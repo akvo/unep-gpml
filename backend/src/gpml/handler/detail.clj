@@ -352,7 +352,8 @@
       tags?
       (assoc :tags (db.resource.tag/get-resource-tags conn {:table (str resource-type "_tag")
                                                             :resource-col resource-type
-                                                            :resource-id id}))
+                                                            :resource-id id
+                                                            :review_status "APPROVED"}))
 
       entity-connections?
       (assoc :entity_connections (db.resource.connection/get-resource-entity-connections conn {:resource-id id

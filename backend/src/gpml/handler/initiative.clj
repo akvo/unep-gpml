@@ -154,7 +154,8 @@
                          :stakeholder_connections stakeholder-connections
                          :tags (db.resource.tag/get-resource-tags conn {:table "initiative_tag"
                                                                         :resource-col "initiative"
-                                                                        :resource-id id})
+                                                                        :resource-id id
+                                                                        :review_status "APPROVED"})
                          :related_content (expand-related-initiative-content conn id)
                          :type "Initiative"}]
       (resp/response (merge data extra-details)))))

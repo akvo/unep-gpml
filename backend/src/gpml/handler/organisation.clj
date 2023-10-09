@@ -2,6 +2,7 @@
   (:require [clojure.java.jdbc :as jdbc]
             [duct.logger :refer [log]]
             [gpml.db.organisation :as db.organisation]
+            [gpml.db.resource.tag :as db.resource.tag]
             [gpml.db.stakeholder :as db.stakeholder]
             [gpml.domain.organisation :as dom.organisation]
             [gpml.handler.file :as handler.file]
@@ -134,11 +135,13 @@
           :custom-context-type srv.permissions/root-app-context-type})
       (let [conn (:spec db)
             organisation (db.organisation/organisation-by-id conn path)
-            seeks (:tags (first (db.organisation/organisation-tags conn path)))
+            tags (mapv :id (db.resource.tag/get-resource-tags conn {:table "organisation_tag"
+                                                                    :resource-col "organisation"
+                                                                    :resource-id (:id path)}))
             geo-coverage (let [data (db.organisation/geo-coverage-v2 conn organisation)]
                            {:geo_coverage_countries (vec (filter some? (mapv :country data)))
                             :geo_coverage_country_groups (vec (filter some? (mapv :country_group data)))})]
-        (resp/response (merge (assoc organisation :expertise seeks) geo-coverage)))
+        (resp/response (merge (assoc organisation :expertise tags) geo-coverage)))
       (r/forbidden {:message "Unauthorized"}))))
 
 (defmethod ig/init-key :gpml.handler.organisation/post
