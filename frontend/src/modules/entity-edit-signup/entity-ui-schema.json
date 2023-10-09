@@ -155,11 +155,17 @@
       "ui:mode": "multiple",
       "ui:showSearch": true
     },
+    "privateTag": {
+      "ui:placeholder": "Search",
+      "ui:widget": "select",
+      "ui:mode": "multiple",
+      "ui:showSearch": true
+    },
     "orgContribution": {
       "ui:widget": "checkboxes",
       "ui:label": null
     },
-    "ui:order": ["orgExpertise", "orgContribution"]
+    "ui:order": ["orgExpertise", "privateTag", "orgContribution"]
   },
   "S5": {
     "ui:order": [

@@ -69,7 +69,6 @@ const SignUpForm = ({
   } = UIStore.currentState
   const { status, id } = formEdit.signUp
   const { initialSignUpData, signUpData } = isEntityType ? entity : stakeholder
-  const uiSchema = isEntityType ? entityUiSchema : stakeholderUiSchema
   const signUpFormData = signUpData.useState()
   const [dependValue, setDependValue] = useState([])
   const [editCheck, setEditCheck] = useState(true)
@@ -79,6 +78,14 @@ const SignUpForm = ({
     setSchema(formSchema.schema)
   }, [formSchema])
 
+  useEffect(() => {
+    if (profile && profile.role !== 'ADMIN') {
+      entityUiSchema.S4.privateTag['ui:widget'] = 'hidden'
+    }
+  }, [profile])
+
+  const uiSchema = isEntityType ? entityUiSchema : stakeholderUiSchema
+
   const handleOnSubmit = ({ formData }) => {
     // # Transform data before sending to endpoint
     let data = {}
@@ -87,7 +94,7 @@ const SignUpForm = ({
 
     data.version = parseInt(formSchema.schema.version)
 
-    setSending(true)
+    // setSending(true)
 
     if (isEntityType) {
       let data2 = handleGeoCoverageValue(
@@ -201,6 +208,13 @@ const SignUpForm = ({
           delete data.orgExpertise
           delete data.expertise
         }
+        if (data.privateTag && data.privateTag.length > 0) {
+          data.org.tags = data.org.tags.concat(
+            tagsMapExpertise(data.privateTag, 'general', tags)
+          )
+          delete data.privateTag
+          delete data.expertise
+        }
       }
     } else {
       data.org = {}
@@ -261,54 +275,54 @@ const SignUpForm = ({
       // add filtered profile to data payload
       data = { ...filteredProfile, ...data }
     }
-    if (status === 'edit' || params?.id) {
-      const changes = getChangedFields(
-        originalData,
-        isEntityType ? data.org : data
-      )
-      if (changes && Object.keys(changes).length > 0) {
-        api
-          .put(
-            `/${isEntityType ? 'organisation' : 'stakeholder'}/${
-              id || params?.id
-            }`,
-            changes
-          )
-          .then(() => {
-            notification.success({ message: 'Update success' })
-            UIStore.update((e) => {
-              e.formStep = {
-                ...e.formStep,
-                signUp: 1,
-              }
-            })
-            // scroll top
-            window.scrollTo({ top: 0 })
-            signUpData.update((e) => {
-              e.data = initialSignUpData
-            })
-            setDisabledBtn({ disabled: true, type: 'default' })
-            router.push(
-              `/${isEntityType ? 'organisation' : 'stakeholder'}/${
-                id || params?.id
-              }`
-            )
-            api.get('/tag').then((res) => {
-              UIStore.update((e) => {
-                e.tags = res.data
-              })
-            })
-          })
-          .catch((e) => {
-            notification.error({ message: 'An error occured' })
-          })
-          .finally(() => {
-            setSending(false)
-          })
-      } else {
-        setSending(false)
-      }
-    }
+    // if (status === 'edit' || params?.id) {
+    //   const changes = getChangedFields(
+    //     originalData,
+    //     isEntityType ? data.org : data
+    //   )
+    //   if (changes && Object.keys(changes).length > 0) {
+    //     api
+    //       .put(
+    //         `/${isEntityType ? 'organisation' : 'stakeholder'}/${
+    //           id || params?.id
+    //         }`,
+    //         changes
+    //       )
+    //       .then(() => {
+    //         notification.success({ message: 'Update success' })
+    //         UIStore.update((e) => {
+    //           e.formStep = {
+    //             ...e.formStep,
+    //             signUp: 1,
+    //           }
+    //         })
+    //         // scroll top
+    //         window.scrollTo({ top: 0 })
+    //         signUpData.update((e) => {
+    //           e.data = initialSignUpData
+    //         })
+    //         setDisabledBtn({ disabled: true, type: 'default' })
+    //         router.push(
+    //           `/${isEntityType ? 'organisation' : 'stakeholder'}/${
+    //             id || params?.id
+    //           }`
+    //         )
+    //         api.get('/tag').then((res) => {
+    //           UIStore.update((e) => {
+    //             e.tags = res.data
+    //           })
+    //         })
+    //       })
+    //       .catch((e) => {
+    //         notification.error({ message: 'An error occured' })
+    //       })
+    //       .finally(() => {
+    //         setSending(false)
+    //       })
+    //   } else {
+    //     setSending(false)
+    //   }
+    // }
   }
 
   const handleFormOnChange = useCallback(
