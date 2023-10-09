@@ -263,7 +263,7 @@ $bg-green-primary: #10f9b7;
         }
       }
       .plastic-strategies-list {
-        margin-top: 30px;
+        // margin-top: 30px;
         h2 {
           margin-bottom: 30px;
         }
@@ -337,6 +337,9 @@ $bg-green-primary: #10f9b7;
           }
         }
       }
+      .workspace-title {
+        margin-top: 30px;
+      }
     }
 
     :global {
@@ -391,6 +394,39 @@ $bg-green-primary: #10f9b7;
               color: #18162f;
               margin: 30px auto 0;
               display: block;
+            }
+          }
+        }
+      }
+    }
+
+    .forumContainer {
+      padding: 19px 0 46px;
+      :global {
+        .forum-heading {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 30px;
+          .forum-title {
+            font-weight: 700;
+          }
+        }
+        .ant-list {
+          .ant-list-item {
+            .ant-card {
+              width: 359px;
+              border-color: transparent;
+              border-radius: 10px;
+              box-shadow: 0px 24px 40px 0px rgba(0, 0, 0, 0.07);
+              .ant-card-body {
+                width: 100%;
+                min-height: 171px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                padding: 24px 19px 22px;
+              }
             }
           }
         }
