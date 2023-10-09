@@ -213,7 +213,6 @@ const SignUpForm = ({
             tagsMapExpertise(data.privateTag, 'general', tags)
           )
           delete data.privateTag
-          delete data.expertise
         }
       }
     } else {
@@ -275,54 +274,54 @@ const SignUpForm = ({
       // add filtered profile to data payload
       data = { ...filteredProfile, ...data }
     }
-    // if (status === 'edit' || params?.id) {
-    //   const changes = getChangedFields(
-    //     originalData,
-    //     isEntityType ? data.org : data
-    //   )
-    //   if (changes && Object.keys(changes).length > 0) {
-    //     api
-    //       .put(
-    //         `/${isEntityType ? 'organisation' : 'stakeholder'}/${
-    //           id || params?.id
-    //         }`,
-    //         changes
-    //       )
-    //       .then(() => {
-    //         notification.success({ message: 'Update success' })
-    //         UIStore.update((e) => {
-    //           e.formStep = {
-    //             ...e.formStep,
-    //             signUp: 1,
-    //           }
-    //         })
-    //         // scroll top
-    //         window.scrollTo({ top: 0 })
-    //         signUpData.update((e) => {
-    //           e.data = initialSignUpData
-    //         })
-    //         setDisabledBtn({ disabled: true, type: 'default' })
-    //         router.push(
-    //           `/${isEntityType ? 'organisation' : 'stakeholder'}/${
-    //             id || params?.id
-    //           }`
-    //         )
-    //         api.get('/tag').then((res) => {
-    //           UIStore.update((e) => {
-    //             e.tags = res.data
-    //           })
-    //         })
-    //       })
-    //       .catch((e) => {
-    //         notification.error({ message: 'An error occured' })
-    //       })
-    //       .finally(() => {
-    //         setSending(false)
-    //       })
-    //   } else {
-    //     setSending(false)
-    //   }
-    // }
+    if (status === 'edit' || params?.id) {
+      const changes = getChangedFields(
+        originalData,
+        isEntityType ? data.org : data
+      )
+      if (changes && Object.keys(changes).length > 0) {
+        api
+          .put(
+            `/${isEntityType ? 'organisation' : 'stakeholder'}/${
+              id || params?.id
+            }`,
+            changes
+          )
+          .then(() => {
+            notification.success({ message: 'Update success' })
+            UIStore.update((e) => {
+              e.formStep = {
+                ...e.formStep,
+                signUp: 1,
+              }
+            })
+            // scroll top
+            window.scrollTo({ top: 0 })
+            signUpData.update((e) => {
+              e.data = initialSignUpData
+            })
+            setDisabledBtn({ disabled: true, type: 'default' })
+            router.push(
+              `/${isEntityType ? 'organisation' : 'stakeholder'}/${
+                id || params?.id
+              }`
+            )
+            api.get('/tag').then((res) => {
+              UIStore.update((e) => {
+                e.tags = res.data
+              })
+            })
+          })
+          .catch((e) => {
+            notification.error({ message: 'An error occured' })
+          })
+          .finally(() => {
+            setSending(false)
+          })
+      } else {
+        setSending(false)
+      }
+    }
   }
 
   const handleFormOnChange = useCallback(
