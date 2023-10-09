@@ -59,3 +59,19 @@
     color: $primaryPurple;
   }
 }
+.forumWrapper {
+  width: 359px;
+  border-color: transparent;
+  border-radius: 10px;
+  box-shadow: 0px 24px 40px 0px rgba(0, 0, 0, 0.07);
+  :global {
+    .ant-card-body {
+      width: 100%;
+      min-height: 171px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 24px 19px 22px;
+    }
+  }
+}

@@ -1,6 +1,6 @@
 import React from 'react'
 import classNames from 'classnames'
-import { Button, Popover } from 'antd'
+import { Button, Card, Popover } from 'antd'
 import { MoreOutlined } from '@ant-design/icons'
 import moment from 'moment'
 import styles from './style.module.scss'
@@ -59,14 +59,21 @@ const ForumTitle = ({
   </div>
 )
 
-const ForumCard = ({ children, className = null }) => {
+const ForumHStack = ({ children, className }) => (
+  <div className={classNames(styles.forumClass, className)}>{children}</div>
+)
+
+const ForumCard = ({ children, className = null, ...props }) => {
   return (
-    <div className={classNames(styles.forumClass, className)}>{children}</div>
+    <Card className={classNames(styles.forumWrapper)} {...props}>
+      {children}
+    </Card>
   )
 }
 
 ForumCard.Title = ForumTitle
 ForumCard.LastMessage = ForumLastMessage
 ForumCard.Options = ForumOptions
+ForumCard.HStack = ForumHStack
 
 export default ForumCard
