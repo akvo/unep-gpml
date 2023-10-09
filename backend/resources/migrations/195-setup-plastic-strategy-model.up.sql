@@ -97,13 +97,18 @@ VALUES (
     'plastic-strategy'),
 (
     '4a841fba-ebb1-41a8-85d8-b02e77708e8e',
-    'plastic-strategy/mark-step-as-completed',
-    'Allows marking a step as completed',
+    'plastic-strategy/update-step',
+    'Allows editing a step',
     'plastic-strategy'),
 (
     'fe3afc8c-5db6-4ab6-9223-f74a9fee906e',
-    'plastic-strategy/edit-group',
-    'Allows editing plastic strategy groups',
+    'plastic-strategy/add-team-member',
+    'Allows adding a plastic strategy team member',
+    'plastic-strategy'),
+(
+    '2777657c-5779-4960-81eb-d08efbd28fde',
+    'plastic-strategy/update-team-member',
+    'Allows editing a plastic strategy team member',
     'plastic-strategy');
 --;;
 INSERT INTO rbac_role (
@@ -148,6 +153,10 @@ VALUES (
     'fe3afc8c-5db6-4ab6-9223-f74a9fee906e',
     1),
 (
+    '5422d5a9-89b4-494d-97a1-894657047803',
+    '2777657c-5779-4960-81eb-d08efbd28fde',
+    1),
+(
     '982889c1-368c-489c-b8f4-234802e0781d',
     'd7bb3d25-e8b7-4311-a6a1-c96855b35081',
     1),
@@ -162,10 +171,6 @@ VALUES (
 (
     '982889c1-368c-489c-b8f4-234802e0781d',
     '4a841fba-ebb1-41a8-85d8-b02e77708e8e',
-    1),
-(
-    '982889c1-368c-489c-b8f4-234802e0781d',
-    'fe3afc8c-5db6-4ab6-9223-f74a9fee906e',
     1),
 (
     '4c953c83-bc6e-41a0-bde7-d25a6a938a3c',
