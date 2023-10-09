@@ -2,7 +2,9 @@
   (:require [camel-snake-kebab.core :refer [->kebab-case]]
             [camel-snake-kebab.extras :as cske]
             [clojure.string :as str]
+            [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.responses :as r]
+            [gpml.service.permissions :as srv.permissions]
             [gpml.service.plastic-strategy :as srv.ps]
             [integrant.core :as ig]))
 
@@ -43,37 +45,63 @@
      [:map]]]])
 
 (defn- get-plastic-strategies
-  [config req]
-  (let [query-params (cske/transform-keys #(->kebab-case % :separator \_)
-                                          (get-in req [:parameters :query]))
-        result (srv.ps/get-plastic-strategies config {:filters query-params})]
-    (if (:success? result)
-      (r/ok (:plastic-strategies result))
-      (r/server-error (dissoc result :success?)))))
+  [config {:keys [user] :as req}]
+  (if-not (h.r.permission/operation-allowed? config
+                                             {:user-id (:id user)
+                                              :entity-type srv.permissions/root-app-context-type
+                                              :custom-permission :list-plastic-strategies
+                                              :root-context? true})
+    (r/forbidden {:message "Unauthorized"})
+    (let [query-params (cske/transform-keys #(->kebab-case % :separator \_)
+                                            (get-in req [:parameters :query]))
+          result (srv.ps/get-plastic-strategies config {:filters query-params})]
+      (if (:success? result)
+        (r/ok (:plastic-strategies result))
+        (r/server-error (dissoc result :success?))))))
 
 (defn- get-plastic-strategy
-  [config req]
+  [config {:keys [user] :as req}]
   (let [country-iso-code-a2 (get-in req [:parameters :path :iso_code_a2])
         search-opts {:filters {:countries-iso-codes-a2 [country-iso-code-a2]}}
-        result (srv.ps/get-plastic-strategy config search-opts)]
-    (if (:success? result)
-      (r/ok (:plastic-strategy result))
-      (if (= (:reason result) :not-found)
+        {:keys [success? plastic-strategy reason] :as result}
+        (srv.ps/get-plastic-strategy config search-opts)]
+    (if success?
+      (if (h.r.permission/operation-allowed? config
+                                             {:user-id (:id user)
+                                              :entity-type :plastic-strategy
+                                              :entity-id (:id plastic-strategy)
+                                              :operation-type :read
+                                              :root-context? false})
+        (r/ok plastic-strategy)
+        (r/forbidden {:message "Unauthorized"}))
+      (if (= reason :not-found)
         (r/not-found {})
         (r/server-error (dissoc result :success?))))))
 
 (defn- update-plastic-strategy
-  [config req]
-  (let [to-update (get-in req [:parameters :body])
-        country-iso-code-a2 (get-in req [:parameters :path :iso_code_a2])
-        result (srv.ps/update-plastic-strategy config
-                                               country-iso-code-a2
-                                               to-update)]
-    (if (:success? result)
-      (r/ok {})
-      (if (= (:reason result) :not-found)
+  [config {:keys [user] :as req}]
+  (let [country-iso-code-a2 (get-in req [:parameters :path :iso_code_a2])
+        search-opts {:filters {:countries-iso-codes-a2 [country-iso-code-a2]}}
+        {:keys [success? plastic-strategy reason] :as get-ps-result}
+        (srv.ps/get-plastic-strategy config search-opts)]
+    (if-not success?
+      (if (= reason :not-found)
         (r/not-found {})
-        (r/server-error (dissoc result :success?))))))
+        (r/server-error (dissoc get-ps-result :success?)))
+      (if-not (h.r.permission/operation-allowed? config
+                                                 {:user-id (:id user)
+                                                  :entity-type :plastic-strategy
+                                                  :entity-id (:id plastic-strategy)
+                                                  :operation-type :update
+                                                  :root-context? false})
+        (r/forbidden {:message "Unauthorized"})
+        (let [plastic-strategy (-> (get-in req [:parameters :body])
+                                   (assoc :id (:id plastic-strategy)))
+              result (srv.ps/update-plastic-strategy config
+                                                     plastic-strategy)]
+          (if (:success? result)
+            (r/ok {})
+            (r/server-error (dissoc result :success?))))))))
 
 (defmethod ig/init-key :gpml.handler.plastic-strategy/get-all
   [_ config]

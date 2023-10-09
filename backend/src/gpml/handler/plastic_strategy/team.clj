@@ -3,7 +3,9 @@
             [camel-snake-kebab.extras :as cske]
             [clojure.string :as str]
             [gpml.domain.types :as dom.types]
+            [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.responses :as r]
+            [gpml.service.plastic-strategy :as srv.ps]
             [gpml.service.plastic-strategy.team :as srv.ps.team]
             [integrant.core :as ig]
             [malli.util :as mu]))
@@ -39,30 +41,54 @@
   (mu/optional-keys add-ps-team-member-body-params-schema [:teams :role]))
 
 (defn- add-ps-team-member
-  [config {{:keys [path body]} :parameters}]
-  (let [body-params (cske/transform-keys ->kebab-case body)
-        country-iso-code-a2 (:iso_code_a2 path)
-        result (srv.ps.team/add-ps-team-member config
-                                               country-iso-code-a2
-                                               body-params)]
-    (if (:success? result)
-      (r/ok {})
-      (if (= (:reason result) :plastic-strategy-not-found)
+  [config {:keys [user] {:keys [path body]} :parameters}]
+  (let [country-iso-code-a2 (:iso_code_a2 path)
+        search-opts {:filters {:countries-iso-codes-a2 [country-iso-code-a2]}}
+        {:keys [success? plastic-strategy reason] :as get-ps-result}
+        (srv.ps/get-plastic-strategy config search-opts)]
+    (if-not success?
+      (if (= reason :not-found)
         (r/not-found {})
-        (r/server-error (dissoc result :success?))))))
+        (r/server-error (dissoc get-ps-result :success?)))
+      (if-not (h.r.permission/operation-allowed? config
+                                                 {:user-id (:id user)
+                                                  :entity-type :plastic-strategy
+                                                  :entity-id (:id plastic-strategy)
+                                                  :custom-permission :add-team-member
+                                                  :root-context? false})
+        (r/forbidden {:message "Unauthorized"})
+        (let [body-params (-> (cske/transform-keys ->kebab-case body)
+                              (assoc :plastic-strategy-id (:id plastic-strategy)))
+              result (srv.ps.team/add-ps-team-member config
+                                                     body-params)]
+          (if (:success? result)
+            (r/ok {})
+            (r/server-error (dissoc result :success?))))))))
 
 (defn- update-ps-team-member
-  [config {{:keys [path body]} :parameters}]
-  (let [body-params (cske/transform-keys ->kebab-case body)
-        country-iso-code-a2 (:iso_code_a2 path)
-        result (srv.ps.team/update-ps-team-member config
-                                                  country-iso-code-a2
-                                                  body-params)]
-    (if (:success? result)
-      (r/ok {})
-      (if (= (:reason result) :plastic-strategy-not-found)
+  [config {:keys [user] {:keys [path body]} :parameters}]
+  (let [country-iso-code-a2 (:iso_code_a2 path)
+        search-opts {:filters {:countries-iso-codes-a2 [country-iso-code-a2]}}
+        {:keys [success? plastic-strategy reason] :as get-ps-result}
+        (srv.ps/get-plastic-strategy config search-opts)]
+    (if-not success?
+      (if (= reason :not-found)
         (r/not-found {})
-        (r/server-error (dissoc result :success?))))))
+        (r/server-error (dissoc get-ps-result :success?)))
+      (if-not (h.r.permission/operation-allowed? config
+                                                 {:user-id (:id user)
+                                                  :entity-type :plastic-strategy
+                                                  :entity-id (:id plastic-strategy)
+                                                  :custom-permission :update-team-member
+                                                  :root-context? false})
+        (r/forbidden {:message "Unauthorized"})
+        (let [body-params (-> (cske/transform-keys ->kebab-case body)
+                              (assoc :plastic-strategy-id (:id plastic-strategy)))
+              result (srv.ps.team/update-ps-team-member config
+                                                        body-params)]
+          (if (:success? result)
+            (r/ok {})
+            (r/server-error (dissoc result :success?))))))))
 
 (defn- get-ps-team-members
   [config req]

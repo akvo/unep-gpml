@@ -16,25 +16,9 @@
                                                   role-assignments))))
 
 (defn add-ps-team-member
-  [{:keys [db logger] :as config} country-iso-code-a2 ps-team-member]
+  [{:keys [db logger] :as config} ps-team-member]
   (let [transactions
         [{:txn-fn
-          (fn tx-get-plastic-strategy
-            [{:keys [country-iso-code-a2] :as context}]
-            (let [search-opts {:filters {:countries-iso-codes-a2 [country-iso-code-a2]}}
-                  {:keys [success? plastic-strategy reason error-details]}
-                  (srv.ps/get-plastic-strategy config search-opts)]
-              (if success?
-                (assoc-in context [:ps-team-member :plastic-strategy-id] (:id plastic-strategy))
-                (if (= reason :not-found)
-                  (assoc context
-                         :success? false
-                         :reason :plastic-strategy-not-found)
-                  (assoc context
-                         :success? false
-                         :reason reason
-                         :error-details error-details)))))}
-         {:txn-fn
           (fn tx-add-ps-team-member
             [{:keys [ps-team-member] :as context}]
             (let [{:keys [success? reason error-details]}
@@ -62,30 +46,13 @@
                        :reason reason
                        :error-details error-details))))}]
         context {:success? true
-                 :country-iso-code-a2 country-iso-code-a2
                  :ps-team-member ps-team-member}]
     (tht/thread-transactions logger transactions context)))
 
 (defn update-ps-team-member
-  [{:keys [db logger] :as config} country-iso-code-a2 ps-team-member]
+  [{:keys [db logger] :as config} ps-team-member]
   (let [transactions
         [{:txn-fn
-          (fn tx-get-plastic-strategy
-            [{:keys [country-iso-code-a2] :as context}]
-            (let [search-opts {:filters {:countries-iso-codes-a2 [country-iso-code-a2]}}
-                  {:keys [success? plastic-strategy reason error-details]}
-                  (srv.ps/get-plastic-strategy config search-opts)]
-              (if success?
-                (assoc-in context [:ps-team-member :plastic-strategy-id] (:id plastic-strategy))
-                (if (= reason :not-found)
-                  (assoc context
-                         :success? false
-                         :reason :plastic-strategy-not-found)
-                  (assoc context
-                         :success? false
-                         :reason reason
-                         :error-details error-details)))))}
-         {:txn-fn
           (fn tx-get-old-ps-team-member
             [{{:keys [plastic-strategy-id user-id]} :ps-team-member :as context}]
             (let [search-opts {:filters {:plastic-strategies-ids [plastic-strategy-id]
@@ -165,7 +132,6 @@
                              :reason reason
                              :error-details error-details)))))))}]
         context {:success? true
-                 :country-iso-code-a2 country-iso-code-a2
                  :ps-team-member ps-team-member}]
     (tht/thread-transactions logger transactions context)))
 
