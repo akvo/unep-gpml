@@ -11,11 +11,13 @@
             [gpml.handler.responses :as r]
             [gpml.service.file :as srv.file]
             [gpml.service.permissions :as srv.permissions]
+            [gpml.util :as util]
             [gpml.util.email :as email]
             [gpml.util.geo :as geo]
             [gpml.util.malli :as util.malli]
             [gpml.util.postgresql :as pg-util]
             [integrant.core :as ig]
+            [malli.util :as mu]
             [ring.util.response :as resp])
   (:import [java.sql SQLException]))
 
@@ -82,9 +84,24 @@
            geo_coverage_countries
            geo_coverage_country_states] :as org}]
   (let [org-id (:id org)
-        new-logo-id (handle-logo-update config conn org-id logo)
+        logo-to-update? (contains? (set (keys org)) :logo)
+        new-logo-id (when logo-to-update?
+                      (handle-logo-update config conn org-id logo))
         geo-coverage-type (keyword geo_coverage_type)
-        org-id (db.organisation/update-organisation conn (assoc org :logo_id new-logo-id))]
+        updates-map (if logo-to-update?
+                      (assoc org :logo_id new-logo-id)
+                      org)
+        updates-map (-> updates-map
+                        (dissoc :id :tags :geo_coverage_countries :geo_coverage_country_groups :logo)
+                        (util/update-if-not-nil :review_status keyword)
+                        (util/update-if-not-nil :geo_coverage_type keyword)
+                        db.organisation/organisation->db-organisation)
+        affected-rows (if-not (empty? updates-map)
+                        (db.organisation/update-organisation
+                         conn
+                         {:id org-id
+                          :updates updates-map})
+                        1)]
     (handler.geo/update-resource-geo-coverage conn
                                               :organisation
                                               org-id
@@ -97,7 +114,8 @@
                                                                              :tag-category "general"
                                                                              :resource-name "organisation"
                                                                              :resource-id org-id}))
-    org-id))
+    {:success? (= 1 affected-rows)
+     :affected-entities affected-rows}))
 
 (defmethod ig/init-key :gpml.handler.organisation/get [_ {:keys [db]}]
   (fn [_]
@@ -188,7 +206,7 @@
 
 (defmethod ig/init-key :gpml.handler.organisation/put
   [_ {:keys [db logger] :as config}]
-  (fn [{:keys [body-params referrer parameters user]}]
+  (fn [{:keys [body-params parameters user]}]
     (try
       (if (h.r.permission/operation-allowed?
            config
@@ -197,10 +215,13 @@
             :entity-id (:id (:path parameters))
             :operation-type :update})
         (jdbc/with-db-transaction [tx (:spec db)]
-          (let [org-id (update-org config tx (-> body-params
-                                                 (assoc :id (:id (:path parameters)))
-                                                 (dissoc :review_status)))]
-            (resp/created referrer (assoc body-params :id org-id))))
+          (let [org-data (-> body-params
+                             (select-keys (util.malli/keys dom.organisation/Organisation))
+                             (dissoc :created :modified :review_status :logo_id :second_contact
+                                     :is_member :reviewed_at :reviewed_by :contribution))
+                {:keys [success?] :as result} (update-org config tx (assoc org-data :id (:id (:path parameters))))]
+            (if success? (r/ok {})
+                (r/server-error result))))
         (r/forbidden {:message "Unauthorized"}))
       (catch Throwable t
         (let [log-data {:exception-message (ex-message t)
@@ -212,32 +233,12 @@
           (r/server-error {:success? false
                            :reason :exception
                            :error-details log-data}))))))
-
-;; TODO: We are not skipping extra params, as for example we don't want `is_member` to be updatable
-;; from this endpoint, so we should skip the ones not expected.
 (defmethod ig/init-key :gpml.handler.organisation/put-params [_ _]
-  (into [:map
-         [:name {:optional true} string?]
-         [:url {:optional true} string?]
-         [:logo {:optional true} string?]
-         [:country {:optional true} int?]
-         [:geo_coverage_type {:optional true} geo/coverage_type]
-         [:type {:optional true} string?]
-         [:representative_group_other {:optional true} [:maybe string?]]
-         [:representative_group_civil_society {:optional true} [:maybe string?]]
-         [:representative_group_private_sector {:optional true} [:maybe string?]]
-         [:representative_group_government {:optional true} [:maybe string?]]
-         [:representative_group_academia_research {:optional true} [:maybe string?]]
-         [:subnational_area {:optional true} [:maybe string?]]
-         [:expertise {:optional true} vector?]
-         [:program {:optional true} string?]
-         [:tags {:optional true}
-          [:vector {:optional true}
-           [:map {:optional true}
-            [:id {:optional true} pos-int?]
-            [:tag string?]
-            [:tag_category {:optional true} string?]]]]]
-        handler.geo/api-geo-coverage-schemas))
+  (-> dom.organisation/Organisation
+      (util.malli/dissoc [:id :created :modified :review_status
+                          :created_by :created_at :second_contact
+                          :is_member :reviewed_at :reviewed_by :contribution])
+      mu/optional-keys))
 
 (defmethod ig/init-key :gpml.handler.organisation/put-req-member
   [_ {:keys [db logger mailjet-config] :as config}]
@@ -258,11 +259,11 @@
                        (= "REJECTED" review_status) {:success? false
                                                      :reason :entity-rejected}
                        :else (jdbc/with-db-transaction [tx (:spec db)]
-                               (update-org config tx (assoc body-params
-                                                            :id org-id
-                                                            :is_member true
-                                                            :review_status "SUBMITTED"))
-                               {:success? true}))]
+                               (update-org config tx (-> body-params
+                                                         (select-keys (util.malli/keys dom.organisation/Organisation))
+                                                         (dissoc :created :modified :logo_id :second_contact
+                                                                 :reviewed_at :reviewed_by)
+                                                         (assoc :id org-id :is_member true :review_status "SUBMITTED")))))]
           (if (:success? result)
             (do
               (email/notify-admins-pending-approval

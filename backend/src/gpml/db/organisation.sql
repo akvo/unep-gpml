@@ -98,26 +98,16 @@ values (
 --~ (when (contains? params :logo_id) ", :logo_id")
 ) returning id;
 
--- :name update-organisation :! :n
--- :doc Update organisation column
-update organisation set id = :id
---~ (when (contains? params :name) ",name= :name")
---~ (when (contains? params :subnational_area) ",subnational_area= :subnational_area")
---~ (when (contains? params :url) ",url= :url")
---~ (when (contains? params :type) ",type= :type")
---~ (when (contains? params :country) ",country= :country")
---~ (when (contains? params :program) ",program= :program")
---~ (when (contains? params :representative_group_other) ",representative_group_other= :representative_group_other")
---~ (when (contains? params :representative_group_civil_society) ",representative_group_civil_society= :representative_group_civil_society")
---~ (when (contains? params :representative_group_private_sector) ",representative_group_private_sector= :representative_group_private_sector")
---~ (when (contains? params :representative_group_government) ",representative_group_government= :representative_group_government")
---~ (when (contains? params :representative_group_academia_research) ",representative_group_academia_research= :representative_group_academia_research")
---~ (when (contains? params :geo_coverage_type) ",geo_coverage_type= :geo_coverage_type::geo_coverage_type")
---~ (when (contains? params :created_by) ",created_by= :created_by")
---~ (when (contains? params :is_member) ",is_member= :is_member")
---~ (when (contains? params :logo_id) ", logo_id= :logo_id")
---~ (when (contains? params :review_status) ", review_status= :review_status::review_status")
-where id = :id
+-- :name update-organisation :execute :affected
+UPDATE organisation
+SET
+/*~
+(str/join ","
+  (for [[field _] (:updates params)]
+    (str (identifier-param-quote (name field) options)
+      " = :updates." (name field))))
+~*/
+WHERE id = :id;
 
 -- :name geo-coverage-v2 :? :*
 -- :doc Get geo coverage by organisation id
