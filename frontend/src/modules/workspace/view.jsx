@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import {
   Row,
   Col,
@@ -10,6 +10,7 @@ import {
   notification,
 } from 'antd'
 const { Title } = Typography
+import kebabCase from 'lodash/kebabCase'
 import styles from './styles.module.scss'
 import DataCatalogueSvg from '../../images/data-catalogue-icon.svg'
 import MatchSvg from '../../images/match.svg'
@@ -22,11 +23,13 @@ import { FilePdfOutlined, DeleteOutlined } from '@ant-design/icons'
 import api from '../../utils/api'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { PREFIX_SLUG } from './ps/config'
 
 const Workspace = ({ profile }) => {
   const router = useRouter()
   const [isFocal, setIsFocal] = useState(false)
   const [projects, setProjects] = useState([])
+  const [psAll, setPSAll] = useState([])
 
   const handleFocalPoint = (id) => {
     setIsFocal(true)
@@ -83,6 +86,21 @@ const Workspace = ({ profile }) => {
       },
     })
   }
+
+  const getPSAll = useCallback(async () => {
+    try {
+      if (profile?.id) {
+        const { data: plasticsStrategies } = await api.get('/plastic-strategy')
+        setPSAll(plasticsStrategies)
+      }
+    } catch (error) {
+      console.error('Unable to fetch plastics strategy:', error)
+    }
+  }, [profile])
+
+  useEffect(() => {
+    getPSAll()
+  }, [getPSAll])
   return (
     <div className={styles.workspace}>
       <div className={styles.workspaceContentWrapper}>
@@ -253,25 +271,34 @@ const Workspace = ({ profile }) => {
             <div className="container">
               <div className="caps-heading-m">workspace</div>
               <h2 className="h-xxl w-semi">Plastic Strategies</h2>
-              <ul>
-                <li>
-                  <Link href="/workspace/plastic-strategy-south-africa">
-                    <div className="caps-heading-s">plastic strategy</div>
-                    <h4 className="h-l w-semi">South Africa</h4>
-                    <div className="compl">12%</div>
-                    <div className="progress-bar">
-                      <div className="fill" style={{ width: '20%' }}></div>
-                    </div>
-                    <ul>
-                      <li className="checked">Project team</li>
-                      <li>Consultation process</li>
-                      <li>Legislation & policy</li>
-                      <li>Nation Source Inventory</li>
-                      <li>Data Analysis</li>
-                      <li>National Plastic Strategy</li>
-                    </ul>
-                  </Link>
-                </li>
+              <ul className="plastic-strategies-items">
+                {psAll.map((item, index) => {
+                  const progressValue = 0
+                  const countryName = kebabCase(item?.country?.name)
+                  return (
+                    <li key={index}>
+                      <Link href={`/workspace/${PREFIX_SLUG}-${countryName}`}>
+                        <div className="caps-heading-s">plastic strategy</div>
+                        <h4 className="h-l w-semi">{item?.country?.name}</h4>
+                        <div className="compl">{`${progressValue}%`}</div>
+                        <div className="progress-bar">
+                          <div
+                            className="fill"
+                            style={{ width: `${progressValue}%` }}
+                          ></div>
+                        </div>
+                        <ul>
+                          <li className="checked">Project team</li>
+                          <li>Consultation process</li>
+                          <li>Legislation & policy</li>
+                          <li>Nation Source Inventory</li>
+                          <li>Data Analysis</li>
+                          <li>National Plastic Strategy</li>
+                        </ul>
+                      </Link>
+                    </li>
+                  )
+                })}
               </ul>
             </div>
           </div>
