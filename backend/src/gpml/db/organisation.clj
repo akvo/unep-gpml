@@ -11,7 +11,6 @@
          all-non-members
          new-organisation
          all-members
-         organisation-tags
          geo-coverage-v2
          get-organisation-files-to-migrate
          get-organisations)

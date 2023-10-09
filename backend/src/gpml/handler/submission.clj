@@ -98,7 +98,8 @@
        item
        (let [tags (db.resource.tag/get-resource-tags conn {:table "stakeholder_tag"
                                                            :resource-col "stakeholder"
-                                                           :resource-id (:id item)})]
+                                                           :resource-id (:id item)
+                                                           :review_status "APPROVED"})]
          (merge item (handler.stakeholder.tag/unwrap-tags (assoc item :tags tags))))))
    submission-data))
 
@@ -218,7 +219,8 @@
         org (db.organisation/organisation-by-id conn {:id (:affiliation stakeholder)})
         tags (db.resource.tag/get-resource-tags conn {:table "stakeholder_tag"
                                                       :resource-col "stakeholder"
-                                                      :resource-id (:id stakeholder)})]
+                                                      :resource-id (:id stakeholder)
+                                                      :review_status "APPROVED"})]
     (cond-> stakeholder
       (seq org)
       (assoc :affiliation org)
