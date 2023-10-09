@@ -48,6 +48,7 @@
         .ant-btn.ant-btn-link {
           font-weight: 700;
           text-decoration-line: none;
+          padding: 8px 20px;
         }
       }
     }
@@ -58,6 +59,30 @@
   &.popover-share {
     .ant-input-group {
       display: flex;
+    }
+  }
+}
+
+.ant-modal-confirm {
+  .ant-modal-confirm-btns {
+    .ant-btn + .ant-btn {
+      margin-left: 12px;
+    }
+    .ant-btn {
+      &.ant-btn-sm {
+        padding: 8px 20px;
+      }
+      &.ant-btn-link {
+        text-decoration-line: none;
+        font-family: var(--font-archia), sans-serif;
+        font-size: $fzXS;
+        line-height: $lhXS;
+        font-weight: 700;
+      }
+      &.ant-btn-default {
+        background-color: $systemWarning5;
+        border-color: transparent;
+      }
     }
   }
 }
