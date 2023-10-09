@@ -303,7 +303,7 @@ const Workspace = ({ profile }) => {
           <div className={styles.forumContainer}>
             <div className="container">
               <div className="forum-heading">
-                <h3 className="forum-title">Forums</h3>
+                <h2 className="w-bold">Forums</h2>
                 <Button
                   withArrow="link"
                   onClick={() => router.push('/forum')}
@@ -313,7 +313,7 @@ const Workspace = ({ profile }) => {
                 </Button>
               </div>
               <List
-                grid={{ column: 3, gutter: 20 }}
+                grid={{ column: 3, gutter: 25 }}
                 dataSource={forums}
                 loading={loading.forums}
                 renderItem={(item) => (
@@ -342,7 +342,7 @@ const Workspace = ({ profile }) => {
           </div>
           <div className="plastic-strategies-list">
             <div className="container">
-              <h2 className="h-xxl w-semi">Plastic Strategies</h2>
+              <h2 className="h-xxl w-bold">Plastic Strategies</h2>
               <ul>
                 <li>
                   <Link href="/workspace/plastic-strategy-south-africa">

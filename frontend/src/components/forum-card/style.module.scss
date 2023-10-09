@@ -60,8 +60,7 @@
   }
 }
 .forumWrapper {
-  width: 359px;
-  border-color: transparent;
+  padding: 8px 19px 8px;
   border-radius: 10px;
   box-shadow: 0px 24px 40px 0px rgba(0, 0, 0, 0.07);
   :global {
@@ -71,7 +70,7 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 24px 19px 22px;
+      padding: 0;
     }
   }
 }
