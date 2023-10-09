@@ -20,13 +20,12 @@ const newRoutes = [
   '/knowledge/library',
   '/[type]/[id]',
   '/onboarding',
-  '/forum'
+  '/forum',
 ]
 const dynamicRoutePattern = /^\/\w+\/\d+$/
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter()
-  console.log(dynamicRoutePattern.test(router.pathname), router.pathname)
   if (!newRoutes.some((route) => router.pathname.startsWith(route))) {
     import('../main.scss')
     import('../buttons.scss')

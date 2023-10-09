@@ -1,6 +1,6 @@
-import React from "react";
-import ProfileLayout from "./ProfileLayout";
-import { AdminSection } from "../../modules/profile/admin";
+import React from 'react'
+import ProfileLayout from './ProfileLayout'
+import { AdminSection } from '../../modules/profile/admin'
 
 function AdminPage(props) {
   return (
@@ -20,15 +20,21 @@ function AdminPage(props) {
         />
       )}
     </>
-  );
+  )
 }
 
-function Admin() {
+function Admin({ isAuthenticated, profile, loadingProfile }) {
   return (
     <ProfileLayout>
-      <AdminPage />
+      <AdminPage
+        {...{
+          isAuthenticated,
+          profile,
+          loadingProfile,
+        }}
+      />
     </ProfileLayout>
-  );
+  )
 }
 
-export default Admin;
+export default Admin
