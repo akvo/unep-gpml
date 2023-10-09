@@ -1168,25 +1168,27 @@ const AdminSection = ({
         <TabPane tab="Tags" key="tags" className="profile-tab-pane">
           {renderList(tagsListOpts, setTagsListOpts)}
         </TabPane>
-        <TabPane
-          tab="PrivateChat"
-          key="privateChat"
-          className="profile-tab-pane"
-        >
-          <div>
-            <p>Request to Join {channel_name}</p>
-            <p>
-              <Link href={`/stakeholder/${user_id}`}>{email}</Link> wants to
-              join {channel_name}{' '}
-              <Button
-                disabled={requestLoading}
-                onClick={() => handleChatRequest()}
-              >
-                {requestButtonText}
-              </Button>
-            </p>
-          </div>
-        </TabPane>
+        {user_id && (
+          <TabPane
+            tab="Requests"
+            key="privateChat"
+            className="profile-tab-pane"
+          >
+            <div className="private-chat-wrapper">
+              <p className="title">Request to Join {channel_name}</p>
+              <p>
+                <Link href={`/stakeholder/${user_id}`}>{email}</Link> wants to
+                join {channel_name}{' '}
+                <Button
+                  disabled={requestLoading}
+                  onClick={() => handleChatRequest()}
+                >
+                  {requestButtonText}
+                </Button>
+              </p>
+            </div>
+          </TabPane>
+        )}
       </Tabs>
 
       <ModalReject
