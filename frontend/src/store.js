@@ -103,6 +103,7 @@ const menuList = [
           {
             href: 'https://communities.gpmarinelitter.org',
             title: 'Engage',
+            to: '/forum',
             subtitle: 'Interactive forum for collaboration',
             icon: <IconForum />,
           },

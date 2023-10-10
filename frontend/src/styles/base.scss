@@ -118,6 +118,9 @@ h6,
   z-index: 20;
   top: 0;
   transition: background 0.27s ease-out;
+  a {
+    color: white;
+  }
   .container {
     .logo-container {
       margin-left: -15px;
@@ -150,6 +153,16 @@ h6,
       transition: color 0.27s ease-out;
       // font-family: ;
     }
+  }
+  .ant-avatar {
+    margin-right: 7px;
+    width: 44px;
+    height: 44px;
+    line-height: 44px;
+    color: $primaryDarkBlue;
+    font-weight: bold;
+    background-color: $primaryBlue2;
+    cursor: pointer;
   }
   @media screen and (max-width: $bpMobile) {
     height: 70px;
