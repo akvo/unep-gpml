@@ -23,7 +23,8 @@ import { FilePdfOutlined, DeleteOutlined } from '@ant-design/icons'
 import api from '../../utils/api'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { PREFIX_SLUG } from './ps/config'
+import { PREFIX_SLUG, stepsState } from './ps/config'
+import classNames from 'classnames'
 
 const Workspace = ({ profile }) => {
   const router = useRouter()
@@ -275,8 +276,18 @@ const Workspace = ({ profile }) => {
               )}
               <ul className="plastic-strategies-items">
                 {psAll.map((item, index) => {
-                  const progressValue = 0
+                  const psSteps = item?.steps || stepsState
+                  const allSteps = psSteps.flatMap((p) => p.substeps || [p])
+                  const progressValue =
+                    (allSteps.filter((a) => a.checked).length /
+                      allSteps.length) *
+                    100
                   const countryName = kebabCase(item?.country?.name)
+                  const summarySteps = psSteps.flatMap((a) =>
+                    a?.substeps?.length
+                      ? a?.substeps?.slice(1, a.substeps.length) // filter intro section
+                      : [a]
+                  )
                   return (
                     <li key={index}>
                       <Link href={`/workspace/${PREFIX_SLUG}-${countryName}`}>
@@ -290,12 +301,14 @@ const Workspace = ({ profile }) => {
                           ></div>
                         </div>
                         <ul>
-                          <li className="checked">Project team</li>
-                          <li>Consultation process</li>
-                          <li>Legislation & policy</li>
-                          <li>Nation Source Inventory</li>
-                          <li>Data Analysis</li>
-                          <li>National Plastic Strategy</li>
+                          {summarySteps.map((s, sx) => (
+                            <li
+                              key={sx}
+                              className={classNames({ checked: s.checked })}
+                            >
+                              {s.label}
+                            </li>
+                          ))}
                         </ul>
                       </Link>
                     </li>
