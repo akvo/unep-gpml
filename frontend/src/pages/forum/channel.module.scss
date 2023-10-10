@@ -37,6 +37,9 @@
             stroke: $primaryWhite;
           }
         }
+        &:not(:last-child) {
+          margin-bottom: 0;
+        }
       }
     }
     .button-container {
