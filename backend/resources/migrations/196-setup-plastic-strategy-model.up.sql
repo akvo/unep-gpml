@@ -97,8 +97,8 @@ VALUES (
     'plastic-strategy'),
 (
     '4a841fba-ebb1-41a8-85d8-b02e77708e8e',
-    'plastic-strategy/update-step',
-    'Allows editing a step',
+    'plastic-strategy/update',
+    'Allows editing a plastic strategy',
     'plastic-strategy'),
 (
     'fe3afc8c-5db6-4ab6-9223-f74a9fee906e',
