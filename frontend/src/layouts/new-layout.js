@@ -57,11 +57,12 @@ const NewLayout = ({
   isAuthenticated,
   auth0Client,
   profile,
+  loginVisible,
+  setLoginVisible,
 }) => {
   const { menuList } = UIStore.useState((s) => ({
     menuList: s.menuList,
   }))
-  const [loginVisible, setLoginVisible] = useState(false)
   const [openedItemKey, setOpenedItemKey] = useState(null)
   const [showMenu, setShowMenu] = useState(false)
   const [width] = useDeviceSize()
@@ -169,7 +170,13 @@ export const withNewLayout = (Component) => {
     const router = useRouter()
     const isIndexPage =
       router.pathname === '/' || router.pathname === '/landing'
-    const { isAuthenticated, auth0Client, profile, setLoginVisible } = props
+    const {
+      isAuthenticated,
+      auth0Client,
+      profile,
+      loginVisible,
+      setLoginVisible,
+    } = props
 
     return (
       <NewLayout
@@ -179,6 +186,7 @@ export const withNewLayout = (Component) => {
           setLoginVisible,
           auth0Client,
           profile,
+          loginVisible,
         }}
       >
         <Component {...props} />

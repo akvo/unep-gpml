@@ -20,9 +20,10 @@ const newRoutes = [
   '/knowledge/library',
   '/[type]/[id]',
   '/onboarding',
+  '/community',
+  '/experts',
   '/forum',
 ]
-const dynamicRoutePattern = /^\/\w+\/\d+$/
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter()
@@ -42,7 +43,7 @@ function MyApp({ Component, pageProps }) {
     _expiresAt: null,
     idToken: null,
     authResult: null,
-    loadingProfile: false,
+    loadingProfile: true,
     loginVisible: false,
   })
 
@@ -256,11 +257,13 @@ function MyApp({ Component, pageProps }) {
       auth0Client,
       profile,
       loginVisible,
-      setLoginVisible: () =>
+      setLoginVisible: (value) => {
+        console.log(value)
         setState((prevState) => ({
           ...prevState,
-          loginVisible: !prevState.loginVisible,
-        })),
+          loginVisible: value,
+        }))
+      },
       loadingProfile,
     }),
     [isAuthenticated, auth0Client, profile, loginVisible, loadingProfile]
