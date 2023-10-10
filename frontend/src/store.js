@@ -103,6 +103,7 @@ const menuList = [
           {
             href: 'https://communities.gpmarinelitter.org',
             title: 'Engage',
+            to: '/forum',
             subtitle: 'Interactive forum for collaboration',
             icon: <IconForum />,
           },
@@ -932,4 +933,9 @@ const UIStore = new Store({
   },
 })
 
-export { UIStore }
+const ChatStore = new Store({
+  myForums: [],
+  isLoggedIn: false,
+})
+
+export { UIStore, ChatStore }

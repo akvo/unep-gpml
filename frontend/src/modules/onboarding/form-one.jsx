@@ -1,29 +1,31 @@
-import React, { useState, useEffect } from "react";
-import { UIStore } from "../../store";
-import { Divider, Typography, Input, Select } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
-import { Field } from "react-final-form";
-const { Title, Link } = Typography;
-import ModalAddEntity from "../flexible-forms/entity-modal/add-entity-modal";
+import React, { useState, useEffect } from 'react'
+import { UIStore } from '../../store'
+import { Divider, Typography, Input, Select } from 'antd'
+import { PlusOutlined } from '@ant-design/icons'
+import { Field } from 'react-final-form'
+const { Title, Link } = Typography
+import ModalAddEntity from '../flexible-forms/entity-modal/add-entity-modal'
+import { SearchIcon } from '../../components/icons'
+import FormLabel from '../../components/form-label'
 
 function FormOne({ validate, error, setEntity }) {
-  const [showModal, setShowModal] = useState(false);
-  const [data, setData] = useState([]);
+  const [showModal, setShowModal] = useState(false)
+  const [data, setData] = useState([])
   const storeData = UIStore.useState((s) => ({
     organisations: s.organisations,
     nonMemberOrganisations: s.nonMemberOrganisations,
-  }));
+  }))
 
-  const { organisations, nonMemberOrganisations } = storeData;
+  const { organisations, nonMemberOrganisations } = storeData
 
   useEffect(() => {
-    setData([...organisations, ...nonMemberOrganisations]);
-  }, [organisations, nonMemberOrganisations]);
+    setData([...organisations, ...nonMemberOrganisations])
+  }, [organisations, nonMemberOrganisations])
 
   const setOrg = (res) => {
-    setEntity(res);
-    setData([...data, { id: res.id, name: res.name }]);
-  };
+    setEntity(res)
+    setData([...data, { id: res.id, name: res.name }])
+  }
 
   return (
     <>
@@ -34,46 +36,59 @@ function FormOne({ validate, error, setEntity }) {
         <div className="field-wrapper">
           <Field name="jobTitle" validate={validate}>
             {({ input, meta }) => {
+              const hasError = error && !meta.valid
+              const validVal = input?.value && meta.valid ? 'success' : null
+              const validateStatus = hasError ? 'error' : validVal
+
               return (
-                <>
+                <FormLabel for="jobTitle" validateStatus={validateStatus}>
                   <Input
+                    size="small"
                     onChange={(e) => input.onChange(e.target.value)}
                     placeholder="Enter job title"
                     className={`${
-                      error && !meta.valid ? "ant-input-status-error" : ""
+                      error && !meta.valid ? 'ant-input-status-error' : ''
                     }`}
                   />
-                </>
-              );
+                </FormLabel>
+              )
             }}
           </Field>
         </div>
-        <Field name="orgName" style={{ width: "100%" }} validate={validate}>
+        <Field name="orgName" style={{ width: '100%' }} validate={validate}>
           {({ input, meta }) => {
+            const hasError = error && !meta.valid
+            const validVal = input?.value && meta.valid ? 'success' : null
+            const validateStatus = hasError ? 'error' : validVal
+
             return (
-              <>
+              <FormLabel for="orgName" validateStatus={validateStatus}>
                 <Select
+                  size="small"
                   placeholder="Enter the name of your entity"
                   allowClear
                   showSearch
                   name="orgName"
+                  virtual={false}
+                  showArrow
                   onChange={(value) => input.onChange(value)}
                   filterOption={(input, option) =>
                     option.children.toLowerCase().includes(input.toLowerCase())
                   }
                   value={input.value ? input.value : undefined}
-                  className={`${
-                    error && !meta.valid ? "ant-input-status-error" : ""
+                  className={`ant-select-suffix ${
+                    error && !meta.valid ? 'ant-input-status-error' : ''
                   }`}
+                  suffixIcon={<SearchIcon />}
                   dropdownRender={(menu) => (
                     <div>
                       {menu}
                       <>
-                        <Divider style={{ margin: "4px 0" }} />
+                        <Divider style={{ margin: '4px 0' }} />
                         <div
                           style={{
-                            display: "flex",
-                            flexWrap: "nowrap",
+                            display: 'flex',
+                            flexWrap: 'nowrap',
                             padding: 8,
                           }}
                         >
@@ -91,8 +106,8 @@ function FormOne({ validate, error, setEntity }) {
                     </Select.Option>
                   ))}
                 </Select>
-              </>
-            );
+              </FormLabel>
+            )
           }}
         </Field>
       </div>
@@ -104,7 +119,7 @@ function FormOne({ validate, error, setEntity }) {
         />
       )}
     </>
-  );
+  )
 }
 
-export default FormOne;
+export default FormOne

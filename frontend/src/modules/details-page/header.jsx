@@ -1,6 +1,6 @@
 import React from 'react'
 import './style.module.scss'
-import { Col, Popover, Input, Button, Select } from 'antd'
+import { Col, Popover, Input, Select } from 'antd'
 const { Option } = Select
 import { eventTrack } from '../../utils/misc'
 import {
@@ -12,6 +12,8 @@ import {
 import { resourceTypeToTopicType, topicNames } from '../../utils/misc'
 import { languageOptions } from '../flexible-forms/view'
 import classNames from 'classnames'
+import Button from '../../components/button'
+import { BookmarkIcon, ArrowRight } from '../../components/icons'
 
 export const HeaderButtons = ({
   data,
@@ -56,11 +58,8 @@ export const HeaderButtons = ({
     <Col className="tool-buttons">
       {data?.url && (
         <Button
-          className="view-button "
-          icon={<EyeFilled />}
-          type="primary"
-          shape="round"
-          size="middle"
+          size="small"
+          className="view-button"
           onClick={(e) => {
             e.preventDefault()
             eventTrack('Resource view', 'View Url', 'Button')
@@ -78,16 +77,15 @@ export const HeaderButtons = ({
             )
           }}
         >
-          View
+          View Source
+          <ArrowRight />
         </Button>
       )}
       {data?.recording && (
         <Button
           className="recording-button two-tone-button"
           icon={<PlayCircleTwoTone twoToneColor="#09689a" />}
-          type="primary"
-          shape="round"
-          size="middle"
+          size="small"
           ghost
           onClick={() => {
             window.open(
@@ -101,6 +99,20 @@ export const HeaderButtons = ({
           Recording
         </Button>
       )}
+      <Button
+        className={classNames('bookmark-button two-tone-button', {
+          bookmarked,
+        })}
+        size="small"
+        ghost
+        onClick={() => {
+          eventTrack('Resource view', 'Bookmark', 'Button')
+          handleChangeRelation('interested in')
+        }}
+      >
+        {bookmarked ? 'Bookmarked' : 'Bookmark'}
+        <BookmarkIcon />
+      </Button>
       {data?.url && (
         <Popover
           placement="top"
@@ -111,6 +123,7 @@ export const HeaderButtons = ({
           content={
             <Input.Group compact>
               <Input
+                size="small"
                 style={{ width: 'calc(100% - 20%)' }}
                 defaultValue={`${
                   data?.url && data?.url?.includes('https://')
@@ -126,8 +139,7 @@ export const HeaderButtons = ({
                 disabled
               />
               <Button
-                style={{ width: '20%' }}
-                type="primary"
+                size="small"
                 disabled={!data?.url}
                 onClick={() => {
                   navigator.clipboard.writeText(
@@ -151,11 +163,8 @@ export const HeaderButtons = ({
           <div>
             <Button
               className="share-button two-tone-button"
-              icon={<MailTwoTone twoToneColor="#09689a" />}
-              type="primary"
-              shape="round"
-              size="middle"
               ghost
+              size="small"
               onClick={() => {
                 navigator.clipboard.writeText(
                   data?.url && data?.url?.includes('https://')
@@ -173,28 +182,10 @@ export const HeaderButtons = ({
           </div>
         </Popover>
       )}
-      <Button
-        className={classNames('bookmark-button two-tone-button', {
-          bookmarked,
-        })}
-        icon={<HeartTwoTone />}
-        type="primary"
-        shape="round"
-        size="middle"
-        ghost
-        onClick={() => {
-          eventTrack('Resource view', 'Bookmark', 'Button')
-          handleChangeRelation('interested in')
-        }}
-      >
-        {bookmarked ? 'Bookmarked' : 'Bookmark'}
-      </Button>
       {canEdit() && (
         <Button
           className="edit-button two-tone-button"
-          type="primary"
-          shape="round"
-          size="middle"
+          size="small"
           ghost
           onClick={() => handleEditBtn(type)}
         >
@@ -204,9 +195,7 @@ export const HeaderButtons = ({
       {canDelete() && (
         <Button
           className="delete-button two-tone-button"
-          type="primary"
-          shape="round"
-          size="middle"
+          size="small"
           ghost
           onClick={handleDeleteBtn}
         >
@@ -289,7 +278,7 @@ const Header = ({
       ?.filter((stakeholder) => stakeholder?.role?.toLowerCase() === 'owner')
       .map((stakeholder) => stakeholder?.stakeholderId)
 
-    const find = resourceOwners?.includes(profile?.id)
+    const find = resourceOwners.includes(profile?.id)
 
     const canEdit = () =>
       isAuthenticated &&

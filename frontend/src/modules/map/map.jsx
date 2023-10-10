@@ -1,12 +1,12 @@
-import React, { useState, useEffect, Fragment } from "react";
-import styles from "./map.module.scss";
-import ReactTooltip from "react-tooltip";
-import { LoadingOutlined, DownOutlined } from "@ant-design/icons";
-import MapChart from "./map-chart";
+import React, { useState, useEffect, Fragment } from 'react'
+import styles from './map.module.scss'
+import ReactTooltip from 'react-tooltip'
+import { LoadingOutlined, DownOutlined } from '@ant-design/icons'
+import MapChart from './map-chart'
 
-export const KNOWLEDGE_LIBRARY = "knowledge";
-export const STAKEHOLDER_OVERVIEW = "community";
-export const EXPERTS = "experts";
+export const KNOWLEDGE_LIBRARY = 'knowledge'
+export const STAKEHOLDER_OVERVIEW = 'community'
+export const EXPERTS = 'experts'
 
 const Maps = ({
   box,
@@ -28,7 +28,7 @@ const Maps = ({
   zoom,
   path,
 }) => {
-  const [tooltipContent, setTooltipContent] = useState("");
+  const [tooltipContent, setTooltipContent] = useState('')
 
   return (
     <div className={`${styles.mapLanding} map-landing`}>
@@ -40,8 +40,8 @@ const Maps = ({
         )}
         <div
           style={{
-            overflow: "hidden",
-            width: "auto",
+            overflow: 'hidden',
+            width: 'auto',
           }}
         >
           <MapChart
@@ -78,7 +78,7 @@ const Maps = ({
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Maps;
+export default Maps

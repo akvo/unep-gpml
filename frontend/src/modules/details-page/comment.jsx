@@ -1,5 +1,5 @@
-import React from "react";
-import "./style.module.scss";
+import React from 'react'
+import './style.module.scss'
 import {
   Col,
   Modal,
@@ -9,18 +9,18 @@ import {
   Button,
   Form,
   Comment,
-} from "antd";
-import { eventTrack } from "../../utils/misc";
+} from 'antd'
+import { eventTrack } from '../../utils/misc'
 import {
   MessageOutlined,
   SendOutlined,
   DeleteOutlined,
   EditOutlined,
   UserOutlined,
-} from "@ant-design/icons";
-import api from "../../utils/api";
-import moment from "moment";
-import TextArea from "rc-textarea";
+} from '@ant-design/icons'
+import api from '../../utils/api'
+import moment from 'moment'
+import TextArea from 'rc-textarea'
 
 export const CommentList = ({
   item,
@@ -41,20 +41,22 @@ export const CommentList = ({
       key={item.id}
       actions={
         profile &&
-        profile.reviewStatus === "APPROVED" && [
+        profile.reviewStatus === 'APPROVED' && [
           <>
-            {profile && profile.reviewStatus === "APPROVED" && (
+            {profile && profile.reviewStatus === 'APPROVED' && (
               <>
                 <span
                   key="comment-nested-reply-to"
-                  className={item.id === showReplyBox ? "active" : ""}
+                  className={`ant-btn ant-btn-link ${
+                    item.id === showReplyBox ? 'active' : ''
+                  }`}
                   onClick={() => {
                     if (item.id === showReplyBox) {
-                      setShowReplyBox("");
+                      setShowReplyBox('')
                     } else {
-                      setShowReplyBox(item.id);
+                      setShowReplyBox(item.id)
                     }
-                    setEditComment("");
+                    setEditComment('')
                   }}
                 >
                   Reply to
@@ -62,49 +64,52 @@ export const CommentList = ({
                 {profile.id === item.authorId && (
                   <span
                     key="comment-nested-edit"
-                    className={item.id === editComment ? "active" : ""}
+                    className={`ant-btn ant-btn-link ${
+                      item.id === editComment ? 'active' : ''
+                    }`}
                     onClick={() => {
                       if (item.id === editComment) {
-                        setEditComment("");
+                        setEditComment('')
                       } else {
-                        setEditComment(item.id);
+                        setEditComment(item.id)
                       }
-                      setShowReplyBox("");
+                      setShowReplyBox('')
                     }}
                   >
                     Edit
                   </span>
                 )}
-                {profile.role === "ADMIN" && (
+                {profile.role === 'ADMIN' && (
                   <span
+                    className="ant-btn ant-btn-link"
                     key="comment-nested-delete"
                     onClick={() => {
                       Modal.error({
-                        className: "popup-delete",
+                        className: 'popup-delete',
                         centered: true,
                         closable: true,
                         icon: <DeleteOutlined />,
-                        title: "Are you sure you want to delete this comment?",
+                        title: 'Are you sure you want to delete this comment?',
                         content:
-                          "Please be aware this action cannot be undone.",
-                        okText: "Delete",
-                        okType: "danger",
+                          'Please be aware this action cannot be undone.',
+                        okText: 'Delete',
+                        okType: 'danger',
                         async onOk() {
                           try {
-                            const res = await api.delete(`/comment/${item.id}`);
+                            const res = await api.delete(`/comment/${item.id}`)
                             notification.success({
-                              message: "Comment deleted successfully",
-                            });
+                              message: 'Comment deleted successfully',
+                            })
 
-                            getComment(id, type.replace("-", "_"));
+                            getComment(id, type.replace('-', '_'))
                           } catch (err) {
-                            console.error(err);
+                            console.error(err)
                             notification.error({
-                              message: "Oops, something went wrong",
-                            });
+                              message: 'Oops, something went wrong',
+                            })
                           }
                         },
-                      });
+                      })
                     }}
                   >
                     Delete
@@ -119,11 +124,11 @@ export const CommentList = ({
                     <EditOutlined
                       onClick={() => {
                         if (showReplyBox) {
-                          setShowReplyBox("");
-                          onReply(item.id, item.title);
+                          setShowReplyBox('')
+                          onReply(item.id, item.title)
                         } else {
-                          setEditComment("");
-                          onEditComment(item.id, item.title);
+                          setEditComment('')
+                          onEditComment(item.id, item.title)
                         }
                       }}
                     />
@@ -131,11 +136,11 @@ export const CommentList = ({
                     <SendOutlined
                       onClick={() => {
                         if (showReplyBox) {
-                          setShowReplyBox("");
-                          onReply(item.id, item.title);
+                          setShowReplyBox('')
+                          onReply(item.id, item.title)
                         } else {
-                          setEditComment("");
-                          onEditComment(item.id, item.title);
+                          setEditComment('')
+                          onEditComment(item.id, item.title)
                         }
                       }}
                     />
@@ -147,11 +152,11 @@ export const CommentList = ({
                     onPressEnter={(e) => {
                       if (e.ctrlKey) {
                         if (showReplyBox) {
-                          setShowReplyBox("");
-                          onReply(item.id, item.title);
+                          setShowReplyBox('')
+                          onReply(item.id, item.title)
                         } else {
-                          setEditComment("");
-                          onEditComment(item.id, item.title);
+                          setEditComment('')
+                          onEditComment(item.id, item.title)
                         }
                       }
                     }}
@@ -166,7 +171,7 @@ export const CommentList = ({
       datetime={moment(item?.createdAt).fromNow()}
       avatar={
         item?.authorPicture ? (
-          <Avatar src={item.authorPicture} alt={"author"} />
+          <Avatar src={item.authorPicture} alt={'author'} />
         ) : (
           <Avatar className="default-comment-avatar" icon={<UserOutlined />} />
         )
@@ -196,8 +201,8 @@ export const CommentList = ({
         />
       ))}
     </Comment>
-  );
-};
+  )
+}
 
 const Comments = ({
   comment,
@@ -218,56 +223,56 @@ const Comments = ({
 }) => {
   const onSubmit = (val) => {
     const resourceType = (type) => {
-      if (type === "initiative") {
-        return "initiative";
+      if (type === 'initiative') {
+        return 'initiative'
       } else {
-        return type;
+        return type
       }
-    };
+    }
     const data = {
       author_id: profile.id,
       resource_id: parseInt(id),
-      resource_type: resourceType(type.replace("-", "_")),
+      resource_type: resourceType(type.replace('-', '_')),
       ...(val.parent_id && { parent_id: val.parent_id }),
       title: val.title,
       content: val.description,
-    };
+    }
 
     api
-      .post("/comment", data)
+      .post('/comment', data)
       .then((data) => {
-        getComment(id, type.replace("-", "_"));
+        getComment(id, type.replace('-', '_'))
       })
       .catch(() => {
-        notification.error({ message: "An error occured" });
+        notification.error({ message: 'An error occured' })
       })
-      .finally(() => {});
-    setNewComment("");
-  };
+      .finally(() => {})
+    setNewComment('')
+  }
 
   const onReply = (id, title) => {
     const val = {
       parent_id: id,
       title: title,
       description: comment,
-    };
-    onSubmit(val);
-  };
+    }
+    onSubmit(val)
+  }
 
   const onEditComment = (id, title) => {
     const val = {
       id: id,
       title: title,
       content: comment,
-    };
+    }
     api
-      .put("/comment", val)
+      .put('/comment', val)
       .then((data) => {
-        getComment(id, type.replace("-", "_"));
+        getComment(id, type.replace('-', '_'))
       })
       .catch(() => {})
-      .finally(() => {});
-  };
+      .finally(() => {})
+  }
 
   return (
     <>
@@ -276,8 +281,8 @@ const Comments = ({
           className="content-heading"
           style={
             comments && comments.length > 0
-              ? { marginBottom: "0" }
-              : { marginBottom: "16px" }
+              ? { marginBottom: '0' }
+              : { marginBottom: '16px' }
           }
         >
           Discussion
@@ -301,7 +306,7 @@ const Comments = ({
                 setEditComment={setEditComment}
                 onEditComment={onEditComment}
               />
-            );
+            )
           })}
         {!isAuthenticated && (
           <Button
@@ -320,8 +325,8 @@ const Comments = ({
           <div className="input">
             <SendOutlined
               onClick={() => {
-                eventTrack("Resource view", "Comment", "Button");
-                onSubmit({ description: newComment });
+                eventTrack('Resource view', 'Comment', 'Button')
+                onSubmit({ description: newComment })
               }}
             />
             <Input.TextArea
@@ -329,8 +334,8 @@ const Comments = ({
               className="comment-input"
               placeholder={
                 comments && comments.length > 0
-                  ? "Join the discussion..."
-                  : "Be the first to comment..."
+                  ? 'Join the discussion...'
+                  : 'Be the first to comment...'
               }
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
@@ -342,6 +347,6 @@ const Comments = ({
         </Col>
       )}
     </>
-  );
-};
-export default Comments;
+  )
+}
+export default Comments
