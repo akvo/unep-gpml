@@ -270,7 +270,9 @@ const Workspace = ({ profile }) => {
           <div className="plastic-strategies-list">
             <div className="container">
               <div className="caps-heading-m">workspace</div>
-              <h2 className="h-xxl w-semi">Plastic Strategies</h2>
+              {psAll.length > 0 && (
+                <h2 className="h-xxl w-semi">Plastic Strategies</h2>
+              )}
               <ul className="plastic-strategies-items">
                 {psAll.map((item, index) => {
                   const progressValue = 0
