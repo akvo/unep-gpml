@@ -1,9 +1,15 @@
 import Link from 'next/link'
+import { CheckOutlined } from '@ant-design/icons'
+import { message } from 'antd'
 import { Pointer, Check } from '../../../components/icons'
 import styles from './ps.module.scss'
 import { useRouter } from 'next/router'
 import classNames from 'classnames'
 import Button from '../../../components/button'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { PREFIX_SLUG, isoA2 } from '../../../modules/workspace/ps/config'
+import { UIStore } from '../../../store'
+import api from '../../../utils/api'
 
 const stepsState = [
   { label: 'Instructions', slug: '', checked: false },
@@ -29,21 +35,117 @@ const stepsState = [
 ]
 
 const NestedLayout = ({ children }) => {
+  const [psItem, setPSItem] = useState({})
+  const [marking, setMarking] = useState(false)
   const router = useRouter()
   const pathSlugs = [...router.route.substring(1).split('/'), '']
+  const { slug } = router.query
+  const profile = UIStore.useState((s) => s.profile)
+
+  const getParentChecked = (step) =>
+    step?.substeps?.length
+      ? step.substeps.filter((sb) => sb.checked).length === step.substeps.length
+      : step?.checked
+
+  const getBySlug = (step, _slug) =>
+    step?.slug === _slug || (!_slug && step?.slug === '')
+
+  const psSteps = useMemo(() => {
+    return psItem?.steps || stepsState
+  }, [psItem, stepsState])
+  const allSteps = psSteps.flatMap((p) => p?.substeps || [p])
+
+  const currentStep = useMemo(() => {
+    const [parent, child] = pathSlugs?.slice(2, pathSlugs.length - 1)
+    const indexStep = parent ? parseInt(parent[0], 10) : 0
+    const findBySlug = allSteps?.find(
+      (a, ax) => indexStep === ax && getBySlug(a, child)
+    )
+    const isCompleted =
+      findBySlug?.checked ||
+      psSteps?.[indexStep]?.checked ||
+      getParentChecked(psSteps?.[indexStep])
+    return { indexStep, child, isCompleted }
+  }, [pathSlugs, psSteps, allSteps])
+
+  const progress =
+    (allSteps.filter((a) => a.checked).length / allSteps.length) * 100
+  const markAsDisabled = !psItem?.id || currentStep?.isCompleted
+
+  const handleOnMarkAsComplete = async () => {
+    setMarking(true)
+    const { indexStep, child } = currentStep
+    const updatedSteps = psSteps.map((s, sx) => {
+      if (sx === indexStep) {
+        if (s?.substeps?.length) {
+          const substeps = s.substeps.map((sb) =>
+            getBySlug(sb, child) ? { ...sb, checked: true } : sb
+          )
+          const allChecked =
+            s.substeps.filter((sb) => sb.checked).length === s.substeps.length
+          return {
+            ...s,
+            checked: allChecked,
+            substeps,
+          }
+        }
+        return {
+          ...s,
+          checked: !child || !s?.checked ? true : s.checked,
+        }
+      }
+      return s
+    })
+    try {
+      await api.put(`/plastic-strategy/${psItem?.country?.isoCodeA2}`, {
+        steps: updatedSteps,
+      })
+      setPSItem({
+        ...psItem,
+        steps: updatedSteps,
+      })
+      setMarking(false)
+    } catch (err) {
+      console.error('Unable to mark as complete:', err)
+      message.error('Unable to mark as complete')
+      setMarking(false)
+    }
+  }
+
+  const getPlasticStrategy = useCallback(async () => {
+    try {
+      const [_, countrySlug] = slug?.split(`${PREFIX_SLUG}-`)
+      const countryISOA2 = isoA2?.[countrySlug]
+      if (countryISOA2 && profile?.id) {
+        const { data: psData } = await api.get(
+          `/plastic-strategy/${countryISOA2}`
+        )
+        setPSItem(psData)
+      }
+    } catch (error) {
+      console.error('Unable to fetch all PS:', error)
+    }
+  }, [slug, profile])
+
+  useEffect(() => {
+    getPlasticStrategy()
+  }, [getPlasticStrategy])
+
   return (
     <div className={styles.plasticStrategyView}>
       <div className={styles.sidebar}>
         <div className="head">
           <div className="caps-heading-s">plastic strategy</div>
-          <h5 className="h-m m-semi">South Africa</h5>
+          <h5 className="h-m m-semi">
+            {psItem?.country?.name || 'Loading...'}
+          </h5>
           <div className="progress-bar">
-            <div className="fill" style={{ width: '20%' }}></div>
+            <div className="fill" style={{ width: `${progress}%` }}></div>
           </div>
-          <div className="progress-text">57% complete</div>
+          <div className="progress-text">{progress}% complete</div>
         </div>
         <div className="steps">
-          {stepsState.map((step) => (
+          {psSteps.map((step) => (
             <div
               className={classNames('step', {
                 selected: pathSlugs[2] == step.slug && !step.substeps,
@@ -52,11 +154,20 @@ const NestedLayout = ({ children }) => {
             >
               <ConditionalLink step={step}>
                 <div className="stephead">
-                  <div className="check"></div>
+                  <div
+                    className={classNames('check', {
+                      checked: getParentChecked(step),
+                    })}
+                  >
+                    {getParentChecked(step) && <CheckOutlined />}
+                  </div>
                   <div className="label">{step.label}</div>
                   {step?.substeps && (
                     <>
-                      <div className="status">0/{step.substeps.length}</div>
+                      <div className="status">
+                        {step.substeps.filter((sb) => sb.checked).length}/
+                        {step.substeps.length}
+                      </div>
                       <div className="pointer">
                         <Pointer />
                       </div>
@@ -79,7 +190,13 @@ const NestedLayout = ({ children }) => {
                       href={`/workspace/${router.query?.slug}/${step.slug}/${substep.slug}`}
                     >
                       <div className="stephead">
-                        <div className="check"></div>
+                        <div
+                          className={classNames('check substep', {
+                            checked: substep.checked,
+                          })}
+                        >
+                          {substep.checked && <CheckOutlined />}
+                        </div>
                         <div className="label">{substep.label}</div>
                       </div>
                     </Link>
@@ -92,7 +209,13 @@ const NestedLayout = ({ children }) => {
       </div>
       <div className={styles.view}>{children}</div>
       <div className={styles.bottomBar}>
-        <Button type="ghost" className="mark-completed">
+        <Button
+          type="ghost"
+          className="mark-completed"
+          onClick={handleOnMarkAsComplete}
+          loading={marking}
+          disabled={markAsDisabled}
+        >
           <Check />
           Mark as Completed
         </Button>
