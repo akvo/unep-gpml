@@ -22,6 +22,7 @@ const newRoutes = [
   '/onboarding',
   '/community',
   '/experts',
+  '/forum',
 ]
 
 function MyApp({ Component, pageProps }) {

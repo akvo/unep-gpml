@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useRouter } from 'next/router'
 import { isEmpty } from 'lodash'
 import Footer from '../footer'
-import Login from '../modules/login/view'
+import Login from '../modules/login/old-view'
 import MenuBar from '../modules/landing/menu-bar'
 
 const MainLayout = ({

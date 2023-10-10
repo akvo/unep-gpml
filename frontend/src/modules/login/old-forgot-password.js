@@ -1,10 +1,19 @@
-import React, { useState, useRef } from 'react'
-import { Form, Input, notification } from 'antd'
-import styles from './styles.module.scss'
+import React, { useState, useEffect, useRef } from 'react'
+import {
+  Carousel,
+  Col,
+  Row,
+  Typography,
+  Button,
+  Avatar,
+  Form,
+  Input,
+  Divider,
+  notification,
+} from 'antd'
+import styles from './oldStyles.module.scss'
 import { Form as FinalForm, Field } from 'react-final-form'
 import { auth0Client } from '../../utils/misc'
-import Button from '../../components/button'
-import FormLabel from '../../components/form-label'
 
 function ForgotPassword({ setSignIn, setForgotPassword, children }) {
   const [form] = Form.useForm()
@@ -56,34 +65,23 @@ function ForgotPassword({ setSignIn, setForgotPassword, children }) {
               formRef.current = form
               return (
                 <Form layout="vertical">
-                  <Field name="email">
-                    {({ input, meta }) => {
-                      const hasError = meta.touched && !meta.valid
-                      const validVal =
-                        input?.value && meta.valid ? 'success' : null
-                      const validateStatus = hasError ? 'error' : validVal
-                      return (
-                        <FormLabel
-                          htmlFor="email"
-                          label="Email"
-                          meta={meta}
-                          validateStatus={validateStatus}
-                        >
-                          <Input
-                            {...input}
-                            size="small"
-                            placeholder="Enter your email"
-                          />
+                  <Form.Item label="Email" style={{ marginBottom: 40 }}>
+                    <Field name="email">
+                      {({ input, meta }) => (
+                        <>
+                          <Input {...input} placeholder="Enter your email" />
                           {meta.touched && meta.error && (
                             <p color="error" className={styles.error}>
                               {meta.error}
                             </p>
                           )}
-                        </FormLabel>
-                      )
-                    }}
-                  </Field>
+                        </>
+                      )}
+                    </Field>
+                  </Form.Item>
                   <Button
+                    type="primary"
+                    shape="round"
                     className={styles.loginButton}
                     onClick={() => handleSubmit()}
                     style={{ marginTop: 20 }}

@@ -89,7 +89,7 @@ const NewLayout = ({
               <h5>
                 Global Partnership
                 <br />
-                on Plastic Pollution1
+                on Plastic Pollution
                 <br />
                 and Marine Litter
               </h5>
@@ -132,6 +132,7 @@ const NewLayout = ({
                 type="primary"
                 size="small"
                 className="noicon hide-mobile"
+                onClick={() => setLoginVisible(true)}
               >
                 Join Now
               </Button>
@@ -157,6 +158,7 @@ const NewLayout = ({
         </div>
         {children}
       </div>
+      <Login visible={loginVisible} close={() => setLoginVisible(false)} />
     </>
   )
 }

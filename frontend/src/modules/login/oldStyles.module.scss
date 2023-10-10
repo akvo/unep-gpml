@@ -1,4 +1,4 @@
-@import '../../styles/vars.scss';
+@import '../../vars.scss';
 
 .login {
   :global {
@@ -12,24 +12,26 @@
   :global {
     .ant-modal-body {
       padding: 0;
-
       .register-text {
+        font-weight: 400;
+        font-size: 18px;
+        line-height: 26px;
         text-align: center;
-        color: $primaryDarkBlue3;
-        padding: 0 50px;
+        color: #a5b0c9;
+        padding: 0 2vw;
       }
       .terms {
-        background: $primaryPurple2;
+        background: #bbedda;
         padding: 6px 0px;
         h4 {
           margin-bottom: 0px;
-          font-weight: 500;
-          font-size: 14px;
+          font-weight: 400;
+          font-size: 16px;
           line-height: 23px;
+          color: #18162f;
           text-align: center;
           a {
-            text-decoration: underline;
-            color: $primaryDarkBlue;
+            font-size: 16px;
           }
         }
       }
@@ -44,17 +46,21 @@
         align-items: center;
         justify-content: space-between;
         .header-text {
-          color: $primaryDarkBlue;
-          font-weight: 700;
-          font-size: $fzS;
-          line-height: $lhS;
+          color: #09689a;
+          font-weight: 500;
+          font-size: 18px;
+          line-height: 26px;
           padding: 0;
           margin-bottom: 0;
-          font-family: var(--font-archia), sans-serif !important;
         }
-        button {
-          span {
-            margin-left: 0px;
+        div {
+          display: flex;
+          align-items: center;
+          cursor: pointer;
+          p {
+            margin-bottom: 0;
+            padding-right: 5px;
+            line-height: 1.5715;
           }
         }
       }
@@ -84,6 +90,47 @@
     }
   }
 
+  :global {
+    .ant-input,
+    .ant-input-number-input,
+    .ant-picker,
+    .ant-select,
+    .ant-select-selector,
+    .ant-input-affix-wrapper {
+      background-color: #edf2f6;
+      border: none !important;
+      border-radius: 5px;
+      font-weight: 500;
+      font-size: 16px;
+      // padding: 0px 11px;
+      height: 42px;
+      color: #a5b0c9;
+      &::placeholder {
+        color: #a5b0c9;
+        font-size: 16px;
+        font-weight: 500;
+      }
+      input {
+        height: 42px;
+      }
+      .ant-select,
+      .ant-select-selector {
+        height: 42px;
+      }
+      .ant-select-selection-placeholder {
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 42px;
+        color: #a5b0c9;
+      }
+      .ant-select-selection-item {
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 42px;
+        color: #a5b0c9;
+      }
+    }
+  }
   .wave-background {
     position: relative;
     z-index: 9;
@@ -174,9 +221,9 @@
         padding: 20px 45px;
         background: transparent;
         &:hover {
-          border-color: $primaryDarkBlue;
+          border-color: $blue12;
           color: #fff;
-          background: $primaryDarkBlue;
+          background: $blue12;
         }
       }
     }
@@ -248,50 +295,37 @@
         flex-direction: column;
         padding: 40px 0px;
         button {
-          margin-bottom: 20px;
+          font-weight: 500;
+          font-size: 18px;
+          line-height: 36px;
+          height: 46px;
           width: 315px;
-          text-align: center;
-          span {
-            flex: 1;
-            padding-left: 10px;
-          }
-          svg {
-            padding-left: 0px;
-            // padding-right: 10px;
-          }
-          :global {
-            .icon {
-              position: absolute;
-              height: 100%;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              left: 15px;
-            }
-          }
-          svg {
-            path {
-              fill: $primaryDarkBlue;
-            }
-          }
+          background-color: transparent;
+          margin-bottom: 20px;
+          border: 2px solid #18162f;
+          color: #18162f;
+          display: flex;
+          align-items: center;
           &:hover {
-            svg {
-              path {
-                fill: white;
-                stroke: white;
-              }
+            border-color: $blue12;
+            color: #fff;
+            background: $blue12;
+            path {
+              fill: #fff;
+              stroke: #fff;
             }
+          }
+          span {
+            padding-left: 20px;
           }
         }
-        :global {
-          .separator {
-            margin-bottom: 10px;
-            h4 {
-              font-weight: 700;
-              font-size: 20px;
-              line-height: 29px;
-              color: $primaryDarkBlue;
-            }
+        .separator {
+          margin-bottom: 10px;
+          h4 {
+            font-weight: 500;
+            font-size: 20px;
+            line-height: 29px;
+            color: #09689a;
           }
         }
       }
@@ -315,16 +349,47 @@
             padding-bottom: 5px;
           }
         }
+        :global {
+          .ant-input-password {
+            border: none !important;
+            padding: 0px 11px;
+            background: #edf2f7;
+            border-radius: 5px;
+            .ant-form-item-has-success {
+              border: none;
+            }
+          }
+        }
         .loginButton {
+          font-weight: 500;
+          font-size: 18px;
+          line-height: 36px;
+          height: 46px;
           width: 230px;
+          background-color: transparent;
           margin: 0 auto;
+          border: 2px solid #18162f;
+          color: #18162f;
           display: flex;
           align-items: center;
           justify-content: center;
+          &:hover {
+            border-color: $blue12;
+            color: #fff;
+            background: $blue12;
+            path {
+              fill: #fff;
+              stroke: #fff;
+            }
+          }
         }
         .forgotPassword {
+          font-weight: 500;
+          font-size: 16px;
+          line-height: 23px;
+          color: #18162f;
           display: block;
-          margin: 20px auto 0;
+          margin: 10px auto 0;
         }
         :global {
           .ant-divider-horizontal {
@@ -337,9 +402,9 @@
           padding-bottom: 30px;
           h2 {
             font-weight: 700;
-            font-size: $fzM;
-            line-height: $lhM;
-            color: $primaryDarkBlue;
+            font-size: 24px;
+            line-height: 35px;
+            color: #18162f;
           }
         }
         :global {
