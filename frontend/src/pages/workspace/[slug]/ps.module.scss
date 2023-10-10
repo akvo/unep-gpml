@@ -5,6 +5,7 @@
 }
 .sidebar {
   width: 330px;
+  min-height: calc(100vh - 90px);
   min-width: 330px;
   background-color: #ebf5ff;
   position: sticky;
@@ -61,6 +62,20 @@
           border-radius: 100%;
           margin-right: 15px;
           margin-left: 5px;
+          &.checked {
+            background-color: $primaryPurple;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            svg {
+              fill: $primaryWhite;
+            }
+            &.substep {
+              svg {
+                font-size: 10px;
+              }
+            }
+          }
         }
         .label {
           font-size: 16px;
@@ -131,7 +146,7 @@
           transform: translateY(0px);
           margin-right: 0px;
         }
-        &:hover {
+        &:hover:not(:disabled) {
           svg {
             width: 19px;
             height: 15px;
@@ -143,6 +158,10 @@
         &.completed {
           border-color: $primaryPurple3;
           background-color: $primaryPurple3;
+        }
+        &:disabled {
+          border-color: $primaryDarkBlue2;
+          color: $primaryDarkBlue2;
         }
       }
     }
