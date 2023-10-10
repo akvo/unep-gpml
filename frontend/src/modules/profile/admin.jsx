@@ -1,4 +1,4 @@
-import { UIStore } from "../../store";
+import { UIStore } from '../../store'
 import {
   notification,
   Button,
@@ -13,16 +13,17 @@ import {
   Typography,
   Checkbox,
   Spin,
-} from "antd";
-const { Title } = Typography;
-import React from "react";
-import { useEffect, useState, useMemo } from "react";
-import api from "../../utils/api";
-import { fetchSubmissionData } from "./utils";
-import moment from "moment";
-import isEmpty from "lodash/isEmpty";
-import invert from "lodash/invert";
-import { DetailCollapse } from "./preview";
+  Form,
+} from 'antd'
+const { Title } = Typography
+import React from 'react'
+import { useEffect, useState, useMemo } from 'react'
+import api from '../../utils/api'
+import { fetchSubmissionData } from './utils'
+import moment from 'moment'
+import isEmpty from 'lodash/isEmpty'
+import invert from 'lodash/invert'
+import { DetailCollapse } from './preview'
 import {
   userRoles,
   topicNames,
@@ -30,22 +31,22 @@ import {
   reviewStatusUIText,
   publishStatusUIText,
   submissionReviewStatusUIText,
-} from "../../utils/misc";
+} from '../../utils/misc'
 import {
   LoadingOutlined,
   UserOutlined,
   FilterOutlined,
-} from "@ant-design/icons";
-import Avatar from "antd/lib/avatar/avatar";
-import Expert from "./expert";
-import IconExpert from "../../images/expert-icon.svg";
-import debouce from "lodash.debounce";
+} from '@ant-design/icons'
+import Avatar from 'antd/lib/avatar/avatar'
+import Expert from './expert'
+import IconExpert from '../../images/expert-icon.svg'
+import debouce from 'lodash.debounce'
 
-const { Search } = Input;
-const { TabPane } = Tabs;
-const { Option } = Select;
+const { Search } = Input
+const { TabPane } = Tabs
+const { Option } = Select
 
-const ModalReject = ({ visible, close, reject, item, action = "Decline" }) => {
+const ModalReject = ({ visible, close, reject, item, action = 'Decline' }) => {
   return (
     <Modal
       width={600}
@@ -65,44 +66,44 @@ const ModalReject = ({ visible, close, reject, item, action = "Decline" }) => {
         <p>Are you sure you want to {action?.toLowerCase()}?</p>
       </div>
     </Modal>
-  );
-};
+  )
+}
 
 const HeaderSearch = ({ placeholder, listOpts, setListOpts }) => {
   return (
     <Search
       className="search"
-      placeholder={placeholder ? placeholder : "Search for a resource"}
+      placeholder={placeholder ? placeholder : 'Search for a resource'}
       allowClear
       onSearch={(title) => {
-        (async () => {
+        ;(async () => {
           const data = await fetchSubmissionData(
             1,
             10,
             listOpts.type,
             listOpts.reviewStatus,
             title
-          );
+          )
           setListOpts((opts) => ({
             ...opts,
             data,
             title,
             size: 10,
             current: 1,
-          }));
-        })();
+          }))
+        })()
       }}
     />
-  );
-};
-const reviewStatusOrderedList = ["Published", "Pending", "Declined"];
+  )
+}
+const reviewStatusOrderedList = ['Published', 'Pending', 'Declined']
 const statusDictToHuman = {
-  APPROVED: "Published",
-  SUBMITTED: "Pending",
-  REJECTED: "Declined",
-  INVITED: "Invited",
-};
-const statusDictToAPI = invert(statusDictToHuman);
+  APPROVED: 'Published',
+  SUBMITTED: 'Pending',
+  REJECTED: 'Declined',
+  INVITED: 'Invited',
+}
+const statusDictToAPI = invert(statusDictToHuman)
 
 const HeaderFilter = ({
   listOpts,
@@ -114,7 +115,7 @@ const HeaderFilter = ({
   const [selectedValue, setSelectedValue] = useState(
     (listOpts.reviewStatus && statusDictToHuman[listOpts.reviewStatus]) ||
       initialReviewStatus
-  );
+  )
   return (
     <Select
       showSearch
@@ -122,42 +123,42 @@ const HeaderFilter = ({
       className="filter-by-status"
       value={selectedValue}
       onChange={(x) => {
-        setSelectedValue(x);
-        if (typeof x === "undefined") {
-          (async () => {
+        setSelectedValue(x)
+        if (typeof x === 'undefined') {
+          ;(async () => {
             const data = await fetchSubmissionData(
               1,
               10,
-              expert ? "experts" : listOpts.type,
+              expert ? 'experts' : listOpts.type,
               listOpts.title
-            );
+            )
             setListOpts((opts) => ({
               ...opts,
               reviewStatus: null,
               data,
               size: 10,
               current: 1,
-            }));
-          })();
+            }))
+          })()
         } else {
-          const reviewStatus = statusDictToAPI[x];
-          setListOpts((opts) => ({ ...opts, reviewStatus }));
-          (async () => {
+          const reviewStatus = statusDictToAPI[x]
+          setListOpts((opts) => ({ ...opts, reviewStatus }))
+          ;(async () => {
             const data = await fetchSubmissionData(
               1,
               10,
-              expert ? "experts" : listOpts.type,
+              expert ? 'experts' : listOpts.type,
               reviewStatus,
               listOpts.title
-            );
+            )
             setListOpts((opts) => ({
               ...opts,
               reviewStatus,
               data,
               current: 1,
               size: 10,
-            }));
-          })();
+            }))
+          })()
         }
       }}
       optionLabelProp="label"
@@ -172,7 +173,7 @@ const HeaderFilter = ({
     >
       {[
         ...reviewStatusOrderedList,
-        ...(listOpts.type === "stakeholders" ? ["Invited"] : []),
+        ...(listOpts.type === 'stakeholders' ? ['Invited'] : []),
       ].map((x, i) => (
         <Option
           key={`${x}-${i}`}
@@ -187,8 +188,8 @@ const HeaderFilter = ({
         </Option>
       ))}
     </Select>
-  );
-};
+  )
+}
 
 const RoleSelect = ({
   stakeholder,
@@ -200,12 +201,12 @@ const RoleSelect = ({
   return (
     <div
       onClick={(e) => {
-        e.stopPropagation();
+        e.stopPropagation()
       }}
     >
-      <div style={{ width: "100%" }}>User role</div>
+      <div style={{ width: '100%' }}>User role</div>
       <Select
-        style={{ width: "200px" }}
+        style={{ width: '200px' }}
         showSearch={false}
         onChange={(role) =>
           onChangeRole(stakeholder, role, listOpts, setListOpts)
@@ -223,8 +224,8 @@ const RoleSelect = ({
         ))}
       </Select>
     </div>
-  );
-};
+  )
+}
 
 const OwnerSelect = ({
   item,
@@ -239,17 +240,17 @@ const OwnerSelect = ({
     <div
       className="review-status-container"
       onClick={(e) => {
-        e.stopPropagation();
+        e.stopPropagation()
       }}
     >
-      {showLabel && <div style={{ width: "100%" }}>Owners</div>}
+      {showLabel && <div style={{ width: '100%' }}>Owners</div>}
       <Select
-        style={{ width: "100%" }}
+        style={{ width: '100%' }}
         showSearch={true}
         mode="multiple"
         placeholder="Assign owner"
         onChange={(data) => {
-          onChangeOwner(item, data, listOpts, setListOpts);
+          onChangeOwner(item, data, listOpts, setListOpts)
         }}
         value={item?.owners ? item?.owners.map((item) => item.id) : []}
         loading={item?.id === loading}
@@ -273,8 +274,8 @@ const OwnerSelect = ({
         ))}
       </Select>
     </div>
-  );
-};
+  )
+}
 
 const FocalPoint = ({
   item,
@@ -290,13 +291,13 @@ const FocalPoint = ({
   return (
     <div className="review-status-container">
       <Select
-        style={{ width: "100%" }}
+        style={{ width: '100%' }}
         allowClear
         showSearch={true}
         mode="multiple"
         placeholder="Assign focal point"
         onChange={(data) => {
-          onChangeFocalPoint(item, data, listOpts, setListOpts);
+          onChangeFocalPoint(item, data, listOpts, setListOpts)
         }}
         value={
           item?.focalPoints ? item?.focalPoints.map((item) => item.id) : []
@@ -315,8 +316,8 @@ const FocalPoint = ({
         ))}
       </Select>
     </div>
-  );
-};
+  )
+}
 
 const AdminSection = ({
   resourcesData,
@@ -328,93 +329,116 @@ const AdminSection = ({
   setEntitiesData,
   tagsData,
 }) => {
-  const profile = UIStore.useState((s) => s.profile);
-  const [modalRejectVisible, setModalRejectVisible] = useState(false);
+  const profile = UIStore.useState((s) => s.profile)
+  const [modalRejectVisible, setModalRejectVisible] = useState(false)
   // TODO:: refactor modalRejectAction and modalRejectFunction
-  const [modalRejectAction, setModalRejectAction] = useState("decline");
-  const [modalRejectFunction, setModalRejectFunction] = useState(false);
+  const [modalRejectAction, setModalRejectAction] = useState('decline')
+  const [modalRejectFunction, setModalRejectFunction] = useState(false)
 
   //TODO :: improve detail preview
-  const [previewContent, storePreviewContent] = useState({});
+  const [previewContent, storePreviewContent] = useState({})
 
-  const [approveLoading, setApproveLoading] = useState({});
-  const [loadingAssignReviewer, setLoadingAssignReviewer] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [exportLoading, setExportLoading] = useState(false);
-  const [expert, setExpert] = useState(false);
+  const [approveLoading, setApproveLoading] = useState({})
+  const [loadingAssignReviewer, setLoadingAssignReviewer] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [exportLoading, setExportLoading] = useState(false)
+  const [expert, setExpert] = useState(false)
 
-  const [tab, setTab] = useState("stakeholders");
+  const [tab, setTab] = useState('stakeholders')
   const [stakeholdersListOpts, setStakeholdersListOpts] = useState({
     titleFilter: null,
-    reviewStatus: "SUBMITTED",
+    reviewStatus: 'SUBMITTED',
     data: stakeholdersData,
-    type: "stakeholders",
+    type: 'stakeholders',
     current: 1,
     size: 10,
-  });
+  })
   const [entitiesListOpts, setEntitiesListOpts] = useState({
     titleFilter: null,
-    reviewStatus: "SUBMITTED",
+    reviewStatus: 'SUBMITTED',
     data: entitiesData,
-    type: "entities",
+    type: 'entities',
     current: 1,
     size: 10,
-  });
+  })
   const [nonMemberEantitiesListOpts, setNonMemberEantitiesListOpts] = useState({
     titleFilter: null,
-    reviewStatus: "SUBMITTED",
+    reviewStatus: 'SUBMITTED',
     data: nonMemberEntitiesData,
-    type: "non-member-entities",
+    type: 'non-member-entities',
     current: 1,
     size: 10,
-  });
+  })
   const [resourcesListOpts, setResourcesListOpts] = useState({
     titleFilter: null,
-    reviewStatus: "SUBMITTED",
+    reviewStatus: 'SUBMITTED',
     data: resourcesData,
-    type: "resources",
+    type: 'resources',
     current: 1,
     size: 10,
-  });
+  })
   const [tagsListOpts, setTagsListOpts] = useState({
     titleFilter: null,
-    reviewStatus: "SUBMITTED",
+    reviewStatus: 'SUBMITTED',
     data: tagsData,
-    type: "tags",
+    type: 'tags',
     current: 1,
     size: 10,
-  });
+  })
 
-  const [reviewers, setReviewers] = useState([]);
-  const [focalPoints, setFocalPoints] = useState([]);
-  const [fetching, setFetching] = useState(false);
+  const [reviewers, setReviewers] = useState([])
+  const [focalPoints, setFocalPoints] = useState([])
+  const [fetching, setFetching] = useState(false)
+  const [form] = Form.useForm()
 
   useEffect(() => {
     api.get(`/reviewer`).then((res) => {
-      setReviewers(res?.data?.reviewers);
-    });
-  }, []);
+      setReviewers(res?.data?.reviewers)
+    })
+  }, [])
+
+  const onFinish = (values) => {
+    const data = {
+      tag_category: 'general',
+      tag: values.tag,
+      review_status: 'APPROVED',
+      private: true,
+    }
+    api
+      .post(`/tag`, data)
+      .then(() => {
+        form.resetFields()
+        notification.success({ message: 'Tag added!' })
+      })
+      .catch((err) => {
+        notification.error({
+          message: err?.response?.data?.errorDetails?.error
+            ? err?.response?.data?.errorDetails?.error
+            : 'Something went wrong',
+        })
+      })
+  }
 
   const handleSearch = (newValue) => {
-    setFetching(true);
+    setFetching(true)
     api.get(`/reviewer?q=${newValue}`).then((res) => {
-      setFocalPoints(res?.data?.reviewers);
-      setFetching(false);
-    });
-  };
+      setFocalPoints(res?.data?.reviewers)
+      setFetching(false)
+    })
+  }
 
   const debouncedResults = useMemo(() => {
-    return debouce(handleSearch, 300);
-  }, []);
+    return debouce(handleSearch, 300)
+  }, [])
 
   const changeRole = (stakeholder, role, listOpts, setListOpts) => {
-    setLoading(stakeholder.id);
+    setLoading(stakeholder.id)
     api
       .patch(`/stakeholder/${stakeholder.id}`, { role })
       .then((resp) => {
-        notification.success({ message: "User role changed" });
+        notification.success({ message: 'User role changed' })
         // FIXME: Add error handling in case the PATCH fails!
-        setLoading(false);
+        setLoading(false)
       })
       .then(() =>
         fetchSubmissionData(
@@ -427,24 +451,24 @@ const AdminSection = ({
       )
       .then((data) => setListOpts((opts) => ({ ...opts, data })))
       .catch((err) => {
-        notification.error({ message: "Something went wrong" });
-      });
-  };
+        notification.error({ message: 'Something went wrong' })
+      })
+  }
 
   const changeOwner = (item, owners, listOpts, setListOpts) => {
-    setLoading(item.id);
-    const stakeholders = owners.map((x) => ({ id: x, roles: ["owner"] }));
+    setLoading(item.id)
+    const stakeholders = owners.map((x) => ({ id: x, roles: ['owner'] }))
     const focalPoints = item?.focalPoints?.map((x) => ({
       id: x.id,
-      roles: ["focal-point"],
-    }));
+      roles: ['focal-point'],
+    }))
     api
       .post(`/auth/${item.type}/${item.id}`, {
         stakeholders: [...stakeholders, ...focalPoints],
       })
       .then((resp) => {
-        notification.success({ message: "Ownerships changed" });
-        setLoading(false);
+        notification.success({ message: 'Ownerships changed' })
+        setLoading(false)
       })
       .then(() =>
         fetchSubmissionData(
@@ -460,26 +484,26 @@ const AdminSection = ({
         notification.error({
           message: err?.response?.data?.errorDetails?.error
             ? err?.response?.data?.errorDetails?.error
-            : "Something went wrong",
-        });
-        setLoading(false);
-      });
-  };
+            : 'Something went wrong',
+        })
+        setLoading(false)
+      })
+  }
 
   const changeFocalPoint = (item, owners, listOpts, setListOpts) => {
-    setLoading(item.id);
-    const focalPoints = owners?.map((x) => ({ id: x, roles: ["focal-point"] }));
+    setLoading(item.id)
+    const focalPoints = owners?.map((x) => ({ id: x, roles: ['focal-point'] }))
     const stakeholders = item?.owners?.map((x) => ({
       id: x.id,
-      roles: ["owner"],
-    }));
+      roles: ['owner'],
+    }))
     api
       .post(`/auth/${item.type}/${item.id}`, {
         stakeholders: [...stakeholders, ...focalPoints],
       })
       .then((resp) => {
-        notification.success({ message: "Focal point changed" });
-        setLoading(false);
+        notification.success({ message: 'Focal point changed' })
+        setLoading(false)
       })
       .then(() =>
         fetchSubmissionData(
@@ -492,130 +516,130 @@ const AdminSection = ({
       )
       .then((data) => setListOpts((opts) => ({ ...opts, data })))
       .catch((err) => {
-        setLoading(false);
+        setLoading(false)
         notification.error({
           message: err?.response?.data?.errorDetails?.error
             ? err?.response?.data?.errorDetails?.error
-            : "Something went wrong",
-        });
-      });
-  };
+            : 'Something went wrong',
+        })
+      })
+  }
 
   const review = (item, reviewStatus, listOpts, setListOpts) => () => {
-    setApproveLoading({ ...item, button: reviewStatus });
+    setApproveLoading({ ...item, button: reviewStatus })
     const itemType =
-      item.type === "initiative"
-        ? "initiative"
-        : resourceTypeToTopicType(item.type);
+      item.type === 'initiative'
+        ? 'initiative'
+        : resourceTypeToTopicType(item.type)
     api
-      .put("submission", {
+      .put('submission', {
         id: item.id,
         itemType: itemType,
         reviewStatus: reviewStatus,
       })
       .then((res) => {
-        (async () => {
+        ;(async () => {
           const data = await fetchSubmissionData(
             listOpts.current,
             listOpts.size,
             listOpts.type,
             listOpts.reviewStatus,
             listOpts.title
-          );
+          )
           notification.success({
             message: res?.data?.message
               ? res?.data?.message
-              : "Something went wrong",
-          });
-          setListOpts((opts) => ({ ...opts, data }));
-          setApproveLoading({});
-        })();
-        setModalRejectVisible(false);
-      });
-  };
+              : 'Something went wrong',
+          })
+          setListOpts((opts) => ({ ...opts, data }))
+          setApproveLoading({})
+        })()
+        setModalRejectVisible(false)
+      })
+  }
 
   const reject = (item, reviewStatus, action, listOpts, setListOpts) => () => {
     setModalRejectFunction(() =>
       review(item, reviewStatus, listOpts, setListOpts)
-    );
-    setModalRejectAction(action);
-    setModalRejectVisible(true);
-  };
+    )
+    setModalRejectAction(action)
+    setModalRejectVisible(true)
+  }
 
   const getPreviewContent = (urls, update) => {
     if (urls.length > 0 || update) {
       urls.forEach((url) => {
         if (!previewContent[url] || update) {
           api.get(url).then((res) => {
-            storePreviewContent({ ...previewContent, [url]: res.data });
-          });
+            storePreviewContent({ ...previewContent, [url]: res.data })
+          })
         }
-      });
+      })
     }
-  };
+  }
 
   const downloadCSV = async (data, name) => {
-    const blob = new Blob([data], { type: "data:text/csv;charset=utf-8," });
-    const blobURL = window.URL.createObjectURL(blob);
+    const blob = new Blob([data], { type: 'data:text/csv;charset=utf-8,' })
+    const blobURL = window.URL.createObjectURL(blob)
 
-    const anchor = document.createElement("a");
-    anchor.download = name;
-    anchor.href = blobURL;
+    const anchor = document.createElement('a')
+    anchor.download = name
+    anchor.href = blobURL
     anchor.dataset.downloadurl = [
-      "text/csv",
+      'text/csv',
       anchor.download,
       anchor.href,
-    ].join(":");
-    anchor.click();
+    ].join(':')
+    anchor.click()
 
     setTimeout(() => {
-      URL.revokeObjectURL(blobURL);
-    }, 100);
-  };
+      URL.revokeObjectURL(blobURL)
+    }, 100)
+  }
 
   const exportList = (type, status) => {
-    setExportLoading(true);
+    setExportLoading(true)
     api
       .get(`/export/${type}?review_status=${status}`)
       .then((res) => {
-        downloadCSV(res.data, `${type}.csv`);
-        setExportLoading(false);
+        downloadCSV(res.data, `${type}.csv`)
+        setExportLoading(false)
       })
       .catch((err) => {
-        console.log(err);
-        setExportLoading(false);
-      });
-  };
+        console.log(err)
+        setExportLoading(false)
+      })
+  }
 
   const assignReviewer = (item, reviewers, listOpts, setListOpts) => {
-    setLoadingAssignReviewer(item);
-    const apiCall = isEmpty(item?.reviewers) ? api.post : api.patch;
+    setLoadingAssignReviewer(item)
+    const apiCall = isEmpty(item?.reviewers) ? api.post : api.patch
     apiCall(`/review/${item.type}/${item.id}`, { reviewers }).then((res) => {
-      setLoadingAssignReviewer(false);
-      (async () => {
+      setLoadingAssignReviewer(false)
+      ;(async () => {
         const data = await fetchSubmissionData(
           listOpts.current,
           listOpts.size,
           listOpts.type,
           listOpts.reviewStatus,
           listOpts.title
-        );
-        setListOpts((opts) => ({ ...opts, data }));
-      })();
-    });
-  };
+        )
+        setListOpts((opts) => ({ ...opts, data }))
+      })()
+    })
+  }
 
   const ReviewStatus = ({ item, listOpts, setListOpts }) => {
     return (
       <div
         className="review-status-container"
         onClick={(e) => {
-          e.stopPropagation();
+          e.stopPropagation()
         }}
       >
-        <div style={{ width: "100%" }}>Reviewers</div>
+        <div style={{ width: '100%' }}>Reviewers</div>
         <Select
-          style={{ width: "100%" }}
+          style={{ width: '100%' }}
           mode="multiple"
           showSearch={true}
           className="select-reviewer"
@@ -643,13 +667,13 @@ const AdminSection = ({
           ))}
         </Select>
       </div>
-    );
-  };
+    )
+  }
 
   const PublishButton = ({
     item,
     type,
-    className = "",
+    className = '',
     disabled = false,
     listOpts,
     setListOpts,
@@ -658,36 +682,36 @@ const AdminSection = ({
       type={type}
       className={className}
       disabled={disabled}
-      onClick={review(item, "APPROVED", listOpts, setListOpts)}
+      onClick={review(item, 'APPROVED', listOpts, setListOpts)}
       loading={
         !isEmpty(approveLoading) &&
-        approveLoading?.button === "APPROVED" &&
+        approveLoading?.button === 'APPROVED' &&
         item?.id === approveLoading?.id &&
         item?.type === approveLoading?.type
       }
     >
-      {publishStatusUIText["APPROVE"]}
+      {publishStatusUIText['APPROVE']}
     </Button>
-  );
+  )
 
   const UnpublishButton = ({
     item,
     type,
-    className = "",
+    className = '',
     disabled = false,
-    uiTitle = "REJECT",
-    action = "REJECTED",
+    uiTitle = 'REJECT',
+    action = 'REJECTED',
     listOpts,
     setListOpts,
   }) => (
     <Button
-      type={"text"}
+      type={'text'}
       danger
       className={className}
       disabled={disabled}
       onClick={reject(
         item,
-        "REJECTED",
+        'REJECTED',
         publishStatusUIText[uiTitle],
         listOpts,
         setListOpts
@@ -701,12 +725,12 @@ const AdminSection = ({
     >
       {publishStatusUIText[uiTitle]}
     </Button>
-  );
+  )
 
   const ExportButton = ({
     item,
     type,
-    className = "",
+    className = '',
     disabled = false,
     listOpts,
     setListOpts,
@@ -718,10 +742,10 @@ const AdminSection = ({
       loading={exportLoading}
       onClick={() =>
         exportList(
-          listOpts.type === "stakeholders"
-            ? "users"
-            : listOpts.type === "resources"
-            ? "topics"
+          listOpts.type === 'stakeholders'
+            ? 'users'
+            : listOpts.type === 'resources'
+            ? 'topics'
             : listOpts.type,
           listOpts.reviewStatus
         )
@@ -729,29 +753,29 @@ const AdminSection = ({
     >
       Export
     </Button>
-  );
+  )
 
   const renderList = (listOpts, setListOpts, title) => {
-    const itemList = listOpts.data || [];
+    const itemList = listOpts.data || []
     const onChangePage = (current, pageSize) => {
-      (async () => {
-        const size = pageSize ? pageSize : itemList.limit;
+      ;(async () => {
+        const size = pageSize ? pageSize : itemList.limit
         const data = await fetchSubmissionData(
           current,
           size,
           listOpts.type,
           listOpts.reviewStatus,
           listOpts.title
-        );
-        setListOpts((opts) => ({ ...opts, data, size, current }));
-      })();
-    };
+        )
+        setListOpts((opts) => ({ ...opts, data, size, current }))
+      })()
+    }
 
     const ResourceApprovedActions = ({ item }) => (
       <div
         className="col action"
         onClick={(e) => {
-          e.stopPropagation();
+          e.stopPropagation()
         }}
       >
         <Space size="small">
@@ -766,7 +790,7 @@ const AdminSection = ({
           />
         </Space>
       </div>
-    );
+    )
 
     const RenderRow = ({ item, setListOpts, listOpts }) => {
       const ResourceAvatar = () => (
@@ -778,20 +802,20 @@ const AdminSection = ({
             icon={item.picture || <UserOutlined />}
           />
           <div className="content-body">
-            <div className="title">{item.title || "No Title"}</div>
+            <div className="title">{item.title || 'No Title'}</div>
             <div className="topic">{topicNames(item.type)}</div>
           </div>
         </div>
-      );
+      )
       const ResourceSubmittedActions = () => (
         <div
           className="col action"
           onClick={(e) => {
-            e.stopPropagation();
+            e.stopPropagation()
           }}
         >
           <Space size="small">
-            {item.type === "profile" ? (
+            {item.type === 'profile' ? (
               item.emailVerified ? (
                 <PublishButton
                   item={item}
@@ -811,7 +835,7 @@ const AdminSection = ({
                   />
                 </Tooltip>
               )
-            ) : item.type === "policy" ? (
+            ) : item.type === 'policy' ? (
               <Tooltip title="Policies are imported from Law division system">
                 <PublishButton
                   item={item}
@@ -841,28 +865,28 @@ const AdminSection = ({
             />
           </Space>
         </div>
-      );
+      )
 
       return (
         <>
-          {item.type !== "tag" ? (
+          {item.type !== 'tag' ? (
             <div className="row">
               <ResourceAvatar />
               <div className="actions-container">
-                {item.reviewStatus === "SUBMITTED" && (
+                {item.reviewStatus === 'SUBMITTED' && (
                   <ReviewStatus
                     item={item}
                     listOpts={listOpts}
                     setListOpts={setListOpts}
                   />
                 )}
-                {item.type === "stakeholder" && item?.expertise?.length > 0 && (
+                {item.type === 'stakeholder' && item?.expertise?.length > 0 && (
                   <div className="expert-icon">
                     <IconExpert />
                   </div>
                 )}
-                {item.reviewStatus === "APPROVED" &&
-                  item.type === "stakeholder" && (
+                {item.reviewStatus === 'APPROVED' &&
+                  item.type === 'stakeholder' && (
                     <RoleSelect
                       stakeholder={item}
                       onChangeRole={changeRole}
@@ -872,9 +896,9 @@ const AdminSection = ({
                     />
                   )}
                 <>
-                  {item.reviewStatus === "APPROVED" &&
-                    item.type !== "stakeholder" &&
-                    item.type !== "organisation" && (
+                  {item.reviewStatus === 'APPROVED' &&
+                    item.type !== 'stakeholder' &&
+                    item.type !== 'organisation' && (
                       <OwnerSelect
                         item={item}
                         reviewers={reviewers}
@@ -887,7 +911,7 @@ const AdminSection = ({
                       />
                     )}
                 </>
-                {item.reviewStatus === "SUBMITTED" && (
+                {item.reviewStatus === 'SUBMITTED' && (
                   <ResourceSubmittedActions />
                 )}
               </div>
@@ -896,20 +920,20 @@ const AdminSection = ({
           ) : (
             <div className="row">
               <ResourceAvatar />
-              {item.reviewStatus === "SUBMITTED" && (
+              {item.reviewStatus === 'SUBMITTED' && (
                 <ResourceSubmittedActions />
               )}
-              {item.reviewStatus === "APPROVED" && (
+              {item.reviewStatus === 'APPROVED' && (
                 <ResourceApprovedActions item={item} />
               )}
             </div>
           )}
         </>
-      );
-    };
+      )
+    }
 
     return (
-      <div key={`new-approval-${title ? title : ""}`} className="approval">
+      <div key={`new-approval-${title ? title : ''}`} className="approval">
         {title && <Title className="tab-label" level={4}>{`${title}`}</Title>}
         <div>
           <b className="approval-bold-text">Total:</b> {itemList.count || 0}
@@ -919,36 +943,36 @@ const AdminSection = ({
             <div className="export-wrapper">
               <div>
                 <b className="approval-bold-text">Filtering by:</b>
-                {listOpts.type === "stakeholders" && (
+                {listOpts.type === 'stakeholders' && (
                   <Checkbox
                     className="expert-checkbox"
                     onChange={(e) => {
-                      setExpert(e.target.checked);
-                      const reviewStatus = listOpts.reviewStatus;
-                      setListOpts((opts) => ({ ...opts, reviewStatus }));
-                      (async () => {
+                      setExpert(e.target.checked)
+                      const reviewStatus = listOpts.reviewStatus
+                      setListOpts((opts) => ({ ...opts, reviewStatus }))
+                      ;(async () => {
                         const data = await fetchSubmissionData(
                           1,
                           10,
-                          e.target.checked ? "experts" : "stakeholders",
+                          e.target.checked ? 'experts' : 'stakeholders',
                           reviewStatus,
                           listOpts.title
-                        );
+                        )
                         setListOpts((opts) => ({
                           ...opts,
                           reviewStatus,
                           data,
                           current: 1,
                           size: 10,
-                        }));
-                      })();
+                        }))
+                      })()
                     }}
                   >
                     Experts
                   </Checkbox>
                 )}
               </div>
-              {title !== "Tags" && (
+              {title !== 'Tags' && (
                 <div>
                   <ExportButton
                     type="ghost"
@@ -961,7 +985,7 @@ const AdminSection = ({
             <hr />
             {listOpts.reviewStatus && (
               <div className="review-status-wrapper">
-                <b className="approval-bold-text">Review status:</b>{" "}
+                <b className="approval-bold-text">Review status:</b>{' '}
                 {statusDictToHuman[listOpts.reviewStatus]}
               </div>
             )}
@@ -988,7 +1012,7 @@ const AdminSection = ({
                 <Collapse.Panel
                   key={item.preview}
                   className={`request-collapse-panel-item ${
-                    item?.reviewer?.id ? "status-show" : "status-none"
+                    item?.reviewer?.id ? 'status-show' : 'status-none'
                   }`}
                   header={
                     <>
@@ -1079,8 +1103,8 @@ const AdminSection = ({
           />
         </div>
       </div>
-    );
-  };
+    )
+  }
 
   return (
     <div className="admin-view">
@@ -1113,12 +1137,12 @@ const AdminSection = ({
             {renderList(
               entitiesListOpts,
               setEntitiesListOpts,
-              "Member Entities"
+              'Member Entities'
             )}
             {renderList(
               nonMemberEantitiesListOpts,
               setNonMemberEantitiesListOpts,
-              "Non-Member Entities"
+              'Non-Member Entities'
             )}
           </>
         </TabPane>
@@ -1126,6 +1150,34 @@ const AdminSection = ({
           {renderList(resourcesListOpts, setResourcesListOpts)}
         </TabPane>
         <TabPane tab="Tags" key="tags" className="profile-tab-pane">
+          <Form
+            name="basic"
+            initialValues={{
+              remember: true,
+            }}
+            form={form}
+            onFinish={onFinish}
+            autoComplete="off"
+            className="tag-form"
+          >
+            <Form.Item
+              label="Tag Name"
+              name="tag"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your tag!',
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item>
+              <Button type="primary" htmlType="submit">
+                Submit
+              </Button>
+            </Form.Item>
+          </Form>
           {renderList(tagsListOpts, setTagsListOpts)}
         </TabPane>
       </Tabs>
@@ -1137,7 +1189,7 @@ const AdminSection = ({
         action={modalRejectAction}
       />
     </div>
-  );
-};
+  )
+}
 
-export { AdminSection, HeaderSearch, HeaderFilter };
+export { AdminSection, HeaderSearch, HeaderFilter }

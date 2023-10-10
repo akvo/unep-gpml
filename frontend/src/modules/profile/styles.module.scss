@@ -1,4 +1,4 @@
-@import "../../vars.scss";
+@import '../../vars.scss';
 
 .profile {
   :global {
@@ -12,7 +12,7 @@
           rgba(45, 103, 150, 0.85),
           rgba(45, 103, 150, 0.85)
         ),
-        url("../../images/landing-gpml-2.jpeg");
+        url('../../images/landing-gpml-2.jpeg');
       background-repeat: no-repeat;
       background-size: cover;
     }
@@ -50,11 +50,11 @@
 
       .lang {
         &:after {
-          content: ")";
+          content: ')';
         }
 
         &:before {
-          content: "(";
+          content: '(';
         }
       }
     }
@@ -904,6 +904,25 @@
       .btn-download {
         margin-top: 20px;
         margin-bottom: 20px;
+      }
+    }
+    .tag-form {
+      margin-bottom: 20px;
+      .ant-form-item {
+        flex-direction: column;
+        margin-bottom: 10px;
+        max-width: 400px;
+        .ant-form-item-label {
+          text-align: left;
+        }
+        .ant-form-item-control-input-content {
+          .ant-input {
+            border-radius: 8px;
+          }
+          .ant-form-item {
+            margin-bottom: 0px;
+          }
+        }
       }
     }
   }
