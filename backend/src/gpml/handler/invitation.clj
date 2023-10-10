@@ -10,8 +10,6 @@
             [gpml.util.postgresql :as pg-util]
             [gpml.util.regular-expressions :as util.regex]
             [integrant.core :as ig]
-            [java-time :as time]
-            [java-time.pre-java8 :as time-pre-j8]
             [java-time.temporal])
   (:import [java.sql SQLException]))
 

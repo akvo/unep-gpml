@@ -7,10 +7,10 @@
             [gpml.handler.responses :as r]
             [gpml.service.plastic-strategy :as srv.ps]
             [gpml.service.plastic-strategy.team :as srv.ps.team]
-            [integrant.core :as ig]
-            [malli.util :as mu]
+            [gpml.util :as util]
             [gpml.util.malli :as util.malli]
-            [gpml.util :as util]))
+            [integrant.core :as ig]
+            [malli.util :as mu]))
 
 (def ^:private common-ps-team-members-path-params-schema
   [:map
