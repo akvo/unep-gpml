@@ -1,13 +1,19 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { Button, Layout, Menu } from 'antd'
-import ForumIframe from '../../modules/forum/forum-iframe'
+import dynamic from 'next/dynamic'
 import styles from './channel.module.scss'
 import { ChatStore, UIStore } from '../../store'
 import { DropDownIcon } from '../../components/icons'
 import { getMyForumsApi } from '../../modules/forum/my-forums'
 
 const { Sider } = Layout
+const DynamicForumIframe = dynamic(
+  () => import('../../modules/forum/forum-iframe'),
+  {
+    ssr: false,
+  }
+)
 
 const ForumDetails = () => {
   const [preload, setPreload] = useState(true)
@@ -77,7 +83,9 @@ const ForumDetails = () => {
         </div>
       </Sider>
       <Layout className={styles.channelContent}>
-        {channelName && <ForumIframe {...{ channelName, channelType }} />}
+        {channelName && (
+          <DynamicForumIframe {...{ channelName, channelType }} />
+        )}
       </Layout>
     </Layout>
   )
