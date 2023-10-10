@@ -8,7 +8,9 @@
             [gpml.service.plastic-strategy :as srv.ps]
             [gpml.service.plastic-strategy.team :as srv.ps.team]
             [integrant.core :as ig]
-            [malli.util :as mu]))
+            [malli.util :as mu]
+            [gpml.util.malli :as util.malli]
+            [gpml.util :as util]))
 
 (def ^:private common-ps-team-members-path-params-schema
   [:map
@@ -36,6 +38,21 @@
                :type "string"
                :enum (map str dom.types/plastic-strategy-team-roles)}}
     (dom.types/get-type-schema :plastic-strategy-team-role)]])
+
+(def ^:private invite-user-to-ps-team-body-params-schema
+  (mu/union
+   (util.malli/dissoc add-ps-team-member-body-params-schema [:user_id])
+   [:map
+    [:name
+     {:swagger {:description "The name of the user to be invited."
+                :type "string"
+                :allowEmptyValue false}}
+     [:string {:min 1}]]
+    [:email
+     {:swagger {:description "The email of the user to be invited."
+                :type "string"
+                :allowEmptyValue false}}
+     [:fn util/email?]]]))
 
 (def ^:private update-ps-team-member-body-params-schema
   (mu/optional-keys add-ps-team-member-body-params-schema [:teams :role]))
@@ -101,6 +118,23 @@
         (r/not-found {})
         (r/server-error (dissoc result :success?))))))
 
+(defn- invite-user-to-ps-team
+  [config {{:keys [path body]} :parameters}]
+  (let [country-iso-code-a2 (:iso_code_a2 path)
+        search-opts {:filters {:countries-iso-codes-a2 [country-iso-code-a2]}}
+        {:keys [success? plastic-strategy reason] :as get-ps-result}
+        (srv.ps/get-plastic-strategy config search-opts)]
+    (if-not success?
+      (if (= reason :not-found)
+        (r/not-found {})
+        (r/server-error (dissoc get-ps-result :success?)))
+      (let [body-params (-> (cske/transform-keys ->kebab-case body)
+                            (assoc :plastic-strategy-id (:id plastic-strategy)))
+            result (srv.ps.team/invite-user-to-ps-team config body-params)]
+        (if (:success? result)
+          (r/ok {:invitation_id (get-in result [:invitation :id])})
+          (r/server-error (dissoc result :success?)))))))
+
 (defmethod ig/init-key :gpml.handler.plastic-strategy.team/get-members
   [_ config]
   (fn [req]
@@ -129,3 +163,13 @@
   [_ _]
   {:path common-ps-team-members-path-params-schema
    :body update-ps-team-member-body-params-schema})
+
+(defmethod ig/init-key :gpml.handler.plastic-strategy.team/invite-user-to-ps-team
+  [_ config]
+  (fn [req]
+    (invite-user-to-ps-team config req)))
+
+(defmethod ig/init-key :gpml.handler.plastic-strategy.team/invite-user-to-ps-team-params
+  [_ _]
+  {:path common-ps-team-members-path-params-schema
+   :body invite-user-to-ps-team-body-params-schema})

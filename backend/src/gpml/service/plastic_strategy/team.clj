@@ -1,5 +1,6 @@
 (ns gpml.service.plastic-strategy.team
   (:require [gpml.db.plastic-strategy.team :as db.ps.team]
+            [gpml.service.invitation :as srv.invitation]
             [gpml.service.permissions :as srv.permissions]
             [gpml.service.plastic-strategy :as srv.ps]
             [gpml.util.thread-transactions :as tht]))
@@ -144,3 +145,37 @@
       (db.ps.team/get-ps-team-members (:spec db)
                                       {:filters {:plastic-strategies-ids [(:id plastic-strategy)]}})
       result)))
+
+(defn invite-user-to-ps-team
+  [{:keys [db logger] :as config} ps-team-invitation]
+  (let [transactions
+        [{:txn-fn
+          (fn tx-invite-user
+            [{:keys [ps-team-invitation] :as context}]
+            (let [invitation-payload {:user (select-keys ps-team-invitation [:name :email])
+                                      :type :plastic-strategy}
+                  result (srv.invitation/invite-user config
+                                                     invitation-payload)]
+              (if (:success? true)
+                (assoc context :user-id (get-in result [:invitation :stakeholder-id]))
+                (assoc context
+                       :success? false
+                       :reason :failed-to-invite-user
+                       :error-details {:result result}))))}
+         {:txn-fn
+          (fn tx-add-user-to-ps-team
+            [{:keys [ps-team-invitation user-id] :as context}]
+            (let [ps-team-member {:plastic-strategy-id (:plastic-strategy-id ps-team-invitation)
+                                  :user-id user-id
+                                  :teams (:teams ps-team-invitation)
+                                  :role (:role ps-team-invitation)}
+                  result (db.ps.team/add-ps-team-member (:spec db) ps-team-member)]
+              (if (:success? result)
+                context
+                (assoc context
+                       :success? false
+                       :reason :failed-to-add-ps-team-member
+                       :error-details {:result result}))))}]
+        context {:success? true
+                 :ps-invitation ps-team-invitation}]
+    (tht/thread-transactions logger transactions context)))
