@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from 'react'
 import {
   Col,
   Row,
@@ -8,107 +8,105 @@ import {
   Input,
   Divider,
   notification,
-} from "antd";
-import styles from "./login-style.module.scss";
-import { ReactComponent as LinkedinIcon } from "../../images/auth/linkedin.svg";
-import { ReactComponent as GoogleIcon } from "../../images/auth/google.svg";
-import { ReactComponent as EmailIcon } from "../../images/auth/email.svg";
-import { useHistory, useLocation } from "react-router-dom";
-const { Title, Link } = Typography;
-import { Form as FinalForm, Field } from "react-final-form";
-import { auth0Client } from "../../utils/misc";
-import ForgotPassword from "./forgot-password";
-import SignUp from "../email-signup/view";
+} from 'antd'
+import styles from './login-style.module.scss'
+import LinkedinIcon from '../../images/auth/linkedin.svg'
+import GoogleIcon from '../../images/auth/google.svg'
+import EmailIcon from '../../images/auth/email.svg'
+const { Title } = Typography
+import { Form as FinalForm, Field } from 'react-final-form'
+import { auth0Client } from '../../utils/misc'
+import ForgotPassword from './forgot-password'
+import SignUp from '../email-signup/view'
 
-function Login({ handleOnClickBtnNext, visible, close }) {
-  const location = useLocation();
-  const [loading, setLoading] = useState(false);
-  const [signin, setSignIn] = useState(false);
-  const [signup, setSignUp] = useState(false);
-  const [forgotPassword, setForgotPassword] = useState(false);
-  const [form] = Form.useForm();
+function Login({}) {
+  const [loading, setLoading] = useState(false)
+  const [signin, setSignIn] = useState(false)
+  const [signup, setSignUp] = useState(false)
+  const [forgotPassword, setForgotPassword] = useState(false)
+  const [form] = Form.useForm()
 
-  const [initialValues, setInitialValues] = useState({});
-  const formRef = useRef();
+  const [initialValues, setInitialValues] = useState({})
+  const formRef = useRef()
 
-  useEffect(() => {
-    if (location?.state) {
-      setSignIn(true);
-    }
-  }, [location]);
+  // useEffect(() => {
+  //   if (location?.state) {
+  //     setSignIn(true);
+  //   }
+  // }, [location]);
 
   const handleOnLogin = async (values) => {
-    setLoading(true);
-    const username = values.email;
-    const password = values.password;
+    setLoading(true)
+    const username = values.email
+    const password = values.password
     auth0Client.login(
       {
-        realm: "Username-Password-Authentication",
+        realm: 'Username-Password-Authentication',
         username,
         password,
       },
       (err, authResult) => {
         if (err) {
-          console.log(err);
-          setLoading(false);
+          console.log(err)
+          setLoading(false)
           notification.error({
             message: err.description,
-          });
-          return;
+          })
+          return
         }
         if (authResult) {
-          window.origin = window.location.origin;
-          console.log(authResult);
-          setLoading(false);
+          // window.origin = window.location.origin;
+          console.log(authResult)
+          setLoading(false)
           //window.origin = window.location.origin;
         }
       }
-    );
-  };
+    )
+  }
 
   const handleGoogleLogin = () => {
     try {
       auth0Client.authorize(
         {
-          connection: "google-oauth2",
+          connection: 'google-oauth2',
         },
         (error, response) => {
-          console.log(response);
+          console.log(response)
         }
-      );
+      )
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
+  }
 
   const handleLinkedinLogin = () => {
     try {
       auth0Client.authorize(
         {
-          connection: "linkedin",
+          connection: 'linkedin',
         },
         (error, response) => {
-          console.log(response);
+          console.log(response)
         }
-      );
+      )
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
+  }
 
   const checkValidation = (values) => {
-    const errors = {};
+    const errors = {}
     if (!values.email?.trim()) {
-      errors.email = "Please enter email address";
+      errors.email = 'Please enter email address'
     }
     if (!values.password?.trim()) {
-      errors.password = "Please enter password";
+      errors.password = 'Please enter password'
     }
-    return errors;
-  };
+    return errors
+  }
 
   return (
-    <div id="login">
+    <div className={styles.login}>
       <div className="ui container wave-background">
         <Row>
           <Col span={24}>
@@ -123,11 +121,11 @@ function Login({ handleOnClickBtnNext, visible, close }) {
                     type="text"
                     className="connect-back-button"
                     onClick={() => {
-                      setSignIn(true);
-                      setForgotPassword(false);
+                      setSignIn(true)
+                      setForgotPassword(false)
                     }}
                   >
-                    {"<"} Back to connect options
+                    {'<'} Back to connect options
                   </Button>
                 </div>
               </ForgotPassword>
@@ -140,7 +138,7 @@ function Login({ handleOnClickBtnNext, visible, close }) {
                     className="connect-back-button"
                     onClick={() => setSignUp(!signup)}
                   >
-                    {"<"} Back to connect options
+                    {'<'} Back to connect options
                   </Button>
                 </div>
               </SignUp>
@@ -153,15 +151,13 @@ function Login({ handleOnClickBtnNext, visible, close }) {
                     </div>
                     <div className="auth-buttons">
                       <Button
-                        type="primary"
                         shape="round"
                         icon={<LinkedinIcon />}
-                        onClick={handleOnClickBtnNext}
+                        onClick={handleLinkedinLogin}
                       >
                         CONTINUE WITH LINKEDIN
                       </Button>
                       <Button
-                        type="primary"
                         shape="round"
                         icon={<GoogleIcon />}
                         onClick={handleGoogleLogin}
@@ -172,7 +168,6 @@ function Login({ handleOnClickBtnNext, visible, close }) {
                         <Title level={4}>or</Title>
                       </div>
                       <Button
-                        type="primary"
                         shape="round"
                         icon={<EmailIcon />}
                         onClick={() => setSignIn(!signin)}
@@ -194,7 +189,7 @@ function Login({ handleOnClickBtnNext, visible, close }) {
                         className="connect-back-button"
                         onClick={() => setSignIn(!signin)}
                       >
-                        {"<"} Back to connect options
+                        {'<'} Back to connect options
                       </Button>
                     </div>
                     <div className="login-form">
@@ -203,7 +198,7 @@ function Login({ handleOnClickBtnNext, visible, close }) {
                         validate={checkValidation}
                         onSubmit={handleOnLogin}
                         render={({ handleSubmit, submitting, form }) => {
-                          formRef.current = form;
+                          formRef.current = form
                           return (
                             <Form layout="vertical">
                               <Form.Item label="Email">
@@ -242,13 +237,12 @@ function Login({ handleOnClickBtnNext, visible, close }) {
                               </Form.Item>
                               <Button
                                 style={{ marginTop: 50 }}
-                                type="primary"
                                 shape="round"
                                 className="login-button"
                                 onClick={() => handleSubmit()}
                               >
                                 LOGIN WITH EMAIL
-                              </Button>{" "}
+                              </Button>{' '}
                               <Button
                                 type="text"
                                 className="forgot-password"
@@ -259,14 +253,13 @@ function Login({ handleOnClickBtnNext, visible, close }) {
                                 Forgot password?
                               </Button>
                             </Form>
-                          );
+                          )
                         }}
                       />
                       <Divider />
                       <div className="join-wrapper">
                         <Title level={2}>Don’t have an account yet?</Title>
                         <Button
-                          type="primary"
                           shape="round"
                           className="login-button"
                           onClick={() => setSignUp(true)}
@@ -288,7 +281,7 @@ function Login({ handleOnClickBtnNext, visible, close }) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default Login;
+export default Login

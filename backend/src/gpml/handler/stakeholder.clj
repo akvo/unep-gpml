@@ -86,7 +86,8 @@
            affiliation job-title
            country geo-coverage-type
            reviewed-at reviewed-by review-status
-           organisation-role public-email tags org]}]
+           organisation-role public-email
+           tags org chat-account-id chat-account-status]}]
   (let [{:keys [seeking offering expertise]} (->> tags
                                                   (group-by :tag_relation_category)
                                                   (reduce-kv (fn [m k v] (assoc m (keyword k) (map :tag v))) {}))]
@@ -115,7 +116,9 @@
      :review_status review-status
      :public_email public-email
      :cv cv
-     :picture picture}))
+     :picture picture
+     :chat_account_id chat-account-id
+     :chat_account_status chat-account-status}))
 
 (defn- get-stakeholder-profile
   [config stakeholder-id]
@@ -231,7 +234,8 @@
         (let [{page :page limit :limit} (:query parameters)
               tags (db.resource.tag/get-resource-tags (:spec db) {:table "stakeholder_tag"
                                                                   :resource-col "stakeholder"
-                                                                  :resource-id (:id stakeholder)})
+                                                                  :resource-id (:id stakeholder)
+                                                                  :review_status "APPROVED"})
               offerings-ids (->> tags
                                  (filter #(= (:tag_relation_category %) "offering"))
                                  (mapv #(get % :id)))

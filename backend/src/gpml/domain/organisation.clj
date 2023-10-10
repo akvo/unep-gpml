@@ -87,9 +87,7 @@
       :swagger {:description "Organisation's logo image URL."
                 :type "string"
                 :format "uri"}}
-     [:and
-      [string? {:min 1}]
-      [:fn util/try-url-str]]]
+     [string? {:min 1}]]
     [:subnational_area
      {:optional true
       :swagger {:description "Organisation's subnational area name."

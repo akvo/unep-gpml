@@ -911,5 +911,24 @@
         font-weight: 600;
       }
     }
+    .tag-form {
+      margin-bottom: 20px;
+      .ant-form-item {
+        flex-direction: column;
+        margin-bottom: 10px;
+        max-width: 400px;
+        .ant-form-item-label {
+          text-align: left;
+        }
+        .ant-form-item-control-input-content {
+          .ant-input {
+            border-radius: 8px;
+          }
+          .ant-form-item {
+            margin-bottom: 0px;
+          }
+        }
+      }
+    }
   }
 }

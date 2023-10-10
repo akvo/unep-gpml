@@ -70,9 +70,13 @@
              :error-details {:message (.getMessage e)}}))))))
 
 (defn update-resource-tags
-  "Updates existing relations between a resource `resource-name` and tags."
+  "Updates existing relations between a resource `resource-name` and tags.
+
+  If the tags relations are empty or nil we just remove all of them."
   [conn logger mailjet-config {:keys [resource-name resource-id] :as opts}]
   (db.resource.tag/delete-resource-tags conn {:table (str resource-name "_tag")
                                               :resource-col resource-name
                                               :resource-id resource-id})
-  (create-resource-tags conn logger mailjet-config opts))
+  (if (seq (:tags opts))
+    (create-resource-tags conn logger mailjet-config opts)
+    {:success? true}))

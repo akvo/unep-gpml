@@ -13,6 +13,7 @@ import {
   Typography,
   Checkbox,
   Spin,
+  Form,
 } from 'antd'
 const { Title } = Typography
 import React from 'react'
@@ -332,7 +333,6 @@ const AdminSection = ({
 }) => {
   const router = useRouter()
   const { user_id, channel_id, email, channel_name } = router.query
-  console.log(user_id, 'user_id')
   const profile = UIStore.useState((s) => s.profile)
   const [modalRejectVisible, setModalRejectVisible] = useState(false)
   // TODO:: refactor modalRejectAction and modalRejectFunction
@@ -395,6 +395,7 @@ const AdminSection = ({
   const [reviewers, setReviewers] = useState([])
   const [focalPoints, setFocalPoints] = useState([])
   const [fetching, setFetching] = useState(false)
+  const [form] = Form.useForm()
 
   useEffect(() => {
     api.get(`/reviewer`).then((res) => {
@@ -426,6 +427,28 @@ const AdminSection = ({
       })
       .catch((err) => {
         setRequestLoading(false)
+        notification.error({
+          message: err?.response?.data?.errorDetails?.error
+            ? err?.response?.data?.errorDetails?.error
+            : 'Something went wrong',
+        })
+      })
+  }
+
+  const onFinish = (values) => {
+    const data = {
+      tag_category: 'general',
+      tag: values.tag,
+      review_status: 'APPROVED',
+      private: true,
+    }
+    api
+      .post(`/tag`, data)
+      .then(() => {
+        form.resetFields()
+        notification.success({ message: 'Tag added!' })
+      })
+      .catch((err) => {
         notification.error({
           message: err?.response?.data?.errorDetails?.error
             ? err?.response?.data?.errorDetails?.error
@@ -1166,6 +1189,34 @@ const AdminSection = ({
           {renderList(resourcesListOpts, setResourcesListOpts)}
         </TabPane>
         <TabPane tab="Tags" key="tags" className="profile-tab-pane">
+          <Form
+            name="basic"
+            initialValues={{
+              remember: true,
+            }}
+            form={form}
+            onFinish={onFinish}
+            autoComplete="off"
+            className="tag-form"
+          >
+            <Form.Item
+              label="Tag Name"
+              name="tag"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your tag!',
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item>
+              <Button type="primary" htmlType="submit">
+                Submit
+              </Button>
+            </Form.Item>
+          </Form>
           {renderList(tagsListOpts, setTagsListOpts)}
         </TabPane>
         {user_id && (

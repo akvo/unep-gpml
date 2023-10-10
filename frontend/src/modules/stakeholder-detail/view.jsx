@@ -15,6 +15,7 @@ import {
 import StickyBox from 'react-sticky-box'
 import ReadMoreReact from 'read-more-less-react'
 import 'read-more-less-react/dist/index.css'
+import LocationImage from '../../images/location.svg'
 import TrashIcon from '../../images/resource-detail/trash-icn.svg'
 import EditIcon from '../../images/resource-detail/edit-icn.svg'
 import FollowIcon from '../../images/resource-detail/follow-icn.svg'
@@ -25,6 +26,7 @@ import {
   LoadingOutlined,
   DeleteOutlined,
 } from '@ant-design/icons'
+import { useHistory } from 'react-router-dom'
 import api from '../../utils/api'
 import { resourceTypeToTopicType } from '../../utils/misc'
 import isEmpty from 'lodash/isEmpty'
@@ -319,24 +321,22 @@ const StakeholderDetail = ({
   }, [isLoaded])
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!isAuthenticated && !loadingProfile) {
       setLoginVisible(true)
-    } else {
+    }
+    if (isAuthenticated) {
       setLoginVisible(false)
     }
   }, [isAuthenticated])
 
   const handleRelationChange = (relation) => {
     if (!isAuthenticated) {
-      console.log(isAuthenticated, 'loadingProfile')
       setLoginVisible(true)
     }
     if (profile.reviewStatus === 'SUBMITTED') {
-      console.log(isAuthenticated, 'loadingProfile')
       setWarningVisible(true)
     }
     if (isAuthenticated && profile.reviewStatus === undefined) {
-      console.log(isAuthenticated, 'loadingProfile')
       setLoginVisible(true)
     }
     if (profile.reviewStatus === 'APPROVED') {

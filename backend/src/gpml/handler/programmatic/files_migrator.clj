@@ -97,7 +97,8 @@
   (migrate-files config
                  {:get-files-to-migrate-fn db.organisation/get-organisation-files-to-migrate
                   :update-entity-fn (fn [conn id updates] (db.organisation/update-organisation conn
-                                                                                               (merge {:id id} updates)))
+                                                                                               {:id id
+                                                                                                :updates updates}))
                   :entity-key entity-key
                   :visibility :private
                   :limit (:limit opts)}))

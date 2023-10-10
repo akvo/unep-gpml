@@ -22,13 +22,13 @@ DELETE FROM :i:table WHERE :i:resource-col = :resource-id;
 
 -- :name get-resource-tags :query :many
 -- :doc Get resource tags
-SELECT rt.:i:resource-col, t.id, t.tag, tg.category AS tag_category
+SELECT rt.:i:resource-col, t.id, t.tag, t.private, tg.category AS tag_category
 --~(when (= (:table params) "stakeholder_tag") ", rt.tag_relation_category")
 FROM :i:table rt
 JOIN tag t ON rt.tag = t.id
 JOIN tag_category tg ON t.tag_category = tg.id
 WHERE rt.:i:resource-col = :resource-id
-AND t.review_status = 'APPROVED';
+--~(when (not (nil? (:review_status params))) " AND t.review_status = :review_status::review_status")
 
 -- :name get-tags-from-resources :query :many
 -- :doc Get all the tags for all the resources
