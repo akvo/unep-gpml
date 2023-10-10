@@ -101,6 +101,13 @@ const formDataMapping = [
     group: null,
   },
   {
+    name: 'privateTag',
+    type: 'array',
+    question: 'privateTag',
+    section: 'S4',
+    group: null,
+  },
+  {
     name: 'country',
     type: 'integer',
     question: 'orgHeadquarter',
@@ -450,9 +457,41 @@ const EntityEditSignUp = ({ match: { params }, ...props }) => {
       if (isEntityType) {
         if (status === 'edit' || dataId) {
           api.get(`/organisation/${dataId}`).then((d) => {
-            setOriginalData(d.data)
+            const tagsArray = Object.keys(tags)
+              .map((k) => tags[k])
+              .flat()
+            let newData = {}
+            if (
+              tagsArray.filter(
+                (item) =>
+                  d?.data?.expertise?.includes(item.id) && item.private === true
+              ).length > 0
+            ) {
+              newData = {
+                ...d.data,
+                privateTag: tagsArray
+                  .filter(
+                    (item) =>
+                      d?.data?.expertise?.includes(item.id) &&
+                      item.private === true
+                  )
+                  ?.map((t) => t.id),
+                expertise: tagsArray
+                  .filter(
+                    (item) =>
+                      d?.data?.expertise?.includes(item.id) &&
+                      item.private !== true
+                  )
+                  ?.map((t) => t.id),
+              }
+            } else {
+              newData = {
+                ...d.data,
+              }
+            }
+            setOriginalData(newData)
             signUpData.update((e) => {
-              e.data = revertFormData(d.data)
+              e.data = revertFormData(newData)
               e.editId = dataId
             })
           })
