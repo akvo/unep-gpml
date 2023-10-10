@@ -274,7 +274,8 @@
                            {:success? true
                             :tags (db.resource.tag/get-resource-tags conn {:table "stakeholder_tag"
                                                                            :resource-col "stakeholder"
-                                                                           :resource-id (:id stakeholder)})}
+                                                                           :resource-id (:id stakeholder)
+                                                                           :review_status "APPROVED"})}
                            (catch Throwable t
                              {:success? false
                               :error-details {:exception-message (ex-message t)}}))]
@@ -476,7 +477,8 @@
                             :tags (db.resource.tag/get-resource-tags conn
                                                                      {:table "stakeholder_tag"
                                                                       :resource-col "stakeholder"
-                                                                      :resource-id (:id stakeholder)})}
+                                                                      :resource-id (:id stakeholder)
+                                                                      :review_status "APPROVED"})}
                            (catch Throwable t
                              {:success? true
                               :error-details {:exception-message (ex-message t)}}))]
