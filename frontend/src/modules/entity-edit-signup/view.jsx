@@ -455,12 +455,7 @@ const EntityEditSignUp = ({ match: { params }, ...props }) => {
     if (isLoaded()) {
       setFormSchema(getSchema(storeData, hideEntityPersonalDetail))
       if (isEntityType) {
-        if (
-          (status === 'edit' || dataId) &&
-          (xor(Object.keys(data?.S3), Object.keys(initialSignUpData?.S3))
-            .length === 0 ||
-            editId !== dataId)
-        ) {
+        if (status === 'edit' || dataId) {
           api.get(`/organisation/${dataId}`).then((d) => {
             const tagsArray = Object.keys(tags)
               .map((k) => tags[k])
@@ -502,12 +497,7 @@ const EntityEditSignUp = ({ match: { params }, ...props }) => {
           })
         }
       } else {
-        if (
-          (status === 'edit' || dataId) &&
-          (xor(Object.keys(data?.S1), Object.keys(initialSignUpData?.S1))
-            .length === 0 ||
-            editId !== dataId)
-        ) {
+        if (status === 'edit' || dataId) {
           api.get(`/stakeholder/${dataId}`).then((d) => {
             if (d.data.tags) {
               d.data = {
@@ -535,7 +525,7 @@ const EntityEditSignUp = ({ match: { params }, ...props }) => {
         }
       }
     }
-  }, [status, id, data, editId, params, isLoaded])
+  }, [status, id])
 
   const renderSteps = (parentTitle, section, steps, index) => {
     const totalRequiredFields = data?.required?.[section]?.length || 0
