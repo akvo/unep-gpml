@@ -7,32 +7,13 @@ import { useRouter } from 'next/router'
 import classNames from 'classnames'
 import Button from '../../../components/button'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { PREFIX_SLUG, isoA2 } from '../../../modules/workspace/ps/config'
+import {
+  PREFIX_SLUG,
+  isoA2,
+  stepsState,
+} from '../../../modules/workspace/ps/config'
 import { UIStore } from '../../../store'
 import api from '../../../utils/api'
-
-const stepsState = [
-  { label: 'Instructions', slug: '', checked: false },
-  {
-    label: 'National Steering Committee & Project Team',
-    slug: '1-project-team',
-    substeps: [
-      { label: 'Intro', slug: '', checked: false },
-      { label: 'Setup your team', slug: 'setup-team', checked: false },
-    ],
-  },
-  {
-    label: 'Stakeholder Consultation Process',
-    slug: '2-stakeholder-consultation',
-    substeps: [
-      { label: 'Intro', slug: '', checked: false },
-      { label: 'Stakeholder Map', slug: 'stakeholder-map', checked: false },
-      { label: 'Case Studies', slug: 'case-studies', checked: false },
-      { label: 'Initiatives', slug: 'initiatives', checked: false },
-      { label: 'Summary & Report', slug: 'summary', checked: false },
-    ],
-  },
-]
 
 const NestedLayout = ({ children }) => {
   const [psItem, setPSItem] = useState({})
