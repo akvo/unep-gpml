@@ -58,19 +58,17 @@ const ForumDetails = () => {
       <Sider className={styles.channelSidebar} width={335}>
         {myForums.length > 0 && <h5>My Forums</h5>}
         <Menu defaultSelectedKeys={[channelName]}>
-          {myForums
-            .filter((forum) => !forum.default)
-            .map((forum) => {
-              return (
-                <Menu.Item
-                  onClick={() => goToChannel(forum)}
-                  icon={<DropDownIcon />}
-                  key={forum.name}
-                >
-                  {forum.name}
-                </Menu.Item>
-              )
-            })}
+          {myForums.map((forum) => {
+            return (
+              <Menu.Item
+                onClick={() => goToChannel(forum)}
+                icon={<DropDownIcon />}
+                key={forum.name}
+              >
+                {forum.name}
+              </Menu.Item>
+            )
+          })}
         </Menu>
         <div className="button-container">
           <Button onClick={goToAll} ghost>
