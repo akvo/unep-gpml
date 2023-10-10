@@ -14,14 +14,11 @@ const DynamicForumModal = dynamic(
   }
 )
 
-const DynamicMyForum = dynamic(
-  () => import('../../modules/forum/my-forums'),
-  {
-    ssr: false, // my forums has window object to update the joins localStorage
-  }
-)
+const DynamicMyForum = dynamic(() => import('../../modules/forum/my-forums'), {
+  ssr: false, // my forums has window object to update the joins localStorage
+})
 
-const Forum = () => {
+const Forum = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
   const [allForums, setAllForums] = useState([])
   const [viewModal, setViewModal] = useState({
     open: false,
@@ -31,6 +28,15 @@ const Forum = () => {
 
   const profile = UIStore.useState((s) => s.profile)
   const avatarUrl = `${process.env.NEXT_PUBLIC_CHAT_API_DOMAIN_URL}/avatar/`
+
+  console.log(profile, isAuthenticated, loadingProfile)
+
+  useEffect(() => {
+    if (!loadingProfile && !isAuthenticated) {
+      setLoading(false)
+      setLoginVisible(true)
+    }
+  }, [isAuthenticated, loadingProfile])
 
   const handleOnView = (data) => {
     setViewModal({

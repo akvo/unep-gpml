@@ -155,15 +155,12 @@ function MyApp({ Component, pageProps }) {
         return console.log(err)
       }
       if (authResult) {
-        const storedLocation = localStorage.getItem('redirect_on_login')
-        const redirectLocation = storedLocation
-          ? JSON.parse(storedLocation)
+        const redirectLocation = localStorage.getItem('redirect_on_login')
+          ? JSON.parse(localStorage.getItem('redirect_on_login'))
           : null
-
         if (redirectLocation) {
           router.push({
-            pathname: redirectLocation.pathname,
-            query: redirectLocation.query,
+            pathname: redirectLocation,
           })
         } else {
           router.push('/')
