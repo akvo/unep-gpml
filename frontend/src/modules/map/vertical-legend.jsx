@@ -1,12 +1,12 @@
-import React from "react";
-import { Card, Typography } from "antd";
-import { colorRange, higlightColor } from "./config";
-import { topicNames, tTypes } from "../../utils/misc";
-import { KNOWLEDGE_LIBRARY, STAKEHOLDER_OVERVIEW } from "./map";
-import { multicountryGroups } from "../knowledge-library/multicountry";
-import PieChart from "../chart/pie-chart";
+import React from 'react'
+import { Card, Typography } from 'antd'
+import { colorRange, higlightColor } from './config'
+import { topicNames, tTypes } from '../../utils/misc'
+import { KNOWLEDGE_LIBRARY, STAKEHOLDER_OVERVIEW } from './map'
+import { multicountryGroups } from '../knowledge-library/multicountry'
+import PieChart from '../chart/pie-chart'
 
-const { Text } = Typography;
+const { Text } = Typography
 
 const VerticalLegend = ({
   data,
@@ -27,19 +27,19 @@ const VerticalLegend = ({
         .map((transnational) =>
           transnational.countries.map((country) => country.id)
         )
-        .flat();
+        .flat()
 
       const transnationalResources = transnationalGroup.item.map(
         (transantional) => {
           const countryIdsPerTransnational = transantional.countries.map(
             (country) => country.id
-          );
+          )
 
           const resourcesPerTransnational = contents
             .filter((content) =>
               countryIdsPerTransnational.includes(content.countryId)
             )
-            .map((content) => content.transnationalCounts);
+            .map((content) => content.transnationalCounts)
 
           const result = resourcesPerTransnational.reduce(
             (acc, currVal) => {
@@ -60,8 +60,8 @@ const VerticalLegend = ({
                 technology: acc.technology + currVal.technology,
                 capacityBuilding:
                   (acc.capacityBuilding || 0) + (currVal.capacityBuilding || 0),
-              };
-              return acc;
+              }
+              return acc
             },
             {
               actionPlan: 0,
@@ -74,19 +74,19 @@ const VerticalLegend = ({
               capacityBuilding: 0,
               id: 0,
             }
-          );
+          )
 
           return {
             label: transantional.name,
             id: transantional.id,
             totalResources: result,
-          };
+          }
         }
-      );
+      )
 
       const resources = contents
         .filter((content) => countryIds.includes(content.countryId))
-        .map((content) => content.transnationalCounts);
+        .map((content) => content.transnationalCounts)
 
       const totalTransantionalResourceCount = resources.reduce(
         (acc, currVal) => {
@@ -107,8 +107,8 @@ const VerticalLegend = ({
             technology: acc.technology + currVal.technology,
             capacityBuilding:
               (acc.capacityBuilding || 0) + (currVal.capacityBuilding || 0),
-          };
-          return acc;
+          }
+          return acc
         },
         {
           actionPlan: 0,
@@ -120,36 +120,36 @@ const VerticalLegend = ({
           policy: 0,
           capacityBuilding: 0,
         }
-      );
+      )
 
       return {
         groupLabel: transnationalGroup.label,
         resourcePerCountry: totalTransantionalResourceCount,
         transnational: transnationalResources,
-      };
+      }
     }
-  );
+  )
 
   const totalResourceCount =
     path === KNOWLEDGE_LIBRARY &&
     countData.filter(
       (data) =>
-        data.topic !== "stakeholder" &&
-        data.topic !== "organisation" &&
-        data.topic !== "gpml_member_entities" &&
-        data.topic !== "non_member_organisation" &&
-        data.topic !== "capacity_building" &&
-        data.topic !== "plastics" &&
-        data.topic !== "waste management" &&
-        data.topic !== "marine litter" &&
-        data.topic !== "capacity building" &&
-        data.topic !== "product by design" &&
-        data.topic !== "source to sea"
-    );
+        data.topic !== 'stakeholder' &&
+        data.topic !== 'organisation' &&
+        data.topic !== 'gpml_member_entities' &&
+        data.topic !== 'non_member_organisation' &&
+        data.topic !== 'capacity_building' &&
+        data.topic !== 'plastics' &&
+        data.topic !== 'waste management' &&
+        data.topic !== 'marine litter' &&
+        data.topic !== 'capacity building' &&
+        data.topic !== 'product by design' &&
+        data.topic !== 'source to sea'
+    )
 
   const resourcesPerTransnationalList = ResourcesCountPerTransnationalGroups.map(
     (item) => item.transnational
-  ).flat();
+  ).flat()
 
   const transnationalResourcesContent = () =>
     resourcesPerTransnationalList
@@ -157,7 +157,7 @@ const VerticalLegend = ({
       .map((transnational) => {
         const data = countryGroupCounts.find(
           (item) => item?.countryGroupId === transnational?.id
-        );
+        )
 
         return (
           <div key={transnational.label} className="legend-transnational-count">
@@ -168,28 +168,28 @@ const VerticalLegend = ({
               {tTypes
                 .filter(
                   (topic) =>
-                    topic !== "organisation" &&
-                    topic !== "stakeholder" &&
-                    topic !== "capacity_building" &&
-                    topic !== "plastics" &&
-                    topic !== "waste management" &&
-                    topic !== "marine litter" &&
-                    topic !== "capacity building" &&
-                    topic !== "product by design" &&
-                    topic !== "source to sea"
+                    topic !== 'organisation' &&
+                    topic !== 'stakeholder' &&
+                    topic !== 'capacity_building' &&
+                    topic !== 'plastics' &&
+                    topic !== 'waste management' &&
+                    topic !== 'marine litter' &&
+                    topic !== 'capacity building' &&
+                    topic !== 'product by design' &&
+                    topic !== 'source to sea'
                 )
                 .map((topic) => {
                   const topicChecker = () => {
-                    if (topic === "actionPlan") {
-                      return "action_plan";
-                    } else if (topic === "technicalResource") {
-                      return "technical_resource";
-                    } else if (topic === "financingResource") {
-                      return "financing_resource";
+                    if (topic === 'actionPlan') {
+                      return 'action_plan'
+                    } else if (topic === 'technicalResource') {
+                      return 'technical_resource'
+                    } else if (topic === 'financingResource') {
+                      return 'financing_resource'
                     } else {
-                      return topic;
+                      return topic
                     }
-                  };
+                  }
 
                   return existingData.length === 0 ? (
                     <div key={topic} className="total-resources">
@@ -207,51 +207,51 @@ const VerticalLegend = ({
                         </div>
                       </div>
                     )
-                  );
+                  )
                 })}
             </div>
           </div>
-        );
-      });
+        )
+      })
 
   // TOTAL RESOURCES
   const resourceCounts =
     path === KNOWLEDGE_LIBRARY &&
-    totalResourceCount.map((resource) => resource?.count);
+    totalResourceCount.map((resource) => resource?.count)
 
   const totalResources =
     path === KNOWLEDGE_LIBRARY &&
-    resourceCounts.reduce((acc, val) => acc + val, 0);
+    resourceCounts.reduce((acc, val) => acc + val, 0)
 
   const totalResourcesContent = () =>
     tTypes
       .filter(
         (topic) =>
-          topic !== "organisation" &&
-          topic !== "stakeholder" &&
-          topic !== "capacity_building" &&
-          topic !== "plastics" &&
-          topic !== "waste management" &&
-          topic !== "marine litter" &&
-          topic !== "capacity building" &&
-          topic !== "product by design" &&
-          topic !== "source to sea"
+          topic !== 'organisation' &&
+          topic !== 'stakeholder' &&
+          topic !== 'capacity_building' &&
+          topic !== 'plastics' &&
+          topic !== 'waste management' &&
+          topic !== 'marine litter' &&
+          topic !== 'capacity building' &&
+          topic !== 'product by design' &&
+          topic !== 'source to sea'
       )
       .map((topic) => {
         const topicChecker = () => {
-          if (topic === "actionPlan") {
-            return "action_plan";
-          } else if (topic === "technicalResource") {
-            return "technical_resource";
-          } else if (topic === "financingResource") {
-            return "financing_resource";
+          if (topic === 'actionPlan') {
+            return 'action_plan'
+          } else if (topic === 'technicalResource') {
+            return 'technical_resource'
+          } else if (topic === 'financingResource') {
+            return 'financing_resource'
           } else {
-            return topic;
+            return topic
           }
-        };
+        }
         const findTopic = totalResourceCount.find(
           (data) => data.topic === topicChecker()
-        );
+        )
 
         return existingData.length === 0 ? (
           <div key={topic} className="total-resources">
@@ -266,42 +266,42 @@ const VerticalLegend = ({
               <b>{findTopic?.count ? findTopic?.count : 0}</b>
             </div>
           )
-        );
-      });
+        )
+      })
 
   // STAKEHOLDER TOTAL COUNTS
   const stakeholderTotalCounts = path === STAKEHOLDER_OVERVIEW && {
     individual: stakeholderCount.individual,
     entity: stakeholderCount.entity,
-  };
+  }
 
   const stakeholderPerTransnationalGroup = multicountryGroups
     .filter(
       (item) =>
-        item.label.toLowerCase() === "un regional groups of member states"
+        item.label.toLowerCase() === 'un regional groups of member states'
     )
     .map((transnationalGroup) => {
       const countryIds = transnationalGroup.item
         .map((transnational) =>
           transnational.countries.map((country) => country.id)
         )
-        .flat();
+        .flat()
 
       const stakeholders = contents
         .filter((content) => countryIds.includes(content.countryId))
-        .map((content) => content.transnationalCounts);
+        .map((content) => content.transnationalCounts)
 
       const transnationalStakeholders = transnationalGroup.item.map(
         (transantional) => {
           const countryIdsPerTransnational = transantional.countries.map(
             (country) => country.id
-          );
+          )
 
           const stakeholdersPerTransnational = contents
             .filter((content) =>
               countryIdsPerTransnational.includes(content.countryId)
             )
-            .map((content) => content.transnationalCounts);
+            .map((content) => content.transnationalCounts)
 
           const result = stakeholdersPerTransnational.reduce(
             (acc, currVal) => {
@@ -314,8 +314,8 @@ const VerticalLegend = ({
                     acc.entity.nonMember +
                     Number(currVal.nonMemberOrganisation),
                 },
-              };
-              return acc;
+              }
+              return acc
             },
             {
               individual: 0,
@@ -324,15 +324,15 @@ const VerticalLegend = ({
                 nonMember: 0,
               },
             }
-          );
+          )
 
           return {
             label: transantional.name,
             id: transantional.id,
             totalStakeholders: result,
-          };
+          }
         }
-      );
+      )
 
       const totalTransnationalStakeholderCount = stakeholders.reduce(
         (acc, currVal) => {
@@ -344,8 +344,8 @@ const VerticalLegend = ({
               nonMember:
                 acc.entity.nonMember + Number(currVal.nonMemberOrganisation),
             },
-          };
-          return acc;
+          }
+          return acc
         },
         {
           individual: 0,
@@ -354,14 +354,14 @@ const VerticalLegend = ({
             nonMember: 0,
           },
         }
-      );
+      )
 
       return {
         groupLabel: transnationalGroup.label,
         stakeholderPerCountry: totalTransnationalStakeholderCount,
         transnational: transnationalStakeholders,
-      };
-    });
+      }
+    })
 
   const stakeholderCountsContent = () => {
     return existingData.length === 0 ? (
@@ -393,7 +393,7 @@ const VerticalLegend = ({
         <div>
           <b className="legend-stakeholder-title">Type</b>
           <div className="legend-stakeholder-wrapper">
-            {existingData.includes("organisation") && (
+            {existingData.includes('organisation') && (
               <div className="legend-stakeholder-type">
                 <div className="type">Entity</div>
                 <div className="entities">
@@ -404,7 +404,7 @@ const VerticalLegend = ({
               </div>
             )}
 
-            {existingData.includes("stakeholder") && (
+            {existingData.includes('stakeholder') && (
               <div className="legend-stakeholder-type individual">
                 <div className="type">Individual</div>
                 <b>{stakeholderTotalCounts.individual}</b>
@@ -413,12 +413,12 @@ const VerticalLegend = ({
           </div>
         </div>
       </div>
-    );
-  };
+    )
+  }
 
   const stakeholderPerTransnationalList = stakeholderPerTransnationalGroup
     .map((item) => item.transnational)
-    .flat();
+    .flat()
 
   const entityPerTransnationalGroupContent = () => {
     return stakeholderPerTransnationalList
@@ -426,7 +426,7 @@ const VerticalLegend = ({
       .map((transnational) => {
         const data = countryGroupCounts.find(
           (item) => item?.countryGroupId === transnational?.id
-        );
+        )
 
         return existingData.length === 0 ? (
           <div key={transnational.label} className="legend-transnational-count">
@@ -466,7 +466,7 @@ const VerticalLegend = ({
                 <b className="legend-stakeholder-title">Type</b>
 
                 <div className="legend-stakeholder-wrapper">
-                  {existingData.includes("organisation") && (
+                  {existingData.includes('organisation') && (
                     <div className="legend-stakeholder-type">
                       <div className="type">Entity</div>
                       <div className="entities">
@@ -477,7 +477,7 @@ const VerticalLegend = ({
                       </div>
                     </div>
                   )}
-                  {existingData.includes("stakeholder") && (
+                  {existingData.includes('stakeholder') && (
                     <div className="legend-stakeholder-type individual">
                       <div className="type">Individual</div>
                       <b>{data?.counts?.individual || 0}</b>
@@ -487,9 +487,9 @@ const VerticalLegend = ({
               </div>
             </div>
           </div>
-        );
-      });
-  };
+        )
+      })
+  }
 
   const entityPerTransnationalContent = () => {
     return (
@@ -502,13 +502,13 @@ const VerticalLegend = ({
           {entityPerTransnationalGroupContent()}
         </div>
       </>
-    );
-  };
+    )
+  }
 
   // Percentage of the stakeholder on each UN regional groups of member states
   const stakeholderPerUNGroup = stakeholderPerTransnationalGroup
     .map((item) => item.transnational)
-    .flat();
+    .flat()
 
   const transnationalStakeholders =
     path === STAKEHOLDER_OVERVIEW &&
@@ -516,7 +516,7 @@ const VerticalLegend = ({
       .map((transnational) => {
         const data = countryGroupCounts.find(
           (item) => item?.countryGroupId === transnational?.id
-        );
+        )
 
         return {
           id: transnational.label,
@@ -526,33 +526,33 @@ const VerticalLegend = ({
             (data?.counts?.stakeholder || 0) +
               (data?.counts?.organisation || 0) +
               (data?.counts?.nonMemberOrganisation || 0) || 0,
-        };
+        }
       })
-      .sort((a, b) => a.title.localeCompare(b.title));
+      .sort((a, b) => a.title.localeCompare(b.title))
 
-  data = Array.from(new Set(data.map((x) => Math.floor(x))));
-  data = data.filter((x) => x !== 0);
+  data = Array.from(new Set(data.map((x) => Math.floor(x))))
+  data = data.filter((x) => x !== 0)
   const range = data.map((x, i) => (
     <div
       key={`legend-${i + 1}`}
       className={
-        "legend" +
+        'legend' +
         (selected !== null && selected === colorRange[i]
-          ? " legend-selected"
-          : "")
+          ? ' legend-selected'
+          : '')
       }
       onClick={(e) => {
         selected === null
           ? setFilterColor(colorRange[i])
           : selected === colorRange[i]
           ? setFilterColor(null)
-          : setFilterColor(colorRange[i]);
+          : setFilterColor(colorRange[i])
       }}
       style={{
-        background: colorRange[i] === selected ? higlightColor : "transparent",
+        background: colorRange[i] === selected ? higlightColor : 'transparent',
       }}
     />
-  ));
+  ))
 
   if (data.length) {
     return (
@@ -561,59 +561,59 @@ const VerticalLegend = ({
           <div className="title">{title && <Text strong>{title}</Text>}</div>
           <div
             style={{
-              background: `linear-gradient(180deg, rgba(103,190,161,1) 10%, rgba(255,255,255,1) 90%)`,
+              background: `linear-gradient(180deg, rgba(0, 193, 153, 1) 10%, rgba(204, 252, 242, 0.5) 90%)`,
               width: 20,
               // minHeight: 132,
-              float: "left",
+              float: 'left',
             }}
           >
             {[
               ...range,
               <div
-                key={"legend-0"}
+                key={'legend-0'}
                 className={
-                  "legend" +
+                  'legend' +
                   (selected !== null && selected === colorRange[range.length]
-                    ? " legend-selected"
-                    : "")
+                    ? ' legend-selected'
+                    : '')
                 }
                 style={{
                   backgroundColor:
                     colorRange[range.length] === selected
                       ? higlightColor
-                      : "transparent",
+                      : 'transparent',
                 }}
                 onClick={(e) => {
                   selected === null
                     ? setFilterColor(colorRange[range.length])
                     : selected === colorRange[range.length]
                     ? setFilterColor(null)
-                    : setFilterColor(colorRange[range.length]);
+                    : setFilterColor(colorRange[range.length])
                 }}
               />,
               <div
-                key={"legend-last"}
+                key={'legend-last'}
                 className={
-                  "legend" +
-                  (selected !== null && selected === "#fff"
-                    ? " legend-selected"
-                    : "")
+                  'legend' +
+                  (selected !== null && selected === '#fff'
+                    ? ' legend-selected'
+                    : '')
                 }
                 style={{
                   backgroundColor:
-                    "#fff" === selected ? higlightColor : "transparent",
+                    '#fff' === selected ? higlightColor : 'transparent',
                 }}
                 onClick={(e) => {
                   selected === null
-                    ? setFilterColor("#fff")
-                    : selected === "#fff"
+                    ? setFilterColor('#fff')
+                    : selected === '#fff'
                     ? setFilterColor(null)
-                    : setFilterColor("#fff");
+                    : setFilterColor('#fff')
                 }}
               />,
             ]}
           </div>
-          <div style={{ float: "left" }}>
+          <div style={{ float: 'left' }}>
             {data.map((x, i) => (
               <div key={i} className="legend label">
                 <Text>{data[i - 1] ? `${x} - ${data[i - 1]}` : `> ${x}`}</Text>
@@ -653,7 +653,7 @@ const VerticalLegend = ({
             <div className="total-resources-wrapper">
               <strong className="legend-heading">Total stakeholders</strong>
               <div className="total-resources total-count">
-                <strong>Total</strong>{" "}
+                <strong>Total</strong>{' '}
                 <b>
                   {(stakeholderTotalCounts?.entity || 0) +
                     (stakeholderTotalCounts?.individual || 0)}
@@ -661,7 +661,7 @@ const VerticalLegend = ({
               </div>
               {stakeholderCountsContent()}
             </div>
-            {existingData.includes("organisation") && (
+            {existingData.includes('organisation') && (
               <>
                 <strong className="legend-heading pie-chart-header">
                   Entities from UN Regional Groups of member States
@@ -676,9 +676,9 @@ const VerticalLegend = ({
           </>
         )}
       </Card>
-    );
+    )
   }
-  return <div className="no-legend-warning">No legend</div>;
-};
+  return <div className="no-legend-warning">No legend</div>
+}
 
-export default VerticalLegend;
+export default VerticalLegend

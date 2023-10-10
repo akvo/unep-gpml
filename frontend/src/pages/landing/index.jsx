@@ -9,6 +9,7 @@ import {
   ArrowRight,
   LinkedinIcon,
   YoutubeIcon,
+  LongArrowRight,
 } from '../../components/icons'
 import { useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
@@ -602,7 +603,7 @@ const Features = () => {
               </p>
             </div>
             <div>
-              <Button withArrow size="large" ghost>
+              <Button withArrow={<LongArrowRight />} size="large" ghost>
                 View All Features
               </Button>
             </div>
@@ -668,7 +669,7 @@ const Activities = () => {
             </p>
           </div>
           <div>
-            <Button size="large" ghost withArrow>
+            <Button size="large" ghost withArrow={<LongArrowRight />}>
               Visit the website
             </Button>
           </div>
@@ -747,7 +748,9 @@ const OurVoices = () => {
                 Cooperative actions for Caribbean fisheries officials after a
                 successful ghost gear retrieval training in Panama{' '}
               </p>
-              <Button withArrow>Explore whole story</Button>
+              <Button withArrow={<LongArrowRight />}>
+                Explore whole story
+              </Button>
             </div>
           </div>
           <div className="group-two">
@@ -759,7 +762,9 @@ const OurVoices = () => {
                 Cooperative actions for Caribbean fisheries officials after a
                 successful ghost gear retrieval training in Panama{' '}
               </p>
-              <Button withArrow>Explore whole story</Button>
+              <Button withArrow={<LongArrowRight />}>
+                Explore whole story
+              </Button>
             </div>
             <img
               src={
@@ -918,7 +923,7 @@ const Partners = () => {
       </div>
       <div className="partner-button-container">
         <div className="container">
-          <Button withArrow size="large" ghost>
+          <Button withArrow={<LongArrowRight />} size="large" ghost>
             See all partners
           </Button>
         </div>
@@ -943,7 +948,7 @@ const HelpCentre = () => {
         </h6>
       </div>
       <div className="help-centre-button">
-        <Button withArrow>Visit the Help Centre</Button>
+        <Button withArrow={<LongArrowRight />}>Visit the Help Centre</Button>
       </div>
     </div>
   )

@@ -15,9 +15,19 @@ import { updateStatusProfile } from '../utils/profile'
 import { uniqBy, sortBy } from 'lodash'
 import { withNewLayout } from '../layouts/new-layout'
 
+const newRoutes = [
+  '/landing',
+  '/knowledge/library',
+  '/[type]/[id]',
+  '/onboarding',
+  '/community',
+  '/experts',
+  '/forum',
+]
+
 function MyApp({ Component, pageProps }) {
   const router = useRouter()
-  if (router.pathname !== '/landing') {
+  if (!newRoutes.some((route) => router.pathname.startsWith(route))) {
     import('../main.scss')
     import('../buttons.scss')
   } else {
@@ -33,7 +43,7 @@ function MyApp({ Component, pageProps }) {
     _expiresAt: null,
     idToken: null,
     authResult: null,
-    loadingProfile: false,
+    loadingProfile: true,
     loginVisible: false,
   })
 
@@ -145,15 +155,12 @@ function MyApp({ Component, pageProps }) {
         return console.log(err)
       }
       if (authResult) {
-        const storedLocation = localStorage.getItem('redirect_on_login')
-        const redirectLocation = storedLocation
-          ? JSON.parse(storedLocation)
+        const redirectLocation = localStorage.getItem('redirect_on_login')
+          ? JSON.parse(localStorage.getItem('redirect_on_login'))
           : null
-
         if (redirectLocation) {
           router.push({
-            pathname: redirectLocation.pathname,
-            query: redirectLocation.query,
+            pathname: redirectLocation,
           })
         } else {
           router.push('/')
@@ -175,7 +182,6 @@ function MyApp({ Component, pageProps }) {
                 emailVerified: authResult?.idTokenPayload?.email_verified,
               }
             })
-            console.log(authResult?.idTokenPayload, authResult)
             router.push(
               {
                 pathname: '/onboarding',
@@ -258,7 +264,7 @@ function MyApp({ Component, pageProps }) {
   )
 
   const Layout = useMemo(() => {
-    if (router.pathname !== '/landing') {
+    if (!newRoutes.some((route) => router.pathname.startsWith(route))) {
       return withLayout(Component)
     } else {
       return withNewLayout(Component)
@@ -266,11 +272,10 @@ function MyApp({ Component, pageProps }) {
   }, [router.pathname, Component])
 
   const RenderedLayout = useMemo(() => {
-    if (router.pathname !== '/landing') {
+    if (!newRoutes.some((route) => router.pathname.startsWith(route))) {
       return <Layout {...pageProps} {...componentProps} />
     } else {
-      const NewLayout = withNewLayout(Component)
-      return <NewLayout {...pageProps} {...componentProps} />
+      return <Layout {...pageProps} {...componentProps} />
     }
   }, [router.pathname, Layout, Component, pageProps, componentProps])
 

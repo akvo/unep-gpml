@@ -164,6 +164,65 @@ const DetailsView = ({
     }
   }
 
+  useEffect(() => {
+    if (type && id && !isServer) {
+      api
+        .get(`/detail/${type.replace('-', '_')}/${id}`)
+        .then((d) => {
+          api
+            .get(
+              `/translations/${
+                getTypeByResource(type.replace('-', '_')).translations
+              }/${id}`
+            )
+            .then((resp) => {
+              setTranslations({
+                ...resp.data,
+                summary: resp.data.abstract
+                  ? resp.data.abstract
+                  : resp.data.remarks
+                  ? resp.data.remarks
+                  : resp.data.description
+                  ? resp.data.description
+                  : resp.data.summary,
+              })
+            })
+            .catch((e) => console.log(e))
+          setData(d.data)
+          getComment(id, type.replace('-', '_'))
+        })
+        .catch((err) => {
+          console.error(err)
+          // redirectError(err, history);
+        })
+    } else {
+      setData(serverData)
+      setTranslations({
+        ...serverTranslations,
+        summary: serverTranslations.abstract
+          ? serverTranslations.abstract
+          : serverTranslations.remarks
+          ? serverTranslations.remarks
+          : serverTranslations.description
+          ? serverTranslations.description
+          : serverTranslations.summary,
+      })
+      getComment(id, type.replace('-', '_'))
+    }
+
+    if (profile.reviewStatus === 'APPROVED') {
+      setTimeout(() => {
+        api.get(`/favorite/${type?.replace('-', '_')}/${id}`).then((resp) => {
+          setRelations(resp.data)
+        })
+      }, 100)
+    }
+    UIStore.update((e) => {
+      e.disclaimer = null
+    })
+    window.scrollTo({ top: 0 })
+  }, [router])
+
   const getComment = async (id, type) => {
     let res = await api.get(
       `/comment?resource_id=${id}&resource_type=${
@@ -248,75 +307,18 @@ const DetailsView = ({
     )
   }
 
-  useEffect(() => {
-    if (type && id && !isServer) {
-      api
-        .get(`/detail/${type.replace('-', '_')}/${id}`)
-        .then((d) => {
-          api
-            .get(
-              `/translations/${
-                getTypeByResource(type.replace('-', '_')).translations
-              }/${id}`
-            )
-            .then((resp) => {
-              setTranslations({
-                ...resp.data,
-                summary: resp.data.abstract
-                  ? resp.data.abstract
-                  : resp.data.remarks
-                  ? resp.data.remarks
-                  : resp.data.description
-                  ? resp.data.description
-                  : resp.data.summary,
-              })
-            })
-            .catch((e) => console.log(e))
-          setData(d.data)
-          getComment(id, type.replace('-', '_'))
-        })
-        .catch((err) => {
-          console.error(err)
-          // redirectError(err, history);
-        })
-    } else {
-      setData(serverData)
-      setTranslations({
-        ...serverTranslations,
-        summary: serverTranslations.abstract
-          ? serverTranslations.abstract
-          : serverTranslations.remarks
-          ? serverTranslations.remarks
-          : serverTranslations.description
-          ? serverTranslations.description
-          : serverTranslations.summary,
-      })
-      getComment(id, type.replace('-', '_'))
-    }
-
-    if (profile.reviewStatus === 'APPROVED') {
-      setTimeout(() => {
-        api.get(`/favorite/${type?.replace('-', '_')}/${id}`).then((resp) => {
-          setRelations(resp.data)
-        })
-      }, 100)
-    }
-    UIStore.update((e) => {
-      e.disclaimer = null
-    })
-    window.scrollTo({ top: 0 })
-  }, [router])
-
   const handleDeleteBtn = () => {
     Modal.error({
       className: 'popup-delete',
       centered: true,
       closable: true,
-      icon: <DeleteOutlined />,
+      icon: false,
       title: 'Are you sure you want to delete this resource?',
       content: 'Please be aware this action cannot be undone.',
       okText: 'Delete',
       okType: 'danger',
+      cancelText: 'Cancel',
+      okButtonProps: { size: 'small' },
       onOk() {
         return api
           .delete(`/detail/${type.replace('-', '_')}/${id}`)
@@ -579,9 +581,9 @@ const DetailsView = ({
                         {data?.tags &&
                           data?.tags.map((tag) => (
                             <li className="tag-list-item" key={tag?.tag}>
-                              <Tag className="resource-tag">
-                                {tag?.tag || ''}
-                              </Tag>
+                              <div className="label">
+                                <span>{tag?.tag || ''}</span>
+                              </div>
                             </li>
                           ))}
                       </ul>

@@ -8,7 +8,7 @@ import { multicountryGroups } from '../../modules/knowledge-library/multicountry
 import { OptGroup } from 'rc-select'
 import './style.module.scss'
 import api from '../../utils/api'
-
+import { SearchIcon } from '../icons'
 const { TabPane } = Tabs
 const { Option } = Select
 
@@ -63,10 +63,12 @@ const CountryTransnationalFilter = ({
         ...(val.length > 0 ? { multiCountry: true } : { multiCountry: false }),
       })
     }
+
     if (isCommunity) {
       updateQuery('country', val, false)
       return
     }
+
     let updatedQuery = { ...history.query }
     delete updatedQuery.totalCount
 
@@ -75,6 +77,7 @@ const CountryTransnationalFilter = ({
     } else {
       delete updatedQuery.country
     }
+    console.log(updatedQuery)
     history.push({
       pathname: history.pathname,
       query: updatedQuery,
@@ -126,6 +129,7 @@ const CountryTransnationalFilter = ({
         disabled={disable?.country}
       >
         <Select
+          size="small"
           showSearch
           allowClear
           dropdownClassName="multiselection-dropdown"
@@ -138,7 +142,8 @@ const CountryTransnationalFilter = ({
           }
           value={country}
           onChange={handleChangeCountry}
-          // onDeselect={handleDeselectCountry}
+          showArrow
+          suffixIcon={<SearchIcon />}
           virtual={false}
         />
       </TabPane>
@@ -151,6 +156,7 @@ const CountryTransnationalFilter = ({
         disabled={disable?.multiCountry}
       >
         <Select
+          size="small"
           dropdownClassName="multiselection-dropdown multiselection-filter"
           showSearch
           allowClear
@@ -166,18 +172,8 @@ const CountryTransnationalFilter = ({
           value={multiCountry}
           onChange={handleChangeMultiCountry}
           dropdownMatchSelectWidth={325}
-          suffixIcon={
-            !multiCountryLabelCustomIcon && multiCountry ? (
-              <MultiCountryInfo
-                multiCountryCountries={
-                  multiCountryCountries.find((x) => x.id === multiCountry)
-                    ?.countries
-                }
-              />
-            ) : (
-              <DownOutlined />
-            )
-          }
+          showArrow
+          suffixIcon={<SearchIcon />}
         >
           {multicountryGroups
             .sort((a, b) => a.label.localeCompare(b.label))
