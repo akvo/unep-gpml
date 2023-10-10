@@ -1,5 +1,6 @@
 (ns gpml.service.stakeholder
   (:require [duct.logger :refer [log]]
+            [gpml.db.invitation :as db.invitation]
             [gpml.db.organisation :as db.organisation]
             [gpml.db.resource.tag :as db.resource.tag]
             [gpml.db.stakeholder :as db.stakeholder]
@@ -8,6 +9,7 @@
             [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
             [gpml.service.file :as srv.file]
             [gpml.service.permissions :as srv.permissions]
+            [gpml.service.plastic-strategy :as srv.ps]
             [gpml.util :as util]
             [gpml.util.image :as util.image]
             [gpml.util.thread-transactions :as tht]
@@ -240,7 +242,7 @@
               (srv.file/delete-file config conn {:id (:id picture-file)}))
             (dissoc context :picture-file))}
          {:txn-fn
-          (fn create-cv-file
+          (fn update-cv-file
             [{{:keys [cv]} :stakeholder old-stakeholder :old-stakeholder :as context}]
             (if-not (seq cv)
               context
@@ -262,7 +264,7 @@
                              :reason :failed-to-create-new-cv-file
                              :error-details {:result result})))))))
           :rollback-fn
-          (fn rollback-create-cv-file
+          (fn rollback-update-cv-file
             [{:keys [cv-file] :as context}]
             (when (seq cv-file)
               (srv.file/delete-file config conn {:id (:id cv-file)}))
@@ -317,32 +319,30 @@
               :update? true})
             (dissoc context :old-tags))}
          {:txn-fn
-          (fn get-experts
+          (fn get-invitations
             [{:keys [old-stakeholder] :as context}]
-            (let [expert? (seq (db.stakeholder/get-experts conn {:filters {:ids [(:id old-stakeholder)]}
-                                                                 :page-size 1
-                                                                 :offset 0}))]
-              (assoc context :expert? expert?)))
-          :rollback-fn
-          (fn rollback-unassign-unapproved-user-role
-            [{:keys [old-stakeholder invited-expert?] :as context}]
-            (if invited-expert?
-              (let [role-assignments [{:role-name :unapproved-user
-                                       :context-type :application
-                                       :resource-id srv.permissions/root-app-resource-id
-                                       :user-id (:id old-stakeholder)}]
-                    result (first (srv.permissions/assign-roles-to-users
-                                   {:conn conn
-                                    :logger logger}
-                                   role-assignments))]
-                (when-not (:success? result)
-                  (log logger :error ::rollback-unassign-unapproved-user-role {:reason result})))
-              (dissoc context :invited-expert?)))}
+            (if-not (= (:review-status old-stakeholder) "INVITED")
+              context
+              (let [result (db.invitation/get-invitation conn
+                                                         {:filters {:stakeholders-ids [(:id old-stakeholder)]}})]
+                (if (:success? result)
+                  (assoc context
+                         :invitation (:invitation old-stakeholder)
+                         :invited? true)
+                  (if (= (:reason result) :not-found)
+                    (assoc context
+                           :success? false
+                           :reason :invitation-not-found
+                           :error-details {:msg "User is on an INVITED state but no invitation record was found."})
+                    (assoc context
+                           :success? false
+                           :reason (:reason result)
+                           :error-details (:error-details result)))))))          }
          {:txn-fn
           (fn unassign-unapproved-user-role
-            [{:keys [old-stakeholder expert?] :as context}]
-            (if (and expert?
-                     (= (:review-status old-stakeholder) "INVITED"))
+            [{:keys [old-stakeholder invited?] :as context}]
+            (if-not invited?
+              context
               (let [role-unassignments [{:role-name :unapproved-user
                                          :context-type :application
                                          :resource-id srv.permissions/root-app-resource-id
@@ -352,32 +352,31 @@
                                     :logger logger}
                                    role-unassignments))]
                 (if (:success? result)
-                  (assoc context :invited-expert? true)
+                  context
                   (assoc context
                          :success? false
                          :reason :failed-to-remove-unapproved-user-role
-                         :error-details {:result result})))
-              context))
+                         :error-details {:result result})))))
           :rollback-fn
-          (fn rollback-assign-approved-user-role
-            [{:keys [old-stakeholder invited-expert?] :as context}]
-            (if invited-expert?
-              (let [role-unassignments [{:role-name :approved-user
-                                         :context-type :application
-                                         :resource-id srv.permissions/root-app-resource-id
-                                         :user-id (:id old-stakeholder)}]
-                    result (first (srv.permissions/unassign-roles-from-users
+          (fn rollback-unassign-unapproved-user-role
+            [{:keys [old-stakeholder invited?] :as context}]
+            (if-not invited?
+              context
+              (let [role-assignments [{:role-name :unapproved-user
+                                       :context-type :application
+                                       :resource-id srv.permissions/root-app-resource-id
+                                       :user-id (:id old-stakeholder)}]
+                    result (first (srv.permissions/assign-roles-to-users
                                    {:conn conn
                                     :logger logger}
-                                   role-unassignments))]
+                                   role-assignments))]
                 (when-not (:success? result)
-                  (log logger :error ::rollback-assign-approved-user-role {:reason result}))
-                context)
-              context))}
+                  (log logger :error ::rollback-unassign-unapproved-user-role {:reason result})))))}
          {:txn-fn
           (fn assign-approved-user-role
-            [{:keys [old-stakeholder invited-expert?] :as context}]
-            (if invited-expert?
+            [{:keys [old-stakeholder invited?] :as context}]
+            (if-not invited?
+              context
               (let [role-assignments [{:role-name :approved-user
                                        :context-type :application
                                        :resource-id srv.permissions/root-app-resource-id
@@ -391,15 +390,23 @@
                   (assoc context
                          :success? false
                          :reason :failed-to-add-approved-user-role
-                         :error-details {:result result})))
-              context))
+                         :error-details {:result result})))))
           :rollback-fn
-          (fn rollback-update-stakeholder
-            [{:keys [old-stakeholder] :as context}]
-            (let [affected (db.stakeholder/update-stakeholder conn old-stakeholder)]
-              (when-not (= 1 affected)
-                (log logger :error ::rollback-update-stakeholder {:id (:id old-stakeholder)})))
-            context)}
+          (fn rollback-assign-approved-user-role
+            [{:keys [old-stakeholder invited?] :as context}]
+            (if-not invited?
+              context
+              (let [role-unassignments [{:role-name :approved-user
+                                         :context-type :application
+                                         :resource-id srv.permissions/root-app-resource-id
+                                         :user-id (:id old-stakeholder)}]
+                    result (first (srv.permissions/unassign-roles-from-users
+                                   {:conn conn
+                                    :logger logger}
+                                   role-unassignments))]
+                (when-not (:success? result)
+                  (log logger :error ::rollback-assign-approved-user-role {:reason result}))
+                context)))}
          {:txn-fn
           (fn update-stakeholder
             [{:keys [stakeholder old-stakeholder invited-expert? picture-file cv-file] :as context}]
@@ -427,7 +434,27 @@
                 context
                 (assoc context
                        :success? false
-                       :reason :failed-to-create-stakeholder))))}]]
+                       :reason :failed-to-create-stakeholder))))
+          :rollback-fn
+          (fn rollback-update-stakeholder
+            [{:keys [old-stakeholder] :as context}]
+            (let [affected (db.stakeholder/update-stakeholder conn old-stakeholder)]
+              (when-not (= 1 affected)
+                (log logger :error ::rollback-update-stakeholder {:id (:id old-stakeholder)})))
+            context)}
+         {:txn-fn
+          (fn setup-invited-plastic-strategy-user
+            [{:keys [old-stakeholder invitation invited?] :as context}]
+            (if-not (and invited?
+                         (= (:type invitation) :plastic-strategy))
+              context
+              (let [result (srv.ps/setup-invited-plastic-strategy-user config (:id old-stakeholder))]
+                (if (:success? result)
+                  context
+                  (assoc context
+                         :success? false
+                         :reason :failed-to-setup-invited-plastic-strategy-user
+                         :error-details {:result result})))))}]]
     (tht/thread-transactions logger transactions context)))
 
 (defn get-stakeholder-profile
