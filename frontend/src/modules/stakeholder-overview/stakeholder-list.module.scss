@@ -1,4 +1,4 @@
-@import '../../vars.scss';
+@import '../../styles/vars.scss';
 .stakeholderMapWrapper {
   position: relative;
   display: flex;
@@ -78,7 +78,7 @@
     .resource-list-header.show-list {
       position: absolute;
       z-index: 999;
-      background-color: $grey05;
+      background-color: $primaryDarkBlue;
     }
 
     .resource-list-header {
@@ -103,7 +103,7 @@
 
       .ant-page-header-heading-title,
       .sort-btn {
-        color: $blue06;
+        color: $primaryDarkBlue;
         background-color: transparent;
       }
 
@@ -180,6 +180,16 @@
 
       .item-body {
         display: flex;
+        .resource-details {
+          .title {
+            color: $primaryDarkBlue;
+            text-transform: capitalize;
+            letter-spacing: normal;
+          }
+          .entity-name {
+            color: $primaryDarkBlue3;
+          }
+        }
       }
       .resource-images-extra-wrapper {
         position: relative;
@@ -218,7 +228,7 @@
         max-width: 60px;
       }
       .badge-wrapper {
-        color: $yellow;
+        color: $primaryDarkBlue;
         position: absolute;
         left: 4px;
         svg {
@@ -235,11 +245,11 @@
           border-radius: 8px;
           box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
           text-align: left;
-          color: $black;
+          color: $primaryDarkBlue;
           padding: 5px 5px 10px 5px;
 
           .topic {
-            color: $green05;
+            color: $primaryDarkBlue;
             font-size: 12px;
             text-transform: uppercase;
             font-weight: bold;
