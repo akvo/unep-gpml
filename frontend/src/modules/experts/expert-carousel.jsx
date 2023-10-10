@@ -1,9 +1,10 @@
-import React from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Navigation } from "swiper";
-import InviteExpertCard from "./invite-expert-card";
-import ExpertCard from "./expert-card";
-import { useDeviceSize } from "../landing/landing";
+import React from 'react'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Pagination, Navigation } from 'swiper'
+import InviteExpertCard from './invite-expert-card'
+import ExpertCard from './expert-card'
+import { useDeviceSize } from '../landing/landing'
+import { pagination } from '../../utils/misc'
 
 const ExpertCarousel = ({
   experts,
@@ -12,15 +13,13 @@ const ExpertCarousel = ({
   setIsShownModal,
   loading,
 }) => {
-  const [width] = useDeviceSize();
+  const [width] = useDeviceSize()
   return (
     <Swiper
       spaceBetween={20}
       slidesPerGroup={width > 1024 ? 4 : 1}
-      slidesPerView={"auto"}
-      pagination={{
-        clickable: true,
-      }}
+      slidesPerView={'auto'}
+      pagination={pagination}
       navigation={true}
       modules={[Pagination, Navigation]}
       className="mySwiper"
@@ -36,6 +35,6 @@ const ExpertCarousel = ({
         </SwiperSlide>
       )}
     </Swiper>
-  );
-};
-export default ExpertCarousel;
+  )
+}
+export default ExpertCarousel

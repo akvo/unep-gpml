@@ -1,4 +1,4 @@
-@import "../../vars.scss";
+@import '../../vars.scss';
 
 .multiselectionFilter,
 .country-filter-tab .ant-select-multiple {
@@ -54,11 +54,6 @@
       opacity: 0;
     }
   }
-}
-
-.collection-selector .ant-select-selector {
-  background-image: url("../../images/knowledge-library/collection-icon.svg"),
-    url("../../images/knowledge-library/chevron-down-grey.svg");
 }
 
 // Transnational filter tab
