@@ -110,7 +110,7 @@
                                               {:countries geo_coverage_countries
                                                :country-groups geo_coverage_country_groups
                                                :country-states geo_coverage_country_states})
-    (when (seq (:tags org))
+    (when (contains? (set (keys org)) :tags)
       (handler.resource.tag/update-resource-tags conn logger mailjet-config {:tags (:tags org)
                                                                              :tag-category "general"
                                                                              :resource-name "organisation"

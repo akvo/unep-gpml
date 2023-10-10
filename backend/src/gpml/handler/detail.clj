@@ -726,7 +726,7 @@
         sth-associations (:individual_connections updates)]
     (doseq [[image-key image-data] (select-keys updates [:image :thumbnail])]
       (update-resource-image config conn table id image-key image-data))
-    (when (seq tags)
+    (when (contains? (set (keys updates)) :tags)
       (update-resource-tags conn logger mailjet-config table id tags))
     (when (seq related-contents)
       (handler.resource.related-content/update-related-contents conn logger id table related-contents))
@@ -780,7 +780,7 @@
       (update-resource-image config conn "initiative" id image-key image-data))
     (when (seq related-contents)
       (handler.resource.related-content/update-related-contents conn logger id "initiative" related-contents))
-    (when (seq tags)
+    (when (contains? (set (keys initiative)) :tags)
       (update-resource-tags conn logger mailjet-config "initiative" id tags))
     (handler.geo/update-resource-geo-coverage conn
                                               :initiative
