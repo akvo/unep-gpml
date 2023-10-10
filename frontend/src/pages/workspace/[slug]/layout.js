@@ -58,7 +58,9 @@ const NestedLayout = ({ children }) => {
   const currentStep = useMemo(() => {
     const [parent, child] = pathSlugs?.slice(2, pathSlugs.length - 1)
     const indexStep = parent ? parseInt(parent[0], 10) : 0
-    const findBySlug = allSteps?.find((a) => getBySlug(a, child))
+    const findBySlug = allSteps?.find(
+      (a, ax) => indexStep === ax && getBySlug(a, child)
+    )
     const isCompleted =
       findBySlug?.checked ||
       psSteps?.[indexStep]?.checked ||
