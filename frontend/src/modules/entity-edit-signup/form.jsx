@@ -94,7 +94,7 @@ const SignUpForm = ({
 
     data.version = parseInt(formSchema.schema.version)
 
-    // setSending(true)
+    setSending(true)
 
     if (isEntityType) {
       let data2 = handleGeoCoverageValue(

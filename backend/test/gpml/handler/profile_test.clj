@@ -300,7 +300,8 @@
                                                       :tags (map #(vector 10001 % "seeking") tags)})
           created-resource-tags (db.resource.tag/get-resource-tags db {:table "stakeholder_tag"
                                                                        :resource-col "stakeholder"
-                                                                       :resource-id sth-id})
+                                                                       :resource-id sth-id
+                                                                       :review_status "APPROVED"})
           geo (db.stakeholder/add-stakeholder-geo db {:geo [[10001 nil 1] [10001 nil 2]]})
           ;; dashboard check if this guy has profile
           req (handler (-> (mock/request :get "/")
