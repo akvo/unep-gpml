@@ -139,11 +139,11 @@
                              :success? false
                              :reason :failed-to-assign-sth-owner-role-to-organisation
                              :error-details {:result result})
-                      (let [success? (boolean (handler.org/update-org
-                                               config
-                                               conn
-                                               {:id (:id org)
-                                                :created_by sth-id}))]
+                      (let [{:keys [success?]} (handler.org/update-org
+                                                config
+                                                conn
+                                                {:id (:id org)
+                                                 :created_by sth-id})]
                         (if success?
                           context
                           (assoc context
@@ -274,7 +274,8 @@
                            {:success? true
                             :tags (db.resource.tag/get-resource-tags conn {:table "stakeholder_tag"
                                                                            :resource-col "stakeholder"
-                                                                           :resource-id (:id stakeholder)})}
+                                                                           :resource-id (:id stakeholder)
+                                                                           :review_status "APPROVED"})}
                            (catch Throwable t
                              {:success? false
                               :error-details {:exception-message (ex-message t)}}))]
@@ -476,7 +477,8 @@
                             :tags (db.resource.tag/get-resource-tags conn
                                                                      {:table "stakeholder_tag"
                                                                       :resource-col "stakeholder"
-                                                                      :resource-id (:id stakeholder)})}
+                                                                      :resource-id (:id stakeholder)
+                                                                      :review_status "APPROVED"})}
                            (catch Throwable t
                              {:success? true
                               :error-details {:exception-message (ex-message t)}}))]

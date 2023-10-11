@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/router'
 import { isEmpty } from 'lodash'
-import { Button } from 'antd'
+import { Avatar, Button, Dropdown, Menu } from 'antd'
 import localFont from 'next/font/local'
 import { DM_Sans } from 'next/font/google'
 import { UIStore } from '../store'
@@ -13,6 +13,7 @@ import { DownArrow } from '../components/icons'
 import Link from 'next/link'
 import { motion, AnimatePresence, useCycle } from 'framer-motion'
 import { useDeviceSize } from '../modules/landing/landing'
+import { isRegistered } from '../utils/profile'
 
 import { MenuToggle, NavMobile, NavDesktop } from '../components/nav'
 import GpmlCircle from '../components/gpml-circle'
@@ -57,12 +58,13 @@ const NewLayout = ({
   isAuthenticated,
   auth0Client,
   profile,
+  loginVisible,
+  setLoginVisible,
 }) => {
-  // console.log(profile, isAuthenticated)
+  const router = useRouter()
   const { menuList } = UIStore.useState((s) => ({
     menuList: s.menuList,
   }))
-  const [loginVisible, setLoginVisible] = useState(false)
   const [openedItemKey, setOpenedItemKey] = useState(null)
   const [showMenu, setShowMenu] = useState(false)
   const [width] = useDeviceSize()
@@ -84,25 +86,20 @@ const NewLayout = ({
           }}
         >
           <div className={`${isIndexPage ? 'container' : 'container-fluid'}`}>
-            <div className="logo-container">
-              <div className="circle">
-                <GpmlCircle />
+            <Link href="/">
+              <div className="logo-container">
+                <div className="circle">
+                  <GpmlCircle />
+                </div>
+                <h5>
+                  Global Partnership
+                  <br />
+                  on Plastic Pollution
+                  <br />
+                  and Marine Litter
+                </h5>
               </div>
-              <h5>
-                Global Partnership
-                <br />
-                on Plastic Pollution
-                <br />
-                and Marine Litter
-              </h5>
-              {/* <Image
-                className="gpml-white"
-                src="/GPML-White-logo.svg"
-                alt="GPML Digital Platform"
-                width={244}
-                height={74}
-              /> */}
-            </div>
+            </Link>
             {width >= 768 && (
               <ul className="ant-menu">
                 {menuList.map((item) => (
@@ -135,20 +132,60 @@ const NewLayout = ({
                   type="primary"
                   size="small"
                   className="noicon hide-mobile"
+                  onClick={() => setLoginVisible(true)}
                 >
                   Join Now
                 </Button>
               )}
               {isAuthenticated && (
-                <Link href="/workspace">
-                  <Button
-                    type="primary"
-                    size="small"
-                    className="noicon hide-mobile"
+                <div style={{ display: 'flex' }}>
+                  <Dropdown
+                    overlayClassName="user-btn-dropdown-wrapper"
+                    overlay={
+                      <Menu className="user-btn-dropdown">
+                        <Menu.Item
+                          key="profile"
+                          onClick={() => {
+                            router.push({
+                              pathname: `/${
+                                isRegistered(profile) ? 'profile' : 'onboarding'
+                              }`,
+                            })
+                          }}
+                        >
+                          Profile
+                        </Menu.Item>
+                        <Menu.Item
+                          key="logout"
+                          onClick={() => {
+                            auth0Client.logout({
+                              returnTo: window.location.origin,
+                            })
+                          }}
+                        >
+                          Logout
+                        </Menu.Item>
+                      </Menu>
+                    }
+                    trigger={['click']}
+                    placement="bottomRight"
                   >
-                    Workspace
-                  </Button>
-                </Link>
+                    <Avatar size="large">
+                      {profile?.firstName?.charAt(0)}
+                      {profile?.lastName?.charAt(0)}
+                    </Avatar>
+                  </Dropdown>
+                  <Link href="/workspace">
+                    <Button
+                      type="primary"
+                      size="small"
+                      className="noicon hide-mobile"
+                      onClick={() => setLoginVisible(true)}
+                    >
+                      Workspace
+                    </Button>
+                  </Link>
+                </div>
               )}
               {width <= 768 && (
                 <div className="toggle-button">
@@ -172,16 +209,29 @@ const NewLayout = ({
         </div>
         {children}
       </div>
+      <Login visible={loginVisible} close={() => setLoginVisible(false)} />
     </>
   )
 }
+
+const initName = (name) =>
+  name
+    ?.split(/[ ,]+/)
+    ?.slice(0, 2)
+    .map((w) => w?.slice(0, 1))
 
 export const withNewLayout = (Component) => {
   const WithLayoutComponent = (props) => {
     const router = useRouter()
     const isIndexPage =
       router.pathname === '/' || router.pathname === '/landing'
-    const { isAuthenticated, auth0Client, profile, setLoginVisible } = props
+    const {
+      isAuthenticated,
+      auth0Client,
+      profile,
+      loginVisible,
+      setLoginVisible,
+    } = props
 
     return (
       <NewLayout
@@ -191,6 +241,7 @@ export const withNewLayout = (Component) => {
           setLoginVisible,
           auth0Client,
           profile,
+          loginVisible,
         }}
       >
         <Component {...props} />

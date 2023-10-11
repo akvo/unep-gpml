@@ -76,14 +76,15 @@
     :or {update? false}}]
   (let [db-params {:table "stakeholder_tag"
                    :resource-col "stakeholder"
-                   :resource-id stakeholder-id}
+                   :resource-id stakeholder-id
+                   :review_status "APPROVED"}
         old-tags (db.resource.tag/get-resource-tags conn db-params)
         tags (tag-diff tags old-tags)]
     (when (seq tags)
       (let [categories (->> tags (group-by :tag_category) keys)
             grouped-tags (group-by :tag_category (add-tags-ids-for-categories conn tags categories))]
         (when update?
-          (db.resource.tag/delete-resource-tags conn db-params))
+          (db.resource.tag/delete-resource-tags conn (dissoc db-params :review_status)))
         (let [create-res-tags-results (mapv (fn [[tag-category tags]]
                                               (let [opts {:tags tags
                                                           :tag-category tag-category

@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react'
 import { Auth0Provider } from '@auth0/auth0-react'
 import Head from 'next/head'
-import '../styles/base.scss'
+// import '../main.scss'
+// import '../buttons.scss'
+import { withLayout } from '../layouts/MainLayout'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
@@ -18,11 +20,19 @@ const newRoutes = [
   '/knowledge/library',
   '/[type]/[id]',
   '/onboarding',
+  '/community',
+  '/experts',
+  '/forum',
 ]
-const dynamicRoutePattern = /^\/\w+\/\d+$/
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter()
+  if (!newRoutes.some((route) => router.pathname.startsWith(route))) {
+    import('../main.scss')
+    import('../buttons.scss')
+  } else {
+    import('../styles/base.scss')
+  }
   const { profile } = UIStore.useState((s) => ({
     profile: s.profile,
     disclaimer: s.disclaimer,
@@ -33,7 +43,7 @@ function MyApp({ Component, pageProps }) {
     _expiresAt: null,
     idToken: null,
     authResult: null,
-    loadingProfile: false,
+    loadingProfile: true,
     loginVisible: false,
   })
 
@@ -145,15 +155,12 @@ function MyApp({ Component, pageProps }) {
         return console.log(err)
       }
       if (authResult) {
-        const storedLocation = localStorage.getItem('redirect_on_login')
-        const redirectLocation = storedLocation
-          ? JSON.parse(storedLocation)
+        const redirectLocation = localStorage.getItem('redirect_on_login')
+          ? JSON.parse(localStorage.getItem('redirect_on_login'))
           : null
-
         if (redirectLocation) {
           router.push({
-            pathname: redirectLocation.pathname,
-            query: redirectLocation.query,
+            pathname: redirectLocation,
           })
         } else {
           router.push('/')
@@ -190,18 +197,16 @@ function MyApp({ Component, pageProps }) {
   }, [])
 
   useEffect(() => {
-    setState((prevState) => ({ ...prevState, loadingProfile: true }))
     auth0Client.checkSession({}, async (err, authResult) => {
       if (err) {
         setState((prevState) => ({
           ...prevState,
-          loadingProfile: true,
+          loadingProfile: false,
         }))
       }
       if (authResult) {
         setSession(authResult)
       }
-      setState((prevState) => ({ ...prevState, loadingProfile: false }))
     })
   }, [])
 
@@ -213,6 +218,7 @@ function MyApp({ Component, pageProps }) {
         api.setToken(null)
       }
       if (isAuthenticated && idToken && authResult) {
+        setState((prevState) => ({ ...prevState, loadingProfile: true }))
         let resp = await api.get('/profile')
         setState((prevState) => ({ ...prevState, loadingProfile: false }))
         if (resp.data && Object.keys(resp.data).length === 0) {
@@ -247,10 +253,10 @@ function MyApp({ Component, pageProps }) {
       auth0Client,
       profile,
       loginVisible,
-      setLoginVisible: () =>
+      setLoginVisible: (value) =>
         setState((prevState) => ({
           ...prevState,
-          loginVisible: !prevState.loginVisible,
+          loginVisible: value,
         })),
       loadingProfile,
     }),

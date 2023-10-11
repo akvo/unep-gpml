@@ -151,7 +151,9 @@ const FilterDrawer = ({
             <Space align="middle">
               <div className="filter-title">Network type</div>
               {isEmpty(query?.networkType) ? (
-                <Tag className="selection-card-type">All (default)</Tag>
+                <Tag className="selection-card-type filter-title">
+                  All (default)
+                </Tag>
               ) : (
                 <Tag
                   className="clear-selection"
@@ -213,7 +215,7 @@ const FilterDrawer = ({
               )}
             </Space>
 
-            <Row type="flex" gutter={[10, 10]}>
+            <Row type="flex" gutter={[10, 0]}>
               <p className="specificity-title">For entities</p>
               {[entities[0]].map((entity) => {
                 const name = humps.decamelize(entity)
@@ -267,7 +269,7 @@ const FilterDrawer = ({
           />
           {/* Location */}
           <Col span={24} style={{ paddingTop: 5, paddingBottom: 5 }}>
-            <Space align="middle">
+            <Space align="middle" style={{ alignItems: 'center' }}>
               <div className="filter-title">Location</div>
               {!isEmpty(query?.country) ? (
                 <Tag
@@ -385,6 +387,7 @@ const FilterDrawer = ({
 
           <Col className="drawer-button-wrapper">
             <Button
+              type="link"
               disabled={queryValues.length === 0}
               className={
                 queryValues.length > 0

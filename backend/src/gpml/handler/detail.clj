@@ -352,7 +352,8 @@
       tags?
       (assoc :tags (db.resource.tag/get-resource-tags conn {:table (str resource-type "_tag")
                                                             :resource-col resource-type
-                                                            :resource-id id}))
+                                                            :resource-id id
+                                                            :review_status "APPROVED"}))
 
       entity-connections?
       (assoc :entity_connections (db.resource.connection/get-resource-entity-connections conn {:resource-id id
@@ -500,7 +501,10 @@
   [{:keys [db] :as config} topic-id topic-type query]
   (let [conn (:spec db)
         resource-details (-> (get-detail* conn topic-type topic-id query)
-                             (dissoc :tags :remarks :name :abstract :description))]
+                             (dissoc :tags :remarks :abstract :description))
+        resource-details (if-not (= "organisation" topic-type)
+                           (dissoc resource-details :name)
+                           resource-details)]
     (if (seq resource-details)
       {:success? true
        :resource-details (extra-details config topic-type resource-details)}
@@ -722,7 +726,7 @@
         sth-associations (:individual_connections updates)]
     (doseq [[image-key image-data] (select-keys updates [:image :thumbnail])]
       (update-resource-image config conn table id image-key image-data))
-    (when (seq tags)
+    (when (contains? (set (keys updates)) :tags)
       (update-resource-tags conn logger mailjet-config table id tags))
     (when (seq related-contents)
       (handler.resource.related-content/update-related-contents conn logger id table related-contents))
@@ -776,7 +780,7 @@
       (update-resource-image config conn "initiative" id image-key image-data))
     (when (seq related-contents)
       (handler.resource.related-content/update-related-contents conn logger id "initiative" related-contents))
-    (when (seq tags)
+    (when (contains? (set (keys initiative)) :tags)
       (update-resource-tags conn logger mailjet-config "initiative" id tags))
     (handler.geo/update-resource-geo-coverage conn
                                               :initiative
