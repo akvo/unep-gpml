@@ -94,3 +94,8 @@ export const stepsState = [
   },
   { label: 'Final Review', slug: '', checked: false },
 ]
+
+export const getParentChecked = (step) =>
+  step?.substeps?.length
+    ? step.substeps.filter((sb) => sb.checked).length === step.substeps.length
+    : step?.checked
