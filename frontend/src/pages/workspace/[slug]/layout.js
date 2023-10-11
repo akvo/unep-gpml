@@ -53,9 +53,9 @@ const NestedLayout = ({ children }) => {
 
   const progress =
     (allSteps.filter((a) => a.checked).length / allSteps.length) * 100
-  const markAsDisabled = !psItem?.id || currentStep?.isCompleted
+  const isCompleted = !psItem?.id || currentStep?.isCompleted
 
-  const handleOnMarkAsComplete = async () => {
+  const handleOnMarkAsComplete = (checked) => async () => {
     setMarking(true)
     const { indexStep, child } = currentStep
     const updatedSteps = psSteps.map((s, sx) => {
@@ -63,7 +63,7 @@ const NestedLayout = ({ children }) => {
         if (s?.substeps?.length) {
           const substeps = s.substeps.map((sb) =>
             getBySlug({ ...sb, indexStep: sx }, child, indexStep)
-              ? { ...sb, checked: true }
+              ? { ...sb, checked }
               : sb
           )
           const allChecked =
@@ -81,6 +81,7 @@ const NestedLayout = ({ children }) => {
       }
       return s
     })
+    console.log(updatedSteps)
     try {
       await api.put(`/plastic-strategy/${psItem?.country?.isoCodeA2}`, {
         steps: updatedSteps,
@@ -217,13 +218,13 @@ const NestedLayout = ({ children }) => {
       <div className={styles.bottomBar}>
         <Button
           type="ghost"
-          className="mark-completed"
-          onClick={handleOnMarkAsComplete}
+          onClick={handleOnMarkAsComplete(!isCompleted)}
           loading={marking}
-          disabled={markAsDisabled}
+          className={classNames('mark-completed', { completed: isCompleted })}
+          // disabled={markAsDisabled}
         >
           <Check />
-          Mark as Completed
+          {isCompleted ? 'Completed' : 'Mark as Completed'}
         </Button>
         <Button onClick={handleOnNext} withArrow>
           Next

@@ -147,7 +147,8 @@
           transform: translateY(0px);
           margin-right: 0px;
         }
-        &:hover:not(:disabled) {
+        &:hover,
+        &.completed {
           svg {
             width: 19px;
             height: 15px;
