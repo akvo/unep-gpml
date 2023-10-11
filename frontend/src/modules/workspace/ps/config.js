@@ -32,4 +32,65 @@ export const stepsState = [
       { label: 'Summary & Report', slug: 'summary', checked: false },
     ],
   },
+  {
+    label: 'Legislation & Policy Review Report',
+    slug: '3-legislation-policy',
+    substeps: [
+      { label: 'Intro', slug: '', checked: false },
+      {
+        label: 'Country Policy Framework',
+        slug: 'country-policy',
+        checked: false,
+      },
+      {
+        label: 'Legislative Development Guide',
+        slug: 'legislative-development',
+        checked: false,
+      },
+      { label: 'Case Studies', slug: 'case-studies', checked: false },
+      { label: 'Summary & Report', slug: 'summary', checked: false },
+    ],
+  },
+  {
+    label: 'Data Analysis',
+    slug: '4-data-analysis',
+    substeps: [
+      { label: 'Intro', slug: '', checked: false },
+      { label: 'Available Tools', slug: 'available-tools', checked: false },
+      {
+        label: 'Available Data & Statistics',
+        slug: 'available-data',
+        checked: false,
+      },
+      { label: 'Data Collection', slug: 'data-collection', checked: false },
+      {
+        label: 'Calculation of Indicators',
+        slug: 'calculation',
+        checked: false,
+      },
+      {
+        label: 'Available Information',
+        slug: 'available-information',
+        checked: false,
+      },
+      { label: 'Summary & Report', slug: 'summary', checked: false },
+    ],
+  },
+  {
+    label: 'National Source Inventory Report',
+    slug: '5-national-source',
+    substeps: [
+      { label: 'Intro', slug: '', checked: false },
+      { label: 'Summary & Report', slug: 'summary', checked: false },
+    ],
+  },
+  {
+    label: 'National Plastic Strategy',
+    slug: '6-national-plastic-strategy',
+    substeps: [
+      { label: 'Intro', slug: '', checked: false },
+      { label: 'Upload', slug: 'upload', checked: false },
+    ],
+  },
+  { label: 'Final Review', slug: '', checked: false },
 ]
