@@ -152,11 +152,19 @@ h6,
     .logo-container {
       margin-left: -15px;
       margin-top: -14px;
+      a {
+        color: white;
+        display: flex;
+      }
     }
   }
   .container-fluid {
     .logo-container {
       margin-top: -14px;
+      a {
+        color: white;
+        display: flex;
+      }
     }
   }
   .logo-container {
