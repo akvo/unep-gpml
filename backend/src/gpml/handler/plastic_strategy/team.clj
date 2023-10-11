@@ -129,7 +129,7 @@
         (r/not-found {})
         (r/server-error (dissoc get-ps-result :success?)))
       (let [body-params (-> (cske/transform-keys ->kebab-case body)
-                            (assoc :plastic-strategy-id (:id plastic-strategy)))
+                            (assoc :plastic-strategy plastic-strategy))
             result (srv.ps.team/invite-user-to-ps-team config body-params)]
         (if (:success? result)
           (r/ok {:invitation_id (get-in result [:invitation :id])})
