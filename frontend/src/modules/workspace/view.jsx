@@ -10,6 +10,7 @@ import {
   List,
 } from 'antd'
 const { Title } = Typography
+import kebabCase from 'lodash/kebabCase'
 import styles from './styles.module.scss'
 import DataCatalogueSvg from '../../images/data-catalogue-icon.svg'
 import MatchSvg from '../../images/match.svg'
@@ -22,6 +23,9 @@ import { FilePdfOutlined, DeleteOutlined } from '@ant-design/icons'
 import api from '../../utils/api'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { PREFIX_SLUG, stepsState } from './ps/config'
+import classNames from 'classnames'
+import SkeletonItems from './ps/skeleton-items'
 import Button from '../../components/button'
 import ForumCard from '../../components/forum-card/forum-card'
 
@@ -54,6 +58,8 @@ const Workspace = ({ profile }) => {
   const router = useRouter()
   const [isFocal, setIsFocal] = useState(false)
   const [projects, setProjects] = useState([])
+  const [psAll, setPSAll] = useState([])
+  const [psLoading, setPsLoading] = useState(true)
   const [forums, setForums] = useState([])
   const [loading, setLoading] = useState({
     forums: true,
@@ -124,6 +130,19 @@ const Workspace = ({ profile }) => {
     })
   }
 
+  const getPSAll = useCallback(async () => {
+    try {
+      if (profile?.id) {
+        const { data: plasticsStrategies } = await api.get('/plastic-strategy')
+        setPSAll(plasticsStrategies)
+        setPsLoading(false)
+      }
+    } catch (error) {
+      console.error('Unable to fetch plastics strategy:', error)
+      setPsLoading(false)
+    }
+  }, [profile])
+
   const getAllForums = useCallback(async () => {
     try {
       /**
@@ -151,6 +170,10 @@ const Workspace = ({ profile }) => {
       })
     }
   }, [profile])
+
+  useEffect(() => {
+    getPSAll()
+  }, [getPSAll])
 
   useEffect(() => {
     getAllForums()
@@ -367,26 +390,53 @@ const Workspace = ({ profile }) => {
           </div>
           <div className="plastic-strategies-list">
             <div className="container">
-              <h2 className="h-xxl w-bold">Plastic Strategies</h2>
-              <ul>
-                <li>
-                  <Link href="/workspace/plastic-strategy-south-africa">
-                    <div className="caps-heading-s">plastic strategy</div>
-                    <h4 className="h-l w-semi">South Africa</h4>
-                    <div className="compl">12%</div>
-                    <div className="progress-bar">
-                      <div className="fill" style={{ width: '20%' }}></div>
-                    </div>
-                    <ul>
-                      <li className="checked">Project team</li>
-                      <li>Consultation process</li>
-                      <li>Legislation & policy</li>
-                      <li>Nation Source Inventory</li>
-                      <li>Data Analysis</li>
-                      <li>National Plastic Strategy</li>
-                    </ul>
-                  </Link>
-                </li>
+              {psAll.length > 0 && (
+                <h2 className="h-xxl w-bold">Plastic Strategies</h2>
+              )}
+              <SkeletonItems loading={psLoading} />
+              <ul className="plastic-strategies-items">
+                {psAll.map((item, index) => {
+                  const psSteps = item?.steps || stepsState
+                  const allSteps = psSteps.flatMap((p) => {
+                    if (p?.substeps?.length) {
+                      return p.substeps.map((sb, sx) => ({
+                        ...sb,
+                        label: sx === 0 ? p.label : sb.label,
+                      }))
+                    }
+                    return [p]
+                  })
+                  const progressValue =
+                    (allSteps.filter((a) => a.checked).length /
+                      allSteps.length) *
+                    100
+                  const countryName = kebabCase(item?.country?.name)
+                  return (
+                    <li key={index}>
+                      <Link href={`/workspace/${PREFIX_SLUG}-${countryName}`}>
+                        <div className="caps-heading-s">plastic strategy</div>
+                        <h4 className="w-semi">{item?.country?.name}</h4>
+                        <div className="compl">{`${progressValue}%`}</div>
+                        <div className="progress-bar">
+                          <div
+                            className="fill"
+                            style={{ width: `${progressValue}%` }}
+                          ></div>
+                        </div>
+                        <ul>
+                          {psSteps.map((s, sx) => (
+                            <li
+                              key={sx}
+                              className={classNames({ checked: s.checked })}
+                            >
+                              {s.label}
+                            </li>
+                          ))}
+                        </ul>
+                      </Link>
+                    </li>
+                  )
+                })}
               </ul>
             </div>
           </div>
