@@ -28,24 +28,26 @@ const NestedLayout = ({ children }) => {
       ? step.substeps.filter((sb) => sb.checked).length === step.substeps.length
       : step?.checked
 
-  const getBySlug = (step, _slug) =>
-    step?.slug === _slug || (!_slug && step?.slug === '')
+  const getBySlug = (step, _slug, indexStep = 0) =>
+    step?.slug === _slug ||
+    (step?.slug === '' && !_slug && indexStep === step?.indexStep)
 
   const psSteps = useMemo(() => {
     return psItem?.steps || stepsState
   }, [psItem, stepsState])
-  const allSteps = psSteps.flatMap((p) => p?.substeps || [p])
+  const allSteps = psSteps.flatMap((p, px) => {
+    if (p?.substeps?.length) {
+      return p.substeps.map((sb) => ({ ...sb, indexStep: px }))
+    }
+    return [p]
+  })
 
   const currentStep = useMemo(() => {
     const [parent, child] = pathSlugs?.slice(2, pathSlugs.length - 1)
     const indexStep = parent ? parseInt(parent[0], 10) : 0
-    const findBySlug = allSteps?.find(
-      (a, ax) => indexStep === ax && getBySlug(a, child)
-    )
+    const findBySlug = allSteps?.find((a) => getBySlug(a, child, indexStep))
     const isCompleted =
-      findBySlug?.checked ||
-      psSteps?.[indexStep]?.checked ||
-      getParentChecked(psSteps?.[indexStep])
+      findBySlug?.checked || getParentChecked(psSteps?.[indexStep])
     return { indexStep, child, isCompleted }
   }, [pathSlugs, psSteps, allSteps])
 
@@ -60,7 +62,9 @@ const NestedLayout = ({ children }) => {
       if (sx === indexStep) {
         if (s?.substeps?.length) {
           const substeps = s.substeps.map((sb) =>
-            getBySlug(sb, child) ? { ...sb, checked: true } : sb
+            getBySlug({ ...sb, indexStep: sx }, child, indexStep)
+              ? { ...sb, checked: true }
+              : sb
           )
           const allChecked =
             s.substeps.filter((sb) => sb.checked).length === s.substeps.length
@@ -90,6 +94,27 @@ const NestedLayout = ({ children }) => {
       console.error('Unable to mark as complete:', err)
       message.error('Unable to mark as complete')
       setMarking(false)
+    }
+  }
+
+  const handleOnNext = () => {
+    const { indexStep, child } = currentStep
+    const parentStep = psSteps?.[indexStep]
+    if (parentStep?.substeps?.length) {
+      const parentPath = `/workspace/${slug}/${parentStep.slug}`
+      const subIndex = parentStep.substeps.findIndex(
+        (sb) => sb?.slug === child || (sb?.slug === '' && !child)
+      )
+      const nextSubSlug = parentStep.substeps?.[subIndex + 1]?.slug
+      if (nextSubSlug) {
+        router.push(`${parentPath}/${nextSubSlug}`)
+      } else if (psSteps?.[indexStep + 1]?.slug) {
+        router.push(`/workspace/${slug}/${psSteps[indexStep + 1].slug}`)
+      }
+      return
+    }
+    if (psSteps?.[indexStep + 1]?.slug) {
+      router.push(`/workspace/${slug}/${psSteps[indexStep + 1].slug}`)
     }
   }
 
@@ -200,7 +225,9 @@ const NestedLayout = ({ children }) => {
           <Check />
           Mark as Completed
         </Button>
-        <Button withArrow>Next</Button>
+        <Button onClick={handleOnNext} withArrow>
+          Next
+        </Button>
       </div>
     </div>
   )
