@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react'
 import { Auth0Provider } from '@auth0/auth0-react'
 import Head from 'next/head'
-// import '../main.scss'
-// import '../buttons.scss'
-import { withLayout } from '../layouts/MainLayout'
+import '../styles/base.scss'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
@@ -15,24 +13,8 @@ import { updateStatusProfile } from '../utils/profile'
 import { uniqBy, sortBy } from 'lodash'
 import { withNewLayout } from '../layouts/new-layout'
 
-const newRoutes = [
-  '/landing',
-  '/knowledge/library',
-  '/[type]/[id]',
-  '/onboarding',
-  '/community',
-  '/experts',
-  '/forum',
-]
-
 function MyApp({ Component, pageProps }) {
   const router = useRouter()
-  if (!newRoutes.some((route) => router.pathname.startsWith(route))) {
-    import('../main.scss')
-    import('../buttons.scss')
-  } else {
-    import('../styles/base.scss')
-  }
   const { profile } = UIStore.useState((s) => ({
     profile: s.profile,
     disclaimer: s.disclaimer,
@@ -263,21 +245,17 @@ function MyApp({ Component, pageProps }) {
     [isAuthenticated, auth0Client, profile, loginVisible, loadingProfile]
   )
 
-  const Layout = useMemo(() => {
-    if (!newRoutes.some((route) => router.pathname.startsWith(route))) {
-      return withLayout(Component)
-    } else {
-      return withNewLayout(Component)
-    }
-  }, [router.pathname, Component])
+  const DefaultLayout = useMemo(() => {
+    return withNewLayout(Component)
+  }, [Component])
 
-  const RenderedLayout = useMemo(() => {
-    if (!newRoutes.some((route) => router.pathname.startsWith(route))) {
-      return <Layout {...pageProps} {...componentProps} />
-    } else {
-      return <Layout {...pageProps} {...componentProps} />
-    }
-  }, [router.pathname, Layout, Component, pageProps, componentProps])
+  const getLayout =
+    Component.getLayout ||
+    ((page) => (
+      <DefaultLayout {...pageProps} {...componentProps}>
+        {page}
+      </DefaultLayout>
+    ))
 
   return (
     <div id="root">
@@ -296,7 +274,7 @@ function MyApp({ Component, pageProps }) {
           typeof window !== 'undefined' ? window.location.origin : ''
         }
       >
-        {RenderedLayout}
+        {getLayout(<Component {...pageProps} {...componentProps} />)}
       </Auth0Provider>
     </div>
   )
