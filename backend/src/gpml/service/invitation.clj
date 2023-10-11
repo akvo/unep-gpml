@@ -16,10 +16,13 @@
             (let [names (str/split (:name user) #" ")
                   stakeholder {:email (:email user)
                                :first_name (first names)
-                               :last_name (str/join "," (rest names))}
+                               :last_name (str/join "," (rest names))
+                               :review_status "INVITED"}
                   result (db.stakeholder/create-stakeholder (:spec db) stakeholder)]
               (if (:success? result)
-                (assoc-in context [:invitation-payload :user :id] (-> result :stakeholder :id))
+                (-> context
+                    (assoc :user-id (-> result :stakeholder :id))
+                    (update-in [:invitation-payload :user] merge stakeholder))
                 (assoc context
                        :success? false
                        :reason :failed-to-create-invited-user
@@ -33,11 +36,11 @@
             context)}
          {:txn-fn
           (fn tx-assign-unapproved-rbac-role
-            [{{:keys [user]} :invitation-payload :as context}]
+            [{:keys [user-id] :as context}]
             (let [role-assignments [{:role-name :unapproved-user
                                      :context-type :application
                                      :resource-id srv.permissions/root-app-resource-id
-                                     :user-id (:id user)}]
+                                     :user-id user-id}]
                   result (first (srv.permissions/assign-roles-to-users
                                  {:conn (:spec db)
                                   :logger logger}
@@ -64,12 +67,12 @@
             context)}
          {:txn-fn
           (fn tx-create-invitation
-            [{:keys [invitation-payload] :as context}]
+            [{:keys [invitation-payload user-id] :as context}]
             (let [{:keys [user type]} invitation-payload
                   invitation {:id (util/uuid)
-                              :stakeholder-id (:id user)
+                              :stakeholder-id user-id
                               :email (:email user)
-                              :type (:type type)}
+                              :type type}
                   result (db.invitation/create-invitation (:spec db)
                                                           invitation)]
               (if (:success? result)
