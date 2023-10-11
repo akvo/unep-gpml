@@ -41,6 +41,8 @@ import Avatar from 'antd/lib/avatar/avatar'
 import Expert from './expert'
 import IconExpert from '../../images/expert-icon.svg'
 import debouce from 'lodash.debounce'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 const { Search } = Input
 const { TabPane } = Tabs
@@ -329,6 +331,8 @@ const AdminSection = ({
   setEntitiesData,
   tagsData,
 }) => {
+  const router = useRouter()
+  const { user_id, channel_id, email, channel_name } = router.query
   const profile = UIStore.useState((s) => s.profile)
   const [modalRejectVisible, setModalRejectVisible] = useState(false)
   // TODO:: refactor modalRejectAction and modalRejectFunction
@@ -341,6 +345,8 @@ const AdminSection = ({
   const [approveLoading, setApproveLoading] = useState({})
   const [loadingAssignReviewer, setLoadingAssignReviewer] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [requestLoading, setRequestLoading] = useState(false)
+  const [requestButtonText, setRequestButtonText] = useState('Approve')
   const [exportLoading, setExportLoading] = useState(false)
   const [expert, setExpert] = useState(false)
 
@@ -396,6 +402,38 @@ const AdminSection = ({
       setReviewers(res?.data?.reviewers)
     })
   }, [])
+
+  useEffect(() => {
+    if (user_id) {
+      setTab('privateChat')
+    }
+  }, [user_id])
+
+  const handleChatRequest = () => {
+    setRequestLoading(true)
+    const data = {
+      channel_id: channel_id,
+      channel_name: channel_name,
+      user_id: Number(user_id),
+    }
+    api
+      .post(`/chat/channel/private/add-user`, data)
+      .then(() => {
+        notification.success({
+          message: `Your request to join the ${channel_name} has been approved!`,
+        })
+        setRequestButtonText('Approved')
+        setRequestLoading(false)
+      })
+      .catch((err) => {
+        setRequestLoading(false)
+        notification.error({
+          message: err?.response?.data?.errorDetails?.error
+            ? err?.response?.data?.errorDetails?.error
+            : 'Something went wrong',
+        })
+      })
+  }
 
   const onFinish = (values) => {
     const data = {
@@ -1121,6 +1159,7 @@ const AdminSection = ({
         onChange={(key) => setTab(key)}
         size="large"
         className="profile-tab-menu"
+        activeKey={tab}
       >
         <TabPane
           tab="Individuals"
@@ -1180,6 +1219,29 @@ const AdminSection = ({
           </Form>
           {renderList(tagsListOpts, setTagsListOpts)}
         </TabPane>
+        {user_id && (
+          <TabPane
+            tab="Requests"
+            key="privateChat"
+            className="profile-tab-pane"
+          >
+            <div className="private-chat-wrapper">
+              <p className="title">Request to Join {channel_name}</p>
+              <p>
+                <Link href={`/stakeholder/${user_id}`}>{email}</Link> wants to
+                join {channel_name}{' '}
+                <Button
+                  type="ghost"
+                  className="black"
+                  disabled={requestLoading}
+                  onClick={() => handleChatRequest()}
+                >
+                  {requestButtonText}
+                </Button>
+              </p>
+            </div>
+          </TabPane>
+        )}
       </Tabs>
 
       <ModalReject

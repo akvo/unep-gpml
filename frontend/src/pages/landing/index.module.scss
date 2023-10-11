@@ -290,6 +290,7 @@
           margin-top: -3px;
           font-size: $fzM !important;
           font: var(--font-archia), sans-serif;
+          background-color: transparent;
         }
         .localisation {
           font-weight: bold;
@@ -855,35 +856,6 @@
     width: fit-content;
     padding: 4px 8px;
   }
-
-  :global(.swiper-pagination) {
-    :global {
-      .swiper-pagination-bullet {
-        width: 20px;
-        height: 20px;
-        background-color: transparent;
-        position: relative;
-        &.swiper-pagination-bullet-active {
-          border: 1px solid $primaryDarkBlue;
-          span {
-            background: $primaryDarkBlue;
-          }
-        }
-        opacity: 1;
-        span {
-          background: $primaryDarkBlue2;
-          display: flex;
-          width: 12px;
-          height: 12px;
-          border-radius: 50%;
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-        }
-      }
-    }
-  }
 }
 
 .about {
@@ -934,6 +906,7 @@
     .ant-tabs-left > .ant-tabs-nav .ant-tabs-tab {
       padding: 20px 24px;
       transition: all 0.3s ease-out;
+      color: $primaryDarkBlueText;
       &:hover:not(.ant-tabs-tab-active) {
         svg {
           circle {
@@ -970,6 +943,7 @@
     }
     .ant-tabs > .ant-tabs-nav .ant-tabs-nav-wrap {
       white-space: normal;
+      overflow: visible;
     }
     .ant-tabs-left > .ant-tabs-content-holder {
       margin-left: 0;
@@ -1016,8 +990,18 @@
     .ant-collapse-header .ant-collapse-expand-icon {
       cursor: pointer;
     }
-    .ant-tabs-tabpane .p-l {
-      line-height: 34px;
+    .ant-tabs-tabpane {
+      .p-l {
+        line-height: 34px;
+      }
+      ul {
+        list-style: disc;
+        padding-left: 30px;
+        line-height: 1.2;
+        li {
+          padding: 10px 0;
+        }
+      }
     }
     .ant-tabs .ant-tabs-tab-active,
     .ant-collapse-item-active {

@@ -1,6 +1,8 @@
 @import 'antd/dist/antd.css';
 @import 'vars.scss';
 @import 'btns.scss';
+@import 'input.scss';
+@import 'dialog.scss';
 
 body {
   color: $primaryDarkBlue;
@@ -8,6 +10,7 @@ body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color: $primaryDarkBlue;
 }
 .h-xxl {
   font-size: $fzXXL;
@@ -112,12 +115,24 @@ h6,
   box-sizing: border-box;
   background-color: $primaryDarkBlue;
   color: white;
-  position: sticky;
   z-index: 20;
   top: 0;
   transition: background 0.27s ease-out;
+  a {
+    color: white;
+  }
+  .container {
+    .logo-container {
+      margin-left: -15px;
+      margin-top: -14px;
+    }
+  }
+  .container-fluid {
+    .logo-container {
+      margin-top: -14px;
+    }
+  }
   .logo-container {
-    margin-left: -15px;
     margin-top: -14px;
     display: flex;
     position: absolute;
@@ -138,6 +153,16 @@ h6,
       transition: color 0.27s ease-out;
       // font-family: ;
     }
+  }
+  .ant-avatar {
+    margin-right: 7px;
+    width: 44px;
+    height: 44px;
+    line-height: 44px;
+    color: $primaryDarkBlue;
+    font-weight: bold;
+    background-color: $primaryBlue2;
+    cursor: pointer;
   }
   @media screen and (max-width: $bpMobile) {
     height: 70px;
@@ -163,8 +188,13 @@ h6,
       // overflow: hidden;
     }
   }
-  .container {
+  .container,
+  .container-fluid {
     display: flex;
+  }
+  .container-fluid {
+    width: 100%;
+    padding: 0px 20px;
   }
   nav {
     margin-left: auto;
@@ -539,4 +569,49 @@ img {
 }
 ul {
   list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.swiper-pagination {
+  .swiper-pagination-bullet {
+    width: 20px;
+    height: 20px;
+    background-color: transparent;
+    position: relative;
+    &.swiper-pagination-bullet-active {
+      border: 1px solid $primaryDarkBlue;
+      span {
+        background: $primaryDarkBlue;
+      }
+    }
+    opacity: 1;
+    span {
+      background: $primaryDarkBlue2;
+      display: flex;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+}
+
+.ant-modal-content {
+  box-shadow: 0px 32px 24px -16px rgba(101, 93, 122, 0.04),
+    0px 16px 36px 0px rgba(101, 93, 122, 0.06);
+  border-radius: 8px;
+  overflow: hidden;
+  .ant-modal-header {
+    border: none;
+  }
+  .ant-modal-close {
+    display: none;
+  }
+  .ant-modal-footer {
+    border: none;
+  }
 }

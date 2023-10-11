@@ -1,7 +1,8 @@
-import { Select } from "antd";
-import catTags from "../../utils/cat-tags.json";
-import styles from "./style.module.scss";
-import { toTitleCase } from "../../utils/misc";
+import { Select } from 'antd'
+import catTags from '../../utils/cat-tags.json'
+import styles from './style.module.scss'
+import { toTitleCase } from '../../utils/misc'
+import { SearchIcon } from '../icons'
 
 const CatTagSelect = ({
   handleChange,
@@ -13,21 +14,25 @@ const CatTagSelect = ({
 }) => (
   <div className="cat-tag-select">
     <Select
+      size="small"
+      virtual={false}
+      showArrow
+      suffixIcon={<SearchIcon />}
       mode="multiple"
-      placeholder={`${placeholder ? placeholder : "Choose"} categories`}
+      placeholder={`${placeholder ? placeholder : 'Choose'} categories`}
       dropdownRender={(menu) => (
         <CategorisedTags handleChange={handleChange} value={value} />
       )}
       className={`dont-show ${
-        error && !meta.valid ? "ant-input-status-error" : ""
+        error && !meta.valid ? 'ant-input-status-error' : ''
       }`}
       value={value}
       onDeselect={(value) => handleRemove(value)}
     />
   </div>
-);
+)
 function slug(text) {
-  return text.toLowerCase().replaceAll("&", "n").replaceAll(" ", "-");
+  return text.toLowerCase().replaceAll('&', 'n').replaceAll(' ', '-')
 }
 const CategorisedTags = ({ handleChange, value }) => {
   return (
@@ -52,7 +57,7 @@ const CategorisedTags = ({ handleChange, value }) => {
         </li>
       ))}
     </ul>
-  );
-};
+  )
+}
 
-export default CatTagSelect;
+export default CatTagSelect

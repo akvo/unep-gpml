@@ -9,6 +9,7 @@ import {
   ArrowRight,
   LinkedinIcon,
   YoutubeIcon,
+  LongArrowRight,
 } from '../../components/icons'
 import { useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
@@ -36,7 +37,7 @@ const Landing = () => (
     <Features />
     <Trusted />
     <Activities />
-    <OurVoices />
+    {/* <OurVoices /> */}
     <Partnership />
     <Partners />
     <HelpCentre />
@@ -53,7 +54,7 @@ const Hero = () => {
     {
       group: 'Governments',
       text:
-        'The plastic action platform empowers all countries to create and implement successful plastic strategies to end plastic pollution.',
+        'The GPML digital platform empowers all countries to create and implement successful plastic strategies to end plastic pollution including in the marine environment.',
     },
     {
       group: 'Private Sector',
@@ -217,7 +218,7 @@ const ShowcasingAndStats = () => {
       label: 'ACTION PLANS',
     },
     {
-      value: '45K',
+      value: '5',
       label: 'COMMUNITIES OF PRACTICE',
     },
   ]
@@ -259,7 +260,7 @@ const ShowcasingAndStats = () => {
         </div>
         <div className="summaries">
           <span className="purple">
-            <h5>195 Governements</h5>
+            <h5>195 Governments</h5>
           </span>
           <span className="green">
             <h5>1358 Organizations</h5>
@@ -288,19 +289,33 @@ const WhoAreWe = () => {
       id: 2,
       title: 'What we do?',
       description:
-        'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolor sapiente maiores consequuntur provident ad a earum consectetur saepe at dicta beatae commodi incidunt deleniti inventore, natus id ullam modi omnis.',
+        'The Global Partnership on Plastic Pollution and Marine Litter (GPML) Digital Platform brings decision making power to multiple stakeholders by integrating data, crowd sourced knowledge, and fostering collaborations to co-create and advance solutions to end plastic pollution including in the marine environment.',
     },
     {
       id: 3,
       title: 'What is the connection between this platform and GPML?',
       description:
-        'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolor sapiente maiores consequuntur provident ad a earum consectetur saepe at dicta beatae commodi incidunt deleniti inventore, natus id ullam modi omnis.',
+        'The GPML Digital Platform functions as the digital arm of the GPML, a multi-stakeholder partnership that brings together all actors working to prevent plastic pollution and marine litter.',
     },
     {
       id: 4,
-      title: 'Why to join the partnership?',
-      description:
-        'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolor sapiente maiores consequuntur provident ad a earum consectetur saepe at dicta beatae commodi incidunt deleniti inventore, natus id ullam modi omnis.',
+      title: 'Why join the GPML?',
+      description: (
+        <>
+          Benefits of joining:
+          <ul>
+            <li>Access to a global network of members​</li>
+            <li>
+              Opportunities to showcase your work in our newsletter, online and
+              at events
+            </li>
+            <li>A Data Hub to guide efforts towards SDGs and more​</li>
+            <li>Thousands of resources at your fingertips</li>
+            <li>Networking with other stakeholders​</li>
+            <li>Access to financing opportunities, and more!</li>
+          </ul>
+        </>
+      ),
     },
   ]
   return (
@@ -392,7 +407,7 @@ const ActNow = () => {
     {
       bgColor: 'blue',
       content:
-        'Start your own initiative. get inspired by others who are making progress to end plastic pollution.',
+        'Start your own initiative. Get inspired by others who are making progress to end plastic pollution.',
       title: 'Country Progress',
       links: [
         { label: 'Track progress', url: '#' },
@@ -409,9 +424,9 @@ const ActNow = () => {
             Act Now: <br /> <span>Co-solution with the plastic network</span>
           </h3>
           <p className="p-l">
-            Avoid duplication of efforts. By using the platform you can match
-            with other organisations and governments to create shared solutions
-            to end plastic pollution.
+            Avoid duplication of efforts. By using the platform, you can
+            collaborate with other organisations and governments to create
+            shared solutions to end plastic pollution.
           </p>
         </div>
       </div>
@@ -602,7 +617,7 @@ const Features = () => {
               </p>
             </div>
             <div>
-              <Button withArrow size="large" ghost>
+              <Button withArrow={<LongArrowRight />} size="large" ghost>
                 View All Features
               </Button>
             </div>
@@ -668,7 +683,7 @@ const Activities = () => {
             </p>
           </div>
           <div>
-            <Button size="large" ghost withArrow>
+            <Button size="large" ghost withArrow={<LongArrowRight />}>
               Visit the website
             </Button>
           </div>
@@ -747,7 +762,9 @@ const OurVoices = () => {
                 Cooperative actions for Caribbean fisheries officials after a
                 successful ghost gear retrieval training in Panama{' '}
               </p>
-              <Button withArrow>Explore whole story</Button>
+              <Button withArrow={<LongArrowRight />}>
+                Explore whole story
+              </Button>
             </div>
           </div>
           <div className="group-two">
@@ -759,7 +776,9 @@ const OurVoices = () => {
                 Cooperative actions for Caribbean fisheries officials after a
                 successful ghost gear retrieval training in Panama{' '}
               </p>
-              <Button withArrow>Explore whole story</Button>
+              <Button withArrow={<LongArrowRight />}>
+                Explore whole story
+              </Button>
             </div>
             <img
               src={
@@ -918,7 +937,7 @@ const Partners = () => {
       </div>
       <div className="partner-button-container">
         <div className="container">
-          <Button withArrow size="large" ghost>
+          <Button withArrow={<LongArrowRight />} size="large" ghost>
             See all partners
           </Button>
         </div>
@@ -943,7 +962,7 @@ const HelpCentre = () => {
         </h6>
       </div>
       <div className="help-centre-button">
-        <Button withArrow>Visit the Help Centre</Button>
+        <Button withArrow={<LongArrowRight />}>Visit the Help Centre</Button>
       </div>
     </div>
   )

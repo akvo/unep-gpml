@@ -1,21 +1,21 @@
-import React from "react";
+import React from 'react'
 
-import { utils } from "@rjsf/core";
-import Button from "antd/lib/button";
-import Col from "antd/lib/col";
-import Form from "antd/lib/form";
-import Input from "antd/lib/input";
-import Row from "antd/lib/row";
-import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
+import { utils } from '@rjsf/core'
+import Button from 'antd/lib/button'
+import Col from 'antd/lib/col'
+import Form from 'antd/lib/form'
+import Input from 'antd/lib/input'
+import Row from 'antd/lib/row'
+import DeleteOutlined from '@ant-design/icons/DeleteOutlined'
 
-const { ADDITIONAL_PROPERTY_FLAG } = utils;
+const { ADDITIONAL_PROPERTY_FLAG } = utils
 
-const VERTICAL_LABEL_COL = { span: 24 };
-const VERTICAL_WRAPPER_COL = { span: 24 };
+const VERTICAL_LABEL_COL = { span: 24 }
+const VERTICAL_WRAPPER_COL = { span: 24 }
 
 const INPUT_STYLE = {
-  width: "100%",
-};
+  width: '100%',
+}
 
 const WrapIfAdditional = ({
   children,
@@ -35,19 +35,19 @@ const WrapIfAdditional = ({
     labelCol = VERTICAL_LABEL_COL,
     readonlyAsDisabled = true,
     rowGutter = 24,
-    toolbarAlign = "top",
+    toolbarAlign = 'top',
     wrapperCol = VERTICAL_WRAPPER_COL,
     wrapperStyle,
-  } = formContext;
+  } = formContext
 
-  const keyLabel = `${label} Key`; // i18n ?
-  const additional = schema.hasOwnProperty(ADDITIONAL_PROPERTY_FLAG);
+  const keyLabel = `${label} Key` // i18n ?
+  const additional = schema.hasOwnProperty(ADDITIONAL_PROPERTY_FLAG)
 
   if (!additional) {
-    return <div className={classNames}>{children}</div>;
+    return <div className={classNames}>{children}</div>
   }
 
-  const handleBlur = ({ target }) => onKeyChange(target.value);
+  const handleBlur = ({ target }) => onKeyChange(target.value)
 
   return (
     <div className={classNames}>
@@ -94,7 +94,7 @@ const WrapIfAdditional = ({
         </Col>
       </Row>
     </div>
-  );
-};
+  )
+}
 
-export default WrapIfAdditional;
+export default WrapIfAdditional
