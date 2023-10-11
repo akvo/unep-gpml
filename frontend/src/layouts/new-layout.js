@@ -180,7 +180,6 @@ const NewLayout = ({
                       type="primary"
                       size="small"
                       className="noicon hide-mobile"
-                      onClick={() => setLoginVisible(true)}
                     >
                       Workspace
                     </Button>
