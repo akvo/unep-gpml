@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import {
   Row,
   Col,
@@ -7,6 +7,7 @@ import {
   Typography,
   Modal,
   notification,
+  List,
 } from 'antd'
 const { Title } = Typography
 import styles from './styles.module.scss'
@@ -22,6 +23,7 @@ import api from '../../utils/api'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Button from '../../components/button'
+import ForumCard from '../../components/forum-card/forum-card'
 
 const suggestions = [
   {
@@ -52,6 +54,10 @@ const Workspace = ({ profile }) => {
   const router = useRouter()
   const [isFocal, setIsFocal] = useState(false)
   const [projects, setProjects] = useState([])
+  const [forums, setForums] = useState([])
+  const [loading, setLoading] = useState({
+    forums: true,
+  })
 
   const handleFocalPoint = (id) => {
     setIsFocal(true)
@@ -108,6 +114,48 @@ const Workspace = ({ profile }) => {
       },
     })
   }
+
+  const goToChannel = ({ name, t }) => {
+    router.push({
+      pathname: `/forum/${name}`,
+      query: {
+        t,
+      },
+    })
+  }
+
+  const getAllForums = useCallback(async () => {
+    try {
+      /**
+       * Waiting for id_token ready by checking profile state
+       */
+      if (profile?.id) {
+        const endpoints = [
+          api.get('/chat/channel/all'),
+          api.get('/chat/user/channel'),
+        ]
+        const [allForums, myForums] = await Promise.all(endpoints)
+        const { data: _myForums } = myForums || {}
+        const { data: _allForums } = allForums || {}
+        const _forums = _myForums?.length
+          ? _myForums.slice(0, 3)
+          : _allForums?.slice(0, 3)
+        setForums(_forums)
+        setLoading({
+          forums: false,
+        })
+      }
+    } catch {
+      setLoading({
+        forums: false,
+      })
+    }
+  }, [profile])
+
+  useEffect(() => {
+    getAllForums()
+  }, [getAllForums])
+
   return (
     <div className={styles.workspace}>
       <div className={styles.workspaceContentWrapper}>
@@ -274,10 +322,52 @@ const Workspace = ({ profile }) => {
               </Row>
             </div>
           )}
+          <div className="workspace-title container">
+            <div className="caps-heading-m">workspace</div>
+          </div>
+          <div className={styles.forumContainer}>
+            <div className="container">
+              <div className="forum-heading">
+                <h2 className="w-bold">Forums</h2>
+                <Button
+                  withArrow="link"
+                  onClick={() => router.push('/forum')}
+                  ghost
+                >
+                  View All Forums
+                </Button>
+              </div>
+              <List
+                grid={{ column: 3, gutter: 25 }}
+                dataSource={forums}
+                loading={loading.forums}
+                renderItem={(item) => (
+                  <List.Item>
+                    <ForumCard>
+                      <ForumCard.HStack>
+                        <ForumCard.Title {...item} />
+                      </ForumCard.HStack>
+                      <ForumCard.HStack>
+                        <ForumCard.LastMessage lm={item?.lm} />
+                        <div>
+                          <Button
+                            size="small"
+                            withArrow="link"
+                            onClick={() => goToChannel(item)}
+                          >
+                            Chat
+                          </Button>
+                        </div>
+                      </ForumCard.HStack>
+                    </ForumCard>
+                  </List.Item>
+                )}
+              />
+            </div>
+          </div>
           <div className="plastic-strategies-list">
             <div className="container">
-              <div className="caps-heading-m">workspace</div>
-              <h2 className="h-xxl w-semi">Plastic Strategies</h2>
+              <h2 className="h-xxl w-bold">Plastic Strategies</h2>
               <ul>
                 <li>
                   <Link href="/workspace/plastic-strategy-south-africa">
