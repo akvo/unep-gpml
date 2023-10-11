@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react'
 import { Auth0Provider } from '@auth0/auth0-react'
 import Head from 'next/head'
-// import '../main.scss'
-// import '../buttons.scss'
+import '../styles/base.scss'
 import { withLayout } from '../layouts/MainLayout'
 import 'swiper/css'
 import 'swiper/css/navigation'
@@ -27,12 +26,6 @@ const newRoutes = [
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter()
-  if (!newRoutes.some((route) => router.pathname.startsWith(route))) {
-    import('../main.scss')
-    import('../buttons.scss')
-  } else {
-    import('../styles/base.scss')
-  }
   const { profile } = UIStore.useState((s) => ({
     profile: s.profile,
     disclaimer: s.disclaimer,
