@@ -261,9 +261,18 @@ $bg-green-primary: #10f9b7;
           margin-bottom: 30px;
         }
         ul {
+          &.plastic-strategies-items {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 26px;
+            row-gap: 26px;
+            @media only screen and (max-width: 1024px) {
+              grid-template-columns: repeat(2, 1fr);
+            }
+          }
           li {
             a {
-              width: 430px;
+              width: 100%;
               display: flex;
               border-radius: 10px;
               background: #fff;
@@ -274,12 +283,13 @@ $bg-green-primary: #10f9b7;
               color: $primaryDarkBlueText;
               h4 {
                 margin-top: 5px;
+                font-size: 28px;
               }
               .compl {
                 position: absolute;
                 right: 20px;
-                top: 36px;
-                font-size: 24px;
+                top: 48px;
+                font-size: 22px;
                 font-style: normal;
                 font-weight: 700;
                 color: $primaryDarkBlueText;
