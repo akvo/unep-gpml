@@ -23,7 +23,7 @@ import { FilePdfOutlined, DeleteOutlined } from '@ant-design/icons'
 import api from '../../utils/api'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { PREFIX_SLUG, stepsState } from './ps/config'
+import { PREFIX_SLUG, getParentChecked, stepsState } from './ps/config'
 import classNames from 'classnames'
 import SkeletonItems from './ps/skeleton-items'
 import Button from '../../components/button'
@@ -427,7 +427,9 @@ const Workspace = ({ profile }) => {
                           {psSteps.map((s, sx) => (
                             <li
                               key={sx}
-                              className={classNames({ checked: s.checked })}
+                              className={classNames({
+                                checked: getParentChecked(s),
+                              })}
                             >
                               {s.label}
                             </li>
