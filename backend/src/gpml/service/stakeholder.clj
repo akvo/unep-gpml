@@ -327,7 +327,7 @@
                                                          {:filters {:stakeholders-ids [(:id old-stakeholder)]}})]
                 (if (:success? result)
                   (assoc context
-                         :invitation (:invitation old-stakeholder)
+                         :invitation (:invitation result)
                          :invited? true)
                   (if (= (:reason result) :not-found)
                     (assoc context
@@ -337,7 +337,7 @@
                     (assoc context
                            :success? false
                            :reason (:reason result)
-                           :error-details (:error-details result)))))))          }
+                           :error-details (:error-details result)))))))}
          {:txn-fn
           (fn unassign-unapproved-user-role
             [{:keys [old-stakeholder invited?] :as context}]
