@@ -1,5 +1,7 @@
 (ns gpml.handler.stakeholder.expert
-  (:require [clojure.java.jdbc :as jdbc]
+  (:require [camel-snake-kebab.core :refer [->snake_case]]
+            [camel-snake-kebab.extras :as cske]
+            [clojure.java.jdbc :as jdbc]
             [clojure.string :as str]
             [duct.logger :refer [log]]
             [gpml.db.country-group :as db.country-group]
@@ -12,6 +14,7 @@
             [gpml.util :as util]
             [gpml.util.email :as email]
             [gpml.util.postgresql :as pg-util]
+            [gpml.util.sql :as util.sql]
             [integrant.core :as ig]
             [jsonista.core :as json]
             [malli.util :as mu]
@@ -192,12 +195,20 @@
             expert-values (util/apply-select-values experts expert-cols)
             expert-stakeholders (db.stakeholder/create-stakeholders conn {:cols (map name expert-cols)
                                                                           :values expert-values})
-            invitation-values (map (fn [{:keys [id email]}]
-                                     (vector (util/uuid) id email))
-                                   expert-stakeholders)
+            invitations-to-create (map (fn [{:keys [id email]}]
+                                         {:id (util/uuid)
+                                          :stakeholder-id id
+                                          :email email
+                                          :type :expert})
+                                       expert-stakeholders)
+            invitation-cols (util.sql/get-insert-columns-from-entity-col invitations-to-create)
+            invitations-values (util.sql/entity-col->persistence-entity-col invitations-to-create)
             experts-by-email (group-by :email experts)
-            invitations (->> (db.invitation/create-invitations conn {:values invitation-values})
-                             (map #(merge % (get-in experts-by-email [(:email %) 0]))))]
+            invitations (->> (db.invitation/create-invitations conn {:cols invitation-cols
+                                                                     :values invitations-values})
+                             :invitations
+                             (map #(merge % (get-in experts-by-email [(:email %) 0])))
+                             (cske/transform-keys ->snake_case))]
         (doseq [{:keys [email expertise]} body
                 :let [stakeholder-id (get-in (group-by :email expert-stakeholders) [email 0 :id])]]
           (handler.stakeholder.tag/save-stakeholder-tags

@@ -160,6 +160,23 @@ View the forums in your GPML workspace:
 (defn new-resource-comment-subject [comment-author]
   (format "%s commented on your resource" comment-author))
 
+(defn- notify-user-about-plastic-strategy-invitation-subject
+  [app-name]
+  (format "[%s] You have been invited to participate in a Plastic Strategy on GPML Platform" app-name))
+
+(defn- notify-user-about-plastic-strategy-invitation-text
+  [app-domain user-full-name country-name]
+  (format "Dear %s,
+
+You have been invited to participate in the Plastic Strategy for %s country.
+
+To accept this invitation please visit %s and sign up to GPML Platform.
+
+- UNEP GPML Digital Platform"
+          user-full-name
+          country-name
+          app-domain))
+
 (defn notify-admins-pending-approval [db mailjet-config new-item]
   (let [admins (db.stakeholder/get-admins db)
         item-type (:type new-item)
@@ -254,6 +271,25 @@ View the forums in your GPML workspace:
         texts [(notify-user-about-chat-private-channel-invitation-request-accepted-text
                 channel-name
                 (:app-domain mailjet-config))]
+        htmls (repeat nil)
+        {:keys [status body]} (send-email mailjet-config sender subject receivers texts htmls)]
+    (if (<= 200 status 299)
+      {:success? true}
+      {:success? false
+       :reason :failed-to-send-email
+       :error-details body})))
+
+(defn notify-user-about-plastic-strategy-invitation
+  [mailjet-config user plastic-strategy]
+  (let [sender unep-sender
+        subject (notify-user-about-plastic-strategy-invitation-subject (:app-name mailjet-config))
+        user-full-name (get-user-full-name user)
+        receivers [{:Name user-full-name
+                    :Email (:email user)}]
+        texts [(notify-user-about-plastic-strategy-invitation-text
+                (:app-domain mailjet-config)
+                user-full-name
+                (get-in plastic-strategy [:country :name]))]
         htmls (repeat nil)
         {:keys [status body]} (send-email mailjet-config sender subject receivers texts htmls)]
     (if (<= 200 status 299)
