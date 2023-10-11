@@ -309,7 +309,7 @@ const Workspace = ({ profile }) => {
                           ></div>
                         </div>
                         <ul>
-                          {allSteps.map((s, sx) => (
+                          {psSteps.map((s, sx) => (
                             <li
                               key={sx}
                               className={classNames({ checked: s.checked })}
