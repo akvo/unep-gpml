@@ -121,6 +121,15 @@ const Workspace = ({ profile }) => {
     })
   }
 
+  const goToChannel = ({ name, t }) => {
+    router.push({
+      pathname: `/forum/${name}`,
+      query: {
+        t,
+      },
+    })
+  }
+
   const getPSAll = useCallback(async () => {
     try {
       if (profile?.id) {
@@ -131,14 +140,8 @@ const Workspace = ({ profile }) => {
     } catch (error) {
       console.error('Unable to fetch plastics strategy:', error)
       setPsLoading(false)
-  const goToChannel = ({ name, t }) => {
-    router.push({
-      pathname: `/forum/${name}`,
-      query: {
-        t,
-      },
-    })
-  }
+    }
+  }, [profile])
 
   const getAllForums = useCallback(async () => {
     try {
@@ -171,7 +174,7 @@ const Workspace = ({ profile }) => {
   useEffect(() => {
     getPSAll()
   }, [getPSAll])
-  
+
   useEffect(() => {
     getAllForums()
   }, [getAllForums])
@@ -387,9 +390,8 @@ const Workspace = ({ profile }) => {
           </div>
           <div className="plastic-strategies-list">
             <div className="container">
-              <div className="caps-heading-m">workspace</div>
               {psAll.length > 0 && (
-                <h2 className="h-xxl w-semi">Plastic Strategies</h2>
+                <h2 className="h-xxl w-bold">Plastic Strategies</h2>
               )}
               <SkeletonItems loading={psLoading} />
               <ul className="plastic-strategies-items">
