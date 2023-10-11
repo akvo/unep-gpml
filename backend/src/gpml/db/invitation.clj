@@ -36,8 +36,8 @@
 (defn get-invitation
   [conn opts]
   (try
-    (let [invitations (get-invitations conn opts)]
-      (if (and (seq invitations)
+    (let [{:keys [success? invitations]} (get-invitations conn opts)]
+      (if (and success?
                (= (count invitations) 1))
         {:success? true
          :invitation (first invitations)}
