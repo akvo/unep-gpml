@@ -90,7 +90,8 @@
             context)}
          {:txn-fn
           (fn tx-notify-user-about-invitation
-            [context]
+            [{{:keys [email-notification-fn user]} :invitation-payload :as context}]
+            (email-notification-fn user)
             context)}]
         context {:success? true
                  :invitation-payload invitation-payload}]
