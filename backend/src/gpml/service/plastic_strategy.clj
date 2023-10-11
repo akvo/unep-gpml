@@ -84,7 +84,7 @@
                   role-assignments [{:role-name role-name
                                      :context-type :plastic-strategy
                                      :resource-id (:plastic-strategy-id ps-team-member)
-                                     :user-id (:user-id ps-team-member)}]
+                                     :user-id (:id ps-team-member)}]
                   result (first (srv.permissions/assign-roles-to-users
                                  {:conn (:spec db)
                                   :logger logger}
@@ -102,7 +102,7 @@
                   role-unassignments [{:role-name role-name
                                        :context-type :plastic-strategy
                                        :resource-id (:plastic-strategy-id ps-team-member)
-                                       :user-id (:user-id ps-team-member)}]
+                                       :user-id (:id ps-team-member)}]
                   result (first (srv.permissions/unassign-roles-from-users
                                  {:conn (:spec db)
                                   :logger logger}
@@ -113,7 +113,7 @@
          {:txn-fn
           (fn create-chat-account
             [{:keys [ps-team-member] :as context}]
-            (let [result (srv.chat/create-user-account config (:user-id ps-team-member))]
+            (let [result (srv.chat/create-user-account config (:id ps-team-member))]
               (if (:success? result)
                 context
                 (assoc context
