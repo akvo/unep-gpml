@@ -409,7 +409,7 @@
                 context)))}
          {:txn-fn
           (fn update-stakeholder
-            [{:keys [stakeholder old-stakeholder invited-expert? picture-file cv-file] :as context}]
+            [{:keys [stakeholder old-stakeholder invited? picture-file cv-file] :as context}]
             (let [idp-usernames (-> (concat (:idp-usernames old-stakeholder)
                                             (:idp_usernames stakeholder))
                                     distinct
@@ -428,7 +428,7 @@
                                                                 cv-id
                                                                 (assoc :cv_id cv-id)
 
-                                                                invited-expert?
+                                                                invited?
                                                                 (assoc :review_status "APPROVED")))]
               (if (= 1 affected)
                 context
