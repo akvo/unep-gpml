@@ -89,6 +89,15 @@
     :active
     :inactive})
 
+(def ^:const plastic-strategy-team-types
+  #{:steering-committee
+    :project-team})
+
+(def ^:const plastic-strategy-team-roles
+  #{:viewer
+    :editor
+    :admin})
+
 (def ^:const enum-types
   {:review-status review-statuses
    :reviewer-status reviewer-review-statuses
@@ -99,7 +108,9 @@
    :topic-type topic-types
    :resource-type resources-types
    :file-visibility file-visibility
-   :chat-account-status chat-account-statuses})
+   :chat-account-status chat-account-statuses
+   :plastic-strategy-team-type plastic-strategy-team-types
+   :plastic-strategy-team-role plastic-strategy-team-roles})
 
 (defn get-type-schema
   [type-name]

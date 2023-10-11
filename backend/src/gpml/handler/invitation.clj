@@ -10,8 +10,6 @@
             [gpml.util.postgresql :as pg-util]
             [gpml.util.regular-expressions :as util.regex]
             [integrant.core :as ig]
-            [java-time :as time]
-            [java-time.pre-java8 :as time-pre-j8]
             [java-time.temporal])
   (:import [java.sql SQLException]))
 
@@ -66,7 +64,7 @@
     (if-not (h.r.permission/super-admin? config (:id user))
       (r/forbidden {:message "Unauthorized"})
       (let [opts (api-opts->opts query)
-            invitations (db.invitation/get-invitations (:spec db) opts)
+            invitations (db.invitation/get-invitations* (:spec db) opts)
             stakeholders (->> (db.stakeholder/get-stakeholders (:spec db)
                                                                {:filters {:ids (map :stakeholder_id invitations)}})
                               (group-by :id))]
@@ -94,24 +92,24 @@
    {{:keys [query path]} :parameters user :user}]
   (try
     (let [opts (api-opts->opts (merge query path))
-          invitation (db.invitation/get-invitations (:spec db)
-                                                    {:filters {:ids [(:id opts)]}})]
-      (if-not (= (:stakeholder_id invitation) (:id user))
-        (r/forbidden {:message "Unauthorized"})
-        (let [accepted-at (-> (time/instant) (time-pre-j8/sql-timestamp "UTC"))
-              affected-rows (db.invitation/accept-invitation (:spec db) (merge opts
-                                                                               {:accepted-at accepted-at}))]
-          (if (= affected-rows 1)
-            (r/ok {:success? true})
-            (r/server-error {:success? false
-                             :reason :could-not-update-invitation})))))
+          {:keys [success? invitation reason] :as get-invitation-result}
+          (db.invitation/get-invitation (:spec db)
+                                        {:filters {:ids [(:id opts)]}})]
+      (if-not success?
+        (if (= reason :not-found)
+          (r/not-found {})
+          (r/server-error (dissoc get-invitation-result :success?)))
+        (if-not (= (:stakeholder-id invitation) (:id user))
+          (r/forbidden {:message "Unauthorized"})
+          (let [result (db.invitation/accept-invitation (:spec db) (:id invitation))]
+            (if (:success? result)
+              (r/ok {})
+              (r/server-error (dissoc result :success?)))))))
     (catch Exception e
-      (log logger :error ::accept-invitation {:exception-message (.getMessage e)})
+      (log logger :error ::failed-to-accept-invitation {:exception-message (.getMessage e)})
       (if (instance? SQLException e)
-        (r/server-error {:success? false
-                         :reason (pg-util/get-sql-state e)})
-        (r/server-error {:success? false
-                         :reason :could-not-update-invitation
+        (r/server-error {:reason (pg-util/get-sql-state e)})
+        (r/server-error {:reason :could-not-update-invitation
                          :error-details {:message (.getMessage e)}})))))
 
 (defmethod ig/init-key :gpml.handler.invitation/get [_ config]
