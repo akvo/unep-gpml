@@ -23,6 +23,7 @@ const newRoutes = [
   '/community',
   '/experts',
   '/forum',
+  '/page',
 ]
 
 function MyApp({ Component, pageProps }) {
