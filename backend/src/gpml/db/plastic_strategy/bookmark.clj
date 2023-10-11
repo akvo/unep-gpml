@@ -8,7 +8,7 @@
 (declare create-ps-bookmark*
          delete-ps-bookmark*)
 
-(hugsql/def-db-fns "gpml/db/plastic_strategy/bookmark.sql")
+(hugsql/def-db-fns "gpml/db/plastic_strategy/bookmark.sql" {:quoting :ansi})
 
 (defn- ps-bookmark->p-ps-bookmark
   [ps-bookmark]
