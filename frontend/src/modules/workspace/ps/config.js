@@ -92,7 +92,7 @@ export const stepsState = [
       { label: 'Upload', slug: 'upload', checked: false },
     ],
   },
-  { label: 'Final Review', slug: '', checked: false },
+  { label: 'Final Review', slug: '7-final-review', checked: false },
 ]
 
 export const getParentChecked = (step) =>
