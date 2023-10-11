@@ -3,6 +3,7 @@
             [gpml.service.invitation :as srv.invitation]
             [gpml.service.permissions :as srv.permissions]
             [gpml.service.plastic-strategy :as srv.ps]
+            [gpml.util.email :as util.email]
             [gpml.util.thread-transactions :as tht]))
 
 (defn- assign-ps-team-member-role
@@ -147,17 +148,25 @@
       result)))
 
 (defn invite-user-to-ps-team
-  [{:keys [db logger] :as config} ps-team-invitation]
+  [{:keys [db logger mailjet-config] :as config} ps-team-invitation]
   (let [transactions
         [{:txn-fn
           (fn tx-invite-user
             [{:keys [ps-team-invitation] :as context}]
-            (let [invitation-payload {:user (select-keys ps-team-invitation [:name :email])
+            (let [email-notification-fn (fn [user]
+                                          (util.email/notify-user-about-plastic-strategy-invitation
+                                           mailjet-config
+                                           user
+                                           (:plastic-strategy ps-team-invitation)))
+                  invitation-payload {:user (select-keys ps-team-invitation [:name :email])
+                                      :email-notification-fn email-notification-fn
                                       :type :plastic-strategy}
                   result (srv.invitation/invite-user config
                                                      invitation-payload)]
-              (if (:success? true)
-                (assoc context :user-id (get-in result [:invitation :stakeholder-id]))
+              (if (:success? result)
+                (assoc context
+                       :user-id (:user-id result)
+                       :invitation (:invitation result))
                 (assoc context
                        :success? false
                        :reason :failed-to-invite-user
@@ -165,7 +174,7 @@
          {:txn-fn
           (fn tx-add-user-to-ps-team
             [{:keys [ps-team-invitation user-id] :as context}]
-            (let [ps-team-member {:plastic-strategy-id (:plastic-strategy-id ps-team-invitation)
+            (let [ps-team-member {:plastic-strategy-id (get-in ps-team-invitation [:plastic-strategy :id])
                                   :user-id user-id
                                   :teams (:teams ps-team-invitation)
                                   :role (:role ps-team-invitation)}
@@ -177,5 +186,5 @@
                        :reason :failed-to-add-ps-team-member
                        :error-details {:result result}))))}]
         context {:success? true
-                 :ps-invitation ps-team-invitation}]
+                 :ps-team-invitation ps-team-invitation}]
     (tht/thread-transactions logger transactions context)))
