@@ -25,12 +25,14 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { PREFIX_SLUG, stepsState } from './ps/config'
 import classNames from 'classnames'
+import SkeletonItems from './ps/skeleton-items'
 
 const Workspace = ({ profile }) => {
   const router = useRouter()
   const [isFocal, setIsFocal] = useState(false)
   const [projects, setProjects] = useState([])
   const [psAll, setPSAll] = useState([])
+  const [psLoading, setPsLoading] = useState(true)
 
   const handleFocalPoint = (id) => {
     setIsFocal(true)
@@ -93,9 +95,11 @@ const Workspace = ({ profile }) => {
       if (profile?.id) {
         const { data: plasticsStrategies } = await api.get('/plastic-strategy')
         setPSAll(plasticsStrategies)
+        setPsLoading(false)
       }
     } catch (error) {
       console.error('Unable to fetch plastics strategy:', error)
+      setPsLoading(false)
     }
   }, [profile])
 
@@ -274,25 +278,29 @@ const Workspace = ({ profile }) => {
               {psAll.length > 0 && (
                 <h2 className="h-xxl w-semi">Plastic Strategies</h2>
               )}
+              <SkeletonItems loading={psLoading} />
               <ul className="plastic-strategies-items">
                 {psAll.map((item, index) => {
                   const psSteps = item?.steps || stepsState
-                  const allSteps = psSteps.flatMap((p) => p.substeps || [p])
+                  const allSteps = psSteps.flatMap((p) => {
+                    if (p?.substeps?.length) {
+                      return p.substeps.map((sb, sx) => ({
+                        ...sb,
+                        label: sx === 0 ? p.label : sb.label,
+                      }))
+                    }
+                    return [p]
+                  })
                   const progressValue =
                     (allSteps.filter((a) => a.checked).length /
                       allSteps.length) *
                     100
                   const countryName = kebabCase(item?.country?.name)
-                  const summarySteps = psSteps.flatMap((a) =>
-                    a?.substeps?.length
-                      ? a?.substeps?.slice(1, a.substeps.length) // filter intro section
-                      : [a]
-                  )
                   return (
                     <li key={index}>
                       <Link href={`/workspace/${PREFIX_SLUG}-${countryName}`}>
                         <div className="caps-heading-s">plastic strategy</div>
-                        <h4 className="h-l w-semi">{item?.country?.name}</h4>
+                        <h4 className="w-semi">{item?.country?.name}</h4>
                         <div className="compl">{`${progressValue}%`}</div>
                         <div className="progress-bar">
                           <div
@@ -301,7 +309,7 @@ const Workspace = ({ profile }) => {
                           ></div>
                         </div>
                         <ul>
-                          {summarySteps.map((s, sx) => (
+                          {allSteps.map((s, sx) => (
                             <li
                               key={sx}
                               className={classNames({ checked: s.checked })}
