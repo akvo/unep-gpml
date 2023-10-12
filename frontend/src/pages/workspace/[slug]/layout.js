@@ -1,3 +1,4 @@
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { CheckOutlined } from '@ant-design/icons'
 import { message } from 'antd'
@@ -6,7 +7,6 @@ import styles from './ps.module.scss'
 import { useRouter } from 'next/router'
 import classNames from 'classnames'
 import Button from '../../../components/button'
-import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   PREFIX_SLUG,
   getParentChecked,
@@ -246,7 +246,9 @@ const NestedLayout = ({ children }) => {
           ))}
         </div>
       </div>
-      <div className={styles.view}>{children}</div>
+      <div className={styles.view}>
+        {React.cloneElement(children, { psItem })}
+      </div>
       <div className={styles.bottomBar}>
         <Button
           type="ghost"
