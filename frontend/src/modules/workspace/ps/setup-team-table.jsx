@@ -119,13 +119,19 @@ const SetupTeamTable = ({ psItem, members, setMembers }) => {
     Modal.confirm({
       title: `${record?.firstName} ${record?.lastName}`,
       content: 'Are you sure you want to delete this member?',
-      onOk: () => {
-        // TODO
-        /**
-         * Delete team member on BE side
-         */
-        const _members = members.filter((m) => m?.id !== record?.id)
-        setMembers(_members)
+      onOk: async () => {
+        try {
+          await api.delete(
+            `/plastic-strategy/${psItem.country.isoCodeA2}/team/member`,
+            {
+              user_id: record?.id,
+            }
+          )
+          const _members = members.filter((m) => m?.id !== record?.id)
+          setMembers(_members)
+        } catch (error) {
+          message.error('Unable to delete a member')
+        }
       },
       okButtonProps: {
         size: 'small',
