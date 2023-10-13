@@ -23,50 +23,12 @@
   gap: 20px;
   margin-bottom: 29px;
   :global {
-    .ant-table-wrapper {
-      width: 100%;
-      .ant-table-thead {
-        & > tr {
-          & > th {
-            background-color: $primaryPurple;
-            color: $primaryWhite;
-
-            .ant-table-column-sorter-up,
-            .ant-table-column-sorter-down {
-              font-size: 12px;
-              &.active {
-                color: $primaryDarkBlue;
-              }
-            }
-          }
-        }
-      }
-      .ant-table-tbody {
-        .ant-table-row {
-          &:nth-child(even) {
-            background-color: $primaryGrey;
-          }
-          td {
-            &.ant-table-column-sort,
-            &.ant-table-cell-row-hover {
-              background-color: transparent;
-            }
-          }
-        }
-      }
-    }
-    .ant-table-column-sorter,
-    .ant-table-filter-trigger {
-      color: $primaryWhite;
-    }
-  }
-  :global(.ant-btn.ant-btn-link) {
-    flex-direction: row-reverse;
-    text-transform: capitalize;
-    &:hover {
-      svg {
-        path {
-          transform: none !important;
+    .ant-table-tbody .ant-table-row td {
+      .ant-btn.ant-btn-link {
+        flex-direction: row-reverse;
+        text-transform: capitalize;
+        svg {
+          padding-left: 8px;
         }
       }
     }
