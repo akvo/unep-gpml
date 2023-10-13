@@ -122,9 +122,10 @@ const SetupTeamTable = ({ psItem, members, setMembers }) => {
       onOk: () => {
         // TODO
         /**
-         * Delete team's member
+         * Delete team member on BE side
          */
-        console.log('record', record)
+        const _members = members.filter((m) => m?.id !== record?.id)
+        setMembers(_members)
       },
       okButtonProps: {
         size: 'small',
