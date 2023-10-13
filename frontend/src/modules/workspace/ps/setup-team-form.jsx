@@ -28,6 +28,7 @@ const SetupTeamForm = ({ psItem, members, setMembers }) => {
   const [users, setUsers] = useState([])
   const [openUsers, setOpenUsers] = useState(false)
   const [openInvitation, setOpenInvitation] = useState(false)
+  const [sending, setSending] = useState(false)
   const [selectedRole, setSelectedRole] = useState(null)
   const [selectedTeams, setSelectedTeams] = useState([])
   const [form] = Form.useForm()
@@ -68,6 +69,7 @@ const SetupTeamForm = ({ psItem, members, setMembers }) => {
   }
 
   const handleOnAddMember = async (newMember) => {
+    setUsers([])
     const isExist = members.find((m) => m.id === newMember?.id)
     if (isExist) {
       message.warning('User already added as a member')
@@ -121,11 +123,13 @@ const SetupTeamForm = ({ psItem, members, setMembers }) => {
   }
 
   const handleOnSubmit = async (values) => {
+    setSending(true)
     try {
       await api.post(
         `/plastic-strategy/${psItem?.country?.isoCodeA2}/team/member/invite`,
         values
       )
+      setSending(false)
       setSelectedRole(null)
       setSelectedTeams([])
       setOpenInvitation(false)
@@ -133,6 +137,7 @@ const SetupTeamForm = ({ psItem, members, setMembers }) => {
     } catch (error) {
       console.error('Unable to send invitation', error)
       message.error('Unable to send invitation')
+      setSending(false)
     }
   }
 
@@ -194,8 +199,13 @@ const SetupTeamForm = ({ psItem, members, setMembers }) => {
             <Button type="link" onClick={handleOnCloseInvitation}>
               Close
             </Button>
-            <Button size="small" withArrow="link" onClick={() => form.submit()}>
-              Send Invite
+            <Button
+              size="small"
+              withArrow="link"
+              onClick={() => form.submit()}
+              disabled={sending}
+            >
+              {sending ? 'Sending...' : 'Send Invite'}
             </Button>
           </>
         }
