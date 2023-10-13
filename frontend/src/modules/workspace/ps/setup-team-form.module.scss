@@ -1,0 +1,83 @@
+@import '../../../styles/vars.scss';
+
+.usersPopover {
+  padding-top: 0;
+  width: 408px;
+  :global {
+    .ant-popover-inner-content {
+      padding: 8px;
+      height: auto;
+      max-height: 148px;
+      overflow-y: scroll;
+      .ant-list-split {
+        .ant-list-item {
+          justify-content: flex-start;
+          font-size: 16px;
+          line-height: 20px;
+          gap: 8px;
+          padding: 12px 8px;
+          border-bottom: none;
+          cursor: pointer;
+          strong {
+            color: #3e345c80;
+          }
+          &:hover {
+            background-color: $primaryGrey;
+          }
+        }
+        .ant-list-footer {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 8px;
+        }
+        .ant-list-empty-text {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+.invitationModal {
+  padding: 0;
+  :global(.ant-modal-header) {
+    padding: 41px 39px 16px;
+  }
+  :global(.ant-modal-body) {
+    padding: 24px 39px;
+  }
+  :global(.role-description) {
+    padding: 8px 0;
+    color: $primaryDarkBlue3;
+    font-size: 14px;
+    line-height: 20px;
+  }
+  :global(.ant-modal-footer) {
+    padding: 19px 27px;
+    background-color: $primaryGrey;
+  }
+  :global(.ant-btn.ant-btn-link) {
+    flex-direction: row-reverse;
+    text-transform: capitalize;
+  }
+}
+
+.searchMember {
+  :global {
+    .ant-input-group {
+      .ant-input {
+        height: 44px;
+      }
+      .ant-input-affix-wrapper {
+        padding-left: 16px;
+      }
+      .ant-input-group-addon {
+        .ant-btn.ant-btn-default {
+          background-color: transparent;
+          border: none;
+        }
+      }
+    }
+  }
+}
