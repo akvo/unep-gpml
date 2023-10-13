@@ -247,7 +247,7 @@ const NestedLayout = ({ children }) => {
         </div>
       </div>
       <div className={styles.view}>
-        {React.cloneElement(children, { psItem })}
+        {children ? React.cloneElement(children, { psItem }) : children}
       </div>
       <div className={styles.bottomBar}>
         <Button
