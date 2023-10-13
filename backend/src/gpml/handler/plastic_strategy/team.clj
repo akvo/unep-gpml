@@ -57,6 +57,9 @@
 (def ^:private update-ps-team-member-body-params-schema
   (mu/optional-keys add-ps-team-member-body-params-schema [:teams :role]))
 
+(def ^:private delete-ps-team-member-body-params-schema
+  (mu/select-keys add-ps-team-member-body-params-schema [:user_id]))
+
 (defn- add-ps-team-member
   [config {:keys [user] {:keys [path body]} :parameters}]
   (let [country-iso-code-a2 (:iso_code_a2 path)
@@ -135,6 +138,33 @@
           (r/ok {:invitation_id (get-in result [:invitation :id])})
           (r/server-error (dissoc result :success?)))))))
 
+(defn- delete-ps-team-member
+  [config {:keys [user] {:keys [path body]} :parameters}]
+  (let [country-iso-code-a2 (:iso_code_a2 path)
+        search-opts {:filters {:countries-iso-codes-a2 [country-iso-code-a2]}}
+        {:keys [success? plastic-strategy reason] :as get-ps-result}
+        (srv.ps/get-plastic-strategy config search-opts)]
+    (if-not success?
+      (if (= reason :not-found)
+        (r/not-found {})
+        (r/server-error (dissoc get-ps-result :success?)))
+      (if-not (h.r.permission/operation-allowed? config
+                                                 {:user-id (:id user)
+                                                  :entity-type :plastic-strategy
+                                                  :entity-id (:id plastic-strategy)
+                                                  :custom-permission :delete-team-member
+                                                  :root-context? false})
+        (r/forbidden {:message "Unauthorized"})
+        (let [user-id (:user_id body)
+              result (srv.ps.team/delete-ps-team-member config
+                                                        (:id plastic-strategy)
+                                                        user-id)]
+          (if (:success? result)
+            (r/ok {})
+            (if (= (:reason result) :ps-team-member-not-found)
+              (r/not-found {:reason :ps-team-member-not-found})
+              (r/server-error (dissoc result :success?)))))))))
+
 (defmethod ig/init-key :gpml.handler.plastic-strategy.team/get-members
   [_ config]
   (fn [req]
@@ -173,3 +203,13 @@
   [_ _]
   {:path common-ps-team-members-path-params-schema
    :body invite-user-to-ps-team-body-params-schema})
+
+(defmethod ig/init-key :gpml.handler.plastic-strategy.team/delete-member
+  [_ config]
+  (fn [req]
+    (delete-ps-team-member config req)))
+
+(defmethod ig/init-key :gpml.handler.plastic-strategy.team/delete-member-params
+  [_ _]
+  {:path common-ps-team-members-path-params-schema
+   :body delete-ps-team-member-body-params-schema})
