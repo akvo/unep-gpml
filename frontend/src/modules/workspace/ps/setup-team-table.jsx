@@ -1,12 +1,24 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { Button, Checkbox, Dropdown, Menu, Table } from 'antd'
+import {
+  Button,
+  Checkbox,
+  Divider,
+  Dropdown,
+  Menu,
+  Modal,
+  Table,
+  Typography,
+  message,
+} from 'antd'
 import uniqBy from 'lodash/uniqBy'
 import { DropDownIcon } from '../../../components/icons'
 import api from '../../../utils/api'
 import { UIStore } from '../../../store'
-import { TEAMS } from './config'
+import { ROLES, TEAMS } from './config'
+import styles from './setup-team-table.module.scss'
 
 const { Column } = Table
+const { Text } = Typography
 
 const SetupTeamTable = ({ psItem, members, setMembers }) => {
   const [loading, setLoading] = useState(true)
@@ -46,7 +58,6 @@ const SetupTeamTable = ({ psItem, members, setMembers }) => {
       {
         title: 'Assigned to',
         dataIndex: 'teams',
-        defaultSortOrder: 'ascend',
         sorter: (a, b) => a.teams?.[0]?.localeCompare(b.teams?.[0]),
       },
       {
@@ -56,6 +67,76 @@ const SetupTeamTable = ({ psItem, members, setMembers }) => {
       },
     ]
   }, [members])
+
+  const handleOnUpdateMember = (field, id, value) => {
+    const _members = members.map((m) => {
+      if (m?.id === id) {
+        return {
+          ...m,
+          [field]: value,
+        }
+      }
+      return m
+    })
+    setMembers(_members)
+  }
+
+  const handleOnTeamsChange = async (teams, recordID) => {
+    try {
+      handleOnUpdateMember('teams', recordID, teams)
+      const payload = {
+        user_id: recordID,
+        teams,
+      }
+      await api.put(
+        `/plastic-strategy/${psItem?.country?.isoCodeA2}/team/member`,
+        payload
+      )
+    } catch (error) {
+      console.error('Unable to update `Assigned to`', error)
+      message.error('Unable to update assignment')
+    }
+  }
+
+  const handleOnRoleChange = async (role, recordID) => {
+    try {
+      handleOnUpdateMember('role', recordID, role)
+      const payload = {
+        user_id: recordID,
+        role,
+      }
+      await api.put(
+        `/plastic-strategy/${psItem?.country?.isoCodeA2}/team/member`,
+        payload
+      )
+    } catch (error) {
+      console.error('Unable to update `role`', error)
+      message.error('Unable to update role')
+    }
+  }
+
+  const handleOnDeleteMember = (record) => {
+    Modal.confirm({
+      title: `${record?.firstName} ${record?.lastName}`,
+      content: 'Are you sure you want to delete this member?',
+      onOk: () => {
+        // TODO
+        /**
+         * Delete team's member
+         */
+        console.log('record', record)
+      },
+      okButtonProps: {
+        size: 'small',
+        type: 'default',
+        danger: true,
+      },
+      okText: 'Delete',
+      cancelButtonProps: {
+        type: 'link',
+      },
+    })
+  }
 
   const getTeamMembers = useCallback(async () => {
     try {
@@ -90,13 +171,25 @@ const SetupTeamTable = ({ psItem, members, setMembers }) => {
             <Column
               {...col}
               key={cx}
-              render={(data) => {
+              render={(data, record) => {
                 return (
                   <Dropdown
                     overlay={
                       <Menu>
-                        <Menu.Item>Admin</Menu.Item>
-                        <Menu.Item>Editor</Menu.Item>
+                        {ROLES.map((r, rx) => (
+                          <Menu.Item
+                            key={rx}
+                            onClick={() =>
+                              handleOnRoleChange(r.key, record?.id)
+                            }
+                          >
+                            {r.label}
+                          </Menu.Item>
+                        ))}
+                        <Divider className={styles.roleDivider} />
+                        <Menu.Item onClick={() => handleOnDeleteMember(record)}>
+                          <Text type="danger">Delete</Text>
+                        </Menu.Item>
                       </Menu>
                     }
                   >
@@ -114,13 +207,22 @@ const SetupTeamTable = ({ psItem, members, setMembers }) => {
             <Column
               {...col}
               key={cx}
-              render={(data) => {
-                const teamsValue = data
-                  ?.map((d) => d?.replace(/-/g, ' '))
-                  .join(' & ')
+              render={(data, record) => {
+                const teamsValue = data?.length
+                  ? data.map((d) => d?.replace(/-/g, ' ')).join(' & ')
+                  : 'Not Assigned'
                 return (
                   <Dropdown
-                    overlay={<Checkbox.Group options={TEAMS} />}
+                    overlay={
+                      <Checkbox.Group
+                        className={styles.teamsCheckbox}
+                        options={TEAMS}
+                        value={data}
+                        onChange={(checkItems) =>
+                          handleOnTeamsChange(checkItems, record?.id)
+                        }
+                      />
+                    }
                     trigger={['click']}
                   >
                     <Button type="link" icon={<DropDownIcon />}>
