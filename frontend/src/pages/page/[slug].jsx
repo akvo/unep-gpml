@@ -26,7 +26,7 @@ const StrapiPage = ({ pageData }) => {
 export async function getServerSideProps(context) {
   const { slug } = context.params
   const text = slug.split('-')
-  text.shift()
+  const id = text.shift()
   const result = text.join('-')
 
   try {
@@ -36,7 +36,9 @@ export async function getServerSideProps(context) {
     const response = await axios.get(
       `https://${domainName}/strapi/api/pages?filters[slug][$eq]=${result}`
     )
-
+    if (response.data.data.length === 0) {
+      return { notFound: true }
+    }
     const pageData = response.data.data[0]
 
     return {
@@ -45,7 +47,7 @@ export async function getServerSideProps(context) {
   } catch (error) {
     console.error(error)
     return {
-      notFound: true,
+      props: { notFound: true },
     }
   }
 }
