@@ -79,6 +79,9 @@
     "technical_resource"
     "action_plan"})
 
+(def ^:const plastic-strategy-bookmarkable-entity-types
+  (set (map keyword (conj topic-entity-tables "organisation"))))
+
 (def ^:const file-visibility
   "Informs about a file's accessability privilegies."
   #{:private
@@ -110,7 +113,8 @@
    :file-visibility file-visibility
    :chat-account-status chat-account-statuses
    :plastic-strategy-team-type plastic-strategy-team-types
-   :plastic-strategy-team-role plastic-strategy-team-roles})
+   :plastic-strategy-team-role plastic-strategy-team-roles
+   :plastic-strategy-bookmarkable-entity-type plastic-strategy-bookmarkable-entity-types})
 
 (defn get-type-schema
   [type-name]
