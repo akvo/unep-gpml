@@ -1,18 +1,22 @@
 import axios from 'axios'
 import styles from './style.module.scss'
 import moment from 'moment'
+import Head from 'next/head'
 
 const StrapiPage = ({ pageData }) => {
   return (
     <div className={styles.forum}>
+      <Head>
+        <title>{pageData.attributes.title}</title>
+      </Head>
       <div className="container">
-        <h1 className="h-l">{pageData.attributes.Title}</h1>
+        <h1 className="h-l">{pageData.attributes.title}</h1>
         <p className="date">
           {moment(pageData.attributes.publishedAt).format('MMMM DD, YYYY')}
         </p>
         <div
           className="content"
-          dangerouslySetInnerHTML={{ __html: pageData.attributes.Content }}
+          dangerouslySetInnerHTML={{ __html: pageData.attributes.content }}
         />
       </div>
     </div>
@@ -30,7 +34,7 @@ export async function getServerSideProps(context) {
       ? 'unep-gpml.akvotest.org'
       : getDomainName(context.req.headers.host)
     const response = await axios.get(
-      `https://${domainName}/strapi/api/pages?filters[Slug][$eq]=${result}`
+      `https://${domainName}/strapi/api/pages?filters[slug][$eq]=${result}`
     )
 
     const pageData = response.data.data[0]
