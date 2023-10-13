@@ -1,0 +1,75 @@
+@import '../../../../styles/vars.scss';
+
+.titleSection {
+  font-family: 'Inter';
+  font-weight: 700;
+  color: $primaryDarkBlue;
+}
+.descSection {
+  width: 85%;
+  margin: 59px 0 65px;
+  :global {
+    p {
+      color: $primaryDarkBlue;
+      font-size: $fzXS;
+      line-height: $lhXS;
+    }
+  }
+}
+.tableSection {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 29px;
+  :global {
+    .ant-table-wrapper {
+      width: 100%;
+      .ant-table-thead {
+        & > tr {
+          & > th {
+            background-color: $primaryPurple;
+            color: $primaryWhite;
+
+            .ant-table-column-sorter-up,
+            .ant-table-column-sorter-down {
+              font-size: 12px;
+              &.active {
+                color: $primaryDarkBlue;
+              }
+            }
+          }
+        }
+      }
+      .ant-table-tbody {
+        .ant-table-row {
+          &:nth-child(even) {
+            background-color: $primaryGrey;
+          }
+          td {
+            &.ant-table-column-sort,
+            &.ant-table-cell-row-hover {
+              background-color: transparent;
+            }
+          }
+        }
+      }
+    }
+    .ant-table-column-sorter,
+    .ant-table-filter-trigger {
+      color: $primaryWhite;
+    }
+  }
+  :global(.ant-btn.ant-btn-link) {
+    flex-direction: row-reverse;
+    text-transform: capitalize;
+  }
+}
+.addMemberSection {
+  width: 100%;
+  max-width: 408px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 100px;
+}
