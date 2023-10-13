@@ -652,3 +652,26 @@ ul {
     height: 100%;
   }
 }
+/**
+* Filter confirm and reset button styles on Antd table
+*/
+.ant-table-filter-dropdown {
+  .ant-table-filter-dropdown-btns {
+    .ant-btn {
+      font-size: $fzXXS;
+      line-height: $lhXXS;
+      &.ant-btn-primary {
+        padding-right: 18px;
+        background-color: $primaryPurple;
+        border-color: transparent;
+        color: $primaryWhite;
+        &.ant-btn-sm {
+          padding: 4px 18px;
+        }
+      }
+      &.ant-btn.ant-btn-link:disabled {
+        background-color: transparent;
+      }
+    }
+  }
+}
