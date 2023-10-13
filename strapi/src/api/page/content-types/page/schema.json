@@ -16,7 +16,7 @@
     }
   },
   "attributes": {
-    "Title": {
+    "title": {
       "type": "string",
       "pluginOptions": {
         "i18n": {
@@ -24,17 +24,28 @@
         }
       }
     },
-    "Slug": {
-      "type": "uid",
-      "targetField": "Title"
+    "slug": {
+      "type": "uid"
     },
-    "Content": {
+    "content": {
       "type": "richtext",
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       }
+    },
+    "section": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "about us",
+        "plastic"
+      ]
     }
   }
 }
