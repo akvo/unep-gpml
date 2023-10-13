@@ -181,15 +181,15 @@
   (try
     (let [conn (:spec db)
           query-params (get-in req [:parameters :query])
-          opts (api-params->opts query-params)
-          modified-filters (if (get-in opts [:filters :transnational])
-                             (let [opts {:filters {:country-groups (get-in opts [:filters :transnational])}}
-                                   country-group-countries (db.country-group/get-country-groups-countries conn opts)
+          api-search-opts (api-params->opts query-params)
+          modified-filters (if (get-in api-search-opts [:filters :transnational])
+                             (let [cgc-search-opts {:filters {:country-groups (get-in api-search-opts [:filters :transnational])}}
+                                   country-group-countries (db.country-group/get-country-groups-countries conn cgc-search-opts)
                                    geo-coverage-countries (map :id country-group-countries)]
-                               (assoc-in opts [:filters :country] (set (concat
-                                                                        (get-in opts [:filters :country])
-                                                                        geo-coverage-countries))))
-                             opts)
+                               (assoc-in api-search-opts [:filters :country] (set (concat
+                                                                                   (get-in api-search-opts [:filters :country])
+                                                                                   geo-coverage-countries))))
+                             api-search-opts)
           results (->> (db.community/get-community-members conn modified-filters)
                        (map (partial community-member->api-community-member config)))]
       (r/ok {:results results

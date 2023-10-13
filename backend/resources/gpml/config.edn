@@ -687,7 +687,13 @@
                                                                  #ig/ref :gpml.auth/auth-required]
                                                     :swagger {:tags ["plastic-strategy"] :security [{:id_token []}]}
                                                     :handler #ig/ref :gpml.handler.plastic-strategy.team/update-member
-                                                    :parameters #ig/ref :gpml.handler.plastic-strategy.team/update-member-params}}]
+                                                    :parameters #ig/ref :gpml.handler.plastic-strategy.team/update-member-params}
+                                              :delete {:summary "Delete a team member"
+                                                       :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                    #ig/ref :gpml.auth/auth-required]
+                                                       :swagger {:tags ["plastic-strategy"] :security [{:id_token []}]}
+                                                       :handler #ig/ref :gpml.handler.plastic-strategy.team/delete-member
+                                                       :parameters #ig/ref :gpml.handler.plastic-strategy.team/delete-member-params}}]
                                             ["/invite"
                                              [""
                                               {:post {:summary "Invite a new user to the plastic strategy team"
@@ -992,6 +998,8 @@
   :gpml.handler.plastic-strategy.team/invite-user-to-ps-team-params {}
   :gpml.handler.plastic-strategy.bookmark/post #ig/ref :gpml.config/common
   :gpml.handler.plastic-strategy.bookmark/post-params {}
+  :gpml.handler.plastic-strategy.team/delete-member #ig/ref :gpml.config/common
+  :gpml.handler.plastic-strategy.team/delete-member-params {}
 
   :gpml.handler.programmatic.plastic-strategy/post #ig/ref :gpml.config/common
   :gpml.handler.programmatic.plastic-strategy/post-params {}

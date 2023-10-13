@@ -1,4 +1,4 @@
-@import "../../vars.scss";
+@import '../../vars.scss';
 
 .stakeholderDetail {
   padding-bottom: 40px;
@@ -21,7 +21,7 @@
         display: flex;
         align-items: center;
         .topbar-image-holder {
-          background-image: url("/stakeholder/individual-icn.svg");
+          background-image: url('/stakeholder/individual-icn.svg');
           background-repeat: no-repeat;
           padding-left: 40px;
           background-position: top left;
@@ -82,6 +82,7 @@
       .owned-resources-wrapper {
         margin-bottom: 20px;
         margin-top: 20px;
+        overflow: hidden;
       }
 
       .flex-col {
@@ -398,7 +399,7 @@
                   background: #fff;
                   border-radius: 10px;
                   box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
-                  content: "";
+                  content: '';
                   position: absolute;
                   height: 12px;
                   width: 12px;
