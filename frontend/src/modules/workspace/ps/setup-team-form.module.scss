@@ -21,6 +21,9 @@
           strong {
             color: #3e345c80;
           }
+          &:hover {
+            background-color: $primaryGrey;
+          }
         }
         .ant-list-footer {
           display: flex;
@@ -56,5 +59,25 @@
   }
   :global(.ant-btn.ant-btn-link) {
     flex-direction: row-reverse;
+    text-transform: capitalize;
+  }
+}
+
+.searchMember {
+  :global {
+    .ant-input-group {
+      .ant-input {
+        height: 44px;
+      }
+      .ant-input-affix-wrapper {
+        padding-left: 16px;
+      }
+      .ant-input-group-addon {
+        .ant-btn.ant-btn-default {
+          background-color: transparent;
+          border: none;
+        }
+      }
+    }
   }
 }

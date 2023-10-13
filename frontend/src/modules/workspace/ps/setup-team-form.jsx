@@ -18,6 +18,7 @@ import api from '../../../utils/api'
 import { ROLES, TEAMS } from './config'
 
 const { Text } = Typography
+const { Search } = Input
 
 const SetupTeamForm = ({ psItem, members, setMembers }) => {
   const [search, setSearch] = useState({
@@ -30,7 +31,6 @@ const SetupTeamForm = ({ psItem, members, setMembers }) => {
   const [selectedRole, setSelectedRole] = useState(null)
   const [selectedTeams, setSelectedTeams] = useState([])
   const [form] = Form.useForm()
-  const teamOptions = TEAMS.map((t) => t.value)
 
   const roleDescription = useMemo(() => {
     const findRole = ROLES.find((r) => r.key === selectedRole?.key)
@@ -40,34 +40,39 @@ const SetupTeamForm = ({ psItem, members, setMembers }) => {
     return null
   }, [selectedRole])
 
-  const handleOnSearching = async (e) => {
+  const handleOnSearching = async () => {
     setSearch({
-      value: e.target.value,
+      ...search,
       loading: true,
     })
     try {
       const {
         data: { results },
       } = await api.get('/community', {
-        q: e.target.value,
+        q: search.value,
         networkType: 'stakeholder',
         limit: 10,
       })
       setUsers(results)
       setSearch({
-        value: e.target.value,
+        ...search,
         loading: false,
       })
     } catch (error) {
       console.error('unable to search the users', error)
       setSearch({
-        value: e.target.value,
+        ...search,
         loading: false,
       })
     }
   }
 
   const handleOnAddMember = async (newMember) => {
+    const isExist = members.find((m) => m.id === newMember?.id)
+    if (isExist) {
+      message.warning('User already added as a member')
+      return
+    }
     try {
       const payload = {
         user_id: newMember?.id,
@@ -168,10 +173,13 @@ const SetupTeamForm = ({ psItem, members, setMembers }) => {
               />
             }
           >
-            <Input
+            <Search
               placeholder="Start typing..."
               value={search.value}
-              onChange={handleOnSearching}
+              className={styles.searchMember}
+              onPressEnter={handleOnSearching}
+              onChange={(e) => setSearch({ ...search, value: e.target.value })}
+              allowClear
             />
           </Popover>
         </Form.Item>
@@ -197,9 +205,23 @@ const SetupTeamForm = ({ psItem, members, setMembers }) => {
           onFinish={handleOnSubmit}
           form={form}
           autoComplete="off"
+          requiredMark="required"
         >
-          <Form.Item label="Email" name="email">
-            <Input type="email" placeholder="Text" required />
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[
+              {
+                required: true,
+                message: 'Email is required',
+              },
+              {
+                type: 'email',
+                message: 'Invalid Email address',
+              },
+            ]}
+          >
+            <Input type="email" placeholder="Text" />
           </Form.Item>
           <Form.Item label="Name" name="name">
             <Input placeholder="Text" />
