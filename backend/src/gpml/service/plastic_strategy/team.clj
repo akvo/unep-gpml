@@ -1,5 +1,6 @@
 (ns gpml.service.plastic-strategy.team
-  (:require [gpml.db.plastic-strategy.team :as db.ps.team]
+  (:require [duct.logger :refer [log]]
+            [gpml.db.plastic-strategy.team :as db.ps.team]
             [gpml.service.invitation :as srv.invitation]
             [gpml.service.permissions :as srv.permissions]
             [gpml.service.plastic-strategy :as srv.ps]
@@ -187,4 +188,72 @@
                        :error-details {:result result}))))}]
         context {:success? true
                  :ps-team-invitation ps-team-invitation}]
+    (tht/thread-transactions logger transactions context)))
+
+(defn delete-ps-team-member
+  [{:keys [db logger]} plastic-strategy-id user-id]
+  (let [transactions
+        [{:txn-fn
+          (fn tx-get-ps-team-member
+            [{:keys [plastic-strategy-id user-id] :as context}]
+            (let [result (db.ps.team/get-ps-team-member (:spec db)
+                                                        {:filters {:plastic-strategies-ids [plastic-strategy-id]
+                                                                   :users-ids [user-id]}})]
+              (if (:success? result)
+                (assoc context :ps-team-member (:ps-team-member result))
+                (if (= (:reason result) :not-found)
+                  (assoc context
+                         :success? false
+                         :reason :ps-team-member-not-found
+                         :error-details {:result result})
+                  (assoc context
+                         :success? false
+                         :reason :failed-to-get-ps-team-member
+                         :error-details {:result result})))))}
+         {:txn-fn
+          (fn tx-unassign-ps-team-member-rbac-role
+            [{:keys [ps-team-member] :as context}]
+            (let [role-name (keyword (format "plastic-strategy-%s" (name (:role ps-team-member))))
+                  role-unassignments [{:role-name role-name
+                                       :context-type :plastic-strategy
+                                       :resource-id (:plastic-strategy-id ps-team-member)
+                                       :user-id (:id ps-team-member)}]
+                  {:keys [success?] :as result}
+                  (first (srv.permissions/unassign-roles-from-users {:conn (:spec db)
+                                                                     :logger logger}
+                                                                    role-unassignments))]
+              (if success?
+                context
+                (assoc context
+                       :success? false
+                       :reason :failed-to-unassign-ps-team-member-rbac-role
+                       :error-details {:result result}))))
+          :rollback-fn
+          (fn rollback-unassign-ps-team-member-rbac-role
+            [{:keys [ps-team-member] :as context}]
+            (let [role-name (keyword (format "plastic-strategy-%s" (name (:role ps-team-member))))
+                  role-assignments [{:role-name role-name
+                                     :context-type :plastic-strategy
+                                     :resource-id (:plastic-strategy-id ps-team-member)
+                                     :user-id (:id ps-team-member)}]
+                  result
+                  (first (srv.permissions/assign-roles-to-users {:conn (:spec db)
+                                                                 :logger logger}
+                                                                role-assignments))]
+              (when-not (:success? result)
+                (log logger :error ::failed-to-rollback-unassign-ps-team-member-rbac-role {:result result})))
+            context)}
+         {:txn-fn
+          (fn tx-delete-ps-team-member
+            [{:keys [plastic-strategy-id user-id] :as context}]
+            (let [result (db.ps.team/delete-ps-team-member (:spec db) plastic-strategy-id user-id)]
+              (if (:success? result)
+                {:success? true}
+                (assoc context
+                       :success? false
+                       :reason :failed-to-delete-ps-team-member
+                       :error-details {:result result}))))}]
+        context {:success? true
+                 :plastic-strategy-id plastic-strategy-id
+                 :user-id user-id}]
     (tht/thread-transactions logger transactions context)))
