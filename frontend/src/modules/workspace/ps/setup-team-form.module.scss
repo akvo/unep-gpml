@@ -22,4 +22,20 @@
     flex-direction: row-reverse;
     text-transform: capitalize;
   }
+  :global(.ant-checkbox-group) {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    :global {
+      .ant-checkbox-wrapper {
+        font-size: $fzXS;
+        line-height: $lhXS;
+        font-weight: 500;
+        color: $primaryDarkBlue;
+        + .ant-checkbox-wrapper {
+          margin-left: 0;
+        }
+      }
+    }
+  }
 }

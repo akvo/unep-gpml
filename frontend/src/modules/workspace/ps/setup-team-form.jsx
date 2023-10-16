@@ -6,9 +6,11 @@ import {
   Input,
   Menu,
   Modal,
+  Tooltip,
   Typography,
   message,
 } from 'antd'
+import { InfoCircleOutlined } from '@ant-design/icons'
 import Button from '../../../components/button'
 import styles from './setup-team-form.module.scss'
 import { DropDownIcon } from '../../../components/icons'
@@ -63,13 +65,7 @@ const SetupTeamForm = ({ psItem, members, setMembers }) => {
     }
   }
 
-  const handleOnCheckedTeams = (target) => {
-    let items = selectedTeams
-    if (target.checked && !items.includes(target.value)) {
-      items = [...items, target.value]
-    } else {
-      items = items.filter((i) => i !== target.value)
-    }
+  const handleOnCheckedTeams = (items) => {
     setSelectedTeams(items)
     form.setFieldsValue({ teams: items })
   }
@@ -207,31 +203,21 @@ const SetupTeamForm = ({ psItem, members, setMembers }) => {
             </div>
           </Form.Item>
           <Form.Item label="Assign to" name="teams">
-            <Dropdown
-              overlay={
-                <Menu>
-                  {TEAMS.map((team) => (
-                    <Menu.Item key={team.value}>
-                      <Checkbox
-                        value={team.value}
-                        onChange={({ target }) => handleOnCheckedTeams(target)}
-                        checked={selectedTeams.includes(team.value)}
-                      >
-                        {team.label}
-                      </Checkbox>
-                    </Menu.Item>
-                  ))}
-                </Menu>
-              }
-              trigger={['click']}
-              placement="bottomRight"
-            >
-              <Button type="link" icon={<DropDownIcon />}>
-                {selectedTeams.length
-                  ? selectedTeams.map((s) => s?.replace(/-/g, ' ')).join(', ')
-                  : '-Please select-'}
-              </Button>
-            </Dropdown>
+            <Checkbox.Group onChange={handleOnCheckedTeams}>
+              {TEAMS.map((team) => (
+                <Checkbox key={team.value} value={team.value}>
+                  {team.label}
+                  <Tooltip
+                    placement="top"
+                    title={team.description}
+                    trigger={['click']}
+                  >
+                    {' '}
+                    <InfoCircleOutlined />
+                  </Tooltip>
+                </Checkbox>
+              ))}
+            </Checkbox.Group>
           </Form.Item>
         </Form>
       </Modal>
