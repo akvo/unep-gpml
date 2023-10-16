@@ -1,0 +1,15 @@
+@import '../../../styles/vars.scss';
+
+.teamsCheckbox {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 15px 13px;
+  border-radius: 3px;
+  border: 1px solid $primaryDarkBlue2;
+  background-color: $primaryWhite;
+}
+.roleDivider {
+  margin: 8px 0;
+}
