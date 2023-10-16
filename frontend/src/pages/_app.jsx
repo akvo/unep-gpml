@@ -14,6 +14,8 @@ import { useRouter } from 'next/router'
 import { updateStatusProfile } from '../utils/profile'
 import { uniqBy, sortBy } from 'lodash'
 import { withNewLayout } from '../layouts/new-layout'
+import { I18nProvider } from '@lingui/react'
+import { useLinguiInit } from '../translations/utils'
 
 const newRoutes = [
   '/landing',
@@ -27,6 +29,7 @@ const newRoutes = [
 ]
 
 function MyApp({ Component, pageProps }) {
+  const initializedI18n = useLinguiInit(pageProps.i18n)
   const router = useRouter()
   if (!newRoutes.some((route) => router.pathname.startsWith(route))) {
     import('../main.scss')
@@ -274,9 +277,17 @@ function MyApp({ Component, pageProps }) {
 
   const RenderedLayout = useMemo(() => {
     if (!newRoutes.some((route) => router.pathname.startsWith(route))) {
-      return <Layout {...pageProps} {...componentProps} />
+      return (
+        <I18nProvider i18n={initializedI18n}>
+          <Layout {...pageProps} {...componentProps} />
+        </I18nProvider>
+      )
     } else {
-      return <Layout {...pageProps} {...componentProps} />
+      return (
+        <I18nProvider i18n={initializedI18n}>
+          <Layout {...pageProps} {...componentProps} />
+        </I18nProvider>
+      )
     }
   }, [router.pathname, Layout, Component, pageProps, componentProps])
 

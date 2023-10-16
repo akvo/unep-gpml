@@ -14,6 +14,7 @@ import DataSetIcon from '../../images/datasets.svg'
 import user1img from '../../images/our-community/cassia-patel.jpg'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { Trans } from '@lingui/macro'
 
 const Landing = ({ setLoginVisible, history, ...props }) => {
   const router = useRouter()
@@ -26,12 +27,16 @@ const Landing = ({ setLoginVisible, history, ...props }) => {
         </div>
         <div className={styles.content}>
           <h1>
-            The Global Partnership on Plastic Pollution and Marine Litter
-            Digital Platform
+            <Trans>
+              The Global Partnership on Plastic Pollution and Marine Litter
+              Digital Platform
+            </Trans>
           </h1>
           <h4>
-            Informs and connects all actors working to address this urgent issue
-            across the life cycle and from source to sea.
+            <Trans>
+              Informs and connects all actors working to address this urgent
+              issue across the life cycle and from source to sea.
+            </Trans>
           </h4>
           {!props.isAuthenticated && (
             <Button
