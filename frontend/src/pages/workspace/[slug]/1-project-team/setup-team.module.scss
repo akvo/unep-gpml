@@ -1,0 +1,63 @@
+@import '../../../../styles/vars.scss';
+
+.titleSection {
+  :global {
+    h4 {
+      margin-block-start: 0;
+      margin-bottom: 13px;
+    }
+    h2 {
+      margin-block-start: 0;
+    }
+  }
+}
+.title {
+  font-family: var(--font-archia), sans-serif;
+  font-weight: 700;
+  line-height: 30px;
+  color: $primaryDarkBlue;
+}
+.descSection {
+  width: 85%;
+  margin: 59px 0 65px;
+  :global {
+    p {
+      color: $primaryDarkBlue;
+      font-size: $fzXS;
+      line-height: $lhXS;
+    }
+  }
+}
+.tableSection {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 49px;
+  :global {
+    .ant-table-tbody .ant-table-row td {
+      .ant-btn.ant-btn-link {
+        flex-direction: row-reverse;
+        text-transform: capitalize;
+        svg {
+          padding-left: 8px;
+        }
+        &:hover {
+          svg {
+            path {
+              transform: none !important;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+.addMemberSection {
+  width: 100%;
+  max-width: 408px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-bottom: 100px;
+}
