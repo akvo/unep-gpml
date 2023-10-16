@@ -2,18 +2,24 @@
 
 .plasticStrategyView {
   display: flex;
+  background: rgba(245, 247, 255, 0.48);
 }
 .sidebar {
   width: 330px;
   min-height: calc(100vh - 90px);
   min-width: 330px;
-  background-color: #ebf5ff;
+  background-color: #fff;
+  box-shadow: 0px 4px 20px 0px rgba(173, 186, 240, 0.31);
   position: sticky;
   top: 0;
   z-index: 100;
   :global {
     .head {
       padding: 18px 10px;
+      color: $primaryDarkBlueText;
+      .caps-heading-s {
+        color: $primaryDarkBlueText;
+      }
     }
     .progress-bar {
       margin: 10px 0;
@@ -22,15 +28,17 @@
       text-transform: uppercase;
       font-size: 12px;
       font-weight: 700;
-      color: $primaryPurple7;
+      color: $primaryDarkBlueText;
+      font-family: $ff1;
     }
     .steps {
       .step {
         .stephead {
           display: flex;
           padding: 15px 10px;
-          border-top: 1px solid $primaryDarkBlue2;
+          border-top: 1px solid rgba(204, 208, 219, 0.3);
           align-items: center;
+          transition: background 0.4s ease-out;
         }
         .substeps {
           transition: height 0.3s ease-out;
@@ -41,9 +49,25 @@
             height: 0 !important;
           }
         }
+        transition: background 0.4s ease-out;
+        .topsection {
+          transition: background 0.4s ease-out;
+        }
         &.opened {
+          background-color: #fafbff;
+          .topsection {
+            background-color: #f5f7ff;
+          }
           & > a > .stephead {
-            border-bottom: 2px solid $primaryPurple4;
+            border-bottom: 1px solid #fff;
+          }
+          .stephead {
+            .pointer {
+              transform: rotate(180deg);
+            }
+          }
+          .topsection .label {
+            font-weight: bold;
           }
         }
         &.selected {
@@ -55,13 +79,14 @@
           color: $primaryDarkBlueText;
         }
         .check {
-          width: 23px;
-          height: 23px;
-          min-width: 23px;
+          width: 19px;
+          height: 19px;
+          min-width: 19px;
           border: 1px solid $primaryPurple;
           border-radius: 100%;
           margin-right: 15px;
           margin-left: 5px;
+          color: #fff;
           &.checked {
             background-color: $primaryPurple;
             display: flex;
@@ -79,23 +104,29 @@
         }
         .label {
           min-width: 190px;
-          font-size: 16px;
+          font-size: 14px;
           font-style: normal;
           font-weight: 500;
           line-height: 22px;
         }
+        .topsection .label {
+          font-family: $ff1;
+          font-weight: 600;
+        }
         .status {
           font-family: $ff1;
           margin-left: auto;
-          font-size: 16px;
+          font-size: 14px;
           color: rgba(0, 0, 0, 0.48);
-          font-weight: 700;
+          font-weight: 600;
           line-height: 24px;
           margin-right: 5px;
           margin-left: 20px;
         }
         .pointer {
           margin-left: 10px;
+          color: $primaryDarkBlue3;
+          transition: all 0.3s ease-out;
         }
       }
       .substep {
@@ -122,12 +153,10 @@
   width: 100%;
   background-color: #fff;
   display: flex;
-  justify-content: flex-end;
   z-index: 99;
   padding: 10px;
   padding-right: 30px;
-  border-top: 1px solid #000;
-  background: #f5f7ff;
+  padding-left: 370px;
   :global {
     .ant-btn {
       margin-left: 10px;

@@ -94,6 +94,14 @@ h6,
     line-height: $lhS;
   }
 }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: $primaryDarkBlueText;
+}
 .p-m {
   font-size: $fzS;
   line-height: $lhS;
@@ -645,10 +653,10 @@ ul {
   width: 100%;
   height: 5px;
   border-radius: 3px;
-  background-color: $primaryDarkBlue2;
+  background-color: rgba(204, 208, 219, 0.3);
   overflow: hidden;
   .fill {
-    background-color: $primaryPurple;
+    background-color: $primaryGreen;
     height: 100%;
   }
 }

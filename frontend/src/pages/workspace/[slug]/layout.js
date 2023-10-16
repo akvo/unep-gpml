@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { CheckOutlined } from '@ant-design/icons'
 import { message } from 'antd'
 import { Pointer, Check } from '../../../components/icons'
 import styles from './ps.module.scss'
@@ -192,13 +191,13 @@ const NestedLayout = ({ children }) => {
               })}
             >
               <ConditionalLink step={step}>
-                <div className="stephead">
+                <div className="stephead topsection">
                   <div
                     className={classNames('check', {
                       checked: getParentChecked(step),
                     })}
                   >
-                    {getParentChecked(step) && <CheckOutlined />}
+                    {getParentChecked(step) && <Check />}
                   </div>
                   <div className="label">{step.label}</div>
                   {step?.substeps && (
@@ -234,7 +233,7 @@ const NestedLayout = ({ children }) => {
                             checked: substep.checked,
                           })}
                         >
-                          {substep.checked && <CheckOutlined />}
+                          {substep.checked && <Check />}
                         </div>
                         <div className="label">{substep.label}</div>
                       </div>
