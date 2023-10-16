@@ -703,6 +703,12 @@ ul {
         background-color: $primaryGrey;
       }
       td {
+        color: $primaryDarkBlue;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 20px;
+        padding: 15px;
         &.ant-table-column-sort,
         &.ant-table-cell-row-hover {
           background-color: transparent;
