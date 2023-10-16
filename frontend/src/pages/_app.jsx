@@ -12,6 +12,8 @@ import { useRouter } from 'next/router'
 import { updateStatusProfile } from '../utils/profile'
 import { uniqBy, sortBy } from 'lodash'
 import { withNewLayout } from '../layouts/new-layout'
+import { I18nProvider } from '@lingui/react'
+import { useLinguiInit } from '../translations/utils'
 
 const newRoutes = [
   '/landing',
@@ -22,6 +24,7 @@ const newRoutes = [
 const dynamicRoutePattern = /^\/\w+\/\d+$/
 
 function MyApp({ Component, pageProps }) {
+  const initializedI18n = useLinguiInit(pageProps.i18n)
   const router = useRouter()
   const { profile } = UIStore.useState((s) => ({
     profile: s.profile,
@@ -264,9 +267,11 @@ function MyApp({ Component, pageProps }) {
   const getLayout =
     Component.getLayout ||
     ((page) => (
-      <DefaultLayout {...pageProps} {...componentProps}>
-        {page}
-      </DefaultLayout>
+      <I18nProvider i18n={initializedI18n}>
+        <DefaultLayout {...pageProps} {...componentProps}>
+          {page}
+        </DefaultLayout>
+      </I18nProvider>
     ))
 
   return (
