@@ -652,3 +652,72 @@ ul {
     height: 100%;
   }
 }
+/**
+* Filter confirm and reset button styles on Antd table
+*/
+.ant-table-filter-dropdown {
+  .ant-table-filter-dropdown-btns {
+    .ant-btn {
+      font-size: $fzXXS;
+      line-height: $lhXXS;
+      &.ant-btn-primary {
+        padding-right: 18px;
+        background-color: $primaryPurple;
+        border-color: transparent;
+        color: $primaryWhite;
+        &.ant-btn-sm {
+          padding: 4px 18px;
+        }
+      }
+      &.ant-btn.ant-btn-link:disabled {
+        background-color: transparent;
+      }
+    }
+  }
+}
+.ant-table {
+  width: 100%;
+  .ant-table-thead {
+    & > tr {
+      & > th {
+        background-color: $primaryPurple;
+        color: $primaryWhite;
+        .ant-table-column-sorter-up,
+        .ant-table-column-sorter-down {
+          font-size: 12px;
+          &.active {
+            color: $primaryDarkBlue;
+          }
+        }
+        &.ant-table-column-has-sorters {
+          &:hover {
+            background-color: rgba(116, 104, 255, 0.4);
+          }
+        }
+      }
+    }
+  }
+  .ant-table-tbody {
+    .ant-table-row {
+      &:nth-child(even) {
+        background-color: $primaryGrey;
+      }
+      td {
+        color: $primaryDarkBlue;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 20px;
+        padding: 15px;
+        &.ant-table-column-sort,
+        &.ant-table-cell-row-hover {
+          background-color: transparent;
+        }
+      }
+    }
+  }
+  .ant-table-column-sorter,
+  .ant-table-filter-trigger {
+    color: $primaryWhite;
+  }
+}
