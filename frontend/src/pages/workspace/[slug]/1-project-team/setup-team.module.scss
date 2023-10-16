@@ -17,11 +17,11 @@
   }
 }
 .tableSection {
-  width: 100%;
+  width: 90%;
   display: flex;
   flex-direction: column;
   gap: 20px;
-  margin-bottom: 29px;
+  margin-bottom: 49px;
   :global {
     .ant-table-tbody .ant-table-row td {
       .ant-btn.ant-btn-link {
@@ -29,6 +29,13 @@
         text-transform: capitalize;
         svg {
           padding-left: 8px;
+        }
+        &:hover {
+          svg {
+            path {
+              transform: none !important;
+            }
+          }
         }
       }
     }
