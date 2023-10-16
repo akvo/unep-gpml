@@ -1,0 +1,41 @@
+@import '../../../styles/vars.scss';
+
+.invitationModal {
+  padding: 0;
+  :global {
+    .ant-modal-header {
+      padding: 41px 39px 16px;
+    }
+    .ant-modal-body {
+      padding: 24px 39px;
+      .role-description {
+        padding: 8px 0;
+        color: $primaryDarkBlue3;
+        font-size: 14px;
+        line-height: 20px;
+      }
+      .ant-btn.ant-btn-link {
+        flex-direction: row-reverse;
+        text-transform: capitalize;
+      }
+      .ant-checkbox-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        .ant-checkbox-wrapper {
+          font-size: $fzXS;
+          line-height: $lhXS;
+          font-weight: 500;
+          color: $primaryDarkBlue;
+          + .ant-checkbox-wrapper {
+            margin-left: 0;
+          }
+        }
+      }
+    }
+    .ant-modal-footer {
+      padding: 19px 27px;
+      background-color: $primaryGrey;
+    }
+  }
+}
