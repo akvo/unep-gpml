@@ -1,5 +1,5 @@
 (ns gpml.handler.plastic-strategy.team
-  (:require [camel-snake-kebab.core :refer [->kebab-case]]
+  (:require [camel-snake-kebab.core :refer [->kebab-case ->snake_case]]
             [camel-snake-kebab.extras :as cske]
             [clojure.string :as str]
             [gpml.domain.types :as dom.types]
@@ -116,7 +116,7 @@
         result (srv.ps.team/get-ps-team-members config
                                                 country-iso-code-a2)]
     (if (:success? result)
-      (r/ok (:ps-team-members result))
+      (r/ok (cske/transform-keys ->snake_case (:ps-team-members result)))
       (if (= (:reason result) :not-found)
         (r/not-found {})
         (r/server-error (dissoc result :success?))))))
