@@ -69,7 +69,7 @@ const API = () => {
       }),
     patch: (url, data, config) =>
       axios({ url, method: "PATCH", data, ...getConfig(), ...config }),
-    delete: (url) => axios({ url, method: "DELETE", ...getConfig() }),
+    delete: (url, data = {}) => axios({ url, method: "DELETE", data, ...getConfig() }),
     setToken: (token) => {
       api.token = token;
     },
