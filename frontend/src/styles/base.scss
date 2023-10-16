@@ -695,6 +695,9 @@ ul {
       }
     }
   }
+  .ant-table-column-sorters:hover .ant-table-column-sorter {
+    color: $primaryWhite;
+  }
   .ant-table-tbody {
     .ant-table-row {
       &:nth-child(even) {
