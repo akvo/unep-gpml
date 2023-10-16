@@ -8,13 +8,13 @@ const View = ({ psItem }) => {
   const [members, setMembers] = useState([])
   return (
     <div className={styles.setupTeamView}>
-      <div className="titleSection">
+      <div className="title-section">
         <h4 className="caps-heading-m">
           National steering committee & Project Team
         </h4>
         <h2 className="h-xxl w-bold">Create Your Team</h2>
       </div>
-      <div className="descSection">
+      <div className="desc-section">
         <p>
           Establish a National Steering Committee (NSC) with representation from
           relevant government agencies as well as relevant non-governmental
@@ -24,12 +24,12 @@ const View = ({ psItem }) => {
           with the guidance of the NSC and UNEP
         </p>
       </div>
-      <div className="tableSection">
-        <h5 className="title">Team members</h5>
+      <div className="table-section">
+        <h5>Team members</h5>
         <SetupTeamTable {...{ psItem, members, setMembers }} />
       </div>
-      <div className="addMemberSection">
-        <h5 className="title">Add a New Member</h5>
+      <div className="add-member-section">
+        <h5>Add a New Member</h5>
         <SetupTeamForm {...{ psItem, members, setMembers }} />
       </div>
     </div>

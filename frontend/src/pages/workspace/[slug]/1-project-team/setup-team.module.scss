@@ -2,7 +2,7 @@
 
 .setupTeamView {
   :global {
-    .titleSection {
+    .title-section {
       h4 {
         margin-block-start: 0;
         margin-bottom: 13px;
@@ -11,13 +11,13 @@
         margin-block-start: 0;
       }
     }
-    .title {
+    h5 {
       font-family: var(--font-archia), sans-serif;
       font-weight: 700;
       line-height: 30px;
       color: $primaryDarkBlue;
     }
-    .descSection {
+    .desc-section {
       width: 85%;
       margin: 59px 0 65px;
       p {
@@ -26,7 +26,7 @@
         line-height: $lhXS;
       }
     }
-    .tableSection {
+    .table-section {
       width: 90%;
       display: flex;
       flex-direction: column;
@@ -49,7 +49,7 @@
         }
       }
     }
-    .addMemberSection {
+    .add-member-section {
       width: 100%;
       max-width: 408px;
       display: flex;
