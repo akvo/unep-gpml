@@ -36,7 +36,7 @@ const AutocompleteForm = ({
               ...extraButton,
               onClick: () => {
                 setOpen(false)
-                if (onClick) onClick()
+                if (extraButton?.onClick) extraButton.onClick()
               },
             },
           ]
