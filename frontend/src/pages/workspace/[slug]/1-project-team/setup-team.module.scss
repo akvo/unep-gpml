@@ -12,9 +12,9 @@
   }
 }
 .title {
-  font-family: 'Inter';
+  font-family: var(--font-archia), sans-serif;
   font-weight: 700;
-  line-height: 140%;
+  line-height: 30px;
   color: $primaryDarkBlue;
 }
 .descSection {
