@@ -7,6 +7,7 @@ import {
   Menu,
   Modal,
   Table,
+  Tooltip,
   Typography,
   message,
 } from 'antd'
@@ -16,6 +17,7 @@ import api from '../../../utils/api'
 import { UIStore } from '../../../store'
 import { ROLES, TEAMS } from './config'
 import styles from './setup-team-table.module.scss'
+import { InfoCircleOutlined } from '@ant-design/icons'
 
 const { Column } = Table
 const { Text } = Typography
@@ -228,7 +230,21 @@ const SetupTeamTable = ({ psItem, members, setMembers }) => {
                     overlay={
                       <Checkbox.Group
                         className={styles.teamsCheckbox}
-                        options={TEAMS}
+                        options={TEAMS.map((t) => ({
+                          ...t,
+                          label: (
+                            <span key={t.value}>
+                              {`${t.label} `}
+                              <Tooltip
+                                placement="top"
+                                title={t.description}
+                                trigger={['click']}
+                              >
+                                <InfoCircleOutlined />
+                              </Tooltip>
+                            </span>
+                          ),
+                        }))}
                         value={data}
                         onChange={(checkItems) =>
                           handleOnTeamsChange(checkItems, record?.id)

@@ -9,6 +9,14 @@
   border-radius: 3px;
   border: 1px solid $primaryDarkBlue2;
   background-color: $primaryWhite;
+  :global {
+    .ant-checkbox-wrapper {
+      font-size: $fzXS;
+      font-weight: 500;
+      line-height: $lhXS;
+      color: $primaryDarkBlue;
+    }
+  }
 }
 .roleDivider {
   margin: 8px 0;
