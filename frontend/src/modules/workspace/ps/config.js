@@ -121,9 +121,11 @@ export const TEAMS = [
   {
     label: 'Steering Committee',
     value: 'steering-committee',
+    description: 'Description text for what this is',
   },
   {
     label: 'Project Team',
     value: 'project-team',
+    description: 'Description text for what this is',
   },
 ]
