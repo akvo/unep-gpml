@@ -1,13 +1,11 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import {
   Checkbox,
   Dropdown,
   Form,
   Input,
-  List,
   Menu,
   Modal,
-  Popover,
   Typography,
   message,
 } from 'antd'
@@ -16,17 +14,11 @@ import styles from './setup-team-form.module.scss'
 import { DropDownIcon } from '../../../components/icons'
 import api from '../../../utils/api'
 import { ROLES, TEAMS } from './config'
+import AutocompleteForm from '../../../components/autocomplete-form/autocomplete-form'
 
 const { Text } = Typography
-const { Search } = Input
 
 const SetupTeamForm = ({ psItem, members, setMembers }) => {
-  const [search, setSearch] = useState({
-    value: '',
-    loading: false,
-  })
-  const [users, setUsers] = useState([])
-  const [openUsers, setOpenUsers] = useState(false)
   const [openInvitation, setOpenInvitation] = useState(false)
   const [sending, setSending] = useState(false)
   const [selectedRole, setSelectedRole] = useState(null)
@@ -41,35 +33,7 @@ const SetupTeamForm = ({ psItem, members, setMembers }) => {
     return null
   }, [selectedRole])
 
-  const handleOnSearching = async () => {
-    setSearch({
-      ...search,
-      loading: true,
-    })
-    try {
-      const {
-        data: { results },
-      } = await api.get('/community', {
-        q: search.value,
-        networkType: 'stakeholder',
-        limit: 10,
-      })
-      setUsers(results)
-      setSearch({
-        ...search,
-        loading: false,
-      })
-    } catch (error) {
-      console.error('unable to search the users', error)
-      setSearch({
-        ...search,
-        loading: false,
-      })
-    }
-  }
-
   const handleOnAddMember = async (newMember) => {
-    setUsers([])
     const isExist = members.find((m) => m.id === newMember?.id)
     if (isExist) {
       message.warning('User already added as a member')
@@ -94,7 +58,6 @@ const SetupTeamForm = ({ psItem, members, setMembers }) => {
         },
         ...members,
       ])
-      setOpenUsers(false)
     } catch (error) {
       console.error('Unable to add a member', error)
     }
@@ -113,7 +76,6 @@ const SetupTeamForm = ({ psItem, members, setMembers }) => {
 
   const handleOnOpenInvitation = () => {
     setOpenInvitation(true)
-    setOpenUsers(false)
   }
 
   const handleOnCloseInvitation = () => {
@@ -141,54 +103,34 @@ const SetupTeamForm = ({ psItem, members, setMembers }) => {
     }
   }
 
+  const renderItem = (item) => {
+    if (item?.onClick) {
+      return (
+        <Button type={item.type} onClick={item.onClick}>
+          {item.text}
+        </Button>
+      )
+    }
+    return (
+      <>
+        <Text>{item?.name}</Text>
+        <strong className="w-bold">{item?.affiliation?.name}</strong>
+      </>
+    )
+  }
+
   return (
     <>
-      <Form>
-        <Form.Item>
-          <Popover
-            placement="bottom"
-            showArrow={false}
-            visible={openUsers}
-            overlayClassName={styles.usersPopover}
-            onVisibleChange={setOpenUsers}
-            trigger={['click']}
-            content={
-              <List
-                footer={
-                  <div>
-                    <Button type="link" onClick={handleOnOpenInvitation}>
-                      + Invite a New Member
-                    </Button>
-                  </div>
-                }
-                loading={search.loading}
-                bordered={false}
-                dataSource={users}
-                renderItem={(item) => (
-                  <List.Item
-                    key={item?.id}
-                    onClick={() => handleOnAddMember(item)}
-                  >
-                    <Text>{item?.name}</Text>
-                    <strong className="w-bold">
-                      {item?.affiliation?.name}
-                    </strong>
-                  </List.Item>
-                )}
-              />
-            }
-          >
-            <Search
-              placeholder="Start typing..."
-              value={search.value}
-              className={styles.searchMember}
-              onPressEnter={handleOnSearching}
-              onChange={(e) => setSearch({ ...search, value: e.target.value })}
-              allowClear
-            />
-          </Popover>
-        </Form.Item>
-      </Form>
+      <AutocompleteForm
+        apiParams={{ networkType: 'stakeholder', limit: 10 }}
+        extraButton={{
+          text: '+ Invite a New Member',
+          type: 'link',
+          onClick: handleOnOpenInvitation,
+        }}
+        onSelect={handleOnAddMember}
+        renderItem={renderItem}
+      />
       <Modal
         title="Invite a new member"
         className={styles.invitationModal}
