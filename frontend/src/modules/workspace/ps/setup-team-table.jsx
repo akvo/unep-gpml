@@ -171,7 +171,11 @@ const SetupTeamTable = ({ psItem, members, setMembers }) => {
   }, [getTeamMembers])
 
   return (
-    <Table dataSource={members} loading={loading}>
+    <Table
+      dataSource={members}
+      loading={loading}
+      pagination={{ position: ['none', 'none'] }}
+    >
       {columns.map((col, cx) => {
         if (col.dataIndex === 'role') {
           return (
@@ -199,6 +203,7 @@ const SetupTeamTable = ({ psItem, members, setMembers }) => {
                         </Menu.Item>
                       </Menu>
                     }
+                    trigger={['click']}
                   >
                     <Button type="link" icon={<DropDownIcon />}>
                       {data}

@@ -63,6 +63,13 @@
   :global(.ant-btn.ant-btn-link) {
     flex-direction: row-reverse;
     text-transform: capitalize;
+    &:hover {
+      svg {
+        path {
+          transform: none !important;
+        }
+      }
+    }
   }
 }
 .addMemberSection {
@@ -70,6 +77,6 @@
   max-width: 408px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 24px;
   margin-bottom: 100px;
 }
