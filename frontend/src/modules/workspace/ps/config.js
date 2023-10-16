@@ -99,3 +99,33 @@ export const getParentChecked = (step) =>
   step?.substeps?.length
     ? step.substeps.filter((sb) => sb.checked).length === step.substeps.length
     : step?.checked
+
+export const ROLES = [
+  {
+    key: 'admin',
+    label: 'Admin',
+    description: 'Admins can edit all content and manage the team',
+  },
+  {
+    key: 'editor',
+    label: 'Editor',
+    description: 'Editors can edit all content, but cannot manage the team',
+  },
+  {
+    key: 'viewer',
+    label: 'Viewer',
+    description: 'Viewers cannot edit all content',
+  },
+]
+export const TEAMS = [
+  {
+    label: 'Steering Committee',
+    value: 'steering-committee',
+    description: 'Description text for what this is',
+  },
+  {
+    label: 'Project Team',
+    value: 'project-team',
+    description: 'Description text for what this is',
+  },
+]
