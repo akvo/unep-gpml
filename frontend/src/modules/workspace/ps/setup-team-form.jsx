@@ -210,10 +210,9 @@ const SetupTeamForm = ({ psItem, members, setMembers }) => {
                   <Tooltip
                     placement="top"
                     title={team.description}
-                    trigger={['click']}
+                    trigger={['hover']}
                   >
-                    {' '}
-                    <InfoCircleOutlined />
+                    <InfoCircleOutlined style={{ marginLeft: 10 }} />
                   </Tooltip>
                 </Checkbox>
               ))}

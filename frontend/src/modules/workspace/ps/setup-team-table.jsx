@@ -234,13 +234,13 @@ const SetupTeamTable = ({ psItem, members, setMembers }) => {
                           ...t,
                           label: (
                             <span key={t.value}>
-                              {`${t.label} `}
+                              {t.label}
                               <Tooltip
                                 placement="top"
                                 title={t.description}
-                                trigger={['click']}
+                                trigger={['hover']}
                               >
-                                <InfoCircleOutlined />
+                                <InfoCircleOutlined style={{ marginLeft: 10 }} />
                               </Tooltip>
                             </span>
                           ),
