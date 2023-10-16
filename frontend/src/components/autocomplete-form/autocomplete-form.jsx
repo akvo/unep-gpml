@@ -43,14 +43,14 @@ const AutocompleteForm = ({
         : results
       setOptions(_options)
       setLoading(false)
-      if (!open) {
+      if (!open && searchVal?.trim()?.length) {
         setOpen(true)
       }
     } catch (error) {
       console.error('Unable to fetch by keyword', error)
       setLoading(false)
     }
-  }, [searchVal])
+  }, [searchVal, open])
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -72,6 +72,9 @@ const AutocompleteForm = ({
         onVisibleChange={(isOpen) => {
           if (!isOpen && options.length) {
             setOptions([])
+          }
+          if (isOpen && !searchVal?.trim()?.length) {
+            return
           }
           setOpen(isOpen)
         }}
