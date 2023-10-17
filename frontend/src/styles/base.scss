@@ -708,16 +708,18 @@ ul {
   }
   .ant-table-tbody {
     .ant-table-row {
+      max-height: 50px;
       &:nth-child(even) {
         background-color: $primaryGrey;
       }
       td {
+        height: 50px;
         color: $primaryDarkBlue;
         font-size: 14px;
         font-style: normal;
         font-weight: 500;
         line-height: 20px;
-        padding: 15px;
+        padding: 0 15px;
         &.ant-table-column-sort,
         &.ant-table-cell-row-hover {
           background-color: transparent;
@@ -753,5 +755,33 @@ ul {
       rgba(2, 10, 91, 1),
       rgba(2, 10, 91, 1)
     );
+  }
+}
+/**
+* Pagination
+*/
+.ant-pagination-prev .ant-pagination-item-link,
+.ant-pagination-next .ant-pagination-item-link,
+.ant-pagination-item {
+  border: none;
+  border-radius: 8px;
+  background-color: $primaryGrey;
+}
+.ant-pagination-item {
+  a {
+    font-family: var(--font-dm-sans), sans-serif;
+    color: $primaryDarkBlue;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    &:hover {
+      color: $primaryDarkBlue;
+    }
+  }
+  &.ant-pagination-item-active {
+    background-color: $primaryPurple;
+    a {
+      color: $primaryWhite;
+    }
   }
 }
