@@ -2,6 +2,7 @@ import React from 'react'
 import GlobeIcon from '../../images/transnational.svg'
 import { Button, Dropdown, Menu } from 'antd'
 import styles from './style.module.scss'
+import { Trans } from '@lingui/macro'
 
 function LocationDropdown({
   countryList,
@@ -32,7 +33,7 @@ function LocationDropdown({
             (query?.transnational?.length ||
               0 + query?.country?.length ||
               0)}{' '}
-          Location
+          <Trans>Location</Trans>
         </span>
       </Button>
     </Dropdown>

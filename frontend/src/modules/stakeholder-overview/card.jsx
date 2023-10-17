@@ -1,36 +1,37 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Row, Card, Avatar } from "antd";
-import { eventTrack } from "../../utils/misc";
-import { UIStore } from "../../store";
-import { randomColor } from "../../utils/misc";
-import Link from "next/link";
+import React, { useState, useEffect, useRef } from 'react'
+import { Row, Card, Avatar } from 'antd'
+import { eventTrack } from '../../utils/misc'
+import { UIStore } from '../../store'
+import { randomColor } from '../../utils/misc'
+import Link from 'next/link'
+import { Trans } from '@lingui/macro'
 
 const ProfileCard = ({ profile, isValidUser, profileType }) => {
   const { countries, seeking } = UIStore.useState((s) => ({
     countries: s.countries,
     seeking: s?.tags?.seeking,
-  }));
+  }))
 
-  const country = countries.find((country) => country.id === profile.country);
+  const country = countries.find((country) => country.id === profile.country)
 
   const linkDestination = isValidUser
-    ? profile.type === "organisation"
+    ? profile.type === 'organisation'
       ? `/organisation/${profile?.id}`
       : `/stakeholder/${profile?.id}`
-    : "/connect/community";
+    : '/connect/community'
   return (
     <Link href={linkDestination} legacyBehavior>
       <a
         className="card-wrapper-link"
         onClick={() => {
-          profile.type !== "organisation"
-            ? eventTrack("Stakeholder view", "Open Url", "Button")
-            : eventTrack("Entity view", "Open Url", "Button");
+          profile.type !== 'organisation'
+            ? eventTrack('Stakeholder view', 'Open Url', 'Button')
+            : eventTrack('Entity view', 'Open Url', 'Button')
         }}
       >
         <Card className="profile-card">
           <div className="profile-icon-container">
-            {profile.type === "organisation" ? (
+            {profile.type === 'organisation' ? (
               <img
                 src="/stakeholder-overview/union-2-icon.svg"
                 alt="union-icon"
@@ -43,7 +44,7 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
             )}
           </div>
           <Row type="flex" className="profile-details">
-            {profile.type === "organisation" ? (
+            {profile.type === 'organisation' ? (
               <div className="image-wrapper organisation-image">
                 {profile.picture ? (
                   <Avatar
@@ -51,9 +52,9 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
                     size={150}
                     alt={profile.name}
                     style={{
-                      verticalAlign: "middle",
-                      fontSize: "62px",
-                      fontWeight: "bold",
+                      verticalAlign: 'middle',
+                      fontSize: '62px',
+                      fontWeight: 'bold',
                     }}
                   >
                     {profile.name.substring(0, 2)}
@@ -64,9 +65,9 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
                       backgroundColor: randomColor(
                         profile?.name?.substring(0, 1)
                       ),
-                      verticalAlign: "middle",
-                      fontSize: "62px",
-                      fontWeight: "bold",
+                      verticalAlign: 'middle',
+                      fontSize: '62px',
+                      fontWeight: 'bold',
                     }}
                     size={150}
                   >
@@ -95,9 +96,9 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
                             ? profile?.firstName?.substring(0, 1)
                             : profile?.name?.substring(0, 1)
                         ),
-                        verticalAlign: "middle",
-                        fontSize: "62px",
-                        fontWeight: "bold",
+                        verticalAlign: 'middle',
+                        fontSize: '62px',
+                        fontWeight: 'bold',
                       }}
                       size={150}
                     >
@@ -109,7 +110,7 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
                 </div>
                 {profile?.affiliation &&
                   profile?.affiliation?.length !== 0 &&
-                  profileType !== "suggested-profiles" && (
+                  profileType !== 'suggested-profiles' && (
                     <div className="affiliation-image-wrapper">
                       {profile?.affiliation?.logo ? (
                         <Avatar src={profile?.affiliation?.logo} size={40} />
@@ -119,7 +120,7 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
                             backgroundColor: randomColor(
                               profile?.affiliation?.name
                             ),
-                            verticalAlign: "middle",
+                            verticalAlign: 'middle',
                           }}
                           size={40}
                         >
@@ -144,12 +145,12 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
                   </h4>
                 </li>
                 <li className="list-item">
-                  <span className={country?.name && "location"}>
+                  <span className={country?.name && 'location'}>
                     {country?.name}
                   </span>
                 </li>
                 <li className="list-item">
-                  {profile?.type === "stakeholder" && profile?.jobTitle && (
+                  {profile?.type === 'stakeholder' && profile?.jobTitle && (
                     <span className="entity-name job-title">
                       {profile?.jobTitle}
                     </span>
@@ -165,7 +166,7 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
                       data-href={profile.linkedIn}
                       className="social-media-link linkedin"
                     >
-                      Linkedin
+                      <Trans>Linkedin</Trans>
                     </div>
                   </li>
                 )}
@@ -176,7 +177,7 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
                       data-href={profile.twitter}
                       className="social-media-link twitter"
                     >
-                      Twitter
+                      <Trans>Twitter</Trans>
                     </div>
                   </li>
                 )}
@@ -186,7 +187,9 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
           </Row>
 
           <div className="person-role">
-            <p className="seeking-text">Seeking:</p>
+            <p className="seeking-text">
+              <Trans>Seeking:</Trans>
+            </p>
             <ul className="role-name">
               {profile?.seeking &&
                 profile?.seeking.length !== 0 &&
@@ -198,7 +201,7 @@ const ProfileCard = ({ profile, isValidUser, profileType }) => {
         </Card>
       </a>
     </Link>
-  );
-};
+  )
+}
 
-export default ProfileCard;
+export default ProfileCard

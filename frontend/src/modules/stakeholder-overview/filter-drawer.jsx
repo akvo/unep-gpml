@@ -16,6 +16,7 @@ import PartnerIcon from '../../images/stakeholder-overview/partner-icon.svg'
 import GPMLLogo from '../../images/stakeholder-overview/gpml-logo.svg'
 import CommunityIcon from '../../images/stakeholder-overview/community-outlined.svg'
 import UnionIcon from '../../images/stakeholder-overview/union-outlined.svg'
+import { Trans } from '@lingui/macro'
 
 const FilterDrawer = ({
   query,
@@ -127,7 +128,7 @@ const FilterDrawer = ({
       <Drawer
         tabIndex=""
         tabindex=""
-        title="Choose your filters below"
+        title={<Trans>Choose your filters below</Trans>}
         placement="left"
         visible={filterVisible}
         getContainer={false}
@@ -135,7 +136,9 @@ const FilterDrawer = ({
         closeIcon={
           <>
             {filterTagValue.length > 0 ? (
-              <span className="apply-button">Apply</span>
+              <span className="apply-button">
+                <Trans>Apply</Trans>
+              </span>
             ) : (
               <CloseCircleOutlined className="drawer-close-icon" />
             )}
@@ -149,9 +152,13 @@ const FilterDrawer = ({
         <Row type="flex" gutter={[0, 24]}>
           <Col span={24} className="network-card-filter">
             <Space align="middle">
-              <div className="filter-title">Network type</div>
+              <div className="filter-title">
+                <Trans>Network type</Trans>
+              </div>
               {isEmpty(query?.networkType) ? (
-                <Tag className="selection-card-type">All (default)</Tag>
+                <Tag className="selection-card-type">
+                  <Trans>All (default)</Trans>
+                </Tag>
               ) : (
                 <Tag
                   className="clear-selection"
@@ -159,7 +166,7 @@ const FilterDrawer = ({
                   onClose={() => updateQuery('networkType', [])}
                   onClick={() => updateQuery('networkType', [])}
                 >
-                  Clear selection
+                  <Trans>Clear selection</Trans>
                 </Tag>
               )}
             </Space>
@@ -208,13 +215,15 @@ const FilterDrawer = ({
                   onClose={() => updateQuery('isMember', '')}
                   onClick={() => updateQuery('isMember', '')}
                 >
-                  Clear selection
+                  <Trans>Clear selection</Trans>
                 </Tag>
               )}
             </Space>
 
             <Row type="flex" gutter={[10, 10]}>
-              <p className="specificity-title">For entities</p>
+              <p className="specificity-title">
+                <Trans>For entities</Trans>
+              </p>
               {[entities[0]].map((entity) => {
                 const name = humps.decamelize(entity)
 
@@ -248,7 +257,7 @@ const FilterDrawer = ({
 
           {/* Affiliation */}
           <MultipleSelectFilter
-            title="Affiliation"
+            title={<Trans>Affiliation</Trans>}
             options={
               !isEmpty(organisations)
                 ? organisations
@@ -268,7 +277,9 @@ const FilterDrawer = ({
           {/* Location */}
           <Col span={24} style={{ paddingTop: 5, paddingBottom: 5 }}>
             <Space align="middle">
-              <div className="filter-title">Location</div>
+              <div className="filter-title">
+                <Trans>Location</Trans>
+              </div>
               {!isEmpty(query?.country) ? (
                 <Tag
                   className="clear-selection"
@@ -278,7 +289,7 @@ const FilterDrawer = ({
                   }}
                   onClose={() => updateQuery('country', [])}
                 >
-                  Clear Country Selection
+                  <Trans>Clear Country Selection</Trans>
                 </Tag>
               ) : (
                 ''
@@ -293,7 +304,7 @@ const FilterDrawer = ({
                   }}
                   onClose={() => updateQuery('transnational', [])}
                 >
-                  Clear Multi-Country Selection
+                  <Trans>Clear Multi-Country Selection</Trans>
                 </Tag>
               ) : (
                 ''
@@ -321,7 +332,7 @@ const FilterDrawer = ({
           </Col>
           {/*Geo-coverage*/}
           <MultipleSelectFilter
-            title="Geo-coverage"
+            title={<Trans>Geo-coverage</Trans>}
             options={
               !isEmpty(geoCoverageTypeOptions)
                 ? [...geoCoverageTypeOptions, 'Sub-national']
@@ -341,7 +352,7 @@ const FilterDrawer = ({
 
           {/*Expertise to offer*/}
           <MultipleSelectFilter
-            title="What expertises are they offering?"
+            title={<Trans>What expertises are they offering?</Trans>}
             options={
               !isEmpty(tags)
                 ? tags?.map((x) => ({ value: x.tag, label: x.tag }))
@@ -355,7 +366,7 @@ const FilterDrawer = ({
 
           {/* Expertise they seek */}
           <MultipleSelectFilter
-            title="What expertises are they seeking?"
+            title={<Trans>What expertises are they seeking?</Trans>}
             options={
               !isEmpty(tags)
                 ? tags?.map((x) => ({ value: x.tag, label: x.tag }))
@@ -368,7 +379,7 @@ const FilterDrawer = ({
           />
           {/* Representative group */}
           <MultipleSelectFilter
-            title="Representative group"
+            title={<Trans>Representative group</Trans>}
             options={
               !isEmpty(representativeGroup)
                 ? representativeOpts.map((x) => ({
@@ -403,7 +414,7 @@ const FilterDrawer = ({
               }}
             >
               <CloseCircleOutlined />
-              Clear all filters
+              <Trans>Clear all filters</Trans>
             </Button>
           </Col>
         </Row>

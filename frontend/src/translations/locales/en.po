@@ -13,10 +13,494 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#: src/modules/knowledge-lib/filter-bar.jsx:26
+msgid "Action Plans"
+msgstr "Action Plans"
+
+#: src/pages/landing/index.jsx:218
+msgid "ACTION PLANS"
+msgstr "ACTION PLANS"
+
+#: src/modules/knowledge-lib/filter-bar.jsx:216
+msgid "Advanced Search"
+msgstr "Advanced Search"
+
+#: src/modules/stakeholder-overview/filter-drawer.jsx:260
+msgid "Affiliation"
+msgstr "Affiliation"
+
+#: src/modules/stakeholder-overview/filter-drawer.jsx:160
+msgid "All (default)"
+msgstr "All (default)"
+
+#: src/modules/knowledge-lib/filter-bar.jsx:157
+msgid "All Resources"
+msgstr "All Resources"
+
+#: src/pages/landing/index.jsx:233
+msgid "Already on the platform"
+msgstr "Already on the platform"
+
+#: src/modules/stakeholder-overview/filter-drawer.jsx:140
+msgid "Apply"
+msgstr "Apply"
+
+#: src/modules/knowledge-lib/filter-modal.jsx:166
+msgid "Apply Filters"
+msgstr "Apply Filters"
+
+#: src/modules/experts/filter-bar.jsx:143
+msgid "Back to categories"
+msgstr "Back to categories"
+
+#: src/modules/knowledge-lib/filter-modal.jsx:173
+msgid "Cancel"
+msgstr "Cancel"
+
+#: src/modules/knowledge-lib/filter-bar.jsx:22
+msgid "Capacity Development"
+msgstr "Capacity Development"
+
+#: src/modules/knowledge-lib/resource-view.jsx:475
+msgid "category"
+msgstr "category"
+
+#: src/modules/case-studies/CaseStudy.jsx:60
+msgid "Challenge & Solution"
+msgstr "Challenge & Solution"
+
+#: src/modules/experts/filter-bar.jsx:122
+msgid "Choose an expert category"
+msgstr "Choose an expert category"
+
+#: src/modules/stakeholder-overview/filter-drawer.jsx:131
+msgid "Choose your filters below"
+msgstr "Choose your filters below"
+
+#: src/pages/landing/index.jsx:77
+msgid "Civil Society"
+msgstr "Civil Society"
+
+#: src/modules/stakeholder-overview/filter-drawer.jsx:417
+msgid "Clear all filters"
+msgstr "Clear all filters"
+
+#: src/modules/stakeholder-overview/filter-drawer.jsx:292
+msgid "Clear Country Selection"
+msgstr "Clear Country Selection"
+
+#: src/modules/stakeholder-overview/filter-drawer.jsx:307
+msgid "Clear Multi-Country Selection"
+msgstr "Clear Multi-Country Selection"
+
+#: src/modules/stakeholder-overview/filter-drawer.jsx:169
+#: src/modules/stakeholder-overview/filter-drawer.jsx:218
+msgid "Clear selection"
+msgstr "Clear selection"
+
+#: src/pages/landing/index.jsx:222
+msgid "COMMUNITIES OF PRACTICE"
+msgstr "COMMUNITIES OF PRACTICE"
+
+#: src/modules/case-studies/CaseStudy.jsx:100
+msgid "Connections"
+msgstr "Connections"
+
+#: src/pages/landing/index.jsx:214
+msgid "DATA LAYERS"
+msgstr "DATA LAYERS"
+
+#: src/pages/landing/index.jsx:132
+msgid "Empowering"
+msgstr "Empowering"
+
+#: src/modules/knowledge-lib/filter-modal.jsx:298
+msgid "End Date"
+msgstr "End Date"
+
+#: src/modules/knowledge-lib/filter-modal.jsx:239
+msgid "Entities"
+msgstr "Entities"
+
+#: src/modules/map/vertical-legend.jsx:699
+msgid "Entities from UN Regional Groups of member States"
+msgstr "Entities from UN Regional Groups of member States"
+
+#: src/modules/map/map-chart.jsx:561
+#: src/modules/map/map-chart.jsx:607
+#: src/modules/map/vertical-legend.jsx:378
+#: src/modules/map/vertical-legend.jsx:408
+#: src/modules/map/vertical-legend.jsx:458
+#: src/modules/map/vertical-legend.jsx:493
+msgid "Entity"
+msgstr "Entity"
+
+#: src/modules/knowledge-lib/filter-bar.jsx:18
+msgid "Events"
+msgstr "Events"
+
+#: src/modules/map/map-chart.jsx:803
+msgid "Experts"
+msgstr "Experts"
+
+#: src/modules/knowledge-lib/filter-modal.jsx:156
+msgid "Filters"
+msgstr "Filters"
+
+#: src/modules/knowledge-lib/filter-bar.jsx:30
+msgid "Financing Resources"
+msgstr "Financing Resources"
+
+#: src/modules/stakeholder-overview/filter-drawer.jsx:225
+msgid "For entities"
+msgstr "For entities"
+
+#: src/modules/help-center/view.jsx:110
+msgid "Frequently Asked Questions"
+msgstr "Frequently Asked Questions"
+
+#: src/modules/stakeholder-overview/filter-drawer.jsx:335
+msgid "Geo-coverage"
+msgstr "Geo-coverage"
+
+#: src/modules/help-center/view.jsx:25
+msgid "Get Started"
+msgstr "Get Started"
+
+#: src/pages/landing/index.jsx:177
+msgid "Globally"
+msgstr "Globally"
+
+#: src/pages/landing/index.jsx:270
+msgid "Governements"
+msgstr "Governements"
+
+#: src/pages/landing/index.jsx:56
+msgid "Governments"
+msgstr "Governments"
+
+#: src/modules/map/map-chart.jsx:566
+#: src/modules/map/map-chart.jsx:612
+msgid "GPML Members"
+msgstr "GPML Members"
+
+#: src/modules/map/map-chart.jsx:578
+#: src/modules/map/map-chart.jsx:624
+msgid "GPML Non-Members"
+msgstr "GPML Non-Members"
+
+#: src/modules/help-center/view.jsx:96
+msgid "GPML Tools"
+msgstr "GPML Tools"
+
+#: src/modules/knowledge-lib/resource-view.jsx:475
+msgid "grid"
+msgstr "grid"
+
+#: src/modules/help-center/view.jsx:46
+msgid "Guidance on how to add resources on the GPML Digital Platform"
+msgstr "Guidance on how to add resources on the GPML Digital Platform"
+
+#: src/modules/help-center/view.jsx:62
+msgid "Guidance on how to sign up on the GPML Digital Platform"
+msgstr "Guidance on how to sign up on the GPML Digital Platform"
+
+#: src/modules/help-center/view.jsx:39
+msgid "How to Guides"
+msgstr "How to Guides"
+
+#: src/pages/landing/index.jsx:73
+msgid "IGOs"
+msgstr "IGOs"
+
+#: src/modules/map/vertical-legend.jsx:391
+#: src/modules/map/vertical-legend.jsx:421
+#: src/modules/map/vertical-legend.jsx:470
+#: src/modules/map/vertical-legend.jsx:506
+msgid "Individual"
+msgstr "Individual"
+
+#: src/modules/map/map-chart.jsx:592
+#: src/modules/map/map-chart.jsx:640
+#: src/pages/landing/index.jsx:280
+msgid "Individuals"
+msgstr "Individuals"
+
 #: src/modules/landing/landing.jsx:36
 msgid "Informs and connects all actors working to address this urgent issue across the life cycle and from source to sea."
 msgstr "Informs and connects all actors working to address this urgent issue across the life cycle and from source to sea."
 
+#: src/modules/knowledge-lib/filter-bar.jsx:25
+msgid "Initiatives"
+msgstr "Initiatives"
+
+#: src/pages/landing/index.jsx:161
+msgid "Join Now"
+msgstr "Join Now"
+
+#: src/modules/case-studies/CaseStudy.jsx:147
+msgid "Learn More"
+msgstr "Learn More"
+
+#: src/modules/stakeholder-overview/card.jsx:169
+msgid "Linkedin"
+msgstr "Linkedin"
+
+#: src/modules/knowledge-lib/resource-view.jsx:467
+msgid "Load More"
+msgstr "Load More"
+
+#: src/modules/map/map.jsx:39
+#: src/modules/stakeholder-overview/stakeholder-list.jsx:46
+#: src/modules/stakeholder-overview/view.jsx:462
+#: src/modules/stakeholder-overview/view.jsx:489
+msgid "Loading"
+msgstr "Loading"
+
+#: src/modules/stakeholder-overview/filter-drawer.jsx:281
+msgid "Location"
+msgstr "Location"
+
+#: src/modules/knowledge-lib/resource-view.jsx:475
+msgid "map"
+msgstr "map"
+
+#: src/modules/knowledge-lib/filter-modal.jsx:189
+msgid "My Bookmarks"
+msgstr "My Bookmarks"
+
+#: src/modules/map/map-chart.jsx:714
+msgid "National"
+msgstr "National"
+
+#: src/modules/stakeholder-overview/filter-drawer.jsx:156
+msgid "Network type"
+msgstr "Network type"
+
+#: src/pages/landing/index.jsx:69
+msgid "NGOs"
+msgstr "NGOs"
+
+#: src/modules/map/map-chart.jsx:309
+#: src/modules/map/map-chart.jsx:899
+#: src/modules/map/vertical-legend.jsx:717
+msgid "No legend"
+msgstr "No legend"
+
+#: src/pages/landing/index.jsx:210
+msgid "NUMBER OF RESOURCES"
+msgstr "NUMBER OF RESOURCES"
+
+#: src/pages/landing/index.jsx:275
+msgid "Organizations"
+msgstr "Organizations"
+
+#: src/modules/knowledge-lib/filter-bar.jsx:27
+msgid "Policies"
+msgstr "Policies"
+
+#: src/pages/landing/index.jsx:238
+msgid "POWERED BY:"
+msgstr "POWERED BY:"
+
+#: src/pages/landing/index.jsx:60
+msgid "Private Sector"
+msgstr "Private Sector"
+
+#: src/modules/knowledge-lib/filter-modal.jsx:259
+#: src/modules/stakeholder-overview/filter-drawer.jsx:382
+msgid "Representative group"
+msgstr "Representative group"
+
+#: src/modules/knowledge-lib/filter-bar.jsx:231
+msgid "Reset filters"
+msgstr "Reset filters"
+
+#: src/modules/map/map-chart.jsx:711
+msgid "Resource"
+msgstr "Resource"
+
+#: src/pages/landing/index.jsx:65
+msgid "Scientific Communities"
+msgstr "Scientific Communities"
+
+#: src/pages/landing/index.jsx:186
+#: src/pages/landing/index.jsx:190
+msgid "Search"
+msgstr "Search"
+
+#: src/modules/knowledge-lib/filter-modal.jsx:375
+msgid "Search resources"
+msgstr "Search resources"
+
+#: src/pages/landing/index.jsx:171
+msgid "Search the resource database..."
+msgstr "Search the resource database..."
+
+#: src/modules/knowledge-lib/resource-view.jsx:388
+msgid "See all"
+msgstr "See all"
+
+#: src/modules/stakeholder-overview/card.jsx:191
+msgid "Seeking:"
+msgstr "Seeking:"
+
+#: src/pages/landing/index.jsx:230
+msgid "SHOWCASING"
+msgstr "SHOWCASING"
+
+#: src/modules/knowledge-lib/resource-view.jsx:259
+msgid "Showing {0} of {totalItems}"
+msgstr "Showing {0} of {totalItems}"
+
+#: src/modules/stakeholder-overview/unathenticated-page.jsx:21
+msgid "Sign In"
+msgstr "Sign In"
+
+#: src/modules/experts/view.jsx:166
+#: src/modules/knowledge-lib/resource-view.jsx:291
+msgid "Sort by:"
+msgstr "Sort by:"
+
+#: src/modules/knowledge-lib/filter-modal.jsx:284
+msgid "Start Date"
+msgstr "Start Date"
+
+#: src/modules/knowledge-lib/filter-modal.jsx:199
+msgid "Sub-content type"
+msgstr "Sub-content type"
+
+#: src/modules/experts/filter-bar.jsx:152
+msgid "Sub-topics"
+msgstr "Sub-topics"
+
+#: src/modules/stakeholder-overview/view.jsx:457
+msgid "Suggested profiles"
+msgstr "Suggested profiles"
+
+#: src/pages/landing/index.jsx:194
+msgid "Suggested search:"
+msgstr "Suggested search:"
+
+#: src/modules/experts/view.jsx:147
+msgid "Switch to"
+msgstr "Switch to"
+
+#: src/modules/case-studies/CaseStudy.jsx:83
+#: src/modules/knowledge-lib/filter-modal.jsx:230
+msgid "Tags"
+msgstr "Tags"
+
+#: src/modules/knowledge-lib/filter-bar.jsx:15
+msgid "Technical Resources"
+msgstr "Technical Resources"
+
+#: src/modules/knowledge-lib/filter-bar.jsx:19
+msgid "Technologies"
+msgstr "Technologies"
+
 #: src/modules/landing/landing.jsx:30
 msgid "The Global Partnership on Plastic Pollution and Marine Litter Digital Platform"
 msgstr "The Global Partnership on Plastic Pollution and Marine Litter Digital Platform"
+
+#: src/pages/landing/index.jsx:78
+msgid "The GPML digital platform allows NGOS and civil society to connect with likeminded organizations, discover financing resources and funding opportunities, and showcase their work in the fight against plastic pollution and marine litter."
+msgstr "The GPML digital platform allows NGOS and civil society to connect with likeminded organizations, discover financing resources and funding opportunities, and showcase their work in the fight against plastic pollution and marine litter."
+
+#: src/pages/landing/index.jsx:66
+#: src/pages/landing/index.jsx:70
+msgid "The GPML digital platform helps academia and the scientific community to ensure their research becomes actionable by offering the opportunity to share resources and collaborate with policy makers."
+msgstr "The GPML digital platform helps academia and the scientific community to ensure their research becomes actionable by offering the opportunity to share resources and collaborate with policy makers."
+
+#: src/pages/landing/index.jsx:74
+msgid "The GPML digital platform offers the opportunity to forge collaborative partnerships with diverse stakeholders, share and find resources on plastic pollution, and amplify advocacy."
+msgstr "The GPML digital platform offers the opportunity to forge collaborative partnerships with diverse stakeholders, share and find resources on plastic pollution, and amplify advocacy."
+
+#: src/pages/landing/index.jsx:57
+msgid "The plastic action platform empowers all countries to create and implement successful plastic strategies to end plastic pollution."
+msgstr "The plastic action platform empowers all countries to create and implement successful plastic strategies to end plastic pollution."
+
+#: src/modules/stakeholder-overview/stakeholder-list.jsx:52
+#: src/modules/stakeholder-overview/view.jsx:480
+#: src/modules/stakeholder-overview/view.jsx:513
+msgid "There is no data to display"
+msgstr "There is no data to display"
+
+#: src/pages/landing/index.jsx:136
+msgid "to address plastic pollution"
+msgstr "to address plastic pollution"
+
+#: src/modules/experts/view.jsx:136
+#: src/modules/map/vertical-legend.jsx:664
+msgid "Total"
+msgstr "Total"
+
+#: src/modules/map/map-chart.jsx:236
+msgid "Total experts per country"
+msgstr "Total experts per country"
+
+#: src/modules/map/vertical-legend.jsx:660
+msgid "Total resources"
+msgstr "Total resources"
+
+#: src/modules/map/map-chart.jsx:233
+msgid "Total resources per country"
+msgstr "Total resources per country"
+
+#: src/modules/map/vertical-legend.jsx:675
+msgid "Total resources per transnational"
+msgstr "Total resources per transnational"
+
+#: src/modules/map/vertical-legend.jsx:685
+msgid "Total stakeholders"
+msgstr "Total stakeholders"
+
+#: src/modules/map/map-chart.jsx:235
+msgid "Total stakeholders per country"
+msgstr "Total stakeholders per country"
+
+#: src/modules/map/vertical-legend.jsx:525
+msgid "Total stakeholders per transnational"
+msgstr "Total stakeholders per transnational"
+
+#: src/modules/map/map-chart.jsx:717
+msgid "Transnational"
+msgstr "Transnational"
+
+#: src/modules/stakeholder-overview/card.jsx:180
+msgid "Twitter"
+msgstr "Twitter"
+
+#: src/modules/map/map-chart.jsx:552
+#: src/modules/map/vertical-legend.jsx:372
+#: src/modules/map/vertical-legend.jsx:402
+#: src/modules/map/vertical-legend.jsx:452
+#: src/modules/map/vertical-legend.jsx:486
+msgid "Type"
+msgstr "Type"
+
+#: src/modules/help-center/view.jsx:124
+msgid "Validation Mechanism"
+msgstr "Validation Mechanism"
+
+#: src/modules/help-center/view.jsx:78
+msgid "Video Tutorials"
+msgstr "Video Tutorials"
+
+#: src/modules/experts/view.jsx:148
+#: src/modules/knowledge-lib/resource-view.jsx:488
+#: src/modules/knowledge-lib/resource-view.jsx:518
+msgid "view"
+msgstr "view"
+
+#: src/modules/stakeholder-overview/filter-drawer.jsx:355
+msgid "What expertises are they offering?"
+msgstr "What expertises are they offering?"
+
+#: src/modules/stakeholder-overview/filter-drawer.jsx:369
+msgid "What expertises are they seeking?"
+msgstr "What expertises are they seeking?"
+
+#: src/modules/stakeholder-overview/unathenticated-page.jsx:31
+msgid "You need to have an account and be signed in to see this page"
+msgstr "You need to have an account and be signed in to see this page"
