@@ -139,6 +139,21 @@
           min-width: 17px;
           margin-left: 8px;
           margin-right: 18px;
+          position: relative;
+          &:after {
+            content: ' ';
+            width: 1px;
+            height: 36px;
+            background-color: $primaryPurple3;
+            position: absolute;
+            left: 7px;
+            top: 16px;
+          }
+        }
+        &:last-child {
+          .check:after {
+            display: none;
+          }
         }
       }
     }
@@ -147,6 +162,10 @@
 .view {
   width: 100%;
   padding: 30px 50px 140px;
+  width: 100%;
+  p {
+    padding: 25px 0;
+  }
 }
 .bottomBar {
   position: fixed;
@@ -197,5 +216,14 @@
         }
       }
     }
+  }
+}
+
+.cardsList {
+  display: flex;
+  flex-wrap: wrap;
+  & > div {
+    margin-right: 15px;
+    margin-bottom: 15px;
   }
 }
