@@ -197,6 +197,16 @@ h6 {
       // font-family: ;
     }
   }
+  .ant-avatar {
+    margin-left: 7px;
+    width: 44px;
+    height: 44px;
+    line-height: 44px;
+    color: $primaryDarkBlue;
+    font-weight: bold;
+    background-color: $primaryBlue2;
+    cursor: pointer;
+  }
   @media screen and (max-width: $bpMobile) {
     height: 70px;
     padding: 12px 0;
@@ -231,6 +241,7 @@ h6 {
   }
   nav {
     margin-left: auto;
+    display: flex;
     .ant-btn-primary {
       margin-top: 0px;
     }
