@@ -13,17 +13,10 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-msgid "English"
-msgstr ""
-
-msgid "Frech"
-msgstr ""
-
+#: src/modules/landing/landing.jsx:36
 msgid "Informs and connects all actors working to address this urgent issue across the life cycle and from source to sea."
 msgstr ""
 
-msgid "Pseudo"
-msgstr ""
-
+#: src/modules/landing/landing.jsx:30
 msgid "The Global Partnership on Plastic Pollution and Marine Litter Digital Platform"
 msgstr ""
