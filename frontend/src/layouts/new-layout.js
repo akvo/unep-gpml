@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/router'
 import { isEmpty } from 'lodash'
-import { Button } from 'antd'
+import { Avatar, Button, Dropdown, Menu } from 'antd'
 import localFont from 'next/font/local'
 import { DM_Sans } from 'next/font/google'
 import { UIStore } from '../store'
@@ -142,15 +142,53 @@ const NewLayout = ({
                 </Button>
               )}
               {isAuthenticated && (
-                <Link href="/workspace">
-                  <Button
-                    type="primary"
-                    size="small"
-                    className="noicon hide-mobile"
+                <>
+                  <Link href="/workspace">
+                    <Button
+                      type="primary"
+                      size="small"
+                      className="noicon hide-mobile"
+                    >
+                      Workspace
+                    </Button>
+                  </Link>
+                  <Dropdown
+                    overlayClassName="user-btn-dropdown-wrapper"
+                    overlay={
+                      <Menu className="user-btn-dropdown">
+                        <Menu.Item
+                          key="profile"
+                          onClick={() => {
+                            router.push({
+                              pathname: `/${
+                                isRegistered(profile) ? 'profile' : 'onboarding'
+                              }`,
+                            })
+                          }}
+                        >
+                          Profile
+                        </Menu.Item>
+                        <Menu.Item
+                          key="logout"
+                          onClick={() => {
+                            auth0Client.logout({
+                              returnTo: window.location.origin,
+                            })
+                          }}
+                        >
+                          Logout
+                        </Menu.Item>
+                      </Menu>
+                    }
+                    trigger={['click']}
+                    placement="bottomRight"
                   >
-                    Workspace
-                  </Button>
-                </Link>
+                    <Avatar size="large">
+                      {profile?.firstName?.charAt(0)}
+                      {profile?.lastName?.charAt(0)}
+                    </Avatar>
+                  </Dropdown>
+                </>
               )}
               {width <= 768 && (
                 <div className="toggle-button">
