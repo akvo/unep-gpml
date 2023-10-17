@@ -709,7 +709,27 @@
                                                                  #ig/ref :gpml.auth/auth-required]
                                                     :swagger {:tags ["plastic-strategy"] :security [{:id_token []}]}
                                                     :handler #ig/ref :gpml.handler.plastic-strategy.bookmark/post
-                                                    :parameters #ig/ref :gpml.handler.plastic-strategy.bookmark/post-params}}]]]]]]
+                                                    :parameters #ig/ref :gpml.handler.plastic-strategy.bookmark/post-params}}]]
+                                          ["/file"
+                                           [""
+                                            {:post {:summary "Uploads and creates a plastic strategy file "
+                                                    :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                 #ig/ref :gpml.auth/auth-required]
+                                                    :swagger {:tags ["plastic-strategy"] :security [{:id_token []}]}
+                                                    :handler #ig/ref :gpml.handler.plastic-strategy.file/post
+                                                    :parameters #ig/ref :gpml.handler.plastic-strategy.file/post-params}
+                                             :delete {:summary "Deletes a plastic strategy file "
+                                                      :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                   #ig/ref :gpml.auth/auth-required]
+                                                      :swagger {:tags ["plastic-strategy"] :security [{:id_token []}]}
+                                                      :handler #ig/ref :gpml.handler.plastic-strategy.file/delete
+                                                      :parameters #ig/ref :gpml.handler.plastic-strategy.file/delete-params}
+                                             :get {:summary "Gets a plastic strategy files"
+                                                   :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                #ig/ref :gpml.auth/auth-required]
+                                                   :swagger {:tags ["plastic-strategy"] :security [{:id_token []}]}
+                                                   :handler #ig/ref :gpml.handler.plastic-strategy.file/get
+                                                   :parameters #ig/ref :gpml.handler.plastic-strategy.file/get-params}}]]]]]]
                               :logger #ig/ref :duct.logger/timbre
                               :cors-allowed-origins #ig/ref :gpml.handler.main/cors-allowed-origins}
 
@@ -1000,6 +1020,12 @@
   :gpml.handler.plastic-strategy.bookmark/post-params {}
   :gpml.handler.plastic-strategy.team/delete-member #ig/ref :gpml.config/common
   :gpml.handler.plastic-strategy.team/delete-member-params {}
+  :gpml.handler.plastic-strategy.file/post #ig/ref :gpml.config/common
+  :gpml.handler.plastic-strategy.file/post-params {}
+  :gpml.handler.plastic-strategy.file/delete #ig/ref :gpml.config/common
+  :gpml.handler.plastic-strategy.file/delete-params {}
+  :gpml.handler.plastic-strategy.file/get #ig/ref :gpml.config/common
+  :gpml.handler.plastic-strategy.file/get-params {}
 
   :gpml.handler.programmatic.plastic-strategy/post #ig/ref :gpml.config/common
   :gpml.handler.programmatic.plastic-strategy/post-params {}
