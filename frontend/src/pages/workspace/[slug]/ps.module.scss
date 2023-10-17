@@ -146,6 +146,10 @@
 }
 .view {
   padding: 30px 50px 140px;
+  width: 100%;
+  p {
+    padding: 25px 0;
+  }
 }
 .bottomBar {
   position: fixed;
@@ -196,5 +200,14 @@
         }
       }
     }
+  }
+}
+
+.cardsList {
+  display: flex;
+  flex-wrap: wrap;
+  & > div {
+    margin-right: 15px;
+    margin-bottom: 15px;
   }
 }
