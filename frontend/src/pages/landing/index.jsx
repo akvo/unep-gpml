@@ -19,6 +19,7 @@ import { Pagination } from 'swiper'
 import moment from 'moment'
 import { useDeviceSize } from '../../modules/landing/landing'
 import Button from '../../components/button'
+import { Trans, t } from '@lingui/macro'
 
 const pagination = {
   clickable: true,
@@ -52,34 +53,29 @@ const Hero = () => {
   const [width] = useDeviceSize()
   const items = [
     {
-      group: 'Governments',
-      text:
-        'The plastic action platform empowers all countries to create and implement successful plastic strategies to end plastic pollution.',
+      group: t`Governments`,
+      text: t`The plastic action platform empowers all countries to create and implement successful plastic strategies to end plastic pollution.`,
     },
     {
-      group: 'Private Sector',
+      group: t`Private Sector`,
       text:
         'The GPML digital platform fosters public-private partnerships, offers clarity on circular economy practices, and provides guidance on Extended Producer Responsibilities (EPRs) and sustainable business models.',
     },
     {
-      group: 'Scientific Community',
-      text:
-        'The GPML digital platform helps academia and the scientific community to ensure their research becomes actionable by offering the opportunity to share resources and collaborate with policy makers.',
+      group: t`Scientific Communities`,
+      text: t`The GPML digital platform helps academia and the scientific community to ensure their research becomes actionable by offering the opportunity to share resources and collaborate with policy makers.`,
     },
     {
-      group: 'NGOs',
-      text:
-        'The GPML digital platform helps academia and the scientific community to ensure their research becomes actionable by offering the opportunity to share resources and collaborate with policy makers.',
+      group: t`NGOs`,
+      text: t`The GPML digital platform helps academia and the scientific community to ensure their research becomes actionable by offering the opportunity to share resources and collaborate with policy makers.`,
     },
     {
-      group: 'IGOs',
-      text:
-        'The GPML digital platform offers the opportunity to forge collaborative partnerships with diverse stakeholders, share and find resources on plastic pollution, and amplify advocacy.',
+      group: t`IGOs`,
+      text: t`The GPML digital platform offers the opportunity to forge collaborative partnerships with diverse stakeholders, share and find resources on plastic pollution, and amplify advocacy.`,
     },
     {
-      group: 'Civil Society',
-      text:
-        'The GPML digital platform allows NGOS and civil society to connect with likeminded organizations, discover financing resources and funding opportunities, and showcase their work in the fight against plastic pollution and marine litter.',
+      group: t`Civil Society`,
+      text: t`The GPML digital platform allows NGOS and civil society to connect with likeminded organizations, discover financing resources and funding opportunities, and showcase their work in the fight against plastic pollution and marine litter.`,
     },
   ]
   useEffect(() => {
@@ -133,11 +129,11 @@ const Hero = () => {
           </div>
           <div className="text">
             <h1>
-              Empowering
+              <Trans>Empowering</Trans>
               <br />
               <b className={classNames({ timeout })}>{selected}</b>
               <br />
-              to address plastic pollution
+              <Trans>to address plastic pollution</Trans>
             </h1>
             <div className="p-container">
               {items.map((item) => (
@@ -162,7 +158,7 @@ const Hero = () => {
               ))}
             </div>
             <Button type="primary" size="large" withArrow>
-              Join Now
+              <Trans>Join Now</Trans>
             </Button>
           </div>
         </div>
@@ -172,12 +168,14 @@ const Hero = () => {
           <div className="bar">
             <Input
               prefix={width < 768 && <Magnifier />}
-              placeholder="Search the resource database..."
+              placeholder={t`Search the resource database...`}
               type="text"
             />
             <div className="localisation h-xs">
               <Localiser />
-              <span className="hide-mobile">Globally</span>
+              <span className="hide-mobile">
+                <Trans>Globally</Trans>
+              </span>
             </div>
             <Button
               type="primary"
@@ -185,14 +183,16 @@ const Hero = () => {
               className="left-icon hide-mobile"
             >
               <Magnifier />
-              Search
+              <Trans>Search</Trans>
             </Button>
           </div>
           <Button type="primary" className="hide-desktop noicon">
-            Search
+            <Trans>Search</Trans>
           </Button>
           <div className="tags hide-mobile">
-            <b>Suggested search:</b>
+            <b>
+              <Trans>Suggested search:</Trans>
+            </b>
             <Tag className="h-xxs">Case Studies</Tag>
             <Tag className="h-xxs">Plastic Strategies</Tag>
             <Tag className="h-xxs">Plastic Solutions</Tag>
@@ -207,30 +207,36 @@ const ShowcasingAndStats = () => {
   const items = [
     {
       value: '2370',
-      label: 'NUMBER OF RESOURCES',
+      label: t`NUMBER OF RESOURCES`,
     },
     {
       value: '300',
-      label: 'DATA LAYERS',
+      label: t`DATA LAYERS`,
     },
     {
       value: '70',
-      label: 'ACTION PLANS',
+      label: t`ACTION PLANS`,
     },
     {
       value: '45K',
-      label: 'COMMUNITIES OF PRACTICE',
+      label: t`COMMUNITIES OF PRACTICE`,
     },
   ]
   return (
     <div className="container">
       <div className={styles.showCasingSection}>
         <div className="caption-container">
-          <div className="caps-heading-1 page-sub-heading">SHOWCASING</div>
-          <h2>Already on the platform</h2>
+          <div className="caps-heading-1 page-sub-heading">
+            <Trans>SHOWCASING</Trans>
+          </div>
+          <h2>
+            <Trans>Already on the platform</Trans>
+          </h2>
         </div>
         <div className="powered-by-container">
-          <div className="caps-heading-1 page-sub-heading">POWERED BY:</div>
+          <div className="caps-heading-1 page-sub-heading">
+            <Trans>POWERED BY:</Trans>
+          </div>
           <div className="powered-by-images">
             <Image
               src="/powered-by-unep.svg"
@@ -260,13 +266,19 @@ const ShowcasingAndStats = () => {
         </div>
         <div className="summaries">
           <span className="purple">
-            <h5>195 Governements</h5>
+            <h5>
+              195 <Trans>Governements</Trans>
+            </h5>
           </span>
           <span className="green">
-            <h5>1358 Organizations</h5>
+            <h5>
+              1358 <Trans>Organizations</Trans>
+            </h5>
           </span>
           <span className="blue">
-            <h5>1251 Individuals</h5>
+            <h5>
+              1251 <Trans>Individuals</Trans>
+            </h5>
           </span>
         </div>
       </div>
