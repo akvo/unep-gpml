@@ -5,7 +5,12 @@ import kebabCase from 'lodash/kebabCase'
 import Image from 'next/image'
 
 import { PageLayout } from '..'
-import { BookmarkIcon } from '../../../../components/icons'
+import {
+  BookmarkIcon,
+  DistributionIcon,
+  EndOfLifeIcon,
+  PetroExtractionIcon,
+} from '../../../../components/icons'
 import AutocompleteForm from '../../../../components/autocomplete-form/autocomplete-form'
 import ModalAddEntity from '../../../../modules/flexible-forms/entity-modal/add-entity-modal'
 import styles from './stakeholder-map.module.scss'
@@ -153,6 +158,12 @@ const columns = [
   },
 ]
 
+const lifeCycles = [
+  <PetroExtractionIcon />,
+  <DistributionIcon />,
+  <EndOfLifeIcon />,
+]
+
 const StakeholderMapTable = ({ psItem }) => {
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState([])
@@ -161,22 +172,25 @@ const StakeholderMapTable = ({ psItem }) => {
     limit: PAGE_SIZE,
     page: 1,
   })
-  const allTags = UIStore.useState((s) => s.tags)
 
   const handleTableChange = (pagination, filters, sorter) => {
     const sorterParams =
       sorter?.column?.dataIndex && sorter?.order
-        ? { [sorter.column.dataIndex]: sorter.order }
+        ? {
+            order_by: sorter.column.dataIndex,
+            descending: sorter.order === 'descend' ? 'true' : 'false',
+          }
         : {}
     const filterParams = Object.values(filters)
       ?.map((value, vx) => ({
-        [columns?.[vx]?.dataIndex]: value?.join(','),
+        [columns?.[vx]?.dataIndex]: value,
       }))
       ?.filter((value, vx) => value?.[columns?.[vx]?.dataIndex])
       ?.reduce((prev, curr) => Object.assign(prev, curr), {})
     setTableParams({
       ...sorterParams,
       ...filterParams,
+      ps_country_iso_code_a2: psItem.country.isoCodeA2,
       networkType: 'organisation',
       limit: pagination?.pageSize || PAGE_SIZE,
       filters,
@@ -195,10 +209,14 @@ const StakeholderMapTable = ({ psItem }) => {
 
   const fakeStakeholderMapApi = useCallback(async () => {
     setLoading(true)
+    if (!psItem?.id) {
+      return
+    }
     try {
       const { pagination, filters, sorter, ...params } = tableParams
       const { data } = await api.get('/community', {
         ...params,
+        ps_country_iso_code_a2: psItem.country.isoCodeA2,
       })
       const { results, counts } = data || {}
       // TODO
@@ -223,7 +241,12 @@ const StakeholderMapTable = ({ psItem }) => {
       console.error('Unable to fetch stakeholder maps data', error)
       setLoading(false)
     }
-  }, [tableParams?.pagination, tableParams?.filters, tableParams?.sorter])
+  }, [
+    tableParams?.pagination,
+    tableParams?.filters,
+    tableParams?.sorter,
+    psItem,
+  ])
 
   useEffect(() => {
     fakeStakeholderMapApi()
@@ -283,15 +306,12 @@ const StakeholderMapTable = ({ psItem }) => {
                 return (
                   <div className="data-with-avatar">
                     {tags?.map((tag, tx) => (
-                      <Tooltip key={tx} title={titleCase(tag)} placement="right">
-                        <span className="img-circle">
-                          <Image
-                            src={`/cat-tags/${kebabCase(tag)}.svg`}
-                            alt={tag}
-                            width={24}
-                            height={24}
-                          />
-                        </span>
+                      <Tooltip
+                        key={tx}
+                        title={titleCase(tag)}
+                        placement="right"
+                      >
+                        {lifeCycles?.[tx] || titleCase(tag)}
                       </Tooltip>
                     ))}
                   </div>
