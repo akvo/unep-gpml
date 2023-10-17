@@ -9,6 +9,16 @@ module.exports = {
   experimental: {
     swcPlugins: [['@lingui/swc-plugin', {}]],
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'storage.googleapis.com',
+        port: '',
+        pathname: '/unep-gpml-public-test/**',
+      },
+    ],
+  },
 
   async rewrites() {
     return [
