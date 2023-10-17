@@ -1,5 +1,15 @@
+const linguiConfig = require('./lingui.config')
+
 module.exports = {
   reactStrictMode: false,
+  i18n: {
+    locales: linguiConfig.locales,
+    defaultLocale: linguiConfig.sourceLocale,
+  },
+  experimental: {
+    swcPlugins: [['@lingui/swc-plugin', {}]],
+  },
+
   async rewrites() {
     return [
       {
