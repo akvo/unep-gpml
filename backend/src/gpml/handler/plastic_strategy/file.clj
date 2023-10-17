@@ -108,7 +108,7 @@
                                                  {:user-id (:id user)
                                                   :entity-type :plastic-strategy
                                                   :entity-id (:id plastic-strategy)
-                                                  :custom-permission :delete-file
+                                                  :custom-permission :list-files
                                                   :root-context? false})
         (r/forbidden {:message "Unauthorized"})
         (let [search-opts {:filters (cond-> {:plastic-strategies-ids [(:id plastic-strategy)]}
