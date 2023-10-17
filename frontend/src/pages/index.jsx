@@ -1,5 +1,7 @@
 import React from 'react'
 import Landing from '../modules/landing/landing'
+import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next'
+import { loadCatalog } from '../translations/utils'
 
 function HomePage({ isAuthenticated, setLoginVisible }) {
   return (
@@ -8,6 +10,14 @@ function HomePage({ isAuthenticated, setLoginVisible }) {
       setLoginVisible={setLoginVisible}
     />
   )
+}
+
+export async function getServerSideProps(ctx) {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
 }
 
 export default HomePage
