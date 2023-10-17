@@ -66,7 +66,7 @@
               result (srv.ps.file/create-ps-file config
                                                  body-params)]
           (if (:success? result)
-            (r/ok {})
+            (r/ok {:file_id (get-in result [:ps-file :file-id])})
             (r/server-error (dissoc result :success?))))))))
 
 (defn- delete-ps-file
