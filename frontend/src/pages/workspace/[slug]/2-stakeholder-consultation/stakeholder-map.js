@@ -1,21 +1,20 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Avatar, Button, Table, Tooltip, Typography } from 'antd'
 import classNames from 'classnames'
-import kebabCase from 'lodash/kebabCase'
-import Image from 'next/image'
 
 import { PageLayout } from '..'
 import {
   BookmarkIcon,
+  DesignNProdIcon,
   DistributionIcon,
   EndOfLifeIcon,
   PetroExtractionIcon,
+  ConsumptionIcon,
 } from '../../../../components/icons'
 import AutocompleteForm from '../../../../components/autocomplete-form/autocomplete-form'
 import ModalAddEntity from '../../../../modules/flexible-forms/entity-modal/add-entity-modal'
 import styles from './stakeholder-map.module.scss'
 import api from '../../../../utils/api'
-import { UIStore } from '../../../../store'
 import { titleCase } from '../../../../utils/string'
 
 const { Column } = Table
@@ -28,13 +27,7 @@ const dummy = [
     name: 'Akvo Foundation',
     type: 'NGO',
     geo_coverage: 'Global',
-    tags: [
-      {
-        id: 943,
-        tag: 'raw materials',
-        private: false,
-      },
-    ],
+    tags: [1],
     focal_point: ['DP', 'AS'],
     strengths: 'Data owner',
     status: 'bookmark',
@@ -44,7 +37,7 @@ const dummy = [
     name: 'Org Name 2',
     type: 'Private sector',
     geo_coverage: 'National',
-    tags: [],
+    tags: [1, 2, 3, 4, 5],
     focal_point: ['MS'],
     strengths: '5 Initiatives',
     status: 'bookmarked',
@@ -54,21 +47,33 @@ const dummy = [
     name: 'Org name 3',
     type: 'IGO',
     geo_coverage: 'Global',
-    tags: [
-      {
-        id: 947,
-        tag: 'development stage',
-        private: false,
-      },
-      {
-        id: 948,
-        tag: 'establishment - company type',
-        private: false,
-      },
-    ],
+    tags: [1, 2, 3],
     focal_point: ['PP', 'DA'],
     strengths: null,
     status: 'bookmark',
+  },
+]
+
+const lifeCycles = [
+  {
+    title: 'Petrochemical Extraction',
+    icon: PetroExtractionIcon,
+  },
+  {
+    title: 'Design & Production',
+    icon: DesignNProdIcon,
+  },
+  {
+    title: 'Distribution',
+    icon: DistributionIcon,
+  },
+  {
+    title: 'Consumption',
+    icon: ConsumptionIcon,
+  },
+  {
+    title: 'End of Life',
+    icon: EndOfLifeIcon,
   },
 ]
 
@@ -130,16 +135,7 @@ const columns = [
   {
     title: 'Lifecycle Stage',
     dataIndex: 'tags',
-    filters: [
-      {
-        text: 'London',
-        value: 'London',
-      },
-      {
-        text: 'New York',
-        value: 'New York',
-      },
-    ],
+    filters: lifeCycles.map((l) => ({ text: l.title, value: l.title })),
   },
   {
     title: 'Focal Point',
@@ -156,12 +152,6 @@ const columns = [
     dataIndex: 'status',
     sorter: (a, b) => a.status - b.status,
   },
-]
-
-const lifeCycles = [
-  <PetroExtractionIcon />,
-  <DistributionIcon />,
-  <EndOfLifeIcon />,
 ]
 
 const StakeholderMapTable = ({ psItem }) => {
@@ -222,7 +212,6 @@ const StakeholderMapTable = ({ psItem }) => {
       // TODO
       const _data = dummy.map((d) => ({
         ...d,
-        tags: d?.tags?.map((d) => d?.tag),
       }))
       setData(_data)
 
@@ -308,10 +297,10 @@ const StakeholderMapTable = ({ psItem }) => {
                     {tags?.map((tag, tx) => (
                       <Tooltip
                         key={tx}
-                        title={titleCase(tag)}
+                        title={lifeCycles?.[tx]?.title}
                         placement="right"
                       >
-                        {lifeCycles?.[tx] || titleCase(tag)}
+                        <span>{lifeCycles?.[tx]?.icon() || tag}</span>
                       </Tooltip>
                     ))}
                   </div>
