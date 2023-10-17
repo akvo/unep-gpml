@@ -675,6 +675,7 @@ ul {
 * Filter confirm and reset button styles on Antd table
 */
 .ant-table-filter-dropdown {
+  min-width: 164px;
   .ant-table-filter-dropdown-btns {
     .ant-btn {
       font-size: $fzXXS;
