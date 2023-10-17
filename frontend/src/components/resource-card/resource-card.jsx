@@ -3,8 +3,11 @@ import Image from 'next/image'
 import styles from './style.module.scss'
 import { BookmarkIcon } from '../icons'
 
-const ResourceCard = ({ item, bookmarked, onBookmark }) => {
+const ResourceCard = ({ item, bookmarked, onBookmark, onClick }) => {
   const withImage = item.image != null
+  const handleClick = (e) => {
+    onClick({ e, type: item.type, id: item.id })
+  }
   let inner
   if (withImage) {
     inner = (
@@ -24,6 +27,7 @@ const ResourceCard = ({ item, bookmarked, onBookmark }) => {
       className={classNames(styles.resourceCard, {
         [styles.withImage]: withImage,
       })}
+      onClick={handleClick}
     >
       {inner}
       {onBookmark != null && <BookmarkBtn {...{ bookmarked, onBookmark }} />}
