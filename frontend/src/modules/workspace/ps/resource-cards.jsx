@@ -4,12 +4,15 @@ import DetailModal from '../../details-page/modal'
 import { useRouter } from 'next/router'
 import styles from './resource-cards.module.scss'
 import bodyScrollLock from '../../details-page/scroll-utils'
+import { LoadingOutlined } from '@ant-design/icons'
+import { Spin } from 'antd'
 
 const ResourceCards = ({
   items,
   setLoginVisible,
   isAuthenticated,
   handleBookmark,
+  loading,
 }) => {
   const router = useRouter()
   const [params, setParams] = useState(null)
@@ -39,6 +42,19 @@ const ResourceCards = ({
   return (
     <>
       <div className={styles.cardsList} style={{ display: 'flex' }}>
+        {loading && (
+          <Spin
+            indicator={
+              <LoadingOutlined
+                style={{
+                  fontSize: 34,
+                }}
+                spin
+              />
+            }
+          />
+        )}
+        {!loading && items.length === 0 && <h5>No relevant resources found</h5>}
         {items.map((item) => (
           <ResourceCard
             item={item}

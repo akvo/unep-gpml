@@ -1,10 +1,6 @@
 import { useEffect, useState } from 'react'
 import { PageLayout } from '..'
 import api from '../../../../utils/api'
-import ResourceCard from '../../../../components/resource-card/resource-card'
-import styles from '../ps.module.scss'
-import DetailModal from '../../../../modules/details-page/modal'
-import { useRouter } from 'next/router'
 import ResourceCards from '../../../../modules/workspace/ps/resource-cards'
 
 const View = ({ setLoginVisible, isAuthenticated }) => {
@@ -27,7 +23,13 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
       <p>Placeholder for description here</p>
 
       <ResourceCards
-        {...{ items, handleBookmark, setLoginVisible, isAuthenticated }}
+        {...{
+          items,
+          handleBookmark,
+          setLoginVisible,
+          isAuthenticated,
+          loading,
+        }}
       />
     </>
   )
