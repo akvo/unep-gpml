@@ -31,7 +31,12 @@
     {:swagger {:description "The entity type to un/bookmark."
                :type "string"
                :enum (map name dom.types/plastic-strategy-bookmarkable-entity-types)}}
-    (dom.types/get-type-schema :plastic-strategy-bookmarkable-entity-type)]])
+    (dom.types/get-type-schema :plastic-strategy-bookmarkable-entity-type)]
+   [:section_key
+    {:swagger {:description "The section key where the bookmark belongs to."
+               :type "string"
+               :allowEmptyValue false}}
+    [:string {:min 1}]]])
 
 (defn- handle-ps-bookmark
   [config {:keys [user parameters]}]

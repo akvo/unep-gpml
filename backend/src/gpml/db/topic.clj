@@ -128,7 +128,7 @@
    {:keys [id entity tag representative-group
            geo-coverage-types sub-content-type
            search-text review-status featured capacity-building upcoming
-           plastic-strategy-id] :as _params}
+           plastic-strategy-id ps-bookmark-sections-keys] :as _params}
    {:keys [search-text-fields] :as _opts}]
   (let [entity-connections-join (if-not (or (seq entity) (seq representative-group))
                                   ""
@@ -156,7 +156,11 @@
                                    entity-name entity-name plastic-strategy-id))
         ps-bookmark-select (if-not plastic-strategy-id
                              ""
-                             (format "psb.%s_id IS NOT NULL AS plastic_strategy_bookmark," entity-name))
+                             (format "json_agg(json_build_object('plastic_strategy_id', psb.plastic_strategy_id,
+                                                                 '%s_id', psb.%s_id,
+                                                                 'section_key', psb.section_key)) AS plastic_strategy_bookmarks,"
+                                     entity-name
+                                     entity-name))
         ps-bookmark-group-by (if-not plastic-strategy-id
                                ""
                                (format ", psb.%s_id" entity-name))
@@ -201,7 +205,10 @@
                      (str " AND e.capacity_building = :capacity-building")
 
                      (and upcoming (= entity-name "event"))
-                     (str " AND now() < e.start_date"))]
+                     (str " AND now() < e.start_date")
+
+                     ps-bookmark-sections-keys
+                     (str " AND psb.section_key IN (:v*:ps-bookmark-sections-keys)"))]
     (apply
      format
      "SELECT
