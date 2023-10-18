@@ -4,17 +4,25 @@ import api from '../../../../utils/api'
 import ResourceCard from '../../../../components/resource-card/resource-card'
 import styles from '../ps.module.scss'
 import ResourceCards from '../../../../modules/workspace/ps/resource-cards'
+import { iso2id, isoA2 } from '../../../../modules/workspace/ps/config'
+import { useRouter } from 'next/router'
 
 const View = ({ setLoginVisible, isAuthenticated }) => {
+  const router = useRouter()
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
+
   useEffect(() => {
-    api.get('/browse?country=710&topic=initiative').then((d) => {
-      setItems(d.data?.results)
-      setLoading(false)
-      console.log(d.data)
-    })
-  }, [])
+    const country = router.query.slug?.replace('plastic-strategy-', '')
+    const countryId = iso2id[isoA2[country]]
+    if (countryId != null) {
+      api.get(`/browse?country=${countryId}&topic=initiative`).then((d) => {
+        setItems(d.data?.results)
+        setLoading(false)
+        console.log(d.data)
+      })
+    }
+  }, [router])
   const handleBookmark = () => {
     console.log('TODO')
   }
