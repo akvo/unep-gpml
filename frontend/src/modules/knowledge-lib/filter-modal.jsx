@@ -20,6 +20,8 @@ import { UIStore } from '../../store'
 import { SearchOutlined } from '@ant-design/icons'
 import MultipleSelectFilter from '../../components/select/multiple-select-filter'
 import { SearchIcon } from '../../components/icons'
+import { Trans, t } from '@lingui/macro'
+
 const FilterModal = ({
   query,
   setShowFilterModal,
@@ -151,7 +153,7 @@ const FilterModal = ({
     <Modal
       centered
       className={styles.filterModal}
-      title="Filters"
+      title={<Trans>Filters</Trans>}
       visible={showFilterModal}
       onCancel={() => setShowFilterModal(false)}
       footer={[
@@ -161,14 +163,14 @@ const FilterModal = ({
           className="apply-button"
           onClick={() => handleApplyFilter()}
         >
-          Apply Filters
+          <Trans>Apply Filters</Trans>
         </Button>,
         <Button
           className="clear-button"
           onClick={() => setShowFilterModal(false)}
           type="link"
         >
-          Cancel
+          <Trans>Cancel</Trans>
         </Button>,
       ]}
     >
@@ -184,7 +186,7 @@ const FilterModal = ({
                   updateQuery('favorites', checked)
                 }
               >
-                My Bookmarks
+                <Trans>My Bookmarks</Trans>
               </Checkbox>
             </Space>
           </Col>
@@ -194,7 +196,7 @@ const FilterModal = ({
 
         {/* Sub-content type */}
         <MultipleSelectFilter
-          title="Sub-content type"
+          title={<Trans>Sub-content type</Trans>}
           options={
             !isEmpty(mainContentType)
               ? mainContentOption().map((content) => {
@@ -225,7 +227,7 @@ const FilterModal = ({
 
         {/* Tags */}
         <MultipleSelectFilter
-          title="Tags"
+          title={<Trans>Tags</Trans>}
           options={tagOpts || []}
           value={filter?.tag?.map((x) => x) || []}
           flag="tag"
@@ -234,7 +236,7 @@ const FilterModal = ({
         />
 
         <MultipleSelectFilter
-          title="Entities"
+          title={<Trans>Entities</Trans>}
           options={
             !isEmpty(organisations)
               ? organisations
@@ -254,7 +256,7 @@ const FilterModal = ({
         />
 
         <MultipleSelectFilter
-          title="Representative group"
+          title={<Trans>Representative group</Trans>}
           options={
             !isEmpty(representativeGroup)
               ? representativeOpts.map((x) => ({
@@ -279,7 +281,7 @@ const FilterModal = ({
           <Row type="flex" style={{ width: '100%' }} gutter={[10, 10]}>
             {/* Start date */}
             <DatePickerFilter
-              title="Start Date"
+              title={<Trans>Start Date</Trans>}
               value={filter?.startDate}
               flag="startDate"
               query={query}
@@ -293,7 +295,7 @@ const FilterModal = ({
             />
             {/* End date */}
             <DatePickerFilter
-              title="End Date"
+              title={<Trans>End Date</Trans>}
               value={filter?.endDate}
               flag="endDate"
               query={query}
@@ -370,7 +372,7 @@ const KnowledgeLibrarySearch = ({ updateQuery, filter }) => {
         <Input
           size="small"
           className="input-search"
-          placeholder="Search resources"
+          placeholder={<Trans>Search resources</Trans>}
           value={filter?.q}
           prefix={<SearchIcon />}
           onPressEnter={(e) => handleSearch(e.target.value)}

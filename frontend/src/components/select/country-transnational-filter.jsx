@@ -8,6 +8,7 @@ import { multicountryGroups } from '../../modules/knowledge-library/multicountry
 import { OptGroup } from 'rc-select'
 import './style.module.scss'
 import api from '../../utils/api'
+import { Trans } from '@lingui/macro'
 
 const { TabPane } = Tabs
 const { Option } = Select
@@ -77,7 +78,6 @@ const CountryTransnationalFilter = ({
     } else {
       delete updatedQuery.country
     }
-    console.log(updatedQuery)
     history.push({
       pathname: history.pathname,
       query: updatedQuery,
@@ -123,7 +123,7 @@ const CountryTransnationalFilter = ({
       onChange={handleChangeLocationTab}
     >
       <TabPane
-        tab="Countries"
+        tab={<Trans>Countries</Trans>}
         key="country"
         className="country-filter-tab-pane country"
         disabled={disable?.country}
@@ -133,7 +133,7 @@ const CountryTransnationalFilter = ({
           allowClear
           dropdownClassName="multiselection-dropdown"
           mode={countrySelectMode || ''}
-          placeholder="Countries"
+          placeholder={<Trans>Countries</Trans>}
           options={countryOpts}
           optionFilterProp="children"
           filterOption={(input, option) =>
@@ -146,7 +146,7 @@ const CountryTransnationalFilter = ({
         />
       </TabPane>
       <TabPane
-        tab="Multi-Country"
+        tab={<Trans>Multi-Country</Trans>}
         key="multi-country"
         className={`country-filter-tab-pane ${
           multiCountry ? 'multi-country-info' : 'multi-country'
@@ -159,7 +159,7 @@ const CountryTransnationalFilter = ({
           allowClear
           virtual={false}
           mode={multiCountrySelectMode || ''}
-          placeholder="Multi-Country"
+          placeholder={<Trans>Multi-Country</Trans>}
           optionFilterProp="children"
           filterOption={(input, option) => {
             return (

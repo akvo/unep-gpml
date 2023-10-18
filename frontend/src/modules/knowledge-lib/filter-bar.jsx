@@ -7,26 +7,27 @@ import CountryTransnationalFilter from '../../components/select/country-transnat
 import LocationDropdown from '../../components/location-dropdown/location-dropdown'
 import api from '../../utils/api'
 import { LeftOutlined, CloseOutlined } from '@ant-design/icons'
+import { Trans, t } from '@lingui/macro'
 
 export const resourceTypes = [
   {
     key: 'technical-resource',
-    label: 'Technical Resources',
+    label: t`Technical Resources`,
     title: 'technical_resource',
   },
-  { key: 'event', label: 'Events', title: 'event' },
-  { key: 'technology', label: 'Technologies', title: 'technology' },
+  { key: 'event', label: t`Events`, title: 'event' },
+  { key: 'technology', label: t`Technologies`, title: 'technology' },
   {
     key: 'capacity-building',
-    label: 'Capacity Development',
+    label: t`Capacity Development`,
     title: 'capacity building',
   },
-  { key: 'initiative', label: 'Initiatives', title: 'initiative' },
-  { key: 'action-plan', label: 'Action Plans', title: 'action_plan' },
-  { key: 'policy', label: 'Policies', title: 'policy' },
+  { key: 'initiative', label: t`Initiatives`, title: 'initiative' },
+  { key: 'action-plan', label: t`Action Plans`, title: 'action_plan' },
+  { key: 'policy', label: t`Policies`, title: 'policy' },
   {
     key: 'financing-resource',
-    label: 'Financing Resources',
+    label: t`Financing Resources`,
     title: 'financing_resource',
   },
 ]
@@ -152,7 +153,9 @@ const FilterBar = ({
               />
               <b>{allResources}</b>
             </div>
-            <span>All Resources</span>
+            <span>
+              <Trans>All Resources</Trans>
+            </span>
           </li>
           {resourceTypes.map((t) => (
             <li
@@ -209,7 +212,9 @@ const FilterBar = ({
               </div>
             )}
           <FilterIcon />
-          <span>Advanced Search</span>
+          <span>
+            <Trans>Advanced Search</Trans>
+          </span>
         </Button>
         {!isEmpty &&
           Object.keys(query).filter(
@@ -223,7 +228,7 @@ const FilterBar = ({
               className="reset-button"
               onClick={() => resetFilter()}
             >
-              Reset filters
+              <Trans>Reset filters</Trans>
             </Button>
           )}
         <LocationDropdown

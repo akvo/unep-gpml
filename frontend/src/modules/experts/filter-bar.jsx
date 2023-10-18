@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from "react";
-import api from "../../utils/api";
-import catTags from "../../utils/cat-tags.json";
+import React, { useEffect, useState } from 'react'
+import api from '../../utils/api'
+import catTags from '../../utils/cat-tags.json'
 // import { Icon } from "../../components/svg-icon/svg-icon";
-import { useQuery } from "../../utils/misc";
-import CountryTransnationalFilter from "../../components/select/country-transnational-filter";
-import LocationDropdown from "../../components/location-dropdown/location-dropdown";
+import { useQuery } from '../../utils/misc'
+import CountryTransnationalFilter from '../../components/select/country-transnational-filter'
+import LocationDropdown from '../../components/location-dropdown/location-dropdown'
+import { Trans, t } from '@lingui/macro'
 
 function slug(text) {
-  return text.toLowerCase().replaceAll("&", "n").replaceAll(" ", "-");
+  return text.toLowerCase().replaceAll('&', 'n').replaceAll(' ', '-')
 }
 
 const FilterBar = ({
@@ -16,66 +17,66 @@ const FilterBar = ({
   filterCountries,
   setFilterCountries,
 }) => {
-  const query = useQuery();
-  const [country, setCountry] = useState([]);
-  const [multiCountry, setMultiCountry] = useState([]);
-  const [multiCountryCountries, setMultiCountryCountries] = useState([]);
-  const [dropdownVisible, setDropdownVisible] = useState(false);
+  const query = useQuery()
+  const [country, setCountry] = useState([])
+  const [multiCountry, setMultiCountry] = useState([])
+  const [multiCountryCountries, setMultiCountryCountries] = useState([])
+  const [dropdownVisible, setDropdownVisible] = useState(false)
   const [disable, setDisable] = useState({
     country: false,
     multiCountry: false,
-  });
+  })
 
   const handleClick0 = (catIndex) => () => {
-    setFilter([catIndex]);
-  };
+    setFilter([catIndex])
+  }
   const handleBack = () => {
-    setFilter([]);
-  };
+    setFilter([])
+  }
 
   const handleClick1 = (tag) => () => {
-    let tagfilters = [...(filter[1] || [])];
+    let tagfilters = [...(filter[1] || [])]
     if (tagfilters.findIndex((it) => it === tag) > -1) {
-      tagfilters = tagfilters.filter((it) => it !== tag);
+      tagfilters = tagfilters.filter((it) => it !== tag)
     } else {
-      tagfilters = [...tagfilters, tag];
+      tagfilters = [...tagfilters, tag]
     }
-    setFilter([filter[0], tagfilters]);
-  };
+    setFilter([filter[0], tagfilters])
+  }
 
   const updateQuery = (param, value) => {
-    if (param === "country") {
+    if (param === 'country') {
       setDisable({
         ...disable,
         ...(value.length > 0
           ? { multiCountry: true }
           : { multiCountry: false }),
-      });
-      setCountry(value);
-      setFilterCountries(value.map((item) => item.toString()));
+      })
+      setCountry(value)
+      setFilterCountries(value.map((item) => item.toString()))
     }
-    if (param === "transnational") {
+    if (param === 'transnational') {
       setDisable({
         ...disable,
         ...(value.length > 0 ? { country: true } : { country: false }),
-      });
+      })
       if (value.length === 0) {
-        setFilterCountries([]);
+        setFilterCountries([])
       }
-      setMultiCountry(value);
+      setMultiCountry(value)
 
       value.forEach((id) => {
-        const check = filterCountries.find((x) => x === id.toString());
+        const check = filterCountries.find((x) => x === id.toString())
         !check &&
           api.get(`/country-group/${id}`).then((resp) => {
             setFilterCountries([
               ...filterCountries,
               ...resp.data?.[0]?.countries.map((item) => item.id.toString()),
-            ]);
-          });
-      });
+            ])
+          })
+      })
     }
-  };
+  }
 
   useEffect(() => {
     if (
@@ -83,11 +84,11 @@ const FilterBar = ({
       filterCountries.length > 0 &&
       multiCountry.length === 0
     ) {
-      setCountry(filterCountries.map((item) => parseInt(item)));
+      setCountry(filterCountries.map((item) => parseInt(item)))
     } else {
-      setCountry([]);
+      setCountry([])
     }
-  }, [filterCountries, multiCountry]);
+  }, [filterCountries, multiCountry])
 
   const countryList = (
     <CountryTransnationalFilter
@@ -105,19 +106,21 @@ const FilterBar = ({
       isExpert={true}
       disable={disable}
     />
-  );
+  )
 
   const title = (title) =>
-    title?.toLowerCase() === "capacity building"
-      ? "Capacity Development"
-      : title;
+    title?.toLowerCase() === 'capacity building'
+      ? 'Capacity Development'
+      : title
 
   return (
     <div className="filter-bar">
       {filter.length === 0 && (
         <div className="level-0">
           <div>
-            <small>Choose an expert category</small>
+            <small>
+              <Trans>Choose an expert category</Trans>
+            </small>
           </div>
           <div className="filter-tools">
             <ul>
@@ -127,7 +130,7 @@ const FilterBar = ({
                     {/* <Icon name={`cat-tags/${slug(cat.title)}`} fill="#67BEA1" /> */}
                     <span>{title(cat.title)}</span>
                   </li>
-                );
+                )
               })}
             </ul>
           </div>
@@ -136,14 +139,18 @@ const FilterBar = ({
       {filter.length > 0 && (
         <div className="level-1">
           <div className={`selected-btn s${filter[0]}`} onClick={handleBack}>
-            <small>&lt; Back to categories</small>
+            <small>
+              &lt; <Trans>Back to categories</Trans>
+            </small>
             {/* <Icon
               name={`cat-tags/${slug(catTags[filter[0]].title)}`}
               fill="#67BEA1"
             /> */}
             <div>
               <strong>{title(catTags[filter[0]].title)}</strong>
-              <small>Sub-topics</small>
+              <small>
+                <Trans>Sub-topics</Trans>
+              </small>
             </div>
           </div>
           <ul>
@@ -151,7 +158,7 @@ const FilterBar = ({
               <li
                 onClick={handleClick1(tag)}
                 className={
-                  filter[1] && filter[1].indexOf(tag) > -1 && "selected"
+                  filter[1] && filter[1].indexOf(tag) > -1 && 'selected'
                 }
               >
                 <div className="img-container">
@@ -175,7 +182,7 @@ const FilterBar = ({
         }}
       />
     </div>
-  );
-};
+  )
+}
 
-export default FilterBar;
+export default FilterBar

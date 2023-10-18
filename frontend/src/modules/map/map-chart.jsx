@@ -19,6 +19,7 @@ import { PatternLines } from '@vx/pattern'
 import classNames from 'classnames'
 import { useHistory } from 'react-router-dom'
 import { isEmpty } from 'lodash'
+import { Trans, t } from '@lingui/macro'
 
 import { topicNames, tTypes } from '../../utils/misc'
 import { curr, snakeToCamel } from './utils'
@@ -229,10 +230,10 @@ const MapChart = ({
   }
   const legendTitle =
     path === KNOWLEDGE_LIBRARY
-      ? 'Total resources per country'
+      ? t`Total resources per country`
       : path === STAKEHOLDER_OVERVIEW
-      ? 'Total stakeholders per country'
-      : 'Total experts per country'
+      ? t`Total stakeholders per country`
+      : t`Total experts per country`
   return (
     <>
       {showLegend && (
@@ -304,7 +305,9 @@ const MapChart = ({
                       stakeholderCount={stakeholderCount}
                     />
                   ) : (
-                    <div className="no-legend-warning">No legend</div>
+                    <div className="no-legend-warning">
+                      <Trans>No legend</Trans>
+                    </div>
                   )
                 ) : (
                   <Legend
@@ -545,17 +548,23 @@ const StakeholderTooltipContent = ({
       <div className="tooltip-table">
         <div className="table-head">
           <div>
-            <b className="stakeholder-type">Type</b>
+            <b className="stakeholder-type">
+              <Trans>Type</Trans>
+            </b>
           </div>
         </div>
         <div>
           {stakeholderToDisplay?.length === 0 ? (
             <>
               <div className="table-row">
-                <div className="tooltip-topic">Entity</div>
+                <div className="tooltip-topic">
+                  <Trans>Entity</Trans>
+                </div>
                 <div>
                   <div className="entity-row">
-                    <b className="entity-type">GPML Members</b>
+                    <b className="entity-type">
+                      <Trans>GPML Members</Trans>
+                    </b>
                     <div className="tooltip-count-wrapper">
                       <b className="tooltip-counts">
                         {dataToDisplay()?.['organisation']
@@ -565,7 +574,9 @@ const StakeholderTooltipContent = ({
                     </div>
                   </div>
                   <div className="entity-row">
-                    <b className="entity-type">GPML Non-Members</b>
+                    <b className="entity-type">
+                      <Trans>GPML Non-Members</Trans>
+                    </b>
                     <div className="tooltip-count-wrapper">
                       <b className="tooltip-counts">
                         {transnationalData()?.['nonMemberOrganisation']
@@ -577,7 +588,9 @@ const StakeholderTooltipContent = ({
                 </div>
               </div>
               <div className="table-row">
-                <div className="tooltip-topic">Individuals</div>
+                <div className="tooltip-topic">
+                  <Trans>Individuals</Trans>
+                </div>
 
                 <div className="tooltip-count-wrapper">
                   <b className="tooltip-counts">
@@ -590,10 +603,14 @@ const StakeholderTooltipContent = ({
             <>
               {stakeholderToDisplay?.includes('organisation') && (
                 <div className="table-row">
-                  <div className="tooltip-topic">Entity</div>
+                  <div className="tooltip-topic">
+                    <Trans>Entity</Trans>
+                  </div>
                   <div>
                     <div className="entity-row">
-                      <b className="entity-type">GPML Members</b>
+                      <b className="entity-type">
+                        <Trans>GPML Members</Trans>
+                      </b>
                       <div className="tooltip-count-wrapper">
                         <b className="tooltip-counts">
                           {dataToDisplay()?.['organisation']
@@ -603,7 +620,9 @@ const StakeholderTooltipContent = ({
                       </div>
                     </div>
                     <div className="entity-row">
-                      <b className="entity-type">GPML Non-Members</b>
+                      <b className="entity-type">
+                        <Trans>GPML Non-Members</Trans>
+                      </b>
                       <div className="tooltip-count-wrapper">
                         <b className="tooltip-counts">
                           {transnationalData()?.['nonMemberOrganisation']
@@ -617,7 +636,9 @@ const StakeholderTooltipContent = ({
               )}
               {stakeholderToDisplay?.includes('stakeholder') && (
                 <div className="table-row">
-                  <div className="tooltip-topic">Individuals</div>
+                  <div className="tooltip-topic">
+                    <Trans>Individuals</Trans>
+                  </div>
 
                   <div className="tooltip-count-wrapper">
                     <b className="tooltip-counts">
@@ -686,9 +707,15 @@ const KnowledgeLibraryToolTipContent = ({
       <table className="tooltip-table">
         <thead>
           <tr>
-            <th>Resource</th>
-            <th>National</th>
-            <th style={{ paddingLeft: '10px' }}>Transnational</th>
+            <th>
+              <Trans>Resource</Trans>
+            </th>
+            <th>
+              <Trans>National</Trans>
+            </th>
+            <th style={{ paddingLeft: '10px' }}>
+              <Trans>Transnational</Trans>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -772,7 +799,9 @@ const ExpertsTooltipContent = ({ data, geo }) => {
     >
       <h3>{geo.MAP_LABEL}</h3>
       <div className="entity-row">
-        <b className="entity-type">Experts</b>
+        <b className="entity-type">
+          <Trans>Experts</Trans>
+        </b>
         <div className="tooltip-count-wrapper">
           <b className="tooltip-counts">
             {data?.counts?.experts ? data?.counts?.experts : 0}
@@ -865,7 +894,11 @@ const Legend = ({ data, setFilterColor, selected }) => {
       </div>
     )
   }
-  return <div className="no-legend-warning">No legend</div>
+  return (
+    <div className="no-legend-warning">
+      <Trans>No legend</Trans>
+    </div>
+  )
 }
 
 export default memo(MapChart)
