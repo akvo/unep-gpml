@@ -175,7 +175,16 @@
      [:string
       {:decode/string str/upper-case
        :max 2
-       :min 2}]]]
+       :min 2}]]
+    [:ps_bookmark_sections_keys
+     {:optional true
+      :swagger {:description "The plastic strategy bookmark sections keys to filter by bookmark sections.
+This filter requires the 'ps_country_iso_code_a2' to be set."
+                :type "string"
+                :allowEmptyValue false}}
+     [:vector
+      {:decode/string (fn [s] (str/split s #","))}
+      [:string {:min 1}]]]]
    [:fn
     {:error/fn
      (fn [_ _]
@@ -191,7 +200,8 @@
   "Transforms API query parameters into a map of database filters."
   [{:keys [limit offset startDate endDate user-id favorites country transnational
            topic tag affiliation representativeGroup subContentType entity orderBy
-           descending q incCountsForTags featured capacity_building upcoming ps_country_iso_code_a2]
+           descending q incCountsForTags featured capacity_building upcoming
+           ps_country_iso_code_a2 ps_bookmark_sections_keys]
     :or {limit default-limit
          offset default-offset}}]
   (cond-> {}
@@ -257,6 +267,9 @@
 
     ps_country_iso_code_a2
     (assoc :ps-country-iso-code-a2 ps_country_iso_code_a2)
+
+    ps_bookmark_sections_keys
+    (assoc :ps-bookmark-sections-keys ps_bookmark_sections_keys)
 
     true
     (assoc :review-status "APPROVED")))
