@@ -3,8 +3,9 @@ import { PageLayout } from '..'
 import api from '../../../../utils/api'
 import ResourceCard from '../../../../components/resource-card/resource-card'
 import styles from '../ps.module.scss'
+import ResourceCards from '../../../../modules/workspace/ps/resource-cards'
 
-const View = () => {
+const View = ({ setLoginVisible, isAuthenticated }) => {
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
   useEffect(() => {
@@ -27,11 +28,9 @@ const View = () => {
         sidebar navigation to easily find relevant initatives.{' '}
       </p>
 
-      <div className={styles.cardsList} style={{ display: 'flex' }}>
-        {items.map((item) => (
-          <ResourceCard item={item} onBookmark={handleBookmark} />
-        ))}
-      </div>
+      <ResourceCards
+        {...{ items, handleBookmark, setLoginVisible, isAuthenticated }}
+      />
     </>
   )
 }
