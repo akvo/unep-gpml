@@ -13,6 +13,7 @@ const ResourceCards = ({
   isAuthenticated,
   handleBookmark,
   loading,
+  sectionKey,
 }) => {
   const router = useRouter()
   const [params, setParams] = useState(null)
@@ -58,6 +59,11 @@ const ResourceCards = ({
         {items.map((item) => (
           <ResourceCard
             item={item}
+            bookmarked={
+              item?.plasticStrategyBookmarks?.findIndex(
+                (it) => it.sectionKey === sectionKey
+              ) !== -1
+            }
             onBookmark={handleBookmark}
             onClick={showModal}
           />
@@ -68,6 +74,7 @@ const ResourceCards = ({
         visible={modalVisible}
         setVisible={setModalVisible}
         isServer={false}
+        onBookmark={handleBookmark}
         {...{
           setLoginVisible,
           isAuthenticated,
