@@ -330,6 +330,13 @@
                                                   :swagger {:tags ["organisation detail"]}
                                                   :parameters #ig/ref :gpml.handler.organisation-detail/get-content-params
                                                   :handler #ig/ref :gpml.handler.organisation-detail/get-content}}]]]
+                                        ["/organisations"
+                                         [""
+                                          {:get {:summary "List all organisations with advanced filtering/sorting.
+                                                           The list of properties are limited to the Plastic Strategy feature needs"
+                                                 :swagger {:tags ["organisation" "plastic-strategy"]}
+                                                 :parameters {:query #ig/ref :gpml.handler.organisation/list-params}
+                                                 :handler #ig/ref :gpml.handler.organisation/list}}]]
                                         ["/favorite" {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                                    #ig/ref :gpml.auth/auth-required]}
                                          [""
@@ -867,6 +874,8 @@
 
   :gpml.handler.non-member-organisation/get #ig/ref :gpml.config/common
   :gpml.handler.organisation/get #ig/ref :gpml.config/common
+  :gpml.handler.organisation/list #ig/ref :gpml.config/common
+  :gpml.handler.organisation/list-params {}
   :gpml.handler.organisation/post #ig/ref :gpml.config/common
   :gpml.handler.organisation/put #ig/ref :gpml.config/common
   :gpml.handler.organisation/post-params {}

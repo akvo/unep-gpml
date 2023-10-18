@@ -144,6 +144,52 @@ WHERE 1=1
 --~(when (true? (get-in params [:filters :is_member])) " AND is_member IS TRUE")
 --~(when (false? (get-in params [:filters :is_member])) " AND is_member IS FALSE")
 
+-- :name list-organisations :query :many
+-- :doc List organisations with advanced filtering (for PSW mainly)
+WITH organisations_strengths_cte AS (
+  SELECT organisation, initiative
+  FROM organisation_initiative
+  WHERE association IN ('owner', 'implementor', 'donor', 'partner')
+),
+organisations_cte AS (
+  SELECT
+    o.id,
+    o.name,
+    o.review_status,
+    o.is_member,
+    json_agg(
+      DISTINCT jsonb_build_object(
+        'id', t.id,
+        'tag', t.tag,
+        'private', t.private
+      )
+    ) FILTER (WHERE t.id IS NOT NULL) AS tags,
+    o.type,
+    o.geo_coverage_type,
+    array_remove(array_agg(DISTINCT og.country_group), NULL) AS geo_coverage_country_groups,
+    array_remove(array_agg(DISTINCT og.country), NULL) AS geo_coverage_countries,
+    array_remove(array_agg(DISTINCT og.country_state), NULL) AS geo_coverage_country_states,
+    array_remove(array_agg(DISTINCT COALESCE(og.country, og.country_group)), NULL) AS geo_coverage_values,
+    json_agg(
+      DISTINCT jsonb_build_object(
+        'id', st.id,
+        'email', st.email,
+        'first_name', st.first_name,
+        'last_name', st.last_name
+      )
+    ) FILTER (WHERE st.id IS NOT NULL) AS focal_points,
+    count(DISTINCT os_cte.initiative) as strengths
+  FROM organisation o
+  LEFT JOIN stakeholder_organisation sto ON (sto.organisation = o.id AND sto.association = 'focal-point')
+  LEFT JOIN stakeholder st ON sto.stakeholder = st.id
+  LEFT JOIN organisations_strengths_cte os_cte ON os_cte.organisation = o.id
+  LEFT JOIN organisation_tag ot ON o.id = ot.organisation
+  LEFT JOIN tag t ON ot.tag = t.id
+  LEFT JOIN organisation_geo_coverage og ON og.organisation = o.id
+--~ (#'gpml.db.organisation/list-organisations-cto-query-filter-and-params params)
+)
+--~ (#'gpml.db.organisation/list-organisations-query-and-filters params)
+
 -- :name get-organisation-files-to-migrate
 SELECT id, 'logo' AS file_type, 'images' AS file_key, logo AS content
 FROM organisation
