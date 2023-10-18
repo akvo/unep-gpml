@@ -187,14 +187,25 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
       [:string {:min 1}]]]]
    [:fn
     {:error/fn
-     (fn [_ _]
-       "Upcoming parameter is only supported for the 'event' topic.")}
-    (fn [{:keys [upcoming topic]}]
-      (if-not (true? upcoming)
-        true
+     (fn [{{:keys [ps_bookmark_sections_keys ps_country_iso_code_a2 upcoming topic]} :value} _]
+       (cond
+         (and ps_bookmark_sections_keys (not ps_country_iso_code_a2))
+         "The 'ps_country_iso_code_a2' parameter is required when using 'ps_bookmark_sections_keys'."
+
+         (not (and upcoming
+                   (= (count topic) 1)
+                   (= (first topic) "event")))
+         "Upcoming parameter is only supported for the 'event' topic."))}
+    (fn [{:keys [upcoming topic ps_country_iso_code_a2 ps_bookmark_sections_keys]}]
+      (and
+       (or
+        (not upcoming)
         (and upcoming
              (= (count topic) 1)
-             (= (first topic) "event"))))]])
+             (= (first topic) "event")))
+       (or
+        (not ps_bookmark_sections_keys)
+        (and ps_bookmark_sections_keys ps_country_iso_code_a2))))]])
 
 (defn api-filters->filters
   "Transforms API query parameters into a map of database filters."
