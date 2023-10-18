@@ -4,6 +4,7 @@ import { TrimText } from '../../utils/string'
 import { isEmpty } from 'lodash'
 import { LoadingOutlined } from '@ant-design/icons'
 import Link from 'next/link'
+import { Trans } from '@lingui/macro'
 
 const StakeholderList = ({
   view,
@@ -42,12 +43,14 @@ const StakeholderList = ({
             >
               {!isLoaded() || loading ? (
                 <h2 className="loading">
-                  <LoadingOutlined spin /> Loading
+                  <LoadingOutlined spin /> <Trans>Loading</Trans>
                 </h2>
               ) : isLoaded() && !loading && !isEmpty(results) ? (
                 <ResourceItem view={view} results={results} />
               ) : (
-                <h2 className="loading">There is no data to display</h2>
+                <h2 className="loading">
+                  <Trans>There is no data to display</Trans>
+                </h2>
               )}
             </Col>
             {!isEmpty(results) && (

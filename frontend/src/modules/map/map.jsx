@@ -3,6 +3,7 @@ import styles from './map.module.scss'
 import ReactTooltip from 'react-tooltip'
 import { LoadingOutlined, DownOutlined } from '@ant-design/icons'
 import MapChart from './map-chart'
+import { Trans } from '@lingui/macro'
 
 export const KNOWLEDGE_LIBRARY = 'knowledge'
 export const STAKEHOLDER_OVERVIEW = 'community'
@@ -35,7 +36,7 @@ const Maps = ({
       <div className="landing-container map-container">
         {!isLoaded() && (
           <h2 className="loading map-loader">
-            <LoadingOutlined spin /> Loading
+            <LoadingOutlined spin /> <Trans>Loading</Trans>
           </h2>
         )}
         <div

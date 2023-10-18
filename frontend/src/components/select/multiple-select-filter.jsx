@@ -3,6 +3,7 @@ import { Col, Space, Tag, Select } from 'antd'
 import isEmpty from 'lodash/isEmpty'
 import styles from './style.module.scss'
 import { SearchIcon } from '../icons'
+import { Trans } from '@lingui/macro'
 
 const MultipleSelectFilter = ({
   title,
@@ -25,7 +26,7 @@ const MultipleSelectFilter = ({
             onClose={() => updateQuery(flag, [])}
             onClick={() => updateQuery(flag, [])}
           >
-            Clear Selection
+            <Trans>Clear Selection</Trans>
           </Tag>
         ) : (
           ''
@@ -38,7 +39,7 @@ const MultipleSelectFilter = ({
           showSearch
           allowClear
           mode="multiple"
-          placeholder="All (default)"
+          placeholder={<Trans>All (default)</Trans>}
           options={options}
           filterOption={(input, option) =>
             option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
