@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from 'react'
 import {
   Carousel,
   Col,
@@ -10,47 +10,48 @@ import {
   Input,
   Divider,
   notification,
-} from "antd";
-import styles from "./styles.module.scss";
-import { Form as FinalForm, Field } from "react-final-form";
-import { auth0Client } from "../../utils/misc";
+} from 'antd'
+import styles from './styles.module.scss'
+import { Form as FinalForm, Field } from 'react-final-form'
+import { auth0Client } from '../../utils/misc'
+import { Trans } from '@lingui/macro'
 
 function ForgotPassword({ setSignIn, setForgotPassword, children }) {
-  const [form] = Form.useForm();
+  const [form] = Form.useForm()
 
-  const [initialValues, setInitialValues] = useState({});
-  const formRef = useRef();
+  const [initialValues, setInitialValues] = useState({})
+  const formRef = useRef()
 
   const handleOnForgotPassword = async (values) => {
-    const email = values.email;
+    const email = values.email
     auth0Client.changePassword(
       {
-        connection: "Username-Password-Authentication",
+        connection: 'Username-Password-Authentication',
         email: email,
       },
       (err, authResult) => {
         if (err) {
-          console.log(err);
+          console.log(err)
         }
         if (authResult) {
           notification.success({
             message: authResult,
-          });
-          setForgotPassword(false);
-          console.log(authResult);
+          })
+          setForgotPassword(false)
+          console.log(authResult)
           //window.origin = window.location.origin;
         }
       }
-    );
-  };
+    )
+  }
 
   const checkValidation = (values) => {
-    const errors = {};
+    const errors = {}
     if (!values.email?.trim()) {
-      errors.email = "Please enter email address";
+      errors.email = 'Please enter email address'
     }
-    return errors;
-  };
+    return errors
+  }
 
   return (
     <div className={styles.authContainer} style={{ paddingBottom: 40 }}>
@@ -62,14 +63,17 @@ function ForgotPassword({ setSignIn, setForgotPassword, children }) {
             validate={checkValidation}
             onSubmit={handleOnForgotPassword}
             render={({ handleSubmit, submitting, form }) => {
-              formRef.current = form;
+              formRef.current = form
               return (
                 <Form layout="vertical">
                   <Form.Item label="Email" style={{ marginBottom: 40 }}>
                     <Field name="email">
                       {({ input, meta }) => (
                         <>
-                          <Input {...input} placeholder="Enter your email" />
+                          <Input
+                            {...input}
+                            placeholder={<Trans>Enter your email</Trans>}
+                          />
                           {meta.touched && meta.error && (
                             <p color="error" className={styles.error}>
                               {meta.error}
@@ -86,16 +90,16 @@ function ForgotPassword({ setSignIn, setForgotPassword, children }) {
                     onClick={() => handleSubmit()}
                     style={{ marginTop: 20 }}
                   >
-                    SEND ME A LINK
-                  </Button>{" "}
+                    <Trans>SEND ME A LINK</Trans>
+                  </Button>{' '}
                 </Form>
-              );
+              )
             }}
           />
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default ForgotPassword;
+export default ForgotPassword
