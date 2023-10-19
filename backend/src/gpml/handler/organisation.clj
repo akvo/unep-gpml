@@ -362,7 +362,10 @@
             results (db.organisation/list-organisations conn opts)]
         (r/ok {:success? true
                :results results
-               :counts (db.organisation/list-organisations conn (assoc opts :count-only? true))}))
+               :counts (->> (assoc opts :count-only? true)
+                            (db.organisation/list-organisations conn)
+                            first
+                            :count)}))
       (catch Throwable t
         (let [log-data {:exception-message (ex-message t)
                         :exception-data (ex-data t)
