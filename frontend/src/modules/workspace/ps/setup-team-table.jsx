@@ -176,7 +176,7 @@ const SetupTeamTable = ({ psItem, members, setMembers }) => {
     <Table
       dataSource={members}
       loading={loading}
-      pagination={{ position: ['none', 'none'] }}
+      pagination={false}
     >
       {columns.map((col, cx) => {
         if (col.dataIndex === 'role') {
