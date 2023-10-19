@@ -5,77 +5,78 @@ const {
   entityRoleOptions,
   individualRoleOptions,
 } = UIStore.currentState
+import { t } from '@lingui/macro'
 
 import { newGeoCoverageFormat } from '../../utils/geo'
 
 const sdgsOptions = [
   {
     goal: 1,
-    name: 'No Poverty',
+    name: t`No Poverty`,
   },
   {
     goal: 2,
-    name: 'Zero Hunger',
+    name: t`Zero Hunger`,
   },
   {
     goal: 3,
-    name: 'Good Health and Well-being',
+    name: t`Good Health and Well-being`,
   },
   {
     goal: 4,
-    name: 'Quality Education',
+    name: t`Quality Education`,
   },
   {
     goal: 5,
-    name: 'Gender Equality',
+    name: t`Gender Equality`,
   },
   {
     goal: 6,
-    name: 'Clean Water and Sanitation',
+    name: t`Clean Water and Sanitation`,
   },
   {
     goal: 7,
-    name: 'Affordable and Clean Energy',
+    name: t`Affordable and Clean Energy`,
   },
   {
     goal: 8,
-    name: 'Decent Jobs and Economic Growth',
+    name: t`Decent Jobs and Economic Growth`,
   },
   {
     goal: 9,
-    name: 'Industry, Innovation and Infrastructure',
+    name: t`Industry, Innovation and Infrastructure`,
   },
   {
     goal: 10,
-    name: 'Reduced Inequalities',
+    name: t`Reduced Inequalities`,
   },
   {
     goal: 11,
-    name: 'Sustainable Cities and Communities',
+    name: t`Sustainable Cities and Communities`,
   },
   {
     goal: 12,
-    name: 'Responsible Consumption and Production',
+    name: t`Responsible Consumption and Production`,
   },
   {
     goal: 13,
-    name: 'Climate Action',
+    name: t`Climate Action`,
   },
   {
     goal: 14,
-    name: 'Life Below Water',
+    name: t`Life Below Water`,
   },
   {
     goal: 15,
-    name: 'Life on Land',
+    name: t`Life on Land`,
   },
   {
     goal: 16,
-    name: 'Peace and Justice - Strong Institutions',
+    name: t`Peace and Justice - Strong Institutions`,
   },
   {
     goal: 17,
-    name: 'Partnerships for the Goals',
+    name: t`Partnerships for the Goals`,
   },
 ]
 
@@ -103,15 +104,15 @@ export const schema = {
             required: ['title', 'summary', 'url'],
             properties: {
               title: {
-                title: 'Title',
+                title: t`Title`,
                 type: 'string',
               },
               summary: {
-                title: 'Description',
+                title: t`Description`,
                 type: 'string',
               },
               url: {
-                title: 'URL',
+                title: t`URL`,
                 type: 'string',
                 format: 'url',
               },
@@ -133,18 +134,18 @@ export const schema = {
             ],
             properties: {
               geoCoverageType: {
-                title: 'Select Geo-Coverage Type',
+                title: t`Select Geo-Coverage Type`,
                 type: 'string',
                 enum: ['global', 'transnational', 'national', 'sub-national'],
                 enumNames: [
-                  'Global',
-                  'Transnational',
-                  'National',
-                  'Subnational',
+                  t`Global`,
+                  t`Transnational`,
+                  t`National`,
+                  t`Subnational`,
                 ],
               },
               'S4_G2_24.3': {
-                title: 'GEO COVERAGE (Transnational)',
+                title: t`GEO COVERAGE (Transnational)`,
                 type: 'string',
                 enum: [],
                 enumNames: [],
@@ -154,7 +155,7 @@ export const schema = {
                 },
               },
               'S4_G2_24.4': {
-                title: 'GEO COVERAGE (Countries)',
+                title: t`GEO COVERAGE (Countries)`,
                 type: 'string',
                 enum: [],
                 enumNames: [],
@@ -164,7 +165,7 @@ export const schema = {
                 },
               },
               'S4_G2_24.2': {
-                title: 'National',
+                title: t`National`,
                 type: 'string',
                 enum: [],
                 enumNames: [],
@@ -174,7 +175,7 @@ export const schema = {
                 },
               },
               geoCoverageValueSubnational: {
-                title: 'Select a country',
+                title: t`Select a country`,
                 enum: [],
                 depend: {
                   id: 'geoCoverageType',
@@ -182,7 +183,7 @@ export const schema = {
                 },
               },
               geoCoverageCountryStates: {
-                title: 'State',
+                title: t`State`,
                 enum: [],
                 depend: {
                   id: 'geoCoverageType',
@@ -201,7 +202,7 @@ export const schema = {
             required: ['tags'],
             properties: {
               tags: {
-                title: 'Tags',
+                title: t`Tags`,
                 enum: [],
               },
             },
@@ -216,12 +217,12 @@ export const schema = {
             required: [],
             properties: {
               image: {
-                title: 'Banner',
+                title: t`Banner`,
                 type: 'string',
                 format: 'data-url',
               },
               thumbnail: {
-                title: 'Thumbnail (300x400)',
+                title: t`Thumbnail (300x400)`,
                 type: 'string',
                 format: 'data-url',
               },
@@ -237,7 +238,7 @@ export const schema = {
             required: [],
             properties: {
               entity: {
-                title: 'Entity connection',
+                title: t`Entity connection`,
                 description: 'entity',
                 custom: 'entity',
                 type: 'array',
@@ -247,7 +248,7 @@ export const schema = {
                   required: ['role', 'entity'],
                   properties: {
                     role: {
-                      title: 'Entity role',
+                      title: t`Entity role`,
                       enum: entityRoleOptions.map((x) => x.toLowerCase()),
                       enumNames: entityRoleOptions,
                     },
@@ -260,7 +261,7 @@ export const schema = {
                 },
               },
               individual: {
-                title: 'Individual connection',
+                title: t`Individual connection`,
                 description: 'individual',
                 custom: 'stakeholder',
                 type: 'array',
@@ -270,7 +271,7 @@ export const schema = {
                   required: ['role', 'stakeholder'],
                   properties: {
                     role: {
-                      title: 'User role',
+                      title: t`User role`,
                       enum: individualRoleOptions.map((x) =>
                         x !== 'Resource Editor'
                           ? x.toLowerCase()
@@ -279,7 +280,7 @@ export const schema = {
                       enumNames: individualRoleOptions,
                     },
                     stakeholder: {
-                      title: 'Indvidual',
+                      title: t`Indvidual`,
                       enum: [],
                       enumNames: [],
                     },
@@ -297,11 +298,11 @@ export const schema = {
             },
             properties: {
               info: {
-                title: 'Info And Docs',
+                title: t`Info And Docs`,
                 type: 'string',
               },
               related: {
-                title: 'Related Resource',
+                title: t`Related Resource`,
                 enum: [],
                 enumNames: [],
               },
@@ -323,8 +324,7 @@ export const schema = {
             required: [],
             properties: {
               S5_G1_4: {
-                title:
-                  'What is the MAIN focus of the initiative? (Please tick ALL that apply).',
+                title: t`What is the MAIN focus of the initiative? (Please tick ALL that apply).`,
                 type: 'array',
                 dependency: [
                   {
@@ -353,17 +353,16 @@ export const schema = {
                 items: {
                   enum: ['4-0', '4-1', '4-2', '4-3'],
                   enumNames: [
-                    'LEGISLATION, STANDARDS, RULES (e.g., agreeing new or changing rules or standards that others should comply with, new regulation, agreements, policies, economic instruments etc. including voluntary commitments).',
-                    'WORKING WITH PEOPLE (encouraging or enabling others, e.g., education, training, communication, awareness raising, behaviour change programmes).',
-                    'TECHNOLOGY and PROCESSES (new technical developments/innovation, e.g., research and development, new product design, new materials, processes etc., changes in practice, operations, environmental management and planning).',
-                    'MONITORING and ANALYSIS (collecting evidence around plastic discharge to the ocean/waterways, e.g., monitoring, analysis).',
+                    t`LEGISLATION, STANDARDS, RULES (e.g., agreeing new or changing rules or standards that others should comply with, new regulation, agreements, policies, economic instruments etc. including voluntary commitments).`,
+                    t`WORKING WITH PEOPLE (encouraging or enabling others, e.g., education, training, communication, awareness raising, behaviour change programmes).`,
+                    t`TECHNOLOGY and PROCESSES (new technical developments/innovation, e.g., research and development, new product design, new materials, processes etc., changes in practice, operations, environmental management and planning).`,
+                    t`MONITORING and ANALYSIS (collecting evidence around plastic discharge to the ocean/waterways, e.g., monitoring, analysis).`,
                   ],
                 },
                 uniqueItems: true,
               },
               'S5_G1_4.1.1': {
-                title:
-                  'Legislation, Standards and Rules. You have selected legislation, standards and rules as the type of initiative. What did the initiative specifically involve? (Please tick ALL that apply):',
+                title: t`Legislation, Standards and Rules. You have selected legislation, standards and rules as the type of initiative. What did the initiative specifically involve? (Please tick ALL that apply):`,
                 type: 'array',
                 dependency: [
                   {
@@ -390,23 +389,23 @@ export const schema = {
                     '4.1.1-10',
                   ],
                   enumNames: [
-                    'Official agreements',
-                    'Policy change or development',
-                    'High-level strategy',
-                    'Legislation or regulations',
-                    'Voluntary commitments',
-                    'New standard(s) or guideline(s)',
-                    'Change in taxes/subsidies',
-                    'Subsidy/financial incentives',
-                    'Ban(s)',
-                    'Package of measures combining incentives and infrastructure (e.g. deposit reward schemes)',
-                    'Other',
+                    t`Official agreements`,
+                    t`Policy change or development`,
+                    t`High-level strategy`,
+                    t`Legislation or regulations`,
+                    t`Voluntary commitments`,
+                    t`New standard(s) or guideline(s)`,
+                    t`Change in taxes/subsidies`,
+                    t`Subsidy/financial incentives`,
+                    t`Ban(s)`,
+                    t`Package of measures combining incentives and infrastructure (e.g. deposit reward schemes)`,
+                    t`Other`,
                   ],
                 },
                 uniqueItems: true,
               },
               'S5_G1_4.1.2': {
-                title: 'If you selected "Other", please specify',
+                title: t`If you selected "Other", please specify`,
                 type: 'string',
                 depend: {
                   id: 'S5_G1_4.1.1',
@@ -414,8 +413,7 @@ export const schema = {
                 },
               },
               'S5_G1_4.2.1': {
-                title:
-                  'Working with People. You have chosen working with people as the type of initiative. What did the initiative specifically involve? (Please tick ALL that apply):',
+                title: t`Working with People. You have chosen working with people as the type of initiative. What did the initiative specifically involve? (Please tick ALL that apply):`,
                 type: 'array',
                 dependency: [
                   {
@@ -450,31 +448,31 @@ export const schema = {
                     '4.2.1-18',
                   ],
                   enumNames: [
-                    'Awareness raising and behaviour change',
-                    'Education/Training',
-                    'Workshops',
-                    'Conferences',
-                    'Information campaign',
-                    'Behaviour change campaign/programme',
-                    'Community engagement',
-                    'Stakeholder engagement',
-                    'Citizen science',
-                    'Curriculum development',
-                    'Professional skills training',
-                    'Other training programmes',
-                    'Life-long learning',
-                    'Institutional development',
-                    'Primary school',
-                    'Secondary school',
-                    'Tertiary higher education',
-                    'Creative/arts event/exhibition',
-                    'Other',
+                    t`Awareness raising and behaviour change`,
+                    t`Education/Training`,
+                    t`Workshops`,
+                    t`Conferences`,
+                    t`Information campaign`,
+                    t`Behaviour change campaign/programme`,
+                    t`Community engagement`,
+                    t`Stakeholder engagement`,
+                    t`Citizen science`,
+                    t`Curriculum development`,
+                    t`Professional skills training`,
+                    t`Other training programmes`,
+                    t`Life-long learning`,
+                    t`Institutional development`,
+                    t`Primary school`,
+                    t`Secondary school`,
+                    t`Tertiary higher education`,
+                    t`Creative/arts event/exhibition`,
+                    t`Other`,
                   ],
                 },
                 uniqueItems: true,
               },
               'S5_G1_4.2.2': {
-                title: 'If you selected "Other", please specify:',
+                title: t`If you selected "Other", please specify:`,
                 type: 'string',
                 depend: {
                   id: 'S5_G1_4.2.1',
@@ -482,8 +480,7 @@ export const schema = {
                 },
               },
               'S5_G1_4.3.1': {
-                title:
-                  'Technology and Processes. You have chosen technology and processes as the type of initiative. What did the initiative specifically involve? (Please tick ALL that apply):',
+                title: t`Technology and Processes. You have chosen technology and processes as the type of initiative. What did the initiative specifically involve? (Please tick ALL that apply):`,
                 type: 'array',
                 dependency: [
                   {
@@ -521,34 +518,34 @@ export const schema = {
                     '4.3.1-21',
                   ],
                   enumNames: [
-                    'New product design',
-                    'Change in service provision',
-                    'Environmental social planning',
-                    'Change in practice',
-                    'Change in operations',
-                    'Industrial or production standard',
-                    'Different environmental management of land-based environments',
-                    'Different environmental management of aquatic environments',
-                    'Research and Development',
-                    'New infrastructure',
-                    'The use of compostable plastic',
-                    'The use of bio-based plastic',
-                    'The use of biodegradable plastic',
-                    'Reducing the environmental impact',
-                    'Developing a new material',
-                    'Developing a new process',
-                    'Manufacturing and production',
-                    'Standards',
-                    'Waste management',
-                    'Compostable plastic',
-                    'Bio-based plastic or bio-degradable plastic',
-                    'Other',
+                    t`New product design`,
+                    t`Change in service provision`,
+                    t`Environmental social planning`,
+                    t`Change in practice`,
+                    t`Change in operations`,
+                    t`Industrial or production standard`,
+                    t`Different environmental management of land-based environments`,
+                    t`Different environmental management of aquatic environments`,
+                    t`Research and Development`,
+                    t`New infrastructure`,
+                    t`The use of compostable plastic`,
+                    t`The use of bio-based plastic`,
+                    t`The use of biodegradable plastic`,
+                    t`Reducing the environmental impact`,
+                    t`Developing a new material`,
+                    t`Developing a new process`,
+                    t`Manufacturing and production`,
+                    t`Standards`,
+                    t`Waste management`,
+                    t`Compostable plastic`,
+                    t`Bio-based plastic or bio-degradable plastic`,
+                    t`Other`,
                   ],
                 },
                 uniqueItems: true,
               },
               'S5_G1_4.3.2': {
-                title: 'If you selected "Other", please specify:',
+                title: t`If you selected "Other", please specify:`,
                 type: 'string',
                 depend: {
                   id: 'S5_G1_4.3.1',
@@ -556,8 +553,7 @@ export const schema = {
                 },
               },
               'S5_G1_4.4.1': {
-                title:
-                  'Monitoring and Analysis. You have chosen monitoring and analysis as the type of initiatives. What did the initiative specifically involve? (Please tick ALL that apply):',
+                title: t`Monitoring and Analysis. You have chosen monitoring and analysis as the type of initiatives. What did the initiative specifically involve? (Please tick ALL that apply):`,
                 type: 'array',
                 dependency: [
                   {
@@ -583,22 +579,22 @@ export const schema = {
                     '4.4.1-9',
                   ],
                   enumNames: [
-                    'Monitoring: On or near ocean surface',
-                    'Monitoring: Water column',
-                    'Monitoring: On the seafloor',
-                    'Monitoring: On the shoreline',
-                    'Monitoring: Entanglement/ ingested/ in biota',
-                    'Monitoring: Air',
-                    'Review and synthesis: Environmental',
-                    'Review and synthesis: Economic',
-                    'Review and synthesis: Materials/Other',
-                    'Other',
+                    t`Monitoring: On or near ocean surface`,
+                    t`Monitoring: Water column`,
+                    t`Monitoring: On the seafloor`,
+                    t`Monitoring: On the shoreline`,
+                    t`Monitoring: Entanglement/ ingested/ in biota`,
+                    t`Monitoring: Air`,
+                    t`Review and synthesis: Environmental`,
+                    t`Review and synthesis: Economic`,
+                    t`Review and synthesis: Materials/Other`,
+                    t`Other`,
                   ],
                 },
                 uniqueItems: true,
               },
               'S5_G1_4.4.2': {
-                title: 'If you selected "Other", please specify:',
+                title: t`If you selected "Other", please specify:`,
                 type: 'string',
                 depend: {
                   id: 'S5_G1_4.4.1',
@@ -606,7 +602,7 @@ export const schema = {
                 },
               },
               'S5_G1_4.4.3': {
-                title: 'For monitoring, which programme/protocol did you use?',
+                title: t`For monitoring, which programme/protocol did you use?`,
                 type: 'string',
                 depend: {
                   id: 'S5_G1_4',
@@ -614,8 +610,7 @@ export const schema = {
                 },
               },
               'S5_G1_4.4.4': {
-                title:
-                  'How can the data and information from your monitoring programme be accessed?',
+                title: t`How can the data and information from your monitoring programme be accessed?`,
                 type: 'string',
                 depend: {
                   id: 'S5_G1_4',
@@ -623,8 +618,7 @@ export const schema = {
                 },
               },
               'S5_G1_4.4.5': {
-                title:
-                  "Please provide the URL's for any links to the monitoring data and information.",
+                title: t`Please provide the URL's for any links to the monitoring data and information.`,
                 type: 'array',
                 items: {
                   type: 'string',
@@ -638,8 +632,8 @@ export const schema = {
                 },
               },
               S5_G2_5: {
-                subTitle: 'Reporting and Measuring Progress',
-                title: 'Do you report and measure the initiative progress?',
+                subTitle: t`Reporting and Measuring Progress`,
+                title: t`Do you report and measure the initiative progress?`,
                 type: 'string',
                 dependency: [
                   {
@@ -649,17 +643,17 @@ export const schema = {
                 ],
                 enum: ['5-0', '5-1', '5-2', '5-3', '5-4', '5-5', '5-6'],
                 enumNames: [
-                  'Yes, reporting is voluntary',
-                  'Yes, it is a requirement',
-                  'No, there is no reporting mechanism',
-                  'No, reporting is voluntary',
-                  'No, there is not enough resources to support reporting',
-                  'No, reporting is too time-consuming',
-                  'Other',
+                  t`Yes, reporting is voluntary`,
+                  t`Yes, it is a requirement`,
+                  t`No, there is no reporting mechanism`,
+                  t`No, reporting is voluntary`,
+                  t`No, there is not enough resources to support reporting`,
+                  t`No, reporting is too time-consuming`,
+                  t`Other`,
                 ],
               },
               S5_G2_6: {
-                title: 'If you selected "Other", please specify.',
+                title: t`If you selected "Other", please specify.`,
                 type: 'string',
                 depend: {
                   id: 'S5_G2_5',
@@ -667,8 +661,7 @@ export const schema = {
                 },
               },
               S5_G2_7: {
-                title:
-                  'If yes, who do you report to? (Please tick ALL that apply):',
+                title: t`If yes, who do you report to? (Please tick ALL that apply):`,
                 type: 'array',
                 dependency: [
                   {
@@ -699,18 +692,17 @@ export const schema = {
                 items: {
                   enum: ['7-0', '7-1', '7-2', '7-3', '7-4'],
                   enumNames: [
-                    'Global Sustainable Development Goals (SDGs)',
-                    'Regional Sustainable Development Goals (SDGs)',
-                    'National Sustainable Development Goals (SDGs)',
-                    'Multilateral Environmental Agreements (MEAs)',
-                    'Other',
+                    t`Global Sustainable Development Goals (SDGs)`,
+                    t`Regional Sustainable Development Goals (SDGs)`,
+                    t`National Sustainable Development Goals (SDGs)`,
+                    t`Multilateral Environmental Agreements (MEAs)`,
+                    t`Other`,
                   ],
                 },
                 uniqueItems: true,
               },
               'S5_G2_7.1.0': {
-                title:
-                  'Which Sustainable Development Goals (SDGs) does your initiative apply to? (Please tick ALL that apply):',
+                title: t`Which Sustainable Development Goals (SDGs) does your initiative apply to? (Please tick ALL that apply):`,
                 type: 'array',
                 depend: {
                   id: 'S5_G2_7',
@@ -723,8 +715,7 @@ export const schema = {
                 uniqueItems: true,
               },
               'S5_G2_7.1.1': {
-                title:
-                  'Which Sustainable Development Goals (SDGs) does your initiative apply to? (Please tick ALL that apply):',
+                title: t`Which Sustainable Development Goals (SDGs) does your initiative apply to? (Please tick ALL that apply):`,
                 type: 'array',
                 depend: {
                   id: 'S5_G2_7',
@@ -737,8 +728,7 @@ export const schema = {
                 uniqueItems: true,
               },
               'S5_G2_7.1.2': {
-                title:
-                  'Which Sustainable Development Goals (SDGs) does your initiative apply to? (Please tick ALL that apply):',
+                title: t`Which Sustainable Development Goals (SDGs) does your initiative apply to? (Please tick ALL that apply):`,
                 type: 'array',
                 depend: {
                   id: 'S5_G2_7',
@@ -751,8 +741,7 @@ export const schema = {
                 uniqueItems: true,
               },
               'S5_G2_7.2': {
-                title:
-                  'Which Multilateral Environmental Agreements (MEAs) does your initiative apply to? (Please tick ALL that apply):',
+                title: t`Which Multilateral Environmental Agreements (MEAs) does your initiative apply to? (Please tick ALL that apply):`,
                 type: 'array',
                 depend: {
                   id: 'S5_G2_7',
@@ -765,7 +754,7 @@ export const schema = {
                 uniqueItems: true,
               },
               'S5_G2_7.3': {
-                title: 'If you selected "Other", please specify.',
+                title: t`If you selected "Other", please specify.`,
                 type: 'string',
                 depend: {
                   id: 'S5_G2_7',
@@ -773,8 +762,7 @@ export const schema = {
                 },
               },
               S5_G2_8: {
-                title:
-                  'Are the actual outcomes and impacts of the initiative evaluated?',
+                title: t`Are the actual outcomes and impacts of the initiative evaluated?`,
                 type: 'string',
                 dependency: [
                   {
@@ -786,7 +774,7 @@ export const schema = {
                 enumNames: ['Yes', 'No', 'Other'],
               },
               S5_G2_9: {
-                title: 'If you selected "Other", please specify.',
+                title: t`If you selected "Other", please specify.`,
                 type: 'string',
                 depend: {
                   id: 'S5_G2_8',
@@ -794,20 +782,18 @@ export const schema = {
                 },
               },
               S5_G2_10: {
-                title:
-                  'When do you expect the impact of the initiative to be evident?',
+                title: t`When do you expect the impact of the initiative to be evident?`,
                 type: 'string',
                 enum: ['10-0', '10-1', '10-2', '10-3'],
                 enumNames: [
-                  'Immediately (less than 1 year)',
-                  'In 1 to 3 years',
-                  'In 4 to 10 years',
-                  'In more than 10 years',
+                  t`Immediately (less than 1 year)`,
+                  t`In 1 to 3 years`,
+                  t`In 4 to 10 years`,
+                  t`In more than 10 years`,
                 ],
               },
               S5_G2_11: {
-                title:
-                  'If applicable, please specify when and how the outcomes will be evaluated (tick ALL that apply).',
+                title: t`If applicable, please specify when and how the outcomes will be evaluated (tick ALL that apply).`,
                 type: 'array',
                 items: {
                   enum: [
@@ -820,31 +806,28 @@ export const schema = {
                     '11-6',
                   ],
                   enumNames: [
-                    'Outcomes will be assessed once, when the initiative is completed',
-                    'Outcomes are being assessed at regular intervals',
-                    'Outcomes will be compared to a baseline measurement',
-                    'Outcomes will be compared to other sites or initiatives',
-                    'Environmental impacts will be evaluated',
-                    'Social impacts will be evaluated',
-                    'Economic impacts will be evaluated',
+                    t`Outcomes will be assessed once, when the initiative is completed`,
+                    t`Outcomes are being assessed at regular intervals`,
+                    t`Outcomes will be compared to a baseline measurement`,
+                    t`Outcomes will be compared to other sites or initiatives`,
+                    t`Environmental impacts will be evaluated`,
+                    t`Social impacts will be evaluated`,
+                    t`Economic impacts will be evaluated`,
                   ],
                 },
                 uniqueItems: true,
               },
               S5_G2_12: {
-                title:
-                  'Do you have specific key performance indicators (KPIs) for your initiative? If yes, please list up to 5.',
+                title: t`Do you have specific key performance indicators (KPIs) for your initiative? If yes, please list up to 5.`,
                 type: 'string',
               },
               S5_G2_13: {
-                title:
-                  'Please, describe if any co-benefits and/or side-effects of the initiative are captured in the evaluation.',
+                title: t`Please, describe if any co-benefits and/or side-effects of the initiative are captured in the evaluation.`,
                 type: 'string',
               },
               S5_G3_14: {
-                subTitle: 'Drivers and Barriers',
-                title:
-                  'Please, indicate which DRIVERS apply to this initiative? (Please tick ALL that apply).',
+                subTitle: t`Drivers and Barriers`,
+                title: t`Please, indicate which DRIVERS apply to this initiative? (Please tick ALL that apply).`,
                 type: 'array',
                 items: {
                   enum: [
@@ -870,33 +853,32 @@ export const schema = {
                     '14-19',
                   ],
                   enumNames: [
-                    'Cost considerations (e.g., reducing costs of existing processes or of disposal)',
-                    'Protecting economy / livelihoods or shareholder value',
-                    'Economic drivers (e.g., fines, subsidies, taxes)',
-                    'A change in public opinion',
-                    'Members of the public have actively complained / asked for change',
-                    'Media coverage, wide exposure of marine litter and plastic pollution',
-                    'Campaigning with or through NGOs',
-                    'Reputation / image of the member state or organisation',
-                    'Leadership by specific individuals in the member state or organisation (who personallydrove change)',
-                    'Existing policy or recent policy change',
-                    'Anticipating a future policy change',
-                    'National or organisational values',
-                    'Peer pressure from similar actors',
-                    'Transnational or global agreements and momentum towards change (e.g.,UN resolutions)',
-                    'Concern about environmental impact (e.g.,harm to animals and plants)',
-                    'Concern about potential human health impacts',
-                    'Protecting future generations',
-                    'Spiritual or religious values',
-                    'Moral considerations',
-                    'Sustainable Development Goals',
+                    t`Cost considerations (e.g., reducing costs of existing processes or of disposal)`,
+                    t`Protecting economy / livelihoods or shareholder value`,
+                    t`Economic drivers (e.g., fines, subsidies, taxes)`,
+                    t`A change in public opinion`,
+                    t`Members of the public have actively complained / asked for change`,
+                    t`Media coverage, wide exposure of marine litter and plastic pollution`,
+                    t`Campaigning with or through NGOs`,
+                    t`Reputation / image of the member state or organisation`,
+                    t`Leadership by specific individuals in the member state or organisation (who personallydrove change)`,
+                    t`Existing policy or recent policy change`,
+                    t`Anticipating a future policy change`,
+                    t`National or organisational values`,
+                    t`Peer pressure from similar actors`,
+                    t`Transnational or global agreements and momentum towards change (e.g.,UN resolutions)`,
+                    t`Concern about environmental impact (e.g.,harm to animals and plants)`,
+                    t`Concern about potential human health impacts`,
+                    t`Protecting future generations`,
+                    t`Spiritual or religious values`,
+                    t`Moral considerations`,
+                    t`Sustainable Development Goals`,
                   ],
                 },
                 uniqueItems: true,
               },
               S5_G3_15: {
-                title:
-                  'Please,indicate which BARRIERS apply to this initiative? (Please tick ALL that apply).',
+                title: t`Please,indicate which BARRIERS apply to this initiative? (Please tick ALL that apply).`,
                 type: 'array',
                 items: {
                   enum: [
@@ -921,33 +903,32 @@ export const schema = {
                     '15-18',
                   ],
                   enumNames: [
-                    "So-called 'perverse incentives' (e.g.,subsidies and taxes) that encourage wasteful use of plastic",
-                    'Not enough regulation/control mechanisms',
-                    'Existing regulation is not enforced',
-                    'Conflicting regulation',
-                    'Initiative depends on other actors who are not cooperating',
-                    'Lobbying by business/industry',
-                    'Not enough reliable information',
-                    'Not enough support from within the member state/organisation',
-                    'Not enough support from outside the member state/organisation',
-                    'Technological/technical resources',
-                    'Problems with alternative materials and supplies',
-                    'Gaps in expertise in member state/organisation ',
-                    'Gaps in leadership/political will',
-                    'Not enough infrastructure',
-                    'Conflicting goals/other priorities more urgent',
-                    'Fragmentation',
-                    'Gaps in public awareness/public not interested',
-                    'Habits in society too slow to change',
-                    'People like plastics (convenience, hygiene etc.)',
+                    t`So-called 'perverse incentives' (e.g.,subsidies and taxes) that encourage wasteful use of plastic`,
+                    t`Not enough regulation/control mechanisms`,
+                    t`Existing regulation is not enforced`,
+                    t`Conflicting regulation`,
+                    t`Initiative depends on other actors who are not cooperating`,
+                    t`Lobbying by business/industry`,
+                    t`Not enough reliable information`,
+                    t`Not enough support from within the member state/organisation`,
+                    t`Not enough support from outside the member state/organisation`,
+                    t`Technological/technical resources`,
+                    t`Problems with alternative materials and supplies`,
+                    t`Gaps in expertise in member state/organisation`,
+                    t`Gaps in leadership/political will`,
+                    t`Not enough infrastructure`,
+                    t`Conflicting goals/other priorities more urgent`,
+                    t`Fragmentation`,
+                    t`Gaps in public awareness/public not interested`,
+                    t`Habits in society too slow to change`,
+                    t`People like plastics (convenience, hygiene etc.)`,
                   ],
                 },
                 uniqueItems: true,
               },
               S5_G3_26: {
-                subTitle: 'Initiative Scope & Target',
-                title:
-                  'Lifecycle. Which specific part of the lifecycle/plastic supply chain is your initiative targeting? (Please tick ALL that apply).',
+                subTitle: t`Initiative Scope & Target`,
+                title: t`Lifecycle. Which specific part of the lifecycle/plastic supply chain is your initiative targeting? (Please tick ALL that apply).`,
                 type: 'array',
                 dependency: [
                   {
@@ -967,20 +948,20 @@ export const schema = {
                     '26-7',
                   ],
                   enumNames: [
-                    'Raw materials',
-                    'Design',
-                    'Production / manufacture',
-                    'Use / consumption',
-                    'Collection / sorting of plastics after use',
-                    'Management of collected plastics',
-                    'Clean-up of marine litter and plasticpollutionfrom the environment',
-                    'Other',
+                    t`Raw materials`,
+                    t`Design`,
+                    t`Production / manufacture`,
+                    t`Use / consumption`,
+                    t`Collection / sorting of plastics after use`,
+                    t`Management of collected plastics`,
+                    t`Clean-up of marine litter and plasticpollutionfrom the environment`,
+                    t`Other`,
                   ],
                 },
                 uniqueItems: true,
               },
               S5_G3_27: {
-                title: 'If you selected "Other", please specify.',
+                title: t`If you selected "Other", please specify.`,
                 type: 'string',
                 depend: {
                   id: 'S5_G3_26',
@@ -988,8 +969,7 @@ export const schema = {
                 },
               },
               S5_G3_28: {
-                title:
-                  'Impact. What impacts or harms does the initiative relate to? (Please tick ALL that apply).',
+                title: t`Impact. What impacts or harms does the initiative relate to? (Please tick ALL that apply).`,
                 type: 'array',
                 dependency: [
                   {
@@ -1010,21 +990,21 @@ export const schema = {
                     '28-8',
                   ],
                   enumNames: [
-                    'Human health and wellbeing',
-                    'Biodiversity',
-                    'Marine organisms',
-                    'Ecosystem Services',
-                    'Food chain',
-                    'Economics and Trade',
-                    'All of the above',
-                    'Not applicable',
-                    'Other',
+                    t`Human health and wellbeing`,
+                    t`Biodiversity`,
+                    t`Marine organisms`,
+                    t`Ecosystem Services`,
+                    t`Food chain`,
+                    t`Economics and Trade`,
+                    t`All of the above`,
+                    t`Not applicable`,
+                    t`Other`,
                   ],
                 },
                 uniqueItems: true,
               },
               S5_G3_29: {
-                title: 'If you selected "Other", please specify.',
+                title: t`If you selected "Other", please specify.`,
                 type: 'string',
                 depend: {
                   id: 'S5_G3_28',
@@ -1032,8 +1012,7 @@ export const schema = {
                 },
               },
               S5_G3_30: {
-                title:
-                  'Sector. Does your initiative target a specific sector? (Please tick ALL that apply).',
+                title: t`Sector. Does your initiative target a specific sector? (Please tick ALL that apply).`,
                 type: 'array',
                 dependency: [
                   {
@@ -1063,30 +1042,30 @@ export const schema = {
                     '30-17',
                   ],
                   enumNames: [
-                    'Packaging',
-                    'Textiles',
-                    'Transportation',
-                    'Building, construction, demolition,industrial machinery',
-                    'Automotive',
-                    'Electrical and electronics',
-                    'Agriculture',
-                    'Fisheries',
-                    'Aquaculture',
-                    'Food & Beverages',
-                    'Personal Healthcare',
-                    'Medical',
-                    'Retail',
-                    'Tourism',
-                    'Wastewater/Sewage management',
-                    'All of the above',
-                    'Not applicable',
-                    'Other',
+                    t`Packaging`,
+                    t`Textiles`,
+                    t`Transportation`,
+                    t`Building, construction, demolition,industrial machinery`,
+                    t`Automotive`,
+                    t`Electrical and electronics`,
+                    t`Agriculture`,
+                    t`Fisheries`,
+                    t`Aquaculture`,
+                    t`Food & Beverages`,
+                    t`Personal Healthcare`,
+                    t`Medical`,
+                    t`Retail`,
+                    t`Tourism`,
+                    t`Wastewater/Sewage management`,
+                    t`All of the above`,
+                    t`Not applicable`,
+                    t`Other`,
                   ],
                 },
                 uniqueItems: true,
               },
               S5_G3_31: {
-                title: 'If you selected "Other", please specify.',
+                title: t`If you selected "Other", please specify.`,
                 type: 'string',
                 depend: {
                   id: 'S5_G3_30',
@@ -1094,18 +1073,17 @@ export const schema = {
                 },
               },
               S5_G4_33: {
-                subTitle: 'Total Stakeholders Engaged',
-                title:
-                  'How many different groups and organisations have you engaged with in total?',
+                subTitle: t`Total Stakeholders Engaged`,
+                title: t`How many different groups and organisations have you engaged with in total?`,
                 type: 'string',
               },
               S5_G4_34: {
-                title: 'How many stakeholders have you engaged in total?',
+                title: t`How many stakeholders have you engaged in total?`,
                 type: 'number',
               },
               S5_G5_35: {
-                subTitle: 'Funding',
-                title: 'What funding sources did you use?',
+                subTitle: t`Funding`,
+                title: t`What funding sources did you use?`,
                 type: 'string',
                 dependency: [
                   {
@@ -1115,17 +1093,17 @@ export const schema = {
                 ],
                 enum: ['35-0', '35-1', '35-2', '35-3', '35-4', '35-6', '35-7'],
                 enumNames: [
-                  'Crowdfunded',
-                  'Voluntary donations',
-                  'Public Financing',
-                  'Private Sector',
-                  'Mixed',
-                  'Not applicable',
-                  'Other',
+                  t`Crowdfunded`,
+                  t`Voluntary donations`,
+                  t`Public Financing`,
+                  t`Private Sector`,
+                  t`Mixed`,
+                  t`Not applicable`,
+                  t`Other`,
                 ],
               },
               'S5_G5_35.1': {
-                title: 'If you selected "Other", please specify.',
+                title: t`If you selected "Other", please specify.`,
                 type: 'string',
                 depend: {
                   id: 'S5_G5_35',
@@ -1133,29 +1111,28 @@ export const schema = {
                 },
               },
               S5_G5_36: {
-                title:
-                  'How much money (amount) has been invested in the initiative so far?',
+                title: t`How much money (amount) has been invested in the initiative so far?`,
                 type: 'number',
               },
               'S5_G5_36.1': {
-                title: 'Currency',
+                title: t`Currency`,
                 type: 'string',
                 enum: [],
                 enumNames: [],
               },
               S5_G5_37: {
-                title: 'Are there in-kind contributions as well?',
+                title: t`Are there in-kind contributions as well?`,
                 type: 'number',
               },
               'S5_G5_37.1': {
-                title: 'Currency',
+                title: t`Currency`,
                 type: 'string',
                 enum: [],
                 enumNames: [],
               },
               S5_G6_38: {
-                subTitle: 'Duration',
-                title: 'Is your initiative a one-off activity or ongoing?',
+                subTitle: t`Duration`,
+                title: t`Is your initiative a one-off activity or ongoing?`,
                 type: 'string',
                 dependency: [
                   {
@@ -1165,16 +1142,16 @@ export const schema = {
                 ],
                 enum: ['38-0', '38-1', '38-2', '38-3', '38-4', '38-5'],
                 enumNames: [
-                  'Single event',
-                  'Ongoing activity less than one year',
-                  'Ongoing activity 1-3 years',
-                  'Ongoing activity more than 3 years long',
-                  'Not applicable',
-                  'Other',
+                  t`Single event`,
+                  t`Ongoing activity less than one year`,
+                  t`Ongoing activity 1-3 years`,
+                  t`Ongoing activity more than 3 years long`,
+                  t`Not applicable`,
+                  t`Other`,
                 ],
               },
               S5_G6_39: {
-                title: 'If you selected "Other", please specify.',
+                title: t`If you selected "Other", please specify.`,
                 type: 'string',
                 depend: {
                   id: 'S5_G6_38',
@@ -1182,21 +1159,21 @@ export const schema = {
                 },
               },
               S5_G7_41: {
-                subTitle: 'Contact Info',
-                title: 'Where can users best contact you to learn more?',
+                subTitle: t`Contact Info`,
+                title: t`Where can users best contact you to learn more?`,
                 type: 'string',
                 enum: ['41-0', '41-1', '41-2', '41-3', '41-4', '41-5'],
                 enumNames: [
-                  'Email',
-                  'LinkedIn',
-                  'Twitter',
-                  'Facebook',
-                  'Instagram',
-                  'Other',
+                  t`Email`,
+                  t`LinkedIn`,
+                  t`Twitter`,
+                  t`Facebook`,
+                  t`Instagram`,
+                  t`Other`,
                 ],
               },
               'S5_G7_41.1': {
-                title: 'Please provide the details',
+                title: t`Please provide the details`,
                 type: 'string',
                 string: true,
                 depend: {
@@ -1233,15 +1210,15 @@ export const schema = {
             required: ['title', 'summary', 'url'],
             properties: {
               title: {
-                title: 'Title',
+                title: t`Title`,
                 type: 'string',
               },
               summary: {
-                title: 'Description',
+                title: t`Description`,
                 type: 'string',
               },
               url: {
-                title: 'URL',
+                title: t`URL`,
                 type: 'string',
                 format: 'url',
               },
@@ -1262,18 +1239,18 @@ export const schema = {
             ],
             properties: {
               geoCoverageType: {
-                title: 'Select Geo-Coverage Type',
+                title: t`Select Geo-Coverage Type`,
                 type: 'string',
                 enum: ['global', 'transnational', 'national', 'sub-national'],
                 enumNames: [
-                  'Global',
-                  'Transnational',
-                  'National',
-                  'Subnational',
+                  t`Global`,
+                  t`Transnational`,
+                  t`National`,
+                  t`Subnational`,
                 ],
               },
               geoCoverageValueTransnational: {
-                title: 'GEO COVERAGE (Transnational)',
+                title: t`GEO COVERAGE (Transnational)`,
                 enum: [],
                 countries: [],
                 depend: {
@@ -1282,7 +1259,7 @@ export const schema = {
                 },
               },
               geoCoverageCountries: {
-                title: 'GEO COVERAGE (Countries)',
+                title: t`GEO COVERAGE (Countries)`,
                 enum: [],
                 depend: {
                   id: 'geoCoverageType',
@@ -1290,7 +1267,7 @@ export const schema = {
                 },
               },
               geoCoverageValueSubnational: {
-                title: 'Select a country',
+                title: t`Select a country`,
                 enum: [],
                 depend: {
                   id: 'geoCoverageType',
@@ -1298,7 +1275,7 @@ export const schema = {
                 },
               },
               geoCoverageCountryStates: {
-                title: 'Select a State',
+                title: t`Select a State`,
                 enum: [],
                 depend: {
                   id: 'geoCoverageType',
@@ -1317,7 +1294,7 @@ export const schema = {
             required: ['tags'],
             properties: {
               tags: {
-                title: 'Tags',
+                title: t`Tags`,
                 enum: [],
               },
             },
@@ -1332,12 +1309,12 @@ export const schema = {
             required: [],
             properties: {
               image: {
-                title: 'Image',
+                title: t`Image`,
                 type: 'string',
                 format: 'data-url',
               },
               thumbnail: {
-                title: 'Thumbnail',
+                title: t`Thumbnail`,
                 type: 'string',
                 format: 'data-url',
               },
@@ -1353,7 +1330,7 @@ export const schema = {
             required: [],
             properties: {
               entity: {
-                title: 'Entity connection',
+                title: t`Entity connection`,
                 description: 'entity',
                 custom: 'entity',
                 type: 'array',
@@ -1363,12 +1340,12 @@ export const schema = {
                   required: ['role', 'entity'],
                   properties: {
                     role: {
-                      title: 'Entity role',
+                      title: t`Entity role`,
                       enum: entityRoleOptions.map((x) => x.toLowerCase()),
                       enumNames: entityRoleOptions,
                     },
                     entity: {
-                      title: 'Entity',
+                      title: t`Entity`,
                       enum: [],
                       enumNames: [],
                     },
@@ -1376,7 +1353,7 @@ export const schema = {
                 },
               },
               individual: {
-                title: 'Individual connection',
+                title: t`Individual connection`,
                 description: 'individual',
                 custom: 'stakeholder',
                 type: 'array',
@@ -1386,7 +1363,7 @@ export const schema = {
                   required: ['role', 'stakeholder'],
                   properties: {
                     role: {
-                      title: 'User role',
+                      title: t`User role`,
                       enum: individualRoleOptions.map((x) =>
                         x !== 'Resource Editor'
                           ? x.toLowerCase()
@@ -1395,7 +1372,7 @@ export const schema = {
                       enumNames: individualRoleOptions,
                     },
                     stakeholder: {
-                      title: 'Indvidual',
+                      title: t`Indvidual`,
                       enum: [],
                       enumNames: [],
                     },
@@ -1413,11 +1390,11 @@ export const schema = {
             },
             properties: {
               info: {
-                title: 'Info And Docs',
+                title: t`Info And Docs`,
                 type: 'string',
               },
               related: {
-                title: 'Related Resource',
+                title: t`Related Resource`,
                 enum: [],
                 enumNames: [],
               },
@@ -1440,7 +1417,7 @@ export const schema = {
             required: [],
             properties: {
               publishYear: {
-                title: 'Publication Year',
+                title: t`Publication Year`,
                 type: 'string',
               },
             },
@@ -1451,12 +1428,12 @@ export const schema = {
             required: [],
             properties: {
               validFrom: {
-                title: 'Valid From',
+                title: t`Valid From`,
                 type: 'string',
                 format: 'date',
               },
               validTo: {
-                title: 'Valid To',
+                title: t`Valid To`,
                 type: 'string',
                 format: 'date',
               },
@@ -1489,15 +1466,15 @@ export const schema = {
             required: ['title', 'summary', 'url'],
             properties: {
               title: {
-                title: 'Title',
+                title: t`Title`,
                 type: 'string',
               },
               summary: {
-                title: 'Description',
+                title: t`Description`,
                 type: 'string',
               },
               url: {
-                title: 'URL',
+                title: t`URL`,
                 type: 'string',
                 format: 'url',
               },
@@ -1518,18 +1495,18 @@ export const schema = {
             ],
             properties: {
               geoCoverageType: {
-                title: 'Select Geo-Coverage Type',
+                title: t`Select Geo-Coverage Type`,
                 type: 'string',
                 enum: ['global', 'transnational', 'national', 'sub-national'],
                 enumNames: [
-                  'Global',
-                  'Transnational',
-                  'National',
-                  'Subnational',
+                  t`Global`,
+                  t`Transnational`,
+                  t`National`,
+                  t`Subnational`,
                 ],
               },
               geoCoverageValueTransnational: {
-                title: 'GEO COVERAGE (Transnational)',
+                title: t`GEO COVERAGE (Transnational)`,
                 enum: [],
                 depend: {
                   id: 'geoCoverageType',
@@ -1537,7 +1514,7 @@ export const schema = {
                 },
               },
               geoCoverageCountries: {
-                title: 'GEO COVERAGE (Countries)',
+                title: t`GEO COVERAGE (Countries)`,
                 enum: [],
                 depend: {
                   id: 'geoCoverageType',
@@ -1545,7 +1522,7 @@ export const schema = {
                 },
               },
               geoCoverageValueSubnational: {
-                title: 'Select a country',
+                title: t`Select a country`,
                 enum: [],
                 depend: {
                   id: 'geoCoverageType',
@@ -1553,7 +1530,7 @@ export const schema = {
                 },
               },
               geoCoverageCountryStates: {
-                title: 'State',
+                title: t`State`,
                 enum: [],
                 depend: {
                   id: 'geoCoverageType',
@@ -1572,7 +1549,7 @@ export const schema = {
             required: ['tags'],
             properties: {
               tags: {
-                title: 'Tags',
+                title: t`Tags`,
                 enum: [],
               },
             },
@@ -1587,12 +1564,12 @@ export const schema = {
             required: [],
             properties: {
               image: {
-                title: 'Image',
+                title: t`Image`,
                 type: 'string',
                 format: 'data-url',
               },
               thumbnail: {
-                title: 'Thumbnail',
+                title: t`Thumbnail`,
                 type: 'string',
                 format: 'data-url',
               },
@@ -1608,7 +1585,7 @@ export const schema = {
             required: [],
             properties: {
               entity: {
-                title: 'Entity connection',
+                title: t`Entity connection`,
                 description: 'entity',
                 custom: 'entity',
                 type: 'array',
@@ -1618,12 +1595,12 @@ export const schema = {
                   required: ['role', 'entity'],
                   properties: {
                     role: {
-                      title: 'Entity role',
+                      title: t`Entity role`,
                       enum: entityRoleOptions.map((x) => x.toLowerCase()),
                       enumNames: entityRoleOptions,
                     },
                     entity: {
-                      title: 'Entity',
+                      title: t`Entity`,
                       enum: [],
                       enumNames: [],
                     },
@@ -1631,7 +1608,7 @@ export const schema = {
                 },
               },
               individual: {
-                title: 'Individual connection',
+                title: t`Individual connection`,
                 description: 'individual',
                 custom: 'stakeholder',
                 type: 'array',
@@ -1641,7 +1618,7 @@ export const schema = {
                   required: ['role', 'stakeholder'],
                   properties: {
                     role: {
-                      title: 'User role',
+                      title: t`User role`,
                       enum: individualRoleOptions.map((x) =>
                         x !== 'Resource Editor'
                           ? x.toLowerCase()
@@ -1650,7 +1627,7 @@ export const schema = {
                       enumNames: individualRoleOptions,
                     },
                     stakeholder: {
-                      title: 'Indvidual',
+                      title: t`Indvidual`,
                       enum: [],
                       enumNames: [],
                     },
@@ -1668,11 +1645,11 @@ export const schema = {
             },
             properties: {
               info: {
-                title: 'Info And Docs',
+                title: t`Info And Docs`,
                 type: 'string',
               },
               related: {
-                title: 'Related Resource',
+                title: t`Related Resource`,
                 enum: [],
                 enumNames: [],
               },
@@ -1694,11 +1671,11 @@ export const schema = {
             required: [],
             properties: {
               originalTitle: {
-                title: 'Original Title',
+                title: t`Original Title`,
                 type: 'string',
               },
               lang: {
-                title: 'Language',
+                title: t`Language`,
                 default: 'en',
                 enum: Object.keys(languages).map((langCode) => langCode),
                 enumNames: Object.keys(languages).map(
@@ -1708,20 +1685,20 @@ export const schema = {
             },
           },
           dataSource: {
-            title: 'Data Source',
+            title: t`Data Source`,
             type: 'string',
           },
           typeOfLaw: {
-            title: 'Type Of Law',
+            title: t`Type Of Law`,
             enum: [
-              'Miscellaneous',
-              'Legislation',
-              'Regulation',
-              'Constitution',
+              t`Miscellaneous`,
+              t`Legislation`,
+              t`Regulation`,
+              t`Constitution`,
             ],
           },
           recordNumber: {
-            title: 'Record Number',
+            title: t`Record Number`,
             type: 'string',
           },
           date: {
@@ -1730,35 +1707,35 @@ export const schema = {
             required: [],
             properties: {
               firstPublicationDate: {
-                title: 'First Publication Date',
+                title: t`First Publication Date`,
                 type: 'string',
                 format: 'date',
               },
               latestAmendmentDate: {
-                title: 'Last Amendment Date',
+                title: t`Last Amendment Date`,
                 type: 'string',
                 format: 'date',
               },
             },
           },
           status: {
-            title: 'Status',
-            enum: ['Repealed', 'In force', 'Not yet in force'],
+            title: t`Status`,
+            enum: [t`Repealed`, t`In force`, t`Not yet in force`],
           },
           implementingMea: {
-            title: 'Implementing MEA',
+            title: t`Implementing MEA`,
             enum: [],
           },
           topics: {
-            title: 'Topics',
+            title: t`Topics`,
             enum: [
-              'Trade and Investment',
-              'Chemicals and waste',
-              'Biological diversity',
-              'Marine and Freshwater',
-              'Climate and Atmosphere',
-              'Land and Agriculture',
-              'Environmental Governance',
+              t`Trade and Investment`,
+              t`Chemicals and waste`,
+              t`Biological diversity`,
+              t`Marine and Freshwater`,
+              t`Climate and Atmosphere`,
+              t`Land and Agriculture`,
+              t`Environmental Governance`,
             ],
           },
         },
@@ -1788,15 +1765,15 @@ export const schema = {
             required: ['title', 'summary', 'url'],
             properties: {
               title: {
-                title: 'Title',
+                title: t`Title`,
                 type: 'string',
               },
               summary: {
-                title: 'Description',
+                title: t`Description`,
                 type: 'string',
               },
               url: {
-                title: 'URL',
+                title: t`URL`,
                 type: 'string',
                 format: 'url',
               },
@@ -1819,18 +1796,18 @@ export const schema = {
             ],
             properties: {
               geoCoverageType: {
-                title: 'Select Geo-Coverage Type',
+                title: t`Select Geo-Coverage Type`,
                 type: 'string',
                 enum: ['global', 'transnational', 'national', 'sub-national'],
                 enumNames: [
-                  'Global',
-                  'Transnational',
-                  'National',
-                  'Subnational',
+                  t`Global`,
+                  t`Transnational`,
+                  t`National`,
+                  t`Subnational`,
                 ],
               },
               geoCoverageValueTransnational: {
-                title: 'GEO COVERAGE (Transnational)',
+                title: t`GEO COVERAGE (Transnational)`,
                 enum: [],
                 depend: {
                   id: 'geoCoverageType',
@@ -1838,7 +1815,7 @@ export const schema = {
                 },
               },
               geoCoverageCountries: {
-                title: 'GEO COVERAGE (Countries)',
+                title: t`GEO COVERAGE (Countries)`,
                 enum: [],
                 depend: {
                   id: 'geoCoverageType',
@@ -1846,7 +1823,7 @@ export const schema = {
                 },
               },
               geoCoverageValueSubnational: {
-                title: 'Select a country',
+                title: t`Select a country`,
                 enum: [],
                 depend: {
                   id: 'geoCoverageType',
@@ -1854,7 +1831,7 @@ export const schema = {
                 },
               },
               geoCoverageCountryStates: {
-                title: 'State',
+                title: t`State`,
                 enum: [],
                 depend: {
                   id: 'geoCoverageType',
@@ -1873,7 +1850,7 @@ export const schema = {
             required: ['tags'],
             properties: {
               tags: {
-                title: 'Tags',
+                title: t`Tags`,
                 enum: [],
               },
             },
@@ -1888,12 +1865,12 @@ export const schema = {
             required: [],
             properties: {
               image: {
-                title: 'Banner',
+                title: t`Banner`,
                 type: 'string',
                 format: 'data-url',
               },
               thumbnail: {
-                title: 'Thumbnail',
+                title: t`Thumbnail`,
                 type: 'string',
                 format: 'data-url',
               },
@@ -1909,7 +1886,7 @@ export const schema = {
             required: [],
             properties: {
               entity: {
-                title: 'Entity connection',
+                title: t`Entity connection`,
                 description: 'entity',
                 custom: 'entity',
                 type: 'array',
@@ -1919,12 +1896,12 @@ export const schema = {
                   required: ['role', 'entity'],
                   properties: {
                     role: {
-                      title: 'Entity role',
+                      title: t`Entity role`,
                       enum: entityRoleOptions.map((x) => x.toLowerCase()),
                       enumNames: entityRoleOptions,
                     },
                     entity: {
-                      title: 'Entity',
+                      title: t`Entity`,
                       enum: [],
                       enumNames: [],
                     },
@@ -1932,7 +1909,7 @@ export const schema = {
                 },
               },
               individual: {
-                title: 'Individual connection',
+                title: t`Individual connection`,
                 description: 'individual',
                 custom: 'stakeholder',
                 type: 'array',
@@ -1942,7 +1919,7 @@ export const schema = {
                   required: ['role', 'stakeholder'],
                   properties: {
                     role: {
-                      title: 'User role',
+                      title: t`User role`,
                       enum: individualRoleOptions.map((x) =>
                         x !== 'Resource Editor'
                           ? x.toLowerCase()
@@ -1951,7 +1928,7 @@ export const schema = {
                       enumNames: individualRoleOptions,
                     },
                     stakeholder: {
-                      title: 'Indvidual',
+                      title: t`Indvidual`,
                       enum: [],
                       enumNames: [],
                     },
@@ -1969,11 +1946,11 @@ export const schema = {
             },
             properties: {
               info: {
-                title: 'Info And Docs',
+                title: t`Info And Docs`,
                 type: 'string',
               },
               related: {
-                title: 'Related Resource',
+                title: t`Related Resource`,
                 enum: [],
                 enumNames: [],
               },
@@ -1996,15 +1973,15 @@ export const schema = {
             required: [],
             properties: {
               valueAmount: {
-                title: 'Value Amount',
+                title: t`Value Amount`,
                 type: 'number',
               },
               valueCurrency: {
-                title: 'Value Currency',
+                title: t`Value Currency`,
                 enum: [],
               },
               valueRemark: {
-                title: 'Value Remark',
+                title: t`Value Remark`,
                 type: 'string',
               },
             },
@@ -2015,12 +1992,12 @@ export const schema = {
             required: [],
             properties: {
               validFrom: {
-                title: 'Valid From',
+                title: t`Valid From`,
                 type: 'string',
                 format: 'date',
               },
               validTo: {
-                title: 'Valid To',
+                title: t`Valid To`,
                 type: 'string',
                 format: 'date',
               },
@@ -2053,15 +2030,15 @@ export const schema = {
             required: ['title', 'summary', 'url'],
             properties: {
               title: {
-                title: 'Title',
+                title: t`Title`,
                 type: 'string',
               },
               summary: {
-                title: 'Description',
+                title: t`Description`,
                 type: 'string',
               },
               url: {
-                title: 'URL',
+                title: t`URL`,
                 type: 'string',
                 format: 'url',
               },
@@ -2084,18 +2061,18 @@ export const schema = {
             ],
             properties: {
               geoCoverageType: {
-                title: 'Select Geo-Coverage Type',
+                title: t`Select Geo-Coverage Type`,
                 type: 'string',
                 enum: ['global', 'transnational', 'national', 'sub-national'],
                 enumNames: [
-                  'Global',
-                  'Transnational',
-                  'National',
-                  'Subnational',
+                  t`Global`,
+                  t`Transnational`,
+                  t`National`,
+                  t`Subnational`,
                 ],
               },
               geoCoverageValueTransnational: {
-                title: 'GEO COVERAGE (Transnational)',
+                title: t`GEO COVERAGE (Transnational)`,
                 enum: [],
                 depend: {
                   id: 'geoCoverageType',
@@ -2103,7 +2080,7 @@ export const schema = {
                 },
               },
               geoCoverageCountries: {
-                title: 'GEO COVERAGE (Countries)',
+                title: t`GEO COVERAGE (Countries)`,
                 enum: [],
                 depend: {
                   id: 'geoCoverageType',
@@ -2111,7 +2088,7 @@ export const schema = {
                 },
               },
               geoCoverageValueSubnational: {
-                title: 'Select a country',
+                title: t`Select a country`,
                 enum: [],
                 depend: {
                   id: 'geoCoverageType',
@@ -2119,7 +2096,7 @@ export const schema = {
                 },
               },
               geoCoverageCountryStates: {
-                title: 'State',
+                title: t`State`,
                 enum: [],
                 depend: {
                   id: 'geoCoverageType',
@@ -2138,7 +2115,7 @@ export const schema = {
             required: ['tags'],
             properties: {
               tags: {
-                title: 'Tags',
+                title: t`Tags`,
                 enum: [],
               },
             },
@@ -2153,12 +2130,12 @@ export const schema = {
             required: [],
             properties: {
               image: {
-                title: 'Image',
+                title: t`Image`,
                 type: 'string',
                 format: 'data-url',
               },
               thumbnail: {
-                title: 'Thumbnail',
+                title: t`Thumbnail`,
                 type: 'string',
                 format: 'data-url',
               },
@@ -2174,7 +2151,7 @@ export const schema = {
             required: [],
             properties: {
               entity: {
-                title: 'Entity connection',
+                title: t`Entity connection`,
                 description: 'entity',
                 custom: 'entity',
                 type: 'array',
@@ -2184,12 +2161,12 @@ export const schema = {
                   required: ['role', 'entity'],
                   properties: {
                     role: {
-                      title: 'Entity role',
+                      title: t`Entity role`,
                       enum: entityRoleOptions.map((x) => x.toLowerCase()),
                       enumNames: entityRoleOptions,
                     },
                     entity: {
-                      title: 'Entity',
+                      title: t`Entity`,
                       enum: [],
                       enumNames: [],
                     },
@@ -2197,7 +2174,7 @@ export const schema = {
                 },
               },
               individual: {
-                title: 'Individual connection',
+                title: t`Individual connection`,
                 description: 'individual',
                 custom: 'stakeholder',
                 type: 'array',
@@ -2207,7 +2184,7 @@ export const schema = {
                   required: ['role', 'stakeholder'],
                   properties: {
                     role: {
-                      title: 'User role',
+                      title: t`User role`,
                       enum: individualRoleOptions.map((x) =>
                         x !== 'Resource Editor'
                           ? x.toLowerCase()
@@ -2216,7 +2193,7 @@ export const schema = {
                       enumNames: individualRoleOptions,
                     },
                     stakeholder: {
-                      title: 'Indvidual',
+                      title: t`Indvidual`,
                       enum: [],
                       enumNames: [],
                     },
@@ -2234,11 +2211,11 @@ export const schema = {
             },
             properties: {
               info: {
-                title: 'Info And Docs',
+                title: t`Info And Docs`,
                 type: 'string',
               },
               related: {
-                title: 'Related Resource',
+                title: t`Related Resource`,
                 enum: [],
                 enumNames: [],
               },
@@ -2260,7 +2237,7 @@ export const schema = {
             required: [],
             properties: {
               publishYear: {
-                title: 'Publication Year',
+                title: t`Publication Year`,
                 type: 'string',
               },
             },
@@ -2292,15 +2269,15 @@ export const schema = {
             required: ['title', 'description', 'url'],
             properties: {
               title: {
-                title: 'Title',
+                title: t`Title`,
                 type: 'string',
               },
               description: {
-                title: 'Description',
+                title: t`Description`,
                 type: 'string',
               },
               url: {
-                title: 'URL',
+                title: t`URL`,
                 type: 'string',
                 format: 'url',
               },
@@ -2323,18 +2300,18 @@ export const schema = {
             ],
             properties: {
               geoCoverageType: {
-                title: 'Select Geo-Coverage Type',
+                title: t`Select Geo-Coverage Type`,
                 type: 'string',
                 enum: ['global', 'transnational', 'national', 'sub-national'],
                 enumNames: [
-                  'Global',
-                  'Transnational',
-                  'National',
-                  'Subnational',
+                  t`Global`,
+                  t`Transnational`,
+                  t`National`,
+                  t`Subnational`,
                 ],
               },
               geoCoverageValueTransnational: {
-                title: 'GEO COVERAGE (Transnational)',
+                title: t`GEO COVERAGE (Transnational)`,
                 enum: [],
                 depend: {
                   id: 'geoCoverageType',
@@ -2342,7 +2319,7 @@ export const schema = {
                 },
               },
               geoCoverageCountries: {
-                title: 'GEO COVERAGE (Countries)',
+                title: t`GEO COVERAGE (Countries)`,
                 enum: [],
                 depend: {
                   id: 'geoCoverageType',
@@ -2350,7 +2327,7 @@ export const schema = {
                 },
               },
               geoCoverageValueSubnational: {
-                title: 'Select a country',
+                title: t`Select a country`,
                 enum: [],
                 depend: {
                   id: 'geoCoverageType',
@@ -2358,7 +2335,7 @@ export const schema = {
                 },
               },
               geoCoverageCountryStates: {
-                title: 'State',
+                title: t`State`,
                 enum: [],
                 depend: {
                   id: 'geoCoverageType',
@@ -2377,7 +2354,7 @@ export const schema = {
             required: ['tags'],
             properties: {
               tags: {
-                title: 'Tags',
+                title: t`Tags`,
                 enum: [],
               },
             },
@@ -2392,12 +2369,12 @@ export const schema = {
             required: [],
             properties: {
               image: {
-                title: 'Image',
+                title: t`Image`,
                 type: 'string',
                 format: 'data-url',
               },
               thumbnail: {
-                title: 'Thumbnail',
+                title: t`Thumbnail`,
                 type: 'string',
                 format: 'data-url',
               },
@@ -2413,7 +2390,7 @@ export const schema = {
             required: [],
             properties: {
               entity: {
-                title: 'Entity connection',
+                title: t`Entity connection`,
                 description: 'entity',
                 custom: 'entity',
                 type: 'array',
@@ -2423,12 +2400,12 @@ export const schema = {
                   required: ['role', 'entity'],
                   properties: {
                     role: {
-                      title: 'Entity role',
+                      title: t`Entity role`,
                       enum: entityRoleOptions.map((x) => x.toLowerCase()),
                       enumNames: entityRoleOptions,
                     },
                     entity: {
-                      title: 'Entity',
+                      title: t`Entity`,
                       enum: [],
                       enumNames: [],
                     },
@@ -2436,7 +2413,7 @@ export const schema = {
                 },
               },
               individual: {
-                title: 'Individual connection',
+                title: t`Individual connection`,
                 description: 'individual',
                 custom: 'stakeholder',
                 type: 'array',
@@ -2446,7 +2423,7 @@ export const schema = {
                   required: ['role', 'stakeholder'],
                   properties: {
                     role: {
-                      title: 'User role',
+                      title: t`User role`,
                       enum: individualRoleOptions.map((x) =>
                         x !== 'Resource Editor'
                           ? x.toLowerCase()
@@ -2455,7 +2432,7 @@ export const schema = {
                       enumNames: individualRoleOptions,
                     },
                     stakeholder: {
-                      title: 'Indvidual',
+                      title: t`Indvidual`,
                       enum: [],
                       enumNames: [],
                     },
@@ -2473,11 +2450,11 @@ export const schema = {
             },
             properties: {
               info: {
-                title: 'Info And Docs',
+                title: t`Info And Docs`,
                 type: 'string',
               },
               related: {
-                title: 'Related Resource',
+                title: t`Related Resource`,
                 enum: [],
                 enumNames: [],
               },
@@ -2499,7 +2476,7 @@ export const schema = {
             required: [],
             properties: {
               publishYear: {
-                title: 'Publication Year',
+                title: t`Publication Year`,
                 type: 'string',
               },
             },

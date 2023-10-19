@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState, useCallback } from "react";
-import styles from "./styles.module.scss";
-import { UIStore } from "../../store";
+import React, { useEffect, useState, useCallback } from 'react'
+import styles from './styles.module.scss'
+import { UIStore } from '../../store'
 import {
   Row,
   Col,
@@ -12,26 +12,27 @@ import {
   Modal,
   notification,
   Typography,
-} from "antd";
-import StickyBox from "react-sticky-box";
+} from 'antd'
+import StickyBox from 'react-sticky-box'
 
-import TrashIcon from "../../images/resource-detail/trash-icn.svg";
-import EditIcon from "../../images/resource-detail/edit-icn.svg";
-import FollowIcon from "../../images/resource-detail/follow-icn.svg";
+import TrashIcon from '../../images/resource-detail/trash-icn.svg'
+import EditIcon from '../../images/resource-detail/edit-icn.svg'
+import FollowIcon from '../../images/resource-detail/follow-icn.svg'
 import {
   LinkOutlined,
   LoadingOutlined,
   DeleteOutlined,
-} from "@ant-design/icons";
-import api from "../../utils/api";
-import { resourceTypeToTopicType } from "../../utils/misc";
+} from '@ant-design/icons'
+import api from '../../utils/api'
+import { resourceTypeToTopicType } from '../../utils/misc'
+import { Trans, t } from '@lingui/macro'
 
-import isEmpty from "lodash/isEmpty";
-import { redirectError } from "../error/error-util";
-import { useAuth0 } from "@auth0/auth0-react";
-import { randomColor, eventTrack } from "../../utils/misc";
-import ResourceCards from "../../components/resource-cards/resource-cards";
-import { useRouter } from "next/router";
+import isEmpty from 'lodash/isEmpty'
+import { redirectError } from '../error/error-util'
+import { useAuth0 } from '@auth0/auth0-react'
+import { randomColor, eventTrack } from '../../utils/misc'
+import ResourceCards from '../../components/resource-cards/resource-cards'
+import { useRouter } from 'next/router'
 
 const CardComponent = ({ title, style, children, getRef }) => {
   return (
@@ -40,8 +41,8 @@ const CardComponent = ({ title, style, children, getRef }) => {
         {children}
       </Card>
     </div>
-  );
-};
+  )
+}
 
 const SharePanel = ({
   profile,
@@ -53,51 +54,51 @@ const SharePanel = ({
   handleEditBtn,
   history,
 }) => {
-  const noEditTopics = new Set(["stakeholder"]);
+  const noEditTopics = new Set(['stakeholder'])
 
   const canEdit = () =>
     isAuthenticated &&
-    profile.reviewStatus === "APPROVED" &&
-    (profile.role === "ADMIN" ||
+    profile.reviewStatus === 'APPROVED' &&
+    (profile.role === 'ADMIN' ||
       profile.id === data.createdBy ||
-      data.owners.includes(profile.id));
+      data.owners.includes(profile.id))
 
   const canDelete = () =>
     isAuthenticated &&
-    profile.reviewStatus === "APPROVED" &&
-    profile.role === "ADMIN";
+    profile.reviewStatus === 'APPROVED' &&
+    profile.role === 'ADMIN'
 
   const handleChangeRelation = (relationType) => {
-    let association = relation ? [...relation.association] : [];
+    let association = relation ? [...relation.association] : []
     if (!association.includes(relationType)) {
-      association = [...association, relationType];
+      association = [...association, relationType]
     } else {
-      association = association.filter((it) => it !== relationType);
+      association = association.filter((it) => it !== relationType)
     }
     handleRelationChange({
       topicId: parseInt(id),
       association,
-      topic: resourceTypeToTopicType("organisation"),
-    });
-  };
+      topic: resourceTypeToTopicType('organisation'),
+    })
+  }
 
   return (
     <div className="sticky-panel">
       <div
         className="sticky-panel-item"
         onClick={() => {
-          handleChangeRelation("interested in");
+          handleChangeRelation('interested in')
           relation &&
           relation.association &&
-          relation.association.indexOf("interested in") !== -1
-            ? eventTrack("Entity view", "Unfollow", "Button")
-            : eventTrack("Entity view", "Follow", "Button");
+          relation.association.indexOf('interested in') !== -1
+            ? eventTrack('Entity view', 'Unfollow', 'Button')
+            : eventTrack('Entity view', 'Follow', 'Button')
         }}
       >
         <FollowIcon className="svg-icon" />
         {relation &&
         relation.association &&
-        relation.association.indexOf("interested in") !== -1 ? (
+        relation.association.indexOf('interested in') !== -1 ? (
           <h2>Unfollow</h2>
         ) : (
           <h2>Follow</h2>
@@ -115,34 +116,34 @@ const SharePanel = ({
           className="sticky-panel-item"
           onClick={() => {
             Modal.error({
-              className: "popup-delete",
+              className: 'popup-delete',
               centered: true,
               closable: true,
               icon: <DeleteOutlined />,
-              title: "Are you sure you want to delete this entity?",
-              content: "Please be aware this action cannot be undone.",
-              okText: "Delete",
-              okType: "danger",
+              title: 'Are you sure you want to delete this entity?',
+              content: 'Please be aware this action cannot be undone.',
+              okText: 'Delete',
+              okType: 'danger',
               onOk() {
-                eventTrack("Entity view", "Delete", "Button");
+                eventTrack('Entity view', 'Delete', 'Button')
                 return api
                   .delete(`/detail/organisation/${id}`)
                   .then((res) => {
                     notification.success({
-                      message: "Entity deleted successfully",
-                    });
+                      message: 'Entity deleted successfully',
+                    })
                     history.push({
                       pathname: `/connect/community`,
-                    });
+                    })
                   })
                   .catch((err) => {
-                    console.error(err);
+                    console.error(err)
                     notification.error({
-                      message: "Oops, something went wrong",
-                    });
-                  });
+                      message: 'Oops, something went wrong',
+                    })
+                  })
               },
-            });
+            })
           }}
         >
           <TrashIcon className="svg-icon" />
@@ -150,8 +151,8 @@ const SharePanel = ({
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
 const StakeholderDetail = ({
   setStakeholderSignupModalVisible,
@@ -174,30 +175,30 @@ const StakeholderDetail = ({
     meaOptions: s.meaOptions,
     transnationalOptions: s.transnationalOptions,
     icons: s.icons,
-  }));
-  const { loginWithPopup } = useAuth0();
-  const router = useRouter();
-  const [data, setData] = useState(null);
-  const [relations, setRelations] = useState([]);
-  const [ownedResources, setOwnedResources] = useState([]);
-  const [bookedResources, setBookedResources] = useState([]);
-  const [ownedResourcesCount, setOwnedResourcesCount] = useState(0);
-  const [bookedResourcesCount, setBookedResourcesCount] = useState(0);
-  const [ownedResourcesPage, setOwnedResourcesPage] = useState(0);
-  const [bookedResourcesPage, setBookedResourcesPage] = useState(0);
-  const [warningVisible, setWarningVisible] = useState(false);
-  const { id } = router.query;
+  }))
+  const { loginWithPopup } = useAuth0()
+  const router = useRouter()
+  const [data, setData] = useState(null)
+  const [relations, setRelations] = useState([])
+  const [ownedResources, setOwnedResources] = useState([])
+  const [bookedResources, setBookedResources] = useState([])
+  const [ownedResourcesCount, setOwnedResourcesCount] = useState(0)
+  const [bookedResourcesCount, setBookedResourcesCount] = useState(0)
+  const [ownedResourcesPage, setOwnedResourcesPage] = useState(0)
+  const [bookedResourcesPage, setBookedResourcesPage] = useState(0)
+  const [warningVisible, setWarningVisible] = useState(false)
+  const { id } = router.query
 
   const relation = relations.find(
     (it) =>
       it.topicId === parseInt(id) &&
-      it.topic === resourceTypeToTopicType("organisation")
-  );
+      it.topic === resourceTypeToTopicType('organisation')
+  )
 
-  const isConnectStakeholders = ["organisation", "stakeholder"].includes(
-    "organisation"
-  );
-  const breadcrumbLink = isConnectStakeholders ? "stakeholders" : "browse";
+  const isConnectStakeholders = ['organisation', 'stakeholder'].includes(
+    'organisation'
+  )
+  const breadcrumbLink = isConnectStakeholders ? 'stakeholders' : 'browse'
 
   const isLoaded = useCallback(
     () =>
@@ -206,73 +207,73 @@ const StakeholderDetail = ({
           (isConnectStakeholders ? !isEmpty(profile) : true)
       ),
     [countries, profile, isConnectStakeholders]
-  );
+  )
 
   const getOwnedResources = useCallback(
     (n) => {
-      setOwnedResourcesPage(n);
-      const searchParms = new URLSearchParams();
-      searchParms.set("limit", 20);
-      searchParms.set("page", n);
-      const url = `/organisation/${id}/content?${String(searchParms)}`;
+      setOwnedResourcesPage(n)
+      const searchParms = new URLSearchParams()
+      searchParms.set('limit', 20)
+      searchParms.set('page', n)
+      const url = `/organisation/${id}/content?${String(searchParms)}`
       api
         .get(url)
         .then((d) => {
-          setOwnedResources(d.data.results);
-          setOwnedResourcesCount(d.data.count);
+          setOwnedResources(d.data.results)
+          setOwnedResourcesCount(d.data.count)
         })
         .catch((err) => {
-          console.error(err);
+          console.error(err)
           // redirectError(err, history);
-        });
+        })
     },
     [router]
-  );
+  )
 
   const getBookedResources = useCallback(
     (n) => {
-      setBookedResourcesPage(n);
-      const searchParms = new URLSearchParams();
-      searchParms.set("limit", 3);
-      searchParms.set("page", n);
-      const url = `/organisation/${id}/members?${String(searchParms)}`;
+      setBookedResourcesPage(n)
+      const searchParms = new URLSearchParams()
+      searchParms.set('limit', 3)
+      searchParms.set('page', n)
+      const url = `/organisation/${id}/members?${String(searchParms)}`
       api
         .get(url)
         .then((d) => {
-          setBookedResources(d.data.members);
-          setBookedResourcesCount(d.data.count);
+          setBookedResources(d.data.members)
+          setBookedResourcesCount(d.data.count)
         })
         .catch((err) => {
-          console.error(err);
+          console.error(err)
           // redirectError(err, history);
-        });
+        })
     },
     [router]
-  );
+  )
 
   const handleEditBtn = () => {
-    eventTrack("Entity view", "Edit", "Button");
+    eventTrack('Entity view', 'Edit', 'Button')
     UIStore.update((e) => {
       e.formEdit = {
         ...e.formEdit,
         signUp: {
-          status: "edit",
+          status: 'edit',
           id: id,
         },
-      };
+      }
       e.formStep = {
         ...e.formStep,
         entity: 1,
-      };
-    });
+      }
+    })
     router.push(
       {
         pathname: `/edit/entity/${id}`,
-        query: { formType: "entity" },
+        query: { formType: 'entity' },
       },
       `/edit/entity/${id}`
-    );
-  };
+    )
+  }
 
   useEffect(() => {
     if (isLoaded()) {
@@ -281,55 +282,55 @@ const StakeholderDetail = ({
         api
           .get(`/detail/organisation/${id}`)
           .then((d) => {
-            setData(d.data);
-            getOwnedResources(0);
-            getBookedResources(0);
+            setData(d.data)
+            getOwnedResources(0)
+            getBookedResources(0)
           })
           .catch((err) => {
-            console.error(err);
-            redirectError(err, router);
-          });
-      if (isLoaded() && profile.reviewStatus === "APPROVED") {
+            console.error(err)
+            redirectError(err, router)
+          })
+      if (isLoaded() && profile.reviewStatus === 'APPROVED') {
         setTimeout(() => {
           api.get(`/favorite/organisation/${id}`).then((resp) => {
-            setRelations(resp.data);
-          });
-        }, 100);
+            setRelations(resp.data)
+          })
+        }, 100)
       }
       UIStore.update((e) => {
-        e.disclaimer = null;
-      });
-      window.scrollTo({ top: 0 });
+        e.disclaimer = null
+      })
+      window.scrollTo({ top: 0 })
     }
-  }, [isLoaded]);
+  }, [isLoaded])
 
   const handleRelationChange = (relation) => {
     if (!isAuthenticated) {
-      loginWithPopup();
+      loginWithPopup()
     }
-    if (profile.reviewStatus === "SUBMITTED") {
-      setWarningVisible(true);
+    if (profile.reviewStatus === 'SUBMITTED') {
+      setWarningVisible(true)
     }
     if (isAuthenticated && profile.reviewStatus === undefined) {
-      setStakeholderSignupModalVisible(true);
+      setStakeholderSignupModalVisible(true)
     }
-    if (profile.reviewStatus === "APPROVED") {
-      api.post("/favorite", relation).then((res) => {
+    if (profile.reviewStatus === 'APPROVED') {
+      api.post('/favorite', relation).then((res) => {
         const relationIndex = relations.findIndex(
           (it) => it.topicId === relation.topicId
-        );
+        )
         if (relationIndex !== -1) {
           setRelations([
             ...relations.slice(0, relationIndex),
             relation,
             ...relations.slice(relationIndex + 1),
-          ]);
+          ])
         } else {
-          setRelations([...relations, relation]);
+          setRelations([...relations, relation])
         }
-      });
+      })
     }
-  };
+  }
 
   if (!data) {
     return (
@@ -339,7 +340,7 @@ const StakeholderDetail = ({
           <i>Loading...</i>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -369,10 +370,10 @@ const StakeholderDetail = ({
                               backgroundColor: randomColor(
                                 data?.name?.substring(0, 1)
                               ),
-                              fontSize: "62px",
-                              fontWeight: "bold",
-                              verticalAlign: "middle",
-                              border: "4px solid #fff",
+                              fontSize: '62px',
+                              fontWeight: 'bold',
+                              verticalAlign: 'middle',
+                              border: '4px solid #fff',
                             }}
                             size={{
                               xs: 55,
@@ -425,7 +426,7 @@ const StakeholderDetail = ({
                           avatar={<Avatar src="/transnational.svg" />}
                           title={
                             <>
-                              <span style={{ textTransform: "capitalize" }}>
+                              <span style={{ textTransform: 'capitalize' }}>
                                 {data?.geoCoverageType}
                               </span>
                             </>
@@ -446,10 +447,10 @@ const StakeholderDetail = ({
                           title={
                             <a
                               href={
-                                data?.url?.includes("https://") ||
-                                data?.url?.includes("http://")
+                                data?.url?.includes('https://') ||
+                                data?.url?.includes('http://')
                                   ? data?.url
-                                  : "https://" + data?.url
+                                  : 'https://' + data?.url
                               }
                               target="_blank"
                             >
@@ -468,10 +469,10 @@ const StakeholderDetail = ({
                 <div className="description-wrapper">
                   <CardComponent
                     style={{
-                      height: "100%",
-                      boxShadow: "none",
-                      borderRadius: "none",
-                      width: "100%",
+                      height: '100%',
+                      boxShadow: 'none',
+                      borderRadius: 'none',
+                      width: '100%',
                     }}
                   >
                     <p>{data?.program}</p>
@@ -532,13 +533,13 @@ const StakeholderDetail = ({
               <CardComponent
                 title={`Individuals (${bookedResourcesCount})`}
                 style={{
-                  height: "100%",
-                  boxShadow: "none",
-                  borderRadius: "none",
+                  height: '100%',
+                  boxShadow: 'none',
+                  borderRadius: 'none',
                 }}
               >
-                <div style={{ padding: "0 10px" }} className="individuals">
-                  <Row gutter={[16, 16]} style={{ width: "100%" }}>
+                <div style={{ padding: '0 10px' }} className="individuals">
+                  <Row gutter={[16, 16]} style={{ width: '100%' }}>
                     {bookedResources.map((item) => (
                       <Col xs={6} lg={8} key={item.id}>
                         <div
@@ -546,14 +547,14 @@ const StakeholderDetail = ({
                           onClick={() => {
                             router.push({
                               pathname: `/stakeholder/${item.id}`,
-                            });
+                            })
                           }}
                         >
-                          <Row style={{ width: "100%" }}>
+                          <Row style={{ width: '100%' }}>
                             <Col className="individual-details" xs={6} lg={14}>
                               <div className="profile-image">
                                 <Avatar
-                                  style={{ border: "none" }}
+                                  style={{ border: 'none' }}
                                   key={item?.picture}
                                   size={{
                                     xs: 60,
@@ -572,9 +573,9 @@ const StakeholderDetail = ({
                                           backgroundColor: randomColor(
                                             item?.name?.substring(0, 1)
                                           ),
-                                          verticalAlign: "middle",
-                                          fontSize: "62px",
-                                          fontWeight: "bold",
+                                          verticalAlign: 'middle',
+                                          fontSize: '62px',
+                                          fontWeight: 'bold',
                                         }}
                                         size={{
                                           xs: 55,
@@ -628,7 +629,7 @@ const StakeholderDetail = ({
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default StakeholderDetail;
+export default StakeholderDetail

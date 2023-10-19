@@ -39,6 +39,7 @@ import dynamic from 'next/dynamic'
 const RichTextEditor = dynamic(() => import('react-rte'), { ssr: false })
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import { Trans } from '@lingui/macro'
 
 export const getTypeByResource = (type) => {
   let t = ''
@@ -1145,7 +1146,7 @@ const FlexibleForms = ({
                 <div className={`form-meta `}>
                   <div className="d-flex">
                     <Button className="draft-button" size="large">
-                      Save as draft
+                      <Trans>Save as draft</Trans>
                     </Button>
                     <Button
                       className="custom-button"
@@ -1155,10 +1156,12 @@ const FlexibleForms = ({
                       size="large"
                       onClick={(e) => handleOnClickBtnSubmit(e)}
                     >
-                      Submit
+                      <Trans>Submit</Trans>
                     </Button>
                     <div className="form-title">
-                      <span className="title">Add {label} Content</span>
+                      <span className="title">
+                        <Trans>Add</Trans> {label} <Trans>Content</Trans>
+                      </span>
                     </div>
                   </div>
                   <div className="highlight">
@@ -1212,7 +1215,7 @@ const FlexibleForms = ({
 
             {!isLoaded() ? (
               <h2 className="loading">
-                <LoadingOutlined spin /> Loading
+                <LoadingOutlined spin /> <Trans>Loading</Trans>
               </h2>
             ) : (
               <Col
@@ -1226,44 +1229,57 @@ const FlexibleForms = ({
                 {getTabStepIndex().tabIndex === 0 ? (
                   <Row>
                     <div className="getting-started-content main-content">
-                      <h5>Welcome to the GPML Digital Platform!</h5>
+                      <h5>
+                        <Trans>Welcome to the GPML Digital Platform!</Trans>
+                      </h5>
                       <p>
-                        We are excited to hear from the members of our
-                        community. The GPML Digital Platform is crowdsourced and
-                        allows everyone to submit new content via this form.
+                        <Trans>
+                          We are excited to hear from the members of our
+                          community. The GPML Digital Platform is crowdsourced
+                          and allows everyone to submit new content via this
+                          form.
+                        </Trans>
                       </p>
                       <p>
-                        A wide range of resources can be submitted, and these
-                        include Action Plans, Initiatives, Technical resources,
-                        Financing resources, Policies, Events, and Technologies.
-                        Learn more about each category and sub-categories
-                        definitions in the “Content Type” section of this form.
-                        A quick summary sheet with categories and sub-categories
-                        can be downloaded{' '}
+                        <Trans>
+                          A wide range of resources can be submitted, and these
+                          include Action Plans, Initiatives, Technical
+                          resources, Financing resources, Policies, Events, and
+                          Technologies. Learn more about each category and
+                          sub-categories definitions in the “Content Type”
+                          section of this form. A quick summary sheet with
+                          categories and sub-categories can be downloaded
+                        </Trans>{' '}
                         <a
                           href="https://wedocs.unep.org/bitstream/handle/20.500.11822/37512/Categories%20and%20Sub%20Categories%20for%20the%20forms.pdf?sequence=3&isAllowed=y"
                           target="_blank"
                         >
-                          here
+                          <Trans>here</Trans>
                         </a>
                         .
                       </p>
                       <p>
-                        Once submitted resources go through a review process
-                        which is being fine-tuned via consultations to assess
-                        content accuracy and quality. The current validation
-                        mechanism draft can be found under{' '}
+                        <Trans>
+                          Once submitted resources go through a review process
+                          which is being fine-tuned via consultations to assess
+                          content accuracy and quality. The current validation
+                          mechanism draft can be found under
+                        </Trans>{' '}
                         <a href="https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP%20GPML%20Digital%20Platform%20Concept%20for%20User%20and%20Partner%20Consultations%20May%202021.pdf">
-                          Annex C of the Concept Document.
+                          <Trans>Annex C of the Concept Document.</Trans>
                         </a>
                       </p>
                       <p>
-                        You can access existing content via the{' '}
+                        <Trans>You can access existing content via the</Trans>{' '}
                         <Link href="/knowledge/library" legacyBehavior>
-                          <a>Knowledge Exchange Library.</a>
+                          <a>
+                            <Trans>Knowledge Exchange Library.</Trans>
+                          </a>
                         </Link>
-                        Make sure to browse around and leave a review under the
-                        resources you enjoy the most!
+                        <Trans>
+                          Make sure to browse around and leave a review under
+                          the resources you enjoy the most!
+                        </Trans>
                       </p>
                     </div>
                   </Row>
@@ -1278,7 +1294,9 @@ const FlexibleForms = ({
                       }}
                     >
                       <div className="button-wrapper">
-                        <h5>Pick the main content type</h5>
+                        <h5>
+                          <Trans>Pick the main content type</Trans>
+                        </h5>
                         <Button
                           icon={
                             <img src="/examples.png" alt="Example button" />
@@ -1286,7 +1304,7 @@ const FlexibleForms = ({
                           size="large"
                           onClick={() => setDisplayModal(!displayModal)}
                         >
-                          SHOW EXAMPLES
+                          <Trans>SHOW EXAMPLES</Trans>
                         </Button>
                       </div>
                       <div className="example-container">
@@ -1299,7 +1317,7 @@ const FlexibleForms = ({
                             onClick={() => setDisplayModal(!displayModal)}
                             className="hide-button"
                           >
-                            HIDE EXAMPLES
+                            <Trans>HIDE EXAMPLES</Trans>
                           </Button>
 
                           <List itemLayout="horizontal">
@@ -1379,8 +1397,12 @@ const FlexibleForms = ({
                     <div className="sub-content">
                       <div className="sub-content-top">
                         <div className="sub-content-wrapper">
-                          <h5>Pick the sub-content type</h5>
-                          <span>Optional</span>
+                          <h5>
+                            <Trans>Pick the sub-content type</Trans>
+                          </h5>
+                          <span>
+                            <Trans>Optional</Trans>
+                          </span>
                         </div>
                       </div>
                       {subContentType?.length > 0 ? (
@@ -1420,8 +1442,10 @@ const FlexibleForms = ({
                       ) : (
                         <div className="before-selection">
                           <p>
-                            Select a Main Content Type above to see sub-content
-                            type options
+                            <Trans>
+                              Select a Main Content Type above to see
+                              sub-content type options
+                            </Trans>
                           </p>
                         </div>
                       )}
@@ -1493,7 +1517,7 @@ const FlexibleForms = ({
                           }}
                         >
                           <Button type="default" className="translation-button">
-                            Add translation
+                            <Trans>Add translation</Trans>
                           </Button>
                         </Dropdown>
                       </div>
@@ -1534,13 +1558,17 @@ const FlexibleForms = ({
                 {getTabStepIndex().tabIndex === 0 ? (
                   <div className="bottom-panel">
                     <div className="center-content">
-                      <p>Getting Started</p>
+                      <p>
+                        <Trans>Getting Started</Trans>
+                      </p>
                     </div>
                     <div
                       className="next-button"
                       onClick={(e) => handleOnClickBtnNext(e)}
                     >
-                      <p>Next</p>
+                      <p>
+                        <Trans>Next</Trans>
+                      </p>
                       <RightOutlined />
                     </div>
                   </div>
@@ -1551,17 +1579,25 @@ const FlexibleForms = ({
                       onClick={(e) => handleOnClickBtnBack(e)}
                     >
                       <LeftOutlined />
-                      <p>Back</p>
+                      <p>
+                        <Trans>Back</Trans>
+                      </p>
                     </div>
                     <div className="center-content">
-                      <p>Field to submit</p>
-                      <h6>1 of 1</h6>
+                      <p>
+                        <Trans>Field to submit</Trans>
+                      </p>
+                      <h6>
+                        <Trans>1 of 1</Trans>
+                      </h6>
                     </div>
                     <div
                       className="next-button"
                       onClick={(e) => handleOnClickBtnNext(e)}
                     >
-                      <p>Next</p>
+                      <p>
+                        <Trans>Next</Trans>
+                      </p>
                       <RightOutlined />
                     </div>
                   </div>
@@ -1572,10 +1608,14 @@ const FlexibleForms = ({
                       onClick={(e) => handleOnClickBtnBack(e)}
                     >
                       <LeftOutlined />
-                      <p>Back</p>
+                      <p>
+                        <Trans>Back</Trans>
+                      </p>
                     </div>
                     <div className="center-content">
-                      <p>Field to submit</p>
+                      <p>
+                        <Trans>Field to submit</Trans>
+                      </p>
                       <h6>
                         {data?.[data.tabs[0]]?.required?.[
                           Object.keys(data?.[data.tabs[0]]?.required)[
@@ -1588,7 +1628,9 @@ const FlexibleForms = ({
                       className="next-button"
                       onClick={(e) => handleOnClickBtnNext(e)}
                     >
-                      <p>Next</p>
+                      <p>
+                        <Trans>Next</Trans>
+                      </p>
                       <RightOutlined />
                     </div>
                   </div>
@@ -1599,7 +1641,9 @@ const FlexibleForms = ({
                       onClick={(e) => handleOnClickBtnBack(e)}
                     >
                       <LeftOutlined />
-                      <p>Back</p>
+                      <p>
+                        <Trans>Back</Trans>
+                      </p>
                     </div>
                   </div>
                 )}

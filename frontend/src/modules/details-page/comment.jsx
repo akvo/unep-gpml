@@ -21,6 +21,7 @@ import {
 import api from '../../utils/api'
 import moment from 'moment'
 import TextArea from 'rc-textarea'
+import { Trans, t } from '@lingui/macro'
 
 export const CommentList = ({
   item,
@@ -59,7 +60,7 @@ export const CommentList = ({
                     setEditComment('')
                   }}
                 >
-                  Reply to
+                  <Trans>Reply to</Trans>
                 </span>
                 {profile.id === item.authorId && (
                   <span
@@ -76,7 +77,7 @@ export const CommentList = ({
                       setShowReplyBox('')
                     }}
                   >
-                    Edit
+                    <Trans>Edit</Trans>
                   </span>
                 )}
                 {profile.role === 'ADMIN' && (
@@ -89,30 +90,29 @@ export const CommentList = ({
                         centered: true,
                         closable: true,
                         icon: <DeleteOutlined />,
-                        title: 'Are you sure you want to delete this comment?',
-                        content:
-                          'Please be aware this action cannot be undone.',
-                        okText: 'Delete',
+                        title: t`Are you sure you want to delete this comment?`,
+                        content: t`Please be aware this action cannot be undone.`,
+                        okText: t`Delete`,
                         okType: 'danger',
                         async onOk() {
                           try {
                             const res = await api.delete(`/comment/${item.id}`)
                             notification.success({
-                              message: 'Comment deleted successfully',
+                              message: t`Comment deleted successfully`,
                             })
 
                             getComment(id, type.replace('-', '_'))
                           } catch (err) {
                             console.error(err)
                             notification.error({
-                              message: 'Oops, something went wrong',
+                              message: t`Oops, something went wrong`,
                             })
                           }
                         },
                       })
                     }}
                   >
-                    Delete
+                    <Trans>Delete</Trans>
                   </span>
                 )}
               </>
@@ -285,7 +285,7 @@ const Comments = ({
               : { marginBottom: '16px' }
           }
         >
-          Discussion
+          <Trans>Discussion</Trans>
         </h3>
         {comments &&
           comments.length > 0 &&
@@ -315,7 +315,7 @@ const Comments = ({
             icon={<MessageOutlined twoToneColor="#09689a" />}
             shape="round"
           >
-            Login to comment
+            <Trans>Login to comment</Trans>
           </Button>
         )}
       </Col>
@@ -334,8 +334,8 @@ const Comments = ({
               className="comment-input"
               placeholder={
                 comments && comments.length > 0
-                  ? 'Join the discussion...'
-                  : 'Be the first to comment...'
+                  ? t`Join the discussion...`
+                  : t`Be the first to comment...`
               }
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
