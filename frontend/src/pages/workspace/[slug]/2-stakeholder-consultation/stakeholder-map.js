@@ -1,5 +1,13 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { Avatar, Button, Table, Tooltip, Typography } from 'antd'
+import {
+  Avatar,
+  Button,
+  Table,
+  Tooltip,
+  Typography,
+  Select,
+  Divider,
+} from 'antd'
 import classNames from 'classnames'
 import { kebabCase, uniqBy, snakeCase } from 'lodash'
 import { useRouter } from 'next/router'
@@ -12,11 +20,14 @@ import {
   EndOfLifeIcon,
   PetroExtractionIcon,
   ConsumptionIcon,
+  SearchIcon,
 } from '../../../../components/icons'
 import AutocompleteForm from '../../../../components/autocomplete-form/autocomplete-form'
 import ModalAddEntity from '../../../../modules/flexible-forms/entity-modal/add-entity-modal'
 import styles from './stakeholder-map.module.scss'
 import api from '../../../../utils/api'
+import { PlusOutlined } from '@ant-design/icons'
+import { UIStore } from '../../../../store'
 
 const { Column } = Table
 const { Text } = Typography
@@ -216,7 +227,7 @@ const StakeholderMapTable = ({ psItem }) => {
 
   useEffect(() => {
     getStakeholderMapApi()
-  }, [getStakeholderMapApi])
+  }, [psItem])
 
   useEffect(() => {
     if (data.length && !tableFilters.length) {
@@ -349,33 +360,78 @@ const StakeholderMapTable = ({ psItem }) => {
 
 const StakeholderMapForm = () => {
   const [showModal, setShowModal] = useState(false)
-  const [org, setOrg] = useState(null)
+  const router = useRouter()
+  const [data, setData] = useState([])
+  const [entity, setEntity] = useState([])
+  const country = router.query.slug?.replace('plastic-strategy-', '')
+
+  const storeData = UIStore.useState((s) => ({
+    organisations: s.organisations,
+    nonMemberOrganisations: s.nonMemberOrganisations,
+  }))
+
+  const { organisations, nonMemberOrganisations } = storeData
+
+  useEffect(() => {
+    setData([...organisations, ...nonMemberOrganisations])
+  }, [organisations, nonMemberOrganisations])
+
+  const setOrg = (res) => {
+    setEntity(res.id)
+    setData([...data, { id: res.id, name: res.name }])
+  }
+
   return (
     <>
       <h5 className={styles.title}>Can't find who you're looking for?</h5>
-      <AutocompleteForm
-        apiParams={{ networkType: 'organisation', limit: 10 }}
-        extraButton={{
-          text: '+ Add a New Organisation',
-          type: 'link',
-          onClick: () => setShowModal(true),
+      <Select
+        size="small"
+        placeholder="Start typing..."
+        allowClear
+        showSearch
+        name="orgName"
+        virtual={false}
+        showArrow
+        onChange={(value) => {
+          setEntity(value)
         }}
-        onSelect={(item) => console.log('item', item)}
-        renderItem={(item) => {
-          if (item?.onClick) {
-            return (
-              <Button type={item.type} onClick={item.onClick}>
-                {item.text}
-              </Button>
-            )
-          }
-          return <Text>{item?.name}</Text>
-        }}
-      />
+        filterOption={(input, option) =>
+          option.children.toLowerCase().includes(input.toLowerCase())
+        }
+        value={entity ? entity : undefined}
+        className={`ant-select-suffix`}
+        suffixIcon={<SearchIcon />}
+        dropdownRender={(menu) => (
+          <div>
+            {menu}
+            <>
+              <Divider style={{ margin: '4px 0' }} />
+              <div
+                style={{
+                  display: 'flex',
+                  flexWrap: 'nowrap',
+                  padding: 8,
+                }}
+              >
+                <a onClick={() => setShowModal(!showModal)}>
+                  <PlusOutlined /> Add a New Organisation
+                </a>
+              </div>
+            </>
+          </div>
+        )}
+      >
+        {data?.map((item) => (
+          <Select.Option value={item.id} key={item.id}>
+            {item.name}
+          </Select.Option>
+        ))}
+      </Select>
       <ModalAddEntity
         visible={showModal}
         close={() => setShowModal(!showModal)}
         setEntity={setOrg}
+        tag={`stakeholder-${country}`}
       />
     </>
   )
