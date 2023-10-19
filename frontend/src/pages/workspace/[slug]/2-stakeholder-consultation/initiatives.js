@@ -1,19 +1,33 @@
 import { useEffect, useState } from 'react'
 import { PageLayout } from '..'
 import api from '../../../../utils/api'
-import ResourceCard from '../../../../components/resource-card/resource-card'
-import styles from '../ps.module.scss'
+import ResourceCards from '../../../../modules/workspace/ps/resource-cards'
+import { iso2id, isoA2 } from '../../../../modules/workspace/ps/config'
+import { useRouter } from 'next/router'
 
-const View = () => {
+const sectionKey = 'stakeholder-initiatives'
+
+const View = ({ setLoginVisible, isAuthenticated }) => {
+  const router = useRouter()
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
+
   useEffect(() => {
-    api.get('/browse?country=710&topic=initiative').then((d) => {
-      setItems(d.data?.results)
-      setLoading(false)
-      console.log(d.data)
-    })
-  }, [])
+    const country = router.query.slug?.replace('plastic-strategy-', '')
+    const countryCode = isoA2[country]
+    const countryId = iso2id[countryCode]
+    if (countryId != null) {
+      api
+        .get(
+          `/browse?country=${countryId}&topic=initiative&ps_country_iso_code_a2=${countryCode}`
+        )
+        .then((d) => {
+          setItems(d.data?.results)
+          setLoading(false)
+          console.log(d.data)
+        })
+    }
+  }, [router])
   const handleBookmark = () => {
     console.log('TODO')
   }
@@ -27,11 +41,16 @@ const View = () => {
         sidebar navigation to easily find relevant initatives.{' '}
       </p>
 
-      <div className={styles.cardsList} style={{ display: 'flex' }}>
-        {items.map((item) => (
-          <ResourceCard item={item} onBookmark={handleBookmark} />
-        ))}
-      </div>
+      <ResourceCards
+        {...{
+          items,
+          handleBookmark,
+          setLoginVisible,
+          isAuthenticated,
+          loading,
+          sectionKey,
+        }}
+      />
     </>
   )
 }

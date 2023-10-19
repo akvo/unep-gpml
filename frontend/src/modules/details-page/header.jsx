@@ -14,6 +14,7 @@ import { languageOptions } from '../flexible-forms/view'
 import classNames from 'classnames'
 import Button from '../../components/button'
 import { BookmarkIcon, ArrowRight } from '../../components/icons'
+import { Trans, t } from '@lingui/macro'
 
 export const HeaderButtons = ({
   data,
@@ -77,7 +78,7 @@ export const HeaderButtons = ({
             )
           }}
         >
-          View Source
+          <Trans>View Source</Trans>
           <ArrowRight />
         </Button>
       )}
@@ -96,7 +97,7 @@ export const HeaderButtons = ({
             )
           }}
         >
-          Recording
+          <Trans>Recording</Trans>
         </Button>
       )}
       <Button
@@ -110,7 +111,7 @@ export const HeaderButtons = ({
           handleChangeRelation('interested in')
         }}
       >
-        {bookmarked ? 'Bookmarked' : 'Bookmark'}
+        {bookmarked ? t`Bookmarked` : t`Bookmark`}
         <BookmarkIcon />
       </Button>
       {data?.url && (
@@ -152,7 +153,7 @@ export const HeaderButtons = ({
                   handleVisibleChange()
                 }}
               >
-                Copy
+                <Trans>Copy</Trans>
               </Button>
             </Input.Group>
           }
@@ -177,7 +178,7 @@ export const HeaderButtons = ({
                 handleVisibleChange()
               }}
             >
-              Share
+              <Trans>Share</Trans>
             </Button>
           </div>
         </Popover>
@@ -189,7 +190,7 @@ export const HeaderButtons = ({
           ghost
           onClick={() => handleEditBtn(type)}
         >
-          Edit
+          <Trans>Edit</Trans>
         </Button>
       )}
       {canDelete() && (
@@ -199,7 +200,7 @@ export const HeaderButtons = ({
           ghost
           onClick={handleDeleteBtn}
         >
-          Delete
+          <Trans>Delete</Trans>
         </Button>
       )}
       {translations && translations.hasOwnProperty('title') && (

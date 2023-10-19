@@ -9,6 +9,17 @@ export const isoA2 = {
   'cote-d-ivoire': 'CI',
 }
 
+export const iso2id = {
+  MU: 480,
+  PE: 604,
+  KH: 116,
+  SB: 90,
+  EC: 218,
+  SN: 686,
+  ZA: 710,
+  CI: 384,
+}
+
 export const PREFIX_SLUG = 'plastic-strategy'
 
 export const stepsState = [
