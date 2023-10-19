@@ -43,9 +43,6 @@ const AutocompleteForm = ({
         : results
       setOptions(_options)
       setLoading(false)
-      if (!open && searchVal?.trim()?.length) {
-        setOpen(true)
-      }
     } catch (error) {
       console.error('Unable to fetch by keyword', error)
       setLoading(false)
@@ -103,7 +100,12 @@ const AutocompleteForm = ({
           placeholder="Start typing..."
           value={searchVal}
           className={styles.searchInput}
-          onChange={(e) => setSearchVal(e.target.value)}
+          onChange={(e) => {
+            if (!open) {
+              setOpen(true)
+            }
+            setSearchVal(e.target.value)
+          }}
           suffix={<SearchIcon />}
           allowClear
         />
