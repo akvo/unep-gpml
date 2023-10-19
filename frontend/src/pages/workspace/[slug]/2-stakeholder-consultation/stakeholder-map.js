@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Avatar, Button, Table, Tooltip, Typography } from 'antd'
 import classNames from 'classnames'
+import { kebabCase, uniqBy, snakeCase } from 'lodash'
+import { useRouter } from 'next/router'
 
 import { PageLayout } from '..'
 import {
@@ -15,180 +17,52 @@ import AutocompleteForm from '../../../../components/autocomplete-form/autocompl
 import ModalAddEntity from '../../../../modules/flexible-forms/entity-modal/add-entity-modal'
 import styles from './stakeholder-map.module.scss'
 import api from '../../../../utils/api'
-import { titleCase } from '../../../../utils/string'
 
 const { Column } = Table
 const { Text } = Typography
 
 const PAGE_SIZE = 10
-const dummy = [
-  {
-    key: 1,
-    name: 'Akvo Foundation',
-    type: 'NGO',
-    geo_coverage: 'Global',
-    tags: [1],
-    focal_point: ['DP', 'AS'],
-    strengths: 'Data owner',
-    status: 'bookmark',
-  },
-  {
-    key: 2,
-    name: 'Org Name 2',
-    type: 'Private sector',
-    geo_coverage: 'National',
-    tags: [1, 2, 3, 4, 5],
-    focal_point: ['MS'],
-    strengths: '5 Initiatives',
-    status: 'bookmarked',
-  },
-  {
-    key: 3,
-    name: 'Org name 3',
-    type: 'IGO',
-    geo_coverage: 'Global',
-    tags: [1, 2, 3],
-    focal_point: ['PP', 'DA'],
-    strengths: null,
-    status: 'bookmark',
-  },
-]
+const PREFIX_TAG = 'stakeholder'
+const FILTER_FIELDS = {
+  name: 'name',
+  type: 'types',
+  geo_coverage_type: 'geo_coverage_types',
+}
 
-const lifeCycles = [
+export const PLASTIC_LIFECYCLE = [
   {
-    title: 'Petrochemical Extraction',
+    text: 'Petrochemical Extraction',
+    value: 'petrochemical extraction',
     icon: PetroExtractionIcon,
   },
   {
-    title: 'Design & Production',
+    text: 'Design & Production',
+    value: 'design & production',
     icon: DesignNProdIcon,
   },
   {
-    title: 'Distribution',
+    text: 'Distribution',
+    value: 'distribution',
     icon: DistributionIcon,
   },
   {
-    title: 'Consumption',
+    text: 'Consumption',
+    value: 'consumption',
     icon: ConsumptionIcon,
   },
   {
-    title: 'End of Life',
+    text: 'End of Life',
+    value: 'end-of-life',
     icon: EndOfLifeIcon,
-  },
-]
-
-const columns = [
-  {
-    title: 'Organisation',
-    dataIndex: 'name',
-    filters: [
-      {
-        text: 'Akvo Foundation',
-        value: 'akvo',
-      },
-      {
-        text: 'Org name 1',
-        value: 'Org name 1',
-      },
-      {
-        text: 'Org name 2',
-        value: 'Org name 2',
-      },
-    ],
-    sorter: (a, b) => a.name.length - b.name.length,
-    sortDirections: ['ascend'],
-  },
-  {
-    title: 'Type',
-    dataIndex: 'type',
-    filters: [
-      {
-        text: 'NGO',
-        value: 'NGO',
-      },
-      {
-        text: 'Private sector',
-        value: 'Private sector',
-      },
-      {
-        text: 'IGO',
-        value: 'IGO',
-      },
-    ],
-    sorter: (a, b) => a.type - b.type,
-  },
-  {
-    title: 'Geo-coverage',
-    dataIndex: 'geo_coverage',
-    filters: [
-      {
-        text: 'Global',
-        value: 'global',
-      },
-      {
-        text: 'National',
-        value: 'national',
-      },
-    ],
-    sorter: (a, b) => a.geo_coverage - b.geo_coverage,
-  },
-  {
-    title: 'Lifecycle Stage',
-    dataIndex: 'tags',
-    filters: lifeCycles.map((l) => ({ text: l.title, value: l.title })),
-  },
-  {
-    title: 'Focal Point',
-    dataIndex: 'focal_point',
-    sorter: (a, b) => a.focal_point - b.focal_point,
-  },
-  {
-    title: 'Strengths',
-    dataIndex: 'strengths',
-    sorter: (a, b) => a.strengths - b.strengths,
-  },
-  {
-    title: 'Status',
-    dataIndex: 'status',
-    sorter: (a, b) => a.status - b.status,
   },
 ]
 
 const StakeholderMapTable = ({ psItem }) => {
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState([])
-  const [tableParams, setTableParams] = useState({
-    networkType: 'organisation',
-    limit: PAGE_SIZE,
-    page: 1,
-  })
-
-  const handleTableChange = (pagination, filters, sorter) => {
-    const sorterParams =
-      sorter?.column?.dataIndex && sorter?.order
-        ? {
-            order_by: sorter.column.dataIndex,
-            descending: sorter.order === 'descend' ? 'true' : 'false',
-          }
-        : {}
-    const filterParams = Object.values(filters)
-      ?.map((value, vx) => ({
-        [columns?.[vx]?.dataIndex]: value,
-      }))
-      ?.filter((value, vx) => value?.[columns?.[vx]?.dataIndex])
-      ?.reduce((prev, curr) => Object.assign(prev, curr), {})
-    setTableParams({
-      ...sorterParams,
-      ...filterParams,
-      ps_country_iso_code_a2: psItem.country.isoCodeA2,
-      networkType: 'organisation',
-      limit: pagination?.pageSize || PAGE_SIZE,
-      filters,
-      sorter,
-      pagination,
-      page: pagination?.current,
-    })
-  }
+  const [tableParams, setTableParams] = useState({ limit: PAGE_SIZE })
+  const [tableFilters, setTableFilters] = useState([])
+  const router = useRouter()
 
   const paginationProps = useMemo(() => {
     if (tableParams?.pagination?.total > PAGE_SIZE) {
@@ -197,29 +71,132 @@ const StakeholderMapTable = ({ psItem }) => {
     return false
   }, [tableParams.pagination])
 
-  const fakeStakeholderMapApi = useCallback(async () => {
+  const columns = useMemo(() => {
+    const [filterNames, filterTypes, filterGeo] = tableFilters
+    return [
+      {
+        title: '',
+        dataIndex: 'status',
+        sorter: true,
+      },
+      {
+        title: 'Organisation',
+        dataIndex: 'name',
+        filters: filterNames || [],
+        sorter: true,
+        sortDirections: ['ascend'],
+      },
+      {
+        title: 'Type',
+        dataIndex: 'type',
+        filters: filterTypes || [],
+        sorter: true,
+      },
+      {
+        title: 'Geo-coverage',
+        dataIndex: 'geoCoverageType',
+        filters: filterGeo || [],
+        sorter: true,
+      },
+      {
+        title: 'Lifecycle Stage',
+        dataIndex: 'tags',
+        filters: PLASTIC_LIFECYCLE,
+      },
+      {
+        title: 'Focal Point',
+        dataIndex: 'focalPoints',
+      },
+      {
+        title: 'Strengths',
+        dataIndex: 'strengths',
+      },
+    ]
+  }, [tableFilters])
+
+  const handleTableChange = (pagination, filters, sorter) => {
+    const sorterParams =
+      sorter?.column?.dataIndex && sorter?.order
+        ? {
+            order_by: snakeCase(sorter.column.dataIndex),
+            descending: sorter.order === 'descend' ? 'true' : 'false',
+          }
+        : {}
+    /**
+     * Transform filter from antd table to query params to send to backend
+     */
+    const filterParams = Object.values(filters)
+      ?.map((value, vx) => ({
+        [snakeCase(columns?.[vx + 1]?.dataIndex)]: value, // convert camelCase to snake_case
+      }))
+      ?.filter((value, vx) => value?.[snakeCase(columns?.[vx + 1]?.dataIndex)])
+      ?.reduce((prev, curr) => Object.assign(prev, curr), {})
+    /**
+     * Save query params on local state.
+     */
+    setTableParams({
+      ...sorterParams,
+      ...filterParams,
+      limit: pagination?.pageSize || PAGE_SIZE,
+      filters,
+      sorter,
+      pagination,
+    })
+  }
+
+  const mapFilter = (row, field) => ({
+    text: row[field],
+    value: row[field],
+  })
+
+  const getStakeholderMapApi = useCallback(async () => {
     setLoading(true)
     if (!psItem?.id) {
       return
     }
     try {
       const { pagination, filters, sorter, ...params } = tableParams
-      const { data } = await api.get('/community', {
+      const countryTag = `${PREFIX_TAG}-${kebabCase(psItem.country.name)}`
+      const page = pagination?.current ? pagination.current - 1 : 0
+      /**
+       * Convert object to string query params
+       * due query array is not support in the backend
+       * eg: types[]=foo&types=bar
+       * tobe: types=foo&types=bar
+       */
+      const tags = params?.tags || []
+      const allParams = {
         ...params,
-        ps_country_iso_code_a2: psItem.country.isoCodeA2,
-      })
+        tags: [...tags, countryTag],
+      }
+      const queryString = Object.keys(allParams)
+        .flatMap((field) => {
+          if (Array.isArray(allParams[field])) {
+            return allParams[field].map((value) => {
+              const fieldName = FILTER_FIELDS?.[field] || field
+              const queryVal = value?.replace(/&/g, '%26')
+              return `${fieldName}=${queryVal}`
+            })
+          }
+          return [`${field}=${allParams[field]}`]
+        })
+        .join('&')
+
+      const { data } = await api.get(
+        `/organisations?page=${page}&${queryString}`
+      )
       const { results, counts } = data || {}
-      // TODO
-      const _data = dummy.map((d) => ({
-        ...d,
+      const _data = results.map((r) => ({
+        ...r,
+        status: false, // TODO bookmark status
       }))
       setData(_data)
 
-      if (!tableParams?.pagination?.total) {
+      if (tableParams?.pagination?.total === undefined) {
         setTableParams({
           ...tableParams,
           pagination: {
-            current: params?.page,
+            current: 1,
             pageSize: PAGE_SIZE,
             total: counts?.[0]?.count,
           },
@@ -238,8 +215,19 @@ const StakeholderMapTable = ({ psItem }) => {
   ])
 
   useEffect(() => {
-    fakeStakeholderMapApi()
-  }, [fakeStakeholderMapApi])
+    getStakeholderMapApi()
+  }, [getStakeholderMapApi])
+
+  useEffect(() => {
+    if (data.length && !tableFilters.length) {
+      const filterNames = uniqBy(data, 'name').map((d) => mapFilter(d, 'name'))
+      const filterTypes = uniqBy(data, 'type').map((d) => mapFilter(d, 'type'))
+      const filterGeo = uniqBy(data, 'geoCoverageType').map((d) =>
+        mapFilter(d, 'geoCoverageType')
+      )
+      setTableFilters([filterNames, filterTypes, filterGeo])
+    }
+  }, [data, tableFilters])
 
   return (
     <Table
@@ -255,30 +243,37 @@ const StakeholderMapTable = ({ psItem }) => {
             <Column
               {...col}
               key={cx}
-              render={(data) => {
+              render={(isMarked) => {
                 return (
                   <Button
                     type="link"
-                    icon={<BookmarkIcon />}
-                    className={classNames({ [data]: data })}
+                    className={classNames({ bookmarked: isMarked })}
                   >
-                    {data}
+                    <BookmarkIcon />
                   </Button>
                 )
               }}
             />
           )
         }
-        if (col.dataIndex === 'focal_point') {
+        if (col.dataIndex === 'focalPoints') {
           return (
             <Column
               {...col}
               key={cx}
-              render={(data) => {
+              render={(values) => {
                 return (
                   <div className="data-with-avatar">
-                    {data?.map((d) => (
-                      <Avatar size={37}>{d}</Avatar>
+                    {values?.map((v, vx) => (
+                      <Tooltip
+                        key={vx}
+                        placement="top"
+                        title={`${v?.firstName} ${v?.lastName || ''}`}
+                      >
+                        <Avatar size={37}>
+                          {v?.firstName?.[0]} {v?.lastName?.[0]}
+                        </Avatar>
+                      </Tooltip>
                     ))}
                   </div>
                 )
@@ -294,18 +289,55 @@ const StakeholderMapTable = ({ psItem }) => {
               render={(tags) => {
                 return (
                   <div className="data-with-avatar">
-                    {tags?.map((tag, tx) => (
-                      <Tooltip
-                        key={tx}
-                        title={lifeCycles?.[tx]?.title}
-                        placement="right"
-                      >
-                        <span>{lifeCycles?.[tx]?.icon() || tag}</span>
-                      </Tooltip>
-                    ))}
+                    {tags
+                      ?.filter((t) => !t?.private)
+                      ?.map(({ tag }, tx) => {
+                        const findPL = PLASTIC_LIFECYCLE.find(
+                          (l) => l.value === tag
+                        )
+                        if (!findPL) {
+                          return <div key={tx}>-</div>
+                        }
+                        return (
+                          <Tooltip
+                            placement="top"
+                            title={findPL?.text}
+                            key={tx}
+                          >
+                            {findPL.icon()}
+                          </Tooltip>
+                        )
+                      })}
                   </div>
                 )
               }}
+            />
+          )
+        }
+        if (col.dataIndex === 'strengths') {
+          return (
+            <Column
+              {...col}
+              key={cx}
+              render={(value, record) =>
+                value ? (
+                  <Button
+                    type="link"
+                    onClick={() =>
+                      router.push({
+                        pathname: `/workspace/${router.query?.slug}/2-stakeholder-consultation/initiatives`,
+                        query: {
+                          id: record?.id,
+                        },
+                      })
+                    }
+                  >
+                    {`${value} Initiatives`}
+                  </Button>
+                ) : (
+                  '-'
+                )
+              }
             />
           )
         }
