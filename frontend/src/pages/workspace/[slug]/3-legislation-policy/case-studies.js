@@ -15,11 +15,13 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
   const countryCode = isoA2[country]
   useEffect(() => {
     if (countryCode)
-      api.get(`/browse?tag=legislative+%26+policy+case+study`).then((d) => {
-        setItems(d.data?.results)
-        setLoading(false)
-        console.log(d.data)
-      })
+      api
+        .get(`/browse?tag=legislative+%26+policy+review+case+study`)
+        .then((d) => {
+          setItems(d.data?.results)
+          setLoading(false)
+          console.log(d.data)
+        })
   }, [countryCode])
   const handleBookmark = (item, bookmark = true) => {
     let entityType = item.type
