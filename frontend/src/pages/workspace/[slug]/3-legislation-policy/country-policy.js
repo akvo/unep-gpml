@@ -10,19 +10,13 @@ import {
   VerifiedBadgeIcon,
 } from '../../../../components/icons'
 import styles from './country-policy.module.scss'
+import api from '../../../../utils/api'
+import moment from 'moment'
 
 const { Column } = Table
 const { Text } = Typography
 
-const tagPolicies = [
-  'Legislations',
-  'Regulations & Standards - Prohibitive Regulations',
-  'Bans & Restrictions',
-  'Strategies & Action Plans',
-  'Economic Instruments',
-  'Certification',
-  'Licensing and Registration - Policy Guidance and Information',
-]
+const PAGE_SIZE = 10
 
 const CountryPolicyModal = ({ open, onClose, policy }) => {
   const dummyResources = [
@@ -93,7 +87,7 @@ const CountryPolicyModal = ({ open, onClose, policy }) => {
       <div className="tags-section">
         <strong className="caps-heading-s">Tags</strong>
         <div className="tags">
-          {policy?.tags?.map((tag, tx) => (
+          {policy?.tags?.map(({ tag }, tx) => (
             <Tag key={tx}>{tag}</Tag>
           ))}
         </div>
@@ -117,45 +111,46 @@ const CountryPolicyModal = ({ open, onClose, policy }) => {
   )
 }
 
-const CountryPolicyTable = () => {
+const CountryPolicyTable = ({ psItem }) => {
   const [loading, setLoading] = useState(true)
   const [data, setData] = useState([])
   const [policy, setPolicy] = useState(null)
   const [open, setOpen] = useState(false)
+  const [pagination, setPagination] = useState({
+    pageSize: PAGE_SIZE,
+    current: 1,
+  })
+
+  const paginationProp =
+    pagination?.total && pagination.total > PAGE_SIZE ? pagination : false
 
   const columns = [
     {
       title: '',
-      dataIndex: 'verified',
+      dataIndex: 'verified', // TODO
       hidden: true,
     },
     {
       title: '',
-      dataIndex: 'star',
+      dataIndex: 'star', // TODO
     },
     {
       title: 'Year',
-      dataIndex: 'year',
-      filters: [{ text: '2015', value: 2015 }],
-      sorter: (a, b) => a.year - b.year,
+      dataIndex: 'created',
+      filters: [],
+      sorter: (a, b) => a.created - b.created,
     },
     {
       title: 'Title',
       dataIndex: 'title',
-      filters: Array.from({ length: 5 }).map((_, index) => ({
-        text: `Policy name ${index + 1}`,
-        value: `Policy name ${index + 1}`,
-      })),
+      filters: [],
       sorter: (a, b) => a.title.localeCompare(b.title),
     },
     {
       title: 'Type',
-      dataIndex: 'type',
-      filters: [
-        { text: 'Action plan', value: 'action plan' },
-        { text: 'Legislation', value: 'legislation' },
-      ],
-      sorter: (a, b) => a.type.localeCompare(b.type),
+      dataIndex: 'typeOfLaw',
+      filters: [],
+      sorter: (a, b) => a.typeOfLaw.localeCompare(b.typeOfLaw),
     },
     {
       title: 'Status',
@@ -171,34 +166,9 @@ const CountryPolicyTable = () => {
     },
     {
       title: 'Geo-coverage',
-      dataIndex: 'geo_coverage_type',
-      filters: [{ text: 'National', value: 'national' }],
-      sorter: (a, b) => a.geo_coverage_type - b.geo_coverage_type,
-    },
-  ]
-
-  const dummy = [
-    {
-      key: 1,
-      star: true,
-      verified: false,
-      year: 2015,
-      title: 'Policy name 1',
-      type: 'legislation',
-      status: 'replealed',
-      tags: tagPolicies.slice(0, 2),
-      geo_coverage_type: 'national',
-    },
-    {
-      key: 2,
-      star: false,
-      verified: true,
-      year: 2019,
-      title: 'Policy name 2',
-      type: 'Action plan',
-      status: 'replealed',
-      tags: tagPolicies.slice(1, 5),
-      geo_coverage_type: 'national',
+      dataIndex: 'geoCoverageType',
+      filters: [],
+      sorter: (a, b) => a.geoCoverageType - b.geoCoverageType,
     },
   ]
 
@@ -208,26 +178,52 @@ const CountryPolicyTable = () => {
   }
 
   const getAllPolicies = useCallback(async () => {
+    if (!psItem?.id) {
+      return
+    }
+    console.log('p', pagination)
+    const page = pagination.current - 1
+    let queryString = `?page=${page}&limit=${pagination.pageSize}`
+    queryString += `&ps_country_iso_code_a2=${psItem?.country?.isoCodeA2}`
+    queryString += `&country=${psItem?.country?.id}&topic=policy`
     try {
-      await new Promise((resolve, _) => {
-        // TODO
-        setTimeout(() => {
-          setData(dummy)
-          setLoading(false)
-          resolve()
-        }, 3000)
-      })
+      const { data: apiData } = await api.get(`/browse${queryString}`)
+      const { results, counts } = apiData || {}
+      const _data = results?.map((r) => ({
+        ...r,
+        star: false, // TODO
+        verified: false, // TODO
+      }))
+      setData(_data)
+      if (pagination?.total === undefined) {
+        setPagination({
+          ...pagination,
+          total: counts?.[0]?.count || 0,
+        })
+      }
+      setLoading(false)
     } catch (error) {
       setLoading(false)
     }
-  }, [])
+  }, [psItem, pagination])
 
   useEffect(() => {
     getAllPolicies()
   }, [getAllPolicies])
   return (
     <>
-      <Table dataSource={data} loading={loading} pagination={false}>
+      <Table
+        dataSource={data}
+        loading={loading}
+        pagination={paginationProp}
+        onChange={(_pagination) => {
+          console.log('_pagination', _pagination)
+          setPagination({
+            ...pagination,
+            ..._pagination,
+          })
+        }}
+      >
         {columns
           .filter((col) => !col?.hidden)
           .map((col, cx) => {
@@ -280,12 +276,23 @@ const CountryPolicyTable = () => {
                   key={cx}
                   {...col}
                   render={(values) => {
-                    const stringTags = values?.join(', ')
+                    const stringTags = values?.map(({ tag }) => tag)?.join(', ')
                     return (
                       <Tooltip placement="top" title={stringTags}>
                         <div>{stringTags}</div>
                       </Tooltip>
                     )
+                  }}
+                />
+              )
+            }
+            if (col.dataIndex === 'created') {
+              return (
+                <Column
+                  key={cx}
+                  {...col}
+                  render={(dateValue) => {
+                    return <span>{moment(dateValue).format('YYYY')}</span>
                   }}
                 />
               )
@@ -298,7 +305,7 @@ const CountryPolicyTable = () => {
   )
 }
 
-const View = () => (
+const View = ({ psItem }) => (
   <div className={styles.countryPolicyView}>
     <div className="title-section">
       <h4 className="caps-heading-m">Legislation & Policy Review Report</h4>
@@ -312,7 +319,7 @@ const View = () => (
       </p>
     </div>
     <div className="table-section">
-      <CountryPolicyTable />
+      <CountryPolicyTable psItem={psItem} />
     </div>
   </div>
 )
