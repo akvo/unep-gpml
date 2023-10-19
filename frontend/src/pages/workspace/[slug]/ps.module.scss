@@ -166,6 +166,15 @@
   p {
     padding: 25px 0;
   }
+  :global {
+    .iframe-container {
+      position: absolute;
+      .ant-btn {
+        position: absolute;
+        right: 0;
+      }
+    }
+  }
 }
 .bottomBar {
   position: fixed;
