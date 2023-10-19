@@ -267,11 +267,9 @@ function MyApp({ Component, pageProps }) {
   const getLayout =
     Component.getLayout ||
     ((page) => (
-      <I18nProvider i18n={initializedI18n}>
-        <DefaultLayout {...pageProps} {...componentProps}>
-          {page}
-        </DefaultLayout>
-      </I18nProvider>
+      <DefaultLayout {...pageProps} {...componentProps}>
+        {page}
+      </DefaultLayout>
     ))
 
   return (
@@ -291,7 +289,9 @@ function MyApp({ Component, pageProps }) {
           typeof window !== 'undefined' ? window.location.origin : ''
         }
       >
-        {getLayout(<Component {...pageProps} {...componentProps} />)}
+        <I18nProvider i18n={initializedI18n}>
+          {getLayout(<Component {...pageProps} {...componentProps} />)}
+        </I18nProvider>
       </Auth0Provider>
     </div>
   )
