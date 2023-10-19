@@ -14,6 +14,7 @@
             [gpml.handler.responses :as r]
             [gpml.service.file :as srv.file]
             [gpml.service.permissions :as srv.permissions]
+            [gpml.service.plastic-strategy :as srv.ps]
             [gpml.util :as util]
             [gpml.util.email :as email]
             [gpml.util.geo :as geo]
@@ -293,8 +294,21 @@
               [:id :is_member :created :modified :reviewed_at :reviewed_by :review_status]))})
 (def ^:const ^:private default-list-api-limit 50)
 (def ^:const ^:private default-list-api-page 0)
+
+(defn- add-plastic-strategy-filters
+  [config {:keys [ps-country-iso-code-a2] :as api-search-opts}]
+  (if-not ps-country-iso-code-a2
+    api-search-opts
+    (let [search-opts {:filters {:countries-iso-codes-a2 [ps-country-iso-code-a2]}}
+          {:keys [success? plastic-strategy]}
+          (srv.ps/get-plastic-strategy config search-opts)]
+      (if success?
+        (assoc api-search-opts :plastic-strategy-id (:id plastic-strategy))
+        api-search-opts))))
+
 (defn- list-api-params->opts
-  [{:keys [geo_coverage_types is_member types tags limit page order_by descending]
+  [{:keys [geo_coverage_types is_member types tags limit ps_bookmarked
+           page order_by descending ps_country_iso_code_a2 ps_bookmark_sections_keys]
     :or {limit default-list-api-limit
          page default-list-api-page}
     :as api-params}]
@@ -325,15 +339,26 @@
     (assoc :descending descending)
 
     (seq (:name api-params))
-    (assoc-in [:filters :name] (:name api-params))))
+    (assoc-in [:filters :name] (:name api-params))
+
+    (seq ps_country_iso_code_a2)
+    (assoc :ps-country-iso-code-a2 ps_country_iso_code_a2)
+
+    (seq ps_bookmark_sections_keys)
+    (assoc-in [:filters :ps-bookmark-sections-keys] ps_bookmark_sections_keys)
+
+    (not (nil? ps_bookmarked))
+    (assoc-in [:filters :ps-bookmarked] ps_bookmarked)))
+
 (defmethod ig/init-key :gpml.handler.organisation/list
-  [_ {:keys [db logger]}]
+  [_ {:keys [db logger] :as config}]
   (fn [req]
     (try
       (let [conn (:spec db)
             query-params (get-in req [:parameters :query])
             opts (-> (list-api-params->opts query-params)
                      (assoc-in [:filters :review-status] "APPROVED"))
+            opts (add-plastic-strategy-filters config opts)
             results (db.organisation/list-organisations conn opts)]
         (r/ok {:success? true
                :results results
@@ -351,7 +376,9 @@
 (def ^:const order-by-fields
   #{"name"
     "type"
-    "geo_coverage_type"})
+    "geo_coverage_type"
+    "ps_bookmarked"
+    "not_ps_bookmarked"})
 
 (defmethod ig/init-key :gpml.handler.organisation/list-params [_ _]
   [:map
@@ -416,4 +443,29 @@
                  :swagger {:description "Order results in descending order: true or false"
                            :type "boolean"
                            :allowEmptyValue false}}
+    [:boolean]]
+   [:ps_country_iso_code_a2
+    {:optional true
+     :swagger {:description "Plastic Strategy country ISO code Alpha 2 for bookmark information."
+               :type "string"
+               :allowEmptyValue false}}
+    [:string
+     {:decode/string str/upper-case
+      :max 2
+      :min 2}]]
+   [:ps_bookmark_sections_keys
+    {:optional true
+     :swagger {:description "The plastic strategy bookmark sections keys to provide bookmarks only about specified sections.
+                             This property requires the 'ps_country_iso_code_a2' to be set."
+               :type "string"
+               :allowEmptyValue false}}
+    [:vector
+     {:decode/string (fn [x] (if (string? x) [x] x))}
+     [:string {:min 1}]]]
+   [:ps_bookmarked {:optional true
+                    :swagger {:description "Filter bookmarked/non-bookmarked organisations.
+                                            For this to work, `ps_bookmark_sections_keys` is mandatory.
+                                            Besides, bookmarking is related to `ps_country_iso_code_a2` param."
+                              :type "boolean"
+                              :allowEmptyValue false}}
     [:boolean]]])
