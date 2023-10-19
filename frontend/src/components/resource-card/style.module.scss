@@ -49,6 +49,14 @@
     position: absolute;
     top: 10px;
     right: 10px;
+    z-index: 11;
+    &.bookmarked {
+      svg {
+        path {
+          fill: yellow;
+        }
+      }
+    }
   }
   &.withBookmark {
     padding-right: 45px;

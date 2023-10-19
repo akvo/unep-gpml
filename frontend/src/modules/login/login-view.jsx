@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from 'react'
 import {
   Col,
   Row,
@@ -8,104 +8,105 @@ import {
   Input,
   Divider,
   notification,
-} from "antd";
-import styles from "./login-style.module.scss";
-import { ReactComponent as LinkedinIcon } from "../../images/auth/linkedin.svg";
-import { ReactComponent as GoogleIcon } from "../../images/auth/google.svg";
-import { ReactComponent as EmailIcon } from "../../images/auth/email.svg";
-import { useHistory, useLocation } from "react-router-dom";
-const { Title, Link } = Typography;
-import { Form as FinalForm, Field } from "react-final-form";
-import { auth0Client } from "../../utils/misc";
-import ForgotPassword from "./forgot-password";
-import SignUp from "../email-signup/view";
+} from 'antd'
+import styles from './login-style.module.scss'
+import { ReactComponent as LinkedinIcon } from '../../images/auth/linkedin.svg'
+import { ReactComponent as GoogleIcon } from '../../images/auth/google.svg'
+import { ReactComponent as EmailIcon } from '../../images/auth/email.svg'
+import { useHistory, useLocation } from 'react-router-dom'
+const { Title, Link } = Typography
+import { Form as FinalForm, Field } from 'react-final-form'
+import { auth0Client } from '../../utils/misc'
+import ForgotPassword from './forgot-password'
+import SignUp from '../email-signup/view'
+import { Trans } from '@lingui/macro'
 
 function Login({ handleOnClickBtnNext, visible, close }) {
-  const location = useLocation();
-  const [loading, setLoading] = useState(false);
-  const [signin, setSignIn] = useState(false);
-  const [signup, setSignUp] = useState(false);
-  const [forgotPassword, setForgotPassword] = useState(false);
-  const [form] = Form.useForm();
+  const location = useLocation()
+  const [loading, setLoading] = useState(false)
+  const [signin, setSignIn] = useState(false)
+  const [signup, setSignUp] = useState(false)
+  const [forgotPassword, setForgotPassword] = useState(false)
+  const [form] = Form.useForm()
 
-  const [initialValues, setInitialValues] = useState({});
-  const formRef = useRef();
+  const [initialValues, setInitialValues] = useState({})
+  const formRef = useRef()
 
   useEffect(() => {
     if (location?.state) {
-      setSignIn(true);
+      setSignIn(true)
     }
-  }, [location]);
+  }, [location])
 
   const handleOnLogin = async (values) => {
-    setLoading(true);
-    const username = values.email;
-    const password = values.password;
+    setLoading(true)
+    const username = values.email
+    const password = values.password
     auth0Client.login(
       {
-        realm: "Username-Password-Authentication",
+        realm: 'Username-Password-Authentication',
         username,
         password,
       },
       (err, authResult) => {
         if (err) {
-          console.log(err);
-          setLoading(false);
+          console.log(err)
+          setLoading(false)
           notification.error({
             message: err.description,
-          });
-          return;
+          })
+          return
         }
         if (authResult) {
-          window.origin = window.location.origin;
-          console.log(authResult);
-          setLoading(false);
+          window.origin = window.location.origin
+          console.log(authResult)
+          setLoading(false)
           //window.origin = window.location.origin;
         }
       }
-    );
-  };
+    )
+  }
 
   const handleGoogleLogin = () => {
     try {
       auth0Client.authorize(
         {
-          connection: "google-oauth2",
+          connection: 'google-oauth2',
         },
         (error, response) => {
-          console.log(response);
+          console.log(response)
         }
-      );
+      )
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
+  }
 
   const handleLinkedinLogin = () => {
     try {
       auth0Client.authorize(
         {
-          connection: "linkedin",
+          connection: 'linkedin',
         },
         (error, response) => {
-          console.log(response);
+          console.log(response)
         }
-      );
+      )
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
+  }
 
   const checkValidation = (values) => {
-    const errors = {};
+    const errors = {}
     if (!values.email?.trim()) {
-      errors.email = "Please enter email address";
+      errors.email = 'Please enter email address'
     }
     if (!values.password?.trim()) {
-      errors.password = "Please enter password";
+      errors.password = 'Please enter password'
     }
-    return errors;
-  };
+    return errors
+  }
 
   return (
     <div id="login">
@@ -118,29 +119,33 @@ function Login({ handleOnClickBtnNext, visible, close }) {
                 setForgotPassword={setForgotPassword}
               >
                 <div className="connect-button">
-                  <Button type="text">FORGOT PASSWORD</Button>
+                  <Button type="text">
+                    <Trans>FORGOT PASSWORD</Trans>
+                  </Button>
                   <Button
                     type="text"
                     className="connect-back-button"
                     onClick={() => {
-                      setSignIn(true);
-                      setForgotPassword(false);
+                      setSignIn(true)
+                      setForgotPassword(false)
                     }}
                   >
-                    {"<"} Back to connect options
+                    {'<'} <Trans>Back to connect options</Trans>
                   </Button>
                 </div>
               </ForgotPassword>
             ) : signup ? (
               <SignUp setSignUp={setSignUp}>
                 <div className="connect-button">
-                  <Button type="text">SIGN UP</Button>
+                  <Button type="text">
+                    <Trans>SIGN UP</Trans>
+                  </Button>
                   <Button
                     type="text"
                     className="connect-back-button"
                     onClick={() => setSignUp(!signup)}
                   >
-                    {"<"} Back to connect options
+                    {'<'} <Trans>Back to connect options</Trans>
                   </Button>
                 </div>
               </SignUp>
@@ -149,7 +154,9 @@ function Login({ handleOnClickBtnNext, visible, close }) {
                 {!signin ? (
                   <div className="signup-wrapper">
                     <div className="signin-button">
-                      <Button type="text">SIGN IN</Button>
+                      <Button type="text">
+                        <Trans>SIGN IN</Trans>
+                      </Button>
                     </div>
                     <div className="auth-buttons">
                       <Button
@@ -158,7 +165,7 @@ function Login({ handleOnClickBtnNext, visible, close }) {
                         icon={<LinkedinIcon />}
                         onClick={handleOnClickBtnNext}
                       >
-                        CONTINUE WITH LINKEDIN
+                        <Trans>CONTINUE WITH LINKEDIN</Trans>
                       </Button>
                       <Button
                         type="primary"
@@ -166,7 +173,7 @@ function Login({ handleOnClickBtnNext, visible, close }) {
                         icon={<GoogleIcon />}
                         onClick={handleGoogleLogin}
                       >
-                        CONTINUE WITH GOOGLE
+                        <Trans>CONTINUE WITH GOOGLE</Trans>
                       </Button>
                       <div className="separator">
                         <Title level={4}>or</Title>
@@ -177,24 +184,28 @@ function Login({ handleOnClickBtnNext, visible, close }) {
                         icon={<EmailIcon />}
                         onClick={() => setSignIn(!signin)}
                       >
-                        CONTINUE WITH EMAIL
+                        <Trans>CONTINUE WITH EMAIL</Trans>
                       </Button>
                     </div>
                     <p className="register-text">
-                      Once you have an account you can register your
-                      organisation and apply for GPML membership
+                      <Trans>
+                        Once you have an account you can register your
+                        organisation and apply for GPML membership
+                      </Trans>
                     </p>
                   </div>
                 ) : (
                   <div className="login-wrapper">
                     <div className="connect-button">
-                      <Button type="text">CONTINUE WITH EMAIL</Button>
+                      <Button type="text">
+                        <Trans>CONTINUE WITH EMAIL</Trans>
+                      </Button>
                       <Button
                         type="text"
                         className="connect-back-button"
                         onClick={() => setSignIn(!signin)}
                       >
-                        {"<"} Back to connect options
+                        {'<'} <Trans>Back to connect options</Trans>
                       </Button>
                     </div>
                     <div className="login-form">
@@ -203,7 +214,7 @@ function Login({ handleOnClickBtnNext, visible, close }) {
                         validate={checkValidation}
                         onSubmit={handleOnLogin}
                         render={({ handleSubmit, submitting, form }) => {
-                          formRef.current = form;
+                          formRef.current = form
                           return (
                             <Form layout="vertical">
                               <Form.Item label="Email">
@@ -212,7 +223,9 @@ function Login({ handleOnClickBtnNext, visible, close }) {
                                     <>
                                       <Input
                                         {...input}
-                                        placeholder="Enter your email"
+                                        placeholder={
+                                          <Trans>Enter your email</Trans>
+                                        }
                                       />
                                       {meta.touched && meta.error && (
                                         <p color="error" className="error">
@@ -229,7 +242,9 @@ function Login({ handleOnClickBtnNext, visible, close }) {
                                     <>
                                       <Input.Password
                                         {...input}
-                                        placeholder="Enter your password"
+                                        placeholder={
+                                          <Trans>Enter your password</Trans>
+                                        }
                                       />
                                       {meta.touched && meta.error && (
                                         <p color="error" className="error">
@@ -247,8 +262,8 @@ function Login({ handleOnClickBtnNext, visible, close }) {
                                 className="login-button"
                                 onClick={() => handleSubmit()}
                               >
-                                LOGIN WITH EMAIL
-                              </Button>{" "}
+                                <Trans>LOGIN WITH EMAIL</Trans>
+                              </Button>{' '}
                               <Button
                                 type="text"
                                 className="forgot-password"
@@ -256,22 +271,24 @@ function Login({ handleOnClickBtnNext, visible, close }) {
                                   setForgotPassword(!forgotPassword)
                                 }
                               >
-                                Forgot password?
+                                <Trans>Forgot password?</Trans>
                               </Button>
                             </Form>
-                          );
+                          )
                         }}
                       />
                       <Divider />
                       <div className="join-wrapper">
-                        <Title level={2}>Don’t have an account yet?</Title>
+                        <Title level={2}>
+                          <Trans>Don’t have an account yet?</Trans>
+                        </Title>
                         <Button
                           type="primary"
                           shape="round"
                           className="login-button"
                           onClick={() => setSignUp(true)}
                         >
-                          JOIN WITH EMAIL
+                          <Trans>JOIN WITH EMAIL</Trans>
                         </Button>
                       </div>
                     </div>
@@ -283,12 +300,14 @@ function Login({ handleOnClickBtnNext, visible, close }) {
         </Row>
         <div className="terms">
           <Title level={4}>
-            By signing up you are agreeing to our terms and services.
+            <Trans>
+              By signing up you are agreeing to our terms and services.
+            </Trans>
           </Title>
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default Login;
+export default Login

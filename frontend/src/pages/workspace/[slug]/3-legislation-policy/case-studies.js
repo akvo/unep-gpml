@@ -15,15 +15,11 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
   const countryCode = isoA2[country]
   useEffect(() => {
     if (countryCode)
-      api
-        .get(
-          `/browse?tag=stakeholder+consultation+process&ps_country_iso_code_a2=${countryCode}`
-        )
-        .then((d) => {
-          setItems(d.data?.results)
-          setLoading(false)
-          console.log(d.data)
-        })
+      api.get(`/browse?tag=legislative+%26+policy+case+study`).then((d) => {
+        setItems(d.data?.results)
+        setLoading(false)
+        console.log(d.data)
+      })
   }, [countryCode])
   const handleBookmark = (item, bookmark = true) => {
     let entityType = item.type
@@ -38,7 +34,7 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
   }
   return (
     <>
-      <h4 className="caps-heading-m">Stakeholder Consultation Process</h4>
+      <h4 className="caps-heading-m">LEGISLATION & POLICY REVIEW REPORT</h4>
       <h2 className="h-xxl w-bold">Case Studies</h2>
       <p>Placeholder for description here</p>
 

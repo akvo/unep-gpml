@@ -24,6 +24,7 @@ import { notification } from 'antd'
 import uniqBy from 'lodash/uniqBy'
 import sortBy from 'lodash/sortBy'
 import Button from '../../../components/button'
+import { Trans } from '@lingui/macro'
 
 const Form = withTheme(AntDTheme)
 
@@ -299,7 +300,7 @@ const ModalAddEntity = ({ visible, close, isMember, setEntity }) => {
       className={`${styles.addEntityModal} add-entity-modal`}
       footer={[
         <Button className="close-button" onClick={(e) => close()} type="link">
-          Cancel
+          <Trans>Cancel</Trans>
         </Button>,
         <Button
           size="small"
@@ -308,7 +309,7 @@ const ModalAddEntity = ({ visible, close, isMember, setEntity }) => {
           onClick={(e) => handleOnClickBtnSubmit(e)}
           disabled={disabledBtn.disabled}
         >
-          Submit
+          <Trans>Submit</Trans>
         </Button>,
       ]}
       closable={false}

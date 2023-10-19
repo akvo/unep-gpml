@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import { PageLayout } from '..'
+import Button from '../../../../components/button'
 
 const slides = {
   en: {
@@ -46,16 +47,23 @@ const View = () => {
         National steering committee & Project Team
       </h4>
       <h2 className="h-xxl w-bold">Introduction</h2>
-      <iframe
-        src={slideURL}
-        frameborder="0"
-        width="900"
-        height="542"
-        allowfullscreen="true"
-        mozallowfullscreen="true"
-        webkitallowfullscreen="true"
-        style={{ marginTop: 30 }}
-      ></iframe>
+      <div className="iframe-container">
+        {/* <a href={slideURL} target="_blank">
+          <Button size="small" type="link">
+            Download
+          </Button>
+        </a> */}
+        <iframe
+          src={slideURL}
+          frameborder="0"
+          width="900"
+          height="542"
+          allowfullscreen="true"
+          mozallowfullscreen="true"
+          webkitallowfullscreen="true"
+          style={{ marginTop: 30 }}
+        ></iframe>
+      </div>
     </>
   )
 }
