@@ -338,9 +338,12 @@ const StakeholderMapTable = ({
                   <div className="data-with-avatar">
                     {values?.map((v, vx) => (
                       <Link key={vx} href={`/stakeholder/${v.id}`}>
-                        <Avatar size={37}>
-                          {v?.firstName?.[0]}{v?.lastName?.[0]}
-                        </Avatar>
+                        <Tooltip title={`${v?.firstName} ${v?.lastName}`}>
+                          <Avatar size={37}>
+                            {v?.firstName?.[0]}
+                            {v?.lastName?.[0]}
+                          </Avatar>
+                        </Tooltip>
                       </Link>
                     ))}
                   </div>
@@ -390,7 +393,7 @@ const StakeholderMapTable = ({
               render={(value, record) =>
                 value ? (
                   <Link
-                    href={`/workspace/${router.query?.slug}/2-stakeholder-consultation/initiatives?id=${record?.id}`}
+                    href={`/workspace/${router.query?.slug}/2-stakeholder-consultation/initiatives?org=${record?.id}`}
                     className="ant-btn ant-btn-link"
                   >
                     {`${value} Initiatives`}
