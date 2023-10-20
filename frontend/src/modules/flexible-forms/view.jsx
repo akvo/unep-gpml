@@ -4,7 +4,6 @@ import React, { useEffect, useRef, useState, useCallback } from 'react'
 import {
   Row,
   Col,
-  Button,
   Switch,
   Radio,
   Popover,
@@ -39,6 +38,8 @@ import dynamic from 'next/dynamic'
 const RichTextEditor = dynamic(() => import('react-rte'), { ssr: false })
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import Button from '../../components/button'
+import { LongArrowRight } from '../../components/icons'
 
 export const getTypeByResource = (type) => {
   let t = ''
@@ -827,9 +828,9 @@ const FlexibleForms = ({
                       'role'
                     ) ||
                       data?.[section]?.S4_G5?.entity[0]?.hasOwnProperty('role'))
-                      ? '#255B87'
+                      ? '#020a5b'
                       : '#fff',
-                  borderColor: '#255B87',
+                  borderColor: '#020a5b',
                   backgroundColor: background,
                   display: display,
                 }}
@@ -846,7 +847,7 @@ const FlexibleForms = ({
                   right: '0',
                   position: 'absolute',
                   color: color,
-                  borderColor: '#255B87',
+                  borderColor: '#020a5b',
                   backgroundColor: background,
                   display: display,
                 }}
@@ -1144,15 +1145,15 @@ const FlexibleForms = ({
               <Col xs={24} lg={24}>
                 <div className={`form-meta `}>
                   <div className="d-flex">
-                    <Button className="draft-button" size="large">
+                    <Button ghost className="draft-button" size="small">
                       Save as draft
                     </Button>
                     <Button
+                      size="small"
                       className="custom-button"
                       disabled={disabledBtn.disabled}
                       loading={sending}
                       type={disabledBtn.type}
-                      size="large"
                       onClick={(e) => handleOnClickBtnSubmit(e)}
                     >
                       Submit
@@ -1280,10 +1281,7 @@ const FlexibleForms = ({
                       <div className="button-wrapper">
                         <h5>Pick the main content type</h5>
                         <Button
-                          icon={
-                            <img src="/examples.png" alt="Example button" />
-                          }
-                          size="large"
+                          ghost
                           onClick={() => setDisplayModal(!displayModal)}
                         >
                           SHOW EXAMPLES
@@ -1292,10 +1290,7 @@ const FlexibleForms = ({
                       <div className="example-container">
                         <div className={`Modal ${displayModal ? 'Show' : ''}`}>
                           <Button
-                            icon={
-                              <img src="/examples.png" alt="Example button" />
-                            }
-                            size="large"
+                            ghost
                             onClick={() => setDisplayModal(!displayModal)}
                             className="hide-button"
                           >
@@ -1536,44 +1531,46 @@ const FlexibleForms = ({
                     <div className="center-content">
                       <p>Getting Started</p>
                     </div>
-                    <div
-                      className="next-button"
+                    <Button
+                      size="small"
                       onClick={(e) => handleOnClickBtnNext(e)}
+                      withArrow
                     >
-                      <p>Next</p>
-                      <RightOutlined />
-                    </div>
+                      Next
+                    </Button>
                   </div>
                 ) : getTabStepIndex().tabIndex === 1 ? (
                   <div className="bottom-panel">
-                    <div
+                    <Button
                       className="back-button"
+                      size="small"
                       onClick={(e) => handleOnClickBtnBack(e)}
                     >
-                      <LeftOutlined />
-                      <p>Back</p>
-                    </div>
+                      <LongArrowRight />
+                      Back
+                    </Button>
                     <div className="center-content">
                       <p>Field to submit</p>
                       <h6>1 of 1</h6>
                     </div>
-                    <div
-                      className="next-button"
+                    <Button
+                      size="small"
                       onClick={(e) => handleOnClickBtnNext(e)}
+                      withArrow
                     >
-                      <p>Next</p>
-                      <RightOutlined />
-                    </div>
+                      Next
+                    </Button>
                   </div>
                 ) : getTabStepIndex().tabIndex === 2 ? (
                   <div className="bottom-panel">
-                    <div
+                    <Button
                       className="back-button"
+                      size="small"
                       onClick={(e) => handleOnClickBtnBack(e)}
                     >
-                      <LeftOutlined />
-                      <p>Back</p>
-                    </div>
+                      <LongArrowRight />
+                      Back
+                    </Button>
                     <div className="center-content">
                       <p>Field to submit</p>
                       <h6>
@@ -1584,13 +1581,13 @@ const FlexibleForms = ({
                         ]?.length || 0}
                       </h6>
                     </div>
-                    <div
-                      className="next-button"
+                    <Button
+                      size="small"
                       onClick={(e) => handleOnClickBtnNext(e)}
+                      withArrow
                     >
-                      <p>Next</p>
-                      <RightOutlined />
-                    </div>
+                      Next
+                    </Button>
                   </div>
                 ) : (
                   <div className="bottom-panel">
