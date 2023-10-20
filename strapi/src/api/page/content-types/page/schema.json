@@ -27,6 +27,14 @@
     "slug": {
       "type": "uid"
     },
+    "subtitle": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string"
+    },
     "content": {
       "type": "richtext",
       "pluginOptions": {
@@ -43,8 +51,10 @@
       },
       "type": "enumeration",
       "enum": [
-        "about us",
-        "plastic"
+        "about-platform",
+        "about-network",
+        "plastic-topics",
+        "plastic-basics"
       ]
     }
   }
