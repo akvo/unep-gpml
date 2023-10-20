@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useCallback, useState, useRef } from 'react'
 import { UIStore } from '../../../store'
 import { Store } from 'pullstate'
 import { Modal } from 'antd'
@@ -50,6 +50,7 @@ const getSchema = (
     String(x.id)
   )
   prop.geoCoverageValueGlobalSpesific.enumNames = meaOptions?.map((x) => x.name)
+
   return {
     schema: {
       ...schema,
@@ -64,7 +65,7 @@ export const entityData = new Store({
   editId: null,
 })
 
-const ModalAddEntity = ({ visible, close, isMember, setEntity }) => {
+const ModalAddEntity = ({ visible, close, isMember, setEntity, tag }) => {
   const {
     countries,
     organisations,
@@ -102,17 +103,19 @@ const ModalAddEntity = ({ visible, close, isMember, setEntity }) => {
 
   const [sending, setSending] = useState(false)
 
+  const isLoaded = useCallback(() => {
+    return Boolean(
+      !isEmpty(countries) &&
+        !isEmpty(tags) &&
+        !isEmpty(regionOptions) &&
+        !isEmpty(transnationalOptions) &&
+        !isEmpty(organisations) &&
+        !isEmpty(meaOptions)
+    )
+  }, [countries])
+
   useEffect(() => {
-    const isLoaded = () =>
-      Boolean(
-        !isEmpty(countries) &&
-          !isEmpty(organisations) &&
-          !isEmpty(tags) &&
-          !isEmpty(regionOptions) &&
-          !isEmpty(meaOptions) &&
-          !isEmpty(transnationalOptions)
-      )
-    if (formSchema.loading && isLoaded) {
+    if (isLoaded()) {
       setFormSchema(
         getSchema(
           {
@@ -127,15 +130,7 @@ const ModalAddEntity = ({ visible, close, isMember, setEntity }) => {
         )
       )
     }
-  }, [
-    formSchema,
-    countries,
-    organisations,
-    tags,
-    regionOptions,
-    meaOptions,
-    transnationalOptions,
-  ])
+  }, [getSchema, isLoaded])
 
   const handleOnClickBtnSubmit = (e) => {
     btnSubmit.current.click()
@@ -178,6 +173,15 @@ const ModalAddEntity = ({ visible, close, isMember, setEntity }) => {
         parseInt(x)
       )
       delete data.geoCoverageValueTransnational
+    }
+
+    if (tag) {
+      data.tags = [
+        {
+          tag: tag,
+          tag_category: 'general',
+        },
+      ]
     }
 
     data.reviewStatus = 'APPROVED'
@@ -317,7 +321,7 @@ const ModalAddEntity = ({ visible, close, isMember, setEntity }) => {
       <div>
         <Form
           idPrefix="action-plan"
-          schema={schemaState}
+          schema={formSchema.schema}
           uiSchema={uiSchema}
           formData={data}
           onChange={(e) => handleFormOnChange(e)}
