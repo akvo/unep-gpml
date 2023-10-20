@@ -1,9 +1,19 @@
-@import "../../vars.scss";
+@import '../../styles/vars.scss';
 
 .event {
   padding-top: 50px;
   padding-bottom: 40px;
   :global {
+    .ui {
+      &.container {
+        width: 1560px;
+        margin-left: auto;
+        margin-right: auto;
+        background-color: white;
+        border-radius: 7px;
+        padding: 20px;
+      }
+    }
     .section-title {
       display: flex;
       width: 100%;
@@ -11,31 +21,27 @@
       align-items: center;
       &.white {
         h2 {
-          color: #fff;
-
+          color: $primaryPurple;
+          text-transform: uppercase;
+          letter-spacing: 3.2px;
+          font-size: 24px;
+          font-weight: 700;
           span.see-more-link a {
             color: #fff;
           }
         }
       }
-      .event-add-button {
-        background-color: transparent !important;
-        color: springgreen !important;
-        border: 2px solid springgreen !important;
-        font-size: 16px;
-        font-weight: 700;
-        height: 42px;
-        padding: 0 20px;
-      }
+      // .event-add-button {
+      //   background-color: transparent !important;
+      //   color: springgreen !important;
+      //   border: 2px solid springgreen !important;
+      //   font-size: 16px;
+      //   font-weight: 700;
+      //   height: 42px;
+      //   padding: 0 20px;
+      // }
     }
-    background: linear-gradient(
-        0deg,
-        rgba(28, 165, 133, 0.8),
-        rgba(28, 165, 133, 0.8)
-      ),
-      url("../../images/event.png");
-    background-repeat: no-repeat;
-    background-size: cover;
+    background-color: #e7f3ff6b;
     .body {
       display: flex;
       flex-wrap: wrap;
@@ -83,6 +89,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            background-color: $primaryDarkBlue2;
 
             @media (max-width: 800px) {
               min-height: 5rem;
@@ -154,13 +161,17 @@
           height: 12px;
           vertical-align: middle;
           border-radius: 50%;
+          &.ant-badge-status-warning {
+            background-color: $primaryDarkBlue;
+          }
         }
         .month-select,
         .year-select,
         .day-select {
-          min-width: 123px;
-          border-radius: 5px;
-          margin-bottom: 8px;
+          min-width: 200px;
+          .ant-select-selector {
+            padding: 4px 12px;
+          }
         }
 
         @media (min-width: 540px) {
@@ -175,22 +186,10 @@
           align-items: center;
 
           &:hover {
-            background-color: $yellow-highlight;
+            background-color: $primaryDarkBlue;
             color: #fff;
-            border-color: $yellow-highlight;
+            border-color: $primaryDarkBlue;
           }
-        }
-
-        .ant-select-selector {
-          background-color: rgba(255, 255, 255, 0.2);
-          border-radius: 5px;
-          border: 1px solid white;
-          color: #2d6796;
-          font-weight: 600;
-          font-size: 0.94rem;
-        }
-        .ant-select-arrow {
-          color: #2d6796;
         }
       }
       .content {
@@ -199,8 +198,9 @@
           justify-content: center;
           align-items: center;
           height: 100%;
-          color: #fff;
-          font-size: 1.2rem;
+          color: $primaryDarkBlue;
+          font-size: 24px;
+          font-weight: 700;
 
           .loading {
             padding-bottom: 0;
@@ -224,6 +224,14 @@
             .status {
               margin-left: 10px;
               margin-right: 10px;
+              color: $primaryDarkBlue;
+            }
+            .label-s {
+              background-color: $primaryPurple;
+              color: white;
+            }
+            .date {
+              color: $primaryDarkBlue;
             }
           }
           .item-img {
@@ -249,7 +257,7 @@
         .event-more {
           color: #fff;
           font-weight: 600;
-          background: rgba(211, 222, 231, 0.53);
+          background: $primaryDarkBlue;
           border-radius: 10px 10px 0px 0px;
           padding: 12px 24px; // same as ant-card-body padding
           display: flex;
@@ -260,6 +268,10 @@
           button {
             color: #fff;
           }
+        }
+        .slick-list {
+          box-shadow: 0 20px 44px 0 rgba(101, 93, 122, 0.06),
+            0 40px 32px 0 rgba(0, 0, 0, 0.06);
         }
       }
     }
@@ -288,7 +300,9 @@
     // event, data hub text style
     span.resource-label,
     div.resource-label {
-      color: #4da687;
+      color: $primaryDarkBlue;
+      text-transform: capitalize;
+      font-weight: 600;
       &.margin {
         margin: 20px 0;
       }
