@@ -1,7 +1,6 @@
 import { UIStore } from '../../store'
 import {
   notification,
-  Button,
   Collapse,
   Space,
   Modal,
@@ -43,6 +42,7 @@ import IconExpert from '../../images/expert-icon.svg'
 import debouce from 'lodash.debounce'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import Button from '../../components/button'
 
 const { Search } = Input
 const { TabPane } = Tabs
@@ -247,6 +247,7 @@ const OwnerSelect = ({
     >
       {showLabel && <div style={{ width: '100%' }}>Owners</div>}
       <Select
+        size="small"
         style={{ width: '100%' }}
         showSearch={true}
         mode="multiple"
@@ -717,7 +718,8 @@ const AdminSection = ({
     setListOpts,
   }) => (
     <Button
-      type={type}
+      size="small"
+      ghost
       className={className}
       disabled={disabled}
       onClick={review(item, 'APPROVED', listOpts, setListOpts)}
@@ -743,7 +745,7 @@ const AdminSection = ({
     setListOpts,
   }) => (
     <Button
-      type={'text'}
+      size="small"
       danger
       className={className}
       disabled={disabled}
@@ -774,10 +776,11 @@ const AdminSection = ({
     setListOpts,
   }) => (
     <Button
-      type={type}
+      ghost
       className={className}
       disabled={disabled}
       loading={exportLoading}
+      size="small"
       onClick={() =>
         exportList(
           listOpts.type === 'stakeholders'
@@ -858,7 +861,6 @@ const AdminSection = ({
                 <PublishButton
                   item={item}
                   type="ghost"
-                  className="black"
                   listOpts={listOpts}
                   setListOpts={setListOpts}
                 />
@@ -887,7 +889,6 @@ const AdminSection = ({
               <PublishButton
                 item={item}
                 type="ghost"
-                className="black"
                 listOpts={listOpts}
                 setListOpts={setListOpts}
               />
@@ -1012,11 +1013,7 @@ const AdminSection = ({
               </div>
               {title !== 'Tags' && (
                 <div>
-                  <ExportButton
-                    type="ghost"
-                    className="black"
-                    listOpts={listOpts}
-                  />
+                  <ExportButton listOpts={listOpts} />
                 </div>
               )}
             </div>
@@ -1209,10 +1206,10 @@ const AdminSection = ({
                 },
               ]}
             >
-              <Input />
+              <Input placeholder="Please input your tag!" />
             </Form.Item>
             <Form.Item>
-              <Button type="primary" htmlType="submit">
+              <Button ghost size="small">
                 Submit
               </Button>
             </Form.Item>

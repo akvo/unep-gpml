@@ -1,5 +1,5 @@
 import { UIStore } from '../../store'
-import { Button, notification, Avatar, Menu, Row, Col } from 'antd'
+import { notification, Avatar, Menu, Row, Col } from 'antd'
 import React, { useRef, useState, useEffect } from 'react'
 import { Route, Switch, useHistory } from 'react-router-dom'
 import StickyBox from 'react-sticky-box'
@@ -25,6 +25,7 @@ import {
   DiffOutlined,
   SettingOutlined,
 } from '@ant-design/icons'
+import Button from '../../components/button'
 
 import { tagsMap } from '../../utils/misc'
 
@@ -474,8 +475,7 @@ const ProfileView = ({ relations }) => {
                       />
                       <Button
                         loading={saving}
-                        type="ghost"
-                        className="black"
+                        ghost
                         onClick={(ev) => {
                           handleSubmitRef.current(ev)
                         }}
