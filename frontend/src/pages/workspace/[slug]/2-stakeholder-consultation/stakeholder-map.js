@@ -7,6 +7,7 @@ import {
   Typography,
   Select,
   Divider,
+  message,
 } from 'antd'
 import classNames from 'classnames'
 import { kebabCase, uniqBy, snakeCase } from 'lodash'
@@ -22,7 +23,6 @@ import {
   ConsumptionIcon,
   SearchIcon,
 } from '../../../../components/icons'
-import AutocompleteForm from '../../../../components/autocomplete-form/autocomplete-form'
 import ModalAddEntity from '../../../../modules/flexible-forms/entity-modal/add-entity-modal'
 import styles from './stakeholder-map.module.scss'
 import api from '../../../../utils/api'
@@ -34,6 +34,7 @@ const { Text } = Typography
 
 const PAGE_SIZE = 10
 const PREFIX_TAG = 'stakeholder'
+const SECTION_KEY = 'stakeholder-map'
 const FILTER_FIELDS = {
   name: 'name',
   type: 'types',
@@ -68,9 +69,14 @@ export const PLASTIC_LIFECYCLE = [
   },
 ]
 
-const StakeholderMapTable = ({ psItem }) => {
+const StakeholderMapTable = ({
+  psItem,
+  entities,
+  setEntities,
+  preload,
+  setPreload,
+}) => {
   const [loading, setLoading] = useState(false)
-  const [data, setData] = useState([])
   const [tableParams, setTableParams] = useState({ limit: PAGE_SIZE })
   const [tableFilters, setTableFilters] = useState([])
   const router = useRouter()
@@ -87,8 +93,7 @@ const StakeholderMapTable = ({ psItem }) => {
     return [
       {
         title: '',
-        dataIndex: 'status',
-        sorter: true,
+        dataIndex: 'plasticStrategyBookmarks',
       },
       {
         title: 'Organisation',
@@ -155,6 +160,46 @@ const StakeholderMapTable = ({ psItem }) => {
     })
   }
 
+  const handleToggleBookmark = async (record, isMarked = false) => {
+    const payload = {
+      bookmark: !isMarked,
+      entity_id: record?.id,
+      entity_type: 'organisation',
+      section_key: SECTION_KEY,
+    }
+    const _entities = entities.map((d) => {
+      if (d?.id === record?.id) {
+        const plasticStrategyBookmarks = payload.bookmark
+          ? [
+              {
+                plasticStrategyId: psItem?.id,
+              },
+            ]
+          : null
+        return {
+          ...d,
+          plasticStrategyBookmarks,
+        }
+      }
+      return d
+    })
+    setEntities(_entities)
+    try {
+      await api.post(
+        `/plastic-strategy/${psItem?.country?.isoCodeA2}/bookmark`,
+        payload
+      )
+    } catch (error) {
+      console.error('Unable to update the bookmark status', error)
+      message.error('Unable to update the bookmark status')
+      /**
+       * Undo the changes if something goes wrong
+       */
+      const _entities = entities.map((e) => (e?.id === record?.id ? record : e))
+      setEntities(_entities)
+    }
+  }
+
   const mapFilter = (row, field) => ({
     text: row[field],
     value: row[field],
@@ -164,6 +209,9 @@ const StakeholderMapTable = ({ psItem }) => {
     setLoading(true)
     if (!psItem?.id) {
       return
+    }
+    if (psItem && preload) {
+      setPreload(false)
     }
     try {
       const { pagination, filters, sorter, ...params } = tableParams
@@ -178,6 +226,8 @@ const StakeholderMapTable = ({ psItem }) => {
       const tags = params?.tags || []
       const allParams = {
         ...params,
+        ps_country_iso_code_a2: psItem?.country?.isoCodeA2,
+        ps_bookmark_sections_keys: SECTION_KEY,
         tags: [...tags, countryTag],
       }
       const queryString = Object.keys(allParams)
@@ -197,11 +247,10 @@ const StakeholderMapTable = ({ psItem }) => {
         `/organisations?page=${page}&${queryString}`
       )
       const { results, counts } = data || {}
-      const _data = results.map((r) => ({
+      const _entities = results.map((r) => ({
         ...r,
-        status: false, // TODO bookmark status
       }))
-      setData(_data)
+      setEntities(_entities)
 
       if (tableParams?.pagination?.total === undefined) {
         setTableParams({
@@ -209,7 +258,7 @@ const StakeholderMapTable = ({ psItem }) => {
           pagination: {
             current: 1,
             pageSize: PAGE_SIZE,
-            total: counts?.[0]?.count,
+            total: counts,
           },
         })
       }
@@ -223,42 +272,52 @@ const StakeholderMapTable = ({ psItem }) => {
     tableParams?.filters,
     tableParams?.sorter,
     psItem,
+    preload,
   ])
 
   useEffect(() => {
     getStakeholderMapApi()
-  }, [psItem])
+  }, [getStakeholderMapApi])
 
   useEffect(() => {
-    if (data.length && !tableFilters.length) {
-      const filterNames = uniqBy(data, 'name').map((d) => mapFilter(d, 'name'))
-      const filterTypes = uniqBy(data, 'type').map((d) => mapFilter(d, 'type'))
-      const filterGeo = uniqBy(data, 'geoCoverageType').map((d) =>
+    if (entities.length && !tableFilters.length) {
+      const filterNames = uniqBy(entities, 'name').map((d) =>
+        mapFilter(d, 'name')
+      )
+      const filterTypes = uniqBy(entities, 'type').map((d) =>
+        mapFilter(d, 'type')
+      )
+      const filterGeo = uniqBy(entities, 'geoCoverageType').map((d) =>
         mapFilter(d, 'geoCoverageType')
       )
       setTableFilters([filterNames, filterTypes, filterGeo])
     }
-  }, [data, tableFilters])
+  }, [entities, tableFilters])
 
   return (
     <Table
       loading={loading}
-      dataSource={data}
+      dataSource={entities}
       rowKey={(record) => record.key}
       pagination={paginationProps}
       onChange={handleTableChange}
     >
       {columns.map((col, cx) => {
-        if (col.dataIndex === 'status') {
+        if (col.dataIndex === 'plasticStrategyBookmarks') {
           return (
             <Column
               {...col}
               key={cx}
-              render={(isMarked) => {
+              render={(bookmarks, record) => {
+                const findBm = bookmarks?.find(
+                  (b) => b?.plasticStrategyId === psItem?.id
+                )
+                const isMarked = findBm ? true : false
                 return (
                   <Button
                     type="link"
                     className={classNames({ bookmarked: isMarked })}
+                    onClick={() => handleToggleBookmark(record, isMarked)}
                   >
                     <BookmarkIcon />
                   </Button>
@@ -358,7 +417,7 @@ const StakeholderMapTable = ({ psItem }) => {
   )
 }
 
-const StakeholderMapForm = () => {
+const StakeholderMapForm = ({ entities, preload, setPreload }) => {
   const [showModal, setShowModal] = useState(false)
   const router = useRouter()
   const [data, setData] = useState([])
@@ -381,6 +440,34 @@ const StakeholderMapForm = () => {
     setData([...data, { id: res.id, name: res.name }])
   }
 
+  const handleSelectToAdd = async (dataID) => {
+    const isExist = entities.find((e) => e?.id === dataID)
+    if (isExist) {
+      message.warning('The entity is already added')
+      return
+    }
+    try {
+      await api.put(`/organisation/${dataID}`, {
+        tags: [
+          {
+            tag: `${PREFIX_TAG}-${country}`,
+            tag_category: 'general',
+          },
+        ],
+      })
+      /**
+       * Reload the table to retrieve the newly added entity,
+       * This cannot be handled with setEntities
+       * because the selected entity only contains ID and name (has minimum info to shows on the table).
+       */
+      setPreload(true)
+      setEntity([])
+    } catch (error) {
+      console.error('Unable to add entity', error)
+      message.error('Unable to add entity')
+    }
+  }
+
   return (
     <>
       <h5 className={styles.title}>Can't find who you're looking for?</h5>
@@ -392,9 +479,11 @@ const StakeholderMapForm = () => {
         name="orgName"
         virtual={false}
         showArrow
+        loading={preload}
         onChange={(value) => {
           setEntity(value)
         }}
+        onSelect={(dataID) => handleSelectToAdd(dataID)}
         filterOption={(input, option) =>
           option.children.toLowerCase().includes(input.toLowerCase())
         }
@@ -402,18 +491,12 @@ const StakeholderMapForm = () => {
         className={`ant-select-suffix`}
         suffixIcon={<SearchIcon />}
         dropdownRender={(menu) => (
-          <div>
+          <div className={styles.organisationDropdown}>
             {menu}
             <>
               <Divider style={{ margin: '4px 0' }} />
-              <div
-                style={{
-                  display: 'flex',
-                  flexWrap: 'nowrap',
-                  padding: 8,
-                }}
-              >
-                <a onClick={() => setShowModal(!showModal)}>
+              <div className="add-button-container">
+                <a onClick={() => setShowModal(!showModal)} className="h-xs">
                   <PlusOutlined /> Add a New Organisation
                 </a>
               </div>
@@ -431,29 +514,36 @@ const StakeholderMapForm = () => {
         visible={showModal}
         close={() => setShowModal(!showModal)}
         setEntity={setOrg}
-        tag={`stakeholder-${country}`}
+        tag={`${PREFIX_TAG}-${country}`}
       />
     </>
   )
 }
 
-const View = ({ psItem }) => (
-  <div className={styles.stakeholderMapView}>
-    <div className="title-section">
-      <h4 className="caps-heading-m">stakeholder consultation process</h4>
-      <h2 className="h-xxl w-bold">Stakeholder Map</h2>
+const View = ({ psItem }) => {
+  const [entities, setEntities] = useState([])
+  const [preload, setPreload] = useState(true)
+  return (
+    <div className={styles.stakeholderMapView}>
+      <div className="title-section">
+        <h4 className="caps-heading-m">stakeholder consultation process</h4>
+        <h2 className="h-xxl w-bold">Stakeholder Map</h2>
+      </div>
+      <div className="desc-section">
+        <p>Find and connect the stakeholders relevant to you</p>
+      </div>
+      <div className="table-section">
+        <StakeholderMapTable
+          psItem={psItem}
+          {...{ entities, setEntities, preload, setPreload }}
+        />
+      </div>
+      <div className="add-section">
+        <StakeholderMapForm {...{ entities, preload, setPreload }} />
+      </div>
     </div>
-    <div className="desc-section">
-      <p>Find and connect the stakeholders relevant to you</p>
-    </div>
-    <div className="table-section">
-      <StakeholderMapTable psItem={psItem} />
-    </div>
-    <div className="add-section">
-      <StakeholderMapForm />
-    </div>
-  </div>
-)
+  )
+}
 
 View.getLayout = PageLayout
 
