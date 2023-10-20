@@ -3,9 +3,9 @@ import { PageLayout } from '..'
 import api from '../../../../utils/api'
 import ResourceCards from '../../../../modules/workspace/ps/resource-cards'
 import { useRouter } from 'next/router'
-import { isoA2 } from '../../../../modules/workspace/ps/config'
+import { iso2id, isoA2 } from '../../../../modules/workspace/ps/config'
 
-const sectionKey = 'stakeholder-case-studies'
+const sectionKey = 'data-collection'
 
 const View = ({ setLoginVisible, isAuthenticated }) => {
   const router = useRouter()
@@ -17,7 +17,7 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
     if (countryCode)
       api
         .get(
-          `/browse?tag=legislative+%26+policy+review+case+study&ps_country_iso_code_a2=${countryCode}`
+          `/browse?country=${iso2id[countryCode]}&ps_country_iso_code_a2=${countryCode}`
         )
         .then((d) => {
           setItems(d.data?.results)
@@ -38,8 +38,8 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
   }
   return (
     <>
-      <h4 className="caps-heading-m">LEGISLATION & POLICY REVIEW REPORT</h4>
-      <h2 className="h-xxl w-bold">Case Studies</h2>
+      <h4 className="caps-heading-m">Data Analysis</h4>
+      <h2 className="h-xxl w-bold">Available Tools</h2>
       <p>Placeholder for description here</p>
 
       <ResourceCards

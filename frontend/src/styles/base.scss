@@ -676,6 +676,7 @@ ul {
 */
 .ant-table-filter-dropdown {
   min-width: 164px;
+  max-width: 300px;
   .ant-table-filter-dropdown-btns {
     .ant-btn {
       font-size: $fzXXS;
