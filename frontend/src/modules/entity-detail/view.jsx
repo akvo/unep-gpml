@@ -596,14 +596,14 @@ const StakeholderDetail = ({
                             </Col>
                             <Col className="individual-details" xs={6} lg={10}>
                               <div className="profile-detail">
-                                <h3>{item.name}</h3>
+                                <h5>{item.name}</h5>
                                 {/* <p>
                                   <span>
                                     <img src={LocationImage} />
                                   </span>
                                   Location
                                 </p> */}
-                                <h5>{data?.name}</h5>
+                                <h4>{data?.name}</h4>
                               </div>
                             </Col>
                           </Row>
