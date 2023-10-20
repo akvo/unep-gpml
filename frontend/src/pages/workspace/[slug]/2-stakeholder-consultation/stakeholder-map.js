@@ -366,7 +366,7 @@ const StakeholderMapTable = ({
                           (l) => l.value === tag
                         )
                         if (!findPL) {
-                          return <div key={tx}>-</div>
+                          return null
                         }
                         return (
                           <Tooltip
