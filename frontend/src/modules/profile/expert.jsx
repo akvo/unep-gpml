@@ -1,62 +1,63 @@
-import React, { useRef, useEffect, useState } from "react";
-import { Typography, Row, Col, Input, notification, Button } from "antd";
-const { Title } = Typography;
-import { PlusOutlined, MinusOutlined } from "@ant-design/icons";
-import { Form, Field } from "react-final-form";
-import arrayMutators from "final-form-arrays";
-import { FieldArray } from "react-final-form-arrays";
-import CatTagSelect from "../../components/cat-tag-select/cat-tag-select";
-import api from "../../utils/api";
-import { UIStore } from "../../store";
+import React, { useRef, useEffect, useState } from 'react'
+import { Typography, Row, Col, Input, notification } from 'antd'
+const { Title } = Typography
+import { PlusOutlined, MinusOutlined } from '@ant-design/icons'
+import { Form, Field } from 'react-final-form'
+import arrayMutators from 'final-form-arrays'
+import { FieldArray } from 'react-final-form-arrays'
+import CatTagSelect from '../../components/cat-tag-select/cat-tag-select'
+import api from '../../utils/api'
+import { UIStore } from '../../store'
+import Button from '../../components/button'
 
 function Expert() {
   const { tags } = UIStore.useState((s) => ({
     tags: s.tags,
-  }));
-  const formRef = useRef();
-  const [pendingInvites, setPendingInvites] = useState([]);
-  const [loading, setLoading] = useState(false);
+  }))
+  const formRef = useRef()
+  const [pendingInvites, setPendingInvites] = useState([])
+  const [loading, setLoading] = useState(false)
 
   const onSubmit = async (values) => {
-    setLoading(true);
+    setLoading(true)
 
     values = values.invites.map((item, index) => {
       return {
-        ...(item.name.split(" ").length > 1 && {
-          firstName: item.name.split(" ")[0],
-          lastName: item.name.split(" ")[1],
+        ...(item.name.split(' ').length > 1 && {
+          firstName: item.name.split(' ')[0],
+          lastName: item.name.split(' ')[1],
         }),
         email: item.email,
         expertise: item.expertise,
-      };
-    });
+      }
+    })
 
     api
-      .post("/stakeholder/expert/invite", values)
+      .post('/stakeholder/expert/invite', values)
       .then((res) => {
-        window.scrollTo({ top: 0 });
-        setLoading(false);
-        notification.success({ message: "Invites successfully sent" });
-        loadExperts();
+        window.scrollTo({ top: 0 })
+        setLoading(false)
+        notification.success({ message: 'Invites successfully sent' })
+        loadExperts()
       })
       .catch((err) => {
-        setLoading(false);
-        notification.error({ message: "An error occured" });
-        console.log(err);
-      });
-  };
+        setLoading(false)
+        notification.error({ message: 'An error occured' })
+        console.log(err)
+      })
+  }
 
-  const required = (value) => (value ? undefined : "Required");
+  const required = (value) => (value ? undefined : 'Required')
 
   useEffect(() => {
-    loadExperts();
-  }, []);
+    loadExperts()
+  }, [])
 
   const loadExperts = () => {
-    api.get("/invitation").then((res) => {
-      setPendingInvites(res.data);
-    });
-  };
+    api.get('/invitation').then((res) => {
+      setPendingInvites(res.data)
+    })
+  }
 
   return (
     <>
@@ -73,7 +74,7 @@ function Expert() {
                 ...arrayMutators,
               }}
               initialValues={{
-                invites: [{ name: "", email: "", expertise: "" }],
+                invites: [{ name: '', email: '', expertise: '' }],
               }}
               render={({
                 handleSubmit,
@@ -85,7 +86,7 @@ function Expert() {
                 submitting,
                 values,
               }) => {
-                formRef.current = form;
+                formRef.current = form
                 return (
                   <form onSubmit={handleSubmit}>
                     <FieldArray name="invites">
@@ -111,12 +112,12 @@ function Expert() {
                                         placeholder="Enter Name"
                                         className={`${
                                           meta.touched && meta.error
-                                            ? "ant-input-status-error"
-                                            : ""
+                                            ? 'ant-input-status-error'
+                                            : ''
                                         }`}
                                       />
                                     </>
-                                  );
+                                  )
                                 }}
                               </Field>
                             </Col>
@@ -133,18 +134,19 @@ function Expert() {
                                   return (
                                     <>
                                       <Input
+                                        size="small"
                                         onChange={(e) =>
                                           input.onChange(e.target.value)
                                         }
                                         placeholder="Enter Email"
                                         className={`${
                                           meta.touched && meta.error
-                                            ? "ant-input-status-error"
-                                            : ""
+                                            ? 'ant-input-status-error'
+                                            : ''
                                         }`}
                                       />
                                     </>
-                                  );
+                                  )
                                 }}
                               </Field>
                             </Col>
@@ -158,7 +160,7 @@ function Expert() {
                               )}
                               <Field
                                 name={`${name}.expertise`}
-                                style={{ width: "100%" }}
+                                style={{ width: '100%' }}
                                 validate={required}
                               >
                                 {({ input, meta }) => {
@@ -183,7 +185,7 @@ function Expert() {
                                                   value.toLowerCase()
                                               )?.tag || value,
                                           ]
-                                        );
+                                        )
                                       }}
                                       meta={meta}
                                       error={meta.touched && meta.error}
@@ -196,12 +198,12 @@ function Expert() {
                                           formRef?.current
                                             ?.getFieldState(`${name}.expertise`)
                                             ?.value.filter(function (item) {
-                                              return item !== v;
+                                              return item !== v
                                             })
-                                        );
+                                        )
                                       }}
                                     />
-                                  );
+                                  )
                                 }}
                               </Field>
                             </Col>
@@ -212,18 +214,20 @@ function Expert() {
 
                     <div className="buttons">
                       <Button
-                        icon={<PlusOutlined />}
-                        type="button"
-                        onClick={() => push("invites", undefined)}
+                        size="small"
                         className="icon-button"
+                        onClick={() => push('invites', undefined)}
+                        ghost
+                        icon={<PlusOutlined />}
                       >
                         Add row
                       </Button>
                       <Button
                         icon={<MinusOutlined />}
-                        type="button"
-                        onClick={() => pop("invites")}
+                        onClick={() => pop('invites')}
                         className="icon-button"
+                        ghost
+                        size="small"
                         disabled={values.invites.length === 1}
                       >
                         Remove row
@@ -236,12 +240,14 @@ function Expert() {
                         className="submit"
                         disabled={submitting}
                         onClick={() => handleSubmit()}
+                        ghost
+                        size="small"
                       >
                         Send invites
                       </Button>
                     </div>
                   </form>
-                );
+                )
               }}
             />
           </div>
@@ -266,7 +272,7 @@ function Expert() {
                     <p>{item.email}</p>
                   </Col>
                   <Col span={8}>
-                    <p>{item.expertise?.map((item) => item).join(", ")}</p>
+                    <p>{item.expertise?.map((item) => item).join(', ')}</p>
                   </Col>
                 </Row>
               ))}
@@ -275,7 +281,7 @@ function Expert() {
         </Row>
       )}
     </>
-  );
+  )
 }
 
-export default Expert;
+export default Expert

@@ -1,93 +1,94 @@
-import React, { useEffect, useState } from "react";
-import { Button, Image } from "antd";
-import styles from "./styles.module.scss";
-import issueGraphics from "./issue-section-content";
-import { UIStore } from "../../store";
-import sumBy from "lodash/sumBy";
-import isEmpty from "lodash/isEmpty";
-import api from "../../utils/api";
-import Link from "next/link";
+import React, { useEffect, useState } from 'react'
+import { Image } from 'antd'
+import styles from './styles.module.scss'
+import issueGraphics from './issue-section-content'
+import { UIStore } from '../../store'
+import sumBy from 'lodash/sumBy'
+import isEmpty from 'lodash/isEmpty'
+import api from '../../utils/api'
+import Link from 'next/link'
+import Button from '../../components/button'
 
 const summary = [
   {
-    name: "Data Layers",
+    name: 'Data Layers',
     value: [],
-    startValue: "300+",
-    increment: "12",
+    startValue: '300+',
+    increment: '12',
   },
-];
+]
 
 const AboutUs = () => {
   const { nav, stakeholders } = UIStore.useState((s) => {
-    return { nav: s.nav, stakeholders: s?.stakeholders };
-  });
+    return { nav: s.nav, stakeholders: s?.stakeholders }
+  })
 
-  const [resourcesCount, setResourcesCount] = useState([]);
-  const [entityCount, setEntityCount] = useState(0);
-  const [stakeholdersCount, setStakeholdersCount] = useState([]);
-  const [summary, setSummary] = useState([]);
+  const [resourcesCount, setResourcesCount] = useState([])
+  const [entityCount, setEntityCount] = useState(0)
+  const [stakeholdersCount, setStakeholdersCount] = useState([])
+  const [summary, setSummary] = useState([])
   const totalResources = resourcesCount.reduce(
     (acc, val) => acc + Number(val?.count),
     0
-  );
+  )
 
   const getEntityCount = () => {
     api
       .get(`/community`)
       .then((resp) => {
         const entity = resp?.data?.counts.filter(
-          (item) => item?.networkType === "organisation"
-        );
+          (item) => item?.networkType === 'organisation'
+        )
 
-        setEntityCount(entity[0].count || 0);
+        setEntityCount(entity[0].count || 0)
       })
       .catch((err) => {
-        console.error(err);
-      });
-  };
+        console.error(err)
+      })
+  }
 
   const getResourceCount = () => {
     const topic = [
-      "action_plan",
-      "initiative",
-      "policy",
-      "technical_resource",
-      "technology",
-      "event",
-      "financing_resource",
-    ];
+      'action_plan',
+      'initiative',
+      'policy',
+      'technical_resource',
+      'technology',
+      'event',
+      'financing_resource',
+    ]
     api
       .get(`/browse?topic=${topic}`)
       .then((resp) => {
         const data = resp?.data?.counts.filter(
           (item) =>
-            item?.topic !== "gpml_member_entities" &&
-            item?.topic !== "plastics" &&
-            item?.topic !== "waste management" &&
-            item?.topic !== "marine litter" &&
-            item?.topic !== "capacity building" &&
-            item?.topic !== "product by design" &&
-            item?.topic !== "source to sea"
-        );
-        setResourcesCount(data);
+            item?.topic !== 'gpml_member_entities' &&
+            item?.topic !== 'plastics' &&
+            item?.topic !== 'waste management' &&
+            item?.topic !== 'marine litter' &&
+            item?.topic !== 'capacity building' &&
+            item?.topic !== 'product by design' &&
+            item?.topic !== 'source to sea'
+        )
+        setResourcesCount(data)
         // setEntityCount(GPMLMember[0].count || 0);
       })
       .catch((err) => {
-        console.error(err);
-      });
-  };
+        console.error(err)
+      })
+  }
 
   useEffect(() => {
-    getEntityCount();
-    getResourceCount();
+    getEntityCount()
+    getResourceCount()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [])
 
   useEffect(() => {
     setStakeholdersCount(
       (stakeholders?.stakeholders?.length || 0) + entityCount
-    );
-  }, [stakeholders, entityCount]);
+    )
+  }, [stakeholders, entityCount])
 
   return (
     <div className={styles.aboutUs}>
@@ -100,13 +101,13 @@ const AboutUs = () => {
       {renderSectionCommunity()}
       {renderSectionHistory()}
     </div>
-  );
-};
+  )
+}
 
 const renderSectionIssue = () => {
   const renderIssueGraphic = () => {
     return issueGraphics.map((x, i) => {
-      const { title, image, description } = x;
+      const { title, image, description } = x
       return (
         <div className="item" key={`issue-${i}`}>
           <div className="item-title text-white">{title}</div>
@@ -116,9 +117,9 @@ const renderSectionIssue = () => {
             <div className="item-description text-white">{description}</div>
           </div>
         </div>
-      );
-    });
-  };
+      )
+    })
+  }
   return (
     <div className="section-container section-issue-container">
       <div className="ui container section-issue-wrapper">
@@ -135,9 +136,9 @@ const renderSectionIssue = () => {
             {/* Removed for now
             <Button type="ghost">Vital graphics</Button> */}
             <Button
-              type="ghost"
+              ghost
               onClick={(e) => {
-                window.location.href = "https://www.cleanseas.org/";
+                window.location.href = 'https://www.cleanseas.org/'
               }}
             >
               Clean Seas
@@ -149,15 +150,15 @@ const renderSectionIssue = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 const renderSectionSummary = (nav, totalResources, stakeholderCount) => {
   const renderSummary = (nav) => {
-    const isLoaded = () => Boolean(!isEmpty(nav));
+    const isLoaded = () => Boolean(!isEmpty(nav))
 
     return summary.map((x, i) => {
-      const { name, value, startValue } = x;
+      const { name, value, startValue } = x
       const navData =
         isLoaded() &&
         nav?.resourceCounts
@@ -166,10 +167,10 @@ const renderSectionSummary = (nav, totalResources, stakeholderCount) => {
             return {
               name: Object.keys(x)[0],
               count: x[Object.keys(x)[0]],
-            };
-          });
+            }
+          })
 
-      const total = sumBy(navData, "count");
+      const total = sumBy(navData, 'count')
 
       return (
         <div className="item" key={`summary-${i}`}>
@@ -178,9 +179,9 @@ const renderSectionSummary = (nav, totalResources, stakeholderCount) => {
             {isLoaded() ? total || startValue : 0}
           </div>
         </div>
-      );
-    });
-  };
+      )
+    })
+  }
   return (
     <div className="section-container section-summary-container">
       <div className="ui container section-summary-wrapper">
@@ -195,8 +196,8 @@ const renderSectionSummary = (nav, totalResources, stakeholderCount) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 const renderSectionMission = () => {
   return (
@@ -224,9 +225,8 @@ const renderSectionMission = () => {
             solutions to this pressing global issue.
           </p>
           <Button
-            type="ghost"
             onClick={(e) => {
-              window.location.href = "https://www.gpmarinelitter.org/";
+              window.location.href = 'https://www.gpmarinelitter.org/'
             }}
           >
             Go to the partnership
@@ -234,8 +234,8 @@ const renderSectionMission = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 const renderSectionInfo = () => {
   return (
@@ -255,9 +255,7 @@ const renderSectionInfo = () => {
         <div className="section-info-button-wrapper">
           <a target="_blank" href="/GPML_One-pager.pdf" className="doc-wrapper">
             <img src="/summary-doc.png" alt="summary-document" />
-            <Button type="ghost" className="btn-item">
-              Download Summary (1 Page)
-            </Button>
+            <Button className="btn-item">Download Summary (1 Page)</Button>
           </a>
           <a
             target="_blank"
@@ -265,15 +263,13 @@ const renderSectionInfo = () => {
             className="doc-wrapper"
           >
             <img src="/full-concept-doc.png" alt="full-concept-document" />
-            <Button type="ghost" className="btn-item">
-              Download Full Concept Document
-            </Button>
+            <Button className="btn-item">Download Full Concept Document</Button>
           </a>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 const renderSectionTimelineAndRoadmap = () => {
   return (
@@ -298,10 +294,10 @@ const renderSectionTimelineAndRoadmap = () => {
             UNEA-6, expected to be held in early 2023.
           </p>
           <Button
-            type="primary"
+            size="small"
             onClick={(e) => {
               window.location.href =
-                "https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP%20GPML%20Digital%20Platform%20Concept%20for%20User%20and%20Partner%20Consultations%20May%202021.pdf";
+                'https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP%20GPML%20Digital%20Platform%20Concept%20for%20User%20and%20Partner%20Consultations%20May%202021.pdf'
             }}
           >
             Learn More
@@ -312,8 +308,8 @@ const renderSectionTimelineAndRoadmap = () => {
         <img src="/timeline-roadmap-graphic.png" />
       </div>
     </div>
-  );
-};
+  )
+}
 
 const renderSectionKeyFeaturesAndComponents = () => {
   return (
@@ -333,10 +329,10 @@ const renderSectionKeyFeaturesAndComponents = () => {
             Environment Situation Room (WESR).
           </p>
           <Button
-            type="ghost"
+            size="small"
             onClick={(e) => {
               window.location.href =
-                "https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP%20GPML%20Digital%20Platform%20Concept%20for%20User%20and%20Partner%20Consultations%20May%202021.pdf";
+                'https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP%20GPML%20Digital%20Platform%20Concept%20for%20User%20and%20Partner%20Consultations%20May%202021.pdf'
             }}
           >
             Learn More
@@ -347,8 +343,8 @@ const renderSectionKeyFeaturesAndComponents = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 const renderSectionCommunity = () => {
   return (
@@ -368,7 +364,7 @@ const renderSectionCommunity = () => {
           </p>
           <Link href="/onboarding" legacyBehavior>
             <a>
-              <Button type="ghost">Sign up to find out more</Button>
+              <Button size="small">Sign up to find out more</Button>
             </a>
           </Link>
         </div>
@@ -377,8 +373,8 @@ const renderSectionCommunity = () => {
         <img src="/about-our-community.png" />
       </div>
     </div>
-  );
-};
+  )
+}
 
 const renderSectionHistory = () => {
   return (
@@ -410,7 +406,7 @@ const renderSectionHistory = () => {
         <img src="/GPML-history.png" />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default AboutUs;
+export default AboutUs
