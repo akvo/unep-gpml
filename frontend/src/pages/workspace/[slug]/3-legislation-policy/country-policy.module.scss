@@ -33,9 +33,6 @@
       width: 100%;
       .ant-table-tbody .ant-table-row td {
         max-width: 211px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
         text-transform: capitalize;
         .ant-btn.ant-btn-link {
           .icon {
@@ -47,6 +44,12 @@
                 stroke: none;
               }
             }
+            &.verified {
+              margin-right: 8px;
+            }
+          }
+          span {
+            max-width: 211px;
           }
           &:hover {
             svg {
@@ -68,6 +71,15 @@
             }
           }
         }
+        &:nth-of-type(3) {
+          max-width: 300px;
+        }
+        &:nth-of-type(3) .ant-btn.ant-btn-link span,
+        &:nth-of-type(6) > div {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
       }
     }
   }
@@ -76,81 +88,22 @@
 .modalView {
   :global {
     .ant-modal-content {
-      .ant-modal-header {
-        border-bottom: 1px solid rgba(0, 0, 0, 0.12) !important;
-        padding: 42px 33px 16px;
-        .ant-modal-title {
-          h3 {
-            font-weight: 700;
-            margin: 12px 0 16px;
-          }
-          ul.group-buttons li {
-            display: inline-block;
-            &:not(:last-child) {
-              margin-right: 10px;
-            }
-            .ant-btn.ant-btn-default {
-              &.external-icon {
-                svg {
-                  padding-left: 0 !important;
-                  width: 24px;
-                  height: 24px;
-                }
-              }
-            }
-          }
-        }
-      }
       .ant-modal-body {
-        padding: 16px 33px 24px;
-        .tags-section {
-          display: flex;
-          flex-direction: column;
-          gap: 16px;
-          margin: 16px 0 32px;
-          .tags {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 10px;
-            .ant-tag {
-              padding: 6px 12px;
-              margin-right: 0;
-              font-family: var(--font-archia), sans-serif;
-              font-size: 14px;
-              font-style: normal;
-              font-weight: 600;
-              line-height: 20px;
-              border-radius: 100px;
-              border: 2px solid $primaryDarkBlue2;
-            }
-          }
-        }
-        .records-section {
-          display: flex;
-          flex-direction: column;
-          gap: 9px;
-          .ant-list {
-            width: 100%;
-            .ant-list-items {
-              .ant-list-item {
-                padding: 10px 0;
-                .ant-typography {
-                  width: 40%;
-                  color: $primaryDarkBlue;
-                  &.value {
-                    width: 60%;
-                    text-align: left;
-                  }
-                }
-              }
+        padding: 0 0 64px;
+        .detail-view-wrapper {
+          padding-top: 0;
+          .detail-view {
+            margin: 0;
+            .comment-section,
+            .input-wrapper {
+              display: none;
             }
           }
         }
       }
       .ant-modal-footer {
         padding: 25px 33px 22px;
-        background-color: #E7F3FF6B;
+        background-color: #e7f3ff6b;
         .ant-btn.ant-btn-background-ghost.invalidate {
           color: $systemError !important;
           &:hover {
