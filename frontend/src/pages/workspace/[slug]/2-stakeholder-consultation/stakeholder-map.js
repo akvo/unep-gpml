@@ -12,6 +12,7 @@ import {
 import classNames from 'classnames'
 import { kebabCase, uniqBy, snakeCase } from 'lodash'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 import { PageLayout } from '..'
 import {
@@ -28,6 +29,7 @@ import styles from './stakeholder-map.module.scss'
 import api from '../../../../utils/api'
 import { PlusOutlined } from '@ant-design/icons'
 import { UIStore } from '../../../../store'
+import { shortenOrgTypes } from '../../../../utils/misc'
 
 const { Column } = Table
 const { Text } = Typography
@@ -335,15 +337,11 @@ const StakeholderMapTable = ({
                 return (
                   <div className="data-with-avatar">
                     {values?.map((v, vx) => (
-                      <Tooltip
-                        key={vx}
-                        placement="top"
-                        title={`${v?.firstName} ${v?.lastName || ''}`}
-                      >
+                      <Link key={vx} href={`/stakeholder/${v.id}`}>
                         <Avatar size={37}>
-                          {v?.firstName?.[0]} {v?.lastName?.[0]}
+                          {v?.firstName?.[0]}{v?.lastName?.[0]}
                         </Avatar>
-                      </Tooltip>
+                      </Link>
                     ))}
                   </div>
                 )
@@ -391,23 +389,27 @@ const StakeholderMapTable = ({
               key={cx}
               render={(value, record) =>
                 value ? (
-                  <Button
-                    type="link"
-                    onClick={() =>
-                      router.push({
-                        pathname: `/workspace/${router.query?.slug}/2-stakeholder-consultation/initiatives`,
-                        query: {
-                          id: record?.id,
-                        },
-                      })
-                    }
+                  <Link
+                    href={`/workspace/${router.query?.slug}/2-stakeholder-consultation/initiatives?id=${record?.id}`}
+                    className="ant-btn ant-btn-link"
                   >
                     {`${value} Initiatives`}
-                  </Button>
+                  </Link>
                 ) : (
                   '-'
                 )
               }
+            />
+          )
+        }
+        if (col.dataIndex === 'type') {
+          return (
+            <Column
+              {...col}
+              key={cx}
+              render={(orgType) => {
+                return <>{shortenOrgTypes?.[orgType] || orgType}</>
+              }}
             />
           )
         }
