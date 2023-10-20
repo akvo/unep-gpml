@@ -17,6 +17,12 @@ module.exports = {
         port: '',
         pathname: '/unep-gpml-public-test/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'storage.googleapis.com',
+        port: '',
+        pathname: '/unep-gpml-public-staging/**',
+      },
     ],
   },
 
@@ -25,19 +31,19 @@ module.exports = {
       {
         source: '/api/:path*',
         destination: process.env.REACT_APP_FEENV
-          ? 'https://unep-gpml.akvotest.org/api/:path*'
+          ? 'https://unep-gpml-staging.akvotest.org/api/:path*'
           : 'http://backend:3000/api/:path*',
       },
       {
         source: '/image/:path*',
         destination: process.env.REACT_APP_FEENV
-          ? 'https://unep-gpml.akvotest.org/image/:path*'
+          ? 'https://unep-gpml-staging.akvotest.org/image/:path*'
           : 'http://backend:3000/image/:path*',
       },
       {
         source: '/env.js',
         destination: process.env.REACT_APP_FEENV
-          ? 'https://unep-gpml.akvotest.org/env.js'
+          ? 'https://unep-gpml-staging.akvotest.org/env.js'
           : 'http://backend:3000/env.js',
       },
     ]
