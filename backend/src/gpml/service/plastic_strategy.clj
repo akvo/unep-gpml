@@ -20,37 +20,112 @@
                                              :updates {:steps steps}}))
 
 (defn create-plastic-strategy
-  [{:keys [db logger]} plastic-strategy]
+  [{:keys [db logger] :as config} ps-payload]
   (let [transactions
         [{:txn-fn
           (fn tx-create-plastic-strategy
-            [{:keys [plastic-strategy]}]
-            (db.ps/create-plastic-strategy (:spec db) plastic-strategy))
+            [{:keys [plastic-strategy] :as context}]
+            (let [result (db.ps/create-plastic-strategy (:spec db)
+                                                        plastic-strategy)]
+              (if (:success? result)
+                (assoc-in context [:plastic-strategy :id] (:id result))
+                (assoc context
+                       :success? false
+                       :reason :failed-to-create-plastic-strategy
+                       :error-details {:result result}))))
           :rollback-fn
           (fn rollback-create-plastic-strategy
-            [{:keys [id] :as context}]
-            (db.ps/delete-plastic-strategy (:spec db) {:id id})
+            [{:keys [plastic-strategy] :as context}]
+            (let [result (db.ps/delete-plastic-strategy (:spec db) (:id plastic-strategy))]
+              (when-not (:success? result)
+                (log logger :error ::failed-to-delete-plastic-strategy {:result result})))
             context)}
          {:txn-fn
+          (fn tx-get-plastic-strategy
+            [{{:keys [country-id]} :plastic-strategy :as context}]
+            (let [search-opts {:filters {:countries-ids [country-id]}}
+                  result (db.ps/get-plastic-strategy (:spec db) search-opts)]
+              (if (:success? result)
+                (assoc context :plastic-strategy (:plastic-strategy result))
+                (assoc context
+                       :success? false
+                       :reason :failed-to-get-plastic-strategy
+                       :error-details {:result result}))))}
+         {:txn-fn
           (fn tx-create-plastic-strategy-rbac-context
-            [{:keys [id] :as context}]
+            [{:keys [plastic-strategy] :as context}]
             (let [result (srv.permissions/create-resource-context {:conn (:spec db)
                                                                    :logger logger}
                                                                   {:context-type :plastic-strategy
-                                                                   :resource-id id})]
+                                                                   :resource-id (:id plastic-strategy)})]
+              (if (:success? result)
+                context
+                (assoc context
+                       :success? false
+                       :reason :failed-to-create-plastic-strategy-rbac-context
+                       :error-details result))))
+          :rollback-fn
+          (fn rollback-create-plastic-strategy-rbac-context
+            [{:keys [plastic-strategy] :as context}]
+            (let [result (srv.permissions/delete-resource-context {:conn (:spec db)
+                                                                   :logger logger}
+                                                                  {:context-type-name :plastic-strategy
+                                                                   :resource-id (:id plastic-strategy)})]
+              (when-not (:success? result)
+                (log logger :error ::failed-to-delete-plastic-strategy-rbac-context {:result result})))
+            context)}
+         {:txn-fn
+          (fn tx-create-plastic-strategy-chat-channel
+            [{:keys [chat-channel-name] :as context}]
+            (let [channel {:name chat-channel-name
+                           :read-only false}
+                  result (srv.chat/create-private-channel config channel)]
+              (if (:success? result)
+                (assoc context :channel (:channel result))
+                (assoc context
+                       :success? false
+                       :reason :failed-to-create-plastic-strategy-channel
+                       :error-details {:result result}))))
+          :rollback-fn
+          (fn rollback-create-plastic-strategy-chat-channel
+            [{:keys [channel] :as context}]
+            (let [result (srv.chat/delete-private-channel config (:id channel))]
+              (when-not (:success? result)
+                (log logger :error ::failed-to-rollback-create-plastic-strategy-chat-channel {:result result})))
+            context)}
+         {:txn-fn
+          (fn tx-set-plastic-strategy-channel-custom-fields
+            [{:keys [plastic-strategy channel] :as context}]
+            (let [custom-fields {:ps-country-iso-code-a2 (get-in plastic-strategy [:country :iso-code-a2])}
+                  result (srv.chat/set-private-channel-custom-fields config
+                                                                     (:id channel)
+                                                                     custom-fields)]
+              (if (:success? result)
+                context
+                (assoc context
+                       :success? false
+                       :reason :failed-to-set-plastic-strategy-channel-custom-fields
+                       :error-details {:result result}))))}
+         {:txn-fn
+          (fn update-plastic-strategy-with-channel-id
+            [{:keys [plastic-strategy channel] :as context}]
+            (let [result (db.ps/update-plastic-strategy (:spec db)
+                                                        {:id (:id plastic-strategy)
+                                                         :updates {:chat-channel-id (:id channel)}})]
               (if (:success? result)
                 {:success? true}
                 (assoc context
                        :success? false
-                       :reason :failed-to-create-plastic-strategy-rbac-context
-                       :error-details result))))}]
+                       :reason :failed-to-update-plastic-strategy-with-channel-id
+                       :error-details {:result result}))))}]
         context {:success? true
-                 :plastic-strategy plastic-strategy}]
+                 :plastic-strategy (dissoc ps-payload :chat-channel-name)
+                 :chat-channel-name (:chat-channel-name ps-payload)}]
     (tht/thread-transactions logger transactions context)))
 
 (defn create-plastic-strategies
-  [config plastic-strategies]
-  (let [results (map (partial create-plastic-strategy config) plastic-strategies)]
+  [config pses-payload]
+  (let [results (map (partial create-plastic-strategy config) pses-payload)]
     (if (every? :success? results)
       {:success? true}
       {:success? false

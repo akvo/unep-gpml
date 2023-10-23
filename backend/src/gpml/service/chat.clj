@@ -216,6 +216,18 @@
                                     chat-account-id
                                     channel-id))
 
+(defn create-private-channel
+  [{:keys [chat-adapter]} channel]
+  (chat/create-private-channel chat-adapter channel))
+
+(defn set-private-channel-custom-fields
+  [{:keys [chat-adapter]} channel-id custom-fields]
+  (chat/set-private-channel-custom-fields chat-adapter channel-id custom-fields))
+
+(defn delete-private-channel
+  [{:keys [chat-adapter]} channel-id]
+  (chat/delete-private-channel chat-adapter channel-id))
+
 (defn send-private-channel-invitation-request
   [{:keys [db mailjet-config]} user channel-id channel-name]
   (let [super-admins (db.rbac-util/get-super-admins-details (:spec db) {})]
