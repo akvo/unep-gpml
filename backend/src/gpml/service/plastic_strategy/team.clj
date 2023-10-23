@@ -233,13 +233,13 @@
     (tht/thread-transactions logger transactions context)))
 
 (defn delete-ps-team-member
-  [{:keys [db logger]} plastic-strategy-id user-id]
+  [{:keys [db logger] :as config} plastic-strategy user-id]
   (let [transactions
         [{:txn-fn
           (fn tx-get-ps-team-member
-            [{:keys [plastic-strategy-id user-id] :as context}]
+            [{:keys [plastic-strategy user-id] :as context}]
             (let [result (db.ps.team/get-ps-team-member (:spec db)
-                                                        {:filters {:plastic-strategies-ids [plastic-strategy-id]
+                                                        {:filters {:plastic-strategies-ids [(:id plastic-strategy)]
                                                                    :users-ids [user-id]}})]
               (if (:success? result)
                 (assoc context :ps-team-member (:ps-team-member result))
@@ -252,6 +252,28 @@
                          :success? false
                          :reason :failed-to-get-ps-team-member
                          :error-details {:result result})))))}
+         {:txn-fn
+          (fn tx-remove-user-from-ps-channel
+            [{:keys [plastic-strategy ps-team-member] :as context}]
+            (let [result (srv.chat/remove-user-from-channel config
+                                                            (:chat-account-id ps-team-member)
+                                                            (:chat-channel-id plastic-strategy)
+                                                            "p")]
+              (if (:success? result)
+                context
+                (assoc context
+                       :success? false
+                       :reason :failed-to-remove-user-from-ps-channel
+                       :error-details {:result result}))))
+          :rollback-fn
+          (fn rollback-remove-user-from-ps-channel
+            [{:keys [plastic-strategy ps-team-member] :as context}]
+            (let [result (srv.chat/add-user-to-private-channel config
+                                                               (:chat-account-id ps-team-member)
+                                                               (:chat-channel-id plastic-strategy))]
+              (when-not (:success? result)
+                (log logger :error :failed-to-rollback-remove-user-from-ps-channel {:result result})))
+            context)}
          {:txn-fn
           (fn tx-unassign-ps-team-member-rbac-role
             [{:keys [ps-team-member] :as context}]
@@ -287,8 +309,8 @@
             context)}
          {:txn-fn
           (fn tx-delete-ps-team-member
-            [{:keys [plastic-strategy-id user-id] :as context}]
-            (let [result (db.ps.team/delete-ps-team-member (:spec db) plastic-strategy-id user-id)]
+            [{:keys [plastic-strategy user-id] :as context}]
+            (let [result (db.ps.team/delete-ps-team-member (:spec db) (:id plastic-strategy) user-id)]
               (if (:success? result)
                 {:success? true}
                 (assoc context
@@ -296,6 +318,6 @@
                        :reason :failed-to-delete-ps-team-member
                        :error-details {:result result}))))}]
         context {:success? true
-                 :plastic-strategy-id plastic-strategy-id
+                 :plastic-strategy plastic-strategy
                  :user-id user-id}]
     (tht/thread-transactions logger transactions context)))

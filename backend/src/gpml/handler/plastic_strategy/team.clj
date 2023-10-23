@@ -158,7 +158,7 @@
         (r/forbidden {:message "Unauthorized"})
         (let [user-id (:user_id body)
               result (srv.ps.team/delete-ps-team-member config
-                                                        (:id plastic-strategy)
+                                                        plastic-strategy
                                                         user-id)]
           (if (:success? result)
             (r/ok {})
