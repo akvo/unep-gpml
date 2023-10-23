@@ -15,7 +15,9 @@
   [conn opts]
   (try
     {:success? true
-     :plastic-strategies (get-plastic-strategies* conn opts)}
+     :plastic-strategies (jdbc-util/db-result-snake-kw->db-result-kebab-kw
+                          (get-plastic-strategies* conn opts)
+                          \_)}
     (catch Throwable t
       {:success? false
        :reason :exception

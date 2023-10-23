@@ -17,4 +17,7 @@
     [this user-id opts])
   (get-user-joined-channels [this user-id])
   (remove-user-from-channel [this user-id channel-id channel-type])
-  (add-user-to-private-channel [this user-id channel-id]))
+  (add-user-to-private-channel [this user-id channel-id])
+  (create-private-channel [this channel])
+  (set-private-channel-custom-fields [this channel-id custom-fields])
+  (delete-private-channel [this channel-id]))
