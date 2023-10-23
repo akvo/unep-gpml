@@ -101,6 +101,9 @@
     :editor
     :admin})
 
+(def ^:const badge-type
+  #{:country-verified})
+
 (def ^:const enum-types
   {:review-status review-statuses
    :reviewer-status reviewer-review-statuses
@@ -114,7 +117,8 @@
    :chat-account-status chat-account-statuses
    :plastic-strategy-team-type plastic-strategy-team-types
    :plastic-strategy-team-role plastic-strategy-team-roles
-   :plastic-strategy-bookmarkable-entity-type plastic-strategy-bookmarkable-entity-types})
+   :plastic-strategy-bookmarkable-entity-type plastic-strategy-bookmarkable-entity-types
+   :badge-type badge-type})
 
 (defn get-type-schema
   [type-name]

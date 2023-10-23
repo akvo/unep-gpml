@@ -552,7 +552,12 @@
                                           {:post {:summary "Create plastic strategies"
                                                   :swagger {:tags ["plastic-strategy"] :security [{:id_token []}]}
                                                   :handler #ig/ref :gpml.handler.programmatic.plastic-strategy/post
-                                                  :parameters #ig/ref :gpml.handler.programmatic.plastic-strategy/post-params}}]]
+                                                  :parameters #ig/ref :gpml.handler.programmatic.plastic-strategy/post-params}}]
+                                         ["/badge"
+                                          {:post {:summary "Create a badge"
+                                                  :swagger {:tags ["badge"] :security [{:id_token []}]}
+                                                  :handler #ig/ref :gpml.handler.programmatic.badge/post
+                                                  :parameters #ig/ref :gpml.handler.programmatic.badge/post-params}}]]
                                         ["/subscribe"
                                          {:post {:summary "Send an email to GPML Secretariat about a new subscription request"
                                                  :swagger {:tags ["subscribe"]}
@@ -1038,6 +1043,9 @@
 
   :gpml.handler.programmatic.plastic-strategy/post #ig/ref :gpml.config/common
   :gpml.handler.programmatic.plastic-strategy/post-params {}
+
+  :gpml.handler.programmatic.badge/post #ig/ref :gpml.config/common
+  :gpml.handler.programmatic.badge/post-params {}
 
   :clj-gcp.storage/client {}
 
