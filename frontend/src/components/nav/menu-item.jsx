@@ -63,7 +63,13 @@ export const MenuItem = ({ i, item, onClick, collapseMenu }) => {
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
                 >
-                  <Button type="primary" size="small" className="noicon">
+                  <Button
+                    type={item.text === 'Contact us' ? 'ghost' : 'primary'}
+                    size="small"
+                    className={`${
+                      item.text === 'Contact us' ? 'contact-button' : 'noicon'
+                    }`}
+                  >
                     {item.text}
                   </Button>
                 </motion.div>
