@@ -409,6 +409,86 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
+(defn- create-private-channel*
+  [{:keys [logger api-key api-user-id] :as adapter} channel]
+  (try
+    (let [req-body (cske/transform-keys
+                    ->camelCaseString
+                    ;; We want the admin user calling this endpoint to
+                    ;; be added to the newly created
+                    ;; channel. Otherwise we don't have necessary
+                    ;; permissions to manage it (this is a recurring
+                    ;; issue in RocketChat API and there are open
+                    ;; issue to fix this).
+                    (assoc channel :exclude-self false))
+          {:keys [status body]}
+          (http-client/do-request logger
+                                  {:url (build-api-endpoint-url adapter "/groups.create")
+                                   :method :post
+                                   :body (json/->json req-body)
+                                   :headers (get-auth-headers api-key api-user-id)
+                                   :as :json-keyword-keys})]
+      (if (<= 200 status 299)
+        {:success? true
+         :channel (cske/transform-keys ->kebab-case (:group body))}
+        {:success? false
+         :reason :failed-to-create-private-channel
+         :error-details body}))
+    (catch Throwable t
+      (log logger :error :failed-to-create-private-channel {:exception-message (ex-message t)
+                                                            :stack-trace (map str (.getStackTrace t))})
+      {:success? false
+       :reason :exception
+       :error-details {:msg (ex-message t)}})))
+
+(defn- delete-private-channel*
+  [{:keys [logger api-key api-user-id] :as adapter} channel-id]
+  (try
+    (let [{:keys [status body]}
+          (http-client/do-request logger
+                                  {:url (build-api-endpoint-url adapter "/groups.delete")
+                                   :method :post
+                                   :body (json/->json {:roomId channel-id})
+                                   :headers (get-auth-headers api-key api-user-id)
+                                   :as :json-keyword-keys})]
+      (if (<= 200 status 299)
+        {:success? true}
+        {:success? false
+         :reason :failed-to-delete-private-channel
+         :error-details body}))
+    (catch Throwable t
+      (log logger :error :failed-to-delete-private-channel {:exception-message (ex-message t)
+                                                            :stack-trace (map str (.getStackTrace t))})
+      {:success? false
+       :reason :exception
+       :error-details {:msg (ex-message t)}})))
+
+(defn- set-private-channel-custom-fields*
+  [{:keys [logger api-key api-user-id] :as adapter} channel-id custom-fields]
+  (try
+    (let [req-body (cske/transform-keys
+                    ->camelCaseString
+                    {:room-id channel-id :custom-fields custom-fields})
+          {:keys [status body]}
+          (http-client/do-request logger
+                                  {:url (build-api-endpoint-url adapter "/groups.setCustomFields")
+                                   :method :post
+                                   :body (json/->json req-body)
+                                   :headers (get-auth-headers api-key api-user-id)
+                                   :as :json-keyword-keys})]
+      (if (<= 200 status 299)
+        {:success? true
+         :channel (cske/transform-keys ->kebab-case (:group body))}
+        {:success? false
+         :reason :failed-to-set-private-channel-custom-fields
+         :error-details body}))
+    (catch Throwable t
+      (log logger :error :failed-to-set-private-channel-custom-fields {:exception-message (ex-message t)
+                                                                       :stack-trace (map str (.getStackTrace t))})
+      {:success? false
+       :reason :exception
+       :error-details {:msg (ex-message t)}})))
+
 (defrecord RocketChat [api-domain-url api-url-path api-key api-user-id logger]
   port/Chat
   (create-user-account [this user]
@@ -438,4 +518,10 @@
   (remove-user-from-channel [this user-id channel-id channel-type]
     (remove-user-from-channel* this user-id channel-id channel-type))
   (add-user-to-private-channel [this user-id channel-id]
-    (add-user-to-private-channel* this user-id channel-id)))
+    (add-user-to-private-channel* this user-id channel-id))
+  (create-private-channel [this channel]
+    (create-private-channel* this channel))
+  (set-private-channel-custom-fields [this channel-id custom-fields]
+    (set-private-channel-custom-fields* this channel-id custom-fields))
+  (delete-private-channel [this channel-id]
+    (delete-private-channel* this channel-id)))
