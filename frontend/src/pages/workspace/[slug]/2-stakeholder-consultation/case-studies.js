@@ -25,17 +25,7 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
           console.log(d.data)
         })
   }, [countryCode])
-  const handleBookmark = (item, bookmark = true) => {
-    let entityType = item.type
-    const subtypes = ['action_plan', 'technical_resource', 'financing_resource']
-    if (subtypes.indexOf(entityType) !== -1) entityType = 'resource'
-    api.post(`/plastic-strategy/${countryCode}/bookmark`, {
-      bookmark,
-      entityId: item.id,
-      entityType,
-      sectionKey,
-    })
-  }
+
   return (
     <>
       <h4 className="caps-heading-m">Stakeholder Consultation Process</h4>
@@ -45,7 +35,6 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
       <ResourceCards
         {...{
           items,
-          handleBookmark,
           setLoginVisible,
           isAuthenticated,
           loading,

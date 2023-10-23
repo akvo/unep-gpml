@@ -101,6 +101,8 @@ const DetailsView = ({
   setFilterMenu,
   isAuthenticated,
   isServer,
+  bookmark2PS,
+  onBookmark2PS,
 }) => {
   const [showLess, setShowLess] = useState(true)
   const {
@@ -418,6 +420,8 @@ const DetailsView = ({
             translations,
             selectedLanguage,
             setLanguage,
+            bookmark2PS,
+            onBookmark2PS,
           }}
         />
         <Row

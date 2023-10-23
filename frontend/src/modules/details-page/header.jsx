@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './style.module.scss'
-import { Col, Popover, Input, Select } from 'antd'
+import { Col, Popover, Input, Select, Tooltip } from 'antd'
 const { Option } = Select
 import { eventTrack } from '../../utils/misc'
 import {
@@ -13,7 +13,11 @@ import { resourceTypeToTopicType, topicNames } from '../../utils/misc'
 import { languageOptions } from '../flexible-forms/view'
 import classNames from 'classnames'
 import Button from '../../components/button'
-import { BookmarkIcon, ArrowRight } from '../../components/icons'
+import {
+  BookmarkIcon,
+  ArrowRight,
+  BookmarkIconProper,
+} from '../../components/icons'
 import { Trans, t } from '@lingui/macro'
 
 export const HeaderButtons = ({
@@ -31,6 +35,8 @@ export const HeaderButtons = ({
   translations,
   selectedLanguage,
   setLanguage,
+  bookmark2PS,
+  onBookmark2PS,
 }) => {
   const bookmarked =
     relation &&
@@ -57,6 +63,24 @@ export const HeaderButtons = ({
 
   return (
     <Col className="tool-buttons">
+      {onBookmark2PS != null && (
+        <Tooltip
+          title={bookmark2PS ? 'Remove from Library' : 'Save to Library'}
+        >
+          <Button
+            size="small"
+            type="primary"
+            className={classNames('bookmark-to-ps', {
+              bookmarked: bookmark2PS,
+            })}
+            onClick={() => {
+              onBookmark2PS(data, !bookmark2PS)
+            }}
+          >
+            <BookmarkIconProper />
+          </Button>
+        </Tooltip>
+      )}
       {data?.url && (
         <Button
           size="small"
@@ -254,6 +278,8 @@ const Header = ({
   translations,
   selectedLanguage,
   setLanguage,
+  bookmark2PS,
+  onBookmark2PS,
 }) => {
   const toolButtons = (
     data,
@@ -314,6 +340,7 @@ const Header = ({
         translations={translations}
         selectedLanguage={selectedLanguage}
         setLanguage={setLanguage}
+        {...{ bookmark2PS, onBookmark2PS }}
       />
     )
   }

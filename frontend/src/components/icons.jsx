@@ -837,3 +837,22 @@ export const flags = {
     </svg>
   ),
 }
+
+export const BookmarkIconProper = () => (
+  <svg
+    width="13"
+    height="21"
+    viewBox="0 0 13 21"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M12.0716 19.5536L6.50014 13.9821L0.928711 19.5536V2.83927C0.928711 2.46986 1.07546 2.11558 1.33667 1.85437C1.59788 1.59316 1.95216 1.44641 2.32157 1.44641H10.6787C11.0481 1.44641 11.4024 1.59316 11.6636 1.85437C11.9248 2.11558 12.0716 2.46986 12.0716 2.83927V19.5536Z"
+      fill="#E3E1FF"
+      stroke="#5D53CC"
+      stroke-width="1.4"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>
+)

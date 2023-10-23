@@ -1,14 +1,14 @@
 import classNames from 'classnames'
 import Image from 'next/image'
 import styles from './style.module.scss'
-import { BookmarkIcon } from '../icons'
+import { BookmarkIconProper } from '../icons'
 import { useState } from 'react'
 import { Tooltip } from 'antd'
 
 const ResourceCard = ({ item, bookmarked, onBookmark, onClick }) => {
   const withImage = item.image != null
   const handleClick = (e) => {
-    onClick({ e, type: item.type, id: item.id })
+    onClick({ e, item })
   }
   let inner
   if (withImage) {
@@ -42,23 +42,19 @@ const ResourceCard = ({ item, bookmarked, onBookmark, onClick }) => {
   )
 }
 const BookmarkBtn = ({ bookmarked, onBookmark, item }) => {
-  const [on, setOn] = useState(bookmarked)
   const handleClick = (e) => {
     e.stopPropagation()
-    setOn((_on) => {
-      onBookmark(item, !_on)
-      return !_on
-    })
+    onBookmark(item, !bookmarked)
   }
   return (
-    <Tooltip title={on ? 'Remove from Library' : 'Save to Library'}>
+    <Tooltip title={bookmarked ? 'Remove from Library' : 'Save to Library'}>
       <div
         className={classNames(styles.bookmarkBtn, {
-          [styles.bookmarked]: on,
+          [styles.bookmarked]: bookmarked,
         })}
         onClick={handleClick}
       >
-        <BookmarkIcon />
+        <BookmarkIconProper />
       </div>
     </Tooltip>
   )
