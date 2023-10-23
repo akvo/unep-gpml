@@ -1,6 +1,6 @@
 -- :name get-plastic-strategies* :query :many
 -- :doc Get plastic strategies and their steps as a flat JSON list.
-SELECT ps.id, ps.steps, ps.created_at, ps.last_updated_at,
+SELECT ps.id, ps.steps, ps.created_at, ps.last_updated_at, chat_channel_id,
 json_build_object('id', c.id,
 		  'name', c.name,
 		  'iso_code_a3', c.iso_code_a3,
@@ -19,9 +19,10 @@ WHERE 1=1
 GROUP BY ps.id, c.id;
 
 -- :name update-plastic-strategy* :execute :affected
--- :doc Update the plastic strategy step completion status. Other properties are static.
 UPDATE plastic_strategy
-SET steps = :updates.steps::JSONB, last_updated_at = now()
+SET last_updated_at = now()
+--~(when (get-in params [:updates :steps]) ", steps = :updates.steps::JSONB")
+--~(when (get-in params [:updates :chat-channel-id]) ", chat_channel_id = :updates.chat-channel-id")
 WHERE id = :id;
 
 -- :name create-plastic-strategies* :execute :affected
