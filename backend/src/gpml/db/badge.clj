@@ -6,7 +6,8 @@
             [hugsql.core :as hugsql]))
 
 (declare create-badge*
-         delete-badge*)
+         delete-badge*
+         get-badge-by-name*)
 
 (hugsql/def-db-fns "gpml/db/badge.sql")
 
@@ -46,3 +47,19 @@
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
+
+(defn get-badge-by-name
+  [conn opts]
+  (try
+    (let [badge (get-badge-by-name*
+                 conn
+                 opts)]
+      (if (seq badge)
+        {:success? true
+         :badge (jdbc-util/db-result-snake-kw->db-result-kebab-kw badge)}
+        {:success? false
+         :reason :not-found}))
+    (catch Throwable t
+      {:success? false
+       :reason :exception
+       :error-details (ex-message t)})))
