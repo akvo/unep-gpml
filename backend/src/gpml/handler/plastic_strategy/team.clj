@@ -80,6 +80,7 @@
         (let [body-params (-> (cske/transform-keys ->kebab-case body)
                               (assoc :plastic-strategy-id (:id plastic-strategy)))
               result (srv.ps.team/add-ps-team-member config
+                                                     plastic-strategy
                                                      body-params)]
           (if (:success? result)
             (r/ok {})

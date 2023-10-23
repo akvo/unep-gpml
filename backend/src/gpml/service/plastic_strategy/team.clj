@@ -1,6 +1,7 @@
 (ns gpml.service.plastic-strategy.team
   (:require [duct.logger :refer [log]]
             [gpml.db.plastic-strategy.team :as db.ps.team]
+            [gpml.service.chat :as srv.chat]
             [gpml.service.invitation :as srv.invitation]
             [gpml.service.permissions :as srv.permissions]
             [gpml.service.plastic-strategy :as srv.ps]
@@ -19,7 +20,7 @@
                                                   role-assignments))))
 
 (defn add-ps-team-member
-  [{:keys [db logger] :as config} ps-team-member]
+  [{:keys [db logger] :as config} plastic-strategy ps-team-member]
   (let [transactions
         [{:txn-fn
           (fn tx-add-ps-team-member
@@ -38,6 +39,19 @@
             (db.ps.team/delete-ps-team-member (:spec db) plastic-strategy-id user-id)
             context)}
          {:txn-fn
+          (fn tx-get-ps-team-member
+            [{{:keys [plastic-strategy-id user-id]} :ps-team-member :as context}]
+            (let [search-opts {:filters {:plastic-strategies-ids [plastic-strategy-id]
+                                         :users-ids [user-id]}}
+                  result (db.ps.team/get-ps-team-member (:spec db)
+                                                        search-opts)]
+              (if (:success? result)
+                (update context :ps-team-member merge (:ps-team-member result))
+                (assoc context
+                       :success? false
+                       :reason :failed-to-get-ps-team-member
+                       :error-details {:result result}))))}
+         {:txn-fn
           (fn tx-assign-role-to-user
             [{:keys [ps-team-member] :as context}]
             (let [{:keys [success? reason error-details]}
@@ -47,9 +61,37 @@
                 (assoc context
                        :success? false
                        :reason reason
-                       :error-details error-details))))}]
+                       :error-details error-details))))
+          :rollback-fn
+          (fn rollback-assign-role-to-user
+            [{:keys [ps-team-member] :as context}]
+            (let [role-name (keyword (format "plastic-strategy-%s" (name (:role ps-team-member))))
+                  role-unassignments [{:role-name role-name
+                                       :context-type :plastic-strategy
+                                       :resource-id (:plastic-strategy-id ps-team-member)
+                                       :user-id (:user-id ps-team-member)}]
+                  result
+                  (first (srv.permissions/unassign-roles-from-users {:conn (:spec db)
+                                                                     :logger logger}
+                                                                    role-unassignments))]
+              (when-not (:success? result)
+                (log logger :error :failed-to-rollback-assign-role-to-user {:result result})))
+            context)}
+         {:txn-fn
+          (fn tx-add-team-member-to-ps-chat-channel
+            [{:keys [ps-team-member plastic-strategy] :as context}]
+            (let [result (srv.chat/add-user-to-private-channel config
+                                                               (:chat-account-id ps-team-member)
+                                                               (:chat-channel-id plastic-strategy))]
+              (if (:success? result)
+                {:success? true}
+                (assoc context
+                       :success? false
+                       :reason :failed-to-add-team-member-to-ps-chat-channel
+                       :result {:result result}))))}]
         context {:success? true
-                 :ps-team-member ps-team-member}]
+                 :ps-team-member ps-team-member
+                 :plastic-strategy plastic-strategy}]
     (tht/thread-transactions logger transactions context)))
 
 (defn update-ps-team-member
