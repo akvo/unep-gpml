@@ -222,3 +222,13 @@ export const pagination = {
     return '<div class="' + className + '">' + '<span/>' + '</div>'
   },
 }
+
+export const shortenOrgTypes = {
+  Government: 'Government',
+  'Private Sector (for-profit)': 'Private Sector',
+  'Intergovernmental Organizations (IGOs)': 'IGO',
+  'Non-Governmental Organization (NGO)': 'NGO',
+  'Academia and Research': 'Academia and Research',
+  'Civil Society (not-for-profit)': 'Civil Society',
+  Other: 'Other',
+}
