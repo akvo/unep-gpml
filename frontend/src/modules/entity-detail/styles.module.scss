@@ -1,4 +1,4 @@
-@import "../../vars.scss";
+@import '../../styles/vars.scss';
 
 .entityDetail {
   padding-bottom: 40px;
@@ -11,12 +11,14 @@
     color: #fff;
   }
   :global {
+    .ui.container {
+      padding: 0 5%;
+      width: 100%;
+      max-width: 100%;
+    }
     .topbar-container {
-      background-color: #007090;
+      background-color: $primaryDarkBlue5;
       padding: 10px 0;
-      .ui.container {
-        color: #fff;
-      }
       .topbar-wrapper {
         display: flex;
         align-items: center;
@@ -72,9 +74,6 @@
         overflow: hidden;
         .ant-card {
           padding: 0 !important;
-          .ant-card-body {
-            padding: 14px 10px !important;
-          }
         }
       }
 
@@ -119,11 +118,6 @@
               height: 100%;
               max-height: 80px !important;
             }
-
-            .sticky-panel-item:not(:first-of-type) {
-              border-left: 1px solid #094271 !important;
-              box-shadow: -1px 0px 0px 0px #3872a0 !important;
-            }
           }
         }
       }
@@ -147,9 +141,13 @@
 
             .ant-card-head-title {
               padding-bottom: 0px;
-              color: #09689a;
-              font-size: 18px;
-              font-weight: bold;
+              color: $primaryPurple;
+              font-weight: 700;
+              font-size: 16px;
+              line-height: 22px;
+              text-transform: uppercase;
+              letter-spacing: 3.2px;
+              font-family: var(--font-archia), sans-serif;
             }
           }
 
@@ -194,6 +192,7 @@
 
             p {
               font-size: 16px;
+              color: $primaryDarkBlue;
             }
             .list {
               margin-top: -20px;
@@ -276,7 +275,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            background-color: $blue06;
+            background-color: $primaryDarkBlue;
             margin: 2px;
             flex: 0 0 100px;
             border: 1px solid #d3dee7;
@@ -285,8 +284,8 @@
             padding: 20px 0px;
 
             .sticky-panel-item {
-              border-bottom: 1px solid #094271;
-              box-shadow: 0px 1px 0px #3872a0;
+              border-bottom: 1px solid $primaryDarkBlue5;
+              box-shadow: 0px 1px 0px $primaryDarkBlue5;
               width: 100%;
               cursor: pointer;
               align-items: center;
@@ -295,10 +294,6 @@
               flex-direction: column;
               padding: 10px 0px;
 
-              &:hover {
-                background-color: $yellow-highlight !important;
-                color: #fff;
-              }
               a {
                 text-align: center;
               }
@@ -350,10 +345,14 @@
               }
             }
             .exta-info-head-title {
-              color: #09689a;
-              font-size: 18px;
-              font-weight: bold;
               padding-left: 20px;
+              color: $primaryPurple;
+              font-weight: 700;
+              font-size: 16px;
+              line-height: 22px;
+              text-transform: uppercase;
+              letter-spacing: 3.2px;
+              font-family: var(--font-archia), sans-serif;
             }
             .ant-list {
               padding-left: 20px !important;
@@ -369,28 +368,12 @@
                 margin-top: 10px;
               }
               .ant-list-item {
-                border-bottom: none;
-                background: #d3dee7;
-                border-radius: 23px 5px 5px 23px;
-                color: $blue06;
                 display: inline-block;
-                padding: 5px 20px 5px 30px;
-                position: relative;
                 margin: 0 10px 10px 0;
-                text-decoration: none;
-
-                &::before {
-                  background: #fff;
-                  border-radius: 10px;
-                  box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
-                  content: "";
-                  position: absolute;
-                  height: 12px;
-                  width: 12px;
-                  left: 10px;
-                  top: 50%;
-                  transform: translateY(-50%);
-                }
+                border: 2px solid #ccd0db;
+                border-radius: 100px;
+                padding: 3px 12px;
+                text-transform: capitalize;
               }
             }
             .card-wrapper {
@@ -543,11 +526,11 @@
             border-radius: 50%;
           }
           &:before {
-            background-image: url("/stakeholder-overview/union-icon.svg");
+            background-image: url('/stakeholder-overview/union-icon.svg');
             background-repeat: no-repeat;
             background-size: 30%;
             position: absolute;
-            content: "";
+            content: '';
             width: 100%;
             height: 100%;
             left: 3%;
@@ -565,16 +548,16 @@
             }
           }
           h3 {
-            color: $blue06;
+            color: $primaryDarkBlue;
           }
           h5 {
             font-size: 16px;
-            color: $blue06;
+            color: $primaryDarkBlue;
           }
           p {
             display: flex;
             align-items: center;
-            color: $blue06;
+            color: $primaryDarkBlue;
             font-weight: bold;
             margin-top: 10px;
             margin-bottom: 10px;
@@ -601,29 +584,29 @@
       .ant-pagination-item-link,
       .ant-pagination-item,
       .ant-pagination-item-active {
-        border-color: transparent;
+        border-color: $primaryPurple;
         border-radius: 5px;
       }
       .ant-pagination-item-link {
         background: #fff;
         span.anticon {
-          color: $blue06;
+          color: $primaryDarkBlue;
           font-size: 0.85rem;
         }
       }
       .ant-pagination-item {
         background: rgba(37, 91, 135, 0.1);
         a {
-          color: $blue06;
+          color: $primaryDarkBlue;
           &:hover {
             color: #fff;
-            background: $yellow-highlight;
-            border-color: $yellow-highlight;
+            background: $primaryPurple;
+            border-color: $primaryPurple;
           }
         }
       }
       .ant-pagination-item-active {
-        background: rgba(37, 91, 135, 0.8);
+        background: $primaryPurple;
         a {
           color: #fff;
           &:hover {
@@ -632,14 +615,14 @@
         }
       }
       .ant-pagination-item-ellipsis {
-        color: $blue06;
+        color: $primaryDarkBlue;
       }
       .ant-pagination-options {
         .ant-select-selector {
           background: rgba(37, 91, 135, 0.1);
           border-color: transparent;
           border-radius: 5px;
-          color: $blue06;
+          color: $primaryDarkBlue;
         }
       }
     }
@@ -662,6 +645,124 @@
     .swiper-slide:first-child {
       .resource-card {
         margin-left: 0;
+      }
+    }
+    .resource-cards {
+      padding-bottom: 60px !important;
+    }
+
+    .resource-card {
+      transition: all ease-out 0.2s;
+      position: relative;
+      width: 150px;
+      height: 192px;
+      margin-left: 19px;
+      margin-bottom: 0;
+      padding: 0 !important;
+      .description-holder {
+        transition: all ease-out 0.2s;
+        position: absolute;
+        display: flex;
+        opacity: 0;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 13px;
+        background-color: #fff;
+        height: 100%;
+        min-height: 192px;
+        border-radius: 5px;
+        width: 100%;
+
+        h3 {
+          font-style: normal;
+          font-weight: 600;
+          font-size: 12px;
+          max-height: 70px;
+          overflow: hidden;
+        }
+        h4 {
+          color: #bbbbbb;
+          font-weight: 400;
+          font-size: 10px;
+          line-height: 17px;
+          text-transform: uppercase;
+        }
+
+        .ant-avatar-circle {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .bottom-panel {
+          .read-more {
+            font-weight: 500;
+            font-size: 10px;
+            color: #34a6ff;
+          }
+        }
+      }
+      .thumb-container {
+        height: 100%;
+        background-color: #fff !important;
+        border-radius: 0 !important;
+        img {
+          width: 100%;
+          height: fit-content;
+          align-self: center;
+          height: 100%;
+          object-fit: cover;
+          border-radius: 5px;
+        }
+      }
+      // box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.15);
+      box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.12);
+      border-radius: 4px;
+      overflow: hidden;
+      z-index: 1;
+      &:hover {
+        box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.25);
+        z-index: 9999;
+        transform: scale(1.23) translateY(-5px);
+        .description-holder {
+          opacity: 1;
+        }
+      }
+    }
+    .resource-card.nothumb {
+      background-color: #fff;
+      .nothumb-container {
+        padding: 10px;
+        display: block;
+        .read-more {
+          display: none;
+        }
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        h3 {
+          font-size: 1em;
+          line-height: 1.2;
+          font-weight: 500;
+          max-height: 155px;
+          overflow-y: hidden;
+        }
+        .bottom-panel {
+          margin-top: auto;
+          .connections {
+            margin-bottom: 5px;
+            .ant-avatar {
+              border: 1px solid #ccc !important;
+            }
+          }
+        }
+        h4 {
+          margin-top: auto;
+          font-size: 0.7em;
+          line-height: 1;
+          opacity: 0.6;
+          text-transform: uppercase;
+          margin-bottom: 0;
+        }
       }
     }
   }

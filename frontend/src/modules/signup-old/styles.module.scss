@@ -1,4 +1,4 @@
-@import "../../vars.scss";
+@import '../../styles/vars.scss';
 
 .upload-btn,
 .view-cv {
@@ -21,7 +21,7 @@
   }
 
   h2 {
-    color: $blue02;
+    color: $primaryDarkBlue;
     font-size: 22px;
   }
 
@@ -52,8 +52,12 @@
 
 .signup-form {
   h2 {
-    color: $blue02;
-    font-size: 22px;
+    font-size: 16px;
+    line-height: 22px;
+    text-transform: uppercase;
+    color: $primaryPurple;
+    margin-bottom: 10px;
+    font-weight: 700;
   }
 
   .section:first-child {
@@ -73,8 +77,12 @@
 
   :global {
     h2 {
-      color: $blue02;
-      font-size: 22px;
+      font-size: 16px;
+      line-height: 22px;
+      text-transform: uppercase;
+      color: $primaryPurple;
+      margin-bottom: 10px;
+      font-weight: 700;
     }
 
     .section-grid {

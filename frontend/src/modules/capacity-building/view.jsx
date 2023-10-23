@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef } from 'react'
 import {
   Layout,
   Carousel,
@@ -8,40 +8,40 @@ import {
   Col,
   List,
   Card,
-  Button,
-} from "antd";
-import { groupBy } from "lodash";
+} from 'antd'
+import { groupBy } from 'lodash'
 
-const { Title } = Typography;
+const { Title } = Typography
 
-import "./styles.scss";
+import styles from './styles.module.scss'
 
-import Banner from "./banner";
-import capacities from "./json/capacity-building.json";
-import slides from "./json/slider.json";
+import Banner from './banner'
+import capacities from './json/capacity-building.json'
+import slides from './json/slider.json'
 
-import { ReactComponent as DropdownIcon } from "../../images/case-studies/ic-dropdown.svg";
-import { CapacityCard } from "./capacity-card";
+import DropdownIcon from '../../images/case-studies/ic-dropdown.svg'
+import { CapacityCard } from './capacity-card'
 
-import { eventTrack } from "../../utils/misc";
+import { eventTrack } from '../../utils/misc'
+import Button from '../../components/button'
 
 const CapacityBuilding = () => {
-  const slider = useRef();
+  const slider = useRef()
 
   const prev = () => {
-    slider.current.prev();
-  };
+    slider.current.prev()
+  }
   const next = () => {
-    slider.current.next();
-  };
-  const groupCapacities = groupBy(capacities, "category");
+    slider.current.next()
+  }
+  const groupCapacities = groupBy(capacities, 'category')
 
   return (
-    <Row id="capacity-building">
+    <Row className={styles.capacityBuilding}>
       <Col span={24} className="ui-header">
         <div className="ui-container">
           <div>
-            <div style={{ margin: "auto 0" }}>
+            <div style={{ margin: 'auto 0' }}>
               <Title level={3}>
                 <span className="text-green">
                   Capacity Development &amp; Awareness
@@ -53,7 +53,7 @@ const CapacityBuilding = () => {
       </Col>
       <Col span={24}>
         <div className="">
-          <Col span={24} style={{ position: "relative" }}>
+          <Col span={24} style={{ position: 'relative' }}>
             <Carousel className="pm_event_banner" ref={slider}>
               {slides.map((b, bx) => (
                 <Banner key={bx} {...b} />
@@ -69,7 +69,7 @@ const CapacityBuilding = () => {
               </button>
             </div>
           </Col>
-          <Col span={24} style={{ padding: "0 16px", marginTop: 45 }}>
+          <Col span={24} style={{ padding: '0 16px', marginTop: 45 }}>
             {Object.keys(groupCapacities)?.map((g, gx) => (
               <div
                 className={`capacity-section bg-image ${groupCapacities[g][0]?.category_id}`}
@@ -82,10 +82,11 @@ const CapacityBuilding = () => {
                       href="/knowledge/library"
                       target="_blank"
                       rel="noopener noreferrer"
-                      type="ghost"
+                      type="primary"
                       className="green-border"
+                      withArrow
                     >
-                      See all &gt;
+                      See all
                     </Button>
                   }
                 />
@@ -108,16 +109,16 @@ const CapacityBuilding = () => {
                             href={item.platform_link}
                             target="_blank"
                             onClick={(e) => {
-                              e.preventDefault();
-                              eventTrack("Learning", "View Url", "Button");
-                              window.open(item.platform_link, "_blank");
+                              e.preventDefault()
+                              eventTrack('Learning', 'View Url', 'Button')
+                              window.open(item.platform_link, '_blank')
                             }}
                             rel="noopener noreferrer"
                           >
                             <CapacityCard {...item} />
                           </a>
                         </List.Item>
-                      );
+                      )
                     }}
                   />
                 </div>
@@ -127,7 +128,7 @@ const CapacityBuilding = () => {
         </div>
       </Col>
     </Row>
-  );
-};
+  )
+}
 
-export default CapacityBuilding;
+export default CapacityBuilding
