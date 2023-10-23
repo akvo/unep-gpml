@@ -95,7 +95,7 @@
             (r/server-error (dissoc result :success?))))))))
 
 (defn- get-ps-files
-  [config {:keys [user] {:keys [path body]} :parameters :as _req}]
+  [config {:keys [user] {:keys [path query]} :parameters :as _req}]
   (let [country-iso-code-a2 (:iso_code_a2 path)
         search-opts {:filters {:countries-iso-codes-a2 [country-iso-code-a2]}}
         {:keys [success? plastic-strategy reason] :as get-ps-result}
@@ -112,8 +112,8 @@
                                                   :root-context? false})
         (r/forbidden {:message "Unauthorized"})
         (let [search-opts {:filters (cond-> {:plastic-strategies-ids [(:id plastic-strategy)]}
-                                      (:section_key body)
-                                      (assoc :sections-keys [(:section_key body)]))}
+                                      (:section_key query)
+                                      (assoc :sections-keys [(:section_key query)]))}
               result (srv.ps.file/get-ps-files config
                                                search-opts)]
           (if (:success? result)
