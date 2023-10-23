@@ -125,6 +125,10 @@ h6,
     .logo-container {
       margin-left: -15px;
       margin-top: -14px;
+
+      @media screen and (max-width: $bpMobile) {
+        margin-top: -4px;
+      }
     }
   }
   .container-fluid {
@@ -163,12 +167,15 @@ h6,
     font-weight: bold;
     background-color: $primaryBlue2;
     cursor: pointer;
+    @media screen and (max-width: $bpMobile) {
+      margin-right: 7px;
+      margin-left: 0px;
+    }
   }
   @media screen and (max-width: $bpMobile) {
     height: 70px;
     padding: 12px 0;
     .logo-container {
-      margin-top: -3px;
       margin-left: -5px;
       svg {
         height: auto;
