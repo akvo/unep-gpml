@@ -100,7 +100,7 @@ export const stepsState = [
     slug: '6-national-plastic-strategy',
     substeps: [
       { label: 'Intro', slug: '', checked: false },
-      { label: 'Upload', slug: 'upload', checked: false },
+      { label: 'Upload', slug: 'summary', checked: false },
     ],
   },
   { label: 'Final Review', slug: '7-final-review', checked: false },
