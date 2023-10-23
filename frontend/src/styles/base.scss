@@ -306,6 +306,9 @@ h6,
       border-bottom: 1px solid $primaryGreen;
       padding-bottom: 8px;
       margin-bottom: 30px;
+      &.block {
+        display: block;
+      }
     }
     ul {
       padding: 0;

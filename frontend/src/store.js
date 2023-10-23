@@ -25,17 +25,17 @@ const geoCoverageTypeOptions = [
 ]
 
 const menuList = [
-  // {
-  //   key: 'Plastic',
-  //   children: [
-  //     {
-  //       key: 'Topics',
-  //     },
-  //     {
-  //       key: 'Basics',
-  //     },
-  //   ],
-  // },
+  {
+    key: 'Plastic',
+    children: [
+      {
+        key: 'Topics',
+      },
+      {
+        key: 'Basics',
+      },
+    ],
+  },
   {
     key: 'Tools',
     children: [

@@ -71,50 +71,81 @@ const NewLayout = ({
   const [width] = useDeviceSize()
   const [isOpen, toggleOpen] = useCycle(false, true)
 
-  const [plataform, setPlatformData] = useState([])
-  const [netWork, setNetworkData] = useState([])
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const platformUrl =
-          'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=about-platform&fields=title&fields=subtitle'
-        const networkUrl =
-          'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=about-network&fields=title&fields=subtitle'
+        const MENU_MAPPING = [
+          {
+            key: 'About Us',
+            subKeys: [
+              {
+                key: 'The platform',
+                apiEndpoint:
+                  'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=about-platform&fields=title&fields=subtitle',
+              },
+              {
+                key: 'Our Network',
+                apiEndpoint:
+                  'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=about-network&fields=title&fields=subtitle',
+              },
+            ],
+          },
+          {
+            key: 'Plastic',
+            subKeys: [
+              {
+                key: 'Topics',
+                apiEndpoint:
+                  'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=plastic-topics&fields=title&fields=subtitle',
+              },
+              {
+                key: 'Basics',
+                apiEndpoint:
+                  'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=plastic-basics&fields=title&fields=subtitle',
+              },
+            ],
+          },
+        ]
 
-        const [platformResponse, networkResponse] = await Promise.all([
-          axios.get(platformUrl),
-          axios.get(networkUrl),
-        ])
-
-        UIStore.update((s) => {
-          const aboutUsIndex = s.menuList.findIndex(
-            (item) => item.key === 'About Us'
+        const fetchData = async () => {
+          const apiEndpoints = MENU_MAPPING.flatMap((section) =>
+            section.subKeys.map((sub) => sub.apiEndpoint)
           )
-          if (aboutUsIndex !== -1) {
-            const aboutUs = s.menuList[aboutUsIndex]
-            const platformIndex = aboutUs.children.findIndex(
-              (item) => item.key === 'The platform'
-            )
-            if (platformIndex !== -1) {
-              aboutUs.children[platformIndex].children = transformedData(
-                platformResponse.data?.data
-              )
-            }
-            const networkIndex = aboutUs.children.findIndex(
-              (item) => item.key === 'Our Network'
-            )
-            if (networkIndex !== -1) {
-              aboutUs.children[networkIndex].children = transformedData(
-                networkResponse.data?.data
-              )
-            }
-            s.menuList[aboutUsIndex] = aboutUs
-          }
-        })
 
-        setPlatformData(transformedData(platformResponse.data?.data))
-        setNetworkData(transformedData(networkResponse.data?.data))
+          try {
+            const responses = await Promise.all(
+              apiEndpoints.map((endpoint) => axios.get(endpoint))
+            )
+            return responses
+          } catch (error) {
+            console.error('Error fetching data:', error)
+            return []
+          }
+        }
+
+        fetchData().then((responses) => {
+          UIStore.update((s) => {
+            let updatedMenu = [...s.menuList]
+
+            MENU_MAPPING.forEach((section, sectionIdx) => {
+              section.subKeys.forEach((sub, subIdx) => {
+                const responseData =
+                  responses[sectionIdx * section.subKeys.length + subIdx]?.data
+                    ?.data
+                if (responseData) {
+                  updatedMenu = updateMenuSection(
+                    updatedMenu,
+                    section.key,
+                    sub.key,
+                    responseData
+                  )
+                }
+              })
+            })
+
+            s.menuList = updatedMenu
+          })
+        })
       } catch (err) {
         console.log(err)
       }
@@ -249,7 +280,7 @@ const NewLayout = ({
           </div>
         </div>
         <div className="navigation">
-          <NavMobile {...{ isOpen, toggleOpen, plataform, netWork }} />
+          <NavMobile {...{ isOpen, toggleOpen }} />
 
           <NavDesktop
             isOpen={showMenu}
@@ -258,7 +289,6 @@ const NewLayout = ({
               setShowMenu(!showMenu)
               setOpenedItemKey(null)
             }}
-            {...{ plataform, netWork }}
           />
         </div>
         {children}
@@ -326,6 +356,19 @@ const transformedData = (data) => {
     title: item.attributes.title,
     subtitle: item.attributes.subtitle,
   }))
+}
+
+const updateMenuSection = (menu, sectionKey, subKey, data) => {
+  const sectionIndex = menu.findIndex((item) => item.key === sectionKey)
+  if (sectionIndex !== -1) {
+    const section = menu[sectionIndex]
+    const subIndex = section.children.findIndex((item) => item.key === subKey)
+    if (subIndex !== -1) {
+      section.children[subIndex].children = transformedData(data)
+      menu[sectionIndex] = section
+    }
+  }
+  return menu
 }
 
 export default NewLayout

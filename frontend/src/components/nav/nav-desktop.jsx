@@ -76,6 +76,49 @@ const ToolsMenu = () => {
   )
 }
 
+const PlasticMenu = () => {
+  const { menuList } = UIStore.useState((s) => ({
+    menuList: s.menuList,
+  }))
+  return (
+    <div className="container sub-menu">
+      <Row gutter={[168, 168]}>
+        {menuList
+          .find((it) => it.key === 'Plastic')
+          .children.map((menu, index) => (
+            <Col span={index === 0 ? 16 : 8} key={menu.key}>
+              <motion.p
+                className="p-m block"
+                custom={0}
+                variants={menuItemVariants}
+                initial="closed"
+                animate="open"
+                exit="closed"
+              >
+                {menu.key}
+              </motion.p>
+              <ul>
+                {menu?.children.map((child, i) => (
+                  <motion.li
+                    key={child.title}
+                    custom={i + 1}
+                    variants={menuItemVariants}
+                    initial="closed"
+                    animate="open"
+                    exit="closed"
+                    className="sub-menu-item"
+                  >
+                    <Item {...child} />
+                  </motion.li>
+                ))}
+              </ul>
+            </Col>
+          ))}
+      </Row>
+    </div>
+  )
+}
+
 const AboutUsMenu = () => {
   const { menuList } = UIStore.useState((s) => ({
     menuList: s.menuList,
@@ -146,7 +189,7 @@ const AboutUsMenu = () => {
   )
 }
 
-const NavDesktop = ({ isOpen, toggle, contentKey, plataform, netWork }) => {
+const NavDesktop = ({ isOpen, toggle, contentKey }) => {
   let ContentComponent
 
   switch (contentKey) {
@@ -154,9 +197,10 @@ const NavDesktop = ({ isOpen, toggle, contentKey, plataform, netWork }) => {
       ContentComponent = ToolsMenu
       break
     case 'About Us':
-      ContentComponent = () => (
-        <AboutUsMenu menuItemPlatform={plataform} menuItemNetwork={netWork} />
-      )
+      ContentComponent = AboutUsMenu
+      break
+    case 'Plastic':
+      ContentComponent = PlasticMenu
       break
     default:
       ContentComponent = () => <div>Select a menu item...</div>
