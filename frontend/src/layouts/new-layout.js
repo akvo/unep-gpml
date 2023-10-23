@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { isEmpty } from 'lodash'
 import { Avatar, Button, Dropdown, Menu } from 'antd'
@@ -17,6 +17,7 @@ import { isRegistered } from '../utils/profile'
 
 import { MenuToggle, NavMobile, NavDesktop } from '../components/nav'
 import GpmlCircle from '../components/gpml-circle'
+import axios from 'axios'
 
 const archia = localFont({
   src: [
@@ -69,6 +70,58 @@ const NewLayout = ({
   const [showMenu, setShowMenu] = useState(false)
   const [width] = useDeviceSize()
   const [isOpen, toggleOpen] = useCycle(false, true)
+
+  const [plataform, setPlatformData] = useState([])
+  const [netWork, setNetworkData] = useState([])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const platformUrl =
+          'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=about-platform&fields=title&fields=subtitle'
+        const networkUrl =
+          'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=about-network&fields=title&fields=subtitle'
+
+        const [platformResponse, networkResponse] = await Promise.all([
+          axios.get(platformUrl),
+          axios.get(networkUrl),
+        ])
+
+        UIStore.update((s) => {
+          const aboutUsIndex = s.menuList.findIndex(
+            (item) => item.key === 'About Us'
+          )
+          if (aboutUsIndex !== -1) {
+            const aboutUs = s.menuList[aboutUsIndex]
+            const platformIndex = aboutUs.children.findIndex(
+              (item) => item.key === 'The platform'
+            )
+            if (platformIndex !== -1) {
+              aboutUs.children[platformIndex].children = transformedData(
+                platformResponse.data?.data
+              )
+            }
+            const networkIndex = aboutUs.children.findIndex(
+              (item) => item.key === 'Our Network'
+            )
+            if (networkIndex !== -1) {
+              aboutUs.children[networkIndex].children = transformedData(
+                networkResponse.data?.data
+              )
+            }
+            s.menuList[aboutUsIndex] = aboutUs
+          }
+        })
+
+        setPlatformData(transformedData(platformResponse.data?.data))
+        setNetworkData(transformedData(networkResponse.data?.data))
+      } catch (err) {
+        console.log(err)
+      }
+    }
+
+    fetchData()
+  }, [])
 
   return (
     <>
@@ -196,7 +249,7 @@ const NewLayout = ({
           </div>
         </div>
         <div className="navigation">
-          <NavMobile {...{ isOpen, toggleOpen }} />
+          <NavMobile {...{ isOpen, toggleOpen, plataform, netWork }} />
 
           <NavDesktop
             isOpen={showMenu}
@@ -205,6 +258,7 @@ const NewLayout = ({
               setShowMenu(!showMenu)
               setOpenedItemKey(null)
             }}
+            {...{ plataform, netWork }}
           />
         </div>
         {children}
@@ -265,6 +319,13 @@ export const withNewLayout = (Component) => {
   }
 
   return WithLayoutComponent
+}
+
+const transformedData = (data) => {
+  return data?.map((item) => ({
+    title: item.attributes.title,
+    subtitle: item.attributes.subtitle,
+  }))
 }
 
 export default NewLayout
