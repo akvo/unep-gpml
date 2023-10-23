@@ -40,9 +40,9 @@
             padding-right: 8px;
           }
           &.bookmarked {
-            color: $primaryGreen;
+            // color: $primaryGreen;
             svg path {
-              fill: $primaryGreen;
+              fill: $primaryPurple;
             }
           }
           &:hover {

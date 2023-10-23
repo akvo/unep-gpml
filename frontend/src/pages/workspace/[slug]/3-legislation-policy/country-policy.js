@@ -6,7 +6,7 @@ import uniqBy from 'lodash/uniqBy'
 
 import { PageLayout } from '..'
 import {
-  BookmarkIcon,
+  BookmarkIconProper,
   ValidatePolicyIcon,
   VerifiedBadgeIcon,
 } from '../../../../components/icons'
@@ -282,13 +282,19 @@ const CountryPolicyTable = ({ psItem, setLoginVisible, isAuthenticated }) => {
                   )
                   const isMarked = findBm ? true : false
                   return (
-                    <a
-                      role="button"
-                      onClick={() => handleToggleBookmark(record, isMarked)}
-                      className={classNames({ bookmarked: isMarked })}
+                    <Tooltip
+                      title={
+                        isMarked ? 'Remove from Library' : 'Save to Library'
+                      }
                     >
-                      <BookmarkIcon />
-                    </a>
+                      <a
+                        role="button"
+                        onClick={() => handleToggleBookmark(record, isMarked)}
+                        className={classNames({ bookmarked: isMarked })}
+                      >
+                        <BookmarkIconProper />
+                      </a>
+                    </Tooltip>
                   )
                 }}
               />
@@ -301,10 +307,7 @@ const CountryPolicyTable = ({ psItem, setLoginVisible, isAuthenticated }) => {
                 {...col}
                 render={(value, record) => {
                   return (
-                    <Button
-                      type="link"
-                      onClick={() => showModal(record)}
-                    >
+                    <Button type="link" onClick={() => showModal(record)}>
                       <span
                         className={classNames('icon', {
                           verified: record?.verified,

@@ -16,7 +16,7 @@ import Link from 'next/link'
 
 import { PageLayout } from '..'
 import {
-  BookmarkIcon,
+  BookmarkIconProper,
   DesignNProdIcon,
   DistributionIcon,
   EndOfLifeIcon,
@@ -316,13 +316,17 @@ const StakeholderMapTable = ({
                 )
                 const isMarked = findBm ? true : false
                 return (
-                  <Button
-                    type="link"
-                    className={classNames({ bookmarked: isMarked })}
-                    onClick={() => handleToggleBookmark(record, isMarked)}
+                  <Tooltip
+                    title={isMarked ? 'Remove from Library' : 'Save to Library'}
                   >
-                    <BookmarkIcon />
-                  </Button>
+                    <Button
+                      type="link"
+                      className={classNames({ bookmarked: isMarked })}
+                      onClick={() => handleToggleBookmark(record, isMarked)}
+                    >
+                      <BookmarkIconProper />
+                    </Button>
+                  </Tooltip>
                 )
               }}
             />
