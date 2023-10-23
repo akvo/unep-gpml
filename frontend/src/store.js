@@ -161,13 +161,19 @@ const menuList = [
         key: 'The platform',
       },
       {
-        key: 'Our Netwrok',
+        key: 'Our Network',
       },
       {
         key: 'Partnership',
+        type: 'button',
+        link: '',
+        text: 'Go to GPML',
       },
       {
         key: 'Contact us',
+        type: 'button',
+        link: '',
+        text: 'Contact us',
       },
     ],
   },

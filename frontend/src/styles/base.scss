@@ -348,7 +348,30 @@ h6,
             font-size: 14px;
           }
         }
+        &.ml {
+          margin-left: 0px;
+        }
       }
+    }
+
+    button {
+      min-width: 200px;
+      justify-content: center;
+    }
+    @media screen and (max-width: $bpMobile) {
+      button {
+        min-width: 100%;
+        margin: 10px 0px;
+      }
+    }
+  }
+  .contact-button {
+    border-color: $primaryGreen;
+    color: $primaryGreen;
+    margin-top: 16px;
+    &:hover {
+      background-color: $primaryGreen;
+      color: $primaryDarkBlue;
     }
   }
 }
@@ -498,7 +521,7 @@ h6,
   z-index: 999;
   background: url('/menu-background.png');
   background-size: cover;
-  button {
+  .cancel {
     background: transparent;
     border: none;
     cursor: pointer;
