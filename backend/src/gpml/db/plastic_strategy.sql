@@ -14,7 +14,7 @@ WHERE 1=1
 --~(when (seq (get-in params [:filters :ids])) " AND ps.id IN (:v*:filters.ids)")
 --~(when (seq (get-in params [:filters :countries-ids])) " AND ps.country_id IN (:v*:filters.countries-ids)")
 --~(when (seq (get-in params [:filters :countries-iso-codes-a2])) " AND c.iso_code_a2 IN (:v*:filters.countries-iso-codes-a2)")
---~(when (seq (get-in params [:filters :c>ountries-iso-codes-a3])) " AND c.iso_code_a3 IN (:v*:filters.countries-iso-codes-a3)")
+--~(when (seq (get-in params [:filters :countries-iso-codes-a3])) " AND c.iso_code_a3 IN (:v*:filters.countries-iso-codes-a3)")
 --~(when (seq (get-in params [:filters :countries-names])) " AND LOWER(c.name) IN (:v*:filters.countries-names)")
 GROUP BY ps.id, c.id;
 
