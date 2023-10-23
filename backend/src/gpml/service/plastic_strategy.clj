@@ -153,6 +153,18 @@
                          :reason (:reason result)
                          :error-details (:error-details result))))))}
          {:txn-fn
+          (fn get-plastic-strategy
+            [{:keys [ps-team-member] :as context}]
+            (let [search-opts {:filters {:ids [(:plastic-strategy-id ps-team-member)]}}
+                  result (db.ps/get-plastic-strategy (:spec db)
+                                                     search-opts)]
+              (if (:success? result)
+                (assoc context :plastic-strategy (:plastic-strategy result))
+                (assoc context
+                       :success? false
+                       :reason :failed-to-get-plastic-strategy
+                       :error-details {:result result}))))}
+         {:txn-fn
           (fn assign-plastic-strategy-rbac-role
             [{:keys [ps-team-member] :as context}]
             (let [role-name (keyword (format "plastic-strategy-%s" (name (:role ps-team-member))))
@@ -190,9 +202,28 @@
             [{:keys [ps-team-member] :as context}]
             (let [result (srv.chat/create-user-account config (:id ps-team-member))]
               (if (:success? result)
-                context
+                (assoc context :chat-account-id (get-in result [:chat-user-account :id]))
                 (assoc context
                        :reason :failed-to-create-chat-account
+                       :error-details {:result result}))))
+          :rollback-fn
+          (fn rollback-create-chat-account
+            [{:keys [chat-account-id] :as context}]
+            (let [result (srv.chat/delete-user-account config chat-account-id {})]
+              (when-not (:success? result)
+                (log logger :error :failed-to-rollback-create-chat-account {:result result})))
+            context)}
+         {:txn-fn
+          (fn add-user-to-ps-channel
+            [{:keys [plastic-strategy chat-account-id] :as context}]
+            (let [result (srv.chat/add-user-to-private-channel config
+                                                               chat-account-id
+                                                               (:chat-channel-id plastic-strategy))]
+              (if (:success? result)
+                context
+                (assoc context
+                       :success? false
+                       :reason :failed-to-add-user-to-ps-channel
                        :error-details {:result result}))))}]
         context {:success? true
                  :user-id user-id}]
