@@ -7,7 +7,9 @@
 
 (declare create-badge*
          delete-badge*
-         get-badge-by-name*)
+         get-badge-by-name*
+         add-badge-assignment*
+         remove-badge-assignment*)
 
 (hugsql/def-db-fns "gpml/db/badge.sql")
 
@@ -19,6 +21,38 @@
   [badge]
   (-> badge
       (util/update-if-not-nil :type #(sql-util/keyword->pg-enum % "badge_type"))))
+
+(defn- badge-assignment->p-badge-assignment
+  [badge-assignment]
+  (-> badge-assignment
+      (util/update-if-not-nil :badge-assignment-entity-col name)
+      (util/update-if-not-nil :badge-assignment-table name)))
+
+(defn add-badge-assignment
+  [conn badge-assignment entity-type]
+  (let [entity-name (name entity-type)]
+    (jdbc-util/with-constraint-violation-check
+      [{:type :unique
+        :name (format "%s_badge_pkey" entity-name)
+        :error-reason :already-exists}]
+      (add-badge-assignment* conn (badge-assignment->p-badge-assignment badge-assignment))
+      {:success? true})))
+
+(defn remove-badge-assignment
+  [conn badge-assignment]
+  (try
+    (let [p-badge-assignment (badge-assignment->p-badge-assignment badge-assignment)
+          affected (remove-badge-assignment* conn p-badge-assignment)]
+      (if (= affected 1)
+        {:success? true}
+        {:success? false
+         :reason :unexpected-number-of-affected-rows
+         :error-details {:expected-affected-rows 1
+                         :actual-affected-rows affected}}))
+    (catch Throwable t
+      {:success? false
+       :reason :exception
+       :error-details {:msg (ex-message t)}})))
 
 (defn delete-badge
   [conn badge-id]
