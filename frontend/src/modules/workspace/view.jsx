@@ -295,56 +295,6 @@ const Workspace = ({ profile }) => {
               </Col>
             </Row>
           )}
-          {projects.length > 0 && (
-            <div className="all-projects-starter">
-              <Row>
-                <h2>Your action plans</h2>
-              </Row>
-              <Row>
-                <ul>
-                  {projects?.map((item) => (
-                    <li key={item.id}>
-                      <Link
-                        href={`/projects/${item.id}`}
-                        key={item.id}
-                        legacyBehavior
-                      >
-                        <a className="all-projects">
-                          <div className="content">
-                            {/* <p>Action Plan</p> */}
-                            <h2>{item.title}</h2>
-                            <div className="transnational">
-                              <TransnationalSvg />
-                              <span>{item.geoCoverageType}</span>
-                            </div>
-                          </div>
-                        </a>
-                      </Link>
-                      <div className="actions">
-                        <ShareSvg />
-                        <EditSvg
-                          onClick={() => router.push(`/projects/${item.id}`)}
-                        />
-                        <TrashSvg onClick={() => handleDeleteBtn(item.id)} />
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </Row>
-              <Row className="assessment-row">
-                {/* <Col span={24}>
-                <Link to="/projects/get-started">
-                  <Button
-                    className="assessment-button"
-                    icon={<PlusCircleOutlined />}
-                  >
-                    New project Assessment
-                  </Button>
-                </Link>
-              </Col> */}
-              </Row>
-            </div>
-          )}
           <div className="workspace-title container">
             <div className="caps-heading-m">workspace</div>
           </div>

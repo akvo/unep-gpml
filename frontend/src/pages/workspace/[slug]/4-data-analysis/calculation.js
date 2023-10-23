@@ -39,19 +39,8 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
   return (
     <>
       <h4 className="caps-heading-m">Data Analysis</h4>
-      <h2 className="h-xxl w-bold">Data Collection</h2>
-      <p>Placeholder for description here</p>
-
-      <ResourceCards
-        {...{
-          items,
-          handleBookmark,
-          setLoginVisible,
-          isAuthenticated,
-          loading,
-          sectionKey,
-        }}
-      />
+      <h2 className="h-xxl w-bold">Calculation of Indicators</h2>
+      <p>Placeholder for description here.</p>
     </>
   )
 }
