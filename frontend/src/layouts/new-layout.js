@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { isEmpty } from 'lodash'
 import { Avatar, Button, Dropdown, Menu } from 'antd'
@@ -17,6 +17,7 @@ import { isRegistered } from '../utils/profile'
 
 import { MenuToggle, NavMobile, NavDesktop } from '../components/nav'
 import GpmlCircle from '../components/gpml-circle'
+import axios from 'axios'
 
 const archia = localFont({
   src: [
@@ -69,6 +70,89 @@ const NewLayout = ({
   const [showMenu, setShowMenu] = useState(false)
   const [width] = useDeviceSize()
   const [isOpen, toggleOpen] = useCycle(false, true)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const MENU_MAPPING = [
+          {
+            key: 'About Us',
+            subKeys: [
+              {
+                key: 'The platform',
+                apiEndpoint:
+                  'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=about-platform&fields=title&fields=subtitle',
+              },
+              {
+                key: 'Our Network',
+                apiEndpoint:
+                  'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=about-network&fields=title&fields=subtitle',
+              },
+            ],
+          },
+          {
+            key: 'Plastic',
+            subKeys: [
+              {
+                key: 'Topics',
+                apiEndpoint:
+                  'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=plastic-topics&fields=title&fields=subtitle',
+              },
+              {
+                key: 'Basics',
+                apiEndpoint:
+                  'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=plastic-basics&fields=title&fields=subtitle',
+              },
+            ],
+          },
+        ]
+
+        const fetchData = async () => {
+          const apiEndpoints = MENU_MAPPING.flatMap((section) =>
+            section.subKeys.map((sub) => sub.apiEndpoint)
+          )
+
+          try {
+            const responses = await Promise.all(
+              apiEndpoints.map((endpoint) => axios.get(endpoint))
+            )
+            return responses
+          } catch (error) {
+            console.error('Error fetching data:', error)
+            return []
+          }
+        }
+
+        fetchData().then((responses) => {
+          UIStore.update((s) => {
+            let updatedMenu = [...s.menuList]
+
+            MENU_MAPPING.forEach((section, sectionIdx) => {
+              section.subKeys.forEach((sub, subIdx) => {
+                const responseData =
+                  responses[sectionIdx * section.subKeys.length + subIdx]?.data
+                    ?.data
+                if (responseData) {
+                  updatedMenu = updateMenuSection(
+                    updatedMenu,
+                    section.key,
+                    sub.key,
+                    responseData
+                  )
+                }
+              })
+            })
+
+            s.menuList = updatedMenu
+          })
+        })
+      } catch (err) {
+        console.log(err)
+      }
+    }
+
+    fetchData()
+  }, [])
 
   return (
     <>
@@ -265,6 +349,26 @@ export const withNewLayout = (Component) => {
   }
 
   return WithLayoutComponent
+}
+
+const transformedData = (data) => {
+  return data?.map((item) => ({
+    title: item.attributes.title,
+    subtitle: item.attributes.subtitle,
+  }))
+}
+
+const updateMenuSection = (menu, sectionKey, subKey, data) => {
+  const sectionIndex = menu.findIndex((item) => item.key === sectionKey)
+  if (sectionIndex !== -1) {
+    const section = menu[sectionIndex]
+    const subIndex = section.children.findIndex((item) => item.key === subKey)
+    if (subIndex !== -1) {
+      section.children[subIndex].children = transformedData(data)
+      menu[sectionIndex] = section
+    }
+  }
+  return menu
 }
 
 export default NewLayout
