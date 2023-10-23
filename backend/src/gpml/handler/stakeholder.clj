@@ -397,16 +397,18 @@
                 (if-not success?
                   (throw (ex-info "Error making the user super-admin in RBAC"
                                   {:reason :error-updating-rbac-super-admins}))
-                  (let [roles (if (= role "ADMIN")
-                                ["user" "moderator"]
-                                ["user"])
-                        result (srv.chat/update-user-account config
-                                                             (:chat_account_id target-user)
-                                                             {:roles roles})]
-                    (if (:success? result)
-                      (r/ok {:status "success"})
-                      (throw (ex-info "Error updating user chat account role"
-                                      {:reason :error-updating-user-chat-account-role})))))))))
+                  (if-not (seq (:chat_account_id target-user))
+                    (r/ok {:status "success"})
+                    (let [roles (if (= role "ADMIN")
+                                  ["user" "moderator"]
+                                  ["user"])
+                          result (srv.chat/update-user-account config
+                                                               (:chat_account_id target-user)
+                                                               {:roles roles})]
+                      (if (:success? result)
+                        (r/ok {:status "success"})
+                        (throw (ex-info "Error updating user chat account role"
+                                        {:reason :error-updating-user-chat-account-role}))))))))))
         (catch Throwable e
           (log logger :error ::failed-to-update-stakeholder-role {:exception-message (ex-message e)})
           (let [response {:success? false

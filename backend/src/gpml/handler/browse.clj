@@ -11,6 +11,7 @@
             [gpml.handler.responses :as r]
             [gpml.handler.util :as handler.util]
             [gpml.service.file :as srv.file]
+            [gpml.service.plastic-strategy :as srv.ps]
             [gpml.util.postgresql :as pg-util]
             [gpml.util.regular-expressions :as util.regex]
             [integrant.core :as ig]
@@ -165,23 +166,53 @@
                          :swagger {:description "Boolean flag to filter by capacity building resources"
                                    :type "boolean"
                                    :allowEmptyValue false}}
-     boolean?]]
+     boolean?]
+    [:ps_country_iso_code_a2
+     {:optional true
+      :swagger {:description "Plastic Strategy country ISO code Alpha 2 for bookmark filtering."
+                :type "string"
+                :allowEmptyValue false}}
+     [:string
+      {:decode/string str/upper-case
+       :max 2
+       :min 2}]]
+    [:ps_bookmark_sections_keys
+     {:optional true
+      :swagger {:description "The plastic strategy bookmark sections keys to filter by bookmark sections.
+This filter requires the 'ps_country_iso_code_a2' to be set."
+                :type "string"
+                :allowEmptyValue false}}
+     [:vector
+      {:decode/string (fn [s] (str/split s #","))}
+      [:string {:min 1}]]]]
    [:fn
     {:error/fn
-     (fn [_ _]
-       "Upcoming parameter is only supported for the 'event' topic.")}
-    (fn [{:keys [upcoming topic]}]
-      (if-not (true? upcoming)
-        true
+     (fn [{{:keys [ps_bookmark_sections_keys ps_country_iso_code_a2 upcoming topic]} :value} _]
+       (cond
+         (and ps_bookmark_sections_keys (not ps_country_iso_code_a2))
+         "The 'ps_country_iso_code_a2' parameter is required when using 'ps_bookmark_sections_keys'."
+
+         (not (and upcoming
+                   (= (count topic) 1)
+                   (= (first topic) "event")))
+         "Upcoming parameter is only supported for the 'event' topic."))}
+    (fn [{:keys [upcoming topic ps_country_iso_code_a2 ps_bookmark_sections_keys]}]
+      (and
+       (or
+        (not upcoming)
         (and upcoming
              (= (count topic) 1)
-             (= (first topic) "event"))))]])
+             (= (first topic) "event")))
+       (or
+        (not ps_bookmark_sections_keys)
+        (and ps_bookmark_sections_keys ps_country_iso_code_a2))))]])
 
-(defn get-db-filter
+(defn api-filters->filters
   "Transforms API query parameters into a map of database filters."
   [{:keys [limit offset startDate endDate user-id favorites country transnational
            topic tag affiliation representativeGroup subContentType entity orderBy
-           descending q incCountsForTags featured capacity_building upcoming]
+           descending q incCountsForTags featured capacity_building upcoming
+           ps_country_iso_code_a2 ps_bookmark_sections_keys]
     :or {limit default-limit
          offset default-offset}}]
   (cond-> {}
@@ -245,6 +276,12 @@
     capacity_building
     (assoc :capacity-building capacity_building)
 
+    ps_country_iso_code_a2
+    (assoc :ps-country-iso-code-a2 ps_country_iso_code_a2)
+
+    ps_bookmark_sections_keys
+    (assoc :ps-bookmark-sections-keys ps_bookmark_sections_keys)
+
     true
     (assoc :review-status "APPROVED")))
 
@@ -268,40 +305,64 @@
            :thumbnail (get-in files [thumbnail_id :url])
            :stakeholder_connections connections)))
 
+(defn- add-geo-coverage-countries-filters
+  [{:keys [db]} {:keys [countries] :as api-search-opts}]
+  (let [opts {:filters {:countries-ids countries}}
+        transnational (->> (db.country-group/get-country-groups-by-countries (:spec db) opts)
+                           (map :id)
+                           set)]
+    (assoc api-search-opts
+           :geo-coverage-countries countries
+           :geo-coverage-country-groups transnational)))
+
+(defn- add-geo-coverage-country-groups-filters
+  [{:keys [db]} {:keys [country-groups] :as api-search-opts}]
+  (let [opts {:filters {:country-groups country-groups}}
+        country-group-countries (db.country-group/get-country-groups-countries db opts)
+        geo-coverage-countries (map :id country-group-countries)]
+    (assoc api-search-opts
+           :geo-coverage-country-groups country-groups
+           :geo-coverage-countries (set geo-coverage-countries))))
+
+(defn- add-geo-coverage-filters
+  [config {:keys [countries country-groups] :as api-search-opts}]
+  (cond
+    (seq countries)
+    (add-geo-coverage-countries-filters config api-search-opts)
+
+    (seq country-groups)
+    (add-geo-coverage-country-groups-filters config api-search-opts)
+
+    :else
+    api-search-opts))
+
+(defn- add-plastic-strategy-filters
+  [config {:keys [ps-country-iso-code-a2] :as api-search-opts}]
+  (if-not ps-country-iso-code-a2
+    api-search-opts
+    (let [search-opts {:filters {:countries-iso-codes-a2 [ps-country-iso-code-a2]}}
+          {:keys [success? plastic-strategy]}
+          (srv.ps/get-plastic-strategy config search-opts)]
+      (if success?
+        (assoc api-search-opts :plastic-strategy-id (:id plastic-strategy))
+        api-search-opts))))
+
 (defn- browse-response
   [{:keys [logger] {db :spec} :db :as config} query approved? admin]
   (try
-    (let [{:keys [countries country-groups] :as modified-filters}
-          (->> query
-               (get-db-filter)
-               (merge {:approved approved?
-                       :admin admin}))
-          modified-filters (cond
-                             (seq countries)
-                             (let [opts {:filters {:countries-ids countries}}
-                                   transnational (->> (db.country-group/get-country-groups-by-countries db opts)
-                                                      (map :id)
-                                                      set)]
-                               (assoc modified-filters
-                                      :geo-coverage-countries countries
-                                      :geo-coverage-country-groups transnational))
-
-                             (seq country-groups)
-                             (let [opts {:filters {:country-groups country-groups}}
-                                   country-group-countries (db.country-group/get-country-groups-countries db opts)
-                                   geo-coverage-countries (map :id country-group-countries)]
-                               (assoc modified-filters
-                                      :geo-coverage-country-groups country-groups
-                                      :geo-coverage-countries (set geo-coverage-countries)))
-                             :else
-                             modified-filters)
+    (let [api-search-opts (->> query
+                               (api-filters->filters)
+                               (merge {:approved approved?
+                                       :admin admin})
+                               (add-geo-coverage-filters config)
+                               (add-plastic-strategy-filters config))
           get-topics-start-time (System/currentTimeMillis)
-          results (->> modified-filters
+          results (->> api-search-opts
                        (db.topic/get-topics db)
                        (map (partial resource->api-resource config)))
           get-topics-exec-time (- (System/currentTimeMillis) get-topics-start-time)
           count-topics-start-time (System/currentTimeMillis)
-          counts (->> (assoc modified-filters :count-only? true)
+          counts (->> (assoc api-search-opts :count-only? true)
                       (db.topic/get-topics db))
           count-topics-exec-time (- (System/currentTimeMillis) count-topics-start-time)]
       (log logger :info ::query-exec-time {:get-topics-exec-time (str get-topics-exec-time "ms")

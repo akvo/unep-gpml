@@ -1,0 +1,16 @@
+@import '../../styles//vars.scss';
+
+.forum {
+  padding: 80px 0px;
+  h1 {
+    font-weight: 700;
+  }
+  :global {
+    .date {
+      color: $primaryPurple;
+    }
+    .content {
+      padding: 10px 0px;
+    }
+  }
+}

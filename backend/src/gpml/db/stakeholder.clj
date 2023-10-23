@@ -1,6 +1,9 @@
 (ns gpml.db.stakeholder
   {:ns-tracker/resource-deps ["stakeholder.sql"]}
   (:require [gpml.db.jdbc-util :as jdbc-util]
+            [gpml.util :as util]
+            [gpml.util.postgresql :as util.pgsql]
+            [gpml.util.sql :as util.sql]
             [hugsql.core :as hugsql]))
 
 (declare delete-stakeholder*
@@ -32,6 +35,10 @@
 
 (hugsql/def-db-fns "gpml/db/stakeholder.sql" {:quoting :ansi})
 
+(defn- stakeholder->p-stakeholder
+  [stakeholder]
+  (util/update-if-not-nil stakeholder :review_status util.pgsql/->PGEnum "REVIEW_STATUS"))
+
 (defn delete-stakeholder
   [conn stakeholder-id]
   (try
@@ -61,3 +68,19 @@
       {:success? false
        :reason :exception
        :error-details (ex-message t)})))
+
+(defn create-stakeholder
+  [conn stakeholder]
+  (let [p-stakeholder (stakeholder->p-stakeholder stakeholder)
+        cols (util.sql/get-insert-columns-from-entity-col [p-stakeholder])
+        values (util.sql/entity-col->persistence-entity-col [p-stakeholder])]
+    (jdbc-util/with-constraint-violation-check
+      [{:type :unique
+        :name "stakeholder_email_key"
+        :reason :already-exists}
+       {:type :unique
+        :name "stakeholder_chat_account_id_key"
+        :reason :already-exists}]
+      {:success? true
+       :stakeholder (first (create-stakeholders conn {:cols cols
+                                                      :values values}))})))

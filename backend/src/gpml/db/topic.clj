@@ -127,7 +127,8 @@
   [entity-name
    {:keys [id entity tag representative-group
            geo-coverage-types sub-content-type
-           search-text review-status featured capacity-building upcoming] :as _params}
+           search-text review-status featured capacity-building upcoming
+           plastic-strategy-id ps-bookmark-sections-keys] :as _params}
    {:keys [search-text-fields] :as _opts}]
   (let [entity-connections-join (if-not (or (seq entity) (seq representative-group))
                                   ""
@@ -149,6 +150,20 @@
         geo-coverage-join (if (= entity-name "stakeholder")
                             ""
                             (format "LEFT JOIN %s_geo_coverage eg ON eg.%s = e.id" entity-name entity-name))
+        ps-bookmark-join (if-not plastic-strategy-id
+                           ""
+                           (format "LEFT JOIN plastic_strategy_%s_bookmark psb ON e.id = psb.%s_id AND psb.plastic_strategy_id = %d"
+                                   entity-name entity-name plastic-strategy-id))
+        ps-bookmark-select (if-not plastic-strategy-id
+                             ""
+                             (format "json_agg(json_build_object('plastic_strategy_id', psb.plastic_strategy_id,
+                                                                 '%s_id', psb.%s_id,
+                                                                 'section_key', psb.section_key)) AS plastic_strategy_bookmarks,"
+                                     entity-name
+                                     entity-name))
+        ps-bookmark-group-by (if-not plastic-strategy-id
+                               ""
+                               (format ", psb.%s_id" entity-name))
         files-join (cond
                      (= entity-name "stakeholder")
                      "LEFT JOIN file f ON e.picture_id = f.id"
@@ -190,11 +205,15 @@
                      (str " AND e.capacity_building = :capacity-building")
 
                      (and upcoming (= entity-name "event"))
-                     (str " AND now() < e.start_date"))]
+                     (str " AND now() < e.start_date")
+
+                     ps-bookmark-sections-keys
+                     (str " AND psb.section_key IN (:v*:ps-bookmark-sections-keys)"))]
     (apply
      format
      "SELECT
        %s,
+       %s
        %s
        json_agg(jsonb_build_object('id', f.id, 'object-key', f.object_key, 'visibility', f.visibility)) FILTER (WHERE f.id IS NOT NULL) AS files,
        json_agg(json_build_object('id', t.id, 'tag', t.tag)) FILTER (WHERE t.id IS NOT NULL) AS tags
@@ -204,14 +223,18 @@
    %s
    %s
    %s
-   GROUP BY e.id"
+   %s
+   GROUP BY e.id %s"
      (concat [table-specific-cols]
              [geo-coverage-select]
+             [ps-bookmark-select]
              (repeat 3 entity-name)
              [files-join]
              [entity-connections-join]
              [geo-coverage-join]
-             [where-cond]))))
+             [ps-bookmark-join]
+             [where-cond]
+             [ps-bookmark-group-by]))))
 
 ;;======================= Topic queries =================================
 (defn- generic-topic-query
