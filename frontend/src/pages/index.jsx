@@ -1,5 +1,5 @@
 import React from 'react'
-import Landing from '../modules/landing/landing'
+import Landing from '../pages/landing'
 
 function HomePage({ isAuthenticated, setLoginVisible }) {
   return (
