@@ -1,4 +1,4 @@
-@import "../../vars.scss";
+@import '../../styles/vars.scss';
 
 .flexibleForms {
   // padding-top: 40px;
@@ -19,9 +19,16 @@
     .loading {
       color: white;
     }
-
+    .ui {
+      &.container {
+        width: 1560px;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 100% !important;
+      }
+    }
     .form-info-wrapper {
-      background-color: #005b70;
+      background-color: $primaryDarkBlue5;
       padding: 20px 0;
 
       .ui.container {
@@ -64,32 +71,18 @@
             margin-right: 5px;
           }
           .ant-switch-checked {
-            background-color: #1890ff;
+            background-color: $primaryDarkBlue;
           }
         }
         .custom-button {
-          border-radius: 50px !important;
-          line-height: 16px !important;
-          font-weight: 700 !important;
-          background: #05f081;
-          color: #fff !important;
-          border: 1px solid #05f081;
-          padding: 6.4px 15px;
-          height: 40px;
-          font-size: 16px;
-          &:disabled {
-            opacity: 0.4;
-          }
+          margin-left: 10px;
         }
         .draft-button {
-          border-radius: 50px;
-          line-height: 16px;
-          font-weight: 700;
-          background: transparent;
-          color: #05f081;
-          border: 2px solid #05f081;
-          margin-right: 10px;
-          padding: 6.4px 15px;
+          border-color: white;
+          color: white;
+          &:hover {
+            background-color: hsla(0, 0%, 100%, 0.2);
+          }
         }
         .d-flex {
           display: flex;
@@ -124,7 +117,7 @@
         width: 100%;
       }
       .field-label {
-        color: $blue06;
+        color: $primaryDarkBlue;
         font-size: 16px;
         font-weight: 400;
       }
@@ -174,7 +167,7 @@
 
             .ant-steps-item-title {
               font-size: 14px;
-              color: $blue06;
+              color: $primaryDarkBlue;
               font-weight: 400 !important;
             }
             &.ant-steps-item-active {
@@ -200,6 +193,13 @@
                 border-radius: 50px;
                 width: 24px;
                 height: 24px;
+                padding: 0;
+                text-align: center;
+                svg {
+                  position: relative;
+                  top: 0;
+                  left: 0;
+                }
               }
             }
             .ant-steps-item-tail {
@@ -211,17 +211,17 @@
             }
           }
           .custom-step-icon {
-            background: $blue06;
-            border-color: $blue06;
+            background: $primaryDarkBlue;
+            border-color: $primaryDarkBlue;
             color: #fff;
             min-width: 32px;
-            padding-right: 0;
-            padding-left: 0;
             text-align: center;
             border-radius: 50%;
+            display: block;
+            padding: 2px;
           }
           .ant-steps-item-title {
-            color: $blue06;
+            color: $primaryDarkBlue;
           }
           &.current-tabs {
             background: rgba(49, 118, 174, 0.17);
@@ -246,9 +246,11 @@
           h5 {
             font-size: 18px;
             font-weight: 700;
+            color: $primaryPurple;
+            margin-bottom: 10px;
           }
           p {
-            font-size: 18px;
+            font-size: 16px;
           }
           a {
             color: #34a6ff;
@@ -322,7 +324,7 @@
               background: rgba(52, 166, 255, 0.1);
               box-shadow: 0 0 1px rgba(0, 0, 0, 0.25);
               .content-circle {
-                background: #10f9b7;
+                background: $primaryGreen;
                 border: 5px solid #fff;
               }
               h2 {
@@ -352,7 +354,7 @@
               width: 80px;
               height: 80px;
               border-radius: 50%;
-              border: 5px solid #10f9b7;
+              border: 5px solid $primaryGreen5;
               text-align: center;
               margin: 0 auto 20px auto;
               background-color: #e7fef8;
@@ -370,6 +372,7 @@
               font-size: 14px;
               font-weight: 400;
               text-transform: capitalize;
+              font-family: var(--font-dm-sans), sans-serif;
             }
             &.selected {
               border: 2px solid #34a6ff;
@@ -389,7 +392,7 @@
             justify-content: space-between;
             margin-bottom: 5px;
             h5 {
-              color: $blue06;
+              color: $primaryDarkBlue;
               font-size: 18px;
               font-weight: 400;
               margin-bottom: 0px;
@@ -403,7 +406,6 @@
                 width: 20px;
               }
               span {
-                color: #34a6ff;
                 margin-left: 5px;
                 font-weight: bold;
               }
@@ -452,7 +454,8 @@
             border-radius: 7px;
             height: auto;
             padding: 7px 15px;
-
+            background: transparent;
+            color: #000;
             span {
               font-weight: 700;
             }
@@ -545,7 +548,7 @@
               align-items: center;
             }
             h5 {
-              color: $blue06;
+              color: $primaryDarkBlue;
               font-size: 18px;
               font-weight: 400;
               margin-bottom: 0px;
@@ -659,25 +662,18 @@
               padding-right: 5px;
             }
             &:hover {
-              background-color: $yellow-highlight;
+              background-color: $primaryDarkBlue;
             }
           }
           .back-button {
-            display: flex;
-            align-items: center;
-            width: fit-content;
-            padding: 5px 10px;
-            border-radius: 20px;
-            border: 1px solid;
-            color: #34a6ff;
-            cursor: pointer;
-
-            p {
-              margin-bottom: 0px;
-              padding-left: 5px;
+            svg {
+              transform: rotate(180deg);
             }
             &:hover {
-              background-color: $yellow-highlight;
+              padding-left: 28px;
+              svg {
+                transform: translateX(-8px) rotate(180deg);
+              }
             }
           }
           .center-content {
@@ -685,13 +681,13 @@
             margin-left: 40px;
             p {
               margin-bottom: 0px;
-              color: #3176ae;
-              font-weight: 400;
+              color: $primaryDarkBlue;
+              font-weight: 600;
             }
             h6 {
               text-align: center;
               font-size: 18px;
-              color: #3176ae;
+              color: $primaryDarkBlue;
               font-weight: 700;
             }
           }
@@ -729,7 +725,7 @@
         li {
           background: #d3dee7;
           border-radius: 23px 5px 5px 23px;
-          color: $blue06;
+          color: $primaryDarkBlue;
           display: inline-block;
           padding: 5px 20px 5px 30px;
           position: relative;
@@ -740,7 +736,7 @@
             background: #fff;
             border-radius: 10px;
             box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
-            content: "";
+            content: '';
             position: absolute;
             height: 12px;
             width: 12px;

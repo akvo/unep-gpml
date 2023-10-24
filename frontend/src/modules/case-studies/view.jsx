@@ -1,36 +1,37 @@
-import React, { useRef, useState, useEffect } from "react";
-import { Button, Carousel, Row, Col, Select } from "antd";
-import { DownloadOutlined } from "@ant-design/icons";
-import styles from "./styles.module.scss";
-import datastudies from "./json/case-studies.json";
-import CaseStudy from "./CaseStudy";
-import DropdownIcon from "../../images/case-studies/ic-dropdown.svg";
-import { titleCase } from "../../utils/string";
-import { eventTrack } from "../../utils/misc";
+import React, { useRef, useState, useEffect } from 'react'
+import { Carousel, Row, Col, Select } from 'antd'
+import { DownloadOutlined } from '@ant-design/icons'
+import styles from './styles.module.scss'
+import datastudies from './json/case-studies.json'
+import CaseStudy from './CaseStudy'
+import DropdownIcon from '../../images/case-studies/ic-dropdown.svg'
+import { titleCase } from '../../utils/string'
+import { eventTrack } from '../../utils/misc'
+import Button from '../../components/button'
 
 const CaseStudies = () => {
-  const [isShownDropdown, setIsShownDropdown] = useState(false);
-  const [indexSlide, setIndexSlide] = useState(0);
-  const caseStudyReff = useRef();
+  const [isShownDropdown, setIsShownDropdown] = useState(false)
+  const [indexSlide, setIndexSlide] = useState(0)
+  const caseStudyReff = useRef()
 
-  const slider = useRef();
+  const slider = useRef()
   const prev = () => {
-    slider.current.prev();
-  };
+    slider.current.prev()
+  }
   const next = () => {
-    slider.current.next();
-  };
+    slider.current.next()
+  }
   const goTo = (index) => {
-    setIndexSlide(index);
-    slider.current.goTo(index);
-  };
+    setIndexSlide(index)
+    slider.current.goTo(index)
+  }
 
   useEffect(() => {
     window.scrollTo({
-      behavior: "smooth",
+      behavior: 'smooth',
       top: caseStudyReff.current.offsetTop,
-    });
-  }, []);
+    })
+  }, [])
   return (
     <Row className={styles.caseStudy} ref={caseStudyReff}>
       <Col span={24} className="ui-header">
@@ -73,9 +74,8 @@ const CaseStudies = () => {
                   className="case-study-dropdown"
                   defaultValue={0}
                   onChange={(value) => goTo(value)}
-                  suffixIcon={<DropdownIcon />}
                   virtual={false}
-                  size="large"
+                  size="small"
                   value={indexSlide}
                 >
                   {datastudies.map((c, cx) => (
@@ -88,37 +88,42 @@ const CaseStudies = () => {
             </Col>
 
             <Col lg={18} md={24} className="text-right">
-              <Button
-                href={datastudies[indexSlide].platform_link || "#"}
-                type="link"
-                shape="round"
-                className="green-border case-study-learn-btn"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Learn More
-              </Button>
-              <a
-                onClick={(e) => {
-                  e.preventDefault();
-                  eventTrack("Case studies", "Download", "Button");
-                  window.open(
-                    "https://wedocs.unep.org/bitstream/handle/20.500.11822/38223/Case-studies.pdf?sequence=1&isAllowed=y",
-                    "_blank"
-                  );
-                }}
-              >
-                <Button className="btn-download ml-1">
-                  Download as pdf&nbsp;
-                  <DownloadOutlined />
-                </Button>
-              </a>
+              <Row justify="end" align="middle">
+                <Col>
+                  <Button
+                    href={datastudies[indexSlide].platform_link || '#'}
+                    className="green-border case-study-learn-btn"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    ghost
+                    size="small"
+                  >
+                    Learn More
+                  </Button>
+                </Col>
+                <Col>
+                  <a
+                    onClick={(e) => {
+                      e.preventDefault()
+                      eventTrack('Case studies', 'Download', 'Button')
+                      window.open(
+                        'https://wedocs.unep.org/bitstream/handle/20.500.11822/38223/Case-studies.pdf?sequence=1&isAllowed=y',
+                        '_blank'
+                      )
+                    }}
+                  >
+                    <Button size="small" className="btn-download ml-1">
+                      Download as pdf
+                    </Button>
+                  </a>
+                </Col>
+              </Row>
             </Col>
           </Row>
         </div>
       </Col>
       <Col span={24}>
-        <div className="">
+        <div className="case-study-wrapper">
           <Carousel
             dots={false}
             ref={slider}
@@ -140,7 +145,7 @@ const CaseStudies = () => {
         </div>
       </Col>
     </Row>
-  );
-};
+  )
+}
 
-export default CaseStudies;
+export default CaseStudies

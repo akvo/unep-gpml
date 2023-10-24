@@ -1,0 +1,35 @@
+@import '../../styles//vars.scss';
+
+.page {
+  padding: 50px 0px 0px;
+  h1 {
+    font-weight: 700;
+  }
+  & > :global(.container) {
+    max-width: 640px;
+  }
+  :global {
+    h1 {
+      margin: 10px 0 30px;
+    }
+    .cover {
+      max-height: 300px;
+      height: 300px;
+      width: 100%;
+      position: relative;
+      margin-bottom: 20px;
+      img {
+        object-position: 0 0;
+      }
+    }
+    .date {
+      color: $primaryPurple;
+    }
+
+    .content {
+      padding: 0px 0px 50px;
+      min-height: 300px;
+      line-height: 1.7;
+    }
+  }
+}

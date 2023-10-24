@@ -9,7 +9,8 @@
                      :ps-bookmark-entity-col ps-bookmark-entity-col
                      :ps-id plastic-strategy-id
                      :ps-bookmark-entity-id entity-id
-                     :section-key section-key}]
+                     :section-key section-key
+                     :entity-type entity-type}]
     (if bookmark
       (db.ps.bookmark/create-ps-bookmark (:spec db) ps-bookmark)
       (db.ps.bookmark/delete-ps-bookmark (:spec db) ps-bookmark))))

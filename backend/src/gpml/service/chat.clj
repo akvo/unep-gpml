@@ -133,8 +133,12 @@
     (tht/thread-transactions logger transactions context)))
 
 (defn update-user-account
-  [{:keys [chat-adapter]} user-id updates]
-  (chat/update-user-account chat-adapter user-id updates))
+  [{:keys [chat-adapter]} chat-account-id updates]
+  (chat/update-user-account chat-adapter chat-account-id updates))
+
+(defn delete-user-account
+  [{:keys [chat-adapter]} chat-account-id opts]
+  (chat/delete-user-account chat-adapter chat-account-id opts))
 
 (defn get-user-joined-channels
   [{:keys [chat-adapter]} chat-account-id]
@@ -215,6 +219,18 @@
   (chat/add-user-to-private-channel chat-adapter
                                     chat-account-id
                                     channel-id))
+
+(defn create-private-channel
+  [{:keys [chat-adapter]} channel]
+  (chat/create-private-channel chat-adapter channel))
+
+(defn set-private-channel-custom-fields
+  [{:keys [chat-adapter]} channel-id custom-fields]
+  (chat/set-private-channel-custom-fields chat-adapter channel-id custom-fields))
+
+(defn delete-private-channel
+  [{:keys [chat-adapter]} channel-id]
+  (chat/delete-private-channel chat-adapter channel-id))
 
 (defn send-private-channel-invitation-request
   [{:keys [db mailjet-config]} user channel-id channel-name]

@@ -1,7 +1,6 @@
 (ns gpml.db.plastic-strategy.bookmark
   {:ns-tracker/resource-deps ["plastic_strategy/bookmark.sql"]}
-  (:require [clojure.string :as str]
-            [gpml.db.jdbc-util :as jdbc-util]
+  (:require [gpml.db.jdbc-util :as jdbc-util]
             [gpml.util :as util]
             [hugsql.core :as hugsql]))
 
@@ -14,11 +13,12 @@
   [ps-bookmark]
   (-> ps-bookmark
       (util/update-if-not-nil :ps-bookmark-entity-col name)
-      (util/update-if-not-nil :ps-bookmark-table name)))
+      (util/update-if-not-nil :ps-bookmark-table name)
+      (dissoc :entity-type)))
 
 (defn create-ps-bookmark
-  [conn {:keys [ps-bookmark-entity-col] :as ps-bookmark}]
-  (let [entity-name (first (str/split (name ps-bookmark-entity-col) #"\_"))]
+  [conn {:keys [entity-type] :as ps-bookmark}]
+  (let [entity-name (name entity-type)]
     (jdbc-util/with-constraint-violation-check
       [{:type :unique
         :name (format "plastic_strategy_%s_bookmark_pkey" entity-name)
