@@ -49,11 +49,15 @@
       gap: 16px;
       margin-bottom: 64px;
       .ant-btn-download {
-        padding-top: 12px !important;
+        padding-top: 9px !important;
         padding-left: 12px;
         padding-right: 24px;
+        border-width: 1px;
+        font-family: $ff2 !important;
+        font-weight: bold;
         svg {
           padding-right: 10px;
+          transform: translateY(-1px);
           path {
             fill: $primaryPurple2;
             stroke: $primaryPurple;

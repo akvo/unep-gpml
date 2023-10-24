@@ -191,6 +191,7 @@ const SummaryFiles = ({ psItem, step, slug }) => {
             shape="download"
             target="_blank"
             ghost
+            size="small"
           >
             Download PDF
           </Button>
