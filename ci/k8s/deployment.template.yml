@@ -351,11 +351,11 @@ spec:
             secretKeyRef:
               name: unep-gpml
               key: strapi-api-token-salt
-        - name: URL
+        - name: DOMAIN
           valueFrom:
             secretKeyRef:
               name: unep-gpml
-              key: strapi-url
+              key: strapi-domain
         - name: TRANSFER_TOKEN_SALT
           valueFrom:
             secretKeyRef:
