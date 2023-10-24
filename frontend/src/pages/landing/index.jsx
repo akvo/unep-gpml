@@ -62,7 +62,7 @@ const Hero = () => {
         'The GPML digital platform fosters public-private partnerships, offers clarity on circular economy practices, and provides guidance on Extended Producer Responsibilities (EPRs) and sustainable business models.',
     },
     {
-      group: 'Scientific Community',
+      group: 'Scientific Communities',
       text:
         'The GPML digital platform helps academia and the scientific community to ensure their research becomes actionable by offering the opportunity to share resources and collaborate with policy makers.',
     },
@@ -401,13 +401,13 @@ const ActNow = () => {
       content:
         'Join others in coordinating efforts towards shared plastic solutions. From data to capacity development communities',
       title: 'Communities of practise',
-      label: 'Coming soon',
       links: [{ label: 'Track progress', url: '#' }],
     },
     {
       bgColor: 'blue',
       content:
         'Start your own initiative. Get inspired by others who are making progress to end plastic pollution.',
+      label: 'Coming soon',
       title: 'Country Progress',
       links: [
         { label: 'Track progress', url: '#' },
