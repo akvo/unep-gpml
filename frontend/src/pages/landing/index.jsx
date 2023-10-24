@@ -399,13 +399,13 @@ const ActNow = () => {
       content:
         'Join others in coordinating efforts towards shared plastic solutions. From data to capacity development communities',
       title: 'Communities of practise',
-      label: 'Coming soon',
       links: [{ label: 'Track progress', url: '#' }],
     },
     {
       bgColor: 'blue',
       content:
-        'Start your own initiative. get inspired by others who are making progress to end plastic pollution.',
+        'Start your own initiative. Get inspired by others who are making progress to end plastic pollution.',
+      label: 'Coming soon',
       title: 'Country Progress',
       links: [
         { label: 'Track progress', url: '#' },
