@@ -11,9 +11,13 @@
             [integrant.core :as ig])
   (:import [java.sql SQLException]))
 
-(defn- get-badge-by-name
-  [{:keys [db] :as config} badge-name]
-  (let [{:keys [success? badge] :as result} (db.badge/get-badge-by-name (:spec db) {:name badge-name})
+(defn- get-badge-by-id-or-name
+  [{:keys [db] :as config} badge-id-or-name]
+  (let [{:keys [success? badge] :as result} (db.badge/get-badge-by-id-or-name
+                                             (:spec db)
+                                             (if (integer? badge-id-or-name)
+                                               {:id badge-id-or-name}
+                                               {:name badge-id-or-name}))
         badge-content-file-id (:content-file-id badge)]
     (if-not success?
       result
@@ -44,8 +48,8 @@
   [_ {:keys [logger] :as config}]
   (fn [req]
     (try
-      (let [badge-name (get-in req [:parameters :path :id-or-name])
-            {:keys [success? reason] :as result} (get-badge-by-name config badge-name)]
+      (let [badge-id-or-name (get-in req [:parameters :path :id-or-name])
+            {:keys [success? reason] :as result} (get-badge-by-id-or-name config badge-id-or-name)]
         (if success?
           (r/ok result)
           (if (= reason :not-found)
@@ -61,7 +65,7 @@
   [:map
    [:id-or-name
     {:swagger
-     {:description "The Badge's identifier"
+     {:description "The Badge's identifier (only `id` is supported)."
       :type "integer"}}
     pos-int?]])
 
@@ -86,10 +90,11 @@
   {:path [:map
           [:id-or-name
            {:swagger
-            {:description "The Badge's name."
-             :type "string"
+            {:description "The Badge's name or its id."
              :allowEmptyValue false}}
-           [:string {:min 1}]]]})
+           [:or
+            pos-int?
+            [:string {:min 1}]]]]})
 
 (defmethod ig/init-key :gpml.handler.badge.assign/post
   [_ {:keys [logger] :as config}]

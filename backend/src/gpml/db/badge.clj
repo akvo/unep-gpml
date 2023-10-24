@@ -7,7 +7,7 @@
 
 (declare create-badge*
          delete-badge*
-         get-badge-by-name*
+         get-badge-by-id-or-name*
          add-badge-assignment*
          remove-badge-assignment*)
 
@@ -82,10 +82,10 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn get-badge-by-name
+(defn get-badge-by-id-or-name
   [conn opts]
   (try
-    (let [badge (get-badge-by-name*
+    (let [badge (get-badge-by-id-or-name*
                  conn
                  opts)]
       (if (seq badge)

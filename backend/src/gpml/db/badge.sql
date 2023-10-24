@@ -7,9 +7,10 @@ values :t*:insert-values returning id;
 DELETE FROM badge
 WHERE id = :id;
 
--- :name get-badge-by-name* :query :one
--- :doc Get a Badge by its unique name
-select * from badge where name = :name
+-- :name get-badge-by-id-or-name* :query :one
+-- :doc Get a Badge by its unique name or its id
+select * from badge
+--~ (if (contains? params :id) " WHERE id = :id" " WHERE name = :name")
 
 -- :name add-badge-assignment* :execute :affected
 INSERT INTO :i:badge-assignment-table(badge_id, :i:badge-assignment-entity-col, assigned_by)
