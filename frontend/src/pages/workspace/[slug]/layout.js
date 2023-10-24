@@ -12,8 +12,35 @@ import {
   isoA2,
   stepsState,
 } from '../../../modules/workspace/ps/config'
+import { Trans, t } from '@lingui/macro'
 import { UIStore } from '../../../store'
 import api from '../../../utils/api'
+
+const stepsDict = {
+  Instructions: t`Instructions`,
+  'National Steering Committee & Project Team':
+    'National Steering Committee & Project Team',
+  Intro: t`Intro`,
+  'Setup your team': t`Setup your team`,
+  'Stakeholder Consultation Process': t`Stakeholder Consultation Process`,
+  'Stakeholder Map': t`Stakeholder Map`,
+  'Case Studies': t`Case Studies`,
+  Initiatives: t`Initiatives`,
+  'Summary & Report': t`Summary & Report`,
+  'Legislation & Policy Review Report': t`Legislation & Policy Review Report`,
+  'Country Policy Framework': t`Country Policy Framework`,
+  'Legislative Development Guide': t`Legislative Development Guide`,
+  'Data Analysis': t`Data Analysis`,
+  'Available Tools': t`Available Tools`,
+  'Available Data & Statistics': t`Available Data & Statistics`,
+  'Data Collection': t`Data Collection`,
+  'Calculation of Indicators': t`Calculation of Indicators`,
+  'Available Information': t`Available Information`,
+  'National Source Inventory Report': t`National Source Inventory Report`,
+  'National Plastic Strategy': t`National Plastic Strategy`,
+  Upload: t`Upload`,
+  'Final Review': t`Final Review`,
+}
 
 const NestedLayout = ({ children }) => {
   const [psItem, setPSItem] = useState({})
@@ -173,14 +200,18 @@ const NestedLayout = ({ children }) => {
     <div className={styles.plasticStrategyView}>
       <div className={styles.sidebar}>
         <div className="head">
-          <div className="caps-heading-s">plastic strategy</div>
+          <div className="caps-heading-s">
+            <Trans>plastic strategy</Trans>
+          </div>
           <h5 className="h-m m-semi">
-            {psItem?.country?.name || 'Loading...'}
+            {psItem?.country?.name || t`Loading...`}
           </h5>
           <div className="progress-bar">
             <div className="fill" style={{ width: `${progress}%` }}></div>
           </div>
-          <div className="progress-text">{progress}% complete</div>
+          <div className="progress-text">
+            <Trans>{progress}% complete</Trans>
+          </div>
         </div>
         <div className="steps">
           {psSteps.map((step) => (
@@ -199,7 +230,7 @@ const NestedLayout = ({ children }) => {
                   >
                     {getParentChecked(step) && <Check />}
                   </div>
-                  <div className="label">{step.label}</div>
+                  <div className="label">{stepsDict[step.label]}</div>
                   {step?.substeps && (
                     <>
                       <div className="status">
@@ -235,7 +266,7 @@ const NestedLayout = ({ children }) => {
                         >
                           {substep.checked && <Check />}
                         </div>
-                        <div className="label">{substep.label}</div>
+                        <div className="label">{stepsDict[substep.label]}</div>
                       </div>
                     </Link>
                   ))}
@@ -254,13 +285,12 @@ const NestedLayout = ({ children }) => {
           onClick={handleOnMarkAsComplete(!isCompleted)}
           loading={marking}
           className={classNames('mark-completed', { completed: isCompleted })}
-          // disabled={markAsDisabled}
         >
           <Check />
-          {isCompleted ? 'Completed' : 'Mark as Completed'}
+          {isCompleted ? t`Completed` : `Mark as Completed`}
         </Button>
         <Button onClick={handleOnNext} withArrow>
-          Next
+          <Trans>Next</Trans>
         </Button>
       </div>
     </div>

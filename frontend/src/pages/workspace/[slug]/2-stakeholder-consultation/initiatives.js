@@ -4,6 +4,7 @@ import api from '../../../../utils/api'
 import ResourceCards from '../../../../modules/workspace/ps/resource-cards'
 import { iso2id, isoA2 } from '../../../../modules/workspace/ps/config'
 import { useRouter } from 'next/router'
+import { Trans, t } from '@lingui/macro'
 
 const sectionKey = 'stakeholder-initiatives'
 
@@ -30,12 +31,14 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
   }, [router])
   return (
     <>
-      <h4 className="caps-heading-m">Stakeholder Consultation Process</h4>
-      <h2 className="h-xxl w-bold">Initiatives</h2>
+      <h4 className="caps-heading-m">
+        <Trans>Stakeholder Consultation Process</Trans>
+      </h4>
+      <h2 className="h-xxl w-bold">
+        <Trans>Initiatives</Trans>
+      </h2>
       <p>
-        Find country initiatives across a wide variety of subjects and sectors
-        currently ongoing. Filter either directly on the map or using the
-        sidebar navigation to easily find relevant initatives.{' '}
+        <Trans>Description - Section 2 - Initatives</Trans>
       </p>
 
       <ResourceCards

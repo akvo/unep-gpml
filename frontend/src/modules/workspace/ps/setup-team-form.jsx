@@ -16,6 +16,7 @@ import styles from './setup-team-form.module.scss'
 import { DropDownIcon } from '../../../components/icons'
 import api from '../../../utils/api'
 import { ROLES, TEAMS } from './config'
+import { Trans, t } from '@lingui/macro'
 import AutocompleteForm from '../../../components/autocomplete-form/autocomplete-form'
 
 const { Text } = Typography
@@ -38,7 +39,7 @@ const SetupTeamForm = ({ psItem, members, setMembers }) => {
   const handleOnAddMember = async (newMember) => {
     const isExist = members.find((m) => m.id === newMember?.id)
     if (isExist) {
-      message.warning('User already added as a member')
+      message.warning(t`User already added as a member`)
       return
     }
     try {
@@ -91,7 +92,7 @@ const SetupTeamForm = ({ psItem, members, setMembers }) => {
       setSelectedRole(null)
       setSelectedTeams([])
       setOpenInvitation(false)
-      message.success('Invitation sent!')
+      message.success(t`Invitation sent.`)
     } catch (error) {
       console.error('Unable to send invitation', error)
       message.error('Unable to send invitation')
@@ -120,7 +121,7 @@ const SetupTeamForm = ({ psItem, members, setMembers }) => {
       <AutocompleteForm
         apiParams={{ networkType: 'stakeholder', limit: 10 }}
         extraButton={{
-          text: '+ Invite a New Member',
+          text: t`+ Invite a New Member`,
           type: 'link',
           onClick: handleOnOpenInvitation,
         }}
@@ -128,14 +129,14 @@ const SetupTeamForm = ({ psItem, members, setMembers }) => {
         renderItem={renderItem}
       />
       <Modal
-        title="Invite a new member"
+        title={t`Invite a new member`}
         className={styles.invitationModal}
         visible={openInvitation}
         width={576}
         footer={
           <>
             <Button type="link" onClick={handleOnCloseInvitation}>
-              Close
+              <Trans>Close</Trans>
             </Button>
             <Button
               size="small"
@@ -143,7 +144,7 @@ const SetupTeamForm = ({ psItem, members, setMembers }) => {
               onClick={() => form.submit()}
               disabled={sending}
             >
-              {sending ? 'Sending...' : 'Send Invite'}
+              {sending ? t`Sending...` : t`Send Invite`}
             </Button>
           </>
         }
@@ -161,20 +162,20 @@ const SetupTeamForm = ({ psItem, members, setMembers }) => {
             rules={[
               {
                 required: true,
-                message: 'Email is required',
+                message: t`Email is required`,
               },
               {
                 type: 'email',
-                message: 'Invalid Email address',
+                message: t`Invalid Email address`,
               },
             ]}
           >
-            <Input type="email" placeholder="Text" />
+            <Input type="email" placeholder={t`Text`} />
           </Form.Item>
-          <Form.Item label="Name" name="name">
+          <Form.Item label={t`Name`} name="name">
             <Input placeholder="Text" />
           </Form.Item>
-          <Form.Item label="Role" name="role">
+          <Form.Item label={t`Role`} name="role">
             <Dropdown
               overlay={
                 <Menu>
@@ -195,14 +196,14 @@ const SetupTeamForm = ({ psItem, members, setMembers }) => {
               placement="bottom"
             >
               <Button type="link" icon={<DropDownIcon />}>
-                {selectedRole?.label || '-Please select-'}
+                {selectedRole?.label || t`- Please select -`}
               </Button>
             </Dropdown>
             <div className="role-description">
               <p>{roleDescription}</p>
             </div>
           </Form.Item>
-          <Form.Item label="Assign to" name="teams">
+          <Form.Item label={t`Assign to`} name="teams">
             <Checkbox.Group onChange={handleOnCheckedTeams}>
               {TEAMS.map((team) => (
                 <Checkbox key={team.value} value={team.value}>

@@ -13,6 +13,7 @@ import classNames from 'classnames'
 import { kebabCase, uniqBy, snakeCase } from 'lodash'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import { Trans, t } from '@lingui/macro'
 
 import { PageLayout } from '..'
 import {
@@ -45,27 +46,27 @@ const FILTER_FIELDS = {
 
 export const PLASTIC_LIFECYCLE = [
   {
-    text: 'Petrochemical Extraction',
+    text: t`Petrochemical Extraction`,
     value: 'petrochemical extraction',
     icon: PetroExtractionIcon,
   },
   {
-    text: 'Design & Production',
+    text: t`Design & Production`,
     value: 'design & production',
     icon: DesignNProdIcon,
   },
   {
-    text: 'Distribution',
+    text: t`Distribution`,
     value: 'distribution',
     icon: DistributionIcon,
   },
   {
-    text: 'Consumption',
+    text: t`Consumption`,
     value: 'consumption',
     icon: ConsumptionIcon,
   },
   {
-    text: 'End of Life',
+    text: t`End of Life`,
     value: 'end-of-life',
     icon: EndOfLifeIcon,
   },
@@ -98,35 +99,35 @@ const StakeholderMapTable = ({
         dataIndex: 'plasticStrategyBookmarks',
       },
       {
-        title: 'Organisation',
+        title: t`Organisation`,
         dataIndex: 'name',
         filters: filterNames || [],
         sorter: true,
         sortDirections: ['ascend'],
       },
       {
-        title: 'Type',
+        title: t`Type`,
         dataIndex: 'type',
         filters: filterTypes || [],
         sorter: true,
       },
       {
-        title: 'Geo-coverage',
+        title: t`Geo-coverage`,
         dataIndex: 'geoCoverageType',
         filters: filterGeo || [],
         sorter: true,
       },
       {
-        title: 'Lifecycle Stage',
+        title: t`Lifecycle Stage`,
         dataIndex: 'tags',
         filters: PLASTIC_LIFECYCLE,
       },
       {
-        title: 'Focal Point',
+        title: t`Focal Point`,
         dataIndex: 'focalPoints',
       },
       {
-        title: 'Strengths',
+        title: t`Strengths`,
         dataIndex: 'strengths',
       },
     ]
@@ -317,7 +318,9 @@ const StakeholderMapTable = ({
                 const isMarked = findBm ? true : false
                 return (
                   <Tooltip
-                    title={isMarked ? 'Remove from Library' : 'Save to Library'}
+                    title={
+                      isMarked ? t`Remove from Library` : t`Save to Library`
+                    }
                   >
                     <Button
                       type="link"
@@ -400,7 +403,7 @@ const StakeholderMapTable = ({
                     href={`/workspace/${router.query?.slug}/2-stakeholder-consultation/initiatives?org=${record?.id}`}
                     className="ant-btn ant-btn-link"
                   >
-                    {`${value} Initiatives`}
+                    {t`${value} Initiatives`}
                   </Link>
                 ) : (
                   '-'
@@ -479,10 +482,12 @@ const StakeholderMapForm = ({ entities, preload, setPreload }) => {
 
   return (
     <>
-      <h5 className={styles.title}>Can't find who you're looking for?</h5>
+      <h5 className={styles.title}>
+        <Trans>Can't find who you're looking for?</Trans>
+      </h5>
       <Select
         size="small"
-        placeholder="Start typing..."
+        placeholder={t`Start typing...`}
         allowClear
         showSearch
         name="orgName"
@@ -535,11 +540,17 @@ const View = ({ psItem }) => {
   return (
     <div className={styles.stakeholderMapView}>
       <div className="title-section">
-        <h4 className="caps-heading-m">stakeholder consultation process</h4>
-        <h2 className="h-xxl w-bold">Stakeholder Map</h2>
+        <h4 className="caps-heading-m">
+          <Trans>stakeholder consultation process</Trans>
+        </h4>
+        <h2 className="h-xxl w-bold">
+          <Trans>Stakeholder Map</Trans>
+        </h2>
       </div>
       <div className="desc-section">
-        <p>Find and connect the stakeholders relevant to you</p>
+        <p>
+          <Trans>Find and connect the stakeholders relevant to you</Trans>
+        </p>
       </div>
       <div className="table-section">
         <StakeholderMapTable
