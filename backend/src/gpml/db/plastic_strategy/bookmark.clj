@@ -1,7 +1,6 @@
 (ns gpml.db.plastic-strategy.bookmark
   {:ns-tracker/resource-deps ["plastic_strategy/bookmark.sql"]}
-  (:require [clojure.string :as str]
-            [gpml.db.jdbc-util :as jdbc-util]
+  (:require [gpml.db.jdbc-util :as jdbc-util]
             [gpml.util :as util]
             [hugsql.core :as hugsql]))
 
