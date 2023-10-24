@@ -222,3 +222,15 @@ export const pagination = {
     return '<div class="' + className + '">' + '<span/>' + '</div>'
   },
 }
+
+export function transformStrapiResponse(value) {
+  return value.map((item) => {
+    return { id: item.id, ...item.attributes }
+  })
+}
+
+export function stripHtml(html) {
+  let tmp = document.createElement('DIV')
+  tmp.innerHTML = html
+  return tmp.textContent || tmp.innerText || ''
+}

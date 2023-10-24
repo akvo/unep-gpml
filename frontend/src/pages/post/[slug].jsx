@@ -3,21 +3,31 @@ import styles from './style.module.scss'
 import moment from 'moment'
 import Head from 'next/head'
 import { Footer } from '../landing'
+import { transformStrapiResponse } from '../../utils/misc'
+import Image from 'next/image'
 
 const StrapiPage = ({ pageData }) => {
+  console.log(pageData)
   return (
-    <div className={styles.forum}>
+    <div className={styles.page}>
       <Head>
-        <title>{pageData.attributes.title}</title>
+        <title>{pageData.title}</title>
       </Head>
       <div className="container">
-        <h1 className="h-l">{pageData.attributes.title}</h1>
+        <div className="cover">
+          <Image
+            src={pageData.cover.data.attributes.url}
+            fill
+            objectFit="contain"
+          />
+        </div>
         <p className="date">
-          {moment(pageData.attributes.publishedAt).format('MMMM DD, YYYY')}
+          {moment(pageData.publishedAt).format('MMMM DD, YYYY')}
         </p>
+        <h1 className="h-l">{pageData.title}</h1>
         <div
           className="content"
-          dangerouslySetInnerHTML={{ __html: pageData.attributes.content }}
+          dangerouslySetInnerHTML={{ __html: pageData.content }}
         />
       </div>
       <Footer />
@@ -35,13 +45,14 @@ export async function getServerSideProps(context) {
     const domainName = process.env.REACT_APP_FEENV
       ? 'unep-gpml.akvotest.org'
       : getDomainName(context.req.headers.host)
+
     const response = await axios.get(
-      `https://${domainName}/strapi/api/pages?filters[slug][$eq]=${result}`
+      `https://${domainName}/strapi/api/posts?filters[slug][$eq]=${result}&populate=*`
     )
     if (response.data.data.length === 0) {
       return { notFound: true }
     }
-    const pageData = response.data.data[0]
+    const pageData = transformStrapiResponse(response.data.data)[0]
 
     return {
       props: { pageData },

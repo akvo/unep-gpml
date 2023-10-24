@@ -3,8 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { MenuItem } from './menu-item'
 import { MenuToggle } from './menu-toggle'
 import { CirclePointer, LinkedinIcon, YoutubeIcon } from '../icons'
-import { Button } from 'antd'
 import { UIStore } from '../../store'
+import Button from '../button'
 
 const SOCIAL_LINKS = [
   {
