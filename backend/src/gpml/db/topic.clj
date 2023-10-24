@@ -156,9 +156,10 @@
                                    entity-name entity-name plastic-strategy-id))
         ps-bookmark-select (if-not plastic-strategy-id
                              ""
-                             (format "json_agg(json_build_object('plastic_strategy_id', psb.plastic_strategy_id,
-                                                                 '%s_id', psb.%s_id,
-                                                                 'section_key', psb.section_key)) AS plastic_strategy_bookmarks,"
+                             (format "json_agg(DISTINCT jsonb_build_object('plastic_strategy_id', psb.plastic_strategy_id,
+									   '%s_id', psb.%s_id,
+									   'section_key', psb.section_key))
+				      FILTER (WHERE psb.plastic_strategy_id IS NOT NULL) AS plastic_strategy_bookmarks,"
                                      entity-name
                                      entity-name))
         ps-bookmark-group-by (if-not plastic-strategy-id
