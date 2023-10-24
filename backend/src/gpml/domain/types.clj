@@ -82,6 +82,9 @@
 (def ^:const plastic-strategy-bookmarkable-entity-types
   (set (map keyword (conj topic-entity-tables "organisation"))))
 
+(def ^:const badge-assignable-entity-types
+  (set (map keyword (conj topic-entity-tables "organisation" "stakeholder" "project"))))
+
 (def ^:const file-visibility
   "Informs about a file's accessability privilegies."
   #{:private
@@ -101,6 +104,9 @@
     :editor
     :admin})
 
+(def ^:const badge-type
+  #{:country-verified})
+
 (def ^:const enum-types
   {:review-status review-statuses
    :reviewer-status reviewer-review-statuses
@@ -114,7 +120,9 @@
    :chat-account-status chat-account-statuses
    :plastic-strategy-team-type plastic-strategy-team-types
    :plastic-strategy-team-role plastic-strategy-team-roles
-   :plastic-strategy-bookmarkable-entity-type plastic-strategy-bookmarkable-entity-types})
+   :plastic-strategy-bookmarkable-entity-type plastic-strategy-bookmarkable-entity-types
+   :badge-assignable-entity-type badge-assignable-entity-types
+   :badge-type badge-type})
 
 (defn get-type-schema
   [type-name]
