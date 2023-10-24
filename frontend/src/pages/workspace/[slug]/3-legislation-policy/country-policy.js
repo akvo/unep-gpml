@@ -3,7 +3,7 @@ import { Button, Modal, Table, Tooltip, message } from 'antd'
 import classNames from 'classnames'
 import moment from 'moment'
 import uniqBy from 'lodash/uniqBy'
-
+import { Trans, t } from '@lingui/macro'
 import { PageLayout } from '..'
 import {
   BookmarkIconProper,
@@ -38,10 +38,11 @@ const CountryPolicyModal = ({
       footer={
         <>
           <Button className="invalidate" ghost>
-            Invalidate
+            <Trans>Invalidate</Trans>
           </Button>
           <Button type="primary">
-            Validate Policy
+            <Trans>Validate Policy</Trans>
+            {false && <Trans>Validated</Trans>}
             <ValidatePolicyIcon />
           </Button>
         </>
@@ -90,33 +91,33 @@ const CountryPolicyTable = ({ psItem, setLoginVisible, isAuthenticated }) => {
         dataIndex: 'plasticStrategyBookmarks',
       },
       {
-        title: 'Year',
+        title: t`Year`,
         dataIndex: 'created',
         sorter: (a, b) => a.created - b.created,
       },
       {
-        title: 'Title',
+        title: t`Title`,
         dataIndex: 'title',
         filters: filterTitles || [],
         onFilter: (value, record) => record.title.indexOf(value) === 0,
         sorter: (a, b) => a.title.localeCompare(b.title),
       },
       {
-        title: 'Type',
+        title: t`Type`,
         dataIndex: 'typeOfLaw',
         filters: filterTypes || [],
         onFilter: (value, record) => record.typeOfLaw.indexOf(value) === 0,
         sorter: (a, b) => a.typeOfLaw.localeCompare(b.typeOfLaw),
       },
       {
-        title: 'Status',
+        title: t`Status`,
         dataIndex: 'status',
         filters: filterStatus || [],
         onFilter: (value, record) => record.status.indexOf(value) === 0,
         sorter: (a, b) => a.status.localeCompare(b.status),
       },
       {
-        title: 'Tags',
+        title: t`Tags`,
         dataIndex: 'tags',
         filters: filterTags || [],
         onFilter: (value, record) =>
@@ -124,7 +125,7 @@ const CountryPolicyTable = ({ psItem, setLoginVisible, isAuthenticated }) => {
         sorter: (a, b) => a.tags - b.tags,
       },
       {
-        title: 'Geo-coverage',
+        title: t`Geo-coverage`,
         dataIndex: 'geoCoverageType',
         filters: filterGeo || [],
         onFilter: (value, record) =>
@@ -284,7 +285,7 @@ const CountryPolicyTable = ({ psItem, setLoginVisible, isAuthenticated }) => {
                   return (
                     <Tooltip
                       title={
-                        isMarked ? 'Remove from Library' : 'Save to Library'
+                        isMarked ? t`Remove from Library` : t`Save to Library`
                       }
                     >
                       <a
@@ -364,14 +365,19 @@ const CountryPolicyTable = ({ psItem, setLoginVisible, isAuthenticated }) => {
 const View = ({ psItem, setLoginVisible, isAuthenticated }) => (
   <div className={styles.countryPolicyView}>
     <div className="title-section">
-      <h4 className="caps-heading-m">Legislation & Policy Review Report</h4>
-      <h2 className="h-xxl w-bold">Country Policy Framework</h2>
+      <h4 className="caps-heading-m">
+        <Trans>Legislation & Policy Review Report</Trans>
+      </h4>
+      <h2 className="h-xxl w-bold">
+        <Trans>Country Policy Framework</Trans>
+      </h2>
     </div>
     <div className="desc-section">
       <p>
-        Find country initiatives across a wide variety of subjects and sectors
+        <Trans>Description - Section 3 - Coutry Policy Framework</Trans>
+        {/* Find country initiatives across a wide variety of subjects and sectors
         currently ongoing. Filter either directly on the map or using the
-        sidebar navigation to easily find relevant initatives.
+        sidebar navigation to easily find relevant initatives. */}
       </p>
     </div>
     <div className="table-section">

@@ -4,6 +4,7 @@ import api from '../../../../utils/api'
 import ResourceCards from '../../../../modules/workspace/ps/resource-cards'
 import { useRouter } from 'next/router'
 import { iso2id, isoA2 } from '../../../../modules/workspace/ps/config'
+import { Trans, t } from '@lingui/macro'
 
 const sectionKey = 'data-collection'
 
@@ -38,9 +39,15 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
   }
   return (
     <>
-      <h4 className="caps-heading-m">Data Analysis</h4>
-      <h2 className="h-xxl w-bold">Available Tools</h2>
-      <p>Placeholder for description here</p>
+      <h4 className="caps-heading-m">
+        <Trans>Data Analysis</Trans>
+      </h4>
+      <h2 className="h-xxl w-bold">
+        <Trans>Available Tools</Trans>
+      </h2>
+      <p>
+        <Trans>Description - Section 4 - Available Information</Trans>
+      </p>
 
       <ResourceCards
         {...{

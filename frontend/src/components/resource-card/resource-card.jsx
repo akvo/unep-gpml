@@ -4,6 +4,7 @@ import styles from './style.module.scss'
 import { BookmarkIconProper } from '../icons'
 import { useState } from 'react'
 import { Tooltip } from 'antd'
+import { t } from '@lingui/macro'
 
 const ResourceCard = ({ item, bookmarked, onBookmark, onClick }) => {
   const withImage = item.image != null
@@ -47,7 +48,7 @@ const BookmarkBtn = ({ bookmarked, onBookmark, item }) => {
     onBookmark(item, !bookmarked)
   }
   return (
-    <Tooltip title={bookmarked ? 'Remove from Library' : 'Save to Library'}>
+    <Tooltip title={bookmarked ? t`Remove from Library` : t`Save to Library`}>
       <div
         className={classNames(styles.bookmarkBtn, {
           [styles.bookmarked]: bookmarked,

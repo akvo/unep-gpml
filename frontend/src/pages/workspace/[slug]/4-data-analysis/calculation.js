@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { PageLayout } from '..'
 import api from '../../../../utils/api'
-import ResourceCards from '../../../../modules/workspace/ps/resource-cards'
 import { useRouter } from 'next/router'
 import { isoA2 } from '../../../../modules/workspace/ps/config'
+import { Trans, t } from '@lingui/macro'
 
 const sectionKey = 'data-collection'
 
@@ -38,9 +38,15 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
   }
   return (
     <>
-      <h4 className="caps-heading-m">Data Analysis</h4>
-      <h2 className="h-xxl w-bold">Calculation of Indicators</h2>
-      <p>Placeholder for description here.</p>
+      <h4 className="caps-heading-m">
+        <Trans>Data Analysis</Trans>
+      </h4>
+      <h2 className="h-xxl w-bold">
+        <Trans>Calculation of Indicators</Trans>
+      </h2>
+      <p>
+        <Trans>Description - Section 4 - Calculation of Indicators</Trans>
+      </p>
     </>
   )
 }
