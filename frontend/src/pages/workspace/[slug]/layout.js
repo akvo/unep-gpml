@@ -20,7 +20,7 @@ const NestedLayout = ({ children }) => {
   const [marking, setMarking] = useState(false)
   const router = useRouter()
   const pathSlugs = [...router.route.substring(1).split('/'), '']
-  const { slug } = router.query
+  const { slug, step: stepURL } = router.query
   const profile = UIStore.useState((s) => s.profile)
 
   const getBySlug = (step, _slug, indexStep = 0) =>
@@ -207,8 +207,12 @@ const NestedLayout = ({ children }) => {
           {psSteps.map((step) => (
             <div
               className={classNames('step', {
-                selected: pathSlugs[2] == step.slug && !step.substeps,
-                opened: pathSlugs[2] == step.slug && step.substeps?.length > 0,
+                selected:
+                  (pathSlugs[2] == step.slug || stepURL === step.slug) &&
+                  !step.substeps,
+                opened:
+                  (pathSlugs[2] == step.slug || stepURL === step.slug) &&
+                  step.substeps?.length > 0,
               })}
             >
               <ConditionalLink step={step}>
@@ -243,7 +247,8 @@ const NestedLayout = ({ children }) => {
                     <Link
                       className={classNames('step substep', {
                         selected:
-                          step.slug === pathSlugs[2] &&
+                          (step.slug === pathSlugs[2] ||
+                            stepURL === step.slug) &&
                           substep.slug === pathSlugs[3],
                       })}
                       href={`/workspace/${router.query?.slug}/${step.slug}/${substep.slug}`}
