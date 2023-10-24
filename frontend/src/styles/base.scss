@@ -156,6 +156,9 @@ h6 {
   z-index: 20;
   top: 0;
   transition: background 0.27s ease-out;
+  @media print {
+    display: none;
+  }
   .container {
     .logo-container {
       margin-left: -15px;

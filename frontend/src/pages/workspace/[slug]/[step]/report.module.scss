@@ -1,0 +1,31 @@
+@import '../../../../styles/vars.scss';
+
+.reportView {
+  display: flex;
+  flex-direction: column;
+  gap: 38px;
+  :global {
+    span,
+    h4,
+    h6 {
+      color: $primaryDarkBlue;
+    }
+    .title {
+      font-family: var(--font-archia);
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 24px;
+      margin: 16px 0 32px;
+    }
+    h4 {
+      font-weight: 600;
+    }
+    h6 {
+      font-weight: 500;
+    }
+    ul li {
+      margin-bottom: 18px;
+    }
+  }
+}
