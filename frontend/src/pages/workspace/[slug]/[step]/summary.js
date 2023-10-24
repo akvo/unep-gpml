@@ -163,7 +163,23 @@ const UploadFile = ({ psItem, step }) => {
   )
 }
 
-const SummaryFiles = ({ psItem, step, onDownload }) => {
+const SummaryFiles = ({ psItem, step, slug }) => {
+  /**
+   * Check whether the current step has a bookmark sub-steps or not.
+   * If true, then show the download button.
+   */
+  const hasBookmarkSteps = useMemo(() => {
+    const currentStep = stepsState.find((s) => s?.slug === step)
+    if (!currentStep?.substeps) {
+      return false
+    }
+    return currentStep.substeps.filter((sub) => sub?.apiParams).length
+  }, [step])
+
+  if (!hasBookmarkSteps) {
+    return null
+  }
+
   return (
     <Skeleton loading={!psItem?.id} paragraph={{ rows: 3 }} active>
       <div className="summary-section">
@@ -171,8 +187,9 @@ const SummaryFiles = ({ psItem, step, onDownload }) => {
         <div>
           <Button
             icon={<PDFIcon />}
+            href={`/workspace/${slug}/${step}/report`}
             shape="download"
-            onClick={onDownload}
+            target="_blank"
             ghost
           >
             Download PDF
@@ -191,10 +208,6 @@ const View = ({ psItem }) => {
     return stepsState.find((s) => s?.slug === step)
   }, [step, stepsState])
 
-  const handleOnDownload = () => {
-    const targetURL = `/workspace/${slug}/${step}/report`
-    window.open(targetURL, '_ blank')
-  }
   return (
     <div className={styles.summaryNReportView}>
       <div className="title-section">
@@ -204,7 +217,7 @@ const View = ({ psItem }) => {
       <div className="desc-section">
         <p>Placeholder text for instructions</p>
       </div>
-      <SummaryFiles {...{ psItem, step }} onDownload={handleOnDownload} />
+      <SummaryFiles {...{ psItem, step, slug }} />
       <UploadFile {...{ psItem, step }} />
     </div>
   )

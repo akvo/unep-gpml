@@ -49,6 +49,9 @@
       gap: 16px;
       margin-bottom: 64px;
       .ant-btn-download {
+        padding-top: 12px !important;
+        padding-left: 12px;
+        padding-right: 24px;
         svg {
           padding-right: 10px;
           path {
@@ -107,6 +110,9 @@
               .ant-btn.ant-btn-link {
                 svg {
                   padding-left: 0;
+                  path {
+                    stroke: $systemError;
+                  }
                 }
                 &:hover {
                   svg {
