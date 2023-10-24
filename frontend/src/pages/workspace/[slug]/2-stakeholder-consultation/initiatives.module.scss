@@ -1,0 +1,17 @@
+@import '../../../../styles/vars.scss';
+
+.initiativesView {
+  :global {
+    .filter-container {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 34px;
+      .ant-btn.ant-btn-background-ghost {
+        border-radius: 6px;
+        padding: 8px 12px;
+        text-transform: capitalize;
+      }
+    }
+  }
+}
