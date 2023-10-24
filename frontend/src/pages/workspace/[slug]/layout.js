@@ -29,9 +29,30 @@ const NestedLayout = ({ children }) => {
 
   const psSteps = useMemo(() => {
     /**
-     * Get all steps from the BE first, otherwise take from config.
+     * Always use the SLUG from the config file (stepState).
+     * Just in case the SLUG from BE is different from the latest update.
      */
-    return psItem?.steps || stepsState
+    return psItem?.steps
+      ? psItem.steps.map((step) => {
+          const findStep = stepsState.find((s) => s?.label === step?.label)
+          if (findStep) {
+            return {
+              ...step,
+              substeps: step?.substeps?.map((subItem) => {
+                const findSubStep = findStep.substeps.find(
+                  (s) => s?.label === subItem?.label
+                )
+                if (findSubStep) {
+                  return { ...subItem, slug: findSubStep.slug }
+                }
+                return subItem
+              }),
+              slug: findStep.slug,
+            }
+          }
+          return step
+        })
+      : stepsState
   }, [psItem, stepsState])
 
   /**
