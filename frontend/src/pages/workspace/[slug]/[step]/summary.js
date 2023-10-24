@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Button, List, Skeleton, Spin, Upload } from 'antd'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-
+import classNames from 'classnames'
 import { PageLayout } from '..'
 import {
   DownloadFileIcon,
@@ -105,7 +105,7 @@ const UploadFile = ({ psItem, step }) => {
   return (
     <Skeleton loading={!psItem?.id} paragraph={{ rows: 3 }} active>
       <div className="upload-section">
-        <h5>Upload Your Legislative & Policy Report</h5>
+        <h5>Upload Your Report</h5>
         {files.length ? (
           <List
             loading={preload}
@@ -142,20 +142,20 @@ const UploadFile = ({ psItem, step }) => {
             beforeUpload={() => false}
             maxCount={1}
             showUploadList={false}
+            className={classNames({ uploading })}
           >
-            {uploading ? (
-              <Spin indicator={<LoadingOutlined size={64} />} />
-            ) : (
-              <>
-                <p className="ant-upload-drag-icon">
-                  <UploadIcon />
-                </p>
-                <p className="ant-upload-hint">Drop a PDF or DOC here</p>
-                <Button size="small" shape="upload">
-                  Browse
-                </Button>
-              </>
-            )}
+            <Spin
+              indicator={<LoadingOutlined size={64} />}
+              spinning={uploading}
+            >
+              <p className="ant-upload-drag-icon">
+                <UploadIcon />
+              </p>
+              <p className="ant-upload-hint">Drop a PDF or DOC here</p>
+              <Button size="small" shape="upload">
+                Browse
+              </Button>
+            </Spin>
           </Dragger>
         )}
       </div>
