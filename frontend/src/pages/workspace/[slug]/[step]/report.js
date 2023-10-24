@@ -56,6 +56,11 @@ const ReportPage = () => {
       /**
        * Get all bookmarked items and add URLs based on type.
        */
+      const hostname = window?.location?.hostname
+      const baseURL =
+        hostname.indexOf('localhost') >= 0
+          ? `http://${hostname}:3001`
+          : `https://${hostname}`
       const _bookmarks = responses.map(({ value: { data } }, index) => {
         const { results } = data || {}
         const label = allSections?.[index]?.label
@@ -68,7 +73,7 @@ const ReportPage = () => {
                 : d?.type?.replace('_', '-')
             return {
               ...d,
-              url: `/${pathname}/${d.id}`,
+              url: `${baseURL}/${pathname}/${d.id}`,
             }
           })
         return {
