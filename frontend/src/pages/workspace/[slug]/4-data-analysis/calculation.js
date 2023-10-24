@@ -5,7 +5,7 @@ import ResourceCards from '../../../../modules/workspace/ps/resource-cards'
 import { useRouter } from 'next/router'
 import { isoA2 } from '../../../../modules/workspace/ps/config'
 
-const sectionKey = 'stakeholder-case-studies'
+const sectionKey = 'data-collection'
 
 const View = ({ setLoginVisible, isAuthenticated }) => {
   const router = useRouter()
@@ -17,7 +17,7 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
     if (countryCode)
       api
         .get(
-          `/browse?tag=stakeholder+consultation+process&ps_country_iso_code_a2=${countryCode}`
+          `/browse?tag=data+analysis+-+data+collection&ps_country_iso_code_a2=${countryCode}`
         )
         .then((d) => {
           setItems(d.data?.results)
@@ -25,22 +25,22 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
           console.log(d.data)
         })
   }, [countryCode])
-
+  const handleBookmark = (item, bookmark = true) => {
+    let entityType = item.type
+    const subtypes = ['action_plan', 'technical_resource', 'financing_resource']
+    if (subtypes.indexOf(entityType) !== -1) entityType = 'resource'
+    api.post(`/plastic-strategy/${countryCode}/bookmark`, {
+      bookmark,
+      entityId: item.id,
+      entityType,
+      sectionKey,
+    })
+  }
   return (
     <>
-      <h4 className="caps-heading-m">Stakeholder Consultation Process</h4>
-      <h2 className="h-xxl w-bold">Case Studies</h2>
-      <p>Placeholder for description here</p>
-
-      <ResourceCards
-        {...{
-          items,
-          setLoginVisible,
-          isAuthenticated,
-          loading,
-          sectionKey,
-        }}
-      />
+      <h4 className="caps-heading-m">Data Analysis</h4>
+      <h2 className="h-xxl w-bold">Calculation of Indicators</h2>
+      <p>Placeholder for description here.</p>
     </>
   )
 }

@@ -28,9 +28,6 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
         })
     }
   }, [router])
-  const handleBookmark = () => {
-    console.log('TODO')
-  }
   return (
     <>
       <h4 className="caps-heading-m">Stakeholder Consultation Process</h4>
@@ -44,7 +41,6 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
       <ResourceCards
         {...{
           items,
-          handleBookmark,
           setLoginVisible,
           isAuthenticated,
           loading,

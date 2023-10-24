@@ -162,7 +162,28 @@
           // .bookmarked path:last-of-type {
           //   fill: #09689a;
           // }
-
+          .bookmark-to-ps {
+            width: 45px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            svg {
+              position: static;
+              top: 0;
+              path {
+                stroke: $primaryDarkBlue;
+                fill: transparent;
+              }
+            }
+            &.bookmarked {
+              svg {
+                path {
+                  fill: $primaryDarkBlue;
+                }
+              }
+            }
+          }
           .bookmark-button {
             svg {
               width: 16px;

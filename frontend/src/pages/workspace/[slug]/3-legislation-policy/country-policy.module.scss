@@ -61,13 +61,13 @@
         }
         a {
           svg path {
-            fill: #dfdfdf;
-            stroke: none;
+            // fill: #dfdfdf;
+            // stroke: none;
           }
           &.bookmarked {
             svg path {
-              fill: #ffbe0a;
-              stroke: none;
+              fill: $primaryPurple;
+              // stroke: none;
             }
           }
         }
