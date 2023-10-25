@@ -1,9 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { Select } from 'antd'
+import { useRouter } from 'next/router'
+import uniqBy from 'lodash/uniqBy'
 import { PageLayout } from '..'
 import api from '../../../../utils/api'
 import ResourceCards from '../../../../modules/workspace/ps/resource-cards'
 import { iso2id, isoA2 } from '../../../../modules/workspace/ps/config'
-import { useRouter } from 'next/router'
+import styles from './initiatives.module.scss'
+import { UIStore } from '../../../../store'
 
 const sectionKey = 'stakeholder-initiatives'
 
@@ -11,25 +15,107 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
   const router = useRouter()
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
+  const [filter, setFilter] = useState({})
+  const [queryParam, setQueryParam] = useState({
+    topic: 'initiative',
+  })
+
+  const mainContentType = UIStore.useState((s) => s.mainContentType)
+  const { childs: initiativeTypes } = mainContentType.find(
+    (m) => m.code === 'initiative'
+  )
+  const representativeGroup = UIStore.useState((s) => s.representativeGroup)
+  const geoCoverageTypeOptions = UIStore.useState(
+    (s) => s.geoCoverageTypeOptions
+  )
+  /**
+   * Get dropdown options from UIStore
+   */
+  const ops1 = initiativeTypes?.map((i) => ({
+    label: i.title,
+    value: i.title,
+  }))
+  const ops2 = representativeGroup.map((r) => ({
+    label: r.name,
+    value: r.name,
+  }))
+  const ops3 = geoCoverageTypeOptions.map((geoType) => ({
+    label: geoType,
+    value: geoType?.toLowerCase(),
+  }))
+  /**
+   * Collect all stakeholder connections as options
+   */
+  const stakeholders = items
+    ?.flatMap((i) => i?.stakeholderConnections)
+    ?.map((s) => ({
+      label: s?.stakeholder,
+      value: s?.stakeholderId,
+    }))
+  const ops4 = uniqBy(stakeholders, 'value')
+
+  const filterSk = ({ stakeholderConnections }, filter) =>
+    stakeholderConnections?.filter((sc) =>
+      filter?.stakeholder?.includes(sc.stakeholderId)
+    ).length > 0
+
+  const filteredItems = useMemo(() => {
+    if (Object.keys(filter).length) {
+      return items.filter((i) => {
+        if (filter?.geoCoverageType?.length && filter?.stakeholder?.length) {
+          return (
+            filter.geoCoverageType.includes(i.geoCoverageType) &&
+            filterSk(i, filter)
+          )
+        }
+        if (filter?.geoCoverageType?.length && !filter?.stakeholder?.length) {
+          return filter.geoCoverageType.includes(i.geoCoverageType)
+        }
+        if (!filter?.geoCoverageType?.length && filter?.stakeholder?.length) {
+          return filterSk(i, filter)
+        }
+        return true
+      })
+    }
+    return items
+  }, [items, filter])
+
+  const handleSelectOption = (name, isBE, value) => {
+    if (isBE) {
+      setQueryParam({
+        ...queryParam,
+        [name]: value,
+      })
+    } else {
+      setFilter({ ...filter, [name]: value })
+    }
+  }
 
   useEffect(() => {
-    const country = router.query.slug?.replace('plastic-strategy-', '')
+    const { slug, org: entityID } = router.query
+    const country = slug?.replace('plastic-strategy-', '')
     const countryCode = isoA2[country]
     const countryId = iso2id[countryCode]
     if (countryId != null) {
-      api
-        .get(
-          `/browse?country=${countryId}&topic=initiative&ps_country_iso_code_a2=${countryCode}`
-        )
-        .then((d) => {
-          setItems(d.data?.results)
-          setLoading(false)
-          console.log(d.data)
-        })
+      let params = { ...queryParam, ps_country_iso_code_a2: countryCode }
+      params = entityID
+        ? {
+            ...params,
+            entity: entityID,
+          }
+        : {
+            ...params,
+            country: countryId,
+          }
+      api.get(`/browse?inc_entity_connections=true`, params).then((d) => {
+        setItems(d.data?.results)
+        setLoading(false)
+      })
     }
-  }, [router])
+  }, [router, queryParam])
+
   return (
-    <>
+    <div className={styles.initiativesView}>
       <h4 className="caps-heading-m">Stakeholder Consultation Process</h4>
       <h2 className="h-xxl w-bold">Initiatives</h2>
       <p>
@@ -37,17 +123,55 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
         currently ongoing. Filter either directly on the map or using the
         sidebar navigation to easily find relevant initatives.{' '}
       </p>
-
+      <div className="filter-container">
+        <Select
+          allowClear
+          showArrow
+          placeholder="Initiative type"
+          onChange={(values) => {
+            handleSelectOption('subContentType', true, values)
+          }}
+          options={ops1}
+        />
+        <Select
+          allowClear
+          showArrow
+          placeholder="Representative group"
+          onChange={(values) => {
+            handleSelectOption('representativeGroup', true, values)
+          }}
+          options={ops2}
+        />
+        <Select
+          allowClear
+          showArrow
+          placeholder="Geo-coverage"
+          onChange={(values) => {
+            handleSelectOption('geoCoverageType', false, values)
+          }}
+          options={ops3}
+        />
+        <Select
+          allowClear
+          showArrow
+          mode="multiple"
+          placeholder="Stakeholder"
+          onChange={(values) => {
+            handleSelectOption('stakeholder', false, values)
+          }}
+          options={ops4}
+        />
+      </div>
       <ResourceCards
+        items={filteredItems}
         {...{
-          items,
           setLoginVisible,
           isAuthenticated,
           loading,
           sectionKey,
         }}
       />
-    </>
+    </div>
   )
 }
 
