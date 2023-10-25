@@ -82,9 +82,11 @@
   (fn [{:keys [parameters user]}]
     (try
       (let [badge-id-or-name (get-in parameters [:path :id-or-name])
-            {:keys [badge success?] :as result} (get-badge-by-id-or-name config badge-id-or-name)]
+            {:keys [badge success? reason] :as result} (get-badge-by-id-or-name config badge-id-or-name)]
         (if-not success?
-          (r/server-error result)
+          (if (= reason :not-found)
+            (r/not-found {:reason :badge-not-found})
+            (r/server-error (dissoc result :success?)))
           (if-not (h.r.permission/operation-allowed? config
                                                      {:user-id (:id user)
                                                       :entity-type :badge
@@ -100,12 +102,19 @@
                   body-params (-> (cske/transform-keys ->kebab-case (:body parameters))
                                   (assoc :badge-id badge-id)
                                   (assoc :assigned-by (:id user)))
-                  result (handle-badge-assignment config body-params)]
-              (if (:success? result)
+                  {:keys [success? reason]} (handle-badge-assignment config body-params)]
+              (cond
+                success?
                 (r/ok {})
-                (if (= (:reason result) :already-exists)
-                  (r/conflict {:reason :already-exists})
-                  (r/server-error (dissoc result :success?))))))))
+
+                (= reason :already-exists)
+                (r/conflict {:reason :already-exists})
+
+                (get #{:badge-not-found :entity-not-found} reason)
+                (r/not-found {:reason reason})
+
+                :else
+                (r/server-error (dissoc result :success?)))))))
       (catch Throwable t
         (log logger :error ::failed-to-assign-or-unassign-badge {:exception-message (.getMessage t)})
         (let [response {:success? false
