@@ -105,7 +105,12 @@
     :admin})
 
 (def ^:const badge-type
-  #{:country-verified})
+  #{:country-verified
+    :verified
+    :expert-verified
+    :focal-point-verified
+    :partner-verified
+    :coe-verified})
 
 (def ^:const enum-types
   {:review-status review-statuses

@@ -6,30 +6,16 @@
             [gpml.domain.types :as dom.types]
             [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.responses :as r]
-            [gpml.service.file :as srv.file]
-            [gpml.util :as util]
             [integrant.core :as ig])
   (:import [java.sql SQLException]))
 
 (defn- get-badge-by-id-or-name
-  [{:keys [db] :as config} badge-id-or-name]
-  (let [{:keys [success? badge] :as result} (db.badge/get-badge-by-id-or-name
-                                             (:spec db)
-                                             (if (integer? badge-id-or-name)
-                                               {:id badge-id-or-name}
-                                               {:name badge-id-or-name}))
-        badge-content-file-id (:content-file-id badge)]
-    (if-not success?
-      result
-      (let [{:keys [success? file] :as result-content-file} (srv.file/get-file
-                                                             config
-                                                             (:spec db)
-                                                             {:filters {:id badge-content-file-id}})]
-        (if-not success?
-          result-content-file
-          (-> result
-              (util/update-if-not-nil :badge #(dissoc % :content-file-id))
-              (assoc-in [:badge :content-file-url] (:url file))))))))
+  [{:keys [db]} badge-id-or-name]
+  (db.badge/get-badge-by-id-or-name
+   (:spec db)
+   (if (integer? badge-id-or-name)
+     {:id badge-id-or-name}
+     {:name badge-id-or-name})))
 
 (defn- handle-badge-assignment
   [{:keys [db]} {:keys [assign entity-type entity-id badge-id assigned-by]}]

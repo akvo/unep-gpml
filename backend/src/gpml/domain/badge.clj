@@ -1,6 +1,5 @@
 (ns gpml.domain.badge
-  (:require [gpml.domain.miscellaneous :as dom.misc]
-            [gpml.domain.types :as dom.types]
+  (:require [gpml.domain.types :as dom.types]
             [malli.core :as m]))
 
 (def Badge
@@ -29,13 +28,4 @@
        :type "string"
        :enum dom.types/badge-type
        :allowEmptyValue false}}
-     (apply conj [:enum] dom.types/badge-type)]
-    [:content_file
-     {:optional false
-      :swagger
-      {:description "The Badge's content file. Base64 encoded string."
-       :type "string"
-       :format "byte"}}
-     [:and
-      [:string {:min 1}]
-      dom.misc/base64-schema]]]))
+     (apply conj [:enum] dom.types/badge-type)]]))
