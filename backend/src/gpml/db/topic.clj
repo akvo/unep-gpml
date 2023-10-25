@@ -131,11 +131,10 @@
            plastic-strategy-id ps-bookmark-sections-keys
            badges inc-entity-connections?] :as _params}
    {:keys [search-text-fields] :as _opts}]
-  (let [entity-connections-join (if-not
-                                    ""
-                                  (or (seq entity)
-                                      (seq representative-group)
-                                      inc-entity-connections?)
+  (let [entity-connections-join (if-not (or (seq entity)
+                                            (seq representative-group)
+                                            inc-entity-connections?)
+                                  ""
                                   (format "LEFT JOIN organisation_%s oe ON e.id = oe.%s
                                            LEFT JOIN organisation org ON oe.organisation = org.id"
                                           entity-name entity-name))
