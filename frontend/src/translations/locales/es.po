@@ -67,7 +67,7 @@ msgstr ""
 
 #: src/pages/landing/index.jsx:433
 msgid "Act Now: <0/> <1>Co-solution with the plastic network</1>"
-msgstr ""
+msgstr "Ahora"
 
 #: src/modules/knowledge-lib/filter-bar.jsx:26
 msgid "Action Plans"
@@ -786,7 +786,7 @@ msgstr ""
 
 #: src/pages/landing/index.jsx:132
 msgid "Empowering"
-msgstr ""
+msgstr "Emporar"
 
 #: src/modules/knowledge-lib/filter-modal.jsx:298
 msgid "End Date"
