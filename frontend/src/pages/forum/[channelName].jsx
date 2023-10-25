@@ -15,7 +15,7 @@ const DynamicForumIframe = dynamic(
   }
 )
 
-const ForumDetails = () => {
+const ForumDetails = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
   const [preload, setPreload] = useState(true)
   const [loading, setLoading] = useState(true)
   const [forums, setForums] = useState([])
@@ -77,10 +77,27 @@ const ForumDetails = () => {
     getMyForums()
   }, [getMyForums])
 
+  useEffect(() => {
+    /**
+     * Handle non-logged in users
+     */
+    if (!loadingProfile && !isAuthenticated && loading) {
+      setLoading(false)
+      /**
+       * Show login modal directly if current channel is private.
+       * p = private
+       * Just in case someone who noticed the URL pattern
+       */
+      if (channelType === 'p') {
+        setLoginVisible(true)
+      }
+    }
+  }, [loading, isAuthenticated, loadingProfile, channelType])
+
   return (
     <Layout>
       <Sider className={styles.channelSidebar} width={335}>
-        <h5>My Forums</h5>
+        {isAuthenticated && <h5>My Forums</h5>}
         <Skeleton loading={loading} paragraph={{ rows: 3 }} active>
           <Menu defaultSelectedKeys={[channelName]}>
             {forums.map((forum) => {
@@ -104,7 +121,15 @@ const ForumDetails = () => {
       </Sider>
       <Layout className={styles.channelContent}>
         {channelName && (
-          <DynamicForumIframe {...{ channelName, channelType }} />
+          <DynamicForumIframe
+            {...{
+              channelName,
+              channelType,
+              isAuthenticated,
+              loadingProfile,
+              setLoginVisible,
+            }}
+          />
         )}
       </Layout>
     </Layout>
