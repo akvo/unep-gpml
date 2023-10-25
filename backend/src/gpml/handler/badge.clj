@@ -47,13 +47,15 @@
                          :reason :could-not-get-badge
                          :error-details {:message (.getMessage t)}})))))
 
-(def ^:private common-badge-assignment-path-params-schema
+(def ^:private common-badge-path-params-schema
   [:map
    [:id-or-name
     {:swagger
-     {:description "The Badge's identifier (only `id` is supported)."
-      :type "integer"}}
-    pos-int?]])
+     {:description "The Badge's name or its id."
+      :allowEmptyValue false}}
+    [:or
+     pos-int?
+     [:string {:min 1}]]]])
 
 (def ^:private handle-badge-assignment-body-params-schema
   [:map
@@ -73,36 +75,38 @@
 
 (defmethod ig/init-key :gpml.handler.badge/get-params
   [_ _]
-  {:path [:map
-          [:id-or-name
-           {:swagger
-            {:description "The Badge's name or its id."
-             :allowEmptyValue false}}
-           [:or
-            pos-int?
-            [:string {:min 1}]]]]})
+  {:path common-badge-path-params-schema})
 
 (defmethod ig/init-key :gpml.handler.badge.assign/post
   [_ {:keys [logger] :as config}]
   (fn [{:keys [parameters user]}]
     (try
-      (let [badge-id (get-in parameters [:path :id-or-name])]
-        (if-not (h.r.permission/operation-allowed? config
-                                                   {:user-id (:id user)
-                                                    :entity-type :badge
-                                                    :entity-id badge-id
-                                                    :operation-type :assign
-                                                    :root-context? false})
-          (r/forbidden {:message "Unauthorized"})
-          (let [body-params (-> (cske/transform-keys ->kebab-case (:body parameters))
-                                (assoc :badge-id badge-id)
-                                (assoc :assigned-by (:id user)))
-                result (handle-badge-assignment config body-params)]
-            (if (:success? result)
-              (r/ok {})
-              (if (= (:reason result) :already-exists)
-                (r/conflict {:reason :already-exists})
-                (r/server-error (dissoc result :success?)))))))
+      (let [badge-id-or-name (get-in parameters [:path :id-or-name])
+            {:keys [badge success?] :as result} (when (string? badge-id-or-name)
+                                                  (get-badge-by-id-or-name config badge-id-or-name))]
+        (if-not success?
+          (r/server-error result)
+          (if-not (h.r.permission/operation-allowed? config
+                                                     {:user-id (:id user)
+                                                      :entity-type :badge
+                                                      :entity-id (if (seq badge)
+                                                                   (:id badge)
+                                                                   badge-id-or-name)
+                                                      :operation-type :assign
+                                                      :root-context? false})
+            (r/forbidden {:message "Unauthorized"})
+            (let [badge-id (if (seq badge)
+                             (:id badge)
+                             badge-id-or-name)
+                  body-params (-> (cske/transform-keys ->kebab-case (:body parameters))
+                                  (assoc :badge-id badge-id)
+                                  (assoc :assigned-by (:id user)))
+                  result (handle-badge-assignment config body-params)]
+              (if (:success? result)
+                (r/ok {})
+                (if (= (:reason result) :already-exists)
+                  (r/conflict {:reason :already-exists})
+                  (r/server-error (dissoc result :success?))))))))
       (catch Throwable t
         (log logger :error ::failed-to-assign-or-unassign-badge {:exception-message (.getMessage t)})
         (let [response {:success? false
@@ -114,5 +118,5 @@
 
 (defmethod ig/init-key :gpml.handler.badge.assign/post-params
   [_ _]
-  {:path common-badge-assignment-path-params-schema
+  {:path common-badge-path-params-schema
    :body handle-badge-assignment-body-params-schema})
