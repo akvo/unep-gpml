@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Button, Dropdown, Menu } from 'antd'
+import { Select } from 'antd'
 import { useRouter } from 'next/router'
+import uniqBy from 'lodash/uniqBy'
 import { PageLayout } from '..'
 import api from '../../../../utils/api'
 import ResourceCards from '../../../../modules/workspace/ps/resource-cards'
 import { iso2id, isoA2 } from '../../../../modules/workspace/ps/config'
-import { DropDownIcon } from '../../../../components/icons'
 import styles from './initiatives.module.scss'
 import { UIStore } from '../../../../store'
 
@@ -28,27 +28,27 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
   const geoCoverageTypeOptions = UIStore.useState(
     (s) => s.geoCoverageTypeOptions
   )
-  const stakeholderSuggestedTags = UIStore.useState(
-    (s) => s.stakeholderSuggestedTags
-  )
 
   const filterDropdowns = useMemo(() => {
     const ops1 = initiativeTypes?.map((i) => ({
-      text: i.title,
+      label: i.title,
       value: i.title,
     }))
     const ops2 = representativeGroup.map((r) => ({
-      text: r.name,
+      label: r.name,
       value: r.name,
     }))
     const ops3 = geoCoverageTypeOptions.map((geoType) => ({
-      text: geoType,
+      label: geoType,
       value: geoType?.toLowerCase(),
     }))
-    const ops4 = stakeholderSuggestedTags.map((tag) => ({
-      text: tag,
-      value: tag?.toLowerCase(),
-    }))
+    const stakeholders = items
+      ?.flatMap((i) => i?.stakeholderConnections)
+      ?.map((s) => ({
+        label: s?.stakeholder,
+        value: s?.stakeholderId,
+      }))
+    const ops4 = uniqBy(stakeholders, 'value')
     return [
       {
         label: 'Initiative type',
@@ -70,35 +70,49 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
       },
       {
         label: 'Stakeholder',
-        name: 'tag',
+        name: 'stakeholder',
         items: ops4,
-        isBE: true,
+        isBE: false,
       },
     ]
-  }, [
-    initiativeTypes,
-    representativeGroup,
-    geoCoverageTypeOptions,
-    stakeholderSuggestedTags,
-  ])
+  }, [initiativeTypes, representativeGroup, geoCoverageTypeOptions, items])
+
+  const filterSk = ({ stakeholderConnections }, filter) =>
+    stakeholderConnections?.filter((sc) =>
+      filter?.stakeholder?.includes(sc.stakeholderId)
+    ).length > 0
 
   const filteredItems = useMemo(() => {
-    if (filter?.geoCoverageType) {
+    if (Object.keys(filter).length) {
       return items.filter((i) => {
-        return i.geoCoverageType === filter.geoCoverageType
+        if (filter?.geoCoverageType?.length && filter?.stakeholder?.length) {
+          return (
+            filter.geoCoverageType.includes(i.geoCoverageType) &&
+            filterSk(i, filter)
+          )
+        }
+        if (filter?.geoCoverageType?.length && !filter?.stakeholder?.length) {
+          return filter.geoCoverageType.includes(i.geoCoverageType)
+        }
+        if (!filter?.geoCoverageType?.length && filter?.stakeholder?.length) {
+          return filterSk(i, filter)
+        }
+        return true
       })
     }
     return items
   }, [items, filter])
 
-  const handleSelectOption = ({ isBE, name }, value) => {
+  const handleSelectOption = ({ isBE, name }, values = []) => {
+    console.log('values', values)
     if (isBE) {
+      const value = values.length ? values.join(',') : null
       setQueryParam({
         ...queryParam,
         [name]: value,
       })
     } else {
-      setFilter({ ...filter, [name]: value })
+      setFilter({ ...filter, [name]: values })
     }
   }
 
@@ -121,7 +135,6 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
       api.get(`/browse`, params).then((d) => {
         setItems(d.data?.results)
         setLoading(false)
-        console.log(d.data)
       })
     }
   }, [router, queryParam])
@@ -137,36 +150,18 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
       </p>
       <div className="filter-container">
         {filterDropdowns.map((dropdown, dx) => {
-          const defltText = queryParam?.[dropdown.name] || dropdown.label
-          const labelText =
-            dropdown.name === 'geoCoverageType'
-              ? filter?.geoCoverageType || defltText
-              : defltText
           return (
-            <Dropdown
-              overlay={
-                <Menu className="filter-dropdown">
-                  <Menu.Item onClick={() => handleSelectOption(dropdown, null)}>
-                    All
-                  </Menu.Item>
-                  {dropdown.items.map((item, index) => (
-                    <Menu.Item
-                      key={index}
-                      onClick={() => handleSelectOption(dropdown, item?.value)}
-                    >
-                      {item?.text}
-                    </Menu.Item>
-                  ))}
-                </Menu>
-              }
-              trigger={['click']}
+            <Select
               key={dx}
-            >
-              <Button size="small" ghost>
-                {labelText}
-                <DropDownIcon />
-              </Button>
-            </Dropdown>
+              allowClear
+              showArrow
+              mode="multiple"
+              placeholder={dropdown.label}
+              onChange={(values) => {
+                handleSelectOption(dropdown, values)
+              }}
+              options={dropdown.items}
+            />
           )
         })}
       </div>

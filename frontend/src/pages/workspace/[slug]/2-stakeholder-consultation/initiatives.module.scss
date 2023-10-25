@@ -3,14 +3,19 @@
 .initiativesView {
   :global {
     .filter-container {
+      width: 80%;
       display: flex;
       align-items: center;
       gap: 8px;
       margin-bottom: 34px;
-      .ant-btn.ant-btn-background-ghost {
-        border-radius: 6px;
-        padding: 8px 12px;
-        text-transform: capitalize;
+      .ant-select {
+        width: 100%;
+        input {
+          height: 40px;
+        }
+        .ant-select-selection-placeholder {
+          color: $primaryDarkBlue;
+        }
       }
     }
   }
