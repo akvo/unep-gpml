@@ -322,6 +322,17 @@ const FocalPoint = ({
   )
 }
 
+const resourceBadges = [{ name: 'resource-verified', img: '/verified.svg' }]
+const orgBadges = [
+  { name: 'org-verified', img: '/verified.svg' },
+  { name: 'org-partner-verified', img: '/partner-verified.svg' },
+  { name: 'org-coe-verified', img: '/coe-verified.svg' },
+]
+const userBadges = [
+  { name: 'user-verified', img: '/verified.svg' },
+  { name: 'user-focal-point-verified', img: '/focal-verified.svg' },
+]
+
 const AdminSection = ({
   resourcesData,
   setResourcesData,
@@ -709,6 +720,64 @@ const AdminSection = ({
     )
   }
 
+  const handleVerify = async (
+    e,
+    item,
+    badgeName,
+    assign,
+    listOpts,
+    setListOpts,
+    entityName
+  ) => {
+    e.stopPropagation()
+
+    const data = {
+      assign: assign,
+      entity_id: item.id,
+      entity_type: entityName,
+    }
+
+    api
+      .post(`/badge/${badgeName}/assign`, data)
+      .then((resp) => {
+        notification.success({
+          message: `Your request to add ${badgeName} has been approved!`,
+        })
+        const updatedState = {
+          ...listOpts,
+          data: {
+            ...listOpts.data,
+            data: listOpts.data.data.map((i) =>
+              i.id === item.id
+                ? {
+                    ...i,
+                    assignedBadges: assign
+                      ? [
+                          ...i.assignedBadges,
+                          {
+                            badgeName: badgeName,
+                          },
+                        ]
+                      : i.assignedBadges.filter(
+                          (b) => b.badgeName !== badgeName
+                        ),
+                  }
+                : i
+            ),
+          },
+        }
+
+        setListOpts(updatedState)
+      })
+      .catch((err) => {
+        notification.error({
+          message: err?.response?.data?.errorDetails?.error
+            ? err?.response?.data?.errorDetails?.error
+            : 'Something went wrong',
+        })
+      })
+  }
+
   const PublishButton = ({
     item,
     type,
@@ -922,6 +991,90 @@ const AdminSection = ({
                 {item.type === 'stakeholder' && item?.expertise?.length > 0 && (
                   <div className="expert-icon">
                     <IconExpert />
+                  </div>
+                )}
+                {item.type !== 'stakeholder' && item.type !== 'organisation' && (
+                  <div className="badge-wrapper">
+                    {resourceBadges.map((b) => {
+                      const find = item?.assignedBadges?.find(
+                        (bName) => bName.badgeName === b.name
+                      )
+                      return (
+                        <div
+                          key={b.name}
+                          className={`badge-icon ${find ? 'verified' : ''}`}
+                          onClick={(e) =>
+                            handleVerify(
+                              e,
+                              item,
+                              b.name,
+                              find ? false : true,
+                              listOpts,
+                              setListOpts,
+                              'resource'
+                            )
+                          }
+                        >
+                          <img src={b.img} />
+                        </div>
+                      )
+                    })}
+                  </div>
+                )}
+                {item.type === 'organisation' && (
+                  <div className="badge-wrapper">
+                    {orgBadges.map((b) => {
+                      const find = item?.assignedBadges?.find(
+                        (bName) => bName.badgeName === b.name
+                      )
+                      return (
+                        <div
+                          key={b.name}
+                          className={`badge-icon ${find ? 'verified' : ''}`}
+                          onClick={(e) =>
+                            handleVerify(
+                              e,
+                              item,
+                              b.name,
+                              find ? false : true,
+                              listOpts,
+                              setListOpts,
+                              'organisation'
+                            )
+                          }
+                        >
+                          <img src={b.img} />
+                        </div>
+                      )
+                    })}
+                  </div>
+                )}
+                {item.type === 'stakeholder' && (
+                  <div className="badge-wrapper">
+                    {userBadges.map((b) => {
+                      const find = item?.assignedBadges?.find(
+                        (bName) => bName.badgeName === b.name
+                      )
+                      return (
+                        <div
+                          key={b.name}
+                          className={`badge-icon ${find ? 'verified' : ''}`}
+                          onClick={(e) =>
+                            handleVerify(
+                              e,
+                              item,
+                              b.name,
+                              find ? false : true,
+                              listOpts,
+                              setListOpts,
+                              'stakeholder'
+                            )
+                          }
+                        >
+                          <img src={b.img} />
+                        </div>
+                      )
+                    })}
                   </div>
                 )}
                 {item.reviewStatus === 'APPROVED' &&
