@@ -743,19 +743,33 @@ const AdminSection = ({
         notification.success({
           message: `Your request to add ${badgeName} has been approved!`,
         })
+        const updatedState = {
+          ...listOpts,
+          data: {
+            ...listOpts.data,
+            data: listOpts.data.data.map((i) =>
+              i.id === item.id
+                ? {
+                    ...i,
+                    assignedBadges: assign
+                      ? [
+                          ...i.assignedBadges,
+                          {
+                            badgeName: badgeName,
+                          },
+                        ]
+                      : i.assignedBadges.filter(
+                          (b) => b.badgeName !== badgeName
+                        ),
+                  }
+                : i
+            ),
+          },
+        }
+
+        setListOpts(updatedState)
       })
-      .then(() =>
-        fetchSubmissionData(
-          listOpts.current,
-          listOpts.size,
-          listOpts.type,
-          listOpts.reviewStatus,
-          listOpts.title
-        )
-      )
-      .then((data) => setListOpts((opts) => ({ ...opts, data })))
       .catch((err) => {
-        console.log(err)
         notification.error({
           message: err?.response?.data?.errorDetails?.error
             ? err?.response?.data?.errorDetails?.error
