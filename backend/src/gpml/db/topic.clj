@@ -140,13 +140,13 @@
                                           entity-name entity-name))
         entity-connections-select (if-not inc-entity-connections?
                                     ""
-                                    (format "COALESCE(json_agg(
+                                    "COALESCE(json_agg(
                                                DISTINCT jsonb_build_object(
                                                  'entity_id', oe.organisation,
                                                  'name', org.name,
                                                  'role', oe.association
                                    )
-                                 ) FILTER (WHERE oe.id IS NOT NULL), '[]'::json) AS entity_connections,"))
+                                 ) FILTER (WHERE oe.id IS NOT NULL), '[]'::json) AS entity_connections,")
         table-specific-cols (get-table-specific-cols-exp entity-name)
         search-text-fields (get search-text-fields entity-name)
         tsvector-str (generate-tsvector-str entity-name search-text-fields)
