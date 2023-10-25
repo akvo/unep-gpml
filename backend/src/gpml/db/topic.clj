@@ -128,13 +128,25 @@
    {:keys [id entity tag representative-group
            geo-coverage-types sub-content-type
            search-text review-status featured capacity-building upcoming
-           plastic-strategy-id ps-bookmark-sections-keys badges] :as _params}
+           plastic-strategy-id ps-bookmark-sections-keys
+           badges inc-entity-connections?] :as _params}
    {:keys [search-text-fields] :as _opts}]
-  (let [entity-connections-join (if-not (or (seq entity) (seq representative-group))
+  (let [entity-connections-join (if-not (or (seq entity)
+                                            (seq representative-group)
+                                            inc-entity-connections?)
                                   ""
                                   (format "LEFT JOIN organisation_%s oe ON e.id = oe.%s
                                            LEFT JOIN organisation org ON oe.organisation = org.id"
                                           entity-name entity-name))
+        entity-connections-select (if-not inc-entity-connections?
+                                    ""
+                                    "COALESCE(json_agg(
+                                               DISTINCT jsonb_build_object(
+                                                 'entity_id', oe.organisation,
+                                                 'name', org.name,
+                                                 'role', oe.association
+                                   )
+                                 ) FILTER (WHERE oe.id IS NOT NULL), '[]'::json) AS entity_connections,")
         table-specific-cols (get-table-specific-cols-exp entity-name)
         search-text-fields (get search-text-fields entity-name)
         tsvector-str (generate-tsvector-str entity-name search-text-fields)
@@ -157,9 +169,9 @@
         ps-bookmark-select (if-not plastic-strategy-id
                              ""
                              (format "json_agg(DISTINCT jsonb_build_object('plastic_strategy_id', psb.plastic_strategy_id,
-									   '%s_id', psb.%s_id,
-									   'section_key', psb.section_key))
-				      FILTER (WHERE psb.plastic_strategy_id IS NOT NULL) AS plastic_strategy_bookmarks,"
+                                                                           '%s_id', psb.%s_id,
+                                                                           'section_key', psb.section_key))
+                                      FILTER (WHERE psb.plastic_strategy_id IS NOT NULL) AS plastic_strategy_bookmarks,"
                                      entity-name
                                      entity-name))
         ps-bookmark-group-by (if-not plastic-strategy-id
@@ -234,6 +246,7 @@
        %s
        %s
        %s
+       %s
        json_agg(jsonb_build_object('id', f.id, 'object-key', f.object_key, 'visibility', f.visibility)) FILTER (WHERE f.id IS NOT NULL) AS files,
        json_agg(json_build_object('id', t.id, 'tag', t.tag)) FILTER (WHERE t.id IS NOT NULL) AS tags
    FROM %s e
@@ -249,6 +262,7 @@
              [geo-coverage-select]
              [ps-bookmark-select]
              [badges-select]
+             [entity-connections-select]
              (repeat 3 entity-name)
              [files-join]
              [entity-connections-join]
