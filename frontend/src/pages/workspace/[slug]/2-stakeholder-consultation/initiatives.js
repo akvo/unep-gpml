@@ -107,7 +107,7 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
             ...params,
             country: countryId,
           }
-      api.get(`/browse`, params).then((d) => {
+      api.get(`/browse?inc_entity_connections=true`, params).then((d) => {
         setItems(d.data?.results)
         setLoading(false)
       })
