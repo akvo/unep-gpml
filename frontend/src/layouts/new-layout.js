@@ -11,7 +11,7 @@ import Footer from '../footer'
 import Login from '../modules/login/view'
 import { DownArrow } from '../components/icons'
 import Link from 'next/link'
-import { motion, AnimatePresence, useCycle } from 'framer-motion'
+import { useCycle } from 'framer-motion'
 import { useDeviceSize } from '../modules/landing/landing'
 import { isRegistered } from '../utils/profile'
 
@@ -70,89 +70,6 @@ const NewLayout = ({
   const [showMenu, setShowMenu] = useState(false)
   const [width] = useDeviceSize()
   const [isOpen, toggleOpen] = useCycle(false, true)
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const MENU_MAPPING = [
-          {
-            key: 'About Us',
-            subKeys: [
-              {
-                key: 'The platform',
-                apiEndpoint:
-                  'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=about-platform&fields=title&fields=subtitle',
-              },
-              {
-                key: 'Our Network',
-                apiEndpoint:
-                  'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=about-network&fields=title&fields=subtitle',
-              },
-            ],
-          },
-          {
-            key: 'Plastic',
-            subKeys: [
-              {
-                key: 'Topics',
-                apiEndpoint:
-                  'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=plastic-topics&fields=title&fields=subtitle',
-              },
-              {
-                key: 'Basics',
-                apiEndpoint:
-                  'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=plastic-basics&fields=title&fields=subtitle',
-              },
-            ],
-          },
-        ]
-
-        const fetchData = async () => {
-          const apiEndpoints = MENU_MAPPING.flatMap((section) =>
-            section.subKeys.map((sub) => sub.apiEndpoint)
-          )
-
-          try {
-            const responses = await Promise.all(
-              apiEndpoints.map((endpoint) => axios.get(endpoint))
-            )
-            return responses
-          } catch (error) {
-            console.error('Error fetching data:', error)
-            return []
-          }
-        }
-
-        fetchData().then((responses) => {
-          UIStore.update((s) => {
-            let updatedMenu = [...s.menuList]
-
-            MENU_MAPPING.forEach((section, sectionIdx) => {
-              section.subKeys.forEach((sub, subIdx) => {
-                const responseData =
-                  responses[sectionIdx * section.subKeys.length + subIdx]?.data
-                    ?.data
-                if (responseData) {
-                  updatedMenu = updateMenuSection(
-                    updatedMenu,
-                    section.key,
-                    sub.key,
-                    responseData
-                  )
-                }
-              })
-            })
-
-            s.menuList = updatedMenu
-          })
-        })
-      } catch (err) {
-        console.log(err)
-      }
-    }
-
-    fetchData()
-  }, [])
 
   return (
     <>
@@ -223,15 +140,6 @@ const NewLayout = ({
               )}
               {isAuthenticated && (
                 <div style={{ display: 'flex' }}>
-                  <Link href="/workspace">
-                    <Button
-                      type="primary"
-                      size="small"
-                      className="noicon hide-mobile"
-                    >
-                      Workspace
-                    </Button>
-                  </Link>
                   <Dropdown
                     overlayClassName="user-btn-dropdown-wrapper"
                     overlay={
@@ -268,6 +176,16 @@ const NewLayout = ({
                       {profile?.lastName?.charAt(0)}
                     </Avatar>
                   </Dropdown>
+                  <Link href="/workspace">
+                    <Button
+                      type="primary"
+                      size="small"
+                      className="noicon hide-mobile"
+                      onClick={() => setLoginVisible(true)}
+                    >
+                      Workspace
+                    </Button>
+                  </Link>
                 </div>
               )}
               {width <= 768 && (
@@ -348,26 +266,6 @@ export const withNewLayout = (Component) => {
   }
 
   return WithLayoutComponent
-}
-
-const transformedData = (data) => {
-  return data?.map((item) => ({
-    title: item.attributes.title,
-    subtitle: item.attributes.subtitle,
-  }))
-}
-
-const updateMenuSection = (menu, sectionKey, subKey, data) => {
-  const sectionIndex = menu.findIndex((item) => item.key === sectionKey)
-  if (sectionIndex !== -1) {
-    const section = menu[sectionIndex]
-    const subIndex = section.children.findIndex((item) => item.key === subKey)
-    if (subIndex !== -1) {
-      section.children[subIndex].children = transformedData(data)
-      menu[sectionIndex] = section
-    }
-  }
-  return menu
 }
 
 export default NewLayout
