@@ -320,6 +320,18 @@ h6,
     ul {
       padding: 0;
     }
+    .plastic-menu {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-gap: 10px;
+      li:nth-child(-n + 3) {
+        grid-column: 1;
+      }
+      li:nth-child(4) {
+        grid-column: 2;
+        grid-row: 1;
+      }
+    }
     .sub-menu-item {
       padding-bottom: 30px;
       min-height: 95px;
