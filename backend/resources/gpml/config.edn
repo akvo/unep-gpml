@@ -626,8 +626,6 @@
                                                    :parameters #ig/ref :gpml.handler.chat/remove-user-from-channel-params}}]
                                           ["/all"
                                            {:get {:summary "Get all channels in the server"
-                                                  :middleware [#ig/ref :gpml.auth/auth-middleware
-                                                               #ig/ref :gpml.auth/auth-required]
                                                   :swagger {:tags ["chat"]}
                                                   :handler #ig/ref :gpml.handler.chat/get-all-channels
                                                   :parameters #ig/ref :gpml.handler.chat/get-all-channels-params}}]
