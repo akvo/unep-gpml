@@ -80,7 +80,7 @@ const CONTROLS = {
         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
     }
     return (
-      <Select {...allProps} virtual={false}>
+      <Select size="small" {...allProps} virtual={false}>
         {options?.map(({ label, value }, i) => (
           <Select.Option
             key={`${label}-${value}-${i.toString(36)}`}

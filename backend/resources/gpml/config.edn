@@ -552,7 +552,12 @@
                                           {:post {:summary "Create plastic strategies"
                                                   :swagger {:tags ["plastic-strategy"] :security [{:id_token []}]}
                                                   :handler #ig/ref :gpml.handler.programmatic.plastic-strategy/post
-                                                  :parameters #ig/ref :gpml.handler.programmatic.plastic-strategy/post-params}}]]
+                                                  :parameters #ig/ref :gpml.handler.programmatic.plastic-strategy/post-params}}]
+                                         ["/badge"
+                                          {:post {:summary "Create a badge"
+                                                  :swagger {:tags ["badge"] :security [{:id_token []}]}
+                                                  :handler #ig/ref :gpml.handler.programmatic.badge/post
+                                                  :parameters #ig/ref :gpml.handler.programmatic.badge/post-params}}]]
                                         ["/subscribe"
                                          {:post {:summary "Send an email to GPML Secretariat about a new subscription request"
                                                  :swagger {:tags ["subscribe"]}
@@ -736,7 +741,21 @@
                                                                 #ig/ref :gpml.auth/auth-required]
                                                    :swagger {:tags ["plastic-strategy"] :security [{:id_token []}]}
                                                    :handler #ig/ref :gpml.handler.plastic-strategy.file/get
-                                                   :parameters #ig/ref :gpml.handler.plastic-strategy.file/get-params}}]]]]]]
+                                                   :parameters #ig/ref :gpml.handler.plastic-strategy.file/get-params}}]]]]
+                                        ["/badge"
+                                         ["/{id-or-name}"
+                                          [""
+                                           {:get {:summary "Gets a badge by its unique name"
+                                                  :swagger {:tags ["badge"]}
+                                                  :handler #ig/ref :gpml.handler.badge/get
+                                                  :parameters #ig/ref :gpml.handler.badge/get-params}}]
+                                          ["/assign"
+                                           {:post {:summary "Assing/unassign a badge to/from an entity"
+                                                   :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                #ig/ref :gpml.auth/auth-required]
+                                                   :swagger {:tags ["badge"] :security [{:id_token []}]}
+                                                   :handler #ig/ref :gpml.handler.badge.assign/post
+                                                   :parameters #ig/ref :gpml.handler.badge.assign/post-params}}]]]]]
                               :logger #ig/ref :duct.logger/timbre
                               :cors-allowed-origins #ig/ref :gpml.handler.main/cors-allowed-origins}
 
@@ -1038,6 +1057,14 @@
 
   :gpml.handler.programmatic.plastic-strategy/post #ig/ref :gpml.config/common
   :gpml.handler.programmatic.plastic-strategy/post-params {}
+
+  :gpml.handler.badge/get #ig/ref :gpml.config/common
+  :gpml.handler.badge/get-params {}
+  :gpml.handler.badge.assign/post #ig/ref :gpml.config/common
+  :gpml.handler.badge.assign/post-params {}
+
+  :gpml.handler.programmatic.badge/post #ig/ref :gpml.config/common
+  :gpml.handler.programmatic.badge/post-params {}
 
   :clj-gcp.storage/client {}
 

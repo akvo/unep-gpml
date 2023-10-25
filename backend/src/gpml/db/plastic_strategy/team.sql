@@ -17,7 +17,7 @@ WHERE plastic_strategy_id = :plastic-strategy-id
 
 -- :name get-ps-team-members* :query :many
 SELECT pstm.plastic_strategy_id, pstm.teams, pstm.role,
-       s.id, s.first_name, s.last_name, s.email,
+       s.id, s.first_name, s.last_name, s.email, s.chat_account_id, s.chat_account_status,
        row_to_json(org.*) AS org
 FROM plastic_strategy_team_member pstm
 JOIN stakeholder s ON pstm.user_id = s.id

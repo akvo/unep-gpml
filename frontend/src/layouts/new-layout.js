@@ -223,6 +223,15 @@ const NewLayout = ({
               )}
               {isAuthenticated && (
                 <div style={{ display: 'flex' }}>
+                  <Link href="/workspace">
+                    <Button
+                      type="primary"
+                      size="small"
+                      className="noicon hide-mobile"
+                    >
+                      Workspace
+                    </Button>
+                  </Link>
                   <Dropdown
                     overlayClassName="user-btn-dropdown-wrapper"
                     overlay={
@@ -259,16 +268,6 @@ const NewLayout = ({
                       {profile?.lastName?.charAt(0)}
                     </Avatar>
                   </Dropdown>
-                  <Link href="/workspace">
-                    <Button
-                      type="primary"
-                      size="small"
-                      className="noicon hide-mobile"
-                      onClick={() => setLoginVisible(true)}
-                    >
-                      Workspace
-                    </Button>
-                  </Link>
                 </div>
               )}
               {width <= 768 && (

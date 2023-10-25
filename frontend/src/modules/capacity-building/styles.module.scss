@@ -1,0 +1,521 @@
+@import '../../styles/vars.scss';
+
+.capacityBuilding {
+  background-color: #edf2f7;
+
+  :global {
+    .ant-page-header {
+      padding-left: 16px !important;
+      padding-right: 16px !important;
+    }
+    @media (max-width: 540px) {
+      .ui-header {
+        .ant-typography,
+        .text-green {
+          font-size: 16px !important;
+          line-height: unset !important;
+        }
+      }
+    }
+    .thumbnail {
+      img {
+        width: 100%;
+        height: 187px;
+        object-fit: cover;
+        object-position: 50% 0;
+        border-radius: 10px;
+        &.events {
+          width: 172px;
+          height: 114px;
+          object-position: 100% 0;
+        }
+      }
+    }
+
+    .ant-page-header-heading-title > span.text-green {
+      font-size: 20px;
+      color: $primaryGreen;
+      @media (max-width: 540px) {
+        font-size: 16px !important;
+      }
+    }
+    .green-border {
+      padding-top: 12px !important;
+      line-height: 24px;
+    }
+    .pm_event_banner {
+      .banner_info {
+        overflow: auto;
+        width: 100%;
+        background-color: #00abf1;
+        padding-left: 5%;
+        position: relative;
+        .banner_img {
+          margin: 0;
+          padding: 0;
+          float: right;
+          width: 50%;
+          height: 400px;
+          overflow: hidden;
+          img {
+            height: 100%;
+            object-fit: cover;
+          }
+        }
+        @media (max-width: 540px) {
+          height: 493px;
+          .banner_img {
+            display: none;
+          }
+        }
+        @media (min-width: 541px) and (max-width: 768px) {
+          height: 506px;
+          .banner_img {
+            height: 506px !important;
+            img {
+              height: 506px !important;
+            }
+          }
+        }
+      }
+      .event_details {
+        position: absolute;
+        top: 50%;
+        -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+        width: 45%;
+        .event_date {
+          .ant-typography {
+            display: none;
+          }
+          &.EVENT {
+            .ant-typography {
+              display: inline-block;
+            }
+          }
+        }
+        .ant-typography {
+          color: #fff !important;
+          &.label {
+            font-size: 16px;
+            font-weight: 600;
+          }
+        }
+        h1.ant-typography,
+        h2.ant-typography {
+          font-weight: 800 !important;
+        }
+        @media (max-width: 540px) {
+          .ant-typography.label {
+            font-size: 12px !important;
+            margin-bottom: 10px !important;
+          }
+          h1.ant-typography {
+            font-size: 24px !important;
+          }
+        }
+        @media (min-width: 541px) and (max-width: 768px) {
+          .ant-typography.label {
+            font-size: 14px !important;
+            margin-bottom: 20px !important;
+          }
+          h1.ant-typography {
+            font-size: 28px !important;
+          }
+        }
+        @media (min-width: 769px) and (max-width: 1199px) {
+          .ant-typography.label {
+            font-size: 16px !important;
+            margin-bottom: 20px !important;
+          }
+          h1.ant-typography {
+            font-size: 32px !important;
+          }
+        }
+      }
+    }
+    .photo_credit {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      z-index: 4;
+      background: rgba(51, 51, 51, 0.5);
+      padding: 5px;
+      color: #fff;
+      font-size: 0.7em;
+      font-style: italic;
+    }
+    .capacity-section {
+      min-height: 350px;
+      margin-bottom: 16px;
+      .section-content {
+        padding-left: 16px;
+        padding-right: 16px;
+
+        .resource-col {
+          width: 132px;
+        }
+        .events-col {
+          width: 162px;
+        }
+        .resource-col-fullwidth {
+          width: calc(100% - 132px);
+        }
+        .events-col-fullwidth {
+          width: calc(100% - 162px);
+        }
+      }
+      .card {
+        opacity: 0.9;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        border-radius: 10px;
+        color: #fff;
+        min-height: 187px;
+        .title {
+          font-family: Open Sans;
+          font-style: normal;
+          font-weight: bold;
+          font-size: 18px;
+          line-height: 25px;
+          text-transform: capitalize;
+          &.small {
+            font-size: 14px;
+          }
+
+          @media (max-width: 540px) {
+            font-size: 12px !important;
+          }
+        }
+        .see-more {
+          position: absolute;
+          bottom: 15px;
+          right: 20px;
+          font-weight: 600;
+          @media (max-width: 540px) {
+            font-size: 12px !important;
+          }
+        }
+        .ant-card-body {
+          padding: 14px !important;
+        }
+      }
+      .ant-btn-ghost {
+        &:hover {
+          border-color: #fff;
+        }
+      }
+    }
+    .ant-card-grid {
+      box-shadow: none !important;
+    }
+    .bg-color {
+      &.course-and-trainings {
+        background-color: #1f213d;
+      }
+      &.tools-and-resources {
+        background-color: #6d3c3c;
+      }
+      &.education-and-outreach {
+        background-color: #2b4937;
+      }
+      &.case-studies {
+        background-color: #89662c;
+      }
+      &.events {
+        background-color: #5f4373;
+      }
+    }
+
+    .bg-image {
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      &.course-and-trainings {
+        background-image: url('../../images/capacity-building/course-n-training.png');
+      }
+      &.tools-and-resources {
+        background-image: url('../../images/capacity-building/tools-and-resources.png');
+      }
+      &.education-and-outreach {
+        background-image: url('../../images/capacity-building/education-and-outreach.png');
+      }
+      &.case-studies {
+        background-image: url('../../images/capacity-building/case-studies.png');
+      }
+      &.events {
+        background-image: url('../../images/capacity-building/events.png');
+      }
+    }
+
+    .ant-carousel {
+      .slick-dots {
+        li {
+          width: 17.84px !important;
+          button {
+            width: 10px !important;
+            height: 10px !important;
+            border-radius: 50% !important;
+            border: 3px solid #00aaf1;
+            box-sizing: border-box;
+            background-color: rgba($color: #fff, $alpha: 0);
+          }
+          &.slick-active {
+            button {
+              background-color: #00aaf1 !important;
+            }
+          }
+        }
+      }
+      .slick-dots-bottom {
+        bottom: -25px !important;
+      }
+    }
+    .carousel-control {
+      display: block;
+      button {
+        position: absolute;
+        top: 45%;
+        z-index: 5;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        padding: 0;
+
+        &.carousel-next {
+          right: 12px;
+          transform: rotate(-90deg);
+        }
+        &.carousel-prev {
+          left: 12px;
+          transform: rotate(90deg);
+        }
+      }
+      @media (max-width: 540px) {
+        display: none;
+      }
+    }
+    #bodyContent {
+      background-color: #edf2f7 !important;
+    }
+    .ui-header {
+      padding: 10px 16px 10px 16px;
+
+      h3.ant-typography {
+        margin-bottom: 0px;
+      }
+    }
+    @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
+      .ui-header {
+        padding: 10px 16px 10px 16px;
+
+        h3.ant-typography {
+          margin-bottom: 0px;
+          font-size: 1.2em;
+        }
+      }
+      .pm_event_banner {
+        .event_details {
+          h2.ant-typography {
+            font-size: 1.2em;
+          }
+          h1.ant-typography {
+            font-size: 1.2em;
+          }
+        }
+        .banner_info {
+          .banner_img {
+            height: 200px;
+            img {
+              height: 100%;
+              object-fit: cover;
+            }
+          }
+        }
+      }
+      .capacity-section {
+        min-height: auto;
+        .ant-page-header {
+          padding: 5px 24px;
+        }
+        .card {
+          min-height: 187px;
+          .title {
+            font-size: 1em;
+          }
+        }
+        .thumbnail {
+          img {
+            height: 187px;
+            object-fit: cover;
+            object-position: center;
+          }
+        }
+      }
+    }
+
+    /* (320x480) iPhone (Original, 3G, 3GS) */
+    @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+      /* insert styles here */
+      .pm_event_banner {
+        .banner_info {
+          .banner_img {
+            height: 100% !important;
+          }
+        }
+        .event_details {
+          .ant-typography {
+            &.label {
+              font-size: 12px !important;
+              font-weight: 500 !important;
+            }
+          }
+          .site_title {
+            h1.ant-typography {
+              font-size: 18px !important;
+              font-weight: 400 !important;
+            }
+            h2.ant-typography {
+              font-size: 12px !important;
+            }
+          }
+        }
+      }
+      .capacityBuilding {
+        :global {
+          .thumbnail {
+            img {
+              min-height: 200px !important;
+            }
+          }
+          .capacity-section {
+            .card {
+              height: 100% !important;
+              .title {
+                font-size: 14px;
+                line-height: 24px;
+                &.small {
+                  font-size: 12px;
+                  line-height: 16px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    /* Tab */
+    @media only screen and (min-width: 475px) and (max-width: 768px) {
+      .pm_event_banner {
+        .event_details {
+          .site_title {
+            h2.ant-typography {
+              font-size: 22px !important;
+            }
+          }
+        }
+      }
+      .capacityBuilding {
+        :global {
+          .thumbnail {
+            img {
+              min-height: 200px !important;
+            }
+          }
+          .capacity-section {
+            .card {
+              height: 100% !important;
+            }
+          }
+        }
+      }
+    }
+
+    @media only screen and (min-width: 768px) and (max-width: 991px) {
+      .pm_event_banner {
+        .event_details {
+          .site_title {
+            h2.ant-typography {
+              font-size: 24px !important;
+            }
+          }
+        }
+      }
+      .capacityBuilding {
+        :global {
+          .thumbnail {
+            img {
+              min-height: 300px !important;
+            }
+          }
+          .capacity-section {
+            .card {
+              height: 100% !important;
+              .title {
+                font-size: 22px;
+                line-height: 32px;
+
+                &.small {
+                  font-size: 18px;
+                  line-height: 30px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    /* Desktop */
+    @media screen and (min-width: 1920px) {
+      //For Projectors or Higher Resolution Screens (Full HD)
+      .capacityBuilding {
+        :global {
+          .ui-container {
+            max-width: 85%;
+            margin: 0 auto;
+          }
+        }
+      }
+    }
+    @media screen and (min-width: 2560px) {
+      // For 2K, Quad HD, QHD Displays
+      .capacityBuilding {
+        :global {
+          .ui-container {
+            max-width: 65%;
+            margin: 0 auto;
+          }
+        }
+      }
+    }
+    @media screen and (min-width: 3840px) {
+      //For 4K Displays (Ultra HD)
+      .capacityBuilding {
+        :global {
+          .ui-container {
+            max-width: 55%;
+            margin: 0 auto;
+          }
+          .thumbnail > img {
+            height: 300px;
+          }
+          .capacity-section {
+            .card {
+              height: 100% !important;
+              .title {
+                font-size: 28px;
+                line-height: 48px;
+
+                &.small {
+                  font-size: 22px;
+                  line-height: 38px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

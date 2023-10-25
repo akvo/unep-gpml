@@ -53,5 +53,5 @@
   (cske/transform-keys ->snake_case db-params))
 
 (defn db-result-snake-kw->db-result-kebab-kw
-  [db-result]
-  (cske/transform-keys ->kebab-case db-result))
+  ([db-result] (cske/transform-keys ->kebab-case db-result))
+  ([db-result separator] (cske/transform-keys #(->kebab-case % :separator separator) db-result)))

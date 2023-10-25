@@ -1,10 +1,11 @@
-import React from "react";
-import { Row, Col, Typography, Tooltip, Button, Avatar } from "antd";
+import React from 'react'
+import { Row, Col, Typography, Tooltip, Button, Avatar } from 'antd'
+import TransnationalImage from '../../images/transnational.svg'
 
-import datastakeholders from "./json/stakeholders.json";
-import { titleCase } from "../../utils/string";
+import datastakeholders from './json/stakeholders.json'
+import { titleCase } from '../../utils/string'
 
-const { Title, Paragraph, Text } = Typography;
+const { Title, Paragraph, Text } = Typography
 
 const CaseStudy = ({
   tags,
@@ -17,10 +18,10 @@ const CaseStudy = ({
   stakeholders_involved,
 }) => {
   const stakeholders =
-    typeof stakeholders_involved === "string"
-      ? stakeholders_involved.split(",")
-      : stakeholders_involved;
-  const tagItems = typeof tags === "string" ? tags.split(",") : tags;
+    typeof stakeholders_involved === 'string'
+      ? stakeholders_involved.split(',')
+      : stakeholders_involved
+  const tagItems = typeof tags === 'string' ? tags.split(',') : tags
   return (
     <Row className="case-studies-page">
       <Col
@@ -28,30 +29,17 @@ const CaseStudy = ({
         sm={24}
         style={{
           backgroundImage: `url(${image})`,
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          display: "flex",
-          height: "auto",
-          borderBottom: "4px solid #18162F",
-          borderLeft: "4px solid #18162F",
-          borderTop: "4px solid #18162F",
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+          display: 'flex',
+          height: 'auto',
         }}
       >
         <div className="p-4">
           <Title>{title}</Title>
         </div>
       </Col>
-      <Col
-        lg={10}
-        sm={24}
-        style={{
-          backgroundColor: background_color,
-          borderBottom: "4px solid #18162F",
-          borderRight: "4px solid #18162F",
-          borderLeft: "1px solid #18162F",
-          borderTop: "4px solid #18162F",
-        }}
-      >
+      <Col lg={10} sm={24}>
         <div className="p-4 content-text">
           <Row gutter={[8, 8]}>
             <Col>
@@ -63,14 +51,18 @@ const CaseStudy = ({
               </Paragraph>
             </Col>
             <Col>
-              <div style={{ display: "flex", gap: 5, minHeight: 32 }}>
-                <div style={{ margin: "auto" }}>
-                  <img
-                    src="/case-studies/globe-outline.svg"
-                    style={{ width: 32, height: 32 }}
-                  />
+              <div
+                style={{
+                  display: 'flex',
+                  gap: 5,
+                  minHeight: 32,
+                  marginBottom: '10px',
+                }}
+              >
+                <div className="location-image">
+                  <TransnationalImage />
                 </div>
-                <div style={{ margin: "auto" }}>
+                <div style={{ margin: 'auto' }}>
                   <Text>{geo_coverage}</Text>
                 </div>
               </div>
@@ -82,7 +74,7 @@ const CaseStudy = ({
                   ?.filter((tag, tx) => tx <= 7)
                   ?.map((tag, tx) => (
                     <li className="tag-item" key={tx}>
-                      {tag.length > 5 ? titleCase(tag) : tag}
+                      <span> {tag.length > 5 ? titleCase(tag) : tag}</span>
                     </li>
                   ))}
                 {/* {tagItems.length > 7 && tagItems.length - 7 > 1 && (
@@ -103,25 +95,25 @@ const CaseStudy = ({
                   ?.map((sk, sx) => {
                     const findSk = datastakeholders.find((ds) =>
                       sk?.toLowerCase()?.includes(ds?.name?.toLowerCase())
-                    );
+                    )
                     const avatar = findSk ? (
                       findSk.image
                     ) : (
                       <Avatar
                         style={{
-                          backgroundColor: "#006776",
-                          verticalAlign: "middle",
+                          backgroundColor: '#006776',
+                          verticalAlign: 'middle',
                         }}
                         size={60}
                       >
                         {sk?.substring(0, 2)}
                       </Avatar>
-                    );
+                    )
                     return (
                       <Tooltip className="avatar" title={sk} key={sx}>
                         <Avatar src={avatar} />
                       </Tooltip>
-                    );
+                    )
                   })}
               </div>
             </Col>
@@ -129,7 +121,7 @@ const CaseStudy = ({
           <Row>
             <Col>
               <Button
-                href={platform_link || "#"}
+                href={platform_link || '#'}
                 type="link"
                 shape="round"
                 className="green-border case-study-learn-btn"
@@ -144,7 +136,7 @@ const CaseStudy = ({
         </div>
       </Col>
     </Row>
-  );
-};
+  )
+}
 
-export default CaseStudy;
+export default CaseStudy

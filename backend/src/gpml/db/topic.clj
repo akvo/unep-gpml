@@ -128,7 +128,7 @@
    {:keys [id entity tag representative-group
            geo-coverage-types sub-content-type
            search-text review-status featured capacity-building upcoming
-           plastic-strategy-id ps-bookmark-sections-keys] :as _params}
+           plastic-strategy-id ps-bookmark-sections-keys badges] :as _params}
    {:keys [search-text-fields] :as _opts}]
   (let [entity-connections-join (if-not (or (seq entity) (seq representative-group))
                                   ""
@@ -156,14 +156,32 @@
                                    entity-name entity-name plastic-strategy-id))
         ps-bookmark-select (if-not plastic-strategy-id
                              ""
-                             (format "json_agg(json_build_object('plastic_strategy_id', psb.plastic_strategy_id,
-                                                                 '%s_id', psb.%s_id,
-                                                                 'section_key', psb.section_key)) AS plastic_strategy_bookmarks,"
+                             (format "json_agg(DISTINCT jsonb_build_object('plastic_strategy_id', psb.plastic_strategy_id,
+									   '%s_id', psb.%s_id,
+									   'section_key', psb.section_key))
+				      FILTER (WHERE psb.plastic_strategy_id IS NOT NULL) AS plastic_strategy_bookmarks,"
                                      entity-name
                                      entity-name))
         ps-bookmark-group-by (if-not plastic-strategy-id
                                ""
                                (format ", psb.%s_id" entity-name))
+        badges-join (if-not (nil? badges)
+                      (format "LEFT JOIN %s_badge eb ON eb.%s_id = e.id"
+                              entity-name
+                              entity-name)
+                      "")
+        badges-select (if-not (nil? badges)
+                        (format "json_agg(
+                                   DISTINCT jsonb_build_object(
+                                     'badge_id', eb.badge_id,
+                                     '%s_id', eb.%s_id,
+                                     'assigned_by', eb.assigned_by,
+                                     'assigned_at', eb.assigned_at
+                                   )
+                                 ) FILTER (WHERE eb.badge_id IS NOT NULL) AS assigned_badges,"
+                                entity-name
+                                entity-name)
+                        "")
         files-join (cond
                      (= entity-name "stakeholder")
                      "LEFT JOIN file f ON e.picture_id = f.id"
@@ -215,6 +233,7 @@
        %s,
        %s
        %s
+       %s
        json_agg(jsonb_build_object('id', f.id, 'object-key', f.object_key, 'visibility', f.visibility)) FILTER (WHERE f.id IS NOT NULL) AS files,
        json_agg(json_build_object('id', t.id, 'tag', t.tag)) FILTER (WHERE t.id IS NOT NULL) AS tags
    FROM %s e
@@ -224,15 +243,18 @@
    %s
    %s
    %s
+   %s
    GROUP BY e.id %s"
      (concat [table-specific-cols]
              [geo-coverage-select]
              [ps-bookmark-select]
+             [badges-select]
              (repeat 3 entity-name)
              [files-join]
              [entity-connections-join]
              [geo-coverage-join]
              [ps-bookmark-join]
+             [badges-join]
              [where-cond]
              [ps-bookmark-group-by]))))
 
