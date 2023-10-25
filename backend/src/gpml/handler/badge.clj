@@ -54,7 +54,7 @@
      {:description "The Badge's name or its id."
       :allowEmptyValue false}}
     [:or
-     pos-int?
+     [:int {:min 1}]
      [:string {:min 1}]]]])
 
 (def ^:private handle-badge-assignment-body-params-schema
@@ -82,8 +82,7 @@
   (fn [{:keys [parameters user]}]
     (try
       (let [badge-id-or-name (get-in parameters [:path :id-or-name])
-            {:keys [badge success?] :as result} (when (string? badge-id-or-name)
-                                                  (get-badge-by-id-or-name config badge-id-or-name))]
+            {:keys [badge success?] :as result} (get-badge-by-id-or-name config badge-id-or-name)]
         (if-not success?
           (r/server-error result)
           (if-not (h.r.permission/operation-allowed? config
