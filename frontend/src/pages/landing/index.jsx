@@ -143,8 +143,8 @@ const Hero = () => {
               to address plastic pollution
             </h1>
             <div className="p-container">
-              {items.map((item) => (
-                <AnimatePresence>
+              {items.map((item, index) => (
+                <AnimatePresence key={index}>
                   {item.group === selected && (
                     <motion.p
                       transition={{
@@ -441,8 +441,8 @@ const ActNow = () => {
             pagination={pagination}
             modules={[Pagination]}
           >
-            {items.map((item) => (
-              <SwiperSlide>
+            {items.map((item, index) => (
+              <SwiperSlide key={index}>
                 <ActNowCard item={item} />
               </SwiperSlide>
             ))}
@@ -460,7 +460,7 @@ const ActNowCard = ({ item }) => (
     <p className="p-s">{item?.content}</p>
     <div className={item.links.lenght === 1 ? 'monolink' : 'multilink'}>
       {item.links.map((link) => (
-        <Button type="link" withArrow>
+        <Button type="link" key={link.label} withArrow>
           {link.label}
         </Button>
       ))}
@@ -651,8 +651,8 @@ const Features = () => {
             pagination={pagination}
             modules={[Pagination]}
           >
-            {items.map((item) => (
-              <SwiperSlide>
+            {items.map((item, index) => (
+              <SwiperSlide key={index}>
                 <FeatureCard item={item} />
               </SwiperSlide>
             ))}

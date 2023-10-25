@@ -97,7 +97,7 @@ const PlasticMenu = () => {
               >
                 {menu.key}
               </motion.p>
-              <ul>
+              <ul className={`${index === 0 ? 'plastic-menu' : ''}`}>
                 {menu?.children.map((child, i) => (
                   <motion.li
                     key={child.title}

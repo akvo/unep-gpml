@@ -10,16 +10,18 @@ import { auth0Client } from '../utils/misc'
 import api from '../utils/api'
 import { useRouter } from 'next/router'
 import { updateStatusProfile } from '../utils/profile'
-import { uniqBy, sortBy } from 'lodash'
+import { uniqBy, sortBy, cloneDeep } from 'lodash'
 import { withNewLayout } from '../layouts/new-layout'
+import axios from 'axios'
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter()
-  const { profile } = UIStore.useState((s) => ({
+  const { profile, menuList } = UIStore.useState((s) => ({
     profile: s.profile,
     disclaimer: s.disclaimer,
     nav: s.nav,
     tags: s.tags,
+    menuList: s.menuList,
   }))
   const [state, setState] = useState({
     _expiresAt: null,
@@ -36,6 +38,14 @@ function MyApp({ Component, pageProps }) {
     loadingProfile,
     loginVisible,
   } = state
+
+  useEffect(() => {
+    const updatedMenu = processAndCategorizeData(pageProps, menuList)
+
+    UIStore.update((s) => {
+      s.menuList = updatedMenu
+    })
+  }, [])
 
   const isMounted = useRef(true)
 
@@ -278,6 +288,91 @@ function MyApp({ Component, pageProps }) {
       </Auth0Provider>
     </div>
   )
+}
+
+MyApp.getInitialProps = async (context) => {
+  try {
+    const domainName = process.env.REACT_APP_FEENV
+      ? 'unep-gpml.akvotest.org'
+      : getDomainName(context.req.headers.host)
+
+    const response = await axios.get(buildApiUrl(domainName))
+    return {
+      pageProps: response.data.data,
+    }
+  } catch (error) {
+    return {
+      props: { notFound: true },
+    }
+  }
+}
+
+const buildApiUrl = (domainName) => {
+  const sections = [
+    'about-network',
+    'about-platform',
+    'plastic-topics',
+    'plastic-basics',
+  ]
+  const filters = sections
+    .map((section) => `filters[section][$eq]=${section}`)
+    .join('&')
+  return `https://${domainName}/strapi/api/pages?locale=all&${filters}&fields=title&fields=subtitle&fields=section`
+}
+
+const getDomainName = (host) => {
+  return host.split(':')[0]
+}
+
+const MENU_MAPPING = {
+  'about-platform': {
+    key: 'About Us',
+    subKey: 'The platform',
+  },
+  'about-network': {
+    key: 'About Us',
+    subKey: 'Our Network',
+  },
+  'plastic-topics': {
+    key: 'Plastic',
+    subKey: 'Topics',
+  },
+  'plastic-basics': {
+    key: 'Plastic',
+    subKey: 'Basics',
+  },
+}
+
+const processAndCategorizeData = (responseData, menuList) => {
+  const menu = cloneDeep(menuList)
+
+  responseData.forEach((item) => {
+    const { section, title, subtitle } = item.attributes
+
+    const menuMapping = MENU_MAPPING[section]
+    if (!menuMapping) return
+
+    const sectionIndex = menu.findIndex(
+      (menuItem) => menuItem.key === menuMapping.key
+    )
+    if (sectionIndex === -1) return
+
+    const subSection = menu[sectionIndex].children.find(
+      (child) => child.key === menuMapping.subKey
+    )
+    if (!subSection) return
+
+    if (!subSection.children) {
+      subSection.children = []
+    }
+
+    subSection.children.push({
+      title,
+      subtitle,
+    })
+  })
+
+  return menu
 }
 
 export default MyApp
