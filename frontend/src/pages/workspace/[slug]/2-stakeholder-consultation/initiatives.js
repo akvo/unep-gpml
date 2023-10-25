@@ -28,54 +28,31 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
   const geoCoverageTypeOptions = UIStore.useState(
     (s) => s.geoCoverageTypeOptions
   )
-
-  const filterDropdowns = useMemo(() => {
-    const ops1 = initiativeTypes?.map((i) => ({
-      label: i.title,
-      value: i.title,
+  /**
+   * Get dropdown options from UIStore
+   */
+  const ops1 = initiativeTypes?.map((i) => ({
+    label: i.title,
+    value: i.title,
+  }))
+  const ops2 = representativeGroup.map((r) => ({
+    label: r.name,
+    value: r.name,
+  }))
+  const ops3 = geoCoverageTypeOptions.map((geoType) => ({
+    label: geoType,
+    value: geoType?.toLowerCase(),
+  }))
+  /**
+   * Collect all stakeholder connections as options
+   */
+  const stakeholders = items
+    ?.flatMap((i) => i?.stakeholderConnections)
+    ?.map((s) => ({
+      label: s?.stakeholder,
+      value: s?.stakeholderId,
     }))
-    const ops2 = representativeGroup.map((r) => ({
-      label: r.name,
-      value: r.name,
-    }))
-    const ops3 = geoCoverageTypeOptions.map((geoType) => ({
-      label: geoType,
-      value: geoType?.toLowerCase(),
-    }))
-    const stakeholders = items
-      ?.flatMap((i) => i?.stakeholderConnections)
-      ?.map((s) => ({
-        label: s?.stakeholder,
-        value: s?.stakeholderId,
-      }))
-    const ops4 = uniqBy(stakeholders, 'value')
-    return [
-      {
-        label: 'Initiative type',
-        name: 'subContentType',
-        items: ops1,
-        isBE: true,
-      },
-      {
-        label: 'Representative group',
-        name: 'representativeGroup',
-        items: ops2,
-        isBE: true,
-      },
-      {
-        label: 'Geo-coverage',
-        name: 'geoCoverageType',
-        items: ops3,
-        isBE: false,
-      },
-      {
-        label: 'Stakeholder',
-        name: 'stakeholder',
-        items: ops4,
-        isBE: false,
-      },
-    ]
-  }, [initiativeTypes, representativeGroup, geoCoverageTypeOptions, items])
+  const ops4 = uniqBy(stakeholders, 'value')
 
   const filterSk = ({ stakeholderConnections }, filter) =>
     stakeholderConnections?.filter((sc) =>
@@ -103,16 +80,14 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
     return items
   }, [items, filter])
 
-  const handleSelectOption = ({ isBE, name }, values = []) => {
-    console.log('values', values)
+  const handleSelectOption = (name, isBE, value) => {
     if (isBE) {
-      const value = values.length ? values.join(',') : null
       setQueryParam({
         ...queryParam,
         [name]: value,
       })
     } else {
-      setFilter({ ...filter, [name]: values })
+      setFilter({ ...filter, [name]: value })
     }
   }
 
@@ -149,21 +124,43 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
         sidebar navigation to easily find relevant initatives.{' '}
       </p>
       <div className="filter-container">
-        {filterDropdowns.map((dropdown, dx) => {
-          return (
-            <Select
-              key={dx}
-              allowClear
-              showArrow
-              mode="multiple"
-              placeholder={dropdown.label}
-              onChange={(values) => {
-                handleSelectOption(dropdown, values)
-              }}
-              options={dropdown.items}
-            />
-          )
-        })}
+        <Select
+          allowClear
+          showArrow
+          placeholder="Initiative type"
+          onChange={(values) => {
+            handleSelectOption('subContentType', true, values)
+          }}
+          options={ops1}
+        />
+        <Select
+          allowClear
+          showArrow
+          placeholder="Representative group"
+          onChange={(values) => {
+            handleSelectOption('representativeGroup', true, values)
+          }}
+          options={ops2}
+        />
+        <Select
+          allowClear
+          showArrow
+          placeholder="Geo-coverage"
+          onChange={(values) => {
+            handleSelectOption('geoCoverageType', false, values)
+          }}
+          options={ops3}
+        />
+        <Select
+          allowClear
+          showArrow
+          mode="multiple"
+          placeholder="Stakeholder"
+          onChange={(values) => {
+            handleSelectOption('stakeholder', false, values)
+          }}
+          options={ops4}
+        />
       </div>
       <ResourceCards
         items={filteredItems}
