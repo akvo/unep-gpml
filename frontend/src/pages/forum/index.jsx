@@ -29,15 +29,6 @@ const Forum = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
   const profile = UIStore.useState((s) => s.profile)
   const avatarUrl = `${process.env.NEXT_PUBLIC_CHAT_API_DOMAIN_URL}/avatar/`
 
-  console.log(profile, isAuthenticated, loadingProfile)
-
-  useEffect(() => {
-    if (!loadingProfile && !isAuthenticated) {
-      setLoading(false)
-      setLoginVisible(true)
-    }
-  }, [isAuthenticated, loadingProfile])
-
   const handleOnView = (data) => {
     setViewModal({
       open: true,
@@ -53,15 +44,10 @@ const Forum = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
 
   const getAllForums = useCallback(async () => {
     try {
-      /**
-       * Waiting for id_token ready by checking profile state
-       */
-      if (profile?.id) {
-        const { data } = await api.get('/chat/channel/all')
-        const _allForums = data.map((d) => ({ ...d, membersFetched: false }))
-        setAllForums(_allForums)
-        setLoading(false)
-      }
+      const { data } = await api.get('/chat/channel/all')
+      const _allForums = data.map((d) => ({ ...d, membersFetched: false }))
+      setAllForums(_allForums)
+      setLoading(false)
     } catch (error) {
       console.error('err', error)
       setLoading(false)
