@@ -2,9 +2,7 @@
   (:require [duct.logger :refer [log]]
             [gpml.db.badge :as db.badge]
             [gpml.domain.badge :as dom.badge]
-            [gpml.domain.file :as dom.file]
             [gpml.handler.responses :as r]
-            [gpml.service.file :as srv.file]
             [gpml.service.permissions :as srv.permissions]
             [gpml.util.malli :as util.malli]
             [gpml.util.sql :as sql-util]
@@ -12,31 +10,11 @@
             [integrant.core :as ig]))
 
 (defn- create-badge
-  [{:keys [db logger] :as config} badge]
+  [{:keys [db logger]} badge]
   (let [transactions [{:txn-fn
-                       (fn create-content-file
-                         [{{:keys [content_file]} :badge :as context}]
-                         (let [content-file-entity (dom.file/base64->file content_file :badge :content_files :public)
-                               result (srv.file/create-file config (:spec db) content-file-entity)]
-                           (if (:success? result)
-                             (assoc context :content-file-entity (dissoc content-file-entity :content))
-                             (assoc context
-                                    :success? false
-                                    :reason (:reason result)
-                                    :error-details (:error-details result)))))
-                       :rollback-fn
-                       (fn rollback-create-content-file
-                         [{:keys [content-file-entity] :as context}]
-                         (when (seq content-file-entity)
-                           (srv.file/delete-file config (:spec db) {:id (:id content-file-entity)}))
-                         (dissoc context :content-file-entity :badge))}
-                      {:txn-fn
                        (fn create-badge
-                         [{:keys [content-file-entity] :as context}]
-                         (let [db-badge (db.badge/badge->db-badge
-                                         (-> badge
-                                             (assoc :content_file_id (:id content-file-entity))
-                                             (dissoc :content_file)))
+                         [context]
+                         (let [db-badge (db.badge/badge->db-badge badge)
                                insert-cols (sql-util/get-insert-columns-from-entity-col [db-badge])
                                insert-values (sql-util/entity-col->persistence-entity-col [db-badge])
                                {:keys [success? id] :as result} (db.badge/create-badge
