@@ -128,7 +128,7 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
   }, [router])
 
   return (
-    <>
+    <div className={styles.initiativesView}>
       <h4 className="caps-heading-m">
         <Trans>Stakeholder Consultation Process</Trans>
       </h4>
