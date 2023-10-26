@@ -136,17 +136,18 @@
                                             inc-entity-connections?)
                                   ""
                                   (format "LEFT JOIN organisation_%s oe ON e.id = oe.%s
-					   LEFT JOIN organisation org ON oe.organisation = org.id"
+                                           LEFT JOIN organisation org ON oe.organisation = org.id"
                                           entity-name entity-name))
         entity-connections-select (if-not inc-entity-connections?
                                     ""
                                     "COALESCE(json_agg(
-					       DISTINCT jsonb_build_object(
-						 'entity_id', oe.organisation,
-						 'name', org.name,
-						 'role', oe.association
-				   )
-				 ) FILTER (WHERE oe.id IS NOT NULL), '[]'::json) AS entity_connections,")
+                                               DISTINCT jsonb_build_object(
+                                                 'entity_id', oe.organisation,
+                                                 'name', org.name,
+                                                 'representative_group', org.type,
+                                                 'role', oe.association
+                                   )
+                                 ) FILTER (WHERE oe.id IS NOT NULL), '[]'::json) AS entity_connections,")
         table-specific-cols (get-table-specific-cols-exp entity-name)
         search-text-fields (get search-text-fields entity-name)
         tsvector-str (generate-tsvector-str entity-name search-text-fields)
@@ -156,9 +157,9 @@
         geo-coverage-select (if (= entity-name "stakeholder")
                               ""
                               "array_remove(array_agg(DISTINCT eg.country_group), NULL) AS geo_coverage_country_groups,
-			       array_remove(array_agg(DISTINCT eg.country), NULL) AS geo_coverage_countries,
-			       array_remove(array_agg(DISTINCT eg.country_state), NULL) AS geo_coverage_country_states,
-			       array_remove(array_agg(DISTINCT COALESCE(eg.country, eg.country_group)), NULL) AS geo_coverage_values,")
+                               array_remove(array_agg(DISTINCT eg.country), NULL) AS geo_coverage_countries,
+                               array_remove(array_agg(DISTINCT eg.country_state), NULL) AS geo_coverage_country_states,
+                               array_remove(array_agg(DISTINCT COALESCE(eg.country, eg.country_group)), NULL) AS geo_coverage_values,")
         geo-coverage-join (if (= entity-name "stakeholder")
                             ""
                             (format "LEFT JOIN %s_geo_coverage eg ON eg.%s = e.id" entity-name entity-name))
@@ -169,11 +170,11 @@
         ps-bookmark-select (if-not plastic-strategy-id
                              ""
                              (format "COALESCE(json_agg(
-					DISTINCT jsonb_build_object(
-					  'plastic_strategy_id', psb.plastic_strategy_id,
-					  '%s_id', psb.%s_id,
-					  'section_key', psb.section_key))
-				      FILTER (WHERE psb.plastic_strategy_id IS NOT NULL), '[]'::json) AS plastic_strategy_bookmarks,"
+                                        DISTINCT jsonb_build_object(
+                                          'plastic_strategy_id', psb.plastic_strategy_id,
+                                          '%s_id', psb.%s_id,
+                                          'section_key', psb.section_key))
+                                      FILTER (WHERE psb.plastic_strategy_id IS NOT NULL), '[]'::json) AS plastic_strategy_bookmarks,"
                                      entity-name
                                      entity-name))
         ps-bookmark-group-by (if-not plastic-strategy-id
@@ -186,13 +187,13 @@
                       "")
         badges-select (if-not (nil? badges)
                         (format "json_agg(
-				   DISTINCT jsonb_build_object(
-				     'badge_id', eb.badge_id,
-				     '%s_id', eb.%s_id,
-				     'assigned_by', eb.assigned_by,
-				     'assigned_at', eb.assigned_at
-				   )
-				 ) FILTER (WHERE eb.badge_id IS NOT NULL) AS assigned_badges,"
+                                   DISTINCT jsonb_build_object(
+                                     'badge_id', eb.badge_id,
+                                     '%s_id', eb.%s_id,
+                                     'assigned_by', eb.assigned_by,
+                                     'assigned_at', eb.assigned_at
+                                   )
+                                 ) FILTER (WHERE eb.badge_id IS NOT NULL) AS assigned_badges,"
                                 entity-name
                                 entity-name)
                         "")
@@ -280,10 +281,10 @@
   [topic-name-query entity-name]
   (apply format
          "SELECT
-	  %s AS topic,
-	  row_to_json(d.*) AS json
-	FROM
-	  cte_%s_data d"
+          %s AS topic,
+          row_to_json(d.*) AS json
+        FROM
+          cte_%s_data d"
          (concat [topic-name-query] (repeat 2 entity-name))))
 
 (defn- generic-topic-name-query
@@ -301,7 +302,7 @@
        cte.topic,
        cte.json
     FROM
-	cte_%s_topic cte"
+        cte_%s_topic cte"
    entity-name))
 
 ;;======================= Utility functions =================================
@@ -381,9 +382,9 @@
   (let [tables (if (seq topic)
                  topic
                  (:tables gpml.db.topic/generic-cte-opts))
-	;; If we ever need to add
-	;; `sub_content_type` to case study, remove
-	;; this conditional and binding.
+        ;; If we ever need to add
+        ;; `sub_content_type` to case study, remove
+        ;; this conditional and binding.
         filtered-tables (if (seq sub-content-type)
                           (vec (remove #{"case_study"} tables))
                           tables)
@@ -437,12 +438,12 @@
   "SELECT LOWER(tags.tag) AS topic, COUNT(*)
    FROM cte_results t
    JOIN LATERAL (SELECT DISTINCT LOWER(tag) AS tag
-		 FROM json_populate_recordset
-		   (null::record,
-		    CASE WHEN (t.json->>'tags'::TEXT = '') IS NOT FALSE THEN '[]'::JSON
-		    ELSE (t.json->>'tags')::JSON END)
-		 AS (id INTEGER, tag TEXT)
-		 WHERE LOWER(tag) IN (:v*:tags-to-count)) tags
+                 FROM json_populate_recordset
+                   (null::record,
+                    CASE WHEN (t.json->>'tags'::TEXT = '') IS NOT FALSE THEN '[]'::JSON
+                    ELSE (t.json->>'tags')::JSON END)
+                 AS (id INTEGER, tag TEXT)
+                 WHERE LOWER(tag) IN (:v*:tags-to-count)) tags
    ON TRUE
    GROUP BY 1")
 
@@ -459,10 +460,10 @@
   [{:keys [order-by limit offset descending upcoming topic]}]
   (let [order (if descending "DESC" "ASC")
         order-by-clause (cond
-			  ;; We assume the upcoming filter will always
-			  ;; be together with the event topic. The
-			  ;; browse API disallows its usage if there
-			  ;; are multiple topics.
+                          ;; We assume the upcoming filter will always
+                          ;; be together with the event topic. The
+                          ;; browse API disallows its usage if there
+                          ;; are multiple topics.
                           (and upcoming (= (first topic) "event"))
                           "ORDER BY json->>'start_date' ASC"
 
@@ -497,7 +498,7 @@
   (format
    "(SELECT COUNT(*)
      FROM json_array_elements_text((CASE WHEN (%s::TEXT = '') IS NOT FALSE THEN '[]'::JSON
-					 ELSE (%s)::JSON END))
+                                         ELSE (%s)::JSON END))
      WHERE value::INTEGER IN (:v*:%s)) > 0" json-column json-column values-to-lookup))
 
 #_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
@@ -516,10 +517,10 @@
       ;; FIXME fix this to user a query instead of a view.
       (when (and favorites user-id resource-types)
         "JOIN v_stakeholder_association a
-	 ON a.stakeholder = :user-id
-	 AND a.id = (t.json->>'id')::int
-	 AND (a.topic = t.topic OR (a.topic = 'resource'
-	      AND t.topic IN (:v*:resource-types)))")
+         ON a.stakeholder = :user-id
+         AND a.id = (t.json->>'id')::int
+         AND (a.topic = t.topic OR (a.topic = 'resource'
+              AND t.topic IN (:v*:resource-types)))")
       " WHERE 1=1"
       (when (seq topic)
         " AND topic IN (:v*:topic)")
@@ -530,7 +531,7 @@
         (cond
           (and (seq start-date) (seq end-date))
           " AND (TO_DATE(json->>'start_date', 'YYYY-MM-DD'), (TO_DATE(json->>'end_date', 'YYYY-MM-DD'))) OVERLAPS
-		(:start-date::date, :end-date::date)"
+                (:start-date::date, :end-date::date)"
           (seq start-date)
           " AND TO_DATE(json->>'start_date', 'YYYY-MM-DD') >= :start-date::date"
           (seq end-date)
@@ -539,7 +540,7 @@
         (and geo-coverage-countries? geo-coverage-country-groups?)
         (str " AND (" (generic-json-array-lookup-cond "t.json->>'geo_coverage_countries'" "geo-coverage-countries")
              " OR t.json->>'geo_coverage_type'='transnational'
-	       AND " (generic-json-array-lookup-cond "t.json->>'geo_coverage_country_groups'" "geo-coverage-country-groups") ")")
+               AND " (generic-json-array-lookup-cond "t.json->>'geo_coverage_country_groups'" "geo-coverage-country-groups") ")")
 
         geo-coverage-countries?
         (str " AND " (generic-json-array-lookup-cond "t.json->>'geo_coverage_countries'" "geo-coverage-countries")))))))
