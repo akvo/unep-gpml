@@ -253,7 +253,11 @@ const Hero = () => {
               Search
             </Button>
           </div>
-          <Button type="primary" className="hide-desktop noicon">
+          <Button
+            type="primary"
+            className="hide-desktop noicon"
+            onClick={handleOnSearch}
+          >
             Search
           </Button>
           <div className="tags hide-mobile">

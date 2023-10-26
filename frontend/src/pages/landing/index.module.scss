@@ -371,18 +371,28 @@
       }
       @media screen and (max-width: $bpMobile) {
         padding: 12px;
-        height: 118px;
+        height: 132px;
         top: -245px;
         .bar {
           border-bottom: none;
           display: flex;
           margin-bottom: 10px;
           padding-bottom: 10px;
-          input[type='text'] {
-            font-size: $fzXXS !important;
-            line-height: 30px !important;
-            font-weight: 600 !important;
-            padding-left: 10px !important;
+          .ant-select {
+            width: 100%;
+            height: 24px;
+            overflow-y: scroll;
+            .ant-select-selection-placeholder,
+            .ant-select-selection-search input[type='search'] {
+              font-size: $fzXXS !important;
+            }
+            .ant-select-selection-search {
+              input[type='search'] {
+                line-height: 30px !important;
+                font-weight: 600 !important;
+                padding-left: 10px !important;
+              }
+            }
           }
           .ant-input-affix-wrapper {
             flex: 1;
