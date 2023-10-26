@@ -186,7 +186,7 @@
                               entity-name)
                       "")
         badges-select (if-not (nil? badges)
-                        (format "json_agg(
+                        (format "COALESCE(json_agg(
                                    DISTINCT jsonb_build_object(
                                      'badge_id', eb.badge_id,
                                      'badge_name', b.name,
@@ -194,7 +194,7 @@
                                      'assigned_by', eb.assigned_by,
                                      'assigned_at', eb.assigned_at
                                    )
-                                 ) FILTER (WHERE eb.badge_id IS NOT NULL) AS assigned_badges,"
+                                 ) FILTER (WHERE eb.badge_id IS NOT NULL), '[]'::json) AS assigned_badges,"
                                 entity-name
                                 entity-name)
                         "")
