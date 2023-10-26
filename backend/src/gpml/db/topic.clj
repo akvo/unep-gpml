@@ -1,7 +1,7 @@
 (ns gpml.db.topic
   {:ns-tracker/resource-deps ["topic.sql"]}
   (:require [clojure.string :as str]
-            [hugsql.core :as hugsql]))
+	    [hugsql.core :as hugsql]))
 
 (declare get-topics get-flat-topics)
 
@@ -11,11 +11,11 @@
   "Common set of options for all CTE generation functions."
   {:tables ["event" "technology" "policy" "initiative" "resource" "case_study"]
    :search-text-fields {"event" ["title" "description" "remarks"]
-                        "technology" ["name"]
-                        "policy" ["title" "original_title" "abstract" "remarks"]
-                        "initiative" ["q2" "q3"]
-                        "resource" ["title" "summary" "remarks"]
-                        "case_study" ["title" "description"]}})
+			"technology" ["name"]
+			"policy" ["title" "original_title" "abstract" "remarks"]
+			"initiative" ["q2" "q3"]
+			"resource" ["title" "summary" "remarks"]
+			"case_study" ["title" "description"]}})
 
 #_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (def ^:const generic-entity-cte-opts
@@ -34,7 +34,7 @@
 (defn- rename-tables
   [tables]
   (let [tables-to-rename (filter #(some #{%} (keys table-rename-mapping)) tables)
-        renamed-tables (set (map #(get table-rename-mapping %) tables-to-rename))]
+	renamed-tables (set (map #(get table-rename-mapping %) tables-to-rename))]
     (concat renamed-tables (remove #(some #{%} tables-to-rename) tables))))
 
 (def ^:const ^:private initiative-cols
@@ -104,14 +104,14 @@
   different."
   [entity-name search-text-fields]
   (reduce (fn [acc search-text-field]
-            (let [query (if (= "initiative" entity-name)
-                          (initiative-topic-search-text-field-query search-text-field)
-                          (generic-topic-search-text-field-query search-text-field))]
-              (if (seq acc)
-                (str acc " || ' ' || " query)
-                query)))
-          ""
-          search-text-fields))
+	    (let [query (if (= "initiative" entity-name)
+			  (initiative-topic-search-text-field-query search-text-field)
+			  (generic-topic-search-text-field-query search-text-field))]
+	      (if (seq acc)
+		(str acc " || ' ' || " query)
+		query)))
+	  ""
+	  search-text-fields))
 
 (defn- get-table-specific-cols-exp
   [entity-name]
@@ -126,123 +126,124 @@
 (defn- build-topic-data-query
   [entity-name
    {:keys [id entity tag representative-group
-           geo-coverage-types sub-content-type
-           search-text review-status featured capacity-building upcoming
-           plastic-strategy-id ps-bookmark-sections-keys
-           badges inc-entity-connections?] :as _params}
+	   geo-coverage-types sub-content-type
+	   search-text review-status featured capacity-building upcoming
+	   plastic-strategy-id ps-bookmark-sections-keys
+	   badges inc-entity-connections?] :as _params}
    {:keys [search-text-fields] :as _opts}]
   (let [entity-connections-join (if-not (or (seq entity)
-                                            (seq representative-group)
-                                            inc-entity-connections?)
-                                  ""
-                                  (format "LEFT JOIN organisation_%s oe ON e.id = oe.%s
+					    (seq representative-group)
+					    inc-entity-connections?)
+				  ""
+				  (format "LEFT JOIN organisation_%s oe ON e.id = oe.%s
 					   LEFT JOIN organisation org ON oe.organisation = org.id"
-                                          entity-name entity-name))
-        entity-connections-select (if-not inc-entity-connections?
-                                    ""
-                                    "COALESCE(json_agg(
+					  entity-name entity-name))
+	entity-connections-select (if-not inc-entity-connections?
+				    ""
+				    "COALESCE(json_agg(
 					       DISTINCT jsonb_build_object(
 						 'entity_id', oe.organisation,
 						 'name', org.name,
+						 'representative_group', org.type,
 						 'role', oe.association
 				   )
 				 ) FILTER (WHERE oe.id IS NOT NULL), '[]'::json) AS entity_connections,")
-        table-specific-cols (get-table-specific-cols-exp entity-name)
-        search-text-fields (get search-text-fields entity-name)
-        tsvector-str (generate-tsvector-str entity-name search-text-fields)
-        geo-coverage-type-cond (if (= entity-name "initiative")
-                                 "(select jsonb_object_keys(q24) from initiative where id = e.id)::geo_coverage_type"
-                                 "e.geo_coverage_type")
-        geo-coverage-select (if (= entity-name "stakeholder")
-                              ""
-                              "array_remove(array_agg(DISTINCT eg.country_group), NULL) AS geo_coverage_country_groups,
+	table-specific-cols (get-table-specific-cols-exp entity-name)
+	search-text-fields (get search-text-fields entity-name)
+	tsvector-str (generate-tsvector-str entity-name search-text-fields)
+	geo-coverage-type-cond (if (= entity-name "initiative")
+				 "(select jsonb_object_keys(q24) from initiative where id = e.id)::geo_coverage_type"
+				 "e.geo_coverage_type")
+	geo-coverage-select (if (= entity-name "stakeholder")
+			      ""
+			      "array_remove(array_agg(DISTINCT eg.country_group), NULL) AS geo_coverage_country_groups,
 			       array_remove(array_agg(DISTINCT eg.country), NULL) AS geo_coverage_countries,
 			       array_remove(array_agg(DISTINCT eg.country_state), NULL) AS geo_coverage_country_states,
 			       array_remove(array_agg(DISTINCT COALESCE(eg.country, eg.country_group)), NULL) AS geo_coverage_values,")
-        geo-coverage-join (if (= entity-name "stakeholder")
-                            ""
-                            (format "LEFT JOIN %s_geo_coverage eg ON eg.%s = e.id" entity-name entity-name))
-        ps-bookmark-join (if-not plastic-strategy-id
-                           ""
-                           (format "LEFT JOIN plastic_strategy_%s_bookmark psb ON e.id = psb.%s_id AND psb.plastic_strategy_id = %d"
-                                   entity-name entity-name plastic-strategy-id))
-        ps-bookmark-select (if-not plastic-strategy-id
-                             ""
-                             (format "COALESCE(json_agg(
+	geo-coverage-join (if (= entity-name "stakeholder")
+			    ""
+			    (format "LEFT JOIN %s_geo_coverage eg ON eg.%s = e.id" entity-name entity-name))
+	ps-bookmark-join (if-not plastic-strategy-id
+			   ""
+			   (format "LEFT JOIN plastic_strategy_%s_bookmark psb ON e.id = psb.%s_id AND psb.plastic_strategy_id = %d"
+				   entity-name entity-name plastic-strategy-id))
+	ps-bookmark-select (if-not plastic-strategy-id
+			     ""
+			     (format "COALESCE(json_agg(
 					DISTINCT jsonb_build_object(
 					  'plastic_strategy_id', psb.plastic_strategy_id,
 					  '%s_id', psb.%s_id,
 					  'section_key', psb.section_key))
 				      FILTER (WHERE psb.plastic_strategy_id IS NOT NULL), '[]'::json) AS plastic_strategy_bookmarks,"
-                                     entity-name
-                                     entity-name))
-        ps-bookmark-group-by (if-not plastic-strategy-id
-                               ""
-                               (format ", psb.%s_id" entity-name))
-        badges-join (if-not (nil? badges)
-                      (format "LEFT JOIN %s_badge eb ON eb.%s_id = e.id
-                               LEFT JOIN badge b ON b.id = eb.badge_id"
-                              entity-name
-                              entity-name)
-                      "")
-        badges-select (if-not (nil? badges)
-                        (format "COALESCE(json_agg(
-                                   DISTINCT jsonb_build_object(
-                                     'badge_id', eb.badge_id,
-                                     'badge_name', b.name,
-                                     '%s_id', eb.%s_id,
-                                     'assigned_by', eb.assigned_by,
-                                     'assigned_at', eb.assigned_at
-                                   )
-                                 ) FILTER (WHERE eb.badge_id IS NOT NULL), '[]'::json) AS assigned_badges,"
-                                entity-name
-                                entity-name)
-                        "")
-        files-join (cond
-                     (= entity-name "stakeholder")
-                     "LEFT JOIN file f ON e.picture_id = f.id"
+				     entity-name
+				     entity-name))
+	ps-bookmark-group-by (if-not plastic-strategy-id
+			       ""
+			       (format ", psb.%s_id" entity-name))
+	badges-join (if-not (nil? badges)
+		      (format "LEFT JOIN %s_badge eb ON eb.%s_id = e.id
+			       LEFT JOIN badge b ON b.id = eb.badge_id"
+			      entity-name
+			      entity-name)
+		      "")
+	badges-select (if-not (nil? badges)
+			(format "COALESCE(json_agg(
+				   DISTINCT jsonb_build_object(
+				     'badge_id', eb.badge_id,
+				     'badge_name', b.name,
+				     '%s_id', eb.%s_id,
+				     'assigned_by', eb.assigned_by,
+				     'assigned_at', eb.assigned_at
+				   )
+				 ) FILTER (WHERE eb.badge_id IS NOT NULL), '[]'::json) AS assigned_badges,"
+				entity-name
+				entity-name)
+			"")
+	files-join (cond
+		     (= entity-name "stakeholder")
+		     "LEFT JOIN file f ON e.picture_id = f.id"
 
-                     (= entity-name "organisation")
-                     "LEFT JOIN file f ON e.logo_id = f.id"
+		     (= entity-name "organisation")
+		     "LEFT JOIN file f ON e.logo_id = f.id"
 
-                     :else
-                     "LEFT JOIN file f ON f.id IN (e.image_id, e.thumbnail_id)")
-        where-cond (cond-> "WHERE 1=1"
-                     id
-                     (str " AND e.id = :id")
+		     :else
+		     "LEFT JOIN file f ON f.id IN (e.image_id, e.thumbnail_id)")
+	where-cond (cond-> "WHERE 1=1"
+		     id
+		     (str " AND e.id = :id")
 
-                     (seq review-status)
-                     (str " AND e.review_status = :review-status::REVIEW_STATUS")
+		     (seq review-status)
+		     (str " AND e.review_status = :review-status::REVIEW_STATUS")
 
-                     (seq entity)
-                     (str " AND org.id IN (:v*:entity)")
+		     (seq entity)
+		     (str " AND org.id IN (:v*:entity)")
 
-                     (seq tag)
-                     (str " AND t.tag IN (:v*:tag)")
+		     (seq tag)
+		     (str " AND t.tag IN (:v*:tag)")
 
-                     (seq representative-group)
-                     (str " AND org.type IN (:v*:representative-group)")
+		     (seq representative-group)
+		     (str " AND org.type IN (:v*:representative-group)")
 
-                     (seq geo-coverage-types)
-                     (str " AND " geo-coverage-type-cond " = any(array[:v*:geo-coverage-types]::geo_coverage_type[])")
+		     (seq geo-coverage-types)
+		     (str " AND " geo-coverage-type-cond " = any(array[:v*:geo-coverage-types]::geo_coverage_type[])")
 
-                     (seq sub-content-type)
-                     (str " AND e.sub_content_type IN (:v*:sub-content-type)")
+		     (seq sub-content-type)
+		     (str " AND e.sub_content_type IN (:v*:sub-content-type)")
 
-                     (seq search-text)
-                     (str " AND " tsvector-str " @@ to_tsquery(:search-text)")
+		     (seq search-text)
+		     (str " AND " tsvector-str " @@ to_tsquery(:search-text)")
 
-                     featured
-                     (str " AND e.featured = :featured")
+		     featured
+		     (str " AND e.featured = :featured")
 
-                     capacity-building
-                     (str " AND e.capacity_building = :capacity-building")
+		     capacity-building
+		     (str " AND e.capacity_building = :capacity-building")
 
-                     (and upcoming (= entity-name "event"))
-                     (str " AND now() < e.start_date")
+		     (and upcoming (= entity-name "event"))
+		     (str " AND now() < e.start_date")
 
-                     ps-bookmark-sections-keys
-                     (str " AND psb.section_key IN (:v*:ps-bookmark-sections-keys)"))]
+		     ps-bookmark-sections-keys
+		     (str " AND psb.section_key IN (:v*:ps-bookmark-sections-keys)"))]
     (apply
      format
      "SELECT
@@ -263,30 +264,30 @@
    %s
    GROUP BY e.id %s"
      (concat [table-specific-cols]
-             [geo-coverage-select]
-             [ps-bookmark-select]
-             [badges-select]
-             [entity-connections-select]
-             (repeat 3 entity-name)
-             [files-join]
-             [entity-connections-join]
-             [geo-coverage-join]
-             [ps-bookmark-join]
-             [badges-join]
-             [where-cond]
-             [ps-bookmark-group-by]))))
+	     [geo-coverage-select]
+	     [ps-bookmark-select]
+	     [badges-select]
+	     [entity-connections-select]
+	     (repeat 3 entity-name)
+	     [files-join]
+	     [entity-connections-join]
+	     [geo-coverage-join]
+	     [ps-bookmark-join]
+	     [badges-join]
+	     [where-cond]
+	     [ps-bookmark-group-by]))))
 
 ;;======================= Topic queries =================================
 (defn- generic-topic-query
   "Generic query to generate topics."
   [topic-name-query entity-name]
   (apply format
-         "SELECT
+	 "SELECT
 	  %s AS topic,
 	  row_to_json(d.*) AS json
 	FROM
 	  cte_%s_data d"
-         (concat [topic-name-query] (repeat 2 entity-name))))
+	 (concat [topic-name-query] (repeat 2 entity-name))))
 
 (defn- generic-topic-name-query
   [topic-name]
@@ -328,24 +329,24 @@
   table `entity-name`."
   [entity-name _ _]
   (let [topic-name entity-name
-        topic-name-query (if (= "resource" entity-name)
-                           resource-topic-name-query
-                           (generic-topic-name-query topic-name))]
+	topic-name-query (if (= "resource" entity-name)
+			   resource-topic-name-query
+			   (generic-topic-name-query topic-name))]
     (generic-topic-query topic-name-query entity-name)))
 
 ;;======================= Core functions to generate topic CTEs ================
 (defn- generate-ctes*
   [cte-type query-builder-fn params opts]
   (reduce (fn [ctes entity-name]
-            (let [normalized-cte-type (str/replace (name cte-type) "-" "_")
-                  cte-name (str "cte_" entity-name "_" normalized-cte-type)
-                  query (query-builder-fn entity-name params opts)
-                  ctes (str ctes (generate-cte-sql cte-name query))]
-              (if (= (last (:tables opts)) entity-name)
-                ctes
-                (str ctes ","))))
-          ""
-          (:tables opts)))
+	    (let [normalized-cte-type (str/replace (name cte-type) "-" "_")
+		  cte-name (str "cte_" entity-name "_" normalized-cte-type)
+		  query (query-builder-fn entity-name params opts)
+		  ctes (str ctes (generate-cte-sql cte-name query))]
+	      (if (= (last (:tables opts)) entity-name)
+		ctes
+		(str ctes ","))))
+	  ""
+	  (:tables opts)))
 
 (defmulti generate-ctes
   "Generates the raw CTE SQL for the given query type."
@@ -367,32 +368,32 @@
   "Generate the topic CTE by combining all topics CTEs."
   [_params opts]
   (generate-cte-sql "cte_topic"
-                    (reduce (fn [cte-query entity-name]
-                              (let [query (generic-topic-cte-query entity-name)
-                                    cte-query (str cte-query " " query)]
-                                (if (= (last (:tables opts)) entity-name)
-                                  cte-query
-                                  (str cte-query " UNION ALL "))))
-                            ""
-                            (:tables opts))))
+		    (reduce (fn [cte-query entity-name]
+			      (let [query (generic-topic-cte-query entity-name)
+				    cte-query (str cte-query " " query)]
+				(if (= (last (:tables opts)) entity-name)
+				  cte-query
+				  (str cte-query " UNION ALL "))))
+			    ""
+			    (:tables opts))))
 
 #_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (defn generate-topic-query
   "Generates the SQL to query topic's (resources) data."
   [{:keys [topic sub-content-type] :as params}]
   (let [tables (if (seq topic)
-                 topic
-                 (:tables gpml.db.topic/generic-cte-opts))
+		 topic
+		 (:tables gpml.db.topic/generic-cte-opts))
 	;; If we ever need to add
 	;; `sub_content_type` to case study, remove
 	;; this conditional and binding.
-        filtered-tables (if (seq sub-content-type)
-                          (vec (remove #{"case_study"} tables))
-                          tables)
-        opts (merge generic-cte-opts {:tables (rename-tables filtered-tables)})
-        topic-data-ctes (generate-ctes :data params opts)
-        topic-ctes (generate-ctes :topic params opts)
-        topic-cte (generate-topic-cte {} opts)]
+	filtered-tables (if (seq sub-content-type)
+			  (vec (remove #{"case_study"} tables))
+			  tables)
+	opts (merge generic-cte-opts {:tables (rename-tables filtered-tables)})
+	topic-data-ctes (generate-ctes :data params opts)
+	topic-ctes (generate-ctes :topic params opts)
+	topic-cte (generate-topic-cte {} opts)]
     (str
      "WITH "
      (str/join
@@ -407,8 +408,8 @@
   organisations) data."
   [params opts]
   (let [topic-data-ctes (generate-ctes :entity_data params opts)
-        topic-ctes (generate-ctes :topic params opts)
-        topic-cte (generate-topic-cte {} opts)]
+	topic-ctes (generate-ctes :topic params opts)
+	topic-cte (generate-topic-cte {} opts)]
     (str
      "WITH "
      (str/join
@@ -460,30 +461,30 @@
 (defn- generate-get-topics-query
   [{:keys [order-by limit offset descending upcoming topic]}]
   (let [order (if descending "DESC" "ASC")
-        order-by-clause (cond
+	order-by-clause (cond
 			  ;; We assume the upcoming filter will always
 			  ;; be together with the event topic. The
 			  ;; browse API disallows its usage if there
 			  ;; are multiple topics.
-                          (and upcoming (= (first topic) "event"))
-                          "ORDER BY json->>'start_date' ASC"
+			  (and upcoming (= (first topic) "event"))
+			  "ORDER BY json->>'start_date' ASC"
 
-                          (= order-by "featured")
-                          "ORDER BY json->>'featured' DESC NULLS LAST, (json->>'created')::timestamptz DESC"
+			  (= order-by "featured")
+			  "ORDER BY json->>'featured' DESC NULLS LAST, (json->>'created')::timestamptz DESC"
 
-                          (seq order-by)
-                          (format "ORDER BY json->>'%s' %s" order-by order)
+			  (seq order-by)
+			  (format "ORDER BY json->>'%s' %s" order-by order)
 
-                          :else
-                          "ORDER BY (COALESCE(json->>'start_date', json->>'created'))::timestamptz DESC")]
+			  :else
+			  "ORDER BY (COALESCE(json->>'start_date', json->>'created'))::timestamptz DESC")]
     (str/join
      " "
      ["SELECT * FROM cte_results"
       order-by-clause
       (when limit
-        "LIMIT :limit")
+	"LIMIT :limit")
       (when offset
-        "OFFSET :offset")])))
+	"OFFSET :offset")])))
 
 #_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (defn generate-get-topics
@@ -506,42 +507,42 @@
 (defn generate-filter-topic-snippet
   "Generates the SQL to apply filters to the topics aggregate."
   [{:keys [favorites user-id topic start-date end-date
-           geo-coverage-country-groups
-           geo-coverage-countries resource-types
-           affiliation]}]
+	   geo-coverage-country-groups
+	   geo-coverage-countries resource-types
+	   affiliation]}]
   (let [geo-coverage-country-groups? (seq geo-coverage-country-groups)
-        geo-coverage-countries? (seq geo-coverage-countries)]
+	geo-coverage-countries? (seq geo-coverage-countries)]
     (str/join
      " "
      (list
       "SELECT t.* FROM cte_topic t"
       ;; FIXME fix this to user a query instead of a view.
       (when (and favorites user-id resource-types)
-        "JOIN v_stakeholder_association a
+	"JOIN v_stakeholder_association a
 	 ON a.stakeholder = :user-id
 	 AND a.id = (t.json->>'id')::int
 	 AND (a.topic = t.topic OR (a.topic = 'resource'
 	      AND t.topic IN (:v*:resource-types)))")
       " WHERE 1=1"
       (when (seq topic)
-        " AND topic IN (:v*:topic)")
+	" AND topic IN (:v*:topic)")
       (when (seq affiliation)
-        " AND (t.json->'affiliation'->>'id')::int IN (:v*:affiliation)")
+	" AND (t.json->'affiliation'->>'id')::int IN (:v*:affiliation)")
       (when (and (= (count topic) 1)
-                 (= (first topic) "event"))
-        (cond
-          (and (seq start-date) (seq end-date))
-          " AND (TO_DATE(json->>'start_date', 'YYYY-MM-DD'), (TO_DATE(json->>'end_date', 'YYYY-MM-DD'))) OVERLAPS
+		 (= (first topic) "event"))
+	(cond
+	  (and (seq start-date) (seq end-date))
+	  " AND (TO_DATE(json->>'start_date', 'YYYY-MM-DD'), (TO_DATE(json->>'end_date', 'YYYY-MM-DD'))) OVERLAPS
 		(:start-date::date, :end-date::date)"
-          (seq start-date)
-          " AND TO_DATE(json->>'start_date', 'YYYY-MM-DD') >= :start-date::date"
-          (seq end-date)
-          " AND TO_DATE(json->>'end_date', 'YYYY-MM-DD') <= :end-date::date"))
+	  (seq start-date)
+	  " AND TO_DATE(json->>'start_date', 'YYYY-MM-DD') >= :start-date::date"
+	  (seq end-date)
+	  " AND TO_DATE(json->>'end_date', 'YYYY-MM-DD') <= :end-date::date"))
       (cond
-        (and geo-coverage-countries? geo-coverage-country-groups?)
-        (str " AND (" (generic-json-array-lookup-cond "t.json->>'geo_coverage_countries'" "geo-coverage-countries")
-             " OR t.json->>'geo_coverage_type'='transnational'
+	(and geo-coverage-countries? geo-coverage-country-groups?)
+	(str " AND (" (generic-json-array-lookup-cond "t.json->>'geo_coverage_countries'" "geo-coverage-countries")
+	     " OR t.json->>'geo_coverage_type'='transnational'
 	       AND " (generic-json-array-lookup-cond "t.json->>'geo_coverage_country_groups'" "geo-coverage-country-groups") ")")
 
-        geo-coverage-countries?
-        (str " AND " (generic-json-array-lookup-cond "t.json->>'geo_coverage_countries'" "geo-coverage-countries")))))))
+	geo-coverage-countries?
+	(str " AND " (generic-json-array-lookup-cond "t.json->>'geo_coverage_countries'" "geo-coverage-countries")))))))
