@@ -86,8 +86,8 @@ const ResourceCards = ({
   }
   useEffect(() => {
     if (params != null) {
-      const _stateItem = stateItems.find((it) => it.id === params.item.id)
-      setParams({ type: _stateItem.type, id: _stateItem.id, item: _stateItem })
+      const _stateItem = stateItems.find((it) => it.id === params?.item?.id)
+      setParams({ type: _stateItem?.type, id: _stateItem?.id, item: _stateItem })
     }
   }, [stateItems])
   return (
