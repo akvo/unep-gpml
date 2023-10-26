@@ -741,7 +741,9 @@ const AdminSection = ({
       .post(`/badge/${badgeName}/assign`, data)
       .then((resp) => {
         notification.success({
-          message: `Your request to add ${badgeName} has been approved!`,
+          message: `Your request to ${
+            assign ? 'add' : 'remove'
+          } ${badgeName} has been approved!`,
         })
         const updatedState = {
           ...listOpts,
