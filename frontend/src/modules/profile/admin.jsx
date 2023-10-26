@@ -1000,23 +1000,29 @@ const AdminSection = ({
                         (bName) => bName.badgeName === b.name
                       )
                       return (
-                        <div
-                          key={b.name}
-                          className={`badge-icon ${find ? 'verified' : ''}`}
-                          onClick={(e) =>
-                            handleVerify(
-                              e,
-                              item,
-                              b.name,
-                              find ? false : true,
-                              listOpts,
-                              setListOpts,
-                              'resource'
-                            )
-                          }
+                        <Tooltip
+                          placement="top"
+                          title={find ? `Remove ${b.name}` : `Add ${b.name}`}
+                          color="#020A5B"
                         >
-                          <img src={b.img} />
-                        </div>
+                          <div
+                            key={b.name}
+                            className={`badge-icon ${find ? 'verified' : ''}`}
+                            onClick={(e) =>
+                              handleVerify(
+                                e,
+                                item,
+                                b.name,
+                                find ? false : true,
+                                listOpts,
+                                setListOpts,
+                                'resource'
+                              )
+                            }
+                          >
+                            <img src={b.img} />
+                          </div>
+                        </Tooltip>
                       )
                     })}
                   </div>
@@ -1028,23 +1034,29 @@ const AdminSection = ({
                         (bName) => bName.badgeName === b.name
                       )
                       return (
-                        <div
-                          key={b.name}
-                          className={`badge-icon ${find ? 'verified' : ''}`}
-                          onClick={(e) =>
-                            handleVerify(
-                              e,
-                              item,
-                              b.name,
-                              find ? false : true,
-                              listOpts,
-                              setListOpts,
-                              'organisation'
-                            )
-                          }
+                        <Tooltip
+                          placement="top"
+                          title={find ? `Remove ${b.name}` : `Add ${b.name}`}
+                          color="#020A5B"
                         >
-                          <img src={b.img} />
-                        </div>
+                          <div
+                            key={b.name}
+                            className={`badge-icon ${find ? 'verified' : ''}`}
+                            onClick={(e) =>
+                              handleVerify(
+                                e,
+                                item,
+                                b.name,
+                                find ? false : true,
+                                listOpts,
+                                setListOpts,
+                                'organisation'
+                              )
+                            }
+                          >
+                            <img src={b.img} />
+                          </div>
+                        </Tooltip>
                       )
                     })}
                   </div>
@@ -1056,23 +1068,29 @@ const AdminSection = ({
                         (bName) => bName.badgeName === b.name
                       )
                       return (
-                        <div
-                          key={b.name}
-                          className={`badge-icon ${find ? 'verified' : ''}`}
-                          onClick={(e) =>
-                            handleVerify(
-                              e,
-                              item,
-                              b.name,
-                              find ? false : true,
-                              listOpts,
-                              setListOpts,
-                              'stakeholder'
-                            )
-                          }
+                        <Tooltip
+                          placement="top"
+                          title={find ? `Remove ${b.name}` : `Add ${b.name}`}
+                          color="#020A5B"
                         >
-                          <img src={b.img} />
-                        </div>
+                          <div
+                            key={b.name}
+                            className={`badge-icon ${find ? 'verified' : ''}`}
+                            onClick={(e) =>
+                              handleVerify(
+                                e,
+                                item,
+                                b.name,
+                                find ? false : true,
+                                listOpts,
+                                setListOpts,
+                                'stakeholder'
+                              )
+                            }
+                          >
+                            <img src={b.img} />
+                          </div>
+                        </Tooltip>
                       )
                     })}
                   </div>
