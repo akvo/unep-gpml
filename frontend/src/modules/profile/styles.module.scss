@@ -366,6 +366,21 @@
             transform: translate(-50%, -50%);
           }
         }
+        .badge-wrapper {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          margin: 0 30px;
+          .badge-icon {
+            position: relative;
+            filter: grayscale(100%);
+            transition: filter 0.3s;
+
+            &.verified {
+              filter: grayscale(0%);
+            }
+          }
+        }
         &.stakeholder-row {
           display: flex;
           align-items: center;
@@ -506,7 +521,7 @@
             }
           }
           &.action {
-            flex: 1;
+            // flex: 1;
             display: flex;
             justify-content: flex-end;
             align-items: center;
