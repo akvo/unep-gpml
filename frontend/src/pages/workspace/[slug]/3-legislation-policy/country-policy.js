@@ -203,7 +203,7 @@ const CountryPolicyTable = ({ psItem, setLoginVisible, isAuthenticated }) => {
     const page = pagination.current - 1
     let queryString = `?page=${page}&limit=${pagination.pageSize}`
     queryString += `&ps_country_iso_code_a2=${psItem?.country?.isoCodeA2}`
-    queryString += `&country=${psItem?.country?.id}&topic=policy`
+    queryString += `&country=${psItem?.country?.id}&topic=policy&badges=true`
     try {
       const { data: apiData } = await api.get(`/browse${queryString}`)
       const { results, counts } = apiData || {}
@@ -329,11 +329,29 @@ const CountryPolicyTable = ({ psItem, setLoginVisible, isAuthenticated }) => {
                 key={cx}
                 {...col}
                 render={(values) => {
-                  const stringTags = values?.map(({ tag }) => tag)?.join(', ')
+                  // const stringTags = values?.map(({ tag }) => tag)?.join(', ')
+                  const threshold = 3
                   return (
-                    <Tooltip placement="top" title={stringTags}>
-                      <div>{stringTags}</div>
-                    </Tooltip>
+                    <div className="tag-list">
+                      {values.slice(0, threshold).map((tag) => (
+                        <span className="tag">{tag.tag}</span>
+                      ))}
+                      {values.length > threshold && (
+                        <Tooltip
+                          title={values
+                            .slice(threshold)
+                            .map((it) => it.tag)
+                            .join(', ')}
+                        >
+                          <span className="plus-more">
+                            +{values.length - threshold} more
+                          </span>
+                        </Tooltip>
+                      )}
+                    </div>
+                    // <Tooltip placement="top" title={stringTags}>
+                    //   <div>{stringTags}</div>
+                    // </Tooltip>
                   )
                 }}
               />

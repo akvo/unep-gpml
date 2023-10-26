@@ -34,6 +34,12 @@
       .ant-table-tbody .ant-table-row td {
         max-width: 211px;
         text-transform: capitalize;
+        &:first-child {
+          // display: flex;
+          // align-items: center;
+          // justify-content: center;
+          text-align: center;
+        }
         .ant-btn.ant-btn-link {
           .icon {
             display: flex;
@@ -76,9 +82,32 @@
         }
         &:nth-of-type(3) .ant-btn.ant-btn-link span,
         &:nth-of-type(6) > div {
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
+          // white-space: nowrap;
+          // overflow: hidden;
+          // text-overflow: ellipsis;
+          text-wrap: wrap;
+          text-align: left;
+          padding: 10px 0;
+        }
+        .tag-list {
+          // display: flex;
+          // flex-wrap: wrap;
+          // line-height: 27px;
+          // overflow: hidden;
+          span {
+            display: inline-block;
+            border: 2px solid $primaryDarkBlue2;
+            border-radius: 15px;
+            padding: 1px 8px;
+            margin-right: 3px;
+            max-width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            &.plus-more {
+              white-space: nowrap;
+            }
+          }
         }
       }
     }
