@@ -1,6 +1,10 @@
-import { Tabs, Collapse, Card, Tag, Input, Col, Row, Form } from 'antd'
+import { Tabs, Collapse, Card, Tag, Input, Col, Row, Form, Select } from 'antd'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import isEmpty from 'lodash/isEmpty'
+import values from 'lodash/values'
+import flatten from 'lodash/flatten'
 import styles from './index.module.scss'
 import {
   CirclePointer,
@@ -19,6 +23,7 @@ import { Pagination } from 'swiper'
 import moment from 'moment'
 import { useDeviceSize } from '../../modules/landing/landing'
 import Button from '../../components/button'
+import { UIStore } from '../../store'
 
 const pagination = {
   clickable: true,
@@ -48,6 +53,8 @@ const Landing = () => (
 const Hero = () => {
   const [selected, setSelected] = useState('Governments')
   const [timeout, _setTimeout] = useState(true)
+  const [filter, setFilter] = useState({})
+
   const intidRef = useRef()
   const [width] = useDeviceSize()
   const items = [
@@ -82,6 +89,22 @@ const Hero = () => {
         'The GPML digital platform allows NGOS and civil society to connect with likeminded organizations, discover financing resources and funding opportunities, and showcase their work in the fight against plastic pollution and marine litter.',
     },
   ]
+  const router = useRouter()
+  const tags = UIStore.useState((s) => s.tags)
+  // populate options for tags dropdown
+  const tagsWithoutSpace =
+    !isEmpty(tags) &&
+    flatten(values(tags)).map((it) => ({
+      value: it?.tag?.trim(),
+      label: it?.tag?.trim(),
+    }))
+
+  const tagOpts = !isEmpty(tags)
+    ? [...new Set(tagsWithoutSpace.map((s) => JSON.stringify(s)))]
+        .map((s) => JSON.parse(s))
+        ?.sort((tag1, tag2) => tag1?.label.localeCompare(tag2?.label))
+    : []
+
   useEffect(() => {
     let index = 0
     clearInterval(intidRef.current)
@@ -96,6 +119,34 @@ const Hero = () => {
     clearInterval(intidRef.current)
     _setTimeout(false)
   }
+
+  const updateQuery = (param, value) => {
+    const newQuery = { ...filter }
+    newQuery[param] = value
+    // Remove empty query
+    const arrayOfQuery = Object.entries(newQuery)?.filter(
+      (item) =>
+        item[1]?.length !== 0 &&
+        typeof item[1] !== 'undefined' &&
+        item[1] !== null
+    )
+    const pureQuery = Object.fromEntries(arrayOfQuery)
+    setFilter(pureQuery)
+  }
+
+  const handleOnSearch = () => {
+    if (!filter?.tag) {
+      return
+    }
+    const tags = filter.tag.join(',')
+    router.push({
+      pathname: '/knowledge/library',
+      query: {
+        tag: tags,
+      },
+    })
+  }
+
   return (
     <>
       <div className="hero">
@@ -170,10 +221,23 @@ const Hero = () => {
       <div className="container">
         <div className="search-bar">
           <div className="bar">
-            <Input
-              prefix={width < 768 && <Magnifier />}
+            <Select
+              mode="multiple"
+              className="ant-select-search"
+              dropdownClassName={styles.dropdownSuggestion}
               placeholder="Search the resource database..."
-              type="text"
+              options={tagOpts || []}
+              filterOption={(input, option) =>
+                option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+              value={filter?.tag?.map((x) => x) || []}
+              onChange={(val) => updateQuery('tag', val)}
+              onDeselect={() => updateQuery('tag', [])}
+              suffixIcon={width < 768 && <Magnifier />}
+              virtual={false}
+              showArrow
+              showSearch
+              allowClear
             />
             <div className="localisation h-xs">
               <Localiser />
@@ -183,6 +247,7 @@ const Hero = () => {
               type="primary"
               size="small"
               className="left-icon hide-mobile"
+              onClick={handleOnSearch}
             >
               <Magnifier />
               Search
