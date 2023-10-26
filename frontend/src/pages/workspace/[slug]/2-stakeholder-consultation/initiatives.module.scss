@@ -3,15 +3,25 @@
 .initiativesView {
   :global {
     .filter-container {
-      width: 80%;
+      width: 100%;
       display: flex;
       align-items: center;
       gap: 8px;
       margin-bottom: 34px;
       .ant-select {
-        width: 100%;
+        flex: 1;
+        max-width: 25%;
+        border: 1px solid $primaryDarkBlue2;
+        border-radius: 5px;
+        &:not(.ant-select-customize-input) {
+          .ant-select-selector {
+            background-color: #fff;
+            // height: 50px;
+          }
+        }
+        font-size: 14px;
         input {
-          height: 40px;
+          // height: 60px;
         }
         .ant-select-selection-placeholder {
           color: $primaryDarkBlue;

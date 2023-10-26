@@ -55,23 +55,22 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
   const ops4 = uniqBy(stakeholders, 'value')
 
   const filterSk = ({ entityConnections }, filter) =>
-    entityConnections?.filter((sc) =>
-      filter?.stakeholder?.includes(sc.entityId)
-    ).length > 0
+    entityConnections?.filter((sc) => filter?.stakeholder === sc.entityId)
+      .length > 0
 
   const filteredItems = useMemo(() => {
     if (Object.keys(filter).length) {
       return items.filter((i) => {
-        if (filter?.geoCoverageType?.length && filter?.stakeholder?.length) {
+        if (filter?.geoCoverageType?.length && filter?.stakeholder) {
           return (
             filter.geoCoverageType.includes(i.geoCoverageType) &&
             filterSk(i, filter)
           )
         }
-        if (filter?.geoCoverageType?.length && !filter?.stakeholder?.length) {
+        if (filter?.geoCoverageType?.length && !filter?.stakeholder) {
           return filter.geoCoverageType.includes(i.geoCoverageType)
         }
-        if (!filter?.geoCoverageType?.length && filter?.stakeholder?.length) {
+        if (!filter?.geoCoverageType?.length && filter?.stakeholder) {
           return filterSk(i, filter)
         }
         return i
@@ -127,34 +126,37 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
         <Select
           allowClear
           showArrow
+          size="large"
           placeholder="Initiative type"
           onChange={(values) => {
             handleSelectOption('subContentType', true, values)
           }}
-          options={ops1}
+          options={[{ label: 'Any', value: null }, ...ops1]}
         />
         <Select
           allowClear
           showArrow
+          size="large"
           placeholder="Representative group"
           onChange={(values) => {
             handleSelectOption('representativeGroup', true, values)
           }}
-          options={ops2}
+          options={[{ label: 'Any', value: null }, ...ops2]}
         />
         <Select
           allowClear
           showArrow
+          size="large"
           placeholder="Geo-coverage"
           onChange={(values) => {
             handleSelectOption('geoCoverageType', false, values)
           }}
-          options={ops3}
+          options={[{ label: 'Any', value: null }, ...ops3]}
         />
         <Select
           allowClear
           showArrow
-          mode="multiple"
+          size="large"
           placeholder="Stakeholder"
           onChange={(values) => {
             handleSelectOption('stakeholder', false, values)
