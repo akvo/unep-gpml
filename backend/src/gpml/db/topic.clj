@@ -180,19 +180,21 @@
                                ""
                                (format ", psb.%s_id" entity-name))
         badges-join (if-not (nil? badges)
-                      (format "LEFT JOIN %s_badge eb ON eb.%s_id = e.id"
+                      (format "LEFT JOIN %s_badge eb ON eb.%s_id = e.id
+                               LEFT JOIN badge b ON b.id = eb.badge_id"
                               entity-name
                               entity-name)
                       "")
         badges-select (if-not (nil? badges)
                         (format "json_agg(
-				   DISTINCT jsonb_build_object(
-				     'badge_id', eb.badge_id,
-				     '%s_id', eb.%s_id,
-				     'assigned_by', eb.assigned_by,
-				     'assigned_at', eb.assigned_at
-				   )
-				 ) FILTER (WHERE eb.badge_id IS NOT NULL) AS assigned_badges,"
+                                   DISTINCT jsonb_build_object(
+                                     'badge_id', eb.badge_id,
+                                     'badge_name', b.name,
+                                     '%s_id', eb.%s_id,
+                                     'assigned_by', eb.assigned_by,
+                                     'assigned_at', eb.assigned_at
+                                   )
+                                 ) FILTER (WHERE eb.badge_id IS NOT NULL) AS assigned_badges,"
                                 entity-name
                                 entity-name)
                         "")
