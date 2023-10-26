@@ -222,7 +222,6 @@ const Hero = () => {
         <div className="search-bar">
           <div className="bar">
             <Select
-              mode="multiple"
               className="ant-select-search"
               dropdownClassName={styles.dropdownSuggestion}
               placeholder="Search the resource database..."
@@ -235,9 +234,7 @@ const Hero = () => {
               onDeselect={() => updateQuery('tag', [])}
               suffixIcon={width < 768 && <Magnifier />}
               virtual={false}
-              showArrow
               showSearch
-              allowClear
             />
             <div className="localisation h-xs">
               <Localiser />
