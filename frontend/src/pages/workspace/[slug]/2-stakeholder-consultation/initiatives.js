@@ -99,17 +99,21 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
     }
     return items
   }, [items, filter])
+  const { slug, org: entityID } = router.query
+  const country = slug?.replace('plastic-strategy-', '')
 
   const handleSelectOption = (name, value) => {
     setFilter({ ...filter, [name]: value })
+    if (entityID && value === null) {
+      setLoading(true)
+      router.push(`/workspace/${slug}/2-stakeholder-consultation/initiatives`)
+    }
   }
 
   useEffect(() => {
-    const { slug, org: entityID } = router.query
-    const country = slug?.replace('plastic-strategy-', '')
     const countryCode = isoA2[country]
     const countryId = iso2id[countryCode]
-    if (countryId != null) {
+    if (countryId != null && loading) {
       let params = { topic: 'initiative', ps_country_iso_code_a2: countryCode }
       params = entityID
         ? {
@@ -125,7 +129,13 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
         setLoading(false)
       })
     }
-  }, [router])
+    if (filter?.stakeholder === undefined && entityID && ops4.length) {
+      setFilter({
+        ...filter,
+        stakeholder: parseInt(entityID, 10),
+      })
+    }
+  }, [country, entityID, filter, ops4, loading])
 
   return (
     <div className={styles.initiativesView}>
@@ -183,9 +193,10 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
           size="large"
           placeholder="Stakeholder"
           onChange={(values) => {
-            handleSelectOption('stakeholder', values)
+            handleSelectOption('stakeholder', values || null)
           }}
           options={ops4}
+          value={filter?.stakeholder}
         />
       </div>
       <ResourceCards
