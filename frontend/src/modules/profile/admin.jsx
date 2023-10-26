@@ -1018,7 +1018,7 @@ const AdminSection = ({
                                 find ? false : true,
                                 listOpts,
                                 setListOpts,
-                                item.type
+                                item.topic
                               )
                             }
                           >
