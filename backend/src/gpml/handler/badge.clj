@@ -87,14 +87,19 @@
           (if (= reason :not-found)
             (r/not-found {:reason :badge-not-found})
             (r/server-error (dissoc result :success?)))
-          (if-not (h.r.permission/operation-allowed? config
-                                                     {:user-id (:id user)
-                                                      :entity-type :badge
-                                                      :entity-id (if (seq badge)
-                                                                   (:id badge)
-                                                                   badge-id-or-name)
-                                                      :operation-type :assign
-                                                      :root-context? false})
+          (if-not (or (h.r.permission/operation-allowed? config
+                                                         {:user-id (:id user)
+                                                          :entity-type :badge
+                                                          :entity-id (if (seq badge)
+                                                                       (:id badge)
+                                                                       badge-id-or-name)
+                                                          :operation-type :assign
+                                                          :root-context? false})
+                      ;; FIXME: This is a bypass as per internal
+                      ;; decision. This should be removed in the
+                      ;; future and dealt with enterily with RBAC
+                      ;; system.
+                      (= (:name badge) "country-validated"))
             (r/forbidden {:message "Unauthorized"})
             (let [badge-id (if (seq badge)
                              (:id badge)
