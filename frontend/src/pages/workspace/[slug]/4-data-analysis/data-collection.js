@@ -18,7 +18,7 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
     if (countryCode)
       api
         .get(
-          `/browse?tag=data+analysis+-+data+collection&ps_country_iso_code_a2=${countryCode}`
+          `/browse?tag=data+analysis+-+data+collection&badges=true&ps_country_iso_code_a2=${countryCode}`
         )
         .then((d) => {
           setItems(d.data?.results)

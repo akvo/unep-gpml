@@ -18,7 +18,7 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
     if (countryCode)
       api
         .get(
-          `/browse?tag=stakeholder+consultation+process&ps_country_iso_code_a2=${countryCode}`
+          `/browse?tag=stakeholder+consultation+process&badges=true&ps_country_iso_code_a2=${countryCode}`
         )
         .then((d) => {
           setItems(d.data?.results)

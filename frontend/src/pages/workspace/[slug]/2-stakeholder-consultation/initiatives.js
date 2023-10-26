@@ -20,7 +20,7 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
     if (countryId != null) {
       api
         .get(
-          `/browse?country=${countryId}&topic=initiative&ps_country_iso_code_a2=${countryCode}`
+          `/browse?country=${countryId}&topic=initiative&badges=true&ps_country_iso_code_a2=${countryCode}`
         )
         .then((d) => {
           setItems(d.data?.results)

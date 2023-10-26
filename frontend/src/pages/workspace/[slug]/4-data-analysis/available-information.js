@@ -18,7 +18,7 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
     if (countryCode)
       api
         .get(
-          `/browse?country=${iso2id[countryCode]}&ps_country_iso_code_a2=${countryCode}&topic=technology,event,financing_resource,technical_resource&capacity_building=true`
+          `/browse?country=${iso2id[countryCode]}&badges=true&ps_country_iso_code_a2=${countryCode}&topic=technology,event,financing_resource,technical_resource&capacity_building=true`
         )
         .then((d) => {
           setItems(d.data?.results)

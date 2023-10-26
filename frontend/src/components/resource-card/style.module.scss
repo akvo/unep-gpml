@@ -24,6 +24,10 @@
       bottom: 10px;
       right: 10px;
       z-index: 3;
+      display: flex;
+      & > * {
+        margin-left: 5px;
+      }
       .tag {
         border-radius: 12px;
         border: 1px solid $primaryDarkBlue;
@@ -34,6 +38,13 @@
         text-transform: uppercase;
         padding: 0 7px;
         background-color: rgba(255, 255, 255, 0.85);
+      }
+      .badge {
+        height: 25px;
+        svg {
+          width: 25px;
+          height: 25px;
+        }
       }
     }
   }

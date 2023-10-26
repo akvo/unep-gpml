@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import Image from 'next/image'
 import styles from './style.module.scss'
-import { BookmarkIconProper } from '../icons'
+import { BookmarkIconProper, badges } from '../icons'
 import { useState } from 'react'
 import { Tooltip } from 'antd'
 import { t } from '@lingui/macro'
@@ -37,6 +37,17 @@ const ResourceCard = ({ item, bookmarked, onBookmark, onClick }) => {
         <BookmarkBtn {...{ bookmarked, onBookmark, item }} />
       )}
       <div className="tags">
+        {item.assignedBadges?.map((badge) => (
+          <Tooltip
+            title={
+              badge.badgeName === 'resource-verified'
+                ? 'GPML Verified'
+                : 'Government Verified'
+            }
+          >
+            <div className="badge">{badges.verified}</div>
+          </Tooltip>
+        ))}
         <div className="tag">{item?.type?.replace(/_/g, ' ')}</div>
       </div>
     </div>

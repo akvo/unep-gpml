@@ -18,7 +18,7 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
     if (countryCode)
       api
         .get(
-          `/browse?tag=legislative+%26+policy+review+case+study&ps_country_iso_code_a2=${countryCode}`
+          `/browse?tag=legislative+%26+policy+review+case+study&badges=true&ps_country_iso_code_a2=${countryCode}`
         )
         .then((d) => {
           setItems(d.data?.results)
