@@ -27,24 +27,24 @@ module.exports = {
   },
 
   async rewrites() {
+    let domain = 'http://backend:3000'
+    if (process.env.REACT_APP_FEENV) {
+      domain = 'https://unep-gpml.akvotest.org'
+    } else if (process.REACT_APP_FEENV_STAGING) {
+      domain = 'https://unep-gpml-staging.akvotest.org'
+    }
     return [
       {
         source: '/api/:path*',
-        destination: process.env.REACT_APP_FEENV
-          ? 'https://unep-gpml-staging.akvotest.org/api/:path*'
-          : 'http://backend:3000/api/:path*',
+        destination: `${domain}/api/:path*`,
       },
       {
         source: '/image/:path*',
-        destination: process.env.REACT_APP_FEENV
-          ? 'https://unep-gpml-staging.akvotest.org/image/:path*'
-          : 'http://backend:3000/image/:path*',
+        destination: `${domain}/image/:path*`,
       },
       {
         source: '/env.js',
-        destination: process.env.REACT_APP_FEENV
-          ? 'https://unep-gpml-staging.akvotest.org/env.js'
-          : 'http://backend:3000/env.js',
+        destination: `${domain}/env.js`,
       },
     ]
   },
