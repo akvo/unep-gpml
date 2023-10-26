@@ -142,6 +142,7 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
         <Select
           allowClear
           showArrow
+          dropdownMatchSelectWidth={false}
           size="large"
           placeholder="Initiative type"
           onChange={(values) => {
@@ -152,6 +153,7 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
         <Select
           allowClear
           showArrow
+          dropdownMatchSelectWidth={false}
           size="large"
           placeholder="Representative group"
           onChange={(values) => {
@@ -166,6 +168,7 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
         <Select
           allowClear
           showArrow
+          dropdownMatchSelectWidth={false}
           size="large"
           placeholder="Geo-coverage"
           onChange={(values) => {
@@ -176,6 +179,7 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
         <Select
           allowClear
           showArrow
+          dropdownMatchSelectWidth={false}
           size="large"
           placeholder="Stakeholder"
           onChange={(values) => {
