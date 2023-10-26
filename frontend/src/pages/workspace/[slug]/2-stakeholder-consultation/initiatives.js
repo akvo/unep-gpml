@@ -44,19 +44,19 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
     value: geoType?.toLowerCase(),
   }))
   /**
-   * Collect all stakeholder connections as options
+   * Collect all entity connections as options
    */
   const stakeholders = items
-    ?.flatMap((i) => i?.stakeholderConnections)
+    ?.flatMap((i) => i?.entityConnections)
     ?.map((s) => ({
-      label: s?.stakeholder,
-      value: s?.stakeholderId,
+      label: s?.name,
+      value: s?.entityId,
     }))
   const ops4 = uniqBy(stakeholders, 'value')
 
-  const filterSk = ({ stakeholderConnections }, filter) =>
-    stakeholderConnections?.filter((sc) =>
-      filter?.stakeholder?.includes(sc.stakeholderId)
+  const filterSk = ({ entityConnections }, filter) =>
+    entityConnections?.filter((sc) =>
+      filter?.stakeholder?.includes(sc.entityId)
     ).length > 0
 
   const filteredItems = useMemo(() => {
@@ -74,7 +74,7 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
         if (!filter?.geoCoverageType?.length && filter?.stakeholder?.length) {
           return filterSk(i, filter)
         }
-        return true
+        return i
       })
     }
     return items
