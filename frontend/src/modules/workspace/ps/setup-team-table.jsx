@@ -18,6 +18,7 @@ import { UIStore } from '../../../store'
 import { ROLES, TEAMS } from './config'
 import styles from './setup-team-table.module.scss'
 import { InfoCircleOutlined } from '@ant-design/icons'
+import { Trans, t } from '@lingui/macro'
 
 const { Column } = Table
 const { Text } = Typography
@@ -42,7 +43,7 @@ const SetupTeamTable = ({ psItem, members, setMembers }) => {
     )
     return [
       {
-        title: 'Contact',
+        title: t`Contact`,
         dataIndex: 'contact',
         filters: filterNames,
         onFilter: (value, record) => record.contact.indexOf(value) === 0,
@@ -50,7 +51,7 @@ const SetupTeamTable = ({ psItem, members, setMembers }) => {
         sortDirections: ['ascend'],
       },
       {
-        title: 'Organisation',
+        title: t`Organisation`,
         dataIndex: 'organisation',
         filters: filterOrgs,
         onFilter: (value, record) => value === record.organisation,
@@ -58,12 +59,12 @@ const SetupTeamTable = ({ psItem, members, setMembers }) => {
         sortDirections: ['ascend'],
       },
       {
-        title: 'Assigned to',
+        title: t`Assigned to`,
         dataIndex: 'teams',
         sorter: (a, b) => a.teams?.[0]?.localeCompare(b.teams?.[0]),
       },
       {
-        title: 'Role',
+        title: t`Role`,
         dataIndex: 'role',
         sorter: (a, b) => a.role.localeCompare(b.role),
       },
@@ -120,7 +121,7 @@ const SetupTeamTable = ({ psItem, members, setMembers }) => {
   const handleOnDeleteMember = (record) => {
     Modal.confirm({
       title: `${record?.firstName} ${record?.lastName}`,
-      content: 'Are you sure you want to delete this member?',
+      content: t`Are you sure you want to delete this member?`,
       onOk: async () => {
         try {
           await api.delete(
@@ -173,11 +174,7 @@ const SetupTeamTable = ({ psItem, members, setMembers }) => {
   }, [getTeamMembers])
 
   return (
-    <Table
-      dataSource={members}
-      loading={loading}
-      pagination={false}
-    >
+    <Table dataSource={members} loading={loading} pagination={false}>
       {columns.map((col, cx) => {
         if (col.dataIndex === 'role') {
           return (
@@ -201,7 +198,9 @@ const SetupTeamTable = ({ psItem, members, setMembers }) => {
                         ))}
                         <Divider className={styles.roleDivider} />
                         <Menu.Item onClick={() => handleOnDeleteMember(record)}>
-                          <Text type="danger">Delete</Text>
+                          <Text type="danger">
+                            <Trans>Delete</Trans>
+                          </Text>
                         </Menu.Item>
                       </Menu>
                     }
@@ -224,7 +223,7 @@ const SetupTeamTable = ({ psItem, members, setMembers }) => {
               render={(data, record) => {
                 const teamsValue = data?.length
                   ? data.map((d) => d?.replace(/-/g, ' ')).join(' & ')
-                  : 'Not Assigned'
+                  : t`Not Assigned`
                 return (
                   <Dropdown
                     overlay={
@@ -240,7 +239,9 @@ const SetupTeamTable = ({ psItem, members, setMembers }) => {
                                 title={t.description}
                                 trigger={['hover']}
                               >
-                                <InfoCircleOutlined style={{ marginLeft: 10 }} />
+                                <InfoCircleOutlined
+                                  style={{ marginLeft: 10 }}
+                                />
                               </Tooltip>
                             </span>
                           ),

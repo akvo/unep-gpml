@@ -65,7 +65,7 @@ export const HeaderButtons = ({
     <Col className="tool-buttons">
       {onBookmark2PS != null && (
         <Tooltip
-          title={bookmark2PS ? 'Remove from Library' : 'Save to Library'}
+          title={bookmark2PS ? t`Remove from Library` : t`Save to Library`}
         >
           <Button
             size="small"

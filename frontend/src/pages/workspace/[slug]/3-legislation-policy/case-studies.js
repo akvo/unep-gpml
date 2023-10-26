@@ -4,6 +4,7 @@ import api from '../../../../utils/api'
 import ResourceCards from '../../../../modules/workspace/ps/resource-cards'
 import { useRouter } from 'next/router'
 import { isoA2 } from '../../../../modules/workspace/ps/config'
+import { Trans, t } from '@lingui/macro'
 
 const sectionKey = 'stakeholder-case-studies'
 
@@ -38,9 +39,15 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
   }
   return (
     <>
-      <h4 className="caps-heading-m">LEGISLATION & POLICY REVIEW REPORT</h4>
-      <h2 className="h-xxl w-bold">Case Studies</h2>
-      <p>Placeholder for description here</p>
+      <h4 className="caps-heading-m">
+        <Trans>LEGISLATION & POLICY REVIEW REPORT</Trans>
+      </h4>
+      <h2 className="h-xxl w-bold">
+        <Trans>Case Studies</Trans>
+      </h2>
+      <p>
+        <Trans>Description - Section 3 - Case Studies</Trans>
+      </p>
 
       <ResourceCards
         {...{

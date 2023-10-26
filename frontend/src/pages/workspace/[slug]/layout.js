@@ -12,15 +12,42 @@ import {
   isoA2,
   stepsState,
 } from '../../../modules/workspace/ps/config'
+import { Trans, t } from '@lingui/macro'
 import { UIStore } from '../../../store'
 import api from '../../../utils/api'
+
+const stepsDict = {
+  Instructions: t`Instructions`,
+  'National Steering Committee & Project Team':
+    'National Steering Committee & Project Team',
+  Intro: t`Intro`,
+  'Setup your team': t`Setup your team`,
+  'Stakeholder Consultation Process': t`Stakeholder Consultation Process`,
+  'Stakeholder Map': t`Stakeholder Map`,
+  'Case Studies': t`Case Studies`,
+  Initiatives: t`Initiatives`,
+  'Summary & Report': t`Summary & Report`,
+  'Legislation & Policy Review Report': t`Legislation & Policy Review Report`,
+  'Country Policy Framework': t`Country Policy Framework`,
+  'Legislative Development Guide': t`Legislative Development Guide`,
+  'Data Analysis': t`Data Analysis`,
+  'Available Tools': t`Available Tools`,
+  'Available Data & Statistics': t`Available Data & Statistics`,
+  'Data Collection': t`Data Collection`,
+  'Calculation of Indicators': t`Calculation of Indicators`,
+  'Available Information': t`Available Information`,
+  'National Source Inventory Report': t`National Source Inventory Report`,
+  'National Plastic Strategy': t`National Plastic Strategy`,
+  Upload: t`Upload`,
+  'Final Review': t`Final Review`,
+}
 
 const NestedLayout = ({ children }) => {
   const [psItem, setPSItem] = useState({})
   const [marking, setMarking] = useState(false)
   const router = useRouter()
   const pathSlugs = [...router.route.substring(1).split('/'), '']
-  const { slug } = router.query
+  const { slug, step: stepURL } = router.query
   const profile = UIStore.useState((s) => s.profile)
 
   const getBySlug = (step, _slug, indexStep = 0) =>
@@ -29,9 +56,30 @@ const NestedLayout = ({ children }) => {
 
   const psSteps = useMemo(() => {
     /**
-     * Get all steps from the BE first, otherwise take from config.
+     * Always use the SLUG from the config file (stepState).
+     * Just in case the SLUG from BE is different from the latest update.
      */
-    return psItem?.steps || stepsState
+    return psItem?.steps
+      ? psItem.steps.map((step) => {
+          const findStep = stepsState.find((s) => s?.label === step?.label)
+          if (findStep) {
+            return {
+              ...step,
+              substeps: step?.substeps?.map((subItem) => {
+                const findSubStep = findStep.substeps.find(
+                  (s) => s?.label === subItem?.label
+                )
+                if (findSubStep) {
+                  return { ...subItem, slug: findSubStep.slug }
+                }
+                return subItem
+              }),
+              slug: findStep.slug,
+            }
+          }
+          return step
+        })
+      : stepsState
   }, [psItem, stepsState])
 
   /**
@@ -173,21 +221,29 @@ const NestedLayout = ({ children }) => {
     <div className={styles.plasticStrategyView}>
       <div className={styles.sidebar}>
         <div className="head">
-          <div className="caps-heading-s">plastic strategy</div>
+          <div className="caps-heading-s">
+            <Trans>plastic strategy</Trans>
+          </div>
           <h5 className="h-m m-semi">
-            {psItem?.country?.name || 'Loading...'}
+            {psItem?.country?.name || t`Loading...`}
           </h5>
           <div className="progress-bar">
             <div className="fill" style={{ width: `${progress}%` }}></div>
           </div>
-          <div className="progress-text">{progress}% complete</div>
+          <div className="progress-text">
+            <Trans>{progress}% complete</Trans>
+          </div>
         </div>
         <div className="steps">
           {psSteps.map((step) => (
             <div
               className={classNames('step', {
-                selected: pathSlugs[2] == step.slug && !step.substeps,
-                opened: pathSlugs[2] == step.slug && step.substeps?.length > 0,
+                selected:
+                  (pathSlugs[2] == step.slug || stepURL === step.slug) &&
+                  !step.substeps,
+                opened:
+                  (pathSlugs[2] == step.slug || stepURL === step.slug) &&
+                  step.substeps?.length > 0,
               })}
             >
               <ConditionalLink step={step}>
@@ -199,7 +255,7 @@ const NestedLayout = ({ children }) => {
                   >
                     {getParentChecked(step) && <Check />}
                   </div>
-                  <div className="label">{step.label}</div>
+                  <div className="label">{stepsDict[step.label]}</div>
                   {step?.substeps && (
                     <>
                       <div className="status">
@@ -222,7 +278,8 @@ const NestedLayout = ({ children }) => {
                     <Link
                       className={classNames('step substep', {
                         selected:
-                          step.slug === pathSlugs[2] &&
+                          (step.slug === pathSlugs[2] ||
+                            stepURL === step.slug) &&
                           substep.slug === pathSlugs[3],
                       })}
                       href={`/workspace/${router.query?.slug}/${step.slug}/${substep.slug}`}
@@ -235,7 +292,7 @@ const NestedLayout = ({ children }) => {
                         >
                           {substep.checked && <Check />}
                         </div>
-                        <div className="label">{substep.label}</div>
+                        <div className="label">{stepsDict[substep.label]}</div>
                       </div>
                     </Link>
                   ))}
@@ -254,13 +311,12 @@ const NestedLayout = ({ children }) => {
           onClick={handleOnMarkAsComplete(!isCompleted)}
           loading={marking}
           className={classNames('mark-completed', { completed: isCompleted })}
-          // disabled={markAsDisabled}
         >
           <Check />
-          {isCompleted ? 'Completed' : 'Mark as Completed'}
+          {isCompleted ? t`Completed` : `Mark as Completed`}
         </Button>
         <Button onClick={handleOnNext} withArrow>
-          Next
+          <Trans>Next</Trans>
         </Button>
       </div>
     </div>

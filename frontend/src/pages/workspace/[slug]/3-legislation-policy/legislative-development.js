@@ -1,23 +1,29 @@
 import { useRouter } from 'next/router'
 import { PageLayout } from '..'
 import Button from '../../../../components/button'
+import { Trans, t } from '@lingui/macro'
 
 const View = () => {
   return (
     <>
-      <h4 className="caps-heading-m">Legislation & Policy Review Report</h4>
-      <h2 className="h-xxl w-bold">Legislative Development Guide</h2>
+      <h4 className="caps-heading-m">
+        <Trans>Legislation & Policy Review Report</Trans>
+      </h4>
+      <h2 className="h-xxl w-bold">
+        <Trans>Legislative Development Guide</Trans>
+      </h2>
       <p>
-        Review the evolution of South Africa’s legislative framework. Access a
+        <Trans>Description - Section 3 - Legislative Development Guide</Trans>
+        {/* Review the evolution of South Africa’s legislative framework. Access a
         wide range of resources ranging from source documents, analysis and
-        reports.
+        reports. */}
       </p>
       <a
         href="https://leap.unep.org/knowledge/toolkits/legislative-guide"
         target="_blank"
       >
         <Button type="primary" withArrow>
-          Open The Guide
+          <Trans>Open The Guide</Trans>
         </Button>
       </a>
       {/* <iframe

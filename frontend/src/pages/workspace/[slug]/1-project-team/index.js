@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import { PageLayout } from '..'
-import Button from '../../../../components/button'
+import { Trans, t } from '@lingui/macro'
 
 const slides = {
   en: {
@@ -44,9 +44,11 @@ const View = () => {
   return (
     <>
       <h4 className="caps-heading-m">
-        National steering committee & Project Team
+        <Trans>National steering committee & Project Team</Trans>
       </h4>
-      <h2 className="h-xxl w-bold">Introduction</h2>
+      <h2 className="h-xxl w-bold">
+        <Trans>Introduction</Trans>
+      </h2>
       <div className="iframe-container">
         {/* <a href={slideURL} target="_blank">
           <Button size="small" type="link">

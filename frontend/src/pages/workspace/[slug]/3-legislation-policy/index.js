@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import { PageLayout } from '..'
+import { Trans, t } from '@lingui/macro'
 
 const slides = {
   en: {
@@ -42,8 +43,12 @@ const View = () => {
     : slides.en[country]
   return (
     <>
-      <h4 className="caps-heading-m">Legislation & Policy Review Report</h4>
-      <h2 className="h-xxl w-bold">Introduction</h2>
+      <h4 className="caps-heading-m">
+        <Trans>Legislation & Policy Review Report</Trans>
+      </h4>
+      <h2 className="h-xxl w-bold">
+        <Trans>Introduction</Trans>
+      </h2>
       <iframe
         src={slideURL}
         frameborder="0"

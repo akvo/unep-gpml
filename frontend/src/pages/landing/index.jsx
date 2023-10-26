@@ -38,7 +38,7 @@ const Landing = () => (
     <Features />
     <Trusted />
     <Activities />
-    <OurVoices />
+    {/* <OurVoices /> */}
     <Partnership />
     <Partners />
     <HelpCentre />
@@ -54,7 +54,7 @@ const Hero = () => {
   const items = [
     {
       group: t`Governments`,
-      text: t`The plastic action platform empowers all countries to create and implement successful plastic strategies to end plastic pollution.`,
+      text: t`The GPML digital platform empowers all countries to create and implement successful plastic strategies to end plastic pollution including in the marine environment.`,
     },
     {
       group: t`Private Sector`,
@@ -75,7 +75,7 @@ const Hero = () => {
     },
     {
       group: t`Civil Society`,
-      text: t`The GPML digital platform allows NGOS and civil society to connect with likeminded organizations, discover financing resources and funding opportunities, and showcase their work in the fight against plastic pollution and marine litter.`,
+      text: t`The GPML digital platform allows NGOs and civil society to connect with likeminded organizations, discover financing resources and funding opportunities, and showcase their work in the fight against plastic pollution and marine litter.`,
     },
   ]
   useEffect(() => {
@@ -218,7 +218,7 @@ const ShowcasingAndStats = () => {
       label: t`ACTION PLANS`,
     },
     {
-      value: '45K',
+      value: '5',
       label: t`COMMUNITIES OF PRACTICE`,
     },
   ]
@@ -267,7 +267,7 @@ const ShowcasingAndStats = () => {
         <div className="summaries">
           <span className="purple">
             <h5>
-              195 <Trans>Governements</Trans>
+              195 <Trans>Governments</Trans>
             </h5>
           </span>
           <span className="green">
@@ -293,27 +293,40 @@ const WhoAreWe = () => {
   const items = [
     {
       id: 1,
-      title: 'Who are we?',
-      description:
-        'The Global Partnership on Plastic Pollution and Marine Litter (GPML) Digital Platform is a multi-stakeholder, knowledge sharing and networking tool which aims to facilitate action on plastic pollution and marine litter reduction and prevention.',
+      title: t`Who are we?`,
+      description: t`The Global Partnership on Plastic Pollution and Marine Litter (GPML) Digital Platform is a multi-stakeholder, knowledge sharing and networking tool which aims to facilitate action on plastic pollution and marine litter reduction and prevention.`,
     },
     {
       id: 2,
-      title: 'What we do?',
-      description:
-        'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolor sapiente maiores consequuntur provident ad a earum consectetur saepe at dicta beatae commodi incidunt deleniti inventore, natus id ullam modi omnis.',
+      title: t`What we do?`,
+      description: t`The Global Partnership on Plastic Pollution and Marine Litter (GPML) Digital Platform brings decision making power to multiple stakeholders by integrating data, crowd sourced knowledge, and fostering collaborations to co-create and advance solutions to end plastic pollution including in the marine environment.`,
     },
     {
       id: 3,
-      title: 'What is the connection between this platform and GPML?',
-      description:
-        'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolor sapiente maiores consequuntur provident ad a earum consectetur saepe at dicta beatae commodi incidunt deleniti inventore, natus id ullam modi omnis.',
+      title: t`What is the connection between this platform and GPML?`,
+      description: t`The GPML Digital Platform functions as the digital arm of the GPML, a multi-stakeholder partnership that brings together all actors working to prevent plastic pollution and marine litter.`,
     },
     {
       id: 4,
-      title: 'Why to join the partnership?',
-      description:
-        'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolor sapiente maiores consequuntur provident ad a earum consectetur saepe at dicta beatae commodi incidunt deleniti inventore, natus id ullam modi omnis.',
+      title: t`Why join the GPML?`,
+      description: (
+        <>
+          <Trans>
+            Benefits of joining:
+            <ul>
+              <li>Access to a global network of members​</li>
+              <li>
+                Opportunities to showcase your work in our newsletter, online
+                and at events
+              </li>
+              <li>A Data Hub to guide efforts towards SDGs and more​</li>
+              <li>Thousands of resources at your fingertips</li>
+              <li>Networking with other stakeholders​</li>
+              <li>Access to financing opportunities, and more!</li>
+            </ul>
+          </Trans>
+        </>
+      ),
     },
   ]
   return (
@@ -372,44 +385,42 @@ const ActNow = () => {
   const [width] = useDeviceSize()
   const items = [
     {
-      content:
-        'Start your own initiative. Get inspired by others who are making progress to end plastic pollution.',
+      content: t`Start your own initiative. Get inspired by others who are making progress to end plastic pollution.`,
       bgColor: 'purple',
       title: (
         <>
-          Case
-          <br />
-          Studies
+          <Trans>
+            Case
+            <br />
+            Studies
+          </Trans>
         </>
       ),
-      links: [{ label: 'Track progress', url: '#' }],
+      links: [{ label: t`Track progress`, url: '#' }],
     },
     {
       bgColor: 'green',
-      content:
-        'Reduce your country’s footprint. Create and advance your plastic startegy.',
-      title: 'Plastic Strategies',
+      content: t`Reduce your country’s footprint. Create and advance your plastic startegy.`,
+      title: t`Plastic Strategies`,
       links: [
-        { label: 'Track progress', url: '#' },
-        { label: 'Track action', url: '#' },
+        { label: t`Track progress`, url: '#' },
+        { label: t`Track action`, url: '#' },
       ],
     },
     {
       bgColor: 'violet',
-      content:
-        'Join others in coordinating efforts towards shared plastic solutions. From data to capacity development communities',
-      title: 'Communities of practise',
-      label: 'Coming soon',
-      links: [{ label: 'Track progress', url: '#' }],
+      content: t`Join others in coordinating efforts towards shared plastic solutions. From data to capacity development communities`,
+      title: t`Communities of practise`,
+      links: [{ label: t`Track progress`, url: '#' }],
     },
     {
       bgColor: 'blue',
-      content:
-        'Start your own initiative. get inspired by others who are making progress to end plastic pollution.',
-      title: 'Country Progress',
+      content: t`Start your own initiative. Get inspired by others who are making progress to end plastic pollution.`,
+      label: t`Coming soon`,
+      title: t`Country Progress`,
       links: [
-        { label: 'Track progress', url: '#' },
-        { label: 'Track action', url: '#' },
+        { label: t`Track progress`, url: '#' },
+        { label: t`Track action`, url: '#' },
       ],
     },
   ]
@@ -419,12 +430,16 @@ const ActNow = () => {
         <div className="wrapper">
           <div className="caps-heading-1 page-sub-heading">Why us?</div>
           <h3 className="h-xxl">
-            Act Now: <br /> <span>Co-solution with the plastic network</span>
+            <Trans>
+              Act Now: <br /> <span>Co-solution with the plastic network</span>
+            </Trans>
           </h3>
           <p className="p-l">
-            Avoid duplication of efforts. By using the platform you can match
-            with other organisations and governments to create shared solutions
-            to end plastic pollution.
+            <Trans>
+              Avoid duplication of efforts. By using the platform, you can
+              collaborate with other organisations and governments to create
+              shared solutions to end plastic pollution.
+            </Trans>
           </p>
         </div>
       </div>
@@ -569,30 +584,26 @@ const Features = () => {
   const [width] = useDeviceSize()
   const items = [
     {
-      title: 'Data tools',
+      title: t`Data tools`,
       key: 'data-tool',
-      content:
-        'Access a suite of powerful data tools tailored for tackling plastic pollution and marine litter. Utilize comprehensive data sets, layers and statistics to  gain valuable insights that empower informed decision-making and drive effective action.',
+      content: t`Access a suite of powerful data tools tailored for tackling plastic pollution and marine litter. Utilize comprehensive data sets, layers and statistics to  gain valuable insights that empower informed decision-making and drive effective action.`,
     },
     {
-      label: 'Coming soon',
-      title: 'Workspace',
+      label: t`Coming soon`,
+      title: t`Workspace`,
       key: 'workspace-feature',
-      content:
-        'Elevate your mission to address plastic pollution and marine litter through our integrated workspace feature. This feature enables you to coordinate with partners, centralize resources, strategize actions, and drive collective solutions',
+      content: t`Elevate your mission to address plastic pollution and marine litter through our integrated workspace feature. This feature enables you to coordinate with partners, centralize resources, strategize actions, and drive collective solutions`,
     },
     {
-      title: 'Match-making',
+      title: t`Match-making`,
       key: 'match-making',
-      content:
-        'Discover like-minded individuals and organizations passionate about combating plastic pollution and marine litter through our innovative matchmaking feature. Connect with fellow advocates, researchers, and activists to amplify your impact and collaborate on meaningful projects for a cleaner and healthier ocean ecosystem.',
+      content: t`Discover like-minded individuals and organizations passionate about combating plastic pollution and marine litter through our innovative matchmaking feature. Connect with fellow advocates, researchers, and activists to amplify your impact and collaborate on meaningful projects for a cleaner and healthier ocean ecosystem.`,
     },
     {
-      label: 'Coming soon',
-      title: 'AI Innovations',
+      label: t`Coming soon`,
+      title: t`AI Innovations`,
       key: 'ai-innovations',
-      content:
-        'By leveraging AI and innovation, the platform will enable proactive strategies and solutions that efficiently combat plastic pollution and marine litter',
+      content: t`By leveraging AI and innovation, the platform will enable proactive strategies and solutions that efficiently combat plastic pollution and marine litter`,
     },
   ]
 
@@ -603,20 +614,24 @@ const Features = () => {
           <div className="title-wrapper">
             <div className="title-holder">
               <div className="caps-heading-1 page-sub-heading">
-                How does it work?
+                <Trans>How does it work?</Trans>
               </div>
               <h2 className="h-xxl">
-                Features & Benefits <span>of using the platform</span>
+                <Trans>
+                  Features & Benefits <span>of using the platform</span>
+                </Trans>
               </h2>
               <p className="p-l">
-                The platform offers a wide range of tools to support your
-                decision-making and help a global network of actors to work
-                together to create shared solutions to end plastic pollution.
+                <Trans>
+                  The platform offers a wide range of tools to support your
+                  decision-making and help a global network of actors to work
+                  together to create shared solutions to end plastic pollution.
+                </Trans>
               </p>
             </div>
             <div>
               <Button withArrow={<LongArrowRight />} size="large" ghost>
-                View All Features
+                <Trans>View All Features</Trans>
               </Button>
             </div>
           </div>
@@ -648,10 +663,12 @@ const Trusted = () => {
       <div className={styles.trustedSection}>
         <div className="trusted-text">
           <h3 className="semibold">
-            Trusted data and information badge system and validation process.
+            <Trans>
+              Trusted data and information badge system and validation process.
+            </Trans>
           </h3>
           <Button withArrow type="primary" size="large">
-            Discover
+            <Trans>Discover</Trans>
           </Button>
         </div>
         <div className="trusted-circle" />
@@ -667,22 +684,26 @@ const Activities = () => {
         <div className="title-wrapper">
           <div className="title-holder">
             <div className="caps-heading-1 page-sub-heading">
-              WHAT IS THE FOCUS OF GPML?
+              <Trans>WHAT IS THE FOCUS OF GPML?</Trans>
             </div>
             <h2 className="h-xxl">
-              <span>GPML’s</span> Action Tracks
+              <Trans>
+                <span>GPML’s</span> Action Tracks
+              </Trans>
             </h2>
             <p className="p-l">
-              The current core work of the GPML is organized through the
-              following five Action Tracks, with the aim of advancing priority
-              issues by connecting key stakeholders and facilitating
-              collaboration and coordination. The platform offers a wide range
-              of tools to facilitate this work.
+              <Trans>
+                The current core work of the GPML is organized through the
+                following five Action Tracks, with the aim of advancing priority
+                issues by connecting key stakeholders and facilitating
+                collaboration and coordination. The platform offers a wide range
+                of tools to facilitate this work.
+              </Trans>
             </p>
           </div>
           <div>
             <Button size="large" ghost withArrow={<LongArrowRight />}>
-              Visit the website
+              <Trans>Visit the website</Trans>
             </Button>
           </div>
         </div>
@@ -693,34 +714,44 @@ const Activities = () => {
                 <img src="/activity-policy.svg" />
               </div>
               <p className="h-m">
-                Science
-                <br />
-                policy
+                <Trans>
+                  Science
+                  <br />
+                  policy
+                </Trans>
               </p>
             </li>
             <li>
               <div className="icon">
                 <img src="/activity-bookmark.svg" />
               </div>
-              <p className="h-m">Guidelines standards & harmonization</p>
+              <p className="h-m">
+                <Trans>Guidelines standards & harmonization</Trans>
+              </p>
             </li>
             <li>
               <div className="icon">
                 <img src="/activity-money.svg" />
               </div>
-              <p className="h-m">Sustainable & innovative financing</p>
+              <p className="h-m">
+                <Trans>Sustainable & innovative financing</Trans>
+              </p>
             </li>
             <li>
               <div className="icon">
                 <img src="/activity-plans.svg" />
               </div>
-              <p className="h-m">National action plans</p>
+              <p className="h-m">
+                <Trans>National action plans</Trans>
+              </p>
             </li>
             <li>
               <div className="icon">
                 <img src="/activity-access.svg" />
               </div>
-              <p className="h-m">Access to all</p>
+              <p className="h-m">
+                <Trans>Access to all</Trans>
+              </p>
             </li>
           </ul>
         </div>
@@ -798,14 +829,18 @@ const Partnership = () => {
       <div className="container content-container">
         <div className="partnership-content-wrapper">
           <h2 className="h-xxl">
-            Join the Global Partnership on Plastic Pollution and Marine Litter
+            <Trans>
+              Join the Global Partnership on Plastic Pollution and Marine Litter
+            </Trans>
           </h2>
           <p className="h-m">
-            Become part of GPML to collaborate with thousands of organisations
-            and individuals from around the world
+            <Trans>
+              Become part of GPML to collaborate with thousands of organisations
+              and individuals from around the world
+            </Trans>
           </p>
           <Button withArrow type="primary" size="large">
-            Join now
+            <Trans>Join now</Trans>
           </Button>
         </div>
       </div>
@@ -813,46 +848,52 @@ const Partnership = () => {
         <Row gutter={24}>
           <Col lg={8} xl={8}>
             <div className="links-card">
-              <h3 className="h-m">Become part of the network</h3>
+              <h3 className="h-m">
+                <Trans>Become part of the network</Trans>
+              </h3>
               <ul className="link-list">
                 <li>
                   <CirclePointer />
-                  Sign Up
+                  <Trans>Sign Up</Trans>
                 </li>
                 <li>
                   <CirclePointer />
-                  Join the GPML
+                  <Trans>Join the GPML</Trans>
                 </li>
                 <li>
                   <CirclePointer />
-                  Become a partnerL
+                  <Trans>Become a partnerL</Trans>
                 </li>
               </ul>
             </div>
           </Col>
           <Col lg={8} xl={8}>
             <div className="links-card">
-              <h3 className="h-m">Co-solution with our network</h3>
+              <h3 className="h-m">
+                <Trans>Co-solution with our network</Trans>
+              </h3>
               <ul className="link-list">
                 <li>
                   <CirclePointer />
-                  Network with others
+                  <Trans>Network with others</Trans>
                 </li>
                 <li>
                   <CirclePointer />
-                  Share your knowledge
+                  <Trans>Share your knowledge</Trans>
                 </li>
                 <li>
                   <CirclePointer />
-                  Share your data
+                  <Trans>Share your data</Trans>
                 </li>
               </ul>
             </div>
           </Col>
           <Col lg={8} xl={8}>
             <div className="links-card">
-              <h3 className="h-m">Spread the word</h3>
-              <p>Follow us on social media to be part of the movement. </p>
+              <Trans>
+                <h3 className="h-m">Spread the word</h3>
+                <p>Follow us on social media to be part of the movement. </p>
+              </Trans>
               <ul className="icon-list">
                 <li>
                   <a
@@ -922,7 +963,9 @@ const Partners = () => {
   return (
     <div className={styles.partnerSection}>
       <div className="container">
-        <h2 className="semibold">Our partners</h2>
+        <h2 className="semibold">
+          <Trans>Our partners</Trans>
+        </h2>
       </div>
       <div className="partner-container">
         <ul className="partner-items">
@@ -936,7 +979,7 @@ const Partners = () => {
       <div className="partner-button-container">
         <div className="container">
           <Button withArrow={<LongArrowRight />} size="large" ghost>
-            See all partners
+            <Trans>See all partners</Trans>
           </Button>
         </div>
       </div>
@@ -954,13 +997,17 @@ const HelpCentre = () => {
         height={64}
       />
       <div className="help-centre-text">
-        <h2 className="bold">Any Questions?</h2>
+        <h2 className="bold">
+          <Trans>Any Questions?</Trans>
+        </h2>
         <h6 className="semibold">
-          Visit the Help Center for FAQs, tutorials and more
+          <Trans>Visit the Help Center for FAQs, tutorials and more</Trans>
         </h6>
       </div>
       <div className="help-centre-button">
-        <Button withArrow={<LongArrowRight />}>Visit the Help Centre</Button>
+        <Button withArrow={<LongArrowRight />}>
+          <Trans>Visit the Help Centre</Trans>
+        </Button>
       </div>
     </div>
   )
@@ -979,7 +1026,9 @@ const Footer = () => {
           <div className="footer-item">
             <strong className="p-l">GPML Digital Platform</strong>
             <div className="contact-us">
-              <p className="p-m">Contact Us</p>
+              <p className="p-m">
+                <Trans>Contact Us</Trans>
+              </p>
               <a href="mailto:unep-gpmarinelitter@un.org" className="p-m">
                 unep-gpmarinelitter@un.org
               </a>
@@ -1000,19 +1049,27 @@ const Footer = () => {
             </ul>
           </div> */}
           <div className="footer-item">
-            <h6 className="title">GPML Tools</h6>
+            <h6 className="title">
+              <Trans>GPML Tools</Trans>
+            </h6>
             <ul>
               <li>
-                <Link href="/landing">Show all tools</Link>
+                <Link href="/landing">
+                  <Trans>Show all tools</Trans>
+                </Link>
               </li>
             </ul>
           </div>
           <div className="footer-item">
-            <h6 className="title">Join Newsletter</h6>
+            <h6 className="title">
+              <Trans>Join Newsletter</Trans>
+            </h6>
             <div className="footer-newsletter">
               <div>
                 <p className="h-xs">
-                  Stay tuned with the GPML latest news and events!
+                  <Trans>
+                    Stay tuned with the GPML latest news and events!
+                  </Trans>
                 </p>
               </div>
               <div className="newsletter-container">
@@ -1023,7 +1080,7 @@ const Footer = () => {
                   onFinish={onFinish}
                 >
                   <Form.Item name="email">
-                    <Input type="email" placeholder="Enter your email" />
+                    <Input type="email" placeholder={t`Enter your email`} />
                   </Form.Item>
                   <Form.Item shouldUpdate>
                     {() => (
@@ -1035,7 +1092,9 @@ const Footer = () => {
                 </Form>
               </div>
               <div>
-                <h6>Follow Us</h6>
+                <h6>
+                  <Trans>Follow Us</Trans>
+                </h6>
                 <ul className="social-links">
                   <li>
                     <a
@@ -1064,12 +1123,16 @@ const Footer = () => {
         <div className="footer-bar">
           <div>
             <p className="h-xxs">
-              Copyright © {moment().format('YYYY')} All rights reserved
+              <Trans>
+                Copyright © {moment().format('YYYY')} All rights reserved
+              </Trans>
             </p>
           </div>
           <div className="footer-confirm-cookies">
-            <p className="h-xxs">We use cookies for better service.</p>
-            <Button type="link">Accept</Button>
+            <Trans>
+              <p className="h-xxs">We use cookies for better service.</p>
+              <Button type="link">Accept</Button>
+            </Trans>
           </div>
         </div>
       </div>
