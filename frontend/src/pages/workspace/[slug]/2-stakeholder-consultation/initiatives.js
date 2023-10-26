@@ -16,9 +16,6 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState({})
-  const [queryParam, setQueryParam] = useState({
-    topic: 'initiative',
-  })
 
   const mainContentType = UIStore.useState((s) => s.mainContentType)
   const { childs: initiativeTypes } = mainContentType.find(
@@ -54,40 +51,56 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
     }))
   const ops4 = uniqBy(stakeholders, 'value')
 
-  const filterSk = ({ entityConnections }, filter) =>
-    entityConnections?.filter((sc) => filter?.stakeholder === sc.entityId)
-      .length > 0
+  const filterEntity = ({ entityConnections }, filter) =>
+    entityConnections?.filter((ec) => {
+      if (filter?.stakeholder && filter?.representativeGroup) {
+        return (
+          filter.stakeholder === ec.entityId &&
+          filter.representativeGroup === ec.representativeGroup
+        )
+      }
+      if (filter?.stakeholder && !filter?.representativeGroup) {
+        return filter.stakeholder === ec.entityId
+      }
+      if (!filter?.stakeholder && filter?.representativeGroup) {
+        return filter.representativeGroup === ec.representativeGroup
+      }
+      return ec
+    }).length > 0
 
   const filteredItems = useMemo(() => {
     if (Object.keys(filter).length) {
-      return items.filter((i) => {
-        if (filter?.geoCoverageType?.length && filter?.stakeholder) {
-          return (
-            filter.geoCoverageType.includes(i.geoCoverageType) &&
-            filterSk(i, filter)
-          )
-        }
-        if (filter?.geoCoverageType?.length && !filter?.stakeholder) {
-          return filter.geoCoverageType.includes(i.geoCoverageType)
-        }
-        if (!filter?.geoCoverageType?.length && filter?.stakeholder) {
-          return filterSk(i, filter)
-        }
-        return i
-      })
+      /**
+       * Applying sequence filtering with all active filters.
+       */
+      return items
+        .filter((i) => {
+          // By initiative type
+          if (filter?.subContentType) {
+            return i?.subContentType === filter.subContentType
+          }
+          return i
+        })
+        .filter((i) => {
+          // By geo-coverage
+          if (filter?.geoCoverageType) {
+            return i?.geoCoverageType === filter.geoCoverageType
+          }
+          return i
+        })
+        .filter((i) => {
+          // By stakeholder or reprensentative group
+          if (filter?.stakeholder || filter?.representativeGroup) {
+            return filterEntity(i, filter)
+          }
+          return i
+        })
     }
     return items
   }, [items, filter])
 
-  const handleSelectOption = (name, isBE, value) => {
-    if (isBE) {
-      setQueryParam({
-        ...queryParam,
-        [name]: value,
-      })
-    } else {
-      setFilter({ ...filter, [name]: value })
-    }
+  const handleSelectOption = (name, value) => {
+    setFilter({ ...filter, [name]: value })
   }
 
   useEffect(() => {
@@ -96,7 +109,7 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
     const countryCode = isoA2[country]
     const countryId = iso2id[countryCode]
     if (countryId != null) {
-      let params = { ...queryParam, ps_country_iso_code_a2: countryCode }
+      let params = { topic: 'initiative', ps_country_iso_code_a2: countryCode }
       params = entityID
         ? {
             ...params,
@@ -111,7 +124,7 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
         setLoading(false)
       })
     }
-  }, [router, queryParam])
+  }, [router])
 
   return (
     <div className={styles.initiativesView}>
@@ -129,7 +142,7 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
           size="large"
           placeholder="Initiative type"
           onChange={(values) => {
-            handleSelectOption('subContentType', true, values)
+            handleSelectOption('subContentType', values)
           }}
           options={[{ label: 'Any', value: null }, ...ops1]}
         />
@@ -139,9 +152,13 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
           size="large"
           placeholder="Representative group"
           onChange={(values) => {
-            handleSelectOption('representativeGroup', true, values)
+            handleSelectOption('representativeGroup', values)
           }}
-          options={[{ label: 'Any', value: null }, ...ops2]}
+          options={[
+            { label: 'Any', value: null },
+            ...ops2,
+            { label: 'Other', value: 'Other' },
+          ]}
         />
         <Select
           allowClear
@@ -149,7 +166,7 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
           size="large"
           placeholder="Geo-coverage"
           onChange={(values) => {
-            handleSelectOption('geoCoverageType', false, values)
+            handleSelectOption('geoCoverageType', values)
           }}
           options={[{ label: 'Any', value: null }, ...ops3]}
         />
@@ -159,7 +176,7 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
           size="large"
           placeholder="Stakeholder"
           onChange={(values) => {
-            handleSelectOption('stakeholder', false, values)
+            handleSelectOption('stakeholder', values)
           }}
           options={ops4}
         />
