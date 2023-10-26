@@ -423,6 +423,21 @@ const StakeholderMapTable = ({
             />
           )
         }
+        if (col.dataIndex === 'name') {
+          return (
+            <Column
+              {...col}
+              key={cx}
+              render={(name, it) => {
+                return (
+                  <Link href={`/organisation/${it.id}`} target="_blank">
+                    {name}
+                  </Link>
+                )
+              }}
+            />
+          )
+        }
         return <Column {...col} key={cx} />
       })}
     </Table>

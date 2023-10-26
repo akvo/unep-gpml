@@ -29,6 +29,16 @@
     .table-section {
       width: 100%;
       margin-bottom: 64px;
+      .ant-table-tbody {
+        a {
+          color: $primaryDarkBlueText;
+          text-decoration: underline;
+          &:hover {
+            color: $primaryDarkBlueText;
+            text-decoration: none;
+          }
+        }
+      }
       .ant-table-tbody .ant-table-row td {
         max-width: 211px;
         text-transform: capitalize;
