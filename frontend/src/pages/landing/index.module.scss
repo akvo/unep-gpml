@@ -278,28 +278,59 @@
 
       .bar {
         display: flex;
-        padding-bottom: 18px;
+        padding-bottom: 12px;
         margin-bottom: 18px;
         border-bottom: 1px solid $primaryDarkBlue2;
-        input[type='text'] {
-          flex: 1;
-          border: none !important;
-          outline: none !important;
-          box-shadow: none !important;
-          padding: 0;
-          margin-top: -3px;
-          font-size: $fzM !important;
-          font: var(--font-archia), sans-serif;
-          background-color: transparent;
+        .ant-select {
+          width: 100%;
+          min-height: 46px;
+          .ant-select-selector {
+            display: block;
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+            background-color: transparent;
+            .ant-select-selection-search {
+              width: 100% !important;
+              input[type='search'] {
+                width: 100%;
+                height: 32px;
+                flex: 1;
+                padding: 0;
+              }
+            }
+            .ant-select-selection-placeholder,
+            .ant-select-selection-search input[type='search'] {
+              font-size: $fzM !important;
+              font: var(--font-archia), sans-serif;
+            }
+            .ant-select-selection-placeholder {
+              top: 35%;
+            }
+            .ant-select-selection-item {
+              padding: 0 10px;
+              border-radius: 100px;
+              border-color: $primaryDarkBlue;
+              background-color: $primaryDarkBlue;
+              color: $primaryWhite;
+              font-family: var(--font-archia), sans-serif;
+              height: 32px;
+              line-height: 28px;
+              svg {
+                fill: $primaryWhite;
+              }
+            }
+          }
         }
         .localisation {
+          max-height: 46px;
+          display: flex;
+          align-items: center;
           font-weight: bold;
           margin-right: 20px;
-          margin-top: 7px;
           cursor: pointer;
           svg {
             margin-right: 7px;
-            transform: translateY(4px);
           }
           &:hover {
             color: $primaryDarkBlue4;
@@ -312,7 +343,7 @@
         }
       }
       .tags {
-        margin-top: 25px;
+        margin-top: 12px;
         & > b {
           margin-right: 10px;
         }
@@ -335,20 +366,33 @@
           }
         }
       }
+      .ant-btn.ant-btn-primary {
+        max-height: 46px;
+      }
       @media screen and (max-width: $bpMobile) {
         padding: 12px;
-        height: 118px;
+        height: 132px;
         top: -245px;
         .bar {
           border-bottom: none;
           display: flex;
           margin-bottom: 10px;
           padding-bottom: 10px;
-          input[type='text'] {
-            font-size: $fzXXS !important;
-            line-height: 30px !important;
-            font-weight: 600 !important;
-            padding-left: 10px !important;
+          .ant-select {
+            width: 100%;
+            height: 24px;
+            overflow-y: scroll;
+            .ant-select-selection-placeholder,
+            .ant-select-selection-search input[type='search'] {
+              font-size: $fzXXS !important;
+            }
+            .ant-select-selection-search {
+              input[type='search'] {
+                line-height: 30px !important;
+                font-weight: 600 !important;
+                padding-left: 10px !important;
+              }
+            }
           }
           .ant-input-affix-wrapper {
             flex: 1;
@@ -1844,6 +1888,21 @@
             width: min-content;
             white-space: break-spaces;
           }
+        }
+      }
+    }
+  }
+}
+
+.dropdownSuggestion {
+  :global {
+    .rc-virtual-list-holder-inner {
+      .ant-select-item {
+        color: #000;
+        font-size: 18px;
+        line-height: 32px;
+        &.ant-select-item-option-active {
+          background-color: $primaryBlue2;
         }
       }
     }
