@@ -220,86 +220,90 @@ const NestedLayout = ({ children }) => {
   return (
     <div className={styles.plasticStrategyView}>
       <div className={styles.sidebar}>
-        <div className="head">
-          <div className="caps-heading-s">
-            <Trans>plastic strategy</Trans>
-          </div>
-          <h5 className="h-m m-semi">
-            {psItem?.country?.name || t`Loading...`}
-          </h5>
-          <div className="progress-bar">
-            <div className="fill" style={{ width: `${progress}%` }}></div>
-          </div>
-          <div className="progress-text">
-            <Trans>{progress}% complete</Trans>
-          </div>
-        </div>
-        <div className="steps">
-          {psSteps.map((step) => (
-            <div
-              className={classNames('step', {
-                selected:
-                  (pathSlugs[2] == step.slug || stepURL === step.slug) &&
-                  !step.substeps,
-                opened:
-                  (pathSlugs[2] == step.slug || stepURL === step.slug) &&
-                  step.substeps?.length > 0,
-              })}
-            >
-              <ConditionalLink step={step}>
-                <div className="stephead topsection">
-                  <div
-                    className={classNames('check', {
-                      checked: getParentChecked(step),
-                    })}
-                  >
-                    {getParentChecked(step) && <Check />}
-                  </div>
-                  <div className="label">{stepsDict[step.label]}</div>
-                  {step?.substeps && (
-                    <>
-                      <div className="status">
-                        {step.substeps.filter((sb) => sb.checked).length}/
-                        {step.substeps.length}
-                      </div>
-                      <div className="pointer">
-                        <Pointer />
-                      </div>
-                    </>
-                  )}
-                </div>
-              </ConditionalLink>
-              {step?.substeps?.length > 0 && (
-                <div
-                  className="substeps"
-                  style={{ height: 52 * step.substeps.length }}
-                >
-                  {step.substeps.map((substep) => (
-                    <Link
-                      className={classNames('step substep', {
-                        selected:
-                          (step.slug === pathSlugs[2] ||
-                            stepURL === step.slug) &&
-                          substep.slug === pathSlugs[3],
-                      })}
-                      href={`/workspace/${router.query?.slug}/${step.slug}/${substep.slug}`}
-                    >
-                      <div className="stephead">
-                        <div
-                          className={classNames('check substep', {
-                            checked: substep.checked,
-                          })}
-                        >
-                          {substep.checked && <Check />}
-                        </div>
-                        <div className="label">{stepsDict[substep.label]}</div>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              )}
+        <div className="sticky">
+          <div className="head">
+            <div className="caps-heading-s">
+              <Trans>plastic strategy</Trans>
             </div>
-          ))}
+            <h5 className="h-m m-semi">
+              {psItem?.country?.name || t`Loading...`}
+            </h5>
+            <div className="progress-bar">
+              <div className="fill" style={{ width: `${progress}%` }}></div>
+            </div>
+            <div className="progress-text">
+              <Trans>{progress}% complete</Trans>
+            </div>
+          </div>
+          <div className="steps">
+            {psSteps.map((step) => (
+              <div
+                className={classNames('step', {
+                  selected:
+                    (pathSlugs[2] == step.slug || stepURL === step.slug) &&
+                    !step.substeps,
+                  opened:
+                    (pathSlugs[2] == step.slug || stepURL === step.slug) &&
+                    step.substeps?.length > 0,
+                })}
+              >
+                <ConditionalLink step={step}>
+                  <div className="stephead topsection">
+                    <div
+                      className={classNames('check', {
+                        checked: getParentChecked(step),
+                      })}
+                    >
+                      {getParentChecked(step) && <Check />}
+                    </div>
+                    <div className="label">{stepsDict[step.label]}</div>
+                    {step?.substeps && (
+                      <>
+                        <div className="status">
+                          {step.substeps.filter((sb) => sb.checked).length}/
+                          {step.substeps.length}
+                        </div>
+                        <div className="pointer">
+                          <Pointer />
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </ConditionalLink>
+                {step?.substeps?.length > 0 && (
+                  <div
+                    className="substeps"
+                    style={{ height: 52 * step.substeps.length }}
+                  >
+                    {step.substeps.map((substep) => (
+                      <Link
+                        className={classNames('step substep', {
+                          selected:
+                            (step.slug === pathSlugs[2] ||
+                              stepURL === step.slug) &&
+                            substep.slug === pathSlugs[3],
+                        })}
+                        href={`/workspace/${router.query?.slug}/${step.slug}/${substep.slug}`}
+                      >
+                        <div className="stephead">
+                          <div
+                            className={classNames('check substep', {
+                              checked: substep.checked,
+                            })}
+                          >
+                            {substep.checked && <Check />}
+                          </div>
+                          <div className="label">
+                            {stepsDict[substep.label]}
+                          </div>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
       <div className={styles.view}>
