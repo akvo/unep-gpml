@@ -1,4 +1,16 @@
-import { Tabs, Collapse, Card, Tag, Input, Col, Row, Form, Select } from 'antd'
+import {
+  Tabs,
+  Collapse,
+  Card,
+  Tag,
+  Input,
+  Col,
+  Row,
+  Form,
+  Select,
+  Dropdown,
+  Menu,
+} from 'antd'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -114,6 +126,7 @@ const Hero = () => {
     'Courses & Training',
     'National Action Plan',
   ]
+  const maxTags = 6
 
   useEffect(() => {
     let index = 0
@@ -254,9 +267,9 @@ const Hero = () => {
             Search
           </Button>
           <div className="tags hide-mobile">
-            <b>Suggested search:</b>
+            <b>Suggested:</b>
             <div className="suggestions">
-              {suggestedTags.map((suggestion, sx) => (
+              {suggestedTags.slice(0, maxTags).map((suggestion, sx) => (
                 <Tag
                   key={sx}
                   className="h-xxs"
@@ -265,6 +278,31 @@ const Hero = () => {
                   {suggestion}
                 </Tag>
               ))}
+              {suggestedTags.length > maxTags && (
+                <Dropdown
+                  overlay={
+                    <Menu>
+                      {suggestedTags
+                        .slice(maxTags, suggestedTags.length)
+                        .map((tag, tx) => {
+                          return (
+                            <Menu.Item
+                              key={tx}
+                              onClick={() => setFilter({ tag })}
+                            >
+                              {tag}
+                            </Menu.Item>
+                          )
+                        })}
+                    </Menu>
+                  }
+                  trigger={['click']}
+                >
+                  <Tag className="h-xxs">
+                    {`+${suggestedTags.length - maxTags} more`}
+                  </Tag>
+                </Dropdown>
+              )}
             </div>
           </div>
         </div>

@@ -337,7 +337,7 @@
         display: flex;
         align-items: flex-start;
         & > b {
-          min-width: 128px;
+          width: fit-content;
           margin-right: 10px;
         }
         .ant-tag {
@@ -359,7 +359,7 @@
           }
         }
         .suggestions {
-          width: 80%;
+          width: 100%;
           height: 46px;
           overflow-x: scroll;
           white-space: nowrap;
@@ -387,6 +387,7 @@
                 font-size: $fzXXS !important;
                 font-weight: 600;
                 line-height: 30px;
+                padding-left: 10px;
               }
             }
           }
