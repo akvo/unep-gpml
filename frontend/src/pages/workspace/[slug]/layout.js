@@ -51,8 +51,8 @@ const NestedLayout = ({ children }) => {
   const profile = UIStore.useState((s) => s.profile)
 
   const getBySlug = (step, _slug, indexStep = 0) =>
-    step?.slug === _slug ||
-    (step?.slug === '' && !_slug && indexStep === step?.indexStep)
+    (step?.slug === _slug || (step?.slug === '' && !_slug)) &&
+    indexStep === step?.indexStep
 
   const psSteps = useMemo(() => {
     /**
