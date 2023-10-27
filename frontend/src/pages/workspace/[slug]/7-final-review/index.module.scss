@@ -1,0 +1,51 @@
+@import '../../../../styles/vars.scss';
+
+.finalView {
+  :global {
+    .title-section {
+      h2 {
+        margin-block-start: 0;
+      }
+    }
+    strong.h-xs {
+      font-family: var(--font-archia), sans-serif;
+      color: $systemWarning4;
+      text-transform: uppercase;
+    }
+    h6 {
+      font-weight: 700;
+      line-height: 30px;
+      color: $primaryDarkBlue;
+    }
+    .desc-section {
+      width: 841px;
+      margin: 7px 0 23px;
+      p {
+        color: $primaryDarkBlue;
+        font-size: $fzXS;
+        line-height: $lhXS;
+      }
+      @media screen and (max-width: $bpMobile) {
+        width: 100%;
+      }
+    }
+    .steps {
+      margin-top: 42px;
+      li {
+        h6 {
+          margin-bottom: 18px;
+        }
+        .substeps {
+          margin-left: 30px;
+          margin-bottom: 18px;
+          li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+          }
+        }
+      }
+    }
+  }
+}
