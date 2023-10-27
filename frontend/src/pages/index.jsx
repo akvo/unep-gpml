@@ -1,5 +1,4 @@
 import React from 'react'
-import Landing from '../modules/landing/landing'
 import { loadCatalog } from '../translations/utils'
 import Landing from '../pages/landing'
 
