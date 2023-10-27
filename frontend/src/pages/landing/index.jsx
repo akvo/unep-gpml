@@ -1,6 +1,10 @@
-import { Tabs, Collapse, Card, Tag, Input, Col, Row, Form } from 'antd'
+import { Tabs, Collapse, Card, Tag, Input, Col, Row, Form, Select } from 'antd'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import isEmpty from 'lodash/isEmpty'
+import values from 'lodash/values'
+import flatten from 'lodash/flatten'
 import styles from './index.module.scss'
 import {
   CirclePointer,
@@ -19,6 +23,7 @@ import { Pagination } from 'swiper'
 import moment from 'moment'
 import { useDeviceSize } from '../../modules/landing/landing'
 import Button from '../../components/button'
+import { UIStore } from '../../store'
 
 const pagination = {
   clickable: true,
@@ -48,6 +53,8 @@ const Landing = () => (
 const Hero = () => {
   const [selected, setSelected] = useState('Governments')
   const [timeout, _setTimeout] = useState(true)
+  const [filter, setFilter] = useState({})
+
   const intidRef = useRef()
   const [width] = useDeviceSize()
   const items = [
@@ -82,6 +89,32 @@ const Hero = () => {
         'The GPML digital platform allows NGOS and civil society to connect with likeminded organizations, discover financing resources and funding opportunities, and showcase their work in the fight against plastic pollution and marine litter.',
     },
   ]
+  const router = useRouter()
+  const tags = UIStore.useState((s) => s.tags)
+  // populate options for tags dropdown
+  const tagsWithoutSpace =
+    !isEmpty(tags) &&
+    flatten(values(tags)).map((it) => ({
+      value: it?.tag?.trim(),
+      label: it?.tag?.trim(),
+    }))
+
+  const tagOpts = !isEmpty(tags)
+    ? [...new Set(tagsWithoutSpace.map((s) => JSON.stringify(s)))]
+        .map((s) => JSON.parse(s))
+        ?.sort((tag1, tag2) => tag1?.label.localeCompare(tag2?.label))
+    : []
+  const suggestedTags = [
+    'Plastic Pollution',
+    'Marine Litter',
+    'Reports & Assessments',
+    'Circularity',
+    'Plastics',
+    'Waste management',
+    'Courses & Training',
+    'National Action Plan',
+  ]
+
   useEffect(() => {
     let index = 0
     clearInterval(intidRef.current)
@@ -96,6 +129,17 @@ const Hero = () => {
     clearInterval(intidRef.current)
     _setTimeout(false)
   }
+
+  const handleOnSearch = () => {
+    if (!filter?.tag) {
+      return
+    }
+    router.push({
+      pathname: '/knowledge/library',
+      query: filter,
+    })
+  }
+
   return (
     <>
       <div className="hero">
@@ -170,10 +214,23 @@ const Hero = () => {
       <div className="container">
         <div className="search-bar">
           <div className="bar">
-            <Input
-              prefix={width < 768 && <Magnifier />}
+            <Select
+              dropdownClassName={styles.dropdownSuggestion}
               placeholder="Search the resource database..."
-              type="text"
+              options={tagOpts}
+              optionFilterProp="children"
+              filterOption={(input, option) =>
+                option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+              value={filter?.tag}
+              onChange={(val) => {
+                setFilter({
+                  tag: val,
+                })
+              }}
+              suffixIcon={width < 768 && <Magnifier />}
+              virtual={false}
+              showSearch
             />
             <div className="localisation h-xs">
               <Localiser />
@@ -183,19 +240,32 @@ const Hero = () => {
               type="primary"
               size="small"
               className="left-icon hide-mobile"
+              onClick={handleOnSearch}
             >
               <Magnifier />
               Search
             </Button>
           </div>
-          <Button type="primary" className="hide-desktop noicon">
+          <Button
+            type="primary"
+            className="hide-desktop noicon"
+            onClick={handleOnSearch}
+          >
             Search
           </Button>
           <div className="tags hide-mobile">
             <b>Suggested search:</b>
-            <Tag className="h-xxs">Case Studies</Tag>
-            <Tag className="h-xxs">Plastic Strategies</Tag>
-            <Tag className="h-xxs">Plastic Solutions</Tag>
+            <div className="suggestions">
+              {suggestedTags.map((suggestion, sx) => (
+                <Tag
+                  key={sx}
+                  className="h-xxs"
+                  onClick={() => setFilter({ tag: suggestion })}
+                >
+                  {suggestion}
+                </Tag>
+              ))}
+            </div>
           </div>
         </div>
       </div>
