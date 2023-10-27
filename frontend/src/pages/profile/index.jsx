@@ -2,6 +2,7 @@ import React from 'react'
 import ProfileLayout from './ProfileLayout'
 import SignupForm from '../../modules/signup-old/signup-form'
 import { Button } from 'antd'
+import { loadCatalog } from '../../translations/utils'
 
 function ProfilePage(props) {
   return (
@@ -34,6 +35,14 @@ function Profile({ isAuthenticated, profile, loadingProfile }) {
       <ProfilePage />
     </ProfileLayout>
   )
+}
+
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
 }
 
 export default Profile

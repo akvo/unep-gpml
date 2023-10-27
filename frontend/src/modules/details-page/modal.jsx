@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from "react";
-import { Modal } from "antd";
-import styles from "./modal.module.scss";
-import DetailsView from "./view";
-import bodyScrollLock from "./scroll-utils";
+import React, { useState, useEffect } from 'react'
+import { Modal } from 'antd'
+import styles from './modal.module.scss'
+import DetailsView from './view'
+import bodyScrollLock from './scroll-utils'
 
 const DetailModal = ({
   match,
@@ -12,16 +12,18 @@ const DetailModal = ({
   isAuthenticated,
   visible,
   setVisible,
+  bookmark2PS,
+  onBookmark2PS,
 }) => {
   const desktopViewport =
-    typeof window !== "undefined" ? window.innerWidth > 600 : null;
+    typeof window !== 'undefined' ? window.innerWidth > 600 : null
   return (
     <Modal
-      zIndex={99999}
+      zIndex={1000}
       visible={visible}
       onCancel={() => {
-        setVisible(false);
-        bodyScrollLock.disable();
+        setVisible(false)
+        bodyScrollLock.disable()
       }}
       className={styles.detailModal}
       wrapClassName="detail-modal-wrapper"
@@ -40,10 +42,12 @@ const DetailModal = ({
           setFilterMenu,
           isAuthenticated,
           setLoginVisible,
+          bookmark2PS,
+          onBookmark2PS,
         }}
       />
     </Modal>
-  );
-};
+  )
+}
 
-export default DetailModal;
+export default DetailModal

@@ -1,0 +1,193 @@
+@import '../../../../styles/vars.scss';
+
+.countryPolicyView {
+  :global {
+    .title-section {
+      h4 {
+        margin-block-start: 0;
+        margin-bottom: 20px;
+      }
+      h2 {
+        margin-block-start: 0;
+      }
+    }
+    h5 {
+      font-family: var(--font-archia), sans-serif;
+      font-weight: 700;
+      line-height: 30px;
+      color: $primaryDarkBlue;
+    }
+    .desc-section {
+      width: 841px;
+      margin-bottom: 33px;
+      p {
+        color: $primaryDarkBlue;
+        font-size: $fzXS;
+        line-height: $lhXS;
+      }
+      @media screen and (max-width: $bpMobile) {
+        width: 100%;
+      }
+    }
+    .table-section {
+      width: 100%;
+      .ant-table-tbody .ant-table-row td {
+        max-width: 211px;
+        text-transform: capitalize;
+        .resource-title {
+          display: block;
+          text-align: left;
+          .badge {
+            display: inline-block;
+            transform: translateY(3px);
+            margin-right: 4px;
+            svg {
+              margin-left: 0;
+              padding-left: 0;
+              path {
+                stroke: unset;
+              }
+            }
+            &.gov {
+              svg path:first-child {
+                fill: #ffc2c2;
+              }
+            }
+          }
+          span {
+            display: inline;
+          }
+        }
+        &:first-child {
+          // display: flex;
+          // align-items: center;
+          // justify-content: center;
+          text-align: center;
+        }
+        .ant-btn.ant-btn-link {
+          .icon {
+            display: flex;
+            align-items: center;
+            svg {
+              padding-left: 0;
+              path {
+                stroke: none;
+              }
+            }
+            &.verified {
+              margin-right: 8px;
+            }
+          }
+          span {
+            max-width: 211px;
+          }
+          &:hover {
+            svg {
+              path {
+                transform: none !important;
+              }
+            }
+          }
+        }
+        a {
+          svg path {
+            // fill: #dfdfdf;
+            // stroke: none;
+          }
+          &.bookmarked {
+            svg path {
+              fill: $primaryPurple;
+              // stroke: none;
+            }
+          }
+        }
+        &:nth-of-type(3) {
+          max-width: 300px;
+        }
+        &:nth-of-type(3) .ant-btn.ant-btn-link span,
+        &:nth-of-type(6) > div {
+          // white-space: nowrap;
+          // overflow: hidden;
+          // text-overflow: ellipsis;
+          text-wrap: wrap;
+          text-align: left;
+          padding: 10px 0;
+        }
+        .tag-list {
+          // display: flex;
+          // flex-wrap: wrap;
+          // line-height: 27px;
+          // overflow: hidden;
+          span {
+            display: inline-block;
+            border: 2px solid $primaryDarkBlue2;
+            border-radius: 15px;
+            padding: 1px 8px;
+            margin-right: 3px;
+            max-width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            &.plus-more {
+              white-space: nowrap;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.modalView {
+  :global {
+    .ant-modal-content {
+      .ant-modal-body {
+        padding: 0 0 64px;
+        .detail-view-wrapper {
+          padding-top: 0;
+          .detail-view {
+            margin: 0;
+            .comment-section,
+            .input-wrapper {
+              display: none;
+            }
+          }
+        }
+      }
+      .ant-modal-footer {
+        padding: 25px 33px 22px;
+        background-color: #e7f3ff6b;
+        .ant-btn.ant-btn-background-ghost.invalidate {
+          color: $systemError !important;
+          &:hover {
+            color: $primaryWhite !important;
+            border-color: transparent;
+            background-color: $systemError !important;
+          }
+        }
+      }
+    }
+    .country-validate-btn {
+      background-color: #ffc2c2;
+      border-color: #ffc2c2;
+      svg {
+        width: 30px;
+        height: 30px;
+        path:first-child {
+          fill: $primaryDarkBlue;
+        }
+        path:last-child {
+          fill: #ffc2c2;
+        }
+      }
+      &:active {
+        background-color: #ffc2c2 !important;
+        svg {
+          path {
+            transform: none;
+          }
+        }
+      }
+    }
+  }
+}

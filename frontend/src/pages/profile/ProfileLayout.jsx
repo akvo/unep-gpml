@@ -14,6 +14,7 @@ import { useAuth0 } from '@auth0/auth0-react'
 import styles from '../../modules/profile/styles.module.scss'
 import api from '../../utils/api'
 import { isEqual, isEmpty } from 'lodash'
+import { Trans, t } from '@lingui/macro'
 const userRoles = new Set(roles)
 const reviewerRoles = new Set(['REVIEWER', 'ADMIN'])
 const adminRoles = new Set(['ADMIN'])
@@ -33,25 +34,25 @@ function getChangedFields(original, updated) {
 const menuItems = [
   {
     key: 'personal-details',
-    name: 'Personal Details',
+    name: t`Personal Details`,
     role: userRoles,
     icon: <UserOutlined />,
   },
   {
     key: 'review-section',
-    name: 'Review Section',
+    name: t`Review Section`,
     role: reviewerRoles,
     icon: <DiffOutlined />,
   },
   {
     key: 'admin-section',
-    name: 'Admin Section',
+    name: t`Admin Section`,
     role: adminRoles,
     icon: <SettingOutlined />,
   },
   {
     key: 'profil-section',
-    name: 'Profile Quick Link',
+    name: t`Profile Quick Link`,
     role: userRoles,
     icon: <UserOutlined />,
   },

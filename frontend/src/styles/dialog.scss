@@ -36,6 +36,14 @@
       .ant-modal-confirm-btns {
         display: flex;
         justify-content: flex-end;
+        .ant-btn + .ant-btn {
+          margin-left: 12px;
+        }
+        .ant-btn.ant-btn-link {
+          padding: 8px 18px;
+          font-weight: 700;
+          text-decoration-line: none;
+        }
       }
       .ant-modal-footer,
       .ant-modal-footer div {

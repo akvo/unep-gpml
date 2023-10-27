@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './style.module.scss'
-import { Col, Popover, Input, Select } from 'antd'
+import { Col, Popover, Input, Select, Tooltip } from 'antd'
 const { Option } = Select
 import { eventTrack } from '../../utils/misc'
 import {
@@ -13,7 +13,14 @@ import { resourceTypeToTopicType, topicNames } from '../../utils/misc'
 import { languageOptions } from '../flexible-forms/view'
 import classNames from 'classnames'
 import Button from '../../components/button'
-import { BookmarkIcon, ArrowRight } from '../../components/icons'
+import {
+  BookmarkIcon,
+  ArrowRight,
+  BookmarkIconProper,
+  badges,
+} from '../../components/icons'
+import { Trans, t } from '@lingui/macro'
+import { AssignedBadges } from '../../components/resource-card/resource-card'
 
 export const HeaderButtons = ({
   data,
@@ -30,6 +37,8 @@ export const HeaderButtons = ({
   translations,
   selectedLanguage,
   setLanguage,
+  bookmark2PS,
+  onBookmark2PS,
 }) => {
   const bookmarked =
     relation &&
@@ -56,6 +65,24 @@ export const HeaderButtons = ({
 
   return (
     <Col className="tool-buttons">
+      {onBookmark2PS != null && (
+        <Tooltip
+          title={bookmark2PS ? t`Remove from Library` : t`Save to Library`}
+        >
+          <Button
+            size="small"
+            type="primary"
+            className={classNames('bookmark-to-ps', {
+              bookmarked: bookmark2PS,
+            })}
+            onClick={() => {
+              onBookmark2PS(data, !bookmark2PS)
+            }}
+          >
+            <BookmarkIconProper />
+          </Button>
+        </Tooltip>
+      )}
       {data?.url && (
         <Button
           size="small"
@@ -77,7 +104,7 @@ export const HeaderButtons = ({
             )
           }}
         >
-          View Source
+          <Trans>View Source</Trans>
           <ArrowRight />
         </Button>
       )}
@@ -96,7 +123,7 @@ export const HeaderButtons = ({
             )
           }}
         >
-          Recording
+          <Trans>Recording</Trans>
         </Button>
       )}
       <Button
@@ -110,7 +137,7 @@ export const HeaderButtons = ({
           handleChangeRelation('interested in')
         }}
       >
-        {bookmarked ? 'Bookmarked' : 'Bookmark'}
+        {bookmarked ? t`Bookmarked` : t`Bookmark`}
         <BookmarkIcon />
       </Button>
       {data?.url && (
@@ -152,7 +179,7 @@ export const HeaderButtons = ({
                   handleVisibleChange()
                 }}
               >
-                Copy
+                <Trans>Copy</Trans>
               </Button>
             </Input.Group>
           }
@@ -177,7 +204,7 @@ export const HeaderButtons = ({
                 handleVisibleChange()
               }}
             >
-              Share
+              <Trans>Share</Trans>
             </Button>
           </div>
         </Popover>
@@ -189,7 +216,7 @@ export const HeaderButtons = ({
           ghost
           onClick={() => handleEditBtn(type)}
         >
-          Edit
+          <Trans>Edit</Trans>
         </Button>
       )}
       {canDelete() && (
@@ -199,7 +226,7 @@ export const HeaderButtons = ({
           ghost
           onClick={handleDeleteBtn}
         >
-          Delete
+          <Trans>Delete</Trans>
         </Button>
       )}
       {translations && translations.hasOwnProperty('title') && (
@@ -253,6 +280,8 @@ const Header = ({
   translations,
   selectedLanguage,
   setLanguage,
+  bookmark2PS,
+  onBookmark2PS,
 }) => {
   const toolButtons = (
     data,
@@ -313,6 +342,7 @@ const Header = ({
         translations={translations}
         selectedLanguage={selectedLanguage}
         setLanguage={setLanguage}
+        {...{ bookmark2PS, onBookmark2PS }}
       />
     )
   }
@@ -323,6 +353,7 @@ const Header = ({
         {topicNames(type)}
       </h3>
       <h4 className="detail-resource-title">
+        <AssignedBadges assignedBadges={data.assignedBadges} />
         {selectedLanguage ? translations?.title[selectedLanguage] : data?.title}
       </h4>
       {toolButtons(

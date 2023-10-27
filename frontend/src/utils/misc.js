@@ -2,6 +2,7 @@ import humps from 'humps'
 import auth0 from 'auth0-js'
 import ReactGA from 'react-ga4'
 import { useRouter } from 'next/router'
+import { i18n } from '@lingui/core'
 
 export const tTypes = [
   'project',
@@ -221,6 +222,36 @@ export const pagination = {
   renderBullet: function (index, className) {
     return '<div class="' + className + '">' + '<span/>' + '</div>'
   },
+}
+
+export const shortenOrgTypes = {
+  Government: 'Government',
+  'Private Sector (for-profit)': 'Private Sector',
+  'Intergovernmental Organizations (IGOs)': 'IGO',
+  'Non-Governmental Organization (NGO)': 'NGO',
+  'Academia and Research': 'Academia and Research',
+  'Civil Society (not-for-profit)': 'Civil Society',
+  Other: 'Other',
+}
+
+export const deepTranslate = (obj) => {
+  if (Array.isArray(obj)) {
+    return obj.map(deepTranslate)
+  } else if (typeof obj === 'object' && obj !== null) {
+    const translatedObj = {}
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        if (obj[key] && obj[key].id && obj[key].message) {
+          translatedObj[key] = i18n._(obj[key])
+        } else {
+          translatedObj[key] = deepTranslate(obj[key])
+        }
+      }
+    }
+    return translatedObj
+  } else {
+    return obj
+  }
 }
 
 export function transformStrapiResponse(value) {

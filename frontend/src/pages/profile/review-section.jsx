@@ -1,6 +1,7 @@
-import React from "react";
-import ProfileLayout from "./ProfileLayout";
-import ReviewSection from "../../modules/profile/review";
+import React from 'react'
+import ProfileLayout from './ProfileLayout'
+import ReviewSection from '../../modules/profile/review'
+import { loadCatalog } from '../../translations/utils'
 
 function ReviewPage(props) {
   return (
@@ -14,7 +15,7 @@ function ReviewPage(props) {
         />
       )}
     </>
-  );
+  )
 }
 
 function Review() {
@@ -22,7 +23,15 @@ function Review() {
     <ProfileLayout>
       <ReviewPage />
     </ProfileLayout>
-  );
+  )
 }
 
-export default Review;
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
+}
+
+export default Review

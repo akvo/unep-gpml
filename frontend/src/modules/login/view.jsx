@@ -23,6 +23,7 @@ import { eventTrack } from '../../utils/misc'
 import { useRouter } from 'next/router'
 import Button from '../../components/button'
 import FormLabel from '../../components/form-label'
+import { Trans, t } from '@lingui/macro'
 
 function Login({ visible, close }) {
   const router = useRouter()
@@ -121,16 +122,16 @@ function Login({ visible, close }) {
           <div className="signinButton">
             <p className="header-text">
               {!signin
-                ? 'SIGN IN'
+                ? t`SIGN IN`
                 : forgotPassword
-                ? 'FORGOT PASSWORD'
+                ? t`FORGOT PASSWORD`
                 : signup
-                ? 'JOIN WITH EMAIL'
-                : 'CONTINUE WITH EMAIL'}
+                ? t`JOIN WITH EMAIL`
+                : t`CONTINUE WITH EMAIL`}
             </p>
             {!signin ? (
               <Button type="link" onClick={close}>
-                CANCEL
+                <Trans>CANCEL</Trans>
                 <CloseCircleOutlined />
               </Button>
             ) : forgotPassword ? (
@@ -142,7 +143,7 @@ function Login({ visible, close }) {
                   setForgotPassword(false)
                 }}
               >
-                {'<'} Back to connect options
+                {'<'} <Trans>Back to connect options</Trans>
               </Button>
             ) : signup ? (
               <Button
@@ -150,7 +151,7 @@ function Login({ visible, close }) {
                 className={styles.connectBackButton}
                 onClick={() => setSignUp(!signup)}
               >
-                {'<'} Back to connect options
+                {'<'} <Trans>Back to connect options</Trans>
               </Button>
             ) : (
               <Button
@@ -158,7 +159,7 @@ function Login({ visible, close }) {
                 className={styles.connectBackButton}
                 onClick={() => setSignIn(!signin)}
               >
-                {'<'} Back to connect options
+                {'<'} <Trans>Back to connect options</Trans>
               </Button>
             )}
           </div>
@@ -195,7 +196,7 @@ function Login({ visible, close }) {
                         }
                         onClick={handleLinkedinLogin}
                       >
-                        CONTINUE WITH LINKEDIN
+                        <Trans>CONTINUE WITH LINKEDIN</Trans>
                       </Button>
                       <Button
                         ghost
@@ -206,7 +207,7 @@ function Login({ visible, close }) {
                         }
                         onClick={handleGoogleLogin}
                       >
-                        CONTINUE WITH GOOGLE
+                        <Trans>CONTINUE WITH GOOGLE</Trans>
                       </Button>
                       <div className="separator">
                         <Title level={4}>or</Title>
@@ -220,13 +221,15 @@ function Login({ visible, close }) {
                         }
                         onClick={() => setSignIn(!signin)}
                       >
-                        CONTINUE WITH EMAIL
+                        <Trans>CONTINUE WITH EMAIL</Trans>
                       </Button>
                     </div>
-                    <p className="register-text p-s">
-                      Once you have an account you can register your
-                      organisation and apply for Global Partnership on Plastic
-                      Pollution and Marine Litter membership
+                    <p className="register-text">
+                      <Trans>
+                        Once you have an account you can register your
+                        organisation and apply for Global Partnership on Plastic
+                        Pollution and Marine Litter membership
+                      </Trans>
                     </p>
                   </div>
                 ) : (
@@ -254,14 +257,16 @@ function Login({ visible, close }) {
                                     <>
                                       <FormLabel
                                         htmlFor="email"
-                                        label="Email"
+                                        label={<Trans>Email</Trans>}
                                         meta={meta}
                                         validateStatus={validateStatus}
                                       >
                                         <Input
                                           size="small"
                                           {...input}
-                                          placeholder="Enter your email"
+                                          placeholder={
+                                            <Trans>Enter your email</Trans>
+                                          }
                                         />
                                         {meta.touched && meta.error && (
                                           <p color="error" className="error">
@@ -287,14 +292,16 @@ function Login({ visible, close }) {
                                     <>
                                       <FormLabel
                                         htmlFor="password"
-                                        label="Password"
+                                        label={<Trans>Password</Trans>}
                                         meta={meta}
                                         validateStatus={validateStatus}
                                       >
                                         <Input.Password
                                           size="small"
                                           {...input}
-                                          placeholder="Enter your password"
+                                          placeholder={
+                                            <Trans>Enter your password</Trans>
+                                          }
                                         />
                                         {meta.touched && meta.error && (
                                           <p color="error" className="error">
@@ -313,7 +320,7 @@ function Login({ visible, close }) {
                                 loading={loading}
                                 onClick={() => handleSubmit()}
                               >
-                                LOGIN WITH EMAIL
+                                <Trans>LOGIN WITH EMAIL</Trans>
                               </Button>{' '}
                               <Button
                                 type="link"
@@ -322,7 +329,7 @@ function Login({ visible, close }) {
                                   setForgotPassword(!forgotPassword)
                                 }
                               >
-                                Forgot password?
+                                <Trans>Forgot password?</Trans>
                               </Button>
                             </Form>
                           )
@@ -330,13 +337,15 @@ function Login({ visible, close }) {
                       />
                       <Divider />
                       <div className={styles.joinWrapper}>
-                        <Title level={2}>Don’t have an account yet?</Title>
+                        <Title level={2}>
+                          <Trans>Don’t have an account yet?</Trans>
+                        </Title>
                         <Button
                           ghost
                           className={styles.loginButton}
                           onClick={() => setSignUp(true)}
                         >
-                          JOIN WITH EMAIL
+                          <Trans>JOIN WITH EMAIL</Trans>
                         </Button>
                       </div>
                     </div>
@@ -348,14 +357,14 @@ function Login({ visible, close }) {
         </Row>
         <div className="terms">
           <Title level={4}>
-            By signing up you are agreeing to our{' '}
+            <Trans>By signing up you are agreeing to our</Trans>{' '}
             <a
               href="/privacy-policy-and-terms-of-use.pdf"
               target="_blank"
               rel="noreferrer"
               className="copy-right"
             >
-              terms and services.
+              <Trans>terms and services</Trans>
             </a>
           </Title>
         </div>

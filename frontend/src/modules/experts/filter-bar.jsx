@@ -5,6 +5,7 @@ import catTags from '../../utils/cat-tags.json'
 import { useQuery } from '../../utils/misc'
 import CountryTransnationalFilter from '../../components/select/country-transnational-filter'
 import LocationDropdown from '../../components/location-dropdown/location-dropdown'
+import { Trans, t } from '@lingui/macro'
 
 function slug(text) {
   return text.toLowerCase().replaceAll('&', 'n').replaceAll(' ', '-')
@@ -117,7 +118,9 @@ const FilterBar = ({
       {filter.length === 0 && (
         <div className="level-0">
           <div>
-            <small>Choose an expert category</small>
+            <small>
+              <Trans>Choose an expert category</Trans>
+            </small>
           </div>
           <div className="filter-tools">
             <ul>
@@ -139,14 +142,18 @@ const FilterBar = ({
       {filter.length > 0 && (
         <div className="level-1">
           <div className={`selected-btn s${filter[0]}`} onClick={handleBack}>
-            <small>&lt; Back to categories</small>
+            <small>
+              &lt; <Trans>Back to categories</Trans>
+            </small>
             <DynamicSVG
               type={`/${slug(catTags[filter[0]].title)}`}
               fillColor={`'#fff'}`}
             />
             <div>
               <strong>{title(catTags[filter[0]].title)}</strong>
-              <small>Sub-topics</small>
+              <small>
+                <Trans>Sub-topics</Trans>
+              </small>
             </div>
           </div>
           <ul>

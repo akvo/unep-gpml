@@ -6,7 +6,7 @@
 
 body {
   color: $primaryDarkBlue;
-  font-family: var(--font-dm-sans), sans-serif;
+  font-family: $ff2;
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -27,6 +27,10 @@ body {
 .h-m {
   font-size: $fzM;
   line-height: $lhM;
+}
+.h-s {
+  font-size: 24px;
+  line-height: 1.4;
 }
 .h-xs {
   font-size: $fzXS;
@@ -91,6 +95,14 @@ h6,
     line-height: $lhS;
   }
 }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: $primaryDarkBlueText;
+}
 .p-m {
   font-size: $fzS;
   line-height: $lhS;
@@ -98,6 +110,33 @@ h6,
 .p-s {
   font-size: $pfS;
   line-height: $plhS;
+}
+.w-semi {
+  font-weight: 600;
+}
+.w-bold {
+  font-weight: 700;
+}
+.caps-heading-m {
+  font-family: $ff1;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  // letter-spacing: 0.24px;
+  letter-spacing: 3.2px;
+  text-transform: uppercase;
+  color: $primaryPurple;
+  line-height: 1.4;
+}
+.caps-heading-s {
+  font-family: $ff1;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 16px; /* 100% */
+  letter-spacing: 0.24px;
+  text-transform: uppercase;
+  color: $primaryPurple;
 }
 .container {
   margin: 0 40px;
@@ -134,6 +173,10 @@ h6,
   .container-fluid {
     .logo-container {
       margin-top: -14px;
+      a {
+        color: white;
+        display: flex;
+      }
     }
   }
   .logo-container {
@@ -156,6 +199,15 @@ h6,
       margin-top: 10px;
       transition: color 0.27s ease-out;
       // font-family: ;
+    }
+  }
+  .lang-btn {
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+    cursor: pointer;
+    & > *:first-child {
+      margin-right: 10px;
     }
   }
   .ant-avatar {
@@ -205,6 +257,7 @@ h6,
   }
   nav {
     margin-left: auto;
+    display: flex;
     .ant-btn-primary {
       margin-top: 0px;
     }
@@ -301,6 +354,26 @@ h6,
         color: $primaryDarkBlue;
       }
     }
+  }
+}
+.lang-dropdown {
+  li {
+    line-height: 30px;
+    svg {
+      margin-right: 5px;
+      position: absolute;
+      left: 15px;
+      top: 7px;
+    }
+    .check svg {
+      left: auto;
+      right: 15px;
+      width: 20px;
+      height: 12px;
+      top: 12px;
+    }
+    padding-left: 50px;
+    padding-right: 50px;
   }
 }
 .navigation {
@@ -646,5 +719,144 @@ ul {
   }
   .ant-modal-footer {
     border: none;
+  }
+}
+
+.progress-bar {
+  width: 100%;
+  height: 5px;
+  border-radius: 3px;
+  background-color: rgba(204, 208, 219, 0.3);
+  overflow: hidden;
+  .fill {
+    background-color: $primaryGreen;
+    height: 100%;
+  }
+}
+/**
+* Filter confirm and reset button styles on Antd table
+*/
+.ant-table-filter-dropdown {
+  min-width: 164px;
+  max-width: 300px;
+  .ant-table-filter-dropdown-btns {
+    .ant-btn {
+      font-size: $fzXXS;
+      line-height: $lhXXS;
+      &.ant-btn-primary {
+        padding-right: 18px;
+        background-color: $primaryPurple;
+        border-color: transparent;
+        color: $primaryWhite;
+        &.ant-btn-sm {
+          padding: 4px 18px;
+        }
+      }
+      &.ant-btn.ant-btn-link:disabled {
+        background-color: transparent;
+      }
+    }
+  }
+}
+.ant-table {
+  width: 100%;
+  .ant-table-thead {
+    & > tr {
+      & > th {
+        background-color: $primaryPurple;
+        color: $primaryWhite;
+        .ant-table-column-sorter-up,
+        .ant-table-column-sorter-down {
+          font-size: 12px;
+          &.active {
+            color: $primaryDarkBlue;
+          }
+        }
+        &:hover {
+          background-color: rgba(116, 104, 255, 0.8);
+        }
+      }
+    }
+  }
+  .ant-table-column-sorters:hover .ant-table-column-sorter {
+    color: $primaryWhite;
+  }
+  .ant-table-tbody {
+    .ant-table-row {
+      max-height: 50px;
+      &:nth-child(even) {
+        background-color: $primaryGrey;
+      }
+      td {
+        height: 50px;
+        color: $primaryDarkBlue;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 20px;
+        padding: 0 15px;
+        &.ant-table-column-sort,
+        &.ant-table-cell-row-hover {
+          background-color: transparent;
+        }
+      }
+    }
+  }
+  .ant-table-column-sorter,
+  .ant-table-filter-trigger {
+    color: $primaryWhite;
+  }
+}
+/**
+* Tooltip
+*/
+.ant-tooltip {
+  .ant-tooltip-content {
+    .ant-tooltip-inner {
+      border-radius: 4px;
+      background: $primaryDarkBlue;
+      display: flex;
+      padding: 8px 16px;
+      align-items: flex-start;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 20px;
+    }
+  }
+  .ant-tooltip-arrow-content {
+    --antd-arrow-background-color: linear-gradient(
+      to right bottom,
+      rgba(2, 10, 91, 1),
+      rgba(2, 10, 91, 1)
+    );
+  }
+}
+/**
+* Pagination
+*/
+.ant-pagination-prev .ant-pagination-item-link,
+.ant-pagination-next .ant-pagination-item-link,
+.ant-pagination-item {
+  border: none;
+  border-radius: 8px;
+  background-color: $primaryGrey;
+}
+.ant-pagination-item {
+  font-family: var(--font-dm-sans), sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  a {
+    color: $primaryDarkBlue;
+    &:hover {
+      color: $primaryDarkBlue;
+    }
+  }
+  &.ant-pagination-item-active {
+    background-color: $primaryPurple;
+    a {
+      color: $primaryWhite;
+    }
   }
 }

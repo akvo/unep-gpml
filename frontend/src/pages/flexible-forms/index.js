@@ -1,5 +1,6 @@
-import React from "react";
-import FlexibleFormsPage from "../../modules/flexible-forms/view";
+import React from 'react'
+import FlexibleFormsPage from '../../modules/flexible-forms/view'
+import { loadCatalog } from '../../translations/utils'
 
 function FlexibleForms({ isAuthenticated, setLoginVisible }) {
   return (
@@ -7,7 +8,15 @@ function FlexibleForms({ isAuthenticated, setLoginVisible }) {
       setLoginVisible={setLoginVisible}
       isAuthenticated={isAuthenticated}
     />
-  );
+  )
 }
 
-export default FlexibleForms;
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
+}
+
+export default FlexibleForms

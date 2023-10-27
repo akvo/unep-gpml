@@ -14,6 +14,7 @@ import { pagination, topicNames } from '../../utils/misc'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination as SwiperPagination, Navigation } from 'swiper'
 import Link from 'next/link'
+import { Trans, t } from '@lingui/macro'
 
 const Card = ({ showMoreCardClick, showMoreCardHref, children }) => {
   if (showMoreCardClick) {
@@ -48,11 +49,13 @@ const ResourceCards = ({
         <Card {...{ showMoreCardClick, showMoreCardHref }}>
           <div className="resources-count">
             <span className="count">+{items.length - showMoreCardAfter}</span>
-            <p>resources</p>
+            <p>
+              <Trans>resources</Trans>
+            </p>
           </div>
 
           <div className="read-more">
-            View All <ArrowRightOutlined />
+            <Trans>View All</Trans> <ArrowRightOutlined />
           </div>
         </Card>
       )

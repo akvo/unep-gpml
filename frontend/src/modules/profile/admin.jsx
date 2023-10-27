@@ -40,6 +40,7 @@ import Avatar from 'antd/lib/avatar/avatar'
 import Expert from './expert'
 import IconExpert from '../../images/expert-icon.svg'
 import debouce from 'lodash.debounce'
+import { Trans, t } from '@lingui/macro'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Button from '../../components/button'
@@ -56,16 +57,20 @@ const ModalReject = ({ visible, close, reject, item, action = 'Decline' }) => {
       visible={visible}
       footer={
         <div>
-          <Button onClick={(e) => reject()}>Yes</Button>
+          <Button onClick={(e) => reject()}>
+            <Trans>Yes</Trans>
+          </Button>
           <Button onClick={(e) => close()} type="primary">
-            No
+            <Trans>No</Trans>
           </Button>
         </div>
       }
       closable={false}
     >
       <div className="warning-modal-user">
-        <p>Are you sure you want to {action?.toLowerCase()}?</p>
+        <p>
+          <Trans>Are you sure you want to</Trans> {action?.toLowerCase()}?
+        </p>
       </div>
     </Modal>
   )
@@ -75,7 +80,7 @@ const HeaderSearch = ({ placeholder, listOpts, setListOpts }) => {
   return (
     <Search
       className="search"
-      placeholder={placeholder ? placeholder : 'Search for a resource'}
+      placeholder={placeholder ? placeholder : t`Search for a resource`}
       allowClear
       onSearch={(title) => {
         ;(async () => {
@@ -166,7 +171,8 @@ const HeaderFilter = ({
       optionLabelProp="label"
       placeholder={
         <>
-          <FilterOutlined className="filter-icon" /> Filter by review status
+          <FilterOutlined className="filter-icon" />{' '}
+          <Trans>Filter by review status</Trans>
         </>
       }
       filterOption={(input, option) =>
@@ -206,7 +212,9 @@ const RoleSelect = ({
         e.stopPropagation()
       }}
     >
-      <div style={{ width: '100%' }}>User role</div>
+      <div style={{ width: '100%' }}>
+        <Trans>User role</Trans>
+      </div>
       <Select
         style={{ width: '200px' }}
         showSearch={false}
@@ -245,13 +253,16 @@ const OwnerSelect = ({
         e.stopPropagation()
       }}
     >
-      {showLabel && <div style={{ width: '100%' }}>Owners</div>}
+      {showLabel && (
+        <div style={{ width: '100%' }}>
+          <Trans>Owners</Trans>
+        </div>
+      )}
       <Select
-        size="small"
         style={{ width: '100%' }}
         showSearch={true}
         mode="multiple"
-        placeholder="Assign owner"
+        placeholder={<Trans>Assign owner</Trans>}
         onChange={(data) => {
           onChangeOwner(item, data, listOpts, setListOpts)
         }}
@@ -298,7 +309,7 @@ const FocalPoint = ({
         allowClear
         showSearch={true}
         mode="multiple"
-        placeholder="Assign focal point"
+        placeholder={<Trans>Assign focal point</Trans>}
         onChange={(data) => {
           onChangeFocalPoint(item, data, listOpts, setListOpts)
         }}
@@ -486,7 +497,7 @@ const AdminSection = ({
     api
       .patch(`/stakeholder/${stakeholder.id}`, { role })
       .then((resp) => {
-        notification.success({ message: 'User role changed' })
+        notification.success({ message: t`User role changed` })
         // FIXME: Add error handling in case the PATCH fails!
         setLoading(false)
       })
@@ -501,7 +512,7 @@ const AdminSection = ({
       )
       .then((data) => setListOpts((opts) => ({ ...opts, data })))
       .catch((err) => {
-        notification.error({ message: 'Something went wrong' })
+        notification.error({ message: t`Something went wrong` })
       })
   }
 
@@ -517,7 +528,7 @@ const AdminSection = ({
         stakeholders: [...stakeholders, ...focalPoints],
       })
       .then((resp) => {
-        notification.success({ message: 'Ownerships changed' })
+        notification.success({ message: t`Ownerships changed` })
         setLoading(false)
       })
       .then(() =>
@@ -552,7 +563,7 @@ const AdminSection = ({
         stakeholders: [...stakeholders, ...focalPoints],
       })
       .then((resp) => {
-        notification.success({ message: 'Focal point changed' })
+        notification.success({ message: t`Focal point changed` })
         setLoading(false)
       })
       .then(() =>
@@ -570,7 +581,7 @@ const AdminSection = ({
         notification.error({
           message: err?.response?.data?.errorDetails?.error
             ? err?.response?.data?.errorDetails?.error
-            : 'Something went wrong',
+            : t`Something went wrong`,
         })
       })
   }
@@ -599,7 +610,7 @@ const AdminSection = ({
           notification.success({
             message: res?.data?.message
               ? res?.data?.message
-              : 'Something went wrong',
+              : t`Something went wrong`,
           })
           setListOpts((opts) => ({ ...opts, data }))
           setApproveLoading({})
@@ -687,13 +698,15 @@ const AdminSection = ({
           e.stopPropagation()
         }}
       >
-        <div style={{ width: '100%' }}>Reviewers</div>
+        <div style={{ width: '100%' }}>
+          <Trans>Reviewers</Trans>
+        </div>
         <Select
           style={{ width: '100%' }}
           mode="multiple"
           showSearch={true}
           className="select-reviewer"
-          placeholder="Assign reviewers"
+          placeholder={<Trans>Assign reviewers</Trans>}
           onChange={(data) => assignReviewer(item, data, listOpts, setListOpts)}
           value={item?.reviewers.map((x) => x.id)}
           loading={item?.id === loading}
@@ -863,7 +876,7 @@ const AdminSection = ({
         )
       }
     >
-      Export
+      <Trans>Export</Trans>
     </Button>
   )
 
@@ -936,7 +949,13 @@ const AdminSection = ({
                   setListOpts={setListOpts}
                 />
               ) : (
-                <Tooltip title="Profile cannot be approved since email is not verified">
+                <Tooltip
+                  title={
+                    <Trans>
+                      Profile cannot be approved since email is not verified
+                    </Trans>
+                  }
+                >
                   <PublishButton
                     item={item}
                     type="secondary"
@@ -947,7 +966,11 @@ const AdminSection = ({
                 </Tooltip>
               )
             ) : item.type === 'policy' ? (
-              <Tooltip title="Policies are imported from Law division system">
+              <Tooltip
+                title={
+                  <Trans>Policies are imported from Law division system</Trans>
+                }
+              >
                 <PublishButton
                   item={item}
                   type="secondary"
@@ -1154,7 +1177,9 @@ const AdminSection = ({
           <div>
             <div className="export-wrapper">
               <div>
-                <b className="approval-bold-text">Filtering by:</b>
+                <b className="approval-bold-text">
+                  <Trans>Filtering by:</Trans>
+                </b>
                 {listOpts.type === 'stakeholders' && (
                   <Checkbox
                     className="expert-checkbox"
@@ -1180,7 +1205,7 @@ const AdminSection = ({
                       })()
                     }}
                   >
-                    Experts
+                    <Trans>Experts</Trans>
                   </Checkbox>
                 )}
               </div>
@@ -1193,13 +1218,18 @@ const AdminSection = ({
             <hr />
             {listOpts.reviewStatus && (
               <div className="review-status-wrapper">
-                <b className="approval-bold-text">Review status:</b>{' '}
+                <b className="approval-bold-text">
+                  <Trans>Review status:</Trans>
+                </b>{' '}
                 {statusDictToHuman[listOpts.reviewStatus]}
               </div>
             )}
             {listOpts.title && (
               <div>
-                <b className="approval-bold-text">Title:</b> {listOpts.title}
+                <b className="approval-bold-text">
+                  <Trans>Title:</Trans>
+                </b>{' '}
+                {listOpts.title}
               </div>
             )}
           </div>
@@ -1228,7 +1258,7 @@ const AdminSection = ({
                         {loadingAssignReviewer.id === item?.id &&
                           loadingAssignReviewer.type === item?.type && (
                             <span className="status">
-                              <LoadingOutlined spin /> Loading
+                              <LoadingOutlined spin /> <Trans>Loading</Trans>
                             </span>
                           )}
                         {listOpts.reviewStatus === null && (
@@ -1240,7 +1270,9 @@ const AdminSection = ({
                         )}
                         {listOpts.reviewStatus !== null &&
                           !isEmpty(item.reviewers) && (
-                            <span>Status of the review: </span>
+                            <span>
+                              <Trans>Status of the review: </Trans>
+                            </span>
                           )}
                         {listOpts.reviewStatus !== null &&
                           item.reviewers.map((x) => (
@@ -1295,7 +1327,11 @@ const AdminSection = ({
               <Collapse.Panel
                 showArrow={false}
                 key="collapse-pending-no-data"
-                header={<div className="row">No data to display</div>}
+                header={
+                  <div className="row">
+                    <Trans>No data to display</Trans>
+                  </div>
+                }
               />
             )}
           </Collapse>

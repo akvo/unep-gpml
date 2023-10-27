@@ -9,7 +9,7 @@ import Image from 'next/image'
 import classNames from 'classnames'
 import Footer from '../footer'
 import Login from '../modules/login/view'
-import { DownArrow } from '../components/icons'
+import { Check, DownArrow, World, flags } from '../components/icons'
 import Link from 'next/link'
 import { motion, AnimatePresence, useCycle } from 'framer-motion'
 import { useDeviceSize } from '../modules/landing/landing'
@@ -222,7 +222,46 @@ const NewLayout = ({
                 </Button>
               )}
               {isAuthenticated && (
-                <div style={{ display: 'flex' }}>
+                <>
+                  <Dropdown
+                    overlayClassName="lang-dropdown-wrapper"
+                    overlay={
+                      <Menu className="lang-dropdown">
+                        {[
+                          { key: 'EN', label: 'English' },
+                          { key: 'FR', label: 'French' },
+                          { key: 'ES', label: 'Spanish' },
+                        ].map((lang) => (
+                          <Menu.Item
+                            className={classNames({
+                              active: lang.key.toLowerCase() === router.locale,
+                            })}
+                            key={lang.key}
+                            onClick={() => {
+                              router.push(router.pathname, router.pathname, {
+                                locale: lang.key.toLowerCase(),
+                              })
+                            }}
+                          >
+                            {flags[lang.key]}
+                            {lang.label}
+                            {lang.key.toLowerCase() === router.locale && (
+                              <div className="check">
+                                <Check />
+                              </div>
+                            )}
+                          </Menu.Item>
+                        ))}
+                      </Menu>
+                    }
+                    trigger={['click']}
+                    placement="bottomRight"
+                  >
+                    <div className="lang-btn">
+                      <World />
+                      <DownArrow />
+                    </div>
+                  </Dropdown>
                   <Link href="/workspace">
                     <Button
                       type="primary"
@@ -268,7 +307,7 @@ const NewLayout = ({
                       {profile?.lastName?.charAt(0)}
                     </Avatar>
                   </Dropdown>
-                </div>
+                </>
               )}
               {width <= 768 && (
                 <div className="toggle-button">

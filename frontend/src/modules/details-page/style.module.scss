@@ -162,7 +162,28 @@
           // .bookmarked path:last-of-type {
           //   fill: #09689a;
           // }
-
+          .bookmark-to-ps {
+            width: 45px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            svg {
+              position: static;
+              top: 0;
+              path {
+                stroke: $primaryDarkBlue;
+                fill: transparent;
+              }
+            }
+            &.bookmarked {
+              svg {
+                path {
+                  fill: $primaryDarkBlue;
+                }
+              }
+            }
+          }
           .bookmark-button {
             svg {
               width: 16px;
@@ -200,6 +221,22 @@
           line-height: 32px;
           margin-bottom: 10px;
           color: $primaryDarkBlue;
+          .badge {
+            display: inline-block;
+            margin-right: 10px;
+            transform: translateY(3px);
+            svg {
+              width: 34px;
+              height: 34px;
+            }
+            &.gov {
+              svg {
+                path:first-child {
+                  fill: #ffc2c2;
+                }
+              }
+            }
+          }
           @media (min-width: 900px) {
             font-size: $fzXL;
             line-height: $lhXL;

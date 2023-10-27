@@ -16,6 +16,7 @@ import InviteExpertModal from './invite-expert-modal'
 import ExpertCard from './expert-card'
 import UnathenticatedPage from '../stakeholder-overview/unathenticated-page'
 import InviteExpertCard from './invite-expert-card'
+import { Trans, t } from '@lingui/macro'
 
 const Experts = ({ isAuthenticated, setLoginVisible, loadingProfile }) => {
   const { countries, organisations } = UIStore.useState((s) => ({
@@ -131,7 +132,9 @@ const Experts = ({ isAuthenticated, setLoginVisible, loadingProfile }) => {
       />
       <div className="expert-list-section">
         <div className="list-toolbar">
-          <div className="page-label">Total {experts?.count}</div>
+          <div className="page-label">
+            <Trans>Total</Trans> {experts?.count}
+          </div>
           <button
             className="view-button"
             shape="round"
@@ -141,7 +144,8 @@ const Experts = ({ isAuthenticated, setLoginVisible, loadingProfile }) => {
             }}
           >
             <div className="view-button-text ">
-              Switch to {`${view === 'map' ? 'grid' : 'map'}`} view
+              <Trans>Switch to</Trans> {`${view === 'map' ? 'grid' : 'map'}`}{' '}
+              <Trans>view</Trans>
             </div>
             {view === 'map' ? <AppstoreOutlined /> : <GlobeIcon />}
           </button>
@@ -149,18 +153,18 @@ const Experts = ({ isAuthenticated, setLoginVisible, loadingProfile }) => {
             className="sort-by-button"
             onClick={() => sortExperts(!isAscending)}
           >
-            <div className="sort-icon">
-              <SortIcon
-                style={{
-                  transform:
-                    isAscending || isAscending === null
-                      ? 'initial'
-                      : 'rotate(180deg)',
-                }}
-              />
-            </div>
+            <SortIcon
+              style={{
+                transform:
+                  isAscending || isAscending === null
+                    ? 'initial'
+                    : 'rotate(180deg)',
+              }}
+            />
             <div className="sort-button-text">
-              <span>Sort by:</span>
+              <span>
+                <Trans>Sort by:</Trans>
+              </span>
               <b>{isAscending ? `A>Z` : 'Z>A'}</b>
             </div>
           </button>

@@ -1,4 +1,5 @@
 import { UIStore } from '../../../store'
+import { t } from '@lingui/macro'
 
 const {
   geoCoverageTypeOptions,
@@ -22,31 +23,31 @@ export const schema = {
   ],
   properties: {
     name: {
-      title: 'Name',
+      title: t`Name`,
       type: 'string',
     },
     type: {
-      title: 'Type of the entity',
+      title: t`Type of the entity`,
       enum: representativeGroup?.map((x) => x.name),
       enumNames: representativeGroup?.map((x) => x.name),
     },
     url: {
-      title: 'Entity URL',
+      title: t`Entity URL`,
       type: 'string',
       format: 'url',
     },
     country: {
-      title: 'Country',
+      title: t`Country`,
       enum: countries?.map((x, i) => x.id),
       enumNames: countries?.map((x, i) => x.name),
     },
     geoCoverageType: {
-      title: 'Geo coverage type',
+      title: t`Geo coverage type`,
       enum: geoCoverageTypeOptions.map((x) => x.toLowerCase()),
       enumNames: geoCoverageTypeOptions,
     },
     geoCoverageValueRegional: {
-      title: 'Geo coverage',
+      title: t`Geo coverage`,
       enum: [],
       depend: {
         id: 'geoCoverageType',
@@ -54,7 +55,7 @@ export const schema = {
       },
     },
     geoCoverageValueTransnational: {
-      title: 'Geo coverage',
+      title: t`Geo coverage`,
       enum: [],
       depend: {
         id: 'geoCoverageType',
@@ -62,7 +63,7 @@ export const schema = {
       },
     },
     geoCoverageCountries: {
-      title: 'Geo coverage country',
+      title: t`Geo coverage country`,
       enum: [],
       depend: {
         id: 'geoCoverageType',
@@ -70,7 +71,7 @@ export const schema = {
       },
     },
     geoCoverageValueGlobalSpesific: {
-      title: 'Geo coverage',
+      title: t`Geo coverage`,
       enum: [],
       depend: {
         id: 'geoCoverageType',
@@ -83,11 +84,11 @@ export const schema = {
 export const uiSchema = {
   'ui:group': 'border',
   name: {
-    'ui:placeholder': 'Type in the entity name',
+    'ui:placeholder': t`Type in the entity name`,
     'ui:size': 'small',
   },
   type: {
-    'ui:placeholder': 'Choose the entity type',
+    'ui:placeholder': t`Choose the entity type`,
     'ui:widget': 'select',
     'ui:options': {
       size: 'small',
@@ -97,7 +98,7 @@ export const uiSchema = {
   country: {
     'ui:showSearch': true,
     'ui:widget': 'select',
-    'ui:placeholder': 'Choose the entity country',
+    'ui:placeholder': t`Choose the entity country`,
     'ui:options': {
       type: 'single',
       size: 'small',
@@ -106,12 +107,12 @@ export const uiSchema = {
     },
   },
   url: {
-    'ui:placeholder': 'URL Address (e.g. example.com)',
+    'ui:placeholder': t`URL Address (e.g. example.com)`,
     'ui:widget': 'uri',
     'ui:addOnBefore': 'https://',
   },
   geoCoverageType: {
-    'ui:placeholder': 'Choose the entity coverage type',
+    'ui:placeholder': t`Choose the entity coverage type`,
     'ui:widget': 'select',
     'ui:options': {
       type: 'single',
@@ -120,13 +121,13 @@ export const uiSchema = {
     },
   },
   geoCoverageValueRegional: {
-    'ui:placeholder': 'Choose the entity coverage',
+    'ui:placeholder': t`Choose the entity coverage`,
     'ui:widget': 'select',
     'ui:showSearch': true,
     'ui:mode': 'multiple',
   },
   geoCoverageValueTransnational: {
-    'ui:placeholder': 'Choose the entity coverage',
+    'ui:placeholder': t`Choose the entity coverage`,
     'ui:widget': 'select',
     'ui:showSearch': true,
     'ui:mode': 'multiple',
@@ -136,7 +137,7 @@ export const uiSchema = {
     },
   },
   geoCoverageCountries: {
-    'ui:placeholder': 'Choose country',
+    'ui:placeholder': t`Choose country`,
     'ui:widget': 'select',
     'ui:showSearch': true,
     'ui:mode': 'multiple',
@@ -146,7 +147,7 @@ export const uiSchema = {
     },
   },
   geoCoverageValueSubNational: {
-    'ui:placeholder': 'Choose the entity coverage',
+    'ui:placeholder': t`Choose the entity coverage`,
     'ui:widget': 'select',
     'ui:showSearch': true,
     'ui:options': {
@@ -154,7 +155,7 @@ export const uiSchema = {
     },
   },
   geoCoverageValueGlobalSpesific: {
-    'ui:placeholder': 'Choose the entity coverage',
+    'ui:placeholder': t`Choose the entity coverage`,
     'ui:widget': 'select',
     'ui:showSearch': true,
     'ui:mode': 'multiple',
