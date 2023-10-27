@@ -130,6 +130,13 @@ const NewLayout = ({
                     </a>
                   </li>
                 ))}
+                {isAuthenticated && (
+                  <li>
+                    <Link href="/flexible-forms">
+                      <span>Add +</span>
+                    </Link>
+                  </li>
+                )}
               </ul>
             )}
             <nav>
