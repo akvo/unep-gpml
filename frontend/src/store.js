@@ -25,17 +25,17 @@ const geoCoverageTypeOptions = [
 ]
 
 const menuList = [
-  // {
-  //   key: 'Plastic',
-  //   children: [
-  //     {
-  //       key: 'Topics',
-  //     },
-  //     {
-  //       key: 'Basics',
-  //     },
-  //   ],
-  // },
+  {
+    key: 'Plastic',
+    children: [
+      {
+        key: 'Topics',
+      },
+      {
+        key: 'Basics',
+      },
+    ],
+  },
   {
     key: 'Tools',
     children: [
@@ -161,13 +161,19 @@ const menuList = [
         key: 'The platform',
       },
       {
-        key: 'Our Netwrok',
+        key: 'Our Network',
       },
       {
         key: 'Partnership',
+        type: 'button',
+        link: '',
+        text: 'Go to GPML',
       },
       {
         key: 'Contact us',
+        type: 'button',
+        link: '',
+        text: 'Contact us',
       },
     ],
   },

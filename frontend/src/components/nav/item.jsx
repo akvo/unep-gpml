@@ -25,8 +25,8 @@ const Item = ({ title, subtitle, icon, iconClass, to, href, setShowMenu }) => {
 
   return (
     <>
-      <div className="icon">{icon}</div>
-      <div className="content">
+      {icon && <div className="icon">{icon}</div>}
+      <div className={`content ${!icon ? 'ml' : ''}`}>
         <b className="p-s">{title}</b>
         <span>{subtitle}</span>
       </div>

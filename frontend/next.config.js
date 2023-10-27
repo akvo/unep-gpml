@@ -1,5 +1,21 @@
 module.exports = {
   reactStrictMode: false,
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'storage.googleapis.com',
+        port: '',
+        pathname: '/unep-gpml-public-test/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'storage.googleapis.com',
+        port: '',
+        pathname: '/unep-gpml-public-staging/**',
+      },
+    ],
+  },
   async rewrites() {
     return [
       {

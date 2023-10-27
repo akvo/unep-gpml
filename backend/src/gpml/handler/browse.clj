@@ -184,7 +184,18 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
                 :allowEmptyValue false}}
      [:vector
       {:decode/string (fn [s] (str/split s #","))}
-      [:string {:min 1}]]]]
+      [:string {:min 1}]]]
+    [:badges {:optional true
+              :swagger {:description "Boolean flag to load badges-related metadata"
+                        :type "boolean"
+                        :allowEmptyValue false}}
+     [:boolean]]
+    [:inc_entity_connections
+     {:optional true
+      :swagger {:description "If set to 'true' includes the 'entity_connections' of each resource."
+                :type "boolean"
+                :allowEmptyValue false}}
+     [:boolean]]]
    [:fn
     {:error/fn
      (fn [{{:keys [ps_bookmark_sections_keys ps_country_iso_code_a2 upcoming topic]} :value} _]
@@ -212,7 +223,7 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
   [{:keys [limit offset startDate endDate user-id favorites country transnational
            topic tag affiliation representativeGroup subContentType entity orderBy
            descending q incCountsForTags featured capacity_building upcoming
-           ps_country_iso_code_a2 ps_bookmark_sections_keys]
+           ps_country_iso_code_a2 ps_bookmark_sections_keys badges inc_entity_connections]
     :or {limit default-limit
          offset default-offset}}]
   (cond-> {}
@@ -270,6 +281,9 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
     featured
     (assoc :featured featured)
 
+    (not (nil? badges))
+    (assoc :badges badges)
+
     upcoming
     (assoc :upcoming upcoming)
 
@@ -281,6 +295,9 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
 
     ps_bookmark_sections_keys
     (assoc :ps-bookmark-sections-keys ps_bookmark_sections_keys)
+
+    inc_entity_connections
+    (assoc :inc-entity-connections? inc_entity_connections)
 
     true
     (assoc :review-status "APPROVED")))
