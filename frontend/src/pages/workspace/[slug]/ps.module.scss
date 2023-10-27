@@ -14,6 +14,10 @@
   top: 0;
   z-index: 100;
   :global {
+    .sticky {
+      position: static;
+      top: 0;
+    }
     .head {
       padding: 18px 10px;
       color: $primaryDarkBlueText;
