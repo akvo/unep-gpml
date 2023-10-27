@@ -28,6 +28,17 @@ const geoCoverageTypeOptions = [
 
 const menuList = [
   {
+    key: 'Plastic',
+    children: [
+      {
+        key: 'Topics',
+      },
+      {
+        key: 'Basics',
+      },
+    ],
+  },
+  {
     key: 'Tools',
     children: [
       {
@@ -94,6 +105,7 @@ const menuList = [
           {
             href: 'https://communities.gpmarinelitter.org',
             title: msg`Engage`,
+            to: '/forum',
             subtitle: msg`Interactive forum for collaboration`,
             icon: <IconForum />,
           },
@@ -143,13 +155,19 @@ const menuList = [
         key: 'The platform',
       },
       {
-        key: 'Our Netwrok',
+        key: 'Our Network',
       },
       {
         key: 'Partnership',
+        type: 'button',
+        link: '',
+        text: 'Go to GPML',
       },
       {
         key: 'Contact us',
+        type: 'button',
+        link: '',
+        text: 'Contact us',
       },
     ],
   },
@@ -848,4 +866,9 @@ const UIStore = new Store({
   },
 })
 
-export { UIStore }
+const ChatStore = new Store({
+  myForums: [],
+  isLoggedIn: false,
+})
+
+export { UIStore, ChatStore }

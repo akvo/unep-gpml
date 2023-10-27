@@ -5,9 +5,7 @@ import { loadCatalog } from '../../translations/utils'
 function Community({ setLoginVisible, isAuthenticated, loadingProfile }) {
   return (
     <StakeholderOverview
-      setLoginVisible={setLoginVisible}
-      isAuthenticated={isAuthenticated}
-      loadingProfile={loadingProfile}
+      {...{ loadingProfile, setLoginVisible, isAuthenticated }}
     />
   )
 }

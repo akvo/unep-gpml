@@ -24,10 +24,16 @@ function AdminPage(props) {
   )
 }
 
-function Admin() {
+function Admin({ isAuthenticated, profile, loadingProfile }) {
   return (
     <ProfileLayout>
-      <AdminPage />
+      <AdminPage
+        {...{
+          isAuthenticated,
+          profile,
+          loadingProfile,
+        }}
+      />
     </ProfileLayout>
   )
 }

@@ -3,7 +3,6 @@ import {
   Col,
   Row,
   Typography,
-  Button,
   Form,
   Input,
   Divider,
@@ -22,6 +21,8 @@ import ForgotPassword from './forgot-password'
 import SignUp from '../email-signup/view'
 import { eventTrack } from '../../utils/misc'
 import { useRouter } from 'next/router'
+import Button from '../../components/button'
+import FormLabel from '../../components/form-label'
 import { Trans, t } from '@lingui/macro'
 
 function Login({ visible, close }) {
@@ -129,15 +130,13 @@ function Login({ visible, close }) {
                 : t`CONTINUE WITH EMAIL`}
             </p>
             {!signin ? (
-              <div onClick={close}>
-                <p>
-                  <Trans>CANCEL</Trans>
-                </p>
+              <Button type="link" onClick={close}>
+                <Trans>CANCEL</Trans>
                 <CloseCircleOutlined />
-              </div>
+              </Button>
             ) : forgotPassword ? (
               <Button
-                type="text"
+                type="link"
                 className={styles.connectBackButton}
                 onClick={() => {
                   setSignIn(true)
@@ -148,7 +147,7 @@ function Login({ visible, close }) {
               </Button>
             ) : signup ? (
               <Button
-                type="text"
+                type="link"
                 className={styles.connectBackButton}
                 onClick={() => setSignUp(!signup)}
               >
@@ -156,7 +155,7 @@ function Login({ visible, close }) {
               </Button>
             ) : (
               <Button
-                type="text"
+                type="link"
                 className={styles.connectBackButton}
                 onClick={() => setSignIn(!signin)}
               >
@@ -189,17 +188,23 @@ function Login({ visible, close }) {
                   <div className={styles.signupWrapper}>
                     <div className={styles.authButtons}>
                       <Button
-                        type="primary"
-                        shape="round"
-                        icon={<LinkedinIcon />}
+                        ghost
+                        icon={
+                          <div className="icon">
+                            <LinkedinIcon />
+                          </div>
+                        }
                         onClick={handleLinkedinLogin}
                       >
                         <Trans>CONTINUE WITH LINKEDIN</Trans>
                       </Button>
                       <Button
-                        type="primary"
-                        shape="round"
-                        icon={<GoogleIcon />}
+                        ghost
+                        icon={
+                          <div className="icon">
+                            <GoogleIcon />
+                          </div>
+                        }
                         onClick={handleGoogleLogin}
                       >
                         <Trans>CONTINUE WITH GOOGLE</Trans>
@@ -208,9 +213,12 @@ function Login({ visible, close }) {
                         <Title level={4}>or</Title>
                       </div>
                       <Button
-                        type="primary"
-                        shape="round"
-                        icon={<EmailIcon />}
+                        ghost
+                        icon={
+                          <div className="icon">
+                            <EmailIcon />
+                          </div>
+                        }
                         onClick={() => setSignIn(!signin)}
                       >
                         <Trans>CONTINUE WITH EMAIL</Trans>
@@ -235,48 +243,79 @@ function Login({ visible, close }) {
                           formRef.current = form
                           return (
                             <Form layout="vertical">
-                              <Form.Item label="Email">
-                                <Field name="email">
-                                  {({ input, meta }) => (
+                              <Field name="email">
+                                {({ input, meta }) => {
+                                  const hasError = meta.touched && !meta.valid
+                                  const validVal =
+                                    input?.value && meta.valid
+                                      ? 'success'
+                                      : null
+                                  const validateStatus = hasError
+                                    ? 'error'
+                                    : validVal
+                                  return (
                                     <>
-                                      <Input
-                                        {...input}
-                                        placeholder={
-                                          <Trans>Enter your email</Trans>
-                                        }
-                                      />
-                                      {meta.touched && meta.error && (
-                                        <p color="error" className="error">
-                                          {meta.error}
-                                        </p>
-                                      )}
+                                      <FormLabel
+                                        htmlFor="email"
+                                        label={<Trans>Email</Trans>}
+                                        meta={meta}
+                                        validateStatus={validateStatus}
+                                      >
+                                        <Input
+                                          size="small"
+                                          {...input}
+                                          placeholder={
+                                            <Trans>Enter your email</Trans>
+                                          }
+                                        />
+                                        {meta.touched && meta.error && (
+                                          <p color="error" className="error">
+                                            {meta.error}
+                                          </p>
+                                        )}
+                                      </FormLabel>
                                     </>
-                                  )}
-                                </Field>
-                              </Form.Item>
-                              <Form.Item label="Password">
-                                <Field name="password">
-                                  {({ input, meta }) => (
+                                  )
+                                }}
+                              </Field>
+                              <Field name="password">
+                                {({ input, meta }) => {
+                                  const hasError = meta.touched && !meta.valid
+                                  const validVal =
+                                    input?.value && meta.valid
+                                      ? 'success'
+                                      : null
+                                  const validateStatus = hasError
+                                    ? 'error'
+                                    : validVal
+                                  return (
                                     <>
-                                      <Input.Password
-                                        {...input}
-                                        placeholder={
-                                          <Trans>Enter your password</Trans>
-                                        }
-                                      />
-                                      {meta.touched && meta.error && (
-                                        <p color="error" className="error">
-                                          {meta.error}
-                                        </p>
-                                      )}
+                                      <FormLabel
+                                        htmlFor="password"
+                                        label={<Trans>Password</Trans>}
+                                        meta={meta}
+                                        validateStatus={validateStatus}
+                                      >
+                                        <Input.Password
+                                          size="small"
+                                          {...input}
+                                          placeholder={
+                                            <Trans>Enter your password</Trans>
+                                          }
+                                        />
+                                        {meta.touched && meta.error && (
+                                          <p color="error" className="error">
+                                            {meta.error}
+                                          </p>
+                                        )}
+                                      </FormLabel>
                                     </>
-                                  )}
-                                </Field>
-                              </Form.Item>
+                                  )
+                                }}
+                              </Field>
                               <Button
                                 style={{ marginTop: 50 }}
-                                type="primary"
-                                shape="round"
+                                ghost
                                 className={styles.loginButton}
                                 loading={loading}
                                 onClick={() => handleSubmit()}
@@ -284,7 +323,7 @@ function Login({ visible, close }) {
                                 <Trans>LOGIN WITH EMAIL</Trans>
                               </Button>{' '}
                               <Button
-                                type="text"
+                                type="link"
                                 className={styles.forgotPassword}
                                 onClick={() =>
                                   setForgotPassword(!forgotPassword)
@@ -302,8 +341,7 @@ function Login({ visible, close }) {
                           <Trans>Don’t have an account yet?</Trans>
                         </Title>
                         <Button
-                          type="primary"
-                          shape="round"
+                          ghost
                           className={styles.loginButton}
                           onClick={() => setSignUp(true)}
                         >
@@ -328,7 +366,6 @@ function Login({ visible, close }) {
             >
               <Trans>terms and services</Trans>
             </a>
-            .
           </Title>
         </div>
       </div>

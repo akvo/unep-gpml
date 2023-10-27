@@ -10,19 +10,17 @@ import {
   notification,
 } from 'antd'
 import styles from './login-style.module.scss'
-import { ReactComponent as LinkedinIcon } from '../../images/auth/linkedin.svg'
-import { ReactComponent as GoogleIcon } from '../../images/auth/google.svg'
-import { ReactComponent as EmailIcon } from '../../images/auth/email.svg'
-import { useHistory, useLocation } from 'react-router-dom'
-const { Title, Link } = Typography
+import LinkedinIcon from '../../images/auth/linkedin.svg'
+import GoogleIcon from '../../images/auth/google.svg'
+import EmailIcon from '../../images/auth/email.svg'
+const { Title } = Typography
 import { Form as FinalForm, Field } from 'react-final-form'
 import { auth0Client } from '../../utils/misc'
 import ForgotPassword from './forgot-password'
 import SignUp from '../email-signup/view'
 import { Trans } from '@lingui/macro'
 
-function Login({ handleOnClickBtnNext, visible, close }) {
-  const location = useLocation()
+function Login({}) {
   const [loading, setLoading] = useState(false)
   const [signin, setSignIn] = useState(false)
   const [signup, setSignUp] = useState(false)
@@ -32,11 +30,11 @@ function Login({ handleOnClickBtnNext, visible, close }) {
   const [initialValues, setInitialValues] = useState({})
   const formRef = useRef()
 
-  useEffect(() => {
-    if (location?.state) {
-      setSignIn(true)
-    }
-  }, [location])
+  // useEffect(() => {
+  //   if (location?.state) {
+  //     setSignIn(true);
+  //   }
+  // }, [location]);
 
   const handleOnLogin = async (values) => {
     setLoading(true)
@@ -58,7 +56,7 @@ function Login({ handleOnClickBtnNext, visible, close }) {
           return
         }
         if (authResult) {
-          window.origin = window.location.origin
+          // window.origin = window.location.origin;
           console.log(authResult)
           setLoading(false)
           //window.origin = window.location.origin;
@@ -109,7 +107,7 @@ function Login({ handleOnClickBtnNext, visible, close }) {
   }
 
   return (
-    <div id="login">
+    <div className={styles.login}>
       <div className="ui container wave-background">
         <Row>
           <Col span={24}>
@@ -130,7 +128,8 @@ function Login({ handleOnClickBtnNext, visible, close }) {
                       setForgotPassword(false)
                     }}
                   >
-                    {'<'} <Trans>Back to connect options</Trans>
+                    {'<'}
+                    <Trans>Back to connect options</Trans>
                   </Button>
                 </div>
               </ForgotPassword>
@@ -160,15 +159,13 @@ function Login({ handleOnClickBtnNext, visible, close }) {
                     </div>
                     <div className="auth-buttons">
                       <Button
-                        type="primary"
                         shape="round"
                         icon={<LinkedinIcon />}
-                        onClick={handleOnClickBtnNext}
+                        onClick={handleLinkedinLogin}
                       >
                         <Trans>CONTINUE WITH LINKEDIN</Trans>
                       </Button>
                       <Button
-                        type="primary"
                         shape="round"
                         icon={<GoogleIcon />}
                         onClick={handleGoogleLogin}
@@ -179,7 +176,6 @@ function Login({ handleOnClickBtnNext, visible, close }) {
                         <Title level={4}>or</Title>
                       </div>
                       <Button
-                        type="primary"
                         shape="round"
                         icon={<EmailIcon />}
                         onClick={() => setSignIn(!signin)}
@@ -257,7 +253,6 @@ function Login({ handleOnClickBtnNext, visible, close }) {
                               </Form.Item>
                               <Button
                                 style={{ marginTop: 50 }}
-                                type="primary"
                                 shape="round"
                                 className="login-button"
                                 onClick={() => handleSubmit()}
@@ -283,7 +278,6 @@ function Login({ handleOnClickBtnNext, visible, close }) {
                           <Trans>Don’t have an account yet?</Trans>
                         </Title>
                         <Button
-                          type="primary"
                           shape="round"
                           className="login-button"
                           onClick={() => setSignUp(true)}

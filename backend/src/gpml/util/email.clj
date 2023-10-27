@@ -2,7 +2,8 @@
   (:require [clj-http.client :as client]
             [clojure.string :as str]
             [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.handler.util :as util]
+            [gpml.handler.util :as h.util]
+            [gpml.util :as util]
             [jsonista.core :as j]))
 
 (defn make-message [sender receiver subject text html]
@@ -87,7 +88,7 @@ Your submission has been published to %s/%s/%s.
 - UNEP GPML Digital Platform
 "
           (:app-domain mailjet-config)
-          (util/get-api-topic-type topic-type topic-item)
+          (h.util/get-api-topic-type topic-type topic-item)
           (:id topic-item)))
 
 (defn notify-user-review-rejected-text [mailjet-config topic-type topic-item]
@@ -100,33 +101,50 @@ again, please visit this URL: %s/edit-%s/%s
 
 - UNEP GPML Digital Platform
 "
-          (util/get-title topic-type topic-item)
+          (h.util/get-title topic-type topic-item)
           (:app-domain mailjet-config)
-          (-> (util/get-api-topic-type topic-type topic-item)
+          (-> (h.util/get-api-topic-type topic-type topic-item)
               (str/replace "_" "-"))
           (:id topic-item)))
 
 (defn notify-user-review-subject [mailjet-config review-status topic-type topic-item]
   (format "[%s] %s %s"
           (:app-name mailjet-config)
-          (util/get-display-topic-type topic-type topic-item)
+          (h.util/get-display-topic-type topic-type topic-item)
           (str/lower-case review-status)))
 
 (defn notify-private-channel-invitation-request-subject
   [app-name channel-name]
-  (format "[%s] Invitation request for private channel %s" app-name channel-name))
+  (format "[%s] Request to Join %s" app-name channel-name))
+
+(defn notify-user-about-chat-private-channel-invitation-request-accepted-subject
+  [app-name channel-name]
+  (format "[%s] You've joined %s" app-name channel-name))
 
 (defn notify-private-channel-invitation-request-text
-  [admin-name user-name user-email channel-name]
-  (format "Dear %s
+  [user-name channel-name review-request-link]
+  (format "%s wants to join %s
 
-%s user with email %s, is requesting access to the private channel %s.
+Visit the link below to review the request:
+
+%s
 
 - UNEP GPML Digital Platform"
-          admin-name
           user-name
-          user-email
-          channel-name))
+          channel-name
+          review-request-link))
+
+(defn notify-user-about-chat-private-channel-invitation-request-accepted-text
+  [channel-name base-url]
+  (format "Your request to join %s channel on the GPML platform was approved.
+
+View the forums in your GPML workspace:
+
+%s/forum
+
+- UNEP GPML Digital Platform"
+          channel-name
+          base-url))
 
 (defn notify-user-invitation-text [inviter-name app-domain entity-name]
   (format "Dear user,
@@ -141,6 +159,23 @@ again, please visit this URL: %s/edit-%s/%s
 
 (defn new-resource-comment-subject [comment-author]
   (format "%s commented on your resource" comment-author))
+
+(defn- notify-user-about-plastic-strategy-invitation-subject
+  [app-name]
+  (format "[%s] You have been invited to participate in a Plastic Strategy on GPML Platform" app-name))
+
+(defn- notify-user-about-plastic-strategy-invitation-text
+  [app-domain user-full-name country-name]
+  (format "Dear %s,
+
+You have been invited to participate in the Plastic Strategy for %s country.
+
+To accept this invitation please visit %s and sign up to GPML Platform.
+
+- UNEP GPML Digital Platform"
+          user-full-name
+          country-name
+          app-domain))
 
 (defn notify-admins-pending-approval [db mailjet-config new-item]
   (let [admins (db.stakeholder/get-admins db)
@@ -197,7 +232,7 @@ again, please visit this URL: %s/edit-%s/%s
     (send-email mailjet-config sender subject receivers texts htmls)))
 
 (defn notify-admins-new-chat-private-channel-invitation-request
-  [mailjet-config admins user channel-name]
+  [mailjet-config admins user channel-id channel-name]
   (let [sender unep-sender
         subject (notify-private-channel-invitation-request-subject
                  (:app-name mailjet-config)
@@ -206,14 +241,57 @@ again, please visit this URL: %s/edit-%s/%s
                    (fn [admin] {:Name (get-user-full-name admin)
                                 :Email (:email admin)})
                    admins)
-        texts (map (fn [receiver]
-                     (notify-private-channel-invitation-request-text (:Name receiver)
-                                                                     (get-user-full-name user)
-                                                                     (:email user)
-                                                                     channel-name))
+        texts (map (fn [_receiver]
+                     (notify-private-channel-invitation-request-text
+                      (get-user-full-name user)
+                      channel-name
+                      (format "%s/profile/admin-section?user_id=%s&channel_id=%s&email=%s&channel_name=%s"
+                              (:app-domain mailjet-config)
+                              (:id user)
+                              (util/encode-url-param channel-id)
+                              (util/encode-url-param (:email user))
+                              (util/encode-url-param channel-name))))
                    receivers)
         htmls (repeat nil)
-        {:keys [status body]}(send-email mailjet-config sender subject receivers texts htmls)]
+        {:keys [status body]} (send-email mailjet-config sender subject receivers texts htmls)]
+    (if (<= 200 status 299)
+      {:success? true}
+      {:success? false
+       :reason :failed-to-send-email
+       :error-details body})))
+
+(defn notify-user-about-chat-private-channel-invitation-request-accepted
+  [mailjet-config user channel-name]
+  (let [sender unep-sender
+        subject (notify-user-about-chat-private-channel-invitation-request-accepted-subject
+                 (:app-name mailjet-config)
+                 channel-name)
+        receivers [{:Name (get-user-full-name user)
+                    :Email (:email user)}]
+        texts [(notify-user-about-chat-private-channel-invitation-request-accepted-text
+                channel-name
+                (:app-domain mailjet-config))]
+        htmls (repeat nil)
+        {:keys [status body]} (send-email mailjet-config sender subject receivers texts htmls)]
+    (if (<= 200 status 299)
+      {:success? true}
+      {:success? false
+       :reason :failed-to-send-email
+       :error-details body})))
+
+(defn notify-user-about-plastic-strategy-invitation
+  [mailjet-config user plastic-strategy]
+  (let [sender unep-sender
+        subject (notify-user-about-plastic-strategy-invitation-subject (:app-name mailjet-config))
+        user-full-name (get-user-full-name user)
+        receivers [{:Name user-full-name
+                    :Email (:email user)}]
+        texts [(notify-user-about-plastic-strategy-invitation-text
+                (:app-domain mailjet-config)
+                user-full-name
+                (get-in plastic-strategy [:country :name]))]
+        htmls (repeat nil)
+        {:keys [status body]} (send-email mailjet-config sender subject receivers texts htmls)]
     (if (<= 200 status 299)
       {:success? true}
       {:success? false

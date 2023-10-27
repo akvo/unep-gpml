@@ -335,9 +335,6 @@ function ProfileLayout({ children }) {
                 position: 'absolute',
                 right: '1rem',
               }}
-              shape="circle"
-              type="ghost"
-              className="white"
               size="small"
             >
               {count}

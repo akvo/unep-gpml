@@ -1,4 +1,4 @@
-@import "../../vars.scss";
+@import '../../styles/vars.scss';
 
 .aboutUs {
   position: relative;
@@ -7,7 +7,7 @@
     max-width: 100%;
   }
   a {
-    color: $blue01 !important; /* blue colors for links too */
+    color: $primaryDarkBlue !important; /* blue colors for links too */
     text-decoration: inherit; /* no underline */
   }
 
@@ -34,10 +34,6 @@
           width: 100%;
         }
 
-        button {
-          max-width: 247px;
-        }
-
         img {
           max-width: 200px;
           margin: 16px 0 16px 0;
@@ -49,10 +45,7 @@
   :global {
     // Section Issue
     .section-issue-container {
-      background: url("../../images/section-issue.png");
-      background-repeat: no-repeat;
-      background-size: cover;
-      background-position: right;
+      background-color: $primaryDarkBlue5;
       .section-issue-wrapper {
         display: flex;
         justify-content: space-between;
@@ -62,6 +55,16 @@
         }
         .section-issue-text {
           flex: 0 0 40%;
+          h2,
+          .txt-emphasis {
+            color: white;
+          }
+          .txt-emphasis {
+            padding-top: 10px;
+          }
+        }
+        .btn-wrapper {
+          margin-top: 20px;
         }
         .section-issue-graphic {
           flex: 0 0 58%;
@@ -112,17 +115,17 @@
           max-width: 359px;
           flex: 0 0 23%;
           margin: 1rem 2rem;
-          background-color: $yellow;
+          background-color: $primaryPurple;
           border-radius: 0.75rem;
           padding: 1.5rem 2.5rem;
           .item-name,
           .item-increment {
             font-size: 1.2rem;
-            color: $blue02;
+            color: $primaryDarkBlue;
           }
           .item-name {
             text-transform: uppercase;
-            color: $blue02;
+            color: $primaryDarkBlue;
             @media (max-width: 540px) {
               font-size: 14px;
             }
@@ -130,7 +133,7 @@
           .item-value {
             font-size: 3.8rem;
             font-weight: 900;
-            color: $blue02;
+            color: $primaryDarkBlue;
 
             @media (max-width: 540px) {
               font-size: 47px;
@@ -149,9 +152,16 @@
           rgba(45, 103, 150, 0.8),
           rgba(45, 103, 150, 0.8)
         ),
-        url("../../images/section-mission.png");
+        url('../../images/section-mission.png');
       background-repeat: no-repeat;
       background-size: cover;
+      .section-mission-text {
+        h2,
+        p {
+          color: white;
+          padding-bottom: 20px;
+        }
+      }
     }
   }
 
@@ -174,11 +184,11 @@
           flex-wrap: wrap;
           border-radius: 50px;
           padding: 1rem 2rem;
+          gap: 20px;
           .btn-item {
             flex: 1 0 40%;
             margin: 0.5rem 1rem;
-            color: white !important;
-            border-color: white !important;
+            justify-content: center;
 
             @media (max-width: 540px) {
               font-size: 12px;
@@ -201,6 +211,16 @@
   :global {
     // Section Timeline & Roadmap
     .section-timeline-roadmap-container {
+      h2 {
+        padding-bottom: 10px;
+      }
+      p {
+        padding-bottom: 10px;
+        color: $primaryDarkBlue;
+      }
+      button {
+        margin: 20px 0px;
+      }
       .section-timeline-roadmap-graphic {
         padding: 0;
         text-align: center;
@@ -226,7 +246,7 @@
           rgba(9, 104, 154, 0.9),
           rgba(9, 104, 154, 0.9)
         ),
-        url("../../images/our-community.png"), #ffffff;
+        url('../../images/our-community.png'), #ffffff;
       background-repeat: no-repeat;
       background-size: cover;
       .section-feature-component-wrapper {
@@ -235,6 +255,14 @@
         align-items: center;
         .section-feature-component-text {
           flex: 0 0 38%;
+          h2 {
+            color: white;
+            padding-bottom: 20px;
+          }
+          p {
+            color: white;
+            padding-bottom: 20px;
+          }
         }
         .section-feature-component-graphic {
           flex: 0 0 60%;
@@ -252,7 +280,7 @@
   :global {
     // Section GPML Community
     .section-community-container {
-      background: $green04;
+      background: #135c72;
       .section-community-graphic {
         text-align: center;
         @media only screen and (max-width: 800px) {
@@ -261,6 +289,11 @@
             margin-top: 10rem;
           }
         }
+      }
+      h2,
+      p {
+        color: white;
+        padding-bottom: 20px;
       }
     }
   }
@@ -272,6 +305,13 @@
       padding-bottom: 0;
       h2 {
         color: #005b71;
+      }
+      p {
+        padding-top: 20px;
+        font-size: 16px;
+      }
+      .section-history-wrapper {
+        padding-bottom: 80px;
       }
       .section-history-graphic {
         background-color: #005b71 !important;

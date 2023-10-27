@@ -4,6 +4,10 @@ import { Row, Col, Typography, Tooltip, Button, Avatar } from 'antd'
 import datastakeholders from './json/stakeholders.json'
 import { titleCase } from '../../utils/string'
 import { Trans, t } from '@lingui/macro'
+import TransnationalImage from '../../images/transnational.svg'
+
+import datastakeholders from './json/stakeholders.json'
+import { titleCase } from '../../utils/string'
 
 const { Title, Paragraph, Text } = Typography
 
@@ -33,26 +37,13 @@ const CaseStudy = ({
           backgroundSize: 'cover',
           display: 'flex',
           height: 'auto',
-          borderBottom: '4px solid #18162F',
-          borderLeft: '4px solid #18162F',
-          borderTop: '4px solid #18162F',
         }}
       >
         <div className="p-4">
           <Title>{title}</Title>
         </div>
       </Col>
-      <Col
-        lg={10}
-        sm={24}
-        style={{
-          backgroundColor: background_color,
-          borderBottom: '4px solid #18162F',
-          borderRight: '4px solid #18162F',
-          borderLeft: '1px solid #18162F',
-          borderTop: '4px solid #18162F',
-        }}
-      >
+      <Col lg={10} sm={24}>
         <div className="p-4 content-text">
           <Row gutter={[8, 8]}>
             <Col>
@@ -66,12 +57,16 @@ const CaseStudy = ({
               </Paragraph>
             </Col>
             <Col>
-              <div style={{ display: 'flex', gap: 5, minHeight: 32 }}>
-                <div style={{ margin: 'auto' }}>
-                  <img
-                    src="/case-studies/globe-outline.svg"
-                    style={{ width: 32, height: 32 }}
-                  />
+              <div
+                style={{
+                  display: 'flex',
+                  gap: 5,
+                  minHeight: 32,
+                  marginBottom: '10px',
+                }}
+              >
+                <div className="location-image">
+                  <TransnationalImage />
                 </div>
                 <div style={{ margin: 'auto' }}>
                   <Text>{geo_coverage}</Text>
@@ -87,7 +82,7 @@ const CaseStudy = ({
                   ?.filter((tag, tx) => tx <= 7)
                   ?.map((tag, tx) => (
                     <li className="tag-item" key={tx}>
-                      {tag.length > 5 ? titleCase(tag) : tag}
+                      <span> {tag.length > 5 ? titleCase(tag) : tag}</span>
                     </li>
                   ))}
                 {/* {tagItems.length > 7 && tagItems.length - 7 > 1 && (

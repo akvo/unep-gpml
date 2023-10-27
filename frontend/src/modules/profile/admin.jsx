@@ -1,7 +1,6 @@
 import { UIStore } from '../../store'
 import {
   notification,
-  Button,
   Collapse,
   Space,
   Modal,
@@ -13,6 +12,7 @@ import {
   Typography,
   Checkbox,
   Spin,
+  Form,
 } from 'antd'
 const { Title } = Typography
 import React from 'react'
@@ -41,6 +41,9 @@ import Expert from './expert'
 import IconExpert from '../../images/expert-icon.svg'
 import debouce from 'lodash.debounce'
 import { Trans, t } from '@lingui/macro'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
+import Button from '../../components/button'
 
 const { Search } = Input
 const { TabPane } = Tabs
@@ -100,12 +103,12 @@ const HeaderSearch = ({ placeholder, listOpts, setListOpts }) => {
     />
   )
 }
-const reviewStatusOrderedList = [t`Published`, t`Pending`, t`Declined`]
+const reviewStatusOrderedList = ['Published', 'Pending', 'Declined']
 const statusDictToHuman = {
-  APPROVED: t`Published`,
-  SUBMITTED: t`Pending`,
-  REJECTED: t`Declined`,
-  INVITED: t`Invited`,
+  APPROVED: 'Published',
+  SUBMITTED: 'Pending',
+  REJECTED: 'Declined',
+  INVITED: 'Invited',
 }
 const statusDictToAPI = invert(statusDictToHuman)
 
@@ -330,6 +333,17 @@ const FocalPoint = ({
   )
 }
 
+const resourceBadges = [{ name: 'resource-verified', img: '/verified.svg' }]
+const orgBadges = [
+  { name: 'org-verified', img: '/verified.svg' },
+  { name: 'org-partner-verified', img: '/partner-verified.svg' },
+  { name: 'org-coe-verified', img: '/coe-verified.svg' },
+]
+const userBadges = [
+  { name: 'user-verified', img: '/verified.svg' },
+  { name: 'user-focal-point-verified', img: '/focal-verified.svg' },
+]
+
 const AdminSection = ({
   resourcesData,
   setResourcesData,
@@ -340,6 +354,8 @@ const AdminSection = ({
   setEntitiesData,
   tagsData,
 }) => {
+  const router = useRouter()
+  const { user_id, channel_id, email, channel_name } = router.query
   const profile = UIStore.useState((s) => s.profile)
   const [modalRejectVisible, setModalRejectVisible] = useState(false)
   // TODO:: refactor modalRejectAction and modalRejectFunction
@@ -352,6 +368,8 @@ const AdminSection = ({
   const [approveLoading, setApproveLoading] = useState({})
   const [loadingAssignReviewer, setLoadingAssignReviewer] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [requestLoading, setRequestLoading] = useState(false)
+  const [requestButtonText, setRequestButtonText] = useState('Approve')
   const [exportLoading, setExportLoading] = useState(false)
   const [expert, setExpert] = useState(false)
 
@@ -400,12 +418,67 @@ const AdminSection = ({
   const [reviewers, setReviewers] = useState([])
   const [focalPoints, setFocalPoints] = useState([])
   const [fetching, setFetching] = useState(false)
+  const [form] = Form.useForm()
 
   useEffect(() => {
     api.get(`/reviewer`).then((res) => {
       setReviewers(res?.data?.reviewers)
     })
   }, [])
+
+  useEffect(() => {
+    if (user_id) {
+      setTab('privateChat')
+    }
+  }, [user_id])
+
+  const handleChatRequest = () => {
+    setRequestLoading(true)
+    const data = {
+      channel_id: channel_id,
+      channel_name: channel_name,
+      user_id: Number(user_id),
+    }
+    api
+      .post(`/chat/channel/private/add-user`, data)
+      .then(() => {
+        notification.success({
+          message: `Your request to join the ${channel_name} has been approved!`,
+        })
+        setRequestButtonText('Approved')
+        setRequestLoading(false)
+      })
+      .catch((err) => {
+        setRequestLoading(false)
+        notification.error({
+          message: err?.response?.data?.errorDetails?.error
+            ? err?.response?.data?.errorDetails?.error
+            : 'Something went wrong',
+        })
+      })
+  }
+
+  const onFinish = (values) => {
+    const data = {
+      tag_category: 'general',
+      tag: values.tag,
+      review_status: 'APPROVED',
+      private: true,
+    }
+    api
+      .post(`/tag`, data)
+      .then(() => {
+        form.resetFields()
+        notification.success({ message: 'Tag added!' })
+      })
+      .catch((err) => {
+        notification.error({
+          message: err?.response?.data?.errorDetails?.error
+            ? err?.response?.data?.errorDetails?.error
+            : 'Something went wrong',
+        })
+      })
+  }
 
   const handleSearch = (newValue) => {
     setFetching(true)
@@ -660,6 +733,66 @@ const AdminSection = ({
     )
   }
 
+  const handleVerify = async (
+    e,
+    item,
+    badgeName,
+    assign,
+    listOpts,
+    setListOpts,
+    entityName
+  ) => {
+    e.stopPropagation()
+
+    const data = {
+      assign: assign,
+      entity_id: item.id,
+      entity_type: entityName,
+    }
+
+    api
+      .post(`/badge/${badgeName}/assign`, data)
+      .then((resp) => {
+        notification.success({
+          message: `Your request to ${
+            assign ? 'add' : 'remove'
+          } ${badgeName} has been approved!`,
+        })
+        const updatedState = {
+          ...listOpts,
+          data: {
+            ...listOpts.data,
+            data: listOpts.data.data.map((i) =>
+              i.id === item.id
+                ? {
+                    ...i,
+                    assignedBadges: assign
+                      ? [
+                          ...i.assignedBadges,
+                          {
+                            badgeName: badgeName,
+                          },
+                        ]
+                      : i.assignedBadges.filter(
+                          (b) => b.badgeName !== badgeName
+                        ),
+                  }
+                : i
+            ),
+          },
+        }
+
+        setListOpts(updatedState)
+      })
+      .catch((err) => {
+        notification.error({
+          message: err?.response?.data?.errorDetails?.error
+            ? err?.response?.data?.errorDetails?.error
+            : 'Something went wrong',
+        })
+      })
+  }
+
   const PublishButton = ({
     item,
     type,
@@ -669,7 +802,8 @@ const AdminSection = ({
     setListOpts,
   }) => (
     <Button
-      type={type}
+      size="small"
+      ghost
       className={className}
       disabled={disabled}
       onClick={review(item, 'APPROVED', listOpts, setListOpts)}
@@ -695,7 +829,7 @@ const AdminSection = ({
     setListOpts,
   }) => (
     <Button
-      type={'text'}
+      size="small"
       danger
       className={className}
       disabled={disabled}
@@ -726,10 +860,11 @@ const AdminSection = ({
     setListOpts,
   }) => (
     <Button
-      type={type}
+      ghost
       className={className}
       disabled={disabled}
       loading={exportLoading}
+      size="small"
       onClick={() =>
         exportList(
           listOpts.type === 'stakeholders'
@@ -810,7 +945,6 @@ const AdminSection = ({
                 <PublishButton
                   item={item}
                   type="ghost"
-                  className="black"
                   listOpts={listOpts}
                   setListOpts={setListOpts}
                 />
@@ -849,7 +983,6 @@ const AdminSection = ({
               <PublishButton
                 item={item}
                 type="ghost"
-                className="black"
                 listOpts={listOpts}
                 setListOpts={setListOpts}
               />
@@ -883,6 +1016,108 @@ const AdminSection = ({
                 {item.type === 'stakeholder' && item?.expertise?.length > 0 && (
                   <div className="expert-icon">
                     <IconExpert />
+                  </div>
+                )}
+                {item.type !== 'stakeholder' && item.type !== 'organisation' && (
+                  <div className="badge-wrapper">
+                    {resourceBadges.map((b) => {
+                      const find = item?.assignedBadges?.find(
+                        (bName) => bName.badgeName === b.name
+                      )
+                      return (
+                        <Tooltip
+                          placement="top"
+                          title={find ? `Remove ${b.name}` : `Add ${b.name}`}
+                          color="#020A5B"
+                        >
+                          <div
+                            key={b.name}
+                            className={`badge-icon ${find ? 'verified' : ''}`}
+                            onClick={(e) =>
+                              handleVerify(
+                                e,
+                                item,
+                                b.name,
+                                find ? false : true,
+                                listOpts,
+                                setListOpts,
+                                item.topic
+                              )
+                            }
+                          >
+                            <img src={b.img} />
+                          </div>
+                        </Tooltip>
+                      )
+                    })}
+                  </div>
+                )}
+                {item.type === 'organisation' && (
+                  <div className="badge-wrapper">
+                    {orgBadges.map((b) => {
+                      const find = item?.assignedBadges?.find(
+                        (bName) => bName.badgeName === b.name
+                      )
+                      return (
+                        <Tooltip
+                          placement="top"
+                          title={find ? `Remove ${b.name}` : `Add ${b.name}`}
+                          color="#020A5B"
+                        >
+                          <div
+                            key={b.name}
+                            className={`badge-icon ${find ? 'verified' : ''}`}
+                            onClick={(e) =>
+                              handleVerify(
+                                e,
+                                item,
+                                b.name,
+                                find ? false : true,
+                                listOpts,
+                                setListOpts,
+                                'organisation'
+                              )
+                            }
+                          >
+                            <img src={b.img} />
+                          </div>
+                        </Tooltip>
+                      )
+                    })}
+                  </div>
+                )}
+                {item.type === 'stakeholder' && (
+                  <div className="badge-wrapper">
+                    {userBadges.map((b) => {
+                      const find = item?.assignedBadges?.find(
+                        (bName) => bName.badgeName === b.name
+                      )
+                      return (
+                        <Tooltip
+                          placement="top"
+                          title={find ? `Remove ${b.name}` : `Add ${b.name}`}
+                          color="#020A5B"
+                        >
+                          <div
+                            key={b.name}
+                            className={`badge-icon ${find ? 'verified' : ''}`}
+                            onClick={(e) =>
+                              handleVerify(
+                                e,
+                                item,
+                                b.name,
+                                find ? false : true,
+                                listOpts,
+                                setListOpts,
+                                'stakeholder'
+                              )
+                            }
+                          >
+                            <img src={b.img} />
+                          </div>
+                        </Tooltip>
+                      )
+                    })}
                   </div>
                 )}
                 {item.reviewStatus === 'APPROVED' &&
@@ -976,11 +1211,7 @@ const AdminSection = ({
               </div>
               {title !== 'Tags' && (
                 <div>
-                  <ExportButton
-                    type="ghost"
-                    className="black"
-                    listOpts={listOpts}
-                  />
+                  <ExportButton listOpts={listOpts} />
                 </div>
               )}
             </div>
@@ -1134,6 +1365,7 @@ const AdminSection = ({
         onChange={(key) => setTab(key)}
         size="large"
         className="profile-tab-menu"
+        activeKey={tab}
       >
         <TabPane
           tab="Individuals"
@@ -1163,8 +1395,59 @@ const AdminSection = ({
           {renderList(resourcesListOpts, setResourcesListOpts)}
         </TabPane>
         <TabPane tab="Tags" key="tags" className="profile-tab-pane">
+          <Form
+            name="basic"
+            initialValues={{
+              remember: true,
+            }}
+            form={form}
+            onFinish={onFinish}
+            autoComplete="off"
+            className="tag-form"
+          >
+            <Form.Item
+              label="Tag Name"
+              name="tag"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your tag!',
+                },
+              ]}
+            >
+              <Input placeholder="Please input your tag!" />
+            </Form.Item>
+            <Form.Item>
+              <Button ghost size="small">
+                Submit
+              </Button>
+            </Form.Item>
+          </Form>
           {renderList(tagsListOpts, setTagsListOpts)}
         </TabPane>
+        {user_id && (
+          <TabPane
+            tab="Requests"
+            key="privateChat"
+            className="profile-tab-pane"
+          >
+            <div className="private-chat-wrapper">
+              <p className="title">Request to Join {channel_name}</p>
+              <p>
+                <Link href={`/stakeholder/${user_id}`}>{email}</Link> wants to
+                join {channel_name}{' '}
+                <Button
+                  type="ghost"
+                  className="black"
+                  disabled={requestLoading}
+                  onClick={() => handleChatRequest()}
+                >
+                  {requestButtonText}
+                </Button>
+              </p>
+            </div>
+          </TabPane>
+        )}
       </Tabs>
 
       <ModalReject

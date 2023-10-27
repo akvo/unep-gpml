@@ -10,6 +10,7 @@ body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color: $primaryDarkBlue;
 }
 .h-xxl {
   font-size: $fzXXL;
@@ -156,16 +157,16 @@ h6 {
   z-index: 20;
   top: 0;
   transition: background 0.27s ease-out;
-  @media print {
-    display: none;
+  a {
+    color: white;
   }
   .container {
     .logo-container {
       margin-left: -15px;
       margin-top: -14px;
-      a {
-        color: white;
-        display: flex;
+
+      @media screen and (max-width: $bpMobile) {
+        margin-top: -4px;
       }
     }
   }
@@ -213,18 +214,20 @@ h6 {
     margin-left: 7px;
     width: 44px;
     height: 44px;
-    min-width: 44px;
     line-height: 44px;
     color: $primaryDarkBlue;
     font-weight: bold;
     background-color: $primaryBlue2;
     cursor: pointer;
+    @media screen and (max-width: $bpMobile) {
+      margin-right: 7px;
+      margin-left: 0px;
+    }
   }
   @media screen and (max-width: $bpMobile) {
     height: 70px;
     padding: 12px 0;
     .logo-container {
-      margin-top: -3px;
       margin-left: -5px;
       svg {
         height: auto;
@@ -383,6 +386,9 @@ h6 {
       border-bottom: 1px solid $primaryGreen;
       padding-bottom: 8px;
       margin-bottom: 30px;
+      &.block {
+        display: block;
+      }
     }
     ul {
       padding: 0;
@@ -425,7 +431,30 @@ h6 {
             font-size: 14px;
           }
         }
+        &.ml {
+          margin-left: 0px;
+        }
       }
+    }
+
+    button {
+      min-width: 200px;
+      justify-content: center;
+    }
+    @media screen and (max-width: $bpMobile) {
+      button {
+        min-width: 100%;
+        margin: 10px 0px;
+      }
+    }
+  }
+  .contact-button {
+    border-color: $primaryGreen;
+    color: $primaryGreen;
+    margin-top: 16px;
+    &:hover {
+      background-color: $primaryGreen;
+      color: $primaryDarkBlue;
     }
   }
 }
@@ -575,7 +604,7 @@ h6 {
   z-index: 999;
   background: url('/menu-background.png');
   background-size: cover;
-  button {
+  .cancel {
     background: transparent;
     border: none;
     cursor: pointer;

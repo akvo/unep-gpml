@@ -3,10 +3,10 @@ import { Col, Row } from 'antd'
 import { UIStore } from '../../store'
 import { CloseIcon } from '../icons'
 import { motion, AnimatePresence } from 'framer-motion'
-import Link from 'next/link'
 import Item from './item'
 import { useLingui } from '@lingui/react'
 import { deepTranslate } from '../../utils/misc'
+import Button from '../button'
 
 const navVariants = {
   open: { scale: 1, opacity: 1 },
@@ -81,12 +81,131 @@ const ToolsMenu = () => {
   )
 }
 
+const PlasticMenu = () => {
+  const { menuList } = UIStore.useState((s) => ({
+    menuList: s.menuList,
+  }))
+  return (
+    <div className="container sub-menu">
+      <Row gutter={[168, 168]}>
+        {menuList
+          .find((it) => it.key === 'Plastic')
+          .children.map((menu, index) => (
+            <Col span={index === 0 ? 16 : 8} key={menu.key}>
+              <motion.p
+                className="p-m block"
+                custom={0}
+                variants={menuItemVariants}
+                initial="closed"
+                animate="open"
+                exit="closed"
+              >
+                {menu.key}
+              </motion.p>
+              <ul>
+                {menu?.children.map((child, i) => (
+                  <motion.li
+                    key={child.title}
+                    custom={i + 1}
+                    variants={menuItemVariants}
+                    initial="closed"
+                    animate="open"
+                    exit="closed"
+                    className="sub-menu-item"
+                  >
+                    <Item {...child} />
+                  </motion.li>
+                ))}
+              </ul>
+            </Col>
+          ))}
+      </Row>
+    </div>
+  )
+}
+
+const AboutUsMenu = () => {
+  const { menuList } = UIStore.useState((s) => ({
+    menuList: s.menuList,
+  }))
+  return (
+    <div className="container sub-menu">
+      <Row gutter={[168, 168]}>
+        {menuList
+          .find((it) => it.key === 'About Us')
+          .children.filter((t) => t.type !== 'button')
+          .map((menu) => (
+            <Col span={8} key={menu.key}>
+              <motion.p
+                className="p-m"
+                custom={0}
+                variants={menuItemVariants}
+                initial="closed"
+                animate="open"
+                exit="closed"
+              >
+                {menu.key}
+              </motion.p>
+              <ul>
+                {menu?.children?.map((child, i) => (
+                  <motion.li
+                    key={child.title}
+                    custom={i + 1}
+                    variants={menuItemVariants}
+                    initial="closed"
+                    animate="open"
+                    exit="closed"
+                    className="sub-menu-item"
+                  >
+                    <Item {...child} />
+                  </motion.li>
+                ))}
+              </ul>
+            </Col>
+          ))}
+        <Col span={8}>
+          <motion.div
+            custom={0}
+            key={0}
+            variants={menuItemVariants}
+            initial="closed"
+            animate="open"
+            exit="closed"
+          >
+            <Button type="primary" size="small" className="noicon">
+              Go to GPML
+            </Button>
+          </motion.div>
+          <motion.div
+            custom={1}
+            key={1}
+            variants={menuItemVariants}
+            initial="closed"
+            animate="open"
+            exit="closed"
+          >
+            <Button ghost size="small" className="contact-button">
+              Contact Us
+            </Button>
+          </motion.div>
+        </Col>
+      </Row>
+    </div>
+  )
+}
+
 const NavDesktop = ({ isOpen, toggle, contentKey }) => {
   let ContentComponent
 
   switch (contentKey) {
     case 'Tools':
       ContentComponent = ToolsMenu
+      break
+    case 'About Us':
+      ContentComponent = AboutUsMenu
+      break
+    case 'Plastic':
+      ContentComponent = PlasticMenu
       break
     default:
       ContentComponent = () => <div>Select a menu item...</div>
@@ -103,7 +222,7 @@ const NavDesktop = ({ isOpen, toggle, contentKey }) => {
           transition={{ duration: 0.25 }}
           className="fullscreen-nav"
         >
-          <button onClick={toggle}>
+          <button className="cancel" onClick={toggle}>
             <CloseIcon />
           </button>
           <ContentComponent />

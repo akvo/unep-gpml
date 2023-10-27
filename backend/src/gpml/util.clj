@@ -1,9 +1,9 @@
 (ns gpml.util
   (:require [clojure.string :as str]
             [clojure.walk :as w]
-            [gpml.util.regular-expressions :as util.regex])
+            [gpml.util.regular-expressions])
   (:import [java.io File]
-           [java.net URL]
+           [java.net URL URLEncoder]
            [java.util Base64]
            [java.util UUID]))
 
@@ -122,16 +122,22 @@
   (.decode (Base64/getDecoder) src))
 
 (defn base64?
-  "Check that `src` is a valid Base64 encoded String"
+  "Check that `src` is a valid Base64 encoded String
+
+  Nil-safety is provided."
   [src]
-  (or (= src "")
-      (and (re-matches #"[0-9a-zA-Z+/]+={0,2}" src)
-           (= 0 (rem (count src) 4)))))
+  (and (string? src)
+       (or (= src "")
+           (and (re-matches #"[0-9a-zA-Z+/]+={0,2}" src)
+                (= 0 (rem (count src) 4))))))
 
 (defn base64-headless
-  "Returns the base64 encoded string without the header."
+  "Returns the base64 encoded string without the header.
+
+  Nil-safe."
   [src]
-  (last (re-find #"^data:(\S+);base64,(.*)$" src)))
+  (when src
+    (last (re-find #"^data:(\S+);base64,(.*)$" src))))
 
 (defn add-base64-header
   "Adds the base64 header given the `mime-type` and `base64-str`."
@@ -182,3 +188,7 @@
   [email]
   (and string?
        (re-matches gpml.util.regular-expressions/email-re email)))
+
+(defn encode-url-param
+  [^String param]
+  (URLEncoder/encode param "utf-8"))

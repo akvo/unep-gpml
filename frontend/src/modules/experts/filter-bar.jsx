@@ -127,7 +127,10 @@ const FilterBar = ({
               {catTags.map((cat, index) => {
                 return (
                   <li onClick={handleClick0(index)}>
-                    {/* <Icon name={`cat-tags/${slug(cat.title)}`} fill="#67BEA1" /> */}
+                    <DynamicSVG
+                      type={`/${slug(cat.title)}`}
+                      fillColor={`'#fff'}`}
+                    />
                     <span>{title(cat.title)}</span>
                   </li>
                 )
@@ -142,10 +145,10 @@ const FilterBar = ({
             <small>
               &lt; <Trans>Back to categories</Trans>
             </small>
-            {/* <Icon
-              name={`cat-tags/${slug(catTags[filter[0]].title)}`}
-              fill="#67BEA1"
-            /> */}
+            <DynamicSVG
+              type={`/${slug(catTags[filter[0]].title)}`}
+              fillColor={`'#fff'}`}
+            />
             <div>
               <strong>{title(catTags[filter[0]].title)}</strong>
               <small>
@@ -162,7 +165,7 @@ const FilterBar = ({
                 }
               >
                 <div className="img-container">
-                  {/* <Icon name={`cat-tags/${slug(tag)}`} fill="#67BEA1" /> */}
+                  <DynamicSVG type={`/${slug(tag)}`} fillColor={`'#67BEA1'}`} />
                 </div>
                 <div className="label-container">
                   <span>{tag}</span>
@@ -183,6 +186,25 @@ const FilterBar = ({
       />
     </div>
   )
+}
+
+const DynamicSVG = ({ type, fillColor }) => {
+  const [svgContent, setSvgContent] = useState(null)
+
+  useEffect(() => {
+    fetch(`/cat-tags/${type}.svg`)
+      .then((response) => response.text())
+      .then((content) => setSvgContent(content))
+  }, [type])
+
+  if (!svgContent) return null
+
+  const updatedContent = svgContent.replace(
+    'fill="#06496c"',
+    `fill="${fillColor}"`
+  )
+
+  return <div dangerouslySetInnerHTML={{ __html: updatedContent }} />
 }
 
 export default FilterBar

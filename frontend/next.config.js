@@ -25,7 +25,6 @@ module.exports = {
       },
     ],
   },
-
   async rewrites() {
     let domain = 'http://backend:3000'
     if (process.env.REACT_APP_FEENV) {

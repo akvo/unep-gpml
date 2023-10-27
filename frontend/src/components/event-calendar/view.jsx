@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import {
-  Button,
   Select,
   Card,
   Calendar,
@@ -27,6 +26,7 @@ import api from '../../utils/api'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { Trans } from '@lingui/macro'
+import Button from '../../components/button'
 
 const EventCalendar = ({ isAuthenticated, setLoginVisible }) => {
   const history = useHistory()
@@ -144,7 +144,7 @@ const EventCalendar = ({ isAuthenticated, setLoginVisible }) => {
           <h2>
             <Trans>Upcoming Events</Trans>{' '}
             <span className="see-more-link">
-              <Link href="/knowledge/library?topic=event" legacyBehavior>
+              <Link href="/knowledge/library/map/event" legacyBehavior>
                 <a>
                   <Trans>See all</Trans> <RightOutlined />
                 </a>
@@ -163,9 +163,9 @@ const EventCalendar = ({ isAuthenticated, setLoginVisible }) => {
                   setLoginVisible(true)
                 }
               }}
-              type="primary"
+              ghost
               className="event-add-button"
-              icon={<PlusOutlined />}
+              withArrow
             >
               <Trans>Add An Event</Trans>
             </Button>

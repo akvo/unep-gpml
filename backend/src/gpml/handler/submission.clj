@@ -98,7 +98,8 @@
        item
        (let [tags (db.resource.tag/get-resource-tags conn {:table "stakeholder_tag"
                                                            :resource-col "stakeholder"
-                                                           :resource-id (:id item)})]
+                                                           :resource-id (:id item)
+                                                           :review_status "APPROVED"})]
          (merge item (handler.stakeholder.tag/unwrap-tags (assoc item :tags tags))))))
    submission-data))
 
@@ -132,10 +133,10 @@
         (let [log-data {:exception-message (ex-message t)
                         :exception-data (ex-data t)
                         :context-data query}]
-          (log logger :error :failed-to-update-submission log-data)
-          (log logger :debug :failed-to-update-submission (assoc log-data :stack-trace (.getStackTrace t)))
+          (log logger :error :failed-to-get-submissions log-data)
+          (log logger :debug :failed-to-get-submissions (assoc log-data :stack-trace (.getStackTrace t)))
           (r/server-error {:success? false
-                           :reason :failed-to-update-submission}))))))
+                           :reason :failed-to-get-submissions}))))))
 
 (defn- handle-stakeholder-role-change
   [config stakeholder-id review-status]
@@ -218,7 +219,8 @@
         org (db.organisation/organisation-by-id conn {:id (:affiliation stakeholder)})
         tags (db.resource.tag/get-resource-tags conn {:table "stakeholder_tag"
                                                       :resource-col "stakeholder"
-                                                      :resource-id (:id stakeholder)})]
+                                                      :resource-id (:id stakeholder)
+                                                      :review_status "APPROVED"})]
     (cond-> stakeholder
       (seq org)
       (assoc :affiliation org)

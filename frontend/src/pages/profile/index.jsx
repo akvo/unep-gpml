@@ -16,9 +16,9 @@ function ProfilePage(props) {
         isModal={false}
       />
       <Button
+        ghost
+        size="small"
         loading={props.saving}
-        type="ghost"
-        className="black"
         onClick={(ev) => {
           props.handleSubmitRef.current(ev)
         }}
@@ -29,7 +29,7 @@ function ProfilePage(props) {
   )
 }
 
-function Profile() {
+function Profile({ isAuthenticated, profile, loadingProfile }) {
   return (
     <ProfileLayout>
       <ProfilePage />

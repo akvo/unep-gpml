@@ -53,30 +53,30 @@
   (letfn [(decode-params [params]
             (malli/decode browse/api-opts-schema params mt/string-transformer))]
     (testing "Default filter values"
-      (is (= (browse/get-db-filter (decode-params {})) {:offset 0 :limit 50 :review-status "APPROVED"})))
+      (is (= (browse/api-filters->filters (decode-params {})) {:offset 0 :limit 50 :review-status "APPROVED"})))
     (testing "Country is not empty"
-      (is (= (browse/get-db-filter (decode-params {:country "73,106,107"}))
+      (is (= (browse/api-filters->filters (decode-params {:country "73,106,107"}))
              {:countries #{107 73 106} :offset 0 :limit 50 :review-status "APPROVED"})))
     (testing "Topic is not empty"
-      (is (= (browse/get-db-filter (decode-params {:topic "technology"}))
+      (is (= (browse/api-filters->filters (decode-params {:topic "technology"}))
              {:topic #{"technology"} :offset 0 :limit 50 :review-status "APPROVED"})))
     (testing "Search is not empty"
-      (is (= (browse/get-db-filter (decode-params {:q "act"}))
+      (is (= (browse/api-filters->filters (decode-params {:q "act"}))
              {:search-text "act" :offset 0 :limit 50 :review-status "APPROVED"})))
     (testing "Search multiple keywords"
-      (is (= (browse/get-db-filter (decode-params {:q "some test"}))
+      (is (= (browse/api-filters->filters (decode-params {:q "some test"}))
              {:search-text "some & test" :offset 0 :limit 50 :review-status "APPROVED"})))
     (testing "Trailing/leading/double spaces are trimmed"
-      (is (= (browse/get-db-filter (decode-params {:q "  This   is a test  "}))
+      (is (= (browse/api-filters->filters (decode-params {:q "  This   is a test  "}))
              {:search-text "This & is & a & test" :offset 0 :limit 50 :review-status "APPROVED"})))
     (testing "Ampersand is removed"
-      (is (= (browse/get-db-filter (decode-params {:q "&&test&&"}))
+      (is (= (browse/api-filters->filters (decode-params {:q "&&test&&"}))
              {:search-text "test" :offset 0 :limit 50 :review-status "APPROVED"})))
     (testing "None is empty"
-      (is (= (browse/get-db-filter (decode-params
-                                    {:q "eco"
-                                     :country "253"
-                                     :topic "initiative,event"}))
+      (is (= (browse/api-filters->filters (decode-params
+                                           {:q "eco"
+                                            :country "253"
+                                            :topic "initiative,event"}))
              {:search-text "eco"
               :countries #{253}
               :topic #{"initiative" "event"}

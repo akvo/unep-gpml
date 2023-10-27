@@ -1,6 +1,21 @@
-import { Tabs, Collapse, Card, Tag, Input, Col, Row, Form } from 'antd'
+import {
+  Tabs,
+  Collapse,
+  Card,
+  Tag,
+  Input,
+  Col,
+  Row,
+  Form,
+  Select,
+  Dropdown,
+  Menu,
+} from 'antd'
 import Image from 'next/image'
 import Link from 'next/link'
+import isEmpty from 'lodash/isEmpty'
+import values from 'lodash/values'
+import flatten from 'lodash/flatten'
 import styles from './index.module.scss'
 import {
   CirclePointer,
@@ -22,6 +37,10 @@ import Button from '../../components/button'
 import { Trans, t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 import { loadCatalog } from '../../translations/utils'
+import { UIStore } from '../../store'
+import api from '../../utils/api'
+import { useRouter } from 'next/router'
+import { stripHtml, transformStrapiResponse } from '../../utils/misc'
 
 const pagination = {
   clickable: true,
@@ -51,6 +70,8 @@ const Landing = () => (
 const Hero = () => {
   const [selected, setSelected] = useState('Governments')
   const [timeout, _setTimeout] = useState(true)
+  const [filter, setFilter] = useState({})
+
   const intidRef = useRef()
   const [width] = useDeviceSize()
   const { i18n } = useLingui()
@@ -84,6 +105,33 @@ const Hero = () => {
       text: t`The GPML digital platform allows NGOs and civil society to connect with likeminded organizations, discover financing resources and funding opportunities, and showcase their work in the fight against plastic pollution and marine litter.`,
     },
   ]
+  const router = useRouter()
+  const tags = UIStore.useState((s) => s.tags)
+  // populate options for tags dropdown
+  const tagsWithoutSpace =
+    !isEmpty(tags) &&
+    flatten(values(tags)).map((it) => ({
+      value: it?.tag?.trim(),
+      label: it?.tag?.trim(),
+    }))
+
+  const tagOpts = !isEmpty(tags)
+    ? [...new Set(tagsWithoutSpace.map((s) => JSON.stringify(s)))]
+        .map((s) => JSON.parse(s))
+        ?.sort((tag1, tag2) => tag1?.label.localeCompare(tag2?.label))
+    : []
+  const suggestedTags = [
+    'Plastic Pollution',
+    'Marine Litter',
+    'Reports & Assessments',
+    'Circularity',
+    'Plastics',
+    'Waste management',
+    'Courses & Training',
+    'National Action Plan',
+  ]
+  const maxTags = 6
+
   useEffect(() => {
     let index = 0
     clearInterval(intidRef.current)
@@ -98,6 +146,17 @@ const Hero = () => {
     clearInterval(intidRef.current)
     _setTimeout(false)
   }
+
+  const handleOnSearch = () => {
+    if (!filter?.tag) {
+      return
+    }
+    router.push({
+      pathname: '/knowledge/library',
+      query: filter,
+    })
+  }
+
   return (
     <>
       <div className="hero">
@@ -172,10 +231,23 @@ const Hero = () => {
       <div className="container">
         <div className="search-bar">
           <div className="bar">
-            <Input
-              prefix={width < 768 && <Magnifier />}
+            <Select
+              dropdownClassName={styles.dropdownSuggestion}
               placeholder={t`Search the resource database...`}
-              type="text"
+              options={tagOpts}
+              optionFilterProp="children"
+              filterOption={(input, option) =>
+                option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+              value={filter?.tag}
+              onChange={(val) => {
+                setFilter({
+                  tag: val,
+                })
+              }}
+              suffixIcon={width < 768 && <Magnifier />}
+              virtual={false}
+              showSearch
             />
             <div className="localisation h-xs">
               <Localiser />
@@ -187,21 +259,59 @@ const Hero = () => {
               type="primary"
               size="small"
               className="left-icon hide-mobile"
+              onClick={handleOnSearch}
             >
               <Magnifier />
               <Trans>Search</Trans>
             </Button>
           </div>
-          <Button type="primary" className="hide-desktop noicon">
+          <Button
+            type="primary"
+            className="hide-desktop noicon"
+            onClick={handleOnSearch}
+          >
             <Trans>Search</Trans>
           </Button>
           <div className="tags hide-mobile">
             <b>
-              <Trans>Suggested search:</Trans>
+              <Trans>Suggested:</Trans>
             </b>
-            <Tag className="h-xxs">Case Studies</Tag>
-            <Tag className="h-xxs">Plastic Strategies</Tag>
-            <Tag className="h-xxs">Plastic Solutions</Tag>
+            <div className="suggestions">
+              {suggestedTags.slice(0, maxTags).map((suggestion, sx) => (
+                <Tag
+                  key={sx}
+                  className="h-xxs"
+                  onClick={() => setFilter({ tag: suggestion })}
+                >
+                  {suggestion}
+                </Tag>
+              ))}
+              {suggestedTags.length > maxTags && (
+                <Dropdown
+                  overlay={
+                    <Menu>
+                      {suggestedTags
+                        .slice(maxTags, suggestedTags.length)
+                        .map((tag, tx) => {
+                          return (
+                            <Menu.Item
+                              key={tx}
+                              onClick={() => setFilter({ tag })}
+                            >
+                              {tag}
+                            </Menu.Item>
+                          )
+                        })}
+                    </Menu>
+                  }
+                  trigger={['click']}
+                >
+                  <Tag className="h-xxs">
+                    {`+${suggestedTags.length - maxTags} more`}
+                  </Tag>
+                </Dropdown>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -488,38 +598,52 @@ const ActNowCard = ({ item }) => (
 )
 
 const LatestNews = () => {
-  const items = [
-    {
-      id: 111,
-      badge: 'NEWS',
-      image: '/news/watch-the-7th-international-marine-debris-conference.jpg',
-      published_at: '2023-10-18T07:56:55.667029+00:00',
-      title: 'WATCH: The 7th International Marine Debris Conference',
-      excerpt:
-        'Join a 90-minute interactive workshop, to discuss a risk assessment approach',
-      url: '/landing',
-    },
-    {
-      id: 112,
-      badge: 'EDITORIAL',
-      image: '/news/discover-opportunities-and-resources.jpg',
-      published_at: null,
-      title: 'DISCOVER: Opportunities and Resources!',
-      excerpt:
-        'The CASSINI EU Maritime Prize for Digital Space Applications is looking',
-      url: '/landing',
-    },
-    {
-      id: 113,
-      badge: 'BLOGPOST',
-      image: '/news/register-gpml-interactive-workshop.jpg',
-      published_at: '2023-08-01T07:56:55.667029+00:00',
-      title: 'REGISTER: GPML Interactive Workshop',
-      excerpt:
-        'Join a 90-minute interactive workshop, to discuss a risk assessment approach',
-      url: '/landing',
-    },
-  ]
+  const router = useRouter()
+  const [items, setItems] = useState([])
+  const [loading, setLoading] = useState(true)
+  // const items = [
+  //   {
+  //     id: 111,
+  //     badge: 'NEWS',
+  //     image: '/news/watch-the-7th-international-marine-debris-conference.jpg',
+  //     published_at: '2023-10-18T07:56:55.667029+00:00',
+  //     title: 'WATCH: The 7th International Marine Debris Conference',
+  //     excerpt:
+  //       'Join a 90-minute interactive workshop, to discuss a risk assessment approach',
+  //     url: '/landing',
+  //   },
+  //   {
+  //     id: 112,
+  //     badge: 'EDITORIAL',
+  //     image: '/news/discover-opportunities-and-resources.jpg',
+  //     published_at: null,
+  //     title: 'DISCOVER: Opportunities and Resources!',
+  //     excerpt:
+  //       'The CASSINI EU Maritime Prize for Digital Space Applications is looking',
+  //     url: '/landing',
+  //   },
+  //   {
+  //     id: 113,
+  //     badge: 'BLOGPOST',
+  //     image: '/news/register-gpml-interactive-workshop.jpg',
+  //     published_at: '2023-08-01T07:56:55.667029+00:00',
+  //     title: 'REGISTER: GPML Interactive Workshop',
+  //     excerpt:
+  //       'Join a 90-minute interactive workshop, to discuss a risk assessment approach',
+  //     url: '/landing',
+  //   },
+  // ]
+  useEffect(() => {
+    fetch(
+      `https://unep-gpml.akvotest.org/strapi/api/posts?locale=en&populate=cover`
+    )
+      .then((d) => d.json())
+      .then((d) => {
+        console.log(transformStrapiResponse(d.data))
+        setItems(transformStrapiResponse(d.data))
+        setLoading(false)
+      })
+  }, [])
   return (
     <div className={styles.latestNews}>
       <div className="container">
@@ -544,25 +668,25 @@ const LatestNews = () => {
         </div>
         <div className="news-wrapper news-items">
           {items.map((item, dx) => {
-            const badgeColor = ['blue', 'green', 'purple']
+            // const badgeColor = ['blue', 'green', 'purple']
             return (
               <Card
                 bordered={false}
                 cover={
                   <div className="cover-image-container">
                     <div className="cover-image-overlay">
-                      <span className={`badge ${badgeColor?.[dx]}`}>
+                      {/* <span className={`badge ${badgeColor?.[dx]}`}>
                         {item.badge}
-                      </span>
-                      {item.published_at && (
+                      </span> */}
+                      {item.publishedAt && (
                         <span className="date">
                           <span>
                             <span className="h5 bold">
-                              {moment(item.published_at).format('DD')}
+                              {moment(item.publishedAt).format('DD')}
                             </span>
                             <br />
                             <span className="month">
-                              {moment(item.published_at).format('MMM')}
+                              {moment(item.publishedAt).format('MMM')}
                             </span>
                           </span>
                         </span>
@@ -570,7 +694,7 @@ const LatestNews = () => {
                     </div>
                     <Image
                       alt={item.title}
-                      src={item.image}
+                      src={item.cover.data.attributes.formats.medium.url}
                       width={366}
                       height={220}
                     />
@@ -579,8 +703,10 @@ const LatestNews = () => {
                 key={dx}
               >
                 <h5 className="bold">{item.title}</h5>
-                <p className="p-m">{item.excerpt}</p>
-                <Link href={item.url}>
+                <p className="p-m">
+                  {stripHtml(item.content)?.substring(0, 100)}...
+                </p>
+                <Link href={`/post/${item.id}-${item.slug}`}>
                   <Button type="link" withArrow>
                     <Trans>Read More</Trans>
                   </Button>
@@ -1028,7 +1154,7 @@ const HelpCentre = () => {
   )
 }
 
-const Footer = () => {
+export const Footer = () => {
   const [form] = Form.useForm()
 
   const onFinish = (values) => {

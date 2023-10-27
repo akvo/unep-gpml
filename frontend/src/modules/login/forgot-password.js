@@ -1,19 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react'
-import {
-  Carousel,
-  Col,
-  Row,
-  Typography,
-  Button,
-  Avatar,
-  Form,
-  Input,
-  Divider,
-  notification,
-} from 'antd'
+import React, { useState, useRef } from 'react'
+import { Form, Input, notification } from 'antd'
 import styles from './styles.module.scss'
 import { Form as FinalForm, Field } from 'react-final-form'
 import { auth0Client } from '../../utils/misc'
+import Button from '../../components/button'
+import FormLabel from '../../components/form-label'
 import { Trans } from '@lingui/macro'
 
 function ForgotPassword({ setSignIn, setForgotPassword, children }) {
@@ -66,12 +57,22 @@ function ForgotPassword({ setSignIn, setForgotPassword, children }) {
               formRef.current = form
               return (
                 <Form layout="vertical">
-                  <Form.Item label="Email" style={{ marginBottom: 40 }}>
-                    <Field name="email">
-                      {({ input, meta }) => (
-                        <>
+                  <Field name="email">
+                    {({ input, meta }) => {
+                      const hasError = meta.touched && !meta.valid
+                      const validVal =
+                        input?.value && meta.valid ? 'success' : null
+                      const validateStatus = hasError ? 'error' : validVal
+                      return (
+                        <FormLabel
+                          htmlFor="email"
+                          label={<Trans>Email</Trans>}
+                          meta={meta}
+                          validateStatus={validateStatus}
+                        >
                           <Input
                             {...input}
+                            size="small"
                             placeholder={<Trans>Enter your email</Trans>}
                           />
                           {meta.touched && meta.error && (
@@ -79,13 +80,11 @@ function ForgotPassword({ setSignIn, setForgotPassword, children }) {
                               {meta.error}
                             </p>
                           )}
-                        </>
-                      )}
-                    </Field>
-                  </Form.Item>
+                        </FormLabel>
+                      )
+                    }}
+                  </Field>
                   <Button
-                    type="primary"
-                    shape="round"
                     className={styles.loginButton}
                     onClick={() => handleSubmit()}
                     style={{ marginTop: 20 }}

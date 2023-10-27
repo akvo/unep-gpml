@@ -2,12 +2,14 @@ import React from 'react'
 import { Button, Modal } from 'antd'
 import styles from './unathenticated-page.module.scss'
 import { Trans } from '@lingui/macro'
+import { useRouter } from 'next/router'
 
 const UnathenticatedPage = ({
   unAthenticatedModal,
   setUnathenticatedModal,
   setLoginVisible,
 }) => {
+  const router = useRouter()
   return (
     <Modal
       centered
@@ -17,8 +19,8 @@ const UnathenticatedPage = ({
       maskStyle={{ backgroundColor: 'rgb(24 22 47 / 90%)' }}
       footer={
         <>
-          <Button onClick={() => setLoginVisible(true)}>
-            <Trans>Sign In</Trans>
+          <Button size="small" onClick={() => router.push('/login')}>
+            <Trans>Sign In</Trans>{' '}
           </Button>
         </>
       }

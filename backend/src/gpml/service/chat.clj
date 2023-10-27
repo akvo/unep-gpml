@@ -2,9 +2,11 @@
   (:require [gpml.boundary.port.chat :as chat]
             [gpml.db.rbac-util :as db.rbac-util]
             [gpml.db.stakeholder :as db.sth]
+            [gpml.service.file :as srv.file]
             [gpml.util.crypto :as util.crypto]
             [gpml.util.email :as util.email]
-            [gpml.util.thread-transactions :as tht]))
+            [gpml.util.thread-transactions :as tht]
+            [medley.core :as medley]))
 
 (def ^:private ^:const random-password-size
   10)
@@ -131,8 +133,12 @@
     (tht/thread-transactions logger transactions context)))
 
 (defn update-user-account
-  [{:keys [chat-adapter]} user-id updates]
-  (chat/update-user-account chat-adapter user-id updates))
+  [{:keys [chat-adapter]} chat-account-id updates]
+  (chat/update-user-account chat-adapter chat-account-id updates))
+
+(defn delete-user-account
+  [{:keys [chat-adapter]} chat-account-id opts]
+  (chat/delete-user-account chat-adapter chat-account-id opts))
 
 (defn get-user-joined-channels
   [{:keys [chat-adapter]} chat-account-id]
@@ -146,18 +152,92 @@
   [{:keys [chat-adapter]}]
   (chat/get-public-channels chat-adapter {}))
 
+(defn- add-users-pictures-urls
+  [config users]
+  (map
+   (fn [user]
+     (if-not (seq (:picture_file user))
+       user
+       (let [{object-key :object_key visibility :visibility} (:picture_file user)
+             result (srv.file/get-file-url config {:object-key object-key
+                                                   :visibility (keyword visibility)})]
+         (if (:success? result)
+           (assoc user :picture (:url result))
+           user))))
+   users))
+
 (defn get-all-channels
-  [{:keys [chat-adapter]} opts]
-  ;; We always ask only for the Public `c` and Private `p`
-  ;; channels. Because RocketChat has other channel types that are not
-  ;; used by GPML.
-  (chat/get-all-channels chat-adapter (merge {:types ["c" "p"]} opts)))
+  [{:keys [db chat-adapter] :as config} opts]
+  (let [;; We always ask only for the Public `c` and Private `p`
+        ;; channels. Because RocketChat has other channel types that are not
+        ;; used by GPML.
+        result (chat/get-all-channels chat-adapter (merge {:types ["c" "p"]} opts))]
+    (if-not (:success? result)
+      result
+      (let [channels (:channels result)
+            chat-accounts-ids (set (reduce
+                                    (fn [users-accounts-ids {:keys [users]}]
+                                      (apply conj users-accounts-ids (map :id users)))
+                                    []
+                                    channels))
+            search-opts {:related-entities #{:organisation :picture-file}
+                         :filters {:chat-accounts-ids chat-accounts-ids}}
+            result (try
+                     {:success? true
+                      :stakeholders (db.sth/get-stakeholders (:spec db)
+                                                             search-opts)}
+                     (catch Throwable t
+                       {:success? false
+                        :reason :exception
+                        :error-details {:msg (ex-message t)}}))]
+        (if-not (:success? result)
+          result
+          (let [gpml-users (->> (:stakeholders result)
+                                (add-users-pictures-urls config)
+                                (medley/index-by :chat_account_id))
+                updated-channels
+                (map
+                 (fn [channel]
+                   (update channel :users
+                           (fn [users]
+                             (map
+                              (fn [user]
+                                (merge user (get gpml-users (:id user))))
+                              users))))
+                 channels)]
+            (assoc result :channels updated-channels)))))))
+
+(defn remove-user-from-channel
+  [{:keys [chat-adapter]} chat-account-id channel-id channel-type]
+  (chat/remove-user-from-channel chat-adapter
+                                 chat-account-id
+                                 channel-id
+                                 channel-type))
+
+(defn add-user-to-private-channel
+  [{:keys [chat-adapter]} chat-account-id channel-id]
+  (chat/add-user-to-private-channel chat-adapter
+                                    chat-account-id
+                                    channel-id))
+
+(defn create-private-channel
+  [{:keys [chat-adapter]} channel]
+  (chat/create-private-channel chat-adapter channel))
+
+(defn set-private-channel-custom-fields
+  [{:keys [chat-adapter]} channel-id custom-fields]
+  (chat/set-private-channel-custom-fields chat-adapter channel-id custom-fields))
+
+(defn delete-private-channel
+  [{:keys [chat-adapter]} channel-id]
+  (chat/delete-private-channel chat-adapter channel-id))
 
 (defn send-private-channel-invitation-request
-  [{:keys [db mailjet-config]} user channel-name]
+  [{:keys [db mailjet-config]} user channel-id channel-name]
   (let [super-admins (db.rbac-util/get-super-admins-details (:spec db) {})]
     (util.email/notify-admins-new-chat-private-channel-invitation-request
      mailjet-config
      super-admins
      user
+     channel-id
      channel-name)))

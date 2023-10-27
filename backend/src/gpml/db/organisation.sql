@@ -98,26 +98,16 @@ values (
 --~ (when (contains? params :logo_id) ", :logo_id")
 ) returning id;
 
--- :name update-organisation :! :n
--- :doc Update organisation column
-update organisation set id = :id
---~ (when (contains? params :name) ",name= :name")
---~ (when (contains? params :subnational_area) ",subnational_area= :subnational_area")
---~ (when (contains? params :url) ",url= :url")
---~ (when (contains? params :type) ",type= :type")
---~ (when (contains? params :country) ",country= :country")
---~ (when (contains? params :program) ",program= :program")
---~ (when (contains? params :representative_group_other) ",representative_group_other= :representative_group_other")
---~ (when (contains? params :representative_group_civil_society) ",representative_group_civil_society= :representative_group_civil_society")
---~ (when (contains? params :representative_group_private_sector) ",representative_group_private_sector= :representative_group_private_sector")
---~ (when (contains? params :representative_group_government) ",representative_group_government= :representative_group_government")
---~ (when (contains? params :representative_group_academia_research) ",representative_group_academia_research= :representative_group_academia_research")
---~ (when (contains? params :geo_coverage_type) ",geo_coverage_type= :geo_coverage_type::geo_coverage_type")
---~ (when (contains? params :created_by) ",created_by= :created_by")
---~ (when (contains? params :is_member) ",is_member= :is_member")
---~ (when (contains? params :logo_id) ", logo_id= :logo_id")
---~ (when (contains? params :review_status) ", review_status= :review_status::review_status")
-where id = :id
+-- :name update-organisation :execute :affected
+UPDATE organisation
+SET
+/*~
+(str/join ","
+  (for [[field _] (:updates params)]
+    (str (identifier-param-quote (name field) options)
+      " = :updates." (name field))))
+~*/
+WHERE id = :id;
 
 -- :name geo-coverage-v2 :? :*
 -- :doc Get geo coverage by organisation id
@@ -131,15 +121,6 @@ values :t*:geo RETURNING id;
 -- :name delete-geo-coverage :! :n
 -- :doc remove geo coverage
 delete from organisation_geo_coverage where organisation = :id
-
-
--- :name organisation-tags :? :*
--- :doc get organisation tags
-select json_agg(st.tag) as tags, tc.category from organisation_tag st
-left join tag t on t.id = st.tag
-left join tag_category tc on t.tag_category = tc.id
-where st.organisation = :id
-group by tc.category;
 
 -- :name add-organisation-tags :<! :1
 -- :doc add organisation tags
@@ -162,6 +143,54 @@ WHERE 1=1
 --~(when (get-in params [:filters :name]) " AND LOWER(:filters.name) = LOWER(name)")
 --~(when (true? (get-in params [:filters :is_member])) " AND is_member IS TRUE")
 --~(when (false? (get-in params [:filters :is_member])) " AND is_member IS FALSE")
+
+-- :name list-organisations :query :many
+-- :doc List organisations with advanced filtering (for PSW mainly)
+WITH organisations_strengths_cte AS (
+  SELECT organisation, initiative
+  FROM organisation_initiative
+  WHERE association IN ('owner', 'implementor', 'donor', 'partner')
+),
+organisations_cte AS (
+  SELECT
+    o.id,
+    o.name,
+    o.review_status,
+    o.is_member,
+    json_agg(
+      DISTINCT jsonb_build_object(
+        'id', t.id,
+        'tag', t.tag,
+        'private', t.private
+      )
+    ) FILTER (WHERE t.id IS NOT NULL) AS tags,
+    o.type,
+    o.geo_coverage_type,
+    array_remove(array_agg(DISTINCT og.country_group), NULL) AS geo_coverage_country_groups,
+    array_remove(array_agg(DISTINCT og.country), NULL) AS geo_coverage_countries,
+    array_remove(array_agg(DISTINCT og.country_state), NULL) AS geo_coverage_country_states,
+    array_remove(array_agg(DISTINCT COALESCE(og.country, og.country_group)), NULL) AS geo_coverage_values,
+    json_agg(
+      DISTINCT jsonb_build_object(
+        'id', st.id,
+        'email', st.email,
+        'first_name', st.first_name,
+        'last_name', st.last_name
+      )
+    ) FILTER (WHERE st.id IS NOT NULL) AS focal_points,
+--~ (#'gpml.db.organisation/list-organisations-ps-bookmark-partial-select params)
+--~ (#'gpml.db.organisation/list-organisations-badges-partial-select params)
+    count(DISTINCT os_cte.initiative) as strengths
+  FROM organisation o
+  LEFT JOIN stakeholder_organisation sto ON (sto.organisation = o.id AND sto.association = 'focal-point')
+  LEFT JOIN stakeholder st ON sto.stakeholder = st.id
+  LEFT JOIN organisations_strengths_cte os_cte ON os_cte.organisation = o.id
+  LEFT JOIN organisation_tag ot ON o.id = ot.organisation
+  LEFT JOIN tag t ON ot.tag = t.id
+  LEFT JOIN organisation_geo_coverage og ON og.organisation = o.id
+--~ (#'gpml.db.organisation/list-organisations-cto-query-filter-and-params params)
+)
+--~ (#'gpml.db.organisation/list-organisations-query-and-filters params)
 
 -- :name get-organisation-files-to-migrate
 SELECT id, 'logo' AS file_type, 'images' AS file_key, logo AS content

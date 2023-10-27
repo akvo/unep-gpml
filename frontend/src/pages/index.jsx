@@ -1,7 +1,7 @@
 import React from 'react'
 import Landing from '../modules/landing/landing'
-import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next'
 import { loadCatalog } from '../translations/utils'
+import Landing from '../pages/landing'
 
 function HomePage({ isAuthenticated, setLoginVisible }) {
   return (

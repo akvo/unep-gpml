@@ -246,7 +246,7 @@ const FilterBar = ({
   )
 }
 
-function DynamicSVG({ type, fillColor }) {
+const DynamicSVG = ({ type, fillColor }) => {
   const [svgContent, setSvgContent] = useState(null)
 
   useEffect(() => {

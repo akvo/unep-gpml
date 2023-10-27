@@ -9,8 +9,7 @@ function StakeholderDetail({
 }) {
   return (
     <StakeholderDetailPage
-      setLoginVisible={setLoginVisible}
-      isAuthenticated={isAuthenticated}
+      {...{ loadingProfile, setLoginVisible, isAuthenticated }}
     />
   )
 }

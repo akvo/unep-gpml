@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Image } from 'antd'
+import { Image } from 'antd'
 import styles from './styles.module.scss'
 import issueGraphics from './issue-section-content'
 import { UIStore } from '../../store'
@@ -8,6 +8,7 @@ import isEmpty from 'lodash/isEmpty'
 import api from '../../utils/api'
 import Link from 'next/link'
 import { Trans } from '@lingui/macro'
+import Button from '../../components/button'
 
 const summary = [
   {
@@ -138,7 +139,7 @@ const renderSectionIssue = () => {
             {/* Removed for now
             <Button type="ghost">Vital graphics</Button> */}
             <Button
-              type="ghost"
+              ghost
               onClick={(e) => {
                 window.location.href = 'https://www.cleanseas.org/'
               }}
@@ -237,7 +238,6 @@ const renderSectionMission = () => {
             </Trans>
           </p>
           <Button
-            type="ghost"
             onClick={(e) => {
               window.location.href = 'https://www.gpmarinelitter.org/'
             }}
@@ -321,7 +321,7 @@ const renderSectionTimelineAndRoadmap = () => {
             </Trans>
           </p>
           <Button
-            type="primary"
+            size="small"
             onClick={(e) => {
               window.location.href =
                 'https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP%20GPML%20Digital%20Platform%20Concept%20for%20User%20and%20Partner%20Consultations%20May%202021.pdf'
@@ -362,7 +362,7 @@ const renderSectionKeyFeaturesAndComponents = () => {
             </Trans>
           </p>
           <Button
-            type="ghost"
+            size="small"
             onClick={(e) => {
               window.location.href =
                 'https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP%20GPML%20Digital%20Platform%20Concept%20for%20User%20and%20Partner%20Consultations%20May%202021.pdf'

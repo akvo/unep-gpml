@@ -11,6 +11,7 @@ import {
   Card,
   Modal,
   notification,
+  Tooltip,
 } from 'antd'
 import StickyBox from 'react-sticky-box'
 import ReadMoreReact from 'read-more-less-react'
@@ -28,7 +29,7 @@ import {
 } from '@ant-design/icons'
 import { useHistory } from 'react-router-dom'
 import api from '../../utils/api'
-import { resourceTypeToTopicType } from '../../utils/misc'
+import { getBadgeTitle, resourceTypeToTopicType } from '../../utils/misc'
 import isEmpty from 'lodash/isEmpty'
 import { eventTrack, randomColor } from '../../utils/misc'
 import ResourceCards from '../../components/resource-cards/resource-cards'
@@ -194,7 +195,11 @@ const SharePanel = ({
   )
 }
 
-const StakeholderDetail = ({ setLoginVisible, isAuthenticated }) => {
+const StakeholderDetail = ({
+  setLoginVisible,
+  isAuthenticated,
+  loadingProfile,
+}) => {
   const {
     profile,
     countries,
@@ -326,9 +331,10 @@ const StakeholderDetail = ({ setLoginVisible, isAuthenticated }) => {
   }, [isLoaded])
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!isAuthenticated && !loadingProfile) {
       setLoginVisible(true)
-    } else {
+    }
+    if (isAuthenticated) {
       setLoginVisible(false)
     }
   }, [isAuthenticated])
@@ -376,81 +382,91 @@ const StakeholderDetail = ({ setLoginVisible, isAuthenticated }) => {
 
   return (
     <div className={styles.stakeholderDetail}>
-      <StickyBox style={{ zIndex: 10 }}>
-        <div className="topbar-container">
-          <div className="ui container">
-            <Row>
-              <Col xs={24} lg={24}>
-                <div className="topbar-wrapper">
-                  <div className="topbar-image-holder">
-                    <Avatar
-                      size={150}
-                      src={
-                        data?.picture ? (
-                          data?.picture
-                        ) : (
-                          <Avatar
-                            style={{
-                              backgroundColor: randomColor(
-                                data?.firstName?.substring(0, 1)
-                              ),
-                              verticalAlign: 'middle',
-                              border: '4px solid #fff',
-                              fontSize: '62px',
-                              fontWeight: 'bold',
-                            }}
-                            size={145}
-                          >
-                            {data?.firstName?.substring(0, 1)}
-                          </Avatar>
-                        )
-                      }
-                    />
-                    {data.affiliation && (
-                      <div className="topbar-entity-image-holder">
+      <div className="topbar-container">
+        <div className="ui container">
+          <Row>
+            <Col xs={24} lg={24}>
+              <div className="topbar-wrapper">
+                <div className="topbar-image-holder">
+                  <Avatar
+                    size={150}
+                    src={
+                      data?.picture ? (
+                        data?.picture
+                      ) : (
                         <Avatar
-                          size={50}
-                          src={
-                            data?.affiliation?.logo ? (
-                              data?.affiliation?.logo
-                            ) : (
-                              <Avatar
-                                style={{
-                                  backgroundColor: randomColor(
-                                    data?.affiliation?.name?.substring(0, 1)
-                                  ),
-                                  verticalAlign: 'middle',
-                                }}
-                                size={50}
-                              >
-                                {data?.affiliation?.name?.substring(0, 1)}
-                              </Avatar>
-                            )
-                          }
-                        />
-                      </div>
-                    )}
-                  </div>
-                  <div className="topbar-title-holder">
-                    <h1>{data?.firstName + ' ' + data?.lastName}</h1>
-                    {data?.jobTitle && data?.affiliation && (
-                      <p className="role">
-                        {data?.jobTitle} @ {data?.affiliation?.name}
-                      </p>
-                    )}
-                    {/* <p>
-                      <span>
-                        <img src={StakeholderRating} />
-                      </span>
-                      Expert: Marine Litter
-                    </p> */}
-                  </div>
+                          style={{
+                            backgroundColor: randomColor(
+                              data?.firstName?.substring(0, 1)
+                            ),
+                            verticalAlign: 'middle',
+                            border: '4px solid #fff',
+                            fontSize: '62px',
+                            fontWeight: 'bold',
+                          }}
+                          size={145}
+                        >
+                          {data?.firstName?.substring(0, 1)}
+                        </Avatar>
+                      )
+                    }
+                  />
+                  {data.affiliation && (
+                    <div className="topbar-entity-image-holder">
+                      <Avatar
+                        size={50}
+                        src={
+                          data?.affiliation?.logo ? (
+                            data?.affiliation?.logo
+                          ) : (
+                            <Avatar
+                              style={{
+                                backgroundColor: randomColor(
+                                  data?.affiliation?.name?.substring(0, 1)
+                                ),
+                                verticalAlign: 'middle',
+                              }}
+                              size={50}
+                            >
+                              {data?.affiliation?.name?.substring(0, 1)}
+                            </Avatar>
+                          )
+                        }
+                      />
+                    </div>
+                  )}
                 </div>
-              </Col>
-            </Row>
-          </div>
+                <div className="topbar-title-holder">
+                  <h1>{data?.firstName + ' ' + data?.lastName}</h1>
+                  {data?.jobTitle && data?.affiliation && (
+                    <p className="role">
+                      {data?.jobTitle} @ {data?.affiliation?.name}
+                    </p>
+                  )}
+                  {data?.assignedBadges?.length > 0 && (
+                    <div className="badges-wrapper">
+                      {data?.assignedBadges?.map((b) => {
+                        const badgeDetails = getBadgeTitle(b.badgeName)
+                        return (
+                          <Tooltip
+                            placement="top"
+                            title={badgeDetails.title}
+                            color="#020A5B"
+                          >
+                            <div key={b.badgeName}>
+                              <img src={badgeDetails.image} />
+                            </div>
+                          </Tooltip>
+                        )
+                      })}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </Col>
+          </Row>
         </div>
-      </StickyBox>
+      </div>
       <div className="info-container">
         <div className="ui container">
           <Row gutter={[16, 16]}>

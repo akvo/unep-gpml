@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { isEmpty } from 'lodash'
 import { Avatar, Button, Dropdown, Menu } from 'antd'
@@ -13,9 +13,11 @@ import { Check, DownArrow, World, flags } from '../components/icons'
 import Link from 'next/link'
 import { motion, AnimatePresence, useCycle } from 'framer-motion'
 import { useDeviceSize } from '../modules/landing/landing'
+import { isRegistered } from '../utils/profile'
 
 import { MenuToggle, NavMobile, NavDesktop } from '../components/nav'
 import GpmlCircle from '../components/gpml-circle'
+import axios from 'axios'
 
 const archia = localFont({
   src: [
@@ -57,17 +59,100 @@ const NewLayout = ({
   isAuthenticated,
   auth0Client,
   profile,
+  loginVisible,
+  setLoginVisible,
 }) => {
   const router = useRouter()
-  console.log(router)
   const { menuList } = UIStore.useState((s) => ({
     menuList: s.menuList,
   }))
-  const [loginVisible, setLoginVisible] = useState(false)
   const [openedItemKey, setOpenedItemKey] = useState(null)
   const [showMenu, setShowMenu] = useState(false)
   const [width] = useDeviceSize()
   const [isOpen, toggleOpen] = useCycle(false, true)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const MENU_MAPPING = [
+          {
+            key: 'About Us',
+            subKeys: [
+              {
+                key: 'The platform',
+                apiEndpoint:
+                  'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=about-platform&fields=title&fields=subtitle',
+              },
+              {
+                key: 'Our Network',
+                apiEndpoint:
+                  'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=about-network&fields=title&fields=subtitle',
+              },
+            ],
+          },
+          {
+            key: 'Plastic',
+            subKeys: [
+              {
+                key: 'Topics',
+                apiEndpoint:
+                  'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=plastic-topics&fields=title&fields=subtitle',
+              },
+              {
+                key: 'Basics',
+                apiEndpoint:
+                  'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=plastic-basics&fields=title&fields=subtitle',
+              },
+            ],
+          },
+        ]
+
+        const fetchData = async () => {
+          const apiEndpoints = MENU_MAPPING.flatMap((section) =>
+            section.subKeys.map((sub) => sub.apiEndpoint)
+          )
+
+          try {
+            const responses = await Promise.all(
+              apiEndpoints.map((endpoint) => axios.get(endpoint))
+            )
+            return responses
+          } catch (error) {
+            console.error('Error fetching data:', error)
+            return []
+          }
+        }
+
+        fetchData().then((responses) => {
+          UIStore.update((s) => {
+            let updatedMenu = [...s.menuList]
+
+            MENU_MAPPING.forEach((section, sectionIdx) => {
+              section.subKeys.forEach((sub, subIdx) => {
+                const responseData =
+                  responses[sectionIdx * section.subKeys.length + subIdx]?.data
+                    ?.data
+                if (responseData) {
+                  updatedMenu = updateMenuSection(
+                    updatedMenu,
+                    section.key,
+                    sub.key,
+                    responseData
+                  )
+                }
+              })
+            })
+
+            s.menuList = updatedMenu
+          })
+        })
+      } catch (err) {
+        console.log(err)
+      }
+    }
+
+    fetchData()
+  }, [])
 
   return (
     <>
@@ -85,8 +170,8 @@ const NewLayout = ({
           }}
         >
           <div className={`${isIndexPage ? 'container' : 'container-fluid'}`}>
-            <div className="logo-container">
-              <Link href={'/landing'}>
+            <Link href="/">
+              <div className="logo-container">
                 <div className="circle">
                   <GpmlCircle />
                 </div>
@@ -97,15 +182,8 @@ const NewLayout = ({
                   <br />
                   and Marine Litter
                 </h5>
-                {/* <Image
-                className="gpml-white"
-                src="/GPML-White-logo.svg"
-                alt="GPML Digital Platform"
-                width={244}
-                height={74}
-              /> */}
-              </Link>
-            </div>
+              </div>
+            </Link>
             {width >= 768 && (
               <ul className="ant-menu">
                 {menuList.map((item) => (
@@ -138,6 +216,7 @@ const NewLayout = ({
                   type="primary"
                   size="small"
                   className="noicon hide-mobile"
+                  onClick={() => setLoginVisible(true)}
                 >
                   Join Now
                 </Button>
@@ -252,16 +331,29 @@ const NewLayout = ({
         </div>
         {children}
       </div>
+      <Login visible={loginVisible} close={() => setLoginVisible(false)} />
     </>
   )
 }
+
+const initName = (name) =>
+  name
+    ?.split(/[ ,]+/)
+    ?.slice(0, 2)
+    .map((w) => w?.slice(0, 1))
 
 export const withNewLayout = (Component) => {
   const WithLayoutComponent = (props) => {
     const router = useRouter()
     const isIndexPage =
       router.pathname === '/' || router.pathname === '/landing'
-    const { isAuthenticated, auth0Client, profile, setLoginVisible } = props
+    const {
+      isAuthenticated,
+      auth0Client,
+      profile,
+      loginVisible,
+      setLoginVisible,
+    } = props
 
     return (
       <NewLayout
@@ -271,6 +363,7 @@ export const withNewLayout = (Component) => {
           setLoginVisible,
           auth0Client,
           profile,
+          loginVisible,
         }}
       >
         <Component {...props} />
@@ -294,6 +387,26 @@ export const withNewLayout = (Component) => {
   }
 
   return WithLayoutComponent
+}
+
+const transformedData = (data) => {
+  return data?.map((item) => ({
+    title: item.attributes.title,
+    subtitle: item.attributes.subtitle,
+  }))
+}
+
+const updateMenuSection = (menu, sectionKey, subKey, data) => {
+  const sectionIndex = menu.findIndex((item) => item.key === sectionKey)
+  if (sectionIndex !== -1) {
+    const section = menu[sectionIndex]
+    const subIndex = section.children.findIndex((item) => item.key === subKey)
+    if (subIndex !== -1) {
+      section.children[subIndex].children = transformedData(data)
+      menu[sectionIndex] = section
+    }
+  }
+  return menu
 }
 
 export default NewLayout

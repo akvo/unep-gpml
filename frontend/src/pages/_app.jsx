@@ -15,14 +15,6 @@ import { withNewLayout } from '../layouts/new-layout'
 import { I18nProvider } from '@lingui/react'
 import { useLinguiInit } from '../translations/utils'
 
-const newRoutes = [
-  '/landing',
-  '/knowledge/library',
-  '/[type]/[id]',
-  '/onboarding',
-]
-const dynamicRoutePattern = /^\/\w+\/\d+$/
-
 function MyApp({ Component, pageProps }) {
   const initializedI18n = useLinguiInit(pageProps.i18n)
   const router = useRouter()
@@ -36,7 +28,7 @@ function MyApp({ Component, pageProps }) {
     _expiresAt: null,
     idToken: null,
     authResult: null,
-    loadingProfile: false,
+    loadingProfile: true,
     loginVisible: false,
   })
 
@@ -148,15 +140,12 @@ function MyApp({ Component, pageProps }) {
         return console.log(err)
       }
       if (authResult) {
-        const storedLocation = localStorage.getItem('redirect_on_login')
-        const redirectLocation = storedLocation
-          ? JSON.parse(storedLocation)
+        const redirectLocation = localStorage.getItem('redirect_on_login')
+          ? JSON.parse(localStorage.getItem('redirect_on_login'))
           : null
-
         if (redirectLocation) {
           router.push({
-            pathname: redirectLocation.pathname,
-            query: redirectLocation.query,
+            pathname: redirectLocation,
           })
         } else {
           router.push('/')
@@ -193,18 +182,16 @@ function MyApp({ Component, pageProps }) {
   }, [])
 
   useEffect(() => {
-    setState((prevState) => ({ ...prevState, loadingProfile: true }))
     auth0Client.checkSession({}, async (err, authResult) => {
       if (err) {
         setState((prevState) => ({
           ...prevState,
-          loadingProfile: true,
+          loadingProfile: false,
         }))
       }
       if (authResult) {
         setSession(authResult)
       }
-      setState((prevState) => ({ ...prevState, loadingProfile: false }))
     })
   }, [])
 
@@ -216,6 +203,7 @@ function MyApp({ Component, pageProps }) {
         api.setToken(null)
       }
       if (isAuthenticated && idToken && authResult) {
+        setState((prevState) => ({ ...prevState, loadingProfile: true }))
         let resp = await api.get('/profile')
         setState((prevState) => ({ ...prevState, loadingProfile: false }))
         if (resp.data && Object.keys(resp.data).length === 0) {
@@ -250,10 +238,10 @@ function MyApp({ Component, pageProps }) {
       auth0Client,
       profile,
       loginVisible,
-      setLoginVisible: () =>
+      setLoginVisible: (value) =>
         setState((prevState) => ({
           ...prevState,
-          loginVisible: !prevState.loginVisible,
+          loginVisible: value,
         })),
       loadingProfile,
     }),
