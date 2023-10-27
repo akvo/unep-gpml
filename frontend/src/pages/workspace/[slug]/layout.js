@@ -108,8 +108,9 @@ const NestedLayout = ({ children }) => {
     return { indexStep, child, isCompleted }
   }, [pathSlugs, psSteps, allSteps])
 
-  const progress =
+  const progress = Math.floor(
     (allSteps.filter((a) => a.checked).length / allSteps.length) * 100
+  )
   const isCompleted = !psItem?.id || currentStep?.isCompleted
 
   const handleOnMarkAsComplete = (checked) => async () => {
