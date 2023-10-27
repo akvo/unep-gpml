@@ -1,5 +1,6 @@
-import React from "react";
-import StakeholderOverview from "../../modules/stakeholder-overview/view";
+import React from 'react'
+import StakeholderOverview from '../../modules/stakeholder-overview/view'
+import { loadCatalog } from '../../translations/utils'
 
 function Community({ setLoginVisible, isAuthenticated, loadingProfile }) {
   return (
@@ -8,7 +9,15 @@ function Community({ setLoginVisible, isAuthenticated, loadingProfile }) {
       isAuthenticated={isAuthenticated}
       loadingProfile={loadingProfile}
     />
-  );
+  )
 }
 
-export default Community;
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
+}
+
+export default Community

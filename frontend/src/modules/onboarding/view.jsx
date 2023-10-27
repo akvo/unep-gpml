@@ -15,6 +15,7 @@ import { useRouter } from 'next/router'
 import { useDeviceSize } from '../landing/landing'
 import Button from '../../components/button'
 import { LongArrowRight } from '../../components/icons'
+import { Trans, t } from '@lingui/macro'
 
 function Authentication() {
   const formRef = useRef()
@@ -273,8 +274,10 @@ function Authentication() {
                 >
                   <div className="text-wrapper">
                     <h2>
-                      You’re almost set! <br /> We need to ask a few more
-                      questions to make the platform relevant to you.
+                      <Trans>
+                        You’re almost set! <br /> We need to ask a few more
+                        questions to make the platform relevant to you.
+                      </Trans>
                     </h2>
                   </div>
                   <div className="image-wrapper">
@@ -291,7 +294,7 @@ function Authentication() {
                       withArrow={<LongArrowRight />}
                       onClick={() => next()}
                     >
-                      Next
+                      <Trans>Next</Trans>
                     </Button>
                   </div>
                 </div>
@@ -343,7 +346,7 @@ function Authentication() {
                     onClick={previous}
                   >
                     <LongArrowRight />
-                    Back
+                    <Trans>Back</Trans>
                   </Button>
                 )}
                 {currentStep < 5 && currentStep > 1 && (
@@ -353,7 +356,7 @@ function Authentication() {
                     onClick={() => next()}
                     withArrow
                   >
-                    Next
+                    <Trans>Next</Trans>
                   </Button>
                 )}
                 {currentStep === 5 && (
@@ -363,7 +366,7 @@ function Authentication() {
                     onClick={handleSubmit}
                     loading={loading}
                   >
-                    Submit
+                    <Trans>Submit</Trans>
                   </Button>
                 )}
               </div>

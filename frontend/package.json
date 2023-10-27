@@ -58,7 +58,8 @@
     "dev-fe": "REACT_APP_FEENV=true next dev -p 3001",
     "build": "next build",
     "start": "next start -p 3001",
-    "translations:extract": "lingui extract --clean"
+    "translations:extract": "lingui extract --clean",
+    "compile": "lingui compile"
   },
   "eslintConfig": {
     "extends": [

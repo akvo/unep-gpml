@@ -26,17 +26,6 @@ const geoCoverageTypeOptions = [
 ]
 
 const menuList = [
-  // {
-  //   key: 'Plastic',
-  //   children: [
-  //     {
-  //       key: 'Topics',
-  //     },
-  //     {
-  //       key: 'Basics',
-  //     },
-  //   ],
-  // },
   {
     key: 'Tools',
     children: [
@@ -146,14 +135,6 @@ const menuList = [
       },
     ],
   },
-  // {
-  //   key: 'Countries',
-  //   children: [
-  //     {
-  //       key: 'Information',
-  //     },
-  //   ],
-  // },
   {
     key: 'About Us',
     children: [

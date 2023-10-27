@@ -1,6 +1,7 @@
-import React from "react";
-import ProfileLayout from "./ProfileLayout";
-import { AdminSection } from "../../modules/profile/admin";
+import React from 'react'
+import ProfileLayout from './ProfileLayout'
+import { AdminSection } from '../../modules/profile/admin'
+import { loadCatalog } from '../../translations/utils'
 
 function AdminPage(props) {
   return (
@@ -20,7 +21,7 @@ function AdminPage(props) {
         />
       )}
     </>
-  );
+  )
 }
 
 function Admin() {
@@ -28,7 +29,15 @@ function Admin() {
     <ProfileLayout>
       <AdminPage />
     </ProfileLayout>
-  );
+  )
 }
 
-export default Admin;
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
+}
+
+export default Admin

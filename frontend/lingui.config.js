@@ -14,7 +14,7 @@ module.exports = {
   catalogs: [
     {
       path: 'src/translations/locales/{locale}',
-      include: ['src/pages', 'src/modules'],
+      include: ['src/'],
     },
   ],
   format: 'po',
