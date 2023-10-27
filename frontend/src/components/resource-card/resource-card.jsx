@@ -37,26 +37,33 @@ const ResourceCard = ({ item, bookmarked, onBookmark, onClick }) => {
         <BookmarkBtn {...{ bookmarked, onBookmark, item }} />
       )}
       <div className="tags">
-        {item.assignedBadges?.map((badge) => (
-          <Tooltip
-            title={
-              badge.badgeName === 'resource-verified'
-                ? 'GPML Verified'
-                : 'Government Verified'
-            }
-          >
-            <div
-              className={classNames('badge', {
-                gov: badge.badgeName !== 'resource-verified',
-              })}
-            >
-              {badges.verified}
-            </div>
-          </Tooltip>
-        ))}
+        <AssignedBadges assignedBadges={item.assignedBadges} />
         <div className="tag">{item?.type?.replace(/_/g, ' ')}</div>
       </div>
     </div>
+  )
+}
+export const AssignedBadges = ({ assignedBadges }) => {
+  return (
+    <>
+      {assignedBadges?.map((badge) => (
+        <Tooltip
+          title={
+            badge.badgeName === 'resource-verified'
+              ? t`GPML Verified`
+              : t`Government Verified`
+          }
+        >
+          <div
+            className={classNames('badge', {
+              gov: badge.badgeName !== 'resource-verified',
+            })}
+          >
+            {badges.verified}
+          </div>
+        </Tooltip>
+      ))}
+    </>
   )
 }
 const BookmarkBtn = ({ bookmarked, onBookmark, item }) => {

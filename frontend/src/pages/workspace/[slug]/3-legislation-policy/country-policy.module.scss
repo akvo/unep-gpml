@@ -34,6 +34,30 @@
       .ant-table-tbody .ant-table-row td {
         max-width: 211px;
         text-transform: capitalize;
+        .resource-title {
+          display: block;
+          text-align: left;
+          .badge {
+            display: inline-block;
+            transform: translateY(3px);
+            margin-right: 4px;
+            svg {
+              margin-left: 0;
+              padding-left: 0;
+              path {
+                stroke: unset;
+              }
+            }
+            &.gov {
+              svg path:first-child {
+                fill: #ffc2c2;
+              }
+            }
+          }
+          span {
+            display: inline;
+          }
+        }
         &:first-child {
           // display: flex;
           // align-items: center;

@@ -16,6 +16,7 @@ import api from '../../../../utils/api'
 import bodyScrollLock from '../../../../modules/details-page/scroll-utils'
 import DetailsView from '../../../../modules/details-page/view'
 import { useRouter } from 'next/router'
+import { AssignedBadges } from '../../../../components/resource-card/resource-card'
 
 const { Column } = Table
 
@@ -357,14 +358,19 @@ const CountryPolicyTable = ({ psItem, setLoginVisible, isAuthenticated }) => {
                 {...col}
                 render={(value, record) => {
                   return (
-                    <Button type="link" onClick={() => showModal(record)}>
-                      <span
+                    <Button
+                      className="resource-title"
+                      type="link"
+                      onClick={() => showModal(record)}
+                    >
+                      <AssignedBadges assignedBadges={record.assignedBadges} />
+                      {/* <span
                         className={classNames('icon', {
                           verified: record?.verified,
                         })}
                       >
                         {record?.verified && <VerifiedBadgeIcon />}
-                      </span>
+                      </span> */}
                       <span>{value}</span>
                     </Button>
                   )
