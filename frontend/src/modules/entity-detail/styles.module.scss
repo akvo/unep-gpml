@@ -17,7 +17,7 @@
       max-width: 100%;
     }
     .topbar-container {
-      background-color: $primaryDarkBlue5;
+      // background-color: $primaryDarkBlue5;
       padding: 10px 0;
       .topbar-wrapper {
         display: flex;
@@ -51,9 +51,10 @@
           }
           h1 {
             margin-bottom: 0px;
-            color: #ffffff;
+            // color: #ffffff;
             font-size: 30px;
             line-height: 45px;
+            margin-top: 40px;
           }
           p {
             display: flex;
@@ -69,8 +70,8 @@
           align-items: center;
           gap: 10px;
           img {
-            height: 40px;
-            width: 40px;
+            height: 70px;
+            width: 70px;
           }
         }
       }

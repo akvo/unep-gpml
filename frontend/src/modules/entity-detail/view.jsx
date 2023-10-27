@@ -14,7 +14,6 @@ import {
   Typography,
   Tooltip,
 } from 'antd'
-import StickyBox from 'react-sticky-box'
 
 import TrashIcon from '../../images/resource-detail/trash-icn.svg'
 import EditIcon from '../../images/resource-detail/edit-icn.svg'
@@ -345,78 +344,76 @@ const StakeholderDetail = ({
 
   return (
     <div className={styles.entityDetail}>
-      <StickyBox style={{ zIndex: 10 }}>
-        <div className="topbar-container">
-          <div className="ui container">
-            <Row>
-              <Col xs={24} lg={24}>
-                <div className="topbar-wrapper">
-                  <div className="topbar-image-holder">
-                    <Avatar
-                      size={{
-                        xs: 60,
-                        sm: 60,
-                        md: 60,
-                        lg: 100,
-                        xl: 150,
-                        xxl: 150,
-                      }}
-                      src={
-                        data?.logo ? (
-                          data?.logo
-                        ) : (
-                          <Avatar
-                            style={{
-                              backgroundColor: randomColor(
-                                data?.name?.substring(0, 1)
-                              ),
-                              fontSize: '62px',
-                              fontWeight: 'bold',
-                              verticalAlign: 'middle',
-                              border: '4px solid #fff',
-                            }}
-                            size={{
-                              xs: 55,
-                              sm: 55,
-                              md: 55,
-                              lg: 95,
-                              xl: 145,
-                              xxl: 145,
-                            }}
-                          >
-                            {data?.name?.substring(0, 1)}
-                          </Avatar>
-                        )
-                      }
-                    />
-                  </div>
-                  <div className="topbar-title-holder">
-                    <h1>{data?.name}</h1>
-                    {data?.assignedBadges?.length > 0 && (
-                      <div className="badges-wrapper">
-                        {data.assignedBadges.map((b) => {
-                          const badgeDetails = getBadgeTitle(b.badgeName)
-                          return (
-                            <Tooltip
-                              placement="top"
-                              title={badgeDetails.title}
-                              color="#020A5B"
-                            >
-                              <div key={b.badgeName}>
-                                <img src={badgeDetails.image} />
-                              </div>
-                            </Tooltip>
-                          )
-                        })}
-                      </div>
-                    )}
-                  </div>
+      <div className="topbar-container">
+        <div className="ui container">
+          <Row>
+            <Col xs={24} lg={24}>
+              <div className="topbar-wrapper">
+                <div className="topbar-image-holder">
+                  <Avatar
+                    size={{
+                      xs: 60,
+                      sm: 60,
+                      md: 60,
+                      lg: 100,
+                      xl: 150,
+                      xxl: 150,
+                    }}
+                    src={
+                      data?.logo ? (
+                        data?.logo
+                      ) : (
+                        <Avatar
+                          style={{
+                            backgroundColor: randomColor(
+                              data?.name?.substring(0, 1)
+                            ),
+                            fontSize: '62px',
+                            fontWeight: 'bold',
+                            verticalAlign: 'middle',
+                            border: '4px solid #fff',
+                          }}
+                          size={{
+                            xs: 55,
+                            sm: 55,
+                            md: 55,
+                            lg: 95,
+                            xl: 145,
+                            xxl: 145,
+                          }}
+                        >
+                          {data?.name?.substring(0, 1)}
+                        </Avatar>
+                      )
+                    }
+                  />
                 </div>
-              </Col>
-            </Row>
-          </div>
+                <div className="topbar-title-holder">
+                  <h1>{data?.name}</h1>
+                  {data?.assignedBadges?.length > 0 && (
+                    <div className="badges-wrapper">
+                      {data.assignedBadges.map((b) => {
+                        const badgeDetails = getBadgeTitle(b.badgeName)
+                        return (
+                          <Tooltip
+                            placement="top"
+                            title={badgeDetails.title}
+                            color="#020A5B"
+                          >
+                            <div key={b.badgeName}>
+                              <img src={badgeDetails.image} />
+                            </div>
+                          </Tooltip>
+                        )
+                      })}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </Col>
+          </Row>
         </div>
-      </StickyBox>
+      </div>
       <div className="info-container">
         <div className="ui container">
           <Row gutter={[16, 16]}>

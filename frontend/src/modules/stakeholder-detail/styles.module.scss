@@ -16,15 +16,15 @@
       max-width: 100%;
     }
     .topbar-container {
-      background-color: $primaryDarkBlue5;
+      // background-color: $primaryDarkBlue5;
       padding: 10px 0;
       .topbar-wrapper {
         display: flex;
         align-items: center;
         .topbar-image-holder {
-          background-image: url('/stakeholder/individual-icn.svg');
+          // background-image: url('/stakeholder/individual-icn.svg');
           background-repeat: no-repeat;
-          padding-left: 40px;
+          // padding-left: 40px;
           background-position: top left;
           background-size: 30%;
           position: relative;
@@ -59,9 +59,10 @@
           }
           h1 {
             margin-bottom: 0px;
-            color: #ffffff;
+            // color: #ffffff;
             font-size: 1.6rem;
             line-height: 45px;
+            margin-top: 20px;
           }
           .role {
             font-weight: bold;
@@ -81,8 +82,8 @@
           align-items: center;
           gap: 10px;
           img {
-            height: 40px;
-            width: 40px;
+            height: 70px;
+            width: 70px;
           }
         }
       }
@@ -722,13 +723,14 @@
     :global {
       .topbar-container {
         .topbar-wrapper {
+          margin-top: 20px;
           .topbar-title-holder {
             h1 {
               font-size: 30px;
             }
           }
           .topbar-image-holder {
-            padding-left: 20px;
+            // padding-left: 20px;
 
             .topbar-entity-image-holder {
               right: 10px;
