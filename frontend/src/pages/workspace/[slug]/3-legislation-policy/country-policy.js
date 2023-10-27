@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { Button, Modal, Table, Tooltip, message } from 'antd'
+import { Button, Modal, Table, Tooltip, message, notification } from 'antd'
 import classNames from 'classnames'
 import moment from 'moment'
 import uniqBy from 'lodash/uniqBy'
@@ -14,6 +14,7 @@ import styles from './country-policy.module.scss'
 import api from '../../../../utils/api'
 import bodyScrollLock from '../../../../modules/details-page/scroll-utils'
 import DetailsView from '../../../../modules/details-page/view'
+import { useRouter } from 'next/router'
 
 const { Column } = Table
 
@@ -27,6 +28,34 @@ const CountryPolicyModal = ({
   isAuthenticated,
   setLoginVisible,
 }) => {
+  const handleAssignBadge = async (e, id, entityName, assign) => {
+    e.stopPropagation()
+
+    const data = {
+      assign: assign,
+      entity_id: id,
+      entity_type: entityName,
+    }
+
+    api
+      .post(`/badge/country-validated/assign`, data)
+      .then((resp) => {
+        notification.success({
+          message: `Your request to ${
+            assign ? 'add' : 'remove'
+          } country-validated has been approved!`,
+        })
+      })
+      .catch((err) => {
+        console.log(err)
+        notification.error({
+          message: err?.response?.data?.errorDetails?.error
+            ? err?.response?.data?.errorDetails?.error
+            : 'Something went wrong',
+        })
+      })
+  }
+
   return (
     <Modal
       maskClosable
@@ -40,7 +69,12 @@ const CountryPolicyModal = ({
           {/* <Button className="invalidate" ghost>
             <Trans>Invalidate</Trans>
           </Button> */}
-          <Button type="primary">
+          <Button
+            onClick={(e) =>
+              handleAssignBadge(e, match?.params?.id, match?.params?.type, true)
+            }
+            type="primary"
+          >
             <Trans>Validate Policy</Trans>
             {false && <Trans>Validated</Trans>}
             <ValidatePolicyIcon />
@@ -62,6 +96,7 @@ const CountryPolicyModal = ({
 }
 
 const CountryPolicyTable = ({ psItem, setLoginVisible, isAuthenticated }) => {
+  const router = useRouter()
   const [loading, setLoading] = useState(true)
   const [data, setData] = useState([])
   const [policy, setPolicy] = useState(null)
@@ -139,6 +174,17 @@ const CountryPolicyTable = ({ psItem, setLoginVisible, isAuthenticated }) => {
     setOpen(false)
     setPolicy(null)
   }
+
+  useEffect(() => {
+    if (!open) {
+      const previousHref = router.asPath
+      window.history.pushState(
+        { urlPath: `/${previousHref}` },
+        '',
+        `${previousHref}`
+      )
+    }
+  }, [open])
 
   const showModal = ({ type, id }) => {
     if (type && id) {
