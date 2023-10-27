@@ -454,7 +454,7 @@ const StakeholderOverview = ({
                   {/* Suggested profiles */}
                   {isValidUser && !isEmpty(suggestedProfiles) && (
                     <Col className="card-container green">
-                      <h3 id="title" className="title text-white ui container">
+                      <h3 id="title" className="title text-white">
                         <Trans>Suggested profiles</Trans>
                       </h3>
 

@@ -6,9 +6,6 @@ import { titleCase } from '../../utils/string'
 import { Trans, t } from '@lingui/macro'
 import TransnationalImage from '../../images/transnational.svg'
 
-import datastakeholders from './json/stakeholders.json'
-import { titleCase } from '../../utils/string'
-
 const { Title, Paragraph, Text } = Typography
 
 const CaseStudy = ({
