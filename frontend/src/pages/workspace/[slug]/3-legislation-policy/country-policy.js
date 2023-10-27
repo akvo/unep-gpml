@@ -37,9 +37,9 @@ const CountryPolicyModal = ({
       onCancel={onClose}
       footer={
         <>
-          <Button className="invalidate" ghost>
+          {/* <Button className="invalidate" ghost>
             <Trans>Invalidate</Trans>
-          </Button>
+          </Button> */}
           <Button type="primary">
             <Trans>Validate Policy</Trans>
             {false && <Trans>Validated</Trans>}
