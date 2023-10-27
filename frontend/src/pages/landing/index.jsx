@@ -120,30 +120,13 @@ const Hero = () => {
     _setTimeout(false)
   }
 
-  const updateQuery = (param, value) => {
-    const newQuery = { ...filter }
-    newQuery[param] = value
-    // Remove empty query
-    const arrayOfQuery = Object.entries(newQuery)?.filter(
-      (item) =>
-        item[1]?.length !== 0 &&
-        typeof item[1] !== 'undefined' &&
-        item[1] !== null
-    )
-    const pureQuery = Object.fromEntries(arrayOfQuery)
-    setFilter(pureQuery)
-  }
-
   const handleOnSearch = () => {
     if (!filter?.tag) {
       return
     }
-    const tags = filter.tag.join(',')
     router.push({
       pathname: '/knowledge/library',
-      query: {
-        tag: tags,
-      },
+      query: filter,
     })
   }
 
@@ -222,16 +205,19 @@ const Hero = () => {
         <div className="search-bar">
           <div className="bar">
             <Select
-              className="ant-select-search"
               dropdownClassName={styles.dropdownSuggestion}
               placeholder="Search the resource database..."
-              options={tagOpts || []}
+              options={tagOpts}
+              optionFilterProp="children"
               filterOption={(input, option) =>
                 option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }
-              value={filter?.tag?.map((x) => x) || []}
-              onChange={(val) => updateQuery('tag', val)}
-              onDeselect={() => updateQuery('tag', [])}
+              value={filter?.tag}
+              onChange={(val) => {
+                setFilter({
+                  tag: val,
+                })
+              }}
               suffixIcon={width < 768 && <Magnifier />}
               virtual={false}
               showSearch
@@ -259,9 +245,24 @@ const Hero = () => {
           </Button>
           <div className="tags hide-mobile">
             <b>Suggested search:</b>
-            <Tag className="h-xxs">Case Studies</Tag>
-            <Tag className="h-xxs">Plastic Strategies</Tag>
-            <Tag className="h-xxs">Plastic Solutions</Tag>
+            <Tag
+              className="h-xxs"
+              onClick={() => setFilter({ tag: 'Case Studies' })}
+            >
+              Case Studies
+            </Tag>
+            <Tag
+              className="h-xxs"
+              onClick={() => setFilter({ tag: 'Plastic Strategies' })}
+            >
+              Plastic Strategies
+            </Tag>
+            <Tag
+              className="h-xxs"
+              onClick={() => setFilter({ tag: 'Plastic Solutions' })}
+            >
+              Plastic Solutions
+            </Tag>
           </div>
         </div>
       </div>
