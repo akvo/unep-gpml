@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import NewDetailsView from '../../modules/details-page/view'
 import api from '../../utils/api'
 import { getTypeByResource } from '../../modules/flexible-forms/view'
+import { loadCatalog } from '../../translations/utils'
 
 const VALID_TYPES = [
   'initiative',
@@ -74,6 +75,7 @@ export async function getServerSideProps(context) {
         data: dataRes.data,
         translations: translationsRes.data,
         url: baseUrl,
+        i18n: await loadCatalog(context.locale),
       },
     }
   } catch (error) {

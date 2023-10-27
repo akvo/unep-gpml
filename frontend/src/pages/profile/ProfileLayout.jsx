@@ -1,88 +1,89 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Button, notification, Avatar, Menu, Row, Col } from "antd";
-import { UIStore } from "../../store";
-import { userRoles as roles } from "../../utils/misc";
-import { UserOutlined, DiffOutlined, SettingOutlined } from "@ant-design/icons";
-import StickyBox from "react-sticky-box";
+import React, { useState, useRef, useEffect } from 'react'
+import { Button, notification, Avatar, Menu, Row, Col } from 'antd'
+import { UIStore } from '../../store'
+import { userRoles as roles } from '../../utils/misc'
+import { UserOutlined, DiffOutlined, SettingOutlined } from '@ant-design/icons'
+import StickyBox from 'react-sticky-box'
 import {
   fetchSubmissionData,
   fetchReviewItems,
   fetchStakeholders,
-} from "../../modules/profile/utils";
-import { useRouter } from "next/router";
-import { useAuth0 } from "@auth0/auth0-react";
-import styles from "../../modules/profile/styles.module.scss";
-import api from "../../utils/api";
-import { isEqual, isEmpty } from "lodash";
-const userRoles = new Set(roles);
-const reviewerRoles = new Set(["REVIEWER", "ADMIN"]);
-const adminRoles = new Set(["ADMIN"]);
+} from '../../modules/profile/utils'
+import { useRouter } from 'next/router'
+import { useAuth0 } from '@auth0/auth0-react'
+import styles from '../../modules/profile/styles.module.scss'
+import api from '../../utils/api'
+import { isEqual, isEmpty } from 'lodash'
+import { Trans, t } from '@lingui/macro'
+const userRoles = new Set(roles)
+const reviewerRoles = new Set(['REVIEWER', 'ADMIN'])
+const adminRoles = new Set(['ADMIN'])
 
 function getChangedFields(original, updated) {
-  let changes = {};
+  let changes = {}
 
   Object.keys(updated).forEach((key) => {
     if (!isEqual(original[key], updated[key])) {
-      changes[key] = updated[key];
+      changes[key] = updated[key]
     }
-  });
+  })
 
-  return changes;
+  return changes
 }
 
 const menuItems = [
   {
-    key: "personal-details",
-    name: "Personal Details",
+    key: 'personal-details',
+    name: t`Personal Details`,
     role: userRoles,
     icon: <UserOutlined />,
   },
   {
-    key: "review-section",
-    name: "Review Section",
+    key: 'review-section',
+    name: t`Review Section`,
     role: reviewerRoles,
     icon: <DiffOutlined />,
   },
   {
-    key: "admin-section",
-    name: "Admin Section",
+    key: 'admin-section',
+    name: t`Admin Section`,
     role: adminRoles,
     icon: <SettingOutlined />,
   },
   {
-    key: "profil-section",
-    name: "Profile Quick Link",
+    key: 'profil-section',
+    name: t`Profile Quick Link`,
     role: userRoles,
     icon: <UserOutlined />,
   },
-];
+]
 
 function ProfileLayout({ children }) {
-  const { isAuthenticated, loginWithPopup } = useAuth0();
-  const router = useRouter();
-  const path = router.pathname;
+  const { isAuthenticated, loginWithPopup } = useAuth0()
+  const router = useRouter()
+  const path = router.pathname
 
   const pathname = {
-    personalDetails: "/profile",
-    favourites: "/profile/my-favourites",
-    network: "/profile/my-network",
-    reviewSection: "/profile/review-section",
-    adminSection: "/profile/admin-section",
-  };
+    personalDetails: '/profile',
+    favourites: '/profile/my-favourites',
+    network: '/profile/my-network',
+    reviewSection: '/profile/review-section',
+    adminSection: '/profile/admin-section',
+  }
 
   const activeMenu = () => {
     if (path === pathname.favourites) {
-      return "my-favourites";
+      return 'my-favourites'
     } else if (path === pathname.network) {
-      return "my-network";
+      return 'my-network'
     } else if (path === pathname.reviewSection) {
-      return "review-section";
+      return 'review-section'
     } else if (path === pathname.adminSection) {
-      return "admin-section";
+      return 'admin-section'
     } else {
-      return "personal-details";
+      return 'personal-details'
     }
-  };
+  }
 
   const {
     countries,
@@ -98,7 +99,7 @@ function ProfileLayout({ children }) {
     meaOptions: s.meaOptions,
     organisations: s.organisations,
     profile: s.profile,
-  }));
+  }))
   const isLoaded = () =>
     Boolean(
       countries.length &&
@@ -107,11 +108,11 @@ function ProfileLayout({ children }) {
         meaOptions.length &&
         organisations.length &&
         !isEmpty(profile)
-    );
+    )
 
-  const handleSubmitRef = useRef();
-  const [saving, setSaving] = useState(false);
-  const [menu, setMenu] = useState(activeMenu());
+  const handleSubmitRef = useRef()
+  const [saving, setSaving] = useState(false)
+  const [menu, setMenu] = useState(activeMenu())
 
   const [reviewItems, setReviewItems] = useState({
     reviews: [],
@@ -119,225 +120,220 @@ function ProfileLayout({ children }) {
     page: 1,
     count: 0,
     pages: 0,
-  });
+  })
   const [reviewedItems, setReviewedItems] = useState({
     reviews: [],
     limit: 10,
     page: 1,
     count: 0,
     pages: 0,
-  });
+  })
   const [stakeholdersData, setStakeholdersData] = useState({
     stakeholders: [],
     limit: 10,
     page: 1,
     count: 0,
     pages: 0,
-  });
+  })
   const [resourcesData, setResourcesData] = useState({
     stakeholders: [],
     limit: 10,
     page: 1,
     count: 0,
     pages: 0,
-  });
+  })
   const [tagsData, setTagsData] = useState({
     stakeholders: [],
     limit: 10,
     page: 1,
     count: 0,
     pages: 0,
-  });
+  })
   const [entitiesData, setEntitiesData] = useState({
     stakeholders: [],
     limit: 10,
     page: 1,
     count: 0,
     pages: 0,
-  });
+  })
   const [nonMemberEntitiesData, setNonMemberEntitiesData] = useState({
     stakeholders: [],
     limit: 10,
     page: 1,
     count: 0,
     pages: 0,
-  });
+  })
 
   useEffect(() => {
     UIStore.update((e) => {
-      e.disclaimer = null;
-    });
+      e.disclaimer = null
+    })
 
     // show login prompt
     if (isEmpty(profile) && !isAuthenticated) {
-      loginWithPopup();
-      return;
+      loginWithPopup()
+      return
     }
 
     if (adminRoles.has(profile?.role)) {
-      (async () => {
-        const { page, limit } = stakeholdersData;
+      ;(async () => {
+        const { page, limit } = stakeholdersData
         const data = await fetchSubmissionData(
           page,
           limit,
-          "stakeholders",
-          "SUBMITTED"
-        );
-        setStakeholdersData(data);
-      })();
-      (async () => {
-        const { page, limit } = resourcesData;
+          'stakeholders',
+          'SUBMITTED'
+        )
+        setStakeholdersData(data)
+      })()
+      ;(async () => {
+        const { page, limit } = resourcesData
         const data = await fetchSubmissionData(
           page,
           limit,
-          "resources",
-          "SUBMITTED"
-        );
-        setResourcesData(data);
-      })();
-      (async () => {
-        const { page, limit } = resourcesData;
+          'resources',
+          'SUBMITTED'
+        )
+        setResourcesData(data)
+      })()
+      ;(async () => {
+        const { page, limit } = resourcesData
+        const data = await fetchSubmissionData(page, limit, 'tags', 'SUBMITTED')
+        setTagsData(data)
+      })()
+      ;(async () => {
+        const { page, limit } = resourcesData
         const data = await fetchSubmissionData(
           page,
           limit,
-          "tags",
-          "SUBMITTED"
-        );
-        setTagsData(data);
-      })();
-      (async () => {
-        const { page, limit } = resourcesData;
+          'entities',
+          'SUBMITTED'
+        )
+        setEntitiesData(data)
+      })()
+      ;(async () => {
+        const { page, limit } = resourcesData
         const data = await fetchSubmissionData(
           page,
           limit,
-          "entities",
-          "SUBMITTED"
-        );
-        setEntitiesData(data);
-      })();
-      (async () => {
-        const { page, limit } = resourcesData;
-        const data = await fetchSubmissionData(
-          page,
-          limit,
-          "non-member-entities",
-          "SUBMITTED"
-        );
-        setNonMemberEntitiesData(data);
-      })();
+          'non-member-entities',
+          'SUBMITTED'
+        )
+        setNonMemberEntitiesData(data)
+      })()
     }
     if (reviewerRoles.has(profile?.role)) {
-      (async () => {
-        setReviewItems(await fetchReviewItems(reviewItems, "PENDING"));
-      })();
-      (async () => {
+      ;(async () => {
+        setReviewItems(await fetchReviewItems(reviewItems, 'PENDING'))
+      })()
+      ;(async () => {
         setReviewedItems(
-          await fetchReviewItems(reviewedItems, "ACCEPTED,REJECTED")
-        );
-      })();
+          await fetchReviewItems(reviewedItems, 'ACCEPTED,REJECTED')
+        )
+      })()
     }
     // NOTE: Ignore the linter warning, because adding
     // dependency other than profile makes the FE send
     // multiple requests to the backend.
-  }, [profile]); // eslint-disable-line
+  }, [profile]) // eslint-disable-line
 
   const onSubmit = (vals) => {
     // setSaving(true);
     if (!vals?.publicEmail) {
-      vals = { ...vals, publicEmail: false };
+      vals = { ...vals, publicEmail: false }
     }
     if (
-      (vals.geoCoverageType === "national" ||
-        vals.geoCoverageType === "sub-national") &&
+      (vals.geoCoverageType === 'national' ||
+        vals.geoCoverageType === 'sub-national') &&
       !Array.isArray(vals.geoCoverageValue)
     ) {
-      vals.geoCoverageValue = [vals.geoCoverageValue];
+      vals.geoCoverageValue = [vals.geoCoverageValue]
     }
-    if (vals.geoCoverageType === "global") {
-      vals.geoCoverageValue = null;
+    if (vals.geoCoverageType === 'global') {
+      vals.geoCoverageValue = null
     }
     if (
       vals?.org &&
       vals.org?.id === -1 &&
-      (vals.org.geoCoverageType === "national" ||
-        vals.org.geoCoverageType === "sub-national") &&
+      (vals.org.geoCoverageType === 'national' ||
+        vals.org.geoCoverageType === 'sub-national') &&
       !Array.isArray(vals.org.geoCoverageValue)
     ) {
-      vals.org.geoCoverageValue = [vals.org.geoCoverageValue];
+      vals.org.geoCoverageValue = [vals.org.geoCoverageValue]
     }
     if (
       vals?.org &&
       vals.org?.id === -1 &&
-      vals.org.geoCoverageType === "global"
+      vals.org.geoCoverageType === 'global'
     ) {
-      vals.org.geoCoverageValue = null;
+      vals.org.geoCoverageValue = null
     }
 
-    vals.seeking = vals.seeking.map((item) => item.toString());
-    vals.offering = vals.offering.map((item) => item.toString());
+    vals.seeking = vals.seeking.map((item) => item.toString())
+    vals.offering = vals.offering.map((item) => item.toString())
 
-    const changes = getChangedFields(profile, vals);
+    const changes = getChangedFields(profile, vals)
     if (changes && Object.keys(changes).length > 0)
       api
-        .put("/profile", changes)
+        .put('/profile', changes)
         .then(() => {
           let data = {
             ...vals,
-          };
+          }
           UIStore.update((e) => {
-            e.profile = data;
-          });
-          notification.success({ message: "Profile updated" });
-          setSaving(false);
+            e.profile = data
+          })
+          notification.success({ message: 'Profile updated' })
+          setSaving(false)
         })
         .catch(() => {
-          notification.error({ message: "An error occured" });
-          setSaving(false);
-        });
-  };
+          notification.error({ message: 'An error occured' })
+          setSaving(false)
+        })
+  }
 
   const handleOnClickMenu = (menuKey) => {
-    router.push(getMenuRoute(menuKey));
-    setMenu(menuKey);
-  };
+    router.push(getMenuRoute(menuKey))
+    setMenu(menuKey)
+  }
 
   const getMenuRoute = (menuKey) => {
     switch (menuKey) {
-      case "my-favourites":
-        return "/profile/my-favourites";
-        break;
-      case "my-network":
-        return "/profile/my-network";
-        break;
-      case "review-section":
-        return "/profile/review-section";
-        break;
-      case "admin-section":
-        return "/profile/admin-section";
-        break;
+      case 'my-favourites':
+        return '/profile/my-favourites'
+        break
+      case 'my-network':
+        return '/profile/my-network'
+        break
+      case 'review-section':
+        return '/profile/review-section'
+        break
+      case 'admin-section':
+        return '/profile/admin-section'
+        break
       default:
-        return "/profile";
-        break;
+        return '/profile'
+        break
     }
-  };
+  }
 
   const renderMenuItem = (profile) => {
-    console.log(profile);
-    const menus = menuItems.filter((it) => it.role.has(profile?.role));
+    console.log(profile)
+    const menus = menuItems.filter((it) => it.role.has(profile?.role))
     const renderMenuText = (name, count = false) => {
       return (
         <div
           style={{
-            display: "flex",
-            alignItems: "center",
+            display: 'flex',
+            alignItems: 'center',
           }}
         >
           <span>{name}</span>
           {count !== false && (
             <Button
               style={{
-                position: "absolute",
-                right: "1rem",
+                position: 'absolute',
+                right: '1rem',
               }}
               shape="circle"
               type="ghost"
@@ -348,29 +344,29 @@ function ProfileLayout({ children }) {
             </Button>
           )}
         </div>
-      );
-    };
+      )
+    }
     return menus.map((it) => {
-      let menuText = "";
+      let menuText = ''
       switch (it.key) {
-        case "my-favourites":
-          menuText = renderMenuText(it.name, relations.length);
-          break;
-        case "my-network":
-          menuText = renderMenuText(it.name, 0);
-          break;
-        case "review-section":
-          menuText = renderMenuText(it.name, reviewItems.count);
-          break;
-        case "admin-section":
+        case 'my-favourites':
+          menuText = renderMenuText(it.name, relations.length)
+          break
+        case 'my-network':
+          menuText = renderMenuText(it.name, 0)
+          break
+        case 'review-section':
+          menuText = renderMenuText(it.name, reviewItems.count)
+          break
+        case 'admin-section':
           menuText = renderMenuText(
             it.name,
             stakeholdersData.count + resourcesData.count + entitiesData.count
-          );
-          break;
+          )
+          break
         default:
-          menuText = renderMenuText(it.name);
-          break;
+          menuText = renderMenuText(it.name)
+          break
       }
       return (
         <>
@@ -386,7 +382,7 @@ function ProfileLayout({ children }) {
               />
             }
             onClick={() =>
-              it.key !== "profil-section"
+              it.key !== 'profil-section'
                 ? handleOnClickMenu(it.key)
                 : router.push(`/stakeholder/${profile.id}`)
             }
@@ -394,16 +390,16 @@ function ProfileLayout({ children }) {
             {menuText}
           </Menu.Item>
         </>
-      );
-    });
-  };
+      )
+    })
+  }
 
-  const profilePic = profile?.photo?.includes("googleusercontent.com")
+  const profilePic = profile?.photo?.includes('googleusercontent.com')
     ? profile?.photo.replace(
         /(s\d+\-c)/g,
         window.screen.width > 640 ? `s${window.screen.height}-c` : `s640-c`
       )
-    : profile?.photo;
+    : profile?.photo
 
   const additionalProps = {
     profile: profile,
@@ -426,7 +422,7 @@ function ProfileLayout({ children }) {
     tagsData: tagsData,
     setTagsData: setTagsData,
     adminRoles: adminRoles,
-  };
+  }
 
   return (
     <div id="profile" className={styles.profile}>
@@ -437,9 +433,9 @@ function ProfileLayout({ children }) {
               <StickyBox
                 offsetTop={20}
                 offsetBottom={40}
-                style={{ marginBottom: "3rem" }}
+                style={{ marginBottom: '3rem' }}
               >
-                {menu === "personal-details" && (
+                {menu === 'personal-details' && (
                   <div className="photo">
                     <Avatar
                       src={profilePic}
@@ -452,8 +448,8 @@ function ProfileLayout({ children }) {
                         xxl: 200,
                       }}
                       style={{
-                        fontSize: "62px",
-                        fontWeight: "bold",
+                        fontSize: '62px',
+                        fontWeight: 'bold',
                       }}
                     >
                       {profile?.firstName?.substring(0, 1)}
@@ -473,7 +469,7 @@ function ProfileLayout({ children }) {
               sm={24}
               md={17}
               lg={18}
-              className={menu !== "admin-section" ? "content-wrapper" : ""}
+              className={menu !== 'admin-section' ? 'content-wrapper' : ''}
             >
               {children &&
                 React.isValidElement(children) &&
@@ -483,7 +479,7 @@ function ProfileLayout({ children }) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default ProfileLayout;
+export default ProfileLayout

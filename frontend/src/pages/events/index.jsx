@@ -1,5 +1,6 @@
-import React from "react";
-import EventPage from "../../modules/event-page/view";
+import React from 'react'
+import EventPage from '../../modules/event-page/view'
+import { loadCatalog } from '../../translations/utils'
 
 function Events({ setLoginVisible, isAuthenticated }) {
   return (
@@ -7,7 +8,15 @@ function Events({ setLoginVisible, isAuthenticated }) {
       setLoginVisible={setLoginVisible}
       isAuthenticated={isAuthenticated}
     />
-  );
+  )
 }
 
-export default Events;
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
+}
+
+export default Events

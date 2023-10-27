@@ -455,7 +455,7 @@ const StakeholderDetail = ({ setLoginVisible, isAuthenticated }) => {
         <div className="ui container">
           <Row gutter={[16, 16]}>
             <Col xs={6} lg={6} className="flex-col">
-              <CardComponent title="Basic info">
+              <CardComponent title={<Trans>Basic info</Trans>}>
                 <div className="list ">
                   <List itemLayout="horizontal">
                     <List.Item className="location">
@@ -507,7 +507,7 @@ const StakeholderDetail = ({ setLoginVisible, isAuthenticated }) => {
                   </List>
                 </div>
               </CardComponent>
-              <CardComponent title="Contact info">
+              <CardComponent title={<Trans>Contact info</Trans>}>
                 <div className="list social-list">
                   <List itemLayout="horizontal">
                     {data?.linkedIn && (
@@ -574,7 +574,7 @@ const StakeholderDetail = ({ setLoginVisible, isAuthenticated }) => {
               <div className="description-container">
                 <div className="description-wrapper">
                   <CardComponent
-                    title={'Bio'}
+                    title={<Trans>Bio</Trans>}
                     style={{
                       height: '100%',
                       boxShadow: 'none',

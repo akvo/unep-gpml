@@ -14,7 +14,8 @@ import DataCatalogueSvg from './images/archive.svg'
 import GlossarySvg from './images/glossary.svg'
 import MapSvg from './images/map.svg'
 import ExploreSvg from './images/api.svg'
-import { t } from '@lingui/macro'
+import { t, msg } from '@lingui/macro'
+import { i18n } from '@lingui/core'
 
 const geoCoverageTypeOptions = [
   t`Global`,
@@ -26,17 +27,6 @@ const geoCoverageTypeOptions = [
 ]
 
 const menuList = [
-  // {
-  //   key: 'Plastic',
-  //   children: [
-  //     {
-  //       key: 'Topics',
-  //     },
-  //     {
-  //       key: 'Basics',
-  //     },
-  //   ],
-  // },
   {
     key: 'Tools',
     children: [
@@ -45,28 +35,28 @@ const menuList = [
         children: [
           {
             to: '/knowledge/library',
-            title: t`Knowledge library`,
-            subtitle: t`Resources on marine litter and plastic pollution`,
+            title: msg`Knowledge library`,
+            subtitle: msg`Resources on marine litter and plastic pollution`,
             icon: <BookIcon />,
           },
           {
             to: '/knowledge/case-studies',
-            title: t`Case studies`,
+            title: msg`Case studies`,
             icon: <CaseStudiesSvg />,
-            subtitle: t`Compilation of actions around the world`,
+            subtitle: msg`Compilation of actions around the world`,
             iconClass: 'casestudies',
           },
           {
             to: '/knowledge/capacity-development',
-            title: 'Learning center',
-            subtitle: 'Learning and capacity development resources',
+            title: msg`Learning center`,
+            subtitle: msg`Learning and capacity development resources`,
             icon: <CapacityBuildingSvg />,
             iconClass: 'learning',
           },
           {
             to: '/help-center',
-            title: t`Help Center`,
-            subtitle: t`Support on GPML Digital Platform`,
+            title: msg`Help Center`,
+            subtitle: msg`Support on GPML Digital Platform`,
             icon: <HelpCenterSvg />,
           },
         ],
@@ -76,35 +66,35 @@ const menuList = [
         children: [
           {
             to: '/community',
-            title: t`Members`,
+            title: msg`Members`,
             iconClass: 'tools-community-icon',
-            subtitle: t`Directory of GPML network entities and individuals`,
+            subtitle: msg`Directory of GPML network entities and individuals`,
             icon: <IconCommunity />,
           },
           {
             to: '/experts',
-            title: t`Experts`,
+            title: msg`Experts`,
             iconClass: 'tools-experts-icon',
-            subtitle: t`Tool to find an expert and experts' groups`,
+            subtitle: msg`Tool to find an expert and experts' groups`,
             icon: <ExpertIcon />,
           },
           {
             to: '/events',
-            title: t`Events`,
-            subtitle: t`Global events calendar`,
+            title: msg`Events`,
+            subtitle: msg`Global events calendar`,
             icon: <IconEvent />,
           },
           {
             to: '/partners',
-            title: t`Partners`,
+            title: msg`Partners`,
             iconClass: 'tools-partners-icon',
-            subtitle: t`Directory of partners of the GPML Digital Platform`,
+            subtitle: msg`Directory of partners of the GPML Digital Platform`,
             icon: <IconPartner />,
           },
           {
             href: 'https://communities.gpmarinelitter.org',
-            title: t`Engage`,
-            subtitle: t`Interactive forum for collaboration`,
+            title: msg`Engage`,
+            subtitle: msg`Interactive forum for collaboration`,
             icon: <IconForum />,
           },
         ],
@@ -114,46 +104,38 @@ const menuList = [
         children: [
           {
             href: 'https://datahub.gpmarinelitter.org',
-            title: t`Analytics & statistics`,
-            subtitle: t`Metrics to measure progress`,
+            title: msg`Analytics & statistics`,
+            subtitle: msg`Metrics to measure progress`,
             icon: <AnalyticAndStatisticSvg />,
           },
           {
             href: 'https://unepazecosysadlsstorage.z20.web.core.windows.net/',
-            title: t`Data Catalogue`,
-            subtitle: t`Datasets on plastic pollution and marine litter`,
+            title: msg`Data Catalogue`,
+            subtitle: msg`Datasets on plastic pollution and marine litter`,
             icon: <DataCatalogueSvg />,
           },
           {
             href: 'https://datahub.gpmarinelitter.org/pages/glossary/',
-            title: t`Glossary`,
-            subtitle: t`Terminology and definitions`,
+            title: msg`Glossary`,
+            subtitle: msg`Terminology and definitions`,
             icon: <GlossarySvg />,
           },
           {
             href: 'https://datahub.gpmarinelitter.org/pages/story_map',
-            title: t`Story Maps`,
-            subtitle: t`Storytelling with custom maps`,
+            title: msg`Story Maps`,
+            subtitle: msg`Storytelling with custom maps`,
             icon: <MapSvg />,
           },
           {
             href: 'https://datahub.gpmarinelitter.org/pages/api-explore',
-            title: t`API explore`,
-            subtitle: t`Web services and APIs`,
+            title: msg`API explore`,
+            subtitle: msg`Web services and APIs`,
             icon: <ExploreSvg />,
           },
         ],
       },
     ],
   },
-  // {
-  //   key: 'Countries',
-  //   children: [
-  //     {
-  //       key: 'Information',
-  //     },
-  //   ],
-  // },
   {
     key: 'About Us',
     children: [

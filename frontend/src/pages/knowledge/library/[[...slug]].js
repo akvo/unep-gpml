@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import KnowledgeLib from '../../../modules/knowledge-lib/view'
 import { UIStore } from '../../../store'
 import api from '../../../utils/api'
+import { loadCatalog } from '../../../translations/utils'
 
 function KnowledgeLibrary({ isAuthenticated }) {
   const { landing } = UIStore.useState((s) => ({
@@ -23,6 +24,21 @@ function KnowledgeLibrary({ isAuthenticated }) {
   }, [])
 
   return <KnowledgeLib isAuthenticated={isAuthenticated} />
+}
+
+export const getStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  }
+}
+
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
 }
 
 export default React.memo(KnowledgeLibrary)
