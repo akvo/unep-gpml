@@ -20,6 +20,8 @@ import moment from 'moment'
 import { useDeviceSize } from '../../modules/landing/landing'
 import Button from '../../components/button'
 import { Trans, t } from '@lingui/macro'
+import { useLingui } from '@lingui/react'
+import { loadCatalog } from '../../translations/utils'
 
 const pagination = {
   clickable: true,
@@ -51,10 +53,14 @@ const Hero = () => {
   const [timeout, _setTimeout] = useState(true)
   const intidRef = useRef()
   const [width] = useDeviceSize()
+  const { i18n } = useLingui()
+
   const items = [
     {
-      group: t`Governments`,
-      text: t`The GPML digital platform empowers all countries to create and implement successful plastic strategies to end plastic pollution including in the marine environment.`,
+      group: i18n._(t`Governments`),
+      text: i18n._(
+        t`The GPML digital platform empowers all countries to create and implement successful plastic strategies to end plastic pollution including in the marine environment.`
+      ),
     },
     {
       group: t`Private Sector`,
@@ -137,7 +143,7 @@ const Hero = () => {
             </h1>
             <div className="p-container">
               {items.map((item) => (
-                <AnimatePresence>
+                <AnimatePresence key={`p-${item.group}`}>
                   {item.group === selected && (
                     <motion.p
                       transition={{
@@ -204,10 +210,11 @@ const Hero = () => {
 }
 
 const ShowcasingAndStats = () => {
+  const { i18n } = useLingui()
   const items = [
     {
       value: '2370',
-      label: t`NUMBER OF RESOURCES`,
+      label: i18n._(t`NUMBER OF RESOURCES`),
     },
     {
       value: '300',
@@ -289,6 +296,7 @@ const ShowcasingAndStats = () => {
 const WhoAreWe = () => {
   const [activeTab, setActiveTab] = useState('1')
   const [activeAccordion, setActiveAccordion] = useState('1')
+  const { i18n } = useLingui()
 
   const items = [
     {
@@ -383,6 +391,7 @@ const WhoAreWe = () => {
 
 const ActNow = () => {
   const [width] = useDeviceSize()
+  const { i18n } = useLingui()
   const items = [
     {
       content: t`Start your own initiative. Get inspired by others who are making progress to end plastic pollution.`,
@@ -517,15 +526,20 @@ const LatestNews = () => {
         <div className="news-wrapper hide-sm">
           <strong className="caps-heading-1">HIGHLIGHTS</strong>
           <h2>
-            <strong>Latest news:</strong>
+            <strong>
+              <Trans>Latest news:</Trans>
+            </strong>
             <br />
-            How is the network co-solutioning?
+            <Trans>How is the network co-solutioning?</Trans>
           </h2>
         </div>
         <div className="news-wrapper hide-sm">
           <p className="p-l">
-            Learn about inspiring co-soluting efforts from the GPML network and
-            all the other actors contributing to the plastic action platform.
+            <Trans>
+              Learn about inspiring co-soluting efforts from the GPML network
+              and all the other actors contributing to the plastic action
+              platform.
+            </Trans>
           </p>
         </div>
         <div className="news-wrapper news-items">
@@ -568,7 +582,7 @@ const LatestNews = () => {
                 <p className="p-m">{item.excerpt}</p>
                 <Link href={item.url}>
                   <Button type="link" withArrow>
-                    Read More
+                    <Trans>Read More</Trans>
                   </Button>
                 </Link>
               </Card>
@@ -582,6 +596,7 @@ const LatestNews = () => {
 
 const Features = () => {
   const [width] = useDeviceSize()
+  const { i18n } = useLingui()
   const items = [
     {
       title: t`Data tools`,
@@ -1152,6 +1167,14 @@ const FeatureCard = ({ item }) => {
       </div>
     </div>
   )
+}
+
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
 }
 
 export default Landing

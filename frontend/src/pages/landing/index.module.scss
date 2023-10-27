@@ -1175,6 +1175,8 @@
       border-radius: 40px;
       padding-bottom: 20px;
       background-image: url('/partnership-landing-desktop.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
       @media screen and (max-width: $bpMobile) {
         border-radius: 16px;
         padding-bottom: 0px;

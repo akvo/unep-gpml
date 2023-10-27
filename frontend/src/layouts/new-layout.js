@@ -158,20 +158,19 @@ const NewLayout = ({
                               active: lang.key.toLowerCase() === router.locale,
                             })}
                             key={lang.key}
-                            onClick={() => {}}
+                            onClick={() => {
+                              router.push(router.pathname, router.pathname, {
+                                locale: lang.key.toLowerCase(),
+                              })
+                            }}
                           >
-                            <Link
-                              href={router.asPath}
-                              locale={lang.key.toLowerCase()}
-                            >
-                              {flags[lang.key]}
-                              {lang.label}
-                              {lang.key.toLowerCase() === router.locale && (
-                                <div className="check">
-                                  <Check />
-                                </div>
-                              )}
-                            </Link>
+                            {flags[lang.key]}
+                            {lang.label}
+                            {lang.key.toLowerCase() === router.locale && (
+                              <div className="check">
+                                <Check />
+                              </div>
+                            )}
                           </Menu.Item>
                         ))}
                       </Menu>

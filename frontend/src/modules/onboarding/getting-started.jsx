@@ -1,7 +1,7 @@
-import React from "react";
-import { Col, Row, Button, Typography } from "antd";
-import GettingStartedIcon from "../../images/auth/getting-started.png";
-const { Title, Link } = Typography;
+import React from 'react'
+import { Col, Row, Button, Typography } from 'antd'
+import GettingStartedIcon from '../../images/auth/getting-started.png'
+const { Title, Link } = Typography
 
 function GettingStarted({ handleOnClickBtnNext }) {
   return (
@@ -16,7 +16,7 @@ function GettingStarted({ handleOnClickBtnNext }) {
         <img src={GettingStartedIcon} alt="getting-started" />
       </div>
     </div>
-  );
+  )
 }
 
-export default GettingStarted;
+export default GettingStarted

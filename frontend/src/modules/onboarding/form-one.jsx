@@ -7,6 +7,7 @@ const { Title, Link } = Typography
 import ModalAddEntity from '../flexible-forms/entity-modal/add-entity-modal'
 import { SearchIcon } from '../../components/icons'
 import FormLabel from '../../components/form-label'
+import { Trans, t } from '@lingui/macro'
 
 function FormOne({ validate, error, setEntity }) {
   const [showModal, setShowModal] = useState(false)
@@ -30,7 +31,9 @@ function FormOne({ validate, error, setEntity }) {
   return (
     <>
       <div className="text-wrapper">
-        <Title level={2}>Enter your entity and job title</Title>
+        <Title level={2}>
+          <Trans>Enter your entity and job title</Trans>
+        </Title>
       </div>
       <div className="ant-form ant-form-vertical">
         <div className="field-wrapper">
@@ -45,7 +48,7 @@ function FormOne({ validate, error, setEntity }) {
                   <Input
                     size="small"
                     onChange={(e) => input.onChange(e.target.value)}
-                    placeholder="Enter job title"
+                    placeholder={<Trans>Enter job title</Trans>}
                     className={`${
                       error && !meta.valid ? 'ant-input-status-error' : ''
                     }`}
@@ -65,7 +68,7 @@ function FormOne({ validate, error, setEntity }) {
               <FormLabel for="orgName" validateStatus={validateStatus}>
                 <Select
                   size="small"
-                  placeholder="Enter the name of your entity"
+                  placeholder={<Trans>Enter the name of your entity</Trans>}
                   allowClear
                   showSearch
                   name="orgName"
@@ -93,7 +96,7 @@ function FormOne({ validate, error, setEntity }) {
                           }}
                         >
                           <a onClick={() => setShowModal(!showModal)}>
-                            <PlusOutlined /> Add new entity
+                            <PlusOutlined /> <Trans>Add new entity</Trans>
                           </a>
                         </div>
                       </>
