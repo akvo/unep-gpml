@@ -114,16 +114,14 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
     const countryCode = isoA2[country]
     const countryId = iso2id[countryCode]
     if (countryId != null && loading) {
-      let params = { topic: 'initiative', ps_country_iso_code_a2: countryCode }
-      params = entityID
-        ? {
-            ...params,
-            entity: entityID,
-          }
-        : {
-            ...params,
-            country: countryId,
-          }
+      const params = {
+        topic: 'initiative',
+        ps_country_iso_code_a2: countryCode,
+        country: countryId,
+      }
+      if (entityID) {
+        params.entity = entityID
+      }
       api.get(`/browse?inc_entity_connections=true`, params).then((d) => {
         setItems(d.data?.results)
         setLoading(false)
