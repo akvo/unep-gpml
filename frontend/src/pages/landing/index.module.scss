@@ -339,6 +339,8 @@
         & > b {
           width: fit-content;
           margin-right: 10px;
+          transform: translateY(5px);
+          display: inline-block;
         }
         .ant-tag {
           padding: 0 12px;
@@ -363,6 +365,11 @@
           height: 46px;
           overflow-x: scroll;
           white-space: nowrap;
+        }
+      }
+      @media screen and (min-width: $bpMobile) {
+        .ant-select {
+          transform: translateY(3px);
         }
       }
       .ant-btn.ant-btn-primary {
