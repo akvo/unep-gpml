@@ -24,7 +24,6 @@ import {
   DeleteOutlined,
 } from '@ant-design/icons'
 import api from '../../utils/api'
-import { resourceTypeToTopicType } from '../../utils/misc'
 import { Trans, t } from '@lingui/macro'
 import { resourceTypeToTopicType, getBadgeTitle } from '../../utils/misc'
 
@@ -100,16 +99,22 @@ const SharePanel = ({
         {relation &&
         relation.association &&
         relation.association.indexOf('interested in') !== -1 ? (
-          <h2>Unfollow</h2>
+          <h2>
+            <Trans>Unfollow</Trans>
+          </h2>
         ) : (
-          <h2>Follow</h2>
+          <h2>
+            <Trans>Follow</Trans>
+          </h2>
         )}
       </div>
 
       {canEdit() && (
         <div className="sticky-panel-item" onClick={() => handleEditBtn()}>
           <EditIcon className="edit-icon" />
-          <h2>Update</h2>
+          <h2>
+            <Trans>Update</Trans>
+          </h2>
         </div>
       )}
       {canDelete() && (
@@ -121,9 +126,9 @@ const SharePanel = ({
               centered: true,
               closable: true,
               icon: <DeleteOutlined />,
-              title: 'Are you sure you want to delete this entity?',
-              content: 'Please be aware this action cannot be undone.',
-              okText: 'Delete',
+              title: t`Are you sure you want to delete this entity?`,
+              content: t`Please be aware this action cannot be undone.`,
+              okText: t`Delete`,
               okType: 'danger',
               onOk() {
                 eventTrack('Entity view', 'Delete', 'Button')
@@ -148,7 +153,9 @@ const SharePanel = ({
           }}
         >
           <TrashIcon className="svg-icon" />
-          <h2>Delete</h2>
+          <h2>
+            <Trans>Delete</Trans>
+          </h2>
         </div>
       )}
     </div>
@@ -338,7 +345,9 @@ const StakeholderDetail = ({
       <div className="details-view">
         <div className="loading">
           <LoadingOutlined spin />
-          <i>Loading...</i>
+          <i>
+            <Trans>Loading...</Trans>
+          </i>
         </div>
       </div>
     )
@@ -491,7 +500,7 @@ const StakeholderDetail = ({
                     {data?.tags && Array.isArray(data?.tags) && (
                       <div className="exta-info">
                         <div className="exta-info-head-title">
-                          Area of expertise
+                          <Trans>Area of expertise</Trans>
                         </div>
                         <List>
                           {data?.tags
@@ -525,10 +534,10 @@ const StakeholderDetail = ({
                 title={
                   <div className="related-content-title-wrapper">
                     <div className="related-content-title">
-                      Content on the platform
+                      <Trans>Content on the platform</Trans>
                     </div>
                     <div className="related-content-count">
-                      Total {ownedResourcesCount}
+                      <Trans>Total</Trans> {ownedResourcesCount}
                     </div>
                   </div>
                 }
