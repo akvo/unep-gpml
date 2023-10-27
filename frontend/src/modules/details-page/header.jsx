@@ -17,6 +17,7 @@ import {
   BookmarkIcon,
   ArrowRight,
   BookmarkIconProper,
+  badges,
 } from '../../components/icons'
 import { Trans, t } from '@lingui/macro'
 
@@ -351,6 +352,23 @@ const Header = ({
         {topicNames(type)}
       </h3>
       <h4 className="detail-resource-title">
+        {data.assignedBadges?.map((badge) => (
+          <Tooltip
+            title={
+              badge.badgeName === 'resource-verified'
+                ? 'GPML Verified'
+                : 'Government Verified'
+            }
+          >
+            <div
+              className={classNames('badge', {
+                gov: badge.badgeName !== 'resource-verified',
+              })}
+            >
+              {badges.verified}
+            </div>
+          </Tooltip>
+        ))}
         {selectedLanguage ? translations?.title[selectedLanguage] : data?.title}
       </h4>
       {toolButtons(

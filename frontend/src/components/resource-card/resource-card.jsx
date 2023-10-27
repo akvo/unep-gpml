@@ -45,7 +45,13 @@ const ResourceCard = ({ item, bookmarked, onBookmark, onClick }) => {
                 : 'Government Verified'
             }
           >
-            <div className="badge">{badges.verified}</div>
+            <div
+              className={classNames('badge', {
+                gov: badge.badgeName !== 'resource-verified',
+              })}
+            >
+              {badges.verified}
+            </div>
           </Tooltip>
         ))}
         <div className="tag">{item?.type?.replace(/_/g, ' ')}</div>
