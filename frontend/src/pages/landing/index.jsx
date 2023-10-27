@@ -104,6 +104,16 @@ const Hero = () => {
         .map((s) => JSON.parse(s))
         ?.sort((tag1, tag2) => tag1?.label.localeCompare(tag2?.label))
     : []
+  const suggestedTags = [
+    'Plastic Pollution',
+    'Marine Litter',
+    'Reports & Assessments',
+    'Circularity',
+    'Plastics',
+    'Waste management',
+    'Courses & Training',
+    'National Action Plan',
+  ]
 
   useEffect(() => {
     let index = 0
@@ -245,24 +255,17 @@ const Hero = () => {
           </Button>
           <div className="tags hide-mobile">
             <b>Suggested search:</b>
-            <Tag
-              className="h-xxs"
-              onClick={() => setFilter({ tag: 'Case Studies' })}
-            >
-              Case Studies
-            </Tag>
-            <Tag
-              className="h-xxs"
-              onClick={() => setFilter({ tag: 'Plastic Strategies' })}
-            >
-              Plastic Strategies
-            </Tag>
-            <Tag
-              className="h-xxs"
-              onClick={() => setFilter({ tag: 'Plastic Solutions' })}
-            >
-              Plastic Solutions
-            </Tag>
+            <div className="suggestions">
+              {suggestedTags.map((suggestion, sx) => (
+                <Tag
+                  key={sx}
+                  className="h-xxs"
+                  onClick={() => setFilter({ tag: suggestion })}
+                >
+                  {suggestion}
+                </Tag>
+              ))}
+            </div>
           </div>
         </div>
       </div>
