@@ -105,7 +105,6 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
   const handleSelectOption = (name, value) => {
     setFilter({ ...filter, [name]: value })
     if (entityID && value === null) {
-      setLoading(true)
       router.push(`/workspace/${slug}/2-stakeholder-consultation/initiatives`)
     }
   }
@@ -118,9 +117,6 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
         topic: 'initiative',
         ps_country_iso_code_a2: countryCode,
         country: countryId,
-      }
-      if (entityID) {
-        params.entity = entityID
       }
       api.get(`/browse?inc_entity_connections=true`, params).then((d) => {
         setItems(d.data?.results)
