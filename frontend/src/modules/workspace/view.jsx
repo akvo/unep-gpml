@@ -153,7 +153,10 @@ const Workspace = ({ profile }) => {
           api.get('/chat/channel/all'),
           api.get('/chat/user/channel'),
         ]
-        const [allForums, myForums] = await Promise.all(endpoints)
+        const [
+          { value: allForums },
+          { value: myForums },
+        ] = await Promise.allSettled(endpoints)
         const { data: _myForums } = myForums || {}
         const { data: _allForums } = allForums || {}
         const _forums = _myForums?.length
