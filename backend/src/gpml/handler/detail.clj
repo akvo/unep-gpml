@@ -511,6 +511,33 @@
       {:success? false
        :reason :not-found})))
 
+(def ^:private get-detail-path-params-schema
+  [:map
+   [:topic-type
+    {:swagger {:description "The topic type (or entity type) to get details from."
+               :type "string"
+               :enum dom.types/topic-types}}
+    ;; TODO: refactor to use dom.types/get-type-schema.
+    (apply conj [:enum] dom.types/topic-types)]
+   [:topic-id
+    {:swagger {:description "The topic ID (or entity ID)."
+               :type "integer"}}
+    [:int {:min 1}]]])
+
+(def ^:private get-detail-query-params-schema
+  [:map
+   [:badges
+    {:optional true
+     :swagger {:description "Flag to include assigned badges."
+               :type "boolean"
+               :allowEmptyValue false}}
+    [:boolean]]])
+
+(defmethod ig/init-key :gpml.handler.detail/get-params
+  [_ _]
+  {:path get-detail-path-params-schema
+   :query get-detail-query-params-schema})
+
 (defmethod ig/init-key :gpml.handler.detail/get
   [_ {:keys [db logger] :as config}]
   (fn [{{:keys [path query]} :parameters user :user}]
