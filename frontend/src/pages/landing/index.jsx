@@ -515,31 +515,39 @@ const ActNow = () => {
           </Trans>
         </>
       ),
-      links: [{ label: t`Track progress`, url: '#' }],
+      links: [
+        {
+          label: t`Track progress`,
+          url: '/knowledge/library?subContentType=Case+studies',
+        },
+      ],
     },
     {
       bgColor: 'green',
       content: t`Reduce your country’s footprint. Create and advance your plastic startegy.`,
       title: t`Plastic Strategies`,
       links: [
-        { label: t`Track progress`, url: '#' },
-        { label: t`Track action`, url: '#' },
+        {
+          label: t`Discover`,
+          url: '/knowledge/library/map/action-plan',
+        },
+        { label: t`Add`, url: '/flexible-form' },
       ],
     },
     {
       bgColor: 'violet',
       content: t`Join others in coordinating efforts towards shared plastic solutions. From data to capacity development communities`,
       title: t`Communities of practise`,
-      links: [{ label: t`Track progress`, url: '#' }],
+      links: [{ label: t`Join & collaborate`, url: '/forum' }],
     },
     {
       bgColor: 'blue',
-      content: t`Start your own initiative. Get inspired by others who are making progress to end plastic pollution.`,
+      content: t` Data visualisations to track countries progress. Quickly connect with others working in the country to end plastic.`,
       label: t`Coming soon`,
       title: t`Country Progress`,
       links: [
-        { label: t`Track progress`, url: '#' },
-        { label: t`Track action`, url: '#' },
+        // { label: t`Track progress`, url: '#' },
+        // { label: t`Track action`, url: '#' },
       ],
     },
   ]
@@ -589,9 +597,11 @@ const ActNowCard = ({ item }) => (
     <p className="p-s">{item?.content}</p>
     <div className={item.links.lenght === 1 ? 'monolink' : 'multilink'}>
       {item.links.map((link) => (
-        <Button type="link" withArrow>
-          {link.label}
-        </Button>
+        <Link href={link.url}>
+          <Button type="link" withArrow>
+            {link.label}
+          </Button>
+        </Link>
       ))}
     </div>
   </div>
