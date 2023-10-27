@@ -64,6 +64,15 @@
             }
           }
         }
+        .badges-wrapper {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          img {
+            height: 40px;
+            width: 40px;
+          }
+        }
       }
     }
     .info-container {

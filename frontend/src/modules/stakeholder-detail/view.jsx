@@ -11,6 +11,7 @@ import {
   Card,
   Modal,
   notification,
+  Tooltip,
 } from 'antd'
 import StickyBox from 'react-sticky-box'
 import ReadMoreReact from 'read-more-less-react'
@@ -28,7 +29,7 @@ import {
 } from '@ant-design/icons'
 import { useHistory } from 'react-router-dom'
 import api from '../../utils/api'
-import { resourceTypeToTopicType } from '../../utils/misc'
+import { getBadgeTitle, resourceTypeToTopicType } from '../../utils/misc'
 import isEmpty from 'lodash/isEmpty'
 import { eventTrack, randomColor } from '../../utils/misc'
 import ResourceCards from '../../components/resource-cards/resource-cards'
@@ -432,12 +433,24 @@ const StakeholderDetail = ({
                         {data?.jobTitle} @ {data?.affiliation?.name}
                       </p>
                     )}
-                    {/* <p>
-                      <span>
-                        <img src={StakeholderRating} />
-                      </span>
-                      Expert: Marine Litter
-                    </p> */}
+                    {data?.assignedBadges?.length > 0 && (
+                      <div className="badges-wrapper">
+                        {data?.assignedBadges?.map((b) => {
+                          const badgeDetails = getBadgeTitle(b.badgeName)
+                          return (
+                            <Tooltip
+                              placement="top"
+                              title={badgeDetails.title}
+                              color="#020A5B"
+                            >
+                              <div key={b.badgeName}>
+                                <img src={badgeDetails.image} />
+                              </div>
+                            </Tooltip>
+                          )
+                        })}
+                      </div>
+                    )}
                   </div>
                 </div>
               </Col>

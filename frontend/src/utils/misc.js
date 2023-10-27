@@ -234,3 +234,39 @@ export function stripHtml(html) {
   tmp.innerHTML = html
   return tmp.textContent || tmp.innerText || ''
 }
+
+export const getBadgeTitle = (badgeKey) => {
+  const badges = {
+    'user-verified': {
+      title: 'GPML Verified',
+      image: '/verified.svg',
+    },
+    'user-focal-point-verified': {
+      title: 'Verified Focal Point',
+      image: '/focal-verified.svg',
+    },
+    'org-verified': {
+      title: 'GPML Verified',
+      image: '/verified.svg',
+    },
+    'org-partner-verified': {
+      title: 'Verified Partner',
+      image: '/partner-verified.svg',
+    },
+    'org-coe-verified': {
+      title: 'Verified Center of Excellence',
+      image: '/coe-verified.svg',
+    },
+    'resource-verified': {
+      title: 'GPML Verified',
+      image: '/verified.svg',
+    },
+    'resource-country-verified': {
+      title: 'GPML Verified',
+      image: '/focal-verified.svg',
+    },
+  }
+  return (
+    badges[badgeKey] || { title: 'Unknown Badge', image: 'default-badge.svg' }
+  )
+}
