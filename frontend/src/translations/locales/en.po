@@ -496,7 +496,7 @@ msgstr "California Ocean Litter Prevention Strategy"
 msgid "Campaigning with or through NGOs"
 msgstr "Campaigning with or through NGOs"
 
-#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:486
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:501
 msgid "Can't find who you're looking for?"
 msgstr "Can't find who you're looking for?"
 
@@ -826,7 +826,7 @@ msgstr "Countries"
 msgid "Country"
 msgstr "Country"
 
-#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:372
+#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:390
 #: src/pages/workspace/[slug]/layout.js:31
 msgid "Country Policy Framework"
 msgstr "Country Policy Framework"
@@ -967,7 +967,7 @@ msgstr "Description"
 msgid "Description - Section 2 - Case Studies"
 msgstr "Description - Section 2 - Case Studies"
 
-#: src/pages/workspace/[slug]/2-stakeholder-consultation/initiatives.js:41
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/initiatives.js:144
 msgid "Description - Section 2 - Initatives"
 msgstr "Description - Section 2 - Initatives"
 
@@ -975,7 +975,7 @@ msgstr "Description - Section 2 - Initatives"
 msgid "Description - Section 3 - Case Studies"
 msgstr "Description - Section 3 - Case Studies"
 
-#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:377
+#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:395
 msgid "Description - Section 3 - Coutry Policy Framework"
 msgstr "Description - Section 3 - Coutry Policy Framework"
 
@@ -1371,7 +1371,7 @@ msgstr "Financing Resource"
 msgid "Financing Resources"
 msgstr "Financing Resources"
 
-#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:552
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:567
 msgid "Find and connect the stakeholders relevant to you"
 msgstr "Find and connect the stakeholders relevant to you"
 
@@ -1878,7 +1878,7 @@ msgid "Initiative Scope & Target"
 msgstr "Initiative Scope & Target"
 
 #: src/modules/knowledge-lib/filter-bar.jsx:25
-#: src/pages/workspace/[slug]/2-stakeholder-consultation/initiatives.js:38
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/initiatives.js:141
 #: src/pages/workspace/[slug]/layout.js:28
 #: src/store.js:745
 msgid "Initiatives"
@@ -2059,7 +2059,7 @@ msgstr "Learning center"
 msgid "Legislation"
 msgstr "Legislation"
 
-#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:369
+#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:387
 #: src/pages/workspace/[slug]/3-legislation-policy/index.js:47
 #: src/pages/workspace/[slug]/3-legislation-policy/legislative-development.js:10
 #: src/pages/workspace/[slug]/layout.js:30
@@ -2989,7 +2989,7 @@ msgstr "Related Content, Documents & Info"
 msgid "Related Resource"
 msgstr "Related Resource"
 
-#: src/components/resource-card/resource-card.jsx:51
+#: src/components/resource-card/resource-card.jsx:62
 #: src/modules/details-page/header.jsx:68
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:322
 #: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:288
@@ -3111,7 +3111,7 @@ msgstr "Rules of Procedure and Mechanism"
 msgid "Save as draft"
 msgstr "Save as draft"
 
-#: src/components/resource-card/resource-card.jsx:51
+#: src/components/resource-card/resource-card.jsx:62
 #: src/modules/details-page/header.jsx:68
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:322
 #: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:288
@@ -3315,13 +3315,13 @@ msgstr "Sort by:"
 msgid "Spiritual or religious values"
 msgstr "Spiritual or religious values"
 
-#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:544
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:559
 msgid "stakeholder consultation process"
 msgstr "stakeholder consultation process"
 
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/case-studies.js:33
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/index.js:47
-#: src/pages/workspace/[slug]/2-stakeholder-consultation/initiatives.js:35
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/initiatives.js:138
 #: src/pages/workspace/[slug]/layout.js:25
 msgid "Stakeholder Consultation Process"
 msgstr "Stakeholder Consultation Process"
@@ -3330,7 +3330,7 @@ msgstr "Stakeholder Consultation Process"
 msgid "Stakeholder engagement"
 msgstr "Stakeholder engagement"
 
-#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:547
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:562
 #: src/pages/workspace/[slug]/layout.js:26
 msgid "Stakeholder Map"
 msgstr "Stakeholder Map"
@@ -3349,7 +3349,7 @@ msgstr "Start Date"
 
 #: src/modules/signup-old/signup-form.jsx:69
 #: src/modules/signup-old/signup-form.jsx:81
-#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:490
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:505
 msgid "Start typing..."
 msgstr "Start typing..."
 
