@@ -488,7 +488,7 @@
 
 (defn- get-detail*
   [conn table-name id opts]
-  (let [opts (merge opts {:topic-type table-name :id id})
+  (let [opts (merge opts {:topic-type table-name :id id :badges true})
         {:keys [json] :as result}
         (if (get #{"organisation" "stakeholder"} table-name)
           (db.detail/get-entity-details conn opts)
@@ -524,19 +524,9 @@
                :type "integer"}}
     [:int {:min 1}]]])
 
-(def ^:private get-detail-query-params-schema
-  [:map
-   [:badges
-    {:optional true
-     :swagger {:description "Flag to include assigned badges."
-               :type "boolean"
-               :allowEmptyValue false}}
-    [:boolean]]])
-
 (defmethod ig/init-key :gpml.handler.detail/get-params
   [_ _]
-  {:path get-detail-path-params-schema
-   :query get-detail-query-params-schema})
+  {:path get-detail-path-params-schema})
 
 (defmethod ig/init-key :gpml.handler.detail/get
   [_ {:keys [db logger] :as config}]
