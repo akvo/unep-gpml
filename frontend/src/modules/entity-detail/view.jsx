@@ -12,6 +12,7 @@ import {
   Modal,
   notification,
   Typography,
+  Tooltip,
 } from 'antd'
 import StickyBox from 'react-sticky-box'
 
@@ -24,7 +25,7 @@ import {
   DeleteOutlined,
 } from '@ant-design/icons'
 import api from '../../utils/api'
-import { resourceTypeToTopicType } from '../../utils/misc'
+import { resourceTypeToTopicType, getBadgeTitle } from '../../utils/misc'
 
 import isEmpty from 'lodash/isEmpty'
 import { redirectError } from '../error/error-util'
@@ -391,12 +392,24 @@ const StakeholderDetail = ({
                   </div>
                   <div className="topbar-title-holder">
                     <h1>{data?.name}</h1>
-                    {/* <p>
-                      <span>
-                        <img src={StakeholderRating} />
-                      </span>
-                      Expert: Marine Litter
-                    </p> */}
+                    {data?.assignedBadges?.length > 0 && (
+                      <div className="badges-wrapper">
+                        {data.assignedBadges.map((b) => {
+                          const badgeDetails = getBadgeTitle(b.badgeName)
+                          return (
+                            <Tooltip
+                              placement="top"
+                              title={badgeDetails.title}
+                              color="#020A5B"
+                            >
+                              <div key={b.badgeName}>
+                                <img src={badgeDetails.image} />
+                              </div>
+                            </Tooltip>
+                          )
+                        })}
+                      </div>
+                    )}
                   </div>
                 </div>
               </Col>
