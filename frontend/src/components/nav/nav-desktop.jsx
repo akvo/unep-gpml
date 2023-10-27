@@ -5,6 +5,8 @@ import { CloseIcon } from '../icons'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import Item from './item'
+import { useLingui } from '@lingui/react'
+import { deepTranslate } from '../../utils/misc'
 
 const navVariants = {
   open: { scale: 1, opacity: 1 },
@@ -32,13 +34,18 @@ const menuItemVariants = {
 }
 
 const ToolsMenu = () => {
+  const { i18n } = useLingui()
+
   const { menuList } = UIStore.useState((s) => ({
     menuList: s.menuList,
   }))
+
+  const menu = deepTranslate(menuList)
+
   return (
     <div className="container sub-menu">
       <Row gutter={[168, 168]}>
-        {menuList
+        {menu
           .find((it) => it.key === 'Tools')
           .children.map((menu) => (
             <Col span={8} key={menu.key}>
