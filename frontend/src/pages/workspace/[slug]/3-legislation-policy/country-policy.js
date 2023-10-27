@@ -9,6 +9,7 @@ import {
   BookmarkIconProper,
   ValidatePolicyIcon,
   VerifiedBadgeIcon,
+  badges,
 } from '../../../../components/icons'
 import styles from './country-policy.module.scss'
 import api from '../../../../utils/api'
@@ -70,6 +71,7 @@ const CountryPolicyModal = ({
             <Trans>Invalidate</Trans>
           </Button> */}
           <Button
+            className="country-validate-btn"
             onClick={(e) =>
               handleAssignBadge(e, match?.params?.id, match?.params?.type, true)
             }
@@ -77,7 +79,8 @@ const CountryPolicyModal = ({
           >
             <Trans>Validate Policy</Trans>
             {false && <Trans>Validated</Trans>}
-            <ValidatePolicyIcon />
+            {badges.verified}
+            {/* <ValidatePolicyIcon /> */}
           </Button>
         </>
       }

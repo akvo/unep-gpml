@@ -143,5 +143,27 @@
         }
       }
     }
+    .country-validate-btn {
+      background-color: #ffc2c2;
+      border-color: #ffc2c2;
+      svg {
+        width: 30px;
+        height: 30px;
+        path:first-child {
+          fill: $primaryDarkBlue;
+        }
+        path:last-child {
+          fill: #ffc2c2;
+        }
+      }
+      &:active {
+        background-color: #ffc2c2 !important;
+        svg {
+          path {
+            transform: none;
+          }
+        }
+      }
+    }
   }
 }

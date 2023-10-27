@@ -229,6 +229,13 @@
               width: 34px;
               height: 34px;
             }
+            &.gov {
+              svg {
+                path:first-child {
+                  fill: #ffc2c2;
+                }
+              }
+            }
           }
           @media (min-width: 900px) {
             font-size: $fzXL;
