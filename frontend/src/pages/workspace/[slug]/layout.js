@@ -99,7 +99,8 @@ const NestedLayout = ({ children }) => {
      * @var child = last segment URL to find current substep.
      * @var isCompleted = current checked status to validate the step is completed or not.
      */
-    const [parent, child] = pathSlugs?.slice(2, pathSlugs.length - 1)
+    const [_parent, child] = pathSlugs?.slice(2, pathSlugs.length - 1)
+    const parent = _parent === '[step]' ? stepURL : _parent
     const indexStep = parent ? parseInt(parent[0], 10) : 0
     const findBySlug = allSteps?.find((a) => getBySlug(a, child, indexStep))
     const isCompleted =
@@ -303,7 +304,9 @@ const NestedLayout = ({ children }) => {
         </div>
       </div>
       <div className={styles.view}>
-        {children ? React.cloneElement(children, { psItem }) : children}
+        {children
+          ? React.cloneElement(children, { psItem, psSteps, allSteps })
+          : children}
       </div>
       <div className={styles.bottomBar}>
         <Button
@@ -315,9 +318,11 @@ const NestedLayout = ({ children }) => {
           <Check />
           {isCompleted ? t`Completed` : `Mark as Completed`}
         </Button>
-        <Button onClick={handleOnNext} withArrow>
-          <Trans>Next</Trans>
-        </Button>
+        {!router.pathname.includes('7-final-review') && (
+          <Button onClick={handleOnNext} withArrow>
+            <Trans>Next</Trans>
+          </Button>
+        )}
       </div>
     </div>
   )
