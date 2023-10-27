@@ -57,8 +57,20 @@
 
 .channelContent {
   :global {
-    iframe {
+    iframe,
+    .ant-skeleton,
+    .ant-result {
       height: calc(100vh - 90px) !important;
+    }
+    .ant-skeleton {
+      margin: 16px;
+    }
+    .ant-result {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
   }
 }
