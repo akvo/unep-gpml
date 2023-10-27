@@ -16,6 +16,7 @@ import Maps from '../map/map'
 import { isEmpty } from 'lodash'
 import { useQuery, topicNames } from '../../utils/misc'
 import TopicView from './topic-view'
+import { Trans, t } from '@lingui/macro'
 
 const resourceTopic = [
   'action_plan',
@@ -255,7 +256,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
           <div className="quick-search">
             <div className="count">
               {view === 'grid'
-                ? `Showing ${gridItems?.length} of ${totalItems}`
+                ? t`Showing ${gridItems?.length} of ${totalItems}`
                 : view === 'category'
                 ? `${catData?.reduce(
                     (count, current) => count + current?.count,
@@ -286,7 +287,9 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
               />
             </div>
             <div className="sort-button-text">
-              <span>Sort by:</span>
+              <span>
+                <Trans>Sort by:</Trans>
+              </span>
               <b>{!isAscending ? `A>Z` : 'Z>A'}</b>
             </div>
           </button>
@@ -382,7 +385,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
                           handleCategoryFilter(d.categories)
                         }}
                       >
-                        See all {`>`}
+                        <Trans>See all</Trans> {`>`}
                       </Button>
                     </div>
                     <ResourceCards
@@ -461,7 +464,7 @@ const GridView = ({
             updateQuery('offset', [pageNumber + limit], true)
           }}
         >
-          Load More
+          <Trans>Load More</Trans>
         </Button>
       )}
     </div>
@@ -469,7 +472,7 @@ const GridView = ({
 }
 
 const ViewSwitch = ({ type, view, history, queryParams }) => {
-  const viewOptions = ['map', 'grid', 'category']
+  const viewOptions = [t`map`, t`grid`, t`category`]
   const [visible, setVisible] = useState(false)
   view = !view ? 'map' : view
 
@@ -482,7 +485,7 @@ const ViewSwitch = ({ type, view, history, queryParams }) => {
         }}
       >
         <DownOutlined />
-        {view} view
+        {view} <Trans>view</Trans>
       </div>
       <CSSTransition
         in={visible}
@@ -512,7 +515,7 @@ const ViewSwitch = ({ type, view, history, queryParams }) => {
                     )
                   }}
                 >
-                  {viewOption} view
+                  {viewOption} <Trans>view</Trans>
                 </li>
               ))}
           </ul>

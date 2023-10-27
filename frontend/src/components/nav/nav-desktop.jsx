@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Col, Row } from 'antd'
 import { UIStore } from '../../store'
 import { CloseIcon } from '../icons'
 import { motion, AnimatePresence } from 'framer-motion'
-import Link from 'next/link'
 import Item from './item'
-import axios from 'axios'
+import { useLingui } from '@lingui/react'
+import { deepTranslate } from '../../utils/misc'
 import Button from '../button'
 
 const navVariants = {
@@ -34,13 +34,18 @@ const menuItemVariants = {
 }
 
 const ToolsMenu = () => {
+  const { i18n } = useLingui()
+
   const { menuList } = UIStore.useState((s) => ({
     menuList: s.menuList,
   }))
+
+  const menu = deepTranslate(menuList)
+
   return (
     <div className="container sub-menu">
       <Row gutter={[168, 168]}>
-        {menuList
+        {menu
           .find((it) => it.key === 'Tools')
           .children.map((menu) => (
             <Col span={8} key={menu.key}>

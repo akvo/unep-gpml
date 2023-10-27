@@ -193,20 +193,6 @@
       }
     }
   }
-  &:hover,
-  &:active,
-  &:disabled {
-    background-color: $primaryGreen4;
-    border-color: $primaryGreen4;
-    svg {
-      path {
-        stroke: $primaryDarkBlue;
-      }
-      circle {
-        fill: $primaryGreen4;
-      }
-    }
-  }
   &:disabled {
     background: #f5f7ff;
     border-color: #f5f7ff;

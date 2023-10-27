@@ -25,6 +25,7 @@ import { TrimText } from '../../utils/string'
 import api from '../../utils/api'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import { Trans } from '@lingui/macro'
 import Button from '../../components/button'
 
 const EventCalendar = ({ isAuthenticated, setLoginVisible }) => {
@@ -141,11 +142,11 @@ const EventCalendar = ({ isAuthenticated, setLoginVisible }) => {
       <div className="ui container">
         <div className="section-title white">
           <h2>
-            Upcoming Events{' '}
+            <Trans>Upcoming Events</Trans>{' '}
             <span className="see-more-link">
               <Link href="/knowledge/library/map/event" legacyBehavior>
                 <a>
-                  See all <RightOutlined />
+                  <Trans>See all</Trans> <RightOutlined />
                 </a>
               </Link>
             </span>
@@ -166,7 +167,7 @@ const EventCalendar = ({ isAuthenticated, setLoginVisible }) => {
               className="event-add-button"
               withArrow
             >
-              Add An Event
+              <Trans>Add An Event</Trans>
             </Button>
           )}
         </div>
@@ -175,12 +176,14 @@ const EventCalendar = ({ isAuthenticated, setLoginVisible }) => {
             {(!data || !event) && (
               <div className="no-event">
                 <h2 className="loading text-white">
-                  <LoadingOutlined spin /> Loading...
+                  <LoadingOutlined spin /> <Trans>Loading...</Trans>
                 </h2>
               </div>
             )}
             {data && event && event.length === 0 && (
-              <div className="no-event">No event on {onThisDayText}</div>
+              <div className="no-event">
+                <Trans>No event on</Trans> {onThisDayText}
+              </div>
             )}
             {event &&
               event.length > 0 &&
@@ -212,7 +215,8 @@ const renderEventContent = (history, event, eventCarousel, onThisDayText) => {
       {event.length > 0 && (
         <div className="event-more">
           <span>
-            {event.length} event{event.length > 1 ? 's' : ''} on {onThisDayText}
+            {event.length} <Trans>event</Trans>
+            {event.length > 1 ? 's' : ''} <Trans>on</Trans> {onThisDayText}
           </span>
           {event.length > 1 && (
             <div className="button-carousel">
@@ -264,9 +268,11 @@ const renderEventContent = (history, event, eventCarousel, onThisDayText) => {
               >
                 <div className="item-meta">
                   <div className="date">{dateText}</div>
-                  <div className="status">Online</div>
-                  <div className="label-s">
-                    <span>Featured</span>
+                  <div className="status">
+                    <Trans>Online</Trans>
+                  </div>
+                  <div className="mark">
+                    <Trans>Featured</Trans>
                   </div>
                 </div>
                 <div className="resource-label upper margin">{type}</div>
@@ -284,10 +290,10 @@ const renderEventContent = (history, event, eventCarousel, onThisDayText) => {
                 </div>
                 <div className="item-footer">
                   <span className="read-more">
-                    <Link href={`/event/${id}`} legacyBehavior>
-                      <Button type="link" withArrow>
-                        Read More
-                      </Button>
+                    <Link href={`/event/${id}`}>
+                      <a>
+                        <Trans>Read more</Trans> <ArrowRightOutlined />
+                      </a>
                     </Link>
                   </span>
                   {x?.recording && (
@@ -303,7 +309,7 @@ const renderEventContent = (history, event, eventCarousel, onThisDayText) => {
                           )
                         }}
                       >
-                        Event Recording
+                        <Trans>Event Recording</Trans>
                       </a>
                     </span>
                   )}

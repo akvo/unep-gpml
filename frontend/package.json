@@ -5,6 +5,8 @@
   "dependencies": {
     "@ant-design/icons": "^4.3.0",
     "@auth0/auth0-react": "^1.2.0",
+    "@lingui/core": "^4.5.0",
+    "@lingui/react": "^4.5.0",
     "@rjsf/antd": "^2.4.1",
     "@rjsf/core": "^2.4.1",
     "@sentry/react": "^6.7.1",
@@ -54,8 +56,11 @@
   "scripts": {
     "dev": "next dev -p 3001",
     "dev-fe": "REACT_APP_FEENV=true next dev -p 3001",
+    "staging-fe": "REACT_APP_FEENV_STAGING=true next dev -p 3001",
     "build": "next build",
-    "start": "next start -p 3001"
+    "start": "next start -p 3001",
+    "translations:extract": "lingui extract --clean",
+    "compile": "lingui compile"
   },
   "eslintConfig": {
     "extends": [
@@ -79,7 +84,13 @@
     "react-error-overlay": "6.0.9"
   },
   "devDependencies": {
+    "@babel/core": "^7.23.2",
+    "@lingui/cli": "^4.5.0",
+    "@lingui/loader": "^4.5.0",
+    "@lingui/macro": "^4.5.0",
+    "@lingui/swc-plugin": "^4.0.4",
     "@svgr/webpack": "^8.0.1",
+    "babel-plugin-macros": "^3.1.0",
     "eslint-config-prettier": "8.1.0",
     "http-proxy-middleware": "^1.0.6",
     "prettier": "2.2.1",

@@ -24,6 +24,8 @@ import {
   DeleteOutlined,
 } from '@ant-design/icons'
 import api from '../../utils/api'
+import { resourceTypeToTopicType } from '../../utils/misc'
+import { Trans, t } from '@lingui/macro'
 import { resourceTypeToTopicType, getBadgeTitle } from '../../utils/misc'
 
 import isEmpty from 'lodash/isEmpty'

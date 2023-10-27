@@ -1,5 +1,9 @@
 import React from 'react'
 import { Row, Col, Typography, Tooltip, Button, Avatar } from 'antd'
+
+import datastakeholders from './json/stakeholders.json'
+import { titleCase } from '../../utils/string'
+import { Trans, t } from '@lingui/macro'
 import TransnationalImage from '../../images/transnational.svg'
 
 import datastakeholders from './json/stakeholders.json'
@@ -43,7 +47,9 @@ const CaseStudy = ({
         <div className="p-4 content-text">
           <Row gutter={[8, 8]}>
             <Col>
-              <h4 className="title">Challenge & Solution</h4>
+              <h4 className="title">
+                <Trans>Challenge & Solution</Trans>
+              </h4>
               <Paragraph>
                 <div
                   dangerouslySetInnerHTML={{ __html: challenge_and_solution }}
@@ -68,7 +74,9 @@ const CaseStudy = ({
               </div>
             </Col>
             <Col>
-              <h4 className="title">Tags</h4>
+              <h4 className="title">
+                <Trans>Tags</Trans>
+              </h4>
               <ul className="tags">
                 {Object?.values(tagItems)
                   ?.filter((tag, tx) => tx <= 7)
@@ -83,7 +91,9 @@ const CaseStudy = ({
               </ul>
             </Col>
             <Col>
-              <h4 className="title">Connections</h4>
+              <h4 className="title">
+                <Trans>Connections</Trans>
+              </h4>
               <div className="avatars">
                 {stakeholders.length > 4 && (
                   <div className="avatar green-border">
@@ -129,7 +139,7 @@ const CaseStudy = ({
                 rel="noopener noreferrer"
                 size="small"
               >
-                Learn More
+                <Trans>Learn More</Trans>
               </Button>
             </Col>
           </Row>

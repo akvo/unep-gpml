@@ -1,5 +1,6 @@
-import React from "react";
-import ExpertsPage from "../../modules/experts/view";
+import React from 'react'
+import ExpertsPage from '../../modules/experts/view'
+import { loadCatalog } from '../../translations/utils'
 
 function Experts({ setLoginVisible, isAuthenticated }) {
   return (
@@ -7,7 +8,15 @@ function Experts({ setLoginVisible, isAuthenticated }) {
       setLoginVisible={setLoginVisible}
       isAuthenticated={isAuthenticated}
     />
-  );
+  )
 }
 
-export default Experts;
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
+}
+
+export default Experts

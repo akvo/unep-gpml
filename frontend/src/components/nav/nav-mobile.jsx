@@ -4,6 +4,7 @@ import { MenuItem } from './menu-item'
 import { MenuToggle } from './menu-toggle'
 import { CirclePointer, LinkedinIcon, YoutubeIcon } from '../icons'
 import { UIStore } from '../../store'
+import { deepTranslate } from '../../utils/misc'
 import Button from '../button'
 
 const SOCIAL_LINKS = [
@@ -94,6 +95,8 @@ const sidebar = {
 const NavMobile = ({ isOpen, toggleOpen }) => {
   const [selectedMenuItem, setSelectedMenuItem] = useState(null)
   const { menuList } = UIStore.useState((s) => ({ menuList: s.menuList }))
+
+  const menu = deepTranslate(menuList)
 
   const handleMenuItemClick = (item) => setSelectedMenuItem(item)
 
@@ -193,7 +196,7 @@ const NavMobile = ({ isOpen, toggleOpen }) => {
         animate="open"
         exit="closed"
       >
-        {menuList.map((i) => (
+        {menu.map((i) => (
           <MenuItem key={i.key} i={i.key} onClick={handleMenuItemClick} />
         ))}
       </motion.ul>
@@ -202,7 +205,7 @@ const NavMobile = ({ isOpen, toggleOpen }) => {
 
   function SubMenuItems() {
     const items =
-      menuList.find((item) => selectedMenuItem === item.key)?.children || []
+      menu.find((item) => selectedMenuItem === item.key)?.children || []
     return (
       <motion.ul
         key="menuList"
