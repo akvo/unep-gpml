@@ -179,6 +179,7 @@ organisations_cte AS (
       )
     ) FILTER (WHERE st.id IS NOT NULL) AS focal_points,
 --~ (#'gpml.db.organisation/list-organisations-ps-bookmark-partial-select params)
+--~ (#'gpml.db.organisation/list-organisations-badges-partial-select params)
     count(DISTINCT os_cte.initiative) as strengths
   FROM organisation o
   LEFT JOIN stakeholder_organisation sto ON (sto.organisation = o.id AND sto.association = 'focal-point')

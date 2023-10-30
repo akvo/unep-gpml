@@ -3,6 +3,7 @@ import { schema } from './form-schema'
 import cloneDeep from 'lodash/cloneDeep'
 import { Form, Input } from 'antd'
 import dynamic from 'next/dynamic'
+import { Trans, t } from '@lingui/macro'
 const RichTextEditor = dynamic(() => import('react-rte'), { ssr: false })
 
 const initialData = {
@@ -324,13 +325,13 @@ const getSchema = ({
 const tabs = [
   {
     key: 'S1',
-    title: 'Getting Started',
+    title: t`Getting Started`,
     desc: '',
     steps: [],
   },
   {
     key: 'S3',
-    title: 'Content type',
+    title: t`Content type`,
     desc: '',
     steps: [
       {
@@ -343,25 +344,25 @@ const tabs = [
   },
   {
     key: 'S4',
-    title: 'Basic info',
+    title: t`Basic info`,
     desc: '',
     steps: [
       {
         group: 'S4_G1',
         key: 'S4-p1-title-desc',
-        title: 'Title, Description & Link',
+        title: t`Title, Description & Link`,
         desc: '',
       },
       {
         group: 'S4_G2',
         key: 'S4-p2-location',
-        title: 'Location and Geo-coverage',
+        title: t`Location and Geo-coverage`,
         desc: '',
       },
       {
         group: 'S4_G3',
         key: 'S4-p3-tags',
-        title: 'Tags',
+        title: t`Tags`,
         desc: '',
       },
       {
@@ -373,26 +374,26 @@ const tabs = [
       {
         group: 'S4_G5',
         key: 'S4-p5-stakeholder',
-        title: 'Stakeholders connections',
+        title: t`Stakeholders connections`,
         desc: '',
       },
       {
         group: 'S4_G6',
         key: 'S4-p6-related-content',
-        title: 'Related Content, Documents & Info',
+        title: t`Related Content, Documents & Info`,
         desc: '',
       },
     ],
   },
   {
     key: 'S5',
-    title: 'Detail info',
+    title: t`Detail info`,
     desc: '',
     steps: [],
   },
   {
     key: 'S6',
-    title: 'Translation',
+    title: t`Translation`,
     desc: '',
     steps: [],
   },

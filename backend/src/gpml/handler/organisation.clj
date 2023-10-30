@@ -308,7 +308,8 @@
 
 (defn- list-api-params->opts
   [{:keys [geo_coverage_types is_member types tags limit ps_bookmarked
-           page order_by descending ps_country_iso_code_a2 ps_bookmark_sections_keys]
+           page order_by descending ps_country_iso_code_a2 ps_bookmark_sections_keys
+           badges]
     :or {limit default-list-api-limit
          page default-list-api-page}
     :as api-params}]
@@ -348,7 +349,10 @@
     (assoc-in [:filters :ps-bookmark-sections-keys] ps_bookmark_sections_keys)
 
     (not (nil? ps_bookmarked))
-    (assoc-in [:filters :ps-bookmarked] ps_bookmarked)))
+    (assoc-in [:filters :ps-bookmarked] ps_bookmarked)
+
+    (not (nil? badges))
+    (assoc :badges badges)))
 
 (defmethod ig/init-key :gpml.handler.organisation/list
   [_ {:keys [db logger] :as config}]
@@ -471,4 +475,9 @@
                                             Besides, bookmarking is related to `ps_country_iso_code_a2` param."
                               :type "boolean"
                               :allowEmptyValue false}}
+    [:boolean]]
+   [:badges {:optional true
+             :swagger {:description "Boolean flag to load badges-related metadata"
+                       :type "boolean"
+                       :allowEmptyValue false}}
     [:boolean]]])

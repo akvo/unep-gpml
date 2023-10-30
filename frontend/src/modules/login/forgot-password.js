@@ -5,6 +5,7 @@ import { Form as FinalForm, Field } from 'react-final-form'
 import { auth0Client } from '../../utils/misc'
 import Button from '../../components/button'
 import FormLabel from '../../components/form-label'
+import { Trans } from '@lingui/macro'
 
 function ForgotPassword({ setSignIn, setForgotPassword, children }) {
   const [form] = Form.useForm()
@@ -65,14 +66,14 @@ function ForgotPassword({ setSignIn, setForgotPassword, children }) {
                       return (
                         <FormLabel
                           htmlFor="email"
-                          label="Email"
+                          label={<Trans>Email</Trans>}
                           meta={meta}
                           validateStatus={validateStatus}
                         >
                           <Input
                             {...input}
                             size="small"
-                            placeholder="Enter your email"
+                            placeholder={<Trans>Enter your email</Trans>}
                           />
                           {meta.touched && meta.error && (
                             <p color="error" className={styles.error}>
@@ -88,7 +89,7 @@ function ForgotPassword({ setSignIn, setForgotPassword, children }) {
                     onClick={() => handleSubmit()}
                     style={{ marginTop: 20 }}
                   >
-                    SEND ME A LINK
+                    <Trans>SEND ME A LINK</Trans>
                   </Button>{' '}
                 </Form>
               )

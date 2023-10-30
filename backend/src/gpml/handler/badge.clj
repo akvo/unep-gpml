@@ -6,30 +6,16 @@
             [gpml.domain.types :as dom.types]
             [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.responses :as r]
-            [gpml.service.file :as srv.file]
-            [gpml.util :as util]
             [integrant.core :as ig])
   (:import [java.sql SQLException]))
 
 (defn- get-badge-by-id-or-name
-  [{:keys [db] :as config} badge-id-or-name]
-  (let [{:keys [success? badge] :as result} (db.badge/get-badge-by-id-or-name
-                                             (:spec db)
-                                             (if (integer? badge-id-or-name)
-                                               {:id badge-id-or-name}
-                                               {:name badge-id-or-name}))
-        badge-content-file-id (:content-file-id badge)]
-    (if-not success?
-      result
-      (let [{:keys [success? file] :as result-content-file} (srv.file/get-file
-                                                             config
-                                                             (:spec db)
-                                                             {:filters {:id badge-content-file-id}})]
-        (if-not success?
-          result-content-file
-          (-> result
-              (util/update-if-not-nil :badge #(dissoc % :content-file-id))
-              (assoc-in [:badge :content-file-url] (:url file))))))))
+  [{:keys [db]} badge-id-or-name]
+  (db.badge/get-badge-by-id-or-name
+   (:spec db)
+   (if (integer? badge-id-or-name)
+     {:id badge-id-or-name}
+     {:name badge-id-or-name})))
 
 (defn- handle-badge-assignment
   [{:keys [db]} {:keys [assign entity-type entity-id badge-id assigned-by]}]
@@ -61,13 +47,15 @@
                          :reason :could-not-get-badge
                          :error-details {:message (.getMessage t)}})))))
 
-(def ^:private common-badge-assignment-path-params-schema
+(def ^:private common-badge-path-params-schema
   [:map
    [:id-or-name
     {:swagger
-     {:description "The Badge's identifier (only `id` is supported)."
-      :type "integer"}}
-    pos-int?]])
+     {:description "The Badge's name or its id."
+      :allowEmptyValue false}}
+    [:or
+     [:int {:min 1}]
+     [:string {:min 1}]]]])
 
 (def ^:private handle-badge-assignment-body-params-schema
   [:map
@@ -87,35 +75,50 @@
 
 (defmethod ig/init-key :gpml.handler.badge/get-params
   [_ _]
-  {:path [:map
-          [:id-or-name
-           {:swagger
-            {:description "The Badge's name or its id."
-             :allowEmptyValue false}}
-           [:or
-            pos-int?
-            [:string {:min 1}]]]]})
+  {:path common-badge-path-params-schema})
 
 (defmethod ig/init-key :gpml.handler.badge.assign/post
   [_ {:keys [logger] :as config}]
   (fn [{:keys [parameters user]}]
     (try
-      (let [badge-id (get-in parameters [:path :id-or-name])]
-        (if-not (h.r.permission/operation-allowed? config
-                                                   {:user-id (:id user)
-                                                    :entity-type :badge
-                                                    :entity-id badge-id
-                                                    :operation-type :assign
-                                                    :root-context? false})
-          (r/forbidden {:message "Unauthorized"})
-          (let [body-params (-> (cske/transform-keys ->kebab-case (:body parameters))
-                                (assoc :badge-id badge-id)
-                                (assoc :assigned-by (:id user)))
-                result (handle-badge-assignment config body-params)]
-            (if (:success? result)
-              (r/ok {})
-              (if (= (:reason result) :already-exists)
+      (let [badge-id-or-name (get-in parameters [:path :id-or-name])
+            {:keys [badge success? reason] :as result} (get-badge-by-id-or-name config badge-id-or-name)]
+        (if-not success?
+          (if (= reason :not-found)
+            (r/not-found {:reason :badge-not-found})
+            (r/server-error (dissoc result :success?)))
+          (if-not (or (h.r.permission/operation-allowed? config
+                                                         {:user-id (:id user)
+                                                          :entity-type :badge
+                                                          :entity-id (if (seq badge)
+                                                                       (:id badge)
+                                                                       badge-id-or-name)
+                                                          :operation-type :assign
+                                                          :root-context? false})
+                      ;; FIXME: This is a bypass as per internal
+                      ;; decision. This should be removed in the
+                      ;; future and dealt with enterily with RBAC
+                      ;; system.
+                      (= (:name badge) "country-validated"))
+            (r/forbidden {:message "Unauthorized"})
+            (let [badge-id (if (seq badge)
+                             (:id badge)
+                             badge-id-or-name)
+                  body-params (-> (cske/transform-keys ->kebab-case (:body parameters))
+                                  (assoc :badge-id badge-id)
+                                  (assoc :assigned-by (:id user)))
+                  {:keys [success? reason]} (handle-badge-assignment config body-params)]
+              (cond
+                success?
+                (r/ok {})
+
+                (= reason :already-exists)
                 (r/conflict {:reason :already-exists})
+
+                (get #{:badge-not-found :entity-not-found} reason)
+                (r/not-found {:reason reason})
+
+                :else
                 (r/server-error (dissoc result :success?)))))))
       (catch Throwable t
         (log logger :error ::failed-to-assign-or-unassign-badge {:exception-message (.getMessage t)})
@@ -128,5 +131,5 @@
 
 (defmethod ig/init-key :gpml.handler.badge.assign/post-params
   [_ _]
-  {:path common-badge-assignment-path-params-schema
+  {:path common-badge-path-params-schema
    :body handle-badge-assignment-body-params-schema})

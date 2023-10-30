@@ -5,6 +5,7 @@ import { topicNames, tTypes } from '../../utils/misc'
 import { KNOWLEDGE_LIBRARY, STAKEHOLDER_OVERVIEW } from './map'
 import { multicountryGroups } from '../knowledge-library/multicountry'
 import PieChart from '../chart/pie-chart'
+import { Trans } from '@lingui/macro'
 
 const { Text } = Typography
 
@@ -367,11 +368,15 @@ const VerticalLegend = ({
     return existingData.length === 0 ? (
       <div>
         <div>
-          <b className="legend-stakeholder-title">Type</b>
+          <b className="legend-stakeholder-title">
+            <Trans>Type</Trans>
+          </b>
 
           <div className="legend-stakeholder-wrapper">
             <div className="legend-stakeholder-type">
-              <div className="type">Entity</div>
+              <div className="type">
+                <Trans>Entity</Trans>
+              </div>
               <div className="entities">
                 <div className="entity-breakdown">
                   <b>
@@ -382,7 +387,9 @@ const VerticalLegend = ({
             </div>
 
             <div className="legend-stakeholder-type individual">
-              <div className="type">Individual</div>
+              <div className="type">
+                <Trans>Individual</Trans>
+              </div>
               <b>{stakeholderTotalCounts.individual}</b>
             </div>
           </div>
@@ -391,11 +398,15 @@ const VerticalLegend = ({
     ) : (
       <div>
         <div>
-          <b className="legend-stakeholder-title">Type</b>
+          <b className="legend-stakeholder-title">
+            <Trans>Type</Trans>
+          </b>
           <div className="legend-stakeholder-wrapper">
             {existingData.includes('organisation') && (
               <div className="legend-stakeholder-type">
-                <div className="type">Entity</div>
+                <div className="type">
+                  <Trans>Entity</Trans>
+                </div>
                 <div className="entities">
                   <div className="entity-breakdown">
                     <b>{stakeholderTotalCounts.entity}</b>
@@ -406,7 +417,9 @@ const VerticalLegend = ({
 
             {existingData.includes('stakeholder') && (
               <div className="legend-stakeholder-type individual">
-                <div className="type">Individual</div>
+                <div className="type">
+                  <Trans>Individual</Trans>
+                </div>
                 <b>{stakeholderTotalCounts.individual}</b>
               </div>
             )}
@@ -435,11 +448,15 @@ const VerticalLegend = ({
             </strong>
             <div>
               <div>
-                <b className="legend-stakeholder-title">Type</b>
+                <b className="legend-stakeholder-title">
+                  <Trans>Type</Trans>
+                </b>
 
                 <div className="legend-stakeholder-wrapper">
                   <div className="legend-stakeholder-type">
-                    <div className="type">Entity</div>
+                    <div className="type">
+                      <Trans>Entity</Trans>
+                    </div>
                     <div className="entities">
                       <b className="entity-breakdown">
                         {(data?.counts?.organisation || 0) +
@@ -449,7 +466,9 @@ const VerticalLegend = ({
                   </div>
 
                   <div className="legend-stakeholder-type individual">
-                    <div className="type">Individual</div>
+                    <div className="type">
+                      <Trans>Individual</Trans>
+                    </div>
                     <b>{data?.counts?.individual || 0}</b>
                   </div>
                 </div>
@@ -463,12 +482,16 @@ const VerticalLegend = ({
             </strong>
             <div>
               <div>
-                <b className="legend-stakeholder-title">Type</b>
+                <b className="legend-stakeholder-title">
+                  <Trans>Type</Trans>
+                </b>
 
                 <div className="legend-stakeholder-wrapper">
                   {existingData.includes('organisation') && (
                     <div className="legend-stakeholder-type">
-                      <div className="type">Entity</div>
+                      <div className="type">
+                        <Trans>Entity</Trans>
+                      </div>
                       <div className="entities">
                         <b className="entity-breakdown">
                           {(data?.counts?.organisation || 0) +
@@ -479,7 +502,9 @@ const VerticalLegend = ({
                   )}
                   {existingData.includes('stakeholder') && (
                     <div className="legend-stakeholder-type individual">
-                      <div className="type">Individual</div>
+                      <div className="type">
+                        <Trans>Individual</Trans>
+                      </div>
                       <b>{data?.counts?.individual || 0}</b>
                     </div>
                   )}
@@ -497,7 +522,7 @@ const VerticalLegend = ({
         <hr className="legend-separator" />
         <div className="total-resources-wrapper">
           <strong className="legend-heading">
-            Total stakeholders per transnational
+            <Trans>Total stakeholders per transnational</Trans>
           </strong>
           {entityPerTransnationalGroupContent()}
         </div>
@@ -631,9 +656,14 @@ const VerticalLegend = ({
         {path === KNOWLEDGE_LIBRARY && (
           <>
             <div className="total-resources-wrapper">
-              <strong className="legend-heading">Total resources</strong>
+              <strong className="legend-heading">
+                <Trans>Total resources</Trans>
+              </strong>
               <div className="total-resources total-count">
-                <strong>Total</strong> <b>{totalResources}</b>
+                <strong>
+                  <Trans>Total</Trans>
+                </strong>{' '}
+                <b>{totalResources}</b>
               </div>
               {totalResourcesContent()}
             </div>
@@ -642,7 +672,7 @@ const VerticalLegend = ({
 
             <div className="total-resources-wrapper">
               <strong className="legend-heading">
-                Total resources per transnational
+                <Trans>Total resources per transnational</Trans>
               </strong>
               {transnationalResourcesContent()}
             </div>
@@ -651,7 +681,9 @@ const VerticalLegend = ({
         {path === STAKEHOLDER_OVERVIEW && (
           <>
             <div className="total-resources-wrapper">
-              <strong className="legend-heading">Total stakeholders</strong>
+              <strong className="legend-heading">
+                <Trans>Total stakeholders</Trans>
+              </strong>
               <div className="total-resources total-count">
                 <strong>Total</strong>{' '}
                 <b>
@@ -664,7 +696,9 @@ const VerticalLegend = ({
             {existingData.includes('organisation') && (
               <>
                 <strong className="legend-heading pie-chart-header">
-                  Entities from UN Regional Groups of member States
+                  <Trans>
+                    Entities from UN Regional Groups of member States
+                  </Trans>
                 </strong>
                 <PieChart data={transnationalStakeholders} />
               </>
@@ -678,7 +712,11 @@ const VerticalLegend = ({
       </Card>
     )
   }
-  return <div className="no-legend-warning">No legend</div>
+  return (
+    <div className="no-legend-warning">
+      <Trans>No legend</Trans>
+    </div>
+  )
 }
 
 export default VerticalLegend

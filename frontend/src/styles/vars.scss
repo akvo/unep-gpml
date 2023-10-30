@@ -6,6 +6,7 @@ $primaryGreen5: #33f4cc;
 $primaryGreen: #00f1bf;
 $primaryGreen7: #00c199;
 $primaryPurple: #7468ff;
+$primaryPurple1: #e3e1ff6b;
 $primaryPurple2: #e3e1ff;
 $primaryPurple3: #c7c3ff;
 $primaryPurple4: #aca4ff;
@@ -14,6 +15,7 @@ $primaryBlue: #86c5ff;
 $primaryBlue2: #cfe8ff;
 $primaryBlue5: #9ed1ff;
 $primaryViolet: #ac85ff;
+$primaryViolet7: #8a6acc;
 $primaryGrey: #f5f7ff;
 $primaryWhite: #ffffff;
 $primaryDarkBlue: #020a5b;
@@ -23,11 +25,16 @@ $primaryDarkBlue3: #99a0b7;
 $primaryDarkBlue4: #677194;
 $primaryDarkBlue5: #344170;
 $primaryNeutral4: #777e90;
+$systemError: #b70707;
 $systemWarning5: #f5970a;
 $systemError4: #cc0808;
 $systemError3: #e00909;
 $systemInfo3: #1d90f5;
 $systemSuccess4: #06d1a7;
+$systemWarning4: #f5a609;
+
+$ff1: var(--font-archia), sans-serif;
+$ff2: var(--font-dm-sans), sans-serif;
 
 // Headings
 $fzXXXL: 64px;

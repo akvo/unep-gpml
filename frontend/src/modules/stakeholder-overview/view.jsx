@@ -26,6 +26,7 @@ import { multicountryGroups } from '../knowledge-library/multicountry'
 import GlobeOutlined from '../../images/knowledge-library/globe-outline.svg'
 import DownArrow from '../../images/knowledge-library/chevron-down.svg'
 import { useRouter } from 'next/router'
+import { Trans, t } from '@lingui/macro'
 
 let tmid
 
@@ -453,13 +454,13 @@ const StakeholderOverview = ({
                   {/* Suggested profiles */}
                   {isValidUser && !isEmpty(suggestedProfiles) && (
                     <Col className="card-container green">
-                      <h3 className="title text-white ui">
-                        Suggested profiles
+                      <h3 id="title" className="title text-white">
+                        <Trans>Suggested profiles</Trans>
                       </h3>
 
                       {isEmpty(suggestedProfiles) ? (
                         <h2 className="loading" id="stakeholder-loading">
-                          <LoadingOutlined spin /> Loading
+                          <LoadingOutlined spin /> <Trans>Loading</Trans>
                         </h2>
                       ) : !isEmpty(suggestedProfiles) ? (
                         <div className="card-wrapper ui">
@@ -476,7 +477,9 @@ const StakeholderOverview = ({
                               ))}
                         </div>
                       ) : (
-                        <h2 className="loading">There is no data to display</h2>
+                        <h2 className="loading">
+                          <Trans>There is no data to display</Trans>
+                        </h2>
                       )}
                     </Col>
                   )}
@@ -484,7 +487,7 @@ const StakeholderOverview = ({
                   <Col className="all-profiles">
                     {!isLoaded() || loading ? (
                       <h2 className="loading" id="stakeholder-loading">
-                        <LoadingOutlined spin /> Loading
+                        <LoadingOutlined spin /> <Trans>Loading</Trans>
                       </h2>
                     ) : isLoaded() && !loading && !isEmpty(results) ? (
                       <>
@@ -510,7 +513,9 @@ const StakeholderOverview = ({
                         </div>
                       </>
                     ) : (
-                      <h2 className="loading">There is no data to display</h2>
+                      <h2 className="loading">
+                        <Trans>There is no data to display</Trans>
+                      </h2>
                     )}
                     {/* Pagination */}
                     <div className="page">

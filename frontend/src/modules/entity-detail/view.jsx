@@ -12,8 +12,8 @@ import {
   Modal,
   notification,
   Typography,
+  Tooltip,
 } from 'antd'
-import StickyBox from 'react-sticky-box'
 
 import TrashIcon from '../../images/resource-detail/trash-icn.svg'
 import EditIcon from '../../images/resource-detail/edit-icn.svg'
@@ -24,7 +24,8 @@ import {
   DeleteOutlined,
 } from '@ant-design/icons'
 import api from '../../utils/api'
-import { resourceTypeToTopicType } from '../../utils/misc'
+import { Trans, t } from '@lingui/macro'
+import { resourceTypeToTopicType, getBadgeTitle } from '../../utils/misc'
 
 import isEmpty from 'lodash/isEmpty'
 import { redirectError } from '../error/error-util'
@@ -98,16 +99,22 @@ const SharePanel = ({
         {relation &&
         relation.association &&
         relation.association.indexOf('interested in') !== -1 ? (
-          <h2>Unfollow</h2>
+          <h2>
+            <Trans>Unfollow</Trans>
+          </h2>
         ) : (
-          <h2>Follow</h2>
+          <h2>
+            <Trans>Follow</Trans>
+          </h2>
         )}
       </div>
 
       {canEdit() && (
         <div className="sticky-panel-item" onClick={() => handleEditBtn()}>
           <EditIcon className="edit-icon" />
-          <h2>Update</h2>
+          <h2>
+            <Trans>Update</Trans>
+          </h2>
         </div>
       )}
       {canDelete() && (
@@ -119,9 +126,9 @@ const SharePanel = ({
               centered: true,
               closable: true,
               icon: <DeleteOutlined />,
-              title: 'Are you sure you want to delete this entity?',
-              content: 'Please be aware this action cannot be undone.',
-              okText: 'Delete',
+              title: t`Are you sure you want to delete this entity?`,
+              content: t`Please be aware this action cannot be undone.`,
+              okText: t`Delete`,
               okType: 'danger',
               onOk() {
                 eventTrack('Entity view', 'Delete', 'Button')
@@ -146,7 +153,9 @@ const SharePanel = ({
           }}
         >
           <TrashIcon className="svg-icon" />
-          <h2>Delete</h2>
+          <h2>
+            <Trans>Delete</Trans>
+          </h2>
         </div>
       )}
     </div>
@@ -336,7 +345,9 @@ const StakeholderDetail = ({
       <div className="details-view">
         <div className="loading">
           <LoadingOutlined spin />
-          <i>Loading...</i>
+          <i>
+            <Trans>Loading...</Trans>
+          </i>
         </div>
       </div>
     )
@@ -344,66 +355,76 @@ const StakeholderDetail = ({
 
   return (
     <div className={styles.entityDetail}>
-      <StickyBox style={{ zIndex: 10 }}>
-        <div className="topbar-container">
-          <div className="ui container">
-            <Row>
-              <Col xs={24} lg={24}>
-                <div className="topbar-wrapper">
-                  <div className="topbar-image-holder">
-                    <Avatar
-                      size={{
-                        xs: 60,
-                        sm: 60,
-                        md: 60,
-                        lg: 100,
-                        xl: 150,
-                        xxl: 150,
-                      }}
-                      src={
-                        data?.logo ? (
-                          data?.logo
-                        ) : (
-                          <Avatar
-                            style={{
-                              backgroundColor: randomColor(
-                                data?.name?.substring(0, 1)
-                              ),
-                              fontSize: '62px',
-                              fontWeight: 'bold',
-                              verticalAlign: 'middle',
-                              border: '4px solid #fff',
-                            }}
-                            size={{
-                              xs: 55,
-                              sm: 55,
-                              md: 55,
-                              lg: 95,
-                              xl: 145,
-                              xxl: 145,
-                            }}
-                          >
-                            {data?.name?.substring(0, 1)}
-                          </Avatar>
-                        )
-                      }
-                    />
-                  </div>
-                  <div className="topbar-title-holder">
-                    <h1>{data?.name}</h1>
-                    {/* <p>
-                      <span>
-                        <img src={StakeholderRating} />
-                      </span>
-                      Expert: Marine Litter
-                    </p> */}
-                  </div>
+      <div className="topbar-container">
+        <div className="ui container">
+          <Row>
+            <Col xs={24} lg={24}>
+              <div className="topbar-wrapper">
+                <div className="topbar-image-holder">
+                  <Avatar
+                    size={{
+                      xs: 60,
+                      sm: 60,
+                      md: 60,
+                      lg: 100,
+                      xl: 150,
+                      xxl: 150,
+                    }}
+                    src={
+                      data?.logo ? (
+                        data?.logo
+                      ) : (
+                        <Avatar
+                          style={{
+                            backgroundColor: randomColor(
+                              data?.name?.substring(0, 1)
+                            ),
+                            fontSize: '62px',
+                            fontWeight: 'bold',
+                            verticalAlign: 'middle',
+                            border: '4px solid #fff',
+                          }}
+                          size={{
+                            xs: 55,
+                            sm: 55,
+                            md: 55,
+                            lg: 95,
+                            xl: 145,
+                            xxl: 145,
+                          }}
+                        >
+                          {data?.name?.substring(0, 1)}
+                        </Avatar>
+                      )
+                    }
+                  />
                 </div>
-              </Col>
-            </Row>
-          </div>
+                <div className="topbar-title-holder">
+                  <h1>{data?.name}</h1>
+                  {data?.assignedBadges?.length > 0 && (
+                    <div className="badges-wrapper">
+                      {data.assignedBadges.map((b) => {
+                        const badgeDetails = getBadgeTitle(b.badgeName)
+                        return (
+                          <Tooltip
+                            placement="top"
+                            title={badgeDetails.title}
+                            color="#020A5B"
+                          >
+                            <div key={b.badgeName}>
+                              <img src={badgeDetails.image} />
+                            </div>
+                          </Tooltip>
+                        )
+                      })}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </Col>
+          </Row>
         </div>
-      </StickyBox>
+      </div>
       <div className="info-container">
         <div className="ui container">
           <Row gutter={[16, 16]}>
@@ -479,7 +500,7 @@ const StakeholderDetail = ({
                     {data?.tags && Array.isArray(data?.tags) && (
                       <div className="exta-info">
                         <div className="exta-info-head-title">
-                          Area of expertise
+                          <Trans>Area of expertise</Trans>
                         </div>
                         <List>
                           {data?.tags
@@ -513,10 +534,10 @@ const StakeholderDetail = ({
                 title={
                   <div className="related-content-title-wrapper">
                     <div className="related-content-title">
-                      Content on the platform
+                      <Trans>Content on the platform</Trans>
                     </div>
                     <div className="related-content-count">
-                      Total {ownedResourcesCount}
+                      <Trans>Total</Trans> {ownedResourcesCount}
                     </div>
                   </div>
                 }

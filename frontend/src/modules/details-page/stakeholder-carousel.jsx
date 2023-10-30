@@ -11,6 +11,7 @@ import { randomColor } from '../../utils/misc'
 import LocationIcon from '../../images/location.svg'
 import CircledUserIcon from '../../images/stakeholder-overview/union-outlined.svg'
 import { useDeviceSize } from '../landing/landing'
+import { Trans } from '@lingui/macro'
 
 const colour = () => randomColor[Math.floor(Math.random() * randomColor.length)]
 
@@ -88,9 +89,13 @@ const StakeholderCarousel = ({ stakeholders }) => {
                           </li>
                         )}
                         {stakeholder?.type === 'entity' ? (
-                          <li className="list-item  connection-role">ENTITY</li>
+                          <li className="list-item  connection-role">
+                            <Trans>ENTITY</Trans>
+                          </li>
                         ) : stakeholder?.role === 'owner' ? (
-                          <li className="list-item  connection-role">OWNER</li>
+                          <li className="list-item  connection-role">
+                            <Trans>OWNER</Trans>
+                          </li>
                         ) : null}
                       </ul>
                     </Card>
