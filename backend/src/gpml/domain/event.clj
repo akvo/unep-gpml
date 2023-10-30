@@ -45,4 +45,6 @@
     [:title {:optional false} [string? {:min 1}]]
     [:url {:optional true} [string? {:min 1}]]
     [:source {:default dom.types/default-resource-source}
-     (apply conj [:enum] dom.types/resource-source-types)]]))
+     (apply conj [:enum] dom.types/resource-source-types)]
+    [:image_id [:uuid]]
+    [:thumbnail_id [:uuid]]]))

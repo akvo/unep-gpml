@@ -60,9 +60,10 @@
         (if (<= 200 status 299)
           (let [total-entities (get-count-from-body entity body)
                 new-skip-token (+ skip-token records-per-page)
-                more-pages? (> total-entities (if (zero? skip-token) new-skip-token skip-token))]
+                more-pages? (> total-entities (if (zero? skip-token) new-skip-token skip-token))
+                entities (map (partial brs.f-parser/brs-entity->gpml-entity config entity) (get-result-from-body entity body))]
             {:success? true
-             :entities (map (partial brs.f-parser/brs-entity->gpml-entity config entity) (get-result-from-body entity body))
+             :entities entities
              :skip-token new-skip-token
              :more-pages? more-pages?})
           {:success? false
