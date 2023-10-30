@@ -264,9 +264,7 @@ function Login({ visible, close }) {
                                         <Input
                                           size="small"
                                           {...input}
-                                          placeholder={
-                                            <Trans>Enter your email</Trans>
-                                          }
+                                          placeholder={t`Enter your email`}
                                         />
                                         {meta.touched && meta.error && (
                                           <p color="error" className="error">
@@ -299,9 +297,7 @@ function Login({ visible, close }) {
                                         <Input.Password
                                           size="small"
                                           {...input}
-                                          placeholder={
-                                            <Trans>Enter your password</Trans>
-                                          }
+                                          placeholder={t`Enter your password`}
                                         />
                                         {meta.touched && meta.error && (
                                           <p color="error" className="error">

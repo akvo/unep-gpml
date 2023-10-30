@@ -48,7 +48,7 @@ function FormOne({ validate, error, setEntity }) {
                   <Input
                     size="small"
                     onChange={(e) => input.onChange(e.target.value)}
-                    placeholder={<Trans>Enter job title</Trans>}
+                    placeholder={t`Enter job title`}
                     className={`${
                       error && !meta.valid ? 'ant-input-status-error' : ''
                     }`}
@@ -68,7 +68,7 @@ function FormOne({ validate, error, setEntity }) {
               <FormLabel for="orgName" validateStatus={validateStatus}>
                 <Select
                   size="small"
-                  placeholder={<Trans>Enter the name of your entity</Trans>}
+                  placeholder={t`Enter the name of your entity`}
                   allowClear
                   showSearch
                   name="orgName"

@@ -262,7 +262,7 @@ const OwnerSelect = ({
         style={{ width: '100%' }}
         showSearch={true}
         mode="multiple"
-        placeholder={<Trans>Assign owner</Trans>}
+        placeholder={t`Assign owner`}
         onChange={(data) => {
           onChangeOwner(item, data, listOpts, setListOpts)
         }}
@@ -309,7 +309,7 @@ const FocalPoint = ({
         allowClear
         showSearch={true}
         mode="multiple"
-        placeholder={<Trans>Assign focal point</Trans>}
+        placeholder={t`Assign focal point`}
         onChange={(data) => {
           onChangeFocalPoint(item, data, listOpts, setListOpts)
         }}
@@ -706,7 +706,7 @@ const AdminSection = ({
           mode="multiple"
           showSearch={true}
           className="select-reviewer"
-          placeholder={<Trans>Assign reviewers</Trans>}
+          placeholder={t`Assign reviewers`}
           onChange={(data) => assignReviewer(item, data, listOpts, setListOpts)}
           value={item?.reviewers.map((x) => x.id)}
           loading={item?.id === loading}
@@ -1415,7 +1415,7 @@ const AdminSection = ({
                 },
               ]}
             >
-              <Input placeholder="Please input your tag!" />
+              <Input placeholder={t`Please input your tag!`} />
             </Form.Item>
             <Form.Item>
               <Button ghost size="small">

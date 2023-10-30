@@ -553,11 +553,11 @@ const ActNow = () => {
       bgColor: 'violet',
       content: t`Join others in coordinating efforts towards shared plastic solutions. From data to capacity development communities`,
       title: t`Communities of practise`,
-      links: [{ label: t`Join & collaborate`, url: '/forum' }],
+      links: [{ label: t`Join and collaborate`, url: '/forum' }],
     },
     {
       bgColor: 'blue',
-      content: t` Data visualisations to track countries progress. Quickly connect with others working in the country to end plastic.`,
+      content: t`Data visualisations to track countries progress. Quickly connect with others working in the country to end plastic.`,
       label: t`Coming soon`,
       title: t`Country Progress`,
       links: [
