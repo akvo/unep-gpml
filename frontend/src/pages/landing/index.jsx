@@ -517,7 +517,7 @@ const ActNow = () => {
       ),
       links: [
         {
-          label: t`Track progress`,
+          label: t`Discover`,
           url: '/knowledge/library?subContentType=Case+studies',
         },
       ],
