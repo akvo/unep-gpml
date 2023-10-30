@@ -46,8 +46,8 @@ const ToolsMenu = () => {
     <div className="container sub-menu">
       <Row gutter={[168, 168]}>
         {menu
-          .find((it) => it.key === 'Tools')
-          .children.map((menu) => (
+          .find((it) => it.id === 'Tools')
+          .children?.map((menu) => (
             <Col span={8} key={menu.key}>
               <motion.p
                 className="p-m"
@@ -60,7 +60,7 @@ const ToolsMenu = () => {
                 {menu.key}
               </motion.p>
               <ul>
-                {menu?.children.map((child, i) => (
+                {menu?.children?.map((child, i) => (
                   <motion.li
                     key={child.title}
                     custom={i + 1}
@@ -85,12 +85,15 @@ const PlasticMenu = () => {
   const { menuList } = UIStore.useState((s) => ({
     menuList: s.menuList,
   }))
+
+  const menu = deepTranslate(menuList)
+
   return (
     <div className="container sub-menu">
       <Row gutter={[168, 168]}>
-        {menuList
-          .find((it) => it.key === 'Plastic')
-          .children.map((menu, index) => (
+        {menu
+          .find((it) => it.id === 'Plastic')
+          .children?.map((menu, index) => (
             <Col span={index === 0 ? 16 : 8} key={menu.key}>
               <motion.p
                 className="p-m block"
@@ -103,7 +106,7 @@ const PlasticMenu = () => {
                 {menu.key}
               </motion.p>
               <ul>
-                {menu?.children.map((child, i) => (
+                {menu?.children?.map((child, i) => (
                   <motion.li
                     key={child.title}
                     custom={i + 1}
@@ -128,14 +131,17 @@ const AboutUsMenu = () => {
   const { menuList } = UIStore.useState((s) => ({
     menuList: s.menuList,
   }))
+
+  const menu = deepTranslate(menuList)
+
   return (
     <div className="container sub-menu">
       <Row gutter={[168, 168]}>
-        {menuList
-          .find((it) => it.key === 'About Us')
-          .children.filter((t) => t.type !== 'button')
+        {menu
+          .find((it) => it.id === 'About Us')
+          .children?.filter((t) => t.type !== 'button')
           .map((menu) => (
-            <Col span={8} key={menu.key}>
+            <Col span={8} key={menu?.id}>
               <motion.p
                 className="p-m"
                 custom={0}

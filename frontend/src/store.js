@@ -32,10 +32,12 @@ const menuList = [
     id: 'Plastic',
     children: [
       {
-        key: 'Topics',
+        key: msg`Topics`,
+        id: 'Topics',
       },
       {
-        key: 'Basics',
+        key: msg`Basics`,
+        id: 'Basics',
       },
     ],
   },
@@ -156,18 +158,22 @@ const menuList = [
     children: [
       {
         key: msg`The platform`,
+        id: 'The platform',
       },
       {
         key: msg`Our Network`,
+        id: 'Our Network',
       },
       {
         key: msg`Partnership`,
+        id: 'Partnership',
         type: 'button',
         link: '',
         text: msg`Go to GPML`,
       },
       {
         key: msg`Contact us`,
+        id: 'Contact us',
         type: 'button',
         link: '',
         text: msg`Contact us`,
