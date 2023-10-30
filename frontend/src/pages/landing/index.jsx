@@ -49,25 +49,27 @@ const pagination = {
   },
 }
 
-const Landing = () => (
-  <div id="landing" className={styles.landing}>
-    <Hero />
-    <ShowcasingAndStats />
-    <WhoAreWe />
-    <ActNow />
-    <LatestNews />
-    <Features />
-    <Trusted />
-    <Activities />
-    {/* <OurVoices /> */}
-    <Partnership />
-    <Partners />
-    <HelpCentre />
-    <Footer />
-  </div>
-)
+const Landing = (props) => {
+  return (
+    <div id="landing" className={styles.landing}>
+      <Hero {...props} />
+      <ShowcasingAndStats />
+      <WhoAreWe />
+      <ActNow />
+      <LatestNews />
+      <Features />
+      <Trusted />
+      <Activities />
+      {/* <OurVoices /> */}
+      <Partnership {...props} />
+      <Partners />
+      <HelpCentre />
+      <Footer />
+    </div>
+  )
+}
 
-const Hero = () => {
+const Hero = ({ setLoginVisible, isAuthenticated }) => {
   const [selected, setSelected] = useState('Governments')
   const [timeout, _setTimeout] = useState(true)
   const [filter, setFilter] = useState({})
@@ -222,9 +224,22 @@ const Hero = () => {
                 </AnimatePresence>
               ))}
             </div>
-            <Button type="primary" size="large" withArrow>
-              <Trans>Join Now</Trans>
-            </Button>
+            {!isAuthenticated ? (
+              <Button
+                onClick={() => setLoginVisible(true)}
+                type="primary"
+                size="large"
+                withArrow
+              >
+                <Trans>Join Now</Trans>
+              </Button>
+            ) : (
+              <Link href="/workspace">
+                <Button type="primary" size="large" withArrow>
+                  <Trans>Workspace</Trans>
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
       </div>
@@ -853,9 +868,11 @@ const Activities = () => {
             </p>
           </div>
           <div>
-            <Button size="large" ghost withArrow={<LongArrowRight />}>
-              <Trans>Visit the website</Trans>
-            </Button>
+            <a href="https://www.gpmarinelitter.org/" target="_blank">
+              <Button size="large" ghost withArrow={<LongArrowRight />}>
+                <Trans>Visit the website</Trans>
+              </Button>
+            </a>
           </div>
         </div>
         <div className="activity-box-wrapper">
@@ -974,7 +991,7 @@ const OurVoices = () => {
   )
 }
 
-const Partnership = () => {
+const Partnership = ({ isAuthenticated, setLoginVisible }) => {
   return (
     <section className={styles.partnership}>
       <div className="container content-container">
@@ -990,9 +1007,22 @@ const Partnership = () => {
               and individuals from around the world
             </Trans>
           </p>
-          <Button withArrow type="primary" size="large">
-            <Trans>Join now</Trans>
-          </Button>
+          {!isAuthenticated ? (
+            <Button
+              onClick={() => setLoginVisible(true)}
+              type="primary"
+              size="large"
+              withArrow
+            >
+              <Trans>Join Now</Trans>
+            </Button>
+          ) : (
+            <Link href="/workspace">
+              <Button type="primary" size="large" withArrow>
+                <Trans>Workspace</Trans>
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
       <div className="container links-container">
@@ -1003,7 +1033,7 @@ const Partnership = () => {
                 <Trans>Become part of the network</Trans>
               </h3>
               <ul className="link-list">
-                <li>
+                <li onClick={() => setLoginVisible(true)}>
                   <CirclePointer />
                   <Trans>Sign Up</Trans>
                 </li>
@@ -1013,7 +1043,7 @@ const Partnership = () => {
                 </li>
                 <li>
                   <CirclePointer />
-                  <Trans>Become a partnerL</Trans>
+                  <Trans>Become a partner</Trans>
                 </li>
               </ul>
             </div>
