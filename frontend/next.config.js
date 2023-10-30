@@ -29,9 +29,11 @@ module.exports = {
     let domain = 'http://backend:3000'
     if (process.env.REACT_APP_FEENV) {
       domain = 'https://unep-gpml.akvotest.org'
-    } else if (process.REACT_APP_FEENV_STAGING) {
+    }
+    if (process.env.REACT_APP_FEENV_STAGING) {
       domain = 'https://unep-gpml-staging.akvotest.org'
     }
+    console.log(domain)
     return [
       {
         source: '/api/:path*',
