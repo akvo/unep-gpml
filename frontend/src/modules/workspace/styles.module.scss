@@ -471,9 +471,17 @@ $bg-green-primary: #10f9b7;
           justify-content: space-between;
           margin-bottom: 30px;
         }
-        .ant-list {
-          .ant-row {
-            width: 100%;
+        .forum-list {
+          .ant-list-items {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            .ant-list-item {
+              border-bottom: none;
+              .ant-card {
+                width: 365px;
+              }
+            }
           }
         }
       }
