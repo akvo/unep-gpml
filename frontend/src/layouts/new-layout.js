@@ -11,6 +11,7 @@ import Footer from '../footer'
 import Login from '../modules/login/view'
 import { Check, DownArrow, World, flags } from '../components/icons'
 import Link from 'next/link'
+import { Trans } from '@lingui/macro'
 import { motion, AnimatePresence, useCycle } from 'framer-motion'
 import { useDeviceSize } from '../modules/landing/landing'
 import { isRegistered } from '../utils/profile'
@@ -208,13 +209,6 @@ const NewLayout = ({
                     </a>
                   </li>
                 ))}
-                {isAuthenticated && (
-                  <li>
-                    <Link href="/flexible-forms">
-                      <span>Add +</span>
-                    </Link>
-                  </li>
-                )}
               </ul>
             )}
             <nav>
@@ -282,6 +276,13 @@ const NewLayout = ({
                     overlayClassName="user-btn-dropdown-wrapper"
                     overlay={
                       <Menu className="user-btn-dropdown">
+                        <Menu.Item key="add-content">
+                          <Link href="/flexible-forms">
+                            <span>
+                              <Trans>Add Content</Trans>
+                            </span>
+                          </Link>
+                        </Menu.Item>
                         <Menu.Item
                           key="profile"
                           onClick={() => {
@@ -292,7 +293,7 @@ const NewLayout = ({
                             })
                           }}
                         >
-                          Profile
+                          <Trans>Profile</Trans>
                         </Menu.Item>
                         <Menu.Item
                           key="logout"
@@ -302,7 +303,7 @@ const NewLayout = ({
                             })
                           }}
                         >
-                          Logout
+                          <Trans>Logout</Trans>
                         </Menu.Item>
                       </Menu>
                     }
