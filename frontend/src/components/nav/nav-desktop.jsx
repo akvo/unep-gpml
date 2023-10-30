@@ -7,6 +7,7 @@ import Item from './item'
 import { useLingui } from '@lingui/react'
 import { deepTranslate } from '../../utils/misc'
 import Button from '../button'
+import { i18n } from '@lingui/core'
 
 const navVariants = {
   open: { scale: 1, opacity: 1 },
@@ -57,7 +58,7 @@ const ToolsMenu = () => {
                 animate="open"
                 exit="closed"
               >
-                {menu.key}
+                {i18n._(menu.key)}
               </motion.p>
               <ul>
                 {menu?.children?.map((child, i) => (
@@ -103,7 +104,7 @@ const PlasticMenu = () => {
                 animate="open"
                 exit="closed"
               >
-                {menu.key}
+                {i18n._(menu.key)}
               </motion.p>
               <ul>
                 {menu?.children?.map((child, i) => (
@@ -150,7 +151,7 @@ const AboutUsMenu = () => {
                 animate="open"
                 exit="closed"
               >
-                {menu.key}
+                {i18n._(menu.key)}
               </motion.p>
               <ul>
                 {menu?.children?.map((child, i) => (
