@@ -329,7 +329,7 @@ const DatePickerFilter = ({
       <div>
         <DatePicker
           size="small"
-          placeholder="YYYY"
+          placeholder={t`YYYY`}
           picker={'year'}
           value={
             !isEmpty(value)
@@ -372,7 +372,7 @@ const KnowledgeLibrarySearch = ({ updateQuery, filter }) => {
         <Input
           size="small"
           className="input-search"
-          placeholder={<Trans>Search resources</Trans>}
+          placeholder={t`Search resources`}
           value={filter?.q}
           prefix={<SearchIcon />}
           onPressEnter={(e) => handleSearch(e.target.value)}

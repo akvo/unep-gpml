@@ -84,7 +84,7 @@ function FormThree({
               >
                 <Select
                   size="small"
-                  placeholder={<Trans>Suggest categories</Trans>}
+                  placeholder={t`Suggest categories`}
                   allowClear
                   showSearch
                   mode={tagMode}

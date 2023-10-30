@@ -3,7 +3,7 @@ import { Col, Space, Tag, Select } from 'antd'
 import isEmpty from 'lodash/isEmpty'
 import styles from './style.module.scss'
 import { SearchIcon } from '../icons'
-import { Trans } from '@lingui/macro'
+import { Trans, t } from '@lingui/macro'
 
 const MultipleSelectFilter = ({
   title,
@@ -39,7 +39,7 @@ const MultipleSelectFilter = ({
           showSearch
           allowClear
           mode="multiple"
-          placeholder={<Trans>All (default)</Trans>}
+          placeholder={t`All (default)`}
           options={options}
           filterOption={(input, option) =>
             option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0

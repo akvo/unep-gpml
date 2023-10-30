@@ -8,7 +8,7 @@ import { multicountryGroups } from '../../modules/knowledge-library/multicountry
 import { OptGroup } from 'rc-select'
 import './style.module.scss'
 import api from '../../utils/api'
-import { Trans } from '@lingui/macro'
+import { Trans, t } from '@lingui/macro'
 import { SearchIcon } from '../icons'
 const { TabPane } = Tabs
 const { Option } = Select
@@ -134,7 +134,7 @@ const CountryTransnationalFilter = ({
           allowClear
           dropdownClassName="multiselection-dropdown"
           mode={countrySelectMode || ''}
-          placeholder={<Trans>Countries</Trans>}
+          placeholder={t`Countries`}
           options={countryOpts}
           optionFilterProp="children"
           filterOption={(input, option) =>
@@ -162,7 +162,7 @@ const CountryTransnationalFilter = ({
           allowClear
           virtual={false}
           mode={multiCountrySelectMode || ''}
-          placeholder={<Trans>Multi-Country</Trans>}
+          placeholder={t`Multi-Country`}
           optionFilterProp="children"
           filterOption={(input, option) => {
             return (
