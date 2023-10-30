@@ -21,7 +21,7 @@ const ForumDetails = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
   const [preload, setPreload] = useState(true)
   const [loading, setLoading] = useState(true)
   const [forums, setForums] = useState([])
-  const [publicForums, setPublicForums] = useState([])
+  const [publicForums, setPublicForums] = useState(null)
   const [channel, setChannel] = useState(null)
   const router = useRouter()
   const { channelName, t: channelType } = router.query
@@ -55,7 +55,7 @@ const ForumDetails = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
      * Handles direct access that allows
      * resetting the global state of my forums
      */
-    if (profile?.id && preload) {
+    if (profile?.id && preload && Array.isArray(publicForums)) {
       setPreload(false)
       try {
         const { data: myForums } = await api.get('/chat/user/channel')
