@@ -28,7 +28,9 @@
     [:brs_api_id [string? {:min 1}]]
     [:brs_api_modified inst?]
     [:source {:default dom.types/default-resource-source}
-     (apply conj [:enum] dom.types/resource-source-types)]]))
+     (apply conj [:enum] dom.types/resource-source-types)]
+    [:image_id [:uuid]]
+    [:thumbnail_id [:uuid]]]))
 
 (defn- question-answer->initiative-prop
   [question-answer]
