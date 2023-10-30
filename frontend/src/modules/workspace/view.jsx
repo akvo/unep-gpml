@@ -335,7 +335,7 @@ const Workspace = ({ profile }) => {
                 </Button>
               </div>
               <List
-                grid={{ column: 3, gutter: 20 }}
+                className="forum-list"
                 dataSource={forums}
                 loading={loading.forums}
                 renderItem={(item) => (
