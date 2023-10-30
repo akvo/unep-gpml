@@ -55,7 +55,10 @@
       display: flex;
       flex-direction: column;
       gap: 24px;
-      margin-bottom: 100px;
+      margin-bottom: 194px;
+      .ant-select {
+        cursor: cell;
+      }
     }
   }
 }
