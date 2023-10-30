@@ -28,7 +28,8 @@ const geoCoverageTypeOptions = [
 
 const menuList = [
   {
-    key: 'Plastic',
+    key: msg`Plastic`,
+    id: 'Plastic',
     children: [
       {
         key: 'Topics',
@@ -39,10 +40,11 @@ const menuList = [
     ],
   },
   {
-    key: 'Tools',
+    key: msg`Tools`,
+    id: 'Tools',
     children: [
       {
-        key: 'Information',
+        key: msg`Information`,
         children: [
           {
             to: '/knowledge/library',
@@ -73,7 +75,7 @@ const menuList = [
         ],
       },
       {
-        key: 'Community',
+        key: msg`Community`,
         children: [
           {
             to: '/community',
@@ -112,7 +114,7 @@ const menuList = [
         ],
       },
       {
-        key: 'Data hub',
+        key: msg`Data hub`,
         children: [
           {
             href: 'https://datahub.gpmarinelitter.org',
@@ -149,25 +151,26 @@ const menuList = [
     ],
   },
   {
-    key: 'About Us',
+    key: msg`About Us`,
+    id: 'About Us',
     children: [
       {
-        key: 'The platform',
+        key: msg`The platform`,
       },
       {
-        key: 'Our Network',
+        key: msg`Our Network`,
       },
       {
-        key: 'Partnership',
+        key: msg`Partnership`,
         type: 'button',
         link: '',
-        text: 'Go to GPML',
+        text: msg`Go to GPML`,
       },
       {
-        key: 'Contact us',
+        key: msg`Contact us`,
         type: 'button',
         link: '',
-        text: 'Contact us',
+        text: msg`Contact us`,
       },
     ],
   },
