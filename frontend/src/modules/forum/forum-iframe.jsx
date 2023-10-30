@@ -69,12 +69,12 @@ const ForumIframe = ({
         },
         '*'
       )
-      setTimeout(() => {
+      const _timeout = setTimeout(() => {
         /**
          * Added a 5 second delay
          * so that the redirect to the channel can be executed
          */
-        iFrameCurrent.contentWindow.postMessage(
+        iFrameCurrent?.contentWindow?.postMessage(
           {
             externalCommand: 'go',
             path: `/${prefixPATH}/${channelName}?layout=embedded`,
@@ -85,6 +85,7 @@ const ForumIframe = ({
       ChatStore.update((s) => {
         s.isLoggedIn = true
       })
+      return () => clearTimeout(_timeout)
     }
   }, [
     iFrameCurrent,

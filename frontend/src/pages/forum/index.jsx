@@ -27,9 +27,6 @@ const Forum = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
   const [loading, setLoading] = useState(true)
 
   const profile = UIStore.useState((s) => s.profile)
-  const avatarUrl = `${process.env.NEXT_PUBLIC_CHAT_API_DOMAIN_URL}/avatar/`
-
-  console.log(profile, isAuthenticated, loadingProfile)
 
   useEffect(() => {
     if (!loadingProfile && !isAuthenticated) {
@@ -44,12 +41,6 @@ const Forum = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
       data,
     })
   }
-
-  const initName = (name) =>
-    name
-      ?.split(/[ ,]+/)
-      ?.slice(0, 2)
-      .map((w) => w?.slice(0, 1))
 
   const getAllForums = useCallback(async () => {
     try {
@@ -124,7 +115,7 @@ const Forum = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
                     <p className={styles.forumDesc}>{item?.description}</p>
                   </div>
                   <div className="flex">
-                    <ForumMembers {...{ initName, avatarUrl }} forum={item} />
+                    <ForumMembers forum={item} />
                     <div>
                       <Button
                         size="small"
@@ -141,7 +132,7 @@ const Forum = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
           />
         </section>
         <DynamicForumModal
-          {...{ viewModal, setViewModal, initName, avatarUrl, allForums }}
+          {...{ viewModal, setViewModal, allForums }}
         />
       </div>
     </div>
