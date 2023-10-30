@@ -78,6 +78,12 @@ const menuList = [
         key: msg`Community`,
         children: [
           {
+            title: msg`Forum`,
+            to: '/forum',
+            subtitle: msg`Interactive forum for collaboration`,
+            icon: <IconForum />,
+          },
+          {
             to: '/community',
             title: msg`Members`,
             iconClass: 'tools-community-icon',
@@ -103,13 +109,6 @@ const menuList = [
             iconClass: 'tools-partners-icon',
             subtitle: msg`Directory of partners of the GPML Digital Platform`,
             icon: <IconPartner />,
-          },
-          {
-            href: 'https://communities.gpmarinelitter.org',
-            title: msg`Engage`,
-            to: '/forum',
-            subtitle: msg`Interactive forum for collaboration`,
-            icon: <IconForum />,
           },
         ],
       },

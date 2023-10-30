@@ -9,24 +9,26 @@ import {
   Tooltip,
   Typography,
   message,
+  Select,
+  Divider,
 } from 'antd'
-import { InfoCircleOutlined } from '@ant-design/icons'
+import { InfoCircleOutlined, PlusOutlined } from '@ant-design/icons'
 import Button from '../../../components/button'
 import styles from './setup-team-form.module.scss'
-import { DropDownIcon } from '../../../components/icons'
+import { DropDownIcon, SearchIcon } from '../../../components/icons'
 import api from '../../../utils/api'
 import { ROLES, TEAMS } from './config'
 import { Trans, t } from '@lingui/macro'
-import AutocompleteForm from '../../../components/autocomplete-form/autocomplete-form'
+import { UIStore } from '../../../store'
 
 const { Text } = Typography
 
-const SetupTeamForm = ({ psItem, members, setMembers }) => {
+const SetupTeamForm = ({ psItem, members, setReload }) => {
   const [openInvitation, setOpenInvitation] = useState(false)
   const [sending, setSending] = useState(false)
   const [selectedRole, setSelectedRole] = useState(null)
-  const [selectedTeams, setSelectedTeams] = useState([])
   const [form] = Form.useForm()
+  const { stakeholders } = UIStore.useState((s) => s.stakeholders) || {}
 
   const roleDescription = useMemo(() => {
     const findRole = ROLES.find((r) => r.key === selectedRole?.key)
@@ -36,15 +38,15 @@ const SetupTeamForm = ({ psItem, members, setMembers }) => {
     return null
   }, [selectedRole])
 
-  const handleOnAddMember = async (newMember) => {
-    const isExist = members.find((m) => m.id === newMember?.id)
+  const handleOnAddMember = async (userID) => {
+    const isExist = members.find((m) => m.id === userID)
     if (isExist) {
       message.warning(t`User already added as a member`)
       return
     }
     try {
       const payload = {
-        user_id: newMember?.id,
+        user_id: userID,
         teams: [],
         role: 'viewer',
       }
@@ -52,33 +54,20 @@ const SetupTeamForm = ({ psItem, members, setMembers }) => {
         `/plastic-strategy/${psItem?.country?.isoCodeA2}/team/member`,
         payload
       )
-      setMembers([
-        {
-          ...newMember,
-          ...payload,
-          contact: newMember?.name,
-          organisation: newMember?.affiliation?.name,
-        },
-        ...members,
-      ])
+      setReload(true)
     } catch (error) {
       console.error('Unable to add a member', error)
+      message.error('Unable to add the user to the channel')
     }
   }
 
   const handleOnCheckedTeams = (items) => {
-    setSelectedTeams(items)
     form.setFieldsValue({ teams: items })
-  }
-
-  const handleOnOpenInvitation = () => {
-    setOpenInvitation(true)
   }
 
   const handleOnCloseInvitation = () => {
     setOpenInvitation(false)
     setSelectedRole(null)
-    setSelectedTeams([])
   }
 
   const handleOnSubmit = async (values) => {
@@ -88,9 +77,9 @@ const SetupTeamForm = ({ psItem, members, setMembers }) => {
         `/plastic-strategy/${psItem?.country?.isoCodeA2}/team/member/invite`,
         values
       )
+      setReload(true)
       setSending(false)
       setSelectedRole(null)
-      setSelectedTeams([])
       setOpenInvitation(false)
       message.success(t`Invitation sent.`)
     } catch (error) {
@@ -100,34 +89,52 @@ const SetupTeamForm = ({ psItem, members, setMembers }) => {
     }
   }
 
-  const renderItem = (item) => {
-    if (item?.onClick) {
-      return (
-        <Button type={item.type} onClick={item.onClick}>
-          {item.text}
-        </Button>
-      )
-    }
-    return (
-      <>
-        <Text>{item?.name}</Text>
-        <strong className="w-bold">{item?.affiliation?.name}</strong>
-      </>
-    )
-  }
-
   return (
     <>
-      <AutocompleteForm
-        apiParams={{ networkType: 'stakeholder', limit: 10 }}
-        extraButton={{
-          text: t`+ Invite a New Member`,
-          type: 'link',
-          onClick: handleOnOpenInvitation,
+      <Select
+        allowClear
+        showSearch
+        showArrow
+        virtual={false}
+        size="small"
+        placeholder={t`Start typing...`}
+        name="stakeholderName"
+        disabled={!stakeholders}
+        value={null}
+        onSelect={(dataID) => {
+          handleOnAddMember(dataID)
         }}
-        onSelect={handleOnAddMember}
-        renderItem={renderItem}
-      />
+        filterOption={(input, option) => {
+          const {
+            props: { children: optionText },
+          } = option?.children?.[0] || {}
+          return optionText?.toLowerCase()?.includes(input.toLowerCase())
+        }}
+        suffixIcon={<SearchIcon />}
+        dropdownRender={(menu) => (
+          <div className={styles.addNewDropdown}>
+            {menu}
+            <>
+              <Divider style={{ margin: '4px 0' }} />
+              <div className="add-button-container">
+                <a
+                  onClick={() => setOpenInvitation(!openInvitation)}
+                  className="h-xs"
+                >
+                  <PlusOutlined /> Invite a New Member
+                </a>
+              </div>
+            </>
+          </div>
+        )}
+      >
+        {stakeholders?.map((stakeholder) => (
+          <Select.Option value={stakeholder.id} key={stakeholder.id}>
+            <Text>{`${stakeholder?.firstName} ${stakeholder?.lastName}`}</Text>
+            <strong className="w-bold">{stakeholder?.affiliation?.name}</strong>
+          </Select.Option>
+        ))}
+      </Select>
       <Modal
         title={t`Invite a new member`}
         className={styles.invitationModal}

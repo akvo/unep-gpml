@@ -7,6 +7,7 @@ import { Trans, t } from '@lingui/macro'
 
 const View = ({ psItem }) => {
   const [members, setMembers] = useState([])
+  const [reload, setReload] = useState(false)
   return (
     <div className={styles.setupTeamView}>
       <div className="title-section">
@@ -33,13 +34,15 @@ const View = ({ psItem }) => {
         <h5>
           <Trans>Team members</Trans>
         </h5>
-        <SetupTeamTable {...{ psItem, members, setMembers }} />
+        <SetupTeamTable
+          {...{ psItem, members, setMembers, reload, setReload }}
+        />
       </div>
       <div className="add-member-section">
         <h5>
           <Trans>Add a New Member</Trans>
         </h5>
-        <SetupTeamForm {...{ psItem, members, setMembers }} />
+        <SetupTeamForm {...{ psItem, members, setReload }} />
       </div>
     </div>
   )
