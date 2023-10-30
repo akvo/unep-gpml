@@ -758,10 +758,10 @@
   ;; Consts
 
   [:duct/const :gpml.config/brs-gpml-entities-mapping]
-  [{:gpml-entity-name :resource
-    :brs-entity-name :publication}
-   {:gpml-entity-name :event
-    :brs-entity-name :meeting}
+  [;; {:gpml-entity-name :resource
+   ;;  :brs-entity-name :publication}
+   ;; {:gpml-entity-name :event
+   ;;  :brs-entity-name :meeting}
    {:gpml-entity-name :initiative
     :brs-entity-name :project}]
 
@@ -1129,12 +1129,11 @@
                       :identity "leap-api-policy-importer"
                       :cron #duct/env ["SCHEDULER_LEAP_API_POLICY_IMPORTER_CRON" Str :or "0 0 2 1/14 * ? *"]}}
 
-  ;; TODO: uncomment this once the BRS API integration is resumed.
-  ;; :gpml.scheduler/brs-api-importer
-  ;; {:config #ig/ref :gpml.config/common
-  ;;  :scheduler-config {:time-zone #duct/env ["SCHEDULER_TIME_ZONE" Str :or "Europe/Madrid"]
-  ;;                     :identity "brs-api-importer"
-  ;;                     :cron #duct/env ["SCHEDULER_BRS_API_IMPORTER_CRON" Str :or "0 0 3 1/7 * ? *"]}}
+  :gpml.scheduler/brs-api-importer
+  {:config #ig/ref :gpml.config/common
+   :scheduler-config {:time-zone #duct/env ["SCHEDULER_TIME_ZONE" Str :or "Europe/Madrid"]
+                      :identity "brs-api-importer"
+                      :cron #duct/env ["SCHEDULER_BRS_API_IMPORTER_CRON" Str :or "0 0 3 1/7 * ? *"]}}
 
   ;; End of base configuration
   }

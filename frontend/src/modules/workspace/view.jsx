@@ -23,11 +23,20 @@ import { FilePdfOutlined, DeleteOutlined } from '@ant-design/icons'
 import api from '../../utils/api'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import dynamic from 'next/dynamic'
 import { PREFIX_SLUG, getParentChecked, stepsState } from './ps/config'
 import classNames from 'classnames'
 import SkeletonItems from './ps/skeleton-items'
 import Button from '../../components/button'
 import ForumCard from '../../components/forum-card/forum-card'
+import ForumMembers from '../forum/forum-members'
+
+const DynamicForumModal = dynamic(
+  () => import('../../modules/forum/forum-modal'),
+  {
+    ssr: false,
+  }
+)
 
 const suggestions = [
   {
@@ -63,6 +72,10 @@ const Workspace = ({ profile }) => {
   const [forums, setForums] = useState([])
   const [loading, setLoading] = useState({
     forums: true,
+  })
+  const [forumView, setForumView] = useState({
+    open: false,
+    data: {},
   })
 
   const handleFocalPoint = (id) => {
@@ -121,7 +134,15 @@ const Workspace = ({ profile }) => {
     })
   }
 
-  const goToChannel = ({ name, t }) => {
+  const goToChannel = (forum) => {
+    const { name, t, isView } = forum
+    if (isView) {
+      setForumView({
+        open: true,
+        data: forum,
+      })
+      return
+    }
     router.push({
       pathname: `/forum/${name}`,
       query: {
@@ -161,7 +182,7 @@ const Workspace = ({ profile }) => {
         const { data: _allForums } = allForums || {}
         const _forums = _myForums?.length
           ? _myForums.slice(0, 3)
-          : _allForums?.slice(0, 3)
+          : _allForums?.slice(0, 3)?.map((a) => ({ ...a, isView: true }))
         setForums(_forums)
         setLoading({
           forums: false,
@@ -314,7 +335,7 @@ const Workspace = ({ profile }) => {
                 </Button>
               </div>
               <List
-                grid={{ column: 3, gutter: 25 }}
+                grid={{ column: 3, gutter: 20 }}
                 dataSource={forums}
                 loading={loading.forums}
                 renderItem={(item) => (
@@ -324,20 +345,39 @@ const Workspace = ({ profile }) => {
                         <ForumCard.Title {...item} />
                       </ForumCard.HStack>
                       <ForumCard.HStack>
-                        <ForumCard.LastMessage lm={item?.lm} />
+                        {item?.isView ? (
+                          <ForumMembers forum={item} />
+                        ) : (
+                          <ForumCard.LastMessage lm={item?.lm} />
+                        )}
                         <div>
-                          <Button
-                            size="small"
-                            withArrow="link"
-                            onClick={() => goToChannel(item)}
-                          >
-                            Chat
-                          </Button>
+                          {item?.isView ? (
+                            <Button
+                              size="small"
+                              onClick={() => goToChannel(item)}
+                              ghost
+                            >
+                              View
+                            </Button>
+                          ) : (
+                            <Button
+                              size="small"
+                              withArrow="link"
+                              onClick={() => goToChannel(item)}
+                            >
+                              Chat
+                            </Button>
+                          )}
                         </div>
                       </ForumCard.HStack>
                     </ForumCard>
                   </List.Item>
                 )}
+              />
+              <DynamicForumModal
+                viewModal={forumView}
+                setViewModal={setForumView}
+                allForums={forums}
               />
             </div>
           </div>
