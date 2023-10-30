@@ -35,8 +35,6 @@ const menuItemVariants = {
 }
 
 const ToolsMenu = () => {
-  const { i18n } = useLingui()
-
   const { menuList } = UIStore.useState((s) => ({
     menuList: s.menuList,
   }))

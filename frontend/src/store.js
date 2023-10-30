@@ -47,6 +47,7 @@ const menuList = [
     children: [
       {
         key: msg`Information`,
+        id: 'Information',
         children: [
           {
             to: '/knowledge/library',
@@ -78,6 +79,7 @@ const menuList = [
       },
       {
         key: msg`Community`,
+        id: 'Community',
         children: [
           {
             to: '/community',
@@ -117,6 +119,7 @@ const menuList = [
       },
       {
         key: msg`Data hub`,
+        id: 'Data hub',
         children: [
           {
             href: 'https://datahub.gpmarinelitter.org',
