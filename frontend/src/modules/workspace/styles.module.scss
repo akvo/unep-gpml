@@ -477,11 +477,9 @@ $bg-green-primary: #10f9b7;
             align-items: center;
             gap: 25px;
             .ant-list-item {
-              width: 100%;
               border-bottom: none;
               .ant-card {
-                width: 100%;
-                max-width: 365px;
+                width: 365px;
               }
             }
           }
