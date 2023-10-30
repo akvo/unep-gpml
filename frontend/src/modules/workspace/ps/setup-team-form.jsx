@@ -57,6 +57,7 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
       setReload(true)
     } catch (error) {
       console.error('Unable to add a member', error)
+      message.error('Unable to add the user to the channel')
     }
   }
 
@@ -76,6 +77,7 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
         `/plastic-strategy/${psItem?.country?.isoCodeA2}/team/member/invite`,
         values
       )
+      setReload(true)
       setSending(false)
       setSelectedRole(null)
       setOpenInvitation(false)
@@ -98,6 +100,7 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
         placeholder={t`Start typing...`}
         name="stakeholderName"
         disabled={!stakeholders}
+        value={null}
         onSelect={(dataID) => {
           handleOnAddMember(dataID)
         }}
