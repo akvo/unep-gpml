@@ -73,19 +73,21 @@
 
 (defn- value->instant
   [value]
-  (-> value
-      (java-time/local-date-time)
-      (java-time/zoned-date-time (jt/zone-id "UTC"))
-      (java-time/instant)))
+  (when (seq value)
+    (-> value
+        (java-time/local-date-time)
+        (java-time/zoned-date-time (jt/zone-id "UTC"))
+        (java-time/instant))))
 
 (defn- dot-net-json-date->offset-date-time
   [value]
-  (let [[_ millis offset] (re-find util.regex/dot-net-json-date-re value)]
-    (-> (Long/parseLong millis)
-        (jt/java-date)
-        (jt/offset-date-time (if offset
-                               (jt/zone-offset offset)
-                               (jt/zone-id "UTC"))))))
+  (when (seq value)
+    (let [[_ millis offset] (re-find util.regex/dot-net-json-date-re value)]
+      (-> (Long/parseLong millis)
+          (jt/java-date)
+          (jt/offset-date-time (if offset
+                                 (jt/zone-offset offset)
+                                 (jt/zone-id "UTC")))))))
 
 (defn- value->geo-coverage
   [brs-api-id value]
