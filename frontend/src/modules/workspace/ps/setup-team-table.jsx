@@ -23,7 +23,7 @@ import { Trans, t } from '@lingui/macro'
 const { Column } = Table
 const { Text } = Typography
 
-const SetupTeamTable = ({ psItem, members, setMembers }) => {
+const SetupTeamTable = ({ psItem, members, setMembers, reload, setReload }) => {
   const [loading, setLoading] = useState(true)
   const profile = UIStore.useState((s) => s.profile)
 
@@ -150,7 +150,11 @@ const SetupTeamTable = ({ psItem, members, setMembers }) => {
 
   const getTeamMembers = useCallback(async () => {
     try {
-      if (profile?.id && psItem?.country?.isoCodeA2) {
+      if (
+        (profile?.id && psItem?.country?.isoCodeA2) ||
+        (reload && profile?.id)
+      ) {
+        setReload(false)
         const { data } = await api.get(
           `/plastic-strategy/${psItem.country.isoCodeA2}/team/member`
         )
@@ -167,7 +171,7 @@ const SetupTeamTable = ({ psItem, members, setMembers }) => {
       setLoading(false)
       console.error('unable to fetch team members:', error)
     }
-  }, [psItem?.country, profile])
+  }, [psItem?.country, profile, reload])
 
   useEffect(() => {
     getTeamMembers()
