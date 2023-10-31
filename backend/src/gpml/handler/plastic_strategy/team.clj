@@ -84,7 +84,9 @@
                                                      body-params)]
           (if (:success? result)
             (r/ok {})
-            (r/server-error (dissoc result :success?))))))))
+            (if (= (:reason result) :ps-team-member-already-exists)
+              (r/conflict {:reason :ps-team-member-already-exists})
+              (r/server-error (dissoc result :success?)))))))))
 
 (defn- update-ps-team-member
   [config {:keys [user] {:keys [path body]} :parameters}]
