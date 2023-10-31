@@ -26,14 +26,19 @@
         [{:txn-fn
           (fn tx-add-ps-team-member
             [{:keys [ps-team-member] :as context}]
-            (let [{:keys [success? reason error-details]}
+            (let [{:keys [success? reason] :as result}
                   (db.ps.team/add-ps-team-member (:spec db) ps-team-member)]
               (if success?
                 context
-                (assoc context
-                       :success? false
-                       :reason reason
-                       :error-details error-details))))
+                (if (= reason :already-exists)
+                  (assoc context
+                         :success? false
+                         :reason :ps-team-member-already-exists
+                         :error-details {:result result})
+                  (assoc context
+                         :success? false
+                         :reason :failed-to-add-team-member
+                         :error-details {:result result})))))
           :rollback-fn
           (fn rollback-add-ps-team-member
             [{{:keys [plastic-strategy-id user-id]} :ps-team-member :as context}]
