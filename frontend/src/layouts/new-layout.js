@@ -85,13 +85,13 @@ const NewLayout = ({
                 key: msg`The platform`,
                 id: 'The platform',
                 apiEndpoint:
-                  'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=about-platform&fields=title&fields=subtitle',
+                  'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=about-platform&fields=title&fields=subtitle&fields=slug',
               },
               {
                 key: msg`Our Network`,
                 id: 'Our Network',
                 apiEndpoint:
-                  'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=about-network&fields=title&fields=subtitle',
+                  'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=about-network&fields=title&fields=subtitle&fields=slug',
               },
             ],
           },
@@ -103,13 +103,13 @@ const NewLayout = ({
                 key: msg`Topics`,
                 id: 'Topics',
                 apiEndpoint:
-                  'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=plastic-topics&fields=title&fields=subtitle',
+                  'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=plastic-topics&fields=title&fields=subtitle&fields=slug',
               },
               {
                 key: msg`Basics`,
                 id: 'Basics',
                 apiEndpoint:
-                  'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=plastic-basics&fields=title&fields=subtitle',
+                  'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=plastic-basics&fields=title&fields=subtitle&fields=slug',
               },
             ],
           },
@@ -406,6 +406,7 @@ const transformedData = (data) => {
   return data?.map((item) => ({
     title: item.attributes.title,
     subtitle: item.attributes.subtitle,
+    to: `/page/${item.attributes.slug}`,
   }))
 }
 

@@ -34,7 +34,7 @@ const menuItemVariants = {
   },
 }
 
-const ToolsMenu = () => {
+const ToolsMenu = ({ toggle }) => {
   const { menuList } = UIStore.useState((s) => ({
     menuList: s.menuList,
   }))
@@ -80,7 +80,7 @@ const ToolsMenu = () => {
   )
 }
 
-const PlasticMenu = () => {
+const PlasticMenu = ({ toggle }) => {
   const { menuList } = UIStore.useState((s) => ({
     menuList: s.menuList,
   }))
@@ -107,6 +107,7 @@ const PlasticMenu = () => {
               <ul>
                 {menu?.children?.map((child, i) => (
                   <motion.li
+                    onClick={toggle}
                     key={child.title}
                     custom={i + 1}
                     variants={menuItemVariants}
@@ -126,7 +127,7 @@ const PlasticMenu = () => {
   )
 }
 
-const AboutUsMenu = () => {
+const AboutUsMenu = ({ toggle }) => {
   const { menuList } = UIStore.useState((s) => ({
     menuList: s.menuList,
   }))
@@ -204,13 +205,13 @@ const NavDesktop = ({ isOpen, toggle, contentKey }) => {
 
   switch (contentKey) {
     case 'Tools':
-      ContentComponent = ToolsMenu
+      ContentComponent = () => <ToolsMenu toggle={toggle} />
       break
     case 'About Us':
-      ContentComponent = AboutUsMenu
+      ContentComponent = () => <AboutUsMenu toggle={toggle} />
       break
     case 'Plastic':
-      ContentComponent = PlasticMenu
+      ContentComponent = () => <PlasticMenu toggle={toggle} />
       break
     default:
       ContentComponent = () => <div>Select a menu item...</div>

@@ -28,15 +28,13 @@ const StrapiPage = ({ pageData }) => {
 export async function getServerSideProps(context) {
   const { slug } = context.params
   const text = slug.split('-')
-  const id = text.shift()
-  const result = text.join('-')
 
   try {
     const domainName = process.env.REACT_APP_FEENV
       ? 'unep-gpml.akvotest.org'
       : getDomainName(context.req.headers.host)
     const response = await axios.get(
-      `https://${domainName}/strapi/api/pages?filters[slug][$eq]=${result}`
+      `https://${domainName}/strapi/api/pages?filters[slug][$eq]=${slug}`
     )
     if (response.data.data.length === 0) {
       return { notFound: true }

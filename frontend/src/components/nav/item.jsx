@@ -4,10 +4,14 @@ import { i18n } from '@lingui/core'
 const Item = ({ title, subtitle, icon, iconClass, to, href, setShowMenu }) => {
   const contents = (
     <>
-      <div className={['icon', iconClass].filter((it) => it != null).join(' ')}>
-        {icon}
-      </div>
-      <div className="content">
+      {icon && (
+        <div
+          className={['icon', iconClass].filter((it) => it != null).join(' ')}
+        >
+          {icon}
+        </div>
+      )}
+      <div className={`content ${!icon ? 'ml' : ''}`}>
         <b className="p-s">{i18n._(title)}</b>
         <span>{i18n._(subtitle)}</span>
       </div>
