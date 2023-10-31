@@ -206,9 +206,7 @@ const NewLayout = ({
                         setShowMenu(true)
                       }
                     }}
-                    className={`${
-                      openedItemKey === item.key ? 'selected' : ''
-                    }`}
+                    className={`${openedItemKey === item.id ? 'selected' : ''}`}
                   >
                     <a>
                       <span>{i18n._(item.key)}</span>
