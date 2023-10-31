@@ -11,14 +11,15 @@ import Footer from '../footer'
 import Login from '../modules/login/view'
 import { Check, DownArrow, World, flags } from '../components/icons'
 import Link from 'next/link'
-import { Trans } from '@lingui/macro'
+import { Trans, t, msg } from '@lingui/macro'
 import { motion, AnimatePresence, useCycle } from 'framer-motion'
 import { useDeviceSize } from '../modules/landing/landing'
 import { isRegistered } from '../utils/profile'
-
+import { i18n } from '@lingui/core'
 import { MenuToggle, NavMobile, NavDesktop } from '../components/nav'
 import GpmlCircle from '../components/gpml-circle'
 import axios from 'axios'
+import { deepTranslate } from '../utils/misc'
 
 const archia = localFont({
   src: [
@@ -77,30 +78,36 @@ const NewLayout = ({
       try {
         const MENU_MAPPING = [
           {
-            key: 'About Us',
+            key: msg`About Us`,
+            id: 'About Us',
             subKeys: [
               {
-                key: 'The platform',
+                key: msg`The platform`,
+                id: 'The platform',
                 apiEndpoint:
                   'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=about-platform&fields=title&fields=subtitle',
               },
               {
-                key: 'Our Network',
+                key: msg`Our Network`,
+                id: 'Our Network',
                 apiEndpoint:
                   'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=about-network&fields=title&fields=subtitle',
               },
             ],
           },
           {
-            key: 'Plastic',
+            key: msg`Plastic`,
+            id: 'Plastic',
             subKeys: [
               {
-                key: 'Topics',
+                key: msg`Topics`,
+                id: 'Topics',
                 apiEndpoint:
                   'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=plastic-topics&fields=title&fields=subtitle',
               },
               {
-                key: 'Basics',
+                key: msg`Basics`,
+                id: 'Basics',
                 apiEndpoint:
                   'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=plastic-basics&fields=title&fields=subtitle',
               },
@@ -126,7 +133,8 @@ const NewLayout = ({
 
         fetchData().then((responses) => {
           UIStore.update((s) => {
-            let updatedMenu = [...s.menuList]
+            const menu = deepTranslate([...s.menuList])
+            let updatedMenu = menu
 
             MENU_MAPPING.forEach((section, sectionIdx) => {
               section.subKeys.forEach((sub, subIdx) => {
@@ -136,14 +144,13 @@ const NewLayout = ({
                 if (responseData) {
                   updatedMenu = updateMenuSection(
                     updatedMenu,
-                    section.key,
-                    sub.key,
+                    section.id,
+                    sub.id,
                     responseData
                   )
                 }
               })
             })
-
             s.menuList = updatedMenu
           })
         })
@@ -189,13 +196,13 @@ const NewLayout = ({
               <ul className="ant-menu">
                 {menuList.map((item) => (
                   <li
-                    key={item.key}
+                    key={item.id}
                     onClick={() => {
-                      if (item.key === openedItemKey) {
+                      if (item.id === openedItemKey) {
                         setOpenedItemKey(null)
                         setShowMenu(false)
                       } else {
-                        setOpenedItemKey(item.key)
+                        setOpenedItemKey(item.id)
                         setShowMenu(true)
                       }
                     }}
@@ -204,7 +211,7 @@ const NewLayout = ({
                     }`}
                   >
                     <a>
-                      <span>{item.key}</span>
+                      <span>{i18n._(item.key)}</span>
                       <DownArrow />
                     </a>
                   </li>
@@ -405,10 +412,10 @@ const transformedData = (data) => {
 }
 
 const updateMenuSection = (menu, sectionKey, subKey, data) => {
-  const sectionIndex = menu.findIndex((item) => item.key === sectionKey)
+  const sectionIndex = menu.findIndex((item) => item.id === sectionKey)
   if (sectionIndex !== -1) {
     const section = menu[sectionIndex]
-    const subIndex = section.children.findIndex((item) => item.key === subKey)
+    const subIndex = section.children.findIndex((item) => item.id === subKey)
     if (subIndex !== -1) {
       section.children[subIndex].children = transformedData(data)
       menu[sectionIndex] = section

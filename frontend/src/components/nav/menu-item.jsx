@@ -22,7 +22,6 @@ const variants = {
 }
 
 export const MenuItem = ({ i, item, onClick, collapseMenu }) => {
-  console.log(item, 'items')
   const [isContentVisible, setContentVisible] = useState(false)
   const handleItemClick = () => {
     if (onClick) {

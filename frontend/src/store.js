@@ -28,21 +28,26 @@ const geoCoverageTypeOptions = [
 
 const menuList = [
   {
-    key: 'Plastic',
+    key: msg`Plastic`,
+    id: 'Plastic',
     children: [
       {
-        key: 'Topics',
+        key: msg`Topics`,
+        id: 'Topics',
       },
       {
-        key: 'Basics',
+        key: msg`Basics`,
+        id: 'Basics',
       },
     ],
   },
   {
-    key: 'Tools',
+    key: msg`Tools`,
+    id: 'Tools',
     children: [
       {
-        key: 'Information',
+        key: msg`Information`,
+        id: 'Information',
         children: [
           {
             to: '/knowledge/library',
@@ -73,7 +78,8 @@ const menuList = [
         ],
       },
       {
-        key: 'Community',
+        key: msg`Community`,
+        id: 'Community',
         children: [
           {
             to: '/community',
@@ -112,7 +118,8 @@ const menuList = [
         ],
       },
       {
-        key: 'Data hub',
+        key: msg`Data hub`,
+        id: 'Data hub',
         children: [
           {
             href: 'https://datahub.gpmarinelitter.org',
@@ -149,25 +156,30 @@ const menuList = [
     ],
   },
   {
-    key: 'About Us',
+    key: msg`About Us`,
+    id: 'About Us',
     children: [
       {
-        key: 'The platform',
+        key: msg`The platform`,
+        id: 'The platform',
       },
       {
-        key: 'Our Network',
+        key: msg`Our Network`,
+        id: 'Our Network',
       },
       {
-        key: 'Partnership',
+        key: msg`Partnership`,
+        id: 'Partnership',
         type: 'button',
         link: '',
-        text: 'Go to GPML',
+        text: msg`Go to GPML`,
       },
       {
-        key: 'Contact us',
+        key: msg`Contact us`,
+        id: 'Contact us',
         type: 'button',
         link: '',
-        text: 'Contact us',
+        text: msg`Contact us`,
       },
     ],
   },
