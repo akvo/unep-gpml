@@ -218,6 +218,45 @@ const NewLayout = ({
               </ul>
             )}
             <nav>
+              <Dropdown
+                overlayClassName="lang-dropdown-wrapper"
+                overlay={
+                  <Menu className="lang-dropdown">
+                    {[
+                      { key: 'EN', label: 'English' },
+                      { key: 'FR', label: 'French' },
+                      { key: 'ES', label: 'Spanish' },
+                    ].map((lang) => (
+                      <Menu.Item
+                        className={classNames({
+                          active: lang.key.toLowerCase() === router.locale,
+                        })}
+                        key={lang.key}
+                        onClick={() => {
+                          router.push(router.pathname, router.pathname, {
+                            locale: lang.key.toLowerCase(),
+                          })
+                        }}
+                      >
+                        {flags[lang.key]}
+                        {lang.label}
+                        {lang.key.toLowerCase() === router.locale && (
+                          <div className="check">
+                            <Check />
+                          </div>
+                        )}
+                      </Menu.Item>
+                    ))}
+                  </Menu>
+                }
+                trigger={['click']}
+                placement="bottomRight"
+              >
+                <div className="lang-btn">
+                  <World />
+                  <DownArrow />
+                </div>
+              </Dropdown>
               {!isAuthenticated && (
                 <Button
                   type="primary"
@@ -230,45 +269,6 @@ const NewLayout = ({
               )}
               {isAuthenticated && (
                 <>
-                  <Dropdown
-                    overlayClassName="lang-dropdown-wrapper"
-                    overlay={
-                      <Menu className="lang-dropdown">
-                        {[
-                          { key: 'EN', label: 'English' },
-                          { key: 'FR', label: 'French' },
-                          { key: 'ES', label: 'Spanish' },
-                        ].map((lang) => (
-                          <Menu.Item
-                            className={classNames({
-                              active: lang.key.toLowerCase() === router.locale,
-                            })}
-                            key={lang.key}
-                            onClick={() => {
-                              router.push(router.pathname, router.pathname, {
-                                locale: lang.key.toLowerCase(),
-                              })
-                            }}
-                          >
-                            {flags[lang.key]}
-                            {lang.label}
-                            {lang.key.toLowerCase() === router.locale && (
-                              <div className="check">
-                                <Check />
-                              </div>
-                            )}
-                          </Menu.Item>
-                        ))}
-                      </Menu>
-                    }
-                    trigger={['click']}
-                    placement="bottomRight"
-                  >
-                    <div className="lang-btn">
-                      <World />
-                      <DownArrow />
-                    </div>
-                  </Dropdown>
                   <Link href="/workspace">
                     <Button
                       type="primary"
