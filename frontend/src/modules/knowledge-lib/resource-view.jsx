@@ -100,13 +100,6 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
       .then((resp) => {
         setLoading(false)
         setData(resp?.data)
-        if (totalCount.length === 0) {
-          setTotalCount(
-            history.query.totalCount
-              ? JSON.parse(history.query.totalCount)
-              : resp?.data?.counts
-          )
-        }
         setCountData(resp?.data?.counts)
         setGridItems((prevItems) => {
           return uniqueArrayByKey([...prevItems, ...resp?.data?.results])
@@ -117,6 +110,30 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
         setLoading(false)
       })
   }
+
+  const fetchCount = (searchParams) => {
+    const queryParams = new URLSearchParams(searchParams)
+    queryParams.set('incCountsForTags', popularTags)
+    queryParams.set('limit', limit)
+    const url = `/browse?${String(queryParams)}`
+
+    api
+      .get(url)
+      .then((resp) => {
+        setTotalCount(
+          history.query.totalCount
+            ? JSON.parse(history.query.totalCount)
+            : resp?.data?.counts
+        )
+      })
+      .catch((err) => {})
+  }
+
+  useEffect(() => {
+    if (totalCount.length === 0) {
+      fetchCount()
+    }
+  }, [totalCount])
 
   const updateQuery = (param, value, reset, fetch = true) => {
     if (!reset) {
@@ -296,26 +313,32 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
         </div>
         {(view === 'map' || !view || view === 'topic') && (
           <div style={{ position: 'relative' }}>
-            <ResourceCards
-              items={data?.results}
-              showMoreCardAfter={20}
-              showMoreCardClick={() => {
-                history.push(
-                  {
-                    pathname: `/knowledge/library/grid/${type ? type : ''}`,
-                    query: queryParams,
-                  },
-                  `/knowledge/library/grid/${type ? type : ''}`
-                )
-              }}
-              showModal={(e) =>
-                showModal({
-                  e,
-                  type: e.currentTarget.type,
-                  id: e.currentTarget.id,
-                })
-              }
-            />
+            {data?.results.length === 0 ? (
+              <div className="no-data">
+                No data to show for the selected filters!
+              </div>
+            ) : (
+              <ResourceCards
+                items={data?.results}
+                showMoreCardAfter={20}
+                showMoreCardClick={() => {
+                  history.push(
+                    {
+                      pathname: `/knowledge/library/grid/${type ? type : ''}`,
+                      query: queryParams,
+                    },
+                    `/knowledge/library/grid/${type ? type : ''}`
+                  )
+                }}
+                showModal={(e) =>
+                  showModal({
+                    e,
+                    type: e.currentTarget.type,
+                    id: e.currentTarget.id,
+                  })
+                }
+              />
+            )}
             {loading && (
               <div className="loading">
                 <LoadingOutlined spin />
@@ -422,6 +445,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
           setGridItems,
           loadAllCat,
           view,
+          pathname,
         }}
       />
     </Fragment>

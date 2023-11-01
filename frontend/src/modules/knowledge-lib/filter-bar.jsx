@@ -216,21 +216,6 @@ const FilterBar = ({
             <Trans>Advanced Search</Trans>
           </span>
         </Button>
-        {!isEmpty &&
-          Object.keys(query).filter(
-            (item) =>
-              !hideFilterList.includes(item) &&
-              item !== 'slug' &&
-              item !== 'totalCount'
-          ).length > 0 && (
-            <Button
-              icon={<CloseOutlined />}
-              className="reset-button"
-              onClick={() => resetFilter()}
-            >
-              <Trans>Reset filters</Trans>
-            </Button>
-          )}
         <LocationDropdown
           {...{
             country,

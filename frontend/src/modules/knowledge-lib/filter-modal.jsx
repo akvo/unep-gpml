@@ -30,6 +30,7 @@ const FilterModal = ({
   asPath,
   history,
   setGridItems,
+  pathname,
 }) => {
   const {
     tags,
@@ -149,30 +150,62 @@ const FilterModal = ({
     })
   }
 
+  const hideFilterList = [
+    'offset',
+    'country',
+    'transnational',
+    'topic',
+    'view',
+    'orderBy',
+    'descending',
+  ]
+
+  const resetFilter = () => {
+    const newQuery = {}
+    setShowFilterModal(false)
+    const newParams = new URLSearchParams(newQuery)
+    history.push({
+      pathname: pathname,
+      search: newParams.toString(),
+    })
+  }
+
+  const isEmptyQuery = Object.values(query).every(
+    (x) => x === null || x === undefined || x?.length === 0
+  )
+
   return (
     <Modal
       centered
       className={styles.filterModal}
       title={<Trans>Filters</Trans>}
       visible={showFilterModal}
+      footer={null}
       onCancel={() => setShowFilterModal(false)}
-      footer={[
-        <Button
-          size="small"
-          key="submit"
-          className="apply-button"
-          onClick={() => handleApplyFilter()}
-        >
-          <Trans>Apply Filters</Trans>
-        </Button>,
-        <Button
-          className="clear-button"
-          onClick={() => setShowFilterModal(false)}
-          type="link"
-        >
-          <Trans>Cancel</Trans>
-        </Button>,
-      ]}
+      // footer={[
+      //   <Button
+      //     size="small"
+      //     key="submit"
+      //     className="apply-button"
+      //     onClick={() => handleApplyFilter()}
+      //   >
+      //     <Trans>Apply Filters</Trans>
+      //   </Button>,
+      //   <Button
+      //     className="clear-button"
+      //     onClick={() => setShowFilterModal(false)}
+      //     type="link"
+      //   >
+      //     <Trans>Cancel</Trans>
+      //   </Button>,
+      //   <Button
+      //     className="clear-button"
+      //     onClick={() => setShowFilterModal(false)}
+      //     type="link"
+      //   >
+      //     <Trans>Reset Filter</Trans>
+      //   </Button>,
+      // ]}
     >
       <Row type="flex" gutter={[0, 24]}>
         {/* My Bookmarks */}
@@ -307,6 +340,40 @@ const FilterModal = ({
             />
           </Row>
         </Col>
+        <div className="footer">
+          {!isEmptyQuery &&
+            Object.keys(query).filter(
+              (item) =>
+                !hideFilterList.includes(item) &&
+                item !== 'slug' &&
+                item !== 'totalCount'
+            ).length > 0 && (
+              <Button
+                className="clear-button"
+                onClick={() => resetFilter()}
+                type="link"
+              >
+                <Trans>Reset Filter</Trans>
+              </Button>
+            )}
+          <div className="action-buttons">
+            <Button
+              size="small"
+              key="submit"
+              className="apply-button"
+              onClick={() => handleApplyFilter()}
+            >
+              <Trans>Apply Filters</Trans>
+            </Button>
+            <Button
+              className="clear-button"
+              onClick={() => setShowFilterModal(false)}
+              type="link"
+            >
+              <Trans>Cancel</Trans>
+            </Button>
+          </div>
+        </div>
       </Row>
     </Modal>
   )

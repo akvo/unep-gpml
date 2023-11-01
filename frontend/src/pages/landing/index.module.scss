@@ -313,20 +313,30 @@
           }
         }
         .localisation {
-          max-height: 46px;
-          display: flex;
-          align-items: center;
-          font-weight: bold;
-          margin-right: 20px;
-          cursor: pointer;
-          svg {
-            margin-right: 7px;
-          }
-          &:hover {
-            color: $primaryDarkBlue4;
+          button {
+            max-height: 46px;
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            margin-right: 20px;
+            cursor: pointer;
+            background-color: transparent;
+            color: $primaryDarkBlue;
+            border: none;
             svg {
+              width: 15px;
+              height: 20px;
               path {
-                stroke: $primaryDarkBlue4;
+                stroke: $primaryDarkBlue;
+              }
+              margin-right: 7px;
+            }
+            &:hover {
+              color: $primaryDarkBlue4;
+              svg {
+                path {
+                  stroke: $primaryDarkBlue4;
+                }
               }
             }
           }

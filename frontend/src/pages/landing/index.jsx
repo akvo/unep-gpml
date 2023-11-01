@@ -40,7 +40,10 @@ import { useLingui } from '@lingui/react'
 import { loadCatalog } from '../../translations/utils'
 import { UIStore } from '../../store'
 import { useRouter } from 'next/router'
-import { stripHtml, transformStrapiResponse } from '../../utils/misc'
+import { stripHtml, transformStrapiResponse, useQuery } from '../../utils/misc'
+import LocationDropdown from '../../components/location-dropdown/location-dropdown'
+import CountryTransnationalFilter from '../../components/select/country-transnational-filter'
+import api from '../../utils/api'
 
 const pagination = {
   clickable: true,
@@ -69,9 +72,19 @@ const Landing = (props) => {
 }
 
 const Hero = ({ setLoginVisible, isAuthenticated }) => {
+  const query = useQuery()
   const [selected, setSelected] = useState('Governments')
+  const [dropdownVisible, setDropdownVisible] = useState(false)
+  const [country, setCountry] = useState([])
+  const [multiCountry, setMultiCountry] = useState([])
+  const [disable, setDisable] = useState({
+    country: false,
+    multiCountry: false,
+  })
   const [timeout, _setTimeout] = useState(true)
   const [filter, setFilter] = useState({})
+  const [filterCountries, setFilterCountries] = useState([])
+  const [multiCountryCountries, setMultiCountryCountries] = useState([])
 
   const intidRef = useRef()
   const [width] = useDeviceSize()
@@ -148,15 +161,87 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
     _setTimeout(false)
   }
 
+  function removeEmptyKeys(obj) {
+    return Object.fromEntries(
+      Object.entries(obj).filter(([key, value]) => {
+        if (Array.isArray(value)) {
+          return value.length > 0
+        }
+        return value !== null && value !== undefined && value !== ''
+      })
+    )
+  }
+
   const handleOnSearch = () => {
-    if (!filter?.tag) {
+    if (!filter?.tag && country.length === 0 && multiCountry.length === 0) {
       return
     }
+
+    const data = {
+      tag: filter?.tag,
+      country: country,
+      transnational: multiCountry,
+    }
+
+    const cleanedData = removeEmptyKeys(data)
+
     router.push({
       pathname: '/knowledge/library',
-      query: filter,
+      query: cleanedData,
     })
   }
+
+  const updateQuery = (param, value, paramValueArr) => {
+    if (param === 'country') {
+      setDisable({
+        ...disable,
+        ...(value.length > 0
+          ? { multiCountry: true }
+          : { multiCountry: false }),
+      })
+      setCountry(value)
+      setFilterCountries(value.map((item) => item.toString()))
+    }
+    if (param === 'transnational') {
+      setDisable({
+        ...disable,
+        ...(value.length > 0 ? { country: true } : { country: false }),
+      })
+      if (value.length === 0) {
+        setFilterCountries([])
+      }
+      setMultiCountry(value)
+
+      value.forEach((id) => {
+        const check = filterCountries.find((x) => x === id.toString())
+        !check &&
+          api.get(`/country-group/${id}`).then((resp) => {
+            setFilterCountries([
+              ...filterCountries,
+              ...resp.data?.[0]?.countries.map((item) => item.id.toString()),
+            ])
+          })
+      })
+    }
+  }
+
+  const countryList = (
+    <CountryTransnationalFilter
+      {...{
+        query,
+        updateQuery,
+        multiCountryCountries,
+        setMultiCountryCountries,
+      }}
+      country={country || []}
+      multiCountry={multiCountry || []}
+      multiCountryLabelCustomIcon={true}
+      countrySelectMode="multiple"
+      multiCountrySelectMode="multiple"
+      isExpert={true}
+      disable={disable}
+    />
+  )
 
   return (
     <>
@@ -264,10 +349,15 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
               showSearch
             />
             <div className="localisation h-xs">
-              <Localiser />
-              <span className="hide-mobile">
-                <Trans>Globally</Trans>
-              </span>
+              <LocationDropdown
+                {...{
+                  country,
+                  multiCountry,
+                  countryList,
+                  dropdownVisible,
+                  setDropdownVisible,
+                }}
+              />
             </div>
             <Button
               type="primary"
