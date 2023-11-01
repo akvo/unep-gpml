@@ -7,7 +7,7 @@ import { DM_Sans } from 'next/font/google'
 import { UIStore } from '../store'
 import Image from 'next/image'
 import classNames from 'classnames'
-import Footer from '../footer'
+import Footer from '../pages/landing/Footer'
 import Login from '../modules/login/view'
 import { Check, DownArrow, World, flags } from '../components/icons'
 import Link from 'next/link'
@@ -175,6 +175,7 @@ const NewLayout = ({
           className={classNames('top-bar', { opened: openedItemKey != null })}
           style={{
             zIndex: isOpen ? 9 : 99,
+            position: openedItemKey ? 'sticky' : 'relative',
           }}
         >
           <div className={`${isIndexPage ? 'container' : 'container-fluid'}`}>
@@ -343,6 +344,19 @@ const NewLayout = ({
           />
         </div>
         {children}
+        {!router.pathname.includes('/workspace') && (
+          <Footer
+            showTools={() => {
+              if (openedItemKey === 'Tools') {
+                setOpenedItemKey(null)
+                setShowMenu(false)
+              } else {
+                setOpenedItemKey('Tools')
+                setShowMenu(true)
+              }
+            }}
+          />
+        )}
       </div>
       <Login visible={loginVisible} close={() => setLoginVisible(false)} />
     </>
