@@ -38,7 +38,7 @@ const ResourceCards = ({
     const { type, id } = item
     e?.preventDefault()
     if (type && id) {
-      const detailUrl = `/${type}/${id}`
+      const detailUrl = `/${type.replace(/_/g, '-')}/${id}`
       setParams({ type, id, item })
       window.history.pushState({}, '', detailUrl)
       setModalVisible(true)
@@ -87,7 +87,11 @@ const ResourceCards = ({
   useEffect(() => {
     if (params != null) {
       const _stateItem = stateItems.find((it) => it.id === params?.item?.id)
-      setParams({ type: _stateItem?.type, id: _stateItem?.id, item: _stateItem })
+      setParams({
+        type: _stateItem?.type,
+        id: _stateItem?.id,
+        item: _stateItem,
+      })
     }
   }, [stateItems])
   return (
