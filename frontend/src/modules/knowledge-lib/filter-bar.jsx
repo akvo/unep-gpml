@@ -5,32 +5,41 @@ import { Icon } from '../../components/svg-icon/svg-icon'
 import FilterIcon from '../../images/knowledge-library/filter-icon.svg'
 import CountryTransnationalFilter from '../../components/select/country-transnational-filter'
 import LocationDropdown from '../../components/location-dropdown/location-dropdown'
-import api from '../../utils/api'
-import { LeftOutlined, CloseOutlined } from '@ant-design/icons'
 import { Trans, t } from '@lingui/macro'
+import { useLingui } from '@lingui/react'
 
-export const resourceTypes = [
-  {
-    key: 'technical-resource',
-    label: t`Technical Resources`,
-    title: 'technical_resource',
-  },
-  { key: 'event', label: t`Events`, title: 'event' },
-  { key: 'technology', label: t`Technologies`, title: 'technology' },
-  {
-    key: 'capacity-building',
-    label: t`Capacity Development`,
-    title: 'capacity building',
-  },
-  { key: 'initiative', label: t`Initiatives`, title: 'initiative' },
-  { key: 'action-plan', label: t`Action Plans`, title: 'action_plan' },
-  { key: 'policy', label: t`Policies`, title: 'policy' },
-  {
-    key: 'financing-resource',
-    label: t`Financing Resources`,
-    title: 'financing_resource',
-  },
-]
+export const useResourceTypes = () => {
+  const { i18n } = useLingui()
+
+  const resourceTypes = [
+    {
+      key: 'technical-resource',
+      label: i18n._(t`Technical Resources`),
+      title: 'technical_resource',
+    },
+    { key: 'event', label: i18n._(t`Events`), title: 'event' },
+    { key: 'technology', label: i18n._(t`Technologies`), title: 'technology' },
+    {
+      key: 'capacity-building',
+      label: i18n._(t`Capacity Development`),
+      title: 'capacity building',
+    },
+    { key: 'initiative', label: i18n._(t`Initiatives`), title: 'initiative' },
+    {
+      key: 'action-plan',
+      label: i18n._(t`Action Plans`),
+      title: 'action_plan',
+    },
+    { key: 'policy', label: i18n._(t`Policies`), title: 'policy' },
+    {
+      key: 'financing-resource',
+      label: i18n._(t`Financing Resources`),
+      title: 'financing_resource',
+    },
+  ]
+
+  return resourceTypes
+}
 
 const hideFilterList = [
   'offset',
@@ -64,9 +73,13 @@ const FilterBar = ({
     multiCountry: false,
   })
 
+  const resourceTypes = useResourceTypes()
+
+  console.log(resourceTypes, 'resourceTypes')
+
   const allResources = totalCount
     ?.filter((array) =>
-      resourceTypes.some(
+      resourceTypes?.some(
         (filter) =>
           array.topic === filter.title && filter.title !== 'capacity building'
       )
@@ -118,15 +131,7 @@ const FilterBar = ({
     />
   )
 
-  const resetFilter = () => {
-    const newQuery = {}
-
-    const newParams = new URLSearchParams(newQuery)
-    history.push({
-      pathname: pathname,
-      search: newParams.toString(),
-    })
-  }
+  const { i18n } = useLingui()
 
   return (
     <div className="filter-bar">
@@ -188,7 +193,7 @@ const FilterBar = ({
                     'XX'}
                 </b>
               </div>
-              <span>{t.label}</span>
+              <span>{i18n._(t.label)}</span>
             </li>
           ))}
         </ul>

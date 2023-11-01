@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import { CSSTransition } from 'react-transition-group'
 import api from '../../utils/api'
 import FilterBar from './filter-bar'
-import { resourceTypes } from './filter-bar'
+import { useResourceTypes } from './filter-bar'
 import FilterModal from './filter-modal'
 import ResourceCards, {
   ResourceCard,
@@ -55,6 +55,8 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
       acc + (countData?.find((it) => it.topic === topic)?.count || 0),
     0
   )
+
+  const resourceTypes = useResourceTypes()
 
   const allResources = totalCount
     ?.filter((array) =>
