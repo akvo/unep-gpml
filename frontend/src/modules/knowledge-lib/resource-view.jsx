@@ -313,7 +313,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
         </div>
         {(view === 'map' || !view || view === 'topic') && (
           <div style={{ position: 'relative' }}>
-            {data?.results.length === 0 ? (
+            {data?.results?.length === 0 ? (
               <div className="no-data">
                 No data to show for the selected filters!
               </div>
