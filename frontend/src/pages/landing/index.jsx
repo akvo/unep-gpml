@@ -663,7 +663,6 @@ const LatestNews = () => {
     )
       .then((d) => d.json())
       .then((d) => {
-        console.log(transformStrapiResponse(d.data))
         setItems(transformStrapiResponse(d.data))
         setLoading(false)
       })
