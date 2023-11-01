@@ -2,7 +2,6 @@ import axios from 'axios'
 import styles from './style.module.scss'
 import moment from 'moment'
 import Head from 'next/head'
-import { Footer } from '../landing'
 
 const StrapiPage = ({ pageData }) => {
   return (
@@ -20,7 +19,6 @@ const StrapiPage = ({ pageData }) => {
           dangerouslySetInnerHTML={{ __html: pageData.attributes.content }}
         />
       </div>
-      <Footer />
     </div>
   )
 }

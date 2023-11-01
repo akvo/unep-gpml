@@ -10,6 +10,7 @@ import {
   Select,
   Dropdown,
   Menu,
+  notification,
 } from 'antd'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -38,7 +39,6 @@ import { Trans, t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 import { loadCatalog } from '../../translations/utils'
 import { UIStore } from '../../store'
-import api from '../../utils/api'
 import { useRouter } from 'next/router'
 import { stripHtml, transformStrapiResponse } from '../../utils/misc'
 
@@ -64,7 +64,6 @@ const Landing = (props) => {
       <Partnership {...props} />
       <Partners />
       <HelpCentre />
-      <Footer />
     </div>
   )
 }
@@ -664,7 +663,6 @@ const LatestNews = () => {
     )
       .then((d) => d.json())
       .then((d) => {
-        console.log(transformStrapiResponse(d.data))
         setItems(transformStrapiResponse(d.data))
         setLoading(false)
       })
@@ -1191,133 +1189,6 @@ const HelpCentre = () => {
         </Button>
       </div>
     </div>
-  )
-}
-
-export const Footer = () => {
-  const [form] = Form.useForm()
-
-  const onFinish = (values) => {
-    console.log('Finish:', values)
-  }
-  return (
-    <footer className={styles.footerSection}>
-      <div className="container">
-        <div className="footer-items">
-          <div className="footer-item">
-            <strong className="p-l">GPML Digital Platform</strong>
-            <div className="contact-us">
-              <p className="p-m">
-                <Trans>Contact Us</Trans>
-              </p>
-              <a href="mailto:unep-gpmarinelitter@un.org" className="p-m">
-                unep-gpmarinelitter@un.org
-              </a>
-            </div>
-          </div>
-          {/* <div className="footer-item">
-            <h6 className="title">About us</h6>
-            <ul>
-              <li>
-                <Link href="/landing">Who we are</Link>
-              </li>
-              <li>
-                <Link href="/landing">What we do</Link>
-              </li>
-              <li>
-                <Link href="/landing">About the GPML Digital platform</Link>
-              </li>
-            </ul>
-          </div> */}
-          <div className="footer-item">
-            <h6 className="title">
-              <Trans>GPML Tools</Trans>
-            </h6>
-            <ul>
-              <li>
-                <Link href="/landing">
-                  <Trans>Show all tools</Trans>
-                </Link>
-              </li>
-            </ul>
-          </div>
-          <div className="footer-item">
-            <h6 className="title">
-              <Trans>Join Newsletter</Trans>
-            </h6>
-            <div className="footer-newsletter">
-              <div>
-                <p className="h-xs">
-                  <Trans>
-                    Stay tuned with the GPML latest news and events!
-                  </Trans>
-                </p>
-              </div>
-              <div className="newsletter-container">
-                <Form
-                  form={form}
-                  name="newsletter"
-                  layout="inline"
-                  onFinish={onFinish}
-                >
-                  <Form.Item name="email">
-                    <Input type="email" placeholder={t`Enter your email`} />
-                  </Form.Item>
-                  <Form.Item shouldUpdate>
-                    {() => (
-                      <button type="submit">
-                        <ArrowRight viewBox="0 0 15 24" />
-                      </button>
-                    )}
-                  </Form.Item>
-                </Form>
-              </div>
-              <div>
-                <h6>
-                  <Trans>Follow Us</Trans>
-                </h6>
-                <ul className="social-links">
-                  <li>
-                    <a
-                      href="https://ke.linkedin.com/company/global-partnership-on-marine-litter"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <LinkedinIcon />
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="https://www.youtube.com/channel/UCoWXFwDeoD4c9GoXzFdm9Bg"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <YoutubeIcon />
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        <hr />
-        <div className="footer-bar">
-          <div>
-            <p className="h-xxs">
-              <Trans>
-                Copyright © {moment().format('YYYY')} All rights reserved
-              </Trans>
-            </p>
-          </div>
-          <div className="footer-confirm-cookies">
-            <Trans>
-              <p className="h-xxs">We use cookies for better service.</p>
-              <Button type="link">Accept</Button>
-            </Trans>
-          </div>
-        </div>
-      </div>
-    </footer>
   )
 }
 
