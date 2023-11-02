@@ -399,10 +399,11 @@ const Workspace = ({ profile }) => {
                     }
                     return [p]
                   })
-                  const progressValue =
+                  const progressValue = Math.floor(
                     (allSteps.filter((a) => a.checked).length /
                       allSteps.length) *
-                    100
+                      100
+                  )
                   const countryName = kebabCase(item?.country?.name)
                   return (
                     <li key={index}>
