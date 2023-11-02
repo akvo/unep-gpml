@@ -81,6 +81,21 @@
                   margin-bottom: 0;
                 }
               }
+              h5,
+              p {
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              }
+              h5 {
+                -webkit-line-clamp: 2;
+              }
+              p {
+                font-size: 16px;
+                color: $primaryDarkBlue4;
+                -webkit-line-clamp: 3;
+              }
             }
             .popover-container {
               width: 50%;
