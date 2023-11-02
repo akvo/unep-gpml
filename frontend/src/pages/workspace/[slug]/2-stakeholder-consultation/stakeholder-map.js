@@ -127,7 +127,7 @@ const StakeholderMapTable = ({
         dataIndex: 'focalPoints',
       },
       {
-        title: t`Strengths`,
+        title: t`Initiatives`,
         dataIndex: 'strengths',
       },
     ]
@@ -226,12 +226,12 @@ const StakeholderMapTable = ({
        * eg: types[]=foo&types=bar
        * tobe: types=foo&types=bar
        */
-      const tags = params?.tags || []
+      const tags = params?.tags ? [...params.tags, countryTag] : [countryTag]
       const allParams = {
         ...params,
         ps_country_iso_code_a2: psItem?.country?.isoCodeA2,
         ps_bookmark_sections_keys: SECTION_KEY,
-        tags: [...tags, countryTag],
+        tags,
       }
       const queryString = Object.keys(allParams)
         .flatMap((field) => {
@@ -250,9 +250,14 @@ const StakeholderMapTable = ({
         `/organisations?page=${page}&${queryString}`
       )
       const { results, counts } = data || {}
-      const _entities = results.map((r) => ({
-        ...r,
-      }))
+      const _entities = results.filter((r) => {
+        if (params?.tags?.length) {
+          return (
+            r?.tags?.filter((t) => tags.includes(t.tag))?.length === tags.length
+          )
+        }
+        return r
+      })
       setEntities(_entities)
 
       if (tableParams?.pagination?.total === undefined) {
