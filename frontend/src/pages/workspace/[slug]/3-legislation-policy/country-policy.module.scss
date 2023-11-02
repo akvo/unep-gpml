@@ -37,6 +37,9 @@
         .resource-title {
           display: block;
           text-align: left;
+          width: 100%;
+          overflow: hidden;
+          text-overflow: ellipsis;
           .badge {
             display: inline-block;
             transform: translateY(3px);
