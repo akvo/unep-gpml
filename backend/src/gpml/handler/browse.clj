@@ -335,7 +335,7 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
 (defn- add-geo-coverage-country-groups-filters
   [{:keys [db]} {:keys [country-groups] :as api-search-opts}]
   (let [opts {:filters {:country-groups country-groups}}
-        country-group-countries (db.country-group/get-country-groups-countries db opts)
+        country-group-countries (db.country-group/get-country-groups-countries (:spec db) opts)
         geo-coverage-countries (map :id country-group-countries)]
     (assoc api-search-opts
            :geo-coverage-country-groups country-groups
