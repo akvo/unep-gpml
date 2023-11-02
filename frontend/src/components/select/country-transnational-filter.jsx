@@ -133,6 +133,7 @@ const CountryTransnationalFilter = ({
           showSearch
           allowClear
           dropdownClassName="multiselection-dropdown"
+          dropdownMatchSelectWidth={false}
           mode={countrySelectMode || ''}
           placeholder={t`Countries`}
           options={countryOpts}
@@ -162,6 +163,7 @@ const CountryTransnationalFilter = ({
           allowClear
           virtual={false}
           mode={multiCountrySelectMode || ''}
+          dropdownMatchSelectWidth={false}
           placeholder={t`Multi-Country`}
           optionFilterProp="children"
           filterOption={(input, option) => {
@@ -171,7 +173,6 @@ const CountryTransnationalFilter = ({
           }}
           value={multiCountry}
           onChange={handleChangeMultiCountry}
-          dropdownMatchSelectWidth={325}
           showArrow
           suffixIcon={<SearchIcon />}
         >
