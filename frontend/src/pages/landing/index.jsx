@@ -367,6 +367,7 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
                   dropdownVisible,
                   setDropdownVisible,
                 }}
+                placeholder={<Trans>Globally</Trans>}
                 value={value}
               />
             </div>
