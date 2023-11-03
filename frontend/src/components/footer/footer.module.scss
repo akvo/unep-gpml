@@ -58,7 +58,8 @@
             font-size: $fzXS;
             line-height: $lhXS;
             font-weight: 500;
-            color: $primaryNeutral4;
+            color: #fff;
+            text-decoration: underline;
             &:hover {
               color: $primaryWhite;
             }
