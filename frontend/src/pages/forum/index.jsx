@@ -6,6 +6,7 @@ import Button from '../../components/button'
 import { UIStore } from '../../store'
 import api from '../../utils/api'
 import ForumMembers from '../../modules/forum/forum-members'
+import { Trans, t } from '@lingui/macro'
 
 const DynamicForumModal = dynamic(
   () => import('../../modules/forum/forum-modal'),
@@ -49,7 +50,9 @@ const Forum = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
        */
       if (profile?.id) {
         const { data } = await api.get('/chat/channel/all')
-        const _allForums = data.map((d) => ({ ...d, membersFetched: false }))
+        const _allForums = data
+          .map((d) => ({ ...d, membersFetched: false }))
+          .filter((d) => !d?.name?.includes('plastic-strategy-forum')) // Exclude PS channel
         setAllForums(_allForums)
         setLoading(false)
       }
@@ -86,16 +89,22 @@ const Forum = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
   return (
     <div className="container">
       <div className={styles.forumHome}>
-        <span className="h-xs title">Forums</span>
+        <span className="h-xs title">
+          <Trans>Forums</Trans>
+        </span>
         <DynamicMyForum {...{ handleOnView }} />
 
         <div className="header">
           <div className="jumbotron">
-            <h2>All Forums</h2>
+            <h2>
+              <Trans>All Forums</Trans>
+            </h2>
             <p className="h-xs">
-              Engage in forums across a wide variety of subjects and sectors
-              currently ongoing. Join the public channels or request to join the
-              private channels.
+              <Trans>
+                Engage in forums across a wide variety of subjects and sectors
+                currently ongoing. Join the public channels or request to join
+                the private channels.
+              </Trans>
             </p>
           </div>
         </div>
@@ -109,10 +118,13 @@ const Forum = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
                 <Card>
                   <div className="channel">
                     <span className={styles.forumType}>
-                      {item.t === 'p' ? 'private ' : 'public '}channel
+                      {item.t === 'p' ? t`private` : t`public`} {t`channel`}
                     </span>
                     <h5>{item.name}</h5>
-                    <p className={styles.forumDesc}>{item?.description}</p>
+                    <p className={styles.forumDesc}>
+                      {item?.description?.substring(0, 120)}
+                      {item?.description?.length > 120 && '...'}
+                    </p>
                   </div>
                   <div className="flex">
                     <ForumMembers forum={item} />
@@ -122,7 +134,7 @@ const Forum = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
                         onClick={() => handleOnView(item)}
                         ghost
                       >
-                        View
+                        <Trans>View</Trans>
                       </Button>
                     </div>
                   </div>
@@ -131,9 +143,7 @@ const Forum = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
             )}
           />
         </section>
-        <DynamicForumModal
-          {...{ viewModal, setViewModal, allForums }}
-        />
+        <DynamicForumModal {...{ viewModal, setViewModal, allForums }} />
       </div>
     </div>
   )
