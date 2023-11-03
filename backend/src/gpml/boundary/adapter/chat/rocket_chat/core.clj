@@ -233,8 +233,19 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
+(defn- add-channel-details
+  [{:keys [logger api-domain-url] :as adapter} channel]
+  (let [result (if (= (:t channel) "c")
+                 (get-public-channel-users adapter (:id channel) {})
+                 (get-private-channel-users adapter (:id channel) {}))]
+    (if (:success? result)
+      (add-channel-avatar-url api-domain-url (assoc channel :users (:users result)))
+      (do
+        (log logger :error :failed-to-get-channel-users result)
+        (add-channel-avatar-url api-domain-url channel)))))
+
 (defn- get-public-channels*
-  [{:keys [logger api-domain-url api-key api-user-id] :as adapter} opts]
+  [{:keys [logger api-key api-user-id] :as adapter} opts]
   (try
     (let [query-params (parse-query-and-fields-opts opts)
           {:keys [status body]}
@@ -248,7 +259,7 @@
         {:success? true
          :channels (->> (:channels body)
                         (cske/transform-keys ->kebab-case)
-                        (map (partial add-channel-avatar-url api-domain-url)))}
+                        (map (partial add-channel-details adapter)))}
         {:success? false
          :reason :failed-to-get-public-channels
          :error-details body}))
@@ -260,7 +271,7 @@
        :error-details {:msg (ex-message t)}})))
 
 (defn- get-private-channels*
-  [{:keys [logger api-domain-url api-key api-user-id] :as adapter} opts]
+  [{:keys [logger api-key api-user-id] :as adapter} opts]
   (try
     (let [query-params (parse-query-and-fields-opts opts)
           {:keys [status body]}
@@ -274,7 +285,7 @@
         {:success? true
          :channels (->> (:groups body)
                         (cske/transform-keys ->kebab-case)
-                        (map (partial add-channel-avatar-url api-domain-url)))}
+                        (map (partial add-channel-details adapter)))}
         {:success? false
          :reason :failed-to-get-private-channels
          :error-details body}))
@@ -284,17 +295,6 @@
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
-
-(defn- add-channel-details
-  [{:keys [logger api-domain-url] :as adapter} channel]
-  (let [result (if (= (:t channel) "c")
-                 (get-public-channel-users adapter (:id channel) {})
-                 (get-private-channel-users adapter (:id channel) {}))]
-    (if (:success? result)
-      (add-channel-avatar-url api-domain-url (assoc channel :users (:users result)))
-      (do
-        (log logger :error :failed-to-get-channel-users result)
-        (add-channel-avatar-url api-domain-url channel)))))
 
 (defn- get-all-channels*
   [{:keys [logger api-key api-user-id] :as adapter} opts]
@@ -312,14 +312,37 @@
                                    :query-params (cske/transform-keys ->camelCaseString query-params)
                                    :headers (get-auth-headers api-key api-user-id)
                                    :as :json-keyword-keys})]
-      (if (<= 200 status 299)
-        {:success? true
-         :channels (->> (:rooms body)
-                        (cske/transform-keys ->kebab-case)
-                        (map (partial add-channel-details adapter)))}
+      (if-not (<= 200 status 299)
         {:success? false
          :reason :failed-to-get-all-channels
-         :error-details body}))
+         :error-details {:result body}}
+        (let [channels (:rooms body)
+              public-channels-ids (->> channels
+                                       (filter #(= (:t %) "c"))
+                                       (map :_id))
+              private-channels-ids (->> channels
+                                        (filter #(= (:t %) "p"))
+                                        (map :_id))
+              {success? :success?
+               private-channels :channels
+               :as get-private-channels-result}
+              (get-private-channels* adapter
+                                     {:query {:_id {:$in private-channels-ids}}})]
+          (if-not success?
+            {:success? false
+             :reason :failed-to-get-user-private-channels
+             :error-details get-private-channels-result}
+            (let [{success? :success?
+                   public-channels :channels
+                   :as get-public-channels-result}
+                  (get-public-channels* adapter
+                                        {:query {:_id {:$in public-channels-ids}}})]
+              (if success?
+                {:success? true
+                 :channels (concat private-channels public-channels)}
+                {:success? false
+                 :reason :failed-to-get-user-public-channels
+                 :error-details get-public-channels-result}))))))
     (catch Throwable t
       (log logger :error :failed-to-get-all-channels {:exception-message (ex-message t)
                                                       :stack-trace (map str (.getStackTrace t))})
@@ -409,6 +432,28 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
+(defn- add-user-to-public-channel*
+  [{:keys [logger api-key api-user-id] :as adapter} user-id channel-id]
+  (try
+    (let [{:keys [status body]}
+          (http-client/do-request logger
+                                  {:url (build-api-endpoint-url adapter "/channels.invite")
+                                   :method :post
+                                   :body (json/->json {:roomId channel-id :userId user-id})
+                                   :headers (get-auth-headers api-key api-user-id)
+                                   :as :json-keyword-keys})]
+      (if (<= 200 status 299)
+        {:success? true}
+        {:success? false
+         :reason :failed-to-add-user-to-public-channel
+         :error-details body}))
+    (catch Throwable t
+      (log logger :error :failed-to-add-user-to-public-channel {:exception-message (ex-message t)
+                                                                :stack-trace (map str (.getStackTrace t))})
+      {:success? false
+       :reason :exception
+       :error-details {:msg (ex-message t)}})))
+
 (defn- create-private-channel*
   [{:keys [logger api-key api-user-id] :as adapter} channel]
   (try
@@ -441,6 +486,38 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
+(defn- create-public-channel*
+  [{:keys [logger api-key api-user-id] :as adapter} channel]
+  (try
+    (let [req-body (cske/transform-keys
+                    ->camelCaseString
+                    ;; We want the admin user calling this endpoint to
+                    ;; be added to the newly created
+                    ;; channel. Otherwise we don't have necessary
+                    ;; permissions to manage it (this is a recurring
+                    ;; issue in RocketChat API and there are open
+                    ;; issue to fix this).
+                    (assoc channel :exclude-self false))
+          {:keys [status body]}
+          (http-client/do-request logger
+                                  {:url (build-api-endpoint-url adapter "/channels.create")
+                                   :method :post
+                                   :body (json/->json req-body)
+                                   :headers (get-auth-headers api-key api-user-id)
+                                   :as :json-keyword-keys})]
+      (if (<= 200 status 299)
+        {:success? true
+         :channel (cske/transform-keys ->kebab-case (:channel body))}
+        {:success? false
+         :reason :failed-to-create-channel-channel
+         :error-details body}))
+    (catch Throwable t
+      (log logger :error :failed-to-create-channel-channel {:exception-message (ex-message t)
+                                                            :stack-trace (map str (.getStackTrace t))})
+      {:success? false
+       :reason :exception
+       :error-details {:msg (ex-message t)}})))
+
 (defn- delete-private-channel*
   [{:keys [logger api-key api-user-id] :as adapter} channel-id]
   (try
@@ -459,6 +536,28 @@
     (catch Throwable t
       (log logger :error :failed-to-delete-private-channel {:exception-message (ex-message t)
                                                             :stack-trace (map str (.getStackTrace t))})
+      {:success? false
+       :reason :exception
+       :error-details {:msg (ex-message t)}})))
+
+(defn- delete-public-channel*
+  [{:keys [logger api-key api-user-id] :as adapter} channel-id]
+  (try
+    (let [{:keys [status body]}
+          (http-client/do-request logger
+                                  {:url (build-api-endpoint-url adapter "/channels.delete")
+                                   :method :post
+                                   :body (json/->json {:roomId channel-id})
+                                   :headers (get-auth-headers api-key api-user-id)
+                                   :as :json-keyword-keys})]
+      (if (<= 200 status 299)
+        {:success? true}
+        {:success? false
+         :reason :failed-to-delete-public-channel
+         :error-details body}))
+    (catch Throwable t
+      (log logger :error :failed-to-delete-public-channel {:exception-message (ex-message t)
+                                                           :stack-trace (map str (.getStackTrace t))})
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
@@ -485,6 +584,32 @@
     (catch Throwable t
       (log logger :error :failed-to-set-private-channel-custom-fields {:exception-message (ex-message t)
                                                                        :stack-trace (map str (.getStackTrace t))})
+      {:success? false
+       :reason :exception
+       :error-details {:msg (ex-message t)}})))
+
+(defn- set-public-channel-custom-fields*
+  [{:keys [logger api-key api-user-id] :as adapter} channel-id custom-fields]
+  (try
+    (let [req-body (cske/transform-keys
+                    ->camelCaseString
+                    {:room-id channel-id :custom-fields custom-fields})
+          {:keys [status body]}
+          (http-client/do-request logger
+                                  {:url (build-api-endpoint-url adapter "/channels.setCustomFields")
+                                   :method :post
+                                   :body (json/->json req-body)
+                                   :headers (get-auth-headers api-key api-user-id)
+                                   :as :json-keyword-keys})]
+      (if (<= 200 status 299)
+        {:success? true
+         :channel (cske/transform-keys ->kebab-case (:group body))}
+        {:success? false
+         :reason :failed-to-set-public-channel-custom-fields
+         :error-details body}))
+    (catch Throwable t
+      (log logger :error :failed-to-set-public-channel-custom-fields {:exception-message (ex-message t)
+                                                                      :stack-trace (map str (.getStackTrace t))})
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
@@ -519,9 +644,17 @@
     (remove-user-from-channel* this user-id channel-id channel-type))
   (add-user-to-private-channel [this user-id channel-id]
     (add-user-to-private-channel* this user-id channel-id))
+  (add-user-to-public-channel [this user-id channel-id]
+    (add-user-to-public-channel* this user-id channel-id))
   (create-private-channel [this channel]
     (create-private-channel* this channel))
   (set-private-channel-custom-fields [this channel-id custom-fields]
     (set-private-channel-custom-fields* this channel-id custom-fields))
   (delete-private-channel [this channel-id]
-    (delete-private-channel* this channel-id)))
+    (delete-private-channel* this channel-id))
+  (create-public-channel [this channel]
+    (create-public-channel* this channel))
+  (set-public-channel-custom-fields [this channel-id custom-fields]
+    (set-public-channel-custom-fields* this channel-id custom-fields))
+  (delete-public-channel [this channel-id]
+    (delete-public-channel* this channel-id)))

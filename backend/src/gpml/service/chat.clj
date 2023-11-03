@@ -150,7 +150,11 @@
 
 (defn get-public-channels
   [{:keys [chat-adapter]}]
-  (chat/get-public-channels chat-adapter {}))
+  (let [result (chat/get-public-channels chat-adapter {})]
+    (if (:success? result)
+      (update result :channels (fn [channels]
+                                 (remove #(get-in % [:custom-fields :ps-country-iso-code-a-2]) channels)))
+      result)))
 
 (defn- add-users-pictures-urls
   [config users]
@@ -167,45 +171,64 @@
    users))
 
 (defn get-all-channels
-  [{:keys [db chat-adapter] :as config} opts]
-  (let [;; We always ask only for the Public `c` and Private `p`
-        ;; channels. Because RocketChat has other channel types that are not
-        ;; used by GPML.
-        result (chat/get-all-channels chat-adapter (merge {:types ["c" "p"]} opts))]
-    (if-not (:success? result)
-      result
-      (let [channels (:channels result)
-            chat-accounts-ids (set (reduce
-                                    (fn [users-accounts-ids {:keys [users]}]
-                                      (apply conj users-accounts-ids (map :id users)))
-                                    []
-                                    channels))
-            search-opts {:related-entities #{:organisation :picture-file}
-                         :filters {:chat-accounts-ids chat-accounts-ids}}
-            result (try
-                     {:success? true
-                      :stakeholders (db.sth/get-stakeholders (:spec db)
-                                                             search-opts)}
-                     (catch Throwable t
-                       {:success? false
-                        :reason :exception
-                        :error-details {:msg (ex-message t)}}))]
-        (if-not (:success? result)
-          result
-          (let [gpml-users (->> (:stakeholders result)
-                                (add-users-pictures-urls config)
-                                (medley/index-by :chat_account_id))
-                updated-channels
-                (map
-                 (fn [channel]
-                   (update channel :users
-                           (fn [users]
-                             (map
-                              (fn [user]
-                                (merge user (get gpml-users (:id user))))
-                              users))))
-                 channels)]
-            (assoc result :channels updated-channels)))))))
+  [{:keys [db chat-adapter logger] :as config} opts]
+  (let [transactions
+        [{:txn-fn
+          (fn tx-get-all-channels
+            [{:keys [opts] :as context}]
+            (let [;; We always ask only for the Public `c` and Private `p`
+                  ;; channels. Because RocketChat has other channel types that are not
+                  ;; used by GPML.
+                  start (System/currentTimeMillis)
+                  result (chat/get-all-channels chat-adapter (merge {:types ["c" "p"]} opts))
+                  _ (prn (- (System/currentTimeMillis) start))]
+              (if (:success? result)
+                (assoc context :channels (:channels result))
+                (assoc context
+                       :success? false
+                       :reason :failed-to-get-all-channels
+                       :error-details {:result result}))))}         
+         {:txn-fn
+          (fn tx-add-channels-users-details
+            [{:keys [channels] :as context}]
+            (let [channels (remove #(get-in % [:custom-fields :ps-country-iso-code-a-2]) channels)
+                  chat-accounts-ids (set (reduce
+                                          (fn [users-accounts-ids {:keys [users]}]
+                                            (apply conj users-accounts-ids (map :id users)))
+                                          []
+                                          channels))
+                  search-opts {:related-entities #{:organisation :picture-file}
+                               :filters {:chat-accounts-ids chat-accounts-ids}}
+                  result (try
+                           {:success? true
+                            :stakeholders (db.sth/get-stakeholders (:spec db)
+                                                                   search-opts)}
+                           (catch Throwable t
+                             {:success? false
+                              :reason :exception
+                              :error-details {:msg (ex-message t)}}))]
+              (if-not (:success? result)
+                (assoc context
+                       :success? false
+                       :reason :failed-to-get-channels-users-details
+                       :error-details {:result result})
+                (let [gpml-users (->> (:stakeholders result)
+                                      (add-users-pictures-urls config)
+                                      (medley/index-by :chat_account_id))
+                      updated-channels
+                      (map
+                       (fn [channel]
+                         (update channel :users
+                                 (fn [users]
+                                   (map
+                                    (fn [user]
+                                      (merge user (get gpml-users (:id user))))
+                                    users))))
+                       channels)]
+                  (assoc context :channels updated-channels)))))}]
+        context {:success? true
+                 :opts opts}]
+    (tht/thread-transactions logger transactions context)))
 
 (defn remove-user-from-channel
   [{:keys [chat-adapter]} chat-account-id channel-id channel-type]
@@ -220,6 +243,12 @@
                                     chat-account-id
                                     channel-id))
 
+(defn add-user-to-public-channel
+  [{:keys [chat-adapter]} chat-account-id channel-id]
+  (chat/add-user-to-public-channel chat-adapter
+                                   chat-account-id
+                                   channel-id))
+
 (defn create-private-channel
   [{:keys [chat-adapter]} channel]
   (chat/create-private-channel chat-adapter channel))
@@ -228,9 +257,21 @@
   [{:keys [chat-adapter]} channel-id custom-fields]
   (chat/set-private-channel-custom-fields chat-adapter channel-id custom-fields))
 
+(defn create-public-channel
+  [{:keys [chat-adapter]} channel]
+  (chat/create-public-channel chat-adapter channel))
+
+(defn set-public-channel-custom-fields
+  [{:keys [chat-adapter]} channel-id custom-fields]
+  (chat/set-public-channel-custom-fields chat-adapter channel-id custom-fields))
+
 (defn delete-private-channel
   [{:keys [chat-adapter]} channel-id]
   (chat/delete-private-channel chat-adapter channel-id))
+
+(defn delete-public-channel
+  [{:keys [chat-adapter]} channel-id]
+  (chat/delete-public-channel chat-adapter channel-id))
 
 (defn send-private-channel-invitation-request
   [{:keys [db mailjet-config]} user channel-id channel-name]
