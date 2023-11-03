@@ -16,7 +16,7 @@ import { I18nProvider } from '@lingui/react'
 import { useLinguiInit } from '../translations/utils'
 
 function MyApp({ Component, pageProps }) {
-  const initializedI18n = useLinguiInit(pageProps.i18n)
+  const i18n = useLinguiInit(pageProps.i18n)
   const router = useRouter()
   const { profile } = UIStore.useState((s) => ({
     profile: s.profile,
@@ -277,7 +277,7 @@ function MyApp({ Component, pageProps }) {
           typeof window !== 'undefined' ? window.location.origin : ''
         }
       >
-        <I18nProvider i18n={initializedI18n}>
+        <I18nProvider i18n={i18n}>
           {getLayout(<Component {...pageProps} {...componentProps} />)}
         </I18nProvider>
       </Auth0Provider>

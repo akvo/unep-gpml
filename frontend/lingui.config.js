@@ -1,5 +1,3 @@
-const { formatter } = require('@lingui/format-po')
-
 const locales = ['en', 'fr', 'es']
 
 if (process.env.NODE_ENV !== 'production') {

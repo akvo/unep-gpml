@@ -19,6 +19,7 @@ import { MenuToggle, NavMobile, NavDesktop } from '../components/nav'
 import GpmlCircle from '../components/gpml-circle'
 import axios from 'axios'
 import { deepTranslate } from '../utils/misc'
+import { changeLanguage } from '../translations/utils'
 
 const archia = localFont({
   src: [
@@ -232,9 +233,11 @@ const NewLayout = ({
                         })}
                         key={lang.key}
                         onClick={() => {
-                          router.push(router.pathname, router.pathname, {
-                            locale: lang.key.toLowerCase(),
-                          })
+                          console.log(
+                            lang.key.toLowerCase(),
+                            'lang.key.toLowerCase()'
+                          )
+                          changeLanguage(lang.key.toLowerCase(), router)
                         }}
                       >
                         {flags[lang.key]}
