@@ -24,6 +24,7 @@ import {
   PetroExtractionIcon,
   ConsumptionIcon,
   SearchIcon,
+  CloseIcon,
 } from '../../../../components/icons'
 import ModalAddEntity from '../../../../modules/flexible-forms/entity-modal/add-entity-modal'
 import styles from './stakeholder-map.module.scss'
@@ -129,6 +130,10 @@ const StakeholderMapTable = ({
       {
         title: t`Strengths`,
         dataIndex: 'strengths',
+      },
+      {
+        title: '',
+        dataIndex: 'removex',
       },
     ]
   }, [tableFilters])
@@ -433,6 +438,23 @@ const StakeholderMapTable = ({
                   <Link href={`/organisation/${it.id}`} target="_blank">
                     {name}
                   </Link>
+                )
+              }}
+            />
+          )
+        }
+        if (col.dataIndex === 'removex') {
+          return (
+            <Column
+              {...col}
+              key={cx}
+              render={() => {
+                return (
+                  <>
+                    <div className="remove-btn">
+                      <CloseIcon />
+                    </div>
+                  </>
                 )
               }}
             />
