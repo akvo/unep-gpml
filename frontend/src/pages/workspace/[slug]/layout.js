@@ -49,7 +49,6 @@ const NestedLayout = ({ children }) => {
   const pathSlugs = [...router.route.substring(1).split('/'), '']
   const { slug, step: stepURL } = router.query
   const profile = UIStore.useState((s) => s.profile)
-  console.log(router)
 
   const getBySlug = (step, _slug, indexStep = 0) =>
     (step?.slug === _slug || (step?.slug === '' && !_slug)) &&

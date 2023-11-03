@@ -18,7 +18,6 @@ const View = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
   const country = router.query.slug?.replace('plastic-strategy-', '')
   const channelName = `${PREFIX_CHANNEL_NAME}${country}`
   const channelType = 'p'
-  console.log('channelName', channelName)
 
   return (
     <Skeleton loading={loadingProfile} active>
