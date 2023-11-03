@@ -10,12 +10,12 @@
   min-width: 330px;
   background-color: #fff;
   box-shadow: 0px 4px 20px 0px rgba(173, 186, 240, 0.31);
-  position: sticky;
   top: 0;
   z-index: 100;
   :global {
     .sticky {
-      position: static;
+      position: sticky;
+      // position: static;
       top: 0;
     }
     .head {
@@ -158,6 +158,15 @@
           .check:after {
             display: none;
           }
+        }
+      }
+      .step.forum {
+        &:not(.selected) {
+          background-color: #e7f3ff;
+        }
+        svg {
+          margin-right: 12px;
+          margin-left: 3px;
         }
       }
     }
