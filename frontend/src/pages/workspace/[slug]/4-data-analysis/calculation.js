@@ -22,7 +22,6 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
         .then((d) => {
           setItems(d.data?.results)
           setLoading(false)
-          console.log(d.data)
         })
   }, [countryCode])
   const handleBookmark = (item, bookmark = true) => {

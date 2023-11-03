@@ -17,7 +17,7 @@ const ForumIframe = ({
   const isLoggedIn = ChatStore.useState((s) => s.isLoggedIn)
 
   const handleOnLoadIframe = () => {
-    if (iFrameCurrent && !isReady) {
+    if (!isReady) {
       setTimeout(() => {
         /**
          * Added a 5 second delay
@@ -52,7 +52,7 @@ const ForumIframe = ({
     /**
      * It should be triggered when the isAuthenticated & loadingProfile are true
      */
-    const isAuth0 = isAuthenticated && loadingProfile
+    const isAuth0 = isAuthenticated && !loadingProfile
     if (
       iFrameCurrent &&
       preload &&

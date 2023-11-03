@@ -180,9 +180,12 @@ const Workspace = ({ profile }) => {
         ] = await Promise.allSettled(endpoints)
         const { data: _myForums } = myForums || {}
         const { data: _allForums } = allForums || {}
-        const _forums = _myForums?.length
+        let _forums = _myForums?.length
           ? _myForums.slice(0, 3)
           : _allForums?.slice(0, 3)?.map((a) => ({ ...a, isView: true }))
+        _forums = _forums.filter(
+          (f) => !f?.name?.includes('plastic-strategy-forum')
+        ) // Exclude PS channel
         setForums(_forums)
         setLoading({
           forums: false,

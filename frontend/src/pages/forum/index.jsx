@@ -49,7 +49,9 @@ const Forum = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
        */
       if (profile?.id) {
         const { data } = await api.get('/chat/channel/all')
-        const _allForums = data.map((d) => ({ ...d, membersFetched: false }))
+        const _allForums = data
+          .map((d) => ({ ...d, membersFetched: false }))
+          .filter((d) => !d?.name?.includes('plastic-strategy-forum')) // Exclude PS channel
         setAllForums(_allForums)
         setLoading(false)
       }
