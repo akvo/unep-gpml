@@ -115,8 +115,6 @@
          {:txn-fn
           (fn tx-add-team-member-to-ps-chat-channel
             [{:keys [ps-team-member plastic-strategy] :as context}]
-            (prn (:chat-account-id ps-team-member)
-                 (:chat-channel-id plastic-strategy))
             (let [result (srv.chat/add-user-to-public-channel config
                                                               (:chat-account-id ps-team-member)
                                                               (:chat-channel-id plastic-strategy))]

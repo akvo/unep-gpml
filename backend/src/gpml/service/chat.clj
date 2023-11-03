@@ -179,9 +179,7 @@
             (let [;; We always ask only for the Public `c` and Private `p`
                   ;; channels. Because RocketChat has other channel types that are not
                   ;; used by GPML.
-                  start (System/currentTimeMillis)
-                  result (chat/get-all-channels chat-adapter (merge {:types ["c" "p"]} opts))
-                  _ (prn (- (System/currentTimeMillis) start))]
+                  result (chat/get-all-channels chat-adapter (merge {:types ["c" "p"]} opts))]
               (if (:success? result)
                 (assoc context :channels (:channels result))
                 (assoc context
