@@ -151,6 +151,8 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
   ]
   const maxTags = 6
 
+  const { locale } = router
+
   useEffect(() => {
     let index = 0
     clearInterval(intidRef.current)
@@ -159,7 +161,22 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
       if (index >= items.length) index = 0
       setSelected(items[index].group)
     }, 5000)
+
+    return () => {
+      clearInterval(intidRef.current)
+    }
   }, [])
+
+  const isInitialMount = useRef(true)
+
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false
+    } else {
+      if (locale) setSelected(items[0].group)
+    }
+  }, [locale])
+
   const handleClickLabel = (item) => () => {
     setSelected(item.group)
     clearInterval(intidRef.current)
@@ -238,8 +255,6 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
       country={country || []}
       multiCountry={multiCountry || []}
       multiCountryLabelCustomIcon={true}
-      // countrySelectMode="multiple"
-      // multiCountrySelectMode="multiple"
       isExpert={true}
       disable={disable}
     />
