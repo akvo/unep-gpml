@@ -4,13 +4,22 @@ import { useEffect } from 'react'
 
 export async function loadCatalog(locale) {
   const { messages } = await import(`@lingui/loader!./locales/${locale}.po`)
-
   return messages
+}
+
+export async function changeLanguage(newLocale, router) {
+  const newMessages = await loadCatalog(newLocale)
+
+  i18n.load({ [newLocale]: newMessages })
+  i18n.activate(newLocale)
+
+  router.push(router.pathname, router.asPath, { locale: newLocale })
 }
 
 export function useLinguiInit(messages) {
   const router = useRouter()
   const locale = router.locale || router.defaultLocale
+
   const isClient = typeof window !== 'undefined'
 
   if (!isClient && locale !== i18n.locale) {
@@ -22,6 +31,7 @@ export function useLinguiInit(messages) {
 
   useEffect(() => {
     const localeDidChange = locale !== i18n.locale
+    console.log(localeDidChange, 'localeDidChange')
     if (localeDidChange) {
       i18n.loadAndActivate({ locale, messages })
     }
