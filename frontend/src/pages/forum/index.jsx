@@ -120,7 +120,7 @@ const Forum = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
                     <span className={styles.forumType}>
                       {item.t === 'p' ? t`private` : t`public`} {t`channel`}
                     </span>
-                    <h5>{item.name}</h5>
+                    <h5>{item.name?.replace(/[-_]/g, ' ')}</h5>
                     <p className={styles.forumDesc}>
                       {item?.description?.substring(0, 120)}
                       {item?.description?.length > 120 && '...'}
