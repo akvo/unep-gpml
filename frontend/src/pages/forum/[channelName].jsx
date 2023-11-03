@@ -58,7 +58,10 @@ const ForumDetails = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
     if (profile?.id && preload && Array.isArray(publicForums)) {
       setPreload(false)
       try {
-        const { data: myForums } = await api.get('/chat/user/channel')
+        const { data } = await api.get('/chat/user/channel')
+        const myForums = data.filter(
+          (d) => !d?.name?.includes('plastic-strategy-forum')
+        ) // Exclude PS channel
         ChatStore.update((s) => {
           s.myForums = myForums
         })
