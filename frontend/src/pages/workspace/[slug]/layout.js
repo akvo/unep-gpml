@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { message } from 'antd'
-import { Pointer, Check } from '../../../components/icons'
+import { Pointer, Check, Forum } from '../../../components/icons'
 import styles from './ps.module.scss'
 import { useRouter } from 'next/router'
 import classNames from 'classnames'
@@ -305,30 +305,50 @@ const NestedLayout = ({ children }) => {
                 )}
               </div>
             ))}
+            <div
+              className={classNames('step forum', {
+                selected: router.pathname === '/workspace/[slug]/forum',
+              })}
+            >
+              <Link href={`/workspace/${router.query?.slug}/forum`}>
+                <div className="stephead topsection">
+                  <Forum />
+                  <div className="label">
+                    <Trans>Forum</Trans>
+                  </div>
+                </div>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
-      <div className={styles.view}>
+      <div
+        className={classNames(styles.view, {
+          [styles.forumView]: router.pathname === '/workspace/[slug]/forum',
+        })}
+      >
         {children
           ? React.cloneElement(children, { psItem, psSteps, allSteps })
           : children}
       </div>
-      <div className={styles.bottomBar}>
-        <Button
-          type="ghost"
-          onClick={handleOnMarkAsComplete(!isCompleted)}
-          loading={marking}
-          className={classNames('mark-completed', { completed: isCompleted })}
-        >
-          <Check />
-          {isCompleted ? t`Completed` : `Mark as Completed`}
-        </Button>
-        {!router.pathname.includes('7-final-review') && (
-          <Button onClick={handleOnNext} withArrow>
-            <Trans>Next</Trans>
+      {router.pathname !== '/workspace/[slug]/forum' && (
+        <div className={styles.bottomBar}>
+          <Button
+            type="ghost"
+            onClick={handleOnMarkAsComplete(!isCompleted)}
+            loading={marking}
+            className={classNames('mark-completed', { completed: isCompleted })}
+          >
+            <Check />
+            {isCompleted ? t`Completed` : `Mark as Completed`}
           </Button>
-        )}
-      </div>
+          {!router.pathname.includes('7-final-review') && (
+            <Button onClick={handleOnNext} withArrow>
+              <Trans>Next</Trans>
+            </Button>
+          )}
+        </div>
+      )}
     </div>
   )
 }
