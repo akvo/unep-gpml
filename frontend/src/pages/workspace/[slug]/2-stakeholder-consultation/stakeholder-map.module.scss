@@ -2,6 +2,18 @@
 
 .stakeholderMapView {
   :global {
+    .remove-btn {
+      padding: 5px;
+      display: flex;
+      cursor: pointer;
+      svg {
+        width: 16px;
+        height: 16px;
+        path {
+          stroke: #646464;
+        }
+      }
+    }
     .title-section {
       h4 {
         margin-block-start: 0;
@@ -92,6 +104,7 @@
         margin: 24px 0;
       }
     }
+
     .add-section {
       width: 100%;
       max-width: 408px;
