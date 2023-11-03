@@ -33,7 +33,6 @@ module.exports = {
     if (process.env.REACT_APP_FEENV_STAGING) {
       domain = 'https://unep-gpml-staging.akvotest.org'
     }
-    console.log(domain)
     return [
       {
         source: '/api/:path*',
