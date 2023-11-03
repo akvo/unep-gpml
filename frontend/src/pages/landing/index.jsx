@@ -218,20 +218,12 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
         ...(value ? { country: true } : { country: false }),
       })
       if (!value) {
-        setFilterCountries([])
+        setFilterCountries('')
       }
       setMultiCountry(value)
 
       const find = transnationalOptions.find((item) => item.id === value)
       setValue(find ? find.name : '')
-
-      if (value)
-        api.get(`/country-group/${value}`).then((resp) => {
-          setFilterCountries([
-            ...filterCountries,
-            ...resp.data?.[0]?.countries.map((item) => item.id.toString()),
-          ])
-        })
     }
   }
 
