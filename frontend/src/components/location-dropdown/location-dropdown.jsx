@@ -9,6 +9,7 @@ function LocationDropdown({
   dropdownVisible,
   setDropdownVisible,
   query,
+  value,
 }) {
   return (
     <Dropdown
@@ -33,7 +34,7 @@ function LocationDropdown({
             (query?.transnational?.length ||
               0 + query?.country?.length ||
               0)}{' '}
-          <Trans>Location</Trans>
+          {value ? value : <Trans>Location</Trans>}
         </span>
       </Button>
     </Dropdown>

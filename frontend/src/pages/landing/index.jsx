@@ -84,6 +84,7 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
   const [timeout, _setTimeout] = useState(true)
   const [filter, setFilter] = useState({})
   const [filterCountries, setFilterCountries] = useState([])
+  const [value, setValue] = useState('')
   const [multiCountryCountries, setMultiCountryCountries] = useState([])
 
   const intidRef = useRef()
@@ -121,6 +122,10 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
   ]
   const router = useRouter()
   const tags = UIStore.useState((s) => s.tags)
+  const { countries, transnationalOptions } = UIStore.useState((s) => ({
+    countries: s.countries,
+    transnationalOptions: s.transnationalOptions,
+  }))
   // populate options for tags dropdown
   const tagsWithoutSpace =
     !isEmpty(tags) &&
@@ -191,37 +196,42 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
     })
   }
 
+  const countryOpts = countries
+    ?.filter((country) => country.description.toLowerCase() === 'member state')
+    ?.map((it) => ({ value: it.id, label: it.name }))
+    ?.sort((a, b) => a.label.localeCompare(b.label))
+
   const updateQuery = (param, value, paramValueArr) => {
     if (param === 'country') {
       setDisable({
         ...disable,
-        ...(value.length > 0
-          ? { multiCountry: true }
-          : { multiCountry: false }),
+        ...(value ? { multiCountry: true } : { multiCountry: false }),
       })
       setCountry(value)
-      setFilterCountries(value.map((item) => item.toString()))
+      setFilterCountries(value?.toString())
+      const find = countryOpts.find((item) => item.value === value)
+      setValue(find ? find.label : '')
     }
     if (param === 'transnational') {
       setDisable({
         ...disable,
-        ...(value.length > 0 ? { country: true } : { country: false }),
+        ...(value ? { country: true } : { country: false }),
       })
-      if (value.length === 0) {
+      if (!value) {
         setFilterCountries([])
       }
       setMultiCountry(value)
 
-      value.forEach((id) => {
-        const check = filterCountries.find((x) => x === id.toString())
-        !check &&
-          api.get(`/country-group/${id}`).then((resp) => {
-            setFilterCountries([
-              ...filterCountries,
-              ...resp.data?.[0]?.countries.map((item) => item.id.toString()),
-            ])
-          })
-      })
+      const find = transnationalOptions.find((item) => item.id === value)
+      setValue(find ? find.name : '')
+
+      if (value)
+        api.get(`/country-group/${value}`).then((resp) => {
+          setFilterCountries([
+            ...filterCountries,
+            ...resp.data?.[0]?.countries.map((item) => item.id.toString()),
+          ])
+        })
     }
   }
 
@@ -236,8 +246,8 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
       country={country || []}
       multiCountry={multiCountry || []}
       multiCountryLabelCustomIcon={true}
-      countrySelectMode="multiple"
-      multiCountrySelectMode="multiple"
+      // countrySelectMode="multiple"
+      // multiCountrySelectMode="multiple"
       isExpert={true}
       disable={disable}
     />
@@ -357,6 +367,7 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
                   dropdownVisible,
                   setDropdownVisible,
                 }}
+                value={value}
               />
             </div>
             <Button

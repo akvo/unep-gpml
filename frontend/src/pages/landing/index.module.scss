@@ -283,7 +283,7 @@
         margin-bottom: 18px;
         border-bottom: 1px solid $primaryDarkBlue2;
         .ant-select {
-          width: 100%;
+          flex: 1;
           .ant-select-selector {
             display: block;
             border: none !important;
@@ -313,16 +313,26 @@
           }
         }
         .localisation {
+          width: 180px;
+          display: flex;
+          justify-content: center;
           button {
             max-height: 46px;
             display: flex;
             align-items: center;
             font-weight: bold;
-            margin-right: 20px;
             cursor: pointer;
             background-color: transparent;
             color: $primaryDarkBlue;
             border: none;
+            span {
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              display: block;
+              text-align: left;
+              width: 100px;
+            }
             svg {
               width: 15px;
               height: 20px;
