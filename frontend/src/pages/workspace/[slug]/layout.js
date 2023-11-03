@@ -323,7 +323,11 @@ const NestedLayout = ({ children }) => {
           </div>
         </div>
       </div>
-      <div className={styles.view}>
+      <div
+        className={classNames(styles.view, {
+          [styles.forumView]: router.pathname === '/workspace/[slug]/forum',
+        })}
+      >
         {children
           ? React.cloneElement(children, { psItem, psSteps, allSteps })
           : children}

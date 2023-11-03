@@ -176,6 +176,9 @@
   width: 100%;
   padding: 30px 50px 140px;
   width: 100%;
+  &.forumView {
+    padding: 0;
+  }
   p {
     padding: 25px 0;
   }
