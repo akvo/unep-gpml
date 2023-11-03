@@ -30,7 +30,6 @@ const StrapiPage = ({ pageData }) => {
           dangerouslySetInnerHTML={{ __html: pageData.content }}
         />
       </div>
-      <Footer />
     </div>
   )
 }
