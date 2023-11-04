@@ -1,14 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import {
-  Avatar,
-  Button,
-  Table,
-  Tooltip,
-  Typography,
-  Select,
-  Divider,
-  message,
-} from 'antd'
+import { Avatar, Button, Table, Tooltip, Select, Divider, message } from 'antd'
 import classNames from 'classnames'
 import { kebabCase, uniqBy, snakeCase } from 'lodash'
 import { useRouter } from 'next/router'
@@ -24,6 +15,7 @@ import {
   PetroExtractionIcon,
   ConsumptionIcon,
   SearchIcon,
+  CloseIcon,
 } from '../../../../components/icons'
 import ModalAddEntity from '../../../../modules/flexible-forms/entity-modal/add-entity-modal'
 import styles from './stakeholder-map.module.scss'
@@ -33,7 +25,6 @@ import { UIStore } from '../../../../store'
 import { shortenOrgTypes } from '../../../../utils/misc'
 
 const { Column } = Table
-const { Text } = Typography
 
 const PAGE_SIZE = 10
 const PREFIX_TAG = 'stakeholder'
@@ -83,6 +74,7 @@ const StakeholderMapTable = ({
   const [tableParams, setTableParams] = useState({ limit: PAGE_SIZE })
   const [tableFilters, setTableFilters] = useState([])
   const router = useRouter()
+  const country = router.query.slug?.replace('plastic-strategy-', '')
 
   const paginationProps = useMemo(() => {
     if (tableParams?.pagination?.total > PAGE_SIZE) {
@@ -129,6 +121,10 @@ const StakeholderMapTable = ({
       {
         title: t`Strengths`,
         dataIndex: 'strengths',
+      },
+      {
+        title: '',
+        dataIndex: 'removex',
       },
     ]
   }, [tableFilters])
@@ -200,6 +196,23 @@ const StakeholderMapTable = ({
        */
       const _entities = entities.map((e) => (e?.id === record?.id ? record : e))
       setEntities(_entities)
+    }
+  }
+
+  const handleOnRemove = async ({ id, tags }) => {
+    setLoading(true)
+    const _tags = tags
+      .filter(({ tag }) => tag !== `${PREFIX_TAG}-${country}`)
+      .map((t) => ({ ...t, tag_category: 'general' }))
+    try {
+      await api.put(`/organisation/${id}`, {
+        tags: _tags,
+      })
+      setPreload(true)
+    } catch (error) {
+      setLoading(false)
+      console.error('Unable to remove entity', error)
+      message.error('Unable to remove entity')
     }
   }
 
@@ -433,6 +446,27 @@ const StakeholderMapTable = ({
                   <Link href={`/organisation/${it.id}`} target="_blank">
                     {name}
                   </Link>
+                )
+              }}
+            />
+          )
+        }
+        if (col.dataIndex === 'removex') {
+          return (
+            <Column
+              {...col}
+              key={cx}
+              render={(_, record) => {
+                return (
+                  <>
+                    <Button
+                      type="link"
+                      className="remove-btn"
+                      onClick={() => handleOnRemove(record)}
+                    >
+                      <CloseIcon />
+                    </Button>
+                  </>
                 )
               }}
             />
