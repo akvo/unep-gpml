@@ -15,31 +15,45 @@ import {
 import { Trans, t } from '@lingui/macro'
 import { UIStore } from '../../../store'
 import api from '../../../utils/api'
+import { useLingui } from '@lingui/react'
 
-const stepsDict = {
-  Instructions: t`Instructions`,
-  'National Steering Committee & Project Team':
-    'National Steering Committee & Project Team',
-  Intro: t`Intro`,
-  'Setup your team': t`Setup your team`,
-  'Stakeholder Consultation Process': t`Stakeholder Consultation Process`,
-  'Stakeholder Map': t`Stakeholder Map`,
-  'Case Studies': t`Case Studies`,
-  Initiatives: t`Initiatives`,
-  'Summary & Report': t`Summary & Report`,
-  'Legislation & Policy Review Report': t`Legislation & Policy Review Report`,
-  'Country Policy Framework': t`Country Policy Framework`,
-  'Legislative Development Guide': t`Legislative Development Guide`,
-  'Data Analysis': t`Data Analysis`,
-  'Available Tools': t`Available Tools`,
-  'Available Data & Statistics': t`Available Data & Statistics`,
-  'Data Collection': t`Data Collection`,
-  'Calculation of Indicators': t`Calculation of Indicators`,
-  'Available Information': t`Available Information`,
-  'National Source Inventory Report': t`National Source Inventory Report`,
-  'National Plastic Strategy': t`National Plastic Strategy`,
-  Upload: t`Upload`,
-  'Final Review': t`Final Review`,
+export const useStepsDict = () => {
+  const { i18n } = useLingui()
+
+  const stepsDict = {
+    Instructions: i18n._(t`Instructions`),
+    'National Steering Committee & Project Team': i18n._(
+      t`National Steering Committee & Project Team`
+    ),
+    Intro: t`Intro`,
+    'Setup your team': i18n._(t`Setup your team`),
+    'Stakeholder Consultation Process': i18n._(
+      t`Stakeholder Consultation Process`
+    ),
+    'Stakeholder Map': i18n._(t`Stakeholder Map`),
+    'Case Studies': i18n._(t`Case Studies`),
+    Initiatives: i18n._(t`Initiatives`),
+    'Summary & Report': i18n._(t`Summary & Report`),
+    'Legislation & Policy Review Report': i18n._(
+      t`Legislation & Policy Review Report`
+    ),
+    'Country Policy Framework': i18n._(t`Country Policy Framework`),
+    'Legislative Development Guide': i18n._(t`Legislative Development Guide`),
+    'Data Analysis': i18n._(t`Data Analysis`),
+    'Available Tools': i18n._(t`Available Tools`),
+    'Available Data & Statistics': i18n._(t`Available Data & Statistics`),
+    'Data Collection': i18n._(t`Data Collection`),
+    'Calculation of Indicators': i18n._(t`Calculation of Indicators`),
+    'Available Information': i18n._(t`Available Information`),
+    'National Source Inventory Report': i18n._(
+      t`National Source Inventory Report`
+    ),
+    'National Plastic Strategy': i18n._(t`National Plastic Strategy`),
+    Upload: i18n._(t`Upload`),
+    'Final Review': i18n._(t`Final Review`),
+  }
+
+  return stepsDict
 }
 
 const NestedLayout = ({ children }) => {
@@ -49,6 +63,8 @@ const NestedLayout = ({ children }) => {
   const pathSlugs = [...router.route.substring(1).split('/'), '']
   const { slug, step: stepURL } = router.query
   const profile = UIStore.useState((s) => s.profile)
+
+  const stepsDict = useStepsDict()
 
   const getBySlug = (step, _slug, indexStep = 0) =>
     (step?.slug === _slug || (step?.slug === '' && !_slug)) &&
