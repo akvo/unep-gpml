@@ -31,7 +31,6 @@ export function useLinguiInit(messages) {
 
   useEffect(() => {
     const localeDidChange = locale !== i18n.locale
-    console.log(localeDidChange, 'localeDidChange')
     if (localeDidChange) {
       i18n.loadAndActivate({ locale, messages })
     }

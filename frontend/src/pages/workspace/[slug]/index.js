@@ -2,6 +2,7 @@ import NestedLayout from './layout'
 import NewLayout from '../../../layouts/new-layout'
 import style from './index.module.scss'
 import { Trans } from '@lingui/macro'
+import { loadCatalog } from '../../../translations/utils'
 
 const Page = () => (
   <div className={style.view}>
@@ -102,5 +103,20 @@ export function PageLayout(page) {
 }
 
 export default Page
+
+export const getStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  }
+}
+
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
+}
 
 Page.getLayout = PageLayout
