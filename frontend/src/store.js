@@ -17,14 +17,7 @@ import ExploreSvg from './images/api.svg'
 import { t, msg } from '@lingui/macro'
 import { i18n } from '@lingui/core'
 
-const geoCoverageTypeOptions = [
-  t`Global`,
-  // "Regional",
-  t`Transnational`,
-  t`National`,
-  // "Sub-national",
-  // "Global with elements in specific areas",
-]
+const geoCoverageTypeOptions = ['Global', 'Transnational', 'National']
 
 const menuList = [
   {
@@ -204,17 +197,17 @@ const placeholder = {
   event: 'event-flexible.png',
 }
 
-const entityRole = [t`Owner`, t`Implementor`, t`Partner`, t`Donor`]
-const individualRole = [t`Owner`, t`Resource Editor`]
+const entityRole = [`Owner`, `Implementor`, `Partner`, `Donor`]
+const individualRole = [`Owner`, `Resource Editor`]
 
 const sectorOptions = [
-  t`Government`,
-  t`Private Sector`,
-  t`Foundations`,
-  t`Scientific and Technological Community and Academia`,
-  t`Non-Governmental Organization (NGO) and other Major Groups and Stakeholder (MGS)`,
-  t`Intergovernmental Organization (IGOs) and Multilateral Processes Actors`,
-  t`Private Citizens`,
+  `Government`,
+  `Private Sector`,
+  `Foundations`,
+  `Scientific and Technological Community and Academia`,
+  `Non-Governmental Organization (NGO) and other Major Groups and Stakeholder (MGS)`,
+  `Intergovernmental Organization (IGOs) and Multilateral Processes Actors`,
+  `Private Citizens`,
 ]
 
 const entitySuggestedTags = [
@@ -271,28 +264,28 @@ const organisationType = [
 const representativeGroup = [
   {
     code: 'government',
-    name: t`Government`,
-    childs: [t`National`, t`State/Provincial`, t`Municipal`],
+    name: `Government`,
+    childs: [`National`, `State/Provincial`, `Municipal`],
   },
   {
     code: 'private-sector',
-    name: t`Private Sector (for-profit)`,
+    name: `Private Sector (for-profit)`,
     childs: { tags: 'sector' }, // All sectors list from tags group
   },
   {
     code: 'igos',
-    name: t`Intergovernmental Organizations (IGOs)`,
+    name: `Intergovernmental Organizations (IGOs)`,
     childs: null,
   },
   {
     code: 'academia-research',
-    name: t`Academia and Research`,
-    childs: [t`Public Institute`, t`Privately Owned`],
+    name: `Academia and Research`,
+    childs: [`Public Institute`, `Privately Owned`],
   },
   {
     code: 'civil-society',
-    name: t`Civil Society (not-for-profit)`,
-    childs: [t`Non-Governmental Organization (NGOs)`, t`Foundations`],
+    name: `Civil Society (not-for-profit)`,
+    childs: [`Non-Governmental Organization (NGOs)`, `Foundations`],
   },
 ]
 
