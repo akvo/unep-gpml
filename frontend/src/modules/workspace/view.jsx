@@ -495,7 +495,7 @@ const Workspace = ({ profile }) => {
   )
 }
 
-const PSCard = ({ item, key }) => {
+export const PSCard = ({ item, key }) => {
   const psSteps = item?.steps || stepsState
   const allSteps = psSteps.flatMap((p) => {
     if (p?.substeps?.length) {
