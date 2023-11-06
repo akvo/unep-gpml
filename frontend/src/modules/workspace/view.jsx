@@ -415,53 +415,9 @@ const Workspace = ({ profile }) => {
               )}
               <SkeletonItems loading={psLoading} />
               <ul className="plastic-strategies-items">
-                {psAll.map((item, index) => {
-                  const psSteps = item?.steps || stepsState
-                  const allSteps = psSteps.flatMap((p) => {
-                    if (p?.substeps?.length) {
-                      return p.substeps.map((sb, sx) => ({
-                        ...sb,
-                        label: sx === 0 ? p.label : sb.label,
-                      }))
-                    }
-                    return [p]
-                  })
-                  const progressValue = Math.floor(
-                    (allSteps.filter((a) => a.checked).length /
-                      allSteps.length) *
-                      100
-                  )
-                  const countryName = kebabCase(item?.country?.name)
-                  return (
-                    <li key={index}>
-                      <Link href={`/workspace/${PREFIX_SLUG}-${countryName}`}>
-                        <div className="caps-heading-s">
-                          <Trans>plastic strategy</Trans>
-                        </div>
-                        <h4 className="w-semi">{item?.country?.name}</h4>
-                        <div className="compl">{`${progressValue}%`}</div>
-                        <div className="progress-bar">
-                          <div
-                            className="fill"
-                            style={{ width: `${progressValue}%` }}
-                          ></div>
-                        </div>
-                        <ul>
-                          {psSteps.map((s, sx) => (
-                            <li
-                              key={sx}
-                              className={classNames({
-                                checked: getParentChecked(s),
-                              })}
-                            >
-                              {s.label}
-                            </li>
-                          ))}
-                        </ul>
-                      </Link>
-                    </li>
-                  )
-                })}
+                {psAll.map((item, index) => (
+                  <PSCard item={item} key={index} />
+                ))}
               </ul>
             </div>
           </div>
@@ -529,6 +485,49 @@ const Workspace = ({ profile }) => {
         </div>
       </div>
     </div>
+  )
+}
+
+const PSCard = ({ item, key }) => {
+  const psSteps = item?.steps || stepsState
+  const allSteps = psSteps.flatMap((p) => {
+    if (p?.substeps?.length) {
+      return p.substeps.map((sb, sx) => ({
+        ...sb,
+        label: sx === 0 ? p.label : sb.label,
+      }))
+    }
+    return [p]
+  })
+  const progressValue = Math.floor(
+    (allSteps.filter((a) => a.checked).length / allSteps.length) * 100
+  )
+  const countryName = kebabCase(item?.country?.name)
+  return (
+    <li key={key}>
+      <Link href={`/workspace/${PREFIX_SLUG}-${countryName}`}>
+        <div className="caps-heading-s">
+          <Trans>plastic strategy</Trans>
+        </div>
+        <h4 className="w-semi">{item?.country?.name}</h4>
+        <div className="compl">{`${progressValue}%`}</div>
+        <div className="progress-bar">
+          <div className="fill" style={{ width: `${progressValue}%` }}></div>
+        </div>
+        <ul>
+          {psSteps.map((s, sx) => (
+            <li
+              key={sx}
+              className={classNames({
+                checked: getParentChecked(s),
+              })}
+            >
+              {s.label}
+            </li>
+          ))}
+        </ul>
+      </Link>
+    </li>
   )
 }
 
