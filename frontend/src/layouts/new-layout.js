@@ -346,7 +346,7 @@ const NewLayout = ({
           />
         </div>
         {children}
-        {router.pathname !== '/workspace/[slug]' && (
+        {!router.pathname.includes('/workspace/[slug]') && (
           <Footer
             showTools={() => {
               if (openedItemKey === 'Tools') {
