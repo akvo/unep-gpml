@@ -1,14 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import {
-  Avatar,
-  Button,
-  Table,
-  Tooltip,
-  Typography,
-  Select,
-  Divider,
-  message,
-} from 'antd'
+import { Avatar, Button, Table, Tooltip, Select, Divider, message } from 'antd'
 import classNames from 'classnames'
 import { kebabCase, uniqBy, snakeCase } from 'lodash'
 import { useRouter } from 'next/router'
@@ -24,6 +15,7 @@ import {
   PetroExtractionIcon,
   ConsumptionIcon,
   SearchIcon,
+  CloseIcon,
 } from '../../../../components/icons'
 import ModalAddEntity from '../../../../modules/flexible-forms/entity-modal/add-entity-modal'
 import styles from './stakeholder-map.module.scss'
@@ -34,7 +26,6 @@ import { shortenOrgTypes } from '../../../../utils/misc'
 import { loadCatalog } from '../../../../translations/utils'
 
 const { Column } = Table
-const { Text } = Typography
 
 const PAGE_SIZE = 10
 const PREFIX_TAG = 'stakeholder'
@@ -84,6 +75,7 @@ const StakeholderMapTable = ({
   const [tableParams, setTableParams] = useState({ limit: PAGE_SIZE })
   const [tableFilters, setTableFilters] = useState([])
   const router = useRouter()
+  const country = router.query.slug?.replace('plastic-strategy-', '')
 
   const paginationProps = useMemo(() => {
     if (tableParams?.pagination?.total > PAGE_SIZE) {
@@ -128,8 +120,12 @@ const StakeholderMapTable = ({
         dataIndex: 'focalPoints',
       },
       {
-        title: t`Strengths`,
+        title: t`Initiatives`,
         dataIndex: 'strengths',
+      },
+      {
+        title: '',
+        dataIndex: 'removex',
       },
     ]
   }, [tableFilters])
@@ -204,6 +200,23 @@ const StakeholderMapTable = ({
     }
   }
 
+  const handleOnRemove = async ({ id, tags }) => {
+    setLoading(true)
+    const _tags = tags
+      .filter(({ tag }) => tag !== `${PREFIX_TAG}-${country}`)
+      .map((t) => ({ ...t, tag_category: 'general' }))
+    try {
+      await api.put(`/organisation/${id}`, {
+        tags: _tags,
+      })
+      setPreload(true)
+    } catch (error) {
+      setLoading(false)
+      console.error('Unable to remove entity', error)
+      message.error('Unable to remove entity')
+    }
+  }
+
   const mapFilter = (row, field) => ({
     text: row[field],
     value: row[field],
@@ -251,9 +264,12 @@ const StakeholderMapTable = ({
         `/organisations?page=${page}&${queryString}`
       )
       const { results, counts } = data || {}
-      const _entities = results.map((r) => ({
-        ...r,
-      }))
+      const _entities = results.filter((r) => {
+        if (tags.length) {
+          return r.tags.filter(({ tag }) => tags.includes(tag)).length
+        }
+        return r
+      })
       setEntities(_entities)
 
       if (tableParams?.pagination?.total === undefined) {
@@ -434,6 +450,27 @@ const StakeholderMapTable = ({
                   <Link href={`/organisation/${it.id}`} target="_blank">
                     {name}
                   </Link>
+                )
+              }}
+            />
+          )
+        }
+        if (col.dataIndex === 'removex') {
+          return (
+            <Column
+              {...col}
+              key={cx}
+              render={(_, record) => {
+                return (
+                  <>
+                    <Button
+                      type="link"
+                      className="remove-btn"
+                      onClick={() => handleOnRemove(record)}
+                    >
+                      <CloseIcon />
+                    </Button>
+                  </>
                 )
               }}
             />

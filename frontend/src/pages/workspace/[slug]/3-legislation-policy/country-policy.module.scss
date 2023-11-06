@@ -37,6 +37,9 @@
         .resource-title {
           display: block;
           text-align: left;
+          width: 100%;
+          overflow: hidden;
+          text-overflow: ellipsis;
           .badge {
             display: inline-block;
             transform: translateY(3px);
@@ -106,10 +109,6 @@
         }
         &:nth-of-type(3) .ant-btn.ant-btn-link span,
         &:nth-of-type(6) > div {
-          // white-space: nowrap;
-          // overflow: hidden;
-          // text-overflow: ellipsis;
-          text-wrap: wrap;
           text-align: left;
           padding: 10px 0;
         }

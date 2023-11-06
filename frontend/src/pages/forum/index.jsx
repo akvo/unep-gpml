@@ -51,8 +51,17 @@ const Forum = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
       if (profile?.id) {
         const { data } = await api.get('/chat/channel/all')
         const _allForums = data
-          .map((d) => ({ ...d, membersFetched: false }))
-          .filter((d) => !d?.name?.includes('plastic-strategy-forum')) // Exclude PS channel
+          ?.sort((a, b) => {
+            // Sort public first
+            if (a.t === 'c' && b.type !== 'c') {
+              return -1
+            } else if (a.t !== 'c' && b.t === 'c') {
+              return 1
+            } else {
+              return 0
+            }
+          })
+          ?.map((d) => ({ ...d, membersFetched: false }))
         setAllForums(_allForums)
         setLoading(false)
       }
@@ -120,7 +129,7 @@ const Forum = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
                     <span className={styles.forumType}>
                       {item.t === 'p' ? t`private` : t`public`} {t`channel`}
                     </span>
-                    <h5>{item.name}</h5>
+                    <h5>{item.name?.replace(/[-_]/g, ' ')}</h5>
                     <p className={styles.forumDesc}>
                       {item?.description?.substring(0, 120)}
                       {item?.description?.length > 120 && '...'}

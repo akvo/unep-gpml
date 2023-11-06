@@ -5,7 +5,7 @@ import { PageLayout } from '..'
 import styles from './index.module.scss'
 import { loadCatalog } from '../../../../translations/utils'
 
-const PREFIX_CHANNEL_NAME = 'plastic-strategy-forum-'
+const PREFIX_CHANNEL_NAME = 'plastic-strategy-'
 
 const DynamicForumIframe = dynamic(
   () => import('../../../../modules/forum/forum-iframe'),
@@ -18,7 +18,7 @@ const View = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
   const router = useRouter()
   const country = router.query.slug?.replace('plastic-strategy-', '')
   const channelName = `${PREFIX_CHANNEL_NAME}${country}`
-  const channelType = 'p'
+  const channelType = 'c'
 
   return (
     <Skeleton loading={loadingProfile} active>

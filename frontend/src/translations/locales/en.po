@@ -2400,11 +2400,6 @@ msgstr "National Plastic Strategy"
 msgid "National Source Inventory Report"
 msgstr "National Source Inventory Report"
 
-#: src/pages/workspace/[slug]/1-project-team/index.js:48
-#: src/pages/workspace/[slug]/1-project-team/setup-team.js:16
-msgid "National steering committee & Project Team"
-msgstr "National steering committee & Project Team"
-
 #: src/pages/workspace/[slug]/layout.js:26
 msgid "National Steering Committee & Project Team"
 msgstr "National Steering Committee & Project Team"

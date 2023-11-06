@@ -55,7 +55,7 @@ const ForumTitle = ({
     <span className={styles.forumType}>
       {channelType === 'p' ? 'private ' : 'public '}channel
     </span>
-    <h5 className={styles.title}>{channelName}</h5>
+    <h5 className={styles.title}>{channelName?.replace(/[-_]/g, ' ')}</h5>
   </div>
 )
 

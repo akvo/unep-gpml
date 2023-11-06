@@ -115,9 +115,9 @@
          {:txn-fn
           (fn tx-add-team-member-to-ps-chat-channel
             [{:keys [ps-team-member plastic-strategy] :as context}]
-            (let [result (srv.chat/add-user-to-private-channel config
-                                                               (:chat-account-id ps-team-member)
-                                                               (:chat-channel-id plastic-strategy))]
+            (let [result (srv.chat/add-user-to-public-channel config
+                                                              (:chat-account-id ps-team-member)
+                                                              (:chat-channel-id plastic-strategy))]
               (if (:success? result)
                 {:success? true}
                 (assoc context
@@ -293,7 +293,7 @@
             (let [result (srv.chat/remove-user-from-channel config
                                                             (:chat-account-id ps-team-member)
                                                             (:chat-channel-id plastic-strategy)
-                                                            "p")]
+                                                            "c")]
               (if (:success? result)
                 context
                 (assoc context
@@ -303,9 +303,9 @@
           :rollback-fn
           (fn rollback-remove-user-from-ps-channel
             [{:keys [plastic-strategy ps-team-member] :as context}]
-            (let [result (srv.chat/add-user-to-private-channel config
-                                                               (:chat-account-id ps-team-member)
-                                                               (:chat-channel-id plastic-strategy))]
+            (let [result (srv.chat/add-user-to-public-channel config
+                                                              (:chat-account-id ps-team-member)
+                                                              (:chat-channel-id plastic-strategy))]
               (when-not (:success? result)
                 (log logger :error :failed-to-rollback-remove-user-from-ps-channel {:result result})))
             context)}

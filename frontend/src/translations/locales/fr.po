@@ -2398,14 +2398,9 @@ msgstr "Stratégie nationale sur le plastique"
 msgid "National Source Inventory Report"
 msgstr "Rapport national d'inventaire des sources"
 
-#: src/pages/workspace/[slug]/1-project-team/index.js:48
-#: src/pages/workspace/[slug]/1-project-team/setup-team.js:16
-msgid "National steering committee & Project Team"
-msgstr "Comite de Pilotage National et équipe de projet"
-
 #: src/pages/workspace/[slug]/layout.js:26
 msgid "National Steering Committee & Project Team"
-msgstr ""
+msgstr "Comite de Pilotage National et équipe de projet"
 
 #: src/modules/flexible-forms/form-schema.js:697
 msgid "National Sustainable Development Goals (SDGs)"
