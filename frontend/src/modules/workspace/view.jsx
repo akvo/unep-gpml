@@ -351,13 +351,11 @@ const Workspace = ({ profile }) => {
                 <h2 className="w-bold">
                   <Trans>Forums</Trans>
                 </h2>
-                <Button
-                  withArrow="link"
-                  onClick={() => router.push('/forum')}
-                  ghost
-                >
-                  <Trans>View All Forums</Trans>
-                </Button>
+                <Link href="/forum">
+                  <Button withArrow="link" ghost>
+                    <Trans>View All Forums</Trans>
+                  </Button>
+                </Link>
               </div>
               <List
                 className="forum-list"
@@ -409,13 +407,22 @@ const Workspace = ({ profile }) => {
           <div className="plastic-strategies-list">
             <div className="container">
               {psAll.length > 0 && (
-                <h2 className="h-xxl w-bold">
-                  <Trans>Plastic Strategies</Trans>
-                </h2>
+                <div className="heading-container">
+                  <h2 className="h-xxl w-bold">
+                    <Trans>Plastic Strategies</Trans>
+                  </h2>
+                  {psAll?.length > 3 && (
+                    <Link href="/workspace/plastic-strategies">
+                      <Button withArrow="link" ghost>
+                        <Trans>View All Plastic Strategies</Trans>
+                      </Button>
+                    </Link>
+                  )}
+                </div>
               )}
               <SkeletonItems loading={psLoading} />
               <ul className="plastic-strategies-items">
-                {psAll.map((item, index) => (
+                {psAll.slice(0, 3).map((item, index) => (
                   <PSCard item={item} key={index} />
                 ))}
               </ul>
