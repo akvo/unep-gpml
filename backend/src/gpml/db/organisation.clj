@@ -87,6 +87,23 @@
          ) FILTER (WHERE oba.badge_id IS NOT NULL),
         '[]'::jsonb) AS assigned_badges,")))
 
+(defn list-organisations-strengths-cto
+  [{:keys [plastic-strategy-id]}]
+  (let [bookmarked-initiatives-join (if-not plastic-strategy-id
+                                      ""
+                                      (format
+                                       "INNER JOIN plastic_strategy_initiative_bookmark psib
+                                         ON (oi.initiative = psib.initiative_id AND psib.plastic_strategy_id = %d)"
+                                       plastic-strategy-id))]
+    (format "SELECT oi.organisation, %s AS initiative
+             FROM organisation_initiative oi
+             %s
+             WHERE oi.association IN ('owner', 'implementor', 'donor', 'partner')"
+            (if-not plastic-strategy-id
+              "oi.initiative"
+              "psib.initiative_id")
+            bookmarked-initiatives-join)))
+
 (defn list-organisations-cto-query-filter-and-params
   [params]
   (let [{:keys [filters plastic-strategy-id]} params

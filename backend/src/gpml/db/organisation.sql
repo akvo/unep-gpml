@@ -147,9 +147,7 @@ WHERE 1=1
 -- :name list-organisations :query :many
 -- :doc List organisations with advanced filtering (for PSW mainly)
 WITH organisations_strengths_cte AS (
-  SELECT organisation, initiative
-  FROM organisation_initiative
-  WHERE association IN ('owner', 'implementor', 'donor', 'partner')
+--~ (#'gpml.db.organisation/list-organisations-strengths-cto params)
 ),
 organisations_cte AS (
   SELECT
