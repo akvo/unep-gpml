@@ -7,6 +7,17 @@ export const isoA2 = {
   senegal: 'SN',
   'south-africa': 'ZA',
   'cote-d-ivoire': 'CI',
+  'cape-verde': 'CV',
+  kiribati: 'KI',
+  'sierra-leone': 'SL',
+  'sao-tome-and-principe': 'ST',
+  jamaica: 'JM',
+  'trinidad-and-tobago': 'TT',
+  guinea: 'GN',
+  tuvalu: 'TV',
+  vanuatu: 'VU',
+  togo: 'TG',
+  'papua-new-guinea': 'PG',
 }
 
 export const iso2id = {
@@ -18,6 +29,17 @@ export const iso2id = {
   SN: 686,
   ZA: 710,
   CI: 384,
+  CV: 132,
+  KI: 296,
+  SL: 694,
+  ST: 678,
+  JM: 388,
+  TT: 780,
+  GN: 324,
+  TV: 798,
+  VU: 548,
+  TG: 768,
+  PG: 598,
 }
 
 export const PREFIX_SLUG = 'plastic-strategy'

@@ -87,6 +87,23 @@
          ) FILTER (WHERE oba.badge_id IS NOT NULL),
         '[]'::jsonb) AS assigned_badges,")))
 
+(defn list-organisations-strengths-cto
+  [{:keys [plastic-strategy-id]}]
+  (let [bookmarked-initiatives-join (if-not plastic-strategy-id
+                                      ""
+                                      (format
+                                       "INNER JOIN plastic_strategy_initiative_bookmark psib
+                                         ON (oi.initiative = psib.initiative_id AND psib.plastic_strategy_id = %d)"
+                                       plastic-strategy-id))]
+    (format "SELECT oi.organisation, %s AS initiative
+             FROM organisation_initiative oi
+             %s
+             WHERE oi.association IN ('owner', 'implementor', 'donor', 'partner')"
+            (if-not plastic-strategy-id
+              "oi.initiative"
+              "psib.initiative_id")
+            bookmarked-initiatives-join)))
+
 (defn list-organisations-cto-query-filter-and-params
   [params]
   (let [{:keys [filters plastic-strategy-id]} params
@@ -124,7 +141,7 @@
                           (contains? (set (keys filters)) :ps-bookmarked))
                      (str " AND psb.section_key IN (:v*:filters.ps-bookmark-sections-keys)"))
         having (when (seq tags)
-                 "HAVING array_agg(t.tag) FILTER (WHERE t.id IS NOT NULL) && ARRAY[:v*:filters.tags]::text[]")
+                 "HAVING array_agg(t.tag) FILTER (WHERE t.id IS NOT NULL) @> ARRAY[:v*:filters.tags]::text[]")
         ps-bookmark-group-by (if-not plastic-strategy-id
                                ""
                                ", psb.organisation_id")]
