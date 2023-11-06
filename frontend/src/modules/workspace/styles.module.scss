@@ -474,7 +474,7 @@ $bg-green-primary: #10f9b7;
         .forum-list {
           .ant-list-items {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 25px;
             .ant-list-item {
               border-bottom: none;

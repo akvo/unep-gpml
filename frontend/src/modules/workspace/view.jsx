@@ -164,6 +164,16 @@ const Workspace = ({ profile }) => {
     }
   }, [profile])
 
+  const sortPublicFirst = (a, b) => {
+    if (a.t === 'c' && b.type !== 'c') {
+      return -1
+    } else if (a.t !== 'c' && b.t === 'c') {
+      return 1
+    } else {
+      return 0
+    }
+  }
+
   const getAllForums = useCallback(async () => {
     try {
       /**
@@ -180,12 +190,12 @@ const Workspace = ({ profile }) => {
         ] = await Promise.allSettled(endpoints)
         const { data: _myForums } = myForums || {}
         const { data: _allForums } = allForums || {}
-        let _forums = _myForums?.length
-          ? _myForums.slice(0, 3)
-          : _allForums?.slice(0, 3)?.map((a) => ({ ...a, isView: true }))
-        _forums = _forums.filter(
-          (f) => !f?.name?.includes('plastic-strategy-forum')
-        ) // Exclude PS channel
+        const _forums = _myForums?.length
+          ? _myForums.sort(sortPublicFirst).slice(0, 3)
+          : _allForums
+              ?.sort(sortPublicFirst)
+              ?.slice(0, 3)
+              ?.map((a) => ({ ...a, isView: true }))
         setForums(_forums)
         setLoading({
           forums: false,
