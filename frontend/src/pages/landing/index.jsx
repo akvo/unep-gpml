@@ -507,7 +507,7 @@ const ShowcasingAndStats = () => {
         <div className="summaries">
           <span className="purple">
             <h5>
-              195 <Trans>Governments</Trans>
+              195 <Trans>Government agencies</Trans>
             </h5>
           </span>
           <span className="green">
