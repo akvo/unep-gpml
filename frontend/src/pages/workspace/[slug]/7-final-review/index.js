@@ -3,6 +3,7 @@ import { PageLayout } from '..'
 import Button from '../../../../components/button'
 import { getParentChecked } from '../../../../modules/workspace/ps/config'
 import styles from './index.module.scss'
+import { loadCatalog } from '../../../../translations/utils'
 
 const View = ({ psSteps, allSteps }) => {
   const router = useRouter()
@@ -68,5 +69,20 @@ const View = ({ psSteps, allSteps }) => {
 }
 
 View.getLayout = PageLayout
+
+export const getStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  }
+}
+
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
+}
 
 export default View

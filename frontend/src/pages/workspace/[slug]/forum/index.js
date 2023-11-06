@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
 import { PageLayout } from '..'
 import styles from './index.module.scss'
+import { loadCatalog } from '../../../../translations/utils'
 
 const PREFIX_CHANNEL_NAME = 'plastic-strategy-forum-'
 
@@ -37,5 +38,20 @@ const View = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
 }
 
 View.getLayout = PageLayout
+
+export const getStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  }
+}
+
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
+}
 
 export default View
