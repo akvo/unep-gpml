@@ -124,7 +124,7 @@
                           (contains? (set (keys filters)) :ps-bookmarked))
                      (str " AND psb.section_key IN (:v*:filters.ps-bookmark-sections-keys)"))
         having (when (seq tags)
-                 "HAVING array_agg(t.tag) FILTER (WHERE t.id IS NOT NULL) && ARRAY[:v*:filters.tags]::text[]")
+                 "HAVING array_agg(t.tag) FILTER (WHERE t.id IS NOT NULL) @> ARRAY[:v*:filters.tags]::text[]")
         ps-bookmark-group-by (if-not plastic-strategy-id
                                ""
                                ", psb.organisation_id")]
