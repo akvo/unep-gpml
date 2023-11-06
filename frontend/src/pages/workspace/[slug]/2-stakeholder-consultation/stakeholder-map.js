@@ -120,7 +120,7 @@ const StakeholderMapTable = ({
         dataIndex: 'focalPoints',
       },
       {
-        title: t`Strengths`,
+        title: t`Initiatives`,
         dataIndex: 'strengths',
       },
       {
