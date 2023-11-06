@@ -5,7 +5,7 @@ import { Modal } from 'antd'
 import styles from './modal.module.scss'
 import { withTheme } from '@rjsf/core'
 import { Theme as AntDTheme } from '@rjsf/antd'
-import { schema, uiSchema } from './form-schema'
+import { useSchema, useUiSchema } from './form-schema'
 import ObjectFieldTemplate from '../../../utils/forms/object-template'
 import ArrayFieldTemplate from '../../../utils/forms/array-template'
 import FieldTemplate from '../../../utils/forms/field-template'
@@ -25,11 +25,12 @@ import uniqBy from 'lodash/uniqBy'
 import sortBy from 'lodash/sortBy'
 import Button from '../../../components/button'
 import { Trans } from '@lingui/macro'
+import { useLingui } from '@lingui/react'
 
 const Form = withTheme(AntDTheme)
 
 const getSchema = (
-  { countries, regionOptions, meaOptions, transnationalOptions },
+  { countries, regionOptions, meaOptions, transnationalOptions, schema },
   loading
 ) => {
   const prop = cloneDeep(schema.properties)
@@ -86,6 +87,8 @@ const ModalAddEntity = ({ visible, close, isMember, setEntity, tag }) => {
     formEdit: s.formEdit,
   }))
 
+  const schema = useSchema()
+
   const formData = entityData.useState()
   const { editId, data } = formData
   const { status, id } = formEdit.entity
@@ -125,6 +128,7 @@ const ModalAddEntity = ({ visible, close, isMember, setEntity, tag }) => {
             regionOptions,
             meaOptions,
             transnationalOptions,
+            schema,
           },
           false
         )
@@ -295,6 +299,10 @@ const ModalAddEntity = ({ visible, close, isMember, setEntity, tag }) => {
     let res = overideValidation(errors, dependValue)
     return res
   }
+
+  const uiSchema = useUiSchema()
+
+  console.log(uiSchema, 'uiSchema')
 
   return (
     <Modal
