@@ -33,7 +33,7 @@ msgstr "{value} Initiatives"
 msgid "<0>GPML’s</0> Action Tracks"
 msgstr "Pistes d'action <0>GPML</0>"
 
-#: src/pages/workspace/[slug]/index.js:8
+#: src/pages/workspace/[slug]/index.js:9
 msgid "<0>Instructions</0><1>This workflow tool has been created to assist your team with the development of a plastics strategy for your country. Some key steps are suggested for consideration while in the ‘create’ phase. The workflow will be further developed to assist with the phase of ‘implement’, ‘report’, and ‘review.’ <2/><3/>The workflow and resources associated with each suggested step are designed to facilitate and accelerate the activities of the ‘create’ phase of your plastic strategy. Such resources include data, documents, templates, case studies, relevant organizations (governmental and non governmental) as well as individuals active in the space.</1><4>Step 1: Establishment of a National Steering Committee & project team</4><5>This step assists in the establishment of a National Steering Committee (NSC) with representation from necessary government agencies as well as relevant non-governmental organizations. The NSC should aim to meet 2-4 times per year to assist with and drive the roadmap/strategy/plan. A project team could be established to assist the NSC, consisting of consultants and focal points, to lead the implementation of the project with the guidance of the NSC and UNEP.</5><6>Step 2: Stakeholder consultation process</6><7>Consultation should aim to understand the current issues faced by various stakeholders, as well as their role in solving the problem (actors) and how proposed activities of the national plastics strategy may affect them positively or negatively. Different stakeholders may also have access to important data. This step of the workflow provides guidance on organizing a comprehensive stakeholder consultation process to ensure all relevant sectors and stakeholders are consulted.</7><8>Step 3: Legislation & Policy Review and Analysis</8><9>An analysis of the legal and policy framework in your country can help identify current goals and targets that the national plastics strategy should aim to achieve, as well as gaps in this framework that the strategy could help close. This allows for identification of priority areas to track and the type of data needed to do so. In this stage, together with UNEP’s guidance, a review and analysis of the legislative and policy landscape as it pertains to marine litter and plastic pollution would be conducted.</9><10>Step 4: Data Analysis</10><11>Data is at the core of understanding the issues and current state of play, as well as the tracking of trends to determine effectiveness of the national plastics strategy. This step will help in compiling existing data and information into a State of Knowledge Report. This could include identification of areas in need of additional data collection, leading to additional secondary data collection. Note that all the data collected should be made publicly available.</11><12>Step 5: National Source Inventory Report</12><13>National plastics strategies should be underpinned by a National Source Inventory (NSI). This step will help in analyzingwe the data available and collected into a National Source Inventory Report on plastic pollution and marine litter that can inform discussions on possible actions to be included in the national plastics strategy. </13><14>Final Step: National Roadmap/Strategy/Plan</14><15>This step facilitates the development of a National Roadmap/Strategy/Plan based on the evidence and information gathered in the NSI Report. The roadmap should be time bound, measurable and include provisions of periodic revisions. The strategy can be formally adopted through parliament or act as a voluntary guideline for action. </15>"
 msgstr "<0>Instructions</0><1>Cet outil de flux de travail a été créé pour aider votre équipe à développer une stratégie plastique pour votre pays. Certaines étapes clés sont suggérées à considérer pendant la phase de « création ». Le flux de travail sera développé davantage pour faciliter les phases de « mise en œuvre », « rapport » et « examen ». <2/><3/>Le flux de travail et les ressources associés à chaque étape suggérée sont conçus pour faciliter et accélérer les activités. de la phase « créer » de votre stratégie plastique. Ces ressources comprennent des données, des documents, des modèles, des études de cas, des organisations pertinentes (gouvernementales et non gouvernementales) ainsi que des personnes actives dans le domaine.</1><4>Étape 1 : Création d'un comité directeur national et d'une équipe de projet</ 4><5>Cette étape contribue à la création d'un comité directeur national (NSC) composé de représentants des agences gouvernementales nécessaires ainsi que des organisations non gouvernementales concernées. Le NSC devrait viser à se réunir 2 à 4 fois par an pour aider et piloter la feuille de route/stratégie/plan. Une équipe de projet pourrait être créée pour aider le NSC, composée de consultants et de points focaux, à diriger la mise en œuvre du projet avec les conseils du NSC et du PNUE.</5><6>Étape 2 : Processus de consultation des parties prenantes</6 ><7>La consultation devrait viser à comprendre les problèmes actuels auxquels sont confrontées les différentes parties prenantes, ainsi que leur rôle dans la résolution du problème (acteurs) et comment les activités proposées dans le cadre de la stratégie nationale sur les plastiques peuvent les affecter positivement ou négativement. Différentes parties prenantes peuvent également avoir accès à des données importantes. Cette étape du flux de travail fournit des conseils sur l'organisation d'un processus complet de consultation des parties prenantes afin de garantir que tous les secteurs et parties prenantes concernés sont consultés.</7><8>Étape 3 : Examen et analyse de la législation et des politiques</8><9>Une analyse de le cadre juridique et politique de votre pays peut aider à identifier les objectifs et cibles actuels que la stratégie nationale sur les plastiques devrait viser à atteindre, ainsi que les lacunes de ce cadre que la stratégie pourrait contribuer à combler. Cela permet d’identifier les domaines prioritaires à suivre et le type de données nécessaires pour ce faire. À ce stade, avec les conseils du PNUE, un examen et une analyse du paysage législatif et politique en ce qui concerne les déchets marins et la pollution plastique seraient menés.</9><10>Étape 4 : Analyse des données</10><11 >Les données sont au cœur de la compréhension des problèmes et de l'état actuel des choses, ainsi que du suivi des tendances afin de déterminer l'efficacité de la stratégie nationale sur les plastiques. Cette étape aidera à compiler les données et informations existantes dans un rapport sur l’état des connaissances. Cela pourrait inclure l’identification des domaines nécessitant une collecte de données supplémentaires, conduisant à une collecte de données secondaires supplémentaires. Notez que toutes les données collectées doivent être rendues publiques.</11><12>Étape 5 : Rapport sur l'inventaire national des sources</12><13>Les stratégies nationales sur les plastiques doivent être étayées par un inventaire national des sources (NSI). Cette étape aidera à analyser les données disponibles et collectées dans un rapport d'inventaire national des sources sur la pollution plastique et les déchets marins qui peuvent éclairer les discussions sur les actions possibles à inclure dans la stratégie nationale sur les plastiques. </13><14>Étape finale : Feuille de route/stratégie/plan national</14><15>Cette étape facilite l'élaboration d'une feuille de route/stratégie/plan national basée sur les preuves et les informations recueillies dans le rapport de l'INS. La feuille de route doit être limitée dans le temps, mesurable et inclure des dispositions de révisions périodiques. La stratégie peut être formellement adoptée par le parlement ou servir de ligne directrice d’action volontaire. </15>"
 
@@ -929,7 +929,7 @@ msgstr "L'analyse des données"
 #: src/pages/workspace/[slug]/4-data-analysis/available-tools.js:42
 #: src/pages/workspace/[slug]/4-data-analysis/calculation.js:41
 #: src/pages/workspace/[slug]/4-data-analysis/data-collection.js:42
-#: src/pages/workspace/[slug]/4-data-analysis/index.js:47
+#: src/pages/workspace/[slug]/4-data-analysis/index.js:48
 #: src/pages/workspace/[slug]/layout.js:42
 msgid "Data Analysis"
 msgstr "Analyse de données"
@@ -1993,12 +1993,12 @@ msgstr "Coopération internationale"
 msgid "Intro"
 msgstr "Introduction"
 
-#: src/pages/workspace/[slug]/1-project-team/index.js:50
-#: src/pages/workspace/[slug]/2-stakeholder-consultation/index.js:50
-#: src/pages/workspace/[slug]/3-legislation-policy/index.js:50
-#: src/pages/workspace/[slug]/4-data-analysis/index.js:50
-#: src/pages/workspace/[slug]/5-national-source/index.js:50
-#: src/pages/workspace/[slug]/6-national-plastic-strategy/index.js:50
+#: src/pages/workspace/[slug]/1-project-team/index.js:51
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/index.js:51
+#: src/pages/workspace/[slug]/3-legislation-policy/index.js:51
+#: src/pages/workspace/[slug]/4-data-analysis/index.js:51
+#: src/pages/workspace/[slug]/5-national-source/index.js:51
+#: src/pages/workspace/[slug]/6-national-plastic-strategy/index.js:51
 msgid "Introduction"
 msgstr "Introduction"
 
@@ -2125,7 +2125,7 @@ msgid "Legislation"
 msgstr "Législation"
 
 #: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:442
-#: src/pages/workspace/[slug]/3-legislation-policy/index.js:47
+#: src/pages/workspace/[slug]/3-legislation-policy/index.js:48
 #: src/pages/workspace/[slug]/3-legislation-policy/legislative-development.js:10
 #: src/pages/workspace/[slug]/layout.js:38
 msgid "Legislation & Policy Review Report"
@@ -2450,13 +2450,13 @@ msgstr "Valeurs nationales ou organisationnelles"
 msgid "National Plastic Strategy"
 msgstr "Stratégie nationale sur le plastique"
 
-#: src/pages/workspace/[slug]/5-national-source/index.js:47
-#: src/pages/workspace/[slug]/6-national-plastic-strategy/index.js:47
+#: src/pages/workspace/[slug]/5-national-source/index.js:48
+#: src/pages/workspace/[slug]/6-national-plastic-strategy/index.js:48
 #: src/pages/workspace/[slug]/layout.js:49
 msgid "National Source Inventory Report"
 msgstr "Rapport national d'inventaire des sources"
 
-#: src/pages/workspace/[slug]/1-project-team/index.js:47
+#: src/pages/workspace/[slug]/1-project-team/index.js:48
 #: src/pages/workspace/[slug]/1-project-team/setup-team.js:15
 msgid "National steering committee & Project Team"
 msgstr "Comite de Pilotage National et équipe de projet"
@@ -3415,7 +3415,7 @@ msgid "stakeholder consultation process"
 msgstr "processus de consultation des parties prenantes"
 
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/case-studies.js:32
-#: src/pages/workspace/[slug]/2-stakeholder-consultation/index.js:47
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/index.js:48
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/initiatives.js:138
 #: src/pages/workspace/[slug]/layout.js:31
 msgid "Stakeholder Consultation Process"

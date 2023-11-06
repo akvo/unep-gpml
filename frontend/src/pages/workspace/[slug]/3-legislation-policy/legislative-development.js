@@ -2,6 +2,7 @@ import { useRouter } from 'next/router'
 import { PageLayout } from '..'
 import Button from '../../../../components/button'
 import { Trans, t } from '@lingui/macro'
+import { loadCatalog } from '../../../../translations/utils'
 
 const View = () => {
   return (
@@ -41,5 +42,20 @@ const View = () => {
 }
 
 View.getLayout = PageLayout
+
+export const getStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  }
+}
+
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
+}
 
 export default View

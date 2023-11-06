@@ -5,6 +5,7 @@ import ResourceCards from '../../../../modules/workspace/ps/resource-cards'
 import { useRouter } from 'next/router'
 import { isoA2 } from '../../../../modules/workspace/ps/config'
 import { Trans, t } from '@lingui/macro'
+import { loadCatalog } from '../../../../translations/utils'
 
 const sectionKey = 'stakeholder-case-studies'
 
@@ -52,5 +53,20 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
 }
 
 View.getLayout = PageLayout
+
+export const getStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  }
+}
+
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
+}
 
 export default View

@@ -4,6 +4,7 @@ import api from '../../../../utils/api'
 import { useRouter } from 'next/router'
 import { isoA2 } from '../../../../modules/workspace/ps/config'
 import { Trans, t } from '@lingui/macro'
+import { loadCatalog } from '../../../../translations/utils'
 
 const sectionKey = 'data-collection'
 
@@ -51,5 +52,20 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
 }
 
 View.getLayout = PageLayout
+
+export const getStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  }
+}
+
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
+}
 
 export default View
