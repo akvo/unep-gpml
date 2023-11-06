@@ -13,7 +13,7 @@ const View = ({ psItem }) => {
     <div className={styles.setupTeamView}>
       <div className="title-section">
         <h4 className="caps-heading-m">
-          <Trans>National steering committee & Project Team</Trans>
+          <Trans>National Steering Committee & Project Team</Trans>
         </h4>
         <h2 className="h-xxl w-bold">
           <Trans>Create Your Team</Trans>
