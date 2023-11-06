@@ -12,13 +12,6 @@ import {
 const { Title } = Typography
 import kebabCase from 'lodash/kebabCase'
 import styles from './styles.module.scss'
-import DataCatalogueSvg from '../../images/data-catalogue-icon.svg'
-import MatchSvg from '../../images/match.svg'
-import UploadSvg from '../../images/upload.svg'
-import TransnationalSvg from '../../images/transnational.svg'
-import TrashSvg from '../../images/resource-detail/trash-icn.svg'
-import ShareSvg from '../../images/resource-detail/share-icn.svg'
-import EditSvg from '../../images/resource-detail/edit-icn.svg'
 import { FilePdfOutlined, DeleteOutlined } from '@ant-design/icons'
 import api from '../../utils/api'
 import Link from 'next/link'
@@ -30,6 +23,7 @@ import SkeletonItems from './ps/skeleton-items'
 import Button from '../../components/button'
 import ForumCard from '../../components/forum-card/forum-card'
 import ForumMembers from '../forum/forum-members'
+import { Trans } from '@lingui/macro'
 
 const DynamicForumModal = dynamic(
   () => import('../../modules/forum/forum-modal'),
@@ -225,16 +219,20 @@ const Workspace = ({ profile }) => {
             profile?.reviewStatus === 'SUBMITTED' && (
               <div className="pending-stripe">
                 <Title level={4}>
-                  Your account is pending reviewal. You can still explore the
-                  platform.
+                  <Trans>
+                    Your account is pending reviewal. You can still explore the
+                    platform.
+                  </Trans>
                 </Title>
               </div>
             )}
           {profile && !profile?.emailVerified && (
             <div className="pending-stripe">
               <Title level={4}>
-                We sent you a confirmation email, Please take a moment and
-                validate your address to confirm your account.
+                <Trans>
+                  We sent you a confirmation email, Please take a moment and
+                  validate your address to confirm your account.
+                </Trans>
               </Title>
             </div>
           )}
@@ -245,22 +243,28 @@ const Workspace = ({ profile }) => {
             >
               <Col lg={12} sm={24}>
                 <div className="content-container">
-                  <p className="recommend-text">RECOMMENDED</p>
+                  <p className="recommend-text">
+                    <Trans>RECOMMENDED</Trans>
+                  </p>
                   <Title level={2}>GPML Partnership​</Title>
                   <p className="registration-text">
-                    Hello, It looks like your entity:{' '}
-                    <b>{profile?.org?.name},</b> is not yet part <br /> of the
-                    GPML partnership.
-                    <br /> If you are the focal point, submit your application
-                    below
+                    <Trans>
+                      Hello, It looks like your entity:{' '}
+                      <b>{profile?.org?.name},</b> is not yet part <br /> of the
+                      GPML partnership.
+                      <br /> If you are the focal point, submit your application
+                      below
+                    </Trans>
                   </p>
                   <div className="join-box">
                     <div>
                       <p>
-                        By completing this form I confirm that I have the
-                        authorization to submit an application on behalf of this
-                        Entity to become a member of the Global Partnership on
-                        Marine Litter (GPML)​.
+                        <Trans>
+                          By completing this form I confirm that I have the
+                          authorization to submit an application on behalf of
+                          this Entity to become a member of the Global
+                          Partnership on Marine Litter (GPML)​.
+                        </Trans>
                       </p>
                     </div>
                     <div className="button-container">
@@ -285,7 +289,7 @@ const Workspace = ({ profile }) => {
                           className="focal-point"
                           onClick={() => handleFocalPoint(profile?.org?.id)}
                         >
-                          I AM NOT THE FOCAL POINT
+                          <Trans>I AM NOT THE FOCAL POINT</Trans>
                         </Button>
                       )}
                     </div>
@@ -308,7 +312,9 @@ const Workspace = ({ profile }) => {
                           }}
                         />
                         <Title level={2}>
-                          Tap into a global network of like-minded members​
+                          <Trans>
+                            Tap into a global network of like-minded members​
+                          </Trans>
                         </Title>
                       </div>
                     </div>
@@ -324,7 +330,9 @@ const Workspace = ({ profile }) => {
                             height: 140,
                           }}
                         />
-                        <Title level={2}>Network with other stakeholders</Title>
+                        <Title level={2}>
+                          <Trans>Network with other stakeholders</Trans>
+                        </Title>
                       </div>
                     </div>
                   </Carousel>
@@ -333,19 +341,21 @@ const Workspace = ({ profile }) => {
             </Row>
           )}
           <div className="workspace-title container">
-            <div className="caps-heading-m">workspace</div>
+            <div className="caps-heading-m">
+              <Trans>workspace</Trans>
+            </div>
           </div>
           <div className={styles.forumContainer}>
             <div className="container">
               <div className="forum-heading">
-                <h2 className="w-bold">Forums</h2>
-                <Button
-                  withArrow="link"
-                  onClick={() => router.push('/forum')}
-                  ghost
-                >
-                  View All Forums
-                </Button>
+                <h2 className="w-bold">
+                  <Trans>Forums</Trans>
+                </h2>
+                <Link href="/forum">
+                  <Button withArrow="link" ghost>
+                    <Trans>View All Forums</Trans>
+                  </Button>
+                </Link>
               </div>
               <List
                 className="forum-list"
@@ -370,7 +380,7 @@ const Workspace = ({ profile }) => {
                               onClick={() => goToChannel(item)}
                               ghost
                             >
-                              View
+                              <Trans>View</Trans>
                             </Button>
                           ) : (
                             <Button
@@ -378,7 +388,7 @@ const Workspace = ({ profile }) => {
                               withArrow="link"
                               onClick={() => goToChannel(item)}
                             >
-                              Chat
+                              <Trans>Chat</Trans>
                             </Button>
                           )}
                         </div>
@@ -397,61 +407,32 @@ const Workspace = ({ profile }) => {
           <div className="plastic-strategies-list">
             <div className="container">
               {psAll.length > 0 && (
-                <h2 className="h-xxl w-bold">Plastic Strategies</h2>
+                <div className="heading-container">
+                  <h2 className="h-xxl w-bold">
+                    <Trans>Plastic Strategies</Trans>
+                  </h2>
+                  {psAll?.length > 3 && (
+                    <Link href="/workspace/plastic-strategies">
+                      <Button withArrow="link" ghost>
+                        <Trans>View All Plastic Strategies</Trans>
+                      </Button>
+                    </Link>
+                  )}
+                </div>
               )}
               <SkeletonItems loading={psLoading} />
               <ul className="plastic-strategies-items">
-                {psAll.map((item, index) => {
-                  const psSteps = item?.steps || stepsState
-                  const allSteps = psSteps.flatMap((p) => {
-                    if (p?.substeps?.length) {
-                      return p.substeps.map((sb, sx) => ({
-                        ...sb,
-                        label: sx === 0 ? p.label : sb.label,
-                      }))
-                    }
-                    return [p]
-                  })
-                  const progressValue = Math.floor(
-                    (allSteps.filter((a) => a.checked).length /
-                      allSteps.length) *
-                      100
-                  )
-                  const countryName = kebabCase(item?.country?.name)
-                  return (
-                    <li key={index}>
-                      <Link href={`/workspace/${PREFIX_SLUG}-${countryName}`}>
-                        <div className="caps-heading-s">plastic strategy</div>
-                        <h4 className="w-semi">{item?.country?.name}</h4>
-                        <div className="compl">{`${progressValue}%`}</div>
-                        <div className="progress-bar">
-                          <div
-                            className="fill"
-                            style={{ width: `${progressValue}%` }}
-                          ></div>
-                        </div>
-                        <ul>
-                          {psSteps.map((s, sx) => (
-                            <li
-                              key={sx}
-                              className={classNames({
-                                checked: getParentChecked(s),
-                              })}
-                            >
-                              {s.label}
-                            </li>
-                          ))}
-                        </ul>
-                      </Link>
-                    </li>
-                  )
-                })}
+                {psAll.slice(0, 3).map((item, index) => (
+                  <PSCard item={item} key={index} />
+                ))}
               </ul>
             </div>
           </div>
           <div className="action-suggestions">
             <div className="container">
-              <h2 className="h-xxl w-bold">What to do next?</h2>
+              <h2 className="h-xxl w-bold">
+                <Trans>What to do next?</Trans>
+              </h2>
               <Row gutter={[24, 16]}>
                 {suggestions.map((item) => (
                   <Col lg={8} key={item?.key}>
@@ -494,7 +475,9 @@ const Workspace = ({ profile }) => {
           </div>
           <Row className="video-panel">
             <Col lg={24} sm={24}>
-              <Title level={2}>Watch this video to get started</Title>
+              <Title level={2}>
+                <Trans>Watch this video to get started</Trans>
+              </Title>
               <iframe
                 width="100%"
                 height="640px"
@@ -509,6 +492,49 @@ const Workspace = ({ profile }) => {
         </div>
       </div>
     </div>
+  )
+}
+
+export const PSCard = ({ item, key }) => {
+  const psSteps = item?.steps || stepsState
+  const allSteps = psSteps.flatMap((p) => {
+    if (p?.substeps?.length) {
+      return p.substeps.map((sb, sx) => ({
+        ...sb,
+        label: sx === 0 ? p.label : sb.label,
+      }))
+    }
+    return [p]
+  })
+  const progressValue = Math.floor(
+    (allSteps.filter((a) => a.checked).length / allSteps.length) * 100
+  )
+  const countryName = kebabCase(item?.country?.name)
+  return (
+    <li key={key}>
+      <Link href={`/workspace/${PREFIX_SLUG}-${countryName}`}>
+        <div className="caps-heading-s">
+          <Trans>plastic strategy</Trans>
+        </div>
+        <h4 className="w-semi">{item?.country?.name}</h4>
+        <div className="compl">{`${progressValue}%`}</div>
+        <div className="progress-bar">
+          <div className="fill" style={{ width: `${progressValue}%` }}></div>
+        </div>
+        <ul>
+          {psSteps.map((s, sx) => (
+            <li
+              key={sx}
+              className={classNames({
+                checked: getParentChecked(s),
+              })}
+            >
+              {s.label}
+            </li>
+          ))}
+        </ul>
+      </Link>
+    </li>
   )
 }
 
