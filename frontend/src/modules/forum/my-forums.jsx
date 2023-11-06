@@ -84,9 +84,7 @@ const MyForums = ({ handleOnView }) => {
       await getMyForumsApi(
         (data) => {
           ChatStore.update((s) => {
-            s.myForums = data.filter(
-              (d) => !d?.name?.includes('plastic-strategy-forum')
-            ) // Exclude PS channel
+            s.myForums = data
           })
           setLoading(false)
         },
