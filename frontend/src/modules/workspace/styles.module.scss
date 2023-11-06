@@ -282,8 +282,11 @@ $bg-green-primary: #10f9b7;
               padding: 20px;
               color: $primaryDarkBlueText;
               h4 {
+                max-width: 280px;
                 margin-top: 5px;
                 font-size: 28px;
+                overflow: hidden;
+                text-overflow: ellipsis;
               }
               .compl {
                 position: absolute;
