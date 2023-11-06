@@ -14,6 +14,7 @@ import styles from './summary.module.scss'
 import api from '../../../../utils/api'
 import { LoadingOutlined } from '@ant-design/icons'
 import { stepsState } from '../../../../modules/workspace/ps/config'
+import { loadCatalog } from '../../../../translations/utils'
 
 const { Dragger } = Upload
 
@@ -225,5 +226,20 @@ const View = ({ psItem }) => {
 }
 
 View.getLayout = PageLayout
+
+export const getStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  }
+}
+
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
+}
 
 export default View

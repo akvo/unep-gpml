@@ -17,6 +17,7 @@ import bodyScrollLock from '../../../../modules/details-page/scroll-utils'
 import DetailsView from '../../../../modules/details-page/view'
 import { useRouter } from 'next/router'
 import { AssignedBadges } from '../../../../components/resource-card/resource-card'
+import { loadCatalog } from '../../../../translations/utils'
 
 const { Column } = Table
 
@@ -460,5 +461,20 @@ const View = ({ psItem, setLoginVisible, isAuthenticated }) => (
 )
 
 View.getLayout = PageLayout
+
+export const getStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  }
+}
+
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
+}
 
 export default View

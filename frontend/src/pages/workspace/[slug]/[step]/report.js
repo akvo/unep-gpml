@@ -11,6 +11,7 @@ import {
   stepsState,
 } from '../../../../modules/workspace/ps/config'
 import api from '../../../../utils/api'
+import { loadCatalog } from '../../../../translations/utils'
 
 const ReportPage = () => {
   const [bookmarks, setBookmarks] = useState([])
@@ -129,6 +130,21 @@ const ReportPage = () => {
         })}
     </div>
   )
+}
+
+export const getStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  }
+}
+
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
 }
 
 export default ReportPage
