@@ -120,7 +120,7 @@ const StakeholderMapTable = ({
         dataIndex: 'focalPoints',
       },
       {
-        title: t`Strengths`,
+        title: t`Initiatives`,
         dataIndex: 'strengths',
       },
       {
@@ -264,9 +264,12 @@ const StakeholderMapTable = ({
         `/organisations?page=${page}&${queryString}`
       )
       const { results, counts } = data || {}
-      const _entities = results.map((r) => ({
-        ...r,
-      }))
+      const _entities = results.filter((r) => {
+        if (tags.length) {
+          return r.tags.filter(({ tag }) => tags.includes(tag)).length
+        }
+        return r
+      })
       setEntities(_entities)
 
       if (tableParams?.pagination?.total === undefined) {
