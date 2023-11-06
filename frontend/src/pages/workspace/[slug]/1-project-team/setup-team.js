@@ -4,6 +4,7 @@ import SetupTeamForm from '../../../../modules/workspace/ps/setup-team-form'
 import SetupTeamTable from '../../../../modules/workspace/ps/setup-team-table'
 import styles from './setup-team.module.scss'
 import { Trans, t } from '@lingui/macro'
+import { loadCatalog } from '../../../../translations/utils'
 
 const View = ({ psItem }) => {
   const [members, setMembers] = useState([])
@@ -49,5 +50,20 @@ const View = ({ psItem }) => {
 }
 
 View.getLayout = PageLayout
+
+export const getStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  }
+}
+
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
+}
 
 export default View
