@@ -35,6 +35,7 @@ const CountryPolicyModal = ({
   updateData,
   record,
   setRecord,
+  handleToggleBookmark,
 }) => {
   const handleAssignBadge = async (e, id, entityName, assign) => {
     e.stopPropagation()
@@ -80,10 +81,14 @@ const CountryPolicyModal = ({
       })
   }
 
-  const find = policy?.assignedBadges?.find(
+  const validated = policy?.assignedBadges?.find(
     (bName) => bName.badgeName === 'country-validated'
   )
-
+  const bookmark2PS = policy?.plasticStrategyBookmarks
+    ? policy.plasticStrategyBookmarks.findIndex(
+        (it) => it.sectionKey === sectionKey
+      ) !== -1
+    : false
   return (
     <Modal
       maskClosable
@@ -97,22 +102,28 @@ const CountryPolicyModal = ({
           {/* <Button className="invalidate" ghost>
             <Trans>Invalidate</Trans>
           </Button> */}
-          <Button
-            className="country-validate-btn"
-            onClick={(e) =>
-              handleAssignBadge(
-                e,
-                match?.params?.id,
-                match?.params?.type,
-                find ? false : true
-              )
-            }
-            type="primary"
-          >
-            {find ? <Trans>Validated</Trans> : <Trans>Validate Policy</Trans>}
-            {badges.verified}
-            {/* <ValidatePolicyIcon /> */}
-          </Button>
+          <ConditionalTooltip validated={validated}>
+            <Button
+              className="country-validate-btn"
+              onClick={(e) =>
+                handleAssignBadge(
+                  e,
+                  match?.params?.id,
+                  match?.params?.type,
+                  validated ? false : true
+                )
+              }
+              type="primary"
+            >
+              {validated ? (
+                <Trans>Validated</Trans>
+              ) : (
+                <Trans>Validate Policy</Trans>
+              )}
+              {badges.verified}
+              {/* <ValidatePolicyIcon /> */}
+            </Button>
+          </ConditionalTooltip>
         </>
       }
     >
@@ -120,6 +131,10 @@ const CountryPolicyModal = ({
         type={match?.params?.type}
         id={match?.params?.id}
         updateData={record}
+        onBookmark2PS={() => {
+          handleToggleBookmark(policy)
+        }}
+        bookmark2PS={bookmark2PS}
         {...{
           match,
           isAuthenticated,
@@ -127,6 +142,21 @@ const CountryPolicyModal = ({
         }}
       />
     </Modal>
+  )
+}
+
+const ConditionalTooltip = ({ children, validated }) => {
+  if (!validated) {
+    return children
+  }
+  return (
+    <Tooltip
+      placement="top"
+      title={<Trans>Click to Unflag as Validated</Trans>}
+      color="#020A5B"
+    >
+      {children}
+    </Tooltip>
   )
 }
 
@@ -234,7 +264,11 @@ const CountryPolicyTable = ({ psItem, setLoginVisible, isAuthenticated }) => {
     }
   }
 
-  const handleToggleBookmark = async (record, isMarked = false) => {
+  const handleToggleBookmark = async (record) => {
+    const findBm = record?.plasticStrategyBookmarks?.find(
+      (b) => b?.plasticStrategyId === psItem?.id && b?.sectionKey === sectionKey
+    )
+    const isMarked = findBm ? true : false
     const payload = {
       bookmark: !isMarked,
       entity_id: record?.id,
@@ -251,10 +285,15 @@ const CountryPolicyTable = ({ psItem, setLoginVisible, isAuthenticated }) => {
               },
             ]
           : null
-        return {
+        const _policy = {
           ...d,
           plasticStrategyBookmarks,
         }
+        if (policy) {
+          setPolicy(_policy)
+          setRecord(_policy)
+        }
+        return _policy
       }
       return d
     })
@@ -270,7 +309,7 @@ const CountryPolicyTable = ({ psItem, setLoginVisible, isAuthenticated }) => {
       /**
        * Undo the changes if something goes wrong
        */
-      const _data = data.map((d) => (e?.id === record?.id ? record : d))
+      const _data = data.map((d) => (d?.id === record?.id ? record : d))
       setData(_data)
     }
   }
@@ -395,7 +434,7 @@ const CountryPolicyTable = ({ psItem, setLoginVisible, isAuthenticated }) => {
                     >
                       <a
                         role="button"
-                        onClick={() => handleToggleBookmark(record, isMarked)}
+                        onClick={() => handleToggleBookmark(record)}
                         className={classNames({ bookmarked: isMarked })}
                       >
                         <BookmarkIconProper />
@@ -493,6 +532,7 @@ const CountryPolicyTable = ({ psItem, setLoginVisible, isAuthenticated }) => {
           setRecord,
           isAuthenticated,
           setLoginVisible,
+          handleToggleBookmark,
         }}
       />
     </>
