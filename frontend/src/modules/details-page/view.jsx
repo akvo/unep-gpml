@@ -103,6 +103,7 @@ const DetailsView = ({
   isServer,
   bookmark2PS,
   onBookmark2PS,
+  updateData,
 }) => {
   const [showLess, setShowLess] = useState(true)
   const {
@@ -225,6 +226,15 @@ const DetailsView = ({
     })
     window.scrollTo({ top: 0 })
   }, [router])
+
+  useEffect(() => {
+    if (updateData && Object.keys(updateData).length > 0) {
+      setData((prevData) => ({
+        ...prevData,
+        assignedBadges: updateData.assignedBadges,
+      }))
+    }
+  }, [updateData])
 
   const getComment = async (id, type) => {
     let res = await api.get(

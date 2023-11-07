@@ -30,19 +30,40 @@ const CountryPolicyModal = ({
   match,
   isAuthenticated,
   setLoginVisible,
+  policy,
+  setPolicy,
+  updateData,
+  record,
+  setRecord,
 }) => {
   const handleAssignBadge = async (e, id, entityName, assign) => {
     e.stopPropagation()
-
     const data = {
       assign: assign,
       entity_id: id,
       entity_type: entityName,
     }
 
+    const r = {
+      ...policy,
+      assignedBadges: assign
+        ? [
+            ...policy.assignedBadges,
+            {
+              badgeName: 'country-validated',
+            },
+          ]
+        : policy.assignedBadges.filter(
+            (b) => b.badgeName !== 'country-validated'
+          ),
+    }
+    setPolicy(r)
+    setRecord(r)
+
     api
       .post(`/badge/country-validated/assign`, data)
       .then((resp) => {
+        updateData(policy, assign)
         notification.success({
           message: `Your request to ${
             assign ? 'add' : 'remove'
@@ -58,6 +79,10 @@ const CountryPolicyModal = ({
         })
       })
   }
+
+  const find = policy?.assignedBadges?.find(
+    (bName) => bName.badgeName === 'country-validated'
+  )
 
   return (
     <Modal
@@ -75,12 +100,16 @@ const CountryPolicyModal = ({
           <Button
             className="country-validate-btn"
             onClick={(e) =>
-              handleAssignBadge(e, match?.params?.id, match?.params?.type, true)
+              handleAssignBadge(
+                e,
+                match?.params?.id,
+                match?.params?.type,
+                find ? false : true
+              )
             }
             type="primary"
           >
-            <Trans>Validate Policy</Trans>
-            {false && <Trans>Validated</Trans>}
+            {find ? <Trans>Validated</Trans> : <Trans>Validate Policy</Trans>}
             {badges.verified}
             {/* <ValidatePolicyIcon /> */}
           </Button>
@@ -90,6 +119,7 @@ const CountryPolicyModal = ({
       <DetailsView
         type={match?.params?.type}
         id={match?.params?.id}
+        updateData={record}
         {...{
           match,
           isAuthenticated,
@@ -105,6 +135,7 @@ const CountryPolicyTable = ({ psItem, setLoginVisible, isAuthenticated }) => {
   const [loading, setLoading] = useState(true)
   const [data, setData] = useState([])
   const [policy, setPolicy] = useState(null)
+  const [record, setRecord] = useState({})
   const [open, setOpen] = useState(false)
   const [pagination, setPagination] = useState({
     pageSize: PAGE_SIZE,
@@ -178,6 +209,7 @@ const CountryPolicyTable = ({ psItem, setLoginVisible, isAuthenticated }) => {
   const closeModal = () => {
     setOpen(false)
     setPolicy(null)
+    setRecord(null)
   }
 
   useEffect(() => {
@@ -191,12 +223,13 @@ const CountryPolicyTable = ({ psItem, setLoginVisible, isAuthenticated }) => {
     }
   }, [open])
 
-  const showModal = ({ type, id }) => {
-    if (type && id) {
-      const detailUrl = `/${type}/${id}`
-      setParams({ type, id })
+  const showModal = (record) => {
+    if (record?.type && record?.id) {
+      const detailUrl = `/${record?.type}/${record?.id}`
+      setParams({ type: record?.type, id: record?.id })
       window.history.pushState({}, '', detailUrl)
       setOpen(true)
+      setPolicy(record)
       bodyScrollLock.enable()
     }
   }
@@ -306,6 +339,28 @@ const CountryPolicyTable = ({ psItem, setLoginVisible, isAuthenticated }) => {
     }
   }, [data, tableFilters])
 
+  const handleUpdateData = (d, assign) => {
+    const updatedData = data.map((record) => {
+      if (record.id === d.id) {
+        return {
+          ...record,
+          assignedBadges: assign
+            ? [
+                ...record.assignedBadges,
+                {
+                  badgeName: 'country-validated',
+                },
+              ]
+            : record.assignedBadges.filter(
+                (b) => b.badgeName !== 'country-validated'
+              ),
+        }
+      }
+      return record
+    })
+    setData(updatedData)
+  }
+
   return (
     <>
       <Table
@@ -313,7 +368,6 @@ const CountryPolicyTable = ({ psItem, setLoginVisible, isAuthenticated }) => {
         loading={loading}
         pagination={paginationProp}
         onChange={(_pagination) => {
-          console.log('_pagination', _pagination)
           setPagination({
             ...pagination,
             ..._pagination,
@@ -430,7 +484,16 @@ const CountryPolicyTable = ({ psItem, setLoginVisible, isAuthenticated }) => {
       <CountryPolicyModal
         onClose={closeModal}
         match={{ params }}
-        {...{ open, policy, isAuthenticated, setLoginVisible }}
+        updateData={handleUpdateData}
+        {...{
+          open,
+          policy,
+          setPolicy,
+          record,
+          setRecord,
+          isAuthenticated,
+          setLoginVisible,
+        }}
       />
     </>
   )
