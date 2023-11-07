@@ -1281,7 +1281,7 @@ const FeatureCard = ({ item }) => {
         <h3 className="h-l">{item.title}</h3>
       </div>
       <div className="card-content-container">
-        <p className="p-l">{item?.content}</p>
+        <p className="p-m">{item?.content}</p>
       </div>
     </div>
   )

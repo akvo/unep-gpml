@@ -630,7 +630,7 @@
         }
         .slider-wrapper {
           .feature-card {
-            max-width: 400px;
+            max-width: 340px;
             border-radius: 15px;
             box-sizing: border-box;
             overflow: hidden;
@@ -687,7 +687,7 @@
             padding-bottom: 80px;
             overflow: visible;
             .swiper-slide {
-              width: 395px;
+              width: 335px;
               @media screen and (max-width: $bpMobile) {
                 width: 320px;
               }
