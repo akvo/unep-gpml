@@ -264,31 +264,22 @@ const StakeholderMapTable = ({
         `/organisations?page=${page}&${queryString}`
       )
       const { results, counts } = data || {}
-      const _entities = results.filter((r) => {
-        if (tags.length) {
-          return r.tags.filter(({ tag }) => tags.includes(tag)).length
+      setEntities(results)
+      setTableParams({
+        ...tableParams,
+        pagination: {
+          ...tableParams?.pagination,
+          current: tableParams?.pagination?.current || 1,
+          pageSize: PAGE_SIZE,
+          total: counts
         }
-        return r
       })
-      setEntities(_entities)
-
-      if (tableParams?.pagination?.total === undefined) {
-        setTableParams({
-          ...tableParams,
-          pagination: {
-            current: 1,
-            pageSize: PAGE_SIZE,
-            total: counts,
-          },
-        })
-      }
       setLoading(false)
     } catch (error) {
       console.error('Unable to fetch stakeholder maps data', error)
       setLoading(false)
     }
   }, [
-    tableParams?.pagination,
     tableParams?.filters,
     tableParams?.sorter,
     psItem,
