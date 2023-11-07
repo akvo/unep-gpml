@@ -104,7 +104,7 @@ const CountryPolicyModal = ({
                   e,
                   match?.params?.id,
                   match?.params?.type,
-                  find ? false : true
+                  validated ? false : true
                 )
               }
               type="primary"
