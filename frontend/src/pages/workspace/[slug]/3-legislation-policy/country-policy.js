@@ -97,22 +97,28 @@ const CountryPolicyModal = ({
           {/* <Button className="invalidate" ghost>
             <Trans>Invalidate</Trans>
           </Button> */}
-          <Button
-            className="country-validate-btn"
-            onClick={(e) =>
-              handleAssignBadge(
-                e,
-                match?.params?.id,
-                match?.params?.type,
-                find ? false : true
-              )
-            }
-            type="primary"
+          <Tooltip
+            placement="top"
+            title={find ? `Invalidate Policy` : `Validate policy`}
+            color="#020A5B"
           >
-            {find ? <Trans>Validated</Trans> : <Trans>Validate Policy</Trans>}
-            {badges.verified}
-            {/* <ValidatePolicyIcon /> */}
-          </Button>
+            <Button
+              className="country-validate-btn"
+              onClick={(e) =>
+                handleAssignBadge(
+                  e,
+                  match?.params?.id,
+                  match?.params?.type,
+                  find ? false : true
+                )
+              }
+              type="primary"
+            >
+              {find ? <Trans>Validated</Trans> : <Trans>Validate Policy</Trans>}
+              {badges.verified}
+              {/* <ValidatePolicyIcon /> */}
+            </Button>
+          </Tooltip>
         </>
       }
     >
