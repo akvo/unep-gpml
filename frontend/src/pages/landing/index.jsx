@@ -100,8 +100,7 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
     },
     {
       group: t`Private Sector`,
-      text:
-        'The GPML digital platform fosters public-private partnerships, offers clarity on circular economy practices, and provides guidance on Extended Producer Responsibilities (EPRs) and sustainable business models.',
+      text: t`The GPML digital platform fosters public-private partnerships, offers clarity on circular economy practices, and provides guidance on Extended Producer Responsibilities (EPRs) and sustainable business models.`,
     },
     {
       group: t`Scientific Communities`,
