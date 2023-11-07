@@ -1,6 +1,7 @@
 (ns gpml.db.community
   {:ns-tracker/resource-deps ["community.sql"]}
-  (:require [hugsql.core :as hugsql]))
+  (:require [clojure.string :as str]
+            [hugsql.core :as hugsql]))
 
 (declare get-community-members)
 
@@ -23,7 +24,7 @@
                      JOIN json_each_text(ts) t ON LOWER(t.value) = ANY (ARRAY[:v*:filters.tag]::VARCHAR[]) AND LOWER(t.value) IS NOT NULL")
         where-cond (cond-> "WHERE review_status = 'APPROVED'"
                      (seq search-text)
-                     (str " AND search_text @@ to_tsquery(:filters.search-text)")
+                     (str " AND search_text ILIKE '%" (str/lower-case search-text) "%'")
 
                      (seq affiliation)
                      (str " AND (affiliation->>'id')::int IN (:v*:filters.affiliation)")
