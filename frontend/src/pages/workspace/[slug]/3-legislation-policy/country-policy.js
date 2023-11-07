@@ -80,10 +80,9 @@ const CountryPolicyModal = ({
       })
   }
 
-  const find = policy?.assignedBadges?.find(
+  const validated = policy?.assignedBadges?.find(
     (bName) => bName.badgeName === 'country-validated'
   )
-
   return (
     <Modal
       maskClosable
@@ -97,11 +96,7 @@ const CountryPolicyModal = ({
           {/* <Button className="invalidate" ghost>
             <Trans>Invalidate</Trans>
           </Button> */}
-          <Tooltip
-            placement="top"
-            title={find ? `Invalidate Policy` : `Validate policy`}
-            color="#020A5B"
-          >
+          <ConditionalTooltip validated={validated}>
             <Button
               className="country-validate-btn"
               onClick={(e) =>
@@ -114,11 +109,15 @@ const CountryPolicyModal = ({
               }
               type="primary"
             >
-              {find ? <Trans>Validated</Trans> : <Trans>Validate Policy</Trans>}
+              {validated ? (
+                <Trans>Validated</Trans>
+              ) : (
+                <Trans>Validate Policy</Trans>
+              )}
               {badges.verified}
               {/* <ValidatePolicyIcon /> */}
             </Button>
-          </Tooltip>
+          </ConditionalTooltip>
         </>
       }
     >
@@ -133,6 +132,21 @@ const CountryPolicyModal = ({
         }}
       />
     </Modal>
+  )
+}
+
+const ConditionalTooltip = ({ children, validated }) => {
+  if (!validated) {
+    return children
+  }
+  return (
+    <Tooltip
+      placement="top"
+      title={<Trans>Click to Unflag as Validated</Trans>}
+      color="#020A5B"
+    >
+      {children}
+    </Tooltip>
   )
 }
 
