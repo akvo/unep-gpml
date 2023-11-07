@@ -24,6 +24,7 @@ import { DropDownIcon, SearchIcon } from '../../../components/icons'
 import api from '../../../utils/api'
 import { ROLES, TEAMS } from './config'
 import { Trans, t } from '@lingui/macro'
+import classNames from 'classnames'
 
 const { Text } = Typography
 
@@ -105,6 +106,7 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
       return
     }
     setLoading(true)
+    setOpenDropdown(true)
     try {
       const {
         data: { results },
@@ -112,7 +114,6 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
         q: search,
       })
       setStakeholders(results)
-      setOpenDropdown(true)
       setLoading(false)
     } catch (error) {
       console.error('Unable to fetch by keyword', error)
@@ -153,7 +154,7 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
         onSearch={setSearch}
         suffixIcon={<SearchIcon />}
         dropdownRender={(menu) => (
-          <div className={styles.addNewDropdown}>
+          <div className={classNames(styles.addNewDropdown, { loading })}>
             <Spin spinning={loading} indicator={<LoadingOutlined />}>
               {menu}
             </Spin>

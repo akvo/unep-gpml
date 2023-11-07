@@ -67,9 +67,14 @@
         align-items: center;
         gap: 8px;
         strong.w-bold {
-          color: #3E345C80;
+          color: #3e345c80;
         }
       }
+    }
+  }
+  &:global(.loading) {
+    :global(.ant-empty-small) {
+      opacity: 0;
     }
   }
 }
