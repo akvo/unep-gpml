@@ -620,6 +620,7 @@ msgstr "COUCHES DE DONNÉES"
 msgid "Data Source"
 msgstr "Source de l'information"
 
+#: src/modules/workspace/view.jsx:52
 #: src/pages/landing/index.jsx:831
 msgid "Data tools"
 msgstr "Outils de données"
@@ -1540,6 +1541,7 @@ msgstr "Marine et eau douce"
 msgid "Marine organisms"
 msgstr "les organismes marins"
 
+#: src/modules/workspace/view.jsx:67
 #: src/pages/landing/index.jsx:842
 msgid "Match-making"
 msgstr "Mise en relation"
@@ -4180,6 +4182,7 @@ msgid "About Us"
 msgstr "À propos de nous"
 
 #: src/layouts/new-layout.js:290
+#: src/modules/workspace/view.jsx:64
 msgid "Add Content"
 msgstr "Ajouter du contenu"
 
@@ -4404,4 +4407,28 @@ msgstr "Politique de confidentialité et conditions d'utilisation"
 #: src/pages/landing/index.jsx:103
 msgid "The GPML digital platform fosters public-private partnerships, offers clarity on circular economy practices, and provides guidance on Extended Producer Responsibilities (EPRs) and sustainable business models."
 msgstr "La plateforme numérique GPML favorise les partenariats public-privé, offre des éclaircissements sur les pratiques d'économie circulaire et fournit des conseils sur les responsabilités élargies des producteurs (REP) et les modèles commerciaux durables."
+
+#: src/modules/workspace/view.jsx:71
+msgid "Connect"
+msgstr "Connecter"
+
+#: src/modules/workspace/view.jsx:54
+msgid "Contribute to the DataHub Maps & Dashboard"
+msgstr "Contribuer aux cartes et au tableau de bord DataHub"
+
+#: src/modules/workspace/view.jsx:60
+msgid "Knowledge Library"
+msgstr "Bibliothèque de connaissances"
+
+#: src/modules/workspace/view.jsx:70
+msgid "Match with opportunities"
+msgstr "Correspondre aux opportunités"
+
+#: src/modules/workspace/view.jsx:62
+msgid "Share Your Knowledge"
+msgstr "Partagez vos connaissances"
+
+#: src/modules/workspace/view.jsx:55
+msgid "Upload your data"
+msgstr "Téléchargez vos données"
 

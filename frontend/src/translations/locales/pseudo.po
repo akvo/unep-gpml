@@ -155,6 +155,7 @@ msgid "Add An Event"
 msgstr ""
 
 #: src/layouts/new-layout.js:290
+#: src/modules/workspace/view.jsx:64
 msgid "Add Content"
 msgstr ""
 
@@ -785,6 +786,10 @@ msgstr ""
 msgid "Conflicting regulation"
 msgstr ""
 
+#: src/modules/workspace/view.jsx:71
+msgid "Connect"
+msgstr ""
+
 #: src/modules/case-studies/CaseStudy.jsx:92
 #: src/modules/details-page/view.jsx:629
 msgid "Connections"
@@ -846,6 +851,10 @@ msgstr ""
 #: src/modules/login/login-view.jsx:166
 #: src/modules/login/view.jsx:199
 msgid "CONTINUE WITH LINKEDIN"
+msgstr ""
+
+#: src/modules/workspace/view.jsx:54
+msgid "Contribute to the DataHub Maps & Dashboard"
 msgstr ""
 
 #: src/modules/details-page/header.jsx:182
@@ -967,6 +976,7 @@ msgstr ""
 msgid "Data Source"
 msgstr ""
 
+#: src/modules/workspace/view.jsx:52
 #: src/pages/landing/index.jsx:831
 msgid "Data tools"
 msgstr ""
@@ -2071,6 +2081,10 @@ msgstr ""
 msgid "Knowledge library"
 msgstr ""
 
+#: src/modules/workspace/view.jsx:60
+msgid "Knowledge Library"
+msgstr ""
+
 #: src/modules/flexible-forms/form-schema.js:1737
 msgid "Land and Agriculture"
 msgstr ""
@@ -2279,6 +2293,11 @@ msgstr ""
 msgid "Massive Open Online Course (MOOC) on Marine Litter"
 msgstr ""
 
+#: src/modules/workspace/view.jsx:70
+msgid "Match with opportunities"
+msgstr ""
+
+#: src/modules/workspace/view.jsx:67
 #: src/pages/landing/index.jsx:842
 msgid "Match-making"
 msgstr ""
@@ -3305,6 +3324,10 @@ msgstr ""
 msgid "Share your knowledge"
 msgstr ""
 
+#: src/modules/workspace/view.jsx:62
+msgid "Share Your Knowledge"
+msgstr ""
+
 #: src/modules/onboarding/form-four.jsx:37
 msgid "Short Bio"
 msgstr ""
@@ -3946,6 +3969,10 @@ msgstr ""
 
 #: src/pages/workspace/[slug]/layout.js:52
 msgid "Upload"
+msgstr ""
+
+#: src/modules/workspace/view.jsx:55
+msgid "Upload your data"
 msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:115

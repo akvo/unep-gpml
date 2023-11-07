@@ -157,6 +157,7 @@ msgid "Add An Event"
 msgstr "Add An Event"
 
 #: src/layouts/new-layout.js:290
+#: src/modules/workspace/view.jsx:64
 msgid "Add Content"
 msgstr "Add Content"
 
@@ -787,6 +788,10 @@ msgstr "Conflicting goals/other priorities more urgent"
 msgid "Conflicting regulation"
 msgstr "Conflicting regulation"
 
+#: src/modules/workspace/view.jsx:71
+msgid "Connect"
+msgstr "Connect"
+
 #: src/modules/case-studies/CaseStudy.jsx:92
 #: src/modules/details-page/view.jsx:629
 msgid "Connections"
@@ -849,6 +854,10 @@ msgstr "CONTINUE WITH GOOGLE"
 #: src/modules/login/view.jsx:199
 msgid "CONTINUE WITH LINKEDIN"
 msgstr "CONTINUE WITH LINKEDIN"
+
+#: src/modules/workspace/view.jsx:54
+msgid "Contribute to the DataHub Maps & Dashboard"
+msgstr "Contribute to the DataHub Maps & Dashboard"
 
 #: src/modules/details-page/header.jsx:182
 msgid "Copy"
@@ -969,6 +978,7 @@ msgstr "Data monitoring"
 msgid "Data Source"
 msgstr "Data Source"
 
+#: src/modules/workspace/view.jsx:52
 #: src/pages/landing/index.jsx:831
 msgid "Data tools"
 msgstr "Data tools"
@@ -2073,6 +2083,10 @@ msgstr "Knowledge Exchange Library."
 msgid "Knowledge library"
 msgstr "Knowledge library"
 
+#: src/modules/workspace/view.jsx:60
+msgid "Knowledge Library"
+msgstr "Knowledge Library"
+
 #: src/modules/flexible-forms/form-schema.js:1737
 msgid "Land and Agriculture"
 msgstr "Land and Agriculture"
@@ -2281,6 +2295,11 @@ msgstr "Marine organisms"
 msgid "Massive Open Online Course (MOOC) on Marine Litter"
 msgstr "Massive Open Online Course (MOOC) on Marine Litter"
 
+#: src/modules/workspace/view.jsx:70
+msgid "Match with opportunities"
+msgstr "Match with opportunities"
+
+#: src/modules/workspace/view.jsx:67
 #: src/pages/landing/index.jsx:842
 msgid "Match-making"
 msgstr "Match-making"
@@ -3302,6 +3321,10 @@ msgstr "Share your data"
 msgid "Share your knowledge"
 msgstr "Share your knowledge"
 
+#: src/modules/workspace/view.jsx:62
+msgid "Share Your Knowledge"
+msgstr "Share Your Knowledge"
+
 #: src/modules/onboarding/form-four.jsx:37
 msgid "Short Bio"
 msgstr "Short Bio"
@@ -3944,6 +3967,10 @@ msgstr "Update"
 #: src/pages/workspace/[slug]/layout.js:52
 msgid "Upload"
 msgstr "Upload"
+
+#: src/modules/workspace/view.jsx:55
+msgid "Upload your data"
+msgstr "Upload your data"
 
 #: src/modules/flexible-forms/form-schema.js:115
 #: src/modules/flexible-forms/form-schema.js:1221
