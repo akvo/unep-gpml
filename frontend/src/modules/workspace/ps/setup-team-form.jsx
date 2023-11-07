@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   Checkbox,
   Dropdown,
@@ -11,24 +11,32 @@ import {
   message,
   Select,
   Divider,
+  Spin,
 } from 'antd'
-import { InfoCircleOutlined, PlusOutlined } from '@ant-design/icons'
+import {
+  InfoCircleOutlined,
+  LoadingOutlined,
+  PlusOutlined,
+} from '@ant-design/icons'
 import Button from '../../../components/button'
 import styles from './setup-team-form.module.scss'
 import { DropDownIcon, SearchIcon } from '../../../components/icons'
 import api from '../../../utils/api'
 import { ROLES, TEAMS } from './config'
 import { Trans, t } from '@lingui/macro'
-import { UIStore } from '../../../store'
+import classNames from 'classnames'
 
 const { Text } = Typography
 
 const SetupTeamForm = ({ psItem, members, setReload }) => {
   const [openInvitation, setOpenInvitation] = useState(false)
   const [sending, setSending] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [openDropdown, setOpenDropdown] = useState(false)
   const [selectedRole, setSelectedRole] = useState(null)
+  const [stakeholders, setStakeholders] = useState([])
+  const [search, setSearch] = useState('')
   const [form] = Form.useForm()
-  const { stakeholders } = UIStore.useState((s) => s.stakeholders) || {}
 
   const roleDescription = useMemo(() => {
     const findRole = ROLES.find((r) => r.key === selectedRole?.key)
@@ -39,6 +47,8 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
   }, [selectedRole])
 
   const handleOnAddMember = async (userID) => {
+    message.loading({ content: 'Adding...' })
+    setOpenDropdown(false)
     const isExist = members.find((m) => m.id === userID)
     if (isExist) {
       message.warning(t`User already added as a member`)
@@ -89,12 +99,43 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
     }
   }
 
+  const searchingApi = useCallback(async () => {
+    if (search?.trim()?.length === 0) {
+      setOpenDropdown(false)
+      setStakeholders([])
+      return
+    }
+    setLoading(true)
+    setOpenDropdown(true)
+    try {
+      const {
+        data: { results },
+      } = await api.get(`/community?networkType=stakeholder`, {
+        q: search,
+      })
+      setStakeholders(results)
+      setLoading(false)
+    } catch (error) {
+      console.error('Unable to fetch by keyword', error)
+      setLoading(false)
+    }
+  }, [search])
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      searchingApi()
+    }, 500)
+
+    return () => clearTimeout(timer)
+  }, [searchingApi])
+
   return (
     <>
       <Select
         allowClear
         showSearch
         showArrow
+        open={openDropdown}
         virtual={false}
         size="small"
         placeholder={t`Start typing...`}
@@ -110,10 +151,13 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
           } = option?.children?.[0] || {}
           return optionText?.toLowerCase()?.includes(input.toLowerCase())
         }}
+        onSearch={setSearch}
         suffixIcon={<SearchIcon />}
         dropdownRender={(menu) => (
-          <div className={styles.addNewDropdown}>
-            {menu}
+          <div className={classNames(styles.addNewDropdown, { loading })}>
+            <Spin spinning={loading} indicator={<LoadingOutlined />}>
+              {menu}
+            </Spin>
             <>
               <Divider style={{ margin: '4px 0' }} />
               <div className="add-button-container">
@@ -130,7 +174,7 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
       >
         {stakeholders?.map((stakeholder) => (
           <Select.Option value={stakeholder.id} key={stakeholder.id}>
-            <Text>{`${stakeholder?.firstName} ${stakeholder?.lastName}`}</Text>
+            <Text>{stakeholder?.name}</Text>
             <strong className="w-bold">{stakeholder?.affiliation?.name}</strong>
           </Select.Option>
         ))}
