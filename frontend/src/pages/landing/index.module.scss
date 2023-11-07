@@ -1327,6 +1327,9 @@
             &:last-child {
               margin-bottom: 0px;
             }
+            a {
+              color: $primaryDarkBlueText;
+            }
             svg {
               margin-right: 12px;
               circle {
@@ -1489,6 +1492,7 @@
     .container h2.semibold {
       color: $primaryDarkBlue;
       text-align: center;
+      text-transform: capitalize;
       @media only screen and (max-width: $bpMobile) {
         font-size: $fzL;
         line-height: $lhL;

@@ -1118,11 +1118,15 @@ const Partnership = ({ isAuthenticated, setLoginVisible }) => {
                 </li>
                 <li>
                   <CirclePointer />
-                  <Trans>Join the GPML</Trans>
+                  <Link href="/page/membership">
+                    <Trans>Join the GPML</Trans>
+                  </Link>
                 </li>
                 <li>
                   <CirclePointer />
-                  <Trans>Become a partner</Trans>
+                  <Link href="/page/membership">
+                    <Trans>Become a partner</Trans>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -1135,15 +1139,31 @@ const Partnership = ({ isAuthenticated, setLoginVisible }) => {
               <ul className="link-list">
                 <li>
                   <CirclePointer />
-                  <Trans>Network with others</Trans>
+                  <Link href="/community">
+                    <Trans>Network with others</Trans>
+                  </Link>
                 </li>
                 <li>
                   <CirclePointer />
-                  <Trans>Share your knowledge</Trans>
+                  <Link
+                    href={
+                      isAuthenticated ? '/flexible-forms' : '/knowledge-library'
+                    }
+                  >
+                    <Trans>Share your knowledge</Trans>
+                  </Link>
                 </li>
                 <li>
                   <CirclePointer />
-                  <Trans>Share your data</Trans>
+                  <a
+                    href={
+                      isAuthenticated
+                        ? 'https://unepazecosysadlsstorage.z20.web.core.windows.net/add-data'
+                        : 'https://unepazecosysadlsstorage.z20.web.core.windows.net/'
+                    }
+                  >
+                    <Trans>Share your data</Trans>
+                  </a>
                 </li>
               </ul>
             </div>
