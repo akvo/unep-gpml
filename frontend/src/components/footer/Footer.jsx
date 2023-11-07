@@ -58,6 +58,9 @@ const Footer = ({ showTools }) => {
               <a href="mailto:unep-gpmarinelitter@un.org" className="p-m">
                 unep-gpmarinelitter@un.org
               </a>
+              <Link href="/privacy-policy-and-terms-of-use.pdf">
+                <Trans>Privacy Policy & Terms of Use</Trans>
+              </Link>
             </div>
           </div>
           {/* <div className="footer-item">
@@ -160,12 +163,19 @@ const Footer = ({ showTools }) => {
               </Trans>
             </p>
           </div>
-          {showCookieConsent && (
+          {true && (
             <div className="footer-confirm-cookies">
               <Trans>
-                <p className="h-xxs">We use cookies for better service.</p>
+                <p className="h-xxs">
+                  <Trans>We use cookies for better service.</Trans>
+                </p>
+                <Button type="link">
+                  <Link href="/privacy-policy-and-terms-of-use.pdf">
+                    <Trans>Learn More</Trans>
+                  </Link>
+                </Button>
                 <Button type="link" onClick={handleAccept}>
-                  Accept
+                  <Trans>Accept</Trans>
                 </Button>
               </Trans>
             </div>
