@@ -25,7 +25,7 @@ msgstr ""
 msgid "{progress}% complete"
 msgstr ""
 
-#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:407
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:414
 msgid "{value} Initiatives"
 msgstr ""
 
@@ -203,7 +203,7 @@ msgstr ""
 msgid "All (default)"
 msgstr ""
 
-#: src/pages/forum/index.jsx:100
+#: src/pages/forum/index.jsx:109
 msgid "All Forums"
 msgstr ""
 
@@ -483,6 +483,10 @@ msgstr ""
 msgid "Building, construction, demolition,industrial machinery"
 msgstr ""
 
+#: src/modules/workspace/view.jsx:262
+msgid "By completing this form I confirm that I have the authorization to submit an application on behalf of this Entity to become a member of the Global Partnership on Marine Litter (GPML)​."
+msgstr ""
+
 #: src/pages/landing/index.jsx:879
 msgid "By leveraging AI and innovation, the platform will enable proactive strategies and solutions that efficiently combat plastic pollution and marine litter"
 msgstr ""
@@ -512,7 +516,7 @@ msgstr ""
 msgid "Campaigning with or through NGOs"
 msgstr ""
 
-#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:502
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:530
 msgid "Can't find who you're looking for?"
 msgstr ""
 
@@ -522,7 +526,7 @@ msgid "Can't see what you're looking for?"
 msgstr ""
 
 #: src/modules/details-page/view.jsx:323
-#: src/modules/flexible-forms/entity-modal/add-entity-modal.jsx:312
+#: src/modules/flexible-forms/entity-modal/add-entity-modal.jsx:315
 #: src/modules/knowledge-lib/filter-modal.jsx:373
 msgid "Cancel"
 msgstr ""
@@ -588,8 +592,12 @@ msgstr ""
 msgid "Change in taxes/subsidies"
 msgstr ""
 
-#: src/pages/forum/index.jsx:121
+#: src/pages/forum/index.jsx:130
 msgid "channel"
+msgstr ""
+
+#: src/modules/workspace/view.jsx:391
+msgid "Chat"
 msgstr ""
 
 #: src/store.js:240
@@ -604,26 +612,26 @@ msgstr ""
 msgid "Choose an expert category"
 msgstr ""
 
-#: src/modules/flexible-forms/entity-modal/form-schema.js:144
+#: src/modules/flexible-forms/entity-modal/form-schema.js:150
 msgid "Choose country"
 msgstr ""
 
-#: src/modules/flexible-forms/entity-modal/form-schema.js:105
+#: src/modules/flexible-forms/entity-modal/form-schema.js:111
 msgid "Choose the entity country"
 msgstr ""
 
-#: src/modules/flexible-forms/entity-modal/form-schema.js:128
 #: src/modules/flexible-forms/entity-modal/form-schema.js:134
-#: src/modules/flexible-forms/entity-modal/form-schema.js:154
-#: src/modules/flexible-forms/entity-modal/form-schema.js:162
+#: src/modules/flexible-forms/entity-modal/form-schema.js:140
+#: src/modules/flexible-forms/entity-modal/form-schema.js:160
+#: src/modules/flexible-forms/entity-modal/form-schema.js:168
 msgid "Choose the entity coverage"
 msgstr ""
 
-#: src/modules/flexible-forms/entity-modal/form-schema.js:119
+#: src/modules/flexible-forms/entity-modal/form-schema.js:125
 msgid "Choose the entity coverage type"
 msgstr ""
 
-#: src/modules/flexible-forms/entity-modal/form-schema.js:95
+#: src/modules/flexible-forms/entity-modal/form-schema.js:101
 msgid "Choose the entity type"
 msgstr ""
 
@@ -778,7 +786,7 @@ msgstr ""
 msgid "Constitution"
 msgstr ""
 
-#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:65
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:56
 msgid "Consumption"
 msgstr ""
 
@@ -849,6 +857,7 @@ msgstr ""
 msgid "Countries"
 msgstr ""
 
+#: src/modules/flexible-forms/entity-modal/form-schema.js:44
 #: src/modules/signup-old/signup-form.jsx:52
 #: src/modules/signup-old/signup-form.jsx:364
 msgid "Country"
@@ -1036,7 +1045,7 @@ msgstr ""
 msgid "Design"
 msgstr ""
 
-#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:55
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:46
 msgid "Design & Production"
 msgstr ""
 
@@ -1086,7 +1095,7 @@ msgstr ""
 msgid "Discussion"
 msgstr ""
 
-#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:60
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:51
 msgid "Distribution"
 msgstr ""
 
@@ -1196,11 +1205,11 @@ msgstr ""
 msgid "End Date"
 msgstr ""
 
-#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:70
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:61
 msgid "End of Life"
 msgstr ""
 
-#: src/pages/forum/index.jsx:103
+#: src/pages/forum/index.jsx:112
 msgid "Engage in forums across a wide variety of subjects and sectors currently ongoing. Join the public channels or request to join the private channels."
 msgstr ""
 
@@ -1280,6 +1289,7 @@ msgstr ""
 msgid "Entity role"
 msgstr ""
 
+#: src/modules/flexible-forms/entity-modal/form-schema.js:39
 #: src/modules/signup-old/signup-form.jsx:376
 msgid "Entity URL"
 msgstr ""
@@ -1403,7 +1413,7 @@ msgstr ""
 msgid "Financing Resources"
 msgstr ""
 
-#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:568
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:596
 msgid "Find and connect the stakeholders relevant to you"
 msgstr ""
 
@@ -1423,7 +1433,7 @@ msgstr ""
 msgid "Fishing for Litter: Ocean cleaning project that involves fishermen who collect debris during fishing activities"
 msgstr ""
 
-#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:127
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:119
 msgid "Focal Point"
 msgstr ""
 
@@ -1471,7 +1481,8 @@ msgstr ""
 msgid "Forum"
 msgstr ""
 
-#: src/pages/forum/index.jsx:93
+#: src/modules/workspace/view.jsx:352
+#: src/pages/forum/index.jsx:102
 msgid "Forums"
 msgstr ""
 
@@ -1515,6 +1526,12 @@ msgstr ""
 msgid "Gender Equality"
 msgstr ""
 
+#: src/modules/flexible-forms/entity-modal/form-schema.js:54
+#: src/modules/flexible-forms/entity-modal/form-schema.js:62
+#: src/modules/flexible-forms/entity-modal/form-schema.js:78
+msgid "Geo coverage"
+msgstr ""
+
 #: src/modules/flexible-forms/form-schema.js:158
 #: src/modules/flexible-forms/form-schema.js:1262
 #: src/modules/flexible-forms/form-schema.js:1517
@@ -1533,8 +1550,16 @@ msgstr ""
 msgid "GEO COVERAGE (Transnational)"
 msgstr ""
 
+#: src/modules/flexible-forms/entity-modal/form-schema.js:70
+msgid "Geo coverage country"
+msgstr ""
+
+#: src/modules/flexible-forms/entity-modal/form-schema.js:49
+msgid "Geo coverage type"
+msgstr ""
+
 #: src/modules/stakeholder-overview/filter-drawer.jsx:335
-#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:116
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:108
 #: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:168
 msgid "Geo-coverage"
 msgstr ""
@@ -1605,12 +1630,15 @@ msgstr ""
 msgid "Good Health and Well-being"
 msgstr ""
 
+#: src/pages/landing/index.jsx:510
+msgid "Government agencies"
+msgstr ""
+
 #: src/components/resource-card/resource-card.jsx:54
 msgid "Government Verified"
 msgstr ""
 
 #: src/pages/landing/index.jsx:96
-#: src/pages/landing/index.jsx:510
 msgid "Governments"
 msgstr ""
 
@@ -1690,6 +1718,10 @@ msgstr ""
 msgid "HELCOM Regional action plan on marine litter"
 msgstr ""
 
+#: src/modules/workspace/view.jsx:251
+msgid "Hello, It looks like your entity: <0>{0},</0> is not yet part <1/> of the GPML partnership.<2/> If you are the focal point, submit your application below"
+msgstr ""
+
 #: src/store.js:445
 msgid "Help and advice provided on a set of ideas or plans that is used as a basis for making decisions, especially in politics, economics, or business."
 msgstr ""
@@ -1748,6 +1780,10 @@ msgstr ""
 
 #: src/modules/signup-old/signup-form.jsx:336
 msgid "I am a private citizen"
+msgstr ""
+
+#: src/modules/workspace/view.jsx:292
+msgid "I AM NOT THE FOCAL POINT"
 msgstr ""
 
 #: src/modules/onboarding/affiliation-option.jsx:37
@@ -1908,6 +1944,7 @@ msgstr ""
 
 #: src/modules/knowledge-lib/filter-bar.jsx:27
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/initiatives.js:142
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:123
 #: src/pages/workspace/[slug]/layout.js:35
 #: src/store.js:767
 msgid "Initiatives"
@@ -2117,7 +2154,7 @@ msgstr ""
 msgid "Life-long learning"
 msgstr ""
 
-#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:122
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:114
 msgid "Lifecycle Stage"
 msgstr ""
 
@@ -2360,6 +2397,7 @@ msgstr ""
 msgid "My Bookmarks"
 msgstr ""
 
+#: src/modules/flexible-forms/entity-modal/form-schema.js:30
 #: src/modules/signup-old/signup-form.jsx:350
 #: src/modules/workspace/ps/setup-team-form.jsx:182
 msgid "Name"
@@ -2400,9 +2438,11 @@ msgstr ""
 
 #: src/pages/workspace/[slug]/1-project-team/index.js:48
 #: src/pages/workspace/[slug]/1-project-team/setup-team.js:16
-msgid "National steering committee & Project Team"
-msgstr ""
+#~ msgid "National steering committee & Project Team"
+#~ msgstr ""
 
+#: src/pages/workspace/[slug]/1-project-team/index.js:48
+#: src/pages/workspace/[slug]/1-project-team/setup-team.js:16
 #: src/pages/workspace/[slug]/layout.js:26
 msgid "National Steering Committee & Project Team"
 msgstr ""
@@ -2413,6 +2453,10 @@ msgstr ""
 
 #: src/modules/stakeholder-overview/filter-drawer.jsx:156
 msgid "Network type"
+msgstr ""
+
+#: src/modules/workspace/view.jsx:334
+msgid "Network with other stakeholders"
 msgstr ""
 
 #: src/pages/landing/index.jsx:1166
@@ -2598,7 +2642,7 @@ msgid "Optional"
 msgstr ""
 
 #: src/modules/workspace/ps/setup-team-table.jsx:54
-#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:103
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:95
 msgid "Organisation"
 msgstr ""
 
@@ -2731,7 +2775,7 @@ msgstr ""
 msgid "Personal Healthcare"
 msgstr ""
 
-#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:50
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:41
 msgid "Petrochemical Extraction"
 msgstr ""
 
@@ -2764,10 +2808,13 @@ msgstr ""
 msgid "Plastic Pollution Calculator"
 msgstr ""
 
+#: src/modules/workspace/view.jsx:412
 #: src/pages/landing/index.jsx:651
+#: src/pages/workspace/plastic-strategies/index.js:36
 msgid "Plastic Strategies"
 msgstr ""
 
+#: src/modules/workspace/view.jsx:517
 #: src/pages/workspace/[slug]/layout.js:244
 msgid "plastic strategy"
 msgstr ""
@@ -2844,7 +2891,7 @@ msgstr ""
 msgid "Primary school"
 msgstr ""
 
-#: src/pages/forum/index.jsx:121
+#: src/pages/forum/index.jsx:130
 msgid "private"
 msgstr ""
 
@@ -2905,7 +2952,7 @@ msgstr ""
 msgid "Prototype"
 msgstr ""
 
-#: src/pages/forum/index.jsx:121
+#: src/pages/forum/index.jsx:130
 msgid "public"
 msgstr ""
 
@@ -2937,6 +2984,10 @@ msgstr ""
 
 #: src/pages/landing/index.jsx:843
 msgid "Read More"
+msgstr ""
+
+#: src/modules/workspace/view.jsx:247
+msgid "RECOMMENDED"
 msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:1701
@@ -2998,7 +3049,7 @@ msgstr ""
 
 #: src/components/resource-card/resource-card.jsx:75
 #: src/modules/details-page/header.jsx:70
-#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:323
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:330
 #: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:339
 msgid "Remove from Library"
 msgstr ""
@@ -3112,7 +3163,7 @@ msgstr ""
 
 #: src/components/resource-card/resource-card.jsx:75
 #: src/modules/details-page/header.jsx:70
-#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:323
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:330
 #: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:339
 msgid "Save to Library"
 msgstr ""
@@ -3310,7 +3361,7 @@ msgstr ""
 msgid "Spiritual or religious values"
 msgstr ""
 
-#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:560
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:588
 msgid "stakeholder consultation process"
 msgstr ""
 
@@ -3325,7 +3376,7 @@ msgstr ""
 msgid "Stakeholder engagement"
 msgstr ""
 
-#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:563
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:591
 #: src/pages/workspace/[slug]/layout.js:33
 msgid "Stakeholder Map"
 msgstr ""
@@ -3345,7 +3396,7 @@ msgstr ""
 #: src/modules/signup-old/signup-form.jsx:69
 #: src/modules/signup-old/signup-form.jsx:81
 #: src/modules/workspace/ps/setup-team-form.jsx:100
-#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:506
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:534
 msgid "Start typing..."
 msgstr ""
 
@@ -3387,8 +3438,8 @@ msgid "Strategies & Action Plans"
 msgstr ""
 
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:131
-msgid "Strengths"
-msgstr ""
+#~ msgid "Strengths"
+#~ msgstr ""
 
 #: src/store.js:542
 msgid "Study on industry involvement in the integrated approach to financing the sound management of chemicals and waste, prepared by the SAICM Secretariat"
@@ -3410,7 +3461,7 @@ msgstr ""
 msgid "Sub-topics"
 msgstr ""
 
-#: src/modules/flexible-forms/entity-modal/add-entity-modal.jsx:321
+#: src/modules/flexible-forms/entity-modal/add-entity-modal.jsx:324
 #: src/modules/flexible-forms/view.jsx:1160
 #: src/modules/onboarding/view.jsx:369
 msgid "Submit"
@@ -3489,6 +3540,10 @@ msgstr ""
 #: src/modules/knowledge-lib/filter-modal.jsx:263
 #: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:160
 msgid "Tags"
+msgstr ""
+
+#: src/modules/workspace/view.jsx:315
+msgid "Tap into a global network of like-minded members​"
 msgstr ""
 
 #: src/pages/workspace/[slug]/1-project-team/setup-team.js:36
@@ -3823,12 +3878,12 @@ msgstr ""
 #: src/modules/map/vertical-legend.jsx:402
 #: src/modules/map/vertical-legend.jsx:452
 #: src/modules/map/vertical-legend.jsx:486
-#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:110
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:102
 #: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:146
 msgid "Type"
 msgstr ""
 
-#: src/modules/flexible-forms/entity-modal/form-schema.js:91
+#: src/modules/flexible-forms/entity-modal/form-schema.js:97
 msgid "Type in the entity name"
 msgstr ""
 
@@ -3836,6 +3891,7 @@ msgstr ""
 msgid "Type Of Law"
 msgstr ""
 
+#: src/modules/flexible-forms/entity-modal/form-schema.js:34
 #: src/modules/signup-old/signup-form.jsx:355
 msgid "Type of the entity"
 msgstr ""
@@ -3885,7 +3941,7 @@ msgstr ""
 msgid "URL"
 msgstr ""
 
-#: src/modules/flexible-forms/entity-modal/form-schema.js:114
+#: src/modules/flexible-forms/entity-modal/form-schema.js:120
 msgid "URL Address (e.g. example.com)"
 msgstr ""
 
@@ -3959,7 +4015,8 @@ msgstr ""
 msgid "view"
 msgstr ""
 
-#: src/pages/forum/index.jsx:137
+#: src/modules/workspace/view.jsx:383
+#: src/pages/forum/index.jsx:146
 msgid "View"
 msgstr ""
 
@@ -3969,6 +4026,14 @@ msgstr ""
 
 #: src/pages/landing/index.jsx:907
 msgid "View All Features"
+msgstr ""
+
+#: src/modules/workspace/view.jsx:356
+msgid "View All Forums"
+msgstr ""
+
+#: src/modules/workspace/view.jsx:417
+msgid "View All Plastic Strategies"
 msgstr ""
 
 #: src/modules/details-page/header.jsx:107
@@ -4013,8 +4078,16 @@ msgstr ""
 msgid "Wastewater/Sewage management"
 msgstr ""
 
+#: src/modules/workspace/view.jsx:479
+msgid "Watch this video to get started"
+msgstr ""
+
 #: src/modules/flexible-forms/view.jsx:1237
 msgid "We are excited to hear from the members of our community. The GPML Digital Platform is crowdsourced and allows everyone to submit new content via this form."
+msgstr ""
+
+#: src/modules/workspace/view.jsx:232
+msgid "We sent you a confirmation email, Please take a moment and validate your address to confirm your account."
 msgstr ""
 
 #: src/store.js:143
@@ -4059,6 +4132,10 @@ msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:327
 msgid "What is the MAIN focus of the initiative? (Please tick ALL that apply)."
+msgstr ""
+
+#: src/modules/workspace/view.jsx:434
+msgid "What to do next?"
 msgstr ""
 
 #: src/pages/landing/index.jsx:542
@@ -4116,6 +4193,10 @@ msgstr ""
 msgid "Workshops"
 msgstr ""
 
+#: src/modules/workspace/view.jsx:345
+msgid "workspace"
+msgstr ""
+
 #: src/pages/landing/index.jsx:340
 #: src/pages/landing/index.jsx:866
 #: src/pages/landing/index.jsx:1129
@@ -4153,6 +4234,10 @@ msgstr ""
 
 #: src/modules/onboarding/view.jsx:277
 msgid "You’re almost set! <0/> We need to ask a few more questions to make the platform relevant to you."
+msgstr ""
+
+#: src/modules/workspace/view.jsx:222
+msgid "Your account is pending reviewal. You can still explore the platform."
 msgstr ""
 
 #: src/modules/knowledge-lib/filter-modal.jsx:399
