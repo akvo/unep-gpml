@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react'
 import {
   Row,
   Col,
@@ -9,34 +9,34 @@ import {
   Card,
   Select,
   DatePicker,
-} from "antd";
-import { CloseCircleOutlined } from "@ant-design/icons";
-import classNames from "classnames";
-import { useAuth0 } from "@auth0/auth0-react";
-import moment from "moment";
+} from 'antd'
+import { CloseCircleOutlined } from '@ant-design/icons'
+import classNames from 'classnames'
+import { useAuth0 } from '@auth0/auth0-react'
+import moment from 'moment'
 
-import humps from "humps";
-import isEmpty from "lodash/isEmpty";
-import values from "lodash/values";
-import flatten from "lodash/flatten";
+import humps from 'humps'
+import isEmpty from 'lodash/isEmpty'
+import values from 'lodash/values'
+import flatten from 'lodash/flatten'
 
-import { UIStore } from "../../store";
-import api from "../../utils/api";
-import { topicTypes, topicNames } from "../../utils/misc";
-import { titleCase } from "../../utils/string";
+import { UIStore } from '../../store'
+import api from '../../utils/api'
+import { topicTypes, topicNames } from '../../utils/misc'
+import { titleCase } from '../../utils/string'
 
-import MultipleSelectFilter from "../../components/select/multiple-select-filter";
-import CountryTransnationalFilter from "../../components/select/country-transnational-filter";
+import MultipleSelectFilter from '../../components/select/multiple-select-filter'
+import CountryTransnationalFilter from '../../components/select/country-transnational-filter'
 
 // Import Icons as React component since the color of the icons changes when the card is selected
-import { ReactComponent as CapacityBuildingIcon } from "../../images/knowledge-library/capacity-building.svg";
-import { ReactComponent as ActionSelectedIcon } from "../../images/knowledge-library/action-selected.svg";
-import { ReactComponent as EventFlexibleIcon } from "../../images/knowledge-library/event-flexible.svg";
-import { ReactComponent as InitiativeIcon } from "../../images/knowledge-library/initiative.svg";
-import { ReactComponent as FinancingIcon } from "../../images/knowledge-library/financing-2.svg";
-import { ReactComponent as PolicyIcon } from "../../images/knowledge-library/policy.svg";
-import { ReactComponent as TechnicalIcon } from "../../images/knowledge-library/technical.svg";
-import { ReactComponent as TechnologyIcon } from "../../images/knowledge-library/technology.svg";
+import { ReactComponent as CapacityBuildingIcon } from '../../images/knowledge-library/capacity-building.svg'
+import { ReactComponent as ActionSelectedIcon } from '../../images/knowledge-library/action-selected.svg'
+import { ReactComponent as EventFlexibleIcon } from '../../images/knowledge-library/event-flexible.svg'
+import { ReactComponent as InitiativeIcon } from '../../images/knowledge-library/initiative.svg'
+import { ReactComponent as FinancingIcon } from '../../images/knowledge-library/financing-2.svg'
+import { ReactComponent as PolicyIcon } from '../../images/knowledge-library/policy.svg'
+import { ReactComponent as TechnicalIcon } from '../../images/knowledge-library/technical.svg'
+import { ReactComponent as TechnologyIcon } from '../../images/knowledge-library/technology.svg'
 
 const FilterDrawer = ({
   query,
@@ -60,87 +60,87 @@ const FilterDrawer = ({
     mainContentType: s.mainContentType,
     representativeGroup: s.representativeGroup,
     organisations: s.organisations,
-  }));
-  const { isAuthenticated } = useAuth0();
+  }))
+  const { isAuthenticated } = useAuth0()
   const [
     tagsExcludingCapacityBuilding,
     setTagsExcludingCapacityBuilding,
-  ] = useState([]);
+  ] = useState([])
 
-  const [isClearFilter, setIsClearFilter] = useState(false);
+  const [isClearFilter, setIsClearFilter] = useState(false)
 
   const filteredMainContentOptions = !isEmpty(mainContentType)
     ? mainContentType
         .filter((content) => {
           const resourceName = (name) => {
-            if (name === "initiative") {
-              return "initiative";
-            } else if (name === "event_flexible") {
-              return "event";
-            } else if (name === "financing") {
-              return "financing_resource";
-            } else if (name === "technical") {
-              return "technical_resource";
-            } else if (name === "action") {
-              return "action_plan";
+            if (name === 'initiative') {
+              return 'initiative'
+            } else if (name === 'event_flexible') {
+              return 'event'
+            } else if (name === 'financing') {
+              return 'financing_resource'
+            } else if (name === 'technical') {
+              return 'technical_resource'
+            } else if (name === 'action') {
+              return 'action_plan'
             } else {
-              return name;
+              return name
             }
-          };
-          return query?.topic?.includes(resourceName(content?.code));
+          }
+          return query?.topic?.includes(resourceName(content?.code))
         })
         .sort((a, b) => a?.code.localeCompare(b?.code))
-    : [];
+    : []
 
   const mainContentOption = () => {
     if (query?.topic?.length > 0) {
-      return filteredMainContentOptions;
+      return filteredMainContentOptions
     } else if (query?.topic?.length === 0 || !query?.topic) {
-      return mainContentType;
+      return mainContentType
     }
-  };
+  }
 
   const topicIcons = (topic) => {
-    if (topic === "initiative") {
-      return <InitiativeIcon width="53" height="53" />;
+    if (topic === 'initiative') {
+      return <InitiativeIcon width="53" height="53" />
     }
-    if (topic === "actionPlan") {
-      return <ActionSelectedIcon width="53" height="53" />;
+    if (topic === 'actionPlan') {
+      return <ActionSelectedIcon width="53" height="53" />
     }
-    if (topic === "policy") {
-      return <PolicyIcon width="53" height="53" />;
+    if (topic === 'policy') {
+      return <PolicyIcon width="53" height="53" />
     }
-    if (topic === "technicalResource") {
-      return <TechnicalIcon width="53" height="53" />;
+    if (topic === 'technicalResource') {
+      return <TechnicalIcon width="53" height="53" />
     }
-    if (topic === "financingResource") {
-      return <FinancingIcon width="53" height="53" />;
+    if (topic === 'financingResource') {
+      return <FinancingIcon width="53" height="53" />
     }
-    if (topic === "event") {
-      return <EventFlexibleIcon width="53" height="53" />;
+    if (topic === 'event') {
+      return <EventFlexibleIcon width="53" height="53" />
     }
-    if (topic === "technology") {
-      return <TechnologyIcon width="53" height="53" />;
+    if (topic === 'technology') {
+      return <TechnologyIcon width="53" height="53" />
     }
-    if (topic === "capacityBuilding") {
-      return <CapacityBuildingIcon width="53" height="53" />;
+    if (topic === 'capacityBuilding') {
+      return <CapacityBuildingIcon width="53" height="53" />
     }
-  };
+  }
 
   const handleChangeResourceType = (flag, type) => {
-    const val = query[flag];
+    const val = query[flag]
 
-    let updateVal = [];
+    let updateVal = []
 
     if (isEmpty(val)) {
-      updateVal = [type];
+      updateVal = [type]
     } else if (val.includes(type)) {
-      updateVal = val.filter((x) => x !== type);
+      updateVal = val.filter((x) => x !== type)
     } else {
-      updateVal = [...val, type];
+      updateVal = [...val, type]
     }
-    updateQuery(flag, updateVal);
-  };
+    updateQuery(flag, updateVal)
+  }
 
   // populate options for tags dropdown
   const tagsWithoutSpace =
@@ -148,42 +148,42 @@ const FilterDrawer = ({
     flatten(values(tags)).map((it) => ({
       value: it?.tag?.trim(),
       label: it?.tag?.trim(),
-    }));
+    }))
 
   const tagOpts = !isEmpty(tags)
     ? [...new Set(tagsWithoutSpace.map((s) => JSON.stringify(s)))]
         .map((s) => JSON.parse(s))
         ?.sort((tag1, tag2) => tag1?.label.localeCompare(tag2?.label))
-    : [];
+    : []
 
   // populate options for representative group options
   const representativeOpts = !isEmpty(representativeGroup)
-    ? [...representativeGroup, { code: "other", name: "Other" }].map((x) => ({
+    ? [...representativeGroup, { code: 'other', name: 'Other' }].map((x) => ({
         label: x?.name,
         value: x?.code,
       }))
-    : [];
+    : []
 
   useEffect(() => {
     if (isClearFilter) {
-      updateQuery("tag", tagsExcludingCapacityBuilding);
+      updateQuery('tag', tagsExcludingCapacityBuilding)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tagsExcludingCapacityBuilding]);
+  }, [tagsExcludingCapacityBuilding])
 
   const clearTopicFilter = () => {
-    setIsClearFilter(true);
+    setIsClearFilter(true)
     const removeCapacityBuilding = query?.tag?.filter(
-      (tag) => tag?.toLowerCase() !== "capacity building"
-    );
-    updateQuery("topic", []);
-    setTagsExcludingCapacityBuilding(removeCapacityBuilding);
-  };
+      (tag) => tag?.toLowerCase() !== 'capacity building'
+    )
+    updateQuery('topic', [])
+    setTagsExcludingCapacityBuilding(removeCapacityBuilding)
+  }
 
   return (
     <div
       className={`site-drawer-render-in-current-wrapper ${
-        view === "topic" && "topic-view-drawer"
+        view === 'topic' && 'topic-view-drawer'
       }`}
     >
       <Drawer
@@ -203,7 +203,7 @@ const FilterDrawer = ({
             )}
           </>
         }
-        style={{ position: "absolute" }}
+        style={{ position: 'absolute' }}
         height="100%"
         autoFocus={false}
       >
@@ -230,32 +230,32 @@ const FilterDrawer = ({
               type="flex"
               gutter={[10, 10]}
               justify="space-between"
-              style={{ width: "100%" }}
+              style={{ width: '100%' }}
             >
               {topicTypes.map((type) => {
-                const topic = humps.decamelize(type);
+                const topic = humps.decamelize(type)
 
                 const count =
                   countData?.find((it) => {
-                    if (it?.topic !== "capacity building") {
-                      return it?.topic === topic;
+                    if (it?.topic !== 'capacity building') {
+                      return it?.topic === topic
                     } else {
-                      return it?.topic === "capacity building";
+                      return it?.topic === 'capacity building'
                     }
-                  })?.count || 0;
+                  })?.count || 0
 
                 return (
                   <Col span={6} key={type} className="resource-card-wrapper">
                     <Card
                       onClick={() =>
-                        topic === "capacity_building"
-                          ? handleChangeResourceType("tag", "capacity building")
-                          : handleChangeResourceType("topic", topic)
+                        topic === 'capacity_building'
+                          ? handleChangeResourceType('tag', 'capacity building')
+                          : handleChangeResourceType('topic', topic)
                       }
-                      className={classNames("resource-type-card", {
+                      className={classNames('resource-type-card', {
                         active:
-                          topic === "capacity_building"
-                            ? query?.tag?.includes("capacity building")
+                          topic === 'capacity_building'
+                            ? query?.tag?.includes('capacity building')
                             : query?.topic?.includes(topic),
                       })}
                     >
@@ -266,7 +266,7 @@ const FilterDrawer = ({
                       </Space>
                     </Card>
                   </Col>
-                );
+                )
               })}
             </Row>
           </Col>
@@ -277,12 +277,12 @@ const FilterDrawer = ({
             options={
               !isEmpty(mainContentType)
                 ? mainContentOption().map((content) => ({
-                    label: content?.name,
+                    label: i18n._(content?.name),
                     options: content?.childs
                       .map((child, i) => ({
-                        label: child?.title,
-                        value: child?.title,
-                        key: `${i}-${content?.name}`,
+                        label: i18n._(child?.title),
+                        value: i18n._(child?.title),
+                        key: `${i}-${i18n._(content?.name)}`,
                       }))
                       .sort((a, b) =>
                         a?.label?.trim().localeCompare(b?.label?.trim())
@@ -302,9 +302,9 @@ const FilterDrawer = ({
               <Space align="middle">
                 <Checkbox
                   className="favorites-checkbox"
-                  checked={query?.favorites?.indexOf("true") > -1}
+                  checked={query?.favorites?.indexOf('true') > -1}
                   onChange={({ target: { checked } }) =>
-                    updateQuery("favorites", checked)
+                    updateQuery('favorites', checked)
                   }
                 >
                   My Bookmarks
@@ -321,29 +321,29 @@ const FilterDrawer = ({
                   className="clear-selection"
                   closable
                   onClick={() => {
-                    updateQuery("country", []);
+                    updateQuery('country', [])
                   }}
-                  onClose={() => updateQuery("country", [])}
+                  onClose={() => updateQuery('country', [])}
                 >
                   Clear Country Selection
                 </Tag>
               ) : (
-                ""
+                ''
               )}
               {!isEmpty(query?.transnational) ? (
                 <Tag
                   className="clear-selection"
                   closable
                   onClick={() => {
-                    updateQuery("transnational", []);
-                    setMultiCountryCountries([]);
+                    updateQuery('transnational', [])
+                    setMultiCountryCountries([])
                   }}
-                  onClose={() => updateQuery("transnational", [])}
+                  onClose={() => updateQuery('transnational', [])}
                 >
                   Clear Multi-Country Selection
                 </Tag>
               ) : (
-                ""
+                ''
               )}
             </Space>
             <div className="country-filter-tab-wrapper">
@@ -414,7 +414,7 @@ const FilterDrawer = ({
             className="date-picker-container"
             style={{ paddingTop: 5, paddingBottom: 5 }}
           >
-            <Row type="flex" style={{ width: "100%" }} gutter={[10, 10]}>
+            <Row type="flex" style={{ width: '100%' }} gutter={[10, 10]}>
               {/* Start date */}
               <DatePickerFilter
                 title="Start Date"
@@ -446,8 +446,8 @@ const FilterDrawer = ({
         </Row>
       </Drawer>
     </div>
-  );
-};
+  )
+}
 
 const DatePickerFilter = ({
   title,
@@ -472,34 +472,34 @@ const DatePickerFilter = ({
             Clear Selection
           </Tag>
         ) : (
-          ""
+          ''
         )}
       </Space>
       <div>
         <DatePicker
           placeholder="YYYY"
-          picker={"year"}
+          picker={'year'}
           value={
             !isEmpty(value)
-              ? flag.toLowerCase() === "startdate"
-                ? moment(value[0]).startOf("year")
-                : moment(value[0]).endOf("year")
-              : ""
+              ? flag.toLowerCase() === 'startdate'
+                ? moment(value[0]).startOf('year')
+                : moment(value[0]).endOf('year')
+              : ''
           }
           onChange={(val) =>
-            updateQuery(flag, val ? moment(val).format("YYYY-MM-DD") : [])
+            updateQuery(flag, val ? moment(val).format('YYYY-MM-DD') : [])
           }
           disabledDate={(current) => {
             // Can not select days past start date
             if (startDate) {
-              return current <= startDate;
+              return current <= startDate
             }
-            return null;
+            return null
           }}
         />
       </div>
     </Col>
-  );
-};
+  )
+}
 
-export default FilterDrawer;
+export default FilterDrawer
