@@ -215,7 +215,13 @@ const NavMobile = ({ isOpen, toggleOpen }) => {
         exit="closed"
       >
         {items.map((i) => (
-          <MenuItem key={i.key} i={i.key} item={i} collapseMenu />
+          <MenuItem
+            key={i.key}
+            i={i.key}
+            item={i}
+            collapseMenu
+            isSubItem={true}
+          />
         ))}
       </motion.ul>
     )
