@@ -23,7 +23,7 @@ import SkeletonItems from './ps/skeleton-items'
 import Button from '../../components/button'
 import ForumCard from '../../components/forum-card/forum-card'
 import ForumMembers from '../forum/forum-members'
-import { Trans } from '@lingui/macro'
+import { Trans, t } from '@lingui/macro'
 
 const DynamicForumModal = dynamic(
   () => import('../../modules/forum/forum-modal'),
@@ -31,31 +31,6 @@ const DynamicForumModal = dynamic(
     ssr: false,
   }
 )
-
-const suggestions = [
-  {
-    title: 'Data tools',
-    key: 'data-tool',
-    content: 'Contribute to the DataHub Maps & Dashboard',
-    buttonText: 'Upload your data',
-    href:
-      'https://unep-gpml.eu.auth0.com/authorize?response_type=code&client_id=lmdxuDGdQjUsbLbMFpjDCulTP1w5Z4Gi&redirect_uri=https%3A//apps.unep.org/data-catalog/oauth2/callback&scope=openid+profile+email&state=eyJjYW1lX2Zyb20iOiAiL2Rhc2hib2FyZCJ9',
-  },
-  {
-    title: 'Knowledge Library',
-    key: 'knowledge-library',
-    content: 'Share Your Knowledge',
-    link: '/flexible-forms',
-    buttonText: 'Add content',
-  },
-  {
-    title: 'Match-making',
-    key: 'match-making',
-    link: '/community',
-    content: 'Match with opportunities',
-    buttonText: 'Connect',
-  },
-]
 
 const Workspace = ({ profile }) => {
   const router = useRouter()
@@ -71,6 +46,31 @@ const Workspace = ({ profile }) => {
     open: false,
     data: {},
   })
+
+  const suggestions = [
+    {
+      title: t`Data tools`,
+      key: 'data-tool',
+      content: t`Contribute to the DataHub Maps & Dashboard`,
+      buttonText: t`Upload your data`,
+      href:
+        'https://unep-gpml.eu.auth0.com/authorize?response_type=code&client_id=lmdxuDGdQjUsbLbMFpjDCulTP1w5Z4Gi&redirect_uri=https%3A//apps.unep.org/data-catalog/oauth2/callback&scope=openid+profile+email&state=eyJjYW1lX2Zyb20iOiAiL2Rhc2hib2FyZCJ9',
+    },
+    {
+      title: t`Knowledge Library`,
+      key: 'knowledge-library',
+      content: t`Share Your Knowledge`,
+      link: '/flexible-forms',
+      buttonText: t`Add Content`,
+    },
+    {
+      title: t`Match-making`,
+      key: 'match-making',
+      link: '/community',
+      content: t`Match with opportunities`,
+      buttonText: t`Connect`,
+    },
+  ]
 
   const handleFocalPoint = (id) => {
     setIsFocal(true)

@@ -162,9 +162,7 @@
     (assoc :descending descending)
 
     (seq q)
-    (assoc-in [:filters :search-text] (->> (str/trim q)
-                                           (re-seq #"\w+")
-                                           (str/join " & ")))))
+    (assoc-in [:filters :search-text] (str/trim q))))
 
 (defn- community-member->api-community-member
   [config community-member]

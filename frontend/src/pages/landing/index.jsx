@@ -100,8 +100,7 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
     },
     {
       group: t`Private Sector`,
-      text:
-        'The GPML digital platform fosters public-private partnerships, offers clarity on circular economy practices, and provides guidance on Extended Producer Responsibilities (EPRs) and sustainable business models.',
+      text: t`The GPML digital platform fosters public-private partnerships, offers clarity on circular economy practices, and provides guidance on Extended Producer Responsibilities (EPRs) and sustainable business models.`,
     },
     {
       group: t`Scientific Communities`,
@@ -734,38 +733,6 @@ const LatestNews = () => {
   const router = useRouter()
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
-  // const items = [
-  //   {
-  //     id: 111,
-  //     badge: 'NEWS',
-  //     image: '/news/watch-the-7th-international-marine-debris-conference.jpg',
-  //     published_at: '2023-10-18T07:56:55.667029+00:00',
-  //     title: 'WATCH: The 7th International Marine Debris Conference',
-  //     excerpt:
-  //       'Join a 90-minute interactive workshop, to discuss a risk assessment approach',
-  //     url: '/landing',
-  //   },
-  //   {
-  //     id: 112,
-  //     badge: 'EDITORIAL',
-  //     image: '/news/discover-opportunities-and-resources.jpg',
-  //     published_at: null,
-  //     title: 'DISCOVER: Opportunities and Resources!',
-  //     excerpt:
-  //       'The CASSINI EU Maritime Prize for Digital Space Applications is looking',
-  //     url: '/landing',
-  //   },
-  //   {
-  //     id: 113,
-  //     badge: 'BLOGPOST',
-  //     image: '/news/register-gpml-interactive-workshop.jpg',
-  //     published_at: '2023-08-01T07:56:55.667029+00:00',
-  //     title: 'REGISTER: GPML Interactive Workshop',
-  //     excerpt:
-  //       'Join a 90-minute interactive workshop, to discuss a risk assessment approach',
-  //     url: '/landing',
-  //   },
-  // ]
   useEffect(() => {
     fetch(
       `https://unep-gpml.akvotest.org/strapi/api/posts?locale=en&populate=cover`
@@ -824,17 +791,21 @@ const LatestNews = () => {
                         </span>
                       )}
                     </div>
-                    <Image
-                      alt={item.title}
-                      src={item.cover.data.attributes.formats?.medium.url}
-                      width={366}
-                      height={220}
-                    />
+                    <Link href={`/post/${item.id}-${item.slug}`}>
+                      <Image
+                        alt={item.title}
+                        src={item.cover.data.attributes.formats?.medium.url}
+                        width={366}
+                        height={220}
+                      />
+                    </Link>
                   </div>
                 }
                 key={dx}
               >
-                <h5 className="bold">{item.title}</h5>
+                <Link href={`/post/${item.id}-${item.slug}`}>
+                  <h5 className="bold">{item.title}</h5>
+                </Link>
                 <p className="p-m">
                   {stripHtml(item.content)?.substring(0, 100)}...
                 </p>
@@ -1146,11 +1117,15 @@ const Partnership = ({ isAuthenticated, setLoginVisible }) => {
                 </li>
                 <li>
                   <CirclePointer />
-                  <Trans>Join the GPML</Trans>
+                  <Link href="/page/membership">
+                    <Trans>Join the GPML</Trans>
+                  </Link>
                 </li>
                 <li>
                   <CirclePointer />
-                  <Trans>Become a partner</Trans>
+                  <Link href="/page/membership">
+                    <Trans>Become a partner</Trans>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -1163,15 +1138,31 @@ const Partnership = ({ isAuthenticated, setLoginVisible }) => {
               <ul className="link-list">
                 <li>
                   <CirclePointer />
-                  <Trans>Network with others</Trans>
+                  <Link href="/community">
+                    <Trans>Network with others</Trans>
+                  </Link>
                 </li>
                 <li>
                   <CirclePointer />
-                  <Trans>Share your knowledge</Trans>
+                  <Link
+                    href={
+                      isAuthenticated ? '/flexible-forms' : '/knowledge-library'
+                    }
+                  >
+                    <Trans>Share your knowledge</Trans>
+                  </Link>
                 </li>
                 <li>
                   <CirclePointer />
-                  <Trans>Share your data</Trans>
+                  <a
+                    href={
+                      isAuthenticated
+                        ? 'https://unepazecosysadlsstorage.z20.web.core.windows.net/add-data'
+                        : 'https://unepazecosysadlsstorage.z20.web.core.windows.net/'
+                    }
+                  >
+                    <Trans>Share your data</Trans>
+                  </a>
                 </li>
               </ul>
             </div>
@@ -1309,7 +1300,7 @@ const FeatureCard = ({ item }) => {
         <h3 className="h-l">{item.title}</h3>
       </div>
       <div className="card-content-container">
-        <p className="p-l">{item?.content}</p>
+        <p className="p-m">{item?.content}</p>
       </div>
     </div>
   )
