@@ -13,7 +13,7 @@ import {
   Space,
   Collapse,
   Form,
-  Input,
+  Tooltip,
 } from 'antd'
 const { Panel } = Collapse
 import {
@@ -41,6 +41,7 @@ import Link from 'next/link'
 import { Trans } from '@lingui/macro'
 import Button from '../../components/button'
 import { LongArrowRight } from '../../components/icons'
+import { i18n } from '@lingui/core'
 
 export const getTypeByResource = (type) => {
   let t = ''
@@ -718,8 +719,10 @@ const FlexibleForms = ({
           : 'inline'
       return (
         <div className="custom-step-title">
-          <span>{parentTitle}</span>
-          {parentTitle === 'Basic info' ? (
+          <span>
+            <Trans id={parentTitle.id} />
+          </span>
+          {section === 'S4' ? (
             <Button
               type="ghost"
               size="small"
@@ -788,6 +791,7 @@ const FlexibleForms = ({
         />
       )
     }
+
     const childs = steps.map(({ group, key, title, desc }) => {
       const requiredFields = data?.[section]?.required?.[group]?.length || 0
       const customChildTitle = (status) => {
@@ -801,8 +805,10 @@ const FlexibleForms = ({
             : 'none'
         return (
           <div className="custom-child-title">
-            <span>{title}</span>
-            {title === 'Stakeholders connections' ? (
+            <span>
+              <Trans id={title.id} />
+            </span>
+            {group === 'S4_G5' ? (
               <Button
                 type="ghost"
                 size="small"
@@ -1321,7 +1327,9 @@ const FlexibleForms = ({
                               ?.examples.map((link, id) => (
                                 <List.Item key={id}>
                                   <a href={link.link} target="_blank">
-                                    <List.Item.Meta title={link.title} />
+                                    <List.Item.Meta
+                                      title={<Trans id={link.title.id} />}
+                                    />
                                   </a>
                                 </List.Item>
                               ))}
@@ -1346,9 +1354,11 @@ const FlexibleForms = ({
                             '-'
                           )}-selected.svg`
                           const name =
-                            item?.name?.toLowerCase() === 'capacity building'
+                            item?.code === 'capacity_building'
                               ? 'Capacity Development'
-                              : item?.name
+                              : i18n._(item?.name)
+
+                          console.log(subContentType, 'item')
 
                           return (
                             <Col
@@ -1376,11 +1386,14 @@ const FlexibleForms = ({
                                   </div>
                                   <div className="info-icon-container">
                                     <h2>{name}</h2>
-                                    <Popover content={item.desc}>
+                                    <Tooltip
+                                      placement="top"
+                                      title={<Trans id={item.desc.id} />}
+                                    >
                                       <div className="info-icon-wrapper">
                                         <img src="/i-blue.png" />
                                       </div>
-                                    </Popover>
+                                    </Tooltip>
                                   </div>
                                 </div>
                               </Radio.Button>
@@ -1412,23 +1425,28 @@ const FlexibleForms = ({
                               >
                                 <div
                                   className={`ant-radio-button-wrapper ${
-                                    item.title === subType ? 'selected' : ''
+                                    i18n._(item.title) === subType
+                                      ? 'selected'
+                                      : ''
                                   }`}
                                   key={index}
                                   onClick={() => {
-                                    if (item.title === subType) {
+                                    if (i18n._(item.title) === subType) {
                                       setSubType('')
                                     } else {
-                                      handleSubContentType(item.title)
+                                      handleSubContentType(i18n._(item.title))
                                     }
                                   }}
                                 >
-                                  {item.title}
-                                  <Popover content={item.des}>
+                                  <Trans id={item.title.id} />
+                                  <Tooltip
+                                    placement="top"
+                                    title={<Trans id={item.des.id} />}
+                                  >
                                     <div className="info-icon-wrapper">
                                       <img src="/i-blue.png" />
                                     </div>
-                                  </Popover>
+                                  </Tooltip>
                                 </div>
                               </Col>
                             ))}
@@ -1623,15 +1641,14 @@ const FlexibleForms = ({
                   </div>
                 ) : (
                   <div className="bottom-panel">
-                    <div
+                    <Button
                       className="back-button"
+                      size="small"
                       onClick={(e) => handleOnClickBtnBack(e)}
                     >
-                      <LeftOutlined />
-                      <p>
-                        <Trans>Back</Trans>
-                      </p>
-                    </div>
+                      <LongArrowRight />
+                      <Trans>Back</Trans>
+                    </Button>
                   </div>
                 )}
               </Col>

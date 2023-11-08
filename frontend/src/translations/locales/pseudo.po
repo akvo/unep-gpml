@@ -45,7 +45,7 @@ msgstr ""
 msgid "<0>We use cookies for better service.</0><1>Accept</1>"
 msgstr ""
 
-#: src/modules/flexible-forms/view.jsx:1583
+#: src/modules/flexible-forms/view.jsx:1601
 msgid "1 of 1"
 msgstr ""
 
@@ -95,7 +95,7 @@ msgstr ""
 msgid "A type of technical report that is a work in progress, a preliminary form of a possible future document."
 msgstr ""
 
-#: src/modules/flexible-forms/view.jsx:1245
+#: src/modules/flexible-forms/view.jsx:1251
 msgid "A wide range of resources can be submitted, and these include Action Plans, Initiatives, Technical resources, Financing resources, Policies, Events, and Technologies. Learn more about each category and sub-categories definitions in the “Content Type” section of this form. A quick summary sheet with categories and sub-categories can be downloaded"
 msgstr ""
 
@@ -137,7 +137,7 @@ msgstr ""
 msgid "ACTION PLANS"
 msgstr ""
 
-#: src/modules/flexible-forms/view.jsx:1164
+#: src/modules/flexible-forms/view.jsx:1170
 #: src/pages/landing/index.jsx:657
 msgid "Add"
 msgstr ""
@@ -158,7 +158,7 @@ msgstr ""
 msgid "Add new entity"
 msgstr ""
 
-#: src/modules/flexible-forms/view.jsx:1515
+#: src/modules/flexible-forms/view.jsx:1533
 msgid "Add translation"
 msgstr ""
 
@@ -244,7 +244,7 @@ msgstr ""
 msgid "Analytics & statistics"
 msgstr ""
 
-#: src/modules/flexible-forms/view.jsx:1270
+#: src/modules/flexible-forms/view.jsx:1276
 msgid "Annex C of the Concept Document."
 msgstr ""
 
@@ -306,7 +306,7 @@ msgstr ""
 msgid "Are you sure you want to delete this member?"
 msgstr ""
 
-#: src/modules/details-page/view.jsx:319
+#: src/modules/details-page/view.jsx:329
 msgid "Are you sure you want to delete this resource?"
 msgstr ""
 
@@ -384,9 +384,9 @@ msgstr ""
 msgid "Awareness-raising is a process that seeks to inform and educate people about a topic or issue with the intention of influencing their attitudes, behaviours and beliefs towards the achievement of a defined purpose or goal.1 It can mobilize the power of public opinion in support of an issue and thereby influence the political will of decision makers.2 There are multiple awareness-raising strategies, methods and tools that can be used to convey and spread messages, and to gather the support necessary to influence public opinion."
 msgstr ""
 
-#: src/modules/flexible-forms/view.jsx:1576
-#: src/modules/flexible-forms/view.jsx:1602
-#: src/modules/flexible-forms/view.jsx:1632
+#: src/modules/flexible-forms/view.jsx:1594
+#: src/modules/flexible-forms/view.jsx:1620
+#: src/modules/flexible-forms/view.jsx:1650
 #: src/modules/onboarding/view.jsx:349
 msgid "Back"
 msgstr ""
@@ -525,7 +525,7 @@ msgstr ""
 msgid "Can't see what you're looking for?"
 msgstr ""
 
-#: src/modules/details-page/view.jsx:323
+#: src/modules/details-page/view.jsx:333
 #: src/modules/flexible-forms/entity-modal/add-entity-modal.jsx:315
 #: src/modules/knowledge-lib/filter-modal.jsx:373
 msgid "Cancel"
@@ -778,7 +778,7 @@ msgid "Conflicting regulation"
 msgstr ""
 
 #: src/modules/case-studies/CaseStudy.jsx:92
-#: src/modules/details-page/view.jsx:619
+#: src/modules/details-page/view.jsx:629
 msgid "Connections"
 msgstr ""
 
@@ -811,7 +811,7 @@ msgstr ""
 msgid "Contact Us"
 msgstr ""
 
-#: src/modules/flexible-forms/view.jsx:1164
+#: src/modules/flexible-forms/view.jsx:1170
 msgid "Content"
 msgstr ""
 
@@ -863,7 +863,7 @@ msgstr ""
 msgid "Country"
 msgstr ""
 
-#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:446
+#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:515
 #: src/pages/workspace/[slug]/layout.js:40
 msgid "Country Policy Framework"
 msgstr ""
@@ -986,7 +986,7 @@ msgstr ""
 #: src/modules/details-page/comment.jsx:95
 #: src/modules/details-page/comment.jsx:115
 #: src/modules/details-page/header.jsx:229
-#: src/modules/details-page/view.jsx:321
+#: src/modules/details-page/view.jsx:331
 #: src/modules/entity-detail/view.jsx:131
 #: src/modules/entity-detail/view.jsx:157
 #: src/modules/stakeholder-detail/view.jsx:164
@@ -995,7 +995,7 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: src/modules/details-page/view.jsx:460
+#: src/modules/details-page/view.jsx:470
 #: src/modules/flexible-forms/form-schema.js:111
 #: src/modules/flexible-forms/form-schema.js:1217
 #: src/modules/flexible-forms/form-schema.js:1473
@@ -1017,7 +1017,7 @@ msgstr ""
 msgid "Description - Section 3 - Case Studies"
 msgstr ""
 
-#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:451
+#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:520
 msgid "Description - Section 3 - Coutry Policy Framework"
 msgstr ""
 
@@ -1107,7 +1107,7 @@ msgstr ""
 msgid "Do you report and measure the initiative progress?"
 msgstr ""
 
-#: src/modules/details-page/view.jsx:634
+#: src/modules/details-page/view.jsx:644
 msgid "Documents and info"
 msgstr ""
 
@@ -1378,8 +1378,8 @@ msgstr ""
 msgid "Features of the GPML Digital Platform are made available via 3 primary components."
 msgstr ""
 
-#: src/modules/flexible-forms/view.jsx:1580
-#: src/modules/flexible-forms/view.jsx:1606
+#: src/modules/flexible-forms/view.jsx:1598
+#: src/modules/flexible-forms/view.jsx:1624
 msgid "Field to submit"
 msgstr ""
 
@@ -1560,7 +1560,7 @@ msgstr ""
 
 #: src/modules/stakeholder-overview/filter-drawer.jsx:335
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:108
-#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:168
+#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:205
 msgid "Geo-coverage"
 msgstr ""
 
@@ -1569,7 +1569,7 @@ msgid "Get Started"
 msgstr ""
 
 #: src/modules/flexible-forms/common.js:328
-#: src/modules/flexible-forms/view.jsx:1557
+#: src/modules/flexible-forms/view.jsx:1575
 msgid "Getting Started"
 msgstr ""
 
@@ -1584,6 +1584,10 @@ msgstr ""
 #: src/modules/flexible-forms/form-schema.js:2068
 #: src/modules/flexible-forms/form-schema.js:2307
 msgid "Global"
+msgstr ""
+
+#: src/store.js:377
+msgid "Global Action Plan"
 msgstr ""
 
 #: src/store.js:100
@@ -1730,11 +1734,11 @@ msgstr ""
 msgid "Help Center"
 msgstr ""
 
-#: src/modules/flexible-forms/view.jsx:1258
+#: src/modules/flexible-forms/view.jsx:1264
 msgid "here"
 msgstr ""
 
-#: src/modules/flexible-forms/view.jsx:1315
+#: src/modules/flexible-forms/view.jsx:1321
 msgid "HIDE EXAMPLES"
 msgstr ""
 
@@ -1823,6 +1827,7 @@ msgstr ""
 msgid "IGOs"
 msgstr ""
 
+#: src/modules/flexible-forms/common.js:371
 #: src/modules/flexible-forms/form-schema.js:1312
 #: src/modules/flexible-forms/form-schema.js:1567
 #: src/modules/flexible-forms/form-schema.js:2133
@@ -2055,7 +2060,7 @@ msgstr ""
 msgid "Key Features & Components"
 msgstr ""
 
-#: src/modules/flexible-forms/view.jsx:1277
+#: src/modules/flexible-forms/view.jsx:1283
 msgid "Knowledge Exchange Library."
 msgstr ""
 
@@ -2110,7 +2115,7 @@ msgstr ""
 msgid "Legislation"
 msgstr ""
 
-#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:443
+#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:512
 #: src/pages/workspace/[slug]/3-legislation-policy/index.js:48
 #: src/pages/workspace/[slug]/3-legislation-policy/legislative-development.js:11
 #: src/pages/workspace/[slug]/layout.js:38
@@ -2127,6 +2132,10 @@ msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:365
 msgid "Legislation, Standards and Rules. You have selected legislation, standards and rules as the type of initiative. What did the initiative specifically involve? (Please tick ALL that apply):"
+msgstr ""
+
+#: src/store.js:324
+msgid "Legislation, standards, rules"
 msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:356
@@ -2176,7 +2185,7 @@ msgstr ""
 msgid "Load More"
 msgstr ""
 
-#: src/modules/flexible-forms/view.jsx:1219
+#: src/modules/flexible-forms/view.jsx:1225
 #: src/modules/map/map.jsx:39
 #: src/modules/profile/admin.jsx:1261
 #: src/modules/stakeholder-overview/stakeholder-list.jsx:46
@@ -2186,7 +2195,7 @@ msgid "Loading"
 msgstr ""
 
 #: src/components/event-calendar/view.jsx:179
-#: src/modules/details-page/view.jsx:356
+#: src/modules/details-page/view.jsx:366
 #: src/modules/entity-detail/view.jsx:349
 #: src/modules/stakeholder-detail/view.jsx:376
 #: src/pages/workspace/[slug]/layout.js:247
@@ -2206,7 +2215,7 @@ msgstr ""
 msgid "Location"
 msgstr ""
 
-#: src/modules/details-page/view.jsx:475
+#: src/modules/details-page/view.jsx:485
 msgid "Location & Geocoverage"
 msgstr ""
 
@@ -2227,11 +2236,15 @@ msgstr ""
 msgid "Logout"
 msgstr ""
 
+#: src/modules/flexible-forms/common.js:340
+msgid "Main & Sub Content"
+msgstr ""
+
 #: src/store.js:310
 msgid "Make Lome Plastic Free"
 msgstr ""
 
-#: src/modules/flexible-forms/view.jsx:1280
+#: src/modules/flexible-forms/view.jsx:1286
 msgid "Make sure to browse around and leave a review under the resources you enjoy the most!"
 msgstr ""
 
@@ -2438,11 +2451,6 @@ msgstr ""
 
 #: src/pages/workspace/[slug]/1-project-team/index.js:48
 #: src/pages/workspace/[slug]/1-project-team/setup-team.js:16
-#~ msgid "National steering committee & Project Team"
-#~ msgstr ""
-
-#: src/pages/workspace/[slug]/1-project-team/index.js:48
-#: src/pages/workspace/[slug]/1-project-team/setup-team.js:16
 #: src/pages/workspace/[slug]/layout.js:26
 msgid "National Steering Committee & Project Team"
 msgstr ""
@@ -2479,9 +2487,9 @@ msgstr ""
 msgid "New technical developments/innovation, e.g., research and development, new product design, new materials, processes etc., changes in practice, operations, environmental management and planning."
 msgstr ""
 
-#: src/modules/flexible-forms/view.jsx:1565
-#: src/modules/flexible-forms/view.jsx:1591
-#: src/modules/flexible-forms/view.jsx:1621
+#: src/modules/flexible-forms/view.jsx:1583
+#: src/modules/flexible-forms/view.jsx:1609
+#: src/modules/flexible-forms/view.jsx:1639
 #: src/modules/onboarding/view.jsx:297
 #: src/modules/onboarding/view.jsx:359
 #: src/pages/workspace/[slug]/layout.js:363
@@ -2599,7 +2607,7 @@ msgstr ""
 msgid "on"
 msgstr ""
 
-#: src/modules/flexible-forms/view.jsx:1263
+#: src/modules/flexible-forms/view.jsx:1269
 msgid "Once submitted resources go through a review process which is being fine-tuned via consultations to assess content accuracy and quality. The current validation mechanism draft can be found under"
 msgstr ""
 
@@ -2628,7 +2636,7 @@ msgid "Online"
 msgstr ""
 
 #: src/modules/details-page/comment.jsx:108
-#: src/modules/details-page/view.jsx:336
+#: src/modules/details-page/view.jsx:346
 #: src/modules/stakeholder-detail/view.jsx:181
 msgid "Oops, something went wrong"
 msgstr ""
@@ -2637,7 +2645,7 @@ msgstr ""
 msgid "Open The Guide"
 msgstr ""
 
-#: src/modules/flexible-forms/view.jsx:1399
+#: src/modules/flexible-forms/view.jsx:1412
 msgid "Optional"
 msgstr ""
 
@@ -2783,11 +2791,11 @@ msgstr ""
 msgid "Photo"
 msgstr ""
 
-#: src/modules/flexible-forms/view.jsx:1299
+#: src/modules/flexible-forms/view.jsx:1305
 msgid "Pick the main content type"
 msgstr ""
 
-#: src/modules/flexible-forms/view.jsx:1396
+#: src/modules/flexible-forms/view.jsx:1409
 msgid "Pick the sub-content type"
 msgstr ""
 
@@ -2824,7 +2832,7 @@ msgid "Plastic Waste Management"
 msgstr ""
 
 #: src/modules/details-page/comment.jsx:94
-#: src/modules/details-page/view.jsx:320
+#: src/modules/details-page/view.jsx:330
 #: src/modules/entity-detail/view.jsx:130
 #: src/modules/stakeholder-detail/view.jsx:163
 msgid "Please be aware this action cannot be undone."
@@ -2998,7 +3006,7 @@ msgstr ""
 msgid "Recording"
 msgstr ""
 
-#: src/modules/details-page/view.jsx:833
+#: src/modules/details-page/view.jsx:843
 msgid "Records"
 msgstr ""
 
@@ -3030,7 +3038,7 @@ msgstr ""
 msgid "Regulation"
 msgstr ""
 
-#: src/modules/details-page/view.jsx:659
+#: src/modules/details-page/view.jsx:669
 msgid "Related content"
 msgstr ""
 
@@ -3050,7 +3058,7 @@ msgstr ""
 #: src/components/resource-card/resource-card.jsx:75
 #: src/modules/details-page/header.jsx:70
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:330
-#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:339
+#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:399
 msgid "Remove from Library"
 msgstr ""
 
@@ -3096,7 +3104,7 @@ msgstr ""
 msgid "Resource"
 msgstr ""
 
-#: src/modules/details-page/view.jsx:330
+#: src/modules/details-page/view.jsx:340
 msgid "Resource deleted successfully"
 msgstr ""
 
@@ -3164,7 +3172,7 @@ msgstr ""
 #: src/components/resource-card/resource-card.jsx:75
 #: src/modules/details-page/header.jsx:70
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:330
-#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:339
+#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:399
 msgid "Save to Library"
 msgstr ""
 
@@ -3248,7 +3256,7 @@ msgstr ""
 msgid "Select a country"
 msgstr ""
 
-#: src/modules/flexible-forms/view.jsx:1440
+#: src/modules/flexible-forms/view.jsx:1458
 msgid "Select a Main Content Type above to see sub-content type options"
 msgstr ""
 
@@ -3301,7 +3309,7 @@ msgstr ""
 msgid "Show all tools"
 msgstr ""
 
-#: src/modules/flexible-forms/view.jsx:1305
+#: src/modules/flexible-forms/view.jsx:1311
 msgid "SHOW EXAMPLES"
 msgstr ""
 
@@ -3413,7 +3421,7 @@ msgid "State"
 msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:1722
-#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:153
+#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:190
 msgid "Status"
 msgstr ""
 
@@ -3437,10 +3445,6 @@ msgstr ""
 msgid "Strategies & Action Plans"
 msgstr ""
 
-#: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:131
-#~ msgid "Strengths"
-#~ msgstr ""
-
 #: src/store.js:542
 msgid "Study on industry involvement in the integrated approach to financing the sound management of chemicals and waste, prepared by the SAICM Secretariat"
 msgstr ""
@@ -3462,7 +3466,7 @@ msgid "Sub-topics"
 msgstr ""
 
 #: src/modules/flexible-forms/entity-modal/add-entity-modal.jsx:324
-#: src/modules/flexible-forms/view.jsx:1160
+#: src/modules/flexible-forms/view.jsx:1166
 #: src/modules/onboarding/view.jsx:369
 msgid "Submit"
 msgstr ""
@@ -3529,7 +3533,7 @@ msgid "Switch to"
 msgstr ""
 
 #: src/modules/case-studies/CaseStudy.jsx:75
-#: src/modules/details-page/view.jsx:587
+#: src/modules/details-page/view.jsx:597
 #: src/modules/flexible-forms/common.js:365
 #: src/modules/flexible-forms/form-schema.js:205
 #: src/modules/flexible-forms/form-schema.js:1297
@@ -3538,7 +3542,7 @@ msgstr ""
 #: src/modules/flexible-forms/form-schema.js:2118
 #: src/modules/flexible-forms/form-schema.js:2357
 #: src/modules/knowledge-lib/filter-modal.jsx:263
-#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:160
+#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:197
 msgid "Tags"
 msgstr ""
 
@@ -3755,7 +3759,7 @@ msgstr ""
 #: src/modules/flexible-forms/form-schema.js:2033
 #: src/modules/flexible-forms/form-schema.js:2272
 #: src/modules/signup-old/signup-form.jsx:26
-#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:139
+#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:176
 msgid "Title"
 msgstr ""
 
@@ -3879,7 +3883,7 @@ msgstr ""
 #: src/modules/map/vertical-legend.jsx:452
 #: src/modules/map/vertical-legend.jsx:486
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:102
-#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:146
+#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:183
 msgid "Type"
 msgstr ""
 
@@ -3977,11 +3981,11 @@ msgstr ""
 msgid "Valid To"
 msgstr ""
 
-#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:82
+#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:117
 msgid "Validate Policy"
 msgstr ""
 
-#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:83
+#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:117
 msgid "Validated"
 msgstr ""
 
@@ -4082,7 +4086,7 @@ msgstr ""
 msgid "Watch this video to get started"
 msgstr ""
 
-#: src/modules/flexible-forms/view.jsx:1237
+#: src/modules/flexible-forms/view.jsx:1243
 msgid "We are excited to hear from the members of our community. The GPML Digital Platform is crowdsourced and allows everyone to submit new content via this form."
 msgstr ""
 
@@ -4098,7 +4102,7 @@ msgstr ""
 msgid "Webinars & Seminars"
 msgstr ""
 
-#: src/modules/flexible-forms/view.jsx:1234
+#: src/modules/flexible-forms/view.jsx:1240
 msgid "Welcome to the GPML Digital Platform!"
 msgstr ""
 
@@ -4207,7 +4211,7 @@ msgstr ""
 msgid "Worldwide Coverage"
 msgstr ""
 
-#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:134
+#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:171
 msgid "Year"
 msgstr ""
 
@@ -4224,7 +4228,7 @@ msgstr ""
 msgid "Yes, reporting is voluntary"
 msgstr ""
 
-#: src/modules/flexible-forms/view.jsx:1274
+#: src/modules/flexible-forms/view.jsx:1280
 msgid "You can access existing content via the"
 msgstr ""
 

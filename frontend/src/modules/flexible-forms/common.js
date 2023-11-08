@@ -3,7 +3,7 @@ import { schema } from './form-schema'
 import cloneDeep from 'lodash/cloneDeep'
 import { Form, Input } from 'antd'
 import dynamic from 'next/dynamic'
-import { Trans, t } from '@lingui/macro'
+import { msg, t } from '@lingui/macro'
 const RichTextEditor = dynamic(() => import('react-rte'), { ssr: false })
 
 const initialData = {
@@ -325,75 +325,75 @@ const getSchema = ({
 const tabs = [
   {
     key: 'S1',
-    title: t`Getting Started`,
+    title: msg`Getting Started`,
     desc: '',
     steps: [],
   },
   {
     key: 'S3',
-    title: t`Content type`,
+    title: msg`Content type`,
     desc: '',
     steps: [
       {
         group: 'S3',
         key: 'S3-p1-main-content',
-        title: 'Main & Sub Content',
+        title: msg`Main & Sub Content`,
         desc: '',
       },
     ],
   },
   {
     key: 'S4',
-    title: t`Basic info`,
+    title: msg`Basic info`,
     desc: '',
     steps: [
       {
         group: 'S4_G1',
         key: 'S4-p1-title-desc',
-        title: t`Title, Description & Link`,
+        title: msg`Title, Description & Link`,
         desc: '',
       },
       {
         group: 'S4_G2',
         key: 'S4-p2-location',
-        title: t`Location and Geo-coverage`,
+        title: msg`Location and Geo-coverage`,
         desc: '',
       },
       {
         group: 'S4_G3',
         key: 'S4-p3-tags',
-        title: t`Tags`,
+        title: msg`Tags`,
         desc: '',
       },
       {
         group: 'S4_G4',
         key: 'S4-p4-img',
-        title: 'Image',
+        title: msg`Image`,
         desc: '',
       },
       {
         group: 'S4_G5',
         key: 'S4-p5-stakeholder',
-        title: t`Stakeholders connections`,
+        title: msg`Stakeholders connections`,
         desc: '',
       },
       {
         group: 'S4_G6',
         key: 'S4-p6-related-content',
-        title: t`Related Content, Documents & Info`,
+        title: msg`Related Content, Documents & Info`,
         desc: '',
       },
     ],
   },
   {
     key: 'S5',
-    title: t`Detail info`,
+    title: msg`Detail info`,
     desc: '',
     steps: [],
   },
   {
     key: 'S6',
-    title: t`Translation`,
+    title: msg`Translation`,
     desc: '',
     steps: [],
   },
