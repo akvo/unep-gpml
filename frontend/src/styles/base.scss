@@ -602,8 +602,8 @@ h6 {
   right: 0;
   bottom: 0;
   z-index: 999;
-  background: url('/menu-background.png');
-  background-size: cover;
+  background: url('/menu-background-1.jpg') no-repeat #00124c;
+  background-position: 100% 100%;
   .cancel {
     background: transparent;
     border: none;
