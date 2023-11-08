@@ -199,7 +199,7 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
     }
 
     const data = {
-      tag: filter?.tag,
+      tag: filter?.tag?.toLowerCase(),
       country: country,
       transnational: multiCountry,
     }

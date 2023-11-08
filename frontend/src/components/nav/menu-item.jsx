@@ -21,8 +21,8 @@ const variants = {
   },
 }
 
-export const MenuItem = ({ i, item, onClick, collapseMenu }) => {
-  const [isContentVisible, setContentVisible] = useState(false)
+export const MenuItem = ({ i, item, onClick, collapseMenu, isSubItem }) => {
+  const [isContentVisible, setContentVisible] = useState(isSubItem)
   const handleItemClick = () => {
     if (onClick) {
       onClick(i)
@@ -53,7 +53,7 @@ export const MenuItem = ({ i, item, onClick, collapseMenu }) => {
           </motion.div>
         </div>
         <AnimatePresence>
-          {isContentVisible && (
+          {isContentVisible && item?.children.length > 0 && (
             <>
               {item.type === 'button' ? (
                 <motion.div

@@ -288,7 +288,7 @@
         .ant-select {
           flex: 1;
           .ant-select-selector {
-            display: block;
+            // display: block;
             border: none !important;
             outline: none !important;
             box-shadow: none !important;
@@ -319,6 +319,9 @@
           width: 180px;
           display: flex;
           justify-content: center;
+          @media screen and (max-width: $bpMobile) {
+            width: auto;
+          }
           button {
             max-height: 46px;
             display: flex;
@@ -328,6 +331,11 @@
             background-color: transparent;
             color: $primaryDarkBlue;
             border: none;
+            margin-right: 7px;
+            @media screen and (max-width: $bpMobile) {
+              padding: 0px;
+              margin-right: 0px;
+            }
             span {
               overflow: hidden;
               white-space: nowrap;
@@ -335,14 +343,20 @@
               display: block;
               text-align: left;
               width: 100px;
+              @media screen and (max-width: $bpMobile) {
+                display: none;
+              }
             }
             svg {
-              // width: 15px;
               height: 20px;
               path {
                 stroke: $primaryDarkBlue;
               }
               margin-right: 7px;
+              @media screen and (max-width: $bpMobile) {
+                margin-right: 0px;
+                padding-left: 0px;
+              }
             }
             &:hover {
               color: $primaryDarkBlue4;
@@ -419,6 +433,10 @@
                 line-height: 30px;
                 padding-left: 10px;
               }
+              .ant-select-selection-item {
+                display: block;
+                max-width: 200px;
+              }
             }
           }
           .ant-select-arrow {
@@ -433,6 +451,9 @@
             margin-right: 0;
             svg {
               margin-right: 0;
+            }
+            @media screen and (max-width: $bpMobile) {
+              padding-left: 0px;
             }
             &:before {
               content: ' ';

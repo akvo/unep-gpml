@@ -349,12 +349,16 @@ const NewLayout = ({
         {!router.pathname.includes('/workspace/[slug]') && (
           <Footer
             showTools={() => {
-              if (openedItemKey === 'Tools') {
-                setOpenedItemKey(null)
-                setShowMenu(false)
+              if (width >= 768) {
+                if (openedItemKey === 'Tools') {
+                  setOpenedItemKey(null)
+                  setShowMenu(false)
+                } else {
+                  setOpenedItemKey('Tools')
+                  setShowMenu(true)
+                }
               } else {
-                setOpenedItemKey('Tools')
-                setShowMenu(true)
+                toggleOpen()
               }
             }}
           />
