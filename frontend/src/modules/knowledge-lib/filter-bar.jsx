@@ -162,40 +162,47 @@ const FilterBar = ({
               <Trans>All Resources</Trans>
             </span>
           </li>
-          {resourceTypes.map((t) => (
-            <li
-              className={`${type === t.key ? 'selected' : ''}`}
-              key={t.key}
-              onClick={() => {
-                history.push(
-                  {
-                    pathname: `/knowledge/library/${
-                      view ? (view === 'category' ? 'grid' : view) : 'map'
-                    }/${t.key}`,
-                    query: {
-                      ...history.query,
-                      totalCount: JSON.stringify(totalCount),
-                    },
-                  },
-                  `/knowledge/library/${
-                    view ? (view === 'category' ? 'grid' : view) : 'map'
-                  }/${t.key}`
-                )
-              }}
-            >
-              <div>
-                <DynamicSVG
-                  type={`${t.key}`}
-                  fillColor={`${!view ? '#06496c' : '#fff'}`}
-                />
-                <b>
-                  {totalCount.find((item) => t.title === item.topic)?.count ||
-                    'XX'}
-                </b>
-              </div>
-              <span>{i18n._(t.label)}</span>
-            </li>
-          ))}
+          {resourceTypes.map((t) => {
+            return (
+              <>
+                {totalCount.find((item) => t.title === item.topic)?.count >
+                  0 && (
+                  <li
+                    className={`${type === t.key ? 'selected' : ''}`}
+                    key={t.key}
+                    onClick={() => {
+                      history.push(
+                        {
+                          pathname: `/knowledge/library/${
+                            view ? (view === 'category' ? 'grid' : view) : 'map'
+                          }/${t.key}`,
+                          query: {
+                            ...history.query,
+                            totalCount: JSON.stringify(totalCount),
+                          },
+                        },
+                        `/knowledge/library/${
+                          view ? (view === 'category' ? 'grid' : view) : 'map'
+                        }/${t.key}`
+                      )
+                    }}
+                  >
+                    <div>
+                      <DynamicSVG
+                        type={`${t.key}`}
+                        fillColor={`${!view ? '#06496c' : '#fff'}`}
+                      />
+                      <b>
+                        {totalCount.find((item) => t.title === item.topic)
+                          ?.count || 'XX'}
+                      </b>
+                    </div>
+                    <span>{i18n._(t.label)}</span>
+                  </li>
+                )}
+              </>
+            )
+          })}
         </ul>
       </div>
       <div className="search-container">

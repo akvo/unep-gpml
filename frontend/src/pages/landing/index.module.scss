@@ -32,6 +32,9 @@
         display: inline-block;
         position: relative;
         white-space: nowrap;
+        @media screen and (max-width: $bpMobile) {
+          white-space: normal;
+        }
         &:after {
           content: ' ';
           background-color: $primaryGreen;
@@ -237,7 +240,7 @@
                 top: 235px;
               }
               &:nth-child(3) {
-                left: 130px;
+                left: 70px;
                 top: 280px;
               }
               &:nth-child(4) {
