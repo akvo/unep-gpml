@@ -95,24 +95,6 @@ const NewLayout = ({
               },
             ],
           },
-          {
-            key: msg`Plastic`,
-            id: 'Plastic',
-            subKeys: [
-              {
-                key: msg`Topics`,
-                id: 'Topics',
-                apiEndpoint:
-                  'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=plastic-topics&fields=title&fields=subtitle&fields=slug',
-              },
-              {
-                key: msg`Basics`,
-                id: 'Basics',
-                apiEndpoint:
-                  'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=plastic-basics&fields=title&fields=subtitle&fields=slug',
-              },
-            ],
-          },
         ]
 
         const fetchData = async () => {
