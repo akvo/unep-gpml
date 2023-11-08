@@ -71,7 +71,7 @@ const FilterModal = ({
   }
 
   useEffect(() => {
-    if (Object.keys(query).length > 0) setFilter(query)
+    setFilter(query)
   }, [query])
 
   const filteredMainContentOptions = !isEmpty(mainContentType)
@@ -146,7 +146,7 @@ const FilterModal = ({
     newParams.delete('totalCount')
     newParams.delete('slug')
     history.push({
-      pathname: asPath,
+      pathname: pathname,
       query: newParams.toString(),
     })
   }
