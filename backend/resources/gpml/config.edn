@@ -751,7 +751,12 @@
                                                                 #ig/ref :gpml.auth/auth-required]
                                                    :swagger {:tags ["badge"] :security [{:id_token []}]}
                                                    :handler #ig/ref :gpml.handler.badge.assign/post
-                                                   :parameters #ig/ref :gpml.handler.badge.assign/post-params}}]]]]]
+                                                   :parameters #ig/ref :gpml.handler.badge.assign/post-params}}]]]
+                                        ["/enums/{entity-type}"
+                                         {:get {:summary "Get all the enum options for a given entity type"
+                                                :swagger {:tags ["enums"]}
+                                                :parameters #ig/ref :gpml.handler.enums/get-params
+                                                :handler #ig/ref :gpml.handler.enums/get}}]]]
                               :logger #ig/ref :duct.logger/timbre
                               :cors-allowed-origins #ig/ref :gpml.handler.main/cors-allowed-origins}
 
@@ -1062,6 +1067,9 @@
 
   :gpml.handler.programmatic.badge/post #ig/ref :gpml.config/common
   :gpml.handler.programmatic.badge/post-params {}
+
+  :gpml.handler.enums/get {}
+  :gpml.handler.enums/get-params {}
 
   :clj-gcp.storage/client {}
 

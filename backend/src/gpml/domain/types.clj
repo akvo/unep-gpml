@@ -112,6 +112,9 @@
     :partner-verified
     :coe-verified})
 
+(def ^:const get-enums-entity-types
+  #{:policy})
+
 (def ^:const enum-types
   {:review-status review-statuses
    :reviewer-status reviewer-review-statuses
@@ -127,7 +130,8 @@
    :plastic-strategy-team-role plastic-strategy-team-roles
    :plastic-strategy-bookmarkable-entity-type plastic-strategy-bookmarkable-entity-types
    :badge-assignable-entity-type badge-assignable-entity-types
-   :badge-type badge-type})
+   :badge-type badge-type
+   :get-enums-entity-types get-enums-entity-types})
 
 (defn get-type-schema
   [type-name]
