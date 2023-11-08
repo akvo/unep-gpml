@@ -15,8 +15,8 @@ import { Button } from 'antd'
 import Maps from '../map/map'
 import { isEmpty } from 'lodash'
 import { useQuery, topicNames } from '../../utils/misc'
-import TopicView from './topic-view'
 import { Trans, t } from '@lingui/macro'
+import { useDeviceSize } from '../landing/landing'
 
 const resourceTopic = [
   'action_plan',
@@ -48,6 +48,8 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
   const { pathname, asPath } = history
   const search = new URLSearchParams(history.query).toString()
   const [showFilterModal, setShowFilterModal] = useState(false)
+
+  const [width] = useDeviceSize()
 
   const limit = 30
   const totalItems = resourceTopic.reduce(
@@ -251,6 +253,8 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
     setIsAscending(ascending)
   }
 
+  console.log(width <= 768, 'width')
+
   return (
     <Fragment>
       <FilterBar
@@ -271,49 +275,51 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
         }}
       />
       <div className="list-content">
-        <div className="list-toolbar">
-          <div className="quick-search">
-            <div className="count">
-              {view === 'grid'
-                ? t`Showing ${gridItems?.length} of ${totalItems}`
-                : view === 'category'
-                ? `${catData?.reduce(
-                    (count, current) => count + current?.count,
-                    0
-                  )}`
-                : `Showing ${!loading ? data?.results?.length : ''}`}
+        {width >= 768 && (
+          <div className="list-toolbar">
+            <div className="quick-search">
+              <div className="count">
+                {view === 'grid'
+                  ? t`Showing ${gridItems?.length} of ${totalItems}`
+                  : view === 'category'
+                  ? `${catData?.reduce(
+                      (count, current) => count + current?.count,
+                      0
+                    )}`
+                  : `Showing ${!loading ? data?.results?.length : ''}`}
+              </div>
+              <div className="search-icon">
+                <SearchIcon />
+              </div>
             </div>
-            <div className="search-icon">
-              <SearchIcon />
-            </div>
+            <ViewSwitch {...{ type, view, history, queryParams }} />
+            <button
+              className="sort-by-button"
+              onClick={() => {
+                if (view === 'grid') setGridItems([])
+                sortResults(!isAscending)
+              }}
+            >
+              <div className="sort-icon">
+                <SortIcon
+                  style={{
+                    transform:
+                      !isAscending || isAscending === null
+                        ? 'initial'
+                        : 'rotate(180deg)',
+                  }}
+                />
+              </div>
+              <div className="sort-button-text">
+                <span>
+                  <Trans>Sort by:</Trans>
+                </span>
+                <b>{!isAscending ? `A>Z` : 'Z>A'}</b>
+              </div>
+            </button>
           </div>
-          <ViewSwitch {...{ type, view, history, queryParams }} />
-          <button
-            className="sort-by-button"
-            onClick={() => {
-              if (view === 'grid') setGridItems([])
-              sortResults(!isAscending)
-            }}
-          >
-            <div className="sort-icon">
-              <SortIcon
-                style={{
-                  transform:
-                    !isAscending || isAscending === null
-                      ? 'initial'
-                      : 'rotate(180deg)',
-                }}
-              />
-            </div>
-            <div className="sort-button-text">
-              <span>
-                <Trans>Sort by:</Trans>
-              </span>
-              <b>{!isAscending ? `A>Z` : 'Z>A'}</b>
-            </div>
-          </button>
-        </div>
-        {(view === 'map' || !view || view === 'topic') && (
+        )}
+        {(view === 'map' || !view) && width >= 768 && (
           <div style={{ position: 'relative' }}>
             {data?.results?.length === 0 ? (
               <div className="no-data">
@@ -348,7 +354,12 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
             )}
           </div>
         )}
-        {(view === 'map' || !view) && (
+        {loading && width <= 768 && (
+          <div className="loading">
+            <LoadingOutlined spin />
+          </div>
+        )}
+        {(view === 'map' || !view) && width >= 768 && (
           <Maps
             query={query}
             box={box}
@@ -365,7 +376,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
             zoom={1.1}
           />
         )}
-        {view === 'grid' && (
+        {(view === 'grid' || width <= 768) && (
           <GridView
             {...{
               gridItems,
