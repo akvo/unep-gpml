@@ -20,20 +20,20 @@ import { i18n } from '@lingui/core'
 const geoCoverageTypeOptions = ['Global', 'Transnational', 'National']
 
 const menuList = [
-  {
-    key: msg`Plastic`,
-    id: 'Plastic',
-    children: [
-      {
-        key: msg`Topics`,
-        id: 'Topics',
-      },
-      {
-        key: msg`Basics`,
-        id: 'Basics',
-      },
-    ],
-  },
+  // {
+  //   key: msg`Plastic`,
+  //   id: 'Plastic',
+  //   children: [
+  //     {
+  //       key: msg`Topics`,
+  //       id: 'Topics',
+  //     },
+  //     {
+  //       key: msg`Basics`,
+  //       id: 'Basics',
+  //     },
+  //   ],
+  // },
   {
     key: msg`Tools`,
     id: 'Tools',
