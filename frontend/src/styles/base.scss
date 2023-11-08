@@ -173,6 +173,9 @@ h6 {
   .container-fluid {
     .logo-container {
       margin-top: -14px;
+      @media screen and (max-width: $bpMobile) {
+        margin-top: -4px;
+      }
       a {
         color: white;
         display: flex;
