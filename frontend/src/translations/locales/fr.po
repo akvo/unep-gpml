@@ -4431,4 +4431,3 @@ msgstr "Partagez vos connaissances"
 #: src/modules/workspace/view.jsx:55
 msgid "Upload your data"
 msgstr "Téléchargez vos données"
-

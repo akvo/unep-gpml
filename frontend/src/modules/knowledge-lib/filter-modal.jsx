@@ -21,6 +21,7 @@ import { SearchOutlined } from '@ant-design/icons'
 import MultipleSelectFilter from '../../components/select/multiple-select-filter'
 import { SearchIcon } from '../../components/icons'
 import { Trans, t } from '@lingui/macro'
+import { i18n } from '@lingui/core'
 
 const FilterModal = ({
   query,
@@ -234,16 +235,16 @@ const FilterModal = ({
             !isEmpty(mainContentType)
               ? mainContentOption().map((content) => {
                   const label =
-                    content?.name?.toLowerCase() === 'capacity building'
+                    content?.code === 'capacity_building'
                       ? 'Capacity Development'
-                      : content?.name
+                      : i18n._(content?.name)
                   return {
                     label: label,
                     options: content?.childs
                       .map((child, i) => ({
-                        label: child?.title,
-                        value: child?.title,
-                        key: `${i}-${content?.name}`,
+                        label: i18n._(child?.title),
+                        value: i18n._(child?.title),
+                        key: `${i}-${i18n._(content?.name)}`,
                       }))
                       .sort((a, b) =>
                         a?.label?.trim().localeCompare(b?.label?.trim())
