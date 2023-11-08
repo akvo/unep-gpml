@@ -17,6 +17,7 @@ import { isEmpty } from 'lodash'
 import { useQuery, topicNames } from '../../utils/misc'
 import { Trans, t } from '@lingui/macro'
 import { useDeviceSize } from '../landing/landing'
+import { useRouter } from 'next/router'
 
 const resourceTopic = [
   'action_plan',
@@ -30,6 +31,7 @@ const resourceTopic = [
 
 function ResourceView({ history, popularTags, landing, box, showModal }) {
   const query = useQuery()
+  const { isReady } = useRouter()
 
   const [isAscending, setIsAscending] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -198,12 +200,14 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
   }
 
   useMemo(() => {
-    if ((pathname || search) && !loading) updateQuery('replace')
+    if ((pathname || search) && !loading) {
+      updateQuery('replace')
+    }
   }, [pathname, search])
 
   useEffect(() => {
-    if (data.length === 0) updateQuery()
-  }, [])
+    if (isReady && data.length === 0) updateQuery()
+  }, [isReady])
 
   const clickCountry = (name) => {
     const val = query['country']
@@ -252,8 +256,6 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
     }
     setIsAscending(ascending)
   }
-
-  console.log(width <= 768, 'width')
 
   return (
     <Fragment>

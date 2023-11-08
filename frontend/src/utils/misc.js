@@ -203,7 +203,6 @@ export const eventTrack = (category, action, label) => {
 
 export const useQuery = () => {
   const { query } = useRouter()
-
   const ret = {}
 
   for (let key in query) {

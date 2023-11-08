@@ -75,8 +75,6 @@ const FilterBar = ({
 
   const resourceTypes = useResourceTypes()
 
-  console.log(resourceTypes, 'resourceTypes')
-
   const allResources = totalCount
     ?.filter((array) =>
       resourceTypes?.some(
