@@ -1,5 +1,4 @@
 import { Store } from 'pullstate'
-import { schema } from './form-schema'
 import cloneDeep from 'lodash/cloneDeep'
 import { Form, Input } from 'antd'
 import dynamic from 'next/dynamic'
@@ -95,6 +94,7 @@ const getSchema = ({
   selectedMainContentType,
   currencies,
   relatedResource,
+  schema,
 }) => {
   const prop = cloneDeep(schema[selectedMainContentType].properties)
 
@@ -1445,7 +1445,6 @@ export default {
   prevFormData,
   getSchema,
   tabs,
-  schema,
   initialDataEdit,
   formDataMapping,
   getTranslationForm,

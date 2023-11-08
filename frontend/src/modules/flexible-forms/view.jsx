@@ -42,6 +42,7 @@ import { Trans } from '@lingui/macro'
 import Button from '../../components/button'
 import { LongArrowRight } from '../../components/icons'
 import { i18n } from '@lingui/core'
+import { useSchema } from './form-schema'
 
 export const getTypeByResource = (type) => {
   let t = ''
@@ -169,7 +170,6 @@ const FlexibleForms = ({
   const {
     tabs,
     getSchema,
-    schema,
     initialData,
     initialFormData,
     initialDataEdit,
@@ -177,6 +177,9 @@ const FlexibleForms = ({
     getTranslationForm,
     prevFormData,
   } = common
+
+  const schema = useSchema()
+
   const query = useQuery()
 
   const caseStudy = {
@@ -620,7 +623,7 @@ const FlexibleForms = ({
         })
       }
     }
-  }, [status, schema, initialFormData, type])
+  }, [status, initialFormData, type])
 
   // useEffect(() => {
   //   UIStore.update((e) => {
@@ -646,11 +649,11 @@ const FlexibleForms = ({
       e.highlight = highlight
     })
     setFormSchema({ schema: schema[selectedMainContentType] })
-  }, [schema, highlight, selectedMainContentType])
+  }, [highlight, selectedMainContentType])
 
   useEffect(() => {
     if (isLoaded()) {
-      setFormSchema(getSchema(storeData))
+      setFormSchema(getSchema({ ...storeData, schema }))
     }
   }, [
     initialFormData,
@@ -967,6 +970,7 @@ const FlexibleForms = ({
 
   const handleMainContentType = (e) => {
     setCapacityBuilding(false)
+    console.log(e)
     if (e.target.value === 'capacity_building') {
       setMainType(e.target.value)
       const search = mainContentType.find(
@@ -981,7 +985,9 @@ const FlexibleForms = ({
     ).childs
     setSubContentType(search)
     setLabel(
-      mainContentType.find((element) => element.code === e.target.value).name
+      i18n._(
+        mainContentType.find((element) => element.code === e.target.value).name
+      )
     )
     setFormSchema({ schema: schema[selectedMainContentType] })
     UIStore.update((event) => {
@@ -1358,8 +1364,6 @@ const FlexibleForms = ({
                               ? 'Capacity Development'
                               : i18n._(item?.name)
 
-                          console.log(subContentType, 'item')
-
                           return (
                             <Col
                               className="gutter-row"
@@ -1529,7 +1533,11 @@ const FlexibleForms = ({
                             setDropdownVisible(visible)
                           }}
                         >
-                          <Button type="default" className="translation-button">
+                          <Button
+                            size="small"
+                            type="default"
+                            className="translation-button"
+                          >
                             <Trans>Add translation</Trans>
                           </Button>
                         </Dropdown>

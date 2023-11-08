@@ -13,6 +13,11 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#. js-lingui-explicit-id
+#: src/modules/flexible-forms/form-schema.js:162
+msgid "GEO COVERAGE (Countries)"
+msgstr "GEO COVERAGE (Countries)"
+
 #: src/modules/workspace/ps/setup-team-form.jsx:206
 msgid "- Please select -"
 msgstr "- Please select -"
@@ -47,11 +52,11 @@ msgstr "<0>Spread the word</0><1>Follow us on social media to be part of the mov
 msgid "<0>We use cookies for better service.</0><1>Accept</1>"
 msgstr "<0>We use cookies for better service.</0><1>Accept</1>"
 
-#: src/modules/flexible-forms/view.jsx:1601
+#: src/modules/flexible-forms/view.jsx:1609
 msgid "1 of 1"
 msgstr "1 of 1"
 
-#: src/modules/flexible-forms/form-schema.js:859
+#: src/modules/flexible-forms/form-schema.js:863
 msgid "A change in public opinion"
 msgstr "A change in public opinion"
 
@@ -97,7 +102,7 @@ msgstr "A type of pooled funding involving multiple UN organisations and designe
 msgid "A type of technical report that is a work in progress, a preliminary form of a possible future document."
 msgstr "A type of technical report that is a work in progress, a preliminary form of a possible future document."
 
-#: src/modules/flexible-forms/view.jsx:1251
+#: src/modules/flexible-forms/view.jsx:1259
 msgid "A wide range of resources can be submitted, and these include Action Plans, Initiatives, Technical resources, Financing resources, Policies, Events, and Technologies. Learn more about each category and sub-categories definitions in the “Content Type” section of this form. A quick summary sheet with categories and sub-categories can be downloaded"
 msgstr "A wide range of resources can be submitted, and these include Action Plans, Initiatives, Technical resources, Financing resources, Policies, Events, and Technologies. Learn more about each category and sub-categories definitions in the “Content Type” section of this form. A quick summary sheet with categories and sub-categories can be downloaded"
 
@@ -139,7 +144,7 @@ msgstr "Action Plans"
 msgid "ACTION PLANS"
 msgstr "ACTION PLANS"
 
-#: src/modules/flexible-forms/view.jsx:1170
+#: src/modules/flexible-forms/view.jsx:1178
 #: src/pages/landing/index.jsx:657
 msgid "Add"
 msgstr "Add"
@@ -160,7 +165,7 @@ msgstr "Add Content"
 msgid "Add new entity"
 msgstr "Add new entity"
 
-#: src/modules/flexible-forms/view.jsx:1533
+#: src/modules/flexible-forms/view.jsx:1541
 msgid "Add translation"
 msgstr "Add translation"
 
@@ -176,7 +181,7 @@ msgstr "Advanced Search"
 msgid "Affiliation"
 msgstr "Affiliation"
 
-#: src/modules/flexible-forms/form-schema.js:39
+#: src/modules/flexible-forms/form-schema.js:40
 msgid "Affordable and Clean Energy"
 msgstr "Affordable and Clean Energy"
 
@@ -184,7 +189,7 @@ msgstr "Affordable and Clean Energy"
 msgid "Agreeing new or changing rules or standards that others should comply with, new regulation, agreements, policies, economic instruments etc. including voluntary commitments)."
 msgstr "Agreeing new or changing rules or standards that others should comply with, new regulation, agreements, policies, economic instruments etc. including voluntary commitments)."
 
-#: src/modules/flexible-forms/form-schema.js:1051
+#: src/modules/flexible-forms/form-schema.js:1055
 msgid "Agriculture"
 msgstr "Agriculture"
 
@@ -209,8 +214,8 @@ msgstr "All (default)"
 msgid "All Forums"
 msgstr "All Forums"
 
-#: src/modules/flexible-forms/form-schema.js:999
-#: src/modules/flexible-forms/form-schema.js:1060
+#: src/modules/flexible-forms/form-schema.js:1003
+#: src/modules/flexible-forms/form-schema.js:1064
 msgid "All of the above"
 msgstr "All of the above"
 
@@ -246,11 +251,11 @@ msgstr "An online or face-to-face meeting of people to discuss and/or perform pr
 msgid "Analytics & statistics"
 msgstr "Analytics & statistics"
 
-#: src/modules/flexible-forms/view.jsx:1276
+#: src/modules/flexible-forms/view.jsx:1284
 msgid "Annex C of the Concept Document."
 msgstr "Annex C of the Concept Document."
 
-#: src/modules/flexible-forms/form-schema.js:866
+#: src/modules/flexible-forms/form-schema.js:870
 msgid "Anticipating a future policy change"
 msgstr "Anticipating a future policy change"
 
@@ -275,15 +280,15 @@ msgstr "Apply"
 msgid "Apply Filters"
 msgstr "Apply Filters"
 
-#: src/modules/flexible-forms/form-schema.js:1053
+#: src/modules/flexible-forms/form-schema.js:1057
 msgid "Aquaculture"
 msgstr "Aquaculture"
 
-#: src/modules/flexible-forms/form-schema.js:765
+#: src/modules/flexible-forms/form-schema.js:769
 msgid "Are the actual outcomes and impacts of the initiative evaluated?"
 msgstr "Are the actual outcomes and impacts of the initiative evaluated?"
 
-#: src/modules/flexible-forms/form-schema.js:1124
+#: src/modules/flexible-forms/form-schema.js:1136
 msgid "Are there in-kind contributions as well?"
 msgstr "Are there in-kind contributions as well?"
 
@@ -340,7 +345,7 @@ msgstr "Assign to"
 msgid "Assigned to"
 msgstr "Assigned to"
 
-#: src/modules/flexible-forms/form-schema.js:1049
+#: src/modules/flexible-forms/form-schema.js:1053
 msgid "Automotive"
 msgstr "Automotive"
 
@@ -374,7 +379,7 @@ msgstr "Awareness"
 msgid "Awareness Raising"
 msgstr "Awareness Raising"
 
-#: src/modules/flexible-forms/form-schema.js:451
+#: src/modules/flexible-forms/form-schema.js:455
 msgid "Awareness raising and behaviour change"
 msgstr "Awareness raising and behaviour change"
 
@@ -386,9 +391,9 @@ msgstr "Awareness-raising"
 msgid "Awareness-raising is a process that seeks to inform and educate people about a topic or issue with the intention of influencing their attitudes, behaviours and beliefs towards the achievement of a defined purpose or goal.1 It can mobilize the power of public opinion in support of an issue and thereby influence the political will of decision makers.2 There are multiple awareness-raising strategies, methods and tools that can be used to convey and spread messages, and to gather the support necessary to influence public opinion."
 msgstr "Awareness-raising is a process that seeks to inform and educate people about a topic or issue with the intention of influencing their attitudes, behaviours and beliefs towards the achievement of a defined purpose or goal.1 It can mobilize the power of public opinion in support of an issue and thereby influence the political will of decision makers.2 There are multiple awareness-raising strategies, methods and tools that can be used to convey and spread messages, and to gather the support necessary to influence public opinion."
 
-#: src/modules/flexible-forms/view.jsx:1594
-#: src/modules/flexible-forms/view.jsx:1620
-#: src/modules/flexible-forms/view.jsx:1650
+#: src/modules/flexible-forms/view.jsx:1602
+#: src/modules/flexible-forms/view.jsx:1628
+#: src/modules/flexible-forms/view.jsx:1658
 #: src/modules/onboarding/view.jsx:349
 msgid "Back"
 msgstr "Back"
@@ -406,12 +411,12 @@ msgstr "Back to categories"
 msgid "Back to connect options"
 msgstr "Back to connect options"
 
-#: src/modules/flexible-forms/form-schema.js:400
+#: src/modules/flexible-forms/form-schema.js:404
 msgid "Ban(s)"
 msgstr "Ban(s)"
 
-#: src/modules/flexible-forms/form-schema.js:220
-#: src/modules/flexible-forms/form-schema.js:1868
+#: src/modules/flexible-forms/form-schema.js:224
+#: src/modules/flexible-forms/form-schema.js:1880
 msgid "Banner"
 msgstr "Banner"
 
@@ -441,7 +446,7 @@ msgstr "Become part of GPML to collaborate with thousands of organisations and i
 msgid "Become part of the network"
 msgstr "Become part of the network"
 
-#: src/modules/flexible-forms/form-schema.js:456
+#: src/modules/flexible-forms/form-schema.js:460
 msgid "Behaviour change campaign/programme"
 msgstr "Behaviour change campaign/programme"
 
@@ -453,15 +458,15 @@ msgstr "Benefits of joining:<0><1>Access to a global network of members​</1><2
 msgid "Bio"
 msgstr "Bio"
 
-#: src/modules/flexible-forms/form-schema.js:541
+#: src/modules/flexible-forms/form-schema.js:545
 msgid "Bio-based plastic or bio-degradable plastic"
 msgstr "Bio-based plastic or bio-degradable plastic"
 
-#: src/modules/flexible-forms/form-schema.js:994
+#: src/modules/flexible-forms/form-schema.js:998
 msgid "Biodiversity"
 msgstr "Biodiversity"
 
-#: src/modules/flexible-forms/form-schema.js:1734
+#: src/modules/flexible-forms/form-schema.js:1746
 msgid "Biological diversity"
 msgstr "Biological diversity"
 
@@ -481,7 +486,7 @@ msgstr "Bookmark"
 msgid "Bookmarked"
 msgstr "Bookmarked"
 
-#: src/modules/flexible-forms/form-schema.js:1048
+#: src/modules/flexible-forms/form-schema.js:1052
 msgid "Building, construction, demolition,industrial machinery"
 msgstr "Building, construction, demolition,industrial machinery"
 
@@ -514,7 +519,7 @@ msgstr "Calculation of Indicators"
 msgid "California Ocean Litter Prevention Strategy"
 msgstr "California Ocean Litter Prevention Strategy"
 
-#: src/modules/flexible-forms/form-schema.js:862
+#: src/modules/flexible-forms/form-schema.js:866
 msgid "Campaigning with or through NGOs"
 msgstr "Campaigning with or through NGOs"
 
@@ -578,19 +583,19 @@ msgstr "Challenge & Solution"
 msgid "Challenges & Contests"
 msgstr "Challenges & Contests"
 
-#: src/modules/flexible-forms/form-schema.js:525
+#: src/modules/flexible-forms/form-schema.js:529
 msgid "Change in operations"
 msgstr "Change in operations"
 
-#: src/modules/flexible-forms/form-schema.js:524
+#: src/modules/flexible-forms/form-schema.js:528
 msgid "Change in practice"
 msgstr "Change in practice"
 
-#: src/modules/flexible-forms/form-schema.js:522
+#: src/modules/flexible-forms/form-schema.js:526
 msgid "Change in service provision"
 msgstr "Change in service provision"
 
-#: src/modules/flexible-forms/form-schema.js:398
+#: src/modules/flexible-forms/form-schema.js:402
 msgid "Change in taxes/subsidies"
 msgstr "Change in taxes/subsidies"
 
@@ -606,7 +611,7 @@ msgstr "Chat"
 msgid "Chemicals"
 msgstr "Chemicals"
 
-#: src/modules/flexible-forms/form-schema.js:1733
+#: src/modules/flexible-forms/form-schema.js:1745
 msgid "Chemicals and waste"
 msgstr "Chemicals and waste"
 
@@ -646,7 +651,7 @@ msgstr "Choose your filters below"
 msgid "Circularity"
 msgstr "Circularity"
 
-#: src/modules/flexible-forms/form-schema.js:459
+#: src/modules/flexible-forms/form-schema.js:463
 #: src/store.js:248
 msgid "Citizen science"
 msgstr "Citizen science"
@@ -659,11 +664,11 @@ msgstr "Civil Society"
 msgid "Clean Seas"
 msgstr "Clean Seas"
 
-#: src/modules/flexible-forms/form-schema.js:35
+#: src/modules/flexible-forms/form-schema.js:36
 msgid "Clean Water and Sanitation"
 msgstr "Clean Water and Sanitation"
 
-#: src/modules/flexible-forms/form-schema.js:957
+#: src/modules/flexible-forms/form-schema.js:961
 msgid "Clean-up of marine litter and plasticpollutionfrom the environment"
 msgstr "Clean-up of marine litter and plasticpollutionfrom the environment"
 
@@ -692,11 +697,11 @@ msgstr "Clear Selection"
 msgid "Click to Upload"
 msgstr "Click to Upload"
 
-#: src/modules/flexible-forms/form-schema.js:63
+#: src/modules/flexible-forms/form-schema.js:64
 msgid "Climate Action"
 msgstr "Climate Action"
 
-#: src/modules/flexible-forms/form-schema.js:1736
+#: src/modules/flexible-forms/form-schema.js:1748
 msgid "Climate and Atmosphere"
 msgstr "Climate and Atmosphere"
 
@@ -716,7 +721,7 @@ msgstr "COBSEA Regional Action Plan on Marine Litter 2019"
 msgid "Collecting evidence around plastic discharge to the ocean/waterways, e.g., monitoring, analysis"
 msgstr "Collecting evidence around plastic discharge to the ocean/waterways, e.g., monitoring, analysis"
 
-#: src/modules/flexible-forms/form-schema.js:955
+#: src/modules/flexible-forms/form-schema.js:959
 msgid "Collection / sorting of plastics after use"
 msgstr "Collection / sorting of plastics after use"
 
@@ -742,7 +747,7 @@ msgstr "Communities of practise"
 msgid "Community"
 msgstr "Community"
 
-#: src/modules/flexible-forms/form-schema.js:457
+#: src/modules/flexible-forms/form-schema.js:461
 msgid "Community engagement"
 msgstr "Community engagement"
 
@@ -754,28 +759,28 @@ msgstr "Compilation of actions around the world"
 msgid "Completed"
 msgstr "Completed"
 
-#: src/modules/flexible-forms/form-schema.js:540
+#: src/modules/flexible-forms/form-schema.js:544
 msgid "Compostable plastic"
 msgstr "Compostable plastic"
 
-#: src/modules/flexible-forms/form-schema.js:870
+#: src/modules/flexible-forms/form-schema.js:874
 msgid "Concern about environmental impact (e.g.,harm to animals and plants)"
 msgstr "Concern about environmental impact (e.g.,harm to animals and plants)"
 
-#: src/modules/flexible-forms/form-schema.js:871
+#: src/modules/flexible-forms/form-schema.js:875
 msgid "Concern about potential human health impacts"
 msgstr "Concern about potential human health impacts"
 
-#: src/modules/flexible-forms/form-schema.js:454
+#: src/modules/flexible-forms/form-schema.js:458
 #: src/store.js:635
 msgid "Conferences"
 msgstr "Conferences"
 
-#: src/modules/flexible-forms/form-schema.js:920
+#: src/modules/flexible-forms/form-schema.js:924
 msgid "Conflicting goals/other priorities more urgent"
 msgstr "Conflicting goals/other priorities more urgent"
 
-#: src/modules/flexible-forms/form-schema.js:909
+#: src/modules/flexible-forms/form-schema.js:913
 msgid "Conflicting regulation"
 msgstr "Conflicting regulation"
 
@@ -784,7 +789,7 @@ msgstr "Conflicting regulation"
 msgid "Connections"
 msgstr "Connections"
 
-#: src/modules/flexible-forms/form-schema.js:1697
+#: src/modules/flexible-forms/form-schema.js:1709
 msgid "Constitution"
 msgstr "Constitution"
 
@@ -800,7 +805,7 @@ msgstr "Contact"
 msgid "Contact info"
 msgstr "Contact info"
 
-#: src/modules/flexible-forms/form-schema.js:1162
+#: src/modules/flexible-forms/form-schema.js:1174
 msgid "Contact Info"
 msgstr "Contact Info"
 
@@ -813,7 +818,7 @@ msgstr "Contact us"
 msgid "Contact Us"
 msgstr "Contact Us"
 
-#: src/modules/flexible-forms/view.jsx:1170
+#: src/modules/flexible-forms/view.jsx:1178
 msgid "Content"
 msgstr "Content"
 
@@ -850,7 +855,7 @@ msgstr "Copy"
 msgid "Copyright © {0} All rights reserved"
 msgstr "Copyright © {0} All rights reserved"
 
-#: src/modules/flexible-forms/form-schema.js:856
+#: src/modules/flexible-forms/form-schema.js:860
 msgid "Cost considerations (e.g., reducing costs of existing processes or of disposal)"
 msgstr "Cost considerations (e.g., reducing costs of existing processes or of disposal)"
 
@@ -900,20 +905,20 @@ msgstr "Create Your Team"
 msgid "Creation of new knowledge and/or the use of existing knowledge in a new and creative way to generate new concepts, methodologies and understandings."
 msgstr "Creation of new knowledge and/or the use of existing knowledge in a new and creative way to generate new concepts, methodologies and understandings."
 
-#: src/modules/flexible-forms/form-schema.js:468
+#: src/modules/flexible-forms/form-schema.js:472
 msgid "Creative/arts event/exhibition"
 msgstr "Creative/arts event/exhibition"
 
-#: src/modules/flexible-forms/form-schema.js:1096
+#: src/modules/flexible-forms/form-schema.js:1108
 msgid "Crowdfunded"
 msgstr "Crowdfunded"
 
-#: src/modules/flexible-forms/form-schema.js:1118
-#: src/modules/flexible-forms/form-schema.js:1128
+#: src/modules/flexible-forms/form-schema.js:1130
+#: src/modules/flexible-forms/form-schema.js:1140
 msgid "Currency"
 msgstr "Currency"
 
-#: src/modules/flexible-forms/form-schema.js:460
+#: src/modules/flexible-forms/form-schema.js:464
 msgid "Curriculum development"
 msgstr "Curriculum development"
 
@@ -957,7 +962,7 @@ msgstr "DATA LAYERS"
 msgid "Data monitoring"
 msgstr "Data monitoring"
 
-#: src/modules/flexible-forms/form-schema.js:1688
+#: src/modules/flexible-forms/form-schema.js:1700
 msgid "Data Source"
 msgstr "Data Source"
 
@@ -977,7 +982,7 @@ msgstr "Datasets on plastic pollution and marine litter"
 msgid "Debt securities issued by private or public entities to finance activities or projects linked to sustainable development, green goals, or ocean goals."
 msgstr "Debt securities issued by private or public entities to finance activities or projects linked to sustainable development, green goals, or ocean goals."
 
-#: src/modules/flexible-forms/form-schema.js:43
+#: src/modules/flexible-forms/form-schema.js:44
 msgid "Decent Jobs and Economic Growth"
 msgstr "Decent Jobs and Economic Growth"
 
@@ -998,12 +1003,12 @@ msgid "Delete"
 msgstr "Delete"
 
 #: src/modules/details-page/view.jsx:470
-#: src/modules/flexible-forms/form-schema.js:111
-#: src/modules/flexible-forms/form-schema.js:1217
-#: src/modules/flexible-forms/form-schema.js:1473
-#: src/modules/flexible-forms/form-schema.js:1772
-#: src/modules/flexible-forms/form-schema.js:2037
-#: src/modules/flexible-forms/form-schema.js:2276
+#: src/modules/flexible-forms/form-schema.js:115
+#: src/modules/flexible-forms/form-schema.js:1229
+#: src/modules/flexible-forms/form-schema.js:1485
+#: src/modules/flexible-forms/form-schema.js:1784
+#: src/modules/flexible-forms/form-schema.js:2049
+#: src/modules/flexible-forms/form-schema.js:2288
 msgid "Description"
 msgstr "Description"
 
@@ -1043,7 +1048,7 @@ msgstr "Description - Section 4 - Calculation of Indicators"
 msgid "Description - Section 4 - Data Collection"
 msgstr "Description - Section 4 - Data Collection"
 
-#: src/modules/flexible-forms/form-schema.js:952
+#: src/modules/flexible-forms/form-schema.js:956
 msgid "Design"
 msgstr "Design"
 
@@ -1055,11 +1060,11 @@ msgstr "Design & Production"
 msgid "Detail info"
 msgstr "Detail info"
 
-#: src/modules/flexible-forms/form-schema.js:535
+#: src/modules/flexible-forms/form-schema.js:539
 msgid "Developing a new material"
 msgstr "Developing a new material"
 
-#: src/modules/flexible-forms/form-schema.js:536
+#: src/modules/flexible-forms/form-schema.js:540
 msgid "Developing a new process"
 msgstr "Developing a new process"
 
@@ -1067,11 +1072,11 @@ msgstr "Developing a new process"
 msgid "Development"
 msgstr "Development"
 
-#: src/modules/flexible-forms/form-schema.js:528
+#: src/modules/flexible-forms/form-schema.js:532
 msgid "Different environmental management of aquatic environments"
 msgstr "Different environmental management of aquatic environments"
 
-#: src/modules/flexible-forms/form-schema.js:527
+#: src/modules/flexible-forms/form-schema.js:531
 msgid "Different environmental management of land-based environments"
 msgstr "Different environmental management of land-based environments"
 
@@ -1101,11 +1106,11 @@ msgstr "Discussion"
 msgid "Distribution"
 msgstr "Distribution"
 
-#: src/modules/flexible-forms/form-schema.js:821
+#: src/modules/flexible-forms/form-schema.js:825
 msgid "Do you have specific key performance indicators (KPIs) for your initiative? If yes, please list up to 5."
 msgstr "Do you have specific key performance indicators (KPIs) for your initiative? If yes, please list up to 5."
 
-#: src/modules/flexible-forms/form-schema.js:636
+#: src/modules/flexible-forms/form-schema.js:640
 msgid "Do you report and measure the initiative progress?"
 msgstr "Do you report and measure the initiative progress?"
 
@@ -1126,19 +1131,19 @@ msgstr "Download Full Concept Document"
 msgid "Download Summary (1 Page)"
 msgstr "Download Summary (1 Page)"
 
-#: src/modules/flexible-forms/form-schema.js:829
+#: src/modules/flexible-forms/form-schema.js:833
 msgid "Drivers and Barriers"
 msgstr "Drivers and Barriers"
 
-#: src/modules/flexible-forms/form-schema.js:1134
+#: src/modules/flexible-forms/form-schema.js:1146
 msgid "Duration"
 msgstr "Duration"
 
-#: src/modules/flexible-forms/form-schema.js:858
+#: src/modules/flexible-forms/form-schema.js:862
 msgid "Economic drivers (e.g., fines, subsidies, taxes)"
 msgstr "Economic drivers (e.g., fines, subsidies, taxes)"
 
-#: src/modules/flexible-forms/form-schema.js:815
+#: src/modules/flexible-forms/form-schema.js:819
 msgid "Economic impacts will be evaluated"
 msgstr "Economic impacts will be evaluated"
 
@@ -1146,11 +1151,11 @@ msgstr "Economic impacts will be evaluated"
 msgid "Economic Instruments"
 msgstr "Economic Instruments"
 
-#: src/modules/flexible-forms/form-schema.js:998
+#: src/modules/flexible-forms/form-schema.js:1002
 msgid "Economics and Trade"
 msgstr "Economics and Trade"
 
-#: src/modules/flexible-forms/form-schema.js:996
+#: src/modules/flexible-forms/form-schema.js:1000
 msgid "Ecosystem Services"
 msgstr "Ecosystem Services"
 
@@ -1163,7 +1168,7 @@ msgstr "Edit"
 msgid "Education"
 msgstr "Education"
 
-#: src/modules/flexible-forms/form-schema.js:452
+#: src/modules/flexible-forms/form-schema.js:456
 msgid "Education/Training"
 msgstr "Education/Training"
 
@@ -1172,7 +1177,7 @@ msgstr "Education/Training"
 msgid "Educational & Outreach resources"
 msgstr "Educational & Outreach resources"
 
-#: src/modules/flexible-forms/form-schema.js:1050
+#: src/modules/flexible-forms/form-schema.js:1054
 msgid "Electrical and electronics"
 msgstr "Electrical and electronics"
 
@@ -1184,7 +1189,7 @@ msgstr "Elevate your mission to address plastic pollution and marine litter thro
 msgid "Ellipsis: Machine learning and aerial imagery to identify, map, and track plastic waste"
 msgstr "Ellipsis: Machine learning and aerial imagery to identify, map, and track plastic waste"
 
-#: src/modules/flexible-forms/form-schema.js:1167
+#: src/modules/flexible-forms/form-schema.js:1179
 #: src/modules/login/forgot-password.js:69
 #: src/modules/login/view.jsx:260
 #: src/modules/signup-old/signup-form.jsx:37
@@ -1247,11 +1252,12 @@ msgstr "Entities"
 msgid "Entities from UN Regional Groups of member States"
 msgstr "Entities from UN Regional Groups of member States"
 
-#: src/modules/flexible-forms/form-schema.js:1348
-#: src/modules/flexible-forms/form-schema.js:1603
-#: src/modules/flexible-forms/form-schema.js:1904
-#: src/modules/flexible-forms/form-schema.js:2169
-#: src/modules/flexible-forms/form-schema.js:2408
+#: src/modules/flexible-forms/form-schema.js:260
+#: src/modules/flexible-forms/form-schema.js:1360
+#: src/modules/flexible-forms/form-schema.js:1615
+#: src/modules/flexible-forms/form-schema.js:1916
+#: src/modules/flexible-forms/form-schema.js:2181
+#: src/modules/flexible-forms/form-schema.js:2420
 #: src/modules/map/map-chart.jsx:561
 #: src/modules/map/map-chart.jsx:607
 #: src/modules/map/vertical-legend.jsx:378
@@ -1265,12 +1271,12 @@ msgstr "Entity"
 msgid "ENTITY"
 msgstr "ENTITY"
 
-#: src/modules/flexible-forms/form-schema.js:241
-#: src/modules/flexible-forms/form-schema.js:1333
-#: src/modules/flexible-forms/form-schema.js:1588
-#: src/modules/flexible-forms/form-schema.js:1889
-#: src/modules/flexible-forms/form-schema.js:2154
-#: src/modules/flexible-forms/form-schema.js:2393
+#: src/modules/flexible-forms/form-schema.js:245
+#: src/modules/flexible-forms/form-schema.js:1345
+#: src/modules/flexible-forms/form-schema.js:1600
+#: src/modules/flexible-forms/form-schema.js:1901
+#: src/modules/flexible-forms/form-schema.js:2166
+#: src/modules/flexible-forms/form-schema.js:2405
 msgid "Entity connection"
 msgstr "Entity connection"
 
@@ -1282,12 +1288,12 @@ msgstr "Entity deleted successfully"
 msgid "Entity details"
 msgstr "Entity details"
 
-#: src/modules/flexible-forms/form-schema.js:251
-#: src/modules/flexible-forms/form-schema.js:1343
-#: src/modules/flexible-forms/form-schema.js:1598
-#: src/modules/flexible-forms/form-schema.js:1899
-#: src/modules/flexible-forms/form-schema.js:2164
-#: src/modules/flexible-forms/form-schema.js:2403
+#: src/modules/flexible-forms/form-schema.js:255
+#: src/modules/flexible-forms/form-schema.js:1355
+#: src/modules/flexible-forms/form-schema.js:1610
+#: src/modules/flexible-forms/form-schema.js:1911
+#: src/modules/flexible-forms/form-schema.js:2176
+#: src/modules/flexible-forms/form-schema.js:2415
 msgid "Entity role"
 msgstr "Entity role"
 
@@ -1296,11 +1302,11 @@ msgstr "Entity role"
 msgid "Entity URL"
 msgstr "Entity URL"
 
-#: src/modules/flexible-forms/form-schema.js:1738
+#: src/modules/flexible-forms/form-schema.js:1750
 msgid "Environmental Governance"
 msgstr "Environmental Governance"
 
-#: src/modules/flexible-forms/form-schema.js:813
+#: src/modules/flexible-forms/form-schema.js:817
 msgid "Environmental impacts will be evaluated"
 msgstr "Environmental impacts will be evaluated"
 
@@ -1308,7 +1314,7 @@ msgstr "Environmental impacts will be evaluated"
 msgid "Environmental justice"
 msgstr "Environmental justice"
 
-#: src/modules/flexible-forms/form-schema.js:523
+#: src/modules/flexible-forms/form-schema.js:527
 msgid "Environmental social planning"
 msgstr "Environmental social planning"
 
@@ -1342,11 +1348,11 @@ msgstr "Event Recording"
 msgid "Events"
 msgstr "Events"
 
-#: src/modules/flexible-forms/form-schema.js:865
+#: src/modules/flexible-forms/form-schema.js:869
 msgid "Existing policy or recent policy change"
 msgstr "Existing policy or recent policy change"
 
-#: src/modules/flexible-forms/form-schema.js:908
+#: src/modules/flexible-forms/form-schema.js:912
 msgid "Existing regulation is not enforced"
 msgstr "Existing regulation is not enforced"
 
@@ -1364,7 +1370,7 @@ msgstr "Experts"
 msgid "Export"
 msgstr "Export"
 
-#: src/modules/flexible-forms/form-schema.js:1170
+#: src/modules/flexible-forms/form-schema.js:1182
 msgid "Facebook"
 msgstr "Facebook"
 
@@ -1380,8 +1386,8 @@ msgstr "Features & Benefits <0>of using the platform</0>"
 msgid "Features of the GPML Digital Platform are made available via 3 primary components."
 msgstr "Features of the GPML Digital Platform are made available via 3 primary components."
 
-#: src/modules/flexible-forms/view.jsx:1598
-#: src/modules/flexible-forms/view.jsx:1624
+#: src/modules/flexible-forms/view.jsx:1606
+#: src/modules/flexible-forms/view.jsx:1632
 msgid "Field to submit"
 msgstr "Field to submit"
 
@@ -1423,11 +1429,11 @@ msgstr "Find and connect the stakeholders relevant to you"
 msgid "First name"
 msgstr "First name"
 
-#: src/modules/flexible-forms/form-schema.js:1710
+#: src/modules/flexible-forms/form-schema.js:1722
 msgid "First Publication Date"
 msgstr "First Publication Date"
 
-#: src/modules/flexible-forms/form-schema.js:1052
+#: src/modules/flexible-forms/form-schema.js:1056
 msgid "Fisheries"
 msgstr "Fisheries"
 
@@ -1452,11 +1458,11 @@ msgstr "Follow"
 msgid "Follow Us"
 msgstr "Follow Us"
 
-#: src/modules/flexible-forms/form-schema.js:1054
+#: src/modules/flexible-forms/form-schema.js:1058
 msgid "Food & Beverages"
 msgstr "Food & Beverages"
 
-#: src/modules/flexible-forms/form-schema.js:997
+#: src/modules/flexible-forms/form-schema.js:1001
 msgid "Food chain"
 msgstr "Food chain"
 
@@ -1464,7 +1470,7 @@ msgstr "Food chain"
 msgid "For entities"
 msgstr "For entities"
 
-#: src/modules/flexible-forms/form-schema.js:605
+#: src/modules/flexible-forms/form-schema.js:609
 msgid "For monitoring, which programme/protocol did you use?"
 msgstr "For monitoring, which programme/protocol did you use?"
 
@@ -1488,7 +1494,7 @@ msgstr "Forum"
 msgid "Forums"
 msgstr "Forums"
 
-#: src/modules/flexible-forms/form-schema.js:921
+#: src/modules/flexible-forms/form-schema.js:925
 msgid "Fragmentation"
 msgstr "Fragmentation"
 
@@ -1500,7 +1506,7 @@ msgstr "Frequently Asked Questions"
 msgid "Freshwater"
 msgstr "Freshwater"
 
-#: src/modules/flexible-forms/form-schema.js:1085
+#: src/modules/flexible-forms/form-schema.js:1089
 msgid "Funding"
 msgstr "Funding"
 
@@ -1508,15 +1514,15 @@ msgstr "Funding"
 msgid "G-STIC Conference Second Edition"
 msgstr "G-STIC Conference Second Edition"
 
-#: src/modules/flexible-forms/form-schema.js:917
+#: src/modules/flexible-forms/form-schema.js:921
 msgid "Gaps in expertise in member state/organisation"
 msgstr "Gaps in expertise in member state/organisation"
 
-#: src/modules/flexible-forms/form-schema.js:918
+#: src/modules/flexible-forms/form-schema.js:922
 msgid "Gaps in leadership/political will"
 msgstr "Gaps in leadership/political will"
 
-#: src/modules/flexible-forms/form-schema.js:922
+#: src/modules/flexible-forms/form-schema.js:926
 msgid "Gaps in public awareness/public not interested"
 msgstr "Gaps in public awareness/public not interested"
 
@@ -1524,7 +1530,7 @@ msgstr "Gaps in public awareness/public not interested"
 msgid "Gender"
 msgstr "Gender"
 
-#: src/modules/flexible-forms/form-schema.js:31
+#: src/modules/flexible-forms/form-schema.js:32
 msgid "Gender Equality"
 msgstr "Gender Equality"
 
@@ -1534,21 +1540,20 @@ msgstr "Gender Equality"
 msgid "Geo coverage"
 msgstr "Geo coverage"
 
-#: src/modules/flexible-forms/form-schema.js:158
-#: src/modules/flexible-forms/form-schema.js:1262
-#: src/modules/flexible-forms/form-schema.js:1517
-#: src/modules/flexible-forms/form-schema.js:1818
-#: src/modules/flexible-forms/form-schema.js:2083
-#: src/modules/flexible-forms/form-schema.js:2322
+#: src/modules/flexible-forms/form-schema.js:1274
+#: src/modules/flexible-forms/form-schema.js:1529
+#: src/modules/flexible-forms/form-schema.js:1830
+#: src/modules/flexible-forms/form-schema.js:2095
+#: src/modules/flexible-forms/form-schema.js:2334
 msgid "GEO COVERAGE (Countries)"
 msgstr "GEO COVERAGE (Countries)"
 
-#: src/modules/flexible-forms/form-schema.js:148
-#: src/modules/flexible-forms/form-schema.js:1253
-#: src/modules/flexible-forms/form-schema.js:1509
-#: src/modules/flexible-forms/form-schema.js:1810
-#: src/modules/flexible-forms/form-schema.js:2075
-#: src/modules/flexible-forms/form-schema.js:2314
+#: src/modules/flexible-forms/form-schema.js:152
+#: src/modules/flexible-forms/form-schema.js:1265
+#: src/modules/flexible-forms/form-schema.js:1521
+#: src/modules/flexible-forms/form-schema.js:1822
+#: src/modules/flexible-forms/form-schema.js:2087
+#: src/modules/flexible-forms/form-schema.js:2326
 msgid "GEO COVERAGE (Transnational)"
 msgstr "GEO COVERAGE (Transnational)"
 
@@ -1571,7 +1576,7 @@ msgid "Get Started"
 msgstr "Get Started"
 
 #: src/modules/flexible-forms/common.js:328
-#: src/modules/flexible-forms/view.jsx:1575
+#: src/modules/flexible-forms/view.jsx:1583
 msgid "Getting Started"
 msgstr "Getting Started"
 
@@ -1579,12 +1584,11 @@ msgstr "Getting Started"
 msgid "Glasgow Climate Change Conference"
 msgstr "Glasgow Climate Change Conference"
 
-#: src/modules/flexible-forms/form-schema.js:141
-#: src/modules/flexible-forms/form-schema.js:1246
-#: src/modules/flexible-forms/form-schema.js:1502
-#: src/modules/flexible-forms/form-schema.js:1803
-#: src/modules/flexible-forms/form-schema.js:2068
-#: src/modules/flexible-forms/form-schema.js:2307
+#: src/modules/flexible-forms/form-schema.js:1258
+#: src/modules/flexible-forms/form-schema.js:1514
+#: src/modules/flexible-forms/form-schema.js:1815
+#: src/modules/flexible-forms/form-schema.js:2080
+#: src/modules/flexible-forms/form-schema.js:2319
 msgid "Global"
 msgstr "Global"
 
@@ -1612,7 +1616,7 @@ msgstr "Global Partnership on Plastic Pollution and Marine Litter (GPML) was lau
 msgid "Global Plastics Action Partnership (GPAP)"
 msgstr "Global Plastics Action Partnership (GPAP)"
 
-#: src/modules/flexible-forms/form-schema.js:695
+#: src/modules/flexible-forms/form-schema.js:699
 msgid "Global Sustainable Development Goals (SDGs)"
 msgstr "Global Sustainable Development Goals (SDGs)"
 
@@ -1632,7 +1636,7 @@ msgstr "Go to GPML"
 msgid "Go to the partnership"
 msgstr "Go to the partnership"
 
-#: src/modules/flexible-forms/form-schema.js:23
+#: src/modules/flexible-forms/form-schema.js:24
 msgid "Good Health and Well-being"
 msgstr "Good Health and Well-being"
 
@@ -1708,7 +1712,7 @@ msgstr "Guidelines standards & harmonization"
 msgid "Gulf of Mexico Alliance Regional Action Plan"
 msgstr "Gulf of Mexico Alliance Regional Action Plan"
 
-#: src/modules/flexible-forms/form-schema.js:923
+#: src/modules/flexible-forms/form-schema.js:927
 msgid "Habits in society too slow to change"
 msgstr "Habits in society too slow to change"
 
@@ -1736,19 +1740,19 @@ msgstr "Help and advice provided on a set of ideas or plans that is used as a ba
 msgid "Help Center"
 msgstr "Help Center"
 
-#: src/modules/flexible-forms/view.jsx:1264
+#: src/modules/flexible-forms/view.jsx:1272
 msgid "here"
 msgstr "here"
 
-#: src/modules/flexible-forms/view.jsx:1321
+#: src/modules/flexible-forms/view.jsx:1329
 msgid "HIDE EXAMPLES"
 msgstr "HIDE EXAMPLES"
 
-#: src/modules/flexible-forms/form-schema.js:394
+#: src/modules/flexible-forms/form-schema.js:398
 msgid "High-level strategy"
 msgstr "High-level strategy"
 
-#: src/modules/flexible-forms/form-schema.js:613
+#: src/modules/flexible-forms/form-schema.js:617
 msgid "How can the data and information from your monitoring programme be accessed?"
 msgstr "How can the data and information from your monitoring programme be accessed?"
 
@@ -1760,15 +1764,15 @@ msgstr "How does it work?"
 msgid "How is the network co-solutioning?"
 msgstr "How is the network co-solutioning?"
 
-#: src/modules/flexible-forms/form-schema.js:1077
+#: src/modules/flexible-forms/form-schema.js:1081
 msgid "How many different groups and organisations have you engaged with in total?"
 msgstr "How many different groups and organisations have you engaged with in total?"
 
-#: src/modules/flexible-forms/form-schema.js:1081
+#: src/modules/flexible-forms/form-schema.js:1085
 msgid "How many stakeholders have you engaged in total?"
 msgstr "How many stakeholders have you engaged in total?"
 
-#: src/modules/flexible-forms/form-schema.js:1114
+#: src/modules/flexible-forms/form-schema.js:1126
 msgid "How much money (amount) has been invested in the initiative so far?"
 msgstr "How much money (amount) has been invested in the initiative so far?"
 
@@ -1780,7 +1784,7 @@ msgstr "How to Guides"
 msgid "Human health"
 msgstr "Human health"
 
-#: src/modules/flexible-forms/form-schema.js:993
+#: src/modules/flexible-forms/form-schema.js:997
 msgid "Human health and wellbeing"
 msgstr "Human health and wellbeing"
 
@@ -1796,32 +1800,32 @@ msgstr "I AM NOT THE FOCAL POINT"
 msgid "I’m a private citizen"
 msgstr "I’m a private citizen"
 
-#: src/modules/flexible-forms/form-schema.js:796
+#: src/modules/flexible-forms/form-schema.js:800
 msgid "If applicable, please specify when and how the outcomes will be evaluated (tick ALL that apply)."
 msgstr "If applicable, please specify when and how the outcomes will be evaluated (tick ALL that apply)."
 
-#: src/modules/flexible-forms/form-schema.js:664
+#: src/modules/flexible-forms/form-schema.js:668
 msgid "If yes, who do you report to? (Please tick ALL that apply):"
 msgstr "If yes, who do you report to? (Please tick ALL that apply):"
 
-#: src/modules/flexible-forms/form-schema.js:408
+#: src/modules/flexible-forms/form-schema.js:412
 msgid "If you selected \"Other\", please specify"
 msgstr "If you selected \"Other\", please specify"
 
-#: src/modules/flexible-forms/form-schema.js:475
-#: src/modules/flexible-forms/form-schema.js:548
-#: src/modules/flexible-forms/form-schema.js:597
+#: src/modules/flexible-forms/form-schema.js:479
+#: src/modules/flexible-forms/form-schema.js:552
+#: src/modules/flexible-forms/form-schema.js:601
 msgid "If you selected \"Other\", please specify:"
 msgstr "If you selected \"Other\", please specify:"
 
-#: src/modules/flexible-forms/form-schema.js:656
-#: src/modules/flexible-forms/form-schema.js:757
-#: src/modules/flexible-forms/form-schema.js:777
-#: src/modules/flexible-forms/form-schema.js:964
-#: src/modules/flexible-forms/form-schema.js:1007
-#: src/modules/flexible-forms/form-schema.js:1068
-#: src/modules/flexible-forms/form-schema.js:1106
-#: src/modules/flexible-forms/form-schema.js:1154
+#: src/modules/flexible-forms/form-schema.js:660
+#: src/modules/flexible-forms/form-schema.js:761
+#: src/modules/flexible-forms/form-schema.js:781
+#: src/modules/flexible-forms/form-schema.js:968
+#: src/modules/flexible-forms/form-schema.js:1011
+#: src/modules/flexible-forms/form-schema.js:1072
+#: src/modules/flexible-forms/form-schema.js:1118
+#: src/modules/flexible-forms/form-schema.js:1166
 msgid "If you selected \"Other\", please specify."
 msgstr "If you selected \"Other\", please specify."
 
@@ -1830,26 +1834,26 @@ msgid "IGOs"
 msgstr "IGOs"
 
 #: src/modules/flexible-forms/common.js:371
-#: src/modules/flexible-forms/form-schema.js:1312
-#: src/modules/flexible-forms/form-schema.js:1567
-#: src/modules/flexible-forms/form-schema.js:2133
-#: src/modules/flexible-forms/form-schema.js:2372
+#: src/modules/flexible-forms/form-schema.js:1324
+#: src/modules/flexible-forms/form-schema.js:1579
+#: src/modules/flexible-forms/form-schema.js:2145
+#: src/modules/flexible-forms/form-schema.js:2384
 msgid "Image"
 msgstr "Image"
 
-#: src/modules/flexible-forms/form-schema.js:789
+#: src/modules/flexible-forms/form-schema.js:793
 msgid "Immediately (less than 1 year)"
 msgstr "Immediately (less than 1 year)"
 
-#: src/modules/flexible-forms/form-schema.js:972
+#: src/modules/flexible-forms/form-schema.js:976
 msgid "Impact. What impacts or harms does the initiative relate to? (Please tick ALL that apply)."
 msgstr "Impact. What impacts or harms does the initiative relate to? (Please tick ALL that apply)."
 
-#: src/modules/flexible-forms/form-schema.js:1726
+#: src/modules/flexible-forms/form-schema.js:1738
 msgid "Implementing MEA"
 msgstr "Implementing MEA"
 
-#: src/modules/flexible-forms/form-schema.js:790
+#: src/modules/flexible-forms/form-schema.js:794
 msgid "In 1 to 3 years"
 msgstr "In 1 to 3 years"
 
@@ -1857,11 +1861,11 @@ msgstr "In 1 to 3 years"
 msgid "In 2019, the United Nations Environment Assembly (UNEA) decided in resolution UNEP/EA.4/Res.6 operative paragraph 3: “to strengthen coordination and cooperation by establishing, subject to the availability of resources and building on existing initiatives, a multi-stakeholder platform within the United Nations Environment Programme to take immediate action towards the long-term elimination, through a lifecycle approach, of discharges of litter and microplastics into the oceans”. The GPML Digital Platform was developed in 2021 in response to this and seeks to support transformative, multi-stakeholder actions that target the causes of pollution towards a pollution-free planet, where pollution is prevented and controlled and good environmental quality and improved health and well-being are ensured for all. Overall, the work of the GPML will support UNEP’s Medium-Term Strategy by supporting countries to deliver on their environmental commitments under international agreements."
 msgstr "In 2019, the United Nations Environment Assembly (UNEA) decided in resolution UNEP/EA.4/Res.6 operative paragraph 3: “to strengthen coordination and cooperation by establishing, subject to the availability of resources and building on existing initiatives, a multi-stakeholder platform within the United Nations Environment Programme to take immediate action towards the long-term elimination, through a lifecycle approach, of discharges of litter and microplastics into the oceans”. The GPML Digital Platform was developed in 2021 in response to this and seeks to support transformative, multi-stakeholder actions that target the causes of pollution towards a pollution-free planet, where pollution is prevented and controlled and good environmental quality and improved health and well-being are ensured for all. Overall, the work of the GPML will support UNEP’s Medium-Term Strategy by supporting countries to deliver on their environmental commitments under international agreements."
 
-#: src/modules/flexible-forms/form-schema.js:791
+#: src/modules/flexible-forms/form-schema.js:795
 msgid "In 4 to 10 years"
 msgstr "In 4 to 10 years"
 
-#: src/modules/flexible-forms/form-schema.js:1723
+#: src/modules/flexible-forms/form-schema.js:1735
 msgid "In force"
 msgstr "In force"
 
@@ -1869,7 +1873,7 @@ msgstr "In force"
 msgid "In market"
 msgstr "In market"
 
-#: src/modules/flexible-forms/form-schema.js:792
+#: src/modules/flexible-forms/form-schema.js:796
 msgid "In more than 10 years"
 msgstr "In more than 10 years"
 
@@ -1884,12 +1888,12 @@ msgstr "Incentive measures bring about an intended behaviour or outcome as an al
 msgid "Individual"
 msgstr "Individual"
 
-#: src/modules/flexible-forms/form-schema.js:264
-#: src/modules/flexible-forms/form-schema.js:1356
-#: src/modules/flexible-forms/form-schema.js:1611
-#: src/modules/flexible-forms/form-schema.js:1912
-#: src/modules/flexible-forms/form-schema.js:2177
-#: src/modules/flexible-forms/form-schema.js:2416
+#: src/modules/flexible-forms/form-schema.js:268
+#: src/modules/flexible-forms/form-schema.js:1368
+#: src/modules/flexible-forms/form-schema.js:1623
+#: src/modules/flexible-forms/form-schema.js:1924
+#: src/modules/flexible-forms/form-schema.js:2189
+#: src/modules/flexible-forms/form-schema.js:2428
 msgid "Individual connection"
 msgstr "Individual connection"
 
@@ -1899,29 +1903,29 @@ msgstr "Individual connection"
 msgid "Individuals"
 msgstr "Individuals"
 
-#: src/modules/flexible-forms/form-schema.js:526
+#: src/modules/flexible-forms/form-schema.js:530
 msgid "Industrial or production standard"
 msgstr "Industrial or production standard"
 
-#: src/modules/flexible-forms/form-schema.js:47
+#: src/modules/flexible-forms/form-schema.js:48
 msgid "Industry, Innovation and Infrastructure"
 msgstr "Industry, Innovation and Infrastructure"
 
-#: src/modules/flexible-forms/form-schema.js:283
-#: src/modules/flexible-forms/form-schema.js:1375
-#: src/modules/flexible-forms/form-schema.js:1630
-#: src/modules/flexible-forms/form-schema.js:1931
-#: src/modules/flexible-forms/form-schema.js:2196
-#: src/modules/flexible-forms/form-schema.js:2435
+#: src/modules/flexible-forms/form-schema.js:287
+#: src/modules/flexible-forms/form-schema.js:1387
+#: src/modules/flexible-forms/form-schema.js:1642
+#: src/modules/flexible-forms/form-schema.js:1943
+#: src/modules/flexible-forms/form-schema.js:2208
+#: src/modules/flexible-forms/form-schema.js:2447
 msgid "Indvidual"
 msgstr "Indvidual"
 
-#: src/modules/flexible-forms/form-schema.js:301
-#: src/modules/flexible-forms/form-schema.js:1393
-#: src/modules/flexible-forms/form-schema.js:1648
-#: src/modules/flexible-forms/form-schema.js:1949
-#: src/modules/flexible-forms/form-schema.js:2214
-#: src/modules/flexible-forms/form-schema.js:2453
+#: src/modules/flexible-forms/form-schema.js:305
+#: src/modules/flexible-forms/form-schema.js:1405
+#: src/modules/flexible-forms/form-schema.js:1660
+#: src/modules/flexible-forms/form-schema.js:1961
+#: src/modules/flexible-forms/form-schema.js:2226
+#: src/modules/flexible-forms/form-schema.js:2465
 msgid "Info And Docs"
 msgstr "Info And Docs"
 
@@ -1929,7 +1933,7 @@ msgstr "Info And Docs"
 msgid "Information"
 msgstr "Information"
 
-#: src/modules/flexible-forms/form-schema.js:455
+#: src/modules/flexible-forms/form-schema.js:459
 msgid "Information campaign"
 msgstr "Information campaign"
 
@@ -1941,11 +1945,11 @@ msgstr "Informs and connects all actors working to address this urgent issue acr
 msgid "Initiative"
 msgstr "Initiative"
 
-#: src/modules/flexible-forms/form-schema.js:910
+#: src/modules/flexible-forms/form-schema.js:914
 msgid "Initiative depends on other actors who are not cooperating"
 msgstr "Initiative depends on other actors who are not cooperating"
 
-#: src/modules/flexible-forms/form-schema.js:930
+#: src/modules/flexible-forms/form-schema.js:934
 msgid "Initiative Scope & Target"
 msgstr "Initiative Scope & Target"
 
@@ -1962,11 +1966,11 @@ msgstr "Initiatives"
 msgid "Initiatives or projects that can be used as an example to show general principles."
 msgstr "Initiatives or projects that can be used as an example to show general principles."
 
-#: src/modules/flexible-forms/form-schema.js:1171
+#: src/modules/flexible-forms/form-schema.js:1183
 msgid "Instagram"
 msgstr "Instagram"
 
-#: src/modules/flexible-forms/form-schema.js:464
+#: src/modules/flexible-forms/form-schema.js:468
 msgid "Institutional development"
 msgstr "Institutional development"
 
@@ -2015,7 +2019,7 @@ msgstr "Involves obtaining a faster server with more powerful processors and mor
 msgid "Is the first complete solution to the original challenge. The first “prototype” is the first time all parts of a solution are tested together. It is the first time that the inter-dependencies of all components can be tested, analyzed, and refined."
 msgstr "Is the first complete solution to the original challenge. The first “prototype” is the first time all parts of a solution are tested together. It is the first time that the inter-dependencies of all components can be tested, analyzed, and refined."
 
-#: src/modules/flexible-forms/form-schema.js:1135
+#: src/modules/flexible-forms/form-schema.js:1147
 msgid "Is your initiative a one-off activity or ongoing?"
 msgstr "Is your initiative a one-off activity or ongoing?"
 
@@ -2062,7 +2066,7 @@ msgstr "JOIN WITH EMAIL"
 msgid "Key Features & Components"
 msgstr "Key Features & Components"
 
-#: src/modules/flexible-forms/view.jsx:1283
+#: src/modules/flexible-forms/view.jsx:1291
 msgid "Knowledge Exchange Library."
 msgstr "Knowledge Exchange Library."
 
@@ -2070,15 +2074,15 @@ msgstr "Knowledge Exchange Library."
 msgid "Knowledge library"
 msgstr "Knowledge library"
 
-#: src/modules/flexible-forms/form-schema.js:1737
+#: src/modules/flexible-forms/form-schema.js:1749
 msgid "Land and Agriculture"
 msgstr "Land and Agriculture"
 
-#: src/modules/flexible-forms/form-schema.js:1678
+#: src/modules/flexible-forms/form-schema.js:1690
 msgid "Language"
 msgstr "Language"
 
-#: src/modules/flexible-forms/form-schema.js:1715
+#: src/modules/flexible-forms/form-schema.js:1727
 msgid "Last Amendment Date"
 msgstr "Last Amendment Date"
 
@@ -2090,7 +2094,7 @@ msgstr "Last name"
 msgid "Latest news:"
 msgstr "Latest news:"
 
-#: src/modules/flexible-forms/form-schema.js:864
+#: src/modules/flexible-forms/form-schema.js:868
 msgid "Leadership by specific individuals in the member state or organisation (who personallydrove change)"
 msgstr "Leadership by specific individuals in the member state or organisation (who personallydrove change)"
 
@@ -2112,7 +2116,7 @@ msgstr "Learning and capacity development resources"
 msgid "Learning center"
 msgstr "Learning center"
 
-#: src/modules/flexible-forms/form-schema.js:1695
+#: src/modules/flexible-forms/form-schema.js:1707
 #: src/store.js:225
 msgid "Legislation"
 msgstr "Legislation"
@@ -2128,11 +2132,11 @@ msgstr "Legislation & Policy Review Report"
 msgid "LEGISLATION & POLICY REVIEW REPORT"
 msgstr "LEGISLATION & POLICY REVIEW REPORT"
 
-#: src/modules/flexible-forms/form-schema.js:395
+#: src/modules/flexible-forms/form-schema.js:399
 msgid "Legislation or regulations"
 msgstr "Legislation or regulations"
 
-#: src/modules/flexible-forms/form-schema.js:365
+#: src/modules/flexible-forms/form-schema.js:369
 msgid "Legislation, Standards and Rules. You have selected legislation, standards and rules as the type of initiative. What did the initiative specifically involve? (Please tick ALL that apply):"
 msgstr "Legislation, Standards and Rules. You have selected legislation, standards and rules as the type of initiative. What did the initiative specifically involve? (Please tick ALL that apply):"
 
@@ -2140,7 +2144,7 @@ msgstr "Legislation, Standards and Rules. You have selected legislation, standar
 msgid "Legislation, standards, rules"
 msgstr "Legislation, standards, rules"
 
-#: src/modules/flexible-forms/form-schema.js:356
+#: src/modules/flexible-forms/form-schema.js:360
 msgid "LEGISLATION, STANDARDS, RULES (e.g., agreeing new or changing rules or standards that others should comply with, new regulation, agreements, policies, economic instruments etc. including voluntary commitments)."
 msgstr "LEGISLATION, STANDARDS, RULES (e.g., agreeing new or changing rules or standards that others should comply with, new regulation, agreements, policies, economic instruments etc. including voluntary commitments)."
 
@@ -2153,15 +2157,15 @@ msgstr "Legislations, Regulations & Standards"
 msgid "Legislative Development Guide"
 msgstr "Legislative Development Guide"
 
-#: src/modules/flexible-forms/form-schema.js:67
+#: src/modules/flexible-forms/form-schema.js:68
 msgid "Life Below Water"
 msgstr "Life Below Water"
 
-#: src/modules/flexible-forms/form-schema.js:71
+#: src/modules/flexible-forms/form-schema.js:72
 msgid "Life on Land"
 msgstr "Life on Land"
 
-#: src/modules/flexible-forms/form-schema.js:463
+#: src/modules/flexible-forms/form-schema.js:467
 msgid "Life-long learning"
 msgstr "Life-long learning"
 
@@ -2169,7 +2173,7 @@ msgstr "Life-long learning"
 msgid "Lifecycle Stage"
 msgstr "Lifecycle Stage"
 
-#: src/modules/flexible-forms/form-schema.js:931
+#: src/modules/flexible-forms/form-schema.js:935
 msgid "Lifecycle. Which specific part of the lifecycle/plastic supply chain is your initiative targeting? (Please tick ALL that apply)."
 msgstr "Lifecycle. Which specific part of the lifecycle/plastic supply chain is your initiative targeting? (Please tick ALL that apply)."
 
@@ -2178,7 +2182,7 @@ msgstr "Lifecycle. Which specific part of the lifecycle/plastic supply chain is 
 msgid "Linkedin"
 msgstr "Linkedin"
 
-#: src/modules/flexible-forms/form-schema.js:1168
+#: src/modules/flexible-forms/form-schema.js:1180
 #: src/modules/signup-old/signup-form.jsx:43
 msgid "LinkedIn"
 msgstr "LinkedIn"
@@ -2187,7 +2191,7 @@ msgstr "LinkedIn"
 msgid "Load More"
 msgstr "Load More"
 
-#: src/modules/flexible-forms/view.jsx:1225
+#: src/modules/flexible-forms/view.jsx:1233
 #: src/modules/map/map.jsx:39
 #: src/modules/profile/admin.jsx:1261
 #: src/modules/stakeholder-overview/stakeholder-list.jsx:46
@@ -2208,7 +2212,7 @@ msgstr "Loading..."
 msgid "Loans"
 msgstr "Loans"
 
-#: src/modules/flexible-forms/form-schema.js:911
+#: src/modules/flexible-forms/form-schema.js:915
 msgid "Lobbying by business/industry"
 msgstr "Lobbying by business/industry"
 
@@ -2246,15 +2250,15 @@ msgstr "Main & Sub Content"
 msgid "Make Lome Plastic Free"
 msgstr "Make Lome Plastic Free"
 
-#: src/modules/flexible-forms/view.jsx:1286
+#: src/modules/flexible-forms/view.jsx:1294
 msgid "Make sure to browse around and leave a review under the resources you enjoy the most!"
 msgstr "Make sure to browse around and leave a review under the resources you enjoy the most!"
 
-#: src/modules/flexible-forms/form-schema.js:956
+#: src/modules/flexible-forms/form-schema.js:960
 msgid "Management of collected plastics"
 msgstr "Management of collected plastics"
 
-#: src/modules/flexible-forms/form-schema.js:537
+#: src/modules/flexible-forms/form-schema.js:541
 msgid "Manufacturing and production"
 msgstr "Manufacturing and production"
 
@@ -2262,7 +2266,7 @@ msgstr "Manufacturing and production"
 msgid "map"
 msgstr "map"
 
-#: src/modules/flexible-forms/form-schema.js:1735
+#: src/modules/flexible-forms/form-schema.js:1747
 msgid "Marine and Freshwater"
 msgstr "Marine and Freshwater"
 
@@ -2278,7 +2282,7 @@ msgstr "Marine Litter in the Black Sea Region"
 msgid "Marine Litter Vital Graphics"
 msgstr "Marine Litter Vital Graphics"
 
-#: src/modules/flexible-forms/form-schema.js:995
+#: src/modules/flexible-forms/form-schema.js:999
 msgid "Marine organisms"
 msgstr "Marine organisms"
 
@@ -2298,11 +2302,11 @@ msgstr "Max 500 letters"
 msgid "Measures taken by governmental units to influence people by means of formulated rules and directives which mandate receivers act in accordance with what is ordered in these rules or directives."
 msgstr "Measures taken by governmental units to influence people by means of formulated rules and directives which mandate receivers act in accordance with what is ordered in these rules or directives."
 
-#: src/modules/flexible-forms/form-schema.js:861
+#: src/modules/flexible-forms/form-schema.js:865
 msgid "Media coverage, wide exposure of marine litter and plastic pollution"
 msgstr "Media coverage, wide exposure of marine litter and plastic pollution"
 
-#: src/modules/flexible-forms/form-schema.js:1056
+#: src/modules/flexible-forms/form-schema.js:1060
 msgid "Medical"
 msgstr "Medical"
 
@@ -2314,7 +2318,7 @@ msgstr "Meetings, often lasting a few days, organized on a particular subject or
 msgid "Members"
 msgstr "Members"
 
-#: src/modules/flexible-forms/form-schema.js:860
+#: src/modules/flexible-forms/form-schema.js:864
 msgid "Members of the public have actively complained / asked for change"
 msgstr "Members of the public have actively complained / asked for change"
 
@@ -2331,11 +2335,11 @@ msgstr "Microfibers"
 msgid "Microplastics"
 msgstr "Microplastics"
 
-#: src/modules/flexible-forms/form-schema.js:1694
+#: src/modules/flexible-forms/form-schema.js:1706
 msgid "Miscellaneous"
 msgstr "Miscellaneous"
 
-#: src/modules/flexible-forms/form-schema.js:1100
+#: src/modules/flexible-forms/form-schema.js:1112
 msgid "Mixed"
 msgstr "Mixed"
 
@@ -2355,39 +2359,39 @@ msgstr "Monitoring"
 msgid "Monitoring and Analysis"
 msgstr "Monitoring and Analysis"
 
-#: src/modules/flexible-forms/form-schema.js:359
+#: src/modules/flexible-forms/form-schema.js:363
 msgid "MONITORING and ANALYSIS (collecting evidence around plastic discharge to the ocean/waterways, e.g., monitoring, analysis)."
 msgstr "MONITORING and ANALYSIS (collecting evidence around plastic discharge to the ocean/waterways, e.g., monitoring, analysis)."
 
-#: src/modules/flexible-forms/form-schema.js:556
+#: src/modules/flexible-forms/form-schema.js:560
 msgid "Monitoring and Analysis. You have chosen monitoring and analysis as the type of initiatives. What did the initiative specifically involve? (Please tick ALL that apply):"
 msgstr "Monitoring and Analysis. You have chosen monitoring and analysis as the type of initiatives. What did the initiative specifically involve? (Please tick ALL that apply):"
 
-#: src/modules/flexible-forms/form-schema.js:587
+#: src/modules/flexible-forms/form-schema.js:591
 msgid "Monitoring: Air"
 msgstr "Monitoring: Air"
 
-#: src/modules/flexible-forms/form-schema.js:586
+#: src/modules/flexible-forms/form-schema.js:590
 msgid "Monitoring: Entanglement/ ingested/ in biota"
 msgstr "Monitoring: Entanglement/ ingested/ in biota"
 
-#: src/modules/flexible-forms/form-schema.js:582
+#: src/modules/flexible-forms/form-schema.js:586
 msgid "Monitoring: On or near ocean surface"
 msgstr "Monitoring: On or near ocean surface"
 
-#: src/modules/flexible-forms/form-schema.js:584
+#: src/modules/flexible-forms/form-schema.js:588
 msgid "Monitoring: On the seafloor"
 msgstr "Monitoring: On the seafloor"
 
-#: src/modules/flexible-forms/form-schema.js:585
+#: src/modules/flexible-forms/form-schema.js:589
 msgid "Monitoring: On the shoreline"
 msgstr "Monitoring: On the shoreline"
 
-#: src/modules/flexible-forms/form-schema.js:583
+#: src/modules/flexible-forms/form-schema.js:587
 msgid "Monitoring: Water column"
 msgstr "Monitoring: Water column"
 
-#: src/modules/flexible-forms/form-schema.js:874
+#: src/modules/flexible-forms/form-schema.js:878
 msgid "Moral considerations"
 msgstr "Moral considerations"
 
@@ -2400,7 +2404,7 @@ msgstr "Multi-Country"
 msgid "Multidonor trust fund"
 msgstr "Multidonor trust fund"
 
-#: src/modules/flexible-forms/form-schema.js:698
+#: src/modules/flexible-forms/form-schema.js:702
 msgid "Multilateral Environmental Agreements (MEAs)"
 msgstr "Multilateral Environmental Agreements (MEAs)"
 
@@ -2418,13 +2422,12 @@ msgstr "My Bookmarks"
 msgid "Name"
 msgstr "Name"
 
-#: src/modules/flexible-forms/form-schema.js:143
-#: src/modules/flexible-forms/form-schema.js:168
-#: src/modules/flexible-forms/form-schema.js:1248
-#: src/modules/flexible-forms/form-schema.js:1504
-#: src/modules/flexible-forms/form-schema.js:1805
-#: src/modules/flexible-forms/form-schema.js:2070
-#: src/modules/flexible-forms/form-schema.js:2309
+#: src/modules/flexible-forms/form-schema.js:172
+#: src/modules/flexible-forms/form-schema.js:1260
+#: src/modules/flexible-forms/form-schema.js:1516
+#: src/modules/flexible-forms/form-schema.js:1817
+#: src/modules/flexible-forms/form-schema.js:2082
+#: src/modules/flexible-forms/form-schema.js:2321
 #: src/modules/map/map-chart.jsx:714
 msgid "National"
 msgstr "National"
@@ -2437,7 +2440,7 @@ msgstr "National Action Plan"
 msgid "National action plans"
 msgstr "National action plans"
 
-#: src/modules/flexible-forms/form-schema.js:867
+#: src/modules/flexible-forms/form-schema.js:871
 msgid "National or organisational values"
 msgstr "National or organisational values"
 
@@ -2457,7 +2460,7 @@ msgstr "National Source Inventory Report"
 msgid "National Steering Committee & Project Team"
 msgstr "National Steering Committee & Project Team"
 
-#: src/modules/flexible-forms/form-schema.js:697
+#: src/modules/flexible-forms/form-schema.js:701
 msgid "National Sustainable Development Goals (SDGs)"
 msgstr "National Sustainable Development Goals (SDGs)"
 
@@ -2473,15 +2476,15 @@ msgstr "Network with other stakeholders"
 msgid "Network with others"
 msgstr "Network with others"
 
-#: src/modules/flexible-forms/form-schema.js:530
+#: src/modules/flexible-forms/form-schema.js:534
 msgid "New infrastructure"
 msgstr "New infrastructure"
 
-#: src/modules/flexible-forms/form-schema.js:521
+#: src/modules/flexible-forms/form-schema.js:525
 msgid "New product design"
 msgstr "New product design"
 
-#: src/modules/flexible-forms/form-schema.js:397
+#: src/modules/flexible-forms/form-schema.js:401
 msgid "New standard(s) or guideline(s)"
 msgstr "New standard(s) or guideline(s)"
 
@@ -2489,9 +2492,9 @@ msgstr "New standard(s) or guideline(s)"
 msgid "New technical developments/innovation, e.g., research and development, new product design, new materials, processes etc., changes in practice, operations, environmental management and planning."
 msgstr "New technical developments/innovation, e.g., research and development, new product design, new materials, processes etc., changes in practice, operations, environmental management and planning."
 
-#: src/modules/flexible-forms/view.jsx:1583
-#: src/modules/flexible-forms/view.jsx:1609
-#: src/modules/flexible-forms/view.jsx:1639
+#: src/modules/flexible-forms/view.jsx:1591
+#: src/modules/flexible-forms/view.jsx:1617
+#: src/modules/flexible-forms/view.jsx:1647
 #: src/modules/onboarding/view.jsx:297
 #: src/modules/onboarding/view.jsx:359
 #: src/pages/workspace/[slug]/layout.js:363
@@ -2521,23 +2524,23 @@ msgstr "No event on"
 msgid "No legend"
 msgstr "No legend"
 
-#: src/modules/flexible-forms/form-schema.js:15
+#: src/modules/flexible-forms/form-schema.js:16
 msgid "No Poverty"
 msgstr "No Poverty"
 
-#: src/modules/flexible-forms/form-schema.js:651
+#: src/modules/flexible-forms/form-schema.js:655
 msgid "No, reporting is too time-consuming"
 msgstr "No, reporting is too time-consuming"
 
-#: src/modules/flexible-forms/form-schema.js:649
+#: src/modules/flexible-forms/form-schema.js:653
 msgid "No, reporting is voluntary"
 msgstr "No, reporting is voluntary"
 
-#: src/modules/flexible-forms/form-schema.js:648
+#: src/modules/flexible-forms/form-schema.js:652
 msgid "No, there is no reporting mechanism"
 msgstr "No, there is no reporting mechanism"
 
-#: src/modules/flexible-forms/form-schema.js:650
+#: src/modules/flexible-forms/form-schema.js:654
 msgid "No, there is not enough resources to support reporting"
 msgstr "No, there is not enough resources to support reporting"
 
@@ -2549,10 +2552,10 @@ msgstr "Non Member Entity"
 msgid "Norwegian Development Programme to Combat Marine Litter and Microplastics"
 msgstr "Norwegian Development Programme to Combat Marine Litter and Microplastics"
 
-#: src/modules/flexible-forms/form-schema.js:1000
-#: src/modules/flexible-forms/form-schema.js:1061
-#: src/modules/flexible-forms/form-schema.js:1101
-#: src/modules/flexible-forms/form-schema.js:1149
+#: src/modules/flexible-forms/form-schema.js:1004
+#: src/modules/flexible-forms/form-schema.js:1065
+#: src/modules/flexible-forms/form-schema.js:1113
+#: src/modules/flexible-forms/form-schema.js:1161
 msgid "Not applicable"
 msgstr "Not applicable"
 
@@ -2560,27 +2563,27 @@ msgstr "Not applicable"
 msgid "Not Assigned"
 msgstr "Not Assigned"
 
-#: src/modules/flexible-forms/form-schema.js:919
+#: src/modules/flexible-forms/form-schema.js:923
 msgid "Not enough infrastructure"
 msgstr "Not enough infrastructure"
 
-#: src/modules/flexible-forms/form-schema.js:907
+#: src/modules/flexible-forms/form-schema.js:911
 msgid "Not enough regulation/control mechanisms"
 msgstr "Not enough regulation/control mechanisms"
 
-#: src/modules/flexible-forms/form-schema.js:912
+#: src/modules/flexible-forms/form-schema.js:916
 msgid "Not enough reliable information"
 msgstr "Not enough reliable information"
 
-#: src/modules/flexible-forms/form-schema.js:914
+#: src/modules/flexible-forms/form-schema.js:918
 msgid "Not enough support from outside the member state/organisation"
 msgstr "Not enough support from outside the member state/organisation"
 
-#: src/modules/flexible-forms/form-schema.js:913
+#: src/modules/flexible-forms/form-schema.js:917
 msgid "Not enough support from within the member state/organisation"
 msgstr "Not enough support from within the member state/organisation"
 
-#: src/modules/flexible-forms/form-schema.js:1723
+#: src/modules/flexible-forms/form-schema.js:1735
 msgid "Not yet in force"
 msgstr "Not yet in force"
 
@@ -2601,7 +2604,7 @@ msgstr "Ocean Innovation Challenge"
 msgid "Offering"
 msgstr "Offering"
 
-#: src/modules/flexible-forms/form-schema.js:392
+#: src/modules/flexible-forms/form-schema.js:396
 msgid "Official agreements"
 msgstr "Official agreements"
 
@@ -2609,7 +2612,7 @@ msgstr "Official agreements"
 msgid "on"
 msgstr "on"
 
-#: src/modules/flexible-forms/view.jsx:1269
+#: src/modules/flexible-forms/view.jsx:1277
 msgid "Once submitted resources go through a review process which is being fine-tuned via consultations to assess content accuracy and quality. The current validation mechanism draft can be found under"
 msgstr "Once submitted resources go through a review process which is being fine-tuned via consultations to assess content accuracy and quality. The current validation mechanism draft can be found under"
 
@@ -2621,15 +2624,15 @@ msgstr "Once you have an account you can register your organisation and apply fo
 msgid "Once you have an account you can register your organisation and apply for GPML membership"
 msgstr "Once you have an account you can register your organisation and apply for GPML membership"
 
-#: src/modules/flexible-forms/form-schema.js:1147
+#: src/modules/flexible-forms/form-schema.js:1159
 msgid "Ongoing activity 1-3 years"
 msgstr "Ongoing activity 1-3 years"
 
-#: src/modules/flexible-forms/form-schema.js:1146
+#: src/modules/flexible-forms/form-schema.js:1158
 msgid "Ongoing activity less than one year"
 msgstr "Ongoing activity less than one year"
 
-#: src/modules/flexible-forms/form-schema.js:1148
+#: src/modules/flexible-forms/form-schema.js:1160
 msgid "Ongoing activity more than 3 years long"
 msgstr "Ongoing activity more than 3 years long"
 
@@ -2647,7 +2650,7 @@ msgstr "Oops, something went wrong"
 msgid "Open The Guide"
 msgstr "Open The Guide"
 
-#: src/modules/flexible-forms/view.jsx:1412
+#: src/modules/flexible-forms/view.jsx:1420
 msgid "Optional"
 msgstr "Optional"
 
@@ -2665,26 +2668,26 @@ msgstr "Organizations"
 msgid "Organizations or programmes providing financial support to entities tackling marine plastic litter. Such support includes grants, investment, and loans, among others."
 msgstr "Organizations or programmes providing financial support to entities tackling marine plastic litter. Such support includes grants, investment, and loans, among others."
 
-#: src/modules/flexible-forms/form-schema.js:1674
+#: src/modules/flexible-forms/form-schema.js:1686
 msgid "Original Title"
 msgstr "Original Title"
 
-#: src/modules/flexible-forms/form-schema.js:402
-#: src/modules/flexible-forms/form-schema.js:469
-#: src/modules/flexible-forms/form-schema.js:542
-#: src/modules/flexible-forms/form-schema.js:591
-#: src/modules/flexible-forms/form-schema.js:652
-#: src/modules/flexible-forms/form-schema.js:699
-#: src/modules/flexible-forms/form-schema.js:958
-#: src/modules/flexible-forms/form-schema.js:1001
-#: src/modules/flexible-forms/form-schema.js:1062
-#: src/modules/flexible-forms/form-schema.js:1102
-#: src/modules/flexible-forms/form-schema.js:1150
-#: src/modules/flexible-forms/form-schema.js:1172
+#: src/modules/flexible-forms/form-schema.js:406
+#: src/modules/flexible-forms/form-schema.js:473
+#: src/modules/flexible-forms/form-schema.js:546
+#: src/modules/flexible-forms/form-schema.js:595
+#: src/modules/flexible-forms/form-schema.js:656
+#: src/modules/flexible-forms/form-schema.js:703
+#: src/modules/flexible-forms/form-schema.js:962
+#: src/modules/flexible-forms/form-schema.js:1005
+#: src/modules/flexible-forms/form-schema.js:1066
+#: src/modules/flexible-forms/form-schema.js:1114
+#: src/modules/flexible-forms/form-schema.js:1162
+#: src/modules/flexible-forms/form-schema.js:1184
 msgid "Other"
 msgstr "Other"
 
-#: src/modules/flexible-forms/form-schema.js:462
+#: src/modules/flexible-forms/form-schema.js:466
 msgid "Other training programmes"
 msgstr "Other training programmes"
 
@@ -2705,19 +2708,19 @@ msgstr "Our Network"
 msgid "Our partners"
 msgstr "Our partners"
 
-#: src/modules/flexible-forms/form-schema.js:810
+#: src/modules/flexible-forms/form-schema.js:814
 msgid "Outcomes are being assessed at regular intervals"
 msgstr "Outcomes are being assessed at regular intervals"
 
-#: src/modules/flexible-forms/form-schema.js:809
+#: src/modules/flexible-forms/form-schema.js:813
 msgid "Outcomes will be assessed once, when the initiative is completed"
 msgstr "Outcomes will be assessed once, when the initiative is completed"
 
-#: src/modules/flexible-forms/form-schema.js:811
+#: src/modules/flexible-forms/form-schema.js:815
 msgid "Outcomes will be compared to a baseline measurement"
 msgstr "Outcomes will be compared to a baseline measurement"
 
-#: src/modules/flexible-forms/form-schema.js:812
+#: src/modules/flexible-forms/form-schema.js:816
 msgid "Outcomes will be compared to other sites or initiatives"
 msgstr "Outcomes will be compared to other sites or initiatives"
 
@@ -2733,11 +2736,11 @@ msgstr "Owners"
 msgid "Ownerships changed"
 msgstr "Ownerships changed"
 
-#: src/modules/flexible-forms/form-schema.js:401
+#: src/modules/flexible-forms/form-schema.js:405
 msgid "Package of measures combining incentives and infrastructure (e.g. deposit reward schemes)"
 msgstr "Package of measures combining incentives and infrastructure (e.g. deposit reward schemes)"
 
-#: src/modules/flexible-forms/form-schema.js:1045
+#: src/modules/flexible-forms/form-schema.js:1049
 msgid "Packaging"
 msgstr "Packaging"
 
@@ -2753,7 +2756,7 @@ msgstr "Partners"
 msgid "Partnership"
 msgstr "Partnership"
 
-#: src/modules/flexible-forms/form-schema.js:79
+#: src/modules/flexible-forms/form-schema.js:80
 msgid "Partnerships for the Goals"
 msgstr "Partnerships for the Goals"
 
@@ -2761,15 +2764,15 @@ msgstr "Partnerships for the Goals"
 msgid "Password"
 msgstr "Password"
 
-#: src/modules/flexible-forms/form-schema.js:75
+#: src/modules/flexible-forms/form-schema.js:76
 msgid "Peace and Justice - Strong Institutions"
 msgstr "Peace and Justice - Strong Institutions"
 
-#: src/modules/flexible-forms/form-schema.js:868
+#: src/modules/flexible-forms/form-schema.js:872
 msgid "Peer pressure from similar actors"
 msgstr "Peer pressure from similar actors"
 
-#: src/modules/flexible-forms/form-schema.js:924
+#: src/modules/flexible-forms/form-schema.js:928
 msgid "People like plastics (convenience, hygiene etc.)"
 msgstr "People like plastics (convenience, hygiene etc.)"
 
@@ -2781,7 +2784,7 @@ msgstr "Personal details"
 msgid "Personal Details"
 msgstr "Personal Details"
 
-#: src/modules/flexible-forms/form-schema.js:1055
+#: src/modules/flexible-forms/form-schema.js:1059
 msgid "Personal Healthcare"
 msgstr "Personal Healthcare"
 
@@ -2793,11 +2796,11 @@ msgstr "Petrochemical Extraction"
 msgid "Photo"
 msgstr "Photo"
 
-#: src/modules/flexible-forms/view.jsx:1305
+#: src/modules/flexible-forms/view.jsx:1313
 msgid "Pick the main content type"
 msgstr "Pick the main content type"
 
-#: src/modules/flexible-forms/view.jsx:1409
+#: src/modules/flexible-forms/view.jsx:1417
 msgid "Pick the sub-content type"
 msgstr "Pick the sub-content type"
 
@@ -2844,23 +2847,23 @@ msgstr "Please be aware this action cannot be undone."
 msgid "Please input your tag!"
 msgstr "Please input your tag!"
 
-#: src/modules/flexible-forms/form-schema.js:1176
+#: src/modules/flexible-forms/form-schema.js:1188
 msgid "Please provide the details"
 msgstr "Please provide the details"
 
-#: src/modules/flexible-forms/form-schema.js:621
+#: src/modules/flexible-forms/form-schema.js:625
 msgid "Please provide the URL's for any links to the monitoring data and information."
 msgstr "Please provide the URL's for any links to the monitoring data and information."
 
-#: src/modules/flexible-forms/form-schema.js:825
+#: src/modules/flexible-forms/form-schema.js:829
 msgid "Please, describe if any co-benefits and/or side-effects of the initiative are captured in the evaluation."
 msgstr "Please, describe if any co-benefits and/or side-effects of the initiative are captured in the evaluation."
 
-#: src/modules/flexible-forms/form-schema.js:830
+#: src/modules/flexible-forms/form-schema.js:834
 msgid "Please, indicate which DRIVERS apply to this initiative? (Please tick ALL that apply)."
 msgstr "Please, indicate which DRIVERS apply to this initiative? (Please tick ALL that apply)."
 
-#: src/modules/flexible-forms/form-schema.js:881
+#: src/modules/flexible-forms/form-schema.js:885
 msgid "Please,indicate which BARRIERS apply to this initiative? (Please tick ALL that apply)."
 msgstr "Please,indicate which BARRIERS apply to this initiative? (Please tick ALL that apply)."
 
@@ -2877,7 +2880,7 @@ msgstr "Policies are imported from Law division system"
 msgid "Policy"
 msgstr "Policy"
 
-#: src/modules/flexible-forms/form-schema.js:393
+#: src/modules/flexible-forms/form-schema.js:397
 msgid "Policy change or development"
 msgstr "Policy change or development"
 
@@ -2897,7 +2900,7 @@ msgstr "POWERED BY:"
 msgid "Preparing a Waste Management Plan - A Methodological Guidance Note"
 msgstr "Preparing a Waste Management Plan - A Methodological Guidance Note"
 
-#: src/modules/flexible-forms/form-schema.js:465
+#: src/modules/flexible-forms/form-schema.js:469
 msgid "Primary school"
 msgstr "Primary school"
 
@@ -2905,12 +2908,12 @@ msgstr "Primary school"
 msgid "private"
 msgstr "private"
 
-#: src/modules/flexible-forms/form-schema.js:1099
+#: src/modules/flexible-forms/form-schema.js:1111
 #: src/pages/landing/index.jsx:102
 msgid "Private Sector"
 msgstr "Private Sector"
 
-#: src/modules/flexible-forms/form-schema.js:916
+#: src/modules/flexible-forms/form-schema.js:920
 msgid "Problems with alternative materials and supplies"
 msgstr "Problems with alternative materials and supplies"
 
@@ -2918,11 +2921,11 @@ msgstr "Problems with alternative materials and supplies"
 msgid "Process of checking, verifying, and attaining general information about the abilityl to comply with the standard."
 msgstr "Process of checking, verifying, and attaining general information about the abilityl to comply with the standard."
 
-#: src/modules/flexible-forms/form-schema.js:953
+#: src/modules/flexible-forms/form-schema.js:957
 msgid "Production / manufacture"
 msgstr "Production / manufacture"
 
-#: src/modules/flexible-forms/form-schema.js:461
+#: src/modules/flexible-forms/form-schema.js:465
 msgid "Professional skills training"
 msgstr "Professional skills training"
 
@@ -2950,11 +2953,11 @@ msgstr "Project development"
 msgid "Project to tackle marine litter and plastic pollution in Southeast Asia (SEA)"
 msgstr "Project to tackle marine litter and plastic pollution in Southeast Asia (SEA)"
 
-#: src/modules/flexible-forms/form-schema.js:857
+#: src/modules/flexible-forms/form-schema.js:861
 msgid "Protecting economy / livelihoods or shareholder value"
 msgstr "Protecting economy / livelihoods or shareholder value"
 
-#: src/modules/flexible-forms/form-schema.js:872
+#: src/modules/flexible-forms/form-schema.js:876
 msgid "Protecting future generations"
 msgstr "Protecting future generations"
 
@@ -2966,17 +2969,17 @@ msgstr "Prototype"
 msgid "public"
 msgstr "public"
 
-#: src/modules/flexible-forms/form-schema.js:1098
+#: src/modules/flexible-forms/form-schema.js:1110
 msgid "Public Financing"
 msgstr "Public Financing"
 
-#: src/modules/flexible-forms/form-schema.js:1420
-#: src/modules/flexible-forms/form-schema.js:2240
-#: src/modules/flexible-forms/form-schema.js:2479
+#: src/modules/flexible-forms/form-schema.js:1432
+#: src/modules/flexible-forms/form-schema.js:2252
+#: src/modules/flexible-forms/form-schema.js:2491
 msgid "Publication Year"
 msgstr "Publication Year"
 
-#: src/modules/flexible-forms/form-schema.js:27
+#: src/modules/flexible-forms/form-schema.js:28
 msgid "Quality Education"
 msgstr "Quality Education"
 
@@ -2984,7 +2987,7 @@ msgstr "Quality Education"
 msgid "Raising Awareness Amongst Students"
 msgstr "Raising Awareness Amongst Students"
 
-#: src/modules/flexible-forms/form-schema.js:951
+#: src/modules/flexible-forms/form-schema.js:955
 msgid "Raw materials"
 msgstr "Raw materials"
 
@@ -3000,7 +3003,7 @@ msgstr "Read More"
 msgid "RECOMMENDED"
 msgstr "RECOMMENDED"
 
-#: src/modules/flexible-forms/form-schema.js:1701
+#: src/modules/flexible-forms/form-schema.js:1713
 msgid "Record Number"
 msgstr "Record Number"
 
@@ -3020,11 +3023,11 @@ msgstr "Recycling"
 msgid "Reduce your country’s footprint. Create and advance your plastic startegy."
 msgstr "Reduce your country’s footprint. Create and advance your plastic startegy."
 
-#: src/modules/flexible-forms/form-schema.js:51
+#: src/modules/flexible-forms/form-schema.js:52
 msgid "Reduced Inequalities"
 msgstr "Reduced Inequalities"
 
-#: src/modules/flexible-forms/form-schema.js:534
+#: src/modules/flexible-forms/form-schema.js:538
 msgid "Reducing the environmental impact"
 msgstr "Reducing the environmental impact"
 
@@ -3032,11 +3035,11 @@ msgstr "Reducing the environmental impact"
 msgid "Reef Futures Symposium"
 msgstr "Reef Futures Symposium"
 
-#: src/modules/flexible-forms/form-schema.js:696
+#: src/modules/flexible-forms/form-schema.js:700
 msgid "Regional Sustainable Development Goals (SDGs)"
 msgstr "Regional Sustainable Development Goals (SDGs)"
 
-#: src/modules/flexible-forms/form-schema.js:1696
+#: src/modules/flexible-forms/form-schema.js:1708
 msgid "Regulation"
 msgstr "Regulation"
 
@@ -3048,12 +3051,12 @@ msgstr "Related content"
 msgid "Related Content, Documents & Info"
 msgstr "Related Content, Documents & Info"
 
-#: src/modules/flexible-forms/form-schema.js:305
-#: src/modules/flexible-forms/form-schema.js:1397
-#: src/modules/flexible-forms/form-schema.js:1652
-#: src/modules/flexible-forms/form-schema.js:1953
-#: src/modules/flexible-forms/form-schema.js:2218
-#: src/modules/flexible-forms/form-schema.js:2457
+#: src/modules/flexible-forms/form-schema.js:309
+#: src/modules/flexible-forms/form-schema.js:1409
+#: src/modules/flexible-forms/form-schema.js:1664
+#: src/modules/flexible-forms/form-schema.js:1965
+#: src/modules/flexible-forms/form-schema.js:2230
+#: src/modules/flexible-forms/form-schema.js:2469
 msgid "Related Resource"
 msgstr "Related Resource"
 
@@ -3064,7 +3067,7 @@ msgstr "Related Resource"
 msgid "Remove from Library"
 msgstr "Remove from Library"
 
-#: src/modules/flexible-forms/form-schema.js:1723
+#: src/modules/flexible-forms/form-schema.js:1735
 msgid "Repealed"
 msgstr "Repealed"
 
@@ -3076,7 +3079,7 @@ msgstr "Reply to"
 msgid "Report & Assessment"
 msgstr "Report & Assessment"
 
-#: src/modules/flexible-forms/form-schema.js:635
+#: src/modules/flexible-forms/form-schema.js:639
 msgid "Reporting and Measuring Progress"
 msgstr "Reporting and Measuring Progress"
 
@@ -3085,7 +3088,7 @@ msgstr "Reporting and Measuring Progress"
 msgid "Representative group"
 msgstr "Representative group"
 
-#: src/modules/flexible-forms/form-schema.js:863
+#: src/modules/flexible-forms/form-schema.js:867
 msgid "Reputation / image of the member state or organisation"
 msgstr "Reputation / image of the member state or organisation"
 
@@ -3094,7 +3097,7 @@ msgstr "Reputation / image of the member state or organisation"
 msgid "Research"
 msgstr "Research"
 
-#: src/modules/flexible-forms/form-schema.js:529
+#: src/modules/flexible-forms/form-schema.js:533
 msgid "Research and Development"
 msgstr "Research and Development"
 
@@ -3126,23 +3129,23 @@ msgstr "Resources and mechanisms collected through research based on publicly av
 msgid "Resources on marine litter and plastic pollution"
 msgstr "Resources on marine litter and plastic pollution"
 
-#: src/modules/flexible-forms/form-schema.js:59
+#: src/modules/flexible-forms/form-schema.js:60
 msgid "Responsible Consumption and Production"
 msgstr "Responsible Consumption and Production"
 
-#: src/modules/flexible-forms/form-schema.js:1057
+#: src/modules/flexible-forms/form-schema.js:1061
 msgid "Retail"
 msgstr "Retail"
 
-#: src/modules/flexible-forms/form-schema.js:589
+#: src/modules/flexible-forms/form-schema.js:593
 msgid "Review and synthesis: Economic"
 msgstr "Review and synthesis: Economic"
 
-#: src/modules/flexible-forms/form-schema.js:588
+#: src/modules/flexible-forms/form-schema.js:592
 msgid "Review and synthesis: Environmental"
 msgstr "Review and synthesis: Environmental"
 
-#: src/modules/flexible-forms/form-schema.js:590
+#: src/modules/flexible-forms/form-schema.js:594
 msgid "Review and synthesis: Materials/Other"
 msgstr "Review and synthesis: Materials/Other"
 
@@ -3223,11 +3226,11 @@ msgstr "Search resources"
 msgid "Search the resource database..."
 msgstr "Search the resource database..."
 
-#: src/modules/flexible-forms/form-schema.js:466
+#: src/modules/flexible-forms/form-schema.js:470
 msgid "Secondary school"
 msgstr "Secondary school"
 
-#: src/modules/flexible-forms/form-schema.js:1015
+#: src/modules/flexible-forms/form-schema.js:1019
 msgid "Sector. Does your initiative target a specific sector? (Please tick ALL that apply)."
 msgstr "Sector. Does your initiative target a specific sector? (Please tick ALL that apply)."
 
@@ -3249,29 +3252,29 @@ msgstr "Seeking"
 msgid "Seeking:"
 msgstr "Seeking:"
 
-#: src/modules/flexible-forms/form-schema.js:178
-#: src/modules/flexible-forms/form-schema.js:1270
-#: src/modules/flexible-forms/form-schema.js:1525
-#: src/modules/flexible-forms/form-schema.js:1826
-#: src/modules/flexible-forms/form-schema.js:2091
-#: src/modules/flexible-forms/form-schema.js:2330
+#: src/modules/flexible-forms/form-schema.js:182
+#: src/modules/flexible-forms/form-schema.js:1282
+#: src/modules/flexible-forms/form-schema.js:1537
+#: src/modules/flexible-forms/form-schema.js:1838
+#: src/modules/flexible-forms/form-schema.js:2103
+#: src/modules/flexible-forms/form-schema.js:2342
 msgid "Select a country"
 msgstr "Select a country"
 
-#: src/modules/flexible-forms/view.jsx:1458
+#: src/modules/flexible-forms/view.jsx:1466
 msgid "Select a Main Content Type above to see sub-content type options"
 msgstr "Select a Main Content Type above to see sub-content type options"
 
-#: src/modules/flexible-forms/form-schema.js:1278
+#: src/modules/flexible-forms/form-schema.js:1290
 msgid "Select a State"
 msgstr "Select a State"
 
-#: src/modules/flexible-forms/form-schema.js:137
-#: src/modules/flexible-forms/form-schema.js:1242
-#: src/modules/flexible-forms/form-schema.js:1498
-#: src/modules/flexible-forms/form-schema.js:1799
-#: src/modules/flexible-forms/form-schema.js:2064
-#: src/modules/flexible-forms/form-schema.js:2303
+#: src/modules/flexible-forms/form-schema.js:141
+#: src/modules/flexible-forms/form-schema.js:1254
+#: src/modules/flexible-forms/form-schema.js:1510
+#: src/modules/flexible-forms/form-schema.js:1811
+#: src/modules/flexible-forms/form-schema.js:2076
+#: src/modules/flexible-forms/form-schema.js:2315
 msgid "Select Geo-Coverage Type"
 msgstr "Select Geo-Coverage Type"
 
@@ -3311,7 +3314,7 @@ msgstr "Short Bio"
 msgid "Show all tools"
 msgstr "Show all tools"
 
-#: src/modules/flexible-forms/view.jsx:1311
+#: src/modules/flexible-forms/view.jsx:1319
 msgid "SHOW EXAMPLES"
 msgstr "SHOW EXAMPLES"
 
@@ -3344,15 +3347,15 @@ msgstr "SIGN UP"
 msgid "Sign up to find out more"
 msgstr "Sign up to find out more"
 
-#: src/modules/flexible-forms/form-schema.js:1145
+#: src/modules/flexible-forms/form-schema.js:1157
 msgid "Single event"
 msgstr "Single event"
 
-#: src/modules/flexible-forms/form-schema.js:906
+#: src/modules/flexible-forms/form-schema.js:910
 msgid "So-called 'perverse incentives' (e.g.,subsidies and taxes) that encourage wasteful use of plastic"
 msgstr "So-called 'perverse incentives' (e.g.,subsidies and taxes) that encourage wasteful use of plastic"
 
-#: src/modules/flexible-forms/form-schema.js:814
+#: src/modules/flexible-forms/form-schema.js:818
 msgid "Social impacts will be evaluated"
 msgstr "Social impacts will be evaluated"
 
@@ -3367,7 +3370,7 @@ msgstr "Something went wrong"
 msgid "Sort by:"
 msgstr "Sort by:"
 
-#: src/modules/flexible-forms/form-schema.js:873
+#: src/modules/flexible-forms/form-schema.js:877
 msgid "Spiritual or religious values"
 msgstr "Spiritual or religious values"
 
@@ -3382,7 +3385,7 @@ msgstr "stakeholder consultation process"
 msgid "Stakeholder Consultation Process"
 msgstr "Stakeholder Consultation Process"
 
-#: src/modules/flexible-forms/form-schema.js:458
+#: src/modules/flexible-forms/form-schema.js:462
 msgid "Stakeholder engagement"
 msgstr "Stakeholder engagement"
 
@@ -3395,7 +3398,7 @@ msgstr "Stakeholder Map"
 msgid "Stakeholders connections"
 msgstr "Stakeholders connections"
 
-#: src/modules/flexible-forms/form-schema.js:538
+#: src/modules/flexible-forms/form-schema.js:542
 msgid "Standards"
 msgstr "Standards"
 
@@ -3414,15 +3417,15 @@ msgstr "Start typing..."
 msgid "Start your own initiative. Get inspired by others who are making progress to end plastic pollution."
 msgstr "Start your own initiative. Get inspired by others who are making progress to end plastic pollution."
 
-#: src/modules/flexible-forms/form-schema.js:186
-#: src/modules/flexible-forms/form-schema.js:1533
-#: src/modules/flexible-forms/form-schema.js:1834
-#: src/modules/flexible-forms/form-schema.js:2099
-#: src/modules/flexible-forms/form-schema.js:2338
+#: src/modules/flexible-forms/form-schema.js:190
+#: src/modules/flexible-forms/form-schema.js:1545
+#: src/modules/flexible-forms/form-schema.js:1846
+#: src/modules/flexible-forms/form-schema.js:2111
+#: src/modules/flexible-forms/form-schema.js:2350
 msgid "State"
 msgstr "State"
 
-#: src/modules/flexible-forms/form-schema.js:1722
+#: src/modules/flexible-forms/form-schema.js:1734
 #: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:190
 msgid "Status"
 msgstr "Status"
@@ -3468,21 +3471,20 @@ msgid "Sub-topics"
 msgstr "Sub-topics"
 
 #: src/modules/flexible-forms/entity-modal/add-entity-modal.jsx:324
-#: src/modules/flexible-forms/view.jsx:1166
+#: src/modules/flexible-forms/view.jsx:1174
 #: src/modules/onboarding/view.jsx:369
 msgid "Submit"
 msgstr "Submit"
 
-#: src/modules/flexible-forms/form-schema.js:144
-#: src/modules/flexible-forms/form-schema.js:1249
-#: src/modules/flexible-forms/form-schema.js:1505
-#: src/modules/flexible-forms/form-schema.js:1806
-#: src/modules/flexible-forms/form-schema.js:2071
-#: src/modules/flexible-forms/form-schema.js:2310
+#: src/modules/flexible-forms/form-schema.js:1261
+#: src/modules/flexible-forms/form-schema.js:1517
+#: src/modules/flexible-forms/form-schema.js:1818
+#: src/modules/flexible-forms/form-schema.js:2083
+#: src/modules/flexible-forms/form-schema.js:2322
 msgid "Subnational"
 msgstr "Subnational"
 
-#: src/modules/flexible-forms/form-schema.js:399
+#: src/modules/flexible-forms/form-schema.js:403
 msgid "Subsidy/financial incentives"
 msgstr "Subsidy/financial incentives"
 
@@ -3510,7 +3512,7 @@ msgstr "Support on GPML Digital Platform"
 msgid "Sustainable & innovative financing"
 msgstr "Sustainable & innovative financing"
 
-#: src/modules/flexible-forms/form-schema.js:55
+#: src/modules/flexible-forms/form-schema.js:56
 msgid "Sustainable Cities and Communities"
 msgstr "Sustainable Cities and Communities"
 
@@ -3522,7 +3524,7 @@ msgstr "Sustainable Development Bond on Sustainable Use of Oceans and Coastal Ar
 msgid "Sustainable development bonds, green bonds and blue bonds"
 msgstr "Sustainable development bonds, green bonds and blue bonds"
 
-#: src/modules/flexible-forms/form-schema.js:875
+#: src/modules/flexible-forms/form-schema.js:879
 msgid "Sustainable Development Goals"
 msgstr "Sustainable Development Goals"
 
@@ -3537,12 +3539,12 @@ msgstr "Switch to"
 #: src/modules/case-studies/CaseStudy.jsx:75
 #: src/modules/details-page/view.jsx:597
 #: src/modules/flexible-forms/common.js:365
-#: src/modules/flexible-forms/form-schema.js:205
-#: src/modules/flexible-forms/form-schema.js:1297
-#: src/modules/flexible-forms/form-schema.js:1552
-#: src/modules/flexible-forms/form-schema.js:1853
-#: src/modules/flexible-forms/form-schema.js:2118
-#: src/modules/flexible-forms/form-schema.js:2357
+#: src/modules/flexible-forms/form-schema.js:209
+#: src/modules/flexible-forms/form-schema.js:1309
+#: src/modules/flexible-forms/form-schema.js:1564
+#: src/modules/flexible-forms/form-schema.js:1865
+#: src/modules/flexible-forms/form-schema.js:2130
+#: src/modules/flexible-forms/form-schema.js:2369
 #: src/modules/knowledge-lib/filter-modal.jsx:263
 #: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:197
 msgid "Tags"
@@ -3564,7 +3566,7 @@ msgstr "Technical Resource"
 msgid "Technical Resources"
 msgstr "Technical Resources"
 
-#: src/modules/flexible-forms/form-schema.js:915
+#: src/modules/flexible-forms/form-schema.js:919
 msgid "Technological/technical resources"
 msgstr "Technological/technical resources"
 
@@ -3585,11 +3587,11 @@ msgstr "Technology and innovation"
 msgid "Technology and Processes"
 msgstr "Technology and Processes"
 
-#: src/modules/flexible-forms/form-schema.js:358
+#: src/modules/flexible-forms/form-schema.js:362
 msgid "TECHNOLOGY and PROCESSES (new technical developments/innovation, e.g., research and development, new product design, new materials, processes etc., changes in practice, operations, environmental management and planning)."
 msgstr "TECHNOLOGY and PROCESSES (new technical developments/innovation, e.g., research and development, new product design, new materials, processes etc., changes in practice, operations, environmental management and planning)."
 
-#: src/modules/flexible-forms/form-schema.js:483
+#: src/modules/flexible-forms/form-schema.js:487
 msgid "Technology and Processes. You have chosen technology and processes as the type of initiative. What did the initiative specifically involve? (Please tick ALL that apply):"
 msgstr "Technology and Processes. You have chosen technology and processes as the type of initiative. What did the initiative specifically involve? (Please tick ALL that apply):"
 
@@ -3601,7 +3603,7 @@ msgstr "Terminology and definitions"
 msgid "terms and services"
 msgstr "terms and services"
 
-#: src/modules/flexible-forms/form-schema.js:467
+#: src/modules/flexible-forms/form-schema.js:471
 msgid "Tertiary higher education"
 msgstr "Tertiary higher education"
 
@@ -3609,7 +3611,7 @@ msgstr "Tertiary higher education"
 msgid "Text"
 msgstr "Text"
 
-#: src/modules/flexible-forms/form-schema.js:1046
+#: src/modules/flexible-forms/form-schema.js:1050
 msgid "Textiles"
 msgstr "Textiles"
 
@@ -3715,15 +3717,15 @@ msgstr "The strategic use of development finance for the mobilisation of additio
 msgid "The systematic use of scientific, technical, economic, and commercial knowledge to meet specific business objectives or requirements."
 msgstr "The systematic use of scientific, technical, economic, and commercial knowledge to meet specific business objectives or requirements."
 
-#: src/modules/flexible-forms/form-schema.js:532
+#: src/modules/flexible-forms/form-schema.js:536
 msgid "The use of bio-based plastic"
 msgstr "The use of bio-based plastic"
 
-#: src/modules/flexible-forms/form-schema.js:533
+#: src/modules/flexible-forms/form-schema.js:537
 msgid "The use of biodegradable plastic"
 msgstr "The use of biodegradable plastic"
 
-#: src/modules/flexible-forms/form-schema.js:531
+#: src/modules/flexible-forms/form-schema.js:535
 msgid "The use of compostable plastic"
 msgstr "The use of compostable plastic"
 
@@ -3738,15 +3740,15 @@ msgstr "There is no data to display"
 msgid "These include a wide range of actions from legislation, behaviour change initiatives, education, training, events, new technologies, monitoring and analysis initiatives and science Initiatives. Existing actions and initiatives have been collected via an online survey for voluntary inputs and narrative submissions. Initiatives are linked to a Dashboard."
 msgstr "These include a wide range of actions from legislation, behaviour change initiatives, education, training, events, new technologies, monitoring and analysis initiatives and science Initiatives. Existing actions and initiatives have been collected via an online survey for voluntary inputs and narrative submissions. Initiatives are linked to a Dashboard."
 
-#: src/modules/flexible-forms/form-schema.js:1317
-#: src/modules/flexible-forms/form-schema.js:1572
-#: src/modules/flexible-forms/form-schema.js:1873
-#: src/modules/flexible-forms/form-schema.js:2138
-#: src/modules/flexible-forms/form-schema.js:2377
+#: src/modules/flexible-forms/form-schema.js:1329
+#: src/modules/flexible-forms/form-schema.js:1584
+#: src/modules/flexible-forms/form-schema.js:1885
+#: src/modules/flexible-forms/form-schema.js:2150
+#: src/modules/flexible-forms/form-schema.js:2389
 msgid "Thumbnail"
 msgstr "Thumbnail"
 
-#: src/modules/flexible-forms/form-schema.js:225
+#: src/modules/flexible-forms/form-schema.js:229
 msgid "Thumbnail (300x400)"
 msgstr "Thumbnail (300x400)"
 
@@ -3754,12 +3756,12 @@ msgstr "Thumbnail (300x400)"
 msgid "Timeline & Roadmap"
 msgstr "Timeline & Roadmap"
 
-#: src/modules/flexible-forms/form-schema.js:107
-#: src/modules/flexible-forms/form-schema.js:1213
-#: src/modules/flexible-forms/form-schema.js:1469
-#: src/modules/flexible-forms/form-schema.js:1768
-#: src/modules/flexible-forms/form-schema.js:2033
-#: src/modules/flexible-forms/form-schema.js:2272
+#: src/modules/flexible-forms/form-schema.js:111
+#: src/modules/flexible-forms/form-schema.js:1225
+#: src/modules/flexible-forms/form-schema.js:1481
+#: src/modules/flexible-forms/form-schema.js:1780
+#: src/modules/flexible-forms/form-schema.js:2045
+#: src/modules/flexible-forms/form-schema.js:2284
 #: src/modules/signup-old/signup-form.jsx:26
 #: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:176
 msgid "Title"
@@ -3791,7 +3793,7 @@ msgid "Tools & Toolkits"
 msgstr "Tools & Toolkits"
 
 #: src/layouts/new-layout.js:103
-#: src/modules/flexible-forms/form-schema.js:1730
+#: src/modules/flexible-forms/form-schema.js:1742
 #: src/store.js:28
 msgid "Topics"
 msgstr "Topics"
@@ -3822,7 +3824,7 @@ msgstr "Total resources per transnational"
 msgid "Total stakeholders"
 msgstr "Total stakeholders"
 
-#: src/modules/flexible-forms/form-schema.js:1076
+#: src/modules/flexible-forms/form-schema.js:1080
 msgid "Total Stakeholders Engaged"
 msgstr "Total Stakeholders Engaged"
 
@@ -3834,11 +3836,11 @@ msgstr "Total stakeholders per country"
 msgid "Total stakeholders per transnational"
 msgstr "Total stakeholders per transnational"
 
-#: src/modules/flexible-forms/form-schema.js:1058
+#: src/modules/flexible-forms/form-schema.js:1062
 msgid "Tourism"
 msgstr "Tourism"
 
-#: src/modules/flexible-forms/form-schema.js:1732
+#: src/modules/flexible-forms/form-schema.js:1744
 msgid "Trade and Investment"
 msgstr "Trade and Investment"
 
@@ -3846,12 +3848,11 @@ msgstr "Trade and Investment"
 msgid "Translation"
 msgstr "Translation"
 
-#: src/modules/flexible-forms/form-schema.js:142
-#: src/modules/flexible-forms/form-schema.js:1247
-#: src/modules/flexible-forms/form-schema.js:1503
-#: src/modules/flexible-forms/form-schema.js:1804
-#: src/modules/flexible-forms/form-schema.js:2069
-#: src/modules/flexible-forms/form-schema.js:2308
+#: src/modules/flexible-forms/form-schema.js:1259
+#: src/modules/flexible-forms/form-schema.js:1515
+#: src/modules/flexible-forms/form-schema.js:1816
+#: src/modules/flexible-forms/form-schema.js:2081
+#: src/modules/flexible-forms/form-schema.js:2320
 #: src/modules/map/map-chart.jsx:717
 msgid "Transnational"
 msgstr "Transnational"
@@ -3860,11 +3861,11 @@ msgstr "Transnational"
 msgid "Transnational Action Plan"
 msgstr "Transnational Action Plan"
 
-#: src/modules/flexible-forms/form-schema.js:869
+#: src/modules/flexible-forms/form-schema.js:873
 msgid "Transnational or global agreements and momentum towards change (e.g.,UN resolutions)"
 msgstr "Transnational or global agreements and momentum towards change (e.g.,UN resolutions)"
 
-#: src/modules/flexible-forms/form-schema.js:1047
+#: src/modules/flexible-forms/form-schema.js:1051
 msgid "Transportation"
 msgstr "Transportation"
 
@@ -3872,7 +3873,7 @@ msgstr "Transportation"
 msgid "Trusted data and information badge system and validation process."
 msgstr "Trusted data and information badge system and validation process."
 
-#: src/modules/flexible-forms/form-schema.js:1169
+#: src/modules/flexible-forms/form-schema.js:1181
 #: src/modules/onboarding/form-four.jsx:78
 #: src/modules/signup-old/signup-form.jsx:44
 #: src/modules/stakeholder-overview/card.jsx:180
@@ -3893,7 +3894,7 @@ msgstr "Type"
 msgid "Type in the entity name"
 msgstr "Type in the entity name"
 
-#: src/modules/flexible-forms/form-schema.js:1692
+#: src/modules/flexible-forms/form-schema.js:1704
 msgid "Type Of Law"
 msgstr "Type Of Law"
 
@@ -3938,12 +3939,12 @@ msgstr "Update"
 msgid "Upload"
 msgstr "Upload"
 
-#: src/modules/flexible-forms/form-schema.js:115
-#: src/modules/flexible-forms/form-schema.js:1221
-#: src/modules/flexible-forms/form-schema.js:1477
-#: src/modules/flexible-forms/form-schema.js:1776
-#: src/modules/flexible-forms/form-schema.js:2041
-#: src/modules/flexible-forms/form-schema.js:2280
+#: src/modules/flexible-forms/form-schema.js:119
+#: src/modules/flexible-forms/form-schema.js:1233
+#: src/modules/flexible-forms/form-schema.js:1489
+#: src/modules/flexible-forms/form-schema.js:1788
+#: src/modules/flexible-forms/form-schema.js:2053
+#: src/modules/flexible-forms/form-schema.js:2292
 msgid "URL"
 msgstr "URL"
 
@@ -3951,7 +3952,7 @@ msgstr "URL"
 msgid "URL Address (e.g. example.com)"
 msgstr "URL Address (e.g. example.com)"
 
-#: src/modules/flexible-forms/form-schema.js:954
+#: src/modules/flexible-forms/form-schema.js:958
 msgid "Use / consumption"
 msgstr "Use / consumption"
 
@@ -3959,12 +3960,12 @@ msgstr "Use / consumption"
 msgid "User already added as a member"
 msgstr "User already added as a member"
 
-#: src/modules/flexible-forms/form-schema.js:274
-#: src/modules/flexible-forms/form-schema.js:1366
-#: src/modules/flexible-forms/form-schema.js:1621
-#: src/modules/flexible-forms/form-schema.js:1922
-#: src/modules/flexible-forms/form-schema.js:2187
-#: src/modules/flexible-forms/form-schema.js:2426
+#: src/modules/flexible-forms/form-schema.js:278
+#: src/modules/flexible-forms/form-schema.js:1378
+#: src/modules/flexible-forms/form-schema.js:1633
+#: src/modules/flexible-forms/form-schema.js:1934
+#: src/modules/flexible-forms/form-schema.js:2199
+#: src/modules/flexible-forms/form-schema.js:2438
 #: src/modules/profile/admin.jsx:216
 msgid "User role"
 msgstr "User role"
@@ -3973,13 +3974,13 @@ msgstr "User role"
 msgid "User role changed"
 msgstr "User role changed"
 
-#: src/modules/flexible-forms/form-schema.js:1431
-#: src/modules/flexible-forms/form-schema.js:1995
+#: src/modules/flexible-forms/form-schema.js:1443
+#: src/modules/flexible-forms/form-schema.js:2007
 msgid "Valid From"
 msgstr "Valid From"
 
-#: src/modules/flexible-forms/form-schema.js:1436
-#: src/modules/flexible-forms/form-schema.js:2000
+#: src/modules/flexible-forms/form-schema.js:1448
+#: src/modules/flexible-forms/form-schema.js:2012
 msgid "Valid To"
 msgstr "Valid To"
 
@@ -3995,15 +3996,15 @@ msgstr "Validated"
 msgid "Validation Mechanism"
 msgstr "Validation Mechanism"
 
-#: src/modules/flexible-forms/form-schema.js:1976
+#: src/modules/flexible-forms/form-schema.js:1988
 msgid "Value Amount"
 msgstr "Value Amount"
 
-#: src/modules/flexible-forms/form-schema.js:1980
+#: src/modules/flexible-forms/form-schema.js:1992
 msgid "Value Currency"
 msgstr "Value Currency"
 
-#: src/modules/flexible-forms/form-schema.js:1984
+#: src/modules/flexible-forms/form-schema.js:1996
 msgid "Value Remark"
 msgstr "Value Remark"
 
@@ -4058,11 +4059,11 @@ msgstr "Visit the Help Centre"
 msgid "Visit the website"
 msgstr "Visit the website"
 
-#: src/modules/flexible-forms/form-schema.js:396
+#: src/modules/flexible-forms/form-schema.js:400
 msgid "Voluntary commitments"
 msgstr "Voluntary commitments"
 
-#: src/modules/flexible-forms/form-schema.js:1097
+#: src/modules/flexible-forms/form-schema.js:1109
 msgid "Voluntary donations"
 msgstr "Voluntary donations"
 
@@ -4070,7 +4071,7 @@ msgstr "Voluntary donations"
 msgid "Waste Free Oceans"
 msgstr "Waste Free Oceans"
 
-#: src/modules/flexible-forms/form-schema.js:539
+#: src/modules/flexible-forms/form-schema.js:543
 #: src/store.js:220
 #: src/store.js:236
 msgid "Waste management"
@@ -4080,7 +4081,7 @@ msgstr "Waste management"
 msgid "Wastewater"
 msgstr "Wastewater"
 
-#: src/modules/flexible-forms/form-schema.js:1059
+#: src/modules/flexible-forms/form-schema.js:1063
 msgid "Wastewater/Sewage management"
 msgstr "Wastewater/Sewage management"
 
@@ -4088,7 +4089,7 @@ msgstr "Wastewater/Sewage management"
 msgid "Watch this video to get started"
 msgstr "Watch this video to get started"
 
-#: src/modules/flexible-forms/view.jsx:1243
+#: src/modules/flexible-forms/view.jsx:1251
 msgid "We are excited to hear from the members of our community. The GPML Digital Platform is crowdsourced and allows everyone to submit new content via this form."
 msgstr "We are excited to hear from the members of our community. The GPML Digital Platform is crowdsourced and allows everyone to submit new content via this form."
 
@@ -4104,7 +4105,7 @@ msgstr "Web services and APIs"
 msgid "Webinars & Seminars"
 msgstr "Webinars & Seminars"
 
-#: src/modules/flexible-forms/view.jsx:1240
+#: src/modules/flexible-forms/view.jsx:1248
 msgid "Welcome to the GPML Digital Platform!"
 msgstr "Welcome to the GPML Digital Platform!"
 
@@ -4124,7 +4125,7 @@ msgstr "What expertises are they offering?"
 msgid "What expertises are they seeking?"
 msgstr "What expertises are they seeking?"
 
-#: src/modules/flexible-forms/form-schema.js:1086
+#: src/modules/flexible-forms/form-schema.js:1090
 msgid "What funding sources did you use?"
 msgstr "What funding sources did you use?"
 
@@ -4136,7 +4137,7 @@ msgstr "What is the connection between this platform and GPML?"
 msgid "WHAT IS THE FOCUS OF GPML?"
 msgstr "WHAT IS THE FOCUS OF GPML?"
 
-#: src/modules/flexible-forms/form-schema.js:327
+#: src/modules/flexible-forms/form-schema.js:331
 msgid "What is the MAIN focus of the initiative? (Please tick ALL that apply)."
 msgstr "What is the MAIN focus of the initiative? (Please tick ALL that apply)."
 
@@ -4148,21 +4149,21 @@ msgstr "What to do next?"
 msgid "What we do?"
 msgstr "What we do?"
 
-#: src/modules/flexible-forms/form-schema.js:785
+#: src/modules/flexible-forms/form-schema.js:789
 msgid "When do you expect the impact of the initiative to be evident?"
 msgstr "When do you expect the impact of the initiative to be evident?"
 
-#: src/modules/flexible-forms/form-schema.js:1163
+#: src/modules/flexible-forms/form-schema.js:1175
 msgid "Where can users best contact you to learn more?"
 msgstr "Where can users best contact you to learn more?"
 
-#: src/modules/flexible-forms/form-schema.js:744
+#: src/modules/flexible-forms/form-schema.js:748
 msgid "Which Multilateral Environmental Agreements (MEAs) does your initiative apply to? (Please tick ALL that apply):"
 msgstr "Which Multilateral Environmental Agreements (MEAs) does your initiative apply to? (Please tick ALL that apply):"
 
-#: src/modules/flexible-forms/form-schema.js:705
-#: src/modules/flexible-forms/form-schema.js:718
-#: src/modules/flexible-forms/form-schema.js:731
+#: src/modules/flexible-forms/form-schema.js:709
+#: src/modules/flexible-forms/form-schema.js:722
+#: src/modules/flexible-forms/form-schema.js:735
 msgid "Which Sustainable Development Goals (SDGs) does your initiative apply to? (Please tick ALL that apply):"
 msgstr "Which Sustainable Development Goals (SDGs) does your initiative apply to? (Please tick ALL that apply):"
 
@@ -4186,15 +4187,15 @@ msgstr "Working Document"
 msgid "Working with people"
 msgstr "Working with people"
 
-#: src/modules/flexible-forms/form-schema.js:357
+#: src/modules/flexible-forms/form-schema.js:361
 msgid "WORKING WITH PEOPLE (encouraging or enabling others, e.g., education, training, communication, awareness raising, behaviour change programmes)."
 msgstr "WORKING WITH PEOPLE (encouraging or enabling others, e.g., education, training, communication, awareness raising, behaviour change programmes)."
 
-#: src/modules/flexible-forms/form-schema.js:416
+#: src/modules/flexible-forms/form-schema.js:420
 msgid "Working with People. You have chosen working with people as the type of initiative. What did the initiative specifically involve? (Please tick ALL that apply):"
 msgstr "Working with People. You have chosen working with people as the type of initiative. What did the initiative specifically involve? (Please tick ALL that apply):"
 
-#: src/modules/flexible-forms/form-schema.js:453
+#: src/modules/flexible-forms/form-schema.js:457
 #: src/store.js:630
 msgid "Workshops"
 msgstr "Workshops"
@@ -4222,15 +4223,15 @@ msgstr "Year"
 msgid "Yes"
 msgstr "Yes"
 
-#: src/modules/flexible-forms/form-schema.js:647
+#: src/modules/flexible-forms/form-schema.js:651
 msgid "Yes, it is a requirement"
 msgstr "Yes, it is a requirement"
 
-#: src/modules/flexible-forms/form-schema.js:646
+#: src/modules/flexible-forms/form-schema.js:650
 msgid "Yes, reporting is voluntary"
 msgstr "Yes, reporting is voluntary"
 
-#: src/modules/flexible-forms/view.jsx:1280
+#: src/modules/flexible-forms/view.jsx:1288
 msgid "You can access existing content via the"
 msgstr "You can access existing content via the"
 
@@ -4250,6 +4251,6 @@ msgstr "Your account is pending reviewal. You can still explore the platform."
 msgid "YYYY"
 msgstr "YYYY"
 
-#: src/modules/flexible-forms/form-schema.js:19
+#: src/modules/flexible-forms/form-schema.js:20
 msgid "Zero Hunger"
 msgstr "Zero Hunger"
