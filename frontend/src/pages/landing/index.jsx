@@ -40,7 +40,12 @@ import { useLingui } from '@lingui/react'
 import { loadCatalog } from '../../translations/utils'
 import { UIStore } from '../../store'
 import { useRouter } from 'next/router'
-import { stripHtml, transformStrapiResponse, useQuery } from '../../utils/misc'
+import {
+  getStrapiUrl,
+  stripHtml,
+  transformStrapiResponse,
+  useQuery,
+} from '../../utils/misc'
 import LocationDropdown from '../../components/location-dropdown/location-dropdown'
 import CountryTransnationalFilter from '../../components/select/country-transnational-filter'
 import api from '../../utils/api'
@@ -730,13 +735,11 @@ const ActNowCard = ({ item }) => (
 )
 
 const LatestNews = () => {
-  const router = useRouter()
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
+  const strapiUrl = getStrapiUrl()
   useEffect(() => {
-    fetch(
-      `https://unep-gpml.akvotest.org/strapi/api/posts?locale=en&populate=cover`
-    )
+    fetch(`${strapiUrl}/api/posts?locale=en&populate=cover`)
       .then((d) => d.json())
       .then((d) => {
         setItems(transformStrapiResponse(d.data))
@@ -747,7 +750,9 @@ const LatestNews = () => {
     <div className={styles.latestNews}>
       <div className="container">
         <div className="news-wrapper hide-sm">
-          <strong className="caps-heading-1">HIGHLIGHTS</strong>
+          <strong className="caps-heading-1">
+            <Trans>HIGHLIGHTS</Trans>
+          </strong>
           <h2>
             <strong>
               <Trans>Latest news:</Trans>

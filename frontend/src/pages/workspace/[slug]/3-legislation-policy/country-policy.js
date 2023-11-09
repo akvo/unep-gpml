@@ -193,8 +193,16 @@ const CountryPolicyTable = ({ psItem, setLoginVisible, isAuthenticated }) => {
       },
       {
         title: t`Year`,
-        dataIndex: 'created',
-        sorter: (a, b) => a.created - b.created,
+        dataIndex: 'firstPublicationDate',
+        sorter: (a, b) => {
+          const aYear = a?.firstPublicationDate
+            ? moment(a.firstPublicationDate).format('YYYY')
+            : 0
+          const bYear = b?.firstPublicationDate
+            ? moment(b.firstPublicationDate).format('YYYY')
+            : 0
+          return aYear - bYear
+        },
       },
       {
         title: t`Title`,
@@ -506,12 +514,15 @@ const CountryPolicyTable = ({ psItem, setLoginVisible, isAuthenticated }) => {
               />
             )
           }
-          if (col.dataIndex === 'created') {
+          if (col.dataIndex === 'firstPublicationDate') {
             return (
               <Column
                 key={cx}
                 {...col}
                 render={(dateValue) => {
+                  if (!dateValue) {
+                    return null
+                  }
                   return <span>{moment(dateValue).format('YYYY')}</span>
                 }}
               />
