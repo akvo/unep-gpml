@@ -18,16 +18,7 @@
       color: $primaryDarkBlue;
     }
     .desc-section {
-      width: 841px;
       margin-bottom: 33px;
-      p {
-        color: $primaryDarkBlue;
-        font-size: $fzXS;
-        line-height: $lhXS;
-      }
-      @media screen and (max-width: $bpMobile) {
-        width: 100%;
-      }
     }
     .table-section {
       width: 100%;
