@@ -13,6 +13,7 @@ const ForumIframe = ({
   const ifReff = useRef()
   const iFrameCurrent = ifReff.current
   const prefixPATH = channelType === 'c' ? 'channel' : 'group'
+  console.log(process.env.NEXT_PUBLIC_CHAT_API_DOMAIN_URL)
   const channelURL = `${process.env.NEXT_PUBLIC_CHAT_API_DOMAIN_URL}/${prefixPATH}/${channelName}?layout=embedded`
   const isLoggedIn = ChatStore.useState((s) => s.isLoggedIn)
 
