@@ -193,7 +193,7 @@
     (tht/thread-transactions logger transactions context)))
 
 (defn update-stakeholder
-  [{:keys [db logger mailjet-config] :as config} stakeholder]
+  [{:keys [db logger mailjet-config] :as config} stakeholder partial-tags-override-rel-cats]
   (let [conn (:spec db)
         context {:success? true
                  :stakeholder stakeholder}
@@ -290,7 +290,7 @@
          {:txn-fn
           (fn save-stakeholder-tags
             [{:keys [stakeholder] :as context}]
-            (if-not (seq (:tags stakeholder))
+            (if-not (contains? (set (keys stakeholder)) :tags)
               context
               (let [result (handler.stakeholder.tag/save-stakeholder-tags
                             conn
@@ -299,7 +299,8 @@
                             {:tags (:tags stakeholder)
                              :stakeholder-id (:id stakeholder)
                              :handle-errors? true
-                             :update? true})]
+                             :update? true
+                             :partial-tags-override-rel-cats partial-tags-override-rel-cats})]
                 (if (:success? result)
                   context
                   (assoc context
