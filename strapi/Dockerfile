@@ -14,6 +14,7 @@ WORKDIR /opt/app
 COPY . .
 RUN chown -R node:node /opt/app
 RUN yarn add pg
+RUN yarn add strapi-plugin-import-export-entries
 RUN yarn add @strapi-community/strapi-provider-upload-google-cloud-storage
 RUN yarn add @sklinet/strapi-plugin-tinymce
 RUN ["yarn", "build"]
