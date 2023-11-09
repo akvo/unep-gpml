@@ -2,8 +2,10 @@ import axios from 'axios'
 import styles from './style.module.scss'
 import moment from 'moment'
 import Head from 'next/head'
+import { loadCatalog } from '../../translations/utils'
 
 const StrapiPage = ({ pageData }) => {
+  console.log(pageData)
   return (
     <div className={styles.forum}>
       <Head>
@@ -40,10 +42,10 @@ export async function getServerSideProps(context) {
     const pageData = response.data.data[0]
 
     return {
-      props: { pageData },
+      props: { pageData, i18n: await loadCatalog(context.locale) },
     }
   } catch (error) {
-    console.error(error)
+    console.error(error, 'error')
     return {
       props: { notFound: true },
     }

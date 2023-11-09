@@ -2,12 +2,11 @@ import axios from 'axios'
 import styles from './style.module.scss'
 import moment from 'moment'
 import Head from 'next/head'
-import { Footer } from '../landing'
 import { transformStrapiResponse } from '../../utils/misc'
 import Image from 'next/image'
+import { loadCatalog } from '../../translations/utils'
 
 const StrapiPage = ({ pageData }) => {
-  console.log(pageData)
   return (
     <div className={styles.page}>
       <Head>
@@ -54,7 +53,7 @@ export async function getServerSideProps(context) {
     const pageData = transformStrapiResponse(response.data.data)[0]
 
     return {
-      props: { pageData },
+      props: { pageData, i18n: await loadCatalog(context.locale) },
     }
   } catch (error) {
     console.error(error)
