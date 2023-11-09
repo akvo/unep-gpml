@@ -260,6 +260,7 @@ export function transformStrapiResponse(value) {
 }
 
 export function getStrapiUrl() {
+  console.log('ENV', process.env.NEXT_PUBLIC_ENV)
   let $env = process.env.NEXT_PUBLIC_ENV
   const domains = {
     test: 'unep-gpml.akvotest.org',
