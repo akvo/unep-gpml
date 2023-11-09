@@ -38,7 +38,7 @@ msgstr ""
 msgid "{value} Initiatives"
 msgstr ""
 
-#: src/pages/landing/index.jsx:934
+#: src/pages/landing/index.jsx:944
 msgid "<0>GPML’s</0> Action Tracks"
 msgstr ""
 
@@ -46,7 +46,7 @@ msgstr ""
 msgid "<0>Instructions</0><1>This workflow tool has been created to assist your team with the development of a plastics strategy for your country. Some key steps are suggested for consideration while in the ‘create’ phase. The workflow will be further developed to assist with the phase of ‘implement’, ‘report’, and ‘review.’ <2/><3/>The workflow and resources associated with each suggested step are designed to facilitate and accelerate the activities of the ‘create’ phase of your plastic strategy. Such resources include data, documents, templates, case studies, relevant organizations (governmental and non governmental) as well as individuals active in the space.</1><4>Step 1: Establishment of a National Steering Committee & project team</4><5>This step assists in the establishment of a National Steering Committee (NSC) with representation from necessary government agencies as well as relevant non-governmental organizations. The NSC should aim to meet 2-4 times per year to assist with and drive the roadmap/strategy/plan. A project team could be established to assist the NSC, consisting of consultants and focal points, to lead the implementation of the project with the guidance of the NSC and UNEP.</5><6>Step 2: Stakeholder consultation process</6><7>Consultation should aim to understand the current issues faced by various stakeholders, as well as their role in solving the problem (actors) and how proposed activities of the national plastics strategy may affect them positively or negatively. Different stakeholders may also have access to important data. This step of the workflow provides guidance on organizing a comprehensive stakeholder consultation process to ensure all relevant sectors and stakeholders are consulted.</7><8>Step 3: Legislation & Policy Review and Analysis</8><9>An analysis of the legal and policy framework in your country can help identify current goals and targets that the national plastics strategy should aim to achieve, as well as gaps in this framework that the strategy could help close. This allows for identification of priority areas to track and the type of data needed to do so. In this stage, together with UNEP’s guidance, a review and analysis of the legislative and policy landscape as it pertains to marine litter and plastic pollution would be conducted.</9><10>Step 4: Data Analysis</10><11>Data is at the core of understanding the issues and current state of play, as well as the tracking of trends to determine effectiveness of the national plastics strategy. This step will help in compiling existing data and information into a State of Knowledge Report. This could include identification of areas in need of additional data collection, leading to additional secondary data collection. Note that all the data collected should be made publicly available.</11><12>Step 5: National Source Inventory Report</12><13>National plastics strategies should be underpinned by a National Source Inventory (NSI). This step will help in analyzingwe the data available and collected into a National Source Inventory Report on plastic pollution and marine litter that can inform discussions on possible actions to be included in the national plastics strategy. </13><14>Final Step: National Roadmap/Strategy/Plan</14><15>This step facilitates the development of a National Roadmap/Strategy/Plan based on the evidence and information gathered in the NSI Report. The roadmap should be time bound, measurable and include provisions of periodic revisions. The strategy can be formally adopted through parliament or act as a voluntary guideline for action. </15>"
 msgstr ""
 
-#: src/pages/landing/index.jsx:1172
+#: src/pages/landing/index.jsx:1182
 msgid "<0>Spread the word</0><1>Follow us on social media to be part of the movement. </1>"
 msgstr ""
 
@@ -108,7 +108,7 @@ msgstr ""
 msgid "A wide range of resources can be submitted, and these include Action Plans, Initiatives, Technical resources, Financing resources, Policies, Events, and Technologies. Learn more about each category and sub-categories definitions in the “Content Type” section of this form. A quick summary sheet with categories and sub-categories can be downloaded"
 msgstr ""
 
-#: src/layouts/new-layout.js:81
+#: src/layouts/new-layout.js:82
 #: src/store.js:151
 msgid "About Us"
 msgstr ""
@@ -117,15 +117,15 @@ msgstr ""
 msgid "About yourself"
 msgstr ""
 
-#: src/pages/landing/index.jsx:833
+#: src/pages/landing/index.jsx:838
 msgid "Access a suite of powerful data tools tailored for tackling plastic pollution and marine litter. Utilize comprehensive data sets, layers and statistics to  gain valuable insights that empower informed decision-making and drive effective action."
 msgstr ""
 
-#: src/pages/landing/index.jsx:999
+#: src/pages/landing/index.jsx:1009
 msgid "Access to all"
 msgstr ""
 
-#: src/pages/landing/index.jsx:682
+#: src/pages/landing/index.jsx:687
 msgid "Act Now: <0/> <1>Co-solution with the plastic network</1>"
 msgstr ""
 
@@ -142,12 +142,12 @@ msgstr ""
 msgid "Action Plans"
 msgstr ""
 
-#: src/pages/landing/index.jsx:457
+#: src/pages/landing/index.jsx:462
 msgid "ACTION PLANS"
 msgstr ""
 
 #: src/modules/flexible-forms/view.jsx:1176
-#: src/pages/landing/index.jsx:656
+#: src/pages/landing/index.jsx:661
 msgid "Add"
 msgstr ""
 
@@ -159,7 +159,7 @@ msgstr ""
 msgid "Add An Event"
 msgstr ""
 
-#: src/layouts/new-layout.js:290
+#: src/layouts/new-layout.js:271
 #: src/modules/workspace/view.jsx:64
 msgid "Add Content"
 msgstr ""
@@ -172,11 +172,11 @@ msgstr ""
 msgid "Add translation"
 msgstr ""
 
-#: src/pages/profile/ProfileLayout.jsx:49
+#: src/pages/profile/ProfileLayout.jsx:53
 msgid "Admin Section"
 msgstr ""
 
-#: src/modules/knowledge-lib/filter-bar.jsx:221
+#: src/modules/knowledge-lib/filter-bar.jsx:226
 msgid "Advanced Search"
 msgstr ""
 
@@ -200,7 +200,7 @@ msgstr ""
 msgid "AI for Earth Grant"
 msgstr ""
 
-#: src/pages/landing/index.jsx:848
+#: src/pages/landing/index.jsx:853
 msgid "AI Innovations"
 msgstr ""
 
@@ -226,11 +226,11 @@ msgstr ""
 msgid "All of the above"
 msgstr ""
 
-#: src/modules/knowledge-lib/filter-bar.jsx:162
+#: src/modules/knowledge-lib/filter-bar.jsx:160
 msgid "All Resources"
 msgstr ""
 
-#: src/pages/landing/index.jsx:472
+#: src/pages/landing/index.jsx:477
 msgid "Already on the platform"
 msgstr ""
 
@@ -266,7 +266,7 @@ msgstr ""
 msgid "Anticipating a future policy change"
 msgstr ""
 
-#: src/pages/landing/index.jsx:1280
+#: src/pages/landing/index.jsx:1290
 msgid "Any Questions?"
 msgstr ""
 
@@ -364,17 +364,17 @@ msgstr ""
 msgid "Available Data & Statistics"
 msgstr ""
 
+#: src/pages/workspace/[slug]/4-data-analysis/available-information.js:46
 #: src/pages/workspace/[slug]/layout.js:47
 msgid "Available Information"
 msgstr ""
 
-#: src/pages/workspace/[slug]/4-data-analysis/available-information.js:46
 #: src/pages/workspace/[slug]/4-data-analysis/available-tools.js:46
 #: src/pages/workspace/[slug]/layout.js:43
 msgid "Available Tools"
 msgstr ""
 
-#: src/pages/landing/index.jsx:687
+#: src/pages/landing/index.jsx:692
 msgid "Avoid duplication of efforts. By using the platform, you can collaborate with other organisations and governments to create shared solutions to end plastic pollution."
 msgstr ""
 
@@ -434,22 +434,22 @@ msgstr ""
 
 #: src/layouts/new-layout.js:109
 #: src/store.js:32
-msgid "Basics"
-msgstr ""
+#~ msgid "Basics"
+#~ msgstr ""
 
 #: src/modules/details-page/comment.jsx:338
 msgid "Be the first to comment..."
 msgstr ""
 
-#: src/pages/landing/index.jsx:1127
+#: src/pages/landing/index.jsx:1137
 msgid "Become a partner"
 msgstr ""
 
-#: src/pages/landing/index.jsx:1083
+#: src/pages/landing/index.jsx:1093
 msgid "Become part of GPML to collaborate with thousands of organisations and individuals from around the world"
 msgstr ""
 
-#: src/pages/landing/index.jsx:1111
+#: src/pages/landing/index.jsx:1121
 msgid "Become part of the network"
 msgstr ""
 
@@ -457,7 +457,7 @@ msgstr ""
 msgid "Behaviour change campaign/programme"
 msgstr ""
 
-#: src/pages/landing/index.jsx:554
+#: src/pages/landing/index.jsx:559
 msgid "Benefits of joining:<0><1>Access to a global network of members​</1><2>Opportunities to showcase your work in our newsletter, online and at events</2><3>A Data Hub to guide efforts towards SDGs and more​</3><4>Thousands of resources at your fingertips</4><5>Networking with other stakeholders​</5><6>Access to financing opportunities, and more!</6></0>"
 msgstr ""
 
@@ -505,7 +505,7 @@ msgstr ""
 msgid "By completing this form I confirm that I have the authorization to submit an application on behalf of this Entity to become a member of the Global Partnership on Marine Litter (GPML)​."
 msgstr ""
 
-#: src/pages/landing/index.jsx:850
+#: src/pages/landing/index.jsx:855
 msgid "By leveraging AI and innovation, the platform will enable proactive strategies and solutions that efficiently combat plastic pollution and marine litter"
 msgstr ""
 
@@ -574,11 +574,11 @@ msgstr ""
 msgid "Case Studies"
 msgstr ""
 
-#: src/pages/landing/index.jsx:633
+#: src/pages/landing/index.jsx:638
 msgid "Case<0/>Studies"
 msgstr ""
 
-#: src/modules/knowledge-lib/resource-view.jsx:501
+#: src/modules/knowledge-lib/resource-view.jsx:514
 msgid "category"
 msgstr ""
 
@@ -667,7 +667,7 @@ msgstr ""
 msgid "Citizen science"
 msgstr ""
 
-#: src/pages/landing/index.jsx:118
+#: src/pages/landing/index.jsx:123
 msgid "Civil Society"
 msgstr ""
 
@@ -724,7 +724,7 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: src/pages/landing/index.jsx:1136
+#: src/pages/landing/index.jsx:1146
 msgid "Co-solution with our network"
 msgstr ""
 
@@ -740,9 +740,9 @@ msgstr ""
 msgid "Collection / sorting of plastics after use"
 msgstr ""
 
-#: src/pages/landing/index.jsx:668
-#: src/pages/landing/index.jsx:836
-#: src/pages/landing/index.jsx:847
+#: src/pages/landing/index.jsx:673
+#: src/pages/landing/index.jsx:841
+#: src/pages/landing/index.jsx:852
 msgid "Coming soon"
 msgstr ""
 
@@ -750,11 +750,11 @@ msgstr ""
 msgid "Comment deleted successfully"
 msgstr ""
 
-#: src/pages/landing/index.jsx:461
+#: src/pages/landing/index.jsx:466
 msgid "COMMUNITIES OF PRACTICE"
 msgstr ""
 
-#: src/pages/landing/index.jsx:662
+#: src/pages/landing/index.jsx:667
 msgid "Communities of practise"
 msgstr ""
 
@@ -893,12 +893,12 @@ msgstr ""
 msgid "Country"
 msgstr ""
 
-#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:549
+#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:560
 #: src/pages/workspace/[slug]/layout.js:40
 msgid "Country Policy Framework"
 msgstr ""
 
-#: src/pages/landing/index.jsx:669
+#: src/pages/landing/index.jsx:674
 msgid "Country Progress"
 msgstr ""
 
@@ -977,7 +977,7 @@ msgstr ""
 msgid "Data hub"
 msgstr ""
 
-#: src/pages/landing/index.jsx:453
+#: src/pages/landing/index.jsx:458
 msgid "DATA LAYERS"
 msgstr ""
 
@@ -990,11 +990,11 @@ msgid "Data Source"
 msgstr ""
 
 #: src/modules/workspace/view.jsx:52
-#: src/pages/landing/index.jsx:831
+#: src/pages/landing/index.jsx:836
 msgid "Data tools"
 msgstr ""
 
-#: src/pages/landing/index.jsx:667
+#: src/pages/landing/index.jsx:672
 msgid "Data visualisations to track countries progress. Quickly connect with others working in the country to end plastic."
 msgstr ""
 
@@ -1048,7 +1048,7 @@ msgstr ""
 msgid "Description - Section 3 - Case Studies"
 msgstr ""
 
-#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:554
+#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:565
 msgid "Description - Section 3 - Coutry Policy Framework"
 msgstr ""
 
@@ -1144,13 +1144,13 @@ msgstr ""
 msgid "Directory of partners of the GPML Digital Platform"
 msgstr ""
 
-#: src/pages/landing/index.jsx:642
-#: src/pages/landing/index.jsx:653
-#: src/pages/landing/index.jsx:915
+#: src/pages/landing/index.jsx:647
+#: src/pages/landing/index.jsx:658
+#: src/pages/landing/index.jsx:924
 msgid "Discover"
 msgstr ""
 
-#: src/pages/landing/index.jsx:844
+#: src/pages/landing/index.jsx:849
 msgid "Discover like-minded individuals and organizations passionate about combating plastic pollution and marine litter through our innovative matchmaking feature. Connect with fellow advocates, researchers, and activists to amplify your impact and collaborate on meaningful projects for a cleaner and healthier ocean ecosystem."
 msgstr ""
 
@@ -1241,7 +1241,7 @@ msgstr ""
 msgid "Electrical and electronics"
 msgstr ""
 
-#: src/pages/landing/index.jsx:839
+#: src/pages/landing/index.jsx:844
 msgid "Elevate your mission to address plastic pollution and marine litter through our integrated workspace feature. This feature enables you to coordinate with partners, centralize resources, strategize actions, and drive collective solutions"
 msgstr ""
 
@@ -1260,7 +1260,7 @@ msgstr ""
 msgid "Email is required"
 msgstr ""
 
-#: src/pages/landing/index.jsx:299
+#: src/pages/landing/index.jsx:304
 msgid "Empowering"
 msgstr ""
 
@@ -1438,7 +1438,7 @@ msgstr ""
 msgid "Featured"
 msgstr ""
 
-#: src/pages/landing/index.jsx:864
+#: src/pages/landing/index.jsx:869
 msgid "Features & Benefits <0>of using the platform</0>"
 msgstr ""
 
@@ -1628,7 +1628,7 @@ msgstr ""
 
 #: src/modules/stakeholder-overview/filter-drawer.jsx:335
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:108
-#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:229
+#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:237
 msgid "Geo-coverage"
 msgstr ""
 
@@ -1681,7 +1681,7 @@ msgstr ""
 msgid "Global Sustainable Development Goals (SDGs)"
 msgstr ""
 
-#: src/pages/landing/index.jsx:376
+#: src/pages/landing/index.jsx:381
 msgid "Globally"
 msgstr ""
 
@@ -1701,7 +1701,7 @@ msgstr ""
 msgid "Good Health and Well-being"
 msgstr ""
 
-#: src/pages/landing/index.jsx:509
+#: src/pages/landing/index.jsx:514
 msgid "Government agencies"
 msgstr ""
 
@@ -1709,7 +1709,7 @@ msgstr ""
 msgid "Government Verified"
 msgstr ""
 
-#: src/pages/landing/index.jsx:96
+#: src/pages/landing/index.jsx:101
 msgid "Governments"
 msgstr ""
 
@@ -1744,7 +1744,7 @@ msgstr ""
 msgid "Grants"
 msgstr ""
 
-#: src/modules/knowledge-lib/resource-view.jsx:501
+#: src/modules/knowledge-lib/resource-view.jsx:514
 msgid "grid"
 msgstr ""
 
@@ -1765,7 +1765,7 @@ msgstr ""
 msgid "Guidelines For The Monitoring And Assessment Of Plastic Litter In The Ocean"
 msgstr ""
 
-#: src/pages/landing/index.jsx:975
+#: src/pages/landing/index.jsx:985
 msgid "Guidelines standards & harmonization"
 msgstr ""
 
@@ -1813,15 +1813,19 @@ msgstr ""
 msgid "High-level strategy"
 msgstr ""
 
+#: src/pages/landing/index.jsx:754
+msgid "HIGHLIGHTS"
+msgstr ""
+
 #: src/modules/flexible-forms/form-schema.js:617
 msgid "How can the data and information from your monitoring programme be accessed?"
 msgstr ""
 
-#: src/pages/landing/index.jsx:861
+#: src/pages/landing/index.jsx:866
 msgid "How does it work?"
 msgstr ""
 
-#: src/pages/landing/index.jsx:756
+#: src/pages/landing/index.jsx:761
 msgid "How is the network co-solutioning?"
 msgstr ""
 
@@ -1890,7 +1894,7 @@ msgstr ""
 msgid "If you selected \"Other\", please specify."
 msgstr ""
 
-#: src/pages/landing/index.jsx:114
+#: src/pages/landing/index.jsx:119
 msgid "IGOs"
 msgstr ""
 
@@ -1960,7 +1964,7 @@ msgstr ""
 
 #: src/modules/map/map-chart.jsx:592
 #: src/modules/map/map-chart.jsx:640
-#: src/pages/landing/index.jsx:519
+#: src/pages/landing/index.jsx:524
 msgid "Individuals"
 msgstr ""
 
@@ -2088,7 +2092,7 @@ msgstr ""
 msgid "Job Tilte"
 msgstr ""
 
-#: src/pages/landing/index.jsx:663
+#: src/pages/landing/index.jsx:668
 msgid "Join and collaborate"
 msgstr ""
 
@@ -2096,12 +2100,12 @@ msgstr ""
 msgid "Join Newsletter"
 msgstr ""
 
-#: src/pages/landing/index.jsx:334
-#: src/pages/landing/index.jsx:1095
+#: src/pages/landing/index.jsx:339
+#: src/pages/landing/index.jsx:1105
 msgid "Join Now"
 msgstr ""
 
-#: src/pages/landing/index.jsx:661
+#: src/pages/landing/index.jsx:666
 msgid "Join others in coordinating efforts towards shared plastic solutions. From data to capacity development communities"
 msgstr ""
 
@@ -2109,11 +2113,11 @@ msgstr ""
 msgid "Join the discussion..."
 msgstr ""
 
-#: src/pages/landing/index.jsx:1078
+#: src/pages/landing/index.jsx:1088
 msgid "Join the Global Partnership on Plastic Pollution and Marine Litter"
 msgstr ""
 
-#: src/pages/landing/index.jsx:1121
+#: src/pages/landing/index.jsx:1131
 msgid "Join the GPML"
 msgstr ""
 
@@ -2155,7 +2159,7 @@ msgstr ""
 msgid "Last name"
 msgstr ""
 
-#: src/pages/landing/index.jsx:753
+#: src/pages/landing/index.jsx:758
 msgid "Latest news:"
 msgstr ""
 
@@ -2163,7 +2167,7 @@ msgstr ""
 msgid "Leadership by specific individuals in the member state or organisation (who personallydrove change)"
 msgstr ""
 
-#: src/pages/landing/index.jsx:761
+#: src/pages/landing/index.jsx:766
 msgid "Learn about inspiring co-soluting efforts from the GPML network and all the other actors contributing to the plastic action platform."
 msgstr ""
 
@@ -2186,7 +2190,7 @@ msgstr ""
 msgid "Legislation"
 msgstr ""
 
-#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:546
+#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:557
 #: src/pages/workspace/[slug]/3-legislation-policy/index.js:48
 #: src/pages/workspace/[slug]/3-legislation-policy/legislative-development.js:11
 #: src/pages/workspace/[slug]/layout.js:38
@@ -2252,7 +2256,7 @@ msgstr ""
 msgid "LinkedIn"
 msgstr ""
 
-#: src/modules/knowledge-lib/resource-view.jsx:493
+#: src/modules/knowledge-lib/resource-view.jsx:506
 msgid "Load More"
 msgstr ""
 
@@ -2303,7 +2307,7 @@ msgstr ""
 msgid "LOGIN WITH EMAIL"
 msgstr ""
 
-#: src/layouts/new-layout.js:314
+#: src/layouts/new-layout.js:295
 msgid "Logout"
 msgstr ""
 
@@ -2327,7 +2331,7 @@ msgstr ""
 msgid "Manufacturing and production"
 msgstr ""
 
-#: src/modules/knowledge-lib/resource-view.jsx:501
+#: src/modules/knowledge-lib/resource-view.jsx:514
 msgid "map"
 msgstr ""
 
@@ -2360,7 +2364,7 @@ msgid "Match with opportunities"
 msgstr ""
 
 #: src/modules/workspace/view.jsx:67
-#: src/pages/landing/index.jsx:842
+#: src/pages/landing/index.jsx:847
 msgid "Match-making"
 msgstr ""
 
@@ -2506,7 +2510,7 @@ msgstr ""
 msgid "National Action Plan"
 msgstr ""
 
-#: src/pages/landing/index.jsx:991
+#: src/pages/landing/index.jsx:1001
 msgid "National action plans"
 msgstr ""
 
@@ -2542,7 +2546,7 @@ msgstr ""
 msgid "Network with other stakeholders"
 msgstr ""
 
-#: src/pages/landing/index.jsx:1142
+#: src/pages/landing/index.jsx:1152
 msgid "Network with others"
 msgstr ""
 
@@ -2571,7 +2575,7 @@ msgstr ""
 msgid "Next"
 msgstr ""
 
-#: src/pages/landing/index.jsx:110
+#: src/pages/landing/index.jsx:115
 msgid "NGOs"
 msgstr ""
 
@@ -2657,7 +2661,7 @@ msgstr ""
 msgid "Not yet in force"
 msgstr ""
 
-#: src/pages/landing/index.jsx:449
+#: src/pages/landing/index.jsx:454
 msgid "NUMBER OF RESOURCES"
 msgstr ""
 
@@ -2729,7 +2733,7 @@ msgstr ""
 msgid "Organisation"
 msgstr ""
 
-#: src/pages/landing/index.jsx:514
+#: src/pages/landing/index.jsx:519
 msgid "Organizations"
 msgstr ""
 
@@ -2774,7 +2778,7 @@ msgstr ""
 msgid "Our Network"
 msgstr ""
 
-#: src/pages/landing/index.jsx:1246
+#: src/pages/landing/index.jsx:1256
 msgid "Our partners"
 msgstr ""
 
@@ -2850,7 +2854,7 @@ msgstr ""
 msgid "Personal details"
 msgstr ""
 
-#: src/pages/profile/ProfileLayout.jsx:37
+#: src/pages/profile/ProfileLayout.jsx:41
 msgid "Personal Details"
 msgstr ""
 
@@ -2880,8 +2884,8 @@ msgstr ""
 
 #: src/layouts/new-layout.js:99
 #: src/store.js:24
-msgid "Plastic"
-msgstr ""
+#~ msgid "Plastic"
+#~ msgstr ""
 
 #: src/store.js:674
 msgid "Plastic Odyssey: The Expedition Around The World To Fight Against Plastic Pollution"
@@ -2892,7 +2896,7 @@ msgid "Plastic Pollution Calculator"
 msgstr ""
 
 #: src/modules/workspace/view.jsx:412
-#: src/pages/landing/index.jsx:650
+#: src/pages/landing/index.jsx:655
 #: src/pages/workspace/plastic-strategies/index.js:36
 msgid "Plastic Strategies"
 msgstr ""
@@ -2962,7 +2966,7 @@ msgstr ""
 msgid "Policy Guidance and Information"
 msgstr ""
 
-#: src/pages/landing/index.jsx:477
+#: src/pages/landing/index.jsx:482
 msgid "POWERED BY:"
 msgstr ""
 
@@ -2983,7 +2987,7 @@ msgid "private"
 msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:1111
-#: src/pages/landing/index.jsx:102
+#: src/pages/landing/index.jsx:107
 msgid "Private Sector"
 msgstr ""
 
@@ -3003,7 +3007,7 @@ msgstr ""
 msgid "Professional skills training"
 msgstr ""
 
-#: src/layouts/new-layout.js:304
+#: src/layouts/new-layout.js:285
 msgid "Profile"
 msgstr ""
 
@@ -3011,7 +3015,7 @@ msgstr ""
 msgid "Profile cannot be approved since email is not verified"
 msgstr ""
 
-#: src/pages/profile/ProfileLayout.jsx:55
+#: src/pages/profile/ProfileLayout.jsx:59
 msgid "Profile Quick Link"
 msgstr ""
 
@@ -3069,7 +3073,7 @@ msgstr ""
 msgid "Read more"
 msgstr ""
 
-#: src/pages/landing/index.jsx:814
+#: src/pages/landing/index.jsx:819
 msgid "Read More"
 msgstr ""
 
@@ -3093,7 +3097,7 @@ msgstr ""
 msgid "Recycling"
 msgstr ""
 
-#: src/pages/landing/index.jsx:649
+#: src/pages/landing/index.jsx:654
 msgid "Reduce your country’s footprint. Create and advance your plastic startegy."
 msgstr ""
 
@@ -3137,7 +3141,7 @@ msgstr ""
 #: src/components/resource-card/resource-card.jsx:75
 #: src/modules/details-page/header.jsx:70
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:330
-#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:432
+#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:440
 msgid "Remove from Library"
 msgstr ""
 
@@ -3223,7 +3227,7 @@ msgstr ""
 msgid "Review and synthesis: Materials/Other"
 msgstr ""
 
-#: src/pages/profile/ProfileLayout.jsx:43
+#: src/pages/profile/ProfileLayout.jsx:47
 msgid "Review Section"
 msgstr ""
 
@@ -3251,7 +3255,7 @@ msgstr ""
 #: src/components/resource-card/resource-card.jsx:75
 #: src/modules/details-page/header.jsx:70
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:330
-#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:432
+#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:440
 msgid "Save to Library"
 msgstr ""
 
@@ -3263,11 +3267,11 @@ msgstr ""
 msgid "Scale up"
 msgstr ""
 
-#: src/pages/landing/index.jsx:963
+#: src/pages/landing/index.jsx:973
 msgid "Science<0/>policy"
 msgstr ""
 
-#: src/pages/landing/index.jsx:106
+#: src/pages/landing/index.jsx:111
 msgid "Scientific Communities"
 msgstr ""
 
@@ -3283,8 +3287,8 @@ msgstr ""
 msgid "SeaChange: Converting ocean plastics to inert, non-toxic glass safe for marine life"
 msgstr ""
 
-#: src/pages/landing/index.jsx:387
-#: src/pages/landing/index.jsx:395
+#: src/pages/landing/index.jsx:392
+#: src/pages/landing/index.jsx:400
 msgid "Search"
 msgstr ""
 
@@ -3296,7 +3300,7 @@ msgstr ""
 msgid "Search resources"
 msgstr ""
 
-#: src/pages/landing/index.jsx:351
+#: src/pages/landing/index.jsx:356
 msgid "Search the resource database..."
 msgstr ""
 
@@ -3309,11 +3313,11 @@ msgid "Sector. Does your initiative target a specific sector? (Please tick ALL t
 msgstr ""
 
 #: src/components/event-calendar/view.jsx:149
-#: src/modules/knowledge-lib/resource-view.jsx:413
+#: src/modules/knowledge-lib/resource-view.jsx:426
 msgid "See all"
 msgstr ""
 
-#: src/pages/landing/index.jsx:1261
+#: src/pages/landing/index.jsx:1271
 msgid "See all partners"
 msgstr ""
 
@@ -3372,11 +3376,11 @@ msgstr ""
 msgid "Share"
 msgstr ""
 
-#: src/pages/landing/index.jsx:1164
+#: src/pages/landing/index.jsx:1174
 msgid "Share your data"
 msgstr ""
 
-#: src/pages/landing/index.jsx:1152
+#: src/pages/landing/index.jsx:1162
 msgid "Share your knowledge"
 msgstr ""
 
@@ -3396,11 +3400,11 @@ msgstr ""
 msgid "SHOW EXAMPLES"
 msgstr ""
 
-#: src/pages/landing/index.jsx:469
+#: src/pages/landing/index.jsx:474
 msgid "SHOWCASING"
 msgstr ""
 
-#: src/modules/knowledge-lib/resource-view.jsx:278
+#: src/modules/knowledge-lib/resource-view.jsx:285
 msgid "Showing {0} of {totalItems}"
 msgstr ""
 
@@ -3413,7 +3417,7 @@ msgstr ""
 msgid "SIGN IN"
 msgstr ""
 
-#: src/pages/landing/index.jsx:1116
+#: src/pages/landing/index.jsx:1126
 msgid "Sign Up"
 msgstr ""
 
@@ -3444,7 +3448,7 @@ msgid "Something went wrong"
 msgstr ""
 
 #: src/modules/experts/view.jsx:166
-#: src/modules/knowledge-lib/resource-view.jsx:310
+#: src/modules/knowledge-lib/resource-view.jsx:317
 msgid "Sort by:"
 msgstr ""
 
@@ -3491,7 +3495,7 @@ msgstr ""
 msgid "Start typing..."
 msgstr ""
 
-#: src/pages/landing/index.jsx:629
+#: src/pages/landing/index.jsx:634
 msgid "Start your own initiative. Get inspired by others who are making progress to end plastic pollution."
 msgstr ""
 
@@ -3504,7 +3508,7 @@ msgid "State"
 msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:1734
-#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:214
+#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:222
 msgid "Status"
 msgstr ""
 
@@ -3574,7 +3578,7 @@ msgstr ""
 msgid "Suggested profiles"
 msgstr ""
 
-#: src/pages/landing/index.jsx:399
+#: src/pages/landing/index.jsx:404
 msgid "Suggested:"
 msgstr ""
 
@@ -3607,7 +3611,7 @@ msgstr ""
 msgid "Support on GPML Digital Platform"
 msgstr ""
 
-#: src/pages/landing/index.jsx:983
+#: src/pages/landing/index.jsx:993
 msgid "Sustainable & innovative financing"
 msgstr ""
 
@@ -3645,7 +3649,7 @@ msgstr ""
 #: src/modules/flexible-forms/form-schema.js:2130
 #: src/modules/flexible-forms/form-schema.js:2369
 #: src/modules/knowledge-lib/filter-modal.jsx:264
-#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:221
+#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:229
 msgid "Tags"
 msgstr ""
 
@@ -3722,7 +3726,7 @@ msgstr ""
 msgid "The Act to Prevent Pollution from Ships"
 msgstr ""
 
-#: src/pages/landing/index.jsx:939
+#: src/pages/landing/index.jsx:949
 msgid "The current core work of the GPML is organized through the following five Action Tracks, with the aim of advancing priority issues by connecting key stakeholders and facilitating collaboration and coordination. The platform offers a wide range of tools to facilitate this work."
 msgstr ""
 
@@ -3734,11 +3738,11 @@ msgstr ""
 msgid "The Digital Platform"
 msgstr ""
 
-#: src/pages/landing/index.jsx:542
+#: src/pages/landing/index.jsx:547
 msgid "The Global Partnership on Plastic Pollution and Marine Litter (GPML) Digital Platform brings decision making power to multiple stakeholders by integrating data, crowd sourced knowledge, and fostering collaborations to co-create and advance solutions to end plastic pollution including in the marine environment."
 msgstr ""
 
-#: src/pages/landing/index.jsx:537
+#: src/pages/landing/index.jsx:542
 msgid "The Global Partnership on Plastic Pollution and Marine Litter (GPML) Digital Platform is a multi-stakeholder, knowledge sharing and networking tool which aims to facilitate action on plastic pollution and marine litter reduction and prevention."
 msgstr ""
 
@@ -3746,7 +3750,7 @@ msgstr ""
 msgid "The Global Partnership on Plastic Pollution and Marine Litter Digital Platform"
 msgstr ""
 
-#: src/pages/landing/index.jsx:119
+#: src/pages/landing/index.jsx:124
 msgid "The GPML digital platform allows NGOs and civil society to connect with likeminded organizations, discover financing resources and funding opportunities, and showcase their work in the fight against plastic pollution and marine litter."
 msgstr ""
 
@@ -3754,24 +3758,24 @@ msgstr ""
 msgid "The GPML Digital Platform drives transformation and supports the work of the GPML Action Tracks. The Digital Platform is multi-stakeholder and partly open source, compiling and crowdsourcing different resources, integrating data and connecting stakeholders to guide action on addressing the global problem of marine litter and plastic pollution."
 msgstr ""
 
-#: src/pages/landing/index.jsx:98
+#: src/pages/landing/index.jsx:103
 msgid "The GPML digital platform empowers all countries to create and implement successful plastic strategies to end plastic pollution including in the marine environment."
 msgstr ""
 
-#: src/pages/landing/index.jsx:103
+#: src/pages/landing/index.jsx:108
 msgid "The GPML digital platform fosters public-private partnerships, offers clarity on circular economy practices, and provides guidance on Extended Producer Responsibilities (EPRs) and sustainable business models."
 msgstr ""
 
-#: src/pages/landing/index.jsx:547
+#: src/pages/landing/index.jsx:552
 msgid "The GPML Digital Platform functions as the digital arm of the GPML, a multi-stakeholder partnership that brings together all actors working to prevent plastic pollution and marine litter."
 msgstr ""
 
-#: src/pages/landing/index.jsx:107
-#: src/pages/landing/index.jsx:111
+#: src/pages/landing/index.jsx:112
+#: src/pages/landing/index.jsx:116
 msgid "The GPML digital platform helps academia and the scientific community to ensure their research becomes actionable by offering the opportunity to share resources and collaborate with policy makers."
 msgstr ""
 
-#: src/pages/landing/index.jsx:115
+#: src/pages/landing/index.jsx:120
 msgid "The GPML digital platform offers the opportunity to forge collaborative partnerships with diverse stakeholders, share and find resources on plastic pollution, and amplify advocacy."
 msgstr ""
 
@@ -3795,12 +3799,12 @@ msgstr ""
 msgid "The National Environmental Act - Order No. 2034/33"
 msgstr ""
 
-#: src/layouts/new-layout.js:85
+#: src/layouts/new-layout.js:86
 #: src/store.js:155
 msgid "The platform"
 msgstr ""
 
-#: src/pages/landing/index.jsx:869
+#: src/pages/landing/index.jsx:874
 msgid "The platform offers a wide range of tools to support your decision-making and help a global network of actors to work together to create shared solutions to end plastic pollution."
 msgstr ""
 
@@ -3866,7 +3870,7 @@ msgstr ""
 #: src/modules/flexible-forms/form-schema.js:2045
 #: src/modules/flexible-forms/form-schema.js:2284
 #: src/modules/signup-old/signup-form.jsx:26
-#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:200
+#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:208
 msgid "Title"
 msgstr ""
 
@@ -3878,7 +3882,7 @@ msgstr ""
 msgid "Title:"
 msgstr ""
 
-#: src/pages/landing/index.jsx:303
+#: src/pages/landing/index.jsx:308
 msgid "to address plastic pollution"
 msgstr ""
 
@@ -3895,9 +3899,7 @@ msgstr ""
 msgid "Tools & Toolkits"
 msgstr ""
 
-#: src/layouts/new-layout.js:103
 #: src/modules/flexible-forms/form-schema.js:1742
-#: src/store.js:28
 msgid "Topics"
 msgstr ""
 
@@ -3972,8 +3974,12 @@ msgstr ""
 msgid "Transportation"
 msgstr ""
 
-#: src/pages/landing/index.jsx:910
-msgid "Trusted data and information badge system and validation process."
+#: src/pages/landing/index.jsx:915
+#~ msgid "Trusted data and information badge system and validation process."
+#~ msgstr ""
+
+#: src/pages/landing/index.jsx:915
+msgid "Trusted data, Information badge system and Validation process."
 msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:1181
@@ -3989,7 +3995,7 @@ msgstr ""
 #: src/modules/map/vertical-legend.jsx:452
 #: src/modules/map/vertical-legend.jsx:486
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:102
-#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:207
+#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:215
 msgid "Type"
 msgstr ""
 
@@ -4128,8 +4134,8 @@ msgid "Video Tutorials"
 msgstr ""
 
 #: src/modules/experts/view.jsx:148
-#: src/modules/knowledge-lib/resource-view.jsx:514
-#: src/modules/knowledge-lib/resource-view.jsx:544
+#: src/modules/knowledge-lib/resource-view.jsx:527
+#: src/modules/knowledge-lib/resource-view.jsx:557
 msgid "view"
 msgstr ""
 
@@ -4142,7 +4148,7 @@ msgstr ""
 msgid "View All"
 msgstr ""
 
-#: src/pages/landing/index.jsx:878
+#: src/pages/landing/index.jsx:883
 msgid "View All Features"
 msgstr ""
 
@@ -4158,15 +4164,15 @@ msgstr ""
 msgid "View Source"
 msgstr ""
 
-#: src/pages/landing/index.jsx:1283
+#: src/pages/landing/index.jsx:1293
 msgid "Visit the Help Center for FAQs, tutorials and more"
 msgstr ""
 
-#: src/pages/landing/index.jsx:1288
+#: src/pages/landing/index.jsx:1298
 msgid "Visit the Help Centre"
 msgstr ""
 
-#: src/pages/landing/index.jsx:951
+#: src/pages/landing/index.jsx:961
 msgid "Visit the website"
 msgstr ""
 
@@ -4240,11 +4246,11 @@ msgstr ""
 msgid "What funding sources did you use?"
 msgstr ""
 
-#: src/pages/landing/index.jsx:546
+#: src/pages/landing/index.jsx:551
 msgid "What is the connection between this platform and GPML?"
 msgstr ""
 
-#: src/pages/landing/index.jsx:931
+#: src/pages/landing/index.jsx:941
 msgid "WHAT IS THE FOCUS OF GPML?"
 msgstr ""
 
@@ -4256,7 +4262,7 @@ msgstr ""
 msgid "What to do next?"
 msgstr ""
 
-#: src/pages/landing/index.jsx:541
+#: src/pages/landing/index.jsx:546
 msgid "What we do?"
 msgstr ""
 
@@ -4278,11 +4284,11 @@ msgstr ""
 msgid "Which Sustainable Development Goals (SDGs) does your initiative apply to? (Please tick ALL that apply):"
 msgstr ""
 
-#: src/pages/landing/index.jsx:536
+#: src/pages/landing/index.jsx:541
 msgid "Who are we?"
 msgstr ""
 
-#: src/pages/landing/index.jsx:551
+#: src/pages/landing/index.jsx:556
 msgid "Why join the GPML?"
 msgstr ""
 
@@ -4315,9 +4321,9 @@ msgstr ""
 msgid "workspace"
 msgstr ""
 
-#: src/pages/landing/index.jsx:339
-#: src/pages/landing/index.jsx:837
-#: src/pages/landing/index.jsx:1100
+#: src/pages/landing/index.jsx:344
+#: src/pages/landing/index.jsx:842
+#: src/pages/landing/index.jsx:1110
 msgid "Workspace"
 msgstr ""
 

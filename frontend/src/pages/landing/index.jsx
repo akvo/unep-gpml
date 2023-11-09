@@ -913,12 +913,17 @@ const Trusted = () => {
         <div className="trusted-text">
           <h3 className="semibold">
             <Trans>
-              Trusted data and information badge system and validation process.
+              Trusted data, Information badge system and Validation process.
             </Trans>
           </h3>
-          <Button withArrow type="primary" size="large">
-            <Trans>Discover</Trans>
-          </Button>
+          <a
+            target="_blank"
+            href="https://docs.google.com/presentation/d/e/2PACX-1vSi-8jTrnk3Lj7ieb-z2Hy-FIHE4jQhZyRjonWWOlYgPb2Mu5suUyPPfwylZR_7zDyIJE7kGNkfghTM/pub?start=false&loop=false&delayms=60000"
+          >
+            <Button withArrow type="primary" size="large">
+              <Trans>Discover</Trans>
+            </Button>
+          </a>
         </div>
         <div className="trusted-circle" />
       </div>
