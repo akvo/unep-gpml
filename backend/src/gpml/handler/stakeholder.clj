@@ -142,9 +142,10 @@
       (throw (ex-info "Failed to create stakeholder" result)))))
 
 (defn- update-stakeholder
-  [config stakeholder]
+  [config stakeholder partial-tags-override-rel-cats]
   (let [result (srv.stakeholder/update-stakeholder config
-                                                   stakeholder)]
+                                                   stakeholder
+                                                   partial-tags-override-rel-cats)]
     (if (:success? result)
       (get-in result [:stakeholder :id])
       (throw (ex-info "Failed to update stakeholder" {:result result})))))
@@ -156,6 +157,9 @@
   (try
     (let [conn (:spec db)
           org (:org body)
+          partial-tags-override-rel-cats (->> (select-keys body [:seeking :offering :expertise])
+                                              keys
+                                              set)
           tags (handler.stakeholder.tag/api-stakeholder-tags->stakeholder-tags body)
           new-sth (make-profile (assoc body
                                        :affiliation (:id org)
@@ -167,7 +171,7 @@
                                        :org org))
           old-sth (db.stakeholder/stakeholder-by-email conn {:email (:email new-sth)})
           sth-id (if old-sth
-                   (update-stakeholder config (assoc new-sth :id (:id old-sth)))
+                   (update-stakeholder config (assoc new-sth :id (:id old-sth)) partial-tags-override-rel-cats)
                    (create-stakeholder config new-sth))
           new-sth (db.stakeholder/stakeholder-by-id conn {:id sth-id})]
       (when-not old-sth
@@ -202,13 +206,18 @@
   [_ {:keys [logger] :as config}]
   (fn [{:keys [body-params headers user]}]
     (try
-      (let [tags (handler.stakeholder.tag/api-stakeholder-tags->stakeholder-tags body-params)]
-        (update-stakeholder config (-> body-params
-                                       (assoc :id (:id user)
-                                              :picture {:payload (:picture body-params)
-                                                        :user-agent (get headers "user-agent")}
-                                              :tags tags)
-                                       (dissoc :review_status)))
+      (let [partial-tags-override-rel-cats (->> (select-keys body-params [:seeking :offering :expertise])
+                                                keys
+                                                set)
+            tags (handler.stakeholder.tag/api-stakeholder-tags->stakeholder-tags body-params)]
+        (update-stakeholder config
+                            (-> body-params
+                                (assoc :id (:id user)
+                                       :picture {:payload (:picture body-params)
+                                                 :user-agent (get headers "user-agent")}
+                                       :tags tags)
+                                (dissoc :review_status))
+                            partial-tags-override-rel-cats)
         (resp/status {:success? true} 204))
       (catch Exception e
         (log logger :error ::failed-to-update-stakeholder {:exception-message (.getMessage e)})
@@ -437,12 +446,17 @@
     (if (or (h.r.permission/super-admin? config (:id user))
             (= (:id path) (:id user)))
       (try
-        (let [tags (handler.stakeholder.tag/api-stakeholder-tags->stakeholder-tags body)]
-          (update-stakeholder config (assoc body
-                                            :id (:id path)
-                                            :tags tags
-                                            :picture {:payload (:picture body)
-                                                      :user-agent (get-in req [:headers "user-agent"])}))
+        (let [partial-tags-override-rel-cats (->> (select-keys body [:seeking :offering :expertise])
+                                                  keys
+                                                  set)
+              tags (handler.stakeholder.tag/api-stakeholder-tags->stakeholder-tags body)]
+          (update-stakeholder config
+                              (assoc body
+                                     :id (:id path)
+                                     :tags tags
+                                     :picture {:payload (:picture body)
+                                               :user-agent (get-in req [:headers "user-agent"])})
+                              partial-tags-override-rel-cats)
           (resp/status {:success? true} 204))
         (catch Exception e
           (log logger :error ::failed-to-update-stakeholder {:exception-message (.getMessage e)})
