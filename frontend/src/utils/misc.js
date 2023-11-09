@@ -259,6 +259,16 @@ export function transformStrapiResponse(value) {
   })
 }
 
+export function getStrapiUrl() {
+  let $env = process.env.NEXT_PUBLIC_ENV
+  const domains = {
+    test: 'unep-gpml.akvotest.org',
+    staging: 'digital.gpmarinelitter.org',
+    prod: 'digital.gpmarinelitter.org',
+  }
+  return `https://${domains[$env]}/strapi`
+}
+
 export function stripHtml(html) {
   let tmp = document.createElement('DIV')
   tmp.innerHTML = html

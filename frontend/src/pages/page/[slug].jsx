@@ -2,6 +2,7 @@ import axios from 'axios'
 import styles from './style.module.scss'
 import moment from 'moment'
 import Head from 'next/head'
+import { getStrapiUrl } from '../../utils/misc'
 
 const StrapiPage = ({ pageData }) => {
   return (
@@ -28,11 +29,9 @@ export async function getServerSideProps(context) {
   const text = slug.split('-')
 
   try {
-    const domainName = process.env.REACT_APP_FEENV
-      ? 'unep-gpml.akvotest.org'
-      : getDomainName(context.req.headers.host)
+    const strapiUrl = getStrapiUrl()
     const response = await axios.get(
-      `https://${domainName}/strapi/api/pages?filters[slug][$eq]=${slug}`
+      `${strapiUrl}/api/pages?filters[slug][$eq]=${slug}`
     )
     if (response.data.data.length === 0) {
       return { notFound: true }

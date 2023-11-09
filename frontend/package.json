@@ -55,8 +55,8 @@
   },
   "scripts": {
     "dev": "next dev -p 3001",
-    "dev-fe": "REACT_APP_FEENV=true next dev -p 3001",
-    "staging-fe": "REACT_APP_FEENV_STAGING=true next dev -p 3001",
+    "dev-fe": "REACT_APP_FEENV=true NEXT_PUBLIC_ENV=test next dev -p 3001",
+    "staging-fe": "REACT_APP_FEENV_STAGING=true NEXT_PUBLIC_ENV=staging next dev -p 3001",
     "build": "next build",
     "start": "next start -p 3001",
     "translations:extract": "lingui extract --clean",
