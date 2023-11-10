@@ -8,7 +8,13 @@ import styles from './forum.module.scss'
 import useLocalStorage from '../../utils/hooks/use-storage'
 import { ChatStore } from '../../store'
 
-const ForumModal = ({ viewModal, setViewModal, allForums }) => {
+const ForumModal = ({
+  viewModal,
+  setViewModal,
+  allForums,
+  setLoginVisible,
+  isAuthenticated,
+}) => {
   const [requesting, setRequesting] = useState(false)
   const colorList = ['purple', 'green', 'blue', 'dark-blue']
   const [joins, setJoins] = useLocalStorage('joins', [])
@@ -83,7 +89,13 @@ const ForumModal = ({ viewModal, setViewModal, allForums }) => {
           </Button>
           {isNotAMember ? (
             <Button
-              onClick={() => handleOnRequestJoin(viewModal?.data)}
+              onClick={() => {
+                if (isAuthenticated) {
+                  handleOnRequestJoin(viewModal?.data)
+                } else {
+                  setLoginVisible(true)
+                }
+              }}
               loading={requesting}
               disabled={joinDisabled}
             >
