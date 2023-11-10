@@ -16,7 +16,7 @@ const ForumMembers = ({ forum }) => {
           const [fistName, lastName] = u?.name?.split(/[ ,]+/)
           return (
             <Avatar src={userImage} key={index} aria-label={u.name}>
-              {`${fistName[0]}${lastName?.[0]}`}
+              {`${fistName[0]}${lastName?.[0] || ''}`}
             </Avatar>
           )
         })}

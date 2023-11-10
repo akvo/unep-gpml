@@ -105,9 +105,15 @@ const ForumModal = ({
             <Button
               withArrow="link"
               size="small"
-              onClick={() => goToChannel(viewModal.data)}
+              onClick={() => {
+                if (isAuthenticated) {
+                  goToChannel(viewModal.data)
+                } else {
+                  setLoginVisible(true)
+                }
+              }}
             >
-              View channel
+              {isAuthenticated ? 'View channel' : 'Login to Chat'}
             </Button>
           )}
         </>

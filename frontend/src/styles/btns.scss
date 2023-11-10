@@ -123,7 +123,7 @@
         }
       }
     }
-    &:focus {
+    &:focus:not(&:hover) {
       background-color: transparent;
       border-color: $primaryDarkBlue;
       color: $primaryDarkBlue;
