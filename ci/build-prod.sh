@@ -3,7 +3,7 @@
 
 set -exuo pipefail
 
-[[ -n "${CI_TAG:=}" ]] && { echo "Skip build"; exit 0; }
+[[ -z "${CI_TAG:=}" ]] && { echo "Skip build"; exit 0; }
 
 CI_COMMIT="${SEMAPHORE_GIT_SHA:=local}"
 CI_COMMIT="${CI_COMMIT:0:7}"
@@ -43,17 +43,15 @@ backend_build () {
        bash release.sh
 
     docker build \
-	   --tag "${image_prefix}/backend:latest" \
-	   --tag "${image_prefix}/backend:${CI_COMMIT}" backend
+	   --tag "${image_prefix}/backend:${CI_COMMIT}-prod" backend
 }
 
 frontend_build () {
-
     rm -rf frontend/.env
-    echo 'REACT_APP_AUTH0_CLIENT_ID="dxfYNPO4D9ovQr5NHFkOU3jwJzXhcq5J"' > frontend/.env
-    echo 'REACT_APP_AUTH0_DOMAIN="unep-gpml-test.eu.auth0.com"' > frontend/.env
-    echo 'NEXT_PUBLIC_CHAT_API_DOMAIN_URL="https://rocket-chat.akvotest.org"' > frontend/.env
-    echo 'NEXT_PUBLIC_ENV=test' > frontend/.env
+    echo 'REACT_APP_AUTH0_CLIENT_ID="mSuWoeUEN3Z8XWZMbUqiOIOHwdk0R6dm"' > frontend/.env
+    echo 'REACT_APP_AUTH0_DOMAIN="auth.gpmarinelitter.org"' > frontend/.env
+    echo 'NEXT_PUBLIC_CHAT_API_DOMAIN_URL="https://rocket-chat-unep.akvo.org"' > frontend/.env
+    echo 'NEXT_PUBLIC_ENV=prod' > frontend/.env
 
     dc run \
        --rm \
@@ -62,23 +60,22 @@ frontend_build () {
        bash release.sh
 
     docker build \
-	   --tag "${image_prefix}/frontend:latest" \
-	   --tag "${image_prefix}/frontend:${CI_COMMIT}" frontend
+	   --tag "${image_prefix}/frontend:latest-prod" \
+	   --tag "${image_prefix}/frontend:${CI_COMMIT}-prod" frontend
 }
 
 
 nginx_build () {
     docker build \
-           --tag "${image_prefix}/nginx:latest" \
-           --tag "${image_prefix}/nginx:${CI_COMMIT}" nginx
+           --tag "${image_prefix}/nginx:latest-prod" \
+           --tag "${image_prefix}/nginx:${CI_COMMIT}-prod" nginx
 }
 
 strapi_build () {
     docker build -f strapi/Dockerfile.prod \
-           --tag "${image_prefix}/strapi:latest" \
-           --tag "${image_prefix}/strapi:${CI_COMMIT}" strapi
+           --tag "${image_prefix}/strapi:latest-prod" \
+           --tag "${image_prefix}/strapi:${CI_COMMIT}-prod" strapi
 }
-
 
 backend_build
 frontend_build
