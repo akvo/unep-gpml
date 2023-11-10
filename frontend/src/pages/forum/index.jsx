@@ -127,7 +127,15 @@ const Forum = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
           />
         </section>
         <DynamicForumModal
-          {...{ viewModal, setViewModal, initName, avatarUrl, allForums }}
+          {...{
+            viewModal,
+            setViewModal,
+            initName,
+            avatarUrl,
+            allForums,
+            setLoginVisible,
+            isAuthenticated,
+          }}
         />
       </div>
     </div>

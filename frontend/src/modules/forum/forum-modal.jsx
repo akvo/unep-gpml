@@ -14,6 +14,8 @@ const ForumModal = ({
   initName,
   avatarUrl,
   allForums,
+  setLoginVisible,
+  isAuthenticated,
 }) => {
   const [requesting, setRequesting] = useState(false)
   const colorList = ['purple', 'green', 'blue', 'dark-blue']
@@ -88,7 +90,13 @@ const ForumModal = ({
           </Button>
           {isNotAMember ? (
             <Button
-              onClick={() => handleOnRequestJoin(viewModal?.data)}
+              onClick={() => {
+                if (isAuthenticated) {
+                  handleOnRequestJoin(viewModal?.data)
+                } else {
+                  setLoginVisible(true)
+                }
+              }}
               loading={requesting}
               disabled={joinDisabled}
             >
