@@ -455,7 +455,9 @@ h6 {
     border-color: $primaryGreen;
     color: $primaryGreen;
     margin-top: 16px;
-    &:hover {
+    &:hover,
+    &:active,
+    &:focus {
       background-color: $primaryGreen;
       color: $primaryDarkBlue;
     }
