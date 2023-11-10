@@ -7,6 +7,7 @@ import { UIStore } from '../../store'
 import api from '../../utils/api'
 import ForumMembers from '../../modules/forum/forum-members'
 import { Trans, t } from '@lingui/macro'
+import { loadCatalog } from '../../translations/utils'
 
 const DynamicForumModal = dynamic(
   () => import('../../modules/forum/forum-modal'),
@@ -156,6 +157,14 @@ const Forum = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
       </div>
     </div>
   )
+}
+
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
 }
 
 export default Forum
