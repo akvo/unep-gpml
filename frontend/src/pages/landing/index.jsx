@@ -113,7 +113,7 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
     },
     {
       group: t`NGOs`,
-      text: t`The GPML digital platform helps academia and the scientific community to ensure their research becomes actionable by offering the opportunity to share resources and collaborate with policy makers.`,
+      text: t`The GPML digital platform allows NGOs and civil society to connect with likeminded organizations, discover financing resources and funding opportunities, and showcase their work in the fight against plastic pollution and marine litter.`,
     },
     {
       group: t`IGOs`,
