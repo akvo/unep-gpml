@@ -197,7 +197,7 @@ const NavMobile = ({ isOpen, toggleOpen }) => {
         exit="closed"
       >
         {menu.map((i) => (
-          <MenuItem key={i.key} i={i.key} onClick={handleMenuItemClick} />
+          <MenuItem key={i.id} i={i.id} onClick={handleMenuItemClick} />
         ))}
       </motion.ul>
     )
@@ -205,7 +205,8 @@ const NavMobile = ({ isOpen, toggleOpen }) => {
 
   function SubMenuItems() {
     const items =
-      menu.find((item) => selectedMenuItem === item.key)?.children || []
+      menu.find((item) => selectedMenuItem === item.id)?.children || []
+    console.log(items)
     return (
       <motion.ul
         key="menuList"
@@ -216,8 +217,8 @@ const NavMobile = ({ isOpen, toggleOpen }) => {
       >
         {items.map((i) => (
           <MenuItem
-            key={i.key}
-            i={i.key}
+            key={i.id}
+            i={i.id}
             item={i}
             collapseMenu
             isSubItem={true}
