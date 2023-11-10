@@ -25,10 +25,10 @@ export -f dc
 
 frontend_build () {
     rm -rf frontend/.env
-    echo 'REACT_APP_AUTH0_CLIENT_ID="mSuWoeUEN3Z8XWZMbUqiOIOHwdk0R6dm"' > frontend/.env
-    echo 'REACT_APP_AUTH0_DOMAIN="auth.gpmarinelitter.org"' > frontend/.env
-    echo 'NEXT_PUBLIC_CHAT_API_DOMAIN_URL="https://rocket-chat-unep.akvo.org"' > frontend/.env
-    echo 'NEXT_PUBLIC_ENV=prod' > frontend/.env
+    echo 'REACT_APP_AUTH0_CLIENT_ID="mSuWoeUEN3Z8XWZMbUqiOIOHwdk0R6dm"' >> frontend/.env
+    echo 'REACT_APP_AUTH0_DOMAIN="auth.gpmarinelitter.org"' >> frontend/.env
+    echo 'NEXT_PUBLIC_CHAT_API_DOMAIN_URL="https://rocket-chat-unep.akvo.org"' >> frontend/.env
+    echo 'NEXT_PUBLIC_ENV=prod' >> frontend/.env
 
     dc run \
        --rm \

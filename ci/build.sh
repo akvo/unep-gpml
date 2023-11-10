@@ -52,10 +52,10 @@ backend_build () {
 frontend_build () {
 
     rm -rf frontend/.env
-    echo 'REACT_APP_AUTH0_CLIENT_ID="dxfYNPO4D9ovQr5NHFkOU3jwJzXhcq5J"' > frontend/.env
-    echo 'REACT_APP_AUTH0_DOMAIN="unep-gpml-test.eu.auth0.com"' > frontend/.env
-    echo 'NEXT_PUBLIC_CHAT_API_DOMAIN_URL="https://rocket-chat.akvotest.org"' > frontend/.env
-    echo 'NEXT_PUBLIC_ENV=test' > frontend/.env
+    echo 'REACT_APP_AUTH0_CLIENT_ID="dxfYNPO4D9ovQr5NHFkOU3jwJzXhcq5J"' >> frontend/.env
+    echo 'REACT_APP_AUTH0_DOMAIN="unep-gpml-test.eu.auth0.com"' >> frontend/.env
+    echo 'NEXT_PUBLIC_CHAT_API_DOMAIN_URL="https://rocket-chat.akvotest.org"' >> frontend/.env
+    echo 'NEXT_PUBLIC_ENV=test' >> frontend/.env
 
     dc run \
        --rm \
@@ -71,10 +71,10 @@ frontend_build () {
 frontend_build_staging () {
 
     rm -rf frontend/.env
-    echo 'REACT_APP_AUTH0_CLIENT_ID="dxfYNPO4D9ovQr5NHFkOU3jwJzXhcq5J"' > frontend/.env
-    echo 'REACT_APP_AUTH0_DOMAIN="unep-gpml-test.eu.auth0.com"' > frontend/.env
-    echo 'NEXT_PUBLIC_CHAT_API_DOMAIN_URL="https://rocket-chat.akvotest.org"' > frontend/.env
-    echo 'NEXT_PUBLIC_ENV=staging' > frontend/.env
+    echo 'REACT_APP_AUTH0_CLIENT_ID="dxfYNPO4D9ovQr5NHFkOU3jwJzXhcq5J"' >> frontend/.env
+    echo 'REACT_APP_AUTH0_DOMAIN="unep-gpml-test.eu.auth0.com"' >> frontend/.env
+    echo 'NEXT_PUBLIC_CHAT_API_DOMAIN_URL="https://rocket-chat.akvotest.org"' >> frontend/.env
+    echo 'NEXT_PUBLIC_ENV=staging' >> frontend/.env
 
     dc run \
        --rm \
