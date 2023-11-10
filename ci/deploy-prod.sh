@@ -17,32 +17,25 @@ auth () {
 
 push_image () {
     prefix="eu.gcr.io/akvo-lumen/unep-gpml"
-    if [[ "${1}" != "frontend" ]]; then
-           docker push "${prefix}/${1}:${CI_COMMIT}"
-           docker push "${prefix}/${1}:${CI_COMMIT}-staging"
-           docker push "${prefix}/${1}:${CI_COMMIT}-prod"
-    else
-           docker push "${prefix}/${1}:${CI_COMMIT}"
-           docker push "${prefix}/${1}:${CI_COMMIT}-staging"
+
+    if [[ "${CI_TAG:=}" =~ promote.* ]]; then
+        docker push "${prefix}/${1}:${CI_COMMIT}-prod"
     fi
 }
 
 prepare_deployment () {
-    cluster="test"
-    APP_NAME="UNEP GPML (test)"
-    APP_DOMAIN="unep-gpml.akvotest.org"
 
     if [[ "${CI_TAG:=}" =~ promote.* ]]; then
 	cluster="production"
         APP_NAME="UNEP GPML"
         APP_DOMAIN="digital.gpmarinelitter.org"
+        gcloud container clusters get-credentials "${cluster}"
+
+        sed -e "s/\${CI_COMMIT}/${CI_COMMIT}-prod/g; s/\${APP_NAME}/${APP_NAME}/g; s/\${APP_DOMAIN}/${APP_DOMAIN}/g" \
+            ci/k8s/deployment.template.yml \
+            > ci/k8s/deployment.yml
     fi
 
-    gcloud container clusters get-credentials "${cluster}"
-
-    sed -e "s/\${CI_COMMIT}/${CI_COMMIT}/g; s/\${APP_NAME}/${APP_NAME}/g; s/\${APP_DOMAIN}/${APP_DOMAIN}/g" \
-	ci/k8s/deployment.template.yml \
-	> ci/k8s/deployment.yml
 }
 
 apply_deployment () {
@@ -53,14 +46,12 @@ apply_deployment () {
 
 auth
 
-if [[ -z "${CI_TAG:=}" ]]; then
-    push_image backend
+if [[ -n "${CI_TAG:=}" ]]; then
     push_image frontend
-    push_image strapi
-    push_image nginx
 fi
+
 
 prepare_deployment
 apply_deployment
 
-ci/k8s/wait-for-k8s-deployment-to-be-ready.sh
+ci/k8s/wait-for-k8s-deployment-to-be-ready-prod.sh

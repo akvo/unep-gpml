@@ -59,4 +59,5 @@ blocks:
         - name: Promote to production
           commands:
             - checkout
-            - ./ci/deploy.sh
+            - ./ci/build-prod.sh
+            - ./ci/deploy-prod.sh
