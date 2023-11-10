@@ -20,7 +20,7 @@ const DynamicMyForum = dynamic(() => import('../../modules/forum/my-forums'), {
   ssr: false, // my forums has window object to update the joins localStorage
 })
 
-const Forum = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
+const Forum = ({ isAuthenticated, setLoginVisible }) => {
   const [allForums, setAllForums] = useState([])
   const [viewModal, setViewModal] = useState({
     open: false,
@@ -29,13 +29,6 @@ const Forum = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
   const [loading, setLoading] = useState(true)
 
   const profile = UIStore.useState((s) => s.profile)
-
-  useEffect(() => {
-    if (!loadingProfile && !isAuthenticated) {
-      setLoading(false)
-      setLoginVisible(true)
-    }
-  }, [isAuthenticated, loadingProfile])
 
   const handleOnView = (data) => {
     setViewModal({
@@ -49,23 +42,21 @@ const Forum = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
       /**
        * Waiting for id_token ready by checking profile state
        */
-      if (profile?.id) {
-        const { data } = await api.get('/chat/channel/all')
-        const _allForums = data
-          ?.sort((a, b) => {
-            // Sort public first
-            if (a.t === 'c' && b.type !== 'c') {
-              return -1
-            } else if (a.t !== 'c' && b.t === 'c') {
-              return 1
-            } else {
-              return 0
-            }
-          })
-          ?.map((d) => ({ ...d, membersFetched: false }))
-        setAllForums(_allForums)
-        setLoading(false)
-      }
+      const { data } = await api.get('/chat/channel/all')
+      const _allForums = data
+        ?.sort((a, b) => {
+          // Sort public first
+          if (a.t === 'c' && b.type !== 'c') {
+            return -1
+          } else if (a.t !== 'c' && b.t === 'c') {
+            return 1
+          } else {
+            return 0
+          }
+        })
+        ?.map((d) => ({ ...d, membersFetched: false }))
+      setAllForums(_allForums)
+      setLoading(false)
     } catch (error) {
       console.error('err', error)
       setLoading(false)
@@ -153,7 +144,15 @@ const Forum = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
             )}
           />
         </section>
-        <DynamicForumModal {...{ viewModal, setViewModal, allForums }} />
+        <DynamicForumModal
+          {...{
+            viewModal,
+            setViewModal,
+            allForums,
+            setLoginVisible,
+            isAuthenticated,
+          }}
+        />
       </div>
     </div>
   )
