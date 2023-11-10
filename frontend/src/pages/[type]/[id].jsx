@@ -3,6 +3,8 @@ import { useRouter } from 'next/router'
 import NewDetailsView from '../../modules/details-page/view'
 import api from '../../utils/api'
 import { getTypeByResource } from '../../modules/flexible-forms/view'
+import { loadCatalog } from '../../translations/utils'
+import Head from 'next/head'
 
 const VALID_TYPES = [
   'initiative',
@@ -15,23 +17,75 @@ const VALID_TYPES = [
   'case-study',
 ]
 
-const Details = ({ data, translations, setLoginVisible, isAuthenticated }) => {
+const Details = ({
+  data,
+  translations,
+  setLoginVisible,
+  isAuthenticated,
+  domainValue,
+}) => {
   const router = useRouter()
   const { type, id } = router.query
   if (!VALID_TYPES.includes(type)) {
     return <p>Invalid type!</p>
   }
 
+  const sliceMetaDesc = (words = '', maxLength = 158) => {
+    if (words.length <= maxLength) {
+      return words
+    }
+    let slicedWords = words.slice(0, maxLength)
+    let lastSpaceIndex = slicedWords.lastIndexOf(' ')
+    if (lastSpaceIndex !== -1) {
+      slicedWords = slicedWords.slice(0, lastSpaceIndex)
+    }
+    return slicedWords
+  }
+
   return (
-    <NewDetailsView
-      serverData={data}
-      serverTranslations={translations}
-      type={type}
-      id={id}
-      setLoginVisible={setLoginVisible}
-      isAuthenticated={isAuthenticated}
-      isServer={true}
-    />
+    <>
+      <Head>
+        {/* HTML Meta Tags */}
+        <title>{data?.title}</title>
+        <meta name="description" content={sliceMetaDesc(data?.summary)} />
+        <meta property="og:type" content="website" />
+
+        {/* Facebook Meta Tags */}
+        <meta
+          property="og:url"
+          content={`https://${domainValue}/${type}/${id}`}
+        />
+        <meta property="og:title" content={data?.title} />
+        <meta
+          property="og:description"
+          content={sliceMetaDesc(data?.summary)}
+        />
+        <meta property="og:image" content={data?.image} />
+
+        {/* Twitter Meta Tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta property="twitter:domain" content={domainValue} />
+        <meta
+          property="twitter:url"
+          content={`https://${domainValue}/${type}/${id}`}
+        />
+        <meta name="twitter:title" content={data?.title} />
+        <meta
+          name="twitter:description"
+          content={sliceMetaDesc(data?.summary)}
+        />
+        <meta name="twitter:image" content={data?.image} />
+      </Head>
+      <NewDetailsView
+        serverData={data}
+        serverTranslations={translations}
+        type={type}
+        id={id}
+        setLoginVisible={setLoginVisible}
+        isAuthenticated={isAuthenticated}
+        isServer={true}
+      />
+    </>
   )
 }
 
@@ -74,6 +128,8 @@ export async function getServerSideProps(context) {
         data: dataRes.data,
         translations: translationsRes.data,
         url: baseUrl,
+        i18n: await loadCatalog(context.locale),
+        domainValue: req?.headers?.host,
       },
     }
   } catch (error) {

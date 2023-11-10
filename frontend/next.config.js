@@ -1,5 +1,14 @@
+const linguiConfig = require('./lingui.config')
+
 module.exports = {
   reactStrictMode: false,
+  i18n: {
+    locales: linguiConfig.locales,
+    defaultLocale: linguiConfig.sourceLocale,
+  },
+  experimental: {
+    swcPlugins: [['@lingui/swc-plugin', {}]],
+  },
   images: {
     remotePatterns: [
       {
@@ -14,27 +23,34 @@ module.exports = {
         port: '',
         pathname: '/unep-gpml-public-staging/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'storage.googleapis.com',
+        port: '',
+        pathname: '/unep-gpml-public-production/**',
+      },
     ],
   },
   async rewrites() {
+    let domain = 'http://backend:3000'
+    if (process.env.REACT_APP_FEENV) {
+      domain = 'https://unep-gpml.akvotest.org'
+    }
+    if (process.env.REACT_APP_FEENV_STAGING) {
+      domain = 'https://unep-gpml-staging.akvotest.org'
+    }
     return [
       {
         source: '/api/:path*',
-        destination: process.env.REACT_APP_FEENV
-          ? 'https://unep-gpml.akvotest.org/api/:path*'
-          : 'http://backend:3000/api/:path*',
+        destination: `${domain}/api/:path*`,
       },
       {
         source: '/image/:path*',
-        destination: process.env.REACT_APP_FEENV
-          ? 'https://unep-gpml.akvotest.org/image/:path*'
-          : 'http://backend:3000/image/:path*',
+        destination: `${domain}/image/:path*`,
       },
       {
         source: '/env.js',
-        destination: process.env.REACT_APP_FEENV
-          ? 'https://unep-gpml.akvotest.org/env.js'
-          : 'http://backend:3000/env.js',
+        destination: `${domain}/env.js`,
       },
     ]
   },

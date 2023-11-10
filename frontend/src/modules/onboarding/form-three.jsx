@@ -6,6 +6,7 @@ const { Title, Link } = Typography
 import CatTagSelect from '../../components/cat-tag-select/cat-tag-select'
 import { SearchIcon } from '../../components/icons'
 import FormItem from '../../components/form-label'
+import { Trans, t } from '@lingui/macro'
 
 function FormThree({
   handleSeekingSuggestedTag,
@@ -29,7 +30,9 @@ function FormThree({
   return (
     <>
       <div className="text-wrapper">
-        <Title level={2}>What are the expertises you are looking for?</Title>
+        <Title level={2}>
+          <Trans>What are the expertises you are looking for?</Trans>
+        </Title>
       </div>
       <div className="ant-form ant-form-vertical">
         <Field name="seeking" style={{ width: '100%' }}>
@@ -76,12 +79,12 @@ function FormThree({
               <FormItem
                 for="offeringSuggested"
                 className="label-text"
-                label="Can't see what you're looking for?"
+                label={<Trans>Can't see what you're looking for?</Trans>}
                 validateStatus={validateStatus}
               >
                 <Select
                   size="small"
-                  placeholder="Suggest categories"
+                  placeholder={t`Suggest categories`}
                   allowClear
                   showSearch
                   mode={tagMode}

@@ -20,6 +20,9 @@ import { UIStore } from '../../store'
 import { SearchOutlined } from '@ant-design/icons'
 import MultipleSelectFilter from '../../components/select/multiple-select-filter'
 import { SearchIcon } from '../../components/icons'
+import { Trans, t } from '@lingui/macro'
+import { i18n } from '@lingui/core'
+
 const FilterModal = ({
   query,
   setShowFilterModal,
@@ -28,6 +31,7 @@ const FilterModal = ({
   asPath,
   history,
   setGridItems,
+  pathname,
 }) => {
   const {
     tags,
@@ -67,7 +71,7 @@ const FilterModal = ({
   }
 
   useEffect(() => {
-    if (Object.keys(query).length > 0) setFilter(query)
+    setFilter(query)
   }, [query])
 
   const filteredMainContentOptions = !isEmpty(mainContentType)
@@ -142,35 +146,67 @@ const FilterModal = ({
     newParams.delete('totalCount')
     newParams.delete('slug')
     history.push({
-      pathname: asPath,
+      pathname: pathname,
       query: newParams.toString(),
     })
   }
+
+  const hideFilterList = [
+    'offset',
+    'country',
+    'transnational',
+    'topic',
+    'view',
+    'orderBy',
+    'descending',
+  ]
+
+  const resetFilter = () => {
+    const newQuery = {}
+    setShowFilterModal(false)
+    const newParams = new URLSearchParams(newQuery)
+    history.push({
+      pathname: pathname,
+      search: newParams.toString(),
+    })
+  }
+
+  const isEmptyQuery = Object.values(query).every(
+    (x) => x === null || x === undefined || x?.length === 0
+  )
 
   return (
     <Modal
       centered
       className={styles.filterModal}
-      title="Filters"
+      title={<Trans>Filters</Trans>}
       visible={showFilterModal}
+      footer={null}
       onCancel={() => setShowFilterModal(false)}
-      footer={[
-        <Button
-          size="small"
-          key="submit"
-          className="apply-button"
-          onClick={() => handleApplyFilter()}
-        >
-          Apply Filters
-        </Button>,
-        <Button
-          className="clear-button"
-          onClick={() => setShowFilterModal(false)}
-          type="link"
-        >
-          Cancel
-        </Button>,
-      ]}
+      // footer={[
+      //   <Button
+      //     size="small"
+      //     key="submit"
+      //     className="apply-button"
+      //     onClick={() => handleApplyFilter()}
+      //   >
+      //     <Trans>Apply Filters</Trans>
+      //   </Button>,
+      //   <Button
+      //     className="clear-button"
+      //     onClick={() => setShowFilterModal(false)}
+      //     type="link"
+      //   >
+      //     <Trans>Cancel</Trans>
+      //   </Button>,
+      //   <Button
+      //     className="clear-button"
+      //     onClick={() => setShowFilterModal(false)}
+      //     type="link"
+      //   >
+      //     <Trans>Reset Filter</Trans>
+      //   </Button>,
+      // ]}
     >
       <Row type="flex" gutter={[0, 24]}>
         {/* My Bookmarks */}
@@ -184,7 +220,7 @@ const FilterModal = ({
                   updateQuery('favorites', checked)
                 }
               >
-                My Bookmarks
+                <Trans>My Bookmarks</Trans>
               </Checkbox>
             </Space>
           </Col>
@@ -194,21 +230,21 @@ const FilterModal = ({
 
         {/* Sub-content type */}
         <MultipleSelectFilter
-          title="Sub-content type"
+          title={<Trans>Sub-content type</Trans>}
           options={
             !isEmpty(mainContentType)
               ? mainContentOption().map((content) => {
                   const label =
-                    content?.name?.toLowerCase() === 'capacity building'
+                    content?.code === 'capacity_building'
                       ? 'Capacity Development'
-                      : content?.name
+                      : i18n._(content?.name)
                   return {
                     label: label,
                     options: content?.childs
                       .map((child, i) => ({
-                        label: child?.title,
-                        value: child?.title,
-                        key: `${i}-${content?.name}`,
+                        label: i18n._(child?.title),
+                        value: i18n._(child?.title),
+                        key: `${i}-${i18n._(content?.name)}`,
                       }))
                       .sort((a, b) =>
                         a?.label?.trim().localeCompare(b?.label?.trim())
@@ -225,7 +261,7 @@ const FilterModal = ({
 
         {/* Tags */}
         <MultipleSelectFilter
-          title="Tags"
+          title={<Trans>Tags</Trans>}
           options={tagOpts || []}
           value={filter?.tag?.map((x) => x) || []}
           flag="tag"
@@ -234,7 +270,7 @@ const FilterModal = ({
         />
 
         <MultipleSelectFilter
-          title="Entities"
+          title={<Trans>Entities</Trans>}
           options={
             !isEmpty(organisations)
               ? organisations
@@ -254,7 +290,7 @@ const FilterModal = ({
         />
 
         <MultipleSelectFilter
-          title="Representative group"
+          title={<Trans>Representative group</Trans>}
           options={
             !isEmpty(representativeGroup)
               ? representativeOpts.map((x) => ({
@@ -279,7 +315,7 @@ const FilterModal = ({
           <Row type="flex" style={{ width: '100%' }} gutter={[10, 10]}>
             {/* Start date */}
             <DatePickerFilter
-              title="Start Date"
+              title={<Trans>Start Date</Trans>}
               value={filter?.startDate}
               flag="startDate"
               query={query}
@@ -293,7 +329,7 @@ const FilterModal = ({
             />
             {/* End date */}
             <DatePickerFilter
-              title="End Date"
+              title={<Trans>End Date</Trans>}
               value={filter?.endDate}
               flag="endDate"
               query={query}
@@ -305,6 +341,40 @@ const FilterModal = ({
             />
           </Row>
         </Col>
+        <div className="footer">
+          {!isEmptyQuery &&
+            Object.keys(query).filter(
+              (item) =>
+                !hideFilterList.includes(item) &&
+                item !== 'slug' &&
+                item !== 'totalCount'
+            ).length > 0 && (
+              <Button
+                className="clear-button"
+                onClick={() => resetFilter()}
+                type="link"
+              >
+                <Trans>Reset Filter</Trans>
+              </Button>
+            )}
+          <div className="action-buttons">
+            <Button
+              size="small"
+              key="submit"
+              className="apply-button"
+              onClick={() => handleApplyFilter()}
+            >
+              <Trans>Apply Filters</Trans>
+            </Button>
+            <Button
+              className="clear-button"
+              onClick={() => setShowFilterModal(false)}
+              type="link"
+            >
+              <Trans>Cancel</Trans>
+            </Button>
+          </div>
+        </div>
       </Row>
     </Modal>
   )
@@ -327,7 +397,7 @@ const DatePickerFilter = ({
       <div>
         <DatePicker
           size="small"
-          placeholder="YYYY"
+          placeholder={t`YYYY`}
           picker={'year'}
           value={
             !isEmpty(value)
@@ -370,7 +440,7 @@ const KnowledgeLibrarySearch = ({ updateQuery, filter }) => {
         <Input
           size="small"
           className="input-search"
-          placeholder="Search resources"
+          placeholder={t`Search resources`}
           value={filter?.q}
           prefix={<SearchIcon />}
           onPressEnter={(e) => handleSearch(e.target.value)}

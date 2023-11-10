@@ -71,6 +71,39 @@
        ) FILTER (WHERE psb.plastic_strategy_id IS NOT NULL) AS plastic_strategy_bookmarks,
        (psb.organisation_id IS NOT NULL)::boolean AS ps_bookmarked,")))
 
+(defn list-organisations-badges-partial-select
+  [params]
+  (let [{:keys [badges]} params]
+    (when-not (nil? badges)
+      "COALESCE(
+         jsonb_agg(
+           DISTINCT jsonb_build_object(
+             'badge_id', oba.badge_id,
+             'badge_name', ba.name,
+             'organisation_id', oba.organisation_id,
+             'assigned_by', oba.assigned_by,
+             'assigned_at', oba.assigned_at
+           )
+         ) FILTER (WHERE oba.badge_id IS NOT NULL),
+        '[]'::jsonb) AS assigned_badges,")))
+
+(defn list-organisations-strengths-cto
+  [{:keys [plastic-strategy-id]}]
+  (let [bookmarked-initiatives-join (if-not plastic-strategy-id
+                                      ""
+                                      (format
+                                       "INNER JOIN plastic_strategy_initiative_bookmark psib
+                                         ON (oi.initiative = psib.initiative_id AND psib.plastic_strategy_id = %d)"
+                                       plastic-strategy-id))]
+    (format "SELECT oi.organisation, %s AS initiative
+             FROM organisation_initiative oi
+             %s
+             WHERE oi.association IN ('owner', 'implementor', 'donor', 'partner')"
+            (if-not plastic-strategy-id
+              "oi.initiative"
+              "psib.initiative_id")
+            bookmarked-initiatives-join)))
+
 (defn list-organisations-cto-query-filter-and-params
   [params]
   (let [{:keys [filters plastic-strategy-id]} params
@@ -83,6 +116,10 @@
                            (format "LEFT JOIN plastic_strategy_organisation_bookmark psb ON (o.id = psb.organisation_id %s AND psb.plastic_strategy_id = %d)"
                                    ps-bookmark-section-keys-join-cond
                                    plastic-strategy-id))
+        badges-join (if-not (contains? (set (keys params)) :badges)
+                      ""
+                      "LEFT JOIN organisation_badge oba ON oba.organisation_id = o.id
+                       LEFT JOIN badge ba ON ba.id = oba.badge_id")
         where-cond (cond-> "WHERE 1=1"
                      (seq review-status)
                      (str " AND o.review_status = :filters.review-status::REVIEW_STATUS")
@@ -104,15 +141,17 @@
                           (contains? (set (keys filters)) :ps-bookmarked))
                      (str " AND psb.section_key IN (:v*:filters.ps-bookmark-sections-keys)"))
         having (when (seq tags)
-                 "HAVING array_agg(t.tag) FILTER (WHERE t.id IS NOT NULL) && ARRAY[:v*:filters.tags]::text[]")
+                 "HAVING array_agg(t.tag) FILTER (WHERE t.id IS NOT NULL) @> ARRAY[:v*:filters.tags]::text[]")
         ps-bookmark-group-by (if-not plastic-strategy-id
                                ""
                                ", psb.organisation_id")]
     (format "%s
              %s
+             %s
              GROUP BY o.id %s
              %s"
             ps-bookmark-join
+            badges-join
             where-cond
             ps-bookmark-group-by
             (or having ""))))

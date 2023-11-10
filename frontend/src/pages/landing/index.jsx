@@ -1,6 +1,22 @@
-import { Tabs, Collapse, Card, Tag, Input, Col, Row, Form } from 'antd'
+import {
+  Tabs,
+  Collapse,
+  Card,
+  Tag,
+  Input,
+  Col,
+  Row,
+  Form,
+  Select,
+  Dropdown,
+  Menu,
+  notification,
+} from 'antd'
 import Image from 'next/image'
 import Link from 'next/link'
+import isEmpty from 'lodash/isEmpty'
+import values from 'lodash/values'
+import flatten from 'lodash/flatten'
 import styles from './index.module.scss'
 import {
   CirclePointer,
@@ -19,9 +35,20 @@ import { Pagination } from 'swiper'
 import moment from 'moment'
 import { useDeviceSize } from '../../modules/landing/landing'
 import Button from '../../components/button'
-import api from '../../utils/api'
+import { Trans, t } from '@lingui/macro'
+import { useLingui } from '@lingui/react'
+import { loadCatalog } from '../../translations/utils'
+import { UIStore } from '../../store'
 import { useRouter } from 'next/router'
-import { stripHtml, transformStrapiResponse } from '../../utils/misc'
+import {
+  getStrapiUrl,
+  stripHtml,
+  transformStrapiResponse,
+  useQuery,
+} from '../../utils/misc'
+import LocationDropdown from '../../components/location-dropdown/location-dropdown'
+import CountryTransnationalFilter from '../../components/select/country-transnational-filter'
+import api from '../../utils/api'
 
 const pagination = {
   clickable: true,
@@ -30,61 +57,106 @@ const pagination = {
   },
 }
 
-const Landing = () => (
-  <div id="landing" className={styles.landing}>
-    <Hero />
-    <ShowcasingAndStats />
-    <WhoAreWe />
-    <ActNow />
-    <LatestNews />
-    <Features />
-    <Trusted />
-    <Activities />
-    {/* <OurVoices /> */}
-    <Partnership />
-    <Partners />
-    <HelpCentre />
-    <Footer />
-  </div>
-)
+const Landing = (props) => {
+  return (
+    <div id="landing" className={styles.landing}>
+      <Hero {...props} />
+      <ShowcasingAndStats />
+      <WhoAreWe />
+      <ActNow />
+      <LatestNews />
+      <Features />
+      <Trusted />
+      <Activities />
+      {/* <OurVoices /> */}
+      <Partnership {...props} />
+      <Partners />
+      <HelpCentre />
+    </div>
+  )
+}
 
-const Hero = () => {
+const Hero = ({ setLoginVisible, isAuthenticated }) => {
+  const query = useQuery()
   const [selected, setSelected] = useState('Governments')
+  const [dropdownVisible, setDropdownVisible] = useState(false)
+  const [country, setCountry] = useState([])
+  const [multiCountry, setMultiCountry] = useState([])
+  const [disable, setDisable] = useState({
+    country: false,
+    multiCountry: false,
+  })
   const [timeout, _setTimeout] = useState(true)
+  const [filter, setFilter] = useState({})
+  const [filterCountries, setFilterCountries] = useState([])
+  const [value, setValue] = useState('')
+  const [multiCountryCountries, setMultiCountryCountries] = useState([])
+
   const intidRef = useRef()
   const [width] = useDeviceSize()
+  const { i18n } = useLingui()
+
   const items = [
     {
-      group: 'Governments',
-      text:
-        'The GPML digital platform empowers all countries to create and implement successful plastic strategies to end plastic pollution including in the marine environment.',
+      group: i18n._(t`Governments`),
+      text: i18n._(
+        t`The GPML digital platform empowers all countries to create and implement successful plastic strategies to end plastic pollution including in the marine environment.`
+      ),
     },
     {
-      group: 'Private Sector',
-      text:
-        'The GPML digital platform fosters public-private partnerships, offers clarity on circular economy practices, and provides guidance on Extended Producer Responsibilities (EPRs) and sustainable business models.',
+      group: t`Private Sector`,
+      text: t`The GPML digital platform fosters public-private partnerships, offers clarity on circular economy practices, and provides guidance on Extended Producer Responsibilities (EPRs) and sustainable business models.`,
     },
     {
-      group: 'Scientific Communities',
-      text:
-        'The GPML digital platform helps academia and the scientific community to ensure their research becomes actionable by offering the opportunity to share resources and collaborate with policy makers.',
+      group: t`Scientific Communities`,
+      text: t`The GPML digital platform helps academia and the scientific community to ensure their research becomes actionable by offering the opportunity to share resources and collaborate with policy makers.`,
     },
     {
-      group: 'NGOs',
-      text:
-        'The GPML digital platform helps academia and the scientific community to ensure their research becomes actionable by offering the opportunity to share resources and collaborate with policy makers.',
+      group: t`NGOs`,
+      text: t`The GPML digital platform helps academia and the scientific community to ensure their research becomes actionable by offering the opportunity to share resources and collaborate with policy makers.`,
     },
     {
-      group: 'IGOs',
-      text:
-        'The GPML digital platform offers the opportunity to forge collaborative partnerships with diverse stakeholders, share and find resources on plastic pollution, and amplify advocacy.',
+      group: t`IGOs`,
+      text: t`The GPML digital platform offers the opportunity to forge collaborative partnerships with diverse stakeholders, share and find resources on plastic pollution, and amplify advocacy.`,
     },
     {
-      group: 'Civil Societies',
-      text:
-        'The GPML digital platform allows NGOS and civil society to connect with likeminded organizations, discover financing resources and funding opportunities, and showcase their work in the fight against plastic pollution and marine litter.',
+      group: t`Civil Society`,
+      text: t`The GPML digital platform allows NGOs and civil society to connect with likeminded organizations, discover financing resources and funding opportunities, and showcase their work in the fight against plastic pollution and marine litter.`,
     },
   ]
+  const router = useRouter()
+  const tags = UIStore.useState((s) => s.tags)
+  const { countries, transnationalOptions } = UIStore.useState((s) => ({
+    countries: s.countries,
+    transnationalOptions: s.transnationalOptions,
+  }))
+  // populate options for tags dropdown
+  const tagsWithoutSpace =
+    !isEmpty(tags) &&
+    flatten(values(tags)).map((it) => ({
+      value: it?.tag?.trim(),
+      label: it?.tag?.trim(),
+    }))
+
+  const tagOpts = !isEmpty(tags)
+    ? [...new Set(tagsWithoutSpace.map((s) => JSON.stringify(s)))]
+        .map((s) => JSON.parse(s))
+        ?.sort((tag1, tag2) => tag1?.label.localeCompare(tag2?.label))
+    : []
+  const suggestedTags = [
+    'Plastic Pollution',
+    'Marine Litter',
+    'Reports & Assessments',
+    'Circularity',
+    'Plastics',
+    'Waste management',
+    'Courses & Training',
+    'National Action Plan',
+  ]
+  const maxTags = 6
+
+  const { locale } = router
+
   useEffect(() => {
     let index = 0
     clearInterval(intidRef.current)
@@ -93,12 +165,105 @@ const Hero = () => {
       if (index >= items.length) index = 0
       setSelected(items[index].group)
     }, 5000)
+
+    return () => {
+      clearInterval(intidRef.current)
+    }
   }, [])
+
+  const isInitialMount = useRef(true)
+
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false
+    } else {
+      if (locale) setSelected(items[0].group)
+    }
+  }, [locale])
+
   const handleClickLabel = (item) => () => {
     setSelected(item.group)
     clearInterval(intidRef.current)
     _setTimeout(false)
   }
+
+  function removeEmptyKeys(obj) {
+    return Object.fromEntries(
+      Object.entries(obj).filter(([key, value]) => {
+        if (Array.isArray(value)) {
+          return value.length > 0
+        }
+        return value !== null && value !== undefined && value !== ''
+      })
+    )
+  }
+
+  const handleOnSearch = () => {
+    if (!filter?.tag && country.length === 0 && multiCountry.length === 0) {
+      return
+    }
+
+    const data = {
+      tag: filter?.tag?.toLowerCase(),
+      country: country,
+      transnational: multiCountry,
+    }
+
+    const cleanedData = removeEmptyKeys(data)
+
+    router.push({
+      pathname: '/knowledge/library',
+      query: cleanedData,
+    })
+  }
+
+  const countryOpts = countries
+    ?.filter((country) => country.description.toLowerCase() === 'member state')
+    ?.map((it) => ({ value: it.id, label: it.name }))
+    ?.sort((a, b) => a.label.localeCompare(b.label))
+
+  const updateQuery = (param, value, paramValueArr) => {
+    if (param === 'country') {
+      setDisable({
+        ...disable,
+        ...(value ? { multiCountry: true } : { multiCountry: false }),
+      })
+      setCountry(value)
+      setFilterCountries(value?.toString())
+      const find = countryOpts.find((item) => item.value === value)
+      setValue(find ? find.label : '')
+    }
+    if (param === 'transnational') {
+      setDisable({
+        ...disable,
+        ...(value ? { country: true } : { country: false }),
+      })
+      if (!value) {
+        setFilterCountries('')
+      }
+      setMultiCountry(value)
+
+      const find = transnationalOptions.find((item) => item.id === value)
+      setValue(find ? find.name : '')
+    }
+  }
+
+  const countryList = (
+    <CountryTransnationalFilter
+      {...{
+        query,
+        updateQuery,
+        multiCountryCountries,
+        setMultiCountryCountries,
+      }}
+      country={country || []}
+      multiCountry={multiCountry || []}
+      multiCountryLabelCustomIcon={true}
+      isExpert={true}
+      disable={disable}
+    />
+  )
+
   return (
     <>
       <div className="hero">
@@ -136,15 +301,15 @@ const Hero = () => {
           </div>
           <div className="text">
             <h1>
-              Empowering
+              <Trans>Empowering</Trans>
               <br />
               <b className={classNames({ timeout })}>{selected}</b>
               <br />
-              to address plastic pollution
+              <Trans>to address plastic pollution</Trans>
             </h1>
             <div className="p-container">
               {items.map((item) => (
-                <AnimatePresence>
+                <AnimatePresence key={`p-${item.group}`}>
                   {item.group === selected && (
                     <motion.p
                       transition={{
@@ -164,41 +329,116 @@ const Hero = () => {
                 </AnimatePresence>
               ))}
             </div>
-            <Button type="primary" size="large" withArrow>
-              Join Now
-            </Button>
+            {!isAuthenticated ? (
+              <Button
+                onClick={() => setLoginVisible(true)}
+                type="primary"
+                size="large"
+                withArrow
+              >
+                <Trans>Join Now</Trans>
+              </Button>
+            ) : (
+              <Link href="/workspace">
+                <Button type="primary" size="large" withArrow>
+                  <Trans>Workspace</Trans>
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
       </div>
       <div className="container">
         <div className="search-bar">
           <div className="bar">
-            <Input
-              prefix={width < 768 && <Magnifier />}
-              placeholder="Search the resource database..."
-              type="text"
+            <Select
+              dropdownClassName={styles.dropdownSuggestion}
+              placeholder={t`Search the resource database...`}
+              options={tagOpts}
+              optionFilterProp="children"
+              filterOption={(input, option) =>
+                option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+              value={filter?.tag}
+              onChange={(val) => {
+                setFilter({
+                  tag: val,
+                })
+              }}
+              suffixIcon={width < 768 && <Magnifier />}
+              virtual={false}
+              showSearch
             />
             <div className="localisation h-xs">
-              <Localiser />
-              <span className="hide-mobile">Globally</span>
+              <LocationDropdown
+                {...{
+                  country,
+                  multiCountry,
+                  countryList,
+                  dropdownVisible,
+                  setDropdownVisible,
+                }}
+                placeholder={<Trans>Globally</Trans>}
+                value={value}
+              />
             </div>
             <Button
               type="primary"
               size="small"
               className="left-icon hide-mobile"
+              onClick={handleOnSearch}
             >
               <Magnifier />
-              Search
+              <Trans>Search</Trans>
             </Button>
           </div>
-          <Button type="primary" className="hide-desktop noicon">
-            Search
+          <Button
+            type="primary"
+            className="hide-desktop noicon"
+            onClick={handleOnSearch}
+          >
+            <Trans>Search</Trans>
           </Button>
           <div className="tags hide-mobile">
-            <b>Suggested search:</b>
-            <Tag className="h-xxs">Case Studies</Tag>
-            <Tag className="h-xxs">Plastic Strategies</Tag>
-            <Tag className="h-xxs">Plastic Solutions</Tag>
+            <b>
+              <Trans>Suggested:</Trans>
+            </b>
+            <div className="suggestions">
+              {suggestedTags.slice(0, maxTags).map((suggestion, sx) => (
+                <Tag
+                  key={sx}
+                  className="h-xxs"
+                  onClick={() => setFilter({ tag: suggestion })}
+                >
+                  {suggestion}
+                </Tag>
+              ))}
+              {suggestedTags.length > maxTags && (
+                <Dropdown
+                  overlay={
+                    <Menu>
+                      {suggestedTags
+                        .slice(maxTags, suggestedTags.length)
+                        .map((tag, tx) => {
+                          return (
+                            <Menu.Item
+                              key={tx}
+                              onClick={() => setFilter({ tag })}
+                            >
+                              {tag}
+                            </Menu.Item>
+                          )
+                        })}
+                    </Menu>
+                  }
+                  trigger={['click']}
+                >
+                  <Tag className="h-xxs">
+                    {`+${suggestedTags.length - maxTags} more`}
+                  </Tag>
+                </Dropdown>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -207,33 +447,40 @@ const Hero = () => {
 }
 
 const ShowcasingAndStats = () => {
+  const { i18n } = useLingui()
   const items = [
     {
       value: '2370',
-      label: 'NUMBER OF RESOURCES',
+      label: i18n._(t`NUMBER OF RESOURCES`),
     },
     {
       value: '300',
-      label: 'DATA LAYERS',
+      label: t`DATA LAYERS`,
     },
     {
       value: '70',
-      label: 'ACTION PLANS',
+      label: t`ACTION PLANS`,
     },
     {
       value: '5',
-      label: 'COMMUNITIES OF PRACTICE',
+      label: t`COMMUNITIES OF PRACTICE`,
     },
   ]
   return (
     <div className="container">
       <div className={styles.showCasingSection}>
         <div className="caption-container">
-          <div className="caps-heading-1 page-sub-heading">SHOWCASING</div>
-          <h2>Already on the platform</h2>
+          <div className="caps-heading-1 page-sub-heading">
+            <Trans>SHOWCASING</Trans>
+          </div>
+          <h2>
+            <Trans>Already on the platform</Trans>
+          </h2>
         </div>
         <div className="powered-by-container">
-          <div className="caps-heading-1 page-sub-heading">POWERED BY:</div>
+          <div className="caps-heading-1 page-sub-heading">
+            <Trans>POWERED BY:</Trans>
+          </div>
           <div className="powered-by-images">
             <Image
               src="/powered-by-unep.svg"
@@ -263,13 +510,19 @@ const ShowcasingAndStats = () => {
         </div>
         <div className="summaries">
           <span className="purple">
-            <h5>195 Governments</h5>
+            <h5>
+              195 <Trans>Government agencies</Trans>
+            </h5>
           </span>
           <span className="green">
-            <h5>1358 Organizations</h5>
+            <h5>
+              1358 <Trans>Organizations</Trans>
+            </h5>
           </span>
           <span className="blue">
-            <h5>1251 Individuals</h5>
+            <h5>
+              1251 <Trans>Individuals</Trans>
+            </h5>
           </span>
         </div>
       </div>
@@ -280,43 +533,43 @@ const ShowcasingAndStats = () => {
 const WhoAreWe = () => {
   const [activeTab, setActiveTab] = useState('1')
   const [activeAccordion, setActiveAccordion] = useState('1')
+  const { i18n } = useLingui()
 
   const items = [
     {
       id: 1,
-      title: 'Who are we?',
-      description:
-        'The Global Partnership on Plastic Pollution and Marine Litter (GPML) Digital Platform is a multi-stakeholder, knowledge sharing and networking tool which aims to facilitate action on plastic pollution and marine litter reduction and prevention.',
+      title: t`Who are we?`,
+      description: t`The Global Partnership on Plastic Pollution and Marine Litter (GPML) Digital Platform is a multi-stakeholder, knowledge sharing and networking tool which aims to facilitate action on plastic pollution and marine litter reduction and prevention.`,
     },
     {
       id: 2,
-      title: 'What we do?',
-      description:
-        'The Global Partnership on Plastic Pollution and Marine Litter (GPML) Digital Platform brings decision making power to multiple stakeholders by integrating data, crowd sourced knowledge, and fostering collaborations to co-create and advance solutions to end plastic pollution including in the marine environment.',
+      title: t`What we do?`,
+      description: t`The Global Partnership on Plastic Pollution and Marine Litter (GPML) Digital Platform brings decision making power to multiple stakeholders by integrating data, crowd sourced knowledge, and fostering collaborations to co-create and advance solutions to end plastic pollution including in the marine environment.`,
     },
     {
       id: 3,
-      title: 'What is the connection between this platform and GPML?',
-      description:
-        'The GPML Digital Platform functions as the digital arm of the GPML, a multi-stakeholder partnership that brings together all actors working to prevent plastic pollution and marine litter.',
+      title: t`What is the connection between this platform and GPML?`,
+      description: t`The GPML Digital Platform functions as the digital arm of the GPML, a multi-stakeholder partnership that brings together all actors working to prevent plastic pollution and marine litter.`,
     },
     {
       id: 4,
-      title: 'Why join the GPML?',
+      title: t`Why join the GPML?`,
       description: (
         <>
-          Benefits of joining:
-          <ul>
-            <li>Access to a global network of members​</li>
-            <li>
-              Opportunities to showcase your work in our newsletter, online and
-              at events
-            </li>
-            <li>A Data Hub to guide efforts towards SDGs and more​</li>
-            <li>Thousands of resources at your fingertips</li>
-            <li>Networking with other stakeholders​</li>
-            <li>Access to financing opportunities, and more!</li>
-          </ul>
+          <Trans>
+            Benefits of joining:
+            <ul>
+              <li>Access to a global network of members​</li>
+              <li>
+                Opportunities to showcase your work in our newsletter, online
+                and at events
+              </li>
+              <li>A Data Hub to guide efforts towards SDGs and more​</li>
+              <li>Thousands of resources at your fingertips</li>
+              <li>Networking with other stakeholders​</li>
+              <li>Access to financing opportunities, and more!</li>
+            </ul>
+          </Trans>
         </>
       ),
     },
@@ -375,46 +628,53 @@ const WhoAreWe = () => {
 
 const ActNow = () => {
   const [width] = useDeviceSize()
+  const { i18n } = useLingui()
   const items = [
     {
-      content:
-        'Start your own initiative. Get inspired by others who are making progress to end plastic pollution.',
+      content: t`Start your own initiative. Get inspired by others who are making progress to end plastic pollution.`,
       bgColor: 'purple',
       title: (
         <>
-          Case
-          <br />
-          Studies
+          <Trans>
+            Case
+            <br />
+            Studies
+          </Trans>
         </>
       ),
-      links: [{ label: 'Track progress', url: '#' }],
+      links: [
+        {
+          label: t`Discover`,
+          url: '/knowledge/library?subContentType=Case+studies',
+        },
+      ],
     },
     {
       bgColor: 'green',
-      content:
-        'Reduce your country’s footprint. Create and advance your plastic startegy.',
-      title: 'Plastic Strategies',
+      content: t`Reduce your country’s footprint. Create and advance your plastic startegy.`,
+      title: t`Plastic Strategies`,
       links: [
-        { label: 'Track progress', url: '#' },
-        { label: 'Track action', url: '#' },
+        {
+          label: t`Discover`,
+          url: '/knowledge/library/map/action-plan',
+        },
+        { label: t`Add`, url: '/flexible-form' },
       ],
     },
     {
       bgColor: 'violet',
-      content:
-        'Join others in coordinating efforts towards shared plastic solutions. From data to capacity development communities',
-      title: 'Communities of practise',
-      links: [{ label: 'Track progress', url: '#' }],
+      content: t`Join others in coordinating efforts towards shared plastic solutions. From data to capacity development communities`,
+      title: t`Communities of practise`,
+      links: [{ label: t`Join and collaborate`, url: '/forum' }],
     },
     {
       bgColor: 'blue',
-      content:
-        'Start your own initiative. Get inspired by others who are making progress to end plastic pollution.',
-      label: 'Coming soon',
-      title: 'Country Progress',
+      content: t`Data visualisations to track countries progress. Quickly connect with others working in the country to end plastic.`,
+      label: t`Coming soon`,
+      title: t`Country Progress`,
       links: [
-        { label: 'Track progress', url: '#' },
-        { label: 'Track action', url: '#' },
+        // { label: t`Track progress`, url: '#' },
+        // { label: t`Track action`, url: '#' },
       ],
     },
   ]
@@ -424,12 +684,16 @@ const ActNow = () => {
         <div className="wrapper">
           <div className="caps-heading-1 page-sub-heading">Why us?</div>
           <h3 className="h-xxl">
-            Act Now: <br /> <span>Co-solution with the plastic network</span>
+            <Trans>
+              Act Now: <br /> <span>Co-solution with the plastic network</span>
+            </Trans>
           </h3>
           <p className="p-l">
-            Avoid duplication of efforts. By using the platform, you can
-            collaborate with other organisations and governments to create
-            shared solutions to end plastic pollution.
+            <Trans>
+              Avoid duplication of efforts. By using the platform, you can
+              collaborate with other organisations and governments to create
+              shared solutions to end plastic pollution.
+            </Trans>
           </p>
         </div>
       </div>
@@ -460,57 +724,24 @@ const ActNowCard = ({ item }) => (
     <p className="p-s">{item?.content}</p>
     <div className={item.links.lenght === 1 ? 'monolink' : 'multilink'}>
       {item.links.map((link) => (
-        <Button type="link" withArrow>
-          {link.label}
-        </Button>
+        <Link href={link.url}>
+          <Button type="link" withArrow>
+            {link.label}
+          </Button>
+        </Link>
       ))}
     </div>
   </div>
 )
 
 const LatestNews = () => {
-  const router = useRouter()
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
-  // const items = [
-  //   {
-  //     id: 111,
-  //     badge: 'NEWS',
-  //     image: '/news/watch-the-7th-international-marine-debris-conference.jpg',
-  //     published_at: '2023-10-18T07:56:55.667029+00:00',
-  //     title: 'WATCH: The 7th International Marine Debris Conference',
-  //     excerpt:
-  //       'Join a 90-minute interactive workshop, to discuss a risk assessment approach',
-  //     url: '/landing',
-  //   },
-  //   {
-  //     id: 112,
-  //     badge: 'EDITORIAL',
-  //     image: '/news/discover-opportunities-and-resources.jpg',
-  //     published_at: null,
-  //     title: 'DISCOVER: Opportunities and Resources!',
-  //     excerpt:
-  //       'The CASSINI EU Maritime Prize for Digital Space Applications is looking',
-  //     url: '/landing',
-  //   },
-  //   {
-  //     id: 113,
-  //     badge: 'BLOGPOST',
-  //     image: '/news/register-gpml-interactive-workshop.jpg',
-  //     published_at: '2023-08-01T07:56:55.667029+00:00',
-  //     title: 'REGISTER: GPML Interactive Workshop',
-  //     excerpt:
-  //       'Join a 90-minute interactive workshop, to discuss a risk assessment approach',
-  //     url: '/landing',
-  //   },
-  // ]
+  const strapiUrl = getStrapiUrl()
   useEffect(() => {
-    fetch(
-      `https://unep-gpml.akvotest.org/strapi/api/posts?locale=en&populate=cover`
-    )
+    fetch(`${strapiUrl}/api/posts?locale=en&populate=cover`)
       .then((d) => d.json())
       .then((d) => {
-        console.log(transformStrapiResponse(d.data))
         setItems(transformStrapiResponse(d.data))
         setLoading(false)
       })
@@ -519,17 +750,24 @@ const LatestNews = () => {
     <div className={styles.latestNews}>
       <div className="container">
         <div className="news-wrapper hide-sm">
-          <strong className="caps-heading-1">HIGHLIGHTS</strong>
+          <strong className="caps-heading-1">
+            <Trans>HIGHLIGHTS</Trans>
+          </strong>
           <h2>
-            <strong>Latest news:</strong>
+            <strong>
+              <Trans>Latest news:</Trans>
+            </strong>
             <br />
-            How is the network co-solutioning?
+            <Trans>How is the network co-solutioning?</Trans>
           </h2>
         </div>
         <div className="news-wrapper hide-sm">
           <p className="p-l">
-            Learn about inspiring co-soluting efforts from the GPML network and
-            all the other actors contributing to the plastic action platform.
+            <Trans>
+              Learn about inspiring co-soluting efforts from the GPML network
+              and all the other actors contributing to the plastic action
+              platform.
+            </Trans>
           </p>
         </div>
         <div className="news-wrapper news-items">
@@ -558,23 +796,27 @@ const LatestNews = () => {
                         </span>
                       )}
                     </div>
-                    <Image
-                      alt={item.title}
-                      src={item.cover.data.attributes.formats.medium.url}
-                      width={366}
-                      height={220}
-                    />
+                    <Link href={`/post/${item.id}-${item.slug}`}>
+                      <Image
+                        alt={item.title}
+                        src={item.cover.data.attributes.formats?.medium.url}
+                        width={366}
+                        height={220}
+                      />
+                    </Link>
                   </div>
                 }
                 key={dx}
               >
-                <h5 className="bold">{item.title}</h5>
+                <Link href={`/post/${item.id}-${item.slug}`}>
+                  <h5 className="bold">{item.title}</h5>
+                </Link>
                 <p className="p-m">
                   {stripHtml(item.content)?.substring(0, 100)}...
                 </p>
                 <Link href={`/post/${item.id}-${item.slug}`}>
                   <Button type="link" withArrow>
-                    Read More
+                    <Trans>Read More</Trans>
                   </Button>
                 </Link>
               </Card>
@@ -588,32 +830,29 @@ const LatestNews = () => {
 
 const Features = () => {
   const [width] = useDeviceSize()
+  const { i18n } = useLingui()
   const items = [
     {
-      title: 'Data tools',
+      title: t`Data tools`,
       key: 'data-tool',
-      content:
-        'Access a suite of powerful data tools tailored for tackling plastic pollution and marine litter. Utilize comprehensive data sets, layers and statistics to  gain valuable insights that empower informed decision-making and drive effective action.',
+      content: t`Access a suite of powerful data tools tailored for tackling plastic pollution and marine litter. Utilize comprehensive data sets, layers and statistics to  gain valuable insights that empower informed decision-making and drive effective action.`,
     },
     {
-      label: 'Coming soon',
-      title: 'Workspace',
+      label: t`Coming soon`,
+      title: t`Workspace`,
       key: 'workspace-feature',
-      content:
-        'Elevate your mission to address plastic pollution and marine litter through our integrated workspace feature. This feature enables you to coordinate with partners, centralize resources, strategize actions, and drive collective solutions',
+      content: t`Elevate your mission to address plastic pollution and marine litter through our integrated workspace feature. This feature enables you to coordinate with partners, centralize resources, strategize actions, and drive collective solutions`,
     },
     {
-      title: 'Match-making',
+      title: t`Match-making`,
       key: 'match-making',
-      content:
-        'Discover like-minded individuals and organizations passionate about combating plastic pollution and marine litter through our innovative matchmaking feature. Connect with fellow advocates, researchers, and activists to amplify your impact and collaborate on meaningful projects for a cleaner and healthier ocean ecosystem.',
+      content: t`Discover like-minded individuals and organizations passionate about combating plastic pollution and marine litter through our innovative matchmaking feature. Connect with fellow advocates, researchers, and activists to amplify your impact and collaborate on meaningful projects for a cleaner and healthier ocean ecosystem.`,
     },
     {
-      label: 'Coming soon',
-      title: 'AI Innovations',
+      label: t`Coming soon`,
+      title: t`AI Innovations`,
       key: 'ai-innovations',
-      content:
-        'By leveraging AI and innovation, the platform will enable proactive strategies and solutions that efficiently combat plastic pollution and marine litter',
+      content: t`By leveraging AI and innovation, the platform will enable proactive strategies and solutions that efficiently combat plastic pollution and marine litter`,
     },
   ]
 
@@ -624,20 +863,24 @@ const Features = () => {
           <div className="title-wrapper">
             <div className="title-holder">
               <div className="caps-heading-1 page-sub-heading">
-                How does it work?
+                <Trans>How does it work?</Trans>
               </div>
               <h2 className="h-xxl">
-                Features & Benefits <span>of using the platform</span>
+                <Trans>
+                  Features & Benefits <span>of using the platform</span>
+                </Trans>
               </h2>
               <p className="p-l">
-                The platform offers a wide range of tools to support your
-                decision-making and help a global network of actors to work
-                together to create shared solutions to end plastic pollution.
+                <Trans>
+                  The platform offers a wide range of tools to support your
+                  decision-making and help a global network of actors to work
+                  together to create shared solutions to end plastic pollution.
+                </Trans>
               </p>
             </div>
             <div>
               <Button withArrow={<LongArrowRight />} size="large" ghost>
-                View All Features
+                <Trans>View All Features</Trans>
               </Button>
             </div>
           </div>
@@ -669,11 +912,18 @@ const Trusted = () => {
       <div className={styles.trustedSection}>
         <div className="trusted-text">
           <h3 className="semibold">
-            Trusted data and information badge system and validation process.
+            <Trans>
+              Trusted data, Information badge system and Validation process.
+            </Trans>
           </h3>
-          <Button withArrow type="primary" size="large">
-            Discover
-          </Button>
+          <a
+            target="_blank"
+            href="https://docs.google.com/presentation/d/e/2PACX-1vSi-8jTrnk3Lj7ieb-z2Hy-FIHE4jQhZyRjonWWOlYgPb2Mu5suUyPPfwylZR_7zDyIJE7kGNkfghTM/pub?start=false&loop=false&delayms=60000"
+          >
+            <Button withArrow type="primary" size="large">
+              <Trans>Discover</Trans>
+            </Button>
+          </a>
         </div>
         <div className="trusted-circle" />
       </div>
@@ -688,23 +938,29 @@ const Activities = () => {
         <div className="title-wrapper">
           <div className="title-holder">
             <div className="caps-heading-1 page-sub-heading">
-              WHAT IS THE FOCUS OF GPML?
+              <Trans>WHAT IS THE FOCUS OF GPML?</Trans>
             </div>
             <h2 className="h-xxl">
-              <span>GPML’s</span> Action Tracks
+              <Trans>
+                <span>GPML’s</span> Action Tracks
+              </Trans>
             </h2>
             <p className="p-l">
-              The current core work of the GPML is organized through the
-              following five Action Tracks, with the aim of advancing priority
-              issues by connecting key stakeholders and facilitating
-              collaboration and coordination. The platform offers a wide range
-              of tools to facilitate this work.
+              <Trans>
+                The current core work of the GPML is organized through the
+                following five Action Tracks, with the aim of advancing priority
+                issues by connecting key stakeholders and facilitating
+                collaboration and coordination. The platform offers a wide range
+                of tools to facilitate this work.
+              </Trans>
             </p>
           </div>
           <div>
-            <Button size="large" ghost withArrow={<LongArrowRight />}>
-              Visit the website
-            </Button>
+            <a href="https://www.gpmarinelitter.org/" target="_blank">
+              <Button size="large" ghost withArrow={<LongArrowRight />}>
+                <Trans>Visit the website</Trans>
+              </Button>
+            </a>
           </div>
         </div>
         <div className="activity-box-wrapper">
@@ -714,34 +970,44 @@ const Activities = () => {
                 <img src="/activity-policy.svg" />
               </div>
               <p className="h-m">
-                Science
-                <br />
-                policy
+                <Trans>
+                  Science
+                  <br />
+                  policy
+                </Trans>
               </p>
             </li>
             <li>
               <div className="icon">
                 <img src="/activity-bookmark.svg" />
               </div>
-              <p className="h-m">Guidelines standards & harmonization</p>
+              <p className="h-m">
+                <Trans>Guidelines standards & harmonization</Trans>
+              </p>
             </li>
             <li>
               <div className="icon">
                 <img src="/activity-money.svg" />
               </div>
-              <p className="h-m">Sustainable & innovative financing</p>
+              <p className="h-m">
+                <Trans>Sustainable & innovative financing</Trans>
+              </p>
             </li>
             <li>
               <div className="icon">
                 <img src="/activity-plans.svg" />
               </div>
-              <p className="h-m">National action plans</p>
+              <p className="h-m">
+                <Trans>National action plans</Trans>
+              </p>
             </li>
             <li>
               <div className="icon">
                 <img src="/activity-access.svg" />
               </div>
-              <p className="h-m">Access to all</p>
+              <p className="h-m">
+                <Trans>Access to all</Trans>
+              </p>
             </li>
           </ul>
         </div>
@@ -813,67 +1079,110 @@ const OurVoices = () => {
   )
 }
 
-const Partnership = () => {
+const Partnership = ({ isAuthenticated, setLoginVisible }) => {
   return (
     <section className={styles.partnership}>
       <div className="container content-container">
         <div className="partnership-content-wrapper">
           <h2 className="h-xxl">
-            Join the Global Partnership on Plastic Pollution and Marine Litter
+            <Trans>
+              Join the Global Partnership on Plastic Pollution and Marine Litter
+            </Trans>
           </h2>
           <p className="h-m">
-            Become part of GPML to collaborate with thousands of organisations
-            and individuals from around the world
+            <Trans>
+              Become part of GPML to collaborate with thousands of organisations
+              and individuals from around the world
+            </Trans>
           </p>
-          <Button withArrow type="primary" size="large">
-            Join now
-          </Button>
+          {!isAuthenticated ? (
+            <Button
+              onClick={() => setLoginVisible(true)}
+              type="primary"
+              size="large"
+              withArrow
+            >
+              <Trans>Join Now</Trans>
+            </Button>
+          ) : (
+            <Link href="/workspace">
+              <Button type="primary" size="large" withArrow>
+                <Trans>Workspace</Trans>
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
       <div className="container links-container">
         <Row gutter={24}>
           <Col lg={8} xl={8}>
             <div className="links-card">
-              <h3 className="h-m">Become part of the network</h3>
+              <h3 className="h-m">
+                <Trans>Become part of the network</Trans>
+              </h3>
               <ul className="link-list">
-                <li>
+                <li onClick={() => setLoginVisible(true)}>
                   <CirclePointer />
-                  Sign Up
+                  <Trans>Sign Up</Trans>
                 </li>
                 <li>
                   <CirclePointer />
-                  Join the GPML
+                  <Link href="/page/membership">
+                    <Trans>Join the GPML</Trans>
+                  </Link>
                 </li>
                 <li>
                   <CirclePointer />
-                  Become a partnerL
+                  <Link href="/page/membership">
+                    <Trans>Become a partner</Trans>
+                  </Link>
                 </li>
               </ul>
             </div>
           </Col>
           <Col lg={8} xl={8}>
             <div className="links-card">
-              <h3 className="h-m">Co-solution with our network</h3>
+              <h3 className="h-m">
+                <Trans>Co-solution with our network</Trans>
+              </h3>
               <ul className="link-list">
                 <li>
                   <CirclePointer />
-                  Network with others
+                  <Link href="/community">
+                    <Trans>Network with others</Trans>
+                  </Link>
                 </li>
                 <li>
                   <CirclePointer />
-                  Share your knowledge
+                  <Link
+                    href={
+                      isAuthenticated ? '/flexible-forms' : '/knowledge-library'
+                    }
+                  >
+                    <Trans>Share your knowledge</Trans>
+                  </Link>
                 </li>
                 <li>
                   <CirclePointer />
-                  Share your data
+                  <a
+                    href={
+                      isAuthenticated
+                        ? 'https://unepazecosysadlsstorage.z20.web.core.windows.net/add-data'
+                        : 'https://unepazecosysadlsstorage.z20.web.core.windows.net/'
+                    }
+                  >
+                    <Trans>Share your data</Trans>
+                  </a>
                 </li>
               </ul>
             </div>
           </Col>
           <Col lg={8} xl={8}>
             <div className="links-card">
-              <h3 className="h-m">Spread the word</h3>
-              <p>Follow us on social media to be part of the movement. </p>
+              <Trans>
+                <h3 className="h-m">Spread the word</h3>
+                <p>Follow us on social media to be part of the movement. </p>
+              </Trans>
               <ul className="icon-list">
                 <li>
                   <a
@@ -943,7 +1252,9 @@ const Partners = () => {
   return (
     <div className={styles.partnerSection}>
       <div className="container">
-        <h2 className="semibold">Our partners</h2>
+        <h2 className="semibold">
+          <Trans>Our partners</Trans>
+        </h2>
       </div>
       <div className="partner-container">
         <ul className="partner-items">
@@ -957,7 +1268,7 @@ const Partners = () => {
       <div className="partner-button-container">
         <div className="container">
           <Button withArrow={<LongArrowRight />} size="large" ghost>
-            See all partners
+            <Trans>See all partners</Trans>
           </Button>
         </div>
       </div>
@@ -975,126 +1286,19 @@ const HelpCentre = () => {
         height={64}
       />
       <div className="help-centre-text">
-        <h2 className="bold">Any Questions?</h2>
+        <h2 className="bold">
+          <Trans>Any Questions?</Trans>
+        </h2>
         <h6 className="semibold">
-          Visit the Help Center for FAQs, tutorials and more
+          <Trans>Visit the Help Center for FAQs, tutorials and more</Trans>
         </h6>
       </div>
       <div className="help-centre-button">
-        <Button withArrow={<LongArrowRight />}>Visit the Help Centre</Button>
+        <Button withArrow={<LongArrowRight />}>
+          <Trans>Visit the Help Centre</Trans>
+        </Button>
       </div>
     </div>
-  )
-}
-
-export const Footer = () => {
-  const [form] = Form.useForm()
-
-  const onFinish = (values) => {
-    console.log('Finish:', values)
-  }
-  return (
-    <footer className={styles.footerSection}>
-      <div className="container">
-        <div className="footer-items">
-          <div className="footer-item">
-            <strong className="p-l">GPML Digital Platform</strong>
-            <div className="contact-us">
-              <p className="p-m">Contact Us</p>
-              <a href="mailto:unep-gpmarinelitter@un.org" className="p-m">
-                unep-gpmarinelitter@un.org
-              </a>
-            </div>
-          </div>
-          {/* <div className="footer-item">
-            <h6 className="title">About us</h6>
-            <ul>
-              <li>
-                <Link href="/landing">Who we are</Link>
-              </li>
-              <li>
-                <Link href="/landing">What we do</Link>
-              </li>
-              <li>
-                <Link href="/landing">About the GPML Digital platform</Link>
-              </li>
-            </ul>
-          </div> */}
-          <div className="footer-item">
-            <h6 className="title">GPML Tools</h6>
-            <ul>
-              <li>
-                <Link href="/landing">Show all tools</Link>
-              </li>
-            </ul>
-          </div>
-          <div className="footer-item">
-            <h6 className="title">Join Newsletter</h6>
-            <div className="footer-newsletter">
-              <div>
-                <p className="h-xs">
-                  Stay tuned with the GPML latest news and events!
-                </p>
-              </div>
-              <div className="newsletter-container">
-                <Form
-                  form={form}
-                  name="newsletter"
-                  layout="inline"
-                  onFinish={onFinish}
-                >
-                  <Form.Item name="email">
-                    <Input type="email" placeholder="Enter your email" />
-                  </Form.Item>
-                  <Form.Item shouldUpdate>
-                    {() => (
-                      <button type="submit">
-                        <ArrowRight viewBox="0 0 15 24" />
-                      </button>
-                    )}
-                  </Form.Item>
-                </Form>
-              </div>
-              <div>
-                <h6>Follow Us</h6>
-                <ul className="social-links">
-                  <li>
-                    <a
-                      href="https://ke.linkedin.com/company/global-partnership-on-marine-litter"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <LinkedinIcon />
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="https://www.youtube.com/channel/UCoWXFwDeoD4c9GoXzFdm9Bg"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <YoutubeIcon />
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        <hr />
-        <div className="footer-bar">
-          <div>
-            <p className="h-xxs">
-              Copyright © {moment().format('YYYY')} All rights reserved
-            </p>
-          </div>
-          <div className="footer-confirm-cookies">
-            <p className="h-xxs">We use cookies for better service.</p>
-            <Button type="link">Accept</Button>
-          </div>
-        </div>
-      </div>
-    </footer>
   )
 }
 
@@ -1106,10 +1310,18 @@ const FeatureCard = ({ item }) => {
         <h3 className="h-l">{item.title}</h3>
       </div>
       <div className="card-content-container">
-        <p className="p-l">{item?.content}</p>
+        <p className="p-m">{item?.content}</p>
       </div>
     </div>
   )
+}
+
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
 }
 
 export default Landing

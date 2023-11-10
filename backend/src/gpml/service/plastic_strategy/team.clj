@@ -1,6 +1,7 @@
 (ns gpml.service.plastic-strategy.team
   (:require [duct.logger :refer [log]]
             [gpml.db.plastic-strategy.team :as db.ps.team]
+            [gpml.db.stakeholder :as db.stakeholder]
             [gpml.service.chat :as srv.chat]
             [gpml.service.invitation :as srv.invitation]
             [gpml.service.permissions :as srv.permissions]
@@ -25,14 +26,19 @@
         [{:txn-fn
           (fn tx-add-ps-team-member
             [{:keys [ps-team-member] :as context}]
-            (let [{:keys [success? reason error-details]}
+            (let [{:keys [success? reason] :as result}
                   (db.ps.team/add-ps-team-member (:spec db) ps-team-member)]
               (if success?
                 context
-                (assoc context
-                       :success? false
-                       :reason reason
-                       :error-details error-details))))
+                (if (= reason :already-exists)
+                  (assoc context
+                         :success? false
+                         :reason :ps-team-member-already-exists
+                         :error-details {:result result})
+                  (assoc context
+                         :success? false
+                         :reason :failed-to-add-team-member
+                         :error-details {:result result})))))
           :rollback-fn
           (fn rollback-add-ps-team-member
             [{{:keys [plastic-strategy-id user-id]} :ps-team-member :as context}]
@@ -78,11 +84,40 @@
                 (log logger :error :failed-to-rollback-assign-role-to-user {:result result})))
             context)}
          {:txn-fn
+          (fn tx-create-chat-account-if-required
+            [{:keys [ps-team-member] :as context}]
+            (if (seq (:chat-account-id ps-team-member))
+              context
+              (let [{:keys [success? chat-user-account] :as result}
+                    (srv.chat/create-user-account config (:id ps-team-member))]
+                (if success?
+                  (-> context
+                      (assoc-in [:ps-team-member :chat-account-id] (:id chat-user-account))
+                      (assoc :can-rollback-create-chat-account? true))
+                  (assoc context
+                         :success? false
+                         :reason :failed-to-create-ps-team-member-chat-account
+                         :error-details {:result result})))))
+          :rollback-fn
+          (fn rollback-create-chat-account-if-required
+            [{:keys [ps-team-member can-rollback-create-chat-account?] :as context}]
+            (if-not can-rollback-create-chat-account?
+              context
+              (let [result (srv.chat/delete-user-account config
+                                                         (:chat-account-id ps-team-member)
+                                                         {})]
+                (if-not (:success? result)
+                  (log logger :error ::failed-to-rollback-create-chat-account {:result result})
+                  (db.stakeholder/update-stakeholder (:spec db) {:id (:id ps-team-member)
+                                                                 :chat_account_id nil
+                                                                 :chat_account_status nil}))
+                context)))}
+         {:txn-fn
           (fn tx-add-team-member-to-ps-chat-channel
             [{:keys [ps-team-member plastic-strategy] :as context}]
-            (let [result (srv.chat/add-user-to-private-channel config
-                                                               (:chat-account-id ps-team-member)
-                                                               (:chat-channel-id plastic-strategy))]
+            (let [result (srv.chat/add-user-to-public-channel config
+                                                              (:chat-account-id ps-team-member)
+                                                              (:chat-channel-id plastic-strategy))]
               (if (:success? result)
                 {:success? true}
                 (assoc context
@@ -258,7 +293,7 @@
             (let [result (srv.chat/remove-user-from-channel config
                                                             (:chat-account-id ps-team-member)
                                                             (:chat-channel-id plastic-strategy)
-                                                            "p")]
+                                                            "c")]
               (if (:success? result)
                 context
                 (assoc context
@@ -268,9 +303,9 @@
           :rollback-fn
           (fn rollback-remove-user-from-ps-channel
             [{:keys [plastic-strategy ps-team-member] :as context}]
-            (let [result (srv.chat/add-user-to-private-channel config
-                                                               (:chat-account-id ps-team-member)
-                                                               (:chat-channel-id plastic-strategy))]
+            (let [result (srv.chat/add-user-to-public-channel config
+                                                              (:chat-account-id ps-team-member)
+                                                              (:chat-channel-id plastic-strategy))]
               (when-not (:success? result)
                 (log logger :error :failed-to-rollback-remove-user-from-ps-channel {:result result})))
             context)}

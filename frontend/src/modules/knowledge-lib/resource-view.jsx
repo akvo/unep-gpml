@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import { CSSTransition } from 'react-transition-group'
 import api from '../../utils/api'
 import FilterBar from './filter-bar'
-import { resourceTypes } from './filter-bar'
+import { useResourceTypes } from './filter-bar'
 import FilterModal from './filter-modal'
 import ResourceCards, {
   ResourceCard,
@@ -15,7 +15,9 @@ import { Button } from 'antd'
 import Maps from '../map/map'
 import { isEmpty } from 'lodash'
 import { useQuery, topicNames } from '../../utils/misc'
-import TopicView from './topic-view'
+import { Trans, t } from '@lingui/macro'
+import { useDeviceSize } from '../landing/landing'
+import { useRouter } from 'next/router'
 
 const resourceTopic = [
   'action_plan',
@@ -29,6 +31,7 @@ const resourceTopic = [
 
 function ResourceView({ history, popularTags, landing, box, showModal }) {
   const query = useQuery()
+  const { isReady } = useRouter()
 
   const [isAscending, setIsAscending] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -48,12 +51,16 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
   const search = new URLSearchParams(history.query).toString()
   const [showFilterModal, setShowFilterModal] = useState(false)
 
+  const [width] = useDeviceSize()
+
   const limit = 30
   const totalItems = resourceTopic.reduce(
     (acc, topic) =>
       acc + (countData?.find((it) => it.topic === topic)?.count || 0),
     0
   )
+
+  const resourceTypes = useResourceTypes()
 
   const allResources = totalCount
     ?.filter((array) =>
@@ -99,13 +106,6 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
       .then((resp) => {
         setLoading(false)
         setData(resp?.data)
-        if (totalCount.length === 0) {
-          setTotalCount(
-            history.query.totalCount
-              ? JSON.parse(history.query.totalCount)
-              : resp?.data?.counts
-          )
-        }
         setCountData(resp?.data?.counts)
         setGridItems((prevItems) => {
           return uniqueArrayByKey([...prevItems, ...resp?.data?.results])
@@ -116,6 +116,30 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
         setLoading(false)
       })
   }
+
+  const fetchCount = (searchParams) => {
+    const queryParams = new URLSearchParams(searchParams)
+    queryParams.set('incCountsForTags', popularTags)
+    queryParams.set('limit', limit)
+    const url = `/browse?${String(queryParams)}`
+
+    api
+      .get(url)
+      .then((resp) => {
+        setTotalCount(
+          history.query.totalCount
+            ? JSON.parse(history.query.totalCount)
+            : resp?.data?.counts
+        )
+      })
+      .catch((err) => {})
+  }
+
+  useEffect(() => {
+    if (totalCount.length === 0) {
+      fetchCount()
+    }
+  }, [totalCount])
 
   const updateQuery = (param, value, reset, fetch = true) => {
     if (!reset) {
@@ -176,12 +200,14 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
   }
 
   useMemo(() => {
-    if ((pathname || search) && !loading) updateQuery('replace')
+    if ((pathname || search) && !loading) {
+      updateQuery('replace')
+    }
   }, [pathname, search])
 
   useEffect(() => {
-    if (data.length === 0) updateQuery()
-  }, [])
+    if (isReady && data.length === 0) updateQuery()
+  }, [isReady])
 
   const clickCountry = (name) => {
     const val = query['country']
@@ -251,68 +277,78 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
         }}
       />
       <div className="list-content">
-        <div className="list-toolbar">
-          <div className="quick-search">
-            <div className="count">
-              {view === 'grid'
-                ? `Showing ${gridItems?.length} of ${totalItems}`
-                : view === 'category'
-                ? `${catData?.reduce(
-                    (count, current) => count + current?.count,
-                    0
-                  )}`
-                : `Showing ${!loading ? data?.results?.length : ''}`}
+        {width >= 768 && (
+          <div className="list-toolbar">
+            <div className="quick-search">
+              <div className="count">
+                {view === 'grid'
+                  ? t`Showing ${gridItems?.length} of ${totalItems}`
+                  : view === 'category'
+                  ? `${catData?.reduce(
+                      (count, current) => count + current?.count,
+                      0
+                    )}`
+                  : `Showing ${!loading ? data?.results?.length : ''}`}
+              </div>
+              <div className="search-icon">
+                <SearchIcon />
+              </div>
             </div>
-            <div className="search-icon">
-              <SearchIcon />
-            </div>
-          </div>
-          <ViewSwitch {...{ type, view, history, queryParams }} />
-          <button
-            className="sort-by-button"
-            onClick={() => {
-              if (view === 'grid') setGridItems([])
-              sortResults(!isAscending)
-            }}
-          >
-            <div className="sort-icon">
-              <SortIcon
-                style={{
-                  transform:
-                    !isAscending || isAscending === null
-                      ? 'initial'
-                      : 'rotate(180deg)',
-                }}
-              />
-            </div>
-            <div className="sort-button-text">
-              <span>Sort by:</span>
-              <b>{!isAscending ? `A>Z` : 'Z>A'}</b>
-            </div>
-          </button>
-        </div>
-        {(view === 'map' || !view || view === 'topic') && (
-          <div style={{ position: 'relative' }}>
-            <ResourceCards
-              items={data?.results}
-              showMoreCardAfter={20}
-              showMoreCardClick={() => {
-                history.push(
-                  {
-                    pathname: `/knowledge/library/grid/${type ? type : ''}`,
-                    query: queryParams,
-                  },
-                  `/knowledge/library/grid/${type ? type : ''}`
-                )
+            <ViewSwitch {...{ type, view, history, queryParams }} />
+            <button
+              className="sort-by-button"
+              onClick={() => {
+                if (view === 'grid') setGridItems([])
+                sortResults(!isAscending)
               }}
-              showModal={(e) =>
-                showModal({
-                  e,
-                  type: e.currentTarget.type,
-                  id: e.currentTarget.id,
-                })
-              }
-            />
+            >
+              <div className="sort-icon">
+                <SortIcon
+                  style={{
+                    transform:
+                      !isAscending || isAscending === null
+                        ? 'initial'
+                        : 'rotate(180deg)',
+                  }}
+                />
+              </div>
+              <div className="sort-button-text">
+                <span>
+                  <Trans>Sort by:</Trans>
+                </span>
+                <b>{!isAscending ? `A>Z` : 'Z>A'}</b>
+              </div>
+            </button>
+          </div>
+        )}
+        {(view === 'map' || !view) && width >= 768 && (
+          <div style={{ position: 'relative' }}>
+            {data?.results?.length === 0 ? (
+              <div className="no-data">
+                No data to show for the selected filters!
+              </div>
+            ) : (
+              <ResourceCards
+                items={data?.results}
+                showMoreCardAfter={20}
+                showMoreCardClick={() => {
+                  history.push(
+                    {
+                      pathname: `/knowledge/library/grid/${type ? type : ''}`,
+                      query: queryParams,
+                    },
+                    `/knowledge/library/grid/${type ? type : ''}`
+                  )
+                }}
+                showModal={(e) =>
+                  showModal({
+                    e,
+                    type: e.currentTarget.type,
+                    id: e.currentTarget.id,
+                  })
+                }
+              />
+            )}
             {loading && (
               <div className="loading">
                 <LoadingOutlined spin />
@@ -320,7 +356,12 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
             )}
           </div>
         )}
-        {(view === 'map' || !view) && (
+        {loading && width <= 768 && (
+          <div className="loading">
+            <LoadingOutlined spin />
+          </div>
+        )}
+        {(view === 'map' || !view) && width >= 768 && (
           <Maps
             query={query}
             box={box}
@@ -337,7 +378,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
             zoom={1.1}
           />
         )}
-        {view === 'grid' && (
+        {(view === 'grid' || width <= 768) && (
           <GridView
             {...{
               gridItems,
@@ -382,7 +423,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
                           handleCategoryFilter(d.categories)
                         }}
                       >
-                        See all {`>`}
+                        <Trans>See all</Trans> {`>`}
                       </Button>
                     </div>
                     <ResourceCards
@@ -419,6 +460,7 @@ function ResourceView({ history, popularTags, landing, box, showModal }) {
           setGridItems,
           loadAllCat,
           view,
+          pathname,
         }}
       />
     </Fragment>
@@ -461,7 +503,7 @@ const GridView = ({
             updateQuery('offset', [pageNumber + limit], true)
           }}
         >
-          Load More
+          <Trans>Load More</Trans>
         </Button>
       )}
     </div>
@@ -469,7 +511,7 @@ const GridView = ({
 }
 
 const ViewSwitch = ({ type, view, history, queryParams }) => {
-  const viewOptions = ['map', 'grid', 'category']
+  const viewOptions = [t`map`, t`grid`, t`category`]
   const [visible, setVisible] = useState(false)
   view = !view ? 'map' : view
 
@@ -482,7 +524,7 @@ const ViewSwitch = ({ type, view, history, queryParams }) => {
         }}
       >
         <DownOutlined />
-        {view} view
+        {view} <Trans>view</Trans>
       </div>
       <CSSTransition
         in={visible}
@@ -512,7 +554,7 @@ const ViewSwitch = ({ type, view, history, queryParams }) => {
                     )
                   }}
                 >
-                  {viewOption} view
+                  {viewOption} <Trans>view</Trans>
                 </li>
               ))}
           </ul>

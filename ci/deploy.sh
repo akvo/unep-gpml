@@ -17,7 +17,14 @@ auth () {
 
 push_image () {
     prefix="eu.gcr.io/akvo-lumen/unep-gpml"
-    docker push "${prefix}/${1}:${CI_COMMIT}"
+    if [[ "${1}" != "frontend" ]]; then
+           docker push "${prefix}/${1}:${CI_COMMIT}"
+           docker push "${prefix}/${1}:${CI_COMMIT}-staging"
+           docker push "${prefix}/${1}:${CI_COMMIT}-prod"
+    else
+           docker push "${prefix}/${1}:${CI_COMMIT}"
+           docker push "${prefix}/${1}:${CI_COMMIT}-staging"
+    fi
 }
 
 prepare_deployment () {

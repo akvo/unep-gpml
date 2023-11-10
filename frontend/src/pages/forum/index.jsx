@@ -6,6 +6,8 @@ import Button from '../../components/button'
 import { UIStore } from '../../store'
 import api from '../../utils/api'
 import ForumMembers from '../../modules/forum/forum-members'
+import { Trans, t } from '@lingui/macro'
+import { loadCatalog } from '../../translations/utils'
 
 const DynamicForumModal = dynamic(
   () => import('../../modules/forum/forum-modal'),
@@ -18,7 +20,7 @@ const DynamicMyForum = dynamic(() => import('../../modules/forum/my-forums'), {
   ssr: false, // my forums has window object to update the joins localStorage
 })
 
-const Forum = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
+const Forum = ({ isAuthenticated, setLoginVisible }) => {
   const [allForums, setAllForums] = useState([])
   const [viewModal, setViewModal] = useState({
     open: false,
@@ -27,7 +29,6 @@ const Forum = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
   const [loading, setLoading] = useState(true)
 
   const profile = UIStore.useState((s) => s.profile)
-  const avatarUrl = `${process.env.NEXT_PUBLIC_CHAT_API_DOMAIN_URL}/avatar/`
 
   const handleOnView = (data) => {
     setViewModal({
@@ -36,16 +37,24 @@ const Forum = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
     })
   }
 
-  const initName = (name) =>
-    name
-      ?.split(/[ ,]+/)
-      ?.slice(0, 2)
-      .map((w) => w?.slice(0, 1))
-
   const getAllForums = useCallback(async () => {
     try {
+      /**
+       * Waiting for id_token ready by checking profile state
+       */
       const { data } = await api.get('/chat/channel/all')
-      const _allForums = data.map((d) => ({ ...d, membersFetched: false }))
+      const _allForums = data
+        ?.sort((a, b) => {
+          // Sort public first
+          if (a.t === 'c' && b.type !== 'c') {
+            return -1
+          } else if (a.t !== 'c' && b.t === 'c') {
+            return 1
+          } else {
+            return 0
+          }
+        })
+        ?.map((d) => ({ ...d, membersFetched: false }))
       setAllForums(_allForums)
       setLoading(false)
     } catch (error) {
@@ -81,16 +90,22 @@ const Forum = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
   return (
     <div className="container">
       <div className={styles.forumHome}>
-        <span className="h-xs title">Forums</span>
+        <span className="h-xs title">
+          <Trans>Forums</Trans>
+        </span>
         <DynamicMyForum {...{ handleOnView }} />
 
         <div className="header">
           <div className="jumbotron">
-            <h2>All Forums</h2>
+            <h2>
+              <Trans>All Forums</Trans>
+            </h2>
             <p className="h-xs">
-              Engage in forums across a wide variety of subjects and sectors
-              currently ongoing. Join the public channels or request to join the
-              private channels.
+              <Trans>
+                Engage in forums across a wide variety of subjects and sectors
+                currently ongoing. Join the public channels or request to join
+                the private channels.
+              </Trans>
             </p>
           </div>
         </div>
@@ -104,20 +119,23 @@ const Forum = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
                 <Card>
                   <div className="channel">
                     <span className={styles.forumType}>
-                      {item.t === 'p' ? 'private ' : 'public '}channel
+                      {item.t === 'p' ? t`private` : t`public`} {t`channel`}
                     </span>
-                    <h5>{item.name}</h5>
-                    <p className={styles.forumDesc}>{item?.description}</p>
+                    <h5>{item.name?.replace(/[-_]/g, ' ')}</h5>
+                    <p className={styles.forumDesc}>
+                      {item?.description?.substring(0, 120)}
+                      {item?.description?.length > 120 && '...'}
+                    </p>
                   </div>
                   <div className="flex">
-                    <ForumMembers {...{ initName, avatarUrl }} forum={item} />
+                    <ForumMembers forum={item} />
                     <div>
                       <Button
                         size="small"
                         onClick={() => handleOnView(item)}
                         ghost
                       >
-                        View
+                        <Trans>View</Trans>
                       </Button>
                     </div>
                   </div>
@@ -130,8 +148,6 @@ const Forum = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
           {...{
             viewModal,
             setViewModal,
-            initName,
-            avatarUrl,
             allForums,
             setLoginVisible,
             isAuthenticated,
@@ -140,6 +156,14 @@ const Forum = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
       </div>
     </div>
   )
+}
+
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
 }
 
 export default Forum

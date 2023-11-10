@@ -1,6 +1,7 @@
 import React from 'react'
 import { Button, Modal } from 'antd'
 import styles from './unathenticated-page.module.scss'
+import { Trans } from '@lingui/macro'
 import { useRouter } from 'next/router'
 
 const UnathenticatedPage = ({
@@ -19,7 +20,7 @@ const UnathenticatedPage = ({
       footer={
         <>
           <Button size="small" onClick={() => router.push('/login')}>
-            Sign In
+            <Trans>Sign In</Trans>{' '}
           </Button>
         </>
       }
@@ -28,7 +29,11 @@ const UnathenticatedPage = ({
       keyboard={false}
     >
       <div className="unathenticated-page">
-        <p>You need to have an account and be signed in to see this page</p>
+        <p>
+          <Trans>
+            You need to have an account and be signed in to see this page
+          </Trans>
+        </p>
       </div>
     </Modal>
   )

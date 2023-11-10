@@ -79,7 +79,7 @@
             [{:keys [chat-channel-name] :as context}]
             (let [channel {:name chat-channel-name
                            :read-only false}
-                  result (srv.chat/create-private-channel config channel)]
+                  result (srv.chat/create-public-channel config channel)]
               (if (:success? result)
                 (assoc context :channel (:channel result))
                 (assoc context
@@ -89,7 +89,7 @@
           :rollback-fn
           (fn rollback-create-plastic-strategy-chat-channel
             [{:keys [channel] :as context}]
-            (let [result (srv.chat/delete-private-channel config (:id channel))]
+            (let [result (srv.chat/delete-public-channel config (:id channel))]
               (when-not (:success? result)
                 (log logger :error ::failed-to-rollback-create-plastic-strategy-chat-channel {:result result})))
             context)}
@@ -97,9 +97,9 @@
           (fn tx-set-plastic-strategy-channel-custom-fields
             [{:keys [plastic-strategy channel] :as context}]
             (let [custom-fields {:ps-country-iso-code-a2 (get-in plastic-strategy [:country :iso-code-a2])}
-                  result (srv.chat/set-private-channel-custom-fields config
-                                                                     (:id channel)
-                                                                     custom-fields)]
+                  result (srv.chat/set-public-channel-custom-fields config
+                                                                    (:id channel)
+                                                                    custom-fields)]
               (if (:success? result)
                 context
                 (assoc context
@@ -216,9 +216,9 @@
          {:txn-fn
           (fn add-user-to-ps-channel
             [{:keys [plastic-strategy chat-account-id] :as context}]
-            (let [result (srv.chat/add-user-to-private-channel config
-                                                               chat-account-id
-                                                               (:chat-channel-id plastic-strategy))]
+            (let [result (srv.chat/add-user-to-public-channel config
+                                                              chat-account-id
+                                                              (:chat-channel-id plastic-strategy))]
               (if (:success? result)
                 context
                 (assoc context

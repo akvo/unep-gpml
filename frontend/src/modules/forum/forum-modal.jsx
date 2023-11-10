@@ -11,8 +11,6 @@ import { ChatStore } from '../../store'
 const ForumModal = ({
   viewModal,
   setViewModal,
-  initName,
-  avatarUrl,
   allForums,
   setLoginVisible,
   isAuthenticated,
@@ -32,6 +30,7 @@ const ForumModal = ({
   }, [viewModal, allForums])
 
   const router = useRouter()
+  const avatarUrl = `${process.env.NEXT_PUBLIC_CHAT_API_DOMAIN_URL}/avatar/`
 
   const handleOnClose = () => {
     setViewModal({
@@ -131,12 +130,13 @@ const ForumModal = ({
             const userImage = user?.avatarETag
               ? `${avatarUrl}${user?.username}?etag=${user.avatarETag}`
               : null
+            const [fistName, lastName] = user?.name?.split(/[ ,]+/)
             return (
               <List.Item key={user.id}>
                 <List.Item.Meta
                   avatar={
                     <Avatar src={userImage} className={sample(colorList)}>
-                      {!userImage && initName(user.name)}
+                      {`${fistName[0]}${lastName?.[0]}`}
                     </Avatar>
                   }
                   title={user.name}

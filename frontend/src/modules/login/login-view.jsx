@@ -18,6 +18,7 @@ import { Form as FinalForm, Field } from 'react-final-form'
 import { auth0Client } from '../../utils/misc'
 import ForgotPassword from './forgot-password'
 import SignUp from '../email-signup/view'
+import { Trans } from '@lingui/macro'
 
 function Login({}) {
   const [loading, setLoading] = useState(false)
@@ -116,7 +117,9 @@ function Login({}) {
                 setForgotPassword={setForgotPassword}
               >
                 <div className="connect-button">
-                  <Button type="text">FORGOT PASSWORD</Button>
+                  <Button type="text">
+                    <Trans>FORGOT PASSWORD</Trans>
+                  </Button>
                   <Button
                     type="text"
                     className="connect-back-button"
@@ -125,20 +128,23 @@ function Login({}) {
                       setForgotPassword(false)
                     }}
                   >
-                    {'<'} Back to connect options
+                    {'<'}
+                    <Trans>Back to connect options</Trans>
                   </Button>
                 </div>
               </ForgotPassword>
             ) : signup ? (
               <SignUp setSignUp={setSignUp}>
                 <div className="connect-button">
-                  <Button type="text">SIGN UP</Button>
+                  <Button type="text">
+                    <Trans>SIGN UP</Trans>
+                  </Button>
                   <Button
                     type="text"
                     className="connect-back-button"
                     onClick={() => setSignUp(!signup)}
                   >
-                    {'<'} Back to connect options
+                    {'<'} <Trans>Back to connect options</Trans>
                   </Button>
                 </div>
               </SignUp>
@@ -147,7 +153,9 @@ function Login({}) {
                 {!signin ? (
                   <div className="signup-wrapper">
                     <div className="signin-button">
-                      <Button type="text">SIGN IN</Button>
+                      <Button type="text">
+                        <Trans>SIGN IN</Trans>
+                      </Button>
                     </div>
                     <div className="auth-buttons">
                       <Button
@@ -155,14 +163,14 @@ function Login({}) {
                         icon={<LinkedinIcon />}
                         onClick={handleLinkedinLogin}
                       >
-                        CONTINUE WITH LINKEDIN
+                        <Trans>CONTINUE WITH LINKEDIN</Trans>
                       </Button>
                       <Button
                         shape="round"
                         icon={<GoogleIcon />}
                         onClick={handleGoogleLogin}
                       >
-                        CONTINUE WITH GOOGLE
+                        <Trans>CONTINUE WITH GOOGLE</Trans>
                       </Button>
                       <div className="separator">
                         <Title level={4}>or</Title>
@@ -172,24 +180,28 @@ function Login({}) {
                         icon={<EmailIcon />}
                         onClick={() => setSignIn(!signin)}
                       >
-                        CONTINUE WITH EMAIL
+                        <Trans>CONTINUE WITH EMAIL</Trans>
                       </Button>
                     </div>
                     <p className="register-text">
-                      Once you have an account you can register your
-                      organisation and apply for GPML membership
+                      <Trans>
+                        Once you have an account you can register your
+                        organisation and apply for GPML membership
+                      </Trans>
                     </p>
                   </div>
                 ) : (
                   <div className="login-wrapper">
                     <div className="connect-button">
-                      <Button type="text">CONTINUE WITH EMAIL</Button>
+                      <Button type="text">
+                        <Trans>CONTINUE WITH EMAIL</Trans>
+                      </Button>
                       <Button
                         type="text"
                         className="connect-back-button"
                         onClick={() => setSignIn(!signin)}
                       >
-                        {'<'} Back to connect options
+                        {'<'} <Trans>Back to connect options</Trans>
                       </Button>
                     </div>
                     <div className="login-form">
@@ -207,7 +219,9 @@ function Login({}) {
                                     <>
                                       <Input
                                         {...input}
-                                        placeholder="Enter your email"
+                                        placeholder={
+                                          <Trans>Enter your email</Trans>
+                                        }
                                       />
                                       {meta.touched && meta.error && (
                                         <p color="error" className="error">
@@ -224,7 +238,9 @@ function Login({}) {
                                     <>
                                       <Input.Password
                                         {...input}
-                                        placeholder="Enter your password"
+                                        placeholder={
+                                          <Trans>Enter your password</Trans>
+                                        }
                                       />
                                       {meta.touched && meta.error && (
                                         <p color="error" className="error">
@@ -241,7 +257,7 @@ function Login({}) {
                                 className="login-button"
                                 onClick={() => handleSubmit()}
                               >
-                                LOGIN WITH EMAIL
+                                <Trans>LOGIN WITH EMAIL</Trans>
                               </Button>{' '}
                               <Button
                                 type="text"
@@ -250,7 +266,7 @@ function Login({}) {
                                   setForgotPassword(!forgotPassword)
                                 }
                               >
-                                Forgot password?
+                                <Trans>Forgot password?</Trans>
                               </Button>
                             </Form>
                           )
@@ -258,13 +274,15 @@ function Login({}) {
                       />
                       <Divider />
                       <div className="join-wrapper">
-                        <Title level={2}>Don’t have an account yet?</Title>
+                        <Title level={2}>
+                          <Trans>Don’t have an account yet?</Trans>
+                        </Title>
                         <Button
                           shape="round"
                           className="login-button"
                           onClick={() => setSignUp(true)}
                         >
-                          JOIN WITH EMAIL
+                          <Trans>JOIN WITH EMAIL</Trans>
                         </Button>
                       </div>
                     </div>
@@ -276,7 +294,9 @@ function Login({}) {
         </Row>
         <div className="terms">
           <Title level={4}>
-            By signing up you are agreeing to our terms and services.
+            <Trans>
+              By signing up you are agreeing to our terms and services.
+            </Trans>
           </Title>
         </div>
       </div>

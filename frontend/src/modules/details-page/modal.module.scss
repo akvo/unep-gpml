@@ -1,4 +1,4 @@
-@import "../../vars.scss";
+@import '../../vars.scss';
 
 .scroll-disabled {
   overflow: hidden;
@@ -16,7 +16,7 @@
     .ant-modal-close {
       position: sticky;
       left: 100%;
-      z-index: 9999;
+      z-index: 1001;
       float: right;
     }
     .detail-view-wrapper {

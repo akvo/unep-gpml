@@ -38,6 +38,7 @@ import TransnationalImage from '../../images/transnational.svg'
 import CityImage from '../../images/city-icn.svg'
 import { getTypeByResource, languageOptions } from '../flexible-forms/view'
 import { useRouter } from 'next/router'
+import { Trans, t } from '@lingui/macro'
 
 const currencyFormat = (curr) => Intl.NumberFormat().format(curr)
 
@@ -100,6 +101,9 @@ const DetailsView = ({
   setFilterMenu,
   isAuthenticated,
   isServer,
+  bookmark2PS,
+  onBookmark2PS,
+  updateData,
 }) => {
   const [showLess, setShowLess] = useState(true)
   const {
@@ -223,6 +227,15 @@ const DetailsView = ({
     window.scrollTo({ top: 0 })
   }, [router])
 
+  useEffect(() => {
+    if (updateData && Object.keys(updateData).length > 0) {
+      setData((prevData) => ({
+        ...prevData,
+        assignedBadges: updateData.assignedBadges,
+      }))
+    }
+  }, [updateData])
+
   const getComment = async (id, type) => {
     let res = await api.get(
       `/comment?resource_id=${id}&resource_type=${
@@ -313,24 +326,24 @@ const DetailsView = ({
       centered: true,
       closable: true,
       icon: false,
-      title: 'Are you sure you want to delete this resource?',
-      content: 'Please be aware this action cannot be undone.',
-      okText: 'Delete',
+      title: t`Are you sure you want to delete this resource?`,
+      content: t`Please be aware this action cannot be undone.`,
+      okText: t`Delete`,
       okType: 'danger',
-      cancelText: 'Cancel',
+      cancelText: t`Cancel`,
       okButtonProps: { size: 'small' },
       onOk() {
         return api
           .delete(`/detail/${type.replace('-', '_')}/${id}`)
           .then((res) => {
             notification.success({
-              message: 'Resource deleted successfully',
+              message: t`Resource deleted successfully`,
             })
           })
           .catch((err) => {
             console.error(err)
             notification.error({
-              message: 'Oops, something went wrong',
+              message: t`Oops, something went wrong`,
             })
           })
       },
@@ -349,7 +362,9 @@ const DetailsView = ({
       <div className="details-view">
         <div className="loading">
           <LoadingOutlined spin />
-          <i>Loading...</i>
+          <i>
+            <Trans>Loading...</Trans>
+          </i>
         </div>
       </div>
     )
@@ -415,6 +430,8 @@ const DetailsView = ({
             translations,
             selectedLanguage,
             setLanguage,
+            bookmark2PS,
+            onBookmark2PS,
           }}
         />
         <Row
@@ -449,7 +466,9 @@ const DetailsView = ({
           <Col className="details-content-wrapper section-description section">
             {description && (
               <Row>
-                <h3 className="content-heading">Description</h3>
+                <h3 className="content-heading">
+                  <Trans>Description</Trans>
+                </h3>
                 <p className="content-paragraph">
                   {selectedLanguage
                     ? translations?.summary[selectedLanguage]
@@ -462,7 +481,9 @@ const DetailsView = ({
               {data?.geoCoverageType && (
                 <Col className="section-geo-coverage">
                   <div className="extra-wrapper">
-                    <h3 className="content-heading">Location & Geocoverage</h3>
+                    <h3 className="content-heading">
+                      <Trans>Location & Geocoverage</Trans>
+                    </h3>
                     <div
                       style={{
                         marginBottom: data?.geoCoverageType === 'global' && 0,
@@ -572,7 +593,9 @@ const DetailsView = ({
         {data?.tags && data?.tags?.length > 0 && (
           <Col className="section-tag section">
             <div className="extra-wrapper">
-              <h3 className="content-heading">Tags</h3>
+              <h3 className="content-heading">
+                <Trans>Tags</Trans>
+              </h3>
               <List itemLayout="horizontal">
                 <List.Item>
                   <List.Item.Meta
@@ -602,7 +625,9 @@ const DetailsView = ({
           )?.length > 0) && (
           <Col className="section section-connection-stakeholder">
             <div className="extra-wrapper">
-              <h3 className="content-heading">Connections</h3>
+              <h3 className="content-heading">
+                <Trans>Connections</Trans>
+              </h3>
 
               <StakeholderCarousel
                 stakeholders={[...entityConnections, ...stakeholderConnections]}
@@ -615,7 +640,9 @@ const DetailsView = ({
         {data?.infoDocs && (
           <Col className="section section-document">
             <div className="extra-wrapper">
-              <h3 className="content-heading">Documents and info</h3>
+              <h3 className="content-heading">
+                <Trans>Documents and info</Trans>
+              </h3>
               <div className="content-paragraph">
                 <div
                   className="list documents-list"
@@ -638,7 +665,9 @@ const DetailsView = ({
           data?.relatedContent.length > 0 && (
             <Col className="section section-related-content">
               <div className="resource-cards-wrapper">
-                <h3 className="related-content-title">Related content</h3>
+                <h3 className="related-content-title">
+                  <Trans>Related content</Trans>
+                </h3>
                 <div className="related-content-container">
                   <ResourceCards
                     items={data?.relatedContent}
@@ -810,7 +839,9 @@ const Records = ({ countries, languages, type, data }) => {
   }
   return (
     <Col className="record-section section">
-      <h3 className="content-heading">Records</h3>
+      <h3 className="content-heading">
+        <Trans>Records</Trans>
+      </h3>
       <div>
         <div className="record-table">
           <div>{countries && mapping.map(renderRow)}</div>

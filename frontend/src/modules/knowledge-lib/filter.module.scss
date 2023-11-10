@@ -70,15 +70,18 @@
     }
   }
   :global {
-    .ant-modal-footer {
+    .footer {
+      width: 100%;
       background: #ffffff;
       border-radius: 0px 0px 10px 10px;
-      padding: 0px 20px 20px;
       text-align: center;
       display: flex;
       align-items: center;
-      justify-content: flex-start;
-      flex-direction: row-reverse;
+      justify-content: space-between;
+      .action-buttons {
+        display: flex;
+        gap: 20px;
+      }
       button {
         font-weight: 700;
         text-transform: capitalize;

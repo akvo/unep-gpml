@@ -189,6 +189,12 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
               :swagger {:description "Boolean flag to load badges-related metadata"
                         :type "boolean"
                         :allowEmptyValue false}}
+     [:boolean]]
+    [:inc_entity_connections
+     {:optional true
+      :swagger {:description "If set to 'true' includes the 'entity_connections' of each resource."
+                :type "boolean"
+                :allowEmptyValue false}}
      [:boolean]]]
    [:fn
     {:error/fn
@@ -217,7 +223,7 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
   [{:keys [limit offset startDate endDate user-id favorites country transnational
            topic tag affiliation representativeGroup subContentType entity orderBy
            descending q incCountsForTags featured capacity_building upcoming
-           ps_country_iso_code_a2 ps_bookmark_sections_keys badges]
+           ps_country_iso_code_a2 ps_bookmark_sections_keys badges inc_entity_connections]
     :or {limit default-limit
          offset default-offset}}]
   (cond-> {}
@@ -290,6 +296,9 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
     ps_bookmark_sections_keys
     (assoc :ps-bookmark-sections-keys ps_bookmark_sections_keys)
 
+    inc_entity_connections
+    (assoc :inc-entity-connections? inc_entity_connections)
+
     true
     (assoc :review-status "APPROVED")))
 
@@ -326,7 +335,7 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
 (defn- add-geo-coverage-country-groups-filters
   [{:keys [db]} {:keys [country-groups] :as api-search-opts}]
   (let [opts {:filters {:country-groups country-groups}}
-        country-group-countries (db.country-group/get-country-groups-countries db opts)
+        country-group-countries (db.country-group/get-country-groups-countries (:spec db) opts)
         geo-coverage-countries (map :id country-group-countries)]
     (assoc api-search-opts
            :geo-coverage-country-groups country-groups

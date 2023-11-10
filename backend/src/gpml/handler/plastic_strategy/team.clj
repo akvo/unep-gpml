@@ -30,13 +30,13 @@
     {:swagger {:description "An array of team types the team member participates in."
                :type "array"
                :items {:type "string"
-                       :enum (map str dom.types/plastic-strategy-team-types)}}}
+                       :enum (map name dom.types/plastic-strategy-team-types)}}}
     [:sequential
      (dom.types/get-type-schema :plastic-strategy-team-type)]]
    [:role
     {:swagger {:description "The team member role."
                :type "string"
-               :enum (map str dom.types/plastic-strategy-team-roles)}}
+               :enum (map name dom.types/plastic-strategy-team-roles)}}
     (dom.types/get-type-schema :plastic-strategy-team-role)]])
 
 (def ^:private invite-user-to-ps-team-body-params-schema
@@ -84,7 +84,9 @@
                                                      body-params)]
           (if (:success? result)
             (r/ok {})
-            (r/server-error (dissoc result :success?))))))))
+            (if (= (:reason result) :ps-team-member-already-exists)
+              (r/conflict {:reason :ps-team-member-already-exists})
+              (r/server-error (dissoc result :success?)))))))))
 
 (defn- update-ps-team-member
   [config {:keys [user] {:keys [path body]} :parameters}]

@@ -128,7 +128,7 @@ const MyForums = ({ handleOnView }) => {
                     <span className={styles.forumType}>
                       {item.t === 'p' ? 'private ' : 'public '}channel
                     </span>
-                    <h5>{item.name}</h5>
+                    <h5>{item.name?.replace(/[-_]/g, ' ')}</h5>
                   </div>
                   <div className="popover-container">
                     <Popover

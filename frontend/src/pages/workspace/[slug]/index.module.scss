@@ -1,0 +1,17 @@
+@import '../../../styles/vars.scss';
+
+.view {
+  :global {
+    h2 {
+      padding: 20px 0;
+    }
+    h3 {
+      padding: 20px 0 8px;
+      margin-block-start: 0;
+      margin-block-end: 0;
+    }
+    p {
+      padding-top: 0;
+    }
+  }
+}

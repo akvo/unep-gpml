@@ -21,6 +21,7 @@ import {
 import { Field } from 'react-final-form'
 import Button from '../../components/button'
 import FormLabel from '../../components/form-label'
+import { Trans, t } from '@lingui/macro'
 
 function FormFour({ validate }) {
   return (
@@ -32,10 +33,14 @@ function FormFour({ validate }) {
         <Field name="about" validate={validate}>
           {({ input, meta }) => (
             <div className="field-wrapper">
-              <FormLabel label="Short Bio" for="about" meta={meta}>
+              <FormLabel
+                label={<Trans>Short Bio</Trans>}
+                for="about"
+                meta={meta}
+              >
                 <TextArea
                   onChange={(e) => input.onChange(e.target.value)}
-                  placeholder="Max 500 letters"
+                  placeholder={t`Max 500 letters`}
                   maxLength={500}
                   className={`${
                     meta.touched && meta.error ? 'ant-input-status-error' : ''
@@ -51,7 +56,7 @@ function FormFour({ validate }) {
               {({ input, meta }) => (
                 <FormLabel
                   for="linkedin"
-                  label="Linkedin"
+                  label={<Trans>Linkedin</Trans>}
                   meta={meta}
                   isOptional
                 >
@@ -68,7 +73,12 @@ function FormFour({ validate }) {
           <Col sm={24} md={12}>
             <Field name="twitter">
               {({ input, meta }) => (
-                <FormLabel for="twitter" label="Twitter" meta={meta} isOptional>
+                <FormLabel
+                  for="twitter"
+                  label={<Trans>Twitter</Trans>}
+                  meta={meta}
+                  isOptional
+                >
                   <Input
                     size="small"
                     onChange={(e) => input.onChange(e.target.value)}
@@ -86,15 +96,19 @@ function FormFour({ validate }) {
               <div class="ant-col ant-form-item-label">
                 <label for="twitter" class="" title="">
                   <div className="input-label" style={{ width: 'auto' }}>
-                    <p>CV / Portfolio</p>{' '}
-                    <span style={{ paddingLeft: '20px' }}>(OPTIONAL)</span>
+                    <p>
+                      <Trans>CV / Portfolio</Trans>
+                    </p>{' '}
+                    <span style={{ paddingLeft: '20px' }}>
+                      <Trans>(OPTIONAL)</Trans>
+                    </span>
                   </div>
                 </label>
               </div>
               <br />
               <Upload>
                 <Button size="small">
-                  Click to Upload
+                  <Trans>Click to Upload</Trans>
                   <UploadOutlined />
                 </Button>
               </Upload>
@@ -111,11 +125,13 @@ function FormFour({ validate }) {
                 }`}
               >
                 <p>
-                  By submitting this form, I will be included in the public
-                  database of GPML Digital Platform members and acknowledge that
-                  the provided information will be made public and used to find
-                  and connect via smart-matchmaking functionalities with other
-                  stakeholders and resources.
+                  <Trans>
+                    By submitting this form, I will be included in the public
+                    database of GPML Digital Platform members and acknowledge
+                    that the provided information will be made public and used
+                    to find and connect via smart-matchmaking functionalities
+                    with other stakeholders and resources.
+                  </Trans>
                 </p>
               </Checkbox>
             </div>

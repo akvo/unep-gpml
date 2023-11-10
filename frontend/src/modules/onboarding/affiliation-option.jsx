@@ -1,12 +1,15 @@
 import React from 'react'
 import { Col, Row, Button, Typography } from 'antd'
 const { Title, Link } = Typography
+import { Trans, t } from '@lingui/macro'
 
 function AffiliationOption({ handleAffiliationChange, next }) {
   return (
     <>
       <div className="text-wrapper">
-        <Title level={2}>Are you affiliated to an entity?</Title>
+        <Title level={2}>
+          <Trans>Are you affiliated to an entity?</Trans>
+        </Title>
       </div>
       <div className="buttons-wrapper">
         <div>
@@ -17,7 +20,7 @@ function AffiliationOption({ handleAffiliationChange, next }) {
               next()
             }}
           >
-            Yes
+            <Trans>Yes</Trans>
           </Button>
         </div>
         <div>
@@ -28,9 +31,11 @@ function AffiliationOption({ handleAffiliationChange, next }) {
               next(1)
             }}
           >
-            No
+            <Trans>No</Trans>
           </Button>
-          <Title level={5}>I’m a private citizen</Title>
+          <Title level={5}>
+            <Trans>I’m a private citizen</Trans>
+          </Title>
         </div>
       </div>
     </>

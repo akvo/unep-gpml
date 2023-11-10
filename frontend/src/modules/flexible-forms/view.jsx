@@ -13,7 +13,7 @@ import {
   Space,
   Collapse,
   Form,
-  Input,
+  Tooltip,
 } from 'antd'
 const { Panel } = Collapse
 import {
@@ -38,8 +38,11 @@ import dynamic from 'next/dynamic'
 const RichTextEditor = dynamic(() => import('react-rte'), { ssr: false })
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import { Trans } from '@lingui/macro'
 import Button from '../../components/button'
 import { LongArrowRight } from '../../components/icons'
+import { i18n } from '@lingui/core'
+import { useSchema } from './form-schema'
 
 export const getTypeByResource = (type) => {
   let t = ''
@@ -167,7 +170,6 @@ const FlexibleForms = ({
   const {
     tabs,
     getSchema,
-    schema,
     initialData,
     initialFormData,
     initialDataEdit,
@@ -175,6 +177,9 @@ const FlexibleForms = ({
     getTranslationForm,
     prevFormData,
   } = common
+
+  const schema = useSchema()
+
   const query = useQuery()
 
   const caseStudy = {
@@ -618,7 +623,7 @@ const FlexibleForms = ({
         })
       }
     }
-  }, [status, schema, initialFormData, type])
+  }, [status, initialFormData, type])
 
   // useEffect(() => {
   //   UIStore.update((e) => {
@@ -644,11 +649,11 @@ const FlexibleForms = ({
       e.highlight = highlight
     })
     setFormSchema({ schema: schema[selectedMainContentType] })
-  }, [schema, highlight, selectedMainContentType])
+  }, [highlight, selectedMainContentType])
 
   useEffect(() => {
     if (isLoaded()) {
-      setFormSchema(getSchema(storeData))
+      setFormSchema(getSchema({ ...storeData, schema }))
     }
   }, [
     initialFormData,
@@ -717,8 +722,10 @@ const FlexibleForms = ({
           : 'inline'
       return (
         <div className="custom-step-title">
-          <span>{parentTitle}</span>
-          {parentTitle === 'Basic info' ? (
+          <span>
+            <Trans id={parentTitle.id} />
+          </span>
+          {section === 'S4' ? (
             <Button
               type="ghost"
               size="small"
@@ -787,6 +794,7 @@ const FlexibleForms = ({
         />
       )
     }
+
     const childs = steps.map(({ group, key, title, desc }) => {
       const requiredFields = data?.[section]?.required?.[group]?.length || 0
       const customChildTitle = (status) => {
@@ -800,8 +808,10 @@ const FlexibleForms = ({
             : 'none'
         return (
           <div className="custom-child-title">
-            <span>{title}</span>
-            {title === 'Stakeholders connections' ? (
+            <span>
+              <Trans id={title.id} />
+            </span>
+            {group === 'S4_G5' ? (
               <Button
                 type="ghost"
                 size="small"
@@ -960,6 +970,7 @@ const FlexibleForms = ({
 
   const handleMainContentType = (e) => {
     setCapacityBuilding(false)
+    console.log(e)
     if (e.target.value === 'capacity_building') {
       setMainType(e.target.value)
       const search = mainContentType.find(
@@ -974,7 +985,9 @@ const FlexibleForms = ({
     ).childs
     setSubContentType(search)
     setLabel(
-      mainContentType.find((element) => element.code === e.target.value).name
+      i18n._(
+        mainContentType.find((element) => element.code === e.target.value).name
+      )
     )
     setFormSchema({ schema: schema[selectedMainContentType] })
     UIStore.update((event) => {
@@ -1156,10 +1169,12 @@ const FlexibleForms = ({
                       type={disabledBtn.type}
                       onClick={(e) => handleOnClickBtnSubmit(e)}
                     >
-                      Submit
+                      <Trans>Submit</Trans>
                     </Button>
                     <div className="form-title">
-                      <span className="title">Add {label} Content</span>
+                      <span className="title">
+                        <Trans>Add</Trans> {label} <Trans>Content</Trans>
+                      </span>
                     </div>
                   </div>
                   <div className="highlight">
@@ -1213,7 +1228,7 @@ const FlexibleForms = ({
 
             {!isLoaded() ? (
               <h2 className="loading">
-                <LoadingOutlined spin /> Loading
+                <LoadingOutlined spin /> <Trans>Loading</Trans>
               </h2>
             ) : (
               <Col
@@ -1227,44 +1242,57 @@ const FlexibleForms = ({
                 {getTabStepIndex().tabIndex === 0 ? (
                   <Row>
                     <div className="getting-started-content main-content">
-                      <h5>Welcome to the GPML Digital Platform!</h5>
+                      <h5>
+                        <Trans>Welcome to the GPML Digital Platform!</Trans>
+                      </h5>
                       <p>
-                        We are excited to hear from the members of our
-                        community. The GPML Digital Platform is crowdsourced and
-                        allows everyone to submit new content via this form.
+                        <Trans>
+                          We are excited to hear from the members of our
+                          community. The GPML Digital Platform is crowdsourced
+                          and allows everyone to submit new content via this
+                          form.
+                        </Trans>
                       </p>
                       <p>
-                        A wide range of resources can be submitted, and these
-                        include Action Plans, Initiatives, Technical resources,
-                        Financing resources, Policies, Events, and Technologies.
-                        Learn more about each category and sub-categories
-                        definitions in the “Content Type” section of this form.
-                        A quick summary sheet with categories and sub-categories
-                        can be downloaded{' '}
+                        <Trans>
+                          A wide range of resources can be submitted, and these
+                          include Action Plans, Initiatives, Technical
+                          resources, Financing resources, Policies, Events, and
+                          Technologies. Learn more about each category and
+                          sub-categories definitions in the “Content Type”
+                          section of this form. A quick summary sheet with
+                          categories and sub-categories can be downloaded
+                        </Trans>{' '}
                         <a
                           href="https://wedocs.unep.org/bitstream/handle/20.500.11822/37512/Categories%20and%20Sub%20Categories%20for%20the%20forms.pdf?sequence=3&isAllowed=y"
                           target="_blank"
                         >
-                          here
+                          <Trans>here</Trans>
                         </a>
                         .
                       </p>
                       <p>
-                        Once submitted resources go through a review process
-                        which is being fine-tuned via consultations to assess
-                        content accuracy and quality. The current validation
-                        mechanism draft can be found under{' '}
+                        <Trans>
+                          Once submitted resources go through a review process
+                          which is being fine-tuned via consultations to assess
+                          content accuracy and quality. The current validation
+                          mechanism draft can be found under
+                        </Trans>{' '}
                         <a href="https://wedocs.unep.org/bitstream/handle/20.500.11822/34453/UNEP%20GPML%20Digital%20Platform%20Concept%20for%20User%20and%20Partner%20Consultations%20May%202021.pdf">
-                          Annex C of the Concept Document.
+                          <Trans>Annex C of the Concept Document.</Trans>
                         </a>
                       </p>
                       <p>
-                        You can access existing content via the{' '}
+                        <Trans>You can access existing content via the</Trans>{' '}
                         <Link href="/knowledge/library" legacyBehavior>
-                          <a>Knowledge Exchange Library.</a>
+                          <a>
+                            <Trans>Knowledge Exchange Library.</Trans>
+                          </a>
                         </Link>
-                        Make sure to browse around and leave a review under the
-                        resources you enjoy the most!
+                        <Trans>
+                          Make sure to browse around and leave a review under
+                          the resources you enjoy the most!
+                        </Trans>
                       </p>
                     </div>
                   </Row>
@@ -1279,12 +1307,14 @@ const FlexibleForms = ({
                       }}
                     >
                       <div className="button-wrapper">
-                        <h5>Pick the main content type</h5>
+                        <h5>
+                          <Trans>Pick the main content type</Trans>
+                        </h5>
                         <Button
                           ghost
                           onClick={() => setDisplayModal(!displayModal)}
                         >
-                          SHOW EXAMPLES
+                          <Trans>SHOW EXAMPLES</Trans>
                         </Button>
                       </div>
                       <div className="example-container">
@@ -1294,7 +1324,7 @@ const FlexibleForms = ({
                             onClick={() => setDisplayModal(!displayModal)}
                             className="hide-button"
                           >
-                            HIDE EXAMPLES
+                            <Trans>HIDE EXAMPLES</Trans>
                           </Button>
 
                           <List itemLayout="horizontal">
@@ -1303,7 +1333,9 @@ const FlexibleForms = ({
                               ?.examples.map((link, id) => (
                                 <List.Item key={id}>
                                   <a href={link.link} target="_blank">
-                                    <List.Item.Meta title={link.title} />
+                                    <List.Item.Meta
+                                      title={<Trans id={link.title.id} />}
+                                    />
                                   </a>
                                 </List.Item>
                               ))}
@@ -1328,9 +1360,9 @@ const FlexibleForms = ({
                             '-'
                           )}-selected.svg`
                           const name =
-                            item?.name?.toLowerCase() === 'capacity building'
+                            item?.code === 'capacity_building'
                               ? 'Capacity Development'
-                              : item?.name
+                              : i18n._(item?.name)
 
                           return (
                             <Col
@@ -1358,11 +1390,14 @@ const FlexibleForms = ({
                                   </div>
                                   <div className="info-icon-container">
                                     <h2>{name}</h2>
-                                    <Popover content={item.desc}>
+                                    <Tooltip
+                                      placement="top"
+                                      title={<Trans id={item.desc.id} />}
+                                    >
                                       <div className="info-icon-wrapper">
                                         <img src="/i-blue.png" />
                                       </div>
-                                    </Popover>
+                                    </Tooltip>
                                   </div>
                                 </div>
                               </Radio.Button>
@@ -1374,8 +1409,12 @@ const FlexibleForms = ({
                     <div className="sub-content">
                       <div className="sub-content-top">
                         <div className="sub-content-wrapper">
-                          <h5>Pick the sub-content type</h5>
-                          <span>Optional</span>
+                          <h5>
+                            <Trans>Pick the sub-content type</Trans>
+                          </h5>
+                          <span>
+                            <Trans>Optional</Trans>
+                          </span>
                         </div>
                       </div>
                       {subContentType?.length > 0 ? (
@@ -1390,23 +1429,28 @@ const FlexibleForms = ({
                               >
                                 <div
                                   className={`ant-radio-button-wrapper ${
-                                    item.title === subType ? 'selected' : ''
+                                    i18n._(item.title) === subType
+                                      ? 'selected'
+                                      : ''
                                   }`}
                                   key={index}
                                   onClick={() => {
-                                    if (item.title === subType) {
+                                    if (i18n._(item.title) === subType) {
                                       setSubType('')
                                     } else {
-                                      handleSubContentType(item.title)
+                                      handleSubContentType(i18n._(item.title))
                                     }
                                   }}
                                 >
-                                  {item.title}
-                                  <Popover content={item.des}>
+                                  <Trans id={item.title.id} />
+                                  <Tooltip
+                                    placement="top"
+                                    title={<Trans id={item.des.id} />}
+                                  >
                                     <div className="info-icon-wrapper">
                                       <img src="/i-blue.png" />
                                     </div>
-                                  </Popover>
+                                  </Tooltip>
                                 </div>
                               </Col>
                             ))}
@@ -1415,8 +1459,10 @@ const FlexibleForms = ({
                       ) : (
                         <div className="before-selection">
                           <p>
-                            Select a Main Content Type above to see sub-content
-                            type options
+                            <Trans>
+                              Select a Main Content Type above to see
+                              sub-content type options
+                            </Trans>
                           </p>
                         </div>
                       )}
@@ -1487,8 +1533,12 @@ const FlexibleForms = ({
                             setDropdownVisible(visible)
                           }}
                         >
-                          <Button type="default" className="translation-button">
-                            Add translation
+                          <Button
+                            size="small"
+                            type="default"
+                            className="translation-button"
+                          >
+                            <Trans>Add translation</Trans>
                           </Button>
                         </Dropdown>
                       </div>
@@ -1529,14 +1579,16 @@ const FlexibleForms = ({
                 {getTabStepIndex().tabIndex === 0 ? (
                   <div className="bottom-panel">
                     <div className="center-content">
-                      <p>Getting Started</p>
+                      <p>
+                        <Trans>Getting Started</Trans>
+                      </p>
                     </div>
                     <Button
                       size="small"
                       onClick={(e) => handleOnClickBtnNext(e)}
                       withArrow
                     >
-                      Next
+                      <Trans>Next</Trans>
                     </Button>
                   </div>
                 ) : getTabStepIndex().tabIndex === 1 ? (
@@ -1547,18 +1599,22 @@ const FlexibleForms = ({
                       onClick={(e) => handleOnClickBtnBack(e)}
                     >
                       <LongArrowRight />
-                      Back
+                      <Trans>Back</Trans>
                     </Button>
                     <div className="center-content">
-                      <p>Field to submit</p>
-                      <h6>1 of 1</h6>
+                      <p>
+                        <Trans>Field to submit</Trans>
+                      </p>
+                      <h6>
+                        <Trans>1 of 1</Trans>
+                      </h6>
                     </div>
                     <Button
                       size="small"
                       onClick={(e) => handleOnClickBtnNext(e)}
                       withArrow
                     >
-                      Next
+                      <Trans>Next</Trans>
                     </Button>
                   </div>
                 ) : getTabStepIndex().tabIndex === 2 ? (
@@ -1569,10 +1625,12 @@ const FlexibleForms = ({
                       onClick={(e) => handleOnClickBtnBack(e)}
                     >
                       <LongArrowRight />
-                      Back
+                      <Trans>Back</Trans>
                     </Button>
                     <div className="center-content">
-                      <p>Field to submit</p>
+                      <p>
+                        <Trans>Field to submit</Trans>
+                      </p>
                       <h6>
                         {data?.[data.tabs[0]]?.required?.[
                           Object.keys(data?.[data.tabs[0]]?.required)[
@@ -1586,18 +1644,19 @@ const FlexibleForms = ({
                       onClick={(e) => handleOnClickBtnNext(e)}
                       withArrow
                     >
-                      Next
+                      <Trans>Next</Trans>
                     </Button>
                   </div>
                 ) : (
                   <div className="bottom-panel">
-                    <div
+                    <Button
                       className="back-button"
+                      size="small"
                       onClick={(e) => handleOnClickBtnBack(e)}
                     >
-                      <LeftOutlined />
-                      <p>Back</p>
-                    </div>
+                      <LongArrowRight />
+                      <Trans>Back</Trans>
+                    </Button>
                   </div>
                 )}
               </Col>

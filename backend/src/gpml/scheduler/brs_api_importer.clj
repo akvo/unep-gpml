@@ -421,8 +421,7 @@
 
 (defn- handle-entities-batch-import
   [tx logger entity-name data-coll opts]
-  (let [start-time (System/currentTimeMillis)
-        ;; Entities data normalization
+  (let [;; Entities data normalization
         {:keys [entity-table-data translations-table-data tags-table-data
                 geo-coverage-table-data connections-table-data]}
         (get-entities-and-sub-entities-data entity-name data-coll opts)
@@ -456,22 +455,18 @@
                                    entity-name
                                    entities-by-brs-api-id
                                    connections-table-data
-                                   {})
-        end-time (System/currentTimeMillis)]
-    (log logger :info ::finished-importing-entities {:entities-created (count created-entities)
-                                                     :translations-processed created-or-updated-translations
-                                                     :tags-created created-tags
-                                                     :resource-tags-created created-tags-relations
-                                                     :resource-geo-coverage-created (count created-geo-coverage)
-                                                     :entity-connections-created (count created-connections)
-                                                     :started-at (.toString (jt/instant start-time))
-                                                     :finished-at (.toString (jt/instant end-time))
-                                                     :time-elapsed (str (- end-time start-time) "ms")})))
+                                   {})]
+    {:success? true
+     :metrics {:entities-created (count created-entities)
+               :translations-processed created-or-updated-translations
+               :tags-created created-tags
+               :resource-tags-created created-tags-relations
+               :resource-geo-coverage-created (count created-geo-coverage)
+               :entity-connections-created (count created-connections)}}))
 
 (defn- handle-entities-batch-update
   [tx logger entity-name data-coll opts]
-  (let [start-time (System/currentTimeMillis)
-        ;; Entities data normalization
+  (let [;; Entities data normalization
         {:keys [entity-table-data translations-table-data tags-table-data
                 geo-coverage-table-data connections-table-data]}
         (get-entities-and-sub-entities-data entity-name data-coll opts)
@@ -529,17 +524,14 @@
                                                        entity-name
                                                        entities-by-brs-api-id
                                                        connections-table-data
-                                                       {:old-connections-relations old-connections-relations})
-        end-time (System/currentTimeMillis)]
-    (log logger :info ::finished-updating-entities {:affected-entities affected-entities
-                                                    :translations-processed (first created-or-updated-translations)
-                                                    :created-geo-coverage (count created-geo-coverage)
-                                                    :created-connections (count created-connections)
-                                                    :created-tags-relations created-tags-relations
-                                                    :created-tags created-tags
-                                                    :started-at (.toString (jt/instant start-time))
-                                                    :finished-at (.toString (jt/instant end-time))
-                                                    :time-elapsed (str (- end-time start-time) "ms")})))
+                                                       {:old-connections-relations old-connections-relations})]
+    {:success? true
+     :metrics {:affected-entities affected-entities
+               :translations-processed (first created-or-updated-translations)
+               :created-geo-coverage (count created-geo-coverage)
+               :created-connections (count created-connections)
+               :created-tags-relations created-tags-relations
+               :created-tags created-tags}}))
 
 (defn- with-safe-db-transaction
   [?tx logger entity-name data-coll {:keys [update?] :as opts}]
@@ -548,7 +540,6 @@
       (if update?
         (handle-entities-batch-update tx logger entity-name data-coll opts)
         (handle-entities-batch-import tx logger entity-name data-coll opts)))
-    {:success? true}
     (catch Throwable e
       (let [error-details {:entity-name entity-name
                            :exception-message (ex-message e)
@@ -584,11 +575,11 @@
           :when image-id]
     (srv.file/delete-file config (:spec db) {:id image-id})))
 
-(defmulti ^:private save-as-gpml-entity
+(defmulti ^:private save-as-gpml-entity*
   (fn [_ entity-name _ _]
     entity-name))
 
-(defmethod save-as-gpml-entity :resource
+(defmethod save-as-gpml-entity* :resource
   [{:keys [db logger] :as config} entity-name data-coll opts]
   (try
     (let [updated-data-coll (add-gpml-image-url config (:spec db) logger entity-name data-coll)
@@ -606,7 +597,7 @@
          :reason :failed-to-save-entity
          :error-details error-details}))))
 
-(defmethod save-as-gpml-entity :event
+(defmethod save-as-gpml-entity* :event
   [{:keys [logger db] :as config} entity-name data-coll opts]
   (try
     (jdbc/with-db-transaction [tx (:spec db)]
@@ -623,7 +614,7 @@
          :reason :failed-to-save-entity
          :error-details error-details}))))
 
-(defmethod save-as-gpml-entity :initiative
+(defmethod save-as-gpml-entity* :initiative
   [{:keys [db logger] :as config} entity-name data-coll opts]
   (try
     (let [updated-data-coll (add-gpml-image-url config (:spec db) logger entity-name data-coll)
@@ -640,6 +631,18 @@
         {:success? false
          :reason :failed-to-save-entity
          :error-details error-details}))))
+
+(defn- save-as-gpml-entity
+  [{:keys [logger] :as config} entity-name data-coll opts]
+  (let [started-at (System/currentTimeMillis)
+        result (save-as-gpml-entity* config entity-name data-coll opts)
+        finished-at (System/currentTimeMillis)
+        elapsed-time (str (- finished-at started-at) "ms")
+        metrics (assoc (or (:metrics result) {})
+                       :started-at (.toString (jt/instant started-at))
+                       :finished-at (.toString (jt/instant finished-at))
+                       :elapsed-time elapsed-time)]
+    (log logger :info (keyword (format "finished-saving-%ss" (name entity-name))) metrics)))
 
 (defn- get-import-and-update-entities
   [{:keys [db logger]} entity-name entities]
@@ -689,7 +692,8 @@
             (log logger :error ::failed-to-get-data-from-datasource {:result result}))
           (recur skip-token more-pages?))))
     (catch Throwable e
-      (log logger :error ::something-bad-happened {:exception-message (ex-message e)
+      (log logger :error ::something-bad-happened {:exception-class (str (class e))
+                                                   :exception-message (ex-message e)
                                                    :stack-trace (map str (.getStackTrace e))
                                                    :entity gpml-entity-name})))
   (log logger :info ::finished {}))

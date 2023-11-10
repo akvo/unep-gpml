@@ -16,13 +16,14 @@ import cloneDeep from 'lodash/cloneDeep'
 import isEmpty from 'lodash/isEmpty'
 import { storage } from '../../utils/storage'
 import { useRef } from 'react'
+import { Trans, t } from '@lingui/macro'
 
 const { sectorOptions } = UIStore.currentState
 const defaultFormSchema = {
   personalDetails: {
     account: {
       title: {
-        label: 'Title',
+        label: t`Title`,
         required: true,
         control: 'select',
         options: ['Mr', 'Mrs', 'Ms', 'Dr', 'Prof'].map((it) => ({
@@ -30,25 +31,25 @@ const defaultFormSchema = {
           label: it,
         })),
       },
-      firstName: { label: 'First name', required: true },
-      lastName: { label: 'Last name', required: true },
+      firstName: { label: t`First name`, required: true },
+      lastName: { label: t`Last name`, required: true },
       email: {
-        label: 'Email',
+        label: t`Email`,
         disabled: true,
         required: true,
       },
     },
     socialLocation: {
-      linkedIn: { label: 'LinkedIn', prefix: <LinkedinOutlined /> },
-      twitter: { label: 'Twitter', prefix: <TwitterOutlined /> },
+      linkedIn: { label: t`LinkedIn`, prefix: <LinkedinOutlined /> },
+      twitter: { label: t`Twitter`, prefix: <TwitterOutlined /> },
       photo: {
-        label: 'Photo',
+        label: t`Photo`,
         control: 'file',
         maxFileSize: 1,
         accept: 'image/*',
       },
       country: {
-        label: 'Country',
+        label: t`Country`,
         required: true,
         order: 3,
         control: 'select',
@@ -61,29 +62,29 @@ const defaultFormSchema = {
   },
   organisation: {
     'org.id': {
-      label: 'GPML Entity',
+      label: t`GPML Entity`,
       control: 'select',
       showSearch: true,
       options: [],
-      placeholder: 'Start typing...',
+      placeholder: t`Start typing...`,
       order: 0,
       required: false,
     },
     jobTitle: {
-      label: 'Job Tilte',
+      label: t`Job Tilte`,
     },
     nonMemberOrganisation: {
-      label: 'Non Member Entity',
+      label: t`Non Member Entity`,
       control: 'select',
       showSearch: true,
       options: [],
-      placeholder: 'Start typing...',
+      placeholder: t`Start typing...`,
       required: false,
     },
   },
   expertiesActivities: {
     seeking: {
-      label: 'Seeking',
+      label: t`Seeking`,
       required: true,
       control: 'select',
       mode: 'multiple',
@@ -91,7 +92,7 @@ const defaultFormSchema = {
       options: [],
     },
     offering: {
-      label: 'Offering',
+      label: t`Offering`,
       required: true,
       control: 'select',
       mode: 'multiple',
@@ -99,13 +100,13 @@ const defaultFormSchema = {
       options: [],
     },
     about: {
-      label: 'About yourself',
+      label: t`About yourself`,
       required: true,
       control: 'textarea',
       placeholder: 'Max 150 words',
     },
     cv: {
-      label: 'CV / Portfolio',
+      label: t`CV / Portfolio`,
       control: 'file',
       maxFileSize: 5,
       accept:
@@ -303,7 +304,9 @@ const SignupForm = ({
               {initialValues?.reviewStatus && <ReviewText {...initialValues} />}
               <div className={styles[formContainer]}>
                 <div className={sectionGrid}>
-                  <h2>Personal details</h2>
+                  <h2>
+                    <Trans>Personal details</Trans>
+                  </h2>
                   <FieldsFromSchema
                     schema={formSchema['personalDetails']['account']}
                   />
@@ -322,13 +325,15 @@ const SignupForm = ({
                   />
                 </div>
                 <div className={sectionGrid}>
-                  <h2>Entity details</h2>
+                  <h2>
+                    <Trans>Entity details</Trans>
+                  </h2>
                   <Checkbox
                     className="org-check"
                     checked={noOrg}
                     onChange={handleChangePrivateCitizen}
                   >
-                    I am a private citizen
+                    <Trans>I am a private citizen</Trans>
                   </Checkbox>
                   <FieldsFromSchema schema={formSchema['organisation']} />
                   <FormSpy
@@ -342,12 +347,12 @@ const SignupForm = ({
                       ) {
                         // Add Name field
                         newSchema['organisation']['org.name'] = {
-                          label: 'Name',
+                          label: t`Name`,
                           required: true,
                           order: 1,
                         }
                         newSchema['organisation']['org.type'] = {
-                          label: 'Type of the entity',
+                          label: t`Type of the entity`,
                           required: true,
                           control: 'select',
                           options: organisationType.map((it) => ({
@@ -356,7 +361,7 @@ const SignupForm = ({
                           })),
                         }
                         newSchema['organisation']['org.country'] = {
-                          label: 'Country',
+                          label: t`Country`,
                           order: 3,
                           control: 'select',
                           required: true,
@@ -368,7 +373,7 @@ const SignupForm = ({
                           autoComplete: 'off',
                         }
                         newSchema['organisation']['org.url'] = {
-                          label: 'Entity URL',
+                          label: t`Entity URL`,
                           order: 4,
                           addonBefore: 'https://',
                           required: true,
@@ -404,7 +409,9 @@ const SignupForm = ({
                   />
                 </div>
                 <div className={sectionGrid}>
-                  <h2>Expertise and activities</h2>
+                  <h2>
+                    <Trans>Expertise and activities</Trans>
+                  </h2>
                   <FieldsFromSchema
                     schema={formSchema['expertiesActivities']}
                   />

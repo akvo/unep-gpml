@@ -1,11 +1,11 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useCallback, useState, useRef } from 'react'
 import { UIStore } from '../../../store'
 import { Store } from 'pullstate'
 import { Modal } from 'antd'
 import styles from './modal.module.scss'
 import { withTheme } from '@rjsf/core'
 import { Theme as AntDTheme } from '@rjsf/antd'
-import { schema, uiSchema } from './form-schema'
+import { useSchema, useUiSchema } from './form-schema'
 import ObjectFieldTemplate from '../../../utils/forms/object-template'
 import ArrayFieldTemplate from '../../../utils/forms/array-template'
 import FieldTemplate from '../../../utils/forms/field-template'
@@ -24,11 +24,13 @@ import { notification } from 'antd'
 import uniqBy from 'lodash/uniqBy'
 import sortBy from 'lodash/sortBy'
 import Button from '../../../components/button'
+import { Trans } from '@lingui/macro'
+import { useLingui } from '@lingui/react'
 
 const Form = withTheme(AntDTheme)
 
 const getSchema = (
-  { countries, regionOptions, meaOptions, transnationalOptions },
+  { countries, regionOptions, meaOptions, transnationalOptions, schema },
   loading
 ) => {
   const prop = cloneDeep(schema.properties)
@@ -49,6 +51,7 @@ const getSchema = (
     String(x.id)
   )
   prop.geoCoverageValueGlobalSpesific.enumNames = meaOptions?.map((x) => x.name)
+
   return {
     schema: {
       ...schema,
@@ -63,7 +66,7 @@ export const entityData = new Store({
   editId: null,
 })
 
-const ModalAddEntity = ({ visible, close, isMember, setEntity }) => {
+const ModalAddEntity = ({ visible, close, isMember, setEntity, tag }) => {
   const {
     countries,
     organisations,
@@ -84,6 +87,8 @@ const ModalAddEntity = ({ visible, close, isMember, setEntity }) => {
     formEdit: s.formEdit,
   }))
 
+  const schema = useSchema()
+
   const formData = entityData.useState()
   const { editId, data } = formData
   const { status, id } = formEdit.entity
@@ -101,17 +106,19 @@ const ModalAddEntity = ({ visible, close, isMember, setEntity }) => {
 
   const [sending, setSending] = useState(false)
 
+  const isLoaded = useCallback(() => {
+    return Boolean(
+      !isEmpty(countries) &&
+        !isEmpty(tags) &&
+        !isEmpty(regionOptions) &&
+        !isEmpty(transnationalOptions) &&
+        !isEmpty(organisations) &&
+        !isEmpty(meaOptions)
+    )
+  }, [countries])
+
   useEffect(() => {
-    const isLoaded = () =>
-      Boolean(
-        !isEmpty(countries) &&
-          !isEmpty(organisations) &&
-          !isEmpty(tags) &&
-          !isEmpty(regionOptions) &&
-          !isEmpty(meaOptions) &&
-          !isEmpty(transnationalOptions)
-      )
-    if (formSchema.loading && isLoaded) {
+    if (isLoaded()) {
       setFormSchema(
         getSchema(
           {
@@ -121,20 +128,13 @@ const ModalAddEntity = ({ visible, close, isMember, setEntity }) => {
             regionOptions,
             meaOptions,
             transnationalOptions,
+            schema,
           },
           false
         )
       )
     }
-  }, [
-    formSchema,
-    countries,
-    organisations,
-    tags,
-    regionOptions,
-    meaOptions,
-    transnationalOptions,
-  ])
+  }, [getSchema, isLoaded])
 
   const handleOnClickBtnSubmit = (e) => {
     btnSubmit.current.click()
@@ -177,6 +177,15 @@ const ModalAddEntity = ({ visible, close, isMember, setEntity }) => {
         parseInt(x)
       )
       delete data.geoCoverageValueTransnational
+    }
+
+    if (tag) {
+      data.tags = [
+        {
+          tag: tag,
+          tag_category: 'general',
+        },
+      ]
     }
 
     data.reviewStatus = 'APPROVED'
@@ -291,6 +300,10 @@ const ModalAddEntity = ({ visible, close, isMember, setEntity }) => {
     return res
   }
 
+  const uiSchema = useUiSchema()
+
+  console.log(uiSchema, 'uiSchema')
+
   return (
     <Modal
       width={600}
@@ -299,7 +312,7 @@ const ModalAddEntity = ({ visible, close, isMember, setEntity }) => {
       className={`${styles.addEntityModal} add-entity-modal`}
       footer={[
         <Button className="close-button" onClick={(e) => close()} type="link">
-          Cancel
+          <Trans>Cancel</Trans>
         </Button>,
         <Button
           size="small"
@@ -308,7 +321,7 @@ const ModalAddEntity = ({ visible, close, isMember, setEntity }) => {
           onClick={(e) => handleOnClickBtnSubmit(e)}
           disabled={disabledBtn.disabled}
         >
-          Submit
+          <Trans>Submit</Trans>
         </Button>,
       ]}
       closable={false}
@@ -316,7 +329,7 @@ const ModalAddEntity = ({ visible, close, isMember, setEntity }) => {
       <div>
         <Form
           idPrefix="action-plan"
-          schema={schemaState}
+          schema={formSchema.schema}
           uiSchema={uiSchema}
           formData={data}
           onChange={(e) => handleFormOnChange(e)}

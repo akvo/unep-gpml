@@ -294,6 +294,12 @@
           opacity: 0 !important;
         }
       }
+      .no-data {
+        font-size: 18px;
+        font-weight: 700;
+        text-align: center;
+        margin: 20px 0px 40px;
+      }
     }
   }
   :global {
@@ -310,7 +316,7 @@
       width: 100%;
       background-color: rgba(249, 250, 251, 0.5);
       z-index: 2;
-      color: #027975;
+      color: $primaryDarkBlue;
     }
   }
   :global {
@@ -437,6 +443,8 @@
                 transition: fill 0.15s ease-out;
                 fill: #edf2f7;
               }
+              width: 30px;
+              height: 30px;
               margin-right: 7px;
             }
             b {

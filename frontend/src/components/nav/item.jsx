@@ -1,14 +1,19 @@
 import Link from 'next/link'
+import { i18n } from '@lingui/core'
 
 const Item = ({ title, subtitle, icon, iconClass, to, href, setShowMenu }) => {
   const contents = (
     <>
-      <div className={['icon', iconClass].filter((it) => it != null).join(' ')}>
-        {icon}
-      </div>
-      <div className="content">
-        <b className="p-s">{title}</b>
-        <span>{subtitle}</span>
+      {icon && (
+        <div
+          className={['icon', iconClass].filter((it) => it != null).join(' ')}
+        >
+          {icon}
+        </div>
+      )}
+      <div className={`content ${!icon ? 'ml' : ''}`}>
+        <b className="p-s">{i18n._(title)}</b>
+        <span>{i18n._(subtitle)}</span>
       </div>
     </>
   )
@@ -27,8 +32,8 @@ const Item = ({ title, subtitle, icon, iconClass, to, href, setShowMenu }) => {
     <>
       {icon && <div className="icon">{icon}</div>}
       <div className={`content ${!icon ? 'ml' : ''}`}>
-        <b className="p-s">{title}</b>
-        <span>{subtitle}</span>
+        <b className="p-s">{i18n._(title)}</b>
+        <span>{i18n._(subtitle)}</span>
       </div>
     </>
   )

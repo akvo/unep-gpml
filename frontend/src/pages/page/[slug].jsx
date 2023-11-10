@@ -2,9 +2,11 @@ import axios from 'axios'
 import styles from './style.module.scss'
 import moment from 'moment'
 import Head from 'next/head'
-import { Footer } from '../landing'
+import { loadCatalog } from '../../translations/utils'
+import { getStrapiUrl } from '../../utils/misc'
 
 const StrapiPage = ({ pageData }) => {
+  console.log(pageData)
   return (
     <div className={styles.forum}>
       <Head>
@@ -20,7 +22,6 @@ const StrapiPage = ({ pageData }) => {
           dangerouslySetInnerHTML={{ __html: pageData.attributes.content }}
         />
       </div>
-      <Footer />
     </div>
   )
 }
@@ -28,15 +29,11 @@ const StrapiPage = ({ pageData }) => {
 export async function getServerSideProps(context) {
   const { slug } = context.params
   const text = slug.split('-')
-  const id = text.shift()
-  const result = text.join('-')
 
   try {
-    const domainName = process.env.REACT_APP_FEENV
-      ? 'unep-gpml.akvotest.org'
-      : getDomainName(context.req.headers.host)
+    const strapiUrl = getStrapiUrl()
     const response = await axios.get(
-      `https://${domainName}/strapi/api/pages?filters[slug][$eq]=${result}`
+      `${strapiUrl}/api/pages?filters[slug][$eq]=${slug}`
     )
     if (response.data.data.length === 0) {
       return { notFound: true }
@@ -44,10 +41,10 @@ export async function getServerSideProps(context) {
     const pageData = response.data.data[0]
 
     return {
-      props: { pageData },
+      props: { pageData, i18n: await loadCatalog(context.locale) },
     }
   } catch (error) {
-    console.error(error)
+    console.error(error, 'error')
     return {
       props: { notFound: true },
     }

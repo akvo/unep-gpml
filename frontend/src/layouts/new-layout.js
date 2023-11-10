@@ -5,19 +5,21 @@ import { Avatar, Button, Dropdown, Menu } from 'antd'
 import localFont from 'next/font/local'
 import { DM_Sans } from 'next/font/google'
 import { UIStore } from '../store'
-import Image from 'next/image'
 import classNames from 'classnames'
-import Footer from '../footer'
+import Footer from '../components/footer/Footer'
 import Login from '../modules/login/view'
-import { DownArrow } from '../components/icons'
+import { Check, DownArrow, World, flags } from '../components/icons'
 import Link from 'next/link'
-import { motion, AnimatePresence, useCycle } from 'framer-motion'
+import { Trans, t, msg } from '@lingui/macro'
+import { useCycle } from 'framer-motion'
 import { useDeviceSize } from '../modules/landing/landing'
 import { isRegistered } from '../utils/profile'
-
+import { i18n } from '@lingui/core'
 import { MenuToggle, NavMobile, NavDesktop } from '../components/nav'
 import GpmlCircle from '../components/gpml-circle'
 import axios from 'axios'
+import { deepTranslate, getStrapiUrl } from '../utils/misc'
+import { changeLanguage } from '../translations/utils'
 
 const archia = localFont({
   src: [
@@ -72,36 +74,23 @@ const NewLayout = ({
   const [isOpen, toggleOpen] = useCycle(false, true)
 
   useEffect(() => {
+    const strapiUrl = getStrapiUrl()
     const fetchData = async () => {
       try {
         const MENU_MAPPING = [
           {
-            key: 'About Us',
+            key: msg`About Us`,
+            id: 'About Us',
             subKeys: [
               {
-                key: 'The platform',
-                apiEndpoint:
-                  'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=about-platform&fields=title&fields=subtitle',
+                key: msg`The platform`,
+                id: 'The platform',
+                apiEndpoint: `${strapiUrl}/api/pages?locale=all&filters[section][$eq]=about-platform&fields=title&fields=subtitle&fields=slug`,
               },
               {
-                key: 'Our Network',
-                apiEndpoint:
-                  'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=about-network&fields=title&fields=subtitle',
-              },
-            ],
-          },
-          {
-            key: 'Plastic',
-            subKeys: [
-              {
-                key: 'Topics',
-                apiEndpoint:
-                  'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=plastic-topics&fields=title&fields=subtitle',
-              },
-              {
-                key: 'Basics',
-                apiEndpoint:
-                  'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=plastic-basics&fields=title&fields=subtitle',
+                key: msg`Our Network`,
+                id: 'Our Network',
+                apiEndpoint: `${strapiUrl}/api/pages?locale=all&filters[section][$eq]=about-network&fields=title&fields=subtitle&fields=slug`,
               },
             ],
           },
@@ -125,7 +114,8 @@ const NewLayout = ({
 
         fetchData().then((responses) => {
           UIStore.update((s) => {
-            let updatedMenu = [...s.menuList]
+            const menu = deepTranslate([...s.menuList])
+            let updatedMenu = menu
 
             MENU_MAPPING.forEach((section, sectionIdx) => {
               section.subKeys.forEach((sub, subIdx) => {
@@ -135,14 +125,13 @@ const NewLayout = ({
                 if (responseData) {
                   updatedMenu = updateMenuSection(
                     updatedMenu,
-                    section.key,
-                    sub.key,
+                    section.id,
+                    sub.id,
                     responseData
                   )
                 }
               })
             })
-
             s.menuList = updatedMenu
           })
         })
@@ -167,6 +156,7 @@ const NewLayout = ({
           className={classNames('top-bar', { opened: openedItemKey != null })}
           style={{
             zIndex: isOpen ? 9 : 99,
+            position: openedItemKey ? 'sticky' : 'relative',
           }}
         >
           <div className={`${isIndexPage ? 'container' : 'container-fluid'}`}>
@@ -188,22 +178,20 @@ const NewLayout = ({
               <ul className="ant-menu">
                 {menuList.map((item) => (
                   <li
-                    key={item.key}
+                    key={item.id}
                     onClick={() => {
-                      if (item.key === openedItemKey) {
+                      if (item.id === openedItemKey) {
                         setOpenedItemKey(null)
                         setShowMenu(false)
                       } else {
-                        setOpenedItemKey(item.key)
+                        setOpenedItemKey(item.id)
                         setShowMenu(true)
                       }
                     }}
-                    className={`${
-                      openedItemKey === item.key ? 'selected' : ''
-                    }`}
+                    className={`${openedItemKey === item.id ? 'selected' : ''}`}
                   >
                     <a>
-                      <span>{item.key}</span>
+                      <span>{i18n._(item.key)}</span>
                       <DownArrow />
                     </a>
                   </li>
@@ -211,6 +199,47 @@ const NewLayout = ({
               </ul>
             )}
             <nav>
+              <Dropdown
+                overlayClassName="lang-dropdown-wrapper"
+                overlay={
+                  <Menu className="lang-dropdown">
+                    {[
+                      { key: 'EN', label: 'English' },
+                      { key: 'FR', label: 'French' },
+                      { key: 'ES', label: 'Spanish' },
+                    ].map((lang) => (
+                      <Menu.Item
+                        className={classNames({
+                          active: lang.key.toLowerCase() === router.locale,
+                        })}
+                        key={lang.key}
+                        onClick={() => {
+                          console.log(
+                            lang.key.toLowerCase(),
+                            'lang.key.toLowerCase()'
+                          )
+                          changeLanguage(lang.key.toLowerCase(), router)
+                        }}
+                      >
+                        {flags[lang.key]}
+                        {lang.label}
+                        {lang.key.toLowerCase() === router.locale && (
+                          <div className="check">
+                            <Check />
+                          </div>
+                        )}
+                      </Menu.Item>
+                    ))}
+                  </Menu>
+                }
+                trigger={['click']}
+                placement="bottomRight"
+              >
+                <div className="lang-btn">
+                  <World />
+                  <DownArrow />
+                </div>
+              </Dropdown>
               {!isAuthenticated && (
                 <Button
                   type="primary"
@@ -222,7 +251,7 @@ const NewLayout = ({
                 </Button>
               )}
               {isAuthenticated && (
-                <div style={{ display: 'flex' }}>
+                <>
                   <Link href="/workspace">
                     <Button
                       type="primary"
@@ -236,6 +265,13 @@ const NewLayout = ({
                     overlayClassName="user-btn-dropdown-wrapper"
                     overlay={
                       <Menu className="user-btn-dropdown">
+                        <Menu.Item key="add-content">
+                          <Link href="/flexible-forms">
+                            <span>
+                              <Trans>Add Content</Trans>
+                            </span>
+                          </Link>
+                        </Menu.Item>
                         <Menu.Item
                           key="profile"
                           onClick={() => {
@@ -246,7 +282,7 @@ const NewLayout = ({
                             })
                           }}
                         >
-                          Profile
+                          <Trans>Profile</Trans>
                         </Menu.Item>
                         <Menu.Item
                           key="logout"
@@ -256,7 +292,7 @@ const NewLayout = ({
                             })
                           }}
                         >
-                          Logout
+                          <Trans>Logout</Trans>
                         </Menu.Item>
                       </Menu>
                     }
@@ -268,7 +304,7 @@ const NewLayout = ({
                       {profile?.lastName?.charAt(0)}
                     </Avatar>
                   </Dropdown>
-                </div>
+                </>
               )}
               {width <= 768 && (
                 <div className="toggle-button">
@@ -291,6 +327,23 @@ const NewLayout = ({
           />
         </div>
         {children}
+        {!router.pathname.includes('/workspace/[slug]') && (
+          <Footer
+            showTools={() => {
+              if (width >= 768) {
+                if (openedItemKey === 'Tools') {
+                  setOpenedItemKey(null)
+                  setShowMenu(false)
+                } else {
+                  setOpenedItemKey('Tools')
+                  setShowMenu(true)
+                }
+              } else {
+                toggleOpen()
+              }
+            }}
+          />
+        )}
       </div>
       <Login visible={loginVisible} close={() => setLoginVisible(false)} />
     </>
@@ -354,14 +407,15 @@ const transformedData = (data) => {
   return data?.map((item) => ({
     title: item.attributes.title,
     subtitle: item.attributes.subtitle,
+    to: `/page/${item.attributes.slug}`,
   }))
 }
 
 const updateMenuSection = (menu, sectionKey, subKey, data) => {
-  const sectionIndex = menu.findIndex((item) => item.key === sectionKey)
+  const sectionIndex = menu.findIndex((item) => item.id === sectionKey)
   if (sectionIndex !== -1) {
     const section = menu[sectionIndex]
-    const subIndex = section.children.findIndex((item) => item.key === subKey)
+    const subIndex = section.children.findIndex((item) => item.id === subKey)
     if (subIndex !== -1) {
       section.children[subIndex].children = transformedData(data)
       menu[sectionIndex] = section

@@ -488,7 +488,7 @@
 
 (defn- get-detail*
   [conn table-name id opts]
-  (let [opts (merge opts {:topic-type table-name :id id})
+  (let [opts (merge opts {:topic-type table-name :id id :badges true})
         {:keys [json] :as result}
         (if (get #{"organisation" "stakeholder"} table-name)
           (db.detail/get-entity-details conn opts)
@@ -510,6 +510,23 @@
        :resource-details (extra-details config topic-type resource-details)}
       {:success? false
        :reason :not-found})))
+
+(def ^:private get-detail-path-params-schema
+  [:map
+   [:topic-type
+    {:swagger {:description "The topic type (or entity type) to get details from."
+               :type "string"
+               :enum dom.types/topic-types}}
+    ;; TODO: refactor to use dom.types/get-type-schema.
+    (apply conj [:enum] dom.types/topic-types)]
+   [:topic-id
+    {:swagger {:description "The topic ID (or entity ID)."
+               :type "integer"}}
+    [:int {:min 1}]]])
+
+(defmethod ig/init-key :gpml.handler.detail/get-params
+  [_ _]
+  {:path get-detail-path-params-schema})
 
 (defmethod ig/init-key :gpml.handler.detail/get
   [_ {:keys [db logger] :as config}]

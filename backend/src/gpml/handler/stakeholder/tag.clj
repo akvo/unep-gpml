@@ -46,21 +46,24 @@
               (select-keys [:seeking :offering :expertise]))))
 
 (defn- tag-diff
-  [new-tags old-tags]
+  [new-tags old-tags old-tags-to-keep]
   (let [old-tags (->> old-tags
                       (map (comp #(set/rename-keys % {:tag_relation_category :tag_category})
                                  #(select-keys % [:tag :tag_relation_category])))
                       (group-by :tag_category))
-        new-tags (group-by :tag_category new-tags)]
+        old-tags-to-keep-normalized (->> old-tags-to-keep
+                                         (map (comp #(set/rename-keys % {:tag_relation_category :tag_category})
+                                                    #(select-keys % [:tag :tag_relation_category]))))
+        new-tags (group-by :tag_category (concat new-tags old-tags-to-keep-normalized))]
     (->> (reduce (fn [acc [category tags]]
-                   (let [old-tags (map :tag (get acc category))
+                   (let [old-tags (map :tag (get old-tags category))
                          new-tags (map :tag tags)
                          [to-add _to-delete to-keep] (dt/diff new-tags old-tags)
                          tags-to-create (into [] (comp (map #(assoc {} :tag % :tag_category category))
                                                        (filter #(not (nil? (:tag %)))))
                                               (concat to-add to-keep))]
                      (assoc acc category tags-to-create)))
-                 old-tags
+                 {}
                  new-tags)
          (vals)
          (apply concat))))
@@ -70,37 +73,45 @@
   if they exist. Non-existent tags will be created with the provided
   `tag-category`.
   It handles errors during resource tag creation, returning the results for each operation if it fails, when creating
-  resource tags."
+  resource tags.
+
+  It also allows to remove tags when empty value is provided."
   [conn logger mailjet-config
-   {:keys [tags stakeholder-id update? handle-errors?]
-    :or {update? false}}]
+   {:keys [tags stakeholder-id update? handle-errors? partial-tags-override-rel-cats]
+    :or {update? false
+         partial-tags-override-rel-cats []}}]
   (let [db-params {:table "stakeholder_tag"
                    :resource-col "stakeholder"
                    :resource-id stakeholder-id
                    :review_status "APPROVED"}
         old-tags (db.resource.tag/get-resource-tags conn db-params)
-        tags (tag-diff tags old-tags)]
-    (when (seq tags)
-      (let [categories (->> tags (group-by :tag_category) keys)
-            grouped-tags (group-by :tag_category (add-tags-ids-for-categories conn tags categories))]
-        (when update?
-          (db.resource.tag/delete-resource-tags conn (dissoc db-params :review_status)))
-        (let [create-res-tags-results (mapv (fn [[tag-category tags]]
-                                              (let [opts {:tags tags
-                                                          :tag-category tag-category
-                                                          :resource-name "stakeholder"
-                                                          :resource-id stakeholder-id}]
-                                                (handler.resource.tag/create-resource-tags
-                                                 conn
-                                                 logger
-                                                 mailjet-config
-                                                 (assoc opts :handle-errors? handle-errors?))))
-                                            grouped-tags)]
-          (if (every? #(get % :success?) create-res-tags-results)
-            {:success? true}
-            {:success? false
-             :reason (-> create-res-tags-results first :reason)
-             :results create-res-tags-results}))))))
+        old-tags-to-keep (if (seq partial-tags-override-rel-cats)
+                           (filter #(not (contains? partial-tags-override-rel-cats
+                                                    (keyword (:tag_relation_category %))))
+                                   old-tags)
+                           old-tags)
+        tags (tag-diff tags old-tags old-tags-to-keep)
+        categories (->> tags (group-by :tag_category) keys)
+        grouped-tags (group-by :tag_category (add-tags-ids-for-categories conn tags categories))]
+    (when update?
+      (db.resource.tag/delete-resource-tags conn (dissoc db-params :review_status)))
+    (let [create-res-tags-results (mapv (fn [[tag-category tags]]
+                                          (let [opts {:tags tags
+                                                      :tag-category tag-category
+                                                      :resource-name "stakeholder"
+                                                      :resource-id stakeholder-id}]
+                                            (handler.resource.tag/create-resource-tags
+                                             conn
+                                             logger
+                                             mailjet-config
+                                             (assoc opts :handle-errors? handle-errors?))))
+                                        grouped-tags)]
+      (if (or (empty? tags)
+              (every? #(get % :success?) create-res-tags-results))
+        {:success? true}
+        {:success? false
+         :reason (-> create-res-tags-results first :reason)
+         :results create-res-tags-results}))))
 
 (defn unwrap-tags
   "Unwrap `:tags` key into three different keys `seeking`, `offering`

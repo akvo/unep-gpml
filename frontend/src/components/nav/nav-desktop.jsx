@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Col, Row } from 'antd'
 import { UIStore } from '../../store'
 import { CloseIcon } from '../icons'
 import { motion, AnimatePresence } from 'framer-motion'
-import Link from 'next/link'
 import Item from './item'
-import axios from 'axios'
+import { useLingui } from '@lingui/react'
+import { deepTranslate } from '../../utils/misc'
 import Button from '../button'
+import { i18n } from '@lingui/core'
 
 const navVariants = {
   open: { scale: 1, opacity: 1 },
@@ -33,16 +34,19 @@ const menuItemVariants = {
   },
 }
 
-const ToolsMenu = () => {
+const ToolsMenu = ({ toggle }) => {
   const { menuList } = UIStore.useState((s) => ({
     menuList: s.menuList,
   }))
+
+  const menu = deepTranslate(menuList)
+
   return (
     <div className="container sub-menu">
       <Row gutter={[168, 168]}>
-        {menuList
-          .find((it) => it.key === 'Tools')
-          .children.map((menu) => (
+        {menu
+          .find((it) => it.id === 'Tools')
+          .children?.map((menu) => (
             <Col span={8} key={menu.key}>
               <motion.p
                 className="p-m"
@@ -52,10 +56,10 @@ const ToolsMenu = () => {
                 animate="open"
                 exit="closed"
               >
-                {menu.key}
+                {i18n._(menu.key)}
               </motion.p>
               <ul>
-                {menu?.children.map((child, i) => (
+                {menu?.children?.map((child, i) => (
                   <motion.li
                     key={child.title}
                     custom={i + 1}
@@ -76,16 +80,19 @@ const ToolsMenu = () => {
   )
 }
 
-const PlasticMenu = () => {
+const PlasticMenu = ({ toggle }) => {
   const { menuList } = UIStore.useState((s) => ({
     menuList: s.menuList,
   }))
+
+  const menu = deepTranslate(menuList)
+
   return (
     <div className="container sub-menu">
       <Row gutter={[168, 168]}>
-        {menuList
-          .find((it) => it.key === 'Plastic')
-          .children.map((menu, index) => (
+        {menu
+          .find((it) => it.id === 'Plastic')
+          .children?.map((menu, index) => (
             <Col span={index === 0 ? 16 : 8} key={menu.key}>
               <motion.p
                 className="p-m block"
@@ -95,11 +102,12 @@ const PlasticMenu = () => {
                 animate="open"
                 exit="closed"
               >
-                {menu.key}
+                {i18n._(menu.key)}
               </motion.p>
               <ul>
-                {menu?.children.map((child, i) => (
+                {menu?.children?.map((child, i) => (
                   <motion.li
+                    onClick={toggle}
                     key={child.title}
                     custom={i + 1}
                     variants={menuItemVariants}
@@ -119,18 +127,21 @@ const PlasticMenu = () => {
   )
 }
 
-const AboutUsMenu = () => {
+const AboutUsMenu = ({ toggle }) => {
   const { menuList } = UIStore.useState((s) => ({
     menuList: s.menuList,
   }))
+
+  const menu = deepTranslate(menuList)
+
   return (
     <div className="container sub-menu">
       <Row gutter={[168, 168]}>
-        {menuList
-          .find((it) => it.key === 'About Us')
-          .children.filter((t) => t.type !== 'button')
+        {menu
+          .find((it) => it.id === 'About Us')
+          .children?.filter((t) => t.type !== 'button')
           .map((menu) => (
-            <Col span={8} key={menu.key}>
+            <Col span={8} key={menu?.id}>
               <motion.p
                 className="p-m"
                 custom={0}
@@ -139,7 +150,7 @@ const AboutUsMenu = () => {
                 animate="open"
                 exit="closed"
               >
-                {menu.key}
+                {i18n._(menu.key)}
               </motion.p>
               <ul>
                 {menu?.children?.map((child, i) => (
@@ -194,13 +205,13 @@ const NavDesktop = ({ isOpen, toggle, contentKey }) => {
 
   switch (contentKey) {
     case 'Tools':
-      ContentComponent = ToolsMenu
+      ContentComponent = () => <ToolsMenu toggle={toggle} />
       break
     case 'About Us':
-      ContentComponent = AboutUsMenu
+      ContentComponent = () => <AboutUsMenu toggle={toggle} />
       break
     case 'Plastic':
-      ContentComponent = PlasticMenu
+      ContentComponent = () => <PlasticMenu toggle={toggle} />
       break
     default:
       ContentComponent = () => <div>Select a menu item...</div>

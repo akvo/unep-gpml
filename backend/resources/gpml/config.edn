@@ -367,9 +367,7 @@
                                           {:get {:middleware [#ig/ref :gpml.auth/auth-middleware]
                                                  :summary "Get the details for a specific resource"
                                                  :swagger {:tags ["resource detail"]}
-                                                 :parameters {:path [:map
-                                                                     [:topic-type #ig/ref :gpml.handler.detail/topics]
-                                                                     [:topic-id int?]]}
+                                                 :parameters #ig/ref :gpml.handler.detail/get-params
                                                  :handler #ig/ref :gpml.handler.detail/get}
                                            :delete {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                                  #ig/ref :gpml.auth/auth-required]
@@ -626,8 +624,6 @@
                                                    :parameters #ig/ref :gpml.handler.chat/remove-user-from-channel-params}}]
                                           ["/all"
                                            {:get {:summary "Get all channels in the server"
-                                                  :middleware [#ig/ref :gpml.auth/auth-middleware
-                                                               #ig/ref :gpml.auth/auth-required]
                                                   :swagger {:tags ["chat"]}
                                                   :handler #ig/ref :gpml.handler.chat/get-all-channels
                                                   :parameters #ig/ref :gpml.handler.chat/get-all-channels-params}}]
@@ -762,10 +758,10 @@
   ;; Consts
 
   [:duct/const :gpml.config/brs-gpml-entities-mapping]
-  [{:gpml-entity-name :resource
-    :brs-entity-name :publication}
-   {:gpml-entity-name :event
-    :brs-entity-name :meeting}
+  [;; {:gpml-entity-name :resource
+   ;;  :brs-entity-name :publication}
+   ;; {:gpml-entity-name :event
+   ;;  :brs-entity-name :meeting}
    {:gpml-entity-name :initiative
     :brs-entity-name :project}]
 
@@ -934,6 +930,7 @@
   :gpml.handler.comment/delete-response {}
   :gpml.handler.detail/topics {}
   :gpml.handler.detail/get #ig/ref :gpml.config/common
+  :gpml.handler.detail/get-params {}
   :gpml.handler.detail/delete #ig/ref :gpml.config/common
   :gpml.handler.detail/put #ig/ref :gpml.config/common
   :gpml.handler.detail/put-params {}
@@ -1132,12 +1129,11 @@
                       :identity "leap-api-policy-importer"
                       :cron #duct/env ["SCHEDULER_LEAP_API_POLICY_IMPORTER_CRON" Str :or "0 0 2 1/14 * ? *"]}}
 
-  ;; TODO: uncomment this once the BRS API integration is resumed.
-  ;; :gpml.scheduler/brs-api-importer
-  ;; {:config #ig/ref :gpml.config/common
-  ;;  :scheduler-config {:time-zone #duct/env ["SCHEDULER_TIME_ZONE" Str :or "Europe/Madrid"]
-  ;;                     :identity "brs-api-importer"
-  ;;                     :cron #duct/env ["SCHEDULER_BRS_API_IMPORTER_CRON" Str :or "0 0 3 1/7 * ? *"]}}
+  :gpml.scheduler/brs-api-importer
+  {:config #ig/ref :gpml.config/common
+   :scheduler-config {:time-zone #duct/env ["SCHEDULER_TIME_ZONE" Str :or "Europe/Madrid"]
+                      :identity "brs-api-importer"
+                      :cron #duct/env ["SCHEDULER_BRS_API_IMPORTER_CRON" Str :or "0 0 3 1/7 * ? *"]}}
 
   ;; End of base configuration
   }
