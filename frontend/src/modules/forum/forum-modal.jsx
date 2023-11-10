@@ -97,9 +97,11 @@ const ForumModal = ({
                 }
               }}
               loading={requesting}
-              disabled={joinDisabled}
+              disabled={joinDisabled && isAuthenticated}
             >
-              {joinDisabled ? 'Requested to Join' : 'Request to Join'}
+              {joinDisabled && isAuthenticated
+                ? 'Requested to Join'
+                : 'Request to Join'}
             </Button>
           ) : (
             <Button
