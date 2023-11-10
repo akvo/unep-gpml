@@ -47,14 +47,11 @@ apply_deployment () {
 auth
 
 if [[ -n "${CI_TAG:=}" ]]; then
-    push_image backend
     push_image frontend
-    push_image strapi
-    push_image nginx
 fi
 
 
 prepare_deployment
 apply_deployment
 
-ci/k8s/wait-for-k8s-deployment-to-be-ready.sh
+ci/k8s/wait-for-k8s-deployment-to-be-ready-prod.sh

@@ -23,29 +23,6 @@ dc () {
 }
 export -f dc
 
-dci () {
-    dc -f docker-compose.yml \
-       -f docker-compose.ci.yml "$@"
-}
-export -f dci
-
-backend_build () {
-    docker run \
-	   --rm \
-	   --volume "$(pwd)/backend:/app" \
-	   --workdir /app \
-	   cljkondo/clj-kondo:2021.06.18-alpine \
-	   clj-kondo --lint src --lint test
-
-    dc run \
-       --rm \
-       backend \
-       bash release.sh
-
-    docker build \
-	   --tag "${image_prefix}/backend:${CI_COMMIT}-prod" backend
-}
-
 frontend_build () {
     rm -rf frontend/.env
     echo 'REACT_APP_AUTH0_CLIENT_ID="mSuWoeUEN3Z8XWZMbUqiOIOHwdk0R6dm"' > frontend/.env
@@ -64,26 +41,4 @@ frontend_build () {
 	   --tag "${image_prefix}/frontend:${CI_COMMIT}-prod" frontend
 }
 
-
-nginx_build () {
-    docker build \
-           --tag "${image_prefix}/nginx:latest-prod" \
-           --tag "${image_prefix}/nginx:${CI_COMMIT}-prod" nginx
-}
-
-strapi_build () {
-    docker build -f strapi/Dockerfile.prod \
-           --tag "${image_prefix}/strapi:latest-prod" \
-           --tag "${image_prefix}/strapi:${CI_COMMIT}-prod" strapi
-}
-
-backend_build
 frontend_build
-strapi_build
-nginx_build
-
-if ! dci run -T ci ./basic.sh; then
-  dci logs
-  echo "Build failed when running basic.sh"
-  exit 1
-fi

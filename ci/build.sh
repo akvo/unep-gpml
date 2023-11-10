@@ -45,6 +45,7 @@ backend_build () {
     docker build \
 	   --tag "${image_prefix}/backend:latest" \
            --tag "${image_prefix}/backend:${CI_COMMIT}-staging" \
+           --tag "${image_prefix}/backend:${CI_COMMIT}-prod" \
 	   --tag "${image_prefix}/backend:${CI_COMMIT}" backend
 }
 
@@ -90,6 +91,7 @@ nginx_build () {
     docker build \
            --tag "${image_prefix}/nginx:latest" \
            --tag "${image_prefix}/nginx:${CI_COMMIT}-staging" \
+           --tag "${image_prefix}/nginx:${CI_COMMIT}-prod" \
            --tag "${image_prefix}/nginx:${CI_COMMIT}" nginx
 }
 
@@ -97,6 +99,7 @@ strapi_build () {
     docker build -f strapi/Dockerfile.prod \
            --tag "${image_prefix}/strapi:latest" \
            --tag "${image_prefix}/strapi:${CI_COMMIT}-staging" \
+           --tag "${image_prefix}/strapi:${CI_COMMIT}-prod" \
            --tag "${image_prefix}/strapi:${CI_COMMIT}" strapi
 }
 
