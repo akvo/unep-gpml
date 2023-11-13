@@ -838,10 +838,9 @@ const Features = () => {
       content: t`Access a suite of powerful data tools tailored for tackling plastic pollution and marine litter. Utilize comprehensive data sets, layers and statistics to  gain valuable insights that empower informed decision-making and drive effective action.`,
     },
     {
-      label: t`Coming soon`,
       title: t`Workspace`,
       key: 'workspace-feature',
-      content: t`Elevate your mission to address plastic pollution and marine litter through our integrated workspace feature. This feature enables you to coordinate with partners, centralize resources, strategize actions, and drive collective solutions`,
+      content: `${t`Elevate your mission to address plastic pollution and marine litter through our integrated workspace feature. This feature enables you to coordinate with partners, centralize resources, strategize actions, and drive collective solutions`}.`,
     },
     {
       title: t`Match-making`,
