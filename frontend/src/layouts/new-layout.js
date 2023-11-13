@@ -74,6 +74,21 @@ const NewLayout = ({
   const [isOpen, toggleOpen] = useCycle(false, true)
 
   useEffect(() => {
+    const handleRouteChange = () => {
+      if (showMenu) {
+        setShowMenu(false)
+        setOpenedItemKey(null)
+      }
+    }
+
+    router.events.on('routeChangeStart', handleRouteChange)
+
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChange)
+    }
+  }, [router.events])
+
+  useEffect(() => {
     const strapiUrl = getStrapiUrl()
     const fetchData = async () => {
       try {
