@@ -430,7 +430,7 @@ const StakeholderOverview = ({
         )}
         {/* Content */}
         <Col span={24}>
-          <div className="ui-container">
+          <div className="ui-container page-wrapper">
             <FilterDrawer
               {...{
                 query,
