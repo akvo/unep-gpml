@@ -162,6 +162,7 @@ const AboutUsMenu = ({ toggle }) => {
                     animate="open"
                     exit="closed"
                     className="sub-menu-item"
+                    onClick={toggle}
                   >
                     <Item {...child} />
                   </motion.li>

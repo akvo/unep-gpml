@@ -206,7 +206,6 @@ const NavMobile = ({ isOpen, toggleOpen }) => {
   function SubMenuItems() {
     const items =
       menu.find((item) => selectedMenuItem === item.id)?.children || []
-    console.log(items)
     return (
       <motion.ul
         key="menuList"
@@ -222,6 +221,7 @@ const NavMobile = ({ isOpen, toggleOpen }) => {
             item={i}
             collapseMenu
             isSubItem={true}
+            onClick={handleToggle}
           />
         ))}
       </motion.ul>

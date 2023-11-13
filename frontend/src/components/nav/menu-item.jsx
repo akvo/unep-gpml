@@ -54,7 +54,7 @@ export const MenuItem = ({ i, item, onClick, collapseMenu, isSubItem }) => {
           </motion.div>
         </div>
         <AnimatePresence>
-          {isContentVisible && item?.children.length > 0 && (
+          {isContentVisible && item?.children?.length > 0 && (
             <>
               {item.type === 'button' ? (
                 <motion.div
