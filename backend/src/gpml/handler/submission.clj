@@ -12,7 +12,6 @@
             [gpml.handler.responses :as r]
             [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
             [gpml.handler.util :as handler.util]
-            [gpml.service.chat :as srv.chat]
             [gpml.service.file :as srv.file]
             [gpml.service.permissions :as srv.permissions]
             [gpml.util.auth0 :as auth0]
@@ -155,12 +154,6 @@
         (throw (ex-info "Failed to unassign role from user" {:user-id stakeholder-id}))))
     (srv.permissions/unassign-all-roles config stakeholder-id)))
 
-(defn- handle-stakeholder-chat-account-creation
-  [config stakeholder-id]
-  (let [result (srv.chat/create-user-account config stakeholder-id)]
-    (when-not (:success? result)
-      (throw (ex-info "Failed to create chat user account" {:user-id stakeholder-id})))))
-
 (defn- notify-admins-submission-status
   [{:keys [mailjet-config]} resource-type resource-details]
   (let [creator (:creator resource-details)
@@ -194,10 +187,7 @@
                   (handle-stakeholder-role-change {:conn tx
                                                    :logger logger}
                                                   (:id submission)
-                                                  (:review_status submission))
-                  (when (and (= (:chat_account_status resource-details) "pending-activation")
-                             (= (:review_status resource-details) "APPROVED"))
-                    (handle-stakeholder-chat-account-creation config (:id resource-details))))
+                                                  (:review_status submission)))
                 (notify-admins-submission-status config resource-type resource-details)
                 (r/ok {:success? true
                        :message "Successfuly Updated"
