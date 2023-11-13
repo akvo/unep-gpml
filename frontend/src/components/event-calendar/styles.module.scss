@@ -164,6 +164,9 @@
           &.ant-badge-status-warning {
             background-color: $primaryDarkBlue;
           }
+          &.ant-badge-status-default {
+            background-color: $primaryDarkBlue3;
+          }
         }
         .month-select,
         .year-select,
