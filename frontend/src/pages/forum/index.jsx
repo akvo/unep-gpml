@@ -102,9 +102,14 @@ const Forum = ({ isAuthenticated, setLoginVisible }) => {
             </h2>
             <p className="h-xs">
               <Trans>
-                Engage in forums across a wide variety of subjects and sectors
-                currently ongoing. Join the public channels or request to join
-                the private channels.
+                Welcome to the Global Partnership on Plastic Pollution and
+                Marine Litter (GPML) Digital Platform forums page. A space where
+                you can interact, network, and share insights and information
+                with other like-minded advocates on issues related to plastic
+                pollution and marine litter strategies, models and
+                methodologies, data harmonization, innovative financing, and
+                Capacity Building. Your voice matters, join now and be part of
+                the wave for change.
               </Trans>
             </p>
           </div>
