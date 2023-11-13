@@ -97,17 +97,25 @@ const ForumModal = ({
                 }
               }}
               loading={requesting}
-              disabled={joinDisabled}
+              disabled={joinDisabled && isAuthenticated}
             >
-              {joinDisabled ? 'Requested to Join' : 'Request to Join'}
+              {joinDisabled && isAuthenticated
+                ? 'Requested to Join'
+                : 'Request to Join'}
             </Button>
           ) : (
             <Button
               withArrow="link"
               size="small"
-              onClick={() => goToChannel(viewModal.data)}
+              onClick={() => {
+                if (isAuthenticated) {
+                  goToChannel(viewModal.data)
+                } else {
+                  setLoginVisible(true)
+                }
+              }}
             >
-              View channel
+              {isAuthenticated ? 'View channel' : 'Login to Chat'}
             </Button>
           )}
         </>
