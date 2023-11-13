@@ -37,17 +37,10 @@
     .invite-expert-button {
       display: flex;
       justify-content: center;
-      place-items: center;
-      border: 2px solid #67bea1;
       font-weight: 600;
       font-size: 14px;
-      color: #67bea1;
       margin-top: 24px;
       transition: all 0.15s ease-out;
-      &:hover {
-        background-color: #67bea1;
-        color: white;
-      }
     }
   }
 }

@@ -1,6 +1,7 @@
-import React from "react";
-import styles from "./invite-expert-card.module.scss";
-import { Card, Button } from "antd";
+import React from 'react'
+import styles from './invite-expert-card.module.scss'
+import { Card } from 'antd'
+import Button from '../../components/button'
 
 const InviteExpertCard = ({ setIsShownModal }) => {
   return (
@@ -11,8 +12,6 @@ const InviteExpertCard = ({ setIsShownModal }) => {
       <div>
         <h3 className="invite-expert-text">Do you know an expert?</h3>
         <Button
-          shape="round"
-          size="medium"
           className="invite-expert-button"
           onClick={() => setIsShownModal(true)}
         >
@@ -20,6 +19,6 @@ const InviteExpertCard = ({ setIsShownModal }) => {
         </Button>
       </div>
     </Card>
-  );
-};
-export default InviteExpertCard;
+  )
+}
+export default InviteExpertCard

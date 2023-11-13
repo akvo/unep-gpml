@@ -1,4 +1,4 @@
-@import "../../vars.scss";
+@import '../../vars.scss';
 .inviteExpertModal {
   width: 100% !important;
 
@@ -58,22 +58,14 @@
         }
 
         .cat-tag-select .ant-select-selector {
-          background-image: url("/stakeholder-overview/search-icon.svg"),
-            url("/knowledge-library/chevron-down-grey.svg");
-          background-repeat: no-repeat;
-          background-position: 14px center, calc(100% - 17px) center;
-          padding-left: 45px;
           .ant-select-selection-search {
             margin-left: 0;
-          }
-          .ant-select-selection-placeholder {
-            padding-left: calc(13.88px + 17.77px);
           }
         }
 
         .modal-suggest-category {
           .ant-select-selector {
-            background-image: url("/knowledge-library/chevron-down-grey.svg");
+            background-image: url('/knowledge-library/chevron-down-grey.svg');
             background-repeat: no-repeat;
             background-position: calc(100% - 17px) center;
           }
@@ -92,23 +84,10 @@
         display: flex;
         align-items: center;
         text-align: center;
-        color: #18162f;
         transition: all 0.15s ease-out;
-        // &:hover {
-        //   background-color: $yellow-highlight;
-        //   transition: all 0.15s ease-out;
-        // }
       }
       .invite-submit-button {
         margin-right: 16px;
-        border: 2px solid #18162f;
-        &:hover {
-          background-color: #18162f;
-          color: #fff;
-        }
-      }
-      .invite-cancel-button {
-        border: unset;
       }
     }
     .ant-modal-footer {
