@@ -13,7 +13,8 @@
             [gpml.util :as util]
             [gpml.util.image :as util.image]
             [gpml.util.thread-transactions :as tht]
-            [medley.core :as medley]))
+            [medley.core :as medley]
+            [gpml.service.chat :as srv.chat]))
 
 (defn create-stakeholder
   [{:keys [db logger mailjet-config] :as config} stakeholder]
@@ -189,7 +190,31 @@
                 (assoc context
                        :success? false
                        :reason :failed-to-assign-role-to-stakeholder
-                       :error-details (:error-details result)))))}]]
+                       :error-details (:error-details result)))))
+          :rollback-fn
+          (fn rollback-assign-role
+            [{:keys [stakeholder] :as context}]
+            (let [role-unassignments [{:role-name :unapproved-user
+                                       :context-type :application
+                                       :resource-id srv.permissions/root-app-resource-id
+                                       :user-id (:id stakeholder)}]
+                  result (first (srv.permissions/unassign-roles-from-users
+                                 {:conn conn
+                                  :logger logger}
+                                 role-unassignments))]
+              (when-not (:success? result)
+                (log logger :error ::failed-to-rollback-assign-role-to-stakeholder {:result result})))
+            context)}
+         {:txn-fn
+          (fn create-chat-account
+            [{:keys [stakeholder]}]
+            (let [result (srv.chat/create-user-account config (:id stakeholder))]
+              (if (:success? result)
+                context
+                (assoc context
+                       :success? false
+                       :reason :failed-to-create-chat-user-account
+                       :error-details {:result result}))))}]]
     (tht/thread-transactions logger transactions context)))
 
 (defn update-stakeholder
