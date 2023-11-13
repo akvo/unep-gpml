@@ -13,7 +13,8 @@ const ForumMembers = ({ forum }) => {
           const userImage = u?.avatarETag
             ? `${avatarUrl}${u?.username}?etag=${u.avatarETag}`
             : null
-          const [fistName, lastName] = u?.name?.split(/[ ,]+/)
+          const userName = u?.name || u?.username || ''
+          const [fistName, lastName] = userName.split(/[ ,]+/)
           return (
             <Avatar src={userImage} key={index} aria-label={u.name}>
               {`${fistName[0]}${lastName?.[0] || ''}`}
