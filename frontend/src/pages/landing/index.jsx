@@ -146,12 +146,12 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
   const suggestedTags = [
     'Plastic Pollution',
     'Marine Litter',
-    'Reports & Assessments',
+    'Report & Assessment',
     'Circularity',
     'Plastics',
     'Waste management',
-    'Courses & Training',
-    'National Action Plan',
+    'Courses & Trainings',
+    'National Action Plans',
   ]
   const maxTags = 6
 
