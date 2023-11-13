@@ -27,6 +27,8 @@ import { Trans, t } from '@lingui/macro'
 import classNames from 'classnames'
 
 const { Text } = Typography
+const MIN_SEARCH_CHAR = 3
+const LIMIT_SEARCH_RES = 5
 
 const SetupTeamForm = ({ psItem, members, setReload }) => {
   const [openInvitation, setOpenInvitation] = useState(false)
@@ -100,9 +102,13 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
   }
 
   const searchingApi = useCallback(async () => {
-    if (search?.trim()?.length === 0) {
-      setOpenDropdown(false)
-      setStakeholders([])
+    if (search?.trim()?.length < MIN_SEARCH_CHAR) {
+      if (openDropdown) {
+        setOpenDropdown(false)
+      }
+      if (stakeholders.length) {
+        setStakeholders([])
+      }
       return
     }
     setLoading(true)
@@ -112,6 +118,7 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
         data: { results },
       } = await api.get(`/community?networkType=stakeholder`, {
         q: search,
+        limit: LIMIT_SEARCH_RES,
       })
       setStakeholders(results)
       setLoading(false)
