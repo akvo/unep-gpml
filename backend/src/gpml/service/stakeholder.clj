@@ -7,14 +7,14 @@
             [gpml.domain.file :as dom.file]
             [gpml.handler.organisation :as handler.org]
             [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
+            [gpml.service.chat :as srv.chat]
             [gpml.service.file :as srv.file]
             [gpml.service.permissions :as srv.permissions]
             [gpml.service.plastic-strategy :as srv.ps]
             [gpml.util :as util]
             [gpml.util.image :as util.image]
             [gpml.util.thread-transactions :as tht]
-            [medley.core :as medley]
-            [gpml.service.chat :as srv.chat]))
+            [medley.core :as medley]))
 
 (defn create-stakeholder
   [{:keys [db logger mailjet-config] :as config} stakeholder]

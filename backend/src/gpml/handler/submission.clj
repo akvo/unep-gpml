@@ -12,7 +12,6 @@
             [gpml.handler.responses :as r]
             [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
             [gpml.handler.util :as handler.util]
-            [gpml.service.chat :as srv.chat]
             [gpml.service.file :as srv.file]
             [gpml.service.permissions :as srv.permissions]
             [gpml.util.auth0 :as auth0]
