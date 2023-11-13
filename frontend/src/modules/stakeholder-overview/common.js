@@ -14,6 +14,7 @@ const useQuery = () => {
     representativeGroup: [],
     seeking: [],
     offering: [],
+    affiliation: [],
   }
 
   for (let key in ret) {

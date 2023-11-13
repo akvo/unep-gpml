@@ -25,6 +25,9 @@
   overflow: hidden;
   flex: 1;
   :global {
+    .page-wrapper {
+      min-height: 100vh;
+    }
     .header-filter-option {
       .view-button {
         display: flex;
