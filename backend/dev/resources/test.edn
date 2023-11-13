@@ -9,6 +9,10 @@
  :mocks.boundary.adapter.storage-client/local-file-system
  {:base-path #duct/env ["LOCAL_FS_STORAGE_BASE_PATH" Str]}
 
+ :mocks.boundary.adapter.chat/rocket-chat
+ {}
+
  [:duct/const :gpml.config/common]
- {:storage-client-adapter #ig/ref :mocks.boundary.adapter.storage-client/local-file-system
+ {:chat-adapter #ig/ref :mocks.boundary.adapter.chat/rocket-chat
+  :storage-client-adapter #ig/ref :mocks.boundary.adapter.storage-client/local-file-system
   :storage-bucket-name #duct/env ["LOCAL_FS_STORAGE_BUCKET_NAME" Str]}}
