@@ -237,6 +237,7 @@ const NewLayout = ({
               >
                 <div className="lang-btn">
                   <World />
+                  <span>{router.locale}</span>
                   <DownArrow />
                 </div>
               </Dropdown>
