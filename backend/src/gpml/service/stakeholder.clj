@@ -207,10 +207,13 @@
             context)}
          {:txn-fn
           (fn create-chat-account
-            [{:keys [stakeholder]}]
-            (let [result (srv.chat/create-user-account config (:id stakeholder))]
-              (if (:success? result)
-                context
+            [{:keys [stakeholder] :as context}]
+            (let [{success? :success? updated-user :stakeholder :as result}
+                  (srv.chat/create-user-account config (:id stakeholder))]
+              (if success?
+                (-> context
+                    (assoc-in [:stakeholder :chat_account_id] (:chat-account-id updated-user))
+                    (assoc-in [:stakeholder :chat_account_status] (:chat-account-status updated-user)))
                 (assoc context
                        :success? false
                        :reason :failed-to-create-chat-user-account
