@@ -318,7 +318,6 @@ function ProfileLayout({ children }) {
   }
 
   const renderMenuItem = (profile) => {
-    console.log(profile)
     const menus = menuItems.filter((it) => it.role.has(profile?.role))
     const renderMenuText = (name, count = false) => {
       return (

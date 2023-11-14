@@ -676,7 +676,7 @@ const FlexibleForms = ({
         let array = Object.keys(tags)
           .map((k) => tags[k])
           .flat()
-        let find = obj?.childs.find((o) => o.title === subType)?.tags
+        let find = obj?.childs.find((o) => o.id === subType)?.tags
         if (find) {
           let res = array.filter((item) => find.includes(item.tag))
           let newArray = find
@@ -1429,16 +1429,14 @@ const FlexibleForms = ({
                               >
                                 <div
                                   className={`ant-radio-button-wrapper ${
-                                    i18n._(item.title) === subType
-                                      ? 'selected'
-                                      : ''
+                                    item.id === subType ? 'selected' : ''
                                   }`}
                                   key={index}
                                   onClick={() => {
-                                    if (i18n._(item.title) === subType) {
+                                    if (item.id === subType) {
                                       setSubType('')
                                     } else {
-                                      handleSubContentType(i18n._(item.title))
+                                      handleSubContentType(item.id)
                                     }
                                   }}
                                 >

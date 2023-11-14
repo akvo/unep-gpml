@@ -293,6 +293,7 @@ const mainContentType = [
   {
     code: 'initiative',
     name: msg`Initiative`,
+    id: `Initiative`,
     examples: [
       {
         title: msg`Sustainable Industrial Zone Development`,
@@ -322,21 +323,25 @@ const mainContentType = [
     childs: [
       {
         title: msg`Legislation, standards, rules`,
+        id: `Legislation, standards, rules`,
         tags: ['initiatives', 'policy', 'legislation', 'standards'],
         des: msg`Agreeing new or changing rules or standards that others should comply with, new regulation, agreements, policies, economic instruments etc. including voluntary commitments).`,
       },
       {
         title: msg`Working with people`,
+        id: `Working with people`,
         tags: ['initiatives', 'working with people', 'capacity development'],
         des: msg`Encouraging or enabling others, e.g., education, training, communication, awareness raising, behaviour change programmes`,
       },
       {
         title: msg`Technology and Processes`,
+        id: `Technology and Processes`,
         tags: ['initiatives', 'technology and processes'],
         des: msg`New technical developments/innovation, e.g., research and development, new product design, new materials, processes etc., changes in practice, operations, environmental management and planning.`,
       },
       {
         title: msg`Monitoring and Analysis`,
+        id: `Monitoring and Analysis`,
         tags: ['initiatives', 'monitoring and analysis'],
         des: msg`Collecting evidence around plastic discharge to the ocean/waterways, e.g., monitoring, analysis`,
       },
@@ -375,21 +380,25 @@ const mainContentType = [
     childs: [
       {
         title: msg`Global Action Plan`,
+        id: `Global Action Plan`,
         tags: ['action plan', 'global'],
         des: msg`Worldwide Coverage`,
       },
       {
         title: msg`Transnational Action Plan`,
+        id: `Transnational Action Plan`,
         tags: ['action plan', 'transnational'],
         des: msg`Covers two or more countries`,
       },
       {
         title: msg`National Action Plan`,
+        id: `National Action Plan`,
         tags: ['action plan', 'national'],
         des: msg`Covers an entire country`,
       },
       {
         title: msg`Sub-national Action Plan`,
+        id: `Sub-national Action Plan`,
         tags: ['action plan', 'sub-national'],
         des: msg`Covers part of a country e.g, city, or federal state`,
       },
@@ -416,31 +425,37 @@ const mainContentType = [
     childs: [
       {
         title: msg`Legislations, Regulations & Standards`,
+        id: `Legislations, Regulations & Standards`,
         tags: ['policy', 'legislations, regulations & standards'],
         des: msg`Measures taken by governmental units to influence people by means of formulated rules and directives which mandate receivers act in accordance with what is ordered in these rules or directives.`,
       },
       {
         title: msg`Prohibitive Regulations, Bans & Restrictions`,
+        id: `Prohibitive Regulations, Bans & Restrictions`,
         tags: ['policy', 'legislations, regulations & standards'],
         des: msg`Rules of an obligatory nature that are negative, disallowing certain phenomena or actions.`,
       },
       {
         title: msg`Strategies & Action Plans`,
+        id: `Strategies & Action Plans`,
         tags: ['policy', 'strategies & action plans'],
         des: msg`Decisions designed to create favorable impact on key factors to create a desired outcome.`,
       },
       {
         title: msg`Economic Instruments`,
+        id: `Economic Instruments`,
         tags: ['policy', 'economic instruments'],
         des: msg`Incentive measures bring about an intended behaviour or outcome as an alternative to command and control measures - legal codes and prescriptions.`,
       },
       {
         title: msg`Certification, Licensing and Registration`,
+        id: `Certification, Licensing and Registration`,
         tags: ['policy', 'certification, licensing, and registration'],
         des: msg`Process of checking, verifying, and attaining general information about the abilityl to comply with the standard. `,
       },
       {
         title: msg`Policy Guidance and Information`,
+        id: `Policy Guidance and Information`,
         tags: ['policy', 'policy guidance'],
         des: msg`Help and advice provided on a set of ideas or plans that is used as a basis for making decisions, especially in politics, economics, or business.`,
       },
@@ -479,36 +494,43 @@ const mainContentType = [
     childs: [
       {
         title: msg`Equity Investment`,
+        id: `Equity Investment`,
         tags: ['financing resources', 'equity investment'],
         des: msg`Money that is invested in a company in the form of shares.`,
       },
       {
         title: msg`Venture Capital`,
+        id: `Venture Capital`,
         tags: ['financing resources', 'venture capital'],
         des: msg`Money that is invested or is available for investment in a new company, especially one that involves risk.`,
       },
       {
         title: msg`Loans`,
+        id: `Loans`,
         tags: ['financing resources', 'loans'],
         des: msg`An amount of money that is borrowed, often from a bank, and has to be paid back, usually with an extra charge for borrowing.`,
       },
       {
         title: msg`Grants`,
+        id: `Grants`,
         tags: ['financing resources', 'grants'],
         des: msg`An amount of money that a government or other institution gives to an individual or to an organization for a particular purpose. `,
       },
       {
         title: msg`Blended finance`,
+        id: `Blended finance`,
         tags: ['financing resources', 'blended finance'],
         des: msg`The strategic use of development finance for the mobilisation of additional finance towards sustainable development.`,
       },
       {
         title: msg`Multidonor trust fund`,
+        id: `Multidonor trust fund`,
         tags: ['financing resources', 'multidonor trust fund'],
         des: msg`A type of pooled funding involving multiple UN organisations and designed to receive contributions from donors to support specific national, regional or global results.`,
       },
       {
         title: msg`Sustainable development bonds, green bonds and blue bonds`,
+        id: `Sustainable development bonds, green bonds and blue bonds`,
         tags: [
           'financing resources',
           'sustainable development bonds, green bonds, and blue bonds',
@@ -550,41 +572,49 @@ const mainContentType = [
     childs: [
       {
         title: msg`Report & Assessment`,
+        id: `Report & Assessment`,
         tags: ['technical resources', 'report & assessment'],
         des: msg`A textual document made that present focused, salient content to a specific audience but is not limited to assessment reports, evaluation report, annual report, progress/quadrennial assessment report.`,
       },
       {
         title: msg`Guidance Documents`,
+        id: `Guidance Documents`,
         tags: ['technical resources', 'guidance documents'],
         des: msg`A document that gives advice or help on how to do or understand something.`,
       },
       {
         title: msg`Rules of Procedure and Mechanism`,
+        id: `Rules of Procedure and Mechanism`,
         tags: ['technical resources', 'rules of procedure and mechanism'],
         des: msg`A natural or established process by which something takes place or is brought about.`,
       },
       {
         title: msg`Tools & Toolkits`,
+        id: `Tools & Toolkits`,
         tags: ['technical resources', 'tools & toolkits'],
         des: msg`A resource or set of resources that helps you to do a particular activity.`,
       },
       {
         title: msg`Working Document`,
+        id: `Working Document`,
         tags: ['technical resources', 'working document'],
         des: msg`A type of technical report that is a work in progress, a preliminary form of a possible future document.`,
       },
       {
         title: msg`Educational & Outreach resources`,
+        id: `Educational & Outreach resources`,
         tags: ['technical resources', 'educational & outreach resources'],
         des: msg`Any resource – including print and non-print materials and online/open-access resources – which supports and enhances, directly or indirectly, learning, teaching and awareness raising.`,
       },
       {
         title: msg`Courses & Trainings`,
+        id: `Courses & Trainings`,
         tags: ['technical resources', 'courses & trainings'],
         des: msg`Unit of instruction comprising a sequence of educational activities in a particular field or range of related fields of education.`,
       },
       {
         title: msg`Case studies`,
+        id: `Case studies`,
         tags: ['technical resources', 'case study'],
         des: msg`Initiatives or projects that can be used as an example to show general principles.`,
       },
@@ -623,31 +653,37 @@ const mainContentType = [
     childs: [
       {
         title: msg`Webinars & Seminars`,
+        id: `Webinars & Seminars`,
         tags: ['events', 'webinars & seminars'],
         des: msg`An online or face-to-face meeting of people to discuss and/or perform practical work in a subject or activity`,
       },
       {
         title: msg`Workshops`,
+        id: `Workshops`,
         tags: ['events', 'workshops'],
         des: msg`A meeting of people to discuss and/or perform practical work in a subject or activity`,
       },
       {
         title: msg`Conferences`,
+        id: `Conferences`,
         tags: ['events', 'conferences'],
         des: msg`Meetings, often lasting a few days, organized on a particular subject or to bring together people who have a common interest to exchange ideas and discuss issues, especially important public issues. `,
       },
       {
         title: msg`Challenges & Contests`,
+        id: `Challenges & Contests`,
         tags: ['events', 'challenges & contests'],
         des: msg`An activity done by a number of people or organizations, each of which is trying to do better than all of the others`,
       },
       {
         title: msg`Courses & Trainings`,
+        id: `Courses & Trainings`,
         tags: ['events', 'courses & trainings'],
         des: msg`Unit of instruction comprising a sequence of educational activities in a particular field or range of related fields of education.`,
       },
       {
         title: msg`Awareness Raising`,
+        id: `Awareness Raising`,
         tags: ['events', 'awareness raising'],
         des: msg`Awareness-raising is a process that seeks to inform and educate people about a topic or issue with the intention of influencing their attitudes, behaviours and beliefs towards the achievement of a defined purpose or goal.1 It can mobilize the power of public opinion in support of an issue and thereby influence the political will of decision makers.2 There are multiple awareness-raising strategies, methods and tools that can be used to convey and spread messages, and to gather the support necessary to influence public opinion.`,
       },
@@ -686,31 +722,37 @@ const mainContentType = [
     childs: [
       {
         title: msg`In market`,
+        id: `In market`,
         tags: ['technology', 'in market'],
         des: msg`Within the geographical area that the provider offers the service`,
       },
       {
         title: msg`Scale up`,
+        id: `Scale up`,
         tags: ['technology', 'scale up'],
         des: msg`Involves obtaining a faster server with more powerful processors and more memory. This solution uses less network hardware, and consumes less power; but ultimately, for many platforms may only provide a short-term fix, especially if continued growth is expected`,
       },
       {
         title: msg`Prototype`,
+        id: `Prototype`,
         tags: ['technology', 'prototype'],
         des: msg`Is the first complete solution to the original challenge. The first “prototype” is the first time all parts of a solution are tested together. It is the first time that the inter-dependencies of all components can be tested, analyzed, and refined.`,
       },
       {
         title: msg`Pilot`,
+        id: `Pilot`,
         tags: ['technology', 'pilot'],
         des: msg`A solution that is to be tested on a small scale that is seen to be complete in its own right. Piloting can also be seen as the pre-scale phase of a new approach that focuses on quality, validation, time, cost, adverse events, and initial short-term impact.`,
       },
       {
         title: msg`Development`,
+        id: `Development`,
         tags: ['technology', 'development'],
         des: msg`The systematic use of scientific, technical, economic, and commercial knowledge to meet specific business objectives or requirements.`,
       },
       {
         title: msg`Research`,
+        id: `Research`,
         tags: ['technology', 'research'],
         des: msg`Creation of new knowledge and/or the use of existing knowledge in a new and creative way to generate new concepts, methodologies and understandings.`,
       },
@@ -749,30 +791,37 @@ const mainContentType = [
     childs: [
       {
         title: msg`Guidance Documents`,
+        id: `Guidance Documents`,
         des: msg`A document that gives advice or help on how to do or understand something.`,
       },
       {
         title: msg`Tools & Toolkits`,
+        id: `Tools & Toolkits`,
         des: msg`A resource or set of resources that helps you to do a particular activity.`,
       },
       {
         title: msg`Courses & Trainings`,
+        id: `Courses & Trainings`,
         des: msg`Unit of instruction comprising a sequence of educational activities in a particular field or range of related fields of education.`,
       },
       {
         title: msg`Educational & Outreach resources`,
+        id: `Educational & Outreach resources`,
         des: msg`Any resource – including print and non-print materials and online/open-access resources – which supports and enhances, directly or indirectly, learning, teaching and awareness raising.`,
       },
       {
         title: msg`Initiatives`,
+        id: `Initiatives`,
         des: msg`These include a wide range of actions from legislation, behaviour change initiatives, education, training, events, new technologies, monitoring and analysis initiatives and science Initiatives. Existing actions and initiatives have been collected via an online survey for voluntary inputs and narrative submissions. Initiatives are linked to a Dashboard.`,
       },
       {
         title: msg`Events`,
+        id: `Events`,
         des: msg`Upcoming trainings, capacity development activities and events.`,
       },
       {
         title: msg`Financing Resources`,
+        id: `Financing Resources`,
         des: msg`Organizations or programmes providing financial support to entities tackling marine plastic litter. Such support includes grants, investment, and loans, among others.`,
       },
       {
