@@ -26,7 +26,7 @@ const Card = ({ showMoreCardClick, showMoreCardHref, children }) => {
   }
   if (showMoreCardHref) {
     return (
-      <Link href={showMoreCardHref}>
+      <Link href={showMoreCardHref} legacyBehavior>
         <a className="card">{children}</a>
       </Link>
     )
