@@ -877,11 +877,11 @@ const Features = () => {
                 </Trans>
               </p>
             </div>
-            <div>
+            {/* <div>
               <Button withArrow={<LongArrowRight />} size="large" ghost>
                 <Trans>View All Features</Trans>
               </Button>
-            </div>
+            </div> */}
           </div>
         </div>
       )}
@@ -1266,9 +1266,11 @@ const Partners = () => {
       </div>
       <div className="partner-button-container">
         <div className="container">
-          <Button withArrow={<LongArrowRight />} size="large" ghost>
-            <Trans>See all partners</Trans>
-          </Button>
+          <Link href="/partners">
+            <Button withArrow={<LongArrowRight />} size="large" ghost>
+              <Trans>See all partners</Trans>
+            </Button>
+          </Link>
         </div>
       </div>
     </div>
@@ -1293,9 +1295,11 @@ const HelpCentre = () => {
         </h6>
       </div>
       <div className="help-centre-button">
-        <Button withArrow={<LongArrowRight />}>
-          <Trans>Visit the Help Centre</Trans>
-        </Button>
+        <Link href="/help-center">
+          <Button withArrow={<LongArrowRight />}>
+            <Trans>Visit the Help Centre</Trans>
+          </Button>
+        </Link>
       </div>
     </div>
   )
