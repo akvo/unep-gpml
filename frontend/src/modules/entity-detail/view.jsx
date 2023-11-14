@@ -544,7 +544,7 @@ const StakeholderDetail = ({
               >
                 <ResourceCards
                   items={ownedResources}
-                  showMoreCardAfter={20}
+                  showMoreCardAfter={10}
                   showMoreCardHref={`/knowledge/library?entity=${data.id}`}
                 />
               </CardComponent>
