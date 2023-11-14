@@ -374,38 +374,12 @@ const AdminSection = ({
   const [expert, setExpert] = useState(false)
 
   const [tab, setTab] = useState('stakeholders')
-  const [stakeholdersListOpts, setStakeholdersListOpts] = useState({
-    titleFilter: null,
-    reviewStatus: 'SUBMITTED',
-    data: stakeholdersData,
-    type: 'stakeholders',
-    current: 1,
-    size: 10,
-  })
-  const [entitiesListOpts, setEntitiesListOpts] = useState({
-    titleFilter: null,
-    reviewStatus: 'SUBMITTED',
-    data: entitiesData,
-    type: 'entities',
-    current: 1,
-    size: 10,
-  })
-  const [nonMemberEantitiesListOpts, setNonMemberEantitiesListOpts] = useState({
-    titleFilter: null,
-    reviewStatus: 'SUBMITTED',
-    data: nonMemberEntitiesData,
-    type: 'non-member-entities',
-    current: 1,
-    size: 10,
-  })
-  const [resourcesListOpts, setResourcesListOpts] = useState({
-    titleFilter: null,
-    reviewStatus: 'SUBMITTED',
-    data: resourcesData,
-    type: 'resources',
-    current: 1,
-    size: 10,
-  })
+  const [stakeholdersListOpts, setStakeholdersListOpts] = useState({})
+  const [entitiesListOpts, setEntitiesListOpts] = useState({})
+  const [nonMemberEantitiesListOpts, setNonMemberEantitiesListOpts] = useState(
+    {}
+  )
+  const [resourcesListOpts, setResourcesListOpts] = useState({})
   const [tagsListOpts, setTagsListOpts] = useState({
     titleFilter: null,
     reviewStatus: 'SUBMITTED',
@@ -414,6 +388,48 @@ const AdminSection = ({
     current: 1,
     size: 10,
   })
+
+  useEffect(() => {
+    if (stakeholdersData && stakeholdersData?.data?.length)
+      setStakeholdersListOpts({
+        titleFilter: null,
+        reviewStatus: 'SUBMITTED',
+        data: stakeholdersData,
+        type: 'stakeholders',
+        current: 1,
+        size: 10,
+      })
+    if (entitiesData && entitiesData?.data?.length) {
+      setEntitiesListOpts({
+        titleFilter: null,
+        reviewStatus: 'SUBMITTED',
+        data: entitiesData,
+        type: 'entities',
+        current: 1,
+        size: 10,
+      })
+    }
+    if (nonMemberEntitiesData && nonMemberEntitiesData?.data?.length) {
+      setNonMemberEantitiesListOpts({
+        titleFilter: null,
+        reviewStatus: 'SUBMITTED',
+        data: nonMemberEntitiesData,
+        type: 'non-member-entities',
+        current: 1,
+        size: 10,
+      })
+    }
+    if (resourcesData && resourcesData?.data?.length) {
+      setResourcesListOpts({
+        titleFilter: null,
+        reviewStatus: 'SUBMITTED',
+        data: resourcesData,
+        type: 'resources',
+        current: 1,
+        size: 10,
+      })
+    }
+  }, [stakeholdersData, entitiesData, nonMemberEntitiesData, resourcesData])
 
   const [reviewers, setReviewers] = useState([])
   const [focalPoints, setFocalPoints] = useState([])
