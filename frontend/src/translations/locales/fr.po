@@ -4165,3 +4165,113 @@ msgstr "évènements à venir"
 
 #: src/store.js:772
 msgid "Upcoming trainings, capacity development activities and events."
+msgstr "Formations, activités et événements de développement des capacités à venir."
+
+#: src/modules/profile/admin.jsx:500
+msgid "User role changed"
+msgstr "Le rôle de l'utilisateur a été modifié"
+
+#: src/store.js:486
+msgid "Venture Capital"
+msgstr "Capital-risque"
+
+#: src/components/resource-cards/resource-cards.jsx:58
+msgid "View All"
+msgstr "Voir tout"
+
+#: src/store.js:662
+msgid "Waste Free Oceans"
+msgstr "Des océans sans déchets"
+
+#: src/store.js:242
+msgid "Wastewater"
+msgstr "Eaux usées"
+
+#: src/store.js:143
+msgid "Web services and APIs"
+msgstr "Services Web et API"
+
+#: src/store.js:625
+msgid "Webinars & Seminars"
+msgstr "Webinaires et séminaires"
+
+#: src/modules/onboarding/form-three.jsx:34
+msgid "What are the expertises you are looking for?"
+msgstr "Quelles sont les expertises que vous recherchez ?"
+
+#: src/modules/onboarding/form-two.jsx:35
+msgid "What are the expertises you can provide?"
+msgstr "Quelles sont les expertises que vous pouvez apporter ?"
+
+#: src/store.js:690
+msgid "Within the geographical area that the provider offers the service"
+msgstr "Dans la zone géographique où le fournisseur propose le service"
+
+#: src/store.js:572
+msgid "Working Document"
+msgstr "Document de travail"
+
+#: src/store.js:329
+msgid "Working with people"
+msgstr "Travailler avec des gens"
+
+#: src/store.js:379
+msgid "Worldwide Coverage"
+msgstr "Couverture mondiale"
+
+#: src/modules/onboarding/affiliation-option.jsx:23
+#: src/modules/profile/admin.jsx:61
+msgid "Yes"
+msgstr "Oui"
+
+#: src/modules/onboarding/view.jsx:277
+msgid "You’re almost set! <0/> We need to ask a few more questions to make the platform relevant to you."
+msgstr "Vous êtes presque prêt ! <0/> Nous devons poser quelques questions supplémentaires pour que la plateforme soit pertinente pour vous."
+
+#: src/layouts/new-layout.js:82
+#: src/store.js:151
+msgid "About Us"
+msgstr "À propos de nous"
+
+#: src/layouts/new-layout.js:272
+#: src/modules/workspace/view.jsx:64
+msgid "Add Content"
+msgstr "Ajouter du contenu"
+
+#: src/modules/entity-detail/view.jsx:503
+msgid "Area of expertise"
+msgstr "Domaine d'expertise"
+
+#: src/store.js:74
+msgid "Community"
+msgstr "Communauté"
+
+#: src/store.js:170
+#: src/store.js:174
+msgid "Contact us"
+msgstr "Contactez-nous"
+
+#: src/modules/entity-detail/view.jsx:537
+msgid "Content on the platform"
+msgstr "Contenu sur la plateforme"
+
+#: src/store.js:113
+msgid "Data hub"
+msgstr "Centre de données"
+
+#: src/pages/landing/index.jsx:672
+msgid "Data visualisations to track countries progress. Quickly connect with others working in the country to end plastic."
+msgstr "Visualisations de données pour suivre les progrès des pays. Connectez-vous rapidement avec d’autres personnes travaillant dans le pays pour mettre fin au plastique."
+
+#: src/store.js:167
+msgid "Go to GPML"
+msgstr "Aller au GPML"
+
+#: src/components/resource-card/resource-card.jsx:54
+msgid "Government Verified"
+msgstr "Vérifié par le gouvernement"
+
+#: src/components/resource-card/resource-card.jsx:53
+msgid "GPML Verified"
+msgstr "GPML vérifié"
+
