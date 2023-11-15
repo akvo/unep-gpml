@@ -20,13 +20,16 @@ const DynamicForumIframe = dynamic(
 const ForumDetails = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
   const [preload, setPreload] = useState(true)
   const [loading, setLoading] = useState(true)
-  const [forums, setForums] = useState([])
-  const [publicForums, setPublicForums] = useState(null)
-  const [channel, setChannel] = useState(null)
+  const [publicForums, setPublicForums] = useState([])
   const router = useRouter()
   const { channelName, t: channelType } = router.query
   const myForums = ChatStore.useState((s) => s.myForums)
+  const allForums = ChatStore.useState((s) => s.allForums)
   const profile = UIStore.useState((s) => s.profile)
+  const channel = publicForums.find(
+    (pf) => pf?.name === channelName && pf?.t === channelType
+  )
+  const forums = uniqBy([...myForums, ...publicForums], 'id')
 
   const goToChannel = ({ name, t }) => {
     router.push({
@@ -42,37 +45,45 @@ const ForumDetails = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
   }
 
   const getPublicForums = useCallback(async () => {
-    const { data: _publicForums } = await api.get('/chat/channel/all?types=c')
-    setPublicForums(_publicForums)
-    const findChannel = _publicForums.find(
-      (pf) => pf?.name === channelName && pf?.t === channelType
-    )
-    setChannel(findChannel)
-  }, [channelName, channelType])
+    if (allForums.length && !publicForums.length) {
+      /**
+       * Get public forums from global state
+       */
+      const _publicForums = allForums.filter((forum) => forum.t === 'c')
+      setPublicForums(_publicForums)
+    }
+    if (!allForums.length && !publicForums.length) {
+      /**
+       * Get public forums from API
+       */
+      const { data: _publicForums } = await api.get('/chat/channel/all?types=c')
+      setPublicForums(_publicForums)
+    }
+  }, [publicForums, allForums])
 
   const getMyForums = useCallback(async () => {
+    if (loading && myForums.length) {
+      setLoading(false)
+      return
+    }
     /**
      * Handles direct access that allows
      * resetting the global state of my forums
      */
-    if (profile?.id && preload && Array.isArray(publicForums)) {
+    if (profile?.id && preload && !myForums.length) {
       setPreload(false)
       try {
-        const { data: myForums } = await api.get('/chat/user/channel')
+        const { data: _myForums } = await api.get('/chat/user/channel')
         ChatStore.update((s) => {
-          s.myForums = myForums
+          s.myForums = _myForums
         })
-        /**
-         * Merged as forum list
-         */
-        setForums(uniqBy([...myForums, ...publicForums], 'id'))
         setLoading(false)
       } catch (error) {
         console.error('My forums error:', error)
         setLoading(false)
       }
     }
-  }, [myForums, preload, loading, profile, publicForums])
+  }, [myForums, preload, loading, profile])
 
   useEffect(() => {
     getMyForums()
@@ -89,7 +100,7 @@ const ForumDetails = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
     if (!loadingProfile && !isAuthenticated && loading) {
       setLoading(false)
     }
-  }, [loading, isAuthenticated, loadingProfile, channelType])
+  }, [loading, isAuthenticated, loadingProfile])
 
   return (
     <Layout>
@@ -104,7 +115,7 @@ const ForumDetails = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
                   icon={<DropDownIcon />}
                   key={forum.name}
                 >
-                  {forum.name}
+                  {forum?.name?.replace(/[-_]/g, ' ')}
                 </Menu.Item>
               )
             })}
