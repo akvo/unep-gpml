@@ -169,10 +169,10 @@ const Workspace = ({ profile, isAuthenticated, setLoginVisible }) => {
   }
   const myForums = ChatStore.useState((s) => s.myForums)
   const allForums = ChatStore.useState((s) => s.allForums)
-  const forums = myForums.length ? myForums : allForums
+  const forums = myForums?.length ? myForums : allForums
 
   const getAllForums = useCallback(async () => {
-    if ((myForums.length || allForums.length) && loading.forums) {
+    if ((myForums?.length || allForums.length) && loading.forums) {
       setLoading({
         forums: false,
       })
