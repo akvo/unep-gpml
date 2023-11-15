@@ -247,7 +247,15 @@
 (defn- get-public-channels*
   [{:keys [logger api-key api-user-id] :as adapter} opts]
   (try
-    (let [query-params (parse-query-and-fields-opts opts)
+    (let [query-params (parse-query-and-fields-opts
+                        (cond-> opts
+                          (seq (:query opts))
+                          ;; We don't want to get `discussions`
+                          ;; threads as public channels. That is why
+                          ;; the `prid` filter. It means, filter out
+                          ;; all channels that have a primary room id.
+                          (update :query (fn [q] {:$and [{:prid {:$exists false}}
+                                                         q]}))))
           {:keys [status body]}
           (http-client/do-request logger
                                   {:url (build-api-endpoint-url adapter "/channels.list")
@@ -273,7 +281,15 @@
 (defn- get-private-channels*
   [{:keys [logger api-key api-user-id] :as adapter} opts]
   (try
-    (let [query-params (parse-query-and-fields-opts opts)
+    (let [query-params (parse-query-and-fields-opts
+                        (cond-> opts
+                          (seq (:query opts))
+                          ;; We don't want to get `discussions`
+                          ;; threads as public channels. That is why
+                          ;; the `prid` filter. It means, filter out
+                          ;; all channels that have a primary room id.
+                          (update :query (fn [q] {:$and [{:prid {:$exists false}}
+                                                         q]}))))
           {:keys [status body]}
           (http-client/do-request logger
                                   {:url (build-api-endpoint-url adapter "/groups.listAll")
