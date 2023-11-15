@@ -3,7 +3,7 @@ import { Card, List } from 'antd'
 import dynamic from 'next/dynamic'
 import styles from './index.module.scss'
 import Button from '../../components/button'
-import { UIStore } from '../../store'
+import { ChatStore, UIStore } from '../../store'
 import api from '../../utils/api'
 import ForumMembers from '../../modules/forum/forum-members'
 import { Trans, t } from '@lingui/macro'
@@ -21,7 +21,6 @@ const DynamicMyForum = dynamic(() => import('../../modules/forum/my-forums'), {
 })
 
 const Forum = ({ isAuthenticated, setLoginVisible }) => {
-  const [allForums, setAllForums] = useState([])
   const [viewModal, setViewModal] = useState({
     open: false,
     data: {},
@@ -29,6 +28,7 @@ const Forum = ({ isAuthenticated, setLoginVisible }) => {
   const [loading, setLoading] = useState(true)
 
   const profile = UIStore.useState((s) => s.profile)
+  const allForums = ChatStore.useState((s) => s.allForums)
 
   const handleOnView = (data) => {
     setViewModal({
@@ -39,29 +39,33 @@ const Forum = ({ isAuthenticated, setLoginVisible }) => {
 
   const getAllForums = useCallback(async () => {
     try {
-      /**
-       * Waiting for id_token ready by checking profile state
-       */
-      const { data } = await api.get('/chat/channel/all')
-      const _allForums = data
-        ?.sort((a, b) => {
-          // Sort public first
-          if (a.t === 'c' && b.type !== 'c') {
-            return -1
-          } else if (a.t !== 'c' && b.t === 'c') {
-            return 1
-          } else {
-            return 0
-          }
+      if (loading && allForums.length) {
+        setLoading(false)
+      }
+      if (!allForums.length && loading) {
+        const { data } = await api.get('/chat/channel/all')
+        const _allForums = data
+          ?.sort((a, b) => {
+            // Sort public first
+            if (a.t === 'c' && b.type !== 'c') {
+              return -1
+            } else if (a.t !== 'c' && b.t === 'c') {
+              return 1
+            } else {
+              return 0
+            }
+          })
+          ?.map((d) => ({ ...d, membersFetched: false }))
+        ChatStore.update((s) => {
+          s.allForums = _allForums
         })
-        ?.map((d) => ({ ...d, membersFetched: false }))
-      setAllForums(_allForums)
-      setLoading(false)
+        setLoading(false)
+      }
     } catch (error) {
       console.error('err', error)
       setLoading(false)
     }
-  }, [profile])
+  }, [loading, allForums])
 
   const activateRocketChat = useCallback(async () => {
     if (profile?.id && profile?.chatAccountStatus !== 'active') {

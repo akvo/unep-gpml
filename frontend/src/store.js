@@ -921,6 +921,7 @@ const UIStore = new Store({
 
 const ChatStore = new Store({
   myForums: [],
+  allForums: [],
   isLoggedIn: false,
 })
 
