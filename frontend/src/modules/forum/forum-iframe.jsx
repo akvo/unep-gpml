@@ -87,7 +87,6 @@ const ForumIframe = ({
       ChatStore.update((s) => {
         s.isLoggedIn = true
       })
-      return () => clearTimeout(_timeout)
     }
   }, [
     iFrameCurrent,
