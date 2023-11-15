@@ -76,7 +76,7 @@ const ForumModal = ({
           <span className={styles.forumType}>
             {viewModal?.data?.t === 'p' ? 'private ' : 'public '}channel
           </span>
-          <h5>{viewModal?.data?.name}</h5>
+          <h5>{viewModal?.data?.name?.replace(/[-_]/g, ' ')}</h5>
         </>
       }
       width={702}
