@@ -115,7 +115,7 @@ const ForumDetails = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
                   icon={<DropDownIcon />}
                   key={forum.name}
                 >
-                  {forum.name}
+                  {forum?.name?.replace(/[-_]/g, ' ')}
                 </Menu.Item>
               )
             })}

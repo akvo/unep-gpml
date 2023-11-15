@@ -15,7 +15,7 @@
         justify-content: space-between;
         align-items: center;
         margin: 0;
-        padding: 28px 23px 24px;
+        padding: 21px 23px 19px;
         font-family: var(--font-archia), sans-serif;
         font-size: $fzS;
         font-weight: 600;
@@ -23,6 +23,11 @@
         color: $primaryDarkBlue;
         background-color: $primaryPurple2;
         text-transform: capitalize;
+        height: auto;
+        span {
+          width: 300px;
+          white-space: break-spaces;
+        }
         svg {
           transform: rotate(270deg);
           path {
