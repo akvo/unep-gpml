@@ -3,6 +3,7 @@ import KnowledgeLib from '../../../modules/knowledge-lib/view'
 import { UIStore } from '../../../store'
 import api from '../../../utils/api'
 import { loadCatalog } from '../../../translations/utils'
+import Head from 'next/head'
 
 function KnowledgeLibrary({ isAuthenticated }) {
   const { landing } = UIStore.useState((s) => ({
@@ -23,7 +24,14 @@ function KnowledgeLibrary({ isAuthenticated }) {
     }
   }, [])
 
-  return <KnowledgeLib isAuthenticated={isAuthenticated} />
+  return (
+    <>
+      <Head>
+        <title>Knowledge Library | UNEP GPML Digital Platform</title>
+      </Head>
+      <KnowledgeLib isAuthenticated={isAuthenticated} />
+    </>
+  )
 }
 
 export const getStaticPaths = async () => {

@@ -8,6 +8,7 @@ import { ChatStore, UIStore } from '../../store'
 import { DropDownIcon } from '../../components/icons'
 import api from '../../utils/api'
 import Button from '../../components/button'
+import Head from 'next/head'
 
 const { Sider } = Layout
 const DynamicForumIframe = dynamic(
@@ -103,63 +104,71 @@ const ForumDetails = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
   }, [loading, isAuthenticated, loadingProfile])
 
   return (
-    <Layout>
-      <Sider className={styles.channelSidebar} width={335}>
-        {isAuthenticated && <h5>My Forums</h5>}
-        <Skeleton loading={loading} paragraph={{ rows: 3 }} active>
-          <Menu defaultSelectedKeys={[channelName]}>
-            {forums.map((forum) => {
-              return (
-                <Menu.Item
-                  onClick={() => goToChannel(forum)}
-                  icon={<DropDownIcon />}
-                  key={forum.name}
-                >
-                  {forum?.name?.replace(/[-_]/g, ' ')}
-                </Menu.Item>
-              )
-            })}
-          </Menu>
-        </Skeleton>
-        <div className="button-container">
-          <Button onClick={goToAll} ghost>
-            Explore All Forums
-          </Button>
-        </div>
-      </Sider>
-      <Layout className={styles.channelContent}>
-        {channelName && isAuthenticated ? (
-          <DynamicForumIframe
-            {...{
-              channelName,
-              channelType,
-              isAuthenticated,
-              loadingProfile,
-              setLoginVisible,
-            }}
-          />
-        ) : (
-          <Skeleton loading={loadingProfile} active>
-            <Result
-              icon={
-                <Avatar
-                  alt={channel?.name}
-                  size={128}
-                  src={channel?.avatarUrl}
-                />
-              }
-              title={channel?.name}
-              subTitle={channel?.description}
-              extra={
-                <Button withArrow="link" onClick={() => setLoginVisible(true)}>
-                  Login to Chat
-                </Button>
-              }
-            />
+    <>
+      <Head>
+        <title>{router.query.channelName} | UNEP GPML Digital Platform</title>
+      </Head>
+      <Layout>
+        <Sider className={styles.channelSidebar} width={335}>
+          {isAuthenticated && <h5>My Forums</h5>}
+          <Skeleton loading={loading} paragraph={{ rows: 3 }} active>
+            <Menu defaultSelectedKeys={[channelName]}>
+              {forums.map((forum) => {
+                return (
+                  <Menu.Item
+                    onClick={() => goToChannel(forum)}
+                    icon={<DropDownIcon />}
+                    key={forum.name}
+                  >
+                    {forum?.name?.replace(/[-_]/g, ' ')}
+                  </Menu.Item>
+                )
+              })}
+            </Menu>
           </Skeleton>
-        )}
+          <div className="button-container">
+            <Button onClick={goToAll} ghost>
+              Explore All Forums
+            </Button>
+          </div>
+        </Sider>
+        <Layout className={styles.channelContent}>
+          {channelName && isAuthenticated ? (
+            <DynamicForumIframe
+              {...{
+                channelName,
+                channelType,
+                isAuthenticated,
+                loadingProfile,
+                setLoginVisible,
+              }}
+            />
+          ) : (
+            <Skeleton loading={loadingProfile} active>
+              <Result
+                icon={
+                  <Avatar
+                    alt={channel?.name}
+                    size={128}
+                    src={channel?.avatarUrl}
+                  />
+                }
+                title={channel?.name}
+                subTitle={channel?.description}
+                extra={
+                  <Button
+                    withArrow="link"
+                    onClick={() => setLoginVisible(true)}
+                  >
+                    Login to Chat
+                  </Button>
+                }
+              />
+            </Skeleton>
+          )}
+        </Layout>
       </Layout>
-    </Layout>
+    </>
   )
 }
 
