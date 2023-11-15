@@ -19,15 +19,7 @@ const ForumIframe = ({
   const isLoggedIn = ChatStore.useState((s) => s.isLoggedIn)
 
   const handleOnLoadIframe = () => {
-    if (!isReady) {
-      setTimeout(() => {
-        /**
-         * Added a 5 second delay
-         * for Rocket chat to fully prepare
-         */
-        setIsReady(true)
-      }, 5000)
-    }
+    setIsReady(true)
   }
 
   const handleRocketChatAction = async (e) => {
@@ -81,6 +73,13 @@ const ForumIframe = ({
         {
           externalCommand: 'call-custom-oauth-login',
           service: 'auth0',
+        },
+        '*'
+      )
+      iFrameCurrent.contentWindow.postMessage(
+        {
+          externalCommand: 'go',
+          path: `/${prefixPATH}/${channelName}`,
         },
         '*'
       )
