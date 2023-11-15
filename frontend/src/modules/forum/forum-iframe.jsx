@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { ChatStore } from '../../store'
+import api from '../../utils/api'
 
 const ForumIframe = ({
   channelName,
@@ -29,7 +30,7 @@ const ForumIframe = ({
     }
   }
 
-  const handleRocketChatAction = (e) => {
+  const handleRocketChatAction = async (e) => {
     /**
      * @tutorial https://developer.rocket.chat/customize-and-embed/iframe-integration/iframe-events
      * @prop e.data.eventName
@@ -43,6 +44,19 @@ const ForumIframe = ({
        */
       if (!loadingProfile && !isAuthenticated) {
         setLoginVisible(true)
+      }
+      if (isAuthenticated) {
+        /**
+         * Get the latest my forums list after successfully joining
+         */
+        try {
+          const { data: _myForums } = await api.get('/chat/user/channel')
+          ChatStore.update((s) => {
+            s.myForums = _myForums
+          })
+        } catch (error) {
+          console.error('My forums error:', error)
+        }
       }
     }
   }
@@ -70,23 +84,9 @@ const ForumIframe = ({
         },
         '*'
       )
-      const _timeout = setTimeout(() => {
-        /**
-         * Added a 5 second delay
-         * so that the redirect to the channel can be executed
-         */
-        iFrameCurrent?.contentWindow?.postMessage(
-          {
-            externalCommand: 'go',
-            path: `/${prefixPATH}/${channelName}?layout=embedded`,
-          },
-          '*'
-        )
-      }, 5000)
       ChatStore.update((s) => {
         s.isLoggedIn = true
       })
-      return () => clearTimeout(_timeout)
     }
   }, [
     iFrameCurrent,
