@@ -76,7 +76,7 @@ const ForumModal = ({
           <span className={styles.forumType}>
             {viewModal?.data?.t === 'p' ? 'private ' : 'public '}channel
           </span>
-          <h5>{viewModal?.data?.name}</h5>
+          <h5>{viewModal?.data?.name?.replace(/[-_]/g, ' ')}</h5>
         </>
       }
       width={702}
@@ -138,13 +138,14 @@ const ForumModal = ({
             const userImage = user?.avatarETag
               ? `${avatarUrl}${user?.username}?etag=${user.avatarETag}`
               : null
-            const [fistName, lastName] = user?.name?.split(/[ ,]+/)
+            const userName = user?.name || user?.username || ''
+            const [fistName, lastName] = userName.split(/[ ,]+/)
             return (
               <List.Item key={user.id}>
                 <List.Item.Meta
                   avatar={
                     <Avatar src={userImage} className={sample(colorList)}>
-                      {`${fistName[0]}${lastName?.[0]}`}
+                      {`${fistName[0]}${lastName?.[0] || ''}`}
                     </Avatar>
                   }
                   title={user.name}

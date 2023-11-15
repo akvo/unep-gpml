@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { ChatStore } from '../../store'
+import api from '../../utils/api'
 
 const ForumIframe = ({
   channelName,
@@ -9,7 +10,6 @@ const ForumIframe = ({
   setLoginVisible,
 }) => {
   const [preload, setPreload] = useState(true)
-  const [isReady, setIsReady] = useState(false)
   const ifReff = useRef()
   const iFrameCurrent = ifReff.current
   const prefixPATH = channelType === 'c' ? 'channel' : 'group'
@@ -17,19 +17,7 @@ const ForumIframe = ({
   const channelURL = `${process.env.NEXT_PUBLIC_CHAT_API_DOMAIN_URL}/${prefixPATH}/${channelName}?layout=embedded`
   const isLoggedIn = ChatStore.useState((s) => s.isLoggedIn)
 
-  const handleOnLoadIframe = () => {
-    if (!isReady) {
-      setTimeout(() => {
-        /**
-         * Added a 5 second delay
-         * for Rocket chat to fully prepare
-         */
-        setIsReady(true)
-      }, 5000)
-    }
-  }
-
-  const handleRocketChatAction = (e) => {
+  const handleRocketChatAction = async (e) => {
     /**
      * @tutorial https://developer.rocket.chat/customize-and-embed/iframe-integration/iframe-events
      * @prop e.data.eventName
@@ -44,6 +32,19 @@ const ForumIframe = ({
       if (!loadingProfile && !isAuthenticated) {
         setLoginVisible(true)
       }
+      if (isAuthenticated) {
+        /**
+         * Get the latest my forums list after successfully joining
+         */
+        try {
+          const { data: _myForums } = await api.get('/chat/user/channel')
+          ChatStore.update((s) => {
+            s.myForums = _myForums
+          })
+        } catch (error) {
+          console.error('My forums error:', error)
+        }
+      }
     }
   }
 
@@ -54,14 +55,7 @@ const ForumIframe = ({
      * It should be triggered when the isAuthenticated & loadingProfile are true
      */
     const isAuth0 = isAuthenticated && !loadingProfile
-    if (
-      iFrameCurrent &&
-      preload &&
-      isReady &&
-      !isLoggedIn &&
-      isFunction &&
-      isAuth0
-    ) {
+    if (iFrameCurrent && preload && !isLoggedIn && isFunction && isAuth0) {
       setPreload(false)
       iFrameCurrent.contentWindow.postMessage(
         {
@@ -70,32 +64,12 @@ const ForumIframe = ({
         },
         '*'
       )
-      const _timeout = setTimeout(() => {
-        /**
-         * Added a 5 second delay
-         * so that the redirect to the channel can be executed
-         */
-        iFrameCurrent?.contentWindow?.postMessage(
-          {
-            externalCommand: 'go',
-            path: `/${prefixPATH}/${channelName}?layout=embedded`,
-          },
-          '*'
-        )
-      }, 5000)
       ChatStore.update((s) => {
         s.isLoggedIn = true
       })
       return () => clearTimeout(_timeout)
     }
-  }, [
-    iFrameCurrent,
-    preload,
-    isReady,
-    isLoggedIn,
-    isAuthenticated,
-    loadingProfile,
-  ])
+  }, [iFrameCurrent, preload, isLoggedIn, isAuthenticated, loadingProfile])
 
   useEffect(() => {
     handleSSO()
@@ -119,7 +93,6 @@ const ForumIframe = ({
       width="100%"
       allow="camera;microphone"
       sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
-      onLoad={handleOnLoadIframe}
       ref={ifReff}
     />
   )
