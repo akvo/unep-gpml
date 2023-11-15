@@ -9,6 +9,7 @@ import { DropDownIcon } from '../../components/icons'
 import api from '../../utils/api'
 import Button from '../../components/button'
 import Head from 'next/head'
+import { loadCatalog } from '../../translations/utils'
 
 const { Sider } = Layout
 const DynamicForumIframe = dynamic(
@@ -170,6 +171,14 @@ const ForumDetails = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
       </Layout>
     </>
   )
+}
+
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
 }
 
 export default ForumDetails
