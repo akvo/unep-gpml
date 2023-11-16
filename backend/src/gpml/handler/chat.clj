@@ -88,6 +88,22 @@
                :enum channel-types}}
     (apply conj [:enum] channel-types)]])
 
+(def ^:private get-channel-details-path-params-schema
+  [:map
+   [:id
+    {:swagger {:description "The channel ID."
+               :type "string"
+               :allowEmptyValue false}}
+    [:string {:min 1}]]])
+
+(def ^:private get-channel-details-query-params-schema
+  [:map
+   [:type
+    {:swagger {:description "The channel type: c = public, p = private"
+               :type "string"
+               :enum channel-types}}
+    (apply conj [:enum] channel-types)]])
+
 (defn- create-user-account
   [config {:keys [user]}]
   (let [result (srv.chat/create-user-account config (:id user))]
@@ -195,6 +211,13 @@
           (r/server-error (dissoc result :success?))))
       (r/server-error {:reason :user-not-found}))))
 
+(defn- get-channel-details
+  [config {{:keys [query path]} :parameters :as _req}]
+  (let [ result (srv.chat/get-channel-details config (:id path) (:type query))]
+    (if (:success? result)
+      (r/ok (:channel result))
+      (r/server-error (dissoc result :success?)))))
+
 (defmethod ig/init-key :gpml.handler.chat/post
   [_ config]
   (fn [req]
@@ -267,3 +290,13 @@
 (defmethod ig/init-key :gpml.handler.chat/remove-user-from-channel-params
   [_ _]
   {:body remove-user-from-channel-params-schema})
+
+(defmethod ig/init-key :gpml.handler.chat/get-channel-details
+  [_ config]
+  (fn [req]
+    (get-channel-details config req)))
+
+(defmethod ig/init-key :gpml.handler.chat/get-channel-details-params
+  [_ _]
+  {:path get-channel-details-path-params-schema
+   :query get-channel-details-query-params-schema})
