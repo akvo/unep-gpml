@@ -248,7 +248,7 @@ const NewLayout = ({
                   className="noicon hide-mobile"
                   onClick={() => setLoginVisible(true)}
                 >
-                  Join Now
+                  <Trans>Join Now</Trans>
                 </Button>
               )}
               {isAuthenticated && (
@@ -259,7 +259,7 @@ const NewLayout = ({
                       size="small"
                       className="noicon hide-mobile"
                     >
-                      Workspace
+                      <Trans>Workspace</Trans>
                     </Button>
                   </Link>
                   <Dropdown
