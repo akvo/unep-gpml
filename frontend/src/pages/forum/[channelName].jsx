@@ -173,6 +173,18 @@ const ForumDetails = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
   )
 }
 
+export async function getStaticPaths() {
+  return {
+    paths: [
+      // String variant:
+      '/forum/general',
+      // Object variant:
+      { params: { channelName: 'general' } },
+    ],
+    fallback: true,
+  }
+}
+
 export const getStaticProps = async (ctx) => {
   return {
     props: {

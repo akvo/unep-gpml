@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ChatStore } from '../../store'
 import api from '../../utils/api'
 
@@ -10,15 +10,52 @@ const ForumIframe = ({
   setLoginVisible,
 }) => {
   const [preload, setPreload] = useState(true)
-  const [isReady, setIsReady] = useState(false)
-  const ifReff = useRef()
-  const iFrameCurrent = ifReff.current
   const prefixPATH = channelType === 'c' ? 'channel' : 'group'
   const channelURL = `${process.env.NEXT_PUBLIC_CHAT_API_DOMAIN_URL}/${prefixPATH}/${channelName}?layout=embedded`
-  const isLoggedIn = ChatStore.useState((s) => s.isLoggedIn)
+  const isLoggedInRocketChat = ChatStore.useState((s) => s.isLoggedIn)
+
+  const goToChannelPage = (iFrame) => {
+    iFrame.contentWindow.postMessage(
+      {
+        externalCommand: 'go',
+        path: `/${prefixPATH}/${channelName}?layout=embedded`,
+      },
+      '*'
+    )
+  }
+
+  const handleRocketChatSSO = (iFrame) => {
+    iFrame.contentWindow.postMessage(
+      {
+        externalCommand: 'call-custom-oauth-login',
+        service: 'auth0',
+      },
+      '*'
+    )
+  }
 
   const handleOnLoadIframe = () => {
-    setIsReady(true)
+    const iFrame = document.querySelector('iframe')
+    const isAuth0 = isAuthenticated && !loadingProfile
+
+    if (iFrame && isAuth0 && preload) {
+      setTimeout(() => {
+        if (!isLoggedInRocketChat) {
+
+          handleRocketChatSSO(iFrame)
+
+          ChatStore.update((s) => {
+            s.isLoggedIn = true
+          })
+
+          setTimeout(() => {
+            goToChannelPage(iFrame)
+          }, 5000)
+        }
+
+        setPreload(false)
+      }, 3000)
+    }
   }
 
   const handleRocketChatAction = async (e) => {
@@ -52,53 +89,6 @@ const ForumIframe = ({
     }
   }
 
-  const handleSSO = useCallback(() => {
-    const isFunction =
-      typeof iFrameCurrent?.contentWindow?.postMessage === 'function'
-    /**
-     * It should be triggered when the isAuthenticated & loadingProfile are true
-     */
-    const isAuth0 = isAuthenticated && !loadingProfile
-    if (
-      iFrameCurrent &&
-      preload &&
-      isReady &&
-      !isLoggedIn &&
-      isFunction &&
-      isAuth0
-    ) {
-      setPreload(false)
-      iFrameCurrent.contentWindow.postMessage(
-        {
-          externalCommand: 'call-custom-oauth-login',
-          service: 'auth0',
-        },
-        '*'
-      )
-      iFrameCurrent.contentWindow.postMessage(
-        {
-          externalCommand: 'go',
-          path: `/${prefixPATH}/${channelName}`,
-        },
-        '*'
-      )
-      ChatStore.update((s) => {
-        s.isLoggedIn = true
-      })
-    }
-  }, [
-    iFrameCurrent,
-    preload,
-    isReady,
-    isLoggedIn,
-    isAuthenticated,
-    loadingProfile,
-  ])
-
-  useEffect(() => {
-    handleSSO()
-  }, [handleSSO])
-
   useEffect(() => {
     window.addEventListener('message', handleRocketChatAction)
     return () => {
@@ -118,7 +108,6 @@ const ForumIframe = ({
       allow="camera;microphone"
       sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
       onLoad={handleOnLoadIframe}
-      ref={ifReff}
     />
   )
 }
