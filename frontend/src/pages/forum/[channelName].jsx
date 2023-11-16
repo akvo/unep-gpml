@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { Avatar, Layout, Menu, Result, Skeleton } from 'antd'
+import { Avatar, Layout, List, Menu, Skeleton } from 'antd'
 import dynamic from 'next/dynamic'
 import uniqBy from 'lodash/uniqBy'
 import styles from './channel.module.scss'
@@ -19,31 +19,174 @@ const DynamicForumIframe = dynamic(
   }
 )
 
-const ForumDetails = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
+const goToIFrame = (type, path) => {
+  try {
+    /**
+     * Request the iframe to go to the selected channel/discussion
+     */
+    const prefixPATH = type === 'c' ? 'channel' : 'group'
+    const iFrame = document?.querySelector('iframe')
+    iFrame?.contentWindow?.postMessage(
+      {
+        externalCommand: 'go',
+        path: `/${prefixPATH}/${path}?layout=embedded`,
+      },
+      '*'
+    )
+  } catch (error) {
+    /**
+     * Catch client error if any
+     */
+    console.error('error iframe.postMessage', error)
+  }
+}
+
+const ForumSidebar = ({ selectedForum, setSelectedForum, setDiscussion }) => {
+  const goToDiscussion = (_discussion) => {
+    setDiscussion(_discussion)
+    goToIFrame(selectedForum?.t, _discussion?.name)
+  }
+
+  return (
+    <div className={styles.detailSidebar}>
+      <Button
+        type="link"
+        onClick={() => setSelectedForum(null)}
+        icon={<DropDownIcon />}
+        className={styles.backButton}
+      >
+        Back to all Forums
+      </Button>
+      <div className="description">
+        <h5>{selectedForum?.name}</h5>
+        <p>{selectedForum?.description}</p>
+      </div>
+      <strong>DISCUSSIONS</strong>
+      <List
+        className="discussions"
+        loading={!selectedForum?.isFetched}
+        dataSource={selectedForum?.discussions}
+        renderItem={(item) => {
+          return (
+            <List.Item key={item?.name}>
+              <Button onClick={() => goToDiscussion(item)} type="link">
+                {`#${item?.fname}`}
+              </Button>
+            </List.Item>
+          )
+        }}
+      />
+      <strong>PARTICIPANTS</strong>
+      <List
+        className="members"
+        dataSource={selectedForum?.users}
+        renderItem={(user) => {
+          const avatarUrl = `${process.env.NEXT_PUBLIC_CHAT_API_DOMAIN_URL}/avatar/`
+          const userImage = user?.avatarETag
+            ? `${avatarUrl}${user?.username}?etag=${user.avatarETag}`
+            : null
+          const userName = user?.name || user?.username || ''
+          const [firstName, lastName] = userName.split(/[ ,]+/)
+          return (
+            <List.Item>
+              <List.Item.Meta
+                avatar={
+                  <Avatar src={userImage}>
+                    {`${firstName?.[0] || ''}${lastName?.[0] || ''}`}
+                  </Avatar>
+                }
+                title={`${firstName} ${lastName}`}
+                description={user?.nickname || ''}
+              />
+            </List.Item>
+          )
+        }}
+      />
+    </div>
+  )
+}
+
+const AllForumSidebar = ({
+  channelName,
+  loading,
+  myForums,
+  publicForums,
+  onSelect,
+}) => {
+  const [activeKeys, setActiveKeys] = useState([channelName])
+  const forums = uniqBy([...myForums, ...publicForums], 'id')
+  const router = useRouter()
+
+  const goToChannel = ({ name: forumName, t: forumType }) => {
+    setActiveKeys([forumName])
+    goToIFrame(forumType, forumName)
+  }
+
+  const goToAll = () => {
+    router.push('/forum')
+  }
+
+  return (
+    <>
+      <h5>My Forums</h5>
+      <Skeleton loading={loading} paragraph={{ rows: 3 }} active>
+        <Menu selectedKeys={activeKeys}>
+          {forums.map((forum) => {
+            return (
+              <Menu.Item
+                onClick={() => goToChannel(forum)}
+                icon={
+                  <Button type="link" onClick={() => onSelect(forum)}>
+                    <DropDownIcon />
+                  </Button>
+                }
+                key={forum.name}
+              >
+                {forum?.name?.replace(/[-_]/g, ' ')}
+              </Menu.Item>
+            )
+          })}
+        </Menu>
+      </Skeleton>
+      <div className="button-container">
+        <Button onClick={goToAll} ghost>
+          Explore All Forums
+        </Button>
+      </div>
+    </>
+  )
+}
+
+const ForumView = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
   const [preload, setPreload] = useState(true)
   const [loading, setLoading] = useState(true)
   const [publicForums, setPublicForums] = useState([])
+  const [selectedForum, setSelectedForum] = useState(null)
+  const [discussion, setDiscussion] = useState(null)
   const router = useRouter()
   const { channelName, t: channelType } = router.query
   const myForums = ChatStore.useState((s) => s.myForums)
   const allForums = ChatStore.useState((s) => s.allForums)
   const profile = UIStore.useState((s) => s.profile)
-  const channel = publicForums.find(
-    (pf) => pf?.name === channelName && pf?.t === channelType
-  )
-  const forums = uniqBy([...myForums, ...publicForums], 'id')
 
-  const goToChannel = ({ name, t }) => {
-    router.push({
-      pathname: `/forum/${name}`,
-      query: {
-        t,
-      },
-    })
+  const getSelectedForum = async (_forum) => {
+    setSelectedForum({ ..._forum, isFetched: false, isError: false })
+    try {
+      const { data } = await api.get(
+        `/chat/channel/details/${_forum?.id}?type=${_forum?.t}`
+      )
+      const { users, ..._selected } = data || {}
+      setSelectedForum({ ..._forum, ..._selected, isFetched: true })
+    } catch {
+      setSelectedForum({ ..._forum, isFetched: true, isError: true })
+    }
   }
 
-  const goToAll = () => {
-    router.push('/forum')
+  const goBackForum = () => {
+    if (selectedForum?.t && selectedForum?.name) {
+      goToIFrame(selectedForum.t, selectedForum.name)
+      setDiscussion(null)
+    }
   }
 
   const getPublicForums = useCallback(async () => {
@@ -111,30 +254,37 @@ const ForumDetails = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
       </Head>
       <Layout>
         <Sider className={styles.channelSidebar} width={335}>
-          {isAuthenticated && <h5>My Forums</h5>}
-          <Skeleton loading={loading} paragraph={{ rows: 3 }} active>
-            <Menu defaultSelectedKeys={[channelName]}>
-              {forums.map((forum) => {
-                return (
-                  <Menu.Item
-                    onClick={() => goToChannel(forum)}
-                    icon={<DropDownIcon />}
-                    key={forum.name}
-                  >
-                    {forum?.name?.replace(/[-_]/g, ' ')}
-                  </Menu.Item>
-                )
-              })}
-            </Menu>
-          </Skeleton>
-          <div className="button-container">
-            <Button onClick={goToAll} ghost>
-              Explore All Forums
-            </Button>
-          </div>
+          {selectedForum ? (
+            <ForumSidebar
+              {...{ selectedForum, setSelectedForum, setDiscussion }}
+            />
+          ) : (
+            <AllForumSidebar
+              onSelect={getSelectedForum}
+              {...{
+                loading,
+                channelName,
+                myForums,
+                publicForums,
+              }}
+            />
+          )}
         </Sider>
         <Layout className={styles.channelContent}>
-          {channelName && isAuthenticated ? (
+          {discussion && (
+            <div className="header-discussion">
+              <Button
+                type="link"
+                icon={<DropDownIcon />}
+                className={styles.backButton}
+                onClick={goBackForum}
+              >
+                Back to Channel
+              </Button>
+              <h5>{discussion?.fname}</h5>
+            </div>
+          )}
+          {channelName && isAuthenticated && !loadingProfile && (
             <DynamicForumIframe
               {...{
                 channelName,
@@ -144,28 +294,6 @@ const ForumDetails = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
                 setLoginVisible,
               }}
             />
-          ) : (
-            <Skeleton loading={loadingProfile} active>
-              <Result
-                icon={
-                  <Avatar
-                    alt={channel?.name}
-                    size={128}
-                    src={channel?.avatarUrl}
-                  />
-                }
-                title={channel?.name}
-                subTitle={channel?.description}
-                extra={
-                  <Button
-                    withArrow="link"
-                    onClick={() => setLoginVisible(true)}
-                  >
-                    Login to Chat
-                  </Button>
-                }
-              />
-            </Skeleton>
           )}
         </Layout>
       </Layout>
@@ -193,4 +321,4 @@ export const getStaticProps = async (ctx) => {
   }
 }
 
-export default ForumDetails
+export default ForumView
