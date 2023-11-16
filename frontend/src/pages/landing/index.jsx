@@ -682,7 +682,9 @@ const ActNow = () => {
     <div className={styles.actNow}>
       <div className="container act-now-container">
         <div className="wrapper">
-          <div className="caps-heading-1 page-sub-heading">Why us?</div>
+          <div className="caps-heading-1 page-sub-heading">
+            <Trans>Why us?</Trans>
+          </div>
           <h3 className="h-xxl">
             <Trans>
               Act Now: <br /> <span>Co-solution with the plastic network</span>

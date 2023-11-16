@@ -1,33 +1,63 @@
-import { UIStore } from "../../store";
-import React, { useEffect, useRef, useState, useCallback } from "react";
-import { List, Row, Col, Card, Steps, Switch, Button } from "antd";
+import { UIStore } from '../../store'
+import React, { useEffect, useRef, useState, useCallback } from 'react'
+import { List, Row, Col, Card, Steps, Switch, Button } from 'antd'
 import {
   CheckOutlined,
   EditOutlined,
   LeftOutlined,
   LoadingOutlined,
   RightOutlined,
-} from "@ant-design/icons";
-import styles from "./styles.module.scss";
-import SignUpForm from "./form";
-import StickyBox from "react-sticky-box";
-import cloneDeep from "lodash/cloneDeep";
-import isEmpty from "lodash/isEmpty";
-import xor from "lodash/xor";
-import api from "../../utils/api";
-import entity from "./entity";
-import stakeholder from "./stakeholder";
-import { useRouter } from "next/router";
-import { useDeviceSize } from "../landing/landing";
+} from '@ant-design/icons'
+import styles from './styles.module.scss'
+import SignUpForm from './form'
+import StickyBox from 'react-sticky-box'
+import cloneDeep from 'lodash/cloneDeep'
+import isEmpty from 'lodash/isEmpty'
+import xor from 'lodash/xor'
+import api from '../../utils/api'
+import entity from './entity'
+import stakeholder from './stakeholder'
+import { useRouter } from 'next/router'
+import { useDeviceSize } from '../landing/landing'
+import { useLingui } from '@lingui/react'
+import { t, msg } from '@lingui/macro'
 
-const { Step } = Steps;
+const { Step } = Steps
+
+export const useSuggestedTags = () => {
+  const { i18n } = useLingui()
+
+  const entitySuggestedTags = [
+    i18n._(t`Circularity`),
+    i18n._(t`Education`),
+    i18n._(t`Awareness`),
+    i18n._(t`Awareness-raising`),
+    i18n._(t`Monitoring`),
+    i18n._(t`Research`),
+    i18n._(t`Waste management`),
+    i18n._(t`Recycling`),
+    i18n._(t`Technology`),
+    i18n._(t`Financing`),
+    i18n._(t`Project development`),
+    i18n._(t`Legislation`),
+    i18n._(t`Policy`),
+    i18n._(t`Sea-based Sources`),
+    i18n._(t`ALDFG`),
+    i18n._(t`Microplastics`),
+    i18n._(t`Microfibers`),
+    i18n._(t`International Cooperation`),
+    i18n._(t`Multilateralism`),
+  ]
+
+  return entitySuggestedTags
+}
 
 const SignUp = ({ match: { params }, ...props }) => {
-  const router = useRouter();
-  const { state } = router.query;
-  const parsedState = state ? JSON.parse(state) : null;
-  const isEntityType = props.formType === "entity" ? true : false;
-  const isStakeholderType = !isEntityType;
+  const router = useRouter()
+  const { state } = router.query
+  const parsedState = state ? JSON.parse(state) : null
+  const isEntityType = props.formType === 'entity' ? true : false
+  const isStakeholderType = !isEntityType
   const {
     tabs,
     getSchema,
@@ -35,16 +65,15 @@ const SignUp = ({ match: { params }, ...props }) => {
     initialSignUpData,
     signUpData,
     loadTabs,
-  } = isEntityType ? entity : stakeholder;
-  const [height] = useDeviceSize();
-  const minHeightContainer = height * 0.8;
-  const minHeightCard = height * 0.75;
+  } = isEntityType ? entity : stakeholder
+  const [height] = useDeviceSize()
+  const minHeightContainer = height * 0.8
+  const minHeightCard = height * 0.75
 
   const storeData = UIStore.useState((s) => ({
     stakeholders: s.stakeholders?.stakeholders,
     countries: s.countries,
     tags: s.tags,
-    entitySuggestedTags: s.entitySuggestedTags,
     regionOptions: s.regionOptions,
     transnationalOptions: s.transnationalOptions,
     sectorOptions: s.sectorOptions,
@@ -57,73 +86,58 @@ const SignUp = ({ match: { params }, ...props }) => {
     formStep: s.formStep,
     formEdit: s.formEdit,
     stakeholderSuggestedTags: s.stakeholderSuggestedTags,
-  }));
+  }))
 
-  const {
-    stakeholders,
-    countries,
-    tags,
-    entitySuggestedTags,
-    regionOptions,
-    transnationalOptions,
-    sectorOptions,
-    organisationType,
-    representativeGroup,
-    meaOptions,
-    nonMemberOrganisations,
-    organisations,
-    formStep,
-    formEdit,
-    profile,
-    stakeholderSuggestedTags,
-  } = storeData;
+  const { tags, formStep, formEdit, profile } = storeData
 
-  const formData = signUpData.useState();
-  const { editId, data } = formData;
-  const { status, id } = formEdit.signUp;
+  const entitySuggestedTags = useSuggestedTags()
+
+  const formData = signUpData.useState()
+  const { editId, data } = formData
+  const { status, id } = formEdit.signUp
 
   // hide personal details when user already registered
-  const hasProfile = profile?.reviewStatus;
-  const hideEntityPersonalDetail = hasProfile && isEntityType;
+  const hasProfile = profile?.reviewStatus
+  const hideEntityPersonalDetail = hasProfile && isEntityType
   hideEntityPersonalDetail &&
-    schema?.properties?.["S2"] &&
-    delete schema?.properties?.["S2"];
+    schema?.properties?.['S2'] &&
+    delete schema?.properties?.['S2']
   const tabsData = hideEntityPersonalDetail
-    ? tabs.filter((x) => x?.key !== "S2")
-    : tabs;
+    ? tabs.filter((x) => x?.key !== 'S2')
+    : tabs
   const [formSchema, setFormSchema] = useState({
     schema: schema,
-  });
+  })
 
-  const btnSubmit = useRef();
-  const [sending, setSending] = useState(false);
-  const [highlight, setHighlight] = useState(false);
+  const btnSubmit = useRef()
+  const [sending, setSending] = useState(false)
+  const [highlight, setHighlight] = useState(false)
   const [disabledBtn, setDisabledBtn] = useState({
     disabled: true,
-    type: "default",
-  });
+    type: 'default',
+  })
 
   // force required authorizeSubmission for entity before fill next step
   const isAuthorizeSubmission = isEntityType
     ? formData?.data?.S1?.authorizeSubmission
-    : true;
+    : true
 
   useEffect(() => {
     UIStore.update((e) => {
-      e.disclaimer = null;
-    });
-  }, [props]);
+      e.disclaimer = null
+    })
+  }, [props])
 
   useEffect(() => {
     UIStore.update((e) => {
-      e.highlight = highlight;
-    });
-    setFormSchema({ schema: schema });
-  }, [schema, highlight]);
+      e.highlight = highlight
+    })
+    setFormSchema({ schema: schema })
+  }, [schema, highlight])
 
   const isLoaded = useCallback(() => {
-    return Boolean(!isEmpty(profile));
-  }, [profile]);
+    return Boolean(!isEmpty(profile))
+  }, [profile])
 
   useEffect(() => {
     if (parsedState?.id) {
@@ -132,20 +146,20 @@ const SignUp = ({ match: { params }, ...props }) => {
           ...e.data,
           S3: {
             ...e.data.S3,
-            ["org.name"]: parsedState?.name,
+            ['org.name']: parsedState?.name,
           },
-        };
-      });
+        }
+      })
     }
-  }, [formData, parsedState]);
+  }, [formData, parsedState])
 
   useEffect(() => {
-    const dataId = Number(params?.id || id);
+    const dataId = Number(params?.id || id)
     if (isLoaded()) {
-      setFormSchema(getSchema(storeData, hideEntityPersonalDetail));
+      setFormSchema(getSchema(storeData, hideEntityPersonalDetail))
       // Manage form status, add/edit
       if (
-        (status === "edit" || dataId) &&
+        (status === 'edit' || dataId) &&
         // data.S1 has the same keys as initialSignUpData.S1?
         (xor(Object.keys(data?.S1), Object.keys(initialSignUpData?.S1))
           .length === 0 ||
@@ -156,15 +170,15 @@ const SignUp = ({ match: { params }, ...props }) => {
           //   e.data = revertFormData(initialSignUpData)(JSON.parse(d.data));
           //   e.editId = dataId;
           // });
-        });
+        })
       }
     }
     // Manage form status, add/edit
-    if (status === "add" && !dataId && editId !== null) {
+    if (status === 'add' && !dataId && editId !== null) {
       signUpData.update((e) => {
-        e.data = initialSignUpData;
-        e.editId = null;
-      });
+        e.data = initialSignUpData
+        e.editId = null
+      })
     }
   }, [
     initialSignUpData,
@@ -178,18 +192,18 @@ const SignUp = ({ match: { params }, ...props }) => {
     params,
     isLoaded,
     hideEntityPersonalDetail,
-  ]);
+  ])
 
   const renderSteps = (parentTitle, section, steps, index) => {
-    const totalRequiredFields = data?.required?.[section]?.length || 0;
+    const totalRequiredFields = data?.required?.[section]?.length || 0
     const customTitle = (status) => {
-      const color = totalRequiredFields === 0 ? "#4DFFA5" : "#fff";
+      const color = totalRequiredFields === 0 ? '#4DFFA5' : '#fff'
       const display =
-        status === "active"
-          ? "unset"
+        status === 'active'
+          ? 'unset'
           : totalRequiredFields === 0
-          ? "unset"
-          : "none";
+          ? 'unset'
+          : 'none'
       return (
         <div className="custom-step-title">
           <span>{parentTitle}</span>
@@ -201,90 +215,87 @@ const SignUp = ({ match: { params }, ...props }) => {
               totalRequiredFields === 0 ? <CheckOutlined /> : <EditOutlined />
             }
             style={{
-              right: "0",
-              position: "absolute",
-              color: color,
-              borderColor: color,
+              right: '0',
+              position: 'absolute',
               display: display,
             }}
           />
         </div>
-      );
-    };
+      )
+    }
     const customIcon = (status) => {
-      index += 1;
-      const opacity = status === "active" ? 1 : 0.5;
+      index += 1
+      const opacity = status === 'active' ? 1 : 0.5
       return (
         <Button
           className="custom-step-icon"
           shape="circle"
           style={{
-            color: "#255B87",
-            fontWeight: "600",
+            fontWeight: '600',
             opacity: opacity,
           }}
         >
           {index}
         </Button>
-      );
-    };
+      )
+    }
     if (section !== data.tabs[0]) {
       return (
         <Step
           disabled={!isAuthorizeSubmission}
           key={section}
-          title={customTitle("waiting")}
+          title={customTitle('waiting')}
           subTitle={`Total Required fields: ${totalRequiredFields}`}
           className={
             totalRequiredFields === 0
-              ? "step-section step-section-finish"
-              : "step-section"
+              ? 'step-section step-section-finish'
+              : 'step-section'
           }
-          status={totalRequiredFields === 0 ? "finish" : "wait"}
-          icon={customIcon("waiting")}
+          status={totalRequiredFields === 0 ? 'finish' : 'wait'}
+          icon={customIcon('waiting')}
         />
-      );
+      )
     }
     const childs = steps.map(({ group, key, title, desc }) => {
-      const requiredFields = data?.[section]?.required?.[group]?.length || 0;
+      const requiredFields = data?.[section]?.required?.[group]?.length || 0
       return (
         <Step
           disabled={!isAuthorizeSubmission}
           key={section + key}
           title={`${title}`}
           subTitle={`Required fields: ${requiredFields}`}
-          status={requiredFields === 0 ? "finish" : "process"}
+          status={requiredFields === 0 ? 'finish' : 'process'}
         />
-      );
-    });
+      )
+    })
     return [
       <Step
         disabled={!isAuthorizeSubmission}
         key={section}
-        title={customTitle("active")}
+        title={customTitle('active')}
         subTitle={`Total Required fields: ${totalRequiredFields}`}
         className={
           totalRequiredFields === 0
-            ? "step-section step-section-finish"
-            : "step-section"
+            ? 'step-section step-section-finish'
+            : 'step-section'
         }
-        status={totalRequiredFields === 0 ? "finish" : "process"}
-        icon={customIcon("active")}
+        status={totalRequiredFields === 0 ? 'finish' : 'process'}
+        icon={customIcon('active')}
       />,
       ...childs,
-    ];
-  };
+    ]
+  }
 
   const handleOnTabChange = (key) => {
-    const tabActive = tabsData.filter((x) => x.key === key);
+    const tabActive = tabsData.filter((x) => x.key === key)
     signUpData.update((e) => {
       e.data = {
         ...e.data,
         tabs: [key],
         steps: tabActive[0].steps,
-      };
-    });
-  };
+      }
+    })
+  }
 
   const handleOnStepClick = (current, section) => {
     signUpData.update((e) => {
@@ -294,68 +305,68 @@ const SignUp = ({ match: { params }, ...props }) => {
           ...e.data[section],
           steps: current,
         },
-      };
-    });
-  };
+      }
+    })
+  }
 
   const getTabStepIndex = () => {
-    const section = data.tabs[0];
-    const stepIndex = data[section].steps;
-    const tabIndex = tabsData.findIndex((tab) => tab.key === section);
-    const steps = tabsData[tabIndex]?.steps || [];
-    return { tabIndex, stepIndex, steps };
-  };
+    const section = data.tabs[0]
+    const stepIndex = data[section].steps
+    const tabIndex = tabsData.findIndex((tab) => tab.key === section)
+    const steps = tabsData[tabIndex]?.steps || []
+    return { tabIndex, stepIndex, steps }
+  }
 
   const isLastStep = () => {
-    const { tabIndex } = getTabStepIndex();
-    return tabsData.length === tabIndex + 1;
-  };
+    const { tabIndex } = getTabStepIndex()
+    return tabsData.length === tabIndex + 1
+  }
 
   const isFirstStep = () => {
-    const { tabIndex } = getTabStepIndex();
-    return tabIndex === 0;
-  };
+    const { tabIndex } = getTabStepIndex()
+    return tabIndex === 0
+  }
 
   const handleOnClickBtnNext = (e) => {
-    window.scrollTo(0, 0);
-    const { tabIndex, stepIndex, steps } = getTabStepIndex();
+    window.scrollTo(0, 0)
+    const { tabIndex, stepIndex, steps } = getTabStepIndex()
     if (stepIndex < steps.length - 1) {
       // Next step, same section
-      handleOnStepClick(stepIndex + 1, tabsData[tabIndex].key);
+      handleOnStepClick(stepIndex + 1, tabsData[tabIndex].key)
     } else if (tabIndex < tabsData.length - 1) {
       // Next section, first step
-      handleOnTabChange(tabsData[tabIndex + 1].key);
+      handleOnTabChange(tabsData[tabIndex + 1].key)
     } else {
       // We shouldn't get here, since the button should be hidden
-      console.error("Last step:", tabIndex, stepIndex);
+      console.error('Last step:', tabIndex, stepIndex)
     }
-  };
+  }
 
   const handleOnClickBtnBack = (e) => {
-    window.scrollTo(0, 0);
-    const { tabIndex, stepIndex, steps } = getTabStepIndex();
+    window.scrollTo(0, 0)
+    const { tabIndex, stepIndex, steps } = getTabStepIndex()
     if (stepIndex > 0 && steps.length > 0) {
       // Prev step, same section
-      handleOnStepClick(stepIndex - 1, tabsData[tabIndex].key);
+      handleOnStepClick(stepIndex - 1, tabsData[tabIndex].key)
     } else if (tabIndex > 0) {
       // Prev section, first step
-      handleOnTabChange(tabsData[tabIndex - 1].key);
+      handleOnTabChange(tabsData[tabIndex - 1].key)
     } else {
       // We shouldn't get here, since the button should be hidden
-      console.error("Last step:", tabIndex, stepIndex);
+      console.error('Last step:', tabIndex, stepIndex)
     }
-  };
+  }
 
   const handleOnClickBtnSubmit = (e) => {
-    setHighlight(true);
-    btnSubmit.current.click();
-  };
+    setHighlight(true)
+    btnSubmit.current.click()
+  }
 
   const selectTags = (tag) => {
     let array =
       Object.values(tags)
         .flat()
-        .find((o) => o.tag === tag.toLowerCase())?.id || tag.toLowerCase();
+        .find((o) => o.tag === tag.toLowerCase())?.id || tag.toLowerCase()
 
     signUpData.update((e) => {
       e.data = {
@@ -367,9 +378,9 @@ const SignUp = ({ match: { params }, ...props }) => {
             array,
           ],
         },
-      };
-    });
-  };
+      }
+    })
+  }
 
   return (
     <div className={styles.addSignUp}>
@@ -380,7 +391,7 @@ const SignUp = ({ match: { params }, ...props }) => {
               <Col xs={24} lg={24}>
                 <div
                   className={`form-meta ${
-                    formStep.signUp === 2 ? "submitted" : ""
+                    formStep.signUp === 2 ? 'submitted' : ''
                   }`}
                 >
                   <div className="highlight">
@@ -388,10 +399,10 @@ const SignUp = ({ match: { params }, ...props }) => {
                       checked={highlight}
                       size="small"
                       onChange={(status) => setHighlight(status)}
-                    />{" "}
+                    />{' '}
                     {highlight
-                      ? "Required fields highlighted"
-                      : "Highlight required"}
+                      ? 'Required fields highlighted'
+                      : 'Highlight required'}
                   </div>
                   {formStep.signUp === 1 && (
                     <Button
@@ -421,17 +432,17 @@ const SignUp = ({ match: { params }, ...props }) => {
                 <Row
                   style={{
                     minHeight: `${minHeightContainer}px`,
-                    borderRadius: "18px",
+                    borderRadius: '18px',
                   }}
                 >
                   <Col
                     xs={24}
                     lg={6}
                     style={{
-                      minHeight: "100%",
-                      background: "rgba(3, 155, 120, 0.4)",
-                      borderRadius: "15px 0 0 15px",
-                      padding: "13px 0",
+                      minHeight: '100%',
+                      background: 'white',
+                      borderRadius: '15px 0 0 15px',
+                      padding: '13px 0',
                     }}
                   >
                     <StickyBox style={{ zIndex: 9 }} offsetTop={100}>
@@ -446,10 +457,10 @@ const SignUp = ({ match: { params }, ...props }) => {
                             onChange={(e) => {
                               e === -1
                                 ? handleOnTabChange(key)
-                                : handleOnStepClick(e, data.tabs[0]);
+                                : handleOnStepClick(e, data.tabs[0])
                             }}
                             className={
-                              key === data.tabs[0] ? "current-tabs" : ""
+                              key === data.tabs[0] ? 'current-tabs' : ''
                             }
                           >
                             {renderSteps(title, key, steps, i)}
@@ -464,17 +475,17 @@ const SignUp = ({ match: { params }, ...props }) => {
                     xs={24}
                     lg={18}
                     style={{
-                      padding: "20px 10px 20px 16px",
-                      backgroundColor: "#fff",
-                      borderRadius: "0 15px 15px 0",
+                      padding: '20px 10px 20px 16px',
+                      backgroundColor: '#fff',
+                      borderRadius: '0 15px 15px 0',
                     }}
                   >
                     <Card
                       style={{
                         paddingTop: 0,
-                        paddingBottom: "100px",
-                        paddingRight: "24px",
-                        paddingLeft: "30px",
+                        paddingBottom: '100px',
+                        paddingRight: '24px',
+                        paddingLeft: '30px',
                         minHeight: `${minHeightCard}px`,
                       }}
                     >
@@ -493,7 +504,7 @@ const SignUp = ({ match: { params }, ...props }) => {
                           </div>
                           <div>
                             More information on Entity Focal Points rights can
-                            be found{" "}
+                            be found{' '}
                             <a
                               href="https://wedocs.unep.org/bitstream/handle/20.500.11822/36688/Phase%20II%20Focal%20Point%20Roles%2031-08-2021%20-%20Copy.pdf?sequence=1&isAllowed=y"
                               target="_blank"
@@ -587,7 +598,7 @@ const SignUp = ({ match: { params }, ...props }) => {
                   <Col span={24}>
                     <Card
                       style={{
-                        padding: "30px",
+                        padding: '30px',
                       }}
                     >
                       <div>
@@ -603,7 +614,7 @@ const SignUp = ({ match: { params }, ...props }) => {
         </StickyBox>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default SignUp;
+export default SignUp

@@ -48,7 +48,7 @@ msgstr ""
 "<0>Introductions</0><1>This workflow tool has been created to assist your team with the development of a plastics strategy for your country. Some key steps are suggested for consideration while in the ‘create’ phase. The workflow will be further developed to assist with the phases of ‘implement’, ‘report’, and ‘review'. \n"
 "<2/><3/>The workflow and resources associated with each suggested step are designed to facilitate and accelerate the activities of the ‘create’ phase of your plastic strategy. Such resources include data, documents, templates, case studies, relevant organizations (governmental and non-governmental) as well as individuals active in the space. </1><4>Step 1: Establishment of a National Steering Committee & Project Team</4><5>This step assists in the establishment of a National Steering Committee (NSC) with representation from necessary government agencies as well as relevant non-governmental organizations. The NSC should aim to meet 2-4 times per year to assist with and drive the roadmap/strategy/plan. A project team should be established to assist the NSC, consisting of consultants and focal points, to lead the implementation of the project with the guidance of the NSC and UNEP.</5><6>Step 2: Stakeholder consultation process</6><7>Consultation should aim to understand the current issues faced by various stakeholders, as well as their role in solving the problem (actors) and how proposed activities of the national plastics strategy may affect them positively or negatively. Different stakeholders may also have access to important data. This step of the workflow provides guidance on organizing a comprehensive stakeholder consultation process to ensure all relevant sectors and stakeholders are consulted.</7><8>Step 3: Legislation & Policy Review and Analysis</8><9>An analysis of the legal and policy framework in your country can help identify current goals and targets that the national plastics strategy should aim to achieve, as well as gaps in this framework that the strategy could help close. This allows for the identification of priority areas to track and the type of data needed to do so. In this stage, together with UNEP’s guidance, a review and analysis of the legislative and policy landscape as it pertains to marine litter and plastic pollution would be conducted.</9><10>Step 4: Data Analysis</10><11>Data is at the core of understanding the issues and current state of play, as well as the tracking of trends to determine effectiveness of the national plastics strategy. This step will help in compiling existing data and information into a State of Knowledge Report. This could include identification of areas in need of additional data collection, leading to additional secondary data collection. </11><12>Step 5: National Source Inventory Report</12><13> National plastics strategies should be underpinned by a National Source Inventory (NSI). This step will help in analysing the data available and collected into a National Source Inventory Report on plastic pollution and marine litter that can inform discussions on possible actions to be included in the national plastics strategy. </13><14>Final Step: National Roadmap/Strategy/Plan</14><15>This step facilitates the development of a National Roadmap/Strategy/Plan based on the evidence and information gathered in the NSI Report. The roadmap should be time bound, measurable and include provisions of periodic revisions. The strategy can be formally adopted through parliament or act as a voluntary guideline for action.</15>"
 
-#: src/pages/landing/index.jsx:1181
+#: src/pages/landing/index.jsx:1183
 msgid "<0>Spread the word</0><1>Follow us on social media to be part of the movement. </1>"
 msgstr "<0>Spread the word</0><1>Follow us on social media to be part of the movement. </1>"
 
@@ -123,11 +123,11 @@ msgstr "About yourself"
 msgid "Access a suite of powerful data tools tailored for tackling plastic pollution and marine litter. Utilize comprehensive data sets, layers and statistics to  gain valuable insights that empower informed decision-making and drive effective action."
 msgstr "Access a suite of powerful data tools tailored for tackling plastic pollution and marine litter. Utilize comprehensive data sets, layers and statistics to  gain valuable insights that empower informed decision-making and drive effective action."
 
-#: src/pages/landing/index.jsx:1008
+#: src/pages/landing/index.jsx:1010
 msgid "Access to all"
 msgstr "Access to all"
 
-#: src/pages/landing/index.jsx:687
+#: src/pages/landing/index.jsx:689
 msgid "Act Now: <0/> <1>Co-solution with the plastic network</1>"
 msgstr "Act Now: <0/> <1>Co-solution with the plastic network</1>"
 
@@ -376,7 +376,7 @@ msgstr "Available Information"
 msgid "Available Tools"
 msgstr "Available Tools"
 
-#: src/pages/landing/index.jsx:692
+#: src/pages/landing/index.jsx:694
 msgid "Avoid duplication of efforts. By using the platform, you can collaborate with other organisations and governments to create shared solutions to end plastic pollution."
 msgstr "Avoid duplication of efforts. By using the platform, you can collaborate with other organisations and governments to create shared solutions to end plastic pollution."
 
@@ -446,7 +446,7 @@ msgstr ""
 msgid "Become part of GPML to collaborate with thousands of organisations and individuals from around the world"
 msgstr "Become part of GPML to collaborate with thousands of organisations and individuals from around the world"
 
-#: src/pages/landing/index.jsx:1120
+#: src/pages/landing/index.jsx:1122
 msgid "Become part of the network"
 msgstr "Become part of the network"
 
@@ -707,7 +707,7 @@ msgstr "Climate and Atmosphere"
 msgid "Close"
 msgstr "Close"
 
-#: src/pages/landing/index.jsx:1145
+#: src/pages/landing/index.jsx:1147
 msgid "Co-solution with our network"
 msgstr "Co-solution with our network"
 
@@ -724,7 +724,7 @@ msgid "Collection / sorting of plastics after use"
 msgstr "Collection / sorting of plastics after use"
 
 #: src/pages/landing/index.jsx:673
-#: src/pages/landing/index.jsx:851
+#: src/pages/landing/index.jsx:853
 msgid "Coming soon"
 msgstr "Coming soon"
 
@@ -964,7 +964,7 @@ msgid "Data Source"
 msgstr "Data Source"
 
 #: src/modules/workspace/view.jsx:52
-#: src/pages/landing/index.jsx:836
+#: src/pages/landing/index.jsx:838
 msgid "Data tools"
 msgstr "Data tools"
 
@@ -1126,11 +1126,11 @@ msgstr "Directory of partners of the GPML Digital Platform"
 
 #: src/pages/landing/index.jsx:647
 #: src/pages/landing/index.jsx:658
-#: src/pages/landing/index.jsx:923
+#: src/pages/landing/index.jsx:925
 msgid "Discover"
 msgstr "Discover"
 
-#: src/pages/landing/index.jsx:848
+#: src/pages/landing/index.jsx:850
 msgid "Discover like-minded individuals and organizations passionate about combating plastic pollution and marine litter through our innovative matchmaking feature. Connect with fellow advocates, researchers, and activists to amplify your impact and collaborate on meaningful projects for a cleaner and healthier ocean ecosystem."
 msgstr "Discover like-minded individuals and organizations passionate about combating plastic pollution and marine litter through our innovative matchmaking feature. Connect with fellow advocates, researchers, and activists to amplify your impact and collaborate on meaningful projects for a cleaner and healthier ocean ecosystem."
 
@@ -1221,7 +1221,7 @@ msgstr "Educational & Outreach resources"
 msgid "Electrical and electronics"
 msgstr "Electrical and electronics"
 
-#: src/pages/landing/index.jsx:843
+#: src/pages/landing/index.jsx:845
 msgid "Elevate your mission to address plastic pollution and marine litter through our integrated workspace feature. This feature enables you to coordinate with partners, centralize resources, strategize actions, and drive collective solutions"
 msgstr "Elevate your mission to address plastic pollution and marine litter through our integrated workspace feature. This feature enables you to coordinate with partners, centralize resources, strategize actions, and drive collective solutions"
 
@@ -1788,7 +1788,7 @@ msgstr ""
 msgid "How can the data and information from your monitoring programme be accessed?"
 msgstr "How can the data and information from your monitoring programme be accessed?"
 
-#: src/pages/landing/index.jsx:865
+#: src/pages/landing/index.jsx:867
 msgid "How does it work?"
 msgstr "How does it work?"
 
@@ -2065,7 +2065,7 @@ msgstr "Join Newsletter"
 
 #: src/layouts/new-layout.js:251
 #: src/pages/landing/index.jsx:339
-#: src/pages/landing/index.jsx:1104
+#: src/pages/landing/index.jsx:1106
 msgid "Join Now"
 msgstr "Join Now"
 
@@ -2077,11 +2077,11 @@ msgstr "Join others in coordinating efforts towards shared plastic solutions. Fr
 msgid "Join the discussion..."
 msgstr "Join the discussion..."
 
-#: src/pages/landing/index.jsx:1087
+#: src/pages/landing/index.jsx:1089
 msgid "Join the Global Partnership on Plastic Pollution and Marine Litter"
 msgstr "Join the Global Partnership on Plastic Pollution and Marine Litter"
 
-#: src/pages/landing/index.jsx:1130
+#: src/pages/landing/index.jsx:1132
 msgid "Join the GPML"
 msgstr "Join the GPML"
 
@@ -2388,9 +2388,37 @@ msgstr "Microplastics"
 msgid "Miscellaneous"
 msgstr "Miscellaneous"
 
+#: src/store.js:230
+msgid "Microfibers"
+msgstr "Microfibers"
+
+#: src/store.js:229
+msgid "Microplastics"
+msgstr "Microplastics"
+
+#: src/modules/flexible-forms/form-schema.js:1706
+msgid "Miscellaneous"
+msgstr "Miscellaneous"
+
 #: src/modules/flexible-forms/form-schema.js:1112
 msgid "Mixed"
 msgstr "Mixed"
+
+#: src/store.js:499
+msgid "Money that is invested in a company in the form of shares."
+msgstr "Money that is invested in a company in the form of shares."
+
+#: src/store.js:505
+msgid "Money that is invested or is available for investment in a new company, especially one that involves risk."
+msgstr "Money that is invested or is available for investment in a new company, especially one that involves risk."
+
+#: src/store.js:218
+msgid "Monitoring"
+msgstr "Monitoring"
+
+#: src/store.js:343
+msgid "Monitoring and Analysis"
+msgstr "Monitoring and Analysis"
 
 #: src/store.js:499
 msgid "Money that is invested in a company in the form of shares."
@@ -3344,11 +3372,11 @@ msgstr "Setup your team"
 msgid "Share"
 msgstr "Share"
 
-#: src/pages/landing/index.jsx:1173
+#: src/pages/landing/index.jsx:1175
 msgid "Share your data"
 msgstr "Share your data"
 
-#: src/pages/landing/index.jsx:1161
+#: src/pages/landing/index.jsx:1163
 msgid "Share your knowledge"
 msgstr "Share your knowledge"
 
@@ -3385,7 +3413,7 @@ msgstr "Sign In"
 msgid "SIGN IN"
 msgstr "SIGN IN"
 
-#: src/pages/landing/index.jsx:1125
+#: src/pages/landing/index.jsx:1127
 msgid "Sign Up"
 msgstr "Sign Up"
 
@@ -4135,7 +4163,7 @@ msgstr "Visit the Help Center for FAQs, tutorials and more"
 msgid "Visit the Help Centre"
 msgstr "Visit the Help Centre"
 
-#: src/pages/landing/index.jsx:960
+#: src/pages/landing/index.jsx:962
 msgid "Visit the website"
 msgstr "Visit the website"
 
@@ -4212,7 +4240,7 @@ msgstr "What funding sources did you use?"
 msgid "What is the connection between this platform and GPML?"
 msgstr "What is the connection between this platform and GPML?"
 
-#: src/pages/landing/index.jsx:940
+#: src/pages/landing/index.jsx:942
 msgid "WHAT IS THE FOCUS OF GPML?"
 msgstr "WHAT IS THE FOCUS OF GPML?"
 
@@ -4285,8 +4313,8 @@ msgstr ""
 
 #: src/layouts/new-layout.js:262
 #: src/pages/landing/index.jsx:344
-#: src/pages/landing/index.jsx:841
-#: src/pages/landing/index.jsx:1109
+#: src/pages/landing/index.jsx:843
+#: src/pages/landing/index.jsx:1111
 msgid "Workspace"
 msgstr "Workspace"
 
