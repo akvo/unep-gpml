@@ -118,6 +118,9 @@ const AllForumSidebar = ({
   const router = useRouter()
 
   const goToChannel = ({ name: forumName, t: forumType }) => {
+    if (typeof window !== 'undefined') {
+      window.history.pushState({}, '', `/forum/${forumName}?t=${forumType}`)
+    }
     setActiveKeys([forumName])
     goToIFrame(forumType, forumName)
   }
@@ -244,6 +247,7 @@ const ForumView = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
      */
     if (!loadingProfile && !isAuthenticated && loading) {
       setLoading(false)
+      setLoginVisible(true)
     }
   }, [loading, isAuthenticated, loadingProfile])
 
