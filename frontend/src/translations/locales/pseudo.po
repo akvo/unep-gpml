@@ -472,10 +472,6 @@ msgstr ""
 msgid "Biological diversity"
 msgstr ""
 
-#: src/store.js:239
-#~ msgid "Biota"
-#~ msgstr ""
-
 #: src/store.js:520
 msgid "Blended finance"
 msgstr ""
@@ -548,10 +544,6 @@ msgstr ""
 msgid "CANCEL"
 msgstr ""
 
-#: src/store.js:251
-#~ msgid "Capacity building"
-#~ msgstr ""
-
 #: src/modules/knowledge-lib/filter-bar.jsx:24
 #: src/store.js:764
 msgid "Capacity Development"
@@ -612,10 +604,6 @@ msgstr ""
 #: src/modules/workspace/view.jsx:402
 msgid "Chat"
 msgstr ""
-
-#: src/store.js:240
-#~ msgid "Chemicals"
-#~ msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:1745
 msgid "Chemicals and waste"
@@ -942,10 +930,6 @@ msgstr ""
 msgid "CV / Portfolio"
 msgstr ""
 
-#: src/store.js:249
-#~ msgid "Data analysis"
-#~ msgstr ""
-
 #: src/pages/workspace/[slug]/4-data-analysis/available-data.js:9
 #: src/pages/workspace/[slug]/4-data-analysis/available-information.js:43
 #: src/pages/workspace/[slug]/4-data-analysis/available-tools.js:43
@@ -972,10 +956,6 @@ msgstr ""
 #: src/pages/landing/index.jsx:458
 msgid "DATA LAYERS"
 msgstr ""
-
-#: src/store.js:247
-#~ msgid "Data monitoring"
-#~ msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:1700
 msgid "Data Source"
@@ -1358,10 +1338,6 @@ msgstr ""
 msgid "Environmental impacts will be evaluated"
 msgstr ""
 
-#: src/store.js:243
-#~ msgid "Environmental justice"
-#~ msgstr ""
-
 #: src/modules/flexible-forms/form-schema.js:527
 msgid "Environmental social planning"
 msgstr ""
@@ -1550,10 +1526,6 @@ msgstr ""
 msgid "Frequently Asked Questions"
 msgstr ""
 
-#: src/store.js:238
-#~ msgid "Freshwater"
-#~ msgstr ""
-
 #: src/modules/flexible-forms/form-schema.js:1089
 msgid "Funding"
 msgstr ""
@@ -1573,10 +1545,6 @@ msgstr ""
 #: src/modules/flexible-forms/form-schema.js:926
 msgid "Gaps in public awareness/public not interested"
 msgstr ""
-
-#: src/store.js:245
-#~ msgid "Gender"
-#~ msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:32
 msgid "Gender Equality"
@@ -1831,10 +1799,6 @@ msgstr ""
 #: src/modules/help-center/view.jsx:39
 msgid "How to Guides"
 msgstr ""
-
-#: src/store.js:244
-#~ msgid "Human health"
-#~ msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:997
 msgid "Human health and wellbeing"
@@ -2143,6 +2107,10 @@ msgstr ""
 msgid "Last Amendment Date"
 msgstr ""
 
+#: src/components/forum-card/forum-card.jsx:44
+msgid "Last message"
+msgstr ""
+
 #: src/modules/signup-old/signup-form.jsx:35
 msgid "Last name"
 msgstr ""
@@ -2171,6 +2139,10 @@ msgstr ""
 
 #: src/store.js:60
 msgid "Learning center"
+msgstr ""
+
+#: src/components/forum-card/forum-card.jsx:30
+msgid "Leave"
 msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:1707
@@ -2656,10 +2628,6 @@ msgstr ""
 msgid "NUMBER OF RESOURCES"
 msgstr ""
 
-#: src/store.js:237
-#~ msgid "Ocean and coast"
-#~ msgstr ""
-
 #: src/store.js:779
 msgid "Ocean Innovation Challenge"
 msgstr ""
@@ -2873,11 +2841,6 @@ msgstr ""
 msgid "Pilot"
 msgstr ""
 
-#: src/layouts/new-layout.js:99
-#: src/store.js:24
-#~ msgid "Plastic"
-#~ msgstr ""
-
 #: src/store.js:710
 msgid "Plastic Odyssey: The Expedition Around The World To Fight Against Plastic Pollution"
 msgstr ""
@@ -2973,6 +2936,7 @@ msgstr ""
 msgid "Privacy Policy & Terms of Use"
 msgstr ""
 
+#: src/components/forum-card/forum-card.jsx:59
 #: src/pages/forum/index.jsx:137
 msgid "private"
 msgstr ""
@@ -3034,6 +2998,7 @@ msgstr ""
 msgid "Prototype"
 msgstr ""
 
+#: src/components/forum-card/forum-card.jsx:59
 #: src/pages/forum/index.jsx:137
 msgid "public"
 msgstr ""
@@ -3673,10 +3638,6 @@ msgstr ""
 msgid "Technology"
 msgstr ""
 
-#: src/store.js:250
-#~ msgid "Technology and innovation"
-#~ msgstr ""
-
 #: src/store.js:337
 msgid "Technology and Processes"
 msgstr ""
@@ -4135,16 +4096,16 @@ msgstr ""
 msgid "View All"
 msgstr ""
 
-#: src/pages/landing/index.jsx:882
-#~ msgid "View All Features"
-#~ msgstr ""
-
 #: src/modules/workspace/view.jsx:367
 msgid "View All Forums"
 msgstr ""
 
 #: src/modules/workspace/view.jsx:430
 msgid "View All Plastic Strategies"
+msgstr ""
+
+#: src/components/forum-card/forum-card.jsx:25
+msgid "View Details"
 msgstr ""
 
 #: src/modules/details-page/header.jsx:107
@@ -4179,10 +4140,6 @@ msgstr ""
 #: src/store.js:220
 msgid "Waste management"
 msgstr ""
-
-#: src/store.js:242
-#~ msgid "Wastewater"
-#~ msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:1063
 msgid "Wastewater/Sewage management"
