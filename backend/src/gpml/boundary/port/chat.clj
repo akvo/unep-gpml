@@ -24,4 +24,5 @@
   (delete-private-channel [this channel-id])
   (create-public-channel [this channel])
   (set-public-channel-custom-fields [this channel-id custom-fields])
-  (delete-public-channel [this channel-id]))
+  (delete-public-channel [this channel-id])
+  (get-channel-discussions [this channel-id]))
