@@ -4275,3 +4275,315 @@ msgstr "Vérifié par le gouvernement"
 msgid "GPML Verified"
 msgstr "GPML vérifié"
 
+#: src/store.js:42
+msgid "Information"
+msgstr "Information"
+
+#: src/pages/landing/index.jsx:668
+msgid "Join and collaborate"
+msgstr "Rejoignez et collaborez"
+
+#: src/layouts/new-layout.js:296
+msgid "Logout"
+msgstr "Se déconnecter"
+
+#: src/layouts/new-layout.js:91
+#: src/store.js:159
+msgid "Our Network"
+msgstr "Notre réseau"
+
+#: src/store.js:163
+msgid "Partnership"
+msgstr "Partenariat"
+
+#: src/modules/login/view.jsx:293
+msgid "Password"
+msgstr "Mot de passe"
+
+#: src/layouts/new-layout.js:99
+#: src/store.js:24
+msgid "Plastic"
+msgstr "Plastique"
+
+#: src/modules/profile/admin.jsx:1418
+msgid "Please input your tag!"
+msgstr "Veuillez saisir votre tag !"
+
+#: src/layouts/new-layout.js:286
+msgid "Profile"
+msgstr "Profil"
+
+#: src/pages/landing/index.jsx:200
+#: src/pages/landing/index.jsx:404
+msgid "Suggested:"
+msgstr "Suggéré:"
+
+#: src/layouts/new-layout.js:86
+#: src/store.js:155
+msgid "The platform"
+msgstr "La plateforme"
+
+#: src/store.js:38
+msgid "Tools"
+msgstr "Outils"
+
+#: src/modules/knowledge-lib/filter-modal.jsx:400
+msgid "YYYY"
+msgstr "AAAA"
+
+#: src/pages/forum/index.jsx:101
+msgid "All Forums"
+msgstr "Tous les forums"
+
+#: src/layouts/new-layout.js:109
+#: src/store.js:32
+msgid "Basics"
+msgstr "Les bases"
+
+#: src/pages/landing/index.jsx:1136
+msgid "Become a partner"
+msgstr "Devenir un partenaire"
+
+#: src/pages/forum/index.jsx:127
+msgid "channel"
+msgstr "canal"
+
+#: src/store.js:109
+#: src/pages/forum/index.jsx:112
+msgid "Engage in forums across a wide variety of subjects and sectors currently ongoing. Join the public channels or request to join the private channels."
+msgstr "Participez à des forums sur une grande variété de sujets et de secteurs actuellement en cours. Rejoignez les chaînes publiques ou demandez à rejoindre les chaînes privées."
+
+#: src/pages/workspace/[slug]/layout.js:333
+#: src/store.js:78
+msgid "Forum"
+msgstr "Forum"
+
+#: src/modules/workspace/view.jsx:352
+#: src/pages/forum/index.jsx:94
+msgid "Forums"
+msgstr "Forums"
+
+#: src/pages/forum/index.jsx:127
+msgid "private"
+msgstr "privé"
+
+#: src/pages/forum/index.jsx:127
+msgid "public"
+msgstr "publique"
+
+#: src/modules/knowledge-lib/filter-modal.jsx:357
+msgid "Reset Filter"
+msgstr "Réinitialiser le filtre"
+
+#: src/modules/workspace/view.jsx:383
+#: src/pages/forum/index.jsx:143
+msgid "View"
+msgstr "Voir"
+
+#: src/modules/workspace/view.jsx:262
+msgid "By completing this form I confirm that I have the authorization to submit an application on behalf of this Entity to become a member of the Global Partnership on Marine Litter (GPML)​."
+msgstr "En remplissant ce formulaire, je confirme que j'ai l'autorisation de soumettre une candidature au nom de cette entité pour devenir membre du Partenariat mondial sur les déchets marins (GPML)​."
+
+#: src/modules/workspace/view.jsx:391
+msgid "Chat"
+msgstr "Chat"
+
+#: src/store.js:211
+#: src/store.js:274
+#: src/pages/landing/index.jsx:514
+msgid "Government agencies"
+msgstr "Organismes gouvernementaux"
+
+#: src/modules/workspace/view.jsx:251
+msgid "Hello, It looks like your entity: <0>{0},</0> is not yet part <1/> of the GPML partnership.<2/> If you are the focal point, submit your application below"
+msgstr "Bonjour, Il semblerait que votre entité : <0>{0},</0> ne fasse pas encore partie <1/> du partenariat GPML.<2/> Si vous êtes le point focal, soumettez votre candidature ci-dessous"
+
+#: src/modules/workspace/view.jsx:292
+msgid "I AM NOT THE FOCAL POINT"
+msgstr "JE NE SUIS PAS LE POINT FOCAL"
+
+#: src/pages/workspace/[slug]/1-project-team/index.js:48
+#: src/pages/workspace/[slug]/1-project-team/setup-team.js:16
+#: src/pages/workspace/[slug]/layout.js:26
+msgid "National Steering Committee & Project Team"
+msgstr "Comité directeur national et équipe de projet"
+
+#: src/modules/workspace/view.jsx:334
+msgid "Network with other stakeholders"
+msgstr "Réseauter avec d’autres parties prenantes"
+
+#: src/modules/workspace/view.jsx:247
+msgid "RECOMMENDED"
+msgstr "RECOMMANDÉ"
+
+#: src/modules/workspace/view.jsx:315
+msgid "Tap into a global network of like-minded members​"
+msgstr "Profitez d'un réseau mondial de membres partageant les mêmes idées"
+
+#: src/modules/workspace/view.jsx:356
+msgid "View All Forums"
+msgstr "Voir tous les forums"
+
+#: src/modules/workspace/view.jsx:419
+msgid "View All Plastic Strategies"
+msgstr "Voir toutes les stratégies plastiques"
+
+#: src/modules/workspace/view.jsx:481
+msgid "Watch this video to get started"
+msgstr "Regardez cette vidéo pour commencer"
+
+#: src/modules/workspace/view.jsx:232
+msgid "We sent you a confirmation email, Please take a moment and validate your address to confirm your account."
+msgstr "Nous vous avons envoyé un e-mail de confirmation, veuillez prendre un moment et valider votre adresse pour confirmer votre compte."
+
+#: src/modules/workspace/view.jsx:436
+msgid "What to do next?"
+msgstr "Que faire ensuite?"
+
+#: src/modules/workspace/view.jsx:345
+msgid "workspace"
+msgstr "espace de travail"
+
+#: src/modules/workspace/view.jsx:222
+msgid "Your account is pending reviewal. You can still explore the platform."
+msgstr "Votre compte est en attente de révision. Vous pouvez toujours explorer la plateforme."
+
+#: src/components/footer/Footer.jsx:168
+msgid "<0>We use cookies for better service.</0><1><2>Learn More</2></1><3>Accept</3>"
+msgstr "<0>Nous utilisons des cookies pour un meilleur service.</0><1><2>En savoir plus</2></1><3>Accepter</3>"
+
+#: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:155
+msgid "Click to Unflag as Validated"
+msgstr "Cliquez pour ne plus marquer comme validé"
+
+#: src/components/footer/Footer.jsx:62
+msgid "Privacy Policy & Terms of Use"
+msgstr "Politique de confidentialité et conditions d'utilisation"
+
+#: src/pages/landing/index.jsx:108
+msgid "The GPML digital platform fosters public-private partnerships, offers clarity on circular economy practices, and provides guidance on Extended Producer Responsibilities (EPRs) and sustainable business models."
+msgstr "La plateforme numérique GPML favorise les partenariats public-privé, offre des éclaircissements sur les pratiques d'économie circulaire et fournit des conseils sur les responsabilités élargies des producteurs (REP) et les modèles commerciaux durables."
+
+#: src/modules/workspace/view.jsx:71
+msgid "Connect"
+msgstr "Connecter"
+
+#: src/modules/workspace/view.jsx:54
+msgid "Contribute to the DataHub Maps & Dashboard"
+msgstr "Contribuer aux cartes et au tableau de bord DataHub"
+
+#: src/modules/workspace/view.jsx:60
+msgid "Knowledge Library"
+msgstr "Bibliothèque de connaissances"
+
+#: src/modules/workspace/view.jsx:70
+msgid "Match with opportunities"
+msgstr "Correspondre aux opportunités"
+
+#: src/modules/workspace/view.jsx:62
+msgid "Share Your Knowledge"
+msgstr "Partagez vos connaissances"
+
+#: src/modules/workspace/view.jsx:55
+msgid "Upload your data"
+msgstr "Téléchargez vos données"
+
+#: src/pages/workspace/[slug]/7-final-review/index.js:30
+msgid "{incompleteAmount} items are not completed"
+msgstr "{incompleteAmount} éléments ne sont pas terminés"
+
+#: src/pages/workspace/[slug]/7-final-review/index.js:71
+msgid "All done!"
+msgstr "Terminé!"
+
+#: src/pages/workspace/[slug]/[step]/summary.js:164
+msgid "Browse"
+msgstr "Parcourir"
+
+#: src/pages/workspace/[slug]/7-final-review/index.js:25
+msgid "description-7-final-review"
+msgstr "Retrouvez ci-dessous un récapitulatif de toutes les activités réaliséesà travers le workflow pour finaliser la finalisation de la stratégie plastique."
+
+#: src/pages/workspace/[slug]/4-data-analysis/available-data.js:15
+msgid "description-available-data-4-data-analysis"
+msgstr "Le GPML Data Hub est un référentiel central qui rassemble et normalise les données relatives aux plastiques et aux déchets marins, provenant de fournisseurs de confiance, notamment des gouvernements. Il se concentre sur l’harmonisation de divers ensembles de données. Les principaux objectifs du GPML Data Hub comprennent la conservation des informations disponibles, leur amélioration grâce à des outils d'analyse et d'aide à la décision, et la mise en valeur du leadership et de l'innovation en investissant dans les normes. Explorez la carte ci-dessous pour identifier les indicateurs et couches de données cruciaux, les domaines d’action et les approches pour suivre les progrès."
+
+#: src/pages/workspace/[slug]/[step]/summary.js:159
+msgid "Drop a file here"
+msgstr "Déposez un fichier ici"
+
+#: src/store.js:377
+msgid "Global Action Plan"
+msgstr "Plan d'action mondial"
+
+#: src/store.js:324
+msgid "Legislation, standards, rules"
+msgstr "Législation, normes, règles"
+
+#: src/modules/flexible-forms/common.js:340
+msgid "Main & Sub Content"
+msgstr "Contenu principal et secondaire"
+
+#: src/pages/workspace/[slug]/[step]/summary.js:221
+msgid "summary-description-2-stakeholder-consultation"
+msgstr "Résumez les informations issues du processus de consultation approfondi des parties prenantes afin de garantir la consultation de tous les secteurs et parties prenantes pertinents. Rassemblez toutes les données et informations disponibles dans votre pays et assurez-vous que les différentes perspectives et idées émanant de l'ensemble de la communauté nationale travaillant sur la pollution plastique soient prises en compte."
+
+#: src/pages/workspace/[slug]/[step]/summary.js:222
+msgid "summary-description-3-legislation-policy"
+msgstr "Résumez les enseignements issus de l'analyse légale complète pour identifier l'approche réglementaire préférée et établir les considérations juridiques. Les résultats de cette analyse devraient être inclus en tant que chapitre dans le Rapport National sur l'Inventaire des Sources."
+
+#: src/pages/workspace/[slug]/[step]/summary.js:223
+msgid "summary-description-4-data-analysis"
+msgstr "Sur la base des données et des informations recueillies au cours du processus de consultation des parties prenantes, effectuer une analyse des lacunes pour identifier les informations manquantes et les faiblesses des sources de données et des bases de données existantes. Compiler les données et informations existantes dans un rapport sur l’état des connaissances, y compris les domaines nécessitant une collecte de données supplémentaires. Sur cette base, procéder à une collecte de données primaires ou secondaires supplémentaires, selon le cas, en utilisant des méthodologies établies, pour combler ces lacunes en matière de données. Toutes les données collectées dans le cadre de ce projet doivent être rendues publiques.\n"
+"\n"
+"Téléchargez le résumé du contenu mis en signet dans cette section et téléchargez votre rapport final sur l'état des connaissances."
+
+#: src/pages/workspace/[slug]/[step]/summary.js:224
+msgid "summary-description-5-national-source"
+msgstr "Téléchargez le résumé du contenu mis en signet dans cette section et soumettez votre rapport final d'inventaire national des sources."
+
+#: src/pages/workspace/[slug]/[step]/summary.js:225
+msgid "summary-description-6-national-plastic-strategy"
+msgstr "Téléchargez la stratégie plastique officiellement approuvée."
+
+#: src/pages/workspace/[slug]/[step]/summary.js:111
+msgid "Upload Your Report"
+msgstr "Téléchargez votre rapport"
+
+#: src/pages/workspace/[slug]/1-project-team/index.js:54
+msgid "description-intro-1-project-team"
+msgstr "Trouvez une brève présentation conçue pour vous aider à comprendre les étapes nécessaires et comment la plateforme peut vous aider à lancer avec succès votre équipe de stratégie plastique."
+
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/index.js:54
+msgid "description-intro-2-stakeholder-consultation"
+msgstr "Trouvez une brève présentation conçue pour vous fournir des directives sur la manière de gérer le processus de consultation des parties prenantes."
+
+#: src/pages/workspace/[slug]/3-legislation-policy/index.js:54
+msgid "description-intro-3-legislation-policy"
+msgstr "Trouvez une brève présentation conçue pour vous aider à comprendre comment, avec l'orientation de l'UNEP, mener une revue et une analyse du paysage législatif et réglementaire dans le pays. Cette analyse orientera la création du Rapport National sur l'Inventaire des Sources."
+
+#: src/pages/workspace/[slug]/4-data-analysis/index.js:54
+msgid "description-intro-4-data-analysis"
+msgstr "Retrouvez un résumé de présentation sur la section Analyse des données et lacunes dans les connaissances, qui met l'accent sur la nécessité d'analyser et de collecter des données sur la pollution plastique et les déchets marins. Les commentaires des parties prenantes sont utilisés pour identifier les lacunes et les faiblesses des données dans les sources existantes, et ces informations sont compilées dans un rapport sur l'état des connaissances. Il recommande une collecte de données supplémentaire si nécessaire, garantissant que toutes les données du projet sont rendues publiques. De plus, une gestion efficace des connaissances via la plateforme numérique GPML est encouragée pour maintenir les informations à jour et faciliter le partage des données."
+
+#: src/pages/workspace/[slug]/5-national-source/index.js:54
+msgid "description-intro-5-national-source"
+msgstr "Préparer un rapport d'inventaire national des sources de pollution plastique et de déchets marins, en utilisant les orientations élaborées par le PNUE, pour identifier et évaluer les principales sources et voies de pollution plastique et de déchets marins dans le pays."
+
+#: src/pages/workspace/[slug]/6-national-plastic-strategy/index.js:54
+msgid "description-intro-6-national-plastic-strategy"
+msgstr "Retrouvez ci-dessous une brève présentation sur la manière de créer et de valider la Stratégie Plastique."
+
+#: src/pages/landing/index.jsx:754
+msgid "HIGHLIGHTS"
+msgstr "POINTS FORTS"
+
+#: src/pages/landing/index.jsx:915
+#: src/pages/landing/index.jsx:914
+msgid "Trusted data, Information badge system and Validation process."
+msgstr "Données fiables, système de badge d'information et processus de validation."
+
+#: src/pages/forum/index.jsx:104
+msgid "Welcome to the Global Partnership on Plastic Pollution and Marine Litter (GPML) Digital Platform forums page. A space where you can interact, network, and share insights and information with other like-minded advocates on issues related to plastic pollution and marine litter strategies, models and methodologies, data harmonization, innovative financing, and Capacity Building. Your voice matters, join now and be part of the wave for change."
+msgstr "Bienvenue sur la page des forums de la plateforme numérique du Partenariat mondial sur la pollution plastique et les déchets marins (GPML). Un espace où vous pouvez interagir, réseauter et partager des idées et des informations avec d'autres défenseurs partageant les mêmes idées sur les questions liées aux stratégies, modèles et méthodologies de pollution plastique et de déchets marins, à l'harmonisation des données, au financement innovant et au renforcement des capacités. Votre voix compte, rejoignez-nous maintenant et faites partie de la vague du changement."
+
