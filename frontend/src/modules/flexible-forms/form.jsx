@@ -579,12 +579,12 @@ const FlexibleForm = ({
         data.q24_2 = [parseInt(Object.keys(data.qgeoCoverageValueSubnational))]
         data.geoCoverageCountryStates = [Number(data.qgeoCoverageCountryStates)]
       } else {
-        if (data.geoCoverageCountryStates.length === 0)
+        if (data?.geoCoverageCountryStates?.length === 0)
           delete data.qgeoCoverageCountryStates
         else
-          data.geoCoverageCountryStates = [
-            Number(data.qgeoCoverageCountryStates),
-          ]
+          data.geoCoverageCountryStates = !data.geoCoverageCountryStates
+            ? []
+            : [Number(data.qgeoCoverageCountryStates)]
       }
       delete data.qgeoCoverageValueSubnational
       delete data.geoCoverageValueTransnational
