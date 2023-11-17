@@ -101,7 +101,7 @@ const ForumSidebar = ({ currForum, activeForum, setDiscussion }) => {
                         {`${firstName?.[0] || ''}${lastName?.[0] || ''}`}
                       </Avatar>
                     }
-                    title={`${firstName} ${lastName}`}
+                    title={`${firstName} ${lastName || ''}`}
                     description={user?.nickname || ''}
                   />
                 </List.Item>
