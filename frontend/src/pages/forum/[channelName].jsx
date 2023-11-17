@@ -42,7 +42,12 @@ const goToIFrame = (type, path) => {
   }
 }
 
-const ForumSidebar = ({ currForum, activeForum, setDiscussion }) => {
+const ForumSidebar = ({
+  currForum,
+  activeForum,
+  discussion,
+  setDiscussion,
+}) => {
   const router = useRouter()
   const participants = currForum?.users || activeForum?.users || []
 
@@ -53,32 +58,34 @@ const ForumSidebar = ({ currForum, activeForum, setDiscussion }) => {
 
   return (
     <div className={styles.detailSidebar}>
-      <Button
-        type="link"
-        onClick={() => router.push('/forum')}
-        icon={<DropDownIcon />}
-        className={styles.backButton}
-      >
-        <div className="h-caps-xs">Back to all Forums</div>
-      </Button>
       <div className="description">
-        <h3 className="h-m">{currForum?.name}</h3>
+        <Button
+          type="link"
+          onClick={() => router.push('/forum')}
+          icon={<DropDownIcon />}
+          className={styles.backButton}
+        >
+          Back to all Forums
+        </Button>
+        <h5>{currForum?.name}</h5>
         <p>{currForum?.description}</p>
       </div>
-      {activeForum?.discussions?.length > 0 && (
-        <>
-          <h6 className="w-bold h-caps-xs disc-title">Discussions</h6>
-          <ul className="discussions">
-            {activeForum?.discussions?.map((discussion) => (
-              <li key={discussion.name}>
-                <Button onClick={() => goToDiscussion(discussion)} type="link">
-                  {discussion?.fname}
-                </Button>
-              </li>
-            ))}
-          </ul>
-        </>
-      )}
+      <strong>DISCUSSIONS</strong>
+      <List
+        className="discussions"
+        loading={!activeForum?.isFetched}
+        dataSource={activeForum?.discussions}
+        renderItem={(item) => {
+          const active = discussion?.id === item?.id
+          return (
+            <List.Item key={item?.name} className={classNames({ active })}>
+              <Button onClick={() => goToDiscussion(item)} type="link">
+                {`#${item?.fname}`}
+              </Button>
+            </List.Item>
+          )
+        }}
+      />
       {participants.length > 0 && (
         <>
           <h6 className="w-bold h-caps-xs">Participants</h6>
@@ -150,6 +157,20 @@ const ForumView = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
     }
   }
 
+  const handleOnDiscussCallback = (type = 'new', newDiscussion) => {
+    if (type === 'new') {
+      setDiscussion({
+        ...newDiscussion,
+        fname: newDiscussion?.msg,
+        id: newDiscussion?.drid,
+      })
+    }
+    setActiveForum({
+      ...activeForum,
+      isFetched: false,
+    })
+  }
+
   const getAllForums = useCallback(async () => {
     if (!allForums.length) {
       /**
@@ -187,7 +208,9 @@ const ForumView = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
       </Head>
       <Layout>
         <Sider className={styles.channelSidebar} width={335}>
-          <ForumSidebar {...{ currForum, activeForum, setDiscussion }} />
+          <ForumSidebar
+            {...{ currForum, discussion, activeForum, setDiscussion }}
+          />
         </Sider>
         <Layout className={styles.channelContent}>
           {discussion && (
@@ -205,6 +228,7 @@ const ForumView = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
           )}
           {channelName && isAuthenticated && !loadingProfile && (
             <DynamicForumIframe
+              discussionCallback={handleOnDiscussCallback}
               {...{
                 channelName,
                 channelType,

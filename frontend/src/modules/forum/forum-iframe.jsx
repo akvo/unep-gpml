@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect } from 'react'
 import { ChatStore, UIStore } from '../../store'
 import api from '../../utils/api'
-import classNames from 'classnames'
 
 const ForumIframe = ({
   discussion,
