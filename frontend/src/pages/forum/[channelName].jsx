@@ -1,10 +1,11 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/router'
-import { Avatar, Layout, List, Menu, Skeleton } from 'antd'
+import { Avatar, Layout, List } from 'antd'
 import dynamic from 'next/dynamic'
-import uniqBy from 'lodash/uniqBy'
+import classNames from 'classnames'
+
 import styles from './channel.module.scss'
-import { ChatStore, UIStore } from '../../store'
+import { ChatStore } from '../../store'
 import { DropDownIcon } from '../../components/icons'
 import api from '../../utils/api'
 import Button from '../../components/button'
@@ -41,31 +42,34 @@ const goToIFrame = (type, path) => {
   }
 }
 
-const ForumSidebar = ({ selectedForum, setSelectedForum, setDiscussion }) => {
+const ForumSidebar = ({ currForum, activeForum, setDiscussion }) => {
+  const router = useRouter()
+  const participants = currForum?.users || activeForum?.users || []
+
   const goToDiscussion = (_discussion) => {
     setDiscussion(_discussion)
-    goToIFrame(selectedForum?.t, _discussion?.name)
+    goToIFrame(activeForum?.t, _discussion?.name)
   }
 
   return (
     <div className={styles.detailSidebar}>
       <Button
         type="link"
-        onClick={() => setSelectedForum(null)}
+        onClick={() => router.push('/forum')}
         icon={<DropDownIcon />}
         className={styles.backButton}
       >
         Back to all Forums
       </Button>
       <div className="description">
-        <h5>{selectedForum?.name}</h5>
-        <p>{selectedForum?.description}</p>
+        <h5>{currForum?.name}</h5>
+        <p>{currForum?.description}</p>
       </div>
       <strong>DISCUSSIONS</strong>
       <List
         className="discussions"
-        loading={!selectedForum?.isFetched}
-        dataSource={selectedForum?.discussions}
+        loading={!activeForum?.isFetched}
+        dataSource={activeForum?.discussions}
         renderItem={(item) => {
           return (
             <List.Item key={item?.name}>
@@ -76,170 +80,96 @@ const ForumSidebar = ({ selectedForum, setSelectedForum, setDiscussion }) => {
           )
         }}
       />
-      <strong>PARTICIPANTS</strong>
-      <List
-        className="members"
-        dataSource={selectedForum?.users}
-        renderItem={(user) => {
-          const avatarUrl = `${process.env.NEXT_PUBLIC_CHAT_API_DOMAIN_URL}/avatar/`
-          const userImage = user?.avatarETag
-            ? `${avatarUrl}${user?.username}?etag=${user.avatarETag}`
-            : null
-          const userName = user?.name || user?.username || ''
-          const [firstName, lastName] = userName.split(/[ ,]+/)
-          return (
-            <List.Item>
-              <List.Item.Meta
-                avatar={
-                  <Avatar src={userImage}>
-                    {`${firstName?.[0] || ''}${lastName?.[0] || ''}`}
-                  </Avatar>
-                }
-                title={`${firstName} ${lastName}`}
-                description={user?.nickname || ''}
-              />
-            </List.Item>
-          )
-        }}
-      />
+      {participants.length > 0 && (
+        <>
+          <strong>PARTICIPANTS</strong>
+          <List
+            className="members"
+            dataSource={participants}
+            renderItem={(user) => {
+              const avatarUrl = `${process.env.NEXT_PUBLIC_CHAT_API_DOMAIN_URL}/avatar/`
+              const userImage = user?.avatarETag
+                ? `${avatarUrl}${user?.username}?etag=${user.avatarETag}`
+                : null
+              const userName = user?.name || user?.username || ''
+              const [firstName, lastName] = userName.split(/[ ,]+/)
+              return (
+                <List.Item>
+                  <List.Item.Meta
+                    avatar={
+                      <Avatar src={userImage}>
+                        {`${firstName?.[0] || ''}${lastName?.[0] || ''}`}
+                      </Avatar>
+                    }
+                    title={`${firstName} ${lastName}`}
+                    description={user?.nickname || ''}
+                  />
+                </List.Item>
+              )
+            }}
+          />
+        </>
+      )}
     </div>
   )
 }
 
-const AllForumSidebar = ({
-  channelName,
-  loading,
-  myForums,
-  publicForums,
-  onSelect,
-}) => {
-  const [activeKeys, setActiveKeys] = useState([channelName])
-  const forums = uniqBy([...myForums, ...publicForums], 'id')
-  const router = useRouter()
-
-  const goToChannel = ({ name: forumName, t: forumType }) => {
-    if (typeof window !== 'undefined') {
-      window.history.pushState({}, '', `/forum/${forumName}?t=${forumType}`)
-    }
-    setActiveKeys([forumName])
-    goToIFrame(forumType, forumName)
-  }
-
-  const goToAll = () => {
-    router.push('/forum')
-  }
-
-  return (
-    <>
-      <h5>My Forums</h5>
-      <Skeleton loading={loading} paragraph={{ rows: 3 }} active>
-        <Menu selectedKeys={activeKeys}>
-          {forums.map((forum) => {
-            return (
-              <Menu.Item
-                onClick={() => goToChannel(forum)}
-                icon={
-                  <Button type="link" onClick={() => onSelect(forum)}>
-                    <DropDownIcon />
-                  </Button>
-                }
-                key={forum.name}
-              >
-                {forum?.name?.replace(/[-_]/g, ' ')}
-              </Menu.Item>
-            )
-          })}
-        </Menu>
-      </Skeleton>
-      <div className="button-container">
-        <Button onClick={goToAll} ghost>
-          Explore All Forums
-        </Button>
-      </div>
-    </>
-  )
-}
-
 const ForumView = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
-  const [preload, setPreload] = useState(true)
   const [loading, setLoading] = useState(true)
-  const [publicForums, setPublicForums] = useState([])
-  const [selectedForum, setSelectedForum] = useState(null)
   const [discussion, setDiscussion] = useState(null)
+  const [activeForum, setActiveForum] = useState({
+    isFetched: false,
+  })
   const router = useRouter()
   const { channelName, t: channelType } = router.query
-  const myForums = ChatStore.useState((s) => s.myForums)
   const allForums = ChatStore.useState((s) => s.allForums)
-  const profile = UIStore.useState((s) => s.profile)
 
-  const getSelectedForum = async (_forum) => {
-    setSelectedForum({ ..._forum, isFetched: false, isError: false })
+  const currForum = useMemo(() => {
+    return allForums.find(
+      (a) => a?.name === channelName && a?.t === channelType
+    )
+  }, [allForums])
+
+  const getDetailsChatApi = useCallback(async () => {
     try {
-      const { data } = await api.get(
-        `/chat/channel/details/${_forum?.id}?type=${_forum?.t}`
-      )
-      const { users, ..._selected } = data || {}
-      setSelectedForum({ ..._forum, ..._selected, isFetched: true })
-    } catch {
-      setSelectedForum({ ..._forum, isFetched: true, isError: true })
+      if (!activeForum?.isFetched && currForum?.t && currForum?.id) {
+        const { data } = await api.get(
+          `/chat/channel/details/${currForum.id}?type=${currForum.t}`
+        )
+        const { users, ..._selected } = data || {}
+        setActiveForum({ ...currForum, ..._selected, isFetched: true })
+      }
+    } catch (error) {
+      console.error('error details chat api:', error)
     }
-  }
+  }, [activeForum, currForum])
 
   const goBackForum = () => {
-    if (selectedForum?.t && selectedForum?.name) {
-      goToIFrame(selectedForum.t, selectedForum.name)
+    if (activeForum?.t && activeForum?.name) {
+      goToIFrame(activeForum.t, activeForum.name)
       setDiscussion(null)
     }
   }
 
-  const getPublicForums = useCallback(async () => {
-    if (allForums.length && !publicForums.length) {
+  const getAllForums = useCallback(async () => {
+    if (!allForums.length) {
       /**
-       * Get public forums from global state
+       * Get all forums API
        */
-      const _publicForums = allForums.filter((forum) => forum.t === 'c')
-      setPublicForums(_publicForums)
+      const { data: _allForums } = await api.get('/chat/channel/all')
+      ChatStore.update((s) => {
+        s.allForums = _allForums
+      })
     }
-    if (!allForums.length && !publicForums.length) {
-      /**
-       * Get public forums from API
-       */
-      const { data: _publicForums } = await api.get('/chat/channel/all?types=c')
-      setPublicForums(_publicForums)
-    }
-  }, [publicForums, allForums])
-
-  const getMyForums = useCallback(async () => {
-    if (loading && myForums.length) {
-      setLoading(false)
-      return
-    }
-    /**
-     * Handles direct access that allows
-     * resetting the global state of my forums
-     */
-    if (profile?.id && preload && !myForums.length) {
-      setPreload(false)
-      try {
-        const { data: _myForums } = await api.get('/chat/user/channel')
-        ChatStore.update((s) => {
-          s.myForums = _myForums
-        })
-        setLoading(false)
-      } catch (error) {
-        console.error('My forums error:', error)
-        setLoading(false)
-      }
-    }
-  }, [myForums, preload, loading, profile])
+  }, [allForums])
 
   useEffect(() => {
-    getMyForums()
-  }, [getMyForums])
+    getAllForums()
+  }, [getAllForums])
 
   useEffect(() => {
-    getPublicForums()
-  }, [getPublicForums])
+    getDetailsChatApi()
+  }, [getDetailsChatApi])
 
   useEffect(() => {
     /**
@@ -258,21 +188,7 @@ const ForumView = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
       </Head>
       <Layout>
         <Sider className={styles.channelSidebar} width={335}>
-          {selectedForum ? (
-            <ForumSidebar
-              {...{ selectedForum, setSelectedForum, setDiscussion }}
-            />
-          ) : (
-            <AllForumSidebar
-              onSelect={getSelectedForum}
-              {...{
-                loading,
-                channelName,
-                myForums,
-                publicForums,
-              }}
-            />
-          )}
+          <ForumSidebar {...{ currForum, activeForum, setDiscussion }} />
         </Sider>
         <Layout className={styles.channelContent}>
           {discussion && (
@@ -296,6 +212,7 @@ const ForumView = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
                 isAuthenticated,
                 loadingProfile,
                 setLoginVisible,
+                discussion,
               }}
             />
           )}
