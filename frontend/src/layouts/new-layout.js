@@ -73,6 +73,20 @@ const NewLayout = ({
   const [width] = useDeviceSize()
   const [isOpen, toggleOpen] = useCycle(false, true)
 
+  const handleOnLogoutRC = () => {
+    try {
+      const iFrame = document.querySelector('iframe#invisible-rocket-chat')
+      iFrame.contentWindow.postMessage(
+        {
+          externalCommand: 'logout',
+        },
+        '*'
+      )
+    } catch (error) {
+      console.error('client error RC iframe', error)
+    }
+  }
+
   useEffect(() => {
     const strapiUrl = getStrapiUrl()
     const fetchData = async () => {
@@ -288,6 +302,7 @@ const NewLayout = ({
                         <Menu.Item
                           key="logout"
                           onClick={() => {
+                            handleOnLogoutRC()
                             auth0Client.logout({
                               returnTo: window.location.origin,
                             })
@@ -347,6 +362,16 @@ const NewLayout = ({
         )}
       </div>
       <Login visible={loginVisible} close={() => setLoginVisible(false)} />
+      <iframe
+        id="invisible-rocket-chat"
+        src={`${process.env.NEXT_PUBLIC_CHAT_API_DOMAIN_URL}/home?layout=embedded`}
+        style={{
+          position: 'absolute',
+          width: 0,
+          height: 0,
+        }}
+        sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+      />
     </>
   )
 }
