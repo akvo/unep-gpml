@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect } from 'react'
 import { ChatStore, UIStore } from '../../store'
 import api from '../../utils/api'
+import classNames from 'classnames'
 
 const ForumIframe = ({
   discussion,
@@ -124,6 +125,7 @@ const ForumIframe = ({
       width="100%"
       allow="camera;microphone"
       sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+      className={classNames({ discussion })}
     />
   )
 }
