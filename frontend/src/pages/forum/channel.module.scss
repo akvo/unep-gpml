@@ -102,7 +102,7 @@
   color: $primaryPurple !important;
   font-family: var(--font-archia) !important;
   font-weight: 700 !important;
-  font-size: 12px;
+  font-size: 12px !important;
   letter-spacing: 0.24px;
   text-transform: uppercase;
   text-decoration: none !important;
@@ -132,12 +132,12 @@
 }
 
 .detailSidebar {
-  padding: 21px;
   :global {
     .description {
-      margin-bottom: 12px;
+      padding: 21px 18px 18px 21px;
       h5 {
-        margin: 18px 0 21px;
+        margin-top: 18px;
+        margin-left: 0;
       }
       p {
         color: $primaryDarkBlue;
@@ -147,14 +147,27 @@
       color: $primaryDarkBlue;
       font-family: var(--font-archia);
       font-weight: 700;
+      font-size: 12px;
       letter-spacing: 0.24px;
       margin-bottom: 19px;
+      padding-left: 21px;
     }
 
     .discussions {
       margin-bottom: 36px;
+      .ant-list-item {
+        padding: 11px 21px;
+        border-bottom: none;
+        &.active {
+          background-color: $primaryViolet2;
+        }
+      }
+    }
+    h6 {
+      padding-left: 21px;
     }
     .members {
+      margin-left: 21px;
       margin-top: 21px;
       .ant-list-item {
         padding: 0 0 13px;
