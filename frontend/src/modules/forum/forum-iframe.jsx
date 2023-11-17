@@ -1,13 +1,16 @@
 import React, { useCallback, useEffect } from 'react'
 import { ChatStore, UIStore } from '../../store'
 import api from '../../utils/api'
+import classNames from 'classnames'
 
 const ForumIframe = ({
+  discussion,
   channelName,
   channelType,
   isAuthenticated,
   loadingProfile,
   setLoginVisible,
+  discussionCallback,
 }) => {
   const prefixPATH = channelType === 'c' ? 'channel' : 'group'
   const channelURL = `${process.env.NEXT_PUBLIC_CHAT_API_DOMAIN_URL}/${prefixPATH}/${channelName}?layout=embedded`
@@ -90,6 +93,15 @@ const ForumIframe = ({
             console.error('My forums error:', error)
           }
         }
+        if (e.data.data?.t === 'discussion-created') {
+          discussionCallback('new', e.data.data)
+        }
+      }
+
+      if (e.data.eventName === 'unread-changed-by-subscription') {
+        if (e.data.data?.name === channelName) {
+          discussionCallback('delete', e.data.data?._id)
+        }
       }
     },
     [isLoggedInRocketChat, profile]
@@ -112,7 +124,8 @@ const ForumIframe = ({
       }}
       width="100%"
       allow="camera;microphone"
-      sandbox="allow-same-origin allow-scripts allow-popups allow-forms"    
+      sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+      className={classNames({ discussion })}
     />
   )
 }
