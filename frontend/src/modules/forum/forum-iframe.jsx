@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { ChatStore } from '../../store'
+import React, { useCallback, useEffect } from 'react'
+import { ChatStore, UIStore } from '../../store'
 import api from '../../utils/api'
 
 const ForumIframe = ({
@@ -9,85 +9,91 @@ const ForumIframe = ({
   loadingProfile,
   setLoginVisible,
 }) => {
-  const [preload, setPreload] = useState(true)
   const prefixPATH = channelType === 'c' ? 'channel' : 'group'
   const channelURL = `${process.env.NEXT_PUBLIC_CHAT_API_DOMAIN_URL}/${prefixPATH}/${channelName}?layout=embedded`
   const isLoggedInRocketChat = ChatStore.useState((s) => s.isLoggedIn)
+  const profile = UIStore.useState((s) => s.profile)
 
   const goToChannelPage = (iFrame) => {
-    iFrame.contentWindow.postMessage(
-      {
-        externalCommand: 'go',
-        path: `/${prefixPATH}/${channelName}?layout=embedded`,
-      },
-      '*'
-    )
+    try {
+      iFrame.contentWindow.postMessage(
+        {
+          externalCommand: 'go',
+          path: `/${prefixPATH}/${channelName}?layout=embedded`,
+        },
+        '*'
+      )
+    } catch (error) {
+      console.error('client error RC iframe', error)
+    }
   }
 
   const handleRocketChatSSO = (iFrame) => {
-    iFrame.contentWindow.postMessage(
-      {
-        externalCommand: 'call-custom-oauth-login',
-        service: 'auth0',
-      },
-      '*'
-    )
+    try {
+      iFrame.contentWindow.postMessage(
+        {
+          externalCommand: 'call-custom-oauth-login',
+          service: 'auth0',
+        },
+        '*'
+      )
+    } catch (error) {
+      console.error('client error RC iframe', error)
+    }
   }
 
-  const handleOnLoadIframe = () => {
-    const iFrame = document.querySelector('iframe')
-    const isAuth0 = isAuthenticated && !loadingProfile
+  const handleRocketChatAction = useCallback(
+    async (e) => {
+      /**
+       * @tutorial https://developer.rocket.chat/customize-and-embed/iframe-integration/iframe-events
+       * @prop e.data.eventName
+       * @prop e.data.data: get related user's data
+       * Triggered join button by checking eventName = 'new-message'
+       * 'new-message' has been chosen because each new member will be notified as a new message.
+       */
+      const iFrame = document.querySelector('iframe')
 
-    if (iFrame && isAuth0 && preload) {
-      setTimeout(() => {
-        if (!isLoggedInRocketChat) {
+      if (e.data === 'loaded') {
+        const isValidUser =
+          profile?.reviewStatus === 'APPROVED' && profile?.chatAccountId
 
-          handleRocketChatSSO(iFrame)
-
+        if (!isLoggedInRocketChat && isValidUser) {
+          setTimeout(() => {
+            handleRocketChatSSO(iFrame)
+          }, 1000)
           ChatStore.update((s) => {
             s.isLoggedIn = true
           })
-
-          setTimeout(() => {
-            goToChannelPage(iFrame)
-          }, 5000)
         }
-
-        setPreload(false)
-      }, 3000)
-    }
-  }
-
-  const handleRocketChatAction = async (e) => {
-    /**
-     * @tutorial https://developer.rocket.chat/customize-and-embed/iframe-integration/iframe-events
-     * @prop e.data.eventName
-     * @prop e.data.data: get related user's data
-     * Triggered join button by checking eventName = 'new-message'
-     * 'new-message' has been chosen because each new member will be notified as a new message.
-     */
-    if (e.data.eventName === 'new-message') {
-      /**
-       * Handling non-logged in user
-       */
-      if (!loadingProfile && !isAuthenticated) {
-        setLoginVisible(true)
       }
-      if (isAuthenticated) {
+      if (e.data.eventName === 'Custom_Script_Logged_In') {
+        goToChannelPage(iFrame)
+      }
+
+      if (e.data.eventName === 'new-message') {
         /**
-         * Get the latest my forums list after successfully joining
+         * Handling non-logged in user
          */
-        try {
-          const { data: _myForums } = await api.get('/chat/user/channel')
-          ChatStore.update((s) => {
-            s.myForums = _myForums
-          })
-        } catch (error) {
-          console.error('My forums error:', error)
+        if (!loadingProfile && !isAuthenticated) {
+          setLoginVisible(true)
+        }
+        if (isAuthenticated) {
+          /**
+           * Get the latest my forums list after successfully joining
+           */
+          try {
+            const { data: _myForums } = await api.get('/chat/user/channel')
+            ChatStore.update((s) => {
+              s.myForums = _myForums
+            })
+          } catch (error) {
+            console.error('My forums error:', error)
+          }
         }
       }
-    }
-  }
+    },
+    [isLoggedInRocketChat, profile]
+  )
 
   useEffect(() => {
     window.addEventListener('message', handleRocketChatAction)
@@ -106,8 +112,7 @@ const ForumIframe = ({
       }}
       width="100%"
       allow="camera;microphone"
-      sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
-      onLoad={handleOnLoadIframe}
+      sandbox="allow-same-origin allow-scripts allow-popups allow-forms"    
     />
   )
 }
