@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { ChatStore } from '../../store'
 import api from '../../utils/api'
+import classNames from 'classnames'
 
 const ForumIframe = ({
+  discussion,
   channelName,
   channelType,
   isAuthenticated,
@@ -15,23 +17,31 @@ const ForumIframe = ({
   const isLoggedInRocketChat = ChatStore.useState((s) => s.isLoggedIn)
 
   const goToChannelPage = (iFrame) => {
-    iFrame.contentWindow.postMessage(
-      {
-        externalCommand: 'go',
-        path: `/${prefixPATH}/${channelName}?layout=embedded`,
-      },
-      '*'
-    )
+    try {
+      iFrame?.contentWindow?.postMessage(
+        {
+          externalCommand: 'go',
+          path: `/${prefixPATH}/${channelName}?layout=embedded`,
+        },
+        '*'
+      )
+    } catch (error) {
+      console.error('client RC iframe error', error)
+    }
   }
 
   const handleRocketChatSSO = (iFrame) => {
-    iFrame.contentWindow.postMessage(
-      {
-        externalCommand: 'call-custom-oauth-login',
-        service: 'auth0',
-      },
-      '*'
-    )
+    try {
+      iFrame.contentWindow.postMessage(
+        {
+          externalCommand: 'call-custom-oauth-login',
+          service: 'auth0',
+        },
+        '*'
+      )
+    } catch (error) {
+      console.error('client RC iframe error', error)
+    }
   }
 
   const handleOnLoadIframe = () => {
@@ -41,7 +51,6 @@ const ForumIframe = ({
     if (iFrame && isAuth0 && preload) {
       setTimeout(() => {
         if (!isLoggedInRocketChat) {
-
           handleRocketChatSSO(iFrame)
 
           ChatStore.update((s) => {
@@ -108,6 +117,7 @@ const ForumIframe = ({
       allow="camera;microphone"
       sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
       onLoad={handleOnLoadIframe}
+      className={classNames({ discussion: discussion })}
     />
   )
 }
