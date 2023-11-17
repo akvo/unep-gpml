@@ -145,16 +145,20 @@
   (chat/get-user-joined-channels chat-adapter chat-account-id))
 
 (defn get-private-channels
-  [{:keys [chat-adapter]}]
-  (chat/get-private-channels chat-adapter {}))
+  ([config]
+   (get-private-channels config {}))
+  ([{:keys [chat-adapter]} opts]
+   (chat/get-private-channels chat-adapter opts)))
 
 (defn get-public-channels
-  [{:keys [chat-adapter]}]
-  (let [result (chat/get-public-channels chat-adapter {})]
-    (if (:success? result)
-      (update result :channels (fn [channels]
-                                 (remove #(get-in % [:custom-fields :ps-country-iso-code-a-2]) channels)))
-      result)))
+  ([config]
+   (get-public-channels config {}))
+  ([{:keys [chat-adapter]} opts]
+   (let [result (chat/get-public-channels chat-adapter opts)]
+     (if (:success? result)
+       (update result :channels (fn [channels]
+                                  (remove #(get-in % [:custom-fields :ps-country-iso-code-a-2]) channels)))
+       result))))
 
 (defn- add-users-pictures-urls
   [config users]
@@ -226,6 +230,58 @@
                   (assoc context :channels updated-channels)))))}]
         context {:success? true
                  :opts opts}]
+    (tht/thread-transactions logger transactions context)))
+
+(defn get-channel-details
+  [{:keys [db chat-adapter logger] :as config} channel-id channel-type]
+  (let [transactions
+        [{:txn-fn
+          (fn tx-get-channel
+            [{:keys [channel-id channel-type] :as context}]
+            (let [opts {:query {:_id {:$eq channel-id}}}
+                  result (if (= channel-type "c")
+                           (get-public-channels config opts)
+                           (get-private-channels config opts))]
+              (if (:success? result)
+                (assoc context :channel (first (:channels result)))
+                (assoc context
+                       :success? false
+                       :reason :failed-to-get-channel
+                       :error-details {:result result}))))}
+         {:txn-fn
+          (fn tx-get-channel-discussions
+            [{:keys [channel] :as context}]
+            (let [result (chat/get-channel-discussions chat-adapter (:id channel))]
+              (if (:success? result)
+                (assoc-in context [:channel :discussions] (:discussions result))
+                (assoc context
+                       :success? false
+                       :reason :failed-to-get-channel-discussions
+                       :error-details {:result result}))))}
+         {:txn-fn
+          (fn tx-get-channel-users
+            [{:keys [channel] :as context}]
+            (let [chat-accounts-ids (map :id (:users channel))
+                  search-opts {:related-entities #{:organisation :picture-file}
+                               :filters {:chat-accounts-ids chat-accounts-ids}}
+                  result (try
+                           {:success? true
+                            :stakeholders (db.sth/get-stakeholders (:spec db)
+                                                                   search-opts)}
+                           (catch Throwable t
+                             {:success? false
+                              :reason :exception
+                              :error-details {:msg (ex-message t)}}))]
+              (if (:success? result)
+                (assoc-in context [:channel :users] (->> (:stakeholders result)
+                                                         (add-users-pictures-urls config)))
+                (assoc context
+                       :success? false
+                       :reason :failed-to-get-channel-users
+                       :error-details {:result result}))))}]
+        context {:success? true
+                 :channel-id channel-id
+                 :channel-type channel-type}]
     (tht/thread-transactions logger transactions context)))
 
 (defn remove-user-from-channel
