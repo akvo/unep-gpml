@@ -3,8 +3,8 @@
 .channelSidebar {
   background-color: $primaryGrey !important;
   :global {
-    h5 {
-      margin: 34px 23px 28px;
+    h3 {
+      margin: 12px 0 12px 0;
       font-weight: 600;
     }
     .ant-menu {
@@ -45,6 +45,19 @@
         &:not(:last-child) {
           margin-bottom: 0;
         }
+      }
+    }
+    h6 {
+      margin-top: 28px;
+    }
+    .discussions {
+      margin-top: 8px;
+      li {
+        padding: 7px 0;
+      }
+      .ant-btn-link {
+        white-space: normal;
+        text-align: left;
       }
     }
     .button-container {
@@ -168,6 +181,7 @@
           }
           .ant-list-item-meta-title {
             font-weight: 600;
+            margin-bottom: 0;
           }
         }
       }

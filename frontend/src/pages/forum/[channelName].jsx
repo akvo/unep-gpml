@@ -59,30 +59,29 @@ const ForumSidebar = ({ currForum, activeForum, setDiscussion }) => {
         icon={<DropDownIcon />}
         className={styles.backButton}
       >
-        Back to all Forums
+        <div className="h-caps-xs">Back to all Forums</div>
       </Button>
       <div className="description">
-        <h5>{currForum?.name}</h5>
+        <h3 className="h-m">{currForum?.name}</h3>
         <p>{currForum?.description}</p>
       </div>
-      <strong>DISCUSSIONS</strong>
-      <List
-        className="discussions"
-        loading={!activeForum?.isFetched}
-        dataSource={activeForum?.discussions}
-        renderItem={(item) => {
-          return (
-            <List.Item key={item?.name}>
-              <Button onClick={() => goToDiscussion(item)} type="link">
-                {`#${item?.fname}`}
-              </Button>
-            </List.Item>
-          )
-        }}
-      />
+      {activeForum?.discussions?.length > 0 && (
+        <>
+          <h6 className="w-bold h-caps-xs disc-title">Discussions</h6>
+          <ul className="discussions">
+            {activeForum?.discussions?.map((discussion) => (
+              <li key={discussion.name}>
+                <Button onClick={() => goToDiscussion(discussion)} type="link">
+                  {discussion?.fname}
+                </Button>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
       {participants.length > 0 && (
         <>
-          <strong>PARTICIPANTS</strong>
+          <h6 className="w-bold h-caps-xs">Participants</h6>
           <List
             className="members"
             dataSource={participants}
