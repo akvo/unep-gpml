@@ -198,9 +198,9 @@ const ForumView = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
                 className={styles.backButton}
                 onClick={goBackForum}
               >
-                Back to Channel
+                <div className="h-caps-xs h-bold">Back to Channel</div>
               </Button>
-              <h5>{discussion?.fname}</h5>
+              <h3 className="h-m">{discussion?.fname}</h3>
             </div>
           )}
           {channelName && isAuthenticated && !loadingProfile && (

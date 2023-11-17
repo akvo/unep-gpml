@@ -2,6 +2,7 @@
 
 .channelSidebar {
   background-color: $primaryGrey !important;
+  z-index: 2;
   :global {
     h3 {
       margin: 12px 0 12px 0;
@@ -84,11 +85,13 @@
     .header-discussion {
       display: flex;
       flex-direction: column;
-      gap: 18px;
+      gap: 12px;
       padding: 21px 40px 28px;
       background: $primaryWhite;
       box-shadow: 0px 4px 25px 0px rgba(0, 0, 0, 0.2);
-      h5 {
+      position: relative;
+      z-index: 1;
+      h3 {
         font-weight: 600;
       }
     }
