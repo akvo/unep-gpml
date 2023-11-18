@@ -11,6 +11,9 @@ const View = () => {
       <h2 className="h-xxl w-bold">
         <Trans>Available Data</Trans>
       </h2>
+      <p>
+        <Trans>description-available-data-4-data-analysis</Trans>
+      </p>
       <iframe
         src="https://unepazgpmlblobstorage.z20.web.core.windows.net/GPML_HubHomePage_react/index.html"
         frameborder="0"

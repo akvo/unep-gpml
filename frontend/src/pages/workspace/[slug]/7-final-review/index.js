@@ -4,6 +4,7 @@ import Button from '../../../../components/button'
 import { getParentChecked } from '../../../../modules/workspace/ps/config'
 import styles from './index.module.scss'
 import { loadCatalog } from '../../../../translations/utils'
+import { Trans, t } from '@lingui/macro'
 
 const View = ({ psSteps, allSteps }) => {
   const router = useRouter()
@@ -15,14 +16,18 @@ const View = ({ psSteps, allSteps }) => {
   return (
     <div className={styles.finalView}>
       <div className="title-section">
-        <h2 className="h-xxl w-bold">Final Review</h2>
+        <h2 className="h-xxl w-bold">
+          <Trans>Final Review</Trans>
+        </h2>
       </div>
       <div className="desc-section">
-        <p>Text here ?</p>
+        <p>
+          <Trans>description-7-final-review</Trans>
+        </p>
       </div>
       {incompleteAmount ? (
         <div>
-          <strong className="h-xs">{`${incompleteAmount} items are not completed`}</strong>
+          <strong className="h-xs">{t`${incompleteAmount} items are not completed`}</strong>
           <ul className="steps">
             {psSteps
               .filter(
@@ -62,7 +67,9 @@ const View = ({ psSteps, allSteps }) => {
           </ul>
         </div>
       ) : (
-        <h1>All done!</h1>
+        <h1>
+          <Trans>All done!</Trans>
+        </h1>
       )}
     </div>
   )

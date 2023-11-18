@@ -4,6 +4,7 @@ import { Button, Card, Popover } from 'antd'
 import { MoreOutlined } from '@ant-design/icons'
 import moment from 'moment'
 import styles from './style.module.scss'
+import { Trans, t } from '@lingui/macro'
 
 /**
  * Reusable card component to showing forum information
@@ -21,12 +22,12 @@ const ForumOptions = ({ visible, onVisibleChange, onView, onLeave }) => (
         <ul>
           <li>
             <Button type="link" onClick={() => onView(item)}>
-              View Details
+              <Trans>View Details</Trans>
             </Button>
           </li>
           <li>
             <Button type="link" onClick={() => onLeave(item)}>
-              Leave
+              <Trans>Leave</Trans>
             </Button>
           </li>
         </ul>
@@ -39,7 +40,9 @@ const ForumOptions = ({ visible, onVisibleChange, onView, onLeave }) => (
 
 const ForumLastMessage = ({ lm: updatedAt }) => (
   <div className="last-message">
-    <span className={styles.labelClass}>Last message</span>
+    <span className={styles.labelClass}>
+      <Trans>Last message</Trans>
+    </span>
     <p className="p-m value" suppressHydrationWarning>
       {moment(updatedAt).fromNow()}
     </p>
@@ -53,7 +56,7 @@ const ForumTitle = ({
 }) => (
   <div className={classNames(styles.headingClass, className)}>
     <span className={styles.forumType}>
-      {channelType === 'p' ? 'private ' : 'public '}channel
+      {channelType === 'p' ? t`private ` : t`public `} <Trans>channel</Trans>
     </span>
     <h5 className={styles.title}>{channelName?.replace(/[-_]/g, ' ')}</h5>
   </div>

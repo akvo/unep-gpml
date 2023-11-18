@@ -356,7 +356,7 @@ const NestedLayout = ({ children }) => {
             className={classNames('mark-completed', { completed: isCompleted })}
           >
             <Check />
-            {isCompleted ? t`Completed` : `Mark as Completed`}
+            {isCompleted ? t`Completed` : t`Mark as Completed`}
           </Button>
           {!router.pathname.includes('7-final-review') && (
             <Button onClick={handleOnNext} withArrow>

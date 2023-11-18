@@ -2,12 +2,11 @@ import axios from 'axios'
 import styles from './style.module.scss'
 import moment from 'moment'
 import Head from 'next/head'
-import { Footer } from '../landing'
-import { transformStrapiResponse } from '../../utils/misc'
+import { getStrapiUrl, transformStrapiResponse } from '../../utils/misc'
 import Image from 'next/image'
+import { loadCatalog } from '../../translations/utils'
 
 const StrapiPage = ({ pageData }) => {
-  console.log(pageData)
   return (
     <div className={styles.page}>
       <Head>
@@ -41,12 +40,10 @@ export async function getServerSideProps(context) {
   const result = text.join('-')
 
   try {
-    const domainName = process.env.REACT_APP_FEENV
-      ? 'unep-gpml.akvotest.org'
-      : getDomainName(context.req.headers.host)
+    const strapiUrl = getStrapiUrl()
 
     const response = await axios.get(
-      `https://${domainName}/strapi/api/posts?filters[slug][$eq]=${result}&populate=*`
+      `${strapiUrl}/api/posts?filters[slug][$eq]=${result}&populate=*`
     )
     if (response.data.data.length === 0) {
       return { notFound: true }
@@ -54,7 +51,7 @@ export async function getServerSideProps(context) {
     const pageData = transformStrapiResponse(response.data.data)[0]
 
     return {
-      props: { pageData },
+      props: { pageData, i18n: await loadCatalog(context.locale) },
     }
   } catch (error) {
     console.error(error)
@@ -62,10 +59,6 @@ export async function getServerSideProps(context) {
       props: { notFound: true },
     }
   }
-}
-
-const getDomainName = (host) => {
-  return host.split(':')[0]
 }
 
 export default StrapiPage

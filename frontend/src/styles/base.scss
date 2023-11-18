@@ -40,6 +40,11 @@ body {
   font-size: $fzXXS;
   line-height: $lhXXS;
 }
+.h-caps-xs {
+  font-size: 12px;
+  line-height: 14px;
+  text-transform: uppercase;
+}
 h1,
 h2,
 h3,
@@ -209,6 +214,12 @@ h6 {
     align-items: center;
     margin-right: 15px;
     cursor: pointer;
+    & > span {
+      margin-left: -5px;
+      text-transform: uppercase;
+      margin-right: 5px;
+      font-weight: 500;
+    }
     & > *:first-child {
       margin-right: 10px;
     }
@@ -455,7 +466,9 @@ h6 {
     border-color: $primaryGreen;
     color: $primaryGreen;
     margin-top: 16px;
-    &:hover {
+    &:hover,
+    &:active,
+    &:focus {
       background-color: $primaryGreen;
       color: $primaryDarkBlue;
     }
@@ -605,8 +618,8 @@ h6 {
   right: 0;
   bottom: 0;
   z-index: 999;
-  background: url('/menu-background.png');
-  background-size: cover;
+  background: url('/menu-background-1.jpg') no-repeat #00124c;
+  background-position: 100% 100%;
   .cancel {
     background: transparent;
     border: none;

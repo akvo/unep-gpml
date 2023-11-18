@@ -24,6 +24,7 @@ import Button from '../../components/button'
 import ForumCard from '../../components/forum-card/forum-card'
 import ForumMembers from '../forum/forum-members'
 import { Trans, t } from '@lingui/macro'
+import { ChatStore } from '../../store'
 
 const DynamicForumModal = dynamic(
   () => import('../../modules/forum/forum-modal'),
@@ -32,13 +33,12 @@ const DynamicForumModal = dynamic(
   }
 )
 
-const Workspace = ({ profile }) => {
+const Workspace = ({ profile, isAuthenticated, setLoginVisible }) => {
   const router = useRouter()
   const [isFocal, setIsFocal] = useState(false)
   const [projects, setProjects] = useState([])
   const [psAll, setPSAll] = useState([])
   const [psLoading, setPsLoading] = useState(true)
-  const [forums, setForums] = useState([])
   const [loading, setLoading] = useState({
     forums: true,
   })
@@ -167,8 +167,17 @@ const Workspace = ({ profile }) => {
       return 0
     }
   }
+  const myForums = ChatStore.useState((s) => s.myForums)
+  const allForums = ChatStore.useState((s) => s.allForums)
+  const forums = myForums?.length ? myForums : allForums
 
   const getAllForums = useCallback(async () => {
+    if ((myForums?.length || allForums.length) && loading.forums) {
+      setLoading({
+        forums: false,
+      })
+      return
+    }
     try {
       /**
        * Waiting for id_token ready by checking profile state
@@ -184,13 +193,15 @@ const Workspace = ({ profile }) => {
         ] = await Promise.allSettled(endpoints)
         const { data: _myForums } = myForums || {}
         const { data: _allForums } = allForums || {}
-        const _forums = _myForums?.length
-          ? _myForums.sort(sortPublicFirst).slice(0, 3)
-          : _allForums
-              ?.sort(sortPublicFirst)
-              ?.slice(0, 3)
-              ?.map((a) => ({ ...a, isView: true }))
-        setForums(_forums)
+        /**
+         * Store all forums in global state
+         */
+        ChatStore.update((s) => {
+          s.myForums = _myForums?.sort(sortPublicFirst)
+          s.allForums = _allForums
+            ?.sort(sortPublicFirst)
+            ?.map((a) => ({ ...a, isView: true }))
+        })
         setLoading({
           forums: false,
         })
@@ -200,7 +211,7 @@ const Workspace = ({ profile }) => {
         forums: false,
       })
     }
-  }, [profile])
+  }, [profile, allForums, myForums])
 
   useEffect(() => {
     getPSAll()
@@ -359,7 +370,7 @@ const Workspace = ({ profile }) => {
               </div>
               <List
                 className="forum-list"
-                dataSource={forums}
+                dataSource={forums.slice(0, 3)}
                 loading={loading.forums}
                 renderItem={(item) => (
                   <List.Item>
@@ -401,6 +412,8 @@ const Workspace = ({ profile }) => {
                 viewModal={forumView}
                 setViewModal={setForumView}
                 allForums={forums}
+                setLoginVisible={setLoginVisible}
+                isAuthenticated={isAuthenticated}
               />
             </div>
           </div>

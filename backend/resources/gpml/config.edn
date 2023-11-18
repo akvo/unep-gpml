@@ -627,6 +627,14 @@
                                                   :swagger {:tags ["chat"]}
                                                   :handler #ig/ref :gpml.handler.chat/get-all-channels
                                                   :parameters #ig/ref :gpml.handler.chat/get-all-channels-params}}]
+                                          ["/details"
+                                           ["/{id}"
+                                            {:get {:summary "Get channel details"
+                                                   :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                #ig/ref :gpml.auth/auth-required]
+                                                   :swagger {:tags ["chat"] :security [{:id_token []}]}
+                                                   :handler #ig/ref :gpml.handler.chat/get-channel-details
+                                                   :parameters #ig/ref :gpml.handler.chat/get-channel-details-params}}]]
                                           ["/private"
                                            [""
                                             {:get {:summary "Get all private channels in the server"
@@ -1026,6 +1034,8 @@
   :gpml.handler.chat/add-user-to-private-channel-params {}
   :gpml.handler.chat/remove-user-from-channel #ig/ref :gpml.config/common
   :gpml.handler.chat/remove-user-from-channel-params {}
+  :gpml.handler.chat/get-channel-details #ig/ref :gpml.config/common
+  :gpml.handler.chat/get-channel-details-params {}
 
   :gpml.handler.plastic-strategy/get-all #ig/ref :gpml.config/common
   :gpml.handler.plastic-strategy/get-all-params {}

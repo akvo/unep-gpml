@@ -7,6 +7,7 @@
             [gpml.domain.file :as dom.file]
             [gpml.handler.organisation :as handler.org]
             [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
+            [gpml.service.chat :as srv.chat]
             [gpml.service.file :as srv.file]
             [gpml.service.permissions :as srv.permissions]
             [gpml.service.plastic-strategy :as srv.ps]
@@ -189,11 +190,38 @@
                 (assoc context
                        :success? false
                        :reason :failed-to-assign-role-to-stakeholder
-                       :error-details (:error-details result)))))}]]
+                       :error-details (:error-details result)))))
+          :rollback-fn
+          (fn rollback-assign-role
+            [{:keys [stakeholder] :as context}]
+            (let [role-unassignments [{:role-name :unapproved-user
+                                       :context-type :application
+                                       :resource-id srv.permissions/root-app-resource-id
+                                       :user-id (:id stakeholder)}]
+                  result (first (srv.permissions/unassign-roles-from-users
+                                 {:conn conn
+                                  :logger logger}
+                                 role-unassignments))]
+              (when-not (:success? result)
+                (log logger :error ::failed-to-rollback-assign-role-to-stakeholder {:result result})))
+            context)}
+         {:txn-fn
+          (fn create-chat-account
+            [{:keys [stakeholder] :as context}]
+            (let [{success? :success? updated-user :stakeholder :as result}
+                  (srv.chat/create-user-account config (:id stakeholder))]
+              (if success?
+                (-> context
+                    (assoc-in [:stakeholder :chat_account_id] (:chat-account-id updated-user))
+                    (assoc-in [:stakeholder :chat_account_status] (:chat-account-status updated-user)))
+                (assoc context
+                       :success? false
+                       :reason :failed-to-create-chat-user-account
+                       :error-details {:result result}))))}]]
     (tht/thread-transactions logger transactions context)))
 
 (defn update-stakeholder
-  [{:keys [db logger mailjet-config] :as config} stakeholder]
+  [{:keys [db logger mailjet-config] :as config} stakeholder partial-tags-override-rel-cats]
   (let [conn (:spec db)
         context {:success? true
                  :stakeholder stakeholder}
@@ -290,7 +318,7 @@
          {:txn-fn
           (fn save-stakeholder-tags
             [{:keys [stakeholder] :as context}]
-            (if-not (seq (:tags stakeholder))
+            (if-not (contains? (set (keys stakeholder)) :tags)
               context
               (let [result (handler.stakeholder.tag/save-stakeholder-tags
                             conn
@@ -299,7 +327,8 @@
                             {:tags (:tags stakeholder)
                              :stakeholder-id (:id stakeholder)
                              :handle-errors? true
-                             :update? true})]
+                             :update? true
+                             :partial-tags-override-rel-cats partial-tags-override-rel-cats})]
                 (if (:success? result)
                   context
                   (assoc context

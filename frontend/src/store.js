@@ -233,23 +233,23 @@ const entitySuggestedTags = [
 ]
 
 const stakeholderSuggestedTags = [
-  t`Waste management`,
-  t`Ocean and coast`,
-  t`Freshwater`,
-  t`Biota`,
-  t`Chemicals`,
-  t`Microplastics`,
-  t`Wastewater`,
-  t`Environmental justice`,
-  t`Human health`,
-  t`Gender`,
-  t`Circularity`,
-  t`Data monitoring`,
-  t`Citizen science`,
-  t`Data analysis`,
-  t`Technology and innovation`,
-  t`Capacity building`,
-  t`Financing`,
+  `Waste management`,
+  `Ocean and coast`,
+  `Freshwater`,
+  `Biota`,
+  `Chemicals`,
+  `Microplastics`,
+  `Wastewater`,
+  `Environmental justice`,
+  `Human health`,
+  `Gender`,
+  `Circularity`,
+  `Data monitoring`,
+  `Citizen science`,
+  `Data analysis`,
+  `Technology and innovation`,
+  `Capacity building`,
+  `Financing`,
 ]
 
 const organisationType = [
@@ -921,6 +921,7 @@ const UIStore = new Store({
 
 const ChatStore = new Store({
   myForums: [],
+  allForums: [],
   isLoggedIn: false,
 })
 

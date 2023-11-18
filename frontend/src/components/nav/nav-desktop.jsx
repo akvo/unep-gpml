@@ -162,6 +162,7 @@ const AboutUsMenu = ({ toggle }) => {
                     animate="open"
                     exit="closed"
                     className="sub-menu-item"
+                    onClick={toggle}
                   >
                     <Item {...child} />
                   </motion.li>
@@ -178,9 +179,11 @@ const AboutUsMenu = ({ toggle }) => {
             animate="open"
             exit="closed"
           >
-            <Button type="primary" size="small" className="noicon">
-              Go to GPML
-            </Button>
+            <a href="https://gpmarinelitter.org" target="_blank">
+              <Button type="primary" size="small" className="noicon">
+                Go to GPML
+              </Button>
+            </a>
           </motion.div>
           <motion.div
             custom={1}
@@ -190,9 +193,11 @@ const AboutUsMenu = ({ toggle }) => {
             animate="open"
             exit="closed"
           >
-            <Button ghost size="small" className="contact-button">
-              Contact Us
-            </Button>
+            <a href="mailto:unep-gpmarinelitter@un.org">
+              <Button ghost size="small" className="contact-button">
+                Contact Us
+              </Button>
+            </a>
           </motion.div>
         </Col>
       </Row>

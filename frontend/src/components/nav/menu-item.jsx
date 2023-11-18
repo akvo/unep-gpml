@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { CirclePointer } from '../icons'
 import Item from './item'
 import Button from '../button'
+import { i18n } from '@lingui/core'
 
 const variants = {
   open: {
@@ -43,7 +44,7 @@ export const MenuItem = ({ i, item, onClick, collapseMenu, isSubItem }) => {
     >
       <div className="sub-menu">
         <div className="header">
-          <p className="p-s">{i}</p>
+          <p className="p-s">{i18n._(i)}</p>
           <motion.div
             animate={{ rotate: isContentVisible ? 90 : 0 }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
@@ -53,7 +54,7 @@ export const MenuItem = ({ i, item, onClick, collapseMenu, isSubItem }) => {
           </motion.div>
         </div>
         <AnimatePresence>
-          {isContentVisible && item?.children.length > 0 && (
+          {isContentVisible && item?.children?.length > 0 && (
             <>
               {item.type === 'button' ? (
                 <motion.div
@@ -63,7 +64,7 @@ export const MenuItem = ({ i, item, onClick, collapseMenu, isSubItem }) => {
                   exit={{ opacity: 0, height: 0 }}
                 >
                   <Button type="primary" size="small" className="noicon">
-                    {item.text}
+                    {i18n._(item.text)}
                   </Button>
                 </motion.div>
               ) : (

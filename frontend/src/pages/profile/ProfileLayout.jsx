@@ -18,6 +18,7 @@ import { Trans, t } from '@lingui/macro'
 const userRoles = new Set(roles)
 const reviewerRoles = new Set(['REVIEWER', 'ADMIN'])
 const adminRoles = new Set(['ADMIN'])
+import { useLingui } from '@lingui/react'
 
 function getChangedFields(original, updated) {
   let changes = {}
@@ -31,32 +32,38 @@ function getChangedFields(original, updated) {
   return changes
 }
 
-const menuItems = [
-  {
-    key: 'personal-details',
-    name: t`Personal Details`,
-    role: userRoles,
-    icon: <UserOutlined />,
-  },
-  {
-    key: 'review-section',
-    name: t`Review Section`,
-    role: reviewerRoles,
-    icon: <DiffOutlined />,
-  },
-  {
-    key: 'admin-section',
-    name: t`Admin Section`,
-    role: adminRoles,
-    icon: <SettingOutlined />,
-  },
-  {
-    key: 'profil-section',
-    name: t`Profile Quick Link`,
-    role: userRoles,
-    icon: <UserOutlined />,
-  },
-]
+export const useMenuItems = () => {
+  const { i18n } = useLingui()
+
+  const menuItems = [
+    {
+      key: 'personal-details',
+      name: i18n._(t`Personal Details`),
+      role: userRoles,
+      icon: <UserOutlined />,
+    },
+    {
+      key: 'review-section',
+      name: i18n._(t`Review Section`),
+      role: reviewerRoles,
+      icon: <DiffOutlined />,
+    },
+    {
+      key: 'admin-section',
+      name: i18n._(t`Admin Section`),
+      role: adminRoles,
+      icon: <SettingOutlined />,
+    },
+    {
+      key: 'profil-section',
+      name: i18n._(t`Profile Quick Link`),
+      role: userRoles,
+      icon: <UserOutlined />,
+    },
+  ]
+
+  return menuItems
+}
 
 function ProfileLayout({ children }) {
   const { isAuthenticated, loginWithPopup } = useAuth0()
@@ -163,6 +170,8 @@ function ProfileLayout({ children }) {
     count: 0,
     pages: 0,
   })
+
+  const menuItems = useMenuItems()
 
   useEffect(() => {
     UIStore.update((e) => {

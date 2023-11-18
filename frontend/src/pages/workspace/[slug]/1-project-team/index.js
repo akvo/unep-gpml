@@ -50,6 +50,9 @@ const View = () => {
       <h2 className="h-xxl w-bold">
         <Trans>Introduction</Trans>
       </h2>
+      <p>
+        <Trans>description-intro-1-project-team</Trans>
+      </p>
       <div className="iframe-container">
         {/* <a href={slideURL} target="_blank">
           <Button size="small" type="link">

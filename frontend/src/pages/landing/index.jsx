@@ -40,7 +40,12 @@ import { useLingui } from '@lingui/react'
 import { loadCatalog } from '../../translations/utils'
 import { UIStore } from '../../store'
 import { useRouter } from 'next/router'
-import { stripHtml, transformStrapiResponse, useQuery } from '../../utils/misc'
+import {
+  getStrapiUrl,
+  stripHtml,
+  transformStrapiResponse,
+  useQuery,
+} from '../../utils/misc'
 import LocationDropdown from '../../components/location-dropdown/location-dropdown'
 import CountryTransnationalFilter from '../../components/select/country-transnational-filter'
 import api from '../../utils/api'
@@ -157,12 +162,12 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
   const suggestedTags = [
     'Plastic Pollution',
     'Marine Litter',
-    'Reports & Assessments',
+    'Report & Assessment',
     'Circularity',
     'Plastics',
     'Waste management',
-    'Courses & Training',
-    'National Action Plan',
+    'Courses & Trainings',
+    'National Action Plans',
   ]
   const maxTags = 6
 
@@ -685,7 +690,9 @@ const ActNow = () => {
     <div className={styles.actNow}>
       <div className="container act-now-container">
         <div className="wrapper">
-          <div className="caps-heading-1 page-sub-heading">Why us?</div>
+          <div className="caps-heading-1 page-sub-heading">
+            <Trans>Why us?</Trans>
+          </div>
           <h3 className="h-xxl">
             <Trans>
               Act Now: <br /> <span>Co-solution with the plastic network</span>
@@ -738,13 +745,11 @@ const ActNowCard = ({ item }) => (
 )
 
 const LatestNews = () => {
-  const router = useRouter()
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
+  const strapiUrl = getStrapiUrl()
   useEffect(() => {
-    fetch(
-      `https://unep-gpml.akvotest.org/strapi/api/posts?locale=en&populate=cover`
-    )
+    fetch(`${strapiUrl}/api/posts?locale=en&populate=cover`)
       .then((d) => d.json())
       .then((d) => {
         setItems(transformStrapiResponse(d.data))
@@ -755,7 +760,9 @@ const LatestNews = () => {
     <div className={styles.latestNews}>
       <div className="container">
         <div className="news-wrapper hide-sm">
-          <strong className="caps-heading-1">HIGHLIGHTS</strong>
+          <strong className="caps-heading-1">
+            <Trans>HIGHLIGHTS</Trans>
+          </strong>
           <h2>
             <strong>
               <Trans>Latest news:</Trans>
@@ -841,10 +848,9 @@ const Features = () => {
       content: t`Access a suite of powerful data tools tailored for tackling plastic pollution and marine litter. Utilize comprehensive data sets, layers and statistics to  gain valuable insights that empower informed decision-making and drive effective action.`,
     },
     {
-      label: t`Coming soon`,
       title: t`Workspace`,
       key: 'workspace-feature',
-      content: t`Elevate your mission to address plastic pollution and marine litter through our integrated workspace feature. This feature enables you to coordinate with partners, centralize resources, strategize actions, and drive collective solutions`,
+      content: `${t`Elevate your mission to address plastic pollution and marine litter through our integrated workspace feature. This feature enables you to coordinate with partners, centralize resources, strategize actions, and drive collective solutions`}.`,
     },
     {
       title: t`Match-making`,
@@ -881,11 +887,11 @@ const Features = () => {
                 </Trans>
               </p>
             </div>
-            <div>
+            {/* <div>
               <Button withArrow={<LongArrowRight />} size="large" ghost>
                 <Trans>View All Features</Trans>
               </Button>
-            </div>
+            </div> */}
           </div>
         </div>
       )}
@@ -916,12 +922,17 @@ const Trusted = () => {
         <div className="trusted-text">
           <h3 className="semibold">
             <Trans>
-              Trusted data and information badge system and validation process.
+              Trusted data, Information badge system and Validation process.
             </Trans>
           </h3>
-          <Button withArrow type="primary" size="large">
-            <Trans>Discover</Trans>
-          </Button>
+          <a
+            target="_blank"
+            href="https://docs.google.com/presentation/d/e/2PACX-1vSi-8jTrnk3Lj7ieb-z2Hy-FIHE4jQhZyRjonWWOlYgPb2Mu5suUyPPfwylZR_7zDyIJE7kGNkfghTM/pub?start=false&loop=false&delayms=60000"
+          >
+            <Button withArrow type="primary" size="large">
+              <Trans>Discover</Trans>
+            </Button>
+          </a>
         </div>
         <div className="trusted-circle" />
       </div>
@@ -1265,9 +1276,11 @@ const Partners = () => {
       </div>
       <div className="partner-button-container">
         <div className="container">
-          <Button withArrow={<LongArrowRight />} size="large" ghost>
-            <Trans>See all partners</Trans>
-          </Button>
+          <Link href="/partners">
+            <Button withArrow={<LongArrowRight />} size="large" ghost>
+              <Trans>See all partners</Trans>
+            </Button>
+          </Link>
         </div>
       </div>
     </div>
@@ -1292,9 +1305,11 @@ const HelpCentre = () => {
         </h6>
       </div>
       <div className="help-centre-button">
-        <Button withArrow={<LongArrowRight />}>
-          <Trans>Visit the Help Centre</Trans>
-        </Button>
+        <Link href="/help-center">
+          <Button withArrow={<LongArrowRight />}>
+            <Trans>Visit the Help Centre</Trans>
+          </Button>
+        </Link>
       </div>
     </div>
   )

@@ -1,25 +1,25 @@
-@import "../../vars.scss";
+@import '../../styles/vars.scss';
 
 .addSignUp {
   padding-bottom: 40px;
   min-height: calc(100vh - 145px);
-  background: linear-gradient(
-      0deg,
-      rgba(45, 103, 150, 0.85),
-      rgba(45, 103, 150, 0.85)
-    ),
-    url("../../images/landing-gpml-2.jpeg");
-  background-position-y: top;
+  background: #e7f3ff6b;
   background-size: cover;
   background-repeat: no-repeat;
   :global {
     .loading {
       color: white;
     }
+    .ui.container {
+      width: 1560px;
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 100% !important;
+    }
     .entity-getting-started-heading {
       div,
       a {
-        color: $blue02;
+        color: $primaryDarkBlue;
       }
       div {
         margin: 10px;
@@ -32,7 +32,7 @@
 
     .form-info-wrapper {
       margin-bottom: 40px;
-      background-color: #046799;
+      background-color: $primaryDarkBlue5;
       padding: 15px 0;
 
       .ui.container {
@@ -77,6 +77,10 @@
         }
         .submit-button {
           border-radius: 50px;
+          &:hover {
+            border-color: white;
+            color: white;
+          }
         }
       }
 
@@ -96,11 +100,21 @@
       .ant-tabs-nav {
         margin: 0;
       }
+      .custom-step-icon {
+        background: $primaryDarkBlue;
+        border-color: $primaryDarkBlue;
+        color: #fff;
+        min-width: 32px;
+        text-align: center;
+        border-radius: 50%;
+        display: block;
+        padding: 2px;
+      }
     }
 
     // Represent an entity style
     .represent-checkbox-wrapper {
-      background: $blue06;
+      background: $primaryDarkBlue;
       border-radius: 15px 0px 0px 0px;
       margin: 5px 0px 5px 5px;
       padding: 10px;
@@ -111,7 +125,7 @@
       }
     }
     hr.step-line {
-      border: 1px solid $blue06;
+      border: 1px solid #d3dee7;
       opacity: 0.75;
       width: 90%;
     }
@@ -120,7 +134,7 @@
       border-color: #cbd0d4;
     }
     .ant-checkbox-checked .ant-checkbox-inner::after {
-      border-color: $blue06;
+      border-color: $primaryDarkBlue;
     }
 
     .ant-menu::before {
@@ -149,12 +163,12 @@
         .ant-steps-item-content {
           .ant-steps-item-title {
             font-size: 1rem;
-            color: #fff;
+            color: $primaryDarkBlue;
             width: 90%;
 
             .ant-steps-item-subtitle {
               text-transform: none;
-              color: #fff;
+              color: $primaryDarkBlue;
             }
           }
         }
@@ -166,7 +180,7 @@
       .ant-steps-item-container {
         .ant-steps-item-subtitle {
           text-transform: none;
-          color: #fff;
+          color: $primaryDarkBlue;
           opacity: 0.5;
         }
 
@@ -188,7 +202,7 @@
         .ant-steps-item-content {
           .ant-steps-item-title {
             font-weight: bold;
-            color: #29b696;
+            color: $primaryDarkBlue;
           }
         }
 
@@ -206,7 +220,7 @@
         .ant-steps-item-content {
           .ant-steps-item-title {
             font-weight: bold;
-            color: #398fff;
+            color: $primaryDarkBlue;
           }
         }
 
@@ -215,7 +229,7 @@
           border-width: 2px;
 
           .ant-steps-icon {
-            color: #398fff;
+            color: $primaryDarkBlue;
           }
         }
       }
@@ -242,7 +256,7 @@
       .ant-steps-item-container {
         .ant-steps-item-content {
           .ant-steps-item-title {
-            color: #fff;
+            color: $primaryDarkBlue;
             opacity: 0.5;
           }
         }
@@ -282,12 +296,12 @@
           .ant-steps-item-title {
             font-size: 1rem;
             font-weight: bold;
-            color: #fff;
+            color: $primaryDarkBlue;
             opacity: 1;
 
             .ant-steps-item-subtitle {
               text-transform: none;
-              color: #fff;
+              color: $primaryDarkBlue;
             }
           }
         }
@@ -361,7 +375,7 @@
             li {
               background: #d3dee7;
               border-radius: 23px 5px 5px 23px;
-              color: $blue06;
+              color: $primaryDarkBlue;
               display: inline-block;
               padding: 5px 20px 5px 30px;
               position: relative;
@@ -373,7 +387,7 @@
                 background: #fff;
                 border-radius: 10px;
                 box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
-                content: "";
+                content: '';
                 position: absolute;
                 height: 12px;
                 width: 12px;
@@ -562,26 +576,35 @@
       }
     }
 
-    .back-button,
-    .next-button {
+    .back-button {
+      svg {
+        transform: rotate(180deg);
+      }
       &:hover {
-        background: $green03;
-        border-color: $green03;
-        color: #fff;
+        padding-left: 28px;
+        svg {
+          transform: translateX(-8px) rotate(180deg);
+        }
       }
     }
-    .back-button {
-      color: $green02;
-      border-color: $green02;
-    }
     .next-button {
-      background: $green02;
-      border-color: $green02;
+      background: $primaryGreen;
+      border-color: $primaryGreen;
       color: #fff;
     }
     .custom-step-title {
       button {
+        background: transparent;
+        border-radius: 50px;
+        width: 24px;
         height: 24px;
+        padding: 0;
+        text-align: center;
+        svg {
+          position: relative;
+          top: 0;
+          left: 0;
+        }
       }
     }
   }

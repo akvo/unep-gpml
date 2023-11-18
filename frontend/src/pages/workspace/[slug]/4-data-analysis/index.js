@@ -50,6 +50,9 @@ const View = () => {
       <h2 className="h-xxl w-bold">
         <Trans>Introduction</Trans>
       </h2>
+      <p>
+        <Trans>description-intro-4-data-analysis</Trans>
+      </p>
       <iframe
         src={slideURL}
         frameborder="0"

@@ -15,6 +15,7 @@ import api from '../../../../utils/api'
 import { LoadingOutlined } from '@ant-design/icons'
 import { stepsState } from '../../../../modules/workspace/ps/config'
 import { loadCatalog } from '../../../../translations/utils'
+import { Trans, t } from '@lingui/macro'
 
 const { Dragger } = Upload
 
@@ -106,7 +107,9 @@ const UploadFile = ({ psItem, step }) => {
   return (
     <Skeleton loading={!psItem?.id} paragraph={{ rows: 3 }} active>
       <div className="upload-section">
-        <h5>Upload Your Report</h5>
+        <h5>
+          <Trans>Upload Your Report</Trans>
+        </h5>
         {files.length ? (
           <List
             loading={preload}
@@ -152,9 +155,13 @@ const UploadFile = ({ psItem, step }) => {
               <p className="ant-upload-drag-icon">
                 <UploadIcon />
               </p>
-              <p className="ant-upload-hint">Drop a PDF or DOC here</p>
+              <p className="ant-upload-hint">
+                <Trans>Drop a file here</Trans>
+                <br />
+                <small>(pdf, excel, word or powerpoint)</small>
+              </p>
               <Button size="small" shape="upload">
-                Browse
+                <Trans>Browse</Trans>
               </Button>
             </Spin>
           </Dragger>
@@ -210,14 +217,24 @@ const View = ({ psItem }) => {
     return stepsState.find((s) => s?.slug === step)
   }, [step, stepsState])
 
+  const dict = {
+    '2-stakeholder-consultation': t`summary-description-2-stakeholder-consultation`,
+    '3-legislation-policy': t`summary-description-3-legislation-policy`,
+    '4-data-analysis': t`summary-description-4-data-analysis`,
+    '5-national-source': t`summary-description-5-national-source`,
+    '6-national-plastic-strategy': t`summary-description-6-national-plastic-strategy`,
+  }
+
   return (
     <div className={styles.summaryNReportView}>
       <div className="title-section">
         <h4 className="caps-heading-m">{currentStep?.label || ''}</h4>
-        <h2 className="h-xxl w-bold">Summary & Report</h2>
+        <h2 className="h-xxl w-bold">
+          <Trans>Summary & Report</Trans>
+        </h2>
       </div>
       <div className="desc-section">
-        <p>Placeholder text for instructions</p>
+        <p>{dict[step]}</p>
       </div>
       <SummaryFiles {...{ psItem, step, slug }} />
       <UploadFile {...{ psItem, step }} />

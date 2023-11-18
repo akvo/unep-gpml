@@ -23,6 +23,12 @@ module.exports = {
         port: '',
         pathname: '/unep-gpml-public-staging/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'storage.googleapis.com',
+        port: '',
+        pathname: '/unep-gpml-public-production/**',
+      },
     ],
   },
   async rewrites() {

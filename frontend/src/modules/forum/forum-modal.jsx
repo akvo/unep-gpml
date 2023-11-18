@@ -8,7 +8,13 @@ import styles from './forum.module.scss'
 import useLocalStorage from '../../utils/hooks/use-storage'
 import { ChatStore } from '../../store'
 
-const ForumModal = ({ viewModal, setViewModal, allForums }) => {
+const ForumModal = ({
+  viewModal,
+  setViewModal,
+  allForums,
+  setLoginVisible,
+  isAuthenticated,
+}) => {
   const [requesting, setRequesting] = useState(false)
   const colorList = ['purple', 'green', 'blue', 'dark-blue']
   const [joins, setJoins] = useLocalStorage('joins', [])
@@ -70,7 +76,7 @@ const ForumModal = ({ viewModal, setViewModal, allForums }) => {
           <span className={styles.forumType}>
             {viewModal?.data?.t === 'p' ? 'private ' : 'public '}channel
           </span>
-          <h5>{viewModal?.data?.name}</h5>
+          <h5>{viewModal?.data?.name?.replace(/[-_]/g, ' ')}</h5>
         </>
       }
       width={702}
@@ -83,19 +89,33 @@ const ForumModal = ({ viewModal, setViewModal, allForums }) => {
           </Button>
           {isNotAMember ? (
             <Button
-              onClick={() => handleOnRequestJoin(viewModal?.data)}
+              onClick={() => {
+                if (isAuthenticated) {
+                  handleOnRequestJoin(viewModal?.data)
+                } else {
+                  setLoginVisible(true)
+                }
+              }}
               loading={requesting}
-              disabled={joinDisabled}
+              disabled={joinDisabled && isAuthenticated}
             >
-              {joinDisabled ? 'Requested to Join' : 'Request to Join'}
+              {joinDisabled && isAuthenticated
+                ? 'Requested to Join'
+                : 'Request to Join'}
             </Button>
           ) : (
             <Button
               withArrow="link"
               size="small"
-              onClick={() => goToChannel(viewModal.data)}
+              onClick={() => {
+                if (isAuthenticated) {
+                  goToChannel(viewModal.data)
+                } else {
+                  setLoginVisible(true)
+                }
+              }}
             >
-              View channel
+              {isAuthenticated ? 'View channel' : 'Login to Chat'}
             </Button>
           )}
         </>
@@ -118,13 +138,14 @@ const ForumModal = ({ viewModal, setViewModal, allForums }) => {
             const userImage = user?.avatarETag
               ? `${avatarUrl}${user?.username}?etag=${user.avatarETag}`
               : null
-            const [fistName, lastName] = user?.name?.split(/[ ,]+/)
+            const userName = user?.name || user?.username || ''
+            const [fistName, lastName] = userName.split(/[ ,]+/)
             return (
               <List.Item key={user.id}>
                 <List.Item.Meta
                   avatar={
                     <Avatar src={userImage} className={sample(colorList)}>
-                      {`${fistName[0]}${lastName?.[0]}`}
+                      {`${fistName[0]}${lastName?.[0] || ''}`}
                     </Avatar>
                   }
                   title={user.name}

@@ -18,7 +18,7 @@ import { i18n } from '@lingui/core'
 import { MenuToggle, NavMobile, NavDesktop } from '../components/nav'
 import GpmlCircle from '../components/gpml-circle'
 import axios from 'axios'
-import { deepTranslate } from '../utils/misc'
+import { deepTranslate, getStrapiUrl } from '../utils/misc'
 import { changeLanguage } from '../translations/utils'
 
 const archia = localFont({
@@ -74,6 +74,7 @@ const NewLayout = ({
   const [isOpen, toggleOpen] = useCycle(false, true)
 
   useEffect(() => {
+    const strapiUrl = getStrapiUrl()
     const fetchData = async () => {
       try {
         const MENU_MAPPING = [
@@ -84,14 +85,12 @@ const NewLayout = ({
               {
                 key: msg`The platform`,
                 id: 'The platform',
-                apiEndpoint:
-                  'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=about-platform&fields=title&fields=subtitle&fields=slug',
+                apiEndpoint: `${strapiUrl}/api/pages?locale=all&filters[section][$eq]=about-platform&fields=title&fields=subtitle&fields=slug`,
               },
               {
                 key: msg`Our Network`,
                 id: 'Our Network',
-                apiEndpoint:
-                  'https://unep-gpml.akvotest.org/strapi/api/pages?locale=all&filters[section][$eq]=about-network&fields=title&fields=subtitle&fields=slug',
+                apiEndpoint: `${strapiUrl}/api/pages?locale=all&filters[section][$eq]=about-network&fields=title&fields=subtitle&fields=slug`,
               },
             ],
           },
@@ -238,6 +237,7 @@ const NewLayout = ({
               >
                 <div className="lang-btn">
                   <World />
+                  <span>{router.locale}</span>
                   <DownArrow />
                 </div>
               </Dropdown>
@@ -248,7 +248,7 @@ const NewLayout = ({
                   className="noicon hide-mobile"
                   onClick={() => setLoginVisible(true)}
                 >
-                  Join Now
+                  <Trans>Join Now</Trans>
                 </Button>
               )}
               {isAuthenticated && (
@@ -259,7 +259,7 @@ const NewLayout = ({
                       size="small"
                       className="noicon hide-mobile"
                     >
-                      Workspace
+                      <Trans>Workspace</Trans>
                     </Button>
                   </Link>
                   <Dropdown
@@ -322,7 +322,7 @@ const NewLayout = ({
             isOpen={showMenu}
             contentKey={openedItemKey}
             toggle={() => {
-              setShowMenu(!showMenu)
+              setShowMenu(false)
               setOpenedItemKey(null)
             }}
           />

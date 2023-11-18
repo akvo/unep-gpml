@@ -99,7 +99,20 @@ const CountryTransnationalFilter = ({
 
     updateQuery('transnational', val, fetch)
 
-    // Fetch transnational countries
+    let updatedQuery = { ...history.query }
+    delete updatedQuery.totalCount
+
+    if (val && val.length > 0) {
+      updatedQuery.transnational = val.toString()
+    } else {
+      delete updatedQuery.transnational
+    }
+
+    history.push({
+      pathname: history.pathname,
+      query: updatedQuery,
+    })
+
     val.forEach((id) => {
       const check = multiCountryCountries.find((x) => x.id === id)
       !check &&

@@ -44,6 +44,12 @@ spec:
           limits:
             cpu: "600m"
             memory: "1000Mi"
+        env:
+        - name: NEXT_PUBLIC_ENV
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: next-public-env
       - name: backend
         image: eu.gcr.io/akvo-lumen/unep-gpml/backend:${CI_COMMIT}
         ports:

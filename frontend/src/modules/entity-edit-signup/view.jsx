@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { UIStore } from '../../store'
 import React, { useEffect, useRef, useState, useCallback } from 'react'
-import { Checkbox, Row, Col, Card, Steps, Switch, Button } from 'antd'
+import { Checkbox, Row, Col, Card, Steps, Switch } from 'antd'
 import {
   CheckOutlined,
   EditOutlined,
@@ -20,6 +20,9 @@ import api from '../../utils/api'
 import entity from './entity'
 import stakeholder from './stakeholder'
 import { useRouter } from 'next/router'
+import { Trans } from '@lingui/react'
+import Button from '../../components/button'
+import { LongArrowRight } from '../../components/icons'
 const { Step } = Steps
 
 const formDataMapping = [
@@ -269,9 +272,6 @@ const EntityEditSignUp = ({ match: { params }, ...props }) => {
     signUpData,
     loadTabs,
   } = isEntityType ? entity : stakeholder
-
-  const minHeightContainer = innerHeight * 0.8
-  const minHeightCard = innerHeight * 0.75
 
   const storeData = UIStore.useState((s) => ({
     stakeholders: s.stakeholders?.stakeholders,
@@ -550,8 +550,8 @@ const EntityEditSignUp = ({ match: { params }, ...props }) => {
             style={{
               right: '0',
               position: 'absolute',
-              color: color,
-              borderColor: color,
+              color: '#1CA585',
+              borderColor: '#1CA585',
               display: display,
             }}
           />
@@ -566,7 +566,7 @@ const EntityEditSignUp = ({ match: { params }, ...props }) => {
           className="custom-step-icon"
           shape="circle"
           style={{
-            color: '#255B87',
+            color: 'white',
             fontWeight: '600',
             opacity: opacity,
           }}
@@ -699,7 +699,7 @@ const EntityEditSignUp = ({ match: { params }, ...props }) => {
   }
 
   return (
-    <div id="add-sign-up" className={styles.addSignUp}>
+    <div className={styles.addSignUp}>
       <StickyBox style={{ zIndex: 10 }}>
         <div className="form-info-wrapper">
           <div className="ui container">
@@ -724,9 +724,9 @@ const EntityEditSignUp = ({ match: { params }, ...props }) => {
                     <Button
                       disabled={disabledBtn.disabled}
                       loading={sending}
-                      type={disabledBtn.type}
                       className="submit-button"
                       onClick={(e) => handleOnClickBtnSubmit(e)}
+                      size="small"
                     >
                       SUBMIT
                     </Button>
@@ -748,7 +748,6 @@ const EntityEditSignUp = ({ match: { params }, ...props }) => {
               {formStep.signUp === 1 && (
                 <Row
                   style={{
-                    minHeight: `${minHeightContainer}px`,
                     borderRadius: '18px',
                   }}
                 >
@@ -757,9 +756,10 @@ const EntityEditSignUp = ({ match: { params }, ...props }) => {
                     lg={6}
                     style={{
                       minHeight: '100%',
-                      background: 'rgba(3, 155, 120, 0.4)',
+                      background: 'white',
                       borderRadius: '15px 0 0 15px',
                       padding: '13px 0',
+                      borderRight: '1px solid',
                     }}
                   >
                     <StickyBox style={{ zIndex: 9 }} offsetTop={100}>
@@ -803,7 +803,6 @@ const EntityEditSignUp = ({ match: { params }, ...props }) => {
                         paddingBottom: '100px',
                         paddingRight: '24px',
                         paddingLeft: '30px',
-                        minHeight: `${minHeightCard}px`,
                       }}
                     >
                       <SignUpForm
@@ -826,19 +825,20 @@ const EntityEditSignUp = ({ match: { params }, ...props }) => {
                         {!isFirstStep() && (
                           <Button
                             className="back-button"
-                            type="ghost"
+                            size="small"
                             onClick={(e) => handleOnClickBtnBack(e)}
                           >
-                            <LeftOutlined /> Back
+                            <LongArrowRight />
+                            Back
                           </Button>
                         )}
                         {!isLastStep() && isAuthorizeSubmission && (
                           <Button
-                            className="next-button"
-                            type="primary"
+                            size="small"
                             onClick={(e) => handleOnClickBtnNext(e)}
+                            withArrow
                           >
-                            Next <RightOutlined />
+                            Next
                           </Button>
                         )}
                         {isLastStep() && (

@@ -247,7 +247,15 @@
 (defn- get-public-channels*
   [{:keys [logger api-key api-user-id] :as adapter} opts]
   (try
-    (let [query-params (parse-query-and-fields-opts opts)
+    (let [query-params (parse-query-and-fields-opts
+                        (cond-> opts
+                          (seq (:query opts))
+                          ;; We don't want to get `discussions`
+                          ;; threads as public channels. That is why
+                          ;; the `prid` filter. It means, filter out
+                          ;; all channels that have a primary room id.
+                          (update :query (fn [q] {:$and [{:prid {:$exists false}}
+                                                         q]}))))
           {:keys [status body]}
           (http-client/do-request logger
                                   {:url (build-api-endpoint-url adapter "/channels.list")
@@ -273,7 +281,15 @@
 (defn- get-private-channels*
   [{:keys [logger api-key api-user-id] :as adapter} opts]
   (try
-    (let [query-params (parse-query-and-fields-opts opts)
+    (let [query-params (parse-query-and-fields-opts
+                        (cond-> opts
+                          (seq (:query opts))
+                          ;; We don't want to get `discussions`
+                          ;; threads as public channels. That is why
+                          ;; the `prid` filter. It means, filter out
+                          ;; all channels that have a primary room id.
+                          (update :query (fn [q] {:$and [{:prid {:$exists false}}
+                                                         q]}))))
           {:keys [status body]}
           (http-client/do-request logger
                                   {:url (build-api-endpoint-url adapter "/groups.listAll")
@@ -614,6 +630,29 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
+(defn- get-channel-discussions*
+  [{:keys [logger api-key api-user-id] :as adapter} channel-id]
+  (try
+    (let [{:keys [status body]}
+          (http-client/do-request logger
+                                  {:url (build-api-endpoint-url adapter "/rooms.getDiscussions")
+                                   :method :get
+                                   :query-params {:roomId channel-id}
+                                   :headers (get-auth-headers api-key api-user-id)
+                                   :as :json-keyword-keys})]
+      (if (<= 200 status 299)
+        {:success? true
+         :discussions (cske/transform-keys ->kebab-case (:discussions body))}
+        {:success? false
+         :reason :failed-to-get-channel-discussions
+         :error-details body}))
+    (catch Throwable t
+      (log logger :error :failed-to-get-channel-discussions {:exception-message (ex-message t)
+                                                             :stack-trace (map str (.getStackTrace t))})
+      {:success? false
+       :reason :exception
+       :error-details {:msg (ex-message t)}})))
+
 (defrecord RocketChat [api-domain-url api-url-path api-key api-user-id logger]
   port/Chat
   (create-user-account [this user]
@@ -657,4 +696,6 @@
   (set-public-channel-custom-fields [this channel-id custom-fields]
     (set-public-channel-custom-fields* this channel-id custom-fields))
   (delete-public-channel [this channel-id]
-    (delete-public-channel* this channel-id)))
+    (delete-public-channel* this channel-id))
+  (get-channel-discussions [this channel-id]
+    (get-channel-discussions* this channel-id)))
