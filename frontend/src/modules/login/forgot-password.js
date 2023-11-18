@@ -46,9 +46,9 @@ function ForgotPassword({ setSignIn, setForgotPassword, children }) {
 
   return (
     <div className={styles.authContainer} style={{ paddingBottom: 40 }}>
-      <div className={styles.loginWrapper}>
+      <div className={`${styles.loginWrapper} login-wrapper`}>
         {children && children}
-        <div className={styles.loginForm}>
+        <div className={`${styles.loginForm} login-form`}>
           <FinalForm
             initialValues={initialValues}
             validate={checkValidation}
