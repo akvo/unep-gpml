@@ -530,7 +530,7 @@ export const PSCard = ({ item, key }) => {
           <Trans>plastic strategy</Trans>
         </div>
         <h4 className="w-semi">{item?.country?.name}</h4>
-        <div className="compl">{`${progressValue}%`}</div>
+        {/* <div className="compl">{`${progressValue}%`}</div> */}
         <div className="progress-bar">
           <div className="fill" style={{ width: `${progressValue}%` }}></div>
         </div>
