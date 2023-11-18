@@ -55,6 +55,7 @@ const ForumIframe = ({
        * 'new-message' has been chosen because each new member will be notified as a new message.
        */
       const iFrame = document.querySelector('iframe')
+      console.log(e.data)
 
       if (e.data === 'loaded') {
         const isValidUser =
@@ -93,9 +94,13 @@ const ForumIframe = ({
             console.error('My forums error:', error)
           }
         }
-        if (e.data.data?.t === 'discussion-created') {
-          discussionCallback('new', e.data.data)
-        }
+        // if (e.data.data?.t === 'discussion-created') {
+        //   discussionCallback('new', e.data.data)
+        // }
+      }
+
+      if (e.data.eventName === 'room-opened') {
+        discussionCallback('room-opened', e.data)
       }
 
       if (e.data.eventName === 'unread-changed-by-subscription') {

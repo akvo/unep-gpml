@@ -55,6 +55,7 @@ const ForumSidebar = ({
     setDiscussion(_discussion)
     goToIFrame(activeForum?.t, _discussion?.name)
   }
+  console.log(discussion)
 
   return (
     <div className={styles.detailSidebar}>
@@ -80,7 +81,7 @@ const ForumSidebar = ({
           return (
             <List.Item key={item?.name} className={classNames({ active })}>
               <Button onClick={() => goToDiscussion(item)} type="link">
-                {`#${item?.fname}`}
+                {item?.fname}
               </Button>
             </List.Item>
           )
@@ -157,13 +158,9 @@ const ForumView = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
     }
   }
 
-  const handleOnDiscussCallback = (type = 'new', newDiscussion) => {
-    if (type === 'new') {
-      setDiscussion({
-        ...newDiscussion,
-        fname: newDiscussion?.msg,
-        id: newDiscussion?.drid,
-      })
+  const handleOnDiscussCallback = (type = 'new', evt) => {
+    if (type === 'room-opened' && evt.data.fname) {
+      setDiscussion({ ...evt.data, id: evt.data._id })
     }
     setActiveForum({
       ...activeForum,
