@@ -94,29 +94,45 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
   const items = [
     {
       group: i18n._(t`Governments`),
+      id: 'Governments',
       text: i18n._(
         t`The GPML digital platform empowers all countries to create and implement successful plastic strategies to end plastic pollution including in the marine environment.`
       ),
     },
     {
-      group: t`Private Sector`,
-      text: t`The GPML digital platform fosters public-private partnerships, offers clarity on circular economy practices, and provides guidance on Extended Producer Responsibilities (EPRs) and sustainable business models.`,
+      group: i18n._(t`Private Sector`),
+      id: 'Private Sector',
+      text: i18n._(
+        t`The GPML digital platform fosters public-private partnerships, offers clarity on circular economy practices, and provides guidance on Extended Producer Responsibilities (EPRs) and sustainable business models.`
+      ),
     },
     {
-      group: t`Scientific Communities`,
-      text: t`The GPML digital platform helps academia and the scientific community to ensure their research becomes actionable by offering the opportunity to share resources and collaborate with policy makers.`,
+      group: i18n._(t`Scientific Communities`),
+      id: 'Scientific Communities',
+      text: i18n._(
+        t`The GPML digital platform helps academia and the scientific community to ensure their research becomes actionable by offering the opportunity to share resources and collaborate with policy makers.`
+      ),
     },
     {
-      group: t`NGOs`,
-      text: t`The GPML digital platform helps academia and the scientific community to ensure their research becomes actionable by offering the opportunity to share resources and collaborate with policy makers.`,
+      group: i18n._(t`NGOs`),
+      id: 'NGOs',
+      text: i18n._(
+        t`The GPML digital platform helps academia and the scientific community to ensure their research becomes actionable by offering the opportunity to share resources and collaborate with policy makers.`
+      ),
     },
     {
-      group: t`IGOs`,
-      text: t`The GPML digital platform offers the opportunity to forge collaborative partnerships with diverse stakeholders, share and find resources on plastic pollution, and amplify advocacy.`,
+      group: i18n._(t`IGOs`),
+      id: 'IGOs',
+      text: i18n._(
+        t`The GPML digital platform offers the opportunity to forge collaborative partnerships with diverse stakeholders, share and find resources on plastic pollution, and amplify advocacy.`
+      ),
     },
     {
-      group: t`Civil Society`,
-      text: t`The GPML digital platform allows NGOs and civil society to connect with likeminded organizations, discover financing resources and funding opportunities, and showcase their work in the fight against plastic pollution and marine litter.`,
+      group: i18n._(t`Civil Society`),
+      id: 'Civil Society',
+      text: i18n._(
+        t`The GPML digital platform allows NGOs and civil society to connect with likeminded organizations, discover financing resources and funding opportunities, and showcase their work in the fight against plastic pollution and marine litter.`
+      ),
     },
   ]
   const router = useRouter()
@@ -158,7 +174,7 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
     intidRef.current = setInterval(() => {
       index += 1
       if (index >= items.length) index = 0
-      setSelected(items[index].group)
+      setSelected(items[index].id)
     }, 5000)
 
     return () => {
@@ -166,18 +182,8 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
     }
   }, [])
 
-  const isInitialMount = useRef(true)
-
-  useEffect(() => {
-    if (isInitialMount.current) {
-      isInitialMount.current = false
-    } else {
-      if (locale) setSelected(items[0].group)
-    }
-  }, [locale])
-
   const handleClickLabel = (item) => () => {
-    setSelected(item.group)
+    setSelected(item.id)
     clearInterval(intidRef.current)
     _setTimeout(false)
   }
@@ -283,10 +289,10 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
               {items.map((item) => (
                 <div
                   onClick={handleClickLabel(item)}
-                  key={item.group}
+                  key={item.id}
                   className={classNames(
-                    `label l-${item.group.toLowerCase().replace(' ', '-')}`,
-                    { selected: selected === item.group }
+                    `label l-${item.id.toLowerCase().replace(' ', '-')}`,
+                    { selected: selected === item.id }
                   )}
                 >
                   <span>{item.group}</span>
@@ -298,14 +304,16 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
             <h1>
               <Trans>Empowering</Trans>
               <br />
-              <b className={classNames({ timeout })}>{selected}</b>
+              <b className={classNames({ timeout })}>
+                {items.find((name) => name.id === selected)?.group}
+              </b>
               <br />
               <Trans>to address plastic pollution</Trans>
             </h1>
             <div className="p-container">
               {items.map((item) => (
-                <AnimatePresence key={`p-${item.group}`}>
-                  {item.group === selected && (
+                <AnimatePresence key={`p-${item.id}`}>
+                  {item.id === selected && (
                     <motion.p
                       transition={{
                         type: 'spring',
@@ -316,7 +324,7 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
                       animate={{ opacity: 1, transform: `translateY(0px)` }}
                       exit={{ opacity: 0, transform: `translateY(30px)` }}
                       className="p-l"
-                      key={`p-${item.group}`}
+                      key={`p-${item.id}`}
                     >
                       {item.text}
                     </motion.p>
