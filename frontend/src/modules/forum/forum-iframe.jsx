@@ -1,13 +1,16 @@
 import React, { useCallback, useEffect } from 'react'
 import { ChatStore, UIStore } from '../../store'
 import api from '../../utils/api'
+import classNames from 'classnames'
 
 const ForumIframe = ({
+  discussion,
   channelName,
   channelType,
   isAuthenticated,
   loadingProfile,
   setLoginVisible,
+  discussionCallback,
 }) => {
   const prefixPATH = channelType === 'c' ? 'channel' : 'group'
   const channelURL = `${process.env.NEXT_PUBLIC_CHAT_API_DOMAIN_URL}/${prefixPATH}/${channelName}?layout=embedded`
@@ -52,6 +55,7 @@ const ForumIframe = ({
        * 'new-message' has been chosen because each new member will be notified as a new message.
        */
       const iFrame = document.querySelector('iframe')
+      console.log(e.data)
 
       if (e.data === 'loaded') {
         const isValidUser =
@@ -90,6 +94,19 @@ const ForumIframe = ({
             console.error('My forums error:', error)
           }
         }
+        // if (e.data.data?.t === 'discussion-created') {
+        //   discussionCallback('new', e.data.data)
+        // }
+      }
+
+      if (e.data.eventName === 'room-opened') {
+        discussionCallback('room-opened', e.data)
+      }
+
+      if (e.data.eventName === 'unread-changed-by-subscription') {
+        if (e.data.data?.name === channelName) {
+          discussionCallback('delete', e.data.data?._id)
+        }
       }
     },
     [isLoggedInRocketChat, profile]
@@ -112,7 +129,8 @@ const ForumIframe = ({
       }}
       width="100%"
       allow="camera;microphone"
-      sandbox="allow-same-origin allow-scripts allow-popups allow-forms"    
+      sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+      className={classNames({ discussion })}
     />
   )
 }
