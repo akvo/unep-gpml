@@ -1,14 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react'
-import {
-  Col,
-  Row,
-  Typography,
-  Button,
-  Form,
-  Input,
-  Divider,
-  notification,
-} from 'antd'
+import React, { useState, useRef } from 'react'
+import { Col, Row, Typography, Form, Input, Divider, notification } from 'antd'
 import styles from './login-style.module.scss'
 import LinkedinIcon from '../../images/auth/linkedin.svg'
 import GoogleIcon from '../../images/auth/google.svg'
@@ -18,7 +9,8 @@ import { Form as FinalForm, Field } from 'react-final-form'
 import { auth0Client } from '../../utils/misc'
 import ForgotPassword from './forgot-password'
 import SignUp from '../email-signup/view'
-import { Trans } from '@lingui/macro'
+import { Trans, t } from '@lingui/macro'
+import Button from '../../components/button'
 
 function Login({}) {
   const [loading, setLoading] = useState(false)
@@ -117,11 +109,11 @@ function Login({}) {
                 setForgotPassword={setForgotPassword}
               >
                 <div className="connect-button">
-                  <Button type="text">
+                  <p className="header-text">
                     <Trans>FORGOT PASSWORD</Trans>
-                  </Button>
+                  </p>
                   <Button
-                    type="text"
+                    type="link"
                     className="connect-back-button"
                     onClick={() => {
                       setSignIn(true)
@@ -136,11 +128,11 @@ function Login({}) {
             ) : signup ? (
               <SignUp setSignUp={setSignUp}>
                 <div className="connect-button">
-                  <Button type="text">
+                  <p className="header-text">
                     <Trans>SIGN UP</Trans>
-                  </Button>
+                  </p>
                   <Button
-                    type="text"
+                    type="link"
                     className="connect-back-button"
                     onClick={() => setSignUp(!signup)}
                   >
@@ -152,22 +144,30 @@ function Login({}) {
               <div className="auth-container">
                 {!signin ? (
                   <div className="signup-wrapper">
-                    <div className="signin-button">
-                      <Button type="text">
+                    <div className="signinButton">
+                      <p className="header-text">
                         <Trans>SIGN IN</Trans>
-                      </Button>
+                      </p>
                     </div>
                     <div className="auth-buttons">
                       <Button
-                        shape="round"
-                        icon={<LinkedinIcon />}
+                        ghost
+                        icon={
+                          <div className="icon">
+                            <LinkedinIcon />
+                          </div>
+                        }
                         onClick={handleLinkedinLogin}
                       >
                         <Trans>CONTINUE WITH LINKEDIN</Trans>
                       </Button>
                       <Button
-                        shape="round"
-                        icon={<GoogleIcon />}
+                        ghost
+                        icon={
+                          <div className="icon">
+                            <GoogleIcon />
+                          </div>
+                        }
                         onClick={handleGoogleLogin}
                       >
                         <Trans>CONTINUE WITH GOOGLE</Trans>
@@ -176,8 +176,12 @@ function Login({}) {
                         <Title level={4}>or</Title>
                       </div>
                       <Button
-                        shape="round"
-                        icon={<EmailIcon />}
+                        ghost
+                        icon={
+                          <div className="icon">
+                            <EmailIcon />
+                          </div>
+                        }
                         onClick={() => setSignIn(!signin)}
                       >
                         <Trans>CONTINUE WITH EMAIL</Trans>
@@ -193,12 +197,12 @@ function Login({}) {
                 ) : (
                   <div className="login-wrapper">
                     <div className="connect-button">
-                      <Button type="text">
+                      <p className="header-text">
                         <Trans>CONTINUE WITH EMAIL</Trans>
-                      </Button>
+                      </p>
                       <Button
-                        type="text"
-                        className="connect-back-button"
+                        type="link"
+                        className={styles.connectBackButton}
                         onClick={() => setSignIn(!signin)}
                       >
                         {'<'} <Trans>Back to connect options</Trans>
@@ -219,9 +223,8 @@ function Login({}) {
                                     <>
                                       <Input
                                         {...input}
-                                        placeholder={
-                                          <Trans>Enter your email</Trans>
-                                        }
+                                        size="small"
+                                        placeholder={t`Enter your email`}
                                       />
                                       {meta.touched && meta.error && (
                                         <p color="error" className="error">
@@ -238,9 +241,8 @@ function Login({}) {
                                     <>
                                       <Input.Password
                                         {...input}
-                                        placeholder={
-                                          <Trans>Enter your password</Trans>
-                                        }
+                                        size="small"
+                                        placeholder={t`Enter your password`}
                                       />
                                       {meta.touched && meta.error && (
                                         <p color="error" className="error">
@@ -253,14 +255,15 @@ function Login({}) {
                               </Form.Item>
                               <Button
                                 style={{ marginTop: 50 }}
-                                shape="round"
+                                ghost
                                 className="login-button"
+                                loading={loading}
                                 onClick={() => handleSubmit()}
                               >
                                 <Trans>LOGIN WITH EMAIL</Trans>
                               </Button>{' '}
                               <Button
-                                type="text"
+                                type="link"
                                 className="forgot-password"
                                 onClick={() =>
                                   setForgotPassword(!forgotPassword)
@@ -294,9 +297,15 @@ function Login({}) {
         </Row>
         <div className="terms">
           <Title level={4}>
-            <Trans>
-              By signing up you are agreeing to our terms and services.
-            </Trans>
+            <Trans>By signing up you are agreeing to our</Trans>{' '}
+            <a
+              href="/privacy-policy-and-terms-of-use.pdf"
+              target="_blank"
+              rel="noreferrer"
+              className="copy-right"
+            >
+              <Trans>terms and services</Trans>
+            </a>
           </Title>
         </div>
       </div>
