@@ -24,7 +24,7 @@ msgstr "{value} iniciativas"
 msgid "+ Invite a New Member"
 msgstr "+ Invitar un Nuevo Miembro"
 
-#: src/pages/landing/index.jsx:943
+#: src/pages/landing/index.jsx:945
 msgid "<0>GPML’s</0> Action Tracks"
 msgstr "Programa de Acciones de <0>GPML</0>"
 
@@ -52,7 +52,7 @@ msgstr "Un cambio en la opinión pública"
 msgid "A wide range of resources can be submitted, and these include Action Plans, Initiatives, Technical resources, Financing resources, Policies, Events, and Technologies. Learn more about each category and sub-categories definitions in the “Content Type” section of this form. A quick summary sheet with categories and sub-categories can be downloaded"
 msgstr "Se puede presentar una amplia gama de recursos, entre los que se incluyen Planes de Acción, Iniciativas, Recursos técnicos, Recursos de financiación, Políticas, Eventos y Tecnologías. Puede obtener más información sobre las definiciones de cada categoría y subcategorías en la sección \"Tipo de contenido\" de este formulario. Puede descargarse una hoja de resumen rápido con las categorías y subcategorías"
 
-#: src/pages/landing/index.jsx:838
+#: src/pages/landing/index.jsx:840
 msgid "Access a suite of powerful data tools tailored for tackling plastic pollution and marine litter. Utilize comprehensive data sets, layers and statistics to  gain valuable insights that empower informed decision-making and drive effective action."
 msgstr "Acceda a un conjunto avanzado de herramientas de datos diseñadas para combatir la contaminación por plásticos y la problemática de los desechos marinos. Podrá utilizar amplios conjuntos de datos, capas y estadísticas para obtener información valiosa que le permitirá tomar decisiones informadas y llevar a cabo acciones efectivas."
 
@@ -101,7 +101,7 @@ msgstr "Energía asequible y limpia"
 msgid "Agriculture"
 msgstr "Agricultura"
 
-#: src/pages/landing/index.jsx:852
+#: src/pages/landing/index.jsx:854
 msgid "AI Innovations"
 msgstr "Innovaciones en IA"
 
@@ -131,7 +131,7 @@ msgstr "Anexo C del Documento Conceptual."
 msgid "Anticipating a future policy change"
 msgstr "Anticipar un futuro cambio de política"
 
-#: src/pages/landing/index.jsx:1291
+#: src/pages/landing/index.jsx:1293
 msgid "Any Questions?"
 msgstr "¿Alguna pregunta?"
 
@@ -243,7 +243,7 @@ msgstr "Bandera"
 msgid "Be the first to comment..."
 msgstr "Sé el primero en comentar..."
 
-#: src/pages/landing/index.jsx:1092
+#: src/pages/landing/index.jsx:1094
 msgid "Become part of GPML to collaborate with thousands of organisations and individuals from around the world"
 msgstr "Forme parte de GPML para colaborar con miles de organizaciones e individuos de todo el mundo"
 
@@ -283,7 +283,7 @@ msgstr "Marcado como favorito"
 msgid "Building, construction, demolition,industrial machinery"
 msgstr "Edificación, construcción, demolición, maquinaria industrial."
 
-#: src/pages/landing/index.jsx:854
+#: src/pages/landing/index.jsx:856
 msgid "By leveraging AI and innovation, the platform will enable proactive strategies and solutions that efficiently combat plastic pollution and marine litter"
 msgstr "Al aprovechar la inteligencia artificial y la innovación, la plataforma permitirá estrategias y soluciones proactivas que combatan eficientemente la contaminación plástica y la basura marina."
 
@@ -916,7 +916,7 @@ msgstr "Expertos"
 msgid "Facebook"
 msgstr "Facebook"
 
-#: src/pages/landing/index.jsx:868
+#: src/pages/landing/index.jsx:870
 msgid "Features & Benefits <0>of using the platform</0>"
 msgstr "Características y beneficios <0>de usar la plataforma</0>"
 
@@ -1115,7 +1115,7 @@ msgstr "Orientación sobre cómo agregar recursos en la plataforma digital GPML"
 msgid "Guidance on how to sign up on the GPML Digital Platform"
 msgstr "Orientación sobre cómo registrarse en la plataforma digital GPML"
 
-#: src/pages/landing/index.jsx:984
+#: src/pages/landing/index.jsx:986
 msgid "Guidelines standards & harmonization"
 msgstr "Directrices, estándares y armonización."
 
@@ -1412,6 +1412,7 @@ msgid "Learn More"
 msgstr "Aprende más"
 
 #: src/modules/flexible-forms/form-schema.js:1707
+#: src/modules/signup/view.jsx:42
 #: src/store.js:225
 msgid "Legislation"
 msgstr "Legislación"
@@ -1542,7 +1543,7 @@ msgid "Marine organisms"
 msgstr "organismos marinos"
 
 #: src/modules/workspace/view.jsx:67
-#: src/pages/landing/index.jsx:846
+#: src/pages/landing/index.jsx:848
 msgid "Match-making"
 msgstr "Casamentero"
 
@@ -1626,7 +1627,7 @@ msgstr "Nombre"
 msgid "National"
 msgstr "Nacional"
 
-#: src/pages/landing/index.jsx:1000
+#: src/pages/landing/index.jsx:1002
 msgid "National action plans"
 msgstr "Planes de acción nacionales"
 
@@ -1652,7 +1653,7 @@ msgstr "Objetivos Nacionales de Desarrollo Sostenible (ODS)"
 msgid "Network type"
 msgstr "Tipo de red"
 
-#: src/pages/landing/index.jsx:1151
+#: src/pages/landing/index.jsx:1153
 msgid "Network with others"
 msgstr "Red con otros"
 
@@ -1825,7 +1826,7 @@ msgstr "Otro"
 msgid "Other training programmes"
 msgstr "Otros programas de formación"
 
-#: src/pages/landing/index.jsx:1255
+#: src/pages/landing/index.jsx:1257
 msgid "Our partners"
 msgstr "Nuestros compañeros"
 
@@ -2111,7 +2112,7 @@ msgstr "Guardar como borrador"
 msgid "Save to Library"
 msgstr "Guardar en la biblioteca"
 
-#: src/pages/landing/index.jsx:972
+#: src/pages/landing/index.jsx:974
 msgid "Science<0/>policy"
 msgstr "Política científica<0/>"
 
@@ -2145,7 +2146,7 @@ msgstr "Sector. ¿Su iniciativa se dirige a un sector específico? (Por favor ma
 msgid "See all"
 msgstr "Ver todo"
 
-#: src/pages/landing/index.jsx:1271
+#: src/pages/landing/index.jsx:1273
 msgid "See all partners"
 msgstr "Ver todos los socios"
 
@@ -2365,7 +2366,7 @@ msgstr "Búsqueda sugerida:"
 msgid "Summary & Report"
 msgstr "Informe resumido"
 
-#: src/pages/landing/index.jsx:992
+#: src/pages/landing/index.jsx:994
 msgid "Sustainable & innovative financing"
 msgstr "Financiación sostenible e innovadora"
 
@@ -2435,7 +2436,7 @@ msgstr "Texto"
 msgid "Textiles"
 msgstr "Textiles"
 
-#: src/pages/landing/index.jsx:948
+#: src/pages/landing/index.jsx:950
 msgid "The current core work of the GPML is organized through the following five Action Tracks, with the aim of advancing priority issues by connecting key stakeholders and facilitating collaboration and coordination. The platform offers a wide range of tools to facilitate this work."
 msgstr "El trabajo central actual del GPML está organizado a través de las siguientes cinco Vías de Acción, con el objetivo de avanzar en cuestiones prioritarias conectando a las partes interesadas clave y facilitando la colaboración y la coordinación. La plataforma ofrece una amplia gama de herramientas para facilitar este trabajo."
 
@@ -2472,7 +2473,7 @@ msgstr "La plataforma digital GPML ayuda a la comunidad académica y científica
 msgid "The GPML digital platform offers the opportunity to forge collaborative partnerships with diverse stakeholders, share and find resources on plastic pollution, and amplify advocacy."
 msgstr "La plataforma digital GPML ofrece la oportunidad de forjar asociaciones de colaboración con diversas partes interesadas, compartir y encontrar recursos sobre la contaminación plástica y ampliar la promoción."
 
-#: src/pages/landing/index.jsx:873
+#: src/pages/landing/index.jsx:875
 msgid "The platform offers a wide range of tools to support your decision-making and help a global network of actors to work together to create shared solutions to end plastic pollution."
 msgstr "La plataforma ofrece una amplia gama de herramientas para respaldar su toma de decisiones y ayudar a una red global de actores a trabajar juntos para crear soluciones compartidas para acabar con la contaminación plástica."
 
@@ -2731,11 +2732,11 @@ msgstr "Ver todas las funciones"
 msgid "View Source"
 msgstr "Ver fuente"
 
-#: src/pages/landing/index.jsx:1294
+#: src/pages/landing/index.jsx:1296
 msgid "Visit the Help Center for FAQs, tutorials and more"
 msgstr "Comience visitando el Centro de Ayuda para obtener respuestas a preguntas frecuentes, tutoriales y más"
 
-#: src/pages/landing/index.jsx:1300
+#: src/pages/landing/index.jsx:1302
 msgid "Visit the Help Centre"
 msgstr "Visita el Centro de ayuda"
 
@@ -2752,6 +2753,7 @@ msgid "Voluntary donations"
 msgstr "Donaciones voluntarias"
 
 #: src/modules/flexible-forms/form-schema.js:543
+#: src/modules/signup/view.jsx:37
 #: src/store.js:220
 msgid "Waste management"
 msgstr "Gestión de residuos"
@@ -2949,6 +2951,7 @@ msgstr "Acordar reglas o estándares nuevos o cambiantes que otros deberían cum
 msgid "AI for Earth Grant"
 msgstr "Beca AI para la Tierra"
 
+#: src/modules/signup/view.jsx:45
 #: src/store.js:228
 msgid "ALDFG"
 msgstr "ALDFG"
@@ -3010,6 +3013,7 @@ msgstr "Asignar propietario"
 msgid "Assign reviewers"
 msgstr "Asignar revisores"
 
+#: src/modules/signup/view.jsx:33
 #: src/store.js:216
 msgid "Awareness"
 msgstr "Conciencia"
@@ -3018,6 +3022,7 @@ msgstr "Conciencia"
 msgid "Awareness Raising"
 msgstr "Sensibilización"
 
+#: src/modules/signup/view.jsx:34
 #: src/store.js:217
 msgid "Awareness-raising"
 msgstr "Sensibilización"
@@ -3078,6 +3083,7 @@ msgstr "Desafíos y concursos"
 msgid "Chemicals"
 msgstr "quimicos"
 
+#: src/modules/signup/view.jsx:31
 #: src/store.js:214
 msgid "Circularity"
 msgstr "Circularidad"
@@ -3211,6 +3217,7 @@ msgstr "Descargar resumen (1 página)"
 msgid "Economic Instruments"
 msgstr "Instrumentos Económicos"
 
+#: src/modules/signup/view.jsx:32
 #: src/store.js:215
 msgid "Education"
 msgstr "Educación"
@@ -3296,6 +3303,7 @@ msgstr "Filtrar por estado de revisión"
 msgid "Filtering by:"
 msgstr "Filtrando por:"
 
+#: src/modules/signup/view.jsx:40
 #: src/store.js:223
 msgid "Financing"
 msgstr "Financiación"
@@ -3415,7 +3423,7 @@ msgstr "Ayuda y asesoramiento que se proporciona sobre un conjunto de ideas o pl
 msgid "Help Center"
 msgstr "Centro de ayuda"
 
-#: src/pages/landing/index.jsx:761
+#: src/pages/landing/index.jsx:763
 msgid "How is the network co-solutioning?"
 msgstr "¿Cómo se está co-solucionando la red?"
 
@@ -3468,6 +3476,7 @@ msgstr "Organizaciones Intergubernamentales (OIG) y Actores de Procesos Multilat
 msgid "Intergovernmental Organizations (IGOs)"
 msgstr "Organizaciones intergubernamentales (OIG)"
 
+#: src/modules/signup/view.jsx:48
 #: src/store.js:231
 msgid "International Cooperation"
 msgstr "Cooperación internacional"
@@ -3500,11 +3509,11 @@ msgstr "Biblioteca de conocimientos"
 msgid "Last name"
 msgstr "Apellido"
 
-#: src/pages/landing/index.jsx:758
+#: src/pages/landing/index.jsx:760
 msgid "Latest news:"
 msgstr "Últimas noticias:"
 
-#: src/pages/landing/index.jsx:766
+#: src/pages/landing/index.jsx:768
 msgid "Learn about inspiring co-soluting efforts from the GPML network and all the other actors contributing to the plastic action platform."
 msgstr "Conozca cómo inspirar los esfuerzos de co-solución de la red GPML y todos los demás actores que contribuyen a la plataforma de acción plástica."
 
@@ -3568,10 +3577,12 @@ msgstr "Miembros"
 msgid "Metrics to measure progress"
 msgstr "Métricas para medir el progreso"
 
+#: src/modules/signup/view.jsx:47
 #: src/store.js:230
 msgid "Microfibers"
 msgstr "Microfibras"
 
+#: src/modules/signup/view.jsx:46
 #: src/store.js:229
 msgid "Microplastics"
 msgstr "Microplásticos"
@@ -3584,6 +3595,7 @@ msgstr "Dinero que se invierte en una empresa en forma de acciones."
 msgid "Money that is invested or is available for investment in a new company, especially one that involves risk."
 msgstr "Dinero que se invierte o está disponible para invertir en una nueva empresa, especialmente una que implica riesgo."
 
+#: src/modules/signup/view.jsx:35
 #: src/store.js:218
 msgid "Monitoring"
 msgstr "Supervisión"
@@ -3601,6 +3613,7 @@ msgstr "Varios países"
 msgid "Multidonor trust fund"
 msgstr "Fondo fiduciario de donantes múltiples"
 
+#: src/modules/signup/view.jsx:49
 #: src/store.js:232
 msgid "Multilateralism"
 msgstr "Multilateralismo"
@@ -3737,6 +3750,7 @@ msgstr "Gestión de residuos plásticos"
 msgid "Policies are imported from Law division system"
 msgstr "Las políticas se importan del sistema de división de leyes."
 
+#: src/modules/signup/view.jsx:43
 #: src/store.js:226
 #: src/store.js:410
 msgid "Policy"
@@ -3782,6 +3796,7 @@ msgstr "Enlace rápido al perfil"
 msgid "Prohibitive Regulations, Bans & Restrictions"
 msgstr "Regulaciones prohibitivas, prohibiciones y restricciones"
 
+#: src/modules/signup/view.jsx:41
 #: src/store.js:224
 msgid "Project development"
 msgstr "Desarrollo del proyecto"
@@ -3811,10 +3826,11 @@ msgstr "Sensibilización entre los estudiantes"
 msgid "Read more"
 msgstr "Leer más"
 
-#: src/pages/landing/index.jsx:819
+#: src/pages/landing/index.jsx:821
 msgid "Read More"
 msgstr "Leer más"
 
+#: src/modules/signup/view.jsx:38
 #: src/store.js:221
 msgid "Recycling"
 msgstr "Reciclaje"
@@ -3831,6 +3847,7 @@ msgstr "Contenido, documentos e información relacionados"
 msgid "Report & Assessment"
 msgstr "Informe y evaluación"
 
+#: src/modules/signup/view.jsx:36
 #: src/store.js:219
 #: src/store.js:754
 msgid "Research"
@@ -3892,6 +3909,7 @@ msgstr "Comunidad Científica y Tecnológica y Academia"
 msgid "SEA of Solutions 2021"
 msgstr "MAR de Soluciones 2021"
 
+#: src/modules/signup/view.jsx:44
 #: src/store.js:227
 msgid "Sea-based Sources"
 msgstr "Fuentes marinas"
@@ -3978,6 +3996,7 @@ msgstr "Desarrollo de Zona Industrial Sostenible"
 msgid "Technical Resource"
 msgstr "Recurso Técnico"
 
+#: src/modules/signup/view.jsx:39
 #: src/store.js:222
 #: src/store.js:695
 msgid "Technology"
@@ -4279,10 +4298,11 @@ msgstr "Todos los foros"
 msgid "Basics"
 msgstr "Lo esencial"
 
-#: src/pages/landing/index.jsx:1136
+#: src/pages/landing/index.jsx:1138
 msgid "Become a partner"
 msgstr "Convertirse en un compañero"
 
+#: src/components/forum-card/forum-card.jsx:59
 #: src/pages/forum/index.jsx:137
 msgid "channel"
 msgstr "canal"
@@ -4513,11 +4533,11 @@ msgstr "Elabore un informe del Inventario Nacional de Fuentes sobre la contamina
 msgid "description-intro-6-national-plastic-strategy"
 msgstr "La presentación describe cómo crear y validar la Estrategia del Plástico."
 
-#: src/pages/landing/index.jsx:754
+#: src/pages/landing/index.jsx:756
 msgid "HIGHLIGHTS"
 msgstr "REFLEJOS"
 
-#: src/pages/landing/index.jsx:914
+#: src/pages/landing/index.jsx:916
 msgid "Trusted data, Information badge system and Validation process."
 msgstr "Datos confiables, sistema de credenciales de información y proceso de Validación."
 
@@ -4540,4 +4560,24 @@ msgstr "Dejar"
 #: src/components/forum-card/forum-card.jsx:25
 msgid "View Details"
 msgstr "Ver detalles"
+
+#: src/pages/forum/[channelName].jsx:70
+msgid "Back to all Forums"
+msgstr "Volver a todos los foros"
+
+#: src/pages/forum/[channelName].jsx:227
+msgid "Back to Channel"
+msgstr "Volver al canal"
+
+#: src/pages/forum/[channelName].jsx:76
+msgid "Discussions"
+msgstr "Discusiones"
+
+#: src/pages/forum/[channelName].jsx:96
+msgid "Participants"
+msgstr "Participantes"
+
+#: src/pages/landing/index.jsx:686
+msgid "Why us?"
+msgstr "¿Porque nosotros?"
 

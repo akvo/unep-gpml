@@ -204,6 +204,7 @@ msgstr ""
 msgid "AI Innovations"
 msgstr ""
 
+#: src/modules/signup/view.jsx:45
 #: src/store.js:228
 msgid "ALDFG"
 msgstr ""
@@ -266,7 +267,7 @@ msgstr ""
 msgid "Anticipating a future policy change"
 msgstr ""
 
-#: src/pages/landing/index.jsx:1291
+#: src/pages/landing/index.jsx:1293
 msgid "Any Questions?"
 msgstr ""
 
@@ -378,6 +379,7 @@ msgstr ""
 msgid "Avoid duplication of efforts. By using the platform, you can collaborate with other organisations and governments to create shared solutions to end plastic pollution."
 msgstr ""
 
+#: src/modules/signup/view.jsx:33
 #: src/store.js:216
 msgid "Awareness"
 msgstr ""
@@ -390,6 +392,7 @@ msgstr ""
 msgid "Awareness raising and behaviour change"
 msgstr ""
 
+#: src/modules/signup/view.jsx:34
 #: src/store.js:217
 msgid "Awareness-raising"
 msgstr ""
@@ -405,8 +408,16 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
+#: src/pages/forum/[channelName].jsx:70
+msgid "Back to all Forums"
+msgstr ""
+
 #: src/modules/experts/filter-bar.jsx:146
 msgid "Back to categories"
+msgstr ""
+
+#: src/pages/forum/[channelName].jsx:227
+msgid "Back to Channel"
 msgstr ""
 
 #: src/modules/login/login-view.jsx:132
@@ -597,6 +608,7 @@ msgstr ""
 msgid "Change in taxes/subsidies"
 msgstr ""
 
+#: src/components/forum-card/forum-card.jsx:59
 #: src/pages/forum/index.jsx:137
 msgid "channel"
 msgstr ""
@@ -640,6 +652,7 @@ msgstr ""
 msgid "Choose your filters below"
 msgstr ""
 
+#: src/modules/signup/view.jsx:31
 #: src/store.js:214
 msgid "Circularity"
 msgstr ""
@@ -1130,6 +1143,10 @@ msgstr ""
 msgid "Discussion"
 msgstr ""
 
+#: src/pages/forum/[channelName].jsx:76
+msgid "Discussions"
+msgstr ""
+
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:51
 msgid "Distribution"
 msgstr ""
@@ -1196,6 +1213,7 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
+#: src/modules/signup/view.jsx:32
 #: src/store.js:215
 msgid "Education"
 msgstr ""
@@ -1432,6 +1450,7 @@ msgstr ""
 msgid "Final Review"
 msgstr ""
 
+#: src/modules/signup/view.jsx:40
 #: src/store.js:223
 msgid "Financing"
 msgstr ""
@@ -1998,6 +2017,7 @@ msgstr ""
 msgid "Interactive forum for collaboration"
 msgstr ""
 
+#: src/modules/signup/view.jsx:48
 #: src/store.js:231
 msgid "International Cooperation"
 msgstr ""
@@ -2146,6 +2166,7 @@ msgid "Leave"
 msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:1707
+#: src/modules/signup/view.jsx:42
 #: src/store.js:225
 msgid "Legislation"
 msgstr ""
@@ -2364,10 +2385,12 @@ msgstr ""
 msgid "Metrics to measure progress"
 msgstr ""
 
+#: src/modules/signup/view.jsx:47
 #: src/store.js:230
 msgid "Microfibers"
 msgstr ""
 
+#: src/modules/signup/view.jsx:46
 #: src/store.js:229
 msgid "Microplastics"
 msgstr ""
@@ -2388,6 +2411,7 @@ msgstr ""
 msgid "Money that is invested or is available for investment in a new company, especially one that involves risk."
 msgstr ""
 
+#: src/modules/signup/view.jsx:35
 #: src/store.js:218
 msgid "Monitoring"
 msgstr ""
@@ -2445,6 +2469,7 @@ msgstr ""
 msgid "Multilateral Environmental Agreements (MEAs)"
 msgstr ""
 
+#: src/modules/signup/view.jsx:49
 #: src/store.js:232
 msgid "Multilateralism"
 msgstr ""
@@ -2781,6 +2806,10 @@ msgstr ""
 msgid "PAME, Regional Action Plan on Marine Litter in the Arctic (May 2021)"
 msgstr ""
 
+#: src/pages/forum/[channelName].jsx:96
+msgid "Participants"
+msgstr ""
+
 #: src/store.js:105
 msgid "Partners"
 msgstr ""
@@ -2903,6 +2932,7 @@ msgstr ""
 msgid "Policies are imported from Law division system"
 msgstr ""
 
+#: src/modules/signup/view.jsx:43
 #: src/store.js:226
 #: src/store.js:410
 msgid "Policy"
@@ -2978,6 +3008,7 @@ msgstr ""
 msgid "Prohibitive Regulations, Bans & Restrictions"
 msgstr ""
 
+#: src/modules/signup/view.jsx:41
 #: src/store.js:224
 msgid "Project development"
 msgstr ""
@@ -3049,6 +3080,7 @@ msgstr ""
 msgid "Records"
 msgstr ""
 
+#: src/modules/signup/view.jsx:38
 #: src/store.js:221
 msgid "Recycling"
 msgstr ""
@@ -3126,6 +3158,7 @@ msgstr ""
 msgid "Reputation / image of the member state or organisation"
 msgstr ""
 
+#: src/modules/signup/view.jsx:36
 #: src/store.js:219
 #: src/store.js:754
 msgid "Research"
@@ -3235,6 +3268,7 @@ msgstr ""
 msgid "SEA of Solutions 2021"
 msgstr ""
 
+#: src/modules/signup/view.jsx:44
 #: src/store.js:227
 msgid "Sea-based Sources"
 msgstr ""
@@ -3273,7 +3307,7 @@ msgstr ""
 msgid "See all"
 msgstr ""
 
-#: src/pages/landing/index.jsx:1271
+#: src/pages/landing/index.jsx:1273
 msgid "See all partners"
 msgstr ""
 
@@ -3633,6 +3667,7 @@ msgstr ""
 msgid "Technologies"
 msgstr ""
 
+#: src/modules/signup/view.jsx:39
 #: src/store.js:222
 #: src/store.js:695
 msgid "Technology"
@@ -4112,11 +4147,11 @@ msgstr ""
 msgid "View Source"
 msgstr ""
 
-#: src/pages/landing/index.jsx:1294
+#: src/pages/landing/index.jsx:1296
 msgid "Visit the Help Center for FAQs, tutorials and more"
 msgstr ""
 
-#: src/pages/landing/index.jsx:1300
+#: src/pages/landing/index.jsx:1302
 msgid "Visit the Help Centre"
 msgstr ""
 
@@ -4137,6 +4172,7 @@ msgid "Waste Free Oceans"
 msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:543
+#: src/modules/signup/view.jsx:37
 #: src/store.js:220
 msgid "Waste management"
 msgstr ""
@@ -4237,6 +4273,10 @@ msgstr ""
 
 #: src/pages/landing/index.jsx:556
 msgid "Why join the GPML?"
+msgstr ""
+
+#: src/pages/landing/index.jsx:686
+msgid "Why us?"
 msgstr ""
 
 #: src/store.js:727
