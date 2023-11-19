@@ -88,8 +88,12 @@
         font-weight: 700;
       }
       &.ant-btn-default {
-        background-color: $systemWarning5;
+        background-color: $systemError4;
         border-color: transparent;
+        &:hover {
+          background-color: white;
+          border-color: $systemError4;
+        }
       }
     }
   }

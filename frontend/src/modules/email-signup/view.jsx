@@ -167,7 +167,7 @@ function EmailJoin({ setSignUp, children }) {
   }
 
   return (
-    <div className={styles.signup}>
+    <div className={`${styles.signup} signup`}>
       {children && children}
       <Row className="join-form">
         <Col span={24}>
