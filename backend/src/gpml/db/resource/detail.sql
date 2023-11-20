@@ -3,3 +3,7 @@
 SELECT *
 FROM :i:table-name
 WHERE id = :id::integer
+
+-- :name delete-resource* :execute :affected
+DELETE FROM :i:table-name
+WHERE id = :id;
