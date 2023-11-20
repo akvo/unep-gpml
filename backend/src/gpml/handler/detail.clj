@@ -423,58 +423,34 @@
 (defmethod extra-details :nothing [_ _ _]
   nil)
 
-;; TODO: refactor this. With the exception of the related_content
-;; table the other tables should have a ON DELETE CASCADE constraint
-;; so the database does the deletion work for us. And the
-;; related_content records deletion should be handled by a HugSQL
-;; function and not explicitly written here.
-(defn- common-queries
-  [topic-type topic-id {:keys [url? related-content?]}]
-  (filter some?
-          [(when url? [(format "delete from %s_language_url where %s = ?" topic-type topic-type) topic-id])
-           (when related-content? ["delete from related_content
-            where (resource_id = ? and resource_table_name = ?::regclass)
-            or (related_resource_id = ? and related_resource_table_name = ?::regclass)"
-                                   topic-id topic-type topic-id topic-type])
-           (when (= "organisation" topic-type)
-             ["delete from resource_organisation where organisation=?" topic-id])
-           (when (= "resource" topic-type)
-             ["delete from resource_organisation where resource=?" topic-id])
-           ["delete from rbac_context where resource_id = ? and context_type_name = ?" topic-id topic-type]
-           [(format "delete from %s where id = ?" topic-type) topic-id]]))
-
-;; TODO: We need to delete related resource context as well.
 (defmethod ig/init-key :gpml.handler.detail/delete
   [_ {:keys [db logger] :as config}]
   (fn [{{:keys [path]} :parameters user :user}]
     (try
       (let [topic-id (:topic-id path)
-            topic-type (resolve-resource-type (:topic-type path))]
+            topic-type (resolve-resource-type (:topic-type path))
+            rbac-context-type (h.r.permission/entity-type->context-type topic-type)]
         (if (= topic-type "stakeholder")
           (r/forbidden {:message "Unauthorized"})
           (let [authorized? (h.r.permission/operation-allowed?
                              config
                              {:user-id (:id user)
-                              :entity-type (h.r.permission/entity-type->context-type topic-type)
+                              :entity-type rbac-context-type
                               :entity-id topic-id
                               :operation-type :delete
                               :root-context? false})]
             (if-not authorized?
               (r/forbidden {:message "Unauthorized"})
-              (let [sts (condp = topic-type
-                          "policy" (common-queries topic-type topic-id {:url? false :related-content? true})
-                          "event" (common-queries topic-type topic-id {:url? true :related-content? true})
-                          "technology" (common-queries topic-type topic-id {:url? true :related-content? true})
-                          "organisation" (common-queries topic-type topic-id {:url? false :related-content? false})
-                          "initiative" (common-queries topic-type topic-id {:url? false :related-content? true})
-                          "resource" (common-queries topic-type topic-id {:url? true :related-content? true})
-                          "case_study" (common-queries topic-type topic-id {:url? true :related-content? true}))]
-                (jdbc/with-db-transaction [tx (:spec db)]
-                  (doseq [st sts]
-                    (jdbc/execute! tx st)))
-                (r/ok {:success? true
-                       :deleted {:topic-id topic-id
-                                 :topic-type topic-type}}))))))
+              (let [result (db.resource.detail/delete-resource (:spec db) logger {:id topic-id
+                                                                                  :type topic-type
+                                                                                  :rbac-context-type rbac-context-type})]
+                (if (:success? result)
+                  (r/ok {})
+                  (do
+                    (log logger :error ::failed-to-delete-resource {:id topic-id
+                                                                    :type topic-type
+                                                                    :result result})
+                    (r/server-error (dissoc result :success?)))))))))
       (catch Exception e
         (log logger :error ::delete-resource-failed {:exception-message (.getMessage e)
                                                      :context-data path})
