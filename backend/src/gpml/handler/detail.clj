@@ -429,28 +429,26 @@
     (try
       (let [topic-id (:topic-id path)
             topic-type (resolve-resource-type (:topic-type path))
-            rbac-context-type (h.r.permission/entity-type->context-type topic-type)]
-        (if (= topic-type "stakeholder")
+            rbac-context-type (h.r.permission/entity-type->context-type topic-type)
+            authorized? (h.r.permission/operation-allowed?
+                         config
+                         {:user-id (:id user)
+                          :entity-type rbac-context-type
+                          :entity-id topic-id
+                          :operation-type :delete
+                          :root-context? false})]
+        (if-not authorized?
           (r/forbidden {:message "Unauthorized"})
-          (let [authorized? (h.r.permission/operation-allowed?
-                             config
-                             {:user-id (:id user)
-                              :entity-type rbac-context-type
-                              :entity-id topic-id
-                              :operation-type :delete
-                              :root-context? false})]
-            (if-not authorized?
-              (r/forbidden {:message "Unauthorized"})
-              (let [result (db.resource.detail/delete-resource (:spec db) logger {:id topic-id
-                                                                                  :type topic-type
-                                                                                  :rbac-context-type rbac-context-type})]
-                (if (:success? result)
-                  (r/ok {})
-                  (do
-                    (log logger :error ::failed-to-delete-resource {:id topic-id
-                                                                    :type topic-type
-                                                                    :result result})
-                    (r/server-error (dissoc result :success?)))))))))
+          (let [result (db.resource.detail/delete-resource (:spec db) logger {:id topic-id
+                                                                              :type topic-type
+                                                                              :rbac-context-type rbac-context-type})]
+            (if (:success? result)
+              (r/ok {})
+              (do
+                (log logger :error ::failed-to-delete-resource {:id topic-id
+                                                                :type topic-type
+                                                                :result result})
+                (r/server-error (dissoc result :success?)))))))
       (catch Exception e
         (log logger :error ::delete-resource-failed {:exception-message (.getMessage e)
                                                      :context-data path})
