@@ -298,6 +298,41 @@ To accept this invitation please visit %s and sign up to GPML Platform.
        :reason :failed-to-send-email
        :error-details body})))
 
+(defn notify-user-added-to-plastic-strategy-team-subject
+  [country-name]
+  (format "You've been added to Plastic Strategy %s" country-name))
+
+(defn notify-user-added-to-plastic-strategy-team-text
+  [user-full-name country-name app-domain]
+  (format "Dear %s,
+
+You now have access to Plastic Strategy %s in the GPML Digital Platform.
+It is now accessible through your workspace below
+%s/workspace
+
+- UNEP GPML Digital Platform" user-full-name country-name app-domain))
+
+(defn notify-user-added-to-plastic-strategy-team
+  [mailjet-config user plastic-strategy]
+  (let [sender unep-sender
+        subject (notify-user-added-to-plastic-strategy-team-subject
+                 (get-in plastic-strategy [:country :name]))
+        user-full-name (get-user-full-name user)
+        receivers [{:Name user-full-name
+                    :Email (:email user)}]
+        texts [(notify-user-added-to-plastic-strategy-team-text
+                user-full-name
+                (get-in plastic-strategy [:country :name])
+                (:app-domain mailjet-config))]
+        htmls (repeat nil)
+        {:keys [status body]}
+        (send-email mailjet-config sender subject receivers texts htmls)]
+    (if (<= 200 status 299)
+      {:success? true}
+      {:success? false
+       :reason :failed-to-send-email
+       :error-details body})))
+
 (comment
   (require 'dev)
   (let [db (dev/db-conn)
