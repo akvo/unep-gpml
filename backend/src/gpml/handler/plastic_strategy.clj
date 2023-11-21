@@ -4,7 +4,6 @@
             [clojure.string :as str]
             [gpml.handler.resource.permission :as h.r.permission]
             [gpml.handler.responses :as r]
-            [gpml.service.permissions :as srv.permissions]
             [gpml.service.plastic-strategy :as srv.ps]
             [integrant.core :as ig]))
 
