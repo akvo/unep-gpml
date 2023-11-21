@@ -266,6 +266,8 @@ const Workspace = ({ profile, isAuthenticated, setLoginVisible }) => {
                       <br /> If you are the focal point, submit your application
                       below
                     </Trans>
+                    <br />
+                    <br />
                   </p>
                   <div className="join-box">
                     <div>
@@ -276,13 +278,15 @@ const Workspace = ({ profile, isAuthenticated, setLoginVisible }) => {
                           this Entity to become a member of the Global
                           Partnership on Marine Litter (GPML)​.
                         </Trans>
+                        <br />
+                        <br />
                       </p>
                     </div>
                     <div className="button-container">
                       <Button
-                        className="join-button"
                         type="primary"
                         shape="round"
+                        withArrow
                         onClick={() =>
                           router.push(
                             {
@@ -297,7 +301,7 @@ const Workspace = ({ profile, isAuthenticated, setLoginVisible }) => {
                       </Button>
                       {!isFocal && (
                         <Button
-                          className="focal-point"
+                          type="ghost"
                           onClick={() => handleFocalPoint(profile?.org?.id)}
                         >
                           <Trans>I AM NOT THE FOCAL POINT</Trans>
