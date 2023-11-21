@@ -10,6 +10,12 @@ json_build_object('id', c.id,
 		  'headequarter', c.headquarter) AS country
 FROM plastic_strategy ps
 INNER JOIN country c ON c.id = country_id
+/*~ (when (get-in params [:filters :rbac-user-id]) */
+JOIN rbac_context rc ON rc.resource_id = ps.id AND rc.context_type_name = 'plastic-strategy'
+JOIN rbac_role_assignment rra ON rra.context_id = rc.id AND rra.user_id = :filters.rbac-user-id
+JOIN rbac_role_permission rrp ON rrp.role_id = rra.role_id
+JOIN rbac_permission rp ON rp.id = rrp.permission_id AND rp.name = 'plastic-strategy/read'
+/*~ ) ~*/
 WHERE 1=1
 --~(when (seq (get-in params [:filters :ids])) " AND ps.id IN (:v*:filters.ids)")
 --~(when (seq (get-in params [:filters :countries-ids])) " AND ps.country_id IN (:v*:filters.countries-ids)")

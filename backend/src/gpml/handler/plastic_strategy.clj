@@ -44,20 +44,21 @@
     [:sequential
      [:map]]]])
 
+(defn- get-plastic-strategies*
+  [config search-opts]
+  (let [result (srv.ps/get-plastic-strategies config search-opts)]
+    (if (:success? result)
+      (r/ok (:plastic-strategies result))
+      (r/server-error (dissoc result :success?)))))
+
 (defn- get-plastic-strategies
   [config {:keys [user] :as req}]
-  (if-not (h.r.permission/operation-allowed? config
-                                             {:user-id (:id user)
-                                              :entity-type srv.permissions/root-app-context-type
-                                              :custom-permission :list-plastic-strategies
-                                              :root-context? true})
-    (r/forbidden {:message "Unauthorized"})
-    (let [query-params (cske/transform-keys #(->kebab-case % :separator \_)
-                                            (get-in req [:parameters :query]))
-          result (srv.ps/get-plastic-strategies config {:filters query-params})]
-      (if (:success? result)
-        (r/ok (:plastic-strategies result))
-        (r/server-error (dissoc result :success?))))))
+  (let [query-params (cske/transform-keys #(->kebab-case % :separator \_)
+                                          (get-in req [:parameters :query]))
+        search-opts {:filters query-params}]
+    (if (h.r.permission/super-admin? config (:id user))
+      (get-plastic-strategies* config search-opts)
+      (get-plastic-strategies* config (assoc-in search-opts [:filters :rbac-user-id] (:id user))))))
 
 (defn- get-plastic-strategy
   [config {:keys [user] :as req}]
