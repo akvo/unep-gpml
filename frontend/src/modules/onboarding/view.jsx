@@ -115,10 +115,14 @@ function Authentication() {
 
     data.firstName = query?.hasOwnProperty('given_name')
       ? query?.given_name
+      : data.firstName
+      ? data.firstName
       : 'xxx'
 
     data.lastName = query?.hasOwnProperty('family_name')
       ? query?.family_name
+      : data.lastName
+      ? data.lastName
       : 'xxx'
 
     data.email = query?.hasOwnProperty('email') ? query?.email : ''
