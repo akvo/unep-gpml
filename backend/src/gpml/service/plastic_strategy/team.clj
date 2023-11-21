@@ -21,7 +21,7 @@
                                                   role-assignments))))
 
 (defn add-ps-team-member
-  [{:keys [db logger] :as config} plastic-strategy ps-team-member]
+  [{:keys [db logger mailjet-config] :as config} plastic-strategy ps-team-member]
   (let [transactions
         [{:txn-fn
           (fn tx-add-ps-team-member
@@ -123,7 +123,17 @@
                 (assoc context
                        :success? false
                        :reason :failed-to-add-team-member-to-ps-chat-channel
-                       :result {:result result}))))}]
+                       :result {:result result}))))}
+         {:txn-fn
+          (fn tx-notify-user
+            [{:keys [ps-team-member plastic-strategy] :as context}]
+            (let [result (util.email/notify-user-added-to-plastic-strategy-team
+                          mailjet-config
+                          ps-team-member
+                          plastic-strategy)]
+              (when-not (:success? result)
+                (log logger :error ::failed-to-notify-user-added-to-ps-team {:result result})))
+            context)}]
         context {:success? true
                  :ps-team-member ps-team-member
                  :plastic-strategy plastic-strategy}]

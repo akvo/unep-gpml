@@ -30,10 +30,12 @@
             [gpml.handler.responses :as r]
             [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
             [gpml.service.association :as srv.association]
+            [gpml.service.chat :as srv.chat]
             [gpml.service.file :as srv.file]
             [gpml.service.permissions :as srv.permissions]
             [gpml.util :as util]
             [gpml.util.postgresql :as pg-util]
+            [gpml.util.thread-transactions :as tht]
             [integrant.core :as ig]
             [medley.core :as medley])
   (:import [java.sql SQLException]))
@@ -423,34 +425,96 @@
 (defmethod extra-details :nothing [_ _ _]
   nil)
 
+(defn- delete-resource
+  [{:keys [db logger] :as config} resource-id resource-type rbac-context-type]
+  (let [transactions
+        [{:txn-fn
+          (fn tx-get-resource
+            [{:keys [resource-id resource-type] :as context}]
+            (let [result (try
+                           {:success? true
+                            :resource (db.resource.detail/get-resource (:spec db)
+                                                                       {:table-name resource-type
+                                                                        :id resource-id})}
+                           (catch Throwable t
+                             {:successs? false
+                              :reason :exception
+                              :error-details {:msg (ex-message t)}}))]
+              (if (:success? result)
+                (assoc context :resource (:resource result))
+                (assoc context
+                       :success? false
+                       :reason :failed-to-get-resource
+                       :error-details {:result result}))))}
+         {:txn-fn
+          (fn tx-delete-chat-account
+            [{:keys [resource resource-type] :as context}]
+            (if-not (and (= resource-type "stakeholder")
+                         (seq (:chat_account_id resource)))
+              context
+              (let [result (srv.chat/delete-user-account config
+                                                         (:chat_account_id resource)
+                                                         {})]
+                (if (:success? result)
+                  context
+                  (assoc context
+                         :success? false
+                         :reason :failed-to-delete-user-chat-account
+                         :error-details {:result result})))))
+          :rollback-fn
+          (fn rollback-delete-chat-account
+            [{:keys [resource resource-type] :as context}]
+            (if-not (and (= resource-type "stakeholder")
+                         (seq (:chat_account_id resource)))
+              context
+              (let [result (srv.chat/create-user-account config (:id resource))]
+                (if (:success? result)
+                  context
+                  (do
+                    (log logger :error ::failed-to-rollback-delete-chat-account {:result result})
+                    context)))))}
+         {:txn-fn
+          (fn tx-delete-resource
+            [{:keys [rbac-context-type resource-id resource-type] :as context}]
+            (let [result (db.resource.detail/delete-resource (:spec db) logger {:id resource-id
+                                                                                :type resource-type
+                                                                                :rbac-context-type rbac-context-type})]
+              (if (:success? result)
+                {:success? true}
+                (assoc context
+                       :success? false
+                       :reason :failed-to-delete-resource
+                       :error-details {:result result}))))}]
+        context {:success? true
+                 :resource-id resource-id
+                 :resource-type resource-type
+                 :rbac-context-type rbac-context-type}]
+    (tht/thread-transactions logger transactions context)))
+
 (defmethod ig/init-key :gpml.handler.detail/delete
-  [_ {:keys [db logger] :as config}]
+  [_ {:keys [logger] :as config}]
   (fn [{{:keys [path]} :parameters user :user}]
     (try
       (let [topic-id (:topic-id path)
             topic-type (resolve-resource-type (:topic-type path))
-            rbac-context-type (h.r.permission/entity-type->context-type topic-type)]
-        (if (= topic-type "stakeholder")
+            rbac-context-type (h.r.permission/entity-type->context-type topic-type)
+            authorized? (h.r.permission/operation-allowed?
+                         config
+                         {:user-id (:id user)
+                          :entity-type rbac-context-type
+                          :entity-id topic-id
+                          :operation-type :delete
+                          :root-context? false})]
+        (if-not authorized?
           (r/forbidden {:message "Unauthorized"})
-          (let [authorized? (h.r.permission/operation-allowed?
-                             config
-                             {:user-id (:id user)
-                              :entity-type rbac-context-type
-                              :entity-id topic-id
-                              :operation-type :delete
-                              :root-context? false})]
-            (if-not authorized?
-              (r/forbidden {:message "Unauthorized"})
-              (let [result (db.resource.detail/delete-resource (:spec db) logger {:id topic-id
-                                                                                  :type topic-type
-                                                                                  :rbac-context-type rbac-context-type})]
-                (if (:success? result)
-                  (r/ok {})
-                  (do
-                    (log logger :error ::failed-to-delete-resource {:id topic-id
-                                                                    :type topic-type
-                                                                    :result result})
-                    (r/server-error (dissoc result :success?)))))))))
+          (let [result (delete-resource config topic-id topic-type rbac-context-type)]
+            (if (:success? result)
+              (r/ok {})
+              (do
+                (log logger :error ::failed-to-delete-resource {:id topic-id
+                                                                :type topic-type
+                                                                :result result})
+                (r/server-error (dissoc result :success?)))))))
       (catch Exception e
         (log logger :error ::delete-resource-failed {:exception-message (.getMessage e)
                                                      :context-data path})
