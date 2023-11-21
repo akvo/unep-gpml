@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect, notification } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import styles from './styles.module.scss'
-import { Typography, Steps } from 'antd'
+import { notification } from 'antd'
 import { Form } from 'react-final-form'
 import AffiliationOption from './affiliation-option'
 import FormOne from './form-one'
@@ -22,6 +22,7 @@ function Authentication() {
   const surferRef = useRef()
   const router = useRouter()
   const query = router.query.data ? JSON.parse(router.query.data) : {}
+  console.log(query)
   const [affiliation, setAffiliation] = useState('')
   const [currentStep, setCurrentStep] = useState(0)
   const [initialValues, setInitialValues] = useState({})
@@ -112,27 +113,30 @@ function Authentication() {
       data.cv = await getBase64(data.cv)
     }
 
-    if (query?.hasOwnProperty('given_name')) {
-      data.firstName = query?.given_name
-    }
-    if (query?.hasOwnProperty('family_name')) {
-      data.lastName = query?.family_name
-    }
-    if (query?.hasOwnProperty('email')) {
-      data.email = query?.email
-    }
-    if (query?.hasOwnProperty('picture')) {
-      data.photo = query?.picture
-    }
-    if (query?.hasOwnProperty('https://digital.gpmarinelitter.org/country')) {
-      data.country = countries.find(
-        (country) =>
-          country.name === query?.['https://digital.gpmarinelitter.org/country']
-      )?.id
-    }
-    if (data.country) {
-      data.country = Number(data.country)
-    }
+    data.firstName = query?.hasOwnProperty('given_name')
+      ? query?.given_name
+      : 'xxx'
+
+    data.lastName = query?.hasOwnProperty('family_name')
+      ? query?.family_name
+      : 'xxx'
+
+    data.email = query?.hasOwnProperty('email') ? query?.email : ''
+
+    data.photo = query?.hasOwnProperty('picture') ? query?.picture : ''
+
+    data.country = query?.hasOwnProperty(
+      'https://digital.gpmarinelitter.org/country'
+    )
+      ? countries.find(
+          (country) =>
+            country.name ===
+            query?.['https://digital.gpmarinelitter.org/country']
+        )?.id
+      : ''
+
+    data.country = data.country ? Number(data.country) : ''
+
     if (data.publicEmail) {
       data.publicEmail = data.publicEmail === 'true' ? true : false
     }
