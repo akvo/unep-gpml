@@ -72,24 +72,28 @@ const ForumSidebar = ({
         <h5>{currForum?.name}</h5>
         <p>{currForum?.description}</p>
       </div>
-      <h6 className="h-caps-xs w-bold">
-        <Trans>Discussions</Trans>
-      </h6>
-      <List
-        className="discussions"
-        loading={!activeForum?.isFetched}
-        dataSource={activeForum?.discussions}
-        renderItem={(item) => {
-          const active = discussion?.id === item?.id
-          return (
-            <List.Item key={item?.name} className={classNames({ active })}>
-              <Button onClick={() => goToDiscussion(item)} type="link">
-                {item?.fname}
-              </Button>
-            </List.Item>
-          )
-        }}
-      />
+      {activeForum?.discussions?.length > 0 && (
+        <>
+          <h6 className="h-caps-xs w-bold">
+            <Trans>Discussions</Trans>
+          </h6>
+          <List
+            className="discussions"
+            loading={!activeForum?.isFetched}
+            dataSource={activeForum?.discussions}
+            renderItem={(item) => {
+              const active = discussion?.id === item?.id
+              return (
+                <List.Item key={item?.name} className={classNames({ active })}>
+                  <Button onClick={() => goToDiscussion(item)} type="link">
+                    {item?.fname}
+                  </Button>
+                </List.Item>
+              )
+            }}
+          />
+        </>
+      )}
       {participants.length > 0 && (
         <>
           <h6 className="w-bold h-caps-xs">
@@ -164,7 +168,11 @@ const ForumView = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
   }
 
   const handleOnDiscussCallback = (type = 'new', evt) => {
-    if (type === 'room-opened' && evt.data.fname) {
+    if (
+      type === 'room-opened' &&
+      evt.data.fname &&
+      evt.data.fname !== evt.data.name
+    ) {
       setDiscussion({ ...evt.data, id: evt.data._id })
     }
     setActiveForum({
