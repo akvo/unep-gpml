@@ -119,7 +119,7 @@
     &:not(.ant-select-customize-input) {
       .ant-select-selector {
         padding: 4px 11px;
-        height: 44px;
+        min-height: 44px;
         line-height: 20px;
         overflow: auto;
         .ant-select-selection-placeholder {
