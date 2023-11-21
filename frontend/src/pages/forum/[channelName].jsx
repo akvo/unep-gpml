@@ -69,7 +69,7 @@ const ForumSidebar = ({
         >
           <Trans>Back to all Forums</Trans>
         </Button>
-        <h5>{currForum?.name}</h5>
+        <h5>{currForum?.name?.replace(/[-_]/g, ' ')}</h5>
         <p>{currForum?.description}</p>
       </div>
       <h6 className="h-caps-xs w-bold">
