@@ -50,6 +50,11 @@ spec:
             secretKeyRef:
               name: unep-gpml
               key: next-public-env
+        - name: SENTRY_DSN_FRONTEND
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: sentry-dsn-frontend
       - name: backend
         image: eu.gcr.io/akvo-lumen/unep-gpml/backend:${CI_COMMIT}
         ports:
