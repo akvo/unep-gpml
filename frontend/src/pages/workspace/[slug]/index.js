@@ -87,7 +87,13 @@ const Page = () => (
 )
 
 export function PageLayout(page) {
-  const { isAuthenticated, loginVisible, setLoginVisible, profile } = page.props
+  const {
+    isAuthenticated,
+    loginVisible,
+    setLoginVisible,
+    profile,
+    auth0Client,
+  } = page.props
   return (
     <NewLayout
       {...{
@@ -95,6 +101,7 @@ export function PageLayout(page) {
         loginVisible,
         setLoginVisible,
         profile,
+        auth0Client,
       }}
     >
       <NestedLayout>{page}</NestedLayout>
