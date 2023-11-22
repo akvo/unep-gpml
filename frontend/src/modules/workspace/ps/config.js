@@ -1,3 +1,5 @@
+import { t, msg } from '@lingui/macro'
+
 export const isoA2 = {
   mauritius: 'MU',
   peru: 'PE',
@@ -200,29 +202,29 @@ export const getParentChecked = (step) =>
 export const ROLES = [
   {
     key: 'admin',
-    label: 'Admin',
-    description: 'Admins can edit all content and manage the team',
+    label: msg`Admin`,
+    description: msg`Admins can edit all content and manage the team`,
   },
   {
     key: 'editor',
-    label: 'Editor',
-    description: 'Editors can edit all content, but cannot manage the team',
+    label: msg`Editor`,
+    description: msg`Editors can edit all content, but cannot manage the team`,
   },
   {
     key: 'viewer',
-    label: 'Viewer',
-    description: 'Viewers cannot edit all content',
+    label: msg`Viewer`,
+    description: msg`Viewers cannot edit all content`,
   },
 ]
 export const TEAMS = [
   {
-    label: 'Steering Committee',
+    label: msg`Steering Committee`,
     value: 'steering-committee',
-    description: 'Description text for what this is',
+    description: msg`Description text for what this is`,
   },
   {
-    label: 'Project Team',
+    label: msg`Project Team`,
     value: 'project-team',
-    description: 'Description text for what this is',
+    description: msg`Description text for what this is`,
   },
 ]
