@@ -22,20 +22,110 @@ import { Field } from 'react-final-form'
 import Button from '../../components/button'
 import FormLabel from '../../components/form-label'
 import { Trans, t } from '@lingui/macro'
+import { UIStore } from '../../store'
+import { SearchIcon } from '../../components/icons'
 
-function FormFour({ validate }) {
+function FormFour({ validate, containsOAuthProvider }) {
+  const { countries } = UIStore.useState((s) => ({
+    countries: s.countries,
+  }))
+
   return (
     <>
       <div className="text-wrapper">
         <Title level={2}>And lastly...</Title>
       </div>
       <div className="ant-form ant-form-vertical">
+        {containsOAuthProvider && (
+          <Row gutter={16}>
+            <Col sm={24} md={12}>
+              <Field name="firstName" validate={validate}>
+                {({ input, meta }) => (
+                  <FormLabel
+                    htmlFor="firstName"
+                    label={<Trans>First Name</Trans>}
+                    meta={meta}
+                  >
+                    <Input
+                      size="small"
+                      onChange={(e) => input.onChange(e.target.value)}
+                      placeholder="First Name"
+                      prefix={<LinkedinOutlined />}
+                      className={`${
+                        meta.touched && meta.error
+                          ? 'ant-input-status-error'
+                          : ''
+                      }`}
+                    />{' '}
+                  </FormLabel>
+                )}
+              </Field>
+            </Col>
+            <Col sm={24} md={12}>
+              <Field name="lastName" validate={validate}>
+                {({ input, meta }) => (
+                  <FormLabel
+                    htmlFor="lastName"
+                    label={<Trans>Last Name</Trans>}
+                    meta={meta}
+                  >
+                    <Input
+                      size="small"
+                      onChange={(e) => input.onChange(e.target.value)}
+                      placeholder="Last Name"
+                      prefix={<TwitterOutlined />}
+                    />
+                  </FormLabel>
+                )}
+              </Field>
+            </Col>
+            <Col sm={24} md={24}>
+              <Field name="country" validate={validate}>
+                {({ options, input, meta, control, ...props }) => {
+                  const hasError = meta.touched && !meta.valid
+                  const validVal = input?.value && meta.valid ? 'success' : null
+                  const validateStatus = hasError ? 'error' : validVal
+                  return (
+                    <FormLabel
+                      htmlFor="country"
+                      label="Country"
+                      meta={meta}
+                      validateStatus={validateStatus}
+                    >
+                      <Select
+                        size="small"
+                        onChange={(value) => input.onChange(value)}
+                        placeholder="Search Country"
+                        allowClear
+                        showSearch
+                        virtual={false}
+                        showArrow
+                        suffixIcon={<SearchIcon />}
+                        filterOption={(input, option) =>
+                          option.children
+                            .toLowerCase()
+                            .includes(input.toLowerCase())
+                        }
+                      >
+                        {countries?.map((it) => (
+                          <Select.Option value={it.id} key={it.id}>
+                            {it.name}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </FormLabel>
+                  )
+                }}
+              </Field>
+            </Col>
+          </Row>
+        )}
         <Field name="about" validate={validate}>
           {({ input, meta }) => (
             <div className="field-wrapper">
               <FormLabel
                 label={<Trans>Short Bio</Trans>}
-                for="about"
+                htmlFor="about"
                 meta={meta}
               >
                 <TextArea
@@ -55,7 +145,7 @@ function FormFour({ validate }) {
             <Field name="linkedin">
               {({ input, meta }) => (
                 <FormLabel
-                  for="linkedin"
+                  htmlFor="linkedin"
                   label={<Trans>Linkedin</Trans>}
                   meta={meta}
                   isOptional
@@ -74,7 +164,7 @@ function FormFour({ validate }) {
             <Field name="twitter">
               {({ input, meta }) => (
                 <FormLabel
-                  for="twitter"
+                  htmlFor="twitter"
                   label={<Trans>Twitter</Trans>}
                   meta={meta}
                   isOptional
@@ -94,7 +184,7 @@ function FormFour({ validate }) {
           {({ input, meta }) => (
             <div className="field-wrapper">
               <div class="ant-col ant-form-item-label">
-                <label for="twitter" class="" title="">
+                <label htmlFor="twitter" class="" title="">
                   <div className="input-label" style={{ width: 'auto' }}>
                     <p>
                       <Trans>CV / Portfolio</Trans>
