@@ -22,7 +22,7 @@ import Button from '../../../components/button'
 import styles from './setup-team-form.module.scss'
 import { DropDownIcon, SearchIcon } from '../../../components/icons'
 import api from '../../../utils/api'
-import { useTeams, useRoles } from './config'
+import { ROLES, TEAMS } from './config'
 import { Trans, t } from '@lingui/macro'
 import classNames from 'classnames'
 
@@ -35,8 +35,6 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
   const [sending, setSending] = useState(false)
   const [loading, setLoading] = useState(false)
   const [openDropdown, setOpenDropdown] = useState(false)
-  const ROLES = useRoles()
-  const TEAMS = useTeams()
   const [selectedRole, setSelectedRole] = useState(ROLES[2])
   const [stakeholders, setStakeholders] = useState([])
   const [search, setSearch] = useState('')
@@ -264,7 +262,7 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
                         form.setFieldsValue({ role: role.key })
                       }}
                     >
-                      {role.label}
+                      <Trans id={role.label.id} />
                     </Menu.Item>
                   ))}
                 </Menu>
@@ -287,7 +285,7 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
                   {team.label}
                   <Tooltip
                     placement="top"
-                    title={team.description}
+                    title={<Trans id={team.description.id} />}
                     trigger={['hover']}
                   >
                     <InfoCircleOutlined style={{ marginLeft: 10 }} />

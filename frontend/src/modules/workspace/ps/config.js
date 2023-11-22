@@ -1,4 +1,4 @@
-import { useLingui } from '@lingui/react'
+import { t, msg } from '@lingui/macro'
 
 export const isoA2 = {
   mauritius: 'MU',
@@ -199,47 +199,32 @@ export const getParentChecked = (step) =>
     ? step.substeps.filter((sb) => sb.checked).length === step.substeps.length
     : step?.checked
 
-export const useRoles = () => {
-  const { i18n } = useLingui()
-
-  const ROLES = [
-    {
-      key: 'admin',
-      label: i18n._(t`Admin`),
-      description: i18n._(t`Admins can edit all content and manage the team`),
-    },
-    {
-      key: 'editor',
-      label: i18n._(t`Editor`),
-      description: i18n._(
-        t`Editors can edit all content, but cannot manage the team`
-      ),
-    },
-    {
-      key: 'viewer',
-      label: i18n._(t`Viewer`),
-      description: i18n._(t`Viewers cannot edit all content`),
-    },
-  ]
-
-  return ROLES
-}
-
-export const useTeams = () => {
-  const { i18n } = useLingui()
-
-  const TEAMS = [
-    {
-      label: i18n._(t`Steering Committee`),
-      value: 'steering-committee',
-      description: i18n._(t`Description text for what this is`),
-    },
-    {
-      label: i18n._(t`Project Team`),
-      value: 'project-team',
-      description: i18n._(t`Description text for what this is`),
-    },
-  ]
-
-  return TEAMS
-}
+export const ROLES = [
+  {
+    key: 'admin',
+    label: msg`Admin`,
+    description: msg`Admins can edit all content and manage the team`,
+  },
+  {
+    key: 'editor',
+    label: msg`Editor`,
+    description: msg`Editors can edit all content, but cannot manage the team`,
+  },
+  {
+    key: 'viewer',
+    label: msg`Viewer`,
+    description: msg`Viewers cannot edit all content`,
+  },
+]
+export const TEAMS = [
+  {
+    label: msg`Steering Committee`,
+    value: 'steering-committee',
+    description: msg`Description text for what this is`,
+  },
+  {
+    label: msg`Project Team`,
+    value: 'project-team',
+    description: msg`Description text for what this is`,
+  },
+]

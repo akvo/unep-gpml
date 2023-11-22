@@ -15,7 +15,7 @@ import uniqBy from 'lodash/uniqBy'
 import { DropDownIcon } from '../../../components/icons'
 import api from '../../../utils/api'
 import { UIStore } from '../../../store'
-import { useTeams, useRoles } from './config'
+import { ROLES, TEAMS } from './config'
 import styles from './setup-team-table.module.scss'
 import { InfoCircleOutlined } from '@ant-design/icons'
 import { Trans, t } from '@lingui/macro'
@@ -26,9 +26,6 @@ const { Text } = Typography
 const SetupTeamTable = ({ psItem, members, setMembers, reload, setReload }) => {
   const [loading, setLoading] = useState(true)
   const profile = UIStore.useState((s) => s.profile)
-
-  const ROLES = useRoles()
-  const TEAMS = useTeams()
 
   const columns = useMemo(() => {
     const filterOrgs = uniqBy(
@@ -200,7 +197,7 @@ const SetupTeamTable = ({ psItem, members, setMembers, reload, setReload }) => {
                               handleOnRoleChange(r.key, record?.id)
                             }
                           >
-                            {r.label}
+                            <Trans id={r.label.id} />
                           </Menu.Item>
                         ))}
                         <Divider className={styles.roleDivider} />
@@ -240,7 +237,7 @@ const SetupTeamTable = ({ psItem, members, setMembers, reload, setReload }) => {
                           ...t,
                           label: (
                             <span key={t.value}>
-                              {t.label}
+                              <Trans id={t.label.id} />
                               <Tooltip
                                 placement="top"
                                 title={t.description}
