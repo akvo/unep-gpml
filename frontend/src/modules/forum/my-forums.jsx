@@ -80,7 +80,7 @@ const MyForums = ({ handleOnView }) => {
   }
 
   const getMyForums = useCallback(async () => {
-    if (profile?.id) {
+    if (profile?.id && !myForums.length) {
       await getMyForumsApi(
         (data) => {
           ChatStore.update((s) => {
@@ -93,7 +93,7 @@ const MyForums = ({ handleOnView }) => {
         }
       )
     }
-  }, [profile])
+  }, [profile, myForums])
 
   useEffect(() => {
     getMyForums()
