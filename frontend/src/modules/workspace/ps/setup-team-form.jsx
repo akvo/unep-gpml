@@ -35,7 +35,7 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
   const [sending, setSending] = useState(false)
   const [loading, setLoading] = useState(false)
   const [openDropdown, setOpenDropdown] = useState(false)
-  const [selectedRole, setSelectedRole] = useState(null)
+  const [selectedRole, setSelectedRole] = useState(ROLES[2])
   const [stakeholders, setStakeholders] = useState([])
   const [search, setSearch] = useState('')
   const [form] = Form.useForm()
@@ -79,7 +79,7 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
 
   const handleOnCloseInvitation = () => {
     setOpenInvitation(false)
-    setSelectedRole(null)
+    setSelectedRole(ROLES[2])
   }
 
   const handleOnSubmit = async (values) => {
@@ -87,11 +87,12 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
     try {
       await api.post(
         `/plastic-strategy/${psItem?.country?.isoCodeA2}/team/member/invite`,
-        values
+        { ...values, teams: values?.teams || [] }
       )
+      form.resetFields()
       setReload(true)
       setSending(false)
-      setSelectedRole(null)
+      setSelectedRole(ROLES[2])
       setOpenInvitation(false)
       message.success(t`Invitation sent.`)
     } catch (error) {
@@ -170,7 +171,10 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
               <Divider style={{ margin: '4px 0' }} />
               <div className="add-button-container">
                 <a
-                  onClick={() => setOpenInvitation(!openInvitation)}
+                  onClick={() => {
+                    setOpenDropdown(false)
+                    setOpenInvitation(!openInvitation)
+                  }}
                   className="h-xs"
                 >
                   <PlusOutlined /> Invite a New Member
@@ -214,6 +218,9 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
           form={form}
           autoComplete="off"
           requiredMark="required"
+          initialValues={{
+            role: 'viewer',
+          }}
         >
           <Form.Item
             label="Email"
