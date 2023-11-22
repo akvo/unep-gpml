@@ -196,12 +196,11 @@ const Workspace = ({ profile, isAuthenticated, setLoginVisible }) => {
   }, [profile, forums, loading, forumFetched])
 
   useEffect(() => {
-    getPSAll()
-  }, [getPSAll])
-
-  useEffect(() => {
-    getAllForums()
-  }, [getAllForums])
+    if (profile) {
+      getPSAll()
+      getAllForums()
+    }
+  }, [profile])
 
   return (
     <div className={styles.workspace}>

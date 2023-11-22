@@ -9,7 +9,7 @@ const Feedback = ({ status }) => {
       icon: <FieldSuccessIcon />,
     },
     error: {
-      text: 'Error',
+      text: '',
       icon: <FieldErrorIcon />,
     },
   }

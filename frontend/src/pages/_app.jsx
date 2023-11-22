@@ -206,6 +206,7 @@ function MyApp({ Component, pageProps }) {
         setState((prevState) => ({ ...prevState, loadingProfile: true }))
         let resp = await api.get('/profile')
         setState((prevState) => ({ ...prevState, loadingProfile: false }))
+        console.log(authResult?.idTokenPayload, resp)
         if (resp.data && Object.keys(resp.data).length === 0) {
           router.push(
             {
