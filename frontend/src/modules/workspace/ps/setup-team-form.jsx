@@ -160,6 +160,7 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
         }}
         onSearch={setSearch}
         suffixIcon={<SearchIcon />}
+        dropdownClassName={styles.addMemberDropdown}
         dropdownRender={(menu) => (
           <div className={classNames(styles.addNewDropdown, { loading })}>
             <Spin spinning={loading} indicator={<LoadingOutlined />}>
@@ -230,7 +231,16 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
           >
             <Input type="email" placeholder={t`Text`} />
           </Form.Item>
-          <Form.Item label={t`Name`} name="name">
+          <Form.Item
+            label={t`Name`}
+            name="name"
+            rules={[
+              {
+                required: true,
+                message: t`Name is required`,
+              },
+            ]}
+          >
             <Input placeholder="Text" />
           </Form.Item>
           <Form.Item label={t`Role`} name="role">

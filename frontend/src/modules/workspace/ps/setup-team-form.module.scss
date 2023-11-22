@@ -39,6 +39,9 @@
     }
   }
 }
+.addMemberDropdown {
+  z-index: 999;
+}
 .addNewDropdown {
   :global {
     .add-button-container {
