@@ -160,6 +160,7 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
         }}
         onSearch={setSearch}
         suffixIcon={<SearchIcon />}
+        dropdownStyle={{ zIndex: 99 }}
         dropdownRender={(menu) => (
           <div className={classNames(styles.addNewDropdown, { loading })}>
             <Spin spinning={loading} indicator={<LoadingOutlined />}>
