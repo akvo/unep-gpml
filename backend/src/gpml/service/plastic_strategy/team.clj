@@ -258,10 +258,15 @@
                 (assoc context
                        :user-id (:user-id result)
                        :invitation (:invitation result))
-                (assoc context
-                       :success? false
-                       :reason :failed-to-invite-user
-                       :error-details {:result result}))))}
+                (if (= (:reason result) :already-exists)
+                  (assoc context
+                         :success? false
+                         :reason (:reason result)
+                         :error-details {:result result})
+                  (assoc context
+                         :success? false
+                         :reason :failed-to-invite-user
+                         :error-details {:result result})))))}
          {:txn-fn
           (fn tx-add-user-to-ps-team
             [{:keys [ps-team-invitation user-id] :as context}]

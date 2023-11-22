@@ -75,12 +75,12 @@
         cols (util.sql/get-insert-columns-from-entity-col [p-stakeholder])
         values (util.sql/entity-col->persistence-entity-col [p-stakeholder])]
     (jdbc-util/with-constraint-violation-check
-      [{:type :unique
-        :name "stakeholder_email_key"
-        :reason :already-exists}
-       {:type :unique
-        :name "stakeholder_chat_account_id_key"
-        :reason :already-exists}]
+        [{:type :unique
+          :name "stakeholder_email_key"
+          :error-reason :already-exists}
+         {:type :unique
+          :name "stakeholder_chat_account_id_key"
+          :error-reason :already-exists}]
       {:success? true
        :stakeholder (first (create-stakeholders conn {:cols cols
                                                       :values values}))})))

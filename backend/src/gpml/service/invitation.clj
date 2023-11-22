@@ -23,10 +23,15 @@
                 (-> context
                     (assoc :user-id (-> result :stakeholder :id))
                     (update-in [:invitation-payload :user] merge stakeholder))
-                (assoc context
-                       :success? false
-                       :reason :failed-to-create-invited-user
-                       :error-details {:result result}))))
+                (if (= (:reason result) :already-exists)
+                  (assoc context
+                         :success? false
+                         :reason :already-exists
+                         :error-details {:result result})
+                  (assoc context
+                         :success? false
+                         :reason :failed-to-create-invited-user
+                         :error-details {:result result})))))
           :rollback-fn
           (fn rollback-create-stakeholder
             [{{:keys [user]} :invitation-payload :as context}]
