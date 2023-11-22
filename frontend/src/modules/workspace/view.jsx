@@ -39,9 +39,8 @@ const Workspace = ({ profile, isAuthenticated, setLoginVisible }) => {
   const [projects, setProjects] = useState([])
   const [psAll, setPSAll] = useState([])
   const [psLoading, setPsLoading] = useState(true)
-  const [loading, setLoading] = useState({
-    forums: true,
-  })
+  const [loading, setLoading] = useState(true)
+  const [forumFetched, setForumFetched] = useState(false)
   const [forumView, setForumView] = useState({
     open: false,
     data: {},
@@ -172,46 +171,29 @@ const Workspace = ({ profile, isAuthenticated, setLoginVisible }) => {
   const forums = myForums?.length ? myForums : allForums
 
   const getAllForums = useCallback(async () => {
-    if ((myForums?.length || allForums.length) && loading.forums) {
-      setLoading({
-        forums: false,
-      })
+    if (!profile?.id) {
       return
     }
-    try {
-      /**
-       * Waiting for id_token ready by checking profile state
-       */
-      if (profile?.id) {
-        const endpoints = [
-          api.get('/chat/channel/all'),
-          api.get('/chat/user/channel'),
-        ]
-        const [
-          { value: allForums },
-          { value: myForums },
-        ] = await Promise.allSettled(endpoints)
-        const { data: _myForums } = myForums || {}
-        const { data: _allForums } = allForums || {}
-        /**
-         * Store all forums in global state
-         */
+    if (forums.length && loading) {
+      setLoading(false)
+    }
+    if (!forums.length && !forumFetched) {
+      setForumFetched(true)
+      const { data: _myForums } = await api.get('/chat/user/channel')
+      ChatStore.update((s) => {
+        s.myForums = _myForums?.sort(sortPublicFirst)
+      })
+      if (!_myForums.length) {
+        const { data: _allForums } = await api.get('/chat/channel/all')
         ChatStore.update((s) => {
-          s.myForums = _myForums?.sort(sortPublicFirst)
           s.allForums = _allForums
             ?.sort(sortPublicFirst)
             ?.map((a) => ({ ...a, isView: true }))
         })
-        setLoading({
-          forums: false,
-        })
       }
-    } catch {
-      setLoading({
-        forums: false,
-      })
+      setLoading(false)
     }
-  }, [profile, allForums, myForums])
+  }, [profile, forums, loading, forumFetched])
 
   useEffect(() => {
     getPSAll()
@@ -375,7 +357,7 @@ const Workspace = ({ profile, isAuthenticated, setLoginVisible }) => {
               <List
                 className="forum-list"
                 dataSource={forums.slice(0, 3)}
-                loading={loading.forums}
+                loading={loading}
                 renderItem={(item) => (
                   <List.Item>
                     <ForumCard>
