@@ -249,11 +249,11 @@ spec:
             readOnly: true
         resources:
           requests:
-            cpu: "100m"
-            memory: "256Mi"
+            cpu: "2"
+            memory: "2Gi"
           limits:
-            cpu: "1000m"
-            memory: "1024Mi"
+            cpu: "3"
+            memory: "3Gi"
       - name: cloud-sql-proxy
         resources:
           requests:
