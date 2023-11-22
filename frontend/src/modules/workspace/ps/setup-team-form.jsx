@@ -87,7 +87,7 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
     try {
       await api.post(
         `/plastic-strategy/${psItem?.country?.isoCodeA2}/team/member/invite`,
-        values
+        { ...values, teams: values?.teams || [] }
       )
       form.resetFields()
       setReload(true)
@@ -219,7 +219,7 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
           autoComplete="off"
           requiredMark="required"
           initialValues={{
-            role: 'viewer'
+            role: 'viewer',
           }}
         >
           <Form.Item
