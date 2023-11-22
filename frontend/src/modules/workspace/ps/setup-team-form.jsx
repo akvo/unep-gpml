@@ -262,7 +262,7 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
                         form.setFieldsValue({ role: role.key })
                       }}
                     >
-                      {role.label}
+                      <Trans id={role.label.id} />
                     </Menu.Item>
                   ))}
                 </Menu>
@@ -285,7 +285,7 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
                   {team.label}
                   <Tooltip
                     placement="top"
-                    title={team.description}
+                    title={<Trans id={team.description.id} />}
                     trigger={['hover']}
                   >
                     <InfoCircleOutlined style={{ marginLeft: 10 }} />

@@ -197,7 +197,7 @@ const SetupTeamTable = ({ psItem, members, setMembers, reload, setReload }) => {
                               handleOnRoleChange(r.key, record?.id)
                             }
                           >
-                            {r.label}
+                            <Trans id={r.label.id} />
                           </Menu.Item>
                         ))}
                         <Divider className={styles.roleDivider} />
@@ -237,7 +237,7 @@ const SetupTeamTable = ({ psItem, members, setMembers, reload, setReload }) => {
                           ...t,
                           label: (
                             <span key={t.value}>
-                              {t.label}
+                              <Trans id={t.label.id} />
                               <Tooltip
                                 placement="top"
                                 title={t.description}
