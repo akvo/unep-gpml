@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect, notification } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import styles from './styles.module.scss'
-import { Typography, Steps } from 'antd'
+import { notification } from 'antd'
 import { Form } from 'react-final-form'
 import AffiliationOption from './affiliation-option'
 import FormOne from './form-one'
@@ -35,6 +35,10 @@ function Authentication() {
     countries,
   } = UIStore.currentState
 
+  const containsOAuthProvider =
+    query?.sub?.toLowerCase().includes('google-oauth2'.toLowerCase()) ||
+    query?.sub?.toLowerCase().includes('linkedin'.toLowerCase())
+
   const next = (skip = 0) => {
     if (
       formRef?.current?.getFieldState('jobTitle').valid &&
@@ -42,7 +46,11 @@ function Authentication() {
       formRef?.current?.getFieldState('offering').valid &&
       formRef?.current?.getFieldState('seeking').valid &&
       formRef?.current?.getFieldState('publicDatabase').valid &&
-      formRef?.current?.getFieldState('about').valid
+      formRef?.current?.getFieldState('about').valid &&
+      (!containsOAuthProvider ||
+        (formRef?.current?.getFieldState('firstName').valid &&
+          formRef?.current?.getFieldState('lastName').valid &&
+          formRef?.current?.getFieldState('country').valid))
     ) {
       setError(false)
       setCurrentStep(currentStep + 1 + skip)
@@ -112,27 +120,14 @@ function Authentication() {
       data.cv = await getBase64(data.cv)
     }
 
-    if (query?.hasOwnProperty('given_name')) {
-      data.firstName = query?.given_name
-    }
-    if (query?.hasOwnProperty('family_name')) {
-      data.lastName = query?.family_name
-    }
-    if (query?.hasOwnProperty('email')) {
-      data.email = query?.email
-    }
-    if (query?.hasOwnProperty('picture')) {
-      data.photo = query?.picture
-    }
-    if (query?.hasOwnProperty('https://digital.gpmarinelitter.org/country')) {
-      data.country = countries.find(
-        (country) =>
-          country.name === query?.['https://digital.gpmarinelitter.org/country']
-      )?.id
-    }
+    data.email = query?.hasOwnProperty('email') ? query?.email : ''
+
+    data.photo = query?.hasOwnProperty('picture') ? query?.picture : ''
+
     if (data.country) {
       data.country = Number(data.country)
     }
+
     if (data.publicEmail) {
       data.publicEmail = data.publicEmail === 'true' ? true : false
     }
@@ -149,7 +144,6 @@ function Authentication() {
       .post('/profile', data)
       .then((res) => {
         setLoading(false)
-        // window.scrollTo({ top: 0 });
         UIStore.update((e) => {
           e.profile = {
             ...res.data,
@@ -160,11 +154,8 @@ function Authentication() {
       })
       .catch((err) => {
         setLoading(false)
-        console.log(err)
         notification.error({
-          message: err?.response?.message
-            ? err?.response?.message
-            : 'Oops, something went wrong',
+          message: 'Oops, something went wrong',
         })
       })
   }
@@ -329,6 +320,7 @@ function Authentication() {
                   <FormFour
                     validate={currentStep === 5 ? required : null}
                     error={error}
+                    containsOAuthProvider={containsOAuthProvider}
                   />
                 </div>
                 <Wave

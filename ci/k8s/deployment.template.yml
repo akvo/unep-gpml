@@ -50,6 +50,11 @@ spec:
             secretKeyRef:
               name: unep-gpml
               key: next-public-env
+        - name: SENTRY_DSN_FRONTEND
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: sentry-dsn-frontend
       - name: backend
         image: eu.gcr.io/akvo-lumen/unep-gpml/backend:${CI_COMMIT}
         ports:
@@ -244,11 +249,11 @@ spec:
             readOnly: true
         resources:
           requests:
-            cpu: "100m"
-            memory: "256Mi"
+            cpu: "2"
+            memory: "2Gi"
           limits:
-            cpu: "1000m"
-            memory: "1024Mi"
+            cpu: "3"
+            memory: "3Gi"
       - name: cloud-sql-proxy
         resources:
           requests:

@@ -21,7 +21,7 @@
                                                   role-assignments))))
 
 (defn add-ps-team-member
-  [{:keys [db logger] :as config} plastic-strategy ps-team-member]
+  [{:keys [db logger mailjet-config] :as config} plastic-strategy ps-team-member]
   (let [transactions
         [{:txn-fn
           (fn tx-add-ps-team-member
@@ -123,7 +123,17 @@
                 (assoc context
                        :success? false
                        :reason :failed-to-add-team-member-to-ps-chat-channel
-                       :result {:result result}))))}]
+                       :result {:result result}))))}
+         {:txn-fn
+          (fn tx-notify-user
+            [{:keys [ps-team-member plastic-strategy] :as context}]
+            (let [result (util.email/notify-user-added-to-plastic-strategy-team
+                          mailjet-config
+                          ps-team-member
+                          plastic-strategy)]
+              (when-not (:success? result)
+                (log logger :error ::failed-to-notify-user-added-to-ps-team {:result result})))
+            context)}]
         context {:success? true
                  :ps-team-member ps-team-member
                  :plastic-strategy plastic-strategy}]
@@ -171,6 +181,9 @@
           (fn tx-update-user-role-assignment
             [{:keys [ps-team-member old-ps-team-member] :as context}]
             (cond
+              (= (:review-status old-ps-team-member) "INVITED")
+              context
+
               (not (contains? ps-team-member :role))
               (dissoc context :old-ps-team-member)
 
@@ -290,68 +303,88 @@
          {:txn-fn
           (fn tx-remove-user-from-ps-channel
             [{:keys [plastic-strategy ps-team-member] :as context}]
-            (let [result (srv.chat/remove-user-from-channel config
-                                                            (:chat-account-id ps-team-member)
-                                                            (:chat-channel-id plastic-strategy)
-                                                            "c")]
-              (if (:success? result)
-                context
-                (assoc context
-                       :success? false
-                       :reason :failed-to-remove-user-from-ps-channel
-                       :error-details {:result result}))))
+            (if-not (seq (:chat-account-id ps-team-member))
+              context
+              (let [result (srv.chat/remove-user-from-channel config
+                                                              (:chat-account-id ps-team-member)
+                                                              (:chat-channel-id plastic-strategy)
+                                                              "c")]
+                (if (:success? result)
+                  context
+                  (assoc context
+                         :success? false
+                         :reason :failed-to-remove-user-from-ps-channel
+                         :error-details {:result result})))))
           :rollback-fn
           (fn rollback-remove-user-from-ps-channel
             [{:keys [plastic-strategy ps-team-member] :as context}]
-            (let [result (srv.chat/add-user-to-public-channel config
-                                                              (:chat-account-id ps-team-member)
-                                                              (:chat-channel-id plastic-strategy))]
-              (when-not (:success? result)
-                (log logger :error :failed-to-rollback-remove-user-from-ps-channel {:result result})))
-            context)}
+            (if-not (seq (:chat-account-id ps-team-member))
+              context
+              (let [result (srv.chat/add-user-to-public-channel config
+                                                                (:chat-account-id ps-team-member)
+                                                                (:chat-channel-id plastic-strategy))]
+                (if (:success? result)
+                  context
+                  (do
+                    (log logger :error :failed-to-rollback-remove-user-from-ps-channel {:result result})
+                    context)))))}
          {:txn-fn
           (fn tx-unassign-ps-team-member-rbac-role
             [{:keys [ps-team-member] :as context}]
-            (let [role-name (keyword (format "plastic-strategy-%s" (name (:role ps-team-member))))
-                  role-unassignments [{:role-name role-name
-                                       :context-type :plastic-strategy
-                                       :resource-id (:plastic-strategy-id ps-team-member)
-                                       :user-id (:id ps-team-member)}]
-                  {:keys [success?] :as result}
-                  (first (srv.permissions/unassign-roles-from-users {:conn (:spec db)
-                                                                     :logger logger}
-                                                                    role-unassignments))]
-              (if success?
-                context
-                (assoc context
-                       :success? false
-                       :reason :failed-to-unassign-ps-team-member-rbac-role
-                       :error-details {:result result}))))
+            (if (= (:review-status ps-team-member) "INVITED")
+              context
+              (let [role-name (keyword (format "plastic-strategy-%s" (name (:role ps-team-member))))
+                    role-unassignments [{:role-name role-name
+                                         :context-type :plastic-strategy
+                                         :resource-id (:plastic-strategy-id ps-team-member)
+                                         :user-id (:id ps-team-member)}]
+                    {:keys [success?] :as result}
+                    (first (srv.permissions/unassign-roles-from-users {:conn (:spec db)
+                                                                       :logger logger}
+                                                                      role-unassignments))]
+                (if success?
+                  context
+                  (assoc context
+                         :success? false
+                         :reason :failed-to-unassign-ps-team-member-rbac-role
+                         :error-details {:result result})))))
           :rollback-fn
           (fn rollback-unassign-ps-team-member-rbac-role
             [{:keys [ps-team-member] :as context}]
-            (let [role-name (keyword (format "plastic-strategy-%s" (name (:role ps-team-member))))
-                  role-assignments [{:role-name role-name
-                                     :context-type :plastic-strategy
-                                     :resource-id (:plastic-strategy-id ps-team-member)
-                                     :user-id (:id ps-team-member)}]
-                  result
-                  (first (srv.permissions/assign-roles-to-users {:conn (:spec db)
-                                                                 :logger logger}
-                                                                role-assignments))]
-              (when-not (:success? result)
-                (log logger :error ::failed-to-rollback-unassign-ps-team-member-rbac-role {:result result})))
-            context)}
+            (if (= (:review-status ps-team-member) "INVITED")
+              context
+              (let [role-name (keyword (format "plastic-strategy-%s" (name (:role ps-team-member))))
+                    role-assignments [{:role-name role-name
+                                       :context-type :plastic-strategy
+                                       :resource-id (:plastic-strategy-id ps-team-member)
+                                       :user-id (:id ps-team-member)}]
+                    result
+                    (first (srv.permissions/assign-roles-to-users {:conn (:spec db)
+                                                                   :logger logger}
+                                                                  role-assignments))]
+                (if (:success? result)
+                  context
+                  (do
+                    (log logger :error ::failed-to-rollback-unassign-ps-team-member-rbac-role {:result result})
+                    context)))))}
          {:txn-fn
           (fn tx-delete-ps-team-member
-            [{:keys [plastic-strategy user-id] :as context}]
-            (let [result (db.ps.team/delete-ps-team-member (:spec db) (:id plastic-strategy) user-id)]
-              (if (:success? result)
-                {:success? true}
-                (assoc context
-                       :success? false
-                       :reason :failed-to-delete-ps-team-member
-                       :error-details {:result result}))))}]
+            [{:keys [ps-team-member plastic-strategy user-id] :as context}]
+            (if (= (:review-status ps-team-member) "INVITED")
+              (let [result (db.stakeholder/delete-stakeholder (:spec db) user-id)]
+                (if (:success? result)
+                  context
+                  (assoc context
+                         :success? false
+                         :reason :failed-to-delete-ps-team-member
+                         :error-details {:result result})))
+              (let [result (db.ps.team/delete-ps-team-member (:spec db) (:id plastic-strategy) user-id)]
+                (if (:success? result)
+                  {:success? true}
+                  (assoc context
+                         :success? false
+                         :reason :failed-to-delete-ps-team-member
+                         :error-details {:result result})))))}]
         context {:success? true
                  :plastic-strategy plastic-strategy
                  :user-id user-id}]

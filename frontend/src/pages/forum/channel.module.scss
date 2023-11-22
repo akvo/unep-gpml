@@ -132,6 +132,8 @@
 }
 
 .detailSidebar {
+  height: calc(100vh - 90px);
+  overflow: scroll;
   :global {
     .description {
       padding: 21px 18px 18px 21px;

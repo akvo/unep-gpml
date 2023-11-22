@@ -312,10 +312,7 @@ const Header = ({
     const canEdit = () =>
       isAuthenticated &&
       profile.reviewStatus === 'APPROVED' &&
-      (profile.role === 'ADMIN' ||
-        profile.id === params.createdBy ||
-        data.owners.includes(profile.id) ||
-        find) &&
+      (profile.role === 'ADMIN' || data.owners.includes(profile.id) || find) &&
       ((type !== 'initiative' && !noEditTopics.has(type)) ||
         (type === 'initiative' && id > 10000))
 

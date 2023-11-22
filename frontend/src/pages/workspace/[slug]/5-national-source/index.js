@@ -21,6 +21,22 @@ const slides = {
       'https://docs.google.com/presentation/d/e/2PACX-1vRsvgR7m2ueHWFC3OtJROucySLXsaNv88DUl96UBUL7qCOZVVJu61ccwaiFSnfl2YBUiMJhI7jbwyoN/embed?start=false&loop=false&delayms=60000',
     cambodia:
       'https://docs.google.com/presentation/d/e/2PACX-1vSKv7jwEJQ-YeQSmq4DVCRyTW0CPDuCbgEaDBiBByAydrjnd-IsLLjGgZaP2qCEGAWwMroE7pqAaTkP/embed?start=false&loop=false&delayms=60000',
+    togo:
+      'https://docs.google.com/presentation/d/e/2PACX-1vRH5QBeuZH3TGEe9RuIAPc7trqUbAFdCdIupZddArhD0ruKHYRcVy7Vp0iesVUNLHEiJ-zvM7KMe77_/embed?start=false&loop=false&delayms=60000',
+    guinea:
+      'https://docs.google.com/presentation/d/e/2PACX-1vQPPJp6xBPhgCvtI4NTE38aCeZYFigDgu9e1O_svVU0f_n1M0cMEUYLNou4Q9SwAd9AxDdxnLKSQW-F/embed?start=false&loop=false&delayms=60000',
+    'trinidad-&-tobago':
+      'https://docs.google.com/presentation/d/e/2PACX-1vRTuZfc65d6wymPI_RG_tPNbX2cv9aHeH5JhuHk8xNEd09Kmg3aF3TVuJpCDubYu0xM_xCA4JMsrk11/embed?start=false&loop=false&delayms=60000',
+    kiribati:
+      'https://docs.google.com/presentation/d/e/2PACX-1vT3_N_ggbKKwqEdGCcw-Hy9tewOn-TPjfDXdu9gGpzazZ2LS4woDPD6XPjDSj__ZM4bne_-5XfaSBQr/embed?start=false&loop=false&delayms=60000',
+    'papua-new-guinea':
+      'https://docs.google.com/presentation/d/e/2PACX-1vSHnsx9CvUraz-gDLeq0kX62j42okTIDwHrGW0C7FKrdObGjJFWEVcv6qkrNhHEZsjU-LtU25cElHji/embed?start=false&loop=false&delayms=60000',
+    tuvalu:
+      'https://docs.google.com/presentation/d/e/2PACX-1vSdvVNxL6y_qrR-lCQkU-NYVas9l07oijk2gl58OATHaMYEHDRrtpf0N8VGKP7VCnSJ3PP5ACOcDjJl/embed?start=false&loop=false&delayms=60000',
+    vanuatu:
+      'https://docs.google.com/presentation/d/e/2PACX-1vTcSvUOFjs65h-QcmVlD6u9yriYsg9PuFb0bADDm8kZiG5su8TlPtheZQlCZvHSibBzjV_NjcNZNN2p/embed?start=false&loop=false&delayms=60000',
+    fiji:
+      'https://docs.google.com/presentation/d/e/2PACX-1vQbHpvdH8h6qP0QWjnQa3caPwImnSikJ2cmMdfRiW6XkJfpHIyqMSkDK0_EtezOBDwj8xuVjB3Z47FF/embed?start=false&loop=false&delayms=60000',
   },
   es: {
     peru:

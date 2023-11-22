@@ -81,7 +81,7 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
 
   const handleOnCloseInvitation = () => {
     setOpenInvitation(false)
-    setSelectedRole(null)
+    setSelectedRole(ROLES[2])
   }
 
   const handleOnSubmit = async (values) => {
@@ -89,11 +89,12 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
     try {
       await api.post(
         `/plastic-strategy/${psItem?.country?.isoCodeA2}/team/member/invite`,
-        values
+        { ...values, teams: values?.teams || [] }
       )
+      form.resetFields()
       setReload(true)
       setSending(false)
-      setSelectedRole(null)
+      setSelectedRole(ROLES[2])
       setOpenInvitation(false)
       message.success(t`Invitation sent.`)
     } catch (error) {
@@ -162,6 +163,7 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
         }}
         onSearch={setSearch}
         suffixIcon={<SearchIcon />}
+        dropdownClassName={styles.addMemberDropdown}
         dropdownRender={(menu) => (
           <div className={classNames(styles.addNewDropdown, { loading })}>
             <Spin spinning={loading} indicator={<LoadingOutlined />}>
@@ -171,7 +173,10 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
               <Divider style={{ margin: '4px 0' }} />
               <div className="add-button-container">
                 <a
-                  onClick={() => setOpenInvitation(!openInvitation)}
+                  onClick={() => {
+                    setOpenDropdown(false)
+                    setOpenInvitation(!openInvitation)
+                  }}
                   className="h-xs"
                 >
                   <PlusOutlined /> Invite a New Member
@@ -215,6 +220,9 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
           form={form}
           autoComplete="off"
           requiredMark="required"
+          initialValues={{
+            role: 'viewer',
+          }}
         >
           <Form.Item
             label="Email"
@@ -232,7 +240,16 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
           >
             <Input type="email" placeholder={t`Text`} />
           </Form.Item>
-          <Form.Item label={t`Name`} name="name">
+          <Form.Item
+            label={t`Name`}
+            name="name"
+            rules={[
+              {
+                required: true,
+                message: t`Name is required`,
+              },
+            ]}
+          >
             <Input placeholder="Text" />
           </Form.Item>
           <Form.Item label={t`Role`} name="role">

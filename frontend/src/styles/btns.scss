@@ -42,6 +42,11 @@
       }
     }
   }
+  .ant-btn-loading-icon {
+    svg {
+      padding: 0px !important;
+    }
+  }
   &.ant-btn-default {
     display: flex;
     align-items: center;

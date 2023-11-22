@@ -5,6 +5,7 @@ import api from '../../../utils/api'
 import SkeletonItems from '../../../modules/workspace/ps/skeleton-items'
 import { PSCard } from '../../../modules/workspace/view'
 import { UIStore } from '../../../store'
+import { loadCatalog } from '../../../translations/utils'
 
 const View = () => {
   const [psAll, setPSAll] = useState([])
@@ -45,6 +46,14 @@ const View = () => {
       </div>
     </div>
   )
+}
+
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
 }
 
 export default View

@@ -20,6 +20,7 @@ export const isoA2 = {
   vanuatu: 'VU',
   togo: 'TG',
   'papua-new-guinea': 'PG',
+  fiji: 'FJ',
 }
 
 export const iso2id = {
@@ -42,6 +43,7 @@ export const iso2id = {
   VU: 548,
   TG: 768,
   PG: 598,
+  FJ: 242,
 }
 
 export const PREFIX_SLUG = 'plastic-strategy'

@@ -5,11 +5,11 @@ import { FieldErrorIcon, FieldSuccessIcon } from './icons'
 const Feedback = ({ status }) => {
   const items = {
     success: {
-      text: 'Success',
+      text: '',
       icon: <FieldSuccessIcon />,
     },
     error: {
-      text: 'Error',
+      text: '',
       icon: <FieldErrorIcon />,
     },
   }

@@ -11,6 +11,7 @@ import api from '../../utils/api'
 import Button from '../../components/button'
 import Head from 'next/head'
 import { loadCatalog } from '../../translations/utils'
+import { Trans, t } from '@lingui/macro'
 
 const { Sider } = Layout
 const DynamicForumIframe = dynamic(
@@ -66,30 +67,38 @@ const ForumSidebar = ({
           icon={<DropDownIcon />}
           className={styles.backButton}
         >
-          Back to all Forums
+          <Trans>Back to all Forums</Trans>
         </Button>
-        <h5>{currForum?.name}</h5>
+        <h5>{currForum?.name?.replace(/[-_]/g, ' ')}</h5>
         <p>{currForum?.description}</p>
       </div>
-      <strong>DISCUSSIONS</strong>
-      <List
-        className="discussions"
-        loading={!activeForum?.isFetched}
-        dataSource={activeForum?.discussions}
-        renderItem={(item) => {
-          const active = discussion?.id === item?.id
-          return (
-            <List.Item key={item?.name} className={classNames({ active })}>
-              <Button onClick={() => goToDiscussion(item)} type="link">
-                {item?.fname}
-              </Button>
-            </List.Item>
-          )
-        }}
-      />
+      {activeForum?.discussions?.length > 0 && (
+        <>
+          <h6 className="h-caps-xs w-bold">
+            <Trans>Discussions</Trans>
+          </h6>
+          <List
+            className="discussions"
+            loading={!activeForum?.isFetched}
+            dataSource={activeForum?.discussions}
+            renderItem={(item) => {
+              const active = discussion?.id === item?.id
+              return (
+                <List.Item key={item?.name} className={classNames({ active })}>
+                  <Button onClick={() => goToDiscussion(item)} type="link">
+                    {item?.fname}
+                  </Button>
+                </List.Item>
+              )
+            }}
+          />
+        </>
+      )}
       {participants.length > 0 && (
         <>
-          <h6 className="w-bold h-caps-xs">Participants</h6>
+          <h6 className="w-bold h-caps-xs">
+            <Trans>Participants</Trans>
+          </h6>
           <List
             className="members"
             dataSource={participants}
@@ -159,7 +168,11 @@ const ForumView = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
   }
 
   const handleOnDiscussCallback = (type = 'new', evt) => {
-    if (type === 'room-opened' && evt.data.fname) {
+    if (
+      type === 'room-opened' &&
+      evt.data.fname &&
+      evt.data.fname !== evt.data.name
+    ) {
       setDiscussion({ ...evt.data, id: evt.data._id })
     }
     setActiveForum({
@@ -218,7 +231,9 @@ const ForumView = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
                 className={styles.backButton}
                 onClick={goBackForum}
               >
-                <div className="h-caps-xs h-bold">Back to Channel</div>
+                <div className="h-caps-xs h-bold">
+                  <Trans>Back to Channel</Trans>
+                </div>
               </Button>
               <h3 className="h-m">{discussion?.fname}</h3>
             </div>
