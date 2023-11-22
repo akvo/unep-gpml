@@ -35,6 +35,29 @@
                 (log logger :error ::failed-to-rollback-create-stakeholder {:result result})))
             context)}
          {:txn-fn
+          (fn tx-create-rbac-context
+            [{:keys [user-id] :as context}]
+            (let [result (srv.permissions/create-resource-context {:conn (:spec db)
+                                                                   :logger logger}
+                                                                  {:context-type :stakeholder
+                                                                   :resource-id user-id})]
+              (if (:success? result)
+                context
+                (assoc context
+                       :success? false
+                       :reason :failed-to-create-rbac-context
+                       :error-details {:result result}))))
+          :rollback-fn
+          (fn rollback-create-rbac-context
+            [{:keys [user-id] :as context}]
+            (let [result (srv.permissions/delete-resource-context {:conn (:spec db)
+                                                                   :logger logger}
+                                                                  {:context-type :stakeholder
+                                                                   :resource-id user-id})]
+              (when-not (:success? result)
+                (log logger :error ::failed-to-rollback-create-rbac-context {:result result})))
+            context)}
+         {:txn-fn
           (fn tx-assign-unapproved-rbac-role
             [{:keys [user-id] :as context}]
             (let [role-assignments [{:role-name :unapproved-user
