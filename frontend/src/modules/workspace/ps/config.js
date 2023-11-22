@@ -1,3 +1,5 @@
+import { useLingui } from '@lingui/react'
+
 export const isoA2 = {
   mauritius: 'MU',
   peru: 'PE',
@@ -197,32 +199,47 @@ export const getParentChecked = (step) =>
     ? step.substeps.filter((sb) => sb.checked).length === step.substeps.length
     : step?.checked
 
-export const ROLES = [
-  {
-    key: 'admin',
-    label: 'Admin',
-    description: 'Admins can edit all content and manage the team',
-  },
-  {
-    key: 'editor',
-    label: 'Editor',
-    description: 'Editors can edit all content, but cannot manage the team',
-  },
-  {
-    key: 'viewer',
-    label: 'Viewer',
-    description: 'Viewers cannot edit all content',
-  },
-]
-export const TEAMS = [
-  {
-    label: 'Steering Committee',
-    value: 'steering-committee',
-    description: 'Description text for what this is',
-  },
-  {
-    label: 'Project Team',
-    value: 'project-team',
-    description: 'Description text for what this is',
-  },
-]
+export const useRoles = () => {
+  const { i18n } = useLingui()
+
+  const ROLES = [
+    {
+      key: 'admin',
+      label: i18n._(t`Admin`),
+      description: i18n._(t`Admins can edit all content and manage the team`),
+    },
+    {
+      key: 'editor',
+      label: i18n._(t`Editor`),
+      description: i18n._(
+        t`Editors can edit all content, but cannot manage the team`
+      ),
+    },
+    {
+      key: 'viewer',
+      label: i18n._(t`Viewer`),
+      description: i18n._(t`Viewers cannot edit all content`),
+    },
+  ]
+
+  return ROLES
+}
+
+export const useTeams = () => {
+  const { i18n } = useLingui()
+
+  const TEAMS = [
+    {
+      label: i18n._(t`Steering Committee`),
+      value: 'steering-committee',
+      description: i18n._(t`Description text for what this is`),
+    },
+    {
+      label: i18n._(t`Project Team`),
+      value: 'project-team',
+      description: i18n._(t`Description text for what this is`),
+    },
+  ]
+
+  return TEAMS
+}

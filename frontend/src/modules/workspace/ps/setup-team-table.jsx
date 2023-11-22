@@ -15,7 +15,7 @@ import uniqBy from 'lodash/uniqBy'
 import { DropDownIcon } from '../../../components/icons'
 import api from '../../../utils/api'
 import { UIStore } from '../../../store'
-import { ROLES, TEAMS } from './config'
+import { useTeams, useRoles } from './config'
 import styles from './setup-team-table.module.scss'
 import { InfoCircleOutlined } from '@ant-design/icons'
 import { Trans, t } from '@lingui/macro'
@@ -26,6 +26,9 @@ const { Text } = Typography
 const SetupTeamTable = ({ psItem, members, setMembers, reload, setReload }) => {
   const [loading, setLoading] = useState(true)
   const profile = UIStore.useState((s) => s.profile)
+
+  const ROLES = useRoles()
+  const TEAMS = useTeams()
 
   const columns = useMemo(() => {
     const filterOrgs = uniqBy(

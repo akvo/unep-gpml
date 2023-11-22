@@ -22,7 +22,7 @@ import Button from '../../../components/button'
 import styles from './setup-team-form.module.scss'
 import { DropDownIcon, SearchIcon } from '../../../components/icons'
 import api from '../../../utils/api'
-import { ROLES, TEAMS } from './config'
+import { useTeams, useRoles } from './config'
 import { Trans, t } from '@lingui/macro'
 import classNames from 'classnames'
 
@@ -35,6 +35,8 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
   const [sending, setSending] = useState(false)
   const [loading, setLoading] = useState(false)
   const [openDropdown, setOpenDropdown] = useState(false)
+  const ROLES = useRoles()
+  const TEAMS = useTeams()
   const [selectedRole, setSelectedRole] = useState(ROLES[2])
   const [stakeholders, setStakeholders] = useState([])
   const [search, setSearch] = useState('')
