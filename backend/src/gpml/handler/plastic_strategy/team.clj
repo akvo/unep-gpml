@@ -139,7 +139,9 @@
             result (srv.ps.team/invite-user-to-ps-team config body-params)]
         (if (:success? result)
           (r/ok {:invitation_id (get-in result [:invitation :id])})
-          (r/server-error (dissoc result :success?)))))))
+          (if (= (:reason result) :already-exists)
+            (r/conflict {:reason :already-exists})
+            (r/server-error (dissoc result :success?))))))))
 
 (defn- delete-ps-team-member
   [config {:keys [user] {:keys [path body]} :parameters}]
