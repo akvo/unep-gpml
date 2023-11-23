@@ -9,6 +9,7 @@
     "@lingui/react": "^4.5.0",
     "@rjsf/antd": "^2.4.1",
     "@rjsf/core": "^2.4.1",
+    "@sentry/nextjs": "^7.81.1",
     "@sentry/react": "^6.7.1",
     "@sentry/tracing": "^6.7.1",
     "@testing-library/jest-dom": "^5.11.4",
