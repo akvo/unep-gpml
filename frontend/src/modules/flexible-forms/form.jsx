@@ -542,11 +542,8 @@ const FlexibleForm = ({
     data.q2 = data.qtitle
     delete data.qtitle
 
-    data.q3 = data?.qsummary.replace(/(?:\r\n|\r|\n)/g, ' ')
+    data.q3 = data?.qsummary?.replace(/(?:\r\n|\r|\n)/g, ' ')
     delete data.qsummary
-
-    pdata.q3 = pdata?.qsummary.replace(/(?:\r\n|\r|\n)/g, ' ')
-    delete pdata.qsummary
 
     data.q24 = data.qgeoCoverageType
     delete data.qgeoCoverageType

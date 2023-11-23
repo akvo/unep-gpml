@@ -50,7 +50,6 @@ function FormFour({ validate, containsOAuthProvider }) {
                       size="small"
                       onChange={(e) => input.onChange(e.target.value)}
                       placeholder="First Name"
-                      prefix={<LinkedinOutlined />}
                       className={`${
                         meta.touched && meta.error
                           ? 'ant-input-status-error'
@@ -73,7 +72,6 @@ function FormFour({ validate, containsOAuthProvider }) {
                       size="small"
                       onChange={(e) => input.onChange(e.target.value)}
                       placeholder="Last Name"
-                      prefix={<TwitterOutlined />}
                     />
                   </FormLabel>
                 )}

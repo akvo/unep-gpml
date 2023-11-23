@@ -177,7 +177,6 @@ function MyApp({ Component, pageProps }) {
           }
         }
       }
-      localStorage.removeItem('redirect_on_login')
     })
   }, [])
 
@@ -206,7 +205,6 @@ function MyApp({ Component, pageProps }) {
         setState((prevState) => ({ ...prevState, loadingProfile: true }))
         let resp = await api.get('/profile')
         setState((prevState) => ({ ...prevState, loadingProfile: false }))
-        console.log(authResult?.idTokenPayload, resp)
         if (resp.data && Object.keys(resp.data).length === 0) {
           router.push(
             {
@@ -215,6 +213,8 @@ function MyApp({ Component, pageProps }) {
             },
             '/onboarding'
           )
+        } else {
+          localStorage.removeItem('redirect_on_login')
         }
         UIStore.update((e) => {
           e.profile = {
