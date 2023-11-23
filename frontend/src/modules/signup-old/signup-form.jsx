@@ -17,102 +17,110 @@ import isEmpty from 'lodash/isEmpty'
 import { storage } from '../../utils/storage'
 import { useRef } from 'react'
 import { Trans, t } from '@lingui/macro'
+import { useLingui } from '@lingui/react'
 
 const { sectorOptions } = UIStore.currentState
-const defaultFormSchema = {
-  personalDetails: {
-    account: {
-      title: {
-        label: t`Title`,
-        required: true,
-        control: 'select',
-        options: ['Mr', 'Mrs', 'Ms', 'Dr', 'Prof'].map((it) => ({
-          value: it,
-          label: it,
-        })),
+
+export const useDefaultFormSchema = () => {
+  const { i18n } = useLingui()
+
+  const defaultFormSchema = {
+    personalDetails: {
+      account: {
+        title: {
+          label: i18n._(t`Title`),
+          required: true,
+          control: 'select',
+          options: ['Mr', 'Mrs', 'Ms', 'Dr', 'Prof'].map((it) => ({
+            value: it,
+            label: it,
+          })),
+        },
+        firstName: { label: i18n._(t`First name`), required: true },
+        lastName: { label: i18n._(t`Last name`), required: true },
+        email: {
+          label: i18n._(t`Email`),
+          disabled: true,
+          required: true,
+        },
       },
-      firstName: { label: t`First name`, required: true },
-      lastName: { label: t`Last name`, required: true },
-      email: {
-        label: t`Email`,
-        disabled: true,
-        required: true,
+      socialLocation: {
+        linkedIn: { label: i18n._(t`LinkedIn`), prefix: <LinkedinOutlined /> },
+        twitter: { label: i18n._(t`Twitter`), prefix: <TwitterOutlined /> },
+        photo: {
+          label: i18n._(t`Photo`),
+          control: 'file',
+          maxFileSize: 1,
+          accept: 'image/*',
+        },
+        country: {
+          label: i18n._(t`Country`),
+          required: true,
+          order: 3,
+          control: 'select',
+          showSearch: true,
+          allowClear: true,
+          options: [],
+          autoComplete: 'on',
+        },
       },
     },
-    socialLocation: {
-      linkedIn: { label: t`LinkedIn`, prefix: <LinkedinOutlined /> },
-      twitter: { label: t`Twitter`, prefix: <TwitterOutlined /> },
-      photo: {
-        label: t`Photo`,
-        control: 'file',
-        maxFileSize: 1,
-        accept: 'image/*',
-      },
-      country: {
-        label: t`Country`,
-        required: true,
-        order: 3,
+    organisation: {
+      'org.id': {
+        label: i18n._(t`GPML Entity`),
         control: 'select',
         showSearch: true,
-        allowClear: true,
         options: [],
-        autoComplete: 'on',
+        placeholder: i18n._(t`Start typing...`),
+        order: 0,
+        required: false,
+      },
+      jobTitle: {
+        label: i18n._(t`Job Tilte`),
+      },
+      nonMemberOrganisation: {
+        label: i18n._(t`Non Member Entity`),
+        control: 'select',
+        showSearch: true,
+        options: [],
+        placeholder: i18n._(t`Start typing...`),
+        required: false,
       },
     },
-  },
-  organisation: {
-    'org.id': {
-      label: t`GPML Entity`,
-      control: 'select',
-      showSearch: true,
-      options: [],
-      placeholder: t`Start typing...`,
-      order: 0,
-      required: false,
+    expertiesActivities: {
+      seeking: {
+        label: i18n._(t`Seeking`),
+        required: true,
+        control: 'select',
+        mode: 'multiple',
+        showSearch: true,
+        options: [],
+      },
+      offering: {
+        label: i18n._(t`Offering`),
+        required: true,
+        control: 'select',
+        mode: 'multiple',
+        showSearch: true,
+        options: [],
+      },
+      about: {
+        label: i18n._(t`About yourself`),
+        required: true,
+        control: 'textarea',
+        placeholder: 'Max 150 words',
+      },
+      cv: {
+        label: i18n._(t`CV / Portfolio`),
+        control: 'file',
+        maxFileSize: 5,
+        accept:
+          '.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf,text/plain',
+      },
     },
-    jobTitle: {
-      label: t`Job Tilte`,
-    },
-    nonMemberOrganisation: {
-      label: t`Non Member Entity`,
-      control: 'select',
-      showSearch: true,
-      options: [],
-      placeholder: t`Start typing...`,
-      required: false,
-    },
-  },
-  expertiesActivities: {
-    seeking: {
-      label: t`Seeking`,
-      required: true,
-      control: 'select',
-      mode: 'multiple',
-      showSearch: true,
-      options: [],
-    },
-    offering: {
-      label: t`Offering`,
-      required: true,
-      control: 'select',
-      mode: 'multiple',
-      showSearch: true,
-      options: [],
-    },
-    about: {
-      label: t`About yourself`,
-      required: true,
-      control: 'textarea',
-      placeholder: 'Max 150 words',
-    },
-    cv: {
-      label: t`CV / Portfolio`,
-      control: 'file',
-      maxFileSize: 5,
-      accept:
-        '.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf,text/plain',
-    },
-  },
+  }
+
+  return defaultFormSchema
 }
 
 const ReviewText = ({ reviewStatus }) => {
@@ -165,6 +173,8 @@ const SignupForm = ({
     checked: false,
     text: 'Show my email address on public listing',
   })
+
+  const defaultFormSchema = useDefaultFormSchema()
 
   const prevVals = useRef()
   const formRef = useRef()
