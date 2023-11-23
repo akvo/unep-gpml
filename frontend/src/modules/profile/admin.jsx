@@ -130,6 +130,7 @@ const HeaderFilter = ({
       className="filter-by-status"
       value={selectedValue}
       onChange={(x) => {
+        console.log(listOpts, 'listOpts')
         setSelectedValue(x)
         if (typeof x === 'undefined') {
           ;(async () => {
