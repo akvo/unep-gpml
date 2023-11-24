@@ -156,6 +156,8 @@
             (assoc-in response [:body :error-details :error] (.getMessage e))))))))
 
 (defmethod ig/init-key :gpml.handler.policy/post-params [_ _]
-  {:body (-> dom.policy/Policy
-             (util.malli/dissoc [:id :modified :created :leap_api_id :leap_api_modified :review_status])
-             (mu/optional-keys))})
+  {:body [:and
+          (-> dom.policy/Policy
+              (util.malli/dissoc [:id :modified :created :leap_api_id :leap_api_modified :review_status])
+              (mu/optional-keys))
+          handler.geo/api-geo-coverage-validator-schema]})

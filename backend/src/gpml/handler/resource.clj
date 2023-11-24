@@ -163,80 +163,82 @@
 
 (def ^:private post-params
   [:and
-   (into [:map
-          [:resource_type
-           [:enum "Financing Resource", "Technical Resource", "Action Plan"]]
-          [:title string?]
-          [:country {:optional true} integer?]
-          [:org {:optional true} map?
-           (into
-            [:map
-             [:id {:optional true} integer?]
-             [:name {:optional true} string?]
-             [:url {:optional true} string?]
-             [:country {:optional true} integer?]
-             [:geo_coverage_type {:optional true}
-              [:enum "global", "national", "transnational",
-               "sub-national"]]]
-            handler.geo/api-geo-coverage-schemas)]
-          [:publish_year {:optional true} integer?]
-          [:summary {:optional true} string?]
-          [:value {:optional true} integer?]
-          [:value_currency {:optional true} string?]
-          [:value_remarks {:optional true} string?]
-          [:valid_from {:optional true} string?]
-          [:valid_to {:optional true} string?]
-          [:geo_coverage_type
-           [:enum "global", "national", "transnational",
-            "sub-national"]]
-          [:geo_coverage_value_subnational_city {:optional true} string?]
-          [:image {:optional true} [:fn (comp util/base64? util/base64-headless)]]
-          [:thumbnail {:optional true} [:fn (comp util/base64? util/base64-headless)]]
-          [:remarks {:optional true} string?]
-          [:urls {:optional true}
-           [:vector {:optional true}
-            [:map
-             [:lang string?]
-             [:url
-              [:string {:min 1}]]]]]
-          [:url {:optional true} string?]
-          [:info_docs {:optional true} string?]
-          [:capacity_building {:optional true} boolean?]
-          [:is_member {:optional true} boolean?]
-          [:sub_content_type {:optional true} string?]
-          [:related_content {:optional true}
-           [:vector {:optional true}
-            [:map {:optional true}
-             [:id [:int]]
-             [:type (apply conj [:enum] dom.types/resources-types)]]]]
-          [:first_publication_date {:optional true} string?]
-          [:latest_amendment_date {:optional true} string?]
-          [:document_preview {:optional true} boolean?]
-          [:entity_connections {:optional true}
-           [:vector {:optional true}
-            [:map
-             [:entity int?]
-             [:role
-              [:enum "owner" "implementor" "partner" "donor"]]]]]
-          [:individual_connections {:optional true}
-           [:vector {:optional true}
-            [:map
-             [:stakeholder int?]
-             [:role
-              [:enum "owner" "resource_editor"]]]]]
-          [:tags {:optional true}
-           [:vector {:optional true}
-            [:map {:optional true}
-             [:id {:optional true} pos-int?]
-             [:tag string?]]]]
-          [:language string?]
-          [:source
-           {:default dom.types/default-resource-source
-            :decode/string keyword
-            :decode/json keyword}
-           (apply conj [:enum] dom.types/resource-source-types)]
-          auth/owners-schema]
-         handler.geo/api-geo-coverage-schemas)])
+   (into
+    [:map
+     [:resource_type
+      [:enum "Financing Resource", "Technical Resource", "Action Plan"]]
+     [:title string?]
+     [:country {:optional true} integer?]
+     [:org {:optional true} map?
+      (into
+       [:map
+        [:id {:optional true} integer?]
+        [:name {:optional true} string?]
+        [:url {:optional true} string?]
+        [:country {:optional true} integer?]
+        [:geo_coverage_type {:optional true}
+         [:enum "global", "national", "transnational",
+          "sub-national"]]]
+       handler.geo/api-geo-coverage-schemas)]
+     [:publish_year {:optional true} integer?]
+     [:summary {:optional true} string?]
+     [:value {:optional true} integer?]
+     [:value_currency {:optional true} string?]
+     [:value_remarks {:optional true} string?]
+     [:valid_from {:optional true} string?]
+     [:valid_to {:optional true} string?]
+     [:geo_coverage_type
+      [:enum "global", "national", "transnational",
+       "sub-national"]]
+     [:geo_coverage_value_subnational_city {:optional true} string?]
+     [:image {:optional true} [:fn (comp util/base64? util/base64-headless)]]
+     [:thumbnail {:optional true} [:fn (comp util/base64? util/base64-headless)]]
+     [:remarks {:optional true} string?]
+     [:urls {:optional true}
+      [:vector {:optional true}
+       [:map
+        [:lang string?]
+        [:url
+         [:string {:min 1}]]]]]
+     [:url {:optional true} string?]
+     [:info_docs {:optional true} string?]
+     [:capacity_building {:optional true} boolean?]
+     [:is_member {:optional true} boolean?]
+     [:sub_content_type {:optional true} string?]
+     [:related_content {:optional true}
+      [:vector {:optional true}
+       [:map {:optional true}
+        [:id [:int]]
+        [:type (apply conj [:enum] dom.types/resources-types)]]]]
+     [:first_publication_date {:optional true} string?]
+     [:latest_amendment_date {:optional true} string?]
+     [:document_preview {:optional true} boolean?]
+     [:entity_connections {:optional true}
+      [:vector {:optional true}
+       [:map
+        [:entity int?]
+        [:role
+         [:enum "owner" "implementor" "partner" "donor"]]]]]
+     [:individual_connections {:optional true}
+      [:vector {:optional true}
+       [:map
+        [:stakeholder int?]
+        [:role
+         [:enum "owner" "resource_editor"]]]]]
+     [:tags {:optional true}
+      [:vector {:optional true}
+       [:map {:optional true}
+        [:id {:optional true} pos-int?]
+        [:tag string?]]]]
+     [:language string?]
+     [:source
+      {:default dom.types/default-resource-source
+       :decode/string keyword
+       :decode/json keyword}
+      (apply conj [:enum] dom.types/resource-source-types)]
+     auth/owners-schema]
+    handler.geo/api-geo-coverage-schemas)
+   handler.geo/api-geo-coverage-validator-schema])
 
 (defmethod ig/init-key :gpml.handler.resource/post-params [_ _]
   post-params)
