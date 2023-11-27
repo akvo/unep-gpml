@@ -117,61 +117,63 @@
     {:id event-id}))
 
 (def ^:private post-params
-  (->
-   [:map
-    [:title string?]
-    [:start_date {:optional true} string?]
-    [:end_date {:optional true} string?]
-    [:description {:optional true} string?]
-    [:image {:optional true} [:fn (comp util/base64? util/base64-headless)]]
-    [:thumbnail {:optional true} [:fn (comp util/base64? util/base64-headless)]]
-    [:remarks {:optional true} string?]
-    [:geo_coverage_type
-     [:enum "global", "national", "transnational", "sub-national"]]
-    [:geo_coverage_value_subnational_city {:optional true} string?]
-    [:country {:optional true} integer?]
-    [:city {:optional true} string?]
-    [:url {:optional true} string?]
-    [:info_docs {:optional true} string?]
-    [:sub_content_type {:optional true} string?]
-    [:related_content {:optional true}
-     [:vector {:optional true}
-      [:map {:optional true}
-       [:id [:int]]
-       [:type (apply conj [:enum] dom.types/resources-types)]]]]
-    [:capacity_building {:optional true} boolean?]
-    [:event_type {:optional true} string?]
-    [:recording {:optional true} string?]
-    [:document_preview {:optional true} boolean?]
-    [:entity_connections {:optional true}
-     [:vector {:optional true}
-      [:map
-       [:entity int?]
-       [:role
-        [:enum "owner" "implementor" "partner" "donor"]]]]]
-    [:individual_connections {:optional true}
-     [:vector {:optional true}
-      [:map
-       [:stakeholder int?]
-       [:role
-        [:enum "resource_editor" "owner"]]]]]
-    [:urls {:optional true}
-     [:vector {:optional true}
-      [:map
-       [:lang string?]
-       [:url [:string {:min 1}]]]]]
-    [:tags {:optional true}
-     [:vector
-      [:map
-       [:id {:optional true} pos-int?]
-       [:tag string?]]]]
-    [:language string?]
-    [:source {:default dom.types/default-resource-source
-              :decode/string keyword
-              :decode/json keyword}
-     (apply conj [:enum] dom.types/resource-source-types)]
-    auth/owners-schema]
-   (into handler.geo/api-geo-coverage-schemas)))
+  [:and
+   (->
+    [:map
+     [:title string?]
+     [:start_date {:optional true} string?]
+     [:end_date {:optional true} string?]
+     [:description {:optional true} string?]
+     [:image {:optional true} [:fn (comp util/base64? util/base64-headless)]]
+     [:thumbnail {:optional true} [:fn (comp util/base64? util/base64-headless)]]
+     [:remarks {:optional true} string?]
+     [:geo_coverage_type
+      [:enum "global", "national", "transnational", "sub-national"]]
+     [:geo_coverage_value_subnational_city {:optional true} string?]
+     [:country {:optional true} integer?]
+     [:city {:optional true} string?]
+     [:url {:optional true} string?]
+     [:info_docs {:optional true} string?]
+     [:sub_content_type {:optional true} string?]
+     [:related_content {:optional true}
+      [:vector {:optional true}
+       [:map {:optional true}
+        [:id [:int]]
+        [:type (apply conj [:enum] dom.types/resources-types)]]]]
+     [:capacity_building {:optional true} boolean?]
+     [:event_type {:optional true} string?]
+     [:recording {:optional true} string?]
+     [:document_preview {:optional true} boolean?]
+     [:entity_connections {:optional true}
+      [:vector {:optional true}
+       [:map
+        [:entity int?]
+        [:role
+         [:enum "owner" "implementor" "partner" "donor"]]]]]
+     [:individual_connections {:optional true}
+      [:vector {:optional true}
+       [:map
+        [:stakeholder int?]
+        [:role
+         [:enum "resource_editor" "owner"]]]]]
+     [:urls {:optional true}
+      [:vector {:optional true}
+       [:map
+        [:lang string?]
+        [:url [:string {:min 1}]]]]]
+     [:tags {:optional true}
+      [:vector
+       [:map
+        [:id {:optional true} pos-int?]
+        [:tag string?]]]]
+     [:language string?]
+     [:source {:default dom.types/default-resource-source
+               :decode/string keyword
+               :decode/json keyword}
+      (apply conj [:enum] dom.types/resource-source-types)]
+     auth/owners-schema]
+    (into handler.geo/api-geo-coverage-schemas))
+   handler.geo/api-geo-coverage-validator-schema])
 
 (defmethod ig/init-key :gpml.handler.event/post
   [_ {:keys [db logger] :as config}]

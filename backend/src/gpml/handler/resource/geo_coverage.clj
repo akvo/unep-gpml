@@ -3,22 +3,67 @@
             [gpml.domain.geo-coverage :as dom.geo-coverage]
             [gpml.util.sql :as util.sql]))
 
+(def api-geo-coverage-validator-schema
+  [:fn
+   {:error/fn
+    (fn [{{geo-coverage-type :geo_coverage_type
+           geo-coverage-countries :geo_coverage_countries
+           geo-coverage-country-groups :geo_coverage_country_groups
+           geo-coverage-country-states :geo_coverage_country_states} :value}
+         _]
+      (let [geo-coverage-type (if (keyword? geo-coverage-type)
+                                geo-coverage-type
+                                (keyword geo-coverage-type))]
+        (cond
+          (and
+           (= geo-coverage-type :national)
+           (zero? (count geo-coverage-countries)))
+          "The field 'geo_coverage_countries' can not be empty."
+
+          (and
+           (= geo-coverage-type :sub-national)
+           (zero? (count geo-coverage-country-states)))
+          "The field 'geo_coverage_country_states' can not be empty."
+
+          (and
+           (= geo-coverage-type :transnational)
+           (zero? (count geo-coverage-country-groups)))
+          "The field 'geo_coverage_country_groups' can not be empty.")))}
+   (fn [{geo-coverage-type :geo_coverage_type
+         geo-coverage-countries :geo_coverage_countries
+         geo-coverage-country-groups :geo_coverage_country_groups
+         geo-coverage-country-states :geo_coverage_country_states}]
+     (let [geo-coverage-type (if (keyword? geo-coverage-type)
+                               geo-coverage-type
+                               (keyword geo-coverage-type))]
+       (or
+        (= geo-coverage-type :global)
+        (and
+         (= geo-coverage-type :national)
+         (not (zero? (count geo-coverage-countries))))
+        (and
+         (= geo-coverage-type :sub-national)
+         (not (zero? (count geo-coverage-country-states))))
+        (and
+         (= geo-coverage-type :transnational)
+         (not (zero? (count geo-coverage-country-groups)))))))])
+
 (def api-geo-coverage-schemas
   [[:geo_coverage_countries
     {:optional true}
     [:vector
      {:min 1 :error/message "Need at least one geo coverage value"}
-     integer?]]
+     [:int {:min 1}]]]
    [:geo_coverage_country_groups
     {:optional true}
     [:vector
      {:min 1 :error/message "Need at least one geo coverage value"}
-     integer?]]
+     [:int {:min 1}]]]
    [:geo_coverage_country_states
     {:optional true}
     [:vector
      {:min 1 :error/message "Need at least one geo coverage value"}
-     integer?]]])
+     [:int {:min 1}]]]])
 
 (defn- create-resource-geo-coverage*
   [conn table geo-coverage]
