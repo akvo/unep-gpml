@@ -247,7 +247,7 @@ function ProfileLayout({ children }) {
   }, [profile]) // eslint-disable-line
 
   const onSubmit = (vals) => {
-    // setSaving(true);
+    setSaving(true)
     if (!vals?.publicEmail) {
       vals = { ...vals, publicEmail: false }
     }

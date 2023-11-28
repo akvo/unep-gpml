@@ -17,102 +17,93 @@ import isEmpty from 'lodash/isEmpty'
 import { storage } from '../../utils/storage'
 import { useRef } from 'react'
 import { Trans, t } from '@lingui/macro'
+import { useLingui } from '@lingui/react'
 
 const { sectorOptions } = UIStore.currentState
-const defaultFormSchema = {
-  personalDetails: {
-    account: {
-      title: {
-        label: t`Title`,
-        required: true,
-        control: 'select',
-        options: ['Mr', 'Mrs', 'Ms', 'Dr', 'Prof'].map((it) => ({
-          value: it,
-          label: it,
-        })),
+
+export const useDefaultFormSchema = () => {
+  const { i18n } = useLingui()
+
+  const defaultFormSchema = {
+    personalDetails: {
+      account: {
+        title: {
+          label: i18n._(t`Title`),
+          required: true,
+          control: 'select',
+          options: ['Mr', 'Mrs', 'Ms', 'Dr', 'Prof'].map((it) => ({
+            value: it,
+            label: it,
+          })),
+        },
+        firstName: { label: i18n._(t`First name`), required: true },
+        lastName: { label: i18n._(t`Last name`), required: true },
+        email: {
+          label: i18n._(t`Email`),
+          disabled: true,
+          required: true,
+        },
       },
-      firstName: { label: t`First name`, required: true },
-      lastName: { label: t`Last name`, required: true },
-      email: {
-        label: t`Email`,
-        disabled: true,
-        required: true,
+      socialLocation: {
+        linkedIn: { label: i18n._(t`LinkedIn`), prefix: <LinkedinOutlined /> },
+        twitter: { label: i18n._(t`Twitter`), prefix: <TwitterOutlined /> },
+        photo: {
+          label: i18n._(t`Photo`),
+          control: 'file',
+          maxFileSize: 1,
+          accept: 'image/*',
+        },
+        country: {
+          label: i18n._(t`Country`),
+          required: true,
+          order: 3,
+          control: 'select',
+          showSearch: true,
+          allowClear: true,
+          options: [],
+          autoComplete: 'on',
+        },
       },
     },
-    socialLocation: {
-      linkedIn: { label: t`LinkedIn`, prefix: <LinkedinOutlined /> },
-      twitter: { label: t`Twitter`, prefix: <TwitterOutlined /> },
-      photo: {
-        label: t`Photo`,
-        control: 'file',
-        maxFileSize: 1,
-        accept: 'image/*',
+    organisation: {
+      jobTitle: {
+        label: i18n._(t`Job Tilte`),
       },
-      country: {
-        label: t`Country`,
+    },
+    expertiesActivities: {
+      seeking: {
+        label: i18n._(t`Seeking`),
         required: true,
-        order: 3,
         control: 'select',
+        mode: 'multiple',
         showSearch: true,
-        allowClear: true,
         options: [],
-        autoComplete: 'on',
+      },
+      offering: {
+        label: i18n._(t`Offering`),
+        required: true,
+        control: 'select',
+        mode: 'multiple',
+        showSearch: true,
+        options: [],
+      },
+      about: {
+        label: i18n._(t`About yourself`),
+        required: true,
+        control: 'textarea',
+        placeholder: 'Max 150 words',
+      },
+      cv: {
+        label: i18n._(t`CV / Portfolio`),
+        control: 'file',
+        maxFileSize: 5,
+        accept:
+          '.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf,text/plain',
       },
     },
-  },
-  organisation: {
-    'org.id': {
-      label: t`GPML Entity`,
-      control: 'select',
-      showSearch: true,
-      options: [],
-      placeholder: t`Start typing...`,
-      order: 0,
-      required: false,
-    },
-    jobTitle: {
-      label: t`Job Tilte`,
-    },
-    nonMemberOrganisation: {
-      label: t`Non Member Entity`,
-      control: 'select',
-      showSearch: true,
-      options: [],
-      placeholder: t`Start typing...`,
-      required: false,
-    },
-  },
-  expertiesActivities: {
-    seeking: {
-      label: t`Seeking`,
-      required: true,
-      control: 'select',
-      mode: 'multiple',
-      showSearch: true,
-      options: [],
-    },
-    offering: {
-      label: t`Offering`,
-      required: true,
-      control: 'select',
-      mode: 'multiple',
-      showSearch: true,
-      options: [],
-    },
-    about: {
-      label: t`About yourself`,
-      required: true,
-      control: 'textarea',
-      placeholder: 'Max 150 words',
-    },
-    cv: {
-      label: t`CV / Portfolio`,
-      control: 'file',
-      maxFileSize: 5,
-      accept:
-        '.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf,text/plain',
-    },
-  },
+  }
+
+  return defaultFormSchema
 }
 
 const ReviewText = ({ reviewStatus }) => {
@@ -165,80 +156,71 @@ const SignupForm = ({
     checked: false,
     text: 'Show my email address on public listing',
   })
+  const [orgValue, setOrgValue] = useState('')
+  const [nonMemberOrgValue, setNonMemberOrgValue] = useState('')
+  const [disabled, setDisabled] = useState({
+    nonMemberOrgValue: false,
+    orgValue: false,
+  })
 
-  const prevVals = useRef()
+  const defaultFormSchema = useDefaultFormSchema()
+
   const formRef = useRef()
-  const formSchemaRef = useRef(defaultFormSchema)
   const formContainer = !isModal ? 'signupFormGrid' : 'signupForm'
   const sectionGrid = !isModal ? 'section-grid' : 'section'
 
-  const newSchema = cloneDeep(defaultFormSchema)
-
-  newSchema['organisation']['org.id'].options = [
-    ...organisations.map((it) => ({ value: it.id, label: it.name })),
-    { value: -1, label: 'Other' },
-  ]
-  newSchema['organisation']['nonMemberOrganisation'].options = [
-    ...nonMemberOrganisations.map((it) => ({ value: it.id, label: it.name })),
-  ]
-
-  newSchema['organisation']['org.id'].filterOption = (input, option) => {
-    return (
-      option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 ||
-      option.value === -1
-    )
-  }
-  newSchema['organisation']['nonMemberOrganisation'].filterOption = (
-    input,
-    option
-  ) => {
-    return (
-      option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 ||
-      option.value === -1
-    )
-  }
-
-  const array = Object.keys(tags)
-    .map((k) => tags[k])
-    .flat()
-
-  newSchema['expertiesActivities'].offering.options = array?.map((x) => ({
-    value: x.tag,
-    label: x.tag,
-  }))
-  newSchema['expertiesActivities'].seeking.options = array?.map((x) => ({
-    value: x.tag,
-    label: x.tag,
-  }))
-
-  newSchema['personalDetails'][
-    'socialLocation'
-  ].country.options = countries.map((x) => ({
-    value: x.id,
-    label: x.name,
-  }))
-
-  const [formSchema, setFormSchema] = useState(newSchema)
+  const [formSchema, setFormSchema] = useState({})
 
   useEffect(() => {
-    formSchemaRef.current = formSchema
-  }, [formSchema])
+    const newSchema = cloneDeep(defaultFormSchema)
+
+    const array = Object.keys(tags)
+      .map((k) => tags[k])
+      .flat()
+
+    newSchema['expertiesActivities'].offering.options = array?.map((x) => ({
+      value: x.tag,
+      label: x.tag,
+    }))
+    newSchema['expertiesActivities'].seeking.options = array?.map((x) => ({
+      value: x.tag,
+      label: x.tag,
+    }))
+
+    newSchema['personalDetails'][
+      'socialLocation'
+    ].country.options = countries.map((x) => ({
+      value: x.id,
+      label: x.name,
+    }))
+    setFormSchema(newSchema)
+  }, [organisations, nonMemberOrganisations, tags, countries])
 
   const handleChangePrivateCitizen = ({ target: { checked } }) => {
     setNoOrg(checked)
     const newSchema = cloneDeep(formSchema)
-    Object.keys(newSchema['organisation']).forEach((key) => {
-      newSchema['organisation'][key].disabled = checked
-      newSchema['organisation'][key].required = !checked
-    })
-    setFormSchema(newSchema)
-    setTimeout(() => {
-      formRef.current?.change('ts', new Date().getTime())
-      if (checked) {
-        formRef.current?.change('org.id', null)
-        formRef.current?.change('nonMemberOrganisation', null)
-      }
-    })
+
+    if (checked) {
+      setDisabled((prevState) => ({
+        ...prevState,
+        nonMemberOrgValue: true,
+        orgValue: true,
+      }))
+      setOrgValue('')
+      setNonMemberOrgValue('')
+    } else {
+      setDisabled((prevState) => ({
+        ...prevState,
+        orgValue: false,
+        nonMemberOrgValue: false,
+      }))
+      if (initialValues.org)
+        if (initialValues.org?.isMember) {
+          setOrgValue(initialValues['org']['id'])
+        } else {
+          setNonMemberOrgValue(initialValues['org']['id'])
+        }
+    }
   }
 
   const handleChangePublicEmail = (checked) => {
@@ -253,26 +235,33 @@ const SignupForm = ({
     })
   }
 
-  const changeOrganisationFormSchema = (key) => {
-    newSchema['organisation'][key].disabled = true
-    newSchema['organisation'][key].required = false
-    setFormSchema(newSchema)
-  }
-
   useEffect(() => {
     if (initialValues) {
       handleChangePublicEmail(initialValues.publicEmail)
     }
-    if (
-      initialValues &&
-      initialValues?.org === null &&
-      initialValues?.nonMemberOrganisation === null
-    ) {
+    if (initialValues && initialValues?.org === null) {
       handleChangePrivateCitizen({ target: { checked: true } })
-    } else if (initialValues?.org === null) {
-      changeOrganisationFormSchema('org.id')
-    } else {
-      changeOrganisationFormSchema('nonMemberOrganisation')
+      setDisabled((prevState) => ({
+        ...prevState,
+        orgValue: true,
+        nonMemberOrgValue: true,
+      }))
+    } else if (initialValues?.org) {
+      if (initialValues.org.isMember) {
+        setOrgValue(initialValues['org']['id'])
+        setDisabled((prevState) => ({
+          ...prevState,
+          nonMemberOrgValue: true,
+          orgValue: false,
+        }))
+      } else {
+        setNonMemberOrgValue(initialValues['org']['id'])
+        setDisabled((prevState) => ({
+          ...prevState,
+          orgValue: true,
+          nonMemberOrgValue: false,
+        }))
+      }
     }
   }, [initialValues]) // eslint-disable-line
 
@@ -284,14 +273,59 @@ const SignupForm = ({
     })
   }, [initialValues])
 
+  const handleOrgChange = (value) => {
+    setOrgValue(value)
+    if (value) {
+      setNonMemberOrgValue('')
+      setDisabled((prevState) => ({
+        ...prevState,
+        orgValue: false,
+        nonMemberOrgValue: true,
+      }))
+    }
+  }
+
+  const handleNonMemberOrgChange = (value) => {
+    setNonMemberOrgValue(value)
+    if (value) {
+      setOrgValue('')
+      setDisabled((prevState) => ({
+        ...prevState,
+        orgValue: true,
+        nonMemberOrgValue: false,
+      }))
+    }
+  }
+
+  if (Object.keys(formSchema).length === 0) {
+    return <>Loading....</>
+  }
+
+  const required = (value) => (value ? undefined : 'Required')
+
   return (
     <Form layout="vertical">
       <FinalForm
         initialValues={formInitialValues || {}}
         subscription={{}}
         mutators={{ ...arrayMutators }}
-        onSubmit={onSubmit}
-        render={({ handleSubmit, form, ...props }) => {
+        onSubmit={(vals) => {
+          const data = {
+            ...vals,
+            ...(nonMemberOrgValue && {
+              org: {
+                id: nonMemberOrgValue,
+              },
+            }),
+            ...(orgValue && {
+              org: {
+                id: orgValue,
+              },
+            }),
+          }
+          onSubmit(data)
+        }}
+        render={({ handleSubmit, form, values, ...props }) => {
           if (handleSubmitRef) {
             handleSubmitRef(handleSubmit)
           }
@@ -308,7 +342,7 @@ const SignupForm = ({
                     <Trans>Personal details</Trans>
                   </h2>
                   <FieldsFromSchema
-                    schema={formSchema['personalDetails']['account']}
+                    schema={formSchema?.['personalDetails']?.['account']}
                   />
                   <div className="public-email-container">
                     <Switch
@@ -321,7 +355,7 @@ const SignupForm = ({
                     &nbsp;&nbsp;&nbsp;{pubEmail.text}
                   </div>
                   <FieldsFromSchema
-                    schema={formSchema['personalDetails']['socialLocation']}
+                    schema={formSchema?.['personalDetails']?.['socialLocation']}
                   />
                 </div>
                 <div className={sectionGrid}>
@@ -335,85 +369,80 @@ const SignupForm = ({
                   >
                     <Trans>I am a private citizen</Trans>
                   </Checkbox>
-                  <FieldsFromSchema schema={formSchema['organisation']} />
-                  <FormSpy
-                    subscription={{ values: true }}
-                    onChange={({ values }) => {
-                      const newSchema = cloneDeep(formSchema)
-                      let changedSchema = false
-                      if (
-                        values?.org?.id === -1 &&
-                        prevVals.current?.org?.id !== -1
-                      ) {
-                        // Add Name field
-                        newSchema['organisation']['org.name'] = {
-                          label: t`Name`,
-                          required: true,
-                          order: 1,
-                        }
-                        newSchema['organisation']['org.type'] = {
-                          label: t`Type of the entity`,
-                          required: true,
-                          control: 'select',
-                          options: organisationType.map((it) => ({
-                            value: it,
-                            label: it,
-                          })),
-                        }
-                        newSchema['organisation']['org.country'] = {
-                          label: t`Country`,
-                          order: 3,
-                          control: 'select',
-                          required: true,
-                          showSearch: true,
-                          options: countries.map((it) => ({
-                            value: it.id,
-                            label: it.name,
-                          })),
-                          autoComplete: 'off',
-                        }
-                        newSchema['organisation']['org.url'] = {
-                          label: t`Entity URL`,
-                          order: 4,
-                          addonBefore: 'https://',
-                          required: true,
-                        }
-                        changedSchema = true
-                      }
-                      if (
-                        values?.org != null &&
-                        values?.org?.id !== -1 &&
-                        values.org.id != null &&
-                        prevVals.current?.org?.id !== values?.org?.id
-                      ) {
-                        if (prevVals.current?.org?.id === -1) {
-                          delete newSchema['organisation'].name
-                        }
-                        Object.keys(newSchema['organisation'])
-                          .filter(
-                            (it) => it !== 'org.id' && it !== 'organisationRole'
-                          )
-                          .forEach((it) => {
-                            newSchema['organisation'][it].required = false
-                          })
-                        changedSchema = true
-                        ;['country', 'type', 'url'].forEach((propKey) => {
-                          delete newSchema['organisation'][`org.${propKey}`]
-                        })
-                      }
-                      if (changedSchema) {
-                        setFormSchema(newSchema)
-                      }
-                      prevVals.current = values
-                    }}
-                  />
+                  <FieldsFromSchema schema={formSchema?.['organisation']} />
+                  <Form.Item label={t`GPML Entity`}>
+                    <Field name="org.id">
+                      {({ input, meta }) => (
+                        <Select
+                          {...input}
+                          onChange={handleOrgChange}
+                          allowClear
+                          placeholder={t`Start typing...`}
+                          size="small"
+                          value={orgValue}
+                          disabled={disabled.orgValue}
+                          onClear={() => {
+                            setOrgValue('')
+                            setDisabled((prevState) => ({
+                              ...prevState,
+                              orgValue: false,
+                              nonMemberOrgValue: false,
+                            }))
+                          }}
+                        >
+                          {organisations &&
+                            organisations.map((value, i) => (
+                              <Select.Option
+                                key={String(value.id) + i.toString(36)}
+                                value={value.id}
+                              >
+                                {value.name}
+                              </Select.Option>
+                            ))}
+                        </Select>
+                      )}
+                    </Field>
+                  </Form.Item>
+                  <Form.Item label={t`Non Member Entity`}>
+                    <Field name="nonMemberOrganisation">
+                      {({ input, meta }) => (
+                        <Select
+                          {...input}
+                          onChange={handleNonMemberOrgChange}
+                          allowClear
+                          placeholder={t`Start typing...`}
+                          size="small"
+                          value={nonMemberOrgValue}
+                          disabled={disabled.nonMemberOrgValue}
+                          onClear={() => {
+                            setNonMemberOrgValue('')
+                            setDisabled((prevState) => ({
+                              ...prevState,
+                              orgValue: false,
+                              nonMemberOrgValue: false,
+                            }))
+                          }}
+                        >
+                          {nonMemberOrganisations &&
+                            nonMemberOrganisations.map((value, i) => (
+                              <Select.Option
+                                key={String(value.id) + i.toString(36)}
+                                value={value.id}
+                              >
+                                {value.name}
+                              </Select.Option>
+                            ))}
+                        </Select>
+                      )}
+                    </Field>
+                  </Form.Item>
                 </div>
                 <div className={sectionGrid}>
                   <h2>
                     <Trans>Expertise and activities</Trans>
                   </h2>
                   <FieldsFromSchema
-                    schema={formSchema['expertiesActivities']}
+                    schema={formSchema?.['expertiesActivities']}
                   />
                 </div>
               </div>
