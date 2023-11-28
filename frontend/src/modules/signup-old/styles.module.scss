@@ -107,6 +107,13 @@
     .section-grid:nth-child(3) {
       order: 3;
     }
+    .ant-form-item-control-input-content {
+      .ant-select-status-error {
+        .ant-select-selector {
+          background-color: $primaryGrey !important;
+        }
+      }
+    }
     .public-email-container {
       margin-top: -18px;
       margin-bottom: 28px;
