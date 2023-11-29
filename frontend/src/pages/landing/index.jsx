@@ -809,7 +809,7 @@ const LatestNews = () => {
                     <Link href={`/post/${item.id}-${item.slug}`}>
                       <Image
                         alt={item.title}
-                        src={item.cover.data.attributes.formats?.medium.url}
+                        src={item.cover.data?.attributes?.formats?.medium.url}
                         width={366}
                         height={220}
                       />
