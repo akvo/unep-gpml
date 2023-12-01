@@ -2,109 +2,110 @@ import { useRouter } from 'next/router'
 import { PageLayout } from '..'
 import { Trans, t } from '@lingui/macro'
 import { loadCatalog } from '../../../../translations/utils'
+import Button from '../../../../components/button'
 
 const slides = {
   en: {
     'south-africa':
-      'https://docs.google.com/presentation/d/e/2PACX-1vStiiUBS868lnH-O_XzkUCNC184oIolV2Y0gRAZzqZycaPAsuwb_tI76HQOds1J9ms9MmJHfHhzxAgb/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/1WmwNv_eh5p_-QxVIgdWX1gzHBnyBojVeK32HDUAj2DE/embed?start=false&loop=false&delayms=60000',
     'cote-d-ivoire':
-      'https://docs.google.com/presentation/d/e/2PACX-1vQVadfNdI02za5qsVWmXWv7d_q3AFdQ9jDsGGNyXw-K_RJ_q_ibXpoC-bVZCmNu4A-u1PGWi7K5Q9yG/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/1_SYjBq_2D_9OmJVceP7z2AX6ZSvq-X1Sb0piHNDcuMU/embed?start=false&loop=false&delayms=60000',
     senegal:
-      'https://docs.google.com/presentation/d/e/2PACX-1vRgQy9_4FirFZwNRcMW0BP-YQYvn5fNS-xtbZfSTZfjKTPAhZZk2BbV8L3oFLuQF73YFkkLVBKaJHX1/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/16pZFQq5ao9rXw-E-KrLjtxMQYkk5FZc3MrbZyZo0x6k/embed?start=false&loop=false&delayms=60000',
     mauritius:
-      'https://docs.google.com/presentation/d/e/2PACX-1vQpG8noXcmdZy2vlwCf2yK5Lw3Jkxqfatv2dlLYpUFfPMfhZo54QfA2_w3EpTc-qr30TspuKZwTaFqr/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/1UMvU_6LU_YI-QTdfFstRTl1H1S3_3lugDPoA7G_fuHI/embed?start=false&loop=false&delayms=60000',
     peru:
-      'https://docs.google.com/presentation/d/e/2PACX-1vTVkldkpAgdAzCp79ADSb30n8iDayLEQc0-3BUplZ0GnMZ3DW5eCB1uk2dmCquD59F_R1Dm9k6yx4NC/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/1WYiT3u2QLfWVZS518C9UleJHuHZhX4q1fEmExH4mChQ/embed?start=false&loop=false&delayms=60000',
     ecuador:
-      'https://docs.google.com/presentation/d/e/2PACX-1vTH20K8vipB6rvsVWSfL8IcUGpoSAbzQAXfOgu6RQtk1iluZt3WSTAReTfegA041IS2zsLBzCpFJun2/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/1Vn_F3FpQmbRSJxePKLhkJqY9Dwv7H39g2oYwkAiwsSY/embed?start=false&loop=false&delayms=60000',
     'solomon-islands':
-      'https://docs.google.com/presentation/d/e/2PACX-1vTjIs8GKQCIgcynmcpMB_KCQAsdJIPh64LGyBqyGCWXy7hbpxH0M_duVBmvLlvgEEB26P2tppLlNJQN/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/1175u7vjzScZZkHNn5cj4CV7Mc4DleJP4yIJBBGgpniE/embed?start=false&loop=false&delayms=60000',
     cambodia:
-      'https://docs.google.com/presentation/d/e/2PACX-1vTNI5Efx1LJgL7LKgp5E_KisGYltIENRpbRx_YsFKeiSPKMBA5HYxqkDRSayz1PTSlAwtnXmndCgG_X/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/1Cag-t7fwx1uUuf0ayEtKzoNaErq8b96JSyu_3wLSHtw/embed?start=false&loop=false&delayms=60000',
     togo:
-      'https://docs.google.com/presentation/d/e/2PACX-1vStLc6SxPEGgRWpNdL_TNSp8R3_Yt_Brp_uBXEdojWjvJ1oi9Nty7eD6IKfiEyUBEgIEG6cr_xiR68a/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/1Ef-pMEYDFXpqO-jtDITIXGm34ywpv6JFO_kn85kNxJc/embed?start=false&loop=false&delayms=60000',
     guinea:
-      'https://docs.google.com/presentation/d/e/2PACX-1vTzhVpFWM8nPUft1HS7MCEVYRfVgIog70JuVc8nvS7rzcySg4gApBdswodpVPdgcLFNIDeaWbqF9fqU/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/1iOyiotW1IoGzZ9nQBlOtVEE-G0NhNPfUVPGoVotkfdQ/embed?start=false&loop=false&delayms=60000',
     'trinidad-&-tobago':
-      'https://docs.google.com/presentation/d/e/2PACX-1vSgzdVItZTbIxg3ZG1iESOb2e6vFcQITlhZg0BdyY02wnQlE5uguduYvjZATblEIzA5D5qMxFOJf0dF/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/18Lgq4XUsRULRdmRgVhvZl5KPyNKO3V-KFBtbLBaq2pw/embed?start=false&loop=false&delayms=60000',
     kiribati:
-      'https://docs.google.com/presentation/d/e/2PACX-1vSP1Kh5nZBH_e705sADB4afB9AMiY-yf-SuOHH9-0EAm-zp7r8KocH4xVy5bXGomDUsDgQNQg14kNLO/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/1b24FCounDz-xI1N4Pjcsr4jr05E9b-vN6SbuSYtdDjs/embed?start=false&loop=false&delayms=60000',
     'papua-new-guinea':
-      'https://docs.google.com/presentation/d/e/2PACX-1vRA2nVboE-6WOZ7Q-VsdkjKPalUFbvmX0RpLTkkiXYfLGvftrMia7XdSfTgIId46tIiEuRNu02hYIe2/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/1FV8Nmw9tZSHd3UYrNPcqWF21bDmo8co81y9-xShd-0s/embed?start=false&loop=false&delayms=60000',
     tuvalu:
-      'https://docs.google.com/presentation/d/e/2PACX-1vSDfazrRbE_J2505vN9szLrx0JLid3VCXnDBzRdgW4HLRtfdHT6wsaX9Utg2DLEBmG3ulrlnQ_M0_B_/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/1PgQgpSM4_71-k02Nl4GmNF31kgOfepEzqoi3sVeNNlU/embed?start=false&loop=false&delayms=60000',
     vanuatu:
-      'https://docs.google.com/presentation/d/e/2PACX-1vQFaWHLx8uelRgVzng-WRoXzk8wL420Nk8F6QYZ9h_h_3IBLSCbRptwTNvT4r6XxyQM5_gpRqJ_VLef/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/1L6h-1YnErb6ghP-xEVkViEPSdSynDr5aD5ZTGmxKQh0/embed?start=false&loop=false&delayms=60000',
     fiji:
-      'https://docs.google.com/presentation/d/e/2PACX-1vQqRwxNNVQP1Hq_2Mwg7ttGBtlGdz0rBCBpMY9iBPbf1psTI-T_dFGbvwktMavW8pAox9edoIfv7wFa/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/1Ao3F0mRpJIAkHc2cLD9HIFZ5QHK0vPzLPsl9pbMAMqk/embed?start=false&loop=false&delayms=60000',
   },
   es: {
     peru:
-      'https://docs.google.com/presentation/d/e/2PACX-1vR5ydGUbxHDmh0Jz4H3z8qzAqv2oOSCx23CJk7sYHjmCzhU6CD8e4mlHih1i830wBItht9ayDjhBSKb/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/1UzZ4lKaaHVPiHgH4yOgzGVOrvGyygLvu8weayVxJsSE/embed?start=false&loop=false&delayms=60000',
     ecuador:
-      'https://docs.google.com/presentation/d/e/2PACX-1vQzYwk2Pmc3AOdC6T9OOGq_UYK5mZXobOor8UcD9DO97x_-tKPQDWamE8tl9y4eC64hjOnn56szMBQe/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/1DrsCbGRCRvx-tBQOvZlMlBsn6cJxQhFhULx7ZMYa2ZQ/embed?start=false&loop=false&delayms=60000',
     cambodia:
-      'https://docs.google.com/presentation/d/e/2PACX-1vQs_HU8Jy5-Kh9tcZLNwq8pHFKgE9ZLefgMMg5QjZcn5yKeML65WoqheeklPuIU5aJx8V4pgT6_uZtP/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/1YRiBUoB2D5L5FKK2LYLb_3vM1i4qB2EgseesenVNuE8/embed?start=false&loop=false&delayms=60000',
     'cote-d-ivoire':
-      'https://docs.google.com/presentation/d/e/2PACX-1vRn35Z8KO6LZjP01A8IoYCBr2Xoqbonbx-wDumyu4WOD5L5qh4brb3Q1W-Z4nncR3HXZySibyAYhfiS/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/15An48xWg9JxgQb-oPLfE0P-F0_3mYwBpMa81WhXQ5Bk/embed?start=false&loop=false&delayms=60000',
     fiji:
-      'https://docs.google.com/presentation/d/e/2PACX-1vTELjEYA2SN5eESXByg93Xbj4Lgr2L3QgHmQfL6j10NvQorC_TBfHQBljZZtj7zEUkOzc5V8EO-Cff1/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/1qkJi6MW5WBf5iUDmtcj0wtWNrpyWLwilIj6btIwfOAc/embed?start=false&loop=false&delayms=60000',
     guinea:
-      'https://docs.google.com/presentation/d/e/2PACX-1vSccStzKa66VdBw1PmMzqFlPYDHLKvVeWk2RTSL8_HIRArY-rJyp2FfKMDsZCRssB0QUjULusgkFSGr/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/13nYqaCAdnvwN7G1Vve3mCSfFTshziJrOxFCY7P7cPFs/embed?start=false&loop=false&delayms=60000',
     kiribati:
-      'https://docs.google.com/presentation/d/e/2PACX-1vQj176VtMOYO8KKVOsOrCzB-DSzMnkcvRv93Z1GVux9TzBDOOJZc6IngmYBqDwfBr9DuBcltpErcWKd/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/1TB6lZw4RfeFNBG4MV20lYXA7JvHs_12LavNltgIarDs/embed?start=false&loop=false&delayms=60000',
     mauritius:
-      'https://docs.google.com/presentation/d/e/2PACX-1vSOrb0sDWz8V-ljIDZacC890Hvbt13n8NaMRih9G-VBnlZbayYPV9BDV_mR0ZuKIFaU2NHprP5Q6En-/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/1I_DOT3PfhUkGQguu1wqF0mDGjcEkKGB_tJ5ZR45q87Y/embed?start=false&loop=false&delayms=60000',
     'papua-new-guinea':
-      'https://docs.google.com/presentation/d/e/2PACX-1vT4rOpOevh3z1BQENVLGEgZrQwnoohHD9BB-y9NuJll66e2g9EwU0SPdsdJGgDAA1wLtiWaCAsEVW3h/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/1klVH4cpTLOz68E5gZksHbF-ohnBLEobE8EVPoz1CNAM/embed?start=false&loop=false&delayms=60000',
     senegal:
-      'https://docs.google.com/presentation/d/e/2PACX-1vRIVwCUsvWuhEJMZqHxpY1ZSMrxRdHtK2MyhXqKe6n8niqwilepRQnuNZp4GwFViHBJPF8Hnewy4i9t/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/1IZXWgCVsuusInsYH07OABt8iHA7DQTUoJXm9v-/embed?start=false&loop=false&delayms=60000',
     'solomon-islands':
-      'https://docs.google.com/presentation/d/e/2PACX-1vR3mhXpryHUkJMh2rp95GqIseILVMQ5hLrwwl0luiGTnvY2YfcwB5AUMiI3BZIl3nL_M3Crc0AHFYW8/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/1WGkfWktVzejIDsJ0WcBO_T4v1PeGxvnx3ktMNUClVo4/embed?start=false&loop=false&delayms=60000',
     'south-africa':
-      'https://docs.google.com/presentation/d/e/2PACX-1vRkAqfcz5q8gfp_SIE0Su7CmvhSf0AKXZ47ONfeRxavGj5ZZypzUrQGjZQUuie4oMKO0LkvxV0sNg84/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/1BFT4vjPysB-TdmHPxxaoDZ4qhT3wwfwlIrowVhTbBFg/embed?start=false&loop=false&delayms=60000',
     togo:
-      'https://docs.google.com/presentation/d/e/2PACX-1vQb04m9RWk3lLbcYemnxSLfGyK8PBqeqx9O72AMQv-XN4fQLeyVyunai1oPE-CuR6IAosa1JP4kwozC/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/1Q4rSm4xguMc_qQdRXeAKza611s2O6z2ROCJAVvA1n30/embed?start=false&loop=false&delayms=60000',
     'trinidad-&-tobago':
-      'https://docs.google.com/presentation/d/e/2PACX-1vRlGnG7bmDaHohJDlpTOSQ8btXewu6QXD_kZopDc8DivyjDC-oVsB25Ocjef9YlQE7GdmxOrs3hdbn4/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/1m-Rjfl9f0M2cHTKiv2MnkUN8KZS14osMXOccbkr5sac/embed?start=false&loop=false&delayms=60000',
     tuvalu:
-      'https://docs.google.com/presentation/d/e/2PACX-1vStH8XrQCnUchj-ZPz039gz9dEdXgnyH3_RR4q7uXkYSZvOAmfLviUtWPwAJlW8kcgFut2iH2RW5RMC/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/1lucY98UD957MXWHGXle4wkEX0yvOrewLUnQgVDEwcVY/embed?start=false&loop=false&delayms=60000',
     vanuatu:
-      'https://docs.google.com/presentation/d/e/2PACX-1vTBd2EHrwS_6eAvp7tKpRvVTcHEFTgS-uEpDTGrI5X0gDoe7JtnYFYecrU2O9H5oU4rGV7ad12I5kaL/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/1RcmixBoPTFIgBHMSR6lomKMFCZQAAOlWpZfzRdkLcEQ/embed?start=false&loop=false&delayms=60000',
   },
   fr: {
     senegal:
-      'https://docs.google.com/presentation/d/e/2PACX-1vQKGg1hUeUQlR838Vv2sLKuf1-UGmDp9koPpwEqZ9LvSUF-9bm8DWyBwx7tTepEnPQkNZDkNA1HWpk2/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/1oMYGhIHO6iGcCVgQNcM9-TP8uc-LOInUe2d--9DwB78/embed?start=false&loop=false&delayms=60000',
     'cote-d-ivoire':
-      'https://docs.google.com/presentation/d/e/2PACX-1vT9tm13MwhUjnHF6VtmXcHDZqQ3e-rYukhewD7eU_r4XAIp_0-t2Bp8H2zV4uqQMesNjqAMBk5cc1TH/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/11KG5xFvnxAzxRv8lBsF3R4ZeHRbvdCCuHYjmwnoAHIw/embed?start=false&loop=false&delayms=60000',
     cambodia:
-      'https://docs.google.com/presentation/d/e/2PACX-1vTNC78AI8DolrLGRn_85uq9H2YFOIHl4L02eYKR6Sp2K-bAUU3HgplPvuoJF2-LIk1tdb20YIcgEZ39/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/13TK9hsZiEysSInDqCaF3ylcVUywd8hon6E0oB7W9vhc/embed?start=false&loop=false&delayms=60000',
     ecuador:
-      'https://docs.google.com/presentation/d/e/2PACX-1vRPQ5EHvCwgvk0hnDSHFmcX5KF2MSMM76iZbYd7b27SZVh_E60IFXX6SarHYnz2qj906ZjAJ0_Ang5o/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/1NpMiVBsMN0adJSHJJ83lMeOUb0pBIKm68JZqBFqy0wI/embed?start=false&loop=false&delayms=60000',
     fiji:
-      'https://docs.google.com/presentation/d/e/2PACX-1vQ7jSQG3H1ONx8tpotB6hjMuVgjIZ-Fk-WTHWid-15-5PC1K99L0jYRBqCdbUmjYx1rYpVeQCyiyv53/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/127979AJpDklJKJhNVnIuEILfex2pY6xTu-Ejm7icr_Q/embed?start=false&loop=false&delayms=60000',
     guinea:
-      'https://docs.google.com/presentation/d/e/2PACX-1vST77kheG2v_xEJEzh8i3GEM5d_yWhyvm2WULPq-ubfu11xZJG6bP6m54fvmSVXZRTo9TODtQCDkHz5/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/1_TebR7j1Z9SAF9s-vajddknkNbvAVY_k3AbwvWARzrs/embed?start=false&loop=false&delayms=60000',
     kiribati:
-      'https://docs.google.com/presentation/d/e/2PACX-1vSRTUMXo7qVD2KliFpOv-cIj_NzDaAtgCQ_no3WF5TcmwzrJSvp9Xsd4hNtoODA4k79YX3CDoYtAbwr/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/1MfuebPxxWmKyU2Wcnhe2I0etEHmef6vTRXahL9acEI0/embed?start=false&loop=false&delayms=60000',
     mauritius:
-      'https://docs.google.com/presentation/d/e/2PACX-1vR_Zxll65rJt2m9ifC2ADO57970lRWae86oj5L8vB1LMg7zENny5fOslz2IUHyXHLq51284VG6ZJxWJ/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/1BkD5v-iPcYjgHEW3ZrZsnCMs3GG32YnNV1uk_jkTV0k/embed?start=false&loop=false&delayms=60000',
     'papua-new-guinea':
-      'https://docs.google.com/presentation/d/e/2PACX-1vSRaS2HFxpJrhj36vEuEBmV8HG-wMglf8ONAzlSyMsvH0J_0acG90aP2HENkaHsv1OSWZGXrDJkJbhd/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/102RnsZutU38xxaxkQQypEw7svmUU7kKA29T91GQfdAA/embed?start=false&loop=false&delayms=60000',
     peru:
-      'https://docs.google.com/presentation/d/e/2PACX-1vQRtKyYWsxbFYo-VNMYQ0ZuL1WMMW5R_iX7fkcd36YRO3C8n7ZDgTW0RDTCmsaDasRC3u0jrEW4Qjll/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/1moiiGmIKuAYgd3PZRsyV4cu-YDyPEgQXrHrb5yD9fu8/embed?start=false&loop=false&delayms=60000',
     'solomon-islands':
-      'https://docs.google.com/presentation/d/e/2PACX-1vTGMGR5pXOheuwtu1AjEFZciTdq1T9K72zR01PSr2F8UMQgWic69shAHga817HggXz4_jkiy62UvHAt/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/1LJbbW_W4hY0OVNs1HdW_Dzg4CQ181WPIvGaP_dGKO6Q/embed?start=false&loop=false&delayms=60000',
     'south-africa':
-      'https://docs.google.com/presentation/d/e/2PACX-1vSEj75FgWYfcmmBLIQ2K4MixMIPGtmtfUzYWYVyPufaLNZsGtWiLkJ8qf6ELR3RVbRZkZQKJXt6UYxi/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/135SDrHh1ngmFNVHmRP7JMAAl4dnka3knfFax4yLl5OA/embed?start=false&loop=false&delayms=60000',
     togo:
-      'https://docs.google.com/presentation/d/e/2PACX-1vTQhyvdY4MWgu37SaFU2dmu-WsZ86fXA3RKQuFKEiOn7CB8wrXZNNAEeEQkl8xqHra5cJOCUN_fBFoA/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/1n8tUfz0hHLTLq690ix2siXfzAYZXId4u_by0r0hBmow/embed?start=false&loop=false&delayms=60000',
     'trinidad-&-tobago':
-      'https://docs.google.com/presentation/d/e/2PACX-1vTeEh7t6HQrFY3Frz-2unPGjbI6SD3zvkOHDSgkzsMeyr8_QE9C5BBJOr1F7yxydZeXX9lDCR7ioYFm/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/1i2rpy9vYhuMNLnuhVqAPdyyKU058Z678q3sZTphcKbA/embed?start=false&loop=false&delayms=60000',
     tuvalu:
-      'https://docs.google.com/presentation/d/e/2PACX-1vQhzNGGsSBCY_WXneI_NSAge--FOh29hU58Co4g3o2syDxcRmuOAtGu6WH9O3pZReq4aRTe3bKIyQkK/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/1VtYLvKeRmMYpVxF5urKYBs2Njg2_ljeqtjEDyXhy2RY/embed?start=false&loop=false&delayms=60000',
     vanuatu:
-      'https://docs.google.com/presentation/d/e/2PACX-1vRZftsffIfRd_iawsAC7lUSSMZbDIUVIaowXZVp127l4nx9_w84GhOF6WntLVJLIHKd0LCEUCwGTygJ/embed?start=false&loop=false&delayms=60000',
+      'https://docs.google.com/presentation/d/14EnATU9J2vgOFqgsgsRAbeqI9v7ydWOIkTIrCY0b7V8/embed?start=false&loop=false&delayms=60000',
   },
 }
 
@@ -114,6 +115,7 @@ const View = () => {
   const slideURL = slides[router.locale].hasOwnProperty(country)
     ? slides[router.locale][country]
     : slides.en[country]
+  const match = slideURL.match(/\/d\/(.+?)\//)
   return (
     <>
       <h4 className="caps-heading-m">
@@ -125,6 +127,14 @@ const View = () => {
       <p>
         <Trans>description-intro-6-national-plastic-strategy</Trans>
       </p>
+      <a
+        href={`https://docs.google.com/presentation/d/${match[1]}/export/pptx`}
+        target="_blank"
+      >
+        <Button size="small" type="link">
+          Download
+        </Button>
+      </a>
       <iframe
         src={slideURL}
         frameborder="0"
