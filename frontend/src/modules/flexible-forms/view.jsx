@@ -1394,14 +1394,16 @@ const FlexibleForms = ({
                                   </div>
                                   <div className="info-icon-container">
                                     <h2>{name}</h2>
-                                    <Tooltip
-                                      placement="top"
-                                      title={<Trans id={item.desc.id} />}
-                                    >
-                                      <div className="info-icon-wrapper">
-                                        <img src="/i-blue.png" />
-                                      </div>
-                                    </Tooltip>
+                                    {item.code !== 'case_study' && (
+                                      <Tooltip
+                                        placement="top"
+                                        title={<Trans id={item?.desc?.id} />}
+                                      >
+                                        <div className="info-icon-wrapper">
+                                          <img src="/i-blue.png" />
+                                        </div>
+                                      </Tooltip>
+                                    )}
                                   </div>
                                 </div>
                               </Radio.Button>
