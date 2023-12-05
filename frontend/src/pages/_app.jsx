@@ -278,23 +278,6 @@ function MyApp({ Component, pageProps }) {
         <meta name="theme-color" content="#000000" />
         <meta name="description" content="GPML Digital Platform" />
         <title>UNEP GPML Digital Platform</title>
-        {loadScript && (
-          <>
-            <Script
-              src="https://www.googletagmanager.com/gtag/js?id=G-NCNKDZ0R29"
-              strategy="afterInteractive"
-            />
-            <Script id="google-analytics" strategy="afterInteractive">
-              {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){window.dataLayer.push(arguments);}
-          gtag('js', new Date());
-
-          gtag('config', 'G-NCNKDZ0R29');
-        `}
-            </Script>
-          </>
-        )}
       </Head>
       <Auth0Provider
         domain={domain}
@@ -306,6 +289,23 @@ function MyApp({ Component, pageProps }) {
         }
       >
         <I18nProvider i18n={i18n}>
+          {loadScript && (
+            <>
+              <Script
+                src="https://www.googletagmanager.com/gtag/js?id=G-NCNKDZ0R29"
+                strategy="afterInteractive"
+              />
+              <Script id="google-analytics" strategy="afterInteractive">
+                {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){window.dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-NCNKDZ0R29');
+        `}
+              </Script>
+            </>
+          )}
           {getLayout(<Component {...pageProps} {...componentProps} />)}
         </I18nProvider>
       </Auth0Provider>
