@@ -792,7 +792,7 @@ const LatestNews = () => {
                       {/* <span className={`badge ${badgeColor?.[dx]}`}>
                         {item.badge}
                       </span> */}
-                      {item.publishedAt && (
+                      {/* {item.publishedAt && (
                         <span className="date">
                           <span>
                             <span className="h5 bold">
@@ -804,7 +804,7 @@ const LatestNews = () => {
                             </span>
                           </span>
                         </span>
-                      )}
+                      )} */}
                     </div>
                     <Link href={`/post/${item.id}-${item.slug}`}>
                       <Image
