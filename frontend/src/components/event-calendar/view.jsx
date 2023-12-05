@@ -29,7 +29,6 @@ import { Trans } from '@lingui/macro'
 import Button from '../../components/button'
 
 const EventCalendar = ({ isAuthenticated, setLoginVisible }) => {
-  const history = useHistory()
   const router = useRouter()
   const path = router.pathname
   const dateNow = moment().format('YYYY/MM/DD')
@@ -155,10 +154,13 @@ const EventCalendar = ({ isAuthenticated, setLoginVisible }) => {
             <Button
               onClick={() => {
                 if (isAuthenticated) {
-                  history.push({
-                    pathname: '/flexible-forms',
-                    state: { type: 'event_flexible', label: 'Event' },
-                  })
+                  router.push(
+                    {
+                      pathname: '/flexible-forms',
+                      query: { type: 'event_flexible', label: 'Event' },
+                    },
+                    '/flexible-forms'
+                  )
                 } else {
                   setLoginVisible(true)
                 }
@@ -187,7 +189,7 @@ const EventCalendar = ({ isAuthenticated, setLoginVisible }) => {
             )}
             {event &&
               event.length > 0 &&
-              renderEventContent(history, event, eventCarousel, onThisDayText)}
+              renderEventContent(router, event, eventCarousel, onThisDayText)}
           </div>
           <div className="calendar">
             <Calendar
@@ -209,7 +211,7 @@ const EventCalendar = ({ isAuthenticated, setLoginVisible }) => {
   )
 }
 
-const renderEventContent = (history, event, eventCarousel, onThisDayText) => {
+const renderEventContent = (router, event, eventCarousel, onThisDayText) => {
   return (
     <>
       {event.length > 0 && (
@@ -264,7 +266,7 @@ const renderEventContent = (history, event, eventCarousel, onThisDayText) => {
               <Card
                 key={`event-${id}-${i}`}
                 className="item"
-                onClick={() => history.push(`/event/${id}`)}
+                onClick={() => router.push(`/event/${id}`)}
               >
                 <div className="item-meta">
                   <div className="date">{dateText}</div>

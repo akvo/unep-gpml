@@ -298,11 +298,11 @@ const FlexibleForms = ({
   }, [])
 
   useEffect(() => {
-    if (type && status !== 'edit') {
-      setMainType(type)
-      // setLabel(state?.state?.label);
+    if (state && state?.type && status !== 'edit') {
+      setMainType(state?.type)
+      setLabel(state?.label)
     }
-  }, [type])
+  }, [state])
 
   useEffect(() => {
     if (!isAuthenticated && loadingProfile) {
@@ -313,7 +313,12 @@ const FlexibleForms = ({
   useEffect(() => {
     if (profile && profile.role === 'ADMIN') {
       UIStore.update((e) => {
-        e.mainContentType = [...e.mainContentType, caseStudy]
+        const findCaseStudy = mainContentType.find(
+          (item) => item.code === 'case_study'
+        )
+        if (!findCaseStudy) {
+          e.mainContentType = [...e.mainContentType, caseStudy]
+        }
       })
     }
   }, [profile])
@@ -970,7 +975,6 @@ const FlexibleForms = ({
 
   const handleMainContentType = (e) => {
     setCapacityBuilding(false)
-    console.log(e)
     if (e.target.value === 'capacity_building') {
       setMainType(e.target.value)
       const search = mainContentType.find(
