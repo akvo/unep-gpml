@@ -280,12 +280,14 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
               src="/globe.jpg"
               width={1022}
               height={770}
+              alt="hero"
             />
             <Image
               className="hide-desktop"
               src="/globe-mobile.jpg"
               width={width}
               height={width / 0.77}
+              alt="hero"
             />
             <div
               className="labels"
@@ -715,8 +717,8 @@ const ActNow = () => {
             pagination={pagination}
             modules={[Pagination]}
           >
-            {items.map((item) => (
-              <SwiperSlide>
+            {items.map((item, index) => (
+              <SwiperSlide key={index}>
                 <ActNowCard item={item} />
               </SwiperSlide>
             ))}
@@ -733,8 +735,8 @@ const ActNowCard = ({ item }) => (
     <h2 className="h-m">{item?.title}</h2>
     <p className="p-s">{item?.content}</p>
     <div className={item.links.lenght === 1 ? 'monolink' : 'multilink'}>
-      {item.links.map((link) => (
-        <Link href={link.url}>
+      {item.links.map((link, index) => (
+        <Link href={link.url} key={index}>
           <Button type="link" withArrow>
             {link.label}
           </Button>
@@ -903,8 +905,8 @@ const Features = () => {
             pagination={pagination}
             modules={[Pagination]}
           >
-            {items.map((item) => (
-              <SwiperSlide>
+            {items.map((item, index) => (
+              <SwiperSlide key={index}>
                 <FeatureCard item={item} />
               </SwiperSlide>
             ))}

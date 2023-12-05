@@ -232,6 +232,7 @@ function MyApp({ Component, pageProps }) {
 
   useEffect(() => {
     const host = window?.location?.hostname
+    console.log(host)
     if (host === 'digital.gpmarinelitter.org') {
       setLoadScript(true)
     }
