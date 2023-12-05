@@ -14,6 +14,7 @@ import { uniqBy, sortBy } from 'lodash'
 import { withNewLayout } from '../layouts/new-layout'
 import { I18nProvider } from '@lingui/react'
 import { useLinguiInit } from '../translations/utils'
+import Script from 'next/script'
 
 function MyApp({ Component, pageProps }) {
   const i18n = useLinguiInit(pageProps.i18n)
@@ -31,6 +32,7 @@ function MyApp({ Component, pageProps }) {
     loadingProfile: true,
     loginVisible: false,
   })
+  const [loadScript, setLoadScript] = useState(false)
 
   const {
     _expiresAt,
@@ -228,6 +230,13 @@ function MyApp({ Component, pageProps }) {
     })()
   }, [idToken, authResult])
 
+  useEffect(() => {
+    const host = window?.location?.hostname
+    if (host === 'digital.gpmarinelitter.org') {
+      setLoadScript(true)
+    }
+  }, [])
+
   const domain =
     typeof window !== 'undefined'
       ? window.__ENV__.auth0.domain.replace(/(https:\/\/|\/)/gi, '')
@@ -268,6 +277,23 @@ function MyApp({ Component, pageProps }) {
         <meta name="theme-color" content="#000000" />
         <meta name="description" content="GPML Digital Platform" />
         <title>UNEP GPML Digital Platform</title>
+        {loadScript && (
+          <>
+            <Script
+              src="https://www.googletagmanager.com/gtag/js?id=G-NCNKDZ0R29"
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){window.dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-NCNKDZ0R29');
+        `}
+            </Script>
+          </>
+        )}
       </Head>
       <Auth0Provider
         domain={domain}
