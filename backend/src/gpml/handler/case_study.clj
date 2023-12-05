@@ -141,9 +141,11 @@
 
 (defmethod ig/init-key :gpml.handler.case-study/post-params
   [_ _]
-  {:body (-> dom.case-study/CaseStudy
-             (util.malli/dissoc
-              [:id :created_by :created :last_modified_at :reviewed_at :reviewed_by :review_status]))})
+  {:body [:and
+          (-> dom.case-study/CaseStudy
+              (util.malli/dissoc
+               [:id :created_by :created :last_modified_at :reviewed_at :reviewed_by :review_status]))
+          handler.geo/api-geo-coverage-validator-schema]})
 
 (defmethod ig/init-key :gpml.handler.case-study/post-responses
   [_ _]

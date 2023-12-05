@@ -158,61 +158,64 @@
             (r/server-error (assoc-in response [:body :error-details :error] (.getMessage e)))))))))
 
 (def ^:private post-params
-  (into [:map
-         [:name string?]
-         [:year_founded {:optional true} integer?]
-         [:organisation_type {:optional true}
-          [:enum "Established Company", "Research Lab", "Academic Institution",
-           "Startup", "Non-Profit Org", "Partnerships"]]
-         [:development_stage {:optional true}
-          [:enum "In market", "Scale up", "Prototype", "Pilot"
-           "Development", "Research"]]
-         [:country {:optional true} integer?]
-         [:geo_coverage_type
-          [:enum "global", "national", "transnational",
-           "sub-national"]]
-         [:geo_coverage_value_subnational_city {:optional true} string?]
-         [:image {:optional true} [:fn (comp util/base64? util/base64-headless)]]
-         [:thumbnail {:optional true} [:fn (comp util/base64? util/base64-headless)]]
-         [:logo {:optional true} string?]
-         [:tags {:optional true}
-          [:vector {:optional true}
-           [:map {:optional true}
-            [:id {:optional true} pos-int?]
-            [:tag string?]]]]
-         [:url {:optional true} string?]
-         [:info_docs {:optional true} string?]
-         [:related_content {:optional true}
-          [:vector {:optional true}
-           [:map {:optional true}
-            [:id [:int]]
-            [:type (apply conj [:enum] dom.types/resources-types)]]]]
-         [:sub_content_type {:optional true} string?]
-         [:headquarter {:optional true} string?]
-         [:document_preview {:optional true} boolean?]
-         [:entity_connections {:optional true}
-          [:vector {:optional true}
-           [:map
-            [:entity int?]
-            [:role
-             [:enum "owner" "implementor" "partner" "donor"]]]]]
-         [:individual_connections {:optional true}
-          [:vector {:optional true}
-           [:map
-            [:stakeholder int?]
-            [:role
-             [:enum "owner" "resource_editor"]]]]]
-         [:urls {:optional true}
-          [:vector {:optional true}
-           [:map [:lang string?] [:url [:string {:min 1}]]]]]
-         [:language string?]
-         [:capacity_building {:optional true} boolean?]
-         [:source {:default dom.types/default-resource-source
-                   :decode/string keyword
-                   :decode/json keyword}
-          (apply conj [:enum] dom.types/resource-source-types)]
-         auth/owners-schema]
-        handler.geo/api-geo-coverage-schemas))
+  [:and
+   (into
+    [:map
+     [:name string?]
+     [:year_founded {:optional true} integer?]
+     [:organisation_type {:optional true}
+      [:enum "Established Company", "Research Lab", "Academic Institution",
+       "Startup", "Non-Profit Org", "Partnerships"]]
+     [:development_stage {:optional true}
+      [:enum "In market", "Scale up", "Prototype", "Pilot"
+       "Development", "Research"]]
+     [:country {:optional true} integer?]
+     [:geo_coverage_type
+      [:enum "global", "national", "transnational",
+       "sub-national"]]
+     [:geo_coverage_value_subnational_city {:optional true} string?]
+     [:image {:optional true} [:fn (comp util/base64? util/base64-headless)]]
+     [:thumbnail {:optional true} [:fn (comp util/base64? util/base64-headless)]]
+     [:logo {:optional true} string?]
+     [:tags {:optional true}
+      [:vector {:optional true}
+       [:map {:optional true}
+        [:id {:optional true} pos-int?]
+        [:tag string?]]]]
+     [:url {:optional true} string?]
+     [:info_docs {:optional true} string?]
+     [:related_content {:optional true}
+      [:vector {:optional true}
+       [:map {:optional true}
+        [:id [:int]]
+        [:type (apply conj [:enum] dom.types/resources-types)]]]]
+     [:sub_content_type {:optional true} string?]
+     [:headquarter {:optional true} string?]
+     [:document_preview {:optional true} boolean?]
+     [:entity_connections {:optional true}
+      [:vector {:optional true}
+       [:map
+        [:entity int?]
+        [:role
+         [:enum "owner" "implementor" "partner" "donor"]]]]]
+     [:individual_connections {:optional true}
+      [:vector {:optional true}
+       [:map
+        [:stakeholder int?]
+        [:role
+         [:enum "owner" "resource_editor"]]]]]
+     [:urls {:optional true}
+      [:vector {:optional true}
+       [:map [:lang string?] [:url [:string {:min 1}]]]]]
+     [:language string?]
+     [:capacity_building {:optional true} boolean?]
+     [:source {:default dom.types/default-resource-source
+               :decode/string keyword
+               :decode/json keyword}
+      (apply conj [:enum] dom.types/resource-source-types)]
+     auth/owners-schema]
+    handler.geo/api-geo-coverage-schemas)
+   handler.geo/api-geo-coverage-validator-schema])
 
 (defmethod ig/init-key :gpml.handler.technology/post-params [_ _]
   post-params)
