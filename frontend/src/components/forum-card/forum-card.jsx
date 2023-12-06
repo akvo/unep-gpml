@@ -53,14 +53,22 @@ const ForumTitle = ({
   name: channelName,
   t: channelType,
   className = null,
-}) => (
-  <div className={classNames(styles.headingClass, className)}>
-    <span className={styles.forumType}>
-      {channelType === 'p' ? t`private ` : t`public `} <Trans>channel</Trans>
-    </span>
-    <h5 className={styles.title}>{channelName?.replace(/[-_]/g, ' ')}</h5>
-  </div>
-)
+  ...props
+}) => {
+  console.log(props)
+  return (
+    <div className={classNames(styles.headingClass, className)}>
+      <span className={styles.forumType}>
+        {channelType === 'p' ||
+        props.customFields?.hasOwnProperty('psCountryIsoCodeA2')
+          ? t`private `
+          : t`public `}{' '}
+        <Trans>channel</Trans>
+      </span>
+      <h5 className={styles.title}>{channelName?.replace(/[-_]/g, ' ')}</h5>
+    </div>
+  )
+}
 
 const ForumHStack = ({ children, className }) => (
   <div className={classNames(styles.forumClass, className)}>{children}</div>

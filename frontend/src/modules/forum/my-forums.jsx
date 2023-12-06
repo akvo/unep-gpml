@@ -8,6 +8,7 @@ import api from '../../utils/api'
 import styles from './forum.module.scss'
 import { ChatStore, UIStore } from '../../store'
 import useLocalStorage from '../../utils/hooks/use-storage'
+import { Trans, t } from '@lingui/macro'
 
 export const getMyForumsApi = async (successCallback, errorCallback) => {
   try {
@@ -126,7 +127,11 @@ const MyForums = ({ handleOnView }) => {
                 <div className="flex my-forums">
                   <div className="channel my-forums">
                     <span className={styles.forumType}>
-                      {item.t === 'p' ? 'private ' : 'public '}channel
+                      {item.channelType === 'p' ||
+                      item.customFields?.hasOwnProperty('psCountryIsoCodeA2')
+                        ? t`private `
+                        : t`public `}{' '}
+                      <Trans>channel</Trans>
                     </span>
                     <h5>{item.name?.replace(/[-_]/g, ' ')}</h5>
                   </div>
@@ -149,7 +154,7 @@ const MyForums = ({ handleOnView }) => {
                                 setOpenPopover(null)
                               }}
                             >
-                              View Details
+                              <Trans>View Details</Trans>
                             </Button>
                           </li>
                           <li>
@@ -157,7 +162,7 @@ const MyForums = ({ handleOnView }) => {
                               type="link"
                               onClick={() => handleOnLeave(item)}
                             >
-                              Leave
+                              <Trans>Leave</Trans>
                             </Button>
                           </li>
                         </ul>
@@ -170,7 +175,9 @@ const MyForums = ({ handleOnView }) => {
                 </div>
                 <div className="flex">
                   <div className="last-message">
-                    <span className="label">Last message</span>
+                    <span className="label">
+                      <Trans>Last message</Trans>
+                    </span>
                     <p className="p-m value" suppressHydrationWarning>
                       {moment(item.lm).fromNow()}
                     </p>
@@ -181,7 +188,7 @@ const MyForums = ({ handleOnView }) => {
                       withArrow="link"
                       onClick={() => goToChannel(item)}
                     >
-                      Chat
+                      <Trans>Chat</Trans>
                     </Button>
                   </div>
                 </div>
