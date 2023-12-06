@@ -254,6 +254,20 @@ const NestedLayout = ({ children }) => {
             </div>
           </div>
           <div className="steps">
+            <div
+              className={classNames('step forum', {
+                selected: router.pathname === '/workspace/[slug]/forum',
+              })}
+            >
+              <Link href={`/workspace/${router.query?.slug}/forum`}>
+                <div className="stephead topsection">
+                  <Forum />
+                  <div className="label">
+                    <Trans>Forum</Trans>
+                  </div>
+                </div>
+              </Link>
+            </div>
             {psSteps.map((step) => (
               <div
                 className={classNames('step', {
@@ -321,20 +335,6 @@ const NestedLayout = ({ children }) => {
                 )}
               </div>
             ))}
-            <div
-              className={classNames('step forum', {
-                selected: router.pathname === '/workspace/[slug]/forum',
-              })}
-            >
-              <Link href={`/workspace/${router.query?.slug}/forum`}>
-                <div className="stephead topsection">
-                  <Forum />
-                  <div className="label">
-                    <Trans>Forum</Trans>
-                  </div>
-                </div>
-              </Link>
-            </div>
           </div>
         </div>
       </div>
