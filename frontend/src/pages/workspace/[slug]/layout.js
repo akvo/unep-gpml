@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import { message } from 'antd'
 import { Pointer, Check, Forum } from '../../../components/icons'
@@ -63,6 +63,7 @@ const NestedLayout = ({ children }) => {
   const pathSlugs = [...router.route.substring(1).split('/'), '']
   const { slug, step: stepURL } = router.query
   const profile = UIStore.useState((s) => s.profile)
+  const domRef = useRef()
 
   const stepsDict = useStepsDict()
 
@@ -235,10 +236,18 @@ const NestedLayout = ({ children }) => {
     getPlasticStrategy()
   }, [getPlasticStrategy])
 
+  useEffect(() => {
+    document.addEventListener('scroll', () => {
+      let diffY = 90 - window.scrollY
+      if (diffY < 0) diffY = 0
+      domRef.current.style.height = `calc(100vh - ${diffY}px)`
+    })
+  }, [])
+
   return (
     <div className={styles.plasticStrategyView}>
       <div className={styles.sidebar}>
-        <div className="sticky">
+        <div className="sticky" ref={domRef}>
           <div className="head">
             <div className="caps-heading-s">
               <Trans>plastic strategy</Trans>
