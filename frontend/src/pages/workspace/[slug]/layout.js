@@ -240,7 +240,9 @@ const NestedLayout = ({ children }) => {
     document.addEventListener('scroll', () => {
       let diffY = 90 - window.scrollY
       if (diffY < 0) diffY = 0
-      domRef.current.style.height = `calc(100vh - ${diffY}px)`
+      if (domRef.current?.style) {
+        domRef.current.style.height = `calc(100vh - ${diffY}px)`
+      }
     })
   }, [])
 
