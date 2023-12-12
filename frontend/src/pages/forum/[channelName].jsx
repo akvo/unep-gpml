@@ -137,8 +137,9 @@ const ForumView = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
     isFetched: false,
   })
   const router = useRouter()
-  const { channelName, t: channelType } = router.query
+  const { channelName, t: channelTypeParam } = router.query
   const allForums = ChatStore.useState((s) => s.allForums)
+  const channelType = channelTypeParam || 'c' // set default type as public channel
 
   const currForum = useMemo(() => {
     return allForums.find(
