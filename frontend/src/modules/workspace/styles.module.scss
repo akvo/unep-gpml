@@ -51,7 +51,7 @@ $bg-green-primary: #10f9b7;
     :global {
       .gpml-section {
         margin-bottom: 20px;
-        margin-top: 20px;
+        padding-top: 80px;
       }
     }
     :global {
@@ -128,6 +128,62 @@ $bg-green-primary: #10f9b7;
               line-height: 23px;
               color: #18162f;
               box-shadow: none;
+            }
+          }
+        }
+      }
+      .recommend {
+        .content-container {
+          display: flex;
+          flex-direction: row;
+          border-radius: 40px;
+          padding-bottom: 20px;
+          background-image: url('/partnership-landing-desktop.jpg');
+          background-repeat: no-repeat;
+          background-size: cover;
+          @media screen and (max-width: $bpMobile) {
+            border-radius: 16px;
+            padding-bottom: 0px;
+            padding-top: 40px;
+            background-image: url('/partnership-mobile.jpg');
+            background-size: cover;
+          }
+          .partnership-content-wrapper {
+            padding: 70px 0px 70px 170px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            @media screen and (max-width: $bpMobile) {
+              padding: 25px;
+            }
+            h2 {
+              color: white;
+              font-weight: 600;
+              max-width: 661px;
+              @media screen and (max-width: $bpMobile) {
+                max-width: 230px;
+              }
+            }
+            p {
+              color: white;
+              max-width: 575px;
+              @media screen and (max-width: $bpMobile) {
+                font-size: 18px;
+                line-height: 28px;
+              }
+            }
+            .ant-btn {
+              width: fit-content !important;
+              @media screen and (max-width: $bpMobile) {
+                width: auto !important;
+              }
+            }
+            .ant-btn-link {
+              color: white;
+            }
+            .button-container {
+              display: flex;
+              gap: 10px;
             }
           }
         }

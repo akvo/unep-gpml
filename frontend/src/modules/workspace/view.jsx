@@ -228,114 +228,6 @@ const Workspace = ({ profile, isAuthenticated, setLoginVisible }) => {
               </Title>
             </div>
           )}
-          {profile && profile.org && !profile?.org?.isMember && (
-            <Row
-              className="bg-white gpml-section"
-              style={{ order: isFocal && 2 }}
-            >
-              <Col lg={12} sm={24}>
-                <div className="content-container">
-                  <p className="recommend-text">
-                    <Trans>RECOMMENDED</Trans>
-                  </p>
-                  <Title level={2}>GPML Partnership​</Title>
-                  <p className="registration-text">
-                    <Trans>
-                      Hello, It looks like your entity:{' '}
-                      <b>{profile?.org?.name},</b> is not yet part <br /> of the
-                      GPML partnership.
-                      <br /> If you are the focal point, submit your application
-                      below
-                    </Trans>
-                    <br />
-                    <br />
-                  </p>
-                  <div className="join-box">
-                    <div>
-                      <p>
-                        <Trans>
-                          By completing this form I confirm that I have the
-                          authorization to submit an application on behalf of
-                          this Entity to become a member of the Global
-                          Partnership on Marine Litter (GPML)​.
-                        </Trans>
-                        <br />
-                        <br />
-                      </p>
-                    </div>
-                    <div className="button-container">
-                      <Button
-                        type="primary"
-                        shape="round"
-                        withArrow
-                        onClick={() =>
-                          router.push(
-                            {
-                              pathname: '/entity-signup',
-                              query: { state: JSON.stringify(profile.org) },
-                            },
-                            '/entity-signup'
-                          )
-                        }
-                      >
-                        JOIN GPML
-                      </Button>
-                      {!isFocal && (
-                        <Button
-                          type="ghost"
-                          onClick={() => handleFocalPoint(profile?.org?.id)}
-                        >
-                          <Trans>I AM NOT THE FOCAL POINT</Trans>
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </Col>
-              <Col lg={12} sm={24}>
-                <div className="slider-container">
-                  <Carousel effect="fade">
-                    <div>
-                      <div className="slider-wrapper">
-                        <Avatar
-                          src="/auth/network.png"
-                          style={{
-                            borderRadius: 'initial',
-                            margin: '0 auto 40px auto',
-                            display: 'block',
-                            width: 160,
-                            height: 140,
-                          }}
-                        />
-                        <Title level={2}>
-                          <Trans>
-                            Tap into a global network of like-minded members​
-                          </Trans>
-                        </Title>
-                      </div>
-                    </div>
-                    <div>
-                      <div className="slider-wrapper">
-                        <Avatar
-                          src="/auth/network.png"
-                          style={{
-                            borderRadius: 'initial',
-                            margin: '0 auto 40px auto',
-                            display: 'block',
-                            width: 160,
-                            height: 140,
-                          }}
-                        />
-                        <Title level={2}>
-                          <Trans>Network with other stakeholders</Trans>
-                        </Title>
-                      </div>
-                    </div>
-                  </Carousel>
-                </div>
-              </Col>
-            </Row>
-          )}
           <div className="workspace-title container">
             <div className="caps-heading-m">
               <Trans>workspace</Trans>
@@ -426,6 +318,61 @@ const Workspace = ({ profile, isAuthenticated, setLoginVisible }) => {
               </ul>
             </div>
           </div>
+          {profile && profile.org && !profile?.org?.isMember && (
+            <Row className="gpml-section">
+              <Col lg={24}>
+                <div className="recommend">
+                  <div className="container content-container">
+                    <div className="partnership-content-wrapper">
+                      <h2 className="h-xxl">
+                        <Trans>GPML Partnership</Trans>
+                      </h2>
+                      <p className="h-m">
+                        <Trans>
+                          Submit an application for your organisation - Akvo
+                          Spain - to become part of the GPML.
+                        </Trans>
+                      </p>
+                      <p className="h-xs">
+                        <Trans>
+                          By proceeding to join the Global Partnership on
+                          Plastic Pollution & Marine Litter, you are confirming
+                          that you have the authorisation to submit this
+                          application on behalf of your organisation.
+                        </Trans>
+                      </p>
+                      <div className="button-container">
+                        <Button
+                          type="primary"
+                          size="large"
+                          withArrow
+                          onClick={() =>
+                            router.push(
+                              {
+                                pathname: '/entity-signup',
+                                query: { state: JSON.stringify(profile.org) },
+                              },
+                              '/entity-signup'
+                            )
+                          }
+                        >
+                          <Trans>Join Now</Trans>
+                        </Button>{' '}
+                        {!isFocal && (
+                          <Button
+                            type="link"
+                            onClick={() => handleFocalPoint(profile?.org?.id)}
+                          >
+                            <Trans>I AM NOT THE FOCAL POINT</Trans>
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Col>
+            </Row>
+          )}
           <div className="action-suggestions">
             <div className="container">
               <h2 className="h-xxl w-bold">
