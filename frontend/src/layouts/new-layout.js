@@ -364,7 +364,7 @@ const NewLayout = ({
       <Login visible={loginVisible} close={() => setLoginVisible(false)} />
       {/* iframe ROCKETCHAT */}
       <iframe
-        src={`${process.env.NEXT_PUBLIC_CHAT_API_DOMAIN_URL}/home?standalone=true&layout=embedded`}
+        src={`${process.env.NEXT_PUBLIC_CHAT_API_DOMAIN_URL}/home?layout=embedded`}
         width={'100%'}
         height={0}
         style={{
