@@ -20,6 +20,7 @@ import GpmlCircle from '../components/gpml-circle'
 import axios from 'axios'
 import { deepTranslate, getStrapiUrl } from '../utils/misc'
 import { changeLanguage } from '../translations/utils'
+import { storage } from '../utils/storage'
 
 const archia = localFont({
   src: [
@@ -142,6 +143,27 @@ const NewLayout = ({
 
     fetchData()
   }, [])
+
+  const handleOnLogoutRC = () => {
+    try {
+      const iFrame = document.querySelector('iframe')
+      iFrame.contentWindow.postMessage(
+        {
+          externalCommand: 'logout',
+        },
+        '*'
+      )
+    } catch (error) {
+      console.error('client error RC iframe', error)
+    }
+  }
+
+  const handleOnLogout = () => {
+    handleOnLogoutRC()
+    auth0Client.logout({
+      returnTo: window.location.origin,
+    })
+  }
 
   return (
     <>
@@ -285,14 +307,7 @@ const NewLayout = ({
                         >
                           <Trans>Profile</Trans>
                         </Menu.Item>
-                        <Menu.Item
-                          key="logout"
-                          onClick={() => {
-                            auth0Client.logout({
-                              returnTo: window.location.origin,
-                            })
-                          }}
-                        >
+                        <Menu.Item key="logout" onClick={handleOnLogout}>
                           <Trans>Logout</Trans>
                         </Menu.Item>
                       </Menu>
@@ -347,6 +362,17 @@ const NewLayout = ({
         )}
       </div>
       <Login visible={loginVisible} close={() => setLoginVisible(false)} />
+      {/* iframe ROCKETCHAT */}
+      <iframe
+        src={`${process.env.NEXT_PUBLIC_CHAT_API_DOMAIN_URL}/home?layout=embedded`}
+        width={'100%'}
+        height={0}
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          opacity: 0,
+        }}
+      />
     </>
   )
 }
