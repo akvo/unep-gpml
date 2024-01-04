@@ -12,6 +12,7 @@ import Button from '../../components/button'
 import Head from 'next/head'
 import { loadCatalog } from '../../translations/utils'
 import { Trans, t } from '@lingui/macro'
+import { isoA2 } from '../../modules/workspace/ps/config'
 
 const { Sider } = Layout
 const DynamicForumIframe = dynamic(
@@ -56,7 +57,6 @@ const ForumSidebar = ({
     setDiscussion(_discussion)
     goToIFrame(activeForum?.t, _discussion?.name)
   }
-  console.log(discussion)
 
   return (
     <div className={styles.detailSidebar}>
@@ -136,15 +136,19 @@ const ForumView = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
   const [activeForum, setActiveForum] = useState({
     isFetched: false,
   })
+  const [psFetched, setPSFetched] = useState(false)
   const router = useRouter()
-  const { channelName, t: channelType } = router.query
+  const { channelName: channelQuery, t: typeQuery } = router.query
+  const [channelName, queryString] = channelQuery?.split('?') || []
+  const queryParams = new URLSearchParams(queryString)
+  const channelType = typeQuery || queryParams.get('t')
   const allForums = ChatStore.useState((s) => s.allForums)
 
   const currForum = useMemo(() => {
     return allForums.find(
       (a) => a?.name === channelName && a?.t === channelType
     )
-  }, [allForums])
+  }, [allForums, channelName])
 
   const getDetailsChatApi = useCallback(async () => {
     try {
@@ -156,6 +160,7 @@ const ForumView = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
         setActiveForum({ ...currForum, ..._selected, isFetched: true })
       }
     } catch (error) {
+      setActiveForum({ ...currForum, isFetched: true })
       console.error('error details chat api:', error)
     }
   }, [activeForum, currForum])
@@ -191,7 +196,25 @@ const ForumView = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
         s.allForums = _allForums
       })
     }
-  }, [allForums])
+    if (
+      !psFetched &&
+      channelName &&
+      channelName?.indexOf('plastic-strategy') != -1
+    ) {
+      const [_, countrySlug] = channelName?.split('plastic-strategy-')
+      const countryISOA2 = isoA2?.[countrySlug]
+      const { data: psData } = await api.get(
+        `/plastic-strategy/${countryISOA2}`
+      )
+      setPSFetched(true)
+      ChatStore.update((s) => {
+        s.allForums = [
+          ...s.allForums,
+          { id: psData?.chatChannelId, name: channelName, t: 'c' },
+        ]
+      })
+    }
+  }, [allForums, channelName, psFetched])
 
   useEffect(() => {
     getAllForums()
