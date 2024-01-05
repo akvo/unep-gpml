@@ -42,6 +42,10 @@ const Forum = ({ isAuthenticated, setLoginVisible }) => {
     try {
       if (loading && allForums.length) {
         setLoading(false)
+        // reset discussion
+        ChatStore.update((s) => {
+          s.discussion = null
+        })
       }
       if (!allForums.length && loading) {
         const { data } = await api.get('/chat/channel/all')
