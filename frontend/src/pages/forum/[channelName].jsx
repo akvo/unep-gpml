@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { Avatar, Layout, List } from 'antd'
 import dynamic from 'next/dynamic'
@@ -12,7 +12,6 @@ import Button from '../../components/button'
 import Head from 'next/head'
 import { loadCatalog } from '../../translations/utils'
 import { Trans, t } from '@lingui/macro'
-import { isoA2 } from '../../modules/workspace/ps/config'
 
 const { Sider } = Layout
 const DynamicForumIframe = dynamic(
@@ -44,17 +43,14 @@ const goToIFrame = (type, path) => {
   }
 }
 
-const ForumSidebar = ({
-  currForum,
-  activeForum,
-  discussion,
-  setDiscussion,
-}) => {
+const ForumSidebar = ({ activeForum, discussion }) => {
   const router = useRouter()
-  const participants = currForum?.users || activeForum?.users || []
+  const participants = activeForum?.users || []
 
   const goToDiscussion = (_discussion) => {
-    setDiscussion(_discussion)
+    ChatStore.update((s) => {
+      s.discussion = _discussion
+    })
     goToIFrame(activeForum?.t, _discussion?.name)
   }
 
@@ -69,8 +65,8 @@ const ForumSidebar = ({
         >
           <Trans>Back to all Forums</Trans>
         </Button>
-        <h5>{currForum?.name?.replace(/[-_]/g, ' ')}</h5>
-        <p>{currForum?.description}</p>
+        <h5>{activeForum?.name?.replace(/[-_]/g, ' ')}</h5>
+        <p>{activeForum?.description}</p>
       </div>
       {activeForum?.discussions?.length > 0 && (
         <>
@@ -79,7 +75,6 @@ const ForumSidebar = ({
           </h6>
           <List
             className="discussions"
-            loading={!activeForum?.isFetched}
             dataSource={activeForum?.discussions}
             renderItem={(item) => {
               const active = discussion?.id === item?.id
@@ -132,44 +127,42 @@ const ForumSidebar = ({
 
 const ForumView = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
   const [loading, setLoading] = useState(true)
-  const [discussion, setDiscussion] = useState(null)
-  const [activeForum, setActiveForum] = useState({
-    isFetched: false,
-  })
-  const [psFetched, setPSFetched] = useState(false)
+  const [forumFetched, setForumFetched] = useState(false)
+  const [activeForum, setActiveForum] = useState(null)
   const router = useRouter()
   const { channelName: channelQuery, t: typeQuery } = router.query
   const [channelName, queryString] = channelQuery?.split('?') || []
   const queryParams = new URLSearchParams(queryString)
   const channelType = typeQuery || queryParams.get('t')
   const allForums = ChatStore.useState((s) => s.allForums)
-
-  const currForum = useMemo(() => {
-    return allForums.find(
-      (a) => a?.name === channelName && a?.t === channelType
-    )
-  }, [allForums, channelName])
+  const psForums = ChatStore.useState((s) => s.psForums)
+  const discussion = ChatStore.useState((s) => s.discussion)
 
   const getDetailsChatApi = useCallback(async () => {
+    const forums = [...allForums, ...psForums]
+    const findForum = forums.find(
+      (a) => a?.name === channelName && a?.t === channelType
+    )
+    if (!findForum?.id || forumFetched) {
+      return
+    }
     try {
-      if (!activeForum?.isFetched && currForum?.t && currForum?.id) {
-        const { data } = await api.get(
-          `/chat/channel/details/${currForum.id}?type=${currForum.t}`
-        )
-        const { users, ..._selected } = data || {}
-        setActiveForum({ ...currForum, ..._selected, isFetched: true })
-      }
+      setForumFetched(true)
+      const { data } = await api.get(
+        `/chat/channel/details/${findForum.id}?type=${channelType}`
+      )
+      const { users, ..._selected } = data || {}
+      setActiveForum({ ...findForum, ..._selected })
     } catch (error) {
-      setActiveForum({ ...currForum, isFetched: true })
       console.error('error details chat api:', error)
     }
-  }, [activeForum, currForum])
+  }, [activeForum, allForums, psForums, channelName, channelType, forumFetched])
 
   const goBackForum = () => {
-    if (activeForum?.t && activeForum?.name) {
-      goToIFrame(activeForum.t, activeForum.name)
-      setDiscussion(null)
-    }
+    goToIFrame(channelType, channelName)
+    ChatStore.update((s) => {
+      s.discussion = null
+    })
   }
 
   const handleOnDiscussCallback = (type = 'new', evt) => {
@@ -178,12 +171,10 @@ const ForumView = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
       evt.data.fname &&
       evt.data.fname !== evt.data.name
     ) {
-      setDiscussion({ ...evt.data, id: evt.data._id })
+      ChatStore.update((s) => {
+        s.discussion = { ...evt.data, id: evt.data._id }
+      })
     }
-    setActiveForum({
-      ...activeForum,
-      isFetched: false,
-    })
   }
 
   const getAllForums = useCallback(async () => {
@@ -196,25 +187,7 @@ const ForumView = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
         s.allForums = _allForums
       })
     }
-    if (
-      !psFetched &&
-      channelName &&
-      channelName?.indexOf('plastic-strategy') != -1
-    ) {
-      const [_, countrySlug] = channelName?.split('plastic-strategy-')
-      const countryISOA2 = isoA2?.[countrySlug]
-      const { data: psData } = await api.get(
-        `/plastic-strategy/${countryISOA2}`
-      )
-      setPSFetched(true)
-      ChatStore.update((s) => {
-        s.allForums = [
-          ...s.allForums,
-          { id: psData?.chatChannelId, name: channelName, t: 'c' },
-        ]
-      })
-    }
-  }, [allForums, channelName, psFetched])
+  }, [allForums])
 
   useEffect(() => {
     getAllForums()
@@ -241,9 +214,7 @@ const ForumView = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
       </Head>
       <Layout>
         <Sider className={styles.channelSidebar} width={335}>
-          <ForumSidebar
-            {...{ currForum, discussion, activeForum, setDiscussion }}
-          />
+          <ForumSidebar {...{ discussion, activeForum }} />
         </Sider>
         <Layout className={styles.channelContent}>
           {discussion && (
