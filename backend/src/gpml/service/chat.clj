@@ -152,12 +152,14 @@
 
 (defn get-public-channels
   ([config]
-   (get-public-channels config {}))
-  ([{:keys [chat-adapter]} opts]
-   (let [result (chat/get-public-channels chat-adapter opts)]
+   (get-public-channels config {:remove-ps-channels? true}))
+  ([{:keys [chat-adapter]} {:keys [remove-ps-channels?] :as opts}]
+   (let [result (chat/get-public-channels chat-adapter (dissoc opts :remove-ps-channels?))]
      (if (:success? result)
-       (update result :channels (fn [channels]
-                                  (remove #(get-in % [:custom-fields :ps-country-iso-code-a-2]) channels)))
+       (if remove-ps-channels?
+         (update result :channels (fn [channels]
+                                    (remove #(get-in % [:custom-fields :ps-country-iso-code-a-2]) channels)))
+         result)
        result))))
 
 (defn- add-users-pictures-urls
@@ -238,10 +240,10 @@
         [{:txn-fn
           (fn tx-get-channel
             [{:keys [channel-id channel-type] :as context}]
-            (let [opts {:query {:_id {:$eq channel-id}}}
+            (let [common-opts {:query {:_id {:$eq channel-id}}}
                   result (if (= channel-type "c")
-                           (get-public-channels config opts)
-                           (get-private-channels config opts))]
+                           (get-public-channels config (assoc common-opts :remove-ps-channels? false))
+                           (get-private-channels config common-opts))]
               (if (:success? result)
                 (assoc context :channel (first (:channels result)))
                 (assoc context
