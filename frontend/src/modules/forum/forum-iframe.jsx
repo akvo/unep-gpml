@@ -5,17 +5,19 @@ import classNames from 'classnames'
 
 const ForumIframe = ({
   discussion,
-  channelName,
-  channelType,
+  channelName: channelNameURL,
+  channelType: typeURL,
   isAuthenticated,
   loadingProfile,
   setLoginVisible,
   discussionCallback,
 }) => {
+  const [channelName, queryString] = channelNameURL?.split('?')
+  const queryParams = new URLSearchParams(queryString)
+  const channelType = typeURL || queryParams.get('t')
   const prefixPATH = channelType === 'c' ? 'channel' : 'group'
+
   const channelURL = `${process.env.NEXT_PUBLIC_CHAT_API_DOMAIN_URL}/${prefixPATH}/${channelName}?layout=embedded`
-  const isLoggedInRocketChat = ChatStore.useState((s) => s.isLoggedIn)
-  const profile = UIStore.useState((s) => s.profile)
 
   const goToChannelPage = (iFrame) => {
     try {
@@ -58,17 +60,9 @@ const ForumIframe = ({
       console.log(e.data)
 
       if (e.data === 'loaded') {
-        const isValidUser =
-          profile?.reviewStatus === 'APPROVED' && profile?.chatAccountId
-
-        if (!isLoggedInRocketChat && isValidUser) {
-          setTimeout(() => {
-            handleRocketChatSSO(iFrame)
-          }, 1000)
-          ChatStore.update((s) => {
-            s.isLoggedIn = true
-          })
-        }
+        setTimeout(() => {
+          handleRocketChatSSO(iFrame)
+        }, 1000)
       }
       if (e.data.eventName === 'Custom_Script_Logged_In') {
         goToChannelPage(iFrame)
@@ -109,7 +103,7 @@ const ForumIframe = ({
         }
       }
     },
-    [isLoggedInRocketChat, profile]
+    [isAuthenticated]
   )
 
   useEffect(() => {
@@ -129,7 +123,7 @@ const ForumIframe = ({
       }}
       width="100%"
       allow="camera;microphone"
-      sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+      sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-downloads"
       className={classNames({ discussion })}
     />
   )
