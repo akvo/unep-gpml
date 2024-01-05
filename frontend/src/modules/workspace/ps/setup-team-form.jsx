@@ -177,7 +177,7 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
                   }}
                   className="h-xs"
                 >
-                  <PlusOutlined /> Invite a New Member
+                  <PlusOutlined /> {t`Invite a new member`}
                 </a>
               </div>
             </>
@@ -223,7 +223,7 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
           }}
         >
           <Form.Item
-            label="Email"
+            label={t`Email`}
             name="email"
             rules={[
               {
@@ -236,7 +236,7 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
               },
             ]}
           >
-            <Input type="email" placeholder={t`Text`} />
+            <Input type="email" />
           </Form.Item>
           <Form.Item
             label={t`Name`}
@@ -248,7 +248,7 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
               },
             ]}
           >
-            <Input placeholder="Text" />
+            <Input />
           </Form.Item>
           <Form.Item label={t`Role`} name="role">
             <Dropdown
@@ -271,18 +271,22 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
               placement="bottom"
             >
               <Button type="link" icon={<DropDownIcon />}>
-                {selectedRole?.label || t`- Please select -`}
+                {selectedRole ? (
+                  <Trans id={selectedRole.label.id} />
+                ) : (
+                  t`- Please select -`
+                )}
               </Button>
             </Dropdown>
             <div className="role-description">
-              <p>{roleDescription}</p>
+              <Trans id={roleDescription.id} />
             </div>
           </Form.Item>
           <Form.Item label={t`Assign to`} name="teams">
             <Checkbox.Group onChange={handleOnCheckedTeams}>
               {TEAMS.map((team) => (
                 <Checkbox key={team.value} value={team.value}>
-                  {team.label}
+                  <Trans id={team.label.id} />
                   <Tooltip
                     placement="top"
                     title={<Trans id={team.description.id} />}
