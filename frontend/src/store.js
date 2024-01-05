@@ -923,6 +923,8 @@ const ChatStore = new Store({
   myForums: [],
   allForums: [],
   isLoggedIn: false,
+  psForums: [],
+  discussion: null,
 })
 
 export { UIStore, ChatStore }

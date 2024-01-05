@@ -136,6 +136,10 @@ const Workspace = ({ profile, isAuthenticated, setLoginVisible }) => {
       })
       return
     }
+    // reset discussion
+    ChatStore.update((s) => {
+      s.discussion = null
+    })
     router.push({
       pathname: `/forum/${name}`,
       query: {
