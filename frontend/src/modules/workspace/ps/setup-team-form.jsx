@@ -177,7 +177,7 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
                   }}
                   className="h-xs"
                 >
-                  <PlusOutlined /> Invite a New Member
+                  <PlusOutlined /> {t`Invite a new member`}
                 </a>
               </div>
             </>
