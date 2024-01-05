@@ -236,7 +236,7 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
               },
             ]}
           >
-            <Input type="email" placeholder={t`Text`} />
+            <Input type="email" />
           </Form.Item>
           <Form.Item
             label={t`Name`}
@@ -248,7 +248,7 @@ const SetupTeamForm = ({ psItem, members, setReload }) => {
               },
             ]}
           >
-            <Input placeholder="Text" />
+            <Input />
           </Form.Item>
           <Form.Item label={t`Role`} name="role">
             <Dropdown
