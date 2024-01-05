@@ -18,7 +18,6 @@ const ForumIframe = ({
   const prefixPATH = channelType === 'c' ? 'channel' : 'group'
 
   const channelURL = `${process.env.NEXT_PUBLIC_CHAT_API_DOMAIN_URL}/${prefixPATH}/${channelName}?layout=embedded`
-  const profile = UIStore.useState((s) => s.profile)
 
   const goToChannelPage = (iFrame) => {
     try {
@@ -61,11 +60,9 @@ const ForumIframe = ({
       console.log(e.data)
 
       if (e.data === 'loaded') {
-        if (profile?.chatAccountId) {
-          setTimeout(() => {
-            handleRocketChatSSO(iFrame)
-          }, 1000)
-        }
+        setTimeout(() => {
+          handleRocketChatSSO(iFrame)
+        }, 1000)
       }
       if (e.data.eventName === 'Custom_Script_Logged_In') {
         goToChannelPage(iFrame)
@@ -106,7 +103,7 @@ const ForumIframe = ({
         }
       }
     },
-    [profile, isAuthenticated]
+    [isAuthenticated]
   )
 
   useEffect(() => {
