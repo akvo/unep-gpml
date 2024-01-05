@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Skeleton } from 'antd'
 import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
@@ -15,21 +16,33 @@ const DynamicForumIframe = dynamic(
 )
 
 const View = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
+  const [discussion, setDiscussion] = useState(null)
   const router = useRouter()
   const country = router.query.slug?.replace('plastic-strategy-', '')
   const channelName = `${PREFIX_CHANNEL_NAME}${country}`
   const channelType = 'c'
+  const handleOnDiscussCallback = (type = 'new', evt) => {
+    if (
+      type === 'room-opened' &&
+      evt.data.fname &&
+      evt.data.fname !== evt.data.name
+    ) {
+      setDiscussion({ ...evt.data, id: evt.data._id })
+    }
+  }
 
   return (
     <Skeleton loading={loadingProfile} active>
       <div className={styles.forumView}>
         <DynamicForumIframe
+          discussionCallback={handleOnDiscussCallback}
           {...{
             channelName,
             channelType,
             isAuthenticated,
             loadingProfile,
             setLoginVisible,
+            discussion,
           }}
         />
       </div>
