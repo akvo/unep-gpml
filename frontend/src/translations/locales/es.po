@@ -2075,6 +2075,7 @@ msgstr "Dirección de correo electrónico no válida"
 msgid "Invitation sent."
 msgstr "Invitación enviada."
 
+#: src/modules/workspace/ps/setup-team-form.jsx:180
 #: src/modules/workspace/ps/setup-team-form.jsx:195
 msgid "Invite a new member"
 msgstr "Invitar a un nuevo miembro"

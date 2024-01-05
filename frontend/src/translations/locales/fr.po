@@ -2080,6 +2080,7 @@ msgstr "Adresse e-mail invalide"
 msgid "Invitation sent."
 msgstr "Invitation envoyée."
 
+#: src/modules/workspace/ps/setup-team-form.jsx:180
 #: src/modules/workspace/ps/setup-team-form.jsx:195
 msgid "Invite a new member"
 msgstr "Inviter un nouveau membre"

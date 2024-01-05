@@ -2066,6 +2066,7 @@ msgstr ""
 msgid "Invitation sent."
 msgstr ""
 
+#: src/modules/workspace/ps/setup-team-form.jsx:180
 #: src/modules/workspace/ps/setup-team-form.jsx:195
 msgid "Invite a new member"
 msgstr ""
