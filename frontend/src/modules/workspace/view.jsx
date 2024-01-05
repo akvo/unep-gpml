@@ -179,11 +179,15 @@ const Workspace = ({ profile, isAuthenticated, setLoginVisible }) => {
     }
     if (!forums.length && !forumFetched) {
       setForumFetched(true)
-      const { data: _myForums } = await api.get('/chat/user/channel')
-      ChatStore.update((s) => {
-        s.myForums = _myForums?.sort(sortPublicFirst)
-      })
-      if (!_myForums.length) {
+      let myForums = []
+      try {
+        const { data: _myForums } = await api.get('/chat/user/channel')
+        myForums = _myForums
+        ChatStore.update((s) => {
+          s.myForums = _myForums?.sort(sortPublicFirst)
+        })
+      } catch {}
+      if (!myForums.length) {
         const { data: _allForums } = await api.get('/chat/channel/all')
         ChatStore.update((s) => {
           s.allForums = _allForums
