@@ -54,13 +54,17 @@
     (into (sorted-map-by order-fn) result-map)))
 
 (defn- get-export-values
-  [export-type export-type-key-map sorted-export-type-columns]
-  (let [exports-to-sort (map #(set/rename-keys % export-type-key-map) export-type)]
+  [entity-coll entity-key-map sorted-entity-columns]
+  (let [exports-to-sort (map (fn [entity]
+                               (-> entity
+                                   (select-keys (keys entity-key-map))
+                                   (set/rename-keys entity-key-map)))
+                             entity-coll)]
     (if (empty? exports-to-sort)
       (->>
-       (list (zipmap sorted-export-type-columns (repeat (count sorted-export-type-columns) nil)))
-       (map #(sort-result-map sorted-export-type-columns %)))
-      (map #(sort-result-map sorted-export-type-columns %) exports-to-sort))))
+       (list (zipmap sorted-entity-columns (repeat (count sorted-entity-columns) nil)))
+       (map #(sort-result-map sorted-entity-columns %)))
+      (map #(sort-result-map sorted-entity-columns %) exports-to-sort))))
 
 (defn- export-users
   [{:keys [db] :as config} review-status]
