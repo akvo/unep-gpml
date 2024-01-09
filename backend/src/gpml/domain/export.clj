@@ -85,7 +85,9 @@
    :reviewed_at "Reviewed At"
    :created "Created"
    :modified "Modified"
-   :idp_usernames "IdP Usernames"})
+   :idp_usernames "IdP Usernames"
+   :chat_account_id "Chat Account ID"
+   :chat_account_status "Chat Account Status"})
 
 (def ^:const sorted-user-columns
   "Sorted user's CSV file columns."
@@ -114,7 +116,9 @@
    "Reviewed At"
    "Created"
    "Modified"
-   "IdP Usernames"])
+   "IdP Usernames"
+   "Chat Account ID"
+   "Chat Account Status"])
 
 (def ^:const tags-key-map
   "Tag database entity CSV file columns key mapping."
