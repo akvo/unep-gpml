@@ -34,6 +34,7 @@
             [gpml.service.file :as srv.file]
             [gpml.service.permissions :as srv.permissions]
             [gpml.util :as util]
+            [gpml.util.malli :as util.malli]
             [gpml.util.postgresql :as pg-util]
             [gpml.util.thread-transactions :as tht]
             [integrant.core :as ig]
@@ -812,32 +813,26 @@
    conn
    id
    initiative]
-  (let [initiative (assoc initiative :id id)
-        tags (remove nil? (:tags initiative))
-        geo-coverage-type (keyword (first (keys (:q24 initiative))))
+  (let [dom-keys (util.malli/keys dom.initiative/Initiative)
+        api-initiative (assoc initiative :id id)
+        tags (remove nil? (:tags api-initiative))
+        geo-coverage-type (keyword (first (keys (:q24 api-initiative))))
         {:keys [geo_coverage_countries
                 geo_coverage_country_groups
                 geo_coverage_country_states]}
-        (handler.initiative/extract-geo-data initiative)
+        (handler.initiative/extract-geo-data api-initiative)
         status (db.detail/update-initiative
                 conn
-                (dissoc initiative
-                        :related_content :tags :entity_connections
-                        :individual_connections :urls :org
-                        :geo_coverage_countries
-                        :geo_coverage_country_states
-                        :geo_coverage_country_groups
-                        :geo_coverage_value_subnational
-                        :qimage))
-        related-contents (:related_content initiative)
-        org-associations (map (fn [acs] (set/rename-keys acs {:entity :organisation})) (:entity_connections initiative))
-        sth-associations (:individual_connections initiative)]
-    (doseq [[image-key image-data] (select-keys initiative [:qimage :thumbnail])
+                (select-keys api-initiative dom-keys))
+        related-contents (:related_content api-initiative)
+        org-associations (map (fn [acs] (set/rename-keys acs {:entity :organisation})) (:entity_connections api-initiative))
+        sth-associations (:individual_connections api-initiative)]
+    (doseq [[image-key image-data] (select-keys api-initiative [:qimage :thumbnail])
             :let [image-key (if (= image-key :qimage) :image image-key)]]
       (update-resource-image config conn "initiative" id image-key image-data))
     (when (seq related-contents)
       (handler.resource.related-content/update-related-contents conn logger id "initiative" related-contents))
-    (when (contains? (set (keys initiative)) :tags)
+    (when (contains? (set (keys api-initiative)) :tags)
       (update-resource-tags conn logger mailjet-config "initiative" id tags))
     (handler.geo/update-resource-geo-coverage conn
                                               :initiative
