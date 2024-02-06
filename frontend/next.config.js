@@ -39,6 +39,9 @@ module.exports = {
     if (process.env.REACT_APP_FEENV_STAGING) {
       domain = 'https://unep-gpml-staging.akvotest.org'
     }
+    if (process.env.REACT_APP_FEENV_PROD) {
+      domain = 'https://digital.gpmarinelitter.org'
+    }
     return [
       {
         source: '/api/:path*',
@@ -71,10 +74,9 @@ module.exports = {
   },
 }
 
-
 // Injected content via Sentry wizard below
 
-const { withSentryConfig } = require("@sentry/nextjs");
+const { withSentryConfig } = require('@sentry/nextjs')
 
 module.exports = withSentryConfig(
   module.exports,
@@ -84,8 +86,8 @@ module.exports = withSentryConfig(
 
     // Suppresses source map uploading logs during build
     silent: true,
-    org: "akvo-foundation",
-    project: "unep-gpml-frontend",
+    org: 'akvo-foundation',
+    project: 'unep-gpml-frontend',
   },
   {
     // For all available options, see:
@@ -98,7 +100,7 @@ module.exports = withSentryConfig(
     transpileClientSDK: true,
 
     // Routes browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers (increases server load)
-    tunnelRoute: "/monitoring",
+    tunnelRoute: '/monitoring',
 
     // Hides source maps from generated client bundles
     hideSourceMaps: true,
@@ -106,4 +108,4 @@ module.exports = withSentryConfig(
     // Automatically tree-shake Sentry logger statements to reduce bundle size
     disableLogger: true,
   }
-);
+)
