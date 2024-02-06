@@ -26,7 +26,7 @@ const slides = {
       'https://docs.google.com/presentation/d/1zZZuMJVB4JTXZW3YcjuOKCcFU2vNodz95havutiAivA/embed?start=false&loop=false&delayms=60000',
     guinea:
       'https://docs.google.com/presentation/d/1eQpcG20lgy_I8nGRwpK07900DATYKyH4fgTzvZAfpJc/embed?start=false&loop=false&delayms=60000',
-    'trinidad-&-tobago':
+    'trinidad-and-tobago':
       'https://docs.google.com/presentation/d/1ICypzG4YjcDFLJNgGQ6Ml0lVbijHxlLA-C8q4HJgW5I/embed?start=false&loop=false&delayms=60000',
     kiribati:
       'https://docs.google.com/presentation/d/1c3CuvfVI8-vGEfk95ni90BpKUFdA9ZMTyw14tSVcL74/embed?start=false&loop=false&delayms=60000',
@@ -66,7 +66,7 @@ const slides = {
       'https://docs.google.com/presentation/d/1_bp7nHiryuliy8E6PChQYpuzK2S5gzVmLfu4-i2LR6o/embed?start=false&loop=false&delayms=60000',
     togo:
       'https://docs.google.com/presentation/d/1siGDDM2haJzWZrAfaxiVV-JRCQuLAZh9C0kW647Utzc/embed?start=false&loop=false&delayms=60000',
-    'trinidad-&-tobago':
+    'trinidad-and-tobago':
       'https://docs.google.com/presentation/d/1F6sp0U7ZnNAPpQAiu_Lid6jVAoUEdpGe5X5tuTabDNY/embed?start=false&loop=false&delayms=60000',
     tuvalu:
       'https://docs.google.com/presentation/d/1-DY1E__8TqznNEkRMfucvgEkBF8QuDC7TI8BJYXrG7Y/embed?start=false&loop=false&delayms=60000',
@@ -100,7 +100,7 @@ const slides = {
       'https://docs.google.com/presentation/d/1dTy3dy-RA9QYJNYxszaMyT_qYiYw7mGl1yavT4aes60/embed?start=false&loop=false&delayms=60000',
     togo:
       'https://docs.google.com/presentation/d/1fDfs-vYk3CclpQXvxEfzEY9wgLvYbSp-NEloTYb5Qzc/embed?start=false&loop=false&delayms=60000',
-    'trinidad-&-tobago':
+    'trinidad-and-tobago':
       'https://docs.google.com/presentation/d/1DOYjA3QkBbNX86ZezVBpqiWV6HCLnFAhzzW8yMK1DWA/embed?start=false&loop=false&delayms=60000',
     tuvalu:
       'https://docs.google.com/presentation/d/1fbsJvH53J6YHhfWvBnonKEekRQzKXFz71Ubn5913f4c/embed?start=false&loop=false&delayms=60000',
