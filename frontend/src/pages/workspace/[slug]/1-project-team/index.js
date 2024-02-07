@@ -116,7 +116,7 @@ const View = () => {
     ? slides[router.locale][country]
     : slides.en[country]
 
-  const match = slideURL.match(/\/d\/(.+?)\//)
+  const match = slideURL?.match(/\/d\/(.+?)\//)
 
   return (
     <>
@@ -131,7 +131,7 @@ const View = () => {
       </p>
       <div className="iframe-container">
         <a
-          href={`https://docs.google.com/presentation/d/${match[1]}/export/pptx`}
+          href={`https://docs.google.com/presentation/d/${match?.[1]}/export/pptx`}
           target="_blank"
         >
           <Button size="small" type="link">
