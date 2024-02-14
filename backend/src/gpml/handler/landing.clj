@@ -11,7 +11,8 @@
    [gpml.util.regular-expressions :as util.regex]
    [integrant.core :as ig]
    [ring.util.response :as resp])
-  (:import [java.sql SQLException]))
+  (:import
+   (java.sql SQLException)))
 
 (def ^:const ^:private topic-re (util.regex/comma-separated-enums-re dom.types/topic-types))
 (def ^:const ^:private entity-groups ["topic" "community"])

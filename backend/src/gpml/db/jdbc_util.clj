@@ -1,10 +1,11 @@
 (ns gpml.db.jdbc-util
   (:require
-   [camel-snake-kebab.core :refer [->snake_case ->kebab-case]]
+   [camel-snake-kebab.core :refer [->kebab-case ->snake_case]]
    [camel-snake-kebab.extras :as cske]
    [clojure.string :as str]
    [medley.core :as medley])
-  (:import [java.sql SQLException]))
+  (:import
+   (java.sql SQLException)))
 
 (def ^:const integrity-constraint-violation-state-codes
   {:integrity-constraint "23000"

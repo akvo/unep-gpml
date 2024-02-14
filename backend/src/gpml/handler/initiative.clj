@@ -20,7 +20,8 @@
    [gpml.util.sql :as sql-util]
    [integrant.core :as ig]
    [ring.util.response :as resp])
-  (:import [java.sql SQLException]))
+  (:import
+   (java.sql SQLException)))
 
 (defn- add-geo-initiative
   [conn initiative-id geo-coverage-type

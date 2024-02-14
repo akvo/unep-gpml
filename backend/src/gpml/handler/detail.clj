@@ -40,7 +40,8 @@
    [gpml.util.thread-transactions :as tht]
    [integrant.core :as ig]
    [medley.core :as medley])
-  (:import [java.sql SQLException]))
+  (:import
+   (java.sql SQLException)))
 
 ;;========================================START OF DEPRECATED CODE==============================================================
 ;; FIXME: The code below doesn't seem to be used anyhwere anymore and

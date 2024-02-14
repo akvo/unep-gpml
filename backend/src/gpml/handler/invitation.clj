@@ -10,9 +10,9 @@
    [gpml.util :as util]
    [gpml.util.postgresql :as pg-util]
    [gpml.util.regular-expressions :as util.regex]
-   [integrant.core :as ig]
-   [java-time.temporal])
-  (:import [java.sql SQLException]))
+   [integrant.core :as ig])
+  (:import
+   (java.sql SQLException)))
 
 (def ^:private get-invitations-params
   [:map

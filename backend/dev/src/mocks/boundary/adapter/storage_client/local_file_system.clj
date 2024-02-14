@@ -4,7 +4,8 @@
    [clojure.java.io :as io]
    [gpml.boundary.port.storage-client :as port]
    [integrant.core :as ig])
-  (:import [clj_gcp.storage.core FileSystemStorageClient]))
+  (:import
+   (clj_gcp.storage.core FileSystemStorageClient)))
 
 (defn- delete-blob
   [{:keys [base-path]} bucket blob-name]

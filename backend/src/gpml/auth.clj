@@ -3,10 +3,11 @@
    [gpml.db.stakeholder :as db.stakeholder]
    [integrant.core :as ig]
    [malli.core :as malli])
-  (:import [com.auth0.jwk JwkProvider JwkProviderBuilder]
-           [com.auth0.jwt JWT]
-           [com.auth0.jwt.impl JsonNodeClaim]
-           [com.auth0.utils.tokens IdTokenVerifier PublicKeyProvider SignatureVerifier]))
+  (:import
+   (com.auth0.jwk JwkProvider JwkProviderBuilder)
+   (com.auth0.jwt JWT)
+   (com.auth0.jwt.impl JsonNodeClaim)
+   (com.auth0.utils.tokens IdTokenVerifier PublicKeyProvider SignatureVerifier)))
 
 (def verifier-opts
   [:map

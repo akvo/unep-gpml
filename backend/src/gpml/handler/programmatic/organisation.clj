@@ -8,7 +8,8 @@
    [gpml.util.malli :as util.malli]
    [gpml.util.postgresql :as pg-util]
    [integrant.core :as ig])
-  (:import [java.sql SQLException]))
+  (:import
+   (java.sql SQLException)))
 
 (defn- create-organisation
   [{:keys [db logger] :as config} req]

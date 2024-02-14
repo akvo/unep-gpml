@@ -22,7 +22,8 @@
    [integrant.core :as ig]
    [malli.util :as mu]
    [ring.util.response :as resp])
-  (:import [java.sql SQLException]))
+  (:import
+   (java.sql SQLException)))
 
 (defn- create-policy
   [{:keys [logger mailjet-config] :as config}
