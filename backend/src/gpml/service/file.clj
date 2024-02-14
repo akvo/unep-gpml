@@ -1,11 +1,12 @@
 (ns gpml.service.file
-  (:require [clj-gcp.storage.core :as storage-client]
-            [duct.logger :refer [log]]
-            [gpml.boundary.adapter.storage-client.gcs]      ;; We need to require it to extend the Record there
-            [gpml.boundary.port.storage-client :as storage-client-ext]
-            [gpml.db.file :as db.file]
-            [gpml.util :as util]
-            [gpml.util.thread-transactions :as tht])
+  (:require
+   [clj-gcp.storage.core :as storage-client]
+   [duct.logger :refer [log]]
+   [gpml.boundary.adapter.storage-client.gcs]      ;; We need to require it to extend the Record there
+   [gpml.boundary.port.storage-client :as storage-client-ext]
+   [gpml.db.file :as db.file]
+   [gpml.util :as util]
+   [gpml.util.thread-transactions :as tht])
   (:import [com.google.cloud WriteChannel]
            [java.nio ByteBuffer]))
 

@@ -1,9 +1,10 @@
 (ns gpml.handler.file
-  (:require [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.domain.file :as dom.file]
-            [gpml.service.file :as srv.file]
-            [integrant.core :as ig]
-            [ring.util.response :as resp])
+  (:require
+   [gpml.db.stakeholder :as db.stakeholder]
+   [gpml.domain.file :as dom.file]
+   [gpml.service.file :as srv.file]
+   [integrant.core :as ig]
+   [ring.util.response :as resp])
   (:import java.io.ByteArrayInputStream
            java.util.Base64))
 

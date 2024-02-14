@@ -1,18 +1,19 @@
 (ns gpml.handler.favorite
-  (:require [clojure.data :as dt]
-            [clojure.java.jdbc :as jdbc]
-            [clojure.set :as set]
-            [clojure.string :as string]
-            [duct.logger :refer [log]]
-            [gpml.db.activity :as db.activity]
-            [gpml.db.favorite :as db.favorite]
-            [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.handler.responses :as r]
-            [gpml.handler.util :as api-util]
-            [gpml.util :as util]
-            [gpml.util.postgresql :as pg-util]
-            [integrant.core :as ig]
-            [ring.util.response :as resp])
+  (:require
+   [clojure.data :as dt]
+   [clojure.java.jdbc :as jdbc]
+   [clojure.set :as set]
+   [clojure.string :as string]
+   [duct.logger :refer [log]]
+   [gpml.db.activity :as db.activity]
+   [gpml.db.favorite :as db.favorite]
+   [gpml.db.stakeholder :as db.stakeholder]
+   [gpml.handler.responses :as r]
+   [gpml.handler.util :as api-util]
+   [gpml.util :as util]
+   [gpml.util.postgresql :as pg-util]
+   [integrant.core :as ig]
+   [ring.util.response :as resp])
   (:import [java.sql SQLException]))
 
 ;; FIXME: refactor favorite logic. It's entangled with follower and permissions.

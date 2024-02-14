@@ -3,11 +3,12 @@
   the functionality every platform resource (Policy, Event,
   Technology, Financing, Technical, Action, Organization and
   Stakeholder) shares in common."
-  (:require [duct.logger :refer [log]]
-            [gpml.db.resource.tag :as db.resource.tag]
-            [gpml.handler.tag :as handler.tag]
-            [gpml.util.email :as email]
-            [gpml.util.postgresql :as pg-util])
+  (:require
+   [duct.logger :refer [log]]
+   [gpml.db.resource.tag :as db.resource.tag]
+   [gpml.handler.tag :as handler.tag]
+   [gpml.util.email :as email]
+   [gpml.util.postgresql :as pg-util])
   (:import [java.sql SQLException]))
 
 (defn send-new-tags-admins-pending-approval-notification

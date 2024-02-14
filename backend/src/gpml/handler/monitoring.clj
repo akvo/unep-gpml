@@ -1,15 +1,16 @@
 (ns gpml.handler.monitoring
-  (:require [hugsql.adapter :as adapter]
-            [hugsql.adapter.clojure-java-jdbc :as adp]
-            [hugsql.core :as hugsql]
-            [iapetos.collector.exceptions :as ex]
-            [iapetos.collector.jvm :as jvm]
-            [iapetos.collector.ring :as ring]
-            [iapetos.core :as prometheus]
-            [iapetos.registry :as registry]
-            [integrant.core :as ig]
-            [taoensso.timbre :as timbre]
-            [taoensso.timbre.appenders.3rd-party.sentry :as sentry])
+  (:require
+   [hugsql.adapter :as adapter]
+   [hugsql.adapter.clojure-java-jdbc :as adp]
+   [hugsql.core :as hugsql]
+   [iapetos.collector.exceptions :as ex]
+   [iapetos.collector.jvm :as jvm]
+   [iapetos.collector.ring :as ring]
+   [iapetos.core :as prometheus]
+   [iapetos.registry :as registry]
+   [integrant.core :as ig]
+   [taoensso.timbre :as timbre]
+   [taoensso.timbre.appenders.3rd-party.sentry :as sentry])
   (:import [com.zaxxer.hikari HikariDataSource]
            [com.zaxxer.hikari.metrics.prometheus PrometheusMetricsTrackerFactory]
            [io.prometheus.client.jetty JettyStatisticsCollector QueuedThreadPoolStatisticsCollector]

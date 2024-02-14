@@ -1,6 +1,7 @@
 (ns gpml.db.resource.geo-coverage
   {:ns-tracker/resource-deps ["resource/geo_coverage.sql"]}
-  (:require [hugsql.core :as hugsql]))
+  (:require
+   [hugsql.core :as hugsql]))
 
 (declare create-resource-geo-coverage
          delete-resource-geo-coverage

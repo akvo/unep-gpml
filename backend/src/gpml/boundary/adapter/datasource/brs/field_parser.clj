@@ -1,11 +1,12 @@
 (ns gpml.boundary.adapter.datasource.brs.field-parser
-  (:require [clojure.set :as set]
-            [clojure.string :as str]
-            [gpml.domain.event :as dom.event]
-            [gpml.util :as util]
-            [gpml.util.regular-expressions :as util.regex]
-            [java-time :as jt]
-            [java-time.temporal])
+  (:require
+   [clojure.set :as set]
+   [clojure.string :as str]
+   [gpml.domain.event :as dom.event]
+   [gpml.util :as util]
+   [gpml.util.regular-expressions :as util.regex]
+   [java-time :as jt]
+   [java-time.temporal])
   (:import [org.jsoup Jsoup]
            [org.jsoup.nodes Entities]))
 

@@ -1,10 +1,11 @@
 (ns gpml.db.landing
   {:ns-tracker/resource-deps ["landing.sql"]}
-  (:require [clojure.set :as set]
-            [gpml.db.country :as db.country]
-            [gpml.domain.types :as dom.types]
-            [gpml.util.postgresql]
-            [hugsql.core :as hugsql]))
+  (:require
+   [clojure.set :as set]
+   [gpml.db.country :as db.country]
+   [gpml.domain.types :as dom.types]
+   [gpml.util.postgresql]
+   [hugsql.core :as hugsql]))
 
 (def ^:const ^:private non-transnational-geo-coverage-types ["national" "sub-national"])
 (def ^:const ^:private transnational-geo-coverage-types ["transnational"])

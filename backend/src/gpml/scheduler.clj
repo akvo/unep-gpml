@@ -1,6 +1,7 @@
 (ns gpml.scheduler
-  (:require [integrant.core :as ig]
-            [twarc.core :as twarc]))
+  (:require
+   [integrant.core :as ig]
+   [twarc.core :as twarc]))
 
 (defmethod ig/init-key :gpml/scheduler [_ {:keys [thread-count]}]
   (-> (twarc/make-scheduler {:threadPool.threadCount thread-count

@@ -1,7 +1,8 @@
 (ns gpml.domain.organisation
-  (:require [gpml.domain.types :as dom.types]
-            [gpml.util :as util]
-            [malli.core :as m]))
+  (:require
+   [gpml.domain.types :as dom.types]
+   [gpml.util :as util]
+   [malli.core :as m]))
 
 (def ^:const types
   "Organisation's possible types.

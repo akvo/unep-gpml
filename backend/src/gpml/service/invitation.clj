@@ -1,11 +1,12 @@
 (ns gpml.service.invitation
-  (:require [clojure.string :as str]
-            [duct.logger :refer [log]]
-            [gpml.db.invitation :as db.invitation]
-            [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.service.permissions :as srv.permissions]
-            [gpml.util :as util]
-            [gpml.util.thread-transactions :as tht]))
+  (:require
+   [clojure.string :as str]
+   [duct.logger :refer [log]]
+   [gpml.db.invitation :as db.invitation]
+   [gpml.db.stakeholder :as db.stakeholder]
+   [gpml.service.permissions :as srv.permissions]
+   [gpml.util :as util]
+   [gpml.util.thread-transactions :as tht]))
 
 (defn invite-user
   [{:keys [db logger]} invitation-payload]

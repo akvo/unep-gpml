@@ -1,9 +1,10 @@
 (ns gpml.service.plastic-strategy.file
-  (:require [duct.logger :refer [log]]
-            [gpml.db.plastic-strategy.file :as db.ps.file]
-            [gpml.domain.file :as dom.file]
-            [gpml.service.file :as srv.file]
-            [gpml.util.thread-transactions :as tht]))
+  (:require
+   [duct.logger :refer [log]]
+   [gpml.db.plastic-strategy.file :as db.ps.file]
+   [gpml.domain.file :as dom.file]
+   [gpml.service.file :as srv.file]
+   [gpml.util.thread-transactions :as tht]))
 
 (defn create-ps-file
   [{:keys [db logger] :as config} ps-file]

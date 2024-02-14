@@ -1,6 +1,7 @@
 (ns gpml.domain.stakeholder
-  (:require [gpml.domain.types :as dom.types]
-            [malli.core :as m]))
+  (:require
+   [gpml.domain.types :as dom.types]
+   [malli.core :as m]))
 
 (def ^:const role-types
   "Stakeholder role types in the platform"

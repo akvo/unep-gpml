@@ -1,14 +1,15 @@
 (ns gpml.handler.chat
-  (:require [camel-snake-kebab.core :refer [->snake_case]]
-            [camel-snake-kebab.extras :as cske]
-            [duct.logger :refer [log]]
-            [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.domain.types :as dom.types]
-            [gpml.handler.resource.permission :as h.r.permission]
-            [gpml.handler.responses :as r]
-            [gpml.service.chat :as srv.chat]
-            [gpml.util.email :as email]
-            [integrant.core :as ig]))
+  (:require
+   [camel-snake-kebab.core :refer [->snake_case]]
+   [camel-snake-kebab.extras :as cske]
+   [duct.logger :refer [log]]
+   [gpml.db.stakeholder :as db.stakeholder]
+   [gpml.domain.types :as dom.types]
+   [gpml.handler.resource.permission :as h.r.permission]
+   [gpml.handler.responses :as r]
+   [gpml.service.chat :as srv.chat]
+   [gpml.util.email :as email]
+   [integrant.core :as ig]))
 
 (def ^:private channel-types
   #{"c" "p"})

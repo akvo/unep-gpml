@@ -1,17 +1,18 @@
 (ns gpml.handler.tag
-  (:require [clojure.string :as str]
-            [duct.logger :refer [log]]
-            [gpml.db.tag :as db.tag]
-            [gpml.domain.tag :as dom.tag]
-            [gpml.domain.types :as dom.types]
-            [gpml.handler.resource.permission :as h.r.permission]
-            [gpml.handler.responses :as r]
-            [gpml.service.permissions :as srv.permissions]
-            [gpml.util :as util]
-            [gpml.util.malli :as util.malli]
-            [integrant.core :as ig]
-            [malli.util :as mu]
-            [ring.util.response :as resp])
+  (:require
+   [clojure.string :as str]
+   [duct.logger :refer [log]]
+   [gpml.db.tag :as db.tag]
+   [gpml.domain.tag :as dom.tag]
+   [gpml.domain.types :as dom.types]
+   [gpml.handler.resource.permission :as h.r.permission]
+   [gpml.handler.responses :as r]
+   [gpml.service.permissions :as srv.permissions]
+   [gpml.util :as util]
+   [gpml.util.malli :as util.malli]
+   [integrant.core :as ig]
+   [malli.util :as mu]
+   [ring.util.response :as resp])
   (:import [java.sql SQLException]))
 
 (def ^:const get-popular-topics-tags-params

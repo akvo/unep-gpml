@@ -1,16 +1,17 @@
 (ns gpml.handler.invitation
-  (:require [clojure.string :as str]
-            [duct.logger :refer [log]]
-            [gpml.db.invitation :as db.invitation]
-            [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.handler.resource.permission :as h.r.permission]
-            [gpml.handler.responses :as r]
-            [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
-            [gpml.util :as util]
-            [gpml.util.postgresql :as pg-util]
-            [gpml.util.regular-expressions :as util.regex]
-            [integrant.core :as ig]
-            [java-time.temporal])
+  (:require
+   [clojure.string :as str]
+   [duct.logger :refer [log]]
+   [gpml.db.invitation :as db.invitation]
+   [gpml.db.stakeholder :as db.stakeholder]
+   [gpml.handler.resource.permission :as h.r.permission]
+   [gpml.handler.responses :as r]
+   [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
+   [gpml.util :as util]
+   [gpml.util.postgresql :as pg-util]
+   [gpml.util.regular-expressions :as util.regex]
+   [integrant.core :as ig]
+   [java-time.temporal])
   (:import [java.sql SQLException]))
 
 (def ^:private get-invitations-params

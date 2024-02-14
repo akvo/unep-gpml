@@ -1,8 +1,9 @@
 (ns gpml.db.case-study
   {:ns-tracker/resource-deps ["case_study.sql"]}
-  (:require [gpml.util :as util]
-            [gpml.util.sql :as sql-util]
-            [hugsql.core :as hugsql]))
+  (:require
+   [gpml.util :as util]
+   [gpml.util.sql :as sql-util]
+   [hugsql.core :as hugsql]))
 
 (declare create-case-studies
          update-case-study

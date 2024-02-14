@@ -1,11 +1,12 @@
 (ns gpml.handler.plastic-strategy
-  (:require [camel-snake-kebab.core :refer [->kebab-case]]
-            [camel-snake-kebab.extras :as cske]
-            [clojure.string :as str]
-            [gpml.handler.resource.permission :as h.r.permission]
-            [gpml.handler.responses :as r]
-            [gpml.service.plastic-strategy :as srv.ps]
-            [integrant.core :as ig]))
+  (:require
+   [camel-snake-kebab.core :refer [->kebab-case]]
+   [camel-snake-kebab.extras :as cske]
+   [clojure.string :as str]
+   [gpml.handler.resource.permission :as h.r.permission]
+   [gpml.handler.responses :as r]
+   [gpml.service.plastic-strategy :as srv.ps]
+   [integrant.core :as ig]))
 
 (def ^:private common-plastic-strategy-path-params-schema
   [:map

@@ -1,8 +1,9 @@
 (ns gpml.boundary.adapter.datasource.brs.core
-  (:require [duct.logger :refer [log]]
-            [gpml.boundary.adapter.datasource.brs.field-parser :as brs.f-parser]
-            [gpml.boundary.port.datasource :as port]
-            [gpml.util.http-client :as http-client]))
+  (:require
+   [duct.logger :refer [log]]
+   [gpml.boundary.adapter.datasource.brs.field-parser :as brs.f-parser]
+   [gpml.boundary.port.datasource :as port]
+   [gpml.util.http-client :as http-client]))
 
 (def ^:private brs-api-odata-queries
   "OData query parameters for each entity we want to import. These are

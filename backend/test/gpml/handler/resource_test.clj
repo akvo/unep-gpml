@@ -1,16 +1,17 @@
 (ns gpml.handler.resource-test
-  (:require [clojure.test :refer [deftest is testing use-fixtures]]
-            [gpml.db.language :as db.language]
-            [gpml.db.rbac-util :as db.rbac-util]
-            [gpml.db.resource :as db.resource]
-            [gpml.db.tag :as db.tag]
-            [gpml.domain.types :as dom.types]
-            [gpml.fixtures :as fixtures]
-            [gpml.handler.profile-test :as profile-test]
-            [gpml.handler.resource :as resource]
-            [gpml.test-util :as test-util]
-            [integrant.core :as ig]
-            [ring.mock.request :as mock]))
+  (:require
+   [clojure.test :refer [deftest is testing use-fixtures]]
+   [gpml.db.language :as db.language]
+   [gpml.db.rbac-util :as db.rbac-util]
+   [gpml.db.resource :as db.resource]
+   [gpml.db.tag :as db.tag]
+   [gpml.domain.types :as dom.types]
+   [gpml.fixtures :as fixtures]
+   [gpml.handler.profile-test :as profile-test]
+   [gpml.handler.resource :as resource]
+   [gpml.test-util :as test-util]
+   [integrant.core :as ig]
+   [ring.mock.request :as mock]))
 
 (use-fixtures :each fixtures/with-test-system)
 

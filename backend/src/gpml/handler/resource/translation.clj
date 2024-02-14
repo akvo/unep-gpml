@@ -1,16 +1,17 @@
 (ns gpml.handler.resource.translation
-  (:require [clojure.string :as str]
-            [duct.logger :refer [log]]
-            [gpml.db.resource.detail :as db.resource.detail]
-            [gpml.db.resource.translation :as db.res-translation]
-            [gpml.domain.translation :as dom.translation]
-            [gpml.domain.types :as dom.types]
-            [gpml.handler.resource.permission :as res-permission]
-            [gpml.handler.responses :as r]
-            [gpml.handler.util :as handler.util]
-            [gpml.util.sql :as sql-util]
-            [integrant.core :as ig]
-            [ring.util.response :as resp])
+  (:require
+   [clojure.string :as str]
+   [duct.logger :refer [log]]
+   [gpml.db.resource.detail :as db.resource.detail]
+   [gpml.db.resource.translation :as db.res-translation]
+   [gpml.domain.translation :as dom.translation]
+   [gpml.domain.types :as dom.types]
+   [gpml.handler.resource.permission :as res-permission]
+   [gpml.handler.responses :as r]
+   [gpml.handler.util :as handler.util]
+   [gpml.util.sql :as sql-util]
+   [integrant.core :as ig]
+   [ring.util.response :as resp])
   (:import [java.sql SQLException]))
 
 (defonce ^:private translation-table-sufix "_translation")

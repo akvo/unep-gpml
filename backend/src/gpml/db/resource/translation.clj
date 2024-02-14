@@ -1,6 +1,7 @@
 (ns gpml.db.resource.translation
   {:ns-tracker/resource-deps ["resource/translation.sql"]}
-  (:require [hugsql.core :as hugsql]))
+  (:require
+   [hugsql.core :as hugsql]))
 
 (declare create-or-update-translations
          get-resource-translation-langs

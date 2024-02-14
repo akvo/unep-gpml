@@ -1,8 +1,9 @@
 (ns gpml.db.resource.connection
   {:ns-tracker/resource-deps ["resource/connection.sql"]}
-  (:require [gpml.util :as util]
-            [gpml.util.sql :as sql-util]
-            [hugsql.core :as hugsql]))
+  (:require
+   [gpml.util :as util]
+   [gpml.util.sql :as sql-util]
+   [hugsql.core :as hugsql]))
 
 (declare get-resource-stakeholder-connections
          get-resource-entity-connections

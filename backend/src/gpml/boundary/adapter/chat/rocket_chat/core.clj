@@ -15,12 +15,13 @@
 
   [1] - https://www.mongodb.com/docs/manual/reference/operator/query/
   [2] - https://developer.rocket.chat/reference/api/rest-api#query-parameters"
-  (:require [camel-snake-kebab.core :refer [->camelCaseString ->kebab-case]]
-            [camel-snake-kebab.extras :as cske]
-            [duct.logger :refer [log]]
-            [gpml.boundary.port.chat :as port]
-            [gpml.util.http-client :as http-client]
-            [gpml.util.json :as json]))
+  (:require
+   [camel-snake-kebab.core :refer [->camelCaseString ->kebab-case]]
+   [camel-snake-kebab.extras :as cske]
+   [duct.logger :refer [log]]
+   [gpml.boundary.port.chat :as port]
+   [gpml.util.http-client :as http-client]
+   [gpml.util.json :as json]))
 
 (defn- get-auth-headers
   [api-key api-user-id]

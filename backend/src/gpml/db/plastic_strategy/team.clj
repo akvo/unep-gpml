@@ -1,9 +1,10 @@
 (ns gpml.db.plastic-strategy.team
   {:ns-tracker/resource-deps ["plastic_strategy/team.sql"]}
-  (:require [gpml.db.jdbc-util :as jdbc-util]
-            [gpml.util :as util]
-            [gpml.util.postgresql :as util.pgsql]
-            [hugsql.core :as hugsql]))
+  (:require
+   [gpml.db.jdbc-util :as jdbc-util]
+   [gpml.util :as util]
+   [gpml.util.postgresql :as util.pgsql]
+   [hugsql.core :as hugsql]))
 
 (declare add-ps-team-member*
          update-ps-team-member*

@@ -1,9 +1,10 @@
 (ns gpml.util.http-client
-  (:require [clj-http.client :as client]
-            [diehard.core :as dh]
-            [duct.logger :refer [log]]
-            [gpml.util :as util]
-            [gpml.util.json :as json]))
+  (:require
+   [clj-http.client :as client]
+   [diehard.core :as dh]
+   [duct.logger :refer [log]]
+   [gpml.util :as util]
+   [gpml.util.json :as json]))
 
 (def ^:const default-timeout
   "Default timeout value for an connection attempt"

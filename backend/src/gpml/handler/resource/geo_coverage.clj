@@ -1,7 +1,8 @@
 (ns gpml.handler.resource.geo-coverage
-  (:require [gpml.db.resource.geo-coverage :as db.geo-coverage]
-            [gpml.domain.geo-coverage :as dom.geo-coverage]
-            [gpml.util.sql :as util.sql]))
+  (:require
+   [gpml.db.resource.geo-coverage :as db.geo-coverage]
+   [gpml.domain.geo-coverage :as dom.geo-coverage]
+   [gpml.util.sql :as util.sql]))
 
 (def api-geo-coverage-validator-schema
   [:fn

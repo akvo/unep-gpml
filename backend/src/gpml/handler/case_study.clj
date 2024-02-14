@@ -1,23 +1,24 @@
 (ns gpml.handler.case-study
-  (:require [clojure.java.jdbc :as jdbc]
-            [clojure.set :as set]
-            [duct.logger :refer [log]]
-            [gpml.db.case-study :as db.case-study]
-            [gpml.domain.case-study :as dom.case-study]
-            [gpml.handler.file :as handler.file]
-            [gpml.handler.resource.geo-coverage :as handler.geo]
-            [gpml.handler.resource.permission :as h.r.permission]
-            [gpml.handler.resource.related-content :as handler.resource.related-content]
-            [gpml.handler.resource.tag :as handler.resource.tag]
-            [gpml.handler.responses :as r]
-            [gpml.handler.util :as handler.util]
-            [gpml.service.association :as srv.association]
-            [gpml.service.permissions :as srv.permissions]
-            [gpml.util.email :as email]
-            [gpml.util.malli :as util.malli]
-            [gpml.util.sql :as sql-util]
-            [integrant.core :as ig]
-            [malli.util :as mu])
+  (:require
+   [clojure.java.jdbc :as jdbc]
+   [clojure.set :as set]
+   [duct.logger :refer [log]]
+   [gpml.db.case-study :as db.case-study]
+   [gpml.domain.case-study :as dom.case-study]
+   [gpml.handler.file :as handler.file]
+   [gpml.handler.resource.geo-coverage :as handler.geo]
+   [gpml.handler.resource.permission :as h.r.permission]
+   [gpml.handler.resource.related-content :as handler.resource.related-content]
+   [gpml.handler.resource.tag :as handler.resource.tag]
+   [gpml.handler.responses :as r]
+   [gpml.handler.util :as handler.util]
+   [gpml.service.association :as srv.association]
+   [gpml.service.permissions :as srv.permissions]
+   [gpml.util.email :as email]
+   [gpml.util.malli :as util.malli]
+   [gpml.util.sql :as sql-util]
+   [integrant.core :as ig]
+   [malli.util :as mu])
   (:import [java.sql SQLException]))
 
 (defn- handle-geo-coverage

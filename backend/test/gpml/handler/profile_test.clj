@@ -1,19 +1,20 @@
 (ns gpml.handler.profile-test
-  (:require [clojure.test :refer [deftest is testing use-fixtures]]
-            [gpml.db.country :as db.country]
-            [gpml.db.country-group :as db.country-group]
-            [gpml.db.organisation :as db.organisation]
-            [gpml.db.rbac-util :as db.rbac-util]
-            [gpml.db.resource.tag :as db.resource.tag]
-            [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.db.tag :as db.tag]
-            [gpml.fixtures :as fixtures]
-            [gpml.handler.file :as handler.file]
-            [gpml.handler.stakeholder :as stakeholder]
-            [gpml.service.permissions :as srv.permissions]
-            [gpml.util.sql :as sql-util]
-            [integrant.core :as ig]
-            [ring.mock.request :as mock]))
+  (:require
+   [clojure.test :refer [deftest is testing use-fixtures]]
+   [gpml.db.country :as db.country]
+   [gpml.db.country-group :as db.country-group]
+   [gpml.db.organisation :as db.organisation]
+   [gpml.db.rbac-util :as db.rbac-util]
+   [gpml.db.resource.tag :as db.resource.tag]
+   [gpml.db.stakeholder :as db.stakeholder]
+   [gpml.db.tag :as db.tag]
+   [gpml.fixtures :as fixtures]
+   [gpml.handler.file :as handler.file]
+   [gpml.handler.stakeholder :as stakeholder]
+   [gpml.service.permissions :as srv.permissions]
+   [gpml.util.sql :as sql-util]
+   [integrant.core :as ig]
+   [ring.mock.request :as mock]))
 
 (use-fixtures :each fixtures/with-test-system)
 

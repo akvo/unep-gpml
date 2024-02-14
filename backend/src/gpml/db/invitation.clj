@@ -1,10 +1,11 @@
 (ns gpml.db.invitation
   {:ns-tracker/resource-deps ["invitation.sql"]}
-  (:require [gpml.db.jdbc-util :as jdbc-util]
-            [gpml.util :as util]
-            [gpml.util.postgresql :as util.pgsql]
-            [gpml.util.sql :as util.sql]
-            [hugsql.core :as hugsql]))
+  (:require
+   [gpml.db.jdbc-util :as jdbc-util]
+   [gpml.util :as util]
+   [gpml.util.postgresql :as util.pgsql]
+   [gpml.util.sql :as util.sql]
+   [hugsql.core :as hugsql]))
 
 (declare create-invitations*
          get-invitations*

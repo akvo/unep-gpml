@@ -1,20 +1,21 @@
 (ns gpml.handler.export
-  (:require [clojure.set :as set]
-            [duct.logger :refer [log]]
-            [gpml.db.organisation :as db.organisation]
-            [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.db.tag :as db.tag]
-            [gpml.db.topic :as db.topic]
-            [gpml.domain.export :as dom.exp]
-            [gpml.domain.file :as dom.file]
-            [gpml.domain.types :as dom.types]
-            [gpml.handler.resource.permission :as h.r.permission]
-            [gpml.handler.responses :as r]
-            [gpml.service.file :as srv.file]
-            [gpml.util :as util]
-            [gpml.util.csv :as csv]
-            [integrant.core :as ig]
-            [medley.core :as medley]))
+  (:require
+   [clojure.set :as set]
+   [duct.logger :refer [log]]
+   [gpml.db.organisation :as db.organisation]
+   [gpml.db.stakeholder :as db.stakeholder]
+   [gpml.db.tag :as db.tag]
+   [gpml.db.topic :as db.topic]
+   [gpml.domain.export :as dom.exp]
+   [gpml.domain.file :as dom.file]
+   [gpml.domain.types :as dom.types]
+   [gpml.handler.resource.permission :as h.r.permission]
+   [gpml.handler.responses :as r]
+   [gpml.service.file :as srv.file]
+   [gpml.util :as util]
+   [gpml.util.csv :as csv]
+   [integrant.core :as ig]
+   [medley.core :as medley]))
 
 (defn- add-export-files-urls
   [config src-dst-files-keys-mapping {:keys [files] :as export}]

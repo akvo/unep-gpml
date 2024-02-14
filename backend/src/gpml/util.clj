@@ -1,7 +1,8 @@
 (ns gpml.util
-  (:require [clojure.string :as str]
-            [clojure.walk :as w]
-            [gpml.util.regular-expressions])
+  (:require
+   [clojure.string :as str]
+   [clojure.walk :as w]
+   [gpml.util.regular-expressions])
   (:import [java.io File]
            [java.net URI URL URLEncoder]
            [java.util Base64]
