@@ -541,7 +541,7 @@
       (if update?
         (handle-entities-batch-update tx logger entity-name data-coll opts)
         (handle-entities-batch-import tx logger entity-name data-coll opts)))
-    (catch Throwable e
+    (catch Exception e
       (let [error-details {:entity-name entity-name
                            :exception-message (ex-message e)
                            :exception-data (ex-data e)
@@ -588,7 +588,7 @@
       (if (:success? result)
         result
         (delete-images config (map :image_id updated-data-coll))))
-    (catch Throwable e
+    (catch Exception e
       (let [error-details {:entity-name entity-name
                            :exception-message (ex-message e)
                            :exception-data (ex-data e)
@@ -605,7 +605,7 @@
       (let [updated-data-coll (add-gpml-image-url config tx logger entity-name data-coll)]
         (with-safe-db-transaction tx logger entity-name updated-data-coll opts)))
     {:success? true}
-    (catch Throwable e
+    (catch Exception e
       (let [error-details {:entity-name entity-name
                            :exception-message (ex-message e)
                            :exception-data (ex-data e)
@@ -623,7 +623,7 @@
       (if (:success? result)
         result
         (delete-images config (map :image_id updated-data-coll))))
-    (catch Throwable e
+    (catch Exception e
       (let [error-details {:entity-name entity-name
                            :exception-message (ex-message e)
                            :exception-data (ex-data e)
@@ -692,7 +692,7 @@
                 (save-as-gpml-entity config gpml-entity-name to-import opts)))
             (log logger :error ::failed-to-get-data-from-datasource {:result result}))
           (recur skip-token more-pages?))))
-    (catch Throwable e
+    (catch Exception e
       (log logger :error ::something-bad-happened {:exception-class (str (class e))
                                                    :exception-message (ex-message e)
                                                    :stack-trace (map str (.getStackTrace e))

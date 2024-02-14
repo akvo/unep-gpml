@@ -170,7 +170,7 @@
                           api-case-studies)]
         (r/ok {:success? true
                :inserted-values (count results)})))
-    (catch Throwable e
+    (catch Exception e
       (log logger :error ::failed-to-create-case-studies {:exception-message (ex-message e)
                                                           :exception-class (class e)})
       (r/server-error {:success? false

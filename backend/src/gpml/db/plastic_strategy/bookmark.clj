@@ -37,7 +37,7 @@
          :reason :unexpected-number-of-affected-rows
          :error-details {:expected-affected-rows 1
                          :actual-affected-rows affected}}))
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))

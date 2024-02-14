@@ -245,7 +245,7 @@
         (future (send-invitation-emails config invitations))
         (r/ok {:success? true
                :invited-experts (map #(update % :id str) invitations)})))
-    (catch Throwable t
+    (catch Exception t
       (log logger :error ::invite-experts-error {:exception-message (ex-message t)
                                                  :exception-data (ex-data t)
                                                  :stack-trace (.getStackTrace t)

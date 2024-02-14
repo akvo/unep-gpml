@@ -110,7 +110,7 @@
                           {:content-type type})]
         (.write ^WriteChannel writer byte-buffer))
       {:success? true})
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))

@@ -63,7 +63,7 @@
         (if success?
           (r/ok result)
           (r/server-error result)))
-      (catch Throwable t
+      (catch Exception t
         (log logger :error ::create-badge-failed {:exception-message (.getMessage t)})
         (r/server-error {:success? false
                          :reason :could-not-create-badge

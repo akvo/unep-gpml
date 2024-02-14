@@ -46,7 +46,7 @@
          :reason :unexpected-number-of-affected-rows
          :error-details {:expected-affected-rows 1
                          :actual-affected-rows affected}}))
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
@@ -63,7 +63,7 @@
          :reason :unexpected-number-of-affected-rows
          :error-details {:expected-affected-rows 1
                          :actual-affected-rows affected}}))
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
@@ -75,7 +75,7 @@
      :ps-team-members (->> (get-ps-team-members* conn opts)
                            (map p-ps-team-member->ps-team-member)
                            (jdbc-util/db-result-snake-kw->db-result-kebab-kw))}
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
@@ -92,7 +92,7 @@
            :ps-team-member (first ps-team-members)}
           {:success? false
            :reason :not-found})))
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))

@@ -22,7 +22,7 @@
                         (into-array [(Storage$SignUrlOption/withV4Signature)]))]
       {:success? true
        :url url})
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
