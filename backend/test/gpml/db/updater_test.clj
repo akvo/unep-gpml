@@ -1,15 +1,17 @@
 (ns gpml.db.updater-test
-  (:require [clojure.java.io :as io]
-            [clojure.string :as str]
-            [clojure.test :refer [deftest is testing use-fixtures]]
-            [gpml.db.country :as db.country]
-            [gpml.db.initiative :as db.initiative]
-            [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.fixtures :as fixtures]
-            [gpml.seeder.db :as db.seeder]
-            [gpml.seeder.dummy :as dummy]
-            [gpml.seeder.main :as seeder]
-            [gpml.test-util :as test-util]))
+  (:require
+   [clojure.edn :as edn]
+   [clojure.java.io :as io]
+   [clojure.string :as str]
+   [clojure.test :refer [deftest is testing use-fixtures]]
+   [gpml.db.country :as db.country]
+   [gpml.db.initiative :as db.initiative]
+   [gpml.db.stakeholder :as db.stakeholder]
+   [gpml.fixtures :as fixtures]
+   [gpml.seeder.db :as db.seeder]
+   [gpml.seeder.dummy :as dummy]
+   [gpml.seeder.main :as seeder]
+   [gpml.test-util :as test-util]))
 
 (use-fixtures :each fixtures/with-test-system)
 
@@ -17,12 +19,12 @@
   (let [countries-new (seeder/get-data "new_countries")
         countries-old (seeder/get-data "countries")
         mapping-file (seeder/get-data "new_countries_mapping")
-        old-ids (mapv #(-> % first name read-string) mapping-file)]
+        old-ids (mapv #(-> % first name edn/read-string) mapping-file)]
 
     ;; Sanity check for the old -> new mapping
     (testing "mapping is correct"
       (doseq [mapping mapping-file]
-        (let [old-id (-> mapping first name read-string)
+        (let [old-id (-> mapping first name edn/read-string)
               new-id (-> mapping second)
               country-new (first (filter #(= new-id (:id %)) countries-new))
               country-old (first (filter #(= old-id (:id %)) countries-old))
