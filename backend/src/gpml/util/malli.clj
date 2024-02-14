@@ -1,7 +1,8 @@
 (ns gpml.util.malli
   (:refer-clojure :exclude [dissoc keys])
-  (:require [malli.core :as m]
-            [malli.util :as mu]))
+  (:require
+   [malli.core :as m]
+   [malli.util :as mu]))
 
 (defn dissoc
   "Like [[malli.util/dissoc]] but accepts a sequence of keys `ks` to be

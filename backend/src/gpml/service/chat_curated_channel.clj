@@ -1,5 +1,6 @@
 (ns gpml.service.chat-curated-channel
-  (:require [gpml.db.chat-curated-channel :as db.cc-channel]))
+  (:require
+   [gpml.db.chat-curated-channel :as db.cc-channel]))
 
 (defn create-chat-curated-channel
   [{:keys [db]} chat-curated-channel-id]

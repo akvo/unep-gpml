@@ -1,21 +1,22 @@
 (ns gpml.handler.browse
-  (:require [clojure.string :as str]
-            [duct.logger :refer [log]]
-            [gpml.db.country-group :as db.country-group]
-            [gpml.db.resource.connection :as db.resource.connection]
-            [gpml.db.topic :as db.topic]
-            [gpml.domain.file :as dom.file]
-            [gpml.domain.resource :as dom.resource]
-            [gpml.domain.types :as dom.types]
-            [gpml.handler.resource.permission :as h.r.permission]
-            [gpml.handler.responses :as r]
-            [gpml.handler.util :as handler.util]
-            [gpml.service.file :as srv.file]
-            [gpml.service.plastic-strategy :as srv.ps]
-            [gpml.util.postgresql :as pg-util]
-            [gpml.util.regular-expressions :as util.regex]
-            [integrant.core :as ig]
-            [medley.core :as medley])
+  (:require
+   [clojure.string :as str]
+   [duct.logger :refer [log]]
+   [gpml.db.country-group :as db.country-group]
+   [gpml.db.resource.connection :as db.resource.connection]
+   [gpml.db.topic :as db.topic]
+   [gpml.domain.file :as dom.file]
+   [gpml.domain.resource :as dom.resource]
+   [gpml.domain.types :as dom.types]
+   [gpml.handler.resource.permission :as h.r.permission]
+   [gpml.handler.responses :as r]
+   [gpml.handler.util :as handler.util]
+   [gpml.service.file :as srv.file]
+   [gpml.service.plastic-strategy :as srv.ps]
+   [gpml.util.postgresql :as pg-util]
+   [gpml.util.regular-expressions :as util.regex]
+   [integrant.core :as ig]
+   [medley.core :as medley])
   (:import [java.sql SQLException]))
 
 (def ^:const topic-re (util.regex/comma-separated-enums-re dom.types/topic-types))

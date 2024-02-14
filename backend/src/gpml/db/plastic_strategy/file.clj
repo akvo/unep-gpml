@@ -1,9 +1,10 @@
 (ns gpml.db.plastic-strategy.file
   {:ns-tracker/resource-deps ["plastic_strategy/file.sql"]}
-  (:require [gpml.db.jdbc-util :as jdbc-util]
-            [gpml.util :as util]
-            [gpml.util.postgresql :as util.pgsql]
-            [hugsql.core :as hugsql]))
+  (:require
+   [gpml.db.jdbc-util :as jdbc-util]
+   [gpml.util :as util]
+   [gpml.util.postgresql :as util.pgsql]
+   [hugsql.core :as hugsql]))
 
 (declare create-ps-file*
          delete-ps-file*

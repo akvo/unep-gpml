@@ -1,9 +1,10 @@
 (ns gpml.service.association
-  (:require [clojure.string :as str]
-            [gpml.db.rbac-util :as db.rbac-util]
-            [gpml.db.resource.association :as db.res.acs]
-            [gpml.service.permissions :as srv.permissions]
-            [medley.core :as medley]))
+  (:require
+   [clojure.string :as str]
+   [gpml.db.rbac-util :as db.rbac-util]
+   [gpml.db.resource.association :as db.res.acs]
+   [gpml.service.permissions :as srv.permissions]
+   [medley.core :as medley]))
 
 (defn get-associations-diff
   "FIXME:"

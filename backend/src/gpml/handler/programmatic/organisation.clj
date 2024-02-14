@@ -1,12 +1,13 @@
 (ns gpml.handler.programmatic.organisation
-  (:require [clojure.java.jdbc :as jdbc]
-            [duct.logger :refer [log]]
-            [gpml.domain.organisation :as dom.org]
-            [gpml.handler.organisation :as handler.org]
-            [gpml.handler.responses :as r]
-            [gpml.util.malli :as util.malli]
-            [gpml.util.postgresql :as pg-util]
-            [integrant.core :as ig])
+  (:require
+   [clojure.java.jdbc :as jdbc]
+   [duct.logger :refer [log]]
+   [gpml.domain.organisation :as dom.org]
+   [gpml.handler.organisation :as handler.org]
+   [gpml.handler.responses :as r]
+   [gpml.util.malli :as util.malli]
+   [gpml.util.postgresql :as pg-util]
+   [integrant.core :as ig])
   (:import [java.sql SQLException]))
 
 (defn- create-organisation

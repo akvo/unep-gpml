@@ -1,17 +1,18 @@
 (ns gpml.seeder.dummy
-  (:require [clojure.java.io :as io]
-            [clojure.java.jdbc :as jdbc]
-            [clojure.string :as str]
-            [duct.core :as duct]
-            [gpml.db.country :as db.country]
-            [gpml.db.country-group :as db.country-group]
-            [gpml.db.event :as db.event]
-            [gpml.db.initiative :as db.initiative]
-            [gpml.db.language :as db.language]
-            [gpml.db.organisation :as db.organisation]
-            [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.db.tag :as db.tag]
-            [gpml.seeder.main :as seeder]))
+  (:require
+   [clojure.java.io :as io]
+   [clojure.java.jdbc :as jdbc]
+   [clojure.string :as str]
+   [duct.core :as duct]
+   [gpml.db.country :as db.country]
+   [gpml.db.country-group :as db.country-group]
+   [gpml.db.event :as db.event]
+   [gpml.db.initiative :as db.initiative]
+   [gpml.db.language :as db.language]
+   [gpml.db.organisation :as db.organisation]
+   [gpml.db.stakeholder :as db.stakeholder]
+   [gpml.db.tag :as db.tag]
+   [gpml.seeder.main :as seeder]))
 
 ;; Dummy Content for UI eg. Pagination, Browse, etc
 ;; Also to Create test admin profile

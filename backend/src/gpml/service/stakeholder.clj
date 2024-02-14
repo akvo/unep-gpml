@@ -1,20 +1,21 @@
 (ns gpml.service.stakeholder
-  (:require [duct.logger :refer [log]]
-            [gpml.db.invitation :as db.invitation]
-            [gpml.db.organisation :as db.organisation]
-            [gpml.db.resource.tag :as db.resource.tag]
-            [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.domain.file :as dom.file]
-            [gpml.handler.organisation :as handler.org]
-            [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
-            [gpml.service.chat :as srv.chat]
-            [gpml.service.file :as srv.file]
-            [gpml.service.permissions :as srv.permissions]
-            [gpml.service.plastic-strategy :as srv.ps]
-            [gpml.util :as util]
-            [gpml.util.image :as util.image]
-            [gpml.util.thread-transactions :as tht]
-            [medley.core :as medley]))
+  (:require
+   [duct.logger :refer [log]]
+   [gpml.db.invitation :as db.invitation]
+   [gpml.db.organisation :as db.organisation]
+   [gpml.db.resource.tag :as db.resource.tag]
+   [gpml.db.stakeholder :as db.stakeholder]
+   [gpml.domain.file :as dom.file]
+   [gpml.handler.organisation :as handler.org]
+   [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
+   [gpml.service.chat :as srv.chat]
+   [gpml.service.file :as srv.file]
+   [gpml.service.permissions :as srv.permissions]
+   [gpml.service.plastic-strategy :as srv.ps]
+   [gpml.util :as util]
+   [gpml.util.image :as util.image]
+   [gpml.util.thread-transactions :as tht]
+   [medley.core :as medley]))
 
 (defn create-stakeholder
   [{:keys [db logger mailjet-config] :as config} stakeholder]

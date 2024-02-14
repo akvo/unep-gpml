@@ -1,13 +1,14 @@
 (ns gpml.service.plastic-strategy.team
-  (:require [duct.logger :refer [log]]
-            [gpml.db.plastic-strategy.team :as db.ps.team]
-            [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.service.chat :as srv.chat]
-            [gpml.service.invitation :as srv.invitation]
-            [gpml.service.permissions :as srv.permissions]
-            [gpml.service.plastic-strategy :as srv.ps]
-            [gpml.util.email :as util.email]
-            [gpml.util.thread-transactions :as tht]))
+  (:require
+   [duct.logger :refer [log]]
+   [gpml.db.plastic-strategy.team :as db.ps.team]
+   [gpml.db.stakeholder :as db.stakeholder]
+   [gpml.service.chat :as srv.chat]
+   [gpml.service.invitation :as srv.invitation]
+   [gpml.service.permissions :as srv.permissions]
+   [gpml.service.plastic-strategy :as srv.ps]
+   [gpml.util.email :as util.email]
+   [gpml.util.thread-transactions :as tht]))
 
 (defn- assign-ps-team-member-role
   [{:keys [db logger]} ps-team-member]

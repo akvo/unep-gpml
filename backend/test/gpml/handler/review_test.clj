@@ -1,13 +1,14 @@
 (ns gpml.handler.review-test
-  (:require [clojure.test :refer [deftest is testing use-fixtures]]
-            [gpml.db.review :as db.review]
-            [gpml.fixtures :as fixtures]
-            [gpml.handler.resource.permission :as h.r.permission]
-            [gpml.handler.review :as review]
-            [gpml.service.permissions :as srv.permissions]
-            [gpml.test-util :as test-util]
-            [integrant.core :as ig]
-            [ring.mock.request :as mock]))
+  (:require
+   [clojure.test :refer [deftest is testing use-fixtures]]
+   [gpml.db.review :as db.review]
+   [gpml.fixtures :as fixtures]
+   [gpml.handler.resource.permission :as h.r.permission]
+   [gpml.handler.review :as review]
+   [gpml.service.permissions :as srv.permissions]
+   [gpml.test-util :as test-util]
+   [integrant.core :as ig]
+   [ring.mock.request :as mock]))
 
 (use-fixtures :each fixtures/with-test-system)
 

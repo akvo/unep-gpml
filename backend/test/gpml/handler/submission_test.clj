@@ -1,13 +1,14 @@
 (ns gpml.handler.submission-test
-  (:require [clojure.test :refer [deftest is testing use-fixtures]]
-            [gpml.db.event :as db.event]
-            [gpml.fixtures :as fixtures]
-            [gpml.handler.profile-test :as profile-test]
-            [gpml.handler.submission :as submission]
-            [gpml.service.permissions :as srv.permissions]
-            [gpml.test-util :as test-util]
-            [integrant.core :as ig]
-            [ring.mock.request :as mock]))
+  (:require
+   [clojure.test :refer [deftest is testing use-fixtures]]
+   [gpml.db.event :as db.event]
+   [gpml.fixtures :as fixtures]
+   [gpml.handler.profile-test :as profile-test]
+   [gpml.handler.submission :as submission]
+   [gpml.service.permissions :as srv.permissions]
+   [gpml.test-util :as test-util]
+   [integrant.core :as ig]
+   [ring.mock.request :as mock]))
 
 (use-fixtures :each fixtures/with-test-system)
 

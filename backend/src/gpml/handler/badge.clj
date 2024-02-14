@@ -1,12 +1,13 @@
 (ns gpml.handler.badge
-  (:require [camel-snake-kebab.core :refer [->kebab-case]]
-            [camel-snake-kebab.extras :as cske]
-            [duct.logger :refer [log]]
-            [gpml.db.badge :as db.badge]
-            [gpml.domain.types :as dom.types]
-            [gpml.handler.resource.permission :as h.r.permission]
-            [gpml.handler.responses :as r]
-            [integrant.core :as ig])
+  (:require
+   [camel-snake-kebab.core :refer [->kebab-case]]
+   [camel-snake-kebab.extras :as cske]
+   [duct.logger :refer [log]]
+   [gpml.db.badge :as db.badge]
+   [gpml.domain.types :as dom.types]
+   [gpml.handler.resource.permission :as h.r.permission]
+   [gpml.handler.responses :as r]
+   [integrant.core :as ig])
   (:import [java.sql SQLException]))
 
 (defn- get-badge-by-id-or-name

@@ -1,6 +1,7 @@
 (ns gpml.util.postgresql
-  (:require [clojure.java.jdbc :as jdbc]
-            [jsonista.core :as j])
+  (:require
+   [clojure.java.jdbc :as jdbc]
+   [jsonista.core :as j])
   (:import [java.sql PreparedStatement SQLException]
            [org.postgresql.util PGobject]))
 

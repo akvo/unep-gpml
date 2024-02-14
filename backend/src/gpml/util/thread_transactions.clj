@@ -1,6 +1,7 @@
 (ns gpml.util.thread-transactions
-  (:require [duct.logger :refer [log]]
-            [malli.core :as m]))
+  (:require
+   [duct.logger :refer [log]]
+   [malli.core :as m]))
 
 (def ^:private transaction-schema
   [:map

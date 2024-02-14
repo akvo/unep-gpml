@@ -1,11 +1,12 @@
 (ns gpml.db.tag
   {:ns-tracker/resource-deps ["tag.sql"]}
-  (:require [clojure.string :as str]
-            [gpml.domain.tag :as dom.tag]
-            [gpml.domain.types :as dom.types]
-            [gpml.util :as util]
-            [gpml.util.sql :as sql-util]
-            [hugsql.core :as hugsql]))
+  (:require
+   [clojure.string :as str]
+   [gpml.domain.tag :as dom.tag]
+   [gpml.domain.types :as dom.types]
+   [gpml.util :as util]
+   [gpml.util.sql :as sql-util]
+   [hugsql.core :as hugsql]))
 
 (declare get-tags
          tag-by-tags

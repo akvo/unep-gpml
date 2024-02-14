@@ -1,10 +1,11 @@
 (ns gpml.fixtures
-  (:require [clojure.java.jdbc :as jdbc]
-            [clojure.string :as str]
-            [duct.core :as duct]
-            [duct.database.sql :as sql]
-            [gpml.util.email :as email]
-            [integrant.core :as ig])
+  (:require
+   [clojure.java.jdbc :as jdbc]
+   [clojure.string :as str]
+   [duct.core :as duct]
+   [duct.database.sql :as sql]
+   [gpml.util.email :as email]
+   [integrant.core :as ig])
   (:import [java.util UUID]))
 
 (defonce ^:private lock (Object.))
