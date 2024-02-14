@@ -144,7 +144,7 @@
                   country-tn-new (:q24_4 new-tn-initiative)
                   country-tn-old (:q24_4 tn-initiative)]
               (check-country country-new country-old)
-              (check-country country-tn-new country-tn-old))))
+              (doall (map check-country country-tn-new country-tn-old)))))
 
         (testing "National Initiative country ID changes correctly"
           (let [new-n-initiative (db.initiative/initiative-by-id db n-initiative-id)
