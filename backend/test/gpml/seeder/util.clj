@@ -1,8 +1,10 @@
 (ns gpml.seeder.util
-  (:require [clojure.java.io :as io]
-            [gpml.db.initiative :as db.initiative]
-            [gpml.seeder.db :as seeder.db]
-            [jsonista.core :as j]))
+  (:require
+   [clojure.edn :as edn]
+   [clojure.java.io :as io]
+   [gpml.db.initiative :as db.initiative]
+   [gpml.seeder.db :as seeder.db]
+   [jsonista.core :as j]))
 
 (def ^:private json-path "dev/resources/files/")
 (def ^:private cache-path "dev/resources/cache/")
@@ -114,7 +116,7 @@
 (defn country-id-updater [db cache-id mapping-file]
   (let [table (seeder.db/get-foreign-key db {:table "country"})
         new-map-list (mapv (fn [i] {:new_id (-> i second)
-                                    :old_id (-> i first name read-string)})
+                                    :old_id (-> i first name edn/read-string)})
                            mapping-file)]
     (write-cache table cache-id)
     (doseq [query (:deps table)]

@@ -11,7 +11,7 @@
   "If no argument is passed, creates a random UUID. If the passed
   paramenter is a UUID, returns it verbatim. If it is a string
   representing a UUID value return the corresponding UUID. Any other
-  value or invalid string returns nil. "
+  value or invalid string returns nil."
   ([]
    (UUID/randomUUID))
   ([uuid]
