@@ -44,7 +44,7 @@
   (set-parameter [_ stmt ix]
     (let [as-array (into-array Object elements)
           jdbc-array (.createArrayOf (.getConnection ^PreparedStatement stmt) type-name as-array)]
-      (.setArray stmt ix jdbc-array))))
+      (.setArray ^PreparedStatement stmt ix jdbc-array))))
 
 (deftype PGEnum [value type-name]
   jdbc/ISQLParameter

@@ -118,9 +118,9 @@
               value))))))
 
 (defn sql-timestamp->instant
-  "Convert `java.sql.timestamp` instance into `java.time.instant` one
+  "Convert `java.sql.Timestamp` instance into `java.time.Instant` one
    Return nil if there is nothing to convert."
-  [sql-timestamp]
+  [^java.sql.Timestamp sql-timestamp]
   (when sql-timestamp
     (.toInstant sql-timestamp)))
 

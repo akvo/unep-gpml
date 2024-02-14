@@ -118,7 +118,7 @@
 
 (defn decode-base64
   "Returns a byte[] from a Base64 encoded String"
-  [src]
+  [^String src]
   (.decode (Base64/getDecoder) src))
 
 (defn base64?
