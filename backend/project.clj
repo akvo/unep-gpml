@@ -60,19 +60,22 @@
   :middleware     [lein-duct.plugin/middleware]
   :jvm-opts ["-Djava.awt.headless=true"]
   :profiles
-  {:uberjar {:aot [gpml.main]
+  {:uberjar {:aot []
+             :global-vars {*assert* false}
              :uberjar-name "uberjar.jar"}
-   :metajar {:aot :all
-             :direct-link true
+   :metajar {:aot []
+             :global-vars {*assert* false}
              :jar-inclusions [#"\.sql$"]
              :jar-name "app.jar"
              :pedantic? :abort
              :plugins [[lein-metajar "0.1.1"]]}
    :seeder {:main seeder
-            :source-paths ["dev/src"]
+            :source-paths ["dev/src"] ;; XXX does it still work
             :resource-paths ["dev/resources"]
             :prep-tasks ^:replace []}
-   :test {:dependencies [[ring/ring-mock "0.4.0"]]}
+   :test {:dependencies [[ring/ring-mock "0.4.0"]]
+          :jvm-opts ["-Dclojure.spec.compile-asserts=true"
+                     "-Dclojure.spec.check-asserts=true"]}
    :dev  {:source-paths   ["dev/src"]
           :resource-paths ["dev/resources"]
           :dependencies   [[integrant/repl "0.3.2"]
