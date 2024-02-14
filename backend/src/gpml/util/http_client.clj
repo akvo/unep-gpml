@@ -65,7 +65,7 @@
   (util/update-if-not-nil resp :body json/<-json))
 
 (defn do-request
-  "Like [[clj-http.client/request]] but with retries. Optionally accepts
+  "Like `clj-http.client/request` but with retries. Optionally accepts
   a map with retry configuration. Otherwise, it sets a default
   configuration."
   ([logger req] (do-request logger req {}))

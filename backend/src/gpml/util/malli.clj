@@ -5,7 +5,7 @@
    [malli.util :as mu]))
 
 (defn dissoc
-  "Like [[malli.util/dissoc]] but accepts a sequence of keys `ks` to be
+  "Like `malli.util/dissoc` but accepts a sequence of keys `ks` to be
   dissociated from the schema."
   ([?schema ks]
    (dissoc ?schema ks nil))
@@ -13,7 +13,7 @@
    (mu/transform-entries ?schema #(remove (fn [[k]] (get (set ks) k)) %) options)))
 
 (defn keys
-  "Like [[clojure.core/keys]] but for EntrySchemas.
+  "Like `clojure.core/keys` but for EntrySchemas.
 
   NOTE: new versions of malli already include this function but we are
   using an older version because of reitit. Once reitit is updated
