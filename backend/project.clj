@@ -82,8 +82,7 @@
                            [fipp "0.6.21"]
                            [hawk "0.2.11"]
                            [eftest "0.5.9"]
-                           [kerodon "0.9.1"]
-                           [djblue/portal "0.8.0"]]
+                           [kerodon "0.9.1"]]
           :plugins [[lein-eftest "0.5.9"]]
           :eftest {:thread-count 4
                    :multithread :vars
