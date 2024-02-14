@@ -307,7 +307,7 @@
                                                                            :resource-col "stakeholder"
                                                                            :resource-id (:id stakeholder)
                                                                            :review_status "APPROVED"})}
-                           (catch Throwable t
+                           (catch Exception t
                              {:success? false
                               :error-details {:exception-message (ex-message t)}}))]
               (if (:success? result)
@@ -536,7 +536,7 @@
                                                                       :resource-col "stakeholder"
                                                                       :resource-id (:id stakeholder)
                                                                       :review_status "APPROVED"})}
-                           (catch Throwable t
+                           (catch Exception t
                              {:success? true
                               :error-details {:exception-message (ex-message t)}}))]
               (if (:success? result)
@@ -553,7 +553,7 @@
               (let [result (try
                              {:success? true
                               :org (db.organisation/organisation-by-id conn {:id (:affiliation stakeholder)})}
-                             (catch Throwable t
+                             (catch Exception t
                                {:success? true
                                 :error-details {:exception-message (ex-message t)}}))]
                 (if (:success? result)

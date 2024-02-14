@@ -35,7 +35,7 @@
                                  ;; request.
                                  {:headers {:user-agent "gpml/1.0.0"}})
       src)
-    (catch Throwable t
+    (catch Exception t
       (log logger :error ::failed-to-download-image {:exception-message (ex-message t)
                                                      :stack-trace (map str (.getStackTrace t))}))))
 
@@ -61,7 +61,7 @@
                                                             :file-type (keyword file_type)
                                                             :reason :creation-file-failed
                                                             :error-details {:creation-result result}}))))
-          (catch Throwable t
+          (catch Exception t
             (log logger :error ::failed-to-create-file {:entity entity-key
                                                         :id id
                                                         :file-type (keyword file_type)
@@ -124,7 +124,7 @@
                                                           limit
                                                           (assoc :limit limit))))
         (r/ok {:success? true}))
-      (catch Throwable t
+      (catch Exception t
         (let [log-data {:exception-message (ex-message t)
                         :exception-data (ex-data t)
                         :stack-trace (map str (.getStackTrace t))}]

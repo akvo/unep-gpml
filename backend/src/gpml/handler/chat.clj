@@ -276,7 +276,7 @@
     (if (h.r.permission/super-admin? config (:id user))
       (try
         (add-user-to-private-channel config parameters)
-        (catch Throwable t
+        (catch Exception t
           (log logger :error ::failed-to-add-user-to-private-channel {:exception-message (ex-message t)})
           (let [response {:success? false
                           :reason :could-not-add-user-to-private-channel}]

@@ -190,7 +190,7 @@
           (when (seq result)
             (future (send-new-comment-created-notification config comment)))
           (r/ok {:comment result})))
-      (catch Throwable t
+      (catch Exception t
         (let [log-data {:exception-message (ex-message t)
                         :exception-data (ex-data t)
                         :context-data (get-in req [:parameters :body])}]
@@ -208,7 +208,7 @@
       (r/ok {:comments (-> (map comment->api-comment comments)
                            (util/build-hierarchy {} :parent_id)
                            :children)}))
-    (catch Throwable t
+    (catch Exception t
       (let [log-data {:exception-message (ex-message t)
                       :exception-data (ex-data t)
                       :context-data (get-in req [:parameters :query])}]
@@ -230,7 +230,7 @@
         (r/forbidden {:message "Unauthorized"})
         (let [comment (api-comment->comment body-params)]
           (r/ok {:updated-comments (db.comment/update-comment (:spec db) comment)}))))
-    (catch Throwable t
+    (catch Exception t
       (let [log-data {:exception-message (ex-message t)
                       :exception-data (ex-data t)
                       :context-data (get-in req [:parameters :body])}]
@@ -250,7 +250,7 @@
                   (h.r.permission/super-admin? config (:id user)))
         (r/forbidden {:message "Unauthorized"})
         (r/ok {:deleted-comments (db.comment/delete-comment (:spec db) {:id id})})))
-    (catch Throwable t
+    (catch Exception t
       (let [log-data {:exception-message (ex-message t)
                       :exception-data (ex-data t)
                       :context-data {:comment-id (get-in req [:parameters :path])

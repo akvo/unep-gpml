@@ -230,7 +230,7 @@
             (if success? (r/ok {})
                 (r/server-error result))))
         (r/forbidden {:message "Unauthorized"}))
-      (catch Throwable t
+      (catch Exception t
         (let [log-data {:exception-message (ex-message t)
                         :exception-data (ex-data t)
                         :context-data (assoc body-params
@@ -280,7 +280,7 @@
               (r/ok result))
             (r/server-error result)))
         (r/forbidden {:message "Unauthorized"}))
-      (catch Throwable e
+      (catch Exception e
         (log logger :error ::failed-to-req-org-to-member-conversion {:exception-message (ex-message e)})
         (let [response {:success? false
                         :reason :could-not-req-org-to-member-conversion}]
@@ -371,7 +371,7 @@
                             (db.organisation/list-organisations conn)
                             first
                             :count)}))
-      (catch Throwable t
+      (catch Exception t
         (let [log-data {:exception-message (ex-message t)
                         :exception-data (ex-data t)
                         :context-data (get-in req [:parameters :query])}]

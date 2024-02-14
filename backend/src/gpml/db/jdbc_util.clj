@@ -38,7 +38,7 @@
         {:success? false
          :reason :unknown-sql-error
          :error-details {:msg (ex-message e)}}))
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))

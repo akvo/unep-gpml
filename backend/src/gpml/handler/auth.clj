@@ -64,7 +64,7 @@
                                                         :resource-type (str/replace resource-type \_ \-)
                                                         :resource-id resource-id}))
               (r/ok (merge {:success? true} path body))))))
-      (catch Throwable t
+      (catch Exception t
         (log logger :error ::failed-to-grant-topic-to-stakeholder {:exception-message (ex-message t)
                                                                    :exception-data (ex-data t)
                                                                    :stack-trace (.getStackTrace t)

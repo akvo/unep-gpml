@@ -38,7 +38,7 @@
         {:success? true}
         {:success? false
          :reason :not-found}))
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :error-details {:ex-message (ex-message t)}})))
 
@@ -52,7 +52,7 @@
                (comp persistence-file->file
                      jdbc-util/db-result-snake-kw->db-result-kebab-kw)
                files)})
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details (ex-message t)})))
@@ -68,7 +68,7 @@
            :file (-> result :files first)}
           {:success? false
            :reason :not-found})))
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details (ex-message t)})))

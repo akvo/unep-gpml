@@ -388,7 +388,7 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
       (r/ok {:success? true
              :results results
              :counts counts}))
-    (catch Throwable t
+    (catch Exception t
       (log logger :error :failed-to-get-topics {:exception-message (ex-message t)
                                                 :context-data {:query-params query}})
       (let [response {:success? false

@@ -18,7 +18,7 @@
                                                 {:resource-id id
                                                  :resource-table-name type})
     {:success? true}
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
@@ -35,7 +35,7 @@
       (when-not (= 1 (delete-resource* tx {:table-name type :id id}))
         (throw (ex-info "Failed to delete resource." {:reason :unexpected-number-of-affected-rows})))
       {:success? true})
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
