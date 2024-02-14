@@ -21,7 +21,8 @@
    [gpml.util.email :as email]
    [gpml.util.sql :as sql-util]
    [integrant.core :as ig])
-  (:import [java.sql SQLException]))
+  (:import
+   (java.sql SQLException)))
 
 (defn- create-resource
   [{:keys [logger mailjet-config] :as config}

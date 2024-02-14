@@ -20,7 +20,8 @@
    [gpml.util.geo :as geo]
    [integrant.core :as ig]
    [ring.util.response :as resp])
-  (:import [java.sql SQLException]))
+  (:import
+   (java.sql SQLException)))
 
 (def roles-re (->> dom.stakeholder/role-types
                    (str/join "|")

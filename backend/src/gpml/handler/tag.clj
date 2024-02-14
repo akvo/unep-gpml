@@ -13,7 +13,8 @@
    [integrant.core :as ig]
    [malli.util :as mu]
    [ring.util.response :as resp])
-  (:import [java.sql SQLException]))
+  (:import
+   (java.sql SQLException)))
 
 (def ^:const get-popular-topics-tags-params
   [:map

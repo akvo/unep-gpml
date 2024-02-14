@@ -6,7 +6,8 @@
    [duct.database.sql :as sql]
    [gpml.util.email :as email]
    [integrant.core :as ig])
-  (:import [java.util UUID]))
+  (:import
+   (java.util UUID)))
 
 (defonce ^:private lock (Object.))
 (def ^:dynamic *system* nil)

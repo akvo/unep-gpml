@@ -19,7 +19,8 @@
    [gpml.util.sql :as sql-util]
    [integrant.core :as ig]
    [malli.util :as mu])
-  (:import [java.sql SQLException]))
+  (:import
+   (java.sql SQLException)))
 
 (defn- handle-geo-coverage
   "FIXME: Add docstring"

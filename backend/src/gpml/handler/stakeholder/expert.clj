@@ -20,7 +20,8 @@
    [jsonista.core :as json]
    [malli.util :as mu]
    [ring.util.response :as resp])
-  (:import [java.sql SQLException]))
+  (:import
+   (java.sql SQLException)))
 
 (def ^:private get-experts-params
   [:map

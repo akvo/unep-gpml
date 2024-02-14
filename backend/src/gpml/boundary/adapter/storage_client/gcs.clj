@@ -2,9 +2,10 @@
   (:require
    [clj-gcp.storage.core]
    [gpml.boundary.port.storage-client :as port])
-  (:import [clj_gcp.storage.core GCSStorageClient]
-           [com.google.cloud.storage BlobId BlobInfo Storage Storage$SignUrlOption]
-           [java.util.concurrent TimeUnit]))
+  (:import
+   (clj_gcp.storage.core GCSStorageClient)
+   (com.google.cloud.storage BlobId BlobInfo Storage Storage$SignUrlOption)
+   (java.util.concurrent TimeUnit)))
 
 (defn- delete-blob
   [^Storage storage bucket-name blob-name]

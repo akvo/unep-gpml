@@ -6,7 +6,8 @@
    [gpml.util :as util]
    [malli.core :as m]
    [malli.transform :as mt])
-  (:import [java.io File]))
+  (:import
+   (java.io File)))
 
 (def ^:const object-key-pattern
   "Pattern to define the object key of the file in the object storage.

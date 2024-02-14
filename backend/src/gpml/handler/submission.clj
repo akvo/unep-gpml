@@ -22,7 +22,8 @@
    [malli.core :as m]
    [malli.transform :as mt]
    [ring.util.response :as resp])
-  (:import [java.sql SQLException]))
+  (:import
+   (java.sql SQLException)))
 
 (defn remap-initiative [{:keys [q1 q1_1 q16 q18
                                 q20 q23 q24 q24_1 q24_2

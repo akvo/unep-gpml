@@ -8,7 +8,8 @@
    [gpml.handler.resource.permission :as h.r.permission]
    [gpml.handler.responses :as r]
    [integrant.core :as ig])
-  (:import [java.sql SQLException]))
+  (:import
+   (java.sql SQLException)))
 
 (defn- get-badge-by-id-or-name
   [{:keys [db]} badge-id-or-name]
