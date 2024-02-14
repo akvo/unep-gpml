@@ -29,7 +29,7 @@
                  [com.auth0/java-jwt "3.12.0" :exclusions [com.fasterxml.jackson.core/jackson-databind]]
                  [clj-http "3.12.0"]
                  [clj-time "0.12.0"]
-                 [clj-commons/iapetos "0.1.11" :exclusions [io.prometheus/simpleclient]]
+                 [clj-commons/iapetos "0.1.13" :exclusions [io.prometheus/simpleclient]]
                  [io.prometheus/simpleclient_hotspot "0.9.0"]
                  [io.prometheus/simpleclient_jetty "0.9.0"]
                  [io.prometheus/simpleclient_jetty_jdk8 "0.9.0"]
