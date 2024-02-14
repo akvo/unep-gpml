@@ -9,6 +9,9 @@ HERE=$(shell echo $$PWD)
 # Feel free to suggest any improvements at:
 # https://github.com/clojure-emacs/enrich-classpath/issues
 
+# Allows you to simply type `make`, the default task will be run for you.
+.DEFAULT_GOAL := lein-repl
+
 # Set bash instead of sh for the @if [[ conditions,
 # and use the usual safety flags:
 SHELL = /bin/bash -Eeu

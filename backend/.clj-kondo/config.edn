@@ -1,7 +1,8 @@
-{:config-in-ns      {dev {:linters {:refer-all                    {:exclude #{clojure.repl}}
-                                    :unsorted-required-namespaces {:level :off}
-                                    :unused-referred-var          {:level :off}
-                                    :unused-namespace             {:level :off}}}}
+{:config-in-ns      {dev       {:linters {:refer-all                    {:exclude #{clojure.repl}}
+                                          :unsorted-required-namespaces {:level :off}
+                                          :unused-referred-var          {:level :off}
+                                          :unused-namespace             {:level :off}}}
+                     gpml.main {:linters {:unresolved-namespace {:level :off}}}}
  :config-in-comment {:linters {:unresolved-var       {:level :off}
                                :unresolved-namespace {:level :off}}}
  :linters           {:discouraged-var                       {clojure.core/read-string {:message "Please prefer clojure.edn/read-string"}}
