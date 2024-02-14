@@ -438,7 +438,7 @@
                             :resource (db.resource.detail/get-resource (:spec db)
                                                                        {:table-name resource-type
                                                                         :id resource-id})}
-                           (catch Throwable t
+                           (catch Exception t
                              {:successs? false
                               :reason :exception
                               :error-details {:msg (ex-message t)}}))]
@@ -611,7 +611,7 @@
                 (r/not-found result)
                 (r/server-error result))
               (r/ok (:resource-details result))))))
-      (catch Throwable t
+      (catch Exception t
         (log logger :error ::failed-to-get-resource-details {:exception-message (.getMessage t)
                                                              :context-data {:path-params path
                                                                             :user user}})

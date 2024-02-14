@@ -188,7 +188,7 @@
                      (assoc :org (db.organisation/organisation-by-id
                                   conn
                                   {:id (:affiliation new-sth)})))))
-    (catch Throwable t
+    (catch Exception t
       (let [{:keys [reason]} (ex-data t)]
         (log logger :error ::failed-to-create-or-update-stakeholder {:exception-message (ex-message t)})
         (if (= reason :organisation-name-already-exists)
@@ -419,7 +419,7 @@
                         (r/ok {:status "success"})
                         (throw (ex-info "Error updating user chat account role"
                                         {:reason :error-updating-user-chat-account-role}))))))))))
-        (catch Throwable e
+        (catch Exception e
           (log logger :error ::failed-to-update-stakeholder-role {:exception-message (ex-message e)})
           (let [response {:success? false
                           :reason :could-not-update-stakeholder-role}]

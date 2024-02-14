@@ -159,7 +159,7 @@
                                      :reason :no-translations-affected})))
                 (r/bad-request body))
               (r/forbidden {:message "Unauthorized"})))))
-      (catch Throwable t
+      (catch Exception t
         (let [log-data {:exception-message (ex-message t)
                         :context-data {:path-params path
                                        :body-params body}}]

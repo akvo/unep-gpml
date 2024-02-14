@@ -23,7 +23,7 @@
     (let [file (io/file base-path bucket-name blob-name)]
       {:success? true
        :url (.toURL (.toURI file))})
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))

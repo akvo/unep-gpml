@@ -199,7 +199,7 @@
                         :message "New event created"
                         :id (:id result)})))
         (r/forbidden {:message "Unauthorized"}))
-      (catch Throwable t
+      (catch Exception t
         (log logger :error ::failed-to-create-event {:exception-message (.getMessage t)
                                                      :exception-data (ex-data t)})
         (let [response {:success? false

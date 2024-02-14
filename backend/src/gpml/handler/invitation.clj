@@ -79,7 +79,7 @@
                           (conj invitations (merge invitation stakeholder-w-unwrapped-tags))))
                       []
                       invitations))))
-    (catch Throwable t
+    (catch Exception t
       (log logger :error ::get-invitations {:exception-message (.getMessage t)})
       (if (instance? SQLException t)
         (r/server-error {:success? false

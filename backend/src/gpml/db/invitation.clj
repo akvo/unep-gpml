@@ -29,7 +29,7 @@
      :invitations (->> (get-invitations* conn opts)
                        (jdbc-util/db-result-snake-kw->db-result-kebab-kw)
                        (map p-invitation->invitation))}
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
@@ -44,7 +44,7 @@
          :invitation (first invitations)}
         {:success? false
          :reason :not-found}))
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
@@ -65,7 +65,7 @@
          :reason :unexpected-number-of-affected-rows
          :error-details {:expected-affected-rows (count invitations)
                          :actual-affected-rows (count created-invitations)}}))
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
@@ -78,7 +78,7 @@
         {:success? true
          :invitation (first (:invitations result))}
         result))
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
@@ -93,7 +93,7 @@
          :reason :unexpected-number-of-affected-rows
          :error-details {:expected-affected-rows 1
                          :actual-affected-rows affected}}))
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
@@ -108,7 +108,7 @@
          :reason :unexpected-number-of-affected-rows
          :error-details {:expected-affected-rows 1
                          :actual-affected-rows affected}}))
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))

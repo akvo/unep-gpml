@@ -129,7 +129,7 @@
                                                  (add-stakeholder-tags (:spec db))
                                                  (add-images-urls config))))]
           (resp/response submission)))
-      (catch Throwable t
+      (catch Exception t
         (let [log-data {:exception-message (ex-message t)
                         :exception-data (ex-data t)
                         :context-data query}]
@@ -193,7 +193,7 @@
                 (r/ok {:success? true
                        :message "Successfuly Updated"
                        :data resource-details}))))))
-      (catch Throwable t
+      (catch Exception t
         (let [log-data {:exception-message (ex-message t)
                         :exception-data (ex-data t)
                         :context-data body-params}]
@@ -251,7 +251,7 @@
                                                            :root-context? false})
           (r/forbidden {:message "Unauthorized"})
           (get-detail config path)))
-      (catch Throwable t
+      (catch Exception t
         (log logger :error ::failed-to-get-submission-detail {:exception-message (ex-message t)
                                                               :exception-data (ex-data t)
                                                               :stack-trace (.getStackTrace t)

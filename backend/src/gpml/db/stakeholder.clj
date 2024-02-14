@@ -50,7 +50,7 @@
         {:success? true}
         {:success? false
          :reason :not-found}))
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :error-details {:ex-message (ex-message t)}})))
 
@@ -65,7 +65,7 @@
          :stakeholder (jdbc-util/db-result-snake-kw->db-result-kebab-kw (first stakeholders))}
         {:success? false
          :reason :not-found}))
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details (ex-message t)})))

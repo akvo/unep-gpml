@@ -15,7 +15,7 @@
   (try
     {:success? true
      :chat-curated-channels (get-chat-curated-channels* conn opts)}
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
@@ -38,7 +38,7 @@
          :reason :failed-to-delete-curated-channel
          :error-details {:expected-affected-rows 1
                          :actual-affected-rows affected}}))
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))

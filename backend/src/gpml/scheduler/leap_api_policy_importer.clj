@@ -830,7 +830,7 @@
                                             :policy-status-opts dom.policy/statuses
                                             :policy-sub-content-types dom.policy/sub-content-types
                                             :policy-tag-category-id (:id policy-tag-category)}))
-    (catch Throwable e
+    (catch Exception e
       (let [error-details {:error-code (class e)
                            :message (.getMessage e)
                            :stack-trace (map str (.getStackTrace e))}]

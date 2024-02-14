@@ -197,7 +197,7 @@
       (if (h.r.permission/super-admin? config (:id user))
         (new-multiple-review logger db mailjet-config topic-type topic-id reviewers (:id user))
         (r/forbidden {:message "Unauthorized"}))
-      (catch Throwable t
+      (catch Exception t
         (let [log-data {:exception-message (ex-message t)
                         :exception-data (ex-data t)
                         :context-data {:req-params (:parameters req)

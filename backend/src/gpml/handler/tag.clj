@@ -206,7 +206,7 @@
         (r/ok {:success? true
                :id (create-tag config (:body parameters))})
         (r/forbidden {:message "Unauthorized"}))
-      (catch Throwable t
+      (catch Exception t
         (let [reason (or (:reason (ex-data t)) :could-not-create-tag)
               response {:success? false
                         :reason reason}]

@@ -208,7 +208,7 @@
                            {:success? true
                             :stakeholders (db.sth/get-stakeholders (:spec db)
                                                                    search-opts)}
-                           (catch Throwable t
+                           (catch Exception t
                              {:success? false
                               :reason :exception
                               :error-details {:msg (ex-message t)}}))]
@@ -271,7 +271,7 @@
                            {:success? true
                             :stakeholders (db.sth/get-stakeholders (:spec db)
                                                                    search-opts)}
-                           (catch Throwable t
+                           (catch Exception t
                              {:success? false
                               :reason :exception
                               :error-details {:msg (ex-message t)}}))]

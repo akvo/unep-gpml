@@ -19,7 +19,7 @@
      :plastic-strategies (jdbc-util/db-result-snake-kw->db-result-kebab-kw
                           (get-plastic-strategies* conn opts)
                           \_)}
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
@@ -36,7 +36,7 @@
            :plastic-strategy (first plastic-strategies)}
           {:success? false
            :reason :not-found})))
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
@@ -51,7 +51,7 @@
          :reason :unexpected-number-of-affected-rows
          :error-details {:expected-affected-rows 1
                          :actual-affected-rows affected}}))
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
@@ -66,7 +66,7 @@
          :reason :unexpected-number-of-affected-rows
          :error-details {:expected-affected-rows (count plastic-strategies)
                          :actual-affected-rows affected}}))
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
@@ -89,7 +89,7 @@
          :reason :unexpected-number-of-affected-rows
          :error-details {:expected-affected-rows 1
                          :actual-affected-rows affected}}))
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))

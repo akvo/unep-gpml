@@ -25,7 +25,7 @@
           (r/server-error {:success? false
                            :reason :could-not-send-new-contact-email
                            :error-details "Destination email address missing in config"})))
-      (catch Throwable e
+      (catch Exception e
         (log logger :error :failed-to-send-contact-email {:exception-message (ex-message e)
                                                           :exception-class (class e)})
         (r/server-error {:success? false

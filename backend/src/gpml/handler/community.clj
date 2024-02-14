@@ -193,7 +193,7 @@
                        (map (partial community-member->api-community-member config)))]
       (r/ok {:results results
              :counts (db.community/get-community-members conn (assoc modified-filters :count-only? true))}))
-    (catch Throwable t
+    (catch Exception t
       (let [log-data {:exception-message (ex-message t)
                       :exception-data (ex-data t)
                       :context-data (get-in req [:parameters :query])}]

@@ -63,7 +63,7 @@
                                                   (when (>= (:status response 500) 500)
                                                     (timbre/error e))
                                                   response)
-                                                (catch Throwable t
+                                                (catch Exception t
                                                   (timbre/error t "Error handling error")
                                                   (throw t))))}))
                          ;; decoding request body
