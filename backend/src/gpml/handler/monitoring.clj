@@ -80,7 +80,7 @@
 
 (defmethod ig/init-key ::hikaricp
   [_ {:keys [hikari-cp metrics-collector]}]
-  (let [datasource ^HikariDataSource (get-in hikari-cp [:spec :datasource])]
+  (let [^HikariDataSource datasource (get-in hikari-cp [:spec :datasource])]
     (-> datasource
         (.unwrap javax.sql.DataSource)
         (.setMetricsTrackerFactory

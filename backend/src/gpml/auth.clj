@@ -19,13 +19,13 @@
        (ex-info "Invalid IdToken verifier options"
                 (malli/explain verifier-opts opts)))))
 
-(defn signature-verifier [issuer]
-  (let [jwk-provider (-> issuer
-                         (JwkProviderBuilder.)
-                         (.build))
+(defn signature-verifier [^String issuer]
+  (let [^JwkProvider jwk-provider (-> issuer
+                                      (JwkProviderBuilder.)
+                                      (.build))
         public-key-provider (reify PublicKeyProvider
                               (getPublicKeyById [_this key-id]
-                                (.getPublicKey (.get ^JwkProvider jwk-provider key-id))))]
+                                (.getPublicKey (.get jwk-provider ^String key-id))))]
     (SignatureVerifier/forRS256 public-key-provider)))
 
 (defn token-verifier [{:keys [issuer audience signature-verifier]}]
