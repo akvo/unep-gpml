@@ -1,7 +1,8 @@
 (ns gpml.db.plastic-strategy
   {:ns-tracker/resource-deps ["plastic_strategy.sql"]}
-  (:require [gpml.db.jdbc-util :as jdbc-util]
-            [hugsql.core :as hugsql]))
+  (:require
+   [gpml.db.jdbc-util :as jdbc-util]
+   [hugsql.core :as hugsql]))
 
 (declare get-plastic-strategies*
          update-plastic-strategy*

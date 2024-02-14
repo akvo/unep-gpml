@@ -1,9 +1,10 @@
 (ns gpml.db.resource.detail
   {:ns-tracker/resource-deps ["resource/detail.sql"]}
-  (:require [clojure.java.jdbc :as jdbc]
-            [dev.gethop.rbac :as rbac]
-            [gpml.db.resource.related-content :as db.resource.detail]
-            [hugsql.core :as hugsql]))
+  (:require
+   [clojure.java.jdbc :as jdbc]
+   [dev.gethop.rbac :as rbac]
+   [gpml.db.resource.related-content :as db.resource.detail]
+   [hugsql.core :as hugsql]))
 
 (declare get-resource
          delete-resource*)

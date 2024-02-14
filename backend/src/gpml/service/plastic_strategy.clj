@@ -1,10 +1,11 @@
 (ns gpml.service.plastic-strategy
-  (:require [duct.logger :refer [log]]
-            [gpml.db.plastic-strategy :as db.ps]
-            [gpml.db.plastic-strategy.team :as db.ps.team]
-            [gpml.service.chat :as srv.chat]
-            [gpml.service.permissions :as srv.permissions]
-            [gpml.util.thread-transactions :as tht]))
+  (:require
+   [duct.logger :refer [log]]
+   [gpml.db.plastic-strategy :as db.ps]
+   [gpml.db.plastic-strategy.team :as db.ps.team]
+   [gpml.service.chat :as srv.chat]
+   [gpml.service.permissions :as srv.permissions]
+   [gpml.util.thread-transactions :as tht]))
 
 (defn get-plastic-strategies
   [{:keys [db]} search-opts]

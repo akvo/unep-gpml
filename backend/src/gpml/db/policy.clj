@@ -1,13 +1,14 @@
 (ns gpml.db.policy
   {:ns-tracker/resource-deps ["policy.sql"]}
-  (:require [gpml.util :as util]
-            [gpml.util.postgresql :as pg-util] ;; TODO: Merge this ns with sql-util one.
-            [gpml.util.sql :as sql-util]
-            [hugsql.core :as hugsql]
-            [java-time :as jt]
-            [java-time.core]
-            [java-time.local]
-            [java-time.temporal]))
+  (:require
+   [gpml.util :as util]
+   [gpml.util.postgresql :as pg-util] ;; TODO: Merge this ns with sql-util one.
+   [gpml.util.sql :as sql-util]
+   [hugsql.core :as hugsql]
+   [java-time :as jt]
+   [java-time.core]
+   [java-time.local]
+   [java-time.temporal]))
 
 (declare language-by-policy-id
          new-policy

@@ -1,6 +1,7 @@
 (ns gpml.db.resource.association
   {:ns-tracker/resource-deps ["resource/association.sql"]}
-  (:require [hugsql.core :as hugsql]))
+  (:require
+   [hugsql.core :as hugsql]))
 
 (declare get-resource-associations
          create-stakeholder-association

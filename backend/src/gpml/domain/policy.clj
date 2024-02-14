@@ -1,11 +1,12 @@
 (ns gpml.domain.policy
-  (:require [gpml.domain.related-content :as dom.rc]
-            [gpml.domain.types :as dom.types]
-            [gpml.util :as util]
-            [gpml.util.regular-expressions :as util.regex]
-            [java-time :as jt]
-            [java-time.temporal]
-            [malli.core :as m]))
+  (:require
+   [gpml.domain.related-content :as dom.rc]
+   [gpml.domain.types :as dom.types]
+   [gpml.util :as util]
+   [gpml.util.regular-expressions :as util.regex]
+   [java-time :as jt]
+   [java-time.temporal]
+   [malli.core :as m]))
 
 (def sub-content-types
   "Possible `sub_content_type` values for Policy. These content types

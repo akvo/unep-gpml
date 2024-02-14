@@ -1,16 +1,17 @@
 (ns gpml.handler.plastic-strategy.team
-  (:require [camel-snake-kebab.core :refer [->kebab-case ->snake_case]]
-            [camel-snake-kebab.extras :as cske]
-            [clojure.string :as str]
-            [gpml.domain.types :as dom.types]
-            [gpml.handler.resource.permission :as h.r.permission]
-            [gpml.handler.responses :as r]
-            [gpml.service.plastic-strategy :as srv.ps]
-            [gpml.service.plastic-strategy.team :as srv.ps.team]
-            [gpml.util :as util]
-            [gpml.util.malli :as util.malli]
-            [integrant.core :as ig]
-            [malli.util :as mu]))
+  (:require
+   [camel-snake-kebab.core :refer [->kebab-case ->snake_case]]
+   [camel-snake-kebab.extras :as cske]
+   [clojure.string :as str]
+   [gpml.domain.types :as dom.types]
+   [gpml.handler.resource.permission :as h.r.permission]
+   [gpml.handler.responses :as r]
+   [gpml.service.plastic-strategy :as srv.ps]
+   [gpml.service.plastic-strategy.team :as srv.ps.team]
+   [gpml.util :as util]
+   [gpml.util.malli :as util.malli]
+   [integrant.core :as ig]
+   [malli.util :as mu]))
 
 (def ^:private common-ps-team-members-path-params-schema
   [:map

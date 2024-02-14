@@ -1,7 +1,8 @@
 (ns gpml.domain.tag
-  (:require [gpml.domain.types :as dom.types]
-            [gpml.util :as util]
-            [malli.core :as m]))
+  (:require
+   [gpml.domain.types :as dom.types]
+   [gpml.util :as util]
+   [malli.core :as m]))
 
 (def ^:const popular-tags
   "Set of tags that are considered popular. This is a harcoded value and

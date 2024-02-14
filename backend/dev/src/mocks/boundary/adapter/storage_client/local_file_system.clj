@@ -1,8 +1,9 @@
 (ns mocks.boundary.adapter.storage-client.local-file-system
-  (:require [clj-gcp.storage.core :as gcs]
-            [clojure.java.io :as io]
-            [gpml.boundary.port.storage-client :as port]
-            [integrant.core :as ig])
+  (:require
+   [clj-gcp.storage.core :as gcs]
+   [clojure.java.io :as io]
+   [gpml.boundary.port.storage-client :as port]
+   [integrant.core :as ig])
   (:import [clj_gcp.storage.core FileSystemStorageClient]))
 
 (defn- delete-blob

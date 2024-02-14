@@ -1,8 +1,9 @@
 (ns gpml.db.resource.list
   {:ns-tracker/resource-deps ["resource/list.sql"]}
-  (:require [clojure.string :as str]
-            [gpml.domain.types :as dom.types]
-            [hugsql.core :as hugsql]))
+  (:require
+   [clojure.string :as str]
+   [gpml.domain.types :as dom.types]
+   [hugsql.core :as hugsql]))
 
 (def ^:const default-limit 100)
 

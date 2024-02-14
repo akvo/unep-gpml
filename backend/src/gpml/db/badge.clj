@@ -1,9 +1,10 @@
 (ns gpml.db.badge
   {:ns-tracker/resource-deps ["badge.sql"]}
-  (:require [gpml.db.jdbc-util :as jdbc-util]
-            [gpml.util :as util]
-            [gpml.util.sql :as sql-util]
-            [hugsql.core :as hugsql]))
+  (:require
+   [gpml.db.jdbc-util :as jdbc-util]
+   [gpml.util :as util]
+   [gpml.util.sql :as sql-util]
+   [hugsql.core :as hugsql]))
 
 (declare create-badge*
          delete-badge*

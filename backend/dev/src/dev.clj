@@ -1,19 +1,20 @@
 (ns dev
   (:refer-clojure :exclude [test])
-  (:require [clojure.java.io :as io]
-            [clojure.java.jdbc :as jdbc]
-            clojure.pprint
-            [clojure.repl :refer :all]
-            [clojure.tools.namespace.repl :refer [refresh]]
-            [duct.core :as duct]
-            [duct.core.repl :as duct-repl]
-            [eftest.runner :as eftest]
-            [gpml.seeder.main :as seeder]
-            [integrant.core :as ig]
-            [integrant.repl :refer [clear go halt init prep reset]]
-            [integrant.repl.state :refer [config system]]
-            [ns-tracker.core :refer [ns-tracker]]
-            [portal.api :as portal]))
+  (:require
+   [clojure.java.io :as io]
+   [clojure.java.jdbc :as jdbc]
+   clojure.pprint
+   [clojure.repl :refer :all]
+   [clojure.tools.namespace.repl :refer [refresh]]
+   [duct.core :as duct]
+   [duct.core.repl :as duct-repl]
+   [eftest.runner :as eftest]
+   [gpml.seeder.main :as seeder]
+   [integrant.core :as ig]
+   [integrant.repl :refer [clear go halt init prep reset]]
+   [integrant.repl.state :refer [config system]]
+   [ns-tracker.core :refer [ns-tracker]]
+   [portal.api :as portal]))
 
 (duct/load-hierarchy)
 

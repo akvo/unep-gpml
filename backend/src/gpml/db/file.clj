@@ -1,7 +1,8 @@
 (ns gpml.db.file
   {:ns-tracker/resource-deps ["file.sql"]}
-  (:require [gpml.db.jdbc-util :as jdbc-util]
-            [hugsql.core :as hugsql]))
+  (:require
+   [gpml.db.jdbc-util :as jdbc-util]
+   [hugsql.core :as hugsql]))
 
 (declare create-file*
          delete-file*

@@ -1,10 +1,11 @@
 (ns gpml.handler.resource.related-content
-  (:require [clojure.set :as set]
-            [clojure.string :as str]
-            [duct.logger :refer [log]]
-            [gpml.db.resource.related-content :as db.resource.related-content]
-            [gpml.handler.util :as handler.util]
-            [gpml.util.sql :as sql-util]))
+  (:require
+   [clojure.set :as set]
+   [clojure.string :as str]
+   [duct.logger :refer [log]]
+   [gpml.db.resource.related-content :as db.resource.related-content]
+   [gpml.handler.util :as handler.util]
+   [gpml.util.sql :as sql-util]))
 
 (def ^:const ^:private related-content-shared-keys
   [:id :title :description :image :thumbnail])

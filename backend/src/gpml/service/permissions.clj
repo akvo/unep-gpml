@@ -1,6 +1,7 @@
 (ns gpml.service.permissions
-  (:require [dev.gethop.rbac :as rbac]
-            [gpml.db.rbac-util :as db.rbac-util]))
+  (:require
+   [dev.gethop.rbac :as rbac]
+   [gpml.db.rbac-util :as db.rbac-util]))
 
 (def ^:const root-app-resource-id 0)
 (def ^:const root-app-context-type :application)

@@ -1,7 +1,8 @@
 (ns gpml.db.chat-curated-channel
   {:ns-tracker/resource-deps ["chat_curated_channel.sql"]}
-  (:require [gpml.db.jdbc-util :as jdbc-util]
-            [hugsql.core :as hugsql]))
+  (:require
+   [gpml.db.jdbc-util :as jdbc-util]
+   [hugsql.core :as hugsql]))
 
 (declare get-chat-curated-channels*
          create-chat-curated-channel*

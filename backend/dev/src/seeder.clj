@@ -1,9 +1,10 @@
 (ns seeder
-  (:require [clojure.edn :as edn]
-            [clojure.java.io :as io]
-            [clojure.java.jdbc :as jdbc]
-            [gpml.seeder.main :as seeder]
-            [hikari-cp.core :as hikari]))
+  (:require
+   [clojure.edn :as edn]
+   [clojure.java.io :as io]
+   [clojure.java.jdbc :as jdbc]
+   [gpml.seeder.main :as seeder]
+   [hikari-cp.core :as hikari]))
 
 ;; Seeder main function to run from Kubernetes
 

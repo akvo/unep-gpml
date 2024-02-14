@@ -1,15 +1,16 @@
 (ns gpml.handler.policy-test
-  (:require [clojure.test :refer [deftest is testing use-fixtures]]
-            [gpml.db.language :as db.language]
-            [gpml.db.policy :as db.policy]
-            [gpml.db.tag :as db.tag]
-            [gpml.domain.types :as dom.types]
-            [gpml.fixtures :as fixtures]
-            [gpml.handler.policy :as policy]
-            [gpml.handler.profile-test :as profile-test]
-            [gpml.test-util :as test-util]
-            [integrant.core :as ig]
-            [ring.mock.request :as mock]))
+  (:require
+   [clojure.test :refer [deftest is testing use-fixtures]]
+   [gpml.db.language :as db.language]
+   [gpml.db.policy :as db.policy]
+   [gpml.db.tag :as db.tag]
+   [gpml.domain.types :as dom.types]
+   [gpml.fixtures :as fixtures]
+   [gpml.handler.policy :as policy]
+   [gpml.handler.profile-test :as profile-test]
+   [gpml.test-util :as test-util]
+   [integrant.core :as ig]
+   [ring.mock.request :as mock]))
 
 (use-fixtures :each fixtures/with-test-system)
 

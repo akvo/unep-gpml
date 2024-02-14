@@ -1,18 +1,19 @@
 (ns gpml.handler.comment
-  (:require [duct.logger :refer [log]]
-            [gpml.db.comment :as db.comment]
-            [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.db.stakeholder-association :as db.stakeholder-association]
-            [gpml.domain.types :as dom.types]
-            [gpml.handler.resource.permission :as h.r.permission]
-            [gpml.handler.responses :as r]
-            [gpml.service.permissions :as srv.permissions]
-            [gpml.util :as util]
-            [gpml.util.email :as email]
-            [integrant.core :as ig]
-            [java-time :as time]
-            [java-time.pre-java8 :as time-pre-j8]
-            [java-time.temporal]))
+  (:require
+   [duct.logger :refer [log]]
+   [gpml.db.comment :as db.comment]
+   [gpml.db.stakeholder :as db.stakeholder]
+   [gpml.db.stakeholder-association :as db.stakeholder-association]
+   [gpml.domain.types :as dom.types]
+   [gpml.handler.resource.permission :as h.r.permission]
+   [gpml.handler.responses :as r]
+   [gpml.service.permissions :as srv.permissions]
+   [gpml.util :as util]
+   [gpml.util.email :as email]
+   [integrant.core :as ig]
+   [java-time :as time]
+   [java-time.pre-java8 :as time-pre-j8]
+   [java-time.temporal]))
 
 (def id-param
   [:id

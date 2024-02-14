@@ -1,15 +1,16 @@
 (ns gpml.handler.programmatic.files-migrator
-  (:require [duct.logger :refer [log]]
-            [gpml.db.case-study :as db.case-study]
-            [gpml.db.event :as db.event]
-            [gpml.db.organisation :as db.organisation]
-            [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.domain.file :as dom.file]
-            [gpml.handler.responses :as r]
-            [gpml.service.file :as srv.file]
-            [gpml.util :as util]
-            [gpml.util.image :as util.image]
-            [integrant.core :as ig]))
+  (:require
+   [duct.logger :refer [log]]
+   [gpml.db.case-study :as db.case-study]
+   [gpml.db.event :as db.event]
+   [gpml.db.organisation :as db.organisation]
+   [gpml.db.stakeholder :as db.stakeholder]
+   [gpml.domain.file :as dom.file]
+   [gpml.handler.responses :as r]
+   [gpml.service.file :as srv.file]
+   [gpml.util :as util]
+   [gpml.util.image :as util.image]
+   [integrant.core :as ig]))
 
 (def ^:const ^:private available-entities
   #{:organisation :stakeholder :case_study :event})

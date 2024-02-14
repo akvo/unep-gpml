@@ -1,15 +1,16 @@
 (ns gpml.handler.landing
-  (:require [clojure.string :as str]
-            [duct.logger :refer [log]]
-            [gpml.db.country-group :as db.country-group]
-            [gpml.db.landing :as db.landing]
-            [gpml.domain.resource :as dom.resource]
-            [gpml.domain.types :as dom.types]
-            [gpml.handler.responses :as r]
-            [gpml.util.postgresql :as pg-util]
-            [gpml.util.regular-expressions :as util.regex]
-            [integrant.core :as ig]
-            [ring.util.response :as resp])
+  (:require
+   [clojure.string :as str]
+   [duct.logger :refer [log]]
+   [gpml.db.country-group :as db.country-group]
+   [gpml.db.landing :as db.landing]
+   [gpml.domain.resource :as dom.resource]
+   [gpml.domain.types :as dom.types]
+   [gpml.handler.responses :as r]
+   [gpml.util.postgresql :as pg-util]
+   [gpml.util.regular-expressions :as util.regex]
+   [integrant.core :as ig]
+   [ring.util.response :as resp])
   (:import [java.sql SQLException]))
 
 (def ^:const ^:private topic-re (util.regex/comma-separated-enums-re dom.types/topic-types))
