@@ -64,3 +64,9 @@ kondo: .make_kondo_prep clean
 repl: lein-repl
 
 lint: kondo cljfmt eastwood
+
+psql:
+		psql -h localhost -p 5432 -d gpml -U unep
+
+psql_test:
+		psql -h localhost -p 5432 -d gpml_test -U unep
