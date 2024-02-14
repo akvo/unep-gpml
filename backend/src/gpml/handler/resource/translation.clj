@@ -12,7 +12,8 @@
    [gpml.util.sql :as sql-util]
    [integrant.core :as ig]
    [ring.util.response :as resp])
-  (:import [java.sql SQLException]))
+  (:import
+   (java.sql SQLException)))
 
 (defonce ^:private translation-table-sufix "_translation")
 (defonce ^:private translation-entity-id-sufix "_id")

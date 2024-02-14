@@ -9,7 +9,8 @@
    [gpml.handler.tag :as handler.tag]
    [gpml.util.email :as email]
    [gpml.util.postgresql :as pg-util])
-  (:import [java.sql SQLException]))
+  (:import
+   (java.sql SQLException)))
 
 (defn send-new-tags-admins-pending-approval-notification
   "Send notifications about new created tags that needs approval.

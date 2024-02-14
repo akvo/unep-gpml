@@ -2,8 +2,9 @@
   (:require
    [clojure.java.jdbc :as jdbc]
    [jsonista.core :as j])
-  (:import [java.sql PreparedStatement SQLException]
-           [org.postgresql.util PGobject]))
+  (:import
+   (java.sql PreparedStatement SQLException)
+   (org.postgresql.util PGobject)))
 
 (defn get-sql-state
   "Gets the SQL state from a SQLException object and returns the keyword

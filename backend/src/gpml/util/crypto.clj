@@ -1,6 +1,7 @@
 (ns gpml.util.crypto
-  (:import [java.security SecureRandom]
-           [org.apache.commons.codec.binary Hex]))
+  (:import
+   (java.security SecureRandom)
+   (org.apache.commons.codec.binary Hex)))
 
 (defn create-crypto-random-byte-array
   [size]

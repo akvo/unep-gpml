@@ -17,7 +17,8 @@
    [integrant.core :as ig]
    [malli.util :as mu]
    [ring.util.response :as resp])
-  (:import [java.sql SQLException]))
+  (:import
+   (java.sql SQLException)))
 
 (defn- reviews-by-reviewer-id [conn opts]
   (map (fn [{:keys [details] :as review}]

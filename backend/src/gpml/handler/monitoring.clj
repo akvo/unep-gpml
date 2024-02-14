@@ -11,11 +11,12 @@
    [integrant.core :as ig]
    [taoensso.timbre :as timbre]
    [taoensso.timbre.appenders.3rd-party.sentry :as sentry])
-  (:import [com.zaxxer.hikari HikariDataSource]
-           [com.zaxxer.hikari.metrics.prometheus PrometheusMetricsTrackerFactory]
-           [io.prometheus.client.jetty JettyStatisticsCollector QueuedThreadPoolStatisticsCollector]
-           [org.eclipse.jetty.server Server]
-           [org.eclipse.jetty.server.handler StatisticsHandler]))
+  (:import
+   (com.zaxxer.hikari HikariDataSource)
+   (com.zaxxer.hikari.metrics.prometheus PrometheusMetricsTrackerFactory)
+   (io.prometheus.client.jetty JettyStatisticsCollector QueuedThreadPoolStatisticsCollector)
+   (org.eclipse.jetty.server Server)
+   (org.eclipse.jetty.server.handler StatisticsHandler)))
 
 (defmethod ig/init-key ::collector [_ _]
   (-> (prometheus/collector-registry)

@@ -9,8 +9,9 @@
    [gpml.test-util :as test-util]
    [integrant.core :as ig]
    [ring.mock.request :as mock])
-  (:import [java.sql Timestamp]
-           [java.time Instant]))
+  (:import
+   (java.sql Timestamp)
+   (java.time Instant)))
 
 (use-fixtures :each fixtures/with-test-system)
 

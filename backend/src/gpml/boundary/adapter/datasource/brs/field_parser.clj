@@ -7,8 +7,9 @@
    [gpml.util.regular-expressions :as util.regex]
    [java-time :as jt]
    [java-time.temporal])
-  (:import [org.jsoup Jsoup]
-           [org.jsoup.nodes Entities]))
+  (:import
+   (org.jsoup Jsoup)
+   (org.jsoup.nodes Entities)))
 
 (def ^:private projects-url-template
   "http://www.basel.int/tabid/8783/pid/%d/Default.aspx")

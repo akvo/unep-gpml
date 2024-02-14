@@ -14,7 +14,8 @@
    [gpml.util.postgresql :as pg-util]
    [integrant.core :as ig]
    [ring.util.response :as resp])
-  (:import [java.sql SQLException]))
+  (:import
+   (java.sql SQLException)))
 
 ;; FIXME: refactor favorite logic. It's entangled with follower and permissions.
 

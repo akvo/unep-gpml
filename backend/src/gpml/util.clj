@@ -3,10 +3,10 @@
    [clojure.string :as str]
    [clojure.walk :as w]
    [gpml.util.regular-expressions])
-  (:import [java.io File]
-           [java.net URI URL URLEncoder]
-           [java.util Base64]
-           [java.util UUID]))
+  (:import
+   (java.io File)
+   (java.net URI URL URLEncoder)
+   (java.util Base64 UUID)))
 
 (defn uuid
   "If no argument is passed, creates a random UUID. If the passed

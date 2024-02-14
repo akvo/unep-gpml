@@ -15,7 +15,8 @@
    [gpml.util.postgresql :as pg-util]
    [integrant.core :as ig]
    [malli.util :as mu])
-  (:import [java.sql SQLException]))
+  (:import
+   [java.sql SQLException]))
 
 (def ^:private api-opts-schema
   [:map

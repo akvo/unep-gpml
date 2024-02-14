@@ -17,7 +17,8 @@
    [gpml.util.regular-expressions :as util.regex]
    [integrant.core :as ig]
    [medley.core :as medley])
-  (:import [java.sql SQLException]))
+  (:import
+   (java.sql SQLException)))
 
 (def ^:const topic-re (util.regex/comma-separated-enums-re dom.types/topic-types))
 (def ^:const ^:private order-by-fields ["title" "description" "id" "featured"])
