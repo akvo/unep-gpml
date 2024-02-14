@@ -26,7 +26,7 @@
   (io/delete-file (java.io.File. (str cache-path cache-id ".json"))))
 
 (defn get-id-from-json [json-file]
-  (mapv #(:id %) (parse-json (str json-path json-file))))
+  (mapv :id (parse-json (str json-path json-file))))
 
 (defn drop-all-constraint [db data]
   (let [table (seeder.db/get-foreign-key db data)

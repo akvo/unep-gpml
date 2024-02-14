@@ -31,16 +31,15 @@
 (defn add-badge-assignment
   [conn badge-assignment entity-type]
   (let [entity-name (name entity-type)]
-    (jdbc-util/with-constraint-violation-check
-      [{:type :unique
-        :name (format "%s_badge_pkey" entity-name)
-        :error-reason :already-exists}
-       {:type :foreign-key
-        :name (format "%s_badge_id_fkey" entity-name)
-        :error-reason :badge-not-found}
-       {:type :foreign-key
-        :name (format "%s_badge_%s_id_fkey" entity-name entity-name)
-        :error-reason :entity-not-found}]
+    (jdbc-util/with-constraint-violation-check [{:type :unique
+                                                 :name (format "%s_badge_pkey" entity-name)
+                                                 :error-reason :already-exists}
+                                                {:type :foreign-key
+                                                 :name (format "%s_badge_id_fkey" entity-name)
+                                                 :error-reason :badge-not-found}
+                                                {:type :foreign-key
+                                                 :name (format "%s_badge_%s_id_fkey" entity-name entity-name)
+                                                 :error-reason :entity-not-found}]
       (add-badge-assignment* conn (badge-assignment->p-badge-assignment badge-assignment))
       {:success? true})))
 

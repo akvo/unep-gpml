@@ -17,10 +17,9 @@
 
 (defn create-ps-file
   [conn ps-file]
-  (jdbc-util/with-constraint-violation-check
-    [{:type :unique
-      :name "plastic_strategy_file_pkey"
-      :error-reason :already-exists}]
+  (jdbc-util/with-constraint-violation-check [{:type :unique
+                                               :name "plastic_strategy_file_pkey"
+                                               :error-reason :already-exists}]
     (create-ps-file* conn ps-file)
     {:success? true}))
 

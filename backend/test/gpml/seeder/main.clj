@@ -51,10 +51,10 @@
 
       (and (seq data)
            add-default-lang?)
-      (map #(fn [item]
-              (if (:language item)
-                item
-                (assoc item :language default-lang-iso-code)))
+      (map (fn [item]
+             (if (:language item)
+               item
+               (assoc item :language default-lang-iso-code)))
            data)
       :else
       data)))
@@ -584,8 +584,6 @@
   (->> (get-country-group-countries db)
        (filter #(= 2 (:country_group %)))
        count)
-
-  (require '[clojure.set :as set])
 
   (defn missing-names [names]
     (let [db-names (-> (get-country db names)

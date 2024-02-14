@@ -4,7 +4,7 @@
   :license {:name "AGPL-3.0"
             :url "https://www.gnu.org/licenses/agpl-3.0.en.html"}
   :min-lein-version "2.0.0"
-  :dependencies [[org.clojure/clojure "1.10.2"]
+  :dependencies [[org.clojure/clojure "1.11.1"]
                  [duct/core "0.8.0"]
                  [integrant "0.8.0"]
                  [duct/module.logging "0.5.0"]
@@ -60,8 +60,7 @@
   :middleware     [lein-duct.plugin/middleware]
   :jvm-opts ["-Djava.awt.headless=true"]
   :profiles
-  {:dev  [:project/dev :profiles/dev]
-   :uberjar {:aot [gpml.main]
+  {:uberjar {:aot [gpml.main]
              :uberjar-name "uberjar.jar"}
    :metajar {:aot :all
              :direct-link true
@@ -69,42 +68,39 @@
              :jar-name "app.jar"
              :pedantic? :abort
              :plugins [[lein-metajar "0.1.1"]]}
-   :profiles/dev {}
    :seeder {:main seeder
             :source-paths ["dev/src"]
             :resource-paths ["dev/resources"]
             :prep-tasks ^:replace []}
-   :project/dev  {:source-paths   ["dev/src"]
-                  :resource-paths ["dev/resources"]
-                  :dependencies   [[integrant/repl "0.3.2"]
-                                   [fipp "0.6.21"]
-                                   [hawk "0.2.11"]
-                                   [eftest "0.5.9"]
-                                   [kerodon "0.9.1"]
-                                   [djblue/portal "0.8.0"]]
-                  :plugins [[jonase/eastwood "1.2.4"]
-                            [lein-eftest "0.5.9"]
-                            [lein-cljfmt "0.8.0"]]
-                  :eastwood {:linters [:all]
-                             :source-paths ["src"]
-                             :test-paths ["test"]
-                             :config-files ["eastwood_cfg.clj"]
-                             :exclude-linters [:keyword-typos
-                                               :boxed-math
-                                               :unused-locals
-                                               :non-clojure-file
-                                               :unused-namespaces
-                                               :reflection
-                                               :performance]
-                             :ignored-faults {:unused-namespaces {dev true}}
-                             :debug [:progress :time]}
-                  :eftest {:thread-count 4
-                           :multithread :vars
-                           :fail-fast? true
-                           :report clojure.test/report}
-                  :repl-options {:init-ns dev
-                                 :init (do
-                                         (println "Starting backend ...")
-                                         (go))
-                                 :host "0.0.0.0"
-                                 :port 47480}}})
+   :test {:dependencies [[ring/ring-mock "0.4.0"]]}
+   :dev  {:source-paths   ["dev/src"]
+          :resource-paths ["dev/resources"]
+          :dependencies   [[integrant/repl "0.3.2"]
+                           [fipp "0.6.21"]
+                           [hawk "0.2.11"]
+                           [eftest "0.5.9"]
+                           [kerodon "0.9.1"]
+                           [djblue/portal "0.8.0"]]
+          :plugins [[lein-eftest "0.5.9"]]
+          :eftest {:thread-count 4
+                   :multithread :vars
+                   :fail-fast? true
+                   :report clojure.test/report}
+          :repl-options {:init-ns dev
+                         :init (do
+                                 (println "Starting backend ...")
+                                 (go))
+                         :host "0.0.0.0"
+                         :port 47480}}
+   :cljfmt {:plugins [[lein-cljfmt "0.9.2"]]}
+   :clj-kondo {:plugins [[com.github.clj-kondo/lein-clj-kondo "2024.02.12"]]}
+   :eastwood {:plugins [[jonase/eastwood "1.4.2"]]
+              :eastwood {:linters [:all]
+                         :config-files ["eastwood_cfg.clj"]
+                         :exclude-linters [:keyword-typos
+                                           :boxed-math
+                                           :unused-locals
+                                           :non-clojure-file
+                                           :unused-namespaces
+                                           :reflection
+                                           :performance]}}})
