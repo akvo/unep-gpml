@@ -3,7 +3,7 @@
   (:require
    [clojure.java.io :as io]
    [clojure.java.jdbc :as jdbc]
-   clojure.pprint
+   [clojure.pprint]
    [clojure.repl :refer :all]
    [clojure.tools.namespace.repl :refer [refresh]]
    [duct.core :as duct]
@@ -13,8 +13,7 @@
    [integrant.core :as ig]
    [integrant.repl :refer [clear go halt init prep reset]]
    [integrant.repl.state :refer [config system]]
-   [ns-tracker.core :refer [ns-tracker]]
-   [portal.api :as portal]))
+   [ns-tracker.core :refer [ns-tracker]]))
 
 (duct/load-hierarchy)
 
@@ -49,14 +48,6 @@
                (clojure.pprint/print-table result)
                result))))
 
-(defn launch-portal
-  []
-  (portal/start {:portal.launcher/port 47481
-                 :portal.launcher/host "0.0.0.0"})
-  (portal/tap)
-  (portal/open {:portal.colors/theme
-                :portal.colors/solarized-light}))
-
 (def modified-namespaces
   (ns-tracker ["src/gpml/db"]))
 
@@ -75,8 +66,6 @@
   (test #'gpml.handler.profile-test/handler-put-test)
 
   config
-
-  (launch-portal)
 
   ;; run all tests
   (test)
