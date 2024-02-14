@@ -91,8 +91,8 @@
                    :report clojure.test/report}
           :repl-options {:init-ns dev
                          :init (do
-                                 (println "Starting backend ...")
-                                 (go))
+                                 (require 'dev)
+                                 ((requiring-resolve 'integrant.repl/go)))
                          :host "0.0.0.0"
                          :port 47480}}
    :cljfmt {:plugins [[lein-cljfmt "0.9.2"]]}

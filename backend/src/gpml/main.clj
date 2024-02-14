@@ -4,10 +4,14 @@
 
 (defn -main [& args]
   (binding [*assert* false]
-    (require '[duct.core])
-    (duct.core/load-hierarchy)
-    (let [keys     (or (duct.core/parse-keys args) [:duct/daemon])
+    (require 'duct.core)
+    (@(requiring-resolve 'duct.core/load-hierarchy))
+    (let [parse-keys @(requiring-resolve 'duct.core/parse-keys)
+          resource @(requiring-resolve 'duct.core/resource)
+          read-config @(requiring-resolve 'duct.core/read-config)
+          exec-config @(requiring-resolve 'duct.core/exec-config)
+          keys     (or (parse-keys args) [:duct/daemon])
           profiles [:duct.profile/prod]]
-      (-> (duct.core/resource "gpml/config.edn")
-          (duct.core/read-config)
-          (duct.core/exec-config profiles keys)))))
+      (-> (resource "gpml/config.edn")
+          (read-config)
+          (exec-config profiles keys)))))
