@@ -1,26 +1,27 @@
 (ns gpml.seeder.main
-  (:require [clj-time.format :as f]
-            [clojure.java.io :as io]
-            [clojure.java.jdbc :as jdbc]
-            [clojure.set :as set]
-            [clojure.string :as str]
-            [duct.core :as duct]
-            [gpml.db.action :as db.action]
-            [gpml.db.country :as db.country]
-            [gpml.db.country-group :as db.country-group]
-            [gpml.db.currency :as db.currency]
-            [gpml.db.event :as db.event]
-            [gpml.db.language :as db.language]
-            [gpml.db.organisation :as db.organisation]
-            [gpml.db.policy :as db.policy]
-            [gpml.db.resource :as db.resource]
-            [gpml.db.tag :as db.tag]
-            [gpml.db.technology :as db.technology]
-            gpml.handler.detail
-            [gpml.seeder.util :as db.util]
-            gpml.util.postgresql
-            [integrant.core :as ig]
-            [jsonista.core :as j]))
+  (:require
+   [clj-time.format :as f]
+   [clojure.java.io :as io]
+   [clojure.java.jdbc :as jdbc]
+   [clojure.set :as set]
+   [clojure.string :as str]
+   [duct.core :as duct]
+   [gpml.db.action :as db.action]
+   [gpml.db.country :as db.country]
+   [gpml.db.country-group :as db.country-group]
+   [gpml.db.currency :as db.currency]
+   [gpml.db.event :as db.event]
+   [gpml.db.language :as db.language]
+   [gpml.db.organisation :as db.organisation]
+   [gpml.db.policy :as db.policy]
+   [gpml.db.resource :as db.resource]
+   [gpml.db.tag :as db.tag]
+   [gpml.db.technology :as db.technology]
+   gpml.handler.detail
+   [gpml.seeder.util :as db.util]
+   gpml.util.postgresql
+   [integrant.core :as ig]
+   [jsonista.core :as j]))
 
 (duct/load-hierarchy)
 
@@ -66,7 +67,10 @@
    (parse-data (slurp (io/resource (str "files/" file-name ".json"))) opts)))
 
 (defn get-ids [cmd]
-  (reduce (fn [acc o] (conj acc (:id o))) [] cmd))
+  (reduce (fn [acc o]
+            (conj acc (:id o)))
+          []
+          cmd))
 
 (defn get-country [db x]
   (db.country/get-countries db {:filters {:names x :descriptions ["Member State"]}}))
@@ -435,7 +439,9 @@
 
 (defn revert-mapping [mapping-file]
   (reduce-kv (fn [m k v]
-               (assoc m (keyword (str v)) (-> k name Integer/parseInt))) {} mapping-file))
+               (assoc m (keyword (str v)) (-> k name Integer/parseInt)))
+             {}
+             mapping-file))
 
 (defn is-old [check mapping-file db]
   (let [example-map (first (filter #(not= (first %) (second %)) mapping-file))
@@ -594,7 +600,7 @@
   (->> (get-data "country_group_countries")
        vals
        (#(map missing-names %))
-       (reduce set/union)
+       (reduce set/union #{})
        (run! println))
 
   (defn geo-name-mimatches [topic]
