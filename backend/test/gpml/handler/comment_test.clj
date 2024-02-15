@@ -8,7 +8,7 @@
    [gpml.test-util :as test-util]
    [gpml.util :as util]
    [integrant.core :as ig]
-   [java-time :as time]
+   [java-time.api :as time]
    [java-time.pre-java8 :as time-pre-j8]
    [malli.core :as m]
    [ring.mock.request :as mock]))
