@@ -1,5 +1,5 @@
 (ns gpml.db.initiative
-  {:ns-tracker/resource-deps ["initiative.sql"]}
+  #:ns-tracker{:resource-deps ["initiative.sql"]}
   (:require
    [gpml.util :as util]
    [gpml.util.postgresql :as pg-util]

@@ -1,5 +1,5 @@
 (ns gpml.db.review
-  {:ns-tracker/resource-deps ["review.sql"]}
+  #:ns-tracker{:resource-deps ["review.sql"]}
   (:require
    [hugsql.core :as hugsql]))
 

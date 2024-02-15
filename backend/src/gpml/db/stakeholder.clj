@@ -1,5 +1,5 @@
 (ns gpml.db.stakeholder
-  {:ns-tracker/resource-deps ["stakeholder.sql"]}
+  #:ns-tracker{:resource-deps ["stakeholder.sql"]}
   (:require
    [gpml.db.jdbc-util :as jdbc-util]
    [gpml.util :as util]

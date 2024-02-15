@@ -1,5 +1,5 @@
 (ns gpml.db.resource.geo-coverage
-  {:ns-tracker/resource-deps ["resource/geo_coverage.sql"]}
+  #:ns-tracker{:resource-deps ["resource/geo_coverage.sql"]}
   (:require
    [hugsql.core :as hugsql]))
 

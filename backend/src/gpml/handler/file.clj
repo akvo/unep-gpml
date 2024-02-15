@@ -5,8 +5,9 @@
    [gpml.service.file :as srv.file]
    [integrant.core :as ig]
    [ring.util.response :as resp])
-  (:import java.io.ByteArrayInputStream
-           java.util.Base64))
+  (:import
+   (java.io ByteArrayInputStream)
+   (java.util Base64)))
 
 (defn create-file
   [config conn file-payload entity-key file-key visibility-key]

@@ -1,5 +1,5 @@
 (ns gpml.db.community
-  {:ns-tracker/resource-deps ["community.sql"]}
+  #:ns-tracker{:resource-deps ["community.sql"]}
   (:require
    [clojure.string :as str]
    [hugsql.core :as hugsql]))

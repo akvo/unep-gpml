@@ -1,5 +1,5 @@
 (ns gpml.db.currency
-  {:ns-tracker/resource-deps ["currency.sql"]}
+  #:ns-tracker{:resource-deps ["currency.sql"]}
   (:require
    [hugsql.core :as hugsql]))
 

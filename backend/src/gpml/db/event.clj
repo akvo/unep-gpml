@@ -1,5 +1,5 @@
 (ns gpml.db.event
-  {:ns-tracker/resource-deps ["event.sql"]}
+  #:ns-tracker{:resource-deps ["event.sql"]}
   (:require
    [gpml.util :as util]
    [gpml.util.sql :as sql-util]

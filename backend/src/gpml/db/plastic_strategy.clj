@@ -1,5 +1,5 @@
 (ns gpml.db.plastic-strategy
-  {:ns-tracker/resource-deps ["plastic_strategy.sql"]}
+  #:ns-tracker{:resource-deps ["plastic_strategy.sql"]}
   (:require
    [gpml.db.jdbc-util :as jdbc-util]
    [hugsql.core :as hugsql]))

@@ -1,5 +1,5 @@
 (ns gpml.db.resource.list
-  {:ns-tracker/resource-deps ["resource/list.sql"]}
+  #:ns-tracker{:resource-deps ["resource/list.sql"]}
   (:require
    [clojure.string :as str]
    [gpml.domain.types :as dom.types]

@@ -1,5 +1,5 @@
 (ns gpml.db.rbac-util
-  {:ns-tracker/resource-deps ["rbac_util.sql"]}
+  #:ns-tracker{:resource-deps ["rbac_util.sql"]}
   (:require
    [hugsql.core :as hugsql]))
 
