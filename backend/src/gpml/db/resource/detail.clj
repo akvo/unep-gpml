@@ -1,5 +1,5 @@
 (ns gpml.db.resource.detail
-  {:ns-tracker/resource-deps ["resource/detail.sql"]}
+  #:ns-tracker{:resource-deps ["resource/detail.sql"]}
   (:require
    [clojure.java.jdbc :as jdbc]
    [dev.gethop.rbac :as rbac]

@@ -1,5 +1,5 @@
 (ns gpml.db.badge
-  {:ns-tracker/resource-deps ["badge.sql"]}
+  #:ns-tracker{:resource-deps ["badge.sql"]}
   (:require
    [gpml.db.jdbc-util :as jdbc-util]
    [gpml.util :as util]

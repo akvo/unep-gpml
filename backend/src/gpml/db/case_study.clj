@@ -1,5 +1,5 @@
 (ns gpml.db.case-study
-  {:ns-tracker/resource-deps ["case_study.sql"]}
+  #:ns-tracker{:resource-deps ["case_study.sql"]}
   (:require
    [gpml.util :as util]
    [gpml.util.sql :as sql-util]

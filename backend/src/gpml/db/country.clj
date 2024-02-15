@@ -1,5 +1,5 @@
 (ns gpml.db.country
-  {:ns-tracker/resource-deps ["country.sql"]}
+  #:ns-tracker{:resource-deps ["country.sql"]}
   (:require
    [hugsql.core :as hugsql]))
 

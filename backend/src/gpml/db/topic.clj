@@ -1,5 +1,5 @@
 (ns gpml.db.topic
-  {:ns-tracker/resource-deps ["topic.sql"]}
+  #:ns-tracker{:resource-deps ["topic.sql"]}
   (:require
    [clojure.string :as str]
    [hugsql.core :as hugsql]))

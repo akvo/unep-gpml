@@ -1,5 +1,5 @@
 (ns gpml.db.invitation
-  {:ns-tracker/resource-deps ["invitation.sql"]}
+  #:ns-tracker{:resource-deps ["invitation.sql"]}
   (:require
    [gpml.db.jdbc-util :as jdbc-util]
    [gpml.util :as util]

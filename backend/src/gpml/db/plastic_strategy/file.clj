@@ -1,5 +1,5 @@
 (ns gpml.db.plastic-strategy.file
-  {:ns-tracker/resource-deps ["plastic_strategy/file.sql"]}
+  #:ns-tracker{:resource-deps ["plastic_strategy/file.sql"]}
   (:require
    [gpml.db.jdbc-util :as jdbc-util]
    [gpml.util :as util]
