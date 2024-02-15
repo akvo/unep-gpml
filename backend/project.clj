@@ -45,7 +45,7 @@
                                                         cheshire
                                                         medley
                                                         clj-time]]
-                 [clojure.java-time "0.3.3"]
+                 [clojure.java-time "1.4.2"]
                  [ns-tracker "0.4.0"]
                  [twarc "0.1.15"]
                  [diehard "0.10.3"]
