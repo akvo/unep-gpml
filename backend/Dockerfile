@@ -6,6 +6,8 @@ COPY target/uberjar/app.jar app.jar
 
 CMD java \
     -Dclojure.compiler.direct-linking=true \
+    -Dclojure.main.report=stderr \
+    -XX:-OmitStackTraceInFastThrow \
     -Djava.awt.headless=true \
     -XshowSettings:vm \
     -XX:+UnlockExperimentalVMOptions \
@@ -16,6 +18,8 @@ CMD java \
     gpml.main :duct/migrator && \
     java \
     -Dclojure.compiler.direct-linking=true \
+    -Dclojure.main.report=stderr \
+    -XX:-OmitStackTraceInFastThrow \
     -Djava.awt.headless=true \
     -XshowSettings:vm \
     -XX:+UnlockExperimentalVMOptions \
