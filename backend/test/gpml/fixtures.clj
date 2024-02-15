@@ -17,10 +17,13 @@
 (defmethod ig/init-key :gpml.test/db [_ spec]
   (sql/->Boundary spec))
 
+(defn read-config [x]
+  (duct/read-config x {'gpml/eval eval}))
+
 (defn- test-system
   []
   (-> (duct/resource "gpml/config.edn")
-      (duct/read-config)
+      (read-config)
       (duct/prep-config [:duct.profile/test])))
 
 (defn- migrate-template-test-db

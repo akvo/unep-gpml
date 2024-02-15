@@ -23,80 +23,80 @@
 (defn new-mock-scheduler []
   (reify org.quartz.Scheduler
     (^String getSchedulerName [this]
-     (str `noop))
+      (str `noop))
     (^boolean checkExists [this ^org.quartz.JobKey arg]
-     false)
+      false)
     (^boolean checkExists [this ^org.quartz.TriggerKey arg]
-     false)
+      false)
     (^boolean deleteCalendar [this ^String arg]
-     true)
+      true)
     (^boolean deleteJob [this ^org.quartz.JobKey arg]
-     true)
+      true)
     (^boolean deleteJobs [this ^java.util.List arg]
-     true)
+      true)
     (^boolean interrupt [this ^String arg]
-     true)
+      true)
     (^boolean interrupt [this ^org.quartz.JobKey arg]
-     true)
+      true)
     (^boolean isStarted [this]
-     true)
+      true)
     (^boolean unscheduleJob [this ^org.quartz.TriggerKey arg]
-     true)
+      true)
     (^boolean unscheduleJobs [this ^java.util.List arg]
-     true)
+      true)
     (^java.util.Date rescheduleJob [this ^org.quartz.TriggerKey arg0 ^org.quartz.Trigger arg1]
-     (java.util.Date.))
+      (java.util.Date.))
     (^java.util.Date scheduleJob [this ^org.quartz.JobDetail arg0 ^org.quartz.Trigger arg1]
-     (java.util.Date.))
+      (java.util.Date.))
     (^java.util.Date scheduleJob [this ^org.quartz.Trigger arg]
-     (java.util.Date.))
+      (java.util.Date.))
     (^java.util.List getCurrentlyExecutingJobs [this]
-     [])
+      [])
     (^java.util.List getTriggerGroupNames [this]
-     [])
+      [])
     (^java.util.List getTriggersOfJob [this ^org.quartz.JobKey arg]
-     [])
+      [])
     (^java.util.Set getJobKeys [this ^org.quartz.impl.matchers.GroupMatcher arg]
-     #{})
+      #{})
     (^java.util.Set getPausedTriggerGroups [this]
-     #{})
+      #{})
     (^java.util.Set getTriggerKeys [this ^org.quartz.impl.matchers.GroupMatcher arg]
-     #{})
+      #{})
     (^org.quartz.Calendar getCalendar [this ^String arg]
-     (reify org.quartz.Calendar
-       (^String getDescription [this]
-        (str `noop))
-       (^boolean isTimeIncluded [this ^long arg]
-        true)
-       (^long getNextIncludedTime [this ^long arg]
-        0)
-       (^org.quartz.Calendar getBaseCalendar [this]
-        this)
-       (^void setBaseCalendar [this ^org.quartz.Calendar arg])
-       (^void setDescription [this ^String arg])
-       (clone [this]
-         this)))
+      (reify org.quartz.Calendar
+        (^String getDescription [this]
+          (str `noop))
+        (^boolean isTimeIncluded [this ^long arg]
+          true)
+        (^long getNextIncludedTime [this ^long arg]
+          0)
+        (^org.quartz.Calendar getBaseCalendar [this]
+          this)
+        (^void setBaseCalendar [this ^org.quartz.Calendar arg])
+        (^void setDescription [this ^String arg])
+        (clone [this]
+          this)))
     (^org.quartz.JobDetail getJobDetail [this ^org.quartz.JobKey arg])
     (^org.quartz.SchedulerContext getContext [this] (org.quartz.SchedulerContext.))
     (^org.quartz.SchedulerMetaData getMetaData [this]
-     (org.quartz.SchedulerMetaData. (str `noop)
-                                    (str `noop)
-                                    Class
-                                    false
-                                    true
-                                    false
-                                    false
-                                    (java.util.Date.)
-                                    1
-                                    Class
-                                    false
-                                    false
-                                    Class
-                                    1
-                                    "1.0"))
+      (org.quartz.SchedulerMetaData. (str `noop)
+                                     (str `noop)
+                                     Class
+                                     false
+                                     true
+                                     false
+                                     false
+                                     (java.util.Date.)
+                                     1
+                                     Class
+                                     false
+                                     false
+                                     Class
+                                     1
+                                     "1.0"))
     (^org.quartz.Trigger getTrigger [this ^org.quartz.TriggerKey arg])
     (^org.quartz.Trigger$TriggerState getTriggerState [this ^org.quartz.TriggerKey arg]
-     org.quartz.Trigger$TriggerState/NORMAL)
+      org.quartz.Trigger$TriggerState/NORMAL)
     (^void addCalendar [this ^String arg0 ^org.quartz.Calendar arg1 ^boolean arg2 ^boolean arg3])
     (^void addJob [this ^org.quartz.JobDetail arg0 ^boolean arg1 ^boolean arg2])
     (^void addJob [this ^org.quartz.JobDetail arg0 ^boolean arg1])

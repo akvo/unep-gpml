@@ -6,8 +6,8 @@
    [gpml.seeder.db :as seeder.db]
    [jsonista.core :as j]))
 
-(def ^:private json-path "dev/resources/files/")
-(def ^:private cache-path "dev/resources/cache/")
+(def ^:private json-path "test-resources/files/")
+(def ^:private cache-path "test-resources/cache/")
 
 (defn is-empty [db x]
   (= 0 (:count (seeder.db/get-count db {:tbl x}))))
