@@ -44,7 +44,7 @@ clean:
 	lein clean
 
 test: clean
-	lein with-profile -user,-dev,+test,+eftest eftest
+	lein with-profile -user,-dev,+test,+seeder,+eftest eftest
 
 cljfmt:
 	lein with-profile -user,+test,+cljfmt cljfmt check

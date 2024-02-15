@@ -63,9 +63,8 @@
              :jar-inclusions [#"\.sql$"]
              :uberjar-name "app.jar"}
    :seeder {:main seeder
-            :source-paths ["dev/src"] ;; XXX does it still work
-            :resource-paths ["dev/resources"]
-            :prep-tasks ^:replace []}
+            :source-paths ["seeder"]
+            :resource-paths ["seeder-resources"]}
    :test {:dependencies [[ring/ring-mock "0.4.0"]]
           :resource-paths ["test-resources"]
           :jvm-opts ["-Dclojure.spec.compile-asserts=true"
