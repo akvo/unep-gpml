@@ -11,9 +11,8 @@
    [gpml.util :as util]
    [gpml.util.email :as email]
    [integrant.core :as ig]
-   [java-time :as time]
-   [java-time.pre-java8 :as time-pre-j8]
-   [java-time.temporal]))
+   [java-time.api :as time]
+   [java-time.pre-java8 :as time-pre-j8]))
 
 (def id-param
   [:id

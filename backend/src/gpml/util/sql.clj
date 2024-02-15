@@ -2,10 +2,11 @@
   (:require
    [clojure.string :as str]
    [hugsql.parameters :refer [identifier-param-quote]]
-   [java-time :as jt]
+   [java-time.api :as jt]
    [java-time.pre-java8 :as jt-pre-j8]
    [jsonista.core :as json])
-  (:import org.postgresql.util.PGobject))
+  (:import
+   (org.postgresql.util PGobject)))
 
 (defn is-jsonb [n]
   (contains? #{:q1 :q2 :q3 :q4
