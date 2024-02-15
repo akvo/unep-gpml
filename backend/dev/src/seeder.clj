@@ -10,12 +10,6 @@
 
 (defn -main [& args]
 
-  (println (System/getenv "GOOGLE_APPLICATION_CREDENTIALS"))
-
-  (println (.exists (io/file "/secrets/cloudsql/credentials.json")))
-
-  (println (System/getenv "DATABASE_URL"))
-
   (let [opts {:jdbc-url (System/getenv "DATABASE_URL")
               :register-mbeans false}
         ds (hikari/make-datasource opts)]

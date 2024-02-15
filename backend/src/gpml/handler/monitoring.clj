@@ -110,8 +110,3 @@
                                :event-fn (fn [event]
                                            (assoc event :server_name host))})
       (assoc :min-level :error)))
-
-(comment
-
-  (println
-   (slurp "http://localhost:3000/metrics")))
