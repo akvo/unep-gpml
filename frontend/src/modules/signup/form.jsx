@@ -274,11 +274,21 @@ const SignUpForm = ({
               ...e.formStep,
               signUp: 2,
             }
-            e.profile = { ...res.data }
           })
           updateStatusProfile(res.data)
 
-          router.push(`/workspace`)
+          setTimeout(() => {
+            api.get('/profile').then((p) => {
+              console.log(p)
+              UIStore.update((e) => {
+                e.profile = {
+                  ...p.data,
+                }
+              })
+              router.push(`/workspace`)
+            })
+          }, 1000)
+
           //            scroll top
           window.scrollTo({ top: 0 })
           signUpData.update((e) => {
