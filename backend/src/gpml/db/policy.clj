@@ -5,10 +5,7 @@
    [gpml.util.postgresql :as pg-util]
    [gpml.util.sql :as sql-util]
    [hugsql.core :as hugsql]
-   [java-time.api :as jt]
-   [java-time.core]
-   [java-time.local]
-   [java-time.temporal]))
+   [java-time.api :as jt]))
 
 (declare language-by-policy-id
          new-policy
