@@ -2,13 +2,6 @@
 HOME=$(shell echo $$HOME)
 HERE=$(shell echo $$PWD)
 
-# This makefile offers high-performance (cached) wrappers that enrich the classpath, for optimal IDE functioning.
-# We suggest that you copy/merge this file into your project.
-# We believe it's best to give you something that you can freely understand and hack locally.
-# The tradeoff is that you may have to catch up with important fixes/improvements to this Makefile, if any.
-# Feel free to suggest any improvements at:
-# https://github.com/clojure-emacs/enrich-classpath/issues
-
 # Allows you to simply type `make`, the default task will be run for you.
 .DEFAULT_GOAL := lein-repl
 
@@ -47,19 +40,19 @@ test: clean
 	lein with-profile -user,-dev,+test,+seeder,+eftest eftest
 
 cljfmt:
-	lein with-profile -user,+test,+cljfmt cljfmt check
+	lein with-profile -user,+test,+seeder,+cljfmt cljfmt check
 
 cljfmt-fix:
-	lein with-profile -user,+test,+cljfmt cljfmt fix
+	lein with-profile -user,+test,+seeder,+cljfmt cljfmt fix
 
 eastwood:
-	lein with-profile -user,-dev,+test,+eastwood eastwood
+	lein with-profile -user,-dev,+test,+seeder,+eastwood eastwood
 
 .make_kondo_prep: project.clj .clj-kondo/config.edn
-	lein with-profile -dev,+test,+clj-kondo clj-kondo --copy-configs --dependencies --parallel --lint '$$classpath' > $@
+	lein with-profile -dev,+test,+seeder,+clj-kondo clj-kondo --copy-configs --dependencies --parallel --lint '$$classpath' > $@
 
 kondo: .make_kondo_prep clean
-	lein with-profile -dev,+test,+clj-kondo clj-kondo
+	lein with-profile -dev,+test,+seeder,+clj-kondo clj-kondo
 
 repl: lein-repl
 
