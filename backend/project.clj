@@ -4,54 +4,55 @@
   :license {:name "AGPL-3.0"
             :url "https://www.gnu.org/licenses/agpl-3.0.en.html"}
   :min-lein-version "2.0.0"
-  :dependencies [[org.clojure/clojure "1.11.1"]
+  :dependencies [[camel-snake-kebab "0.4.3"]
+                 [clj-commons/iapetos "0.1.13" :exclusions [io.prometheus/simpleclient]]
+                 [clj-http "3.12.0"]
+                 [clj-time "0.12.0"]
+                 [clojure.java-time "1.4.2"]
+                 [commons-codec "1.15"]
+                 [com.auth0/auth0 "1.25.0" :exclusions [org.jetbrains.kotlin/kotlin-stdlib-common
+                                                        com.fasterxml.jackson.core/jackson-databind]]
+                 [com.auth0/java-jwt "3.12.0" :exclusions [com.fasterxml.jackson.core/jackson-databind]]
+                 [com.auth0/jwks-rsa "0.15.0" :exclusions [com.fasterxml.jackson.core/jackson-databind
+                                                           com.google.guava/guava]]
+                 [com.google.cloud.sql/postgres-socket-factory "1.2.0"]
+                 [com.google.cloud/google-cloud-storage "2.26.0" :exclusions [org.checkerframework/checker-qual]]
+                 [com.layerware/hugsql "0.5.1"]
+                 [com.zaxxer/HikariCP "3.4.5" :exclusions [org.slf4j/slf4j-api]]
+                 [dev.gethop/rbac "0.1.0-alpha-7"]
+                 [diehard "0.10.3" :exclusions [org.clojure/spec.alpha]]
                  [duct/core "0.8.0"]
-                 [integrant "0.8.0"]
                  [duct/module.logging "0.5.0"]
                  [duct/module.sql "0.6.1" :exclusions [medley]]
                  [duct/module.web "0.7.1" :exclusions [medley ring/ring-core]]
-                 [org.postgresql/postgresql "42.2.18"]
-                 [com.google.cloud.sql/postgres-socket-factory "1.2.0"]
-                 [com.google.cloud/google-cloud-storage "2.26.0" :exclusions [org.checkerframework/checker-qual]]
-                 [metosin/reitit-ring "0.5.18" :exclusions [ring/ring-core]]
-                 [metosin/reitit-malli "0.5.18" :exclusions [org.clojure/tools.reader
-                                                             org.clojure/core.rrb-vector]]
-                 [metosin/reitit-middleware "0.5.18" :exclusions [ring/ring-core
-                                                                  org.clojure/spec.alpha
-                                                                  metosin/muuntaja]]
-                 [metosin/reitit-swagger "0.5.18"]
-                 [metosin/reitit-swagger-ui "0.5.18" :exclusions [ring/ring-core]]
-                 [metosin/jsonista "0.3.6"]
-                 [com.layerware/hugsql "0.5.1"]
-                 [com.auth0/auth0 "1.25.0" :exclusions [org.jetbrains.kotlin/kotlin-stdlib-common
-                                                        com.fasterxml.jackson.core/jackson-databind]]
-                 [com.auth0/jwks-rsa "0.15.0" :exclusions [com.fasterxml.jackson.core/jackson-databind]]
-                 [com.auth0/java-jwt "3.12.0" :exclusions [com.fasterxml.jackson.core/jackson-databind]]
-                 [clj-http "3.12.0"]
-                 [clj-time "0.12.0"]
-                 [clj-commons/iapetos "0.1.13" :exclusions [io.prometheus/simpleclient]]
+                 [integrant "0.8.0"]
                  [io.prometheus/simpleclient_hotspot "0.9.0"]
                  [io.prometheus/simpleclient_jetty "0.9.0"]
                  [io.prometheus/simpleclient_jetty_jdk8 "0.9.0"]
-                 [ring/ring-jetty-adapter "1.8.2"]
+                 [metosin/jsonista "0.3.6"]
+                 [metosin/reitit-malli "0.5.18" :exclusions [org.clojure/tools.reader
+                                                             org.clojure/core.rrb-vector]]
+                 [metosin/reitit-middleware "0.5.18" :exclusions [ring/ring-core
+                                                                  org.clojure/spec.alpha metosin/muuntaja]]
+                 [metosin/reitit-ring "0.5.18" :exclusions [ring/ring-core]]
+                 [metosin/reitit-swagger "0.5.18"]
+                 [metosin/reitit-swagger-ui "0.5.18" :exclusions [ring/ring-core]]
+                 [org.clojure/clojure "1.11.1"]
                  [org.clojure/data.csv "1.0.0"]
                  [org.eclipse.jetty/jetty-server "9.4.31.v20200723"]
                  [org.eclipse.jetty/jetty-servlet "9.4.31.v20200723"]
-                 [com.zaxxer/HikariCP "3.4.5" :exclusions [org.slf4j/slf4j-api]]
-                 [raven-clj "1.5.2" :exclusions [cheshire]]
+                 [org.jsoup/jsoup "1.15.3"]
+                 [org.postgresql/postgresql "42.2.18"]
                  [ovotech/clj-gcp "0.6.15" :exclusions [com.google.errorprone/error_prone_annotations
                                                         com.google.auth/google-auth-library-oauth2-http
                                                         com.google.guava/guava
                                                         cheshire
                                                         medley
                                                         clj-time]]
-                 [clojure.java-time "1.4.2"]
-                 [twarc "0.1.15"]
-                 [diehard "0.10.3"]
-                 [org.jsoup/jsoup "1.15.3"]
+                 [raven-clj "1.5.2" :exclusions [cheshire]]
                  [ring-cors "0.1.13"]
-                 [dev.gethop/rbac "0.1.0-alpha-7"]
-                 [camel-snake-kebab "0.4.3"]]
+                 [ring/ring-jetty-adapter "1.8.2"]
+                 [twarc "0.1.15"]]
   :main ^:skip-aot gpml.main
   :resource-paths ["resources" "target/resources"]
   :prep-tasks     ["javac" "compile"]
