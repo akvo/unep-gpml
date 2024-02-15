@@ -1,4 +1,4 @@
-.PHONY: test kondo eastwood cljfmt lint clean repl lein-repl
+.PHONY: test kondo eastwood cljfmt lint clean repl lein-repl uberjar
 HOME=$(shell echo $$HOME)
 HERE=$(shell echo $$PWD)
 
@@ -14,7 +14,7 @@ HERE=$(shell echo $$PWD)
 
 # Set bash instead of sh for the @if [[ conditions,
 # and use the usual safety flags:
-SHELL = /bin/bash -Eeu
+SHELL = /usr/bin/env bash -Eeu
 
 # The Lein profiles that will be selected for `lein-repl`.
 # Feel free to upgrade this, or to override it with an env var named LEIN_PROFILES.
@@ -44,7 +44,7 @@ clean:
 	lein clean
 
 test: clean
-	lein with-profile -user,-dev test
+	lein with-profile -user,-dev,+test,+eftest eftest
 
 cljfmt:
 	lein with-profile -user,+test,+cljfmt cljfmt check
@@ -70,3 +70,6 @@ psql:
 
 psql_test:
 		psql -h localhost -p 5432 -d gpml_test -U unep
+
+uberjar: clean
+		lein with-profile uberjar uberjar
