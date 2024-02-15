@@ -198,31 +198,27 @@
 
 (defn seed-resources [db]
   (doseq [data (get-resources db)]
-    (try
-      (let [res-id (:id (db.resource/new-resource db data))
-            data-org (:organisation data)
-            data-geo (:geo_coverage data)
-            data-geo-type (:geo_coverage_type data)
-            data-lang (:resource_language_url data)
-            data-tag (:tags data)]
-        (when (not-empty data-org)
-          (let [res-org (mapv #(assoc {} :resource res-id :organisation %) data-org)]
-            (jdbc/insert-multi! db :resource_organisation res-org)))
-        (when (not-empty data-geo)
-          (if (= "regional" data-geo-type)
-            (let [res-geo (mapv #(assoc {} :resource res-id :country_group %) data-geo)]
-              (jdbc/insert-multi! db :resource_geo_coverage res-geo))
-            (let [res-geo (mapv #(assoc {} :resource res-id :country %) data-geo)]
-              (jdbc/insert-multi! db :resource_geo_coverage res-geo))))
-        (when (not-empty data-lang)
-          (let [res-lang (map (fn [x] (assoc x :resource res-id)) data-lang)]
-            (jdbc/insert-multi! db :resource_language_url res-lang)))
-        (when (not-empty data-tag)
-          (let [res-tag (mapv #(assoc {} :resource res-id :tag %) data-tag)]
-            (jdbc/insert-multi! db :resource_tag res-tag))))
-      (catch Exception e
-        (.printStackTrace e)
-        (throw e)))))
+    (let [res-id (:id (db.resource/new-resource db data))
+          data-org (:organisation data)
+          data-geo (:geo_coverage data)
+          data-geo-type (:geo_coverage_type data)
+          data-lang (:resource_language_url data)
+          data-tag (:tags data)]
+      (when (not-empty data-org)
+        (let [res-org (mapv #(assoc {} :resource res-id :organisation %) data-org)]
+          (jdbc/insert-multi! db :resource_organisation res-org)))
+      (when (not-empty data-geo)
+        (if (= "regional" data-geo-type)
+          (let [res-geo (mapv #(assoc {} :resource res-id :country_group %) data-geo)]
+            (jdbc/insert-multi! db :resource_geo_coverage res-geo))
+          (let [res-geo (mapv #(assoc {} :resource res-id :country %) data-geo)]
+            (jdbc/insert-multi! db :resource_geo_coverage res-geo))))
+      (when (not-empty data-lang)
+        (let [res-lang (map (fn [x] (assoc x :resource res-id)) data-lang)]
+          (jdbc/insert-multi! db :resource_language_url res-lang)))
+      (when (not-empty data-tag)
+        (let [res-tag (mapv #(assoc {} :resource res-id :tag %) data-tag)]
+          (jdbc/insert-multi! db :resource_tag res-tag))))))
 
 (defn get-events [db]
   (->> (get-data "events")
@@ -257,27 +253,23 @@
 
 (defn seed-events [db]
   (doseq [data (get-events db)]
-    (try
-      (let [evt-id (:id (db.event/new-event db data))
-            data-geo (:geo_coverage data)
-            data-geo-type (:geo_coverage_type data)
-            data-lang (:event_language_url data)
-            data-tag (:tags data)]
-        (when (not-empty data-geo)
-          (if (= "regional" data-geo-type)
-            (let [evt-geo (mapv #(assoc {} :event evt-id :country_group %) data-geo)]
-              (jdbc/insert-multi! db :event_geo_coverage evt-geo))
-            (let [evt-geo (mapv #(assoc {} :event evt-id :country %) data-geo)]
-              (jdbc/insert-multi! db :event_geo_coverage evt-geo))))
-        (when (not-empty data-lang)
-          (let [evt-lang (map (fn [x] (assoc x :event evt-id)) data-lang)]
-            (jdbc/insert-multi! db :event_language_url evt-lang)))
-        (when (not-empty data-tag)
-          (let [evt-tag (mapv #(assoc {} :event evt-id :tag %) data-tag)]
-            (jdbc/insert-multi! db :event_tag evt-tag))))
-      (catch Exception e
-        (.printStackTrace e)
-        (throw e)))))
+    (let [evt-id (:id (db.event/new-event db data))
+          data-geo (:geo_coverage data)
+          data-geo-type (:geo_coverage_type data)
+          data-lang (:event_language_url data)
+          data-tag (:tags data)]
+      (when (not-empty data-geo)
+        (if (= "regional" data-geo-type)
+          (let [evt-geo (mapv #(assoc {} :event evt-id :country_group %) data-geo)]
+            (jdbc/insert-multi! db :event_geo_coverage evt-geo))
+          (let [evt-geo (mapv #(assoc {} :event evt-id :country %) data-geo)]
+            (jdbc/insert-multi! db :event_geo_coverage evt-geo))))
+      (when (not-empty data-lang)
+        (let [evt-lang (map (fn [x] (assoc x :event evt-id)) data-lang)]
+          (jdbc/insert-multi! db :event_language_url evt-lang)))
+      (when (not-empty data-tag)
+        (let [evt-tag (mapv #(assoc {} :event evt-id :tag %) data-tag)]
+          (jdbc/insert-multi! db :event_tag evt-tag))))))
 
 (defn get-policies [db]
   (->> (get-data "policies")
@@ -320,19 +312,15 @@
 
 (defn seed-policies [db]
   (doseq [data (get-policies db)]
-    (try
-      (let [po-id (:id (db.policy/new-policy db data))
-            data-geo (:geo_coverage data)
-            data-tag (:tags data)]
-        (when (not-empty data-geo)
-          (let [po-geo (mapv #(assoc {} :policy po-id :country %) data-geo)]
-            (jdbc/insert-multi! db :policy_geo_coverage po-geo)))
-        (when (not-empty data-tag)
-          (let [po-tag (mapv #(assoc {} :policy po-id :tag %) data-tag)]
-            (jdbc/insert-multi! db :policy_tag po-tag))))
-      (catch Exception e
-        (.printStackTrace e)
-        (throw e)))))
+    (let [po-id (:id (db.policy/new-policy db data))
+          data-geo (:geo_coverage data)
+          data-tag (:tags data)]
+      (when (not-empty data-geo)
+        (let [po-geo (mapv #(assoc {} :policy po-id :country %) data-geo)]
+          (jdbc/insert-multi! db :policy_geo_coverage po-geo)))
+      (when (not-empty data-tag)
+        (let [po-tag (mapv #(assoc {} :policy po-id :tag %) data-tag)]
+          (jdbc/insert-multi! db :policy_tag po-tag))))))
 
 (defn get-technologies [db]
   (->> (get-data "technologies")
@@ -363,19 +351,15 @@
 
 (defn seed-technologies [db]
   (doseq [data (get-technologies db)]
-    (try
-      (let [tech-id (:id (db.technology/new-technology db data))
-            data-geo (:geo_coverage data)
-            data-tag (:tags data)]
-        (when (not-empty data-geo)
-          (let [tech-geo (mapv #(assoc {} :technology tech-id :country %) data-geo)]
-            (jdbc/insert-multi! db :technology_geo_coverage tech-geo)))
-        (when (not-empty data-tag)
-          (let [tech-tag (mapv #(assoc {} :technology tech-id :tag %) data-tag)]
-            (jdbc/insert-multi! db :technology_tag tech-tag))))
-      (catch Exception e
-        (.printStackTrace e)
-        (throw e)))))
+    (let [tech-id (:id (db.technology/new-technology db data))
+          data-geo (:geo_coverage data)
+          data-tag (:tags data)]
+      (when (not-empty data-geo)
+        (let [tech-geo (mapv #(assoc {} :technology tech-id :country %) data-geo)]
+          (jdbc/insert-multi! db :technology_geo_coverage tech-geo)))
+      (when (not-empty data-tag)
+        (let [tech-tag (mapv #(assoc {} :technology tech-id :tag %) data-tag)]
+          (jdbc/insert-multi! db :technology_tag tech-tag))))))
 
 (defn get-cache-id []
   (str (java.util.UUID/randomUUID) "-" (quot (System/currentTimeMillis) 1000)))
