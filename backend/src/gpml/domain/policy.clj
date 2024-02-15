@@ -4,8 +4,7 @@
    [gpml.domain.types :as dom.types]
    [gpml.util :as util]
    [gpml.util.regular-expressions :as util.regex]
-   [java-time :as jt]
-   [java-time.temporal]
+   [java-time.api :as jt]
    [malli.core :as m]))
 
 (def sub-content-types

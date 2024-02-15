@@ -17,10 +17,7 @@
    [gpml.util :as util]
    [gpml.util.sql :as sql-util]
    [integrant.core :as ig]
-   [java-time :as jt]
-   [java-time.core]
-   [java-time.local]
-   [java-time.temporal]
+   [java-time.api :as jt]
    [jsonista.core :as j]
    [twarc.core :refer [defjob]]))
 

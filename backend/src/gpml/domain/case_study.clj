@@ -3,8 +3,7 @@
    [gpml.domain.related-content :as dom.rc]
    [gpml.domain.types :as dom.types]
    [gpml.util :as util]
-   [java-time :as jt]
-   [java-time.temporal]
+   [java-time.api :as jt]
    [malli.core :as m]))
 
 (def ^:const entity-relation-keys

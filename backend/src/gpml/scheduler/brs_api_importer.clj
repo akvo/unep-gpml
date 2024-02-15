@@ -27,8 +27,7 @@
    [gpml.util.malli :as util.malli]
    [gpml.util.sql :as sql-util]
    [integrant.core :as ig]
-   [java-time :as jt]
-   [java-time.temporal]
+   [java-time.api :as jt]
    [medley.core :as medley]
    [twarc.core :refer [defjob]]))
 
