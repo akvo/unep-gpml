@@ -53,7 +53,6 @@
                  [ring-cors "0.1.13"]
                  [ring/ring-jetty-adapter "1.8.2"]
                  [twarc "0.1.15"]]
-  :main ^:skip-aot gpml.main
   :resource-paths ["resources" "target/resources"]
   :prep-tasks     ["javac" "compile"]
   :jvm-opts ["-Djava.awt.headless=true"]
