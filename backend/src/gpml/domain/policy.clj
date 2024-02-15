@@ -128,7 +128,7 @@
       {:description "The Policy's last modification date."
        :type "string"
        :format "date-time"}
-      :decode/string (fn [s] (jt/instant s))}
+      :decode/string jt/instant}
      inst?]
     [:implementing_mea
      {:optional true
@@ -223,7 +223,7 @@
       {:description "The Policy's LEAP API last modification. This value shouldn't be provided by external callers."
        :type "string"
        :format "date-time"}
-      :decode/string (fn [s] (jt/instant s))}
+      :decode/string jt/instant}
      inst?]
     ;; FIXME: Change these to be dates instead of strings
     [:first_publication_date

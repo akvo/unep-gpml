@@ -76,7 +76,7 @@
       {:description "The Case Study's creation datetime."
        :type "string"
        :format "date-time"}
-      :decode/string (fn [s] (jt/instant s))}
+      :decode/string jt/instant}
      inst?]
     [:last_modified_at
      {:optional true
@@ -84,7 +84,7 @@
       {:description "The Case Study's last modification datetime."
        :type "string"
        :format "date-time"}
-      :decode/string (fn [s] (jt/instant s))}
+      :decode/string jt/instant}
      inst?]
     [:reviewed_at
      {:optional true
@@ -92,7 +92,7 @@
       {:description "The Case Study's review's datetime."
        :type "string"
        :format "date-time"}
-      :decode/string (fn [s] (jt/instant s))}
+      :decode/string jt/instant}
      inst?]
     [:reviewed_by
      {:optional true
