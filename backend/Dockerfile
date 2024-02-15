@@ -14,7 +14,8 @@ CMD java \
     -XX:+UseContainerSupport \
     -XX:MaxRAMPercentage=70.0 \
     -server \
-    -jar app.jar :duct/migrator && \
+    -cp app.jar \
+    gpml.main :duct/migrator && \
     java \
     -Dclojure.compiler.direct-linking=true \
     -Djava.awt.headless=true \
@@ -23,4 +24,5 @@ CMD java \
     -XX:+UseContainerSupport \
     -XX:MaxRAMPercentage=70.0 \
     -server \
-    -jar app.jar :duct/daemon
+    -cp app.jar \
+    gpml.main :duct/daemon
