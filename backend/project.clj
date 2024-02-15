@@ -46,7 +46,6 @@
                                                         medley
                                                         clj-time]]
                  [clojure.java-time "1.4.2"]
-                 [ns-tracker "0.4.0"]
                  [twarc "0.1.15"]
                  [diehard "0.10.3"]
                  [org.jsoup/jsoup "1.15.3"]
@@ -79,10 +78,11 @@
                      :report clojure.test/report}}
    :dev  {:source-paths   ["dev/src"]
           :resource-paths ["dev/resources"]
-          :dependencies   [[integrant/repl "0.3.2"]
-                           [fipp "0.6.21"]
+          :dependencies   [[fipp "0.6.21"]
                            [hawk "0.2.11"]
-                           [kerodon "0.9.1"]]
+                           [integrant/repl "0.3.2"]
+                           [kerodon "0.9.1"]
+                           [ns-tracker "0.4.0"]]
           :repl-options {:init-ns dev
                          :init (do
                                  (require 'dev)
