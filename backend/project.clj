@@ -83,9 +83,6 @@
                            [kerodon "0.9.1"]
                            [ns-tracker "0.4.0"]]
           :repl-options {:init-ns dev
-                         :init (do
-                                 (require 'dev)
-                                 ((requiring-resolve 'integrant.repl/go)))
                          :host "0.0.0.0"
                          :port 47480}}
    :cljfmt {:plugins [[dev.weavejester/lein-cljfmt "0.12.0"]]
