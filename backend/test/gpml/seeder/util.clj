@@ -43,16 +43,14 @@
       (doseq [child (:child data)]
         (seeder.db/delete-rows db {:tbl child
                                    :ids ids
-                                   :col (:table data)}))))
-  (println (str "Ref " (:table data) " removed")))
+                                   :col (:table data)})))))
 
 (defn revert-constraint [db cache-id]
   (let [table (read-cache cache-id)]
     (doseq [query (:deps table)]
       (seeder.db/add-constraint db query))
     (seeder.db/set-default-sequence db table)
-    (delete-cache cache-id)
-    (println (str "Ref " (:tbl table) " added"))))
+    (delete-cache cache-id)))
 
 (defn drop-constraint-country [db cache-id]
   (drop-all-constraint db {:cache cache-id
@@ -121,15 +119,13 @@
     (write-cache table cache-id)
     (doseq [query (:deps table)]
       (seeder.db/drop-constraint db query)
-      (println (str "Updating " (:col query) " on " (:tbl query)))
       (let [changed (atom nil)]
         (doseq [option new-map-list]
           (let [exclude-rows {:exclude @changed}
                 rows (seeder.db/update-foreign-value
                       db
                       (merge query option exclude-rows))]
-            (swap! changed #(apply conj % (map :id rows)))))))
-    (println (str "Ref country removed"))))
+            (swap! changed #(apply conj % (map :id rows)))))))))
 
 ;; initiative updater
 (defn new-initiative-object-id [[k _] mapping json-file]

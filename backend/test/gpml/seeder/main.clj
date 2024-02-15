@@ -221,7 +221,6 @@
           (let [res-tag (mapv #(assoc {} :resource res-id :tag %) data-tag)]
             (jdbc/insert-multi! db :resource_tag res-tag))))
       (catch Exception e
-        (println data)
         (.printStackTrace e)
         (throw e)))))
 
@@ -277,7 +276,6 @@
           (let [evt-tag (mapv #(assoc {} :event evt-id :tag %) data-tag)]
             (jdbc/insert-multi! db :event_tag evt-tag))))
       (catch Exception e
-        (println data)
         (.printStackTrace e)
         (throw e)))))
 
@@ -333,7 +331,6 @@
           (let [po-tag (mapv #(assoc {} :policy po-id :tag %) data-tag)]
             (jdbc/insert-multi! db :policy_tag po-tag))))
       (catch Exception e
-        (println data)
         (.printStackTrace e)
         (throw e)))))
 
@@ -377,7 +374,6 @@
           (let [tech-tag (mapv #(assoc {} :technology tech-id :tag %) data-tag)]
             (jdbc/insert-multi! db :technology_tag tech-tag))))
       (catch Exception e
-        (println data)
         (.printStackTrace e)
         (throw e)))))
 
@@ -390,14 +386,12 @@
   ([db opts]
    (let [cache-id (get-cache-id)]
      (db.util/drop-constraint-country db cache-id)
-     (println "Re-seeding country...")
      (seed-countries db opts)
      (db.util/revert-constraint db cache-id))))
 
 (defn resync-country-group [db]
   (let [cache-id (get-cache-id)]
     (db.util/drop-constraint-country-group db cache-id)
-    (println "Re-seeding country-group...")
     (seed-country-groups db)
     (db.util/revert-constraint db cache-id)
     (seed-country-group-country db)))
@@ -405,35 +399,30 @@
 (defn resync-organisation [db]
   (let [cache-id (get-cache-id)]
     (db.util/drop-constraint-organisation db cache-id)
-    (println "Re-seeding organisation...")
     (seed-organisations db)
     (db.util/revert-constraint db cache-id)))
 
 (defn resync-policy [db]
   (let [cache-id (get-cache-id)]
     (db.util/drop-constraint-policy db cache-id)
-    (println "Re-seeding policy...")
     (seed-policies db)
     (db.util/revert-constraint db cache-id)))
 
 (defn resync-resource [db]
   (let [cache-id (get-cache-id)]
     (db.util/drop-constraint-resource db cache-id)
-    (println "Re-seeding resource...")
     (seed-resources db)
     (db.util/revert-constraint db cache-id)))
 
 (defn resync-technology [db]
   (let [cache-id (get-cache-id)]
     (db.util/drop-constraint-technology db cache-id)
-    (println "Re-seeding technology...")
     (seed-technologies db)
     (db.util/revert-constraint db cache-id)))
 
 (defn resync-event [db]
   (let [cache-id (get-cache-id)]
     (db.util/drop-constraint-event db cache-id)
-    (println "Re-seeding event...")
     (seed-events db)
     (db.util/revert-constraint db cache-id)))
 
@@ -466,11 +455,9 @@
                        mapping-file
                        (revert-mapping mapping-file))
         json-file (get-data (if old-data? "new_countries" "countries"))]
-    (println (str "Migrating Country from " (if old-data? "old to new" "new to old")))
     (db.util/country-id-updater db cache-id mapping-file)
     (jdbc/execute! db ["TRUNCATE TABLE country"])
     (seed-countries db {:old? (not old-data?)})
-    (println "Update countries in Initiative Data")
     (db.util/update-initiative-country db mapping-file json-file)
     (db.util/revert-constraint db cache-id)))
 
@@ -491,36 +478,25 @@
              ;; project? false
              }}]
    (jdbc/with-db-transaction [tx db]
-     (println "-- Start Seeding")
      (when country?
-       (println "Seeding country...")
        (resync-country tx)
        (resync-country-group tx))
      (when currency?
-       (println "Seeding currency...")
        (seed-currencies tx))
      (when organisation?
-       (println "Seeding organisation...")
        (resync-organisation tx))
      (when language?
-       (println "Seeding language...")
        (seed-languages tx))
      (when tag?
-       (println "Seeding tag...")
        (seed-tags tx))
      (when policy?
-       (println "Seeding policy...")
        (resync-policy tx))
      (when resource?
-       (println "Seeding resource...")
        (resync-resource tx))
      (when technology?
-       (println "Seeding technology...")
        (resync-technology tx))
      (when event?
-       (println "Seeding event...")
-       (resync-event tx))
-     (println "-- Done Seeding")))
+       (resync-event tx))))
   ([]
    (let [db (-> (dev-system)
                 (ig/init [:duct.database.sql/hikaricp])
@@ -615,6 +591,4 @@
                          set)]
       (set/difference r-countries countries)))
 
-  (println "Technologies Geo Coverage")
-  (doseq [item (geo-name-mimatches "technologies")]
-    (println item)))
+  (geo-name-mimatches "technologies"))
