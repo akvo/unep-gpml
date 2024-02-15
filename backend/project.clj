@@ -53,9 +53,10 @@
                  [ring-cors "0.1.13"]
                  [ring/ring-jetty-adapter "1.8.2"]
                  [twarc "0.1.15"]]
-  :resource-paths ["resources" "target/resources"]
+  :resource-paths ["resources"]
   :prep-tasks     ["javac" "compile"]
   :jvm-opts ["-Djava.awt.headless=true"]
+  :target-path "target/%s/" ;; use different targets, on a per-profile basis
   :profiles
   {:uberjar {:aot []
              :pedantic? :abort

@@ -16,6 +16,6 @@ fi
 
 make lint test uberjar
 
-jar tf target/app.jar | grep --silent duct_hierarchy.edn || exit 1
-jar tf target/app.jar | grep --silent migrations/203-add-missing-on-delete-cascade-constraints.up.sql || exit 1
-jar tf target/app.jar | grep --silent gpml/db/action.sql || exit 1
+jar tf target/uberjar/app.jar | grep --silent duct_hierarchy.edn || exit 1
+jar tf target/uberjar/app.jar | grep --silent migrations/203-add-missing-on-delete-cascade-constraints.up.sql || exit 1
+jar tf target/uberjar/app.jar | grep --silent gpml/db/action.sql || exit 1
