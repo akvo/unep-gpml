@@ -1,5 +1,5 @@
 (ns gpml.db.organisation
-  {:ns-tracker/resource-deps ["organisation.sql"]}
+  #:ns-tracker{:resource-deps ["organisation.sql"]}
   (:require
    [gpml.util :as util]
    [gpml.util.sql :as sql-util]

@@ -1,5 +1,5 @@
 (ns gpml.db.favorite
-  {:ns-tracker/resource-deps ["favorite.sql"]}
+  #:ns-tracker{:resource-deps ["favorite.sql"]}
   (:require
    [hugsql.core :as hugsql]))
 

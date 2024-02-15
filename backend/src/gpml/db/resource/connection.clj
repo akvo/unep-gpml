@@ -1,5 +1,5 @@
 (ns gpml.db.resource.connection
-  {:ns-tracker/resource-deps ["resource/connection.sql"]}
+  #:ns-tracker{:resource-deps ["resource/connection.sql"]}
   (:require
    [gpml.util :as util]
    [gpml.util.sql :as sql-util]

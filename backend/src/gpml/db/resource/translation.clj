@@ -1,5 +1,5 @@
 (ns gpml.db.resource.translation
-  {:ns-tracker/resource-deps ["resource/translation.sql"]}
+  #:ns-tracker{:resource-deps ["resource/translation.sql"]}
   (:require
    [hugsql.core :as hugsql]))
 

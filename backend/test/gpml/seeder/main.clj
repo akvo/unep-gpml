@@ -17,11 +17,13 @@
    [gpml.db.resource :as db.resource]
    [gpml.db.tag :as db.tag]
    [gpml.db.technology :as db.technology]
-   gpml.handler.detail
    [gpml.seeder.util :as db.util]
-   gpml.util.postgresql
    [integrant.core :as ig]
    [jsonista.core :as j]))
+
+;; Load multimethods:
+(require 'gpml.handler.detail
+         'gpml.util.postgresql)
 
 (duct/load-hierarchy)
 

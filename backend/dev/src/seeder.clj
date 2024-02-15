@@ -1,7 +1,6 @@
 (ns seeder
   (:require
    [clojure.edn :as edn]
-   [clojure.java.io :as io]
    [clojure.java.jdbc :as jdbc]
    [gpml.seeder.main :as seeder]
    [hikari-cp.core :as hikari]))

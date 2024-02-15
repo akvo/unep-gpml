@@ -4,6 +4,9 @@
 
 (defn -main [& args]
   (binding [*assert* false]
+    ;; Load multimethods:
+    (require 'gpml.handler.detail
+             'gpml.util.postgresql)
     (require 'duct.core)
     (@(requiring-resolve 'duct.core/load-hierarchy))
     (let [parse-keys @(requiring-resolve 'duct.core/parse-keys)
