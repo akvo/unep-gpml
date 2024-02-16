@@ -1,8 +1,9 @@
 (ns gpml.handler.subscribe
-  (:require [gpml.handler.responses :as r]
-            [gpml.util :as util]
-            [gpml.util.email :as email]
-            [integrant.core :as ig]))
+  (:require
+   [gpml.handler.responses :as r]
+   [gpml.util :as util]
+   [gpml.util.email :as email]
+   [integrant.core :as ig]))
 
 (defmethod ig/init-key :gpml.handler.subscribe/post
   [_ {{:keys [management-dest-email]} :subscribe-settings

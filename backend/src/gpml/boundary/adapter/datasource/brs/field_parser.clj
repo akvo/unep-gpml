@@ -1,13 +1,14 @@
 (ns gpml.boundary.adapter.datasource.brs.field-parser
-  (:require [clojure.set :as set]
-            [clojure.string :as str]
-            [gpml.domain.event :as dom.event]
-            [gpml.util :as util]
-            [gpml.util.regular-expressions :as util.regex]
-            [java-time :as jt]
-            [java-time.temporal])
-  (:import [org.jsoup Jsoup]
-           [org.jsoup.nodes Entities]))
+  (:require
+   [clojure.set :as set]
+   [clojure.string :as str]
+   [gpml.domain.event :as dom.event]
+   [gpml.util :as util]
+   [gpml.util.regular-expressions :as util.regex]
+   [java-time.api :as jt])
+  (:import
+   (org.jsoup Jsoup)
+   (org.jsoup.nodes Entities)))
 
 (def ^:private projects-url-template
   "http://www.basel.int/tabid/8783/pid/%d/Default.aspx")
@@ -75,9 +76,9 @@
   [value]
   (when (seq value)
     (-> value
-        (java-time/local-date-time)
-        (java-time/zoned-date-time (jt/zone-id "UTC"))
-        (java-time/instant))))
+        (jt/local-date-time)
+        (jt/zoned-date-time (jt/zone-id "UTC"))
+        (jt/instant))))
 
 (defn- dot-net-json-date->offset-date-time
   [value]
@@ -329,10 +330,10 @@
   one and avoid putting a lot of images in memory."
   [config entity-name brs-entity]
   (-> (brs-resource->gpml-resource* config entity-name brs-entity)
-       ;; Publication resources have the tags separated in multiple
-       ;; keys. So, when parsing the fields we merge them together and
-       ;; that could generate duplicates. We make sure here we don't
-       ;; return duplicates.
+      ;; Publication resources have the tags separated in multiple
+      ;; keys. So, when parsing the fields we merge them together and
+      ;; that could generate duplicates. We make sure here we don't
+      ;; return duplicates.
       (util/update-if-not-nil :tags #(->> %
                                           (group-by (comp str/lower-case :tag))
                                           vals

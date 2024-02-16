@@ -1,19 +1,13 @@
 (ns seeder
-  (:require [clojure.edn :as edn]
-            [clojure.java.io :as io]
-            [clojure.java.jdbc :as jdbc]
-            [gpml.seeder.main :as seeder]
-            [hikari-cp.core :as hikari]))
+  (:require
+   [clojure.edn :as edn]
+   [clojure.java.jdbc :as jdbc]
+   [gpml.seeder.main :as seeder]
+   [hikari-cp.core :as hikari]))
 
 ;; Seeder main function to run from Kubernetes
 
 (defn -main [& args]
-
-  (println (System/getenv "GOOGLE_APPLICATION_CREDENTIALS"))
-
-  (println (.exists (io/file "/secrets/cloudsql/credentials.json")))
-
-  (println (System/getenv "DATABASE_URL"))
 
   (let [opts {:jdbc-url (System/getenv "DATABASE_URL")
               :register-mbeans false}

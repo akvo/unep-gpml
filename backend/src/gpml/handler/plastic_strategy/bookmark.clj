@@ -1,13 +1,14 @@
 (ns gpml.handler.plastic-strategy.bookmark
-  (:require [camel-snake-kebab.core :refer [->kebab-case]]
-            [camel-snake-kebab.extras :as cske]
-            [clojure.string :as str]
-            [gpml.domain.types :as dom.types]
-            [gpml.handler.resource.permission :as h.r.permission]
-            [gpml.handler.responses :as r]
-            [gpml.service.plastic-strategy :as srv.ps]
-            [gpml.service.plastic-strategy.bookmark :as srv.ps.bookmark]
-            [integrant.core :as ig]))
+  (:require
+   [camel-snake-kebab.core :refer [->kebab-case]]
+   [camel-snake-kebab.extras :as cske]
+   [clojure.string :as str]
+   [gpml.domain.types :as dom.types]
+   [gpml.handler.resource.permission :as h.r.permission]
+   [gpml.handler.responses :as r]
+   [gpml.service.plastic-strategy :as srv.ps]
+   [gpml.service.plastic-strategy.bookmark :as srv.ps.bookmark]
+   [integrant.core :as ig]))
 
 (def ^:private common-ps-bookmark-path-params-schema
   [:map

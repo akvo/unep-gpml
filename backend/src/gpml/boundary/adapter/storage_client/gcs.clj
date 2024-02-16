@@ -1,9 +1,11 @@
 (ns gpml.boundary.adapter.storage-client.gcs
-  (:require [clj-gcp.storage.core]
-            [gpml.boundary.port.storage-client :as port])
-  (:import [clj_gcp.storage.core GCSStorageClient]
-           [com.google.cloud.storage BlobId BlobInfo Storage Storage$SignUrlOption]
-           [java.util.concurrent TimeUnit]))
+  (:require
+   [clj-gcp.storage.core]
+   [gpml.boundary.port.storage-client :as port])
+  (:import
+   (clj_gcp.storage.core GCSStorageClient)
+   (com.google.cloud.storage BlobId BlobInfo Storage Storage$SignUrlOption)
+   (java.util.concurrent TimeUnit)))
 
 (defn- delete-blob
   [^Storage storage bucket-name blob-name]
@@ -21,7 +23,7 @@
                         (into-array [(Storage$SignUrlOption/withV4Signature)]))]
       {:success? true
        :url url})
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))

@@ -1,45 +1,48 @@
 (ns gpml.handler.detail
-  (:require [clojure.java.jdbc :as jdbc]
-            [clojure.set :as set]
-            [clojure.string :as str]
-            [duct.logger :refer [log]]
-            [gpml.db.action :as db.action]
-            [gpml.db.action-detail :as db.action-detail]
-            [gpml.db.country]
-            [gpml.db.country-group :as db.country-group]
-            [gpml.db.detail :as db.detail]
-            [gpml.db.initiative :as db.initiative]
-            [gpml.db.language :as db.language]
-            [gpml.db.organisation :as db.organisation]
-            [gpml.db.policy :as db.policy]
-            [gpml.db.project :as db.project]
-            [gpml.db.rbac-util :as db.rbac-util]
-            [gpml.db.resource.connection :as db.resource.connection]
-            [gpml.db.resource.detail :as db.resource.detail]
-            [gpml.db.resource.tag :as db.resource.tag]
-            [gpml.domain.file :as dom.file]
-            [gpml.domain.initiative :as dom.initiative]
-            [gpml.domain.resource :as dom.resource]
-            [gpml.domain.types :as dom.types]
-            [gpml.handler.initiative :as handler.initiative]
-            [gpml.handler.organisation :as handler.org]
-            [gpml.handler.resource.geo-coverage :as handler.geo]
-            [gpml.handler.resource.permission :as h.r.permission]
-            [gpml.handler.resource.related-content :as handler.resource.related-content]
-            [gpml.handler.resource.tag :as handler.resource.tag]
-            [gpml.handler.responses :as r]
-            [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
-            [gpml.service.association :as srv.association]
-            [gpml.service.chat :as srv.chat]
-            [gpml.service.file :as srv.file]
-            [gpml.service.permissions :as srv.permissions]
-            [gpml.util :as util]
-            [gpml.util.malli :as util.malli]
-            [gpml.util.postgresql :as pg-util]
-            [gpml.util.thread-transactions :as tht]
-            [integrant.core :as ig]
-            [medley.core :as medley])
-  (:import [java.sql SQLException]))
+  (:require
+   [clojure.java.io :as io]
+   [clojure.java.jdbc :as jdbc]
+   [clojure.set :as set]
+   [clojure.string :as str]
+   [duct.logger :refer [log]]
+   [gpml.db.action :as db.action]
+   [gpml.db.action-detail :as db.action-detail]
+   [gpml.db.country]
+   [gpml.db.country-group :as db.country-group]
+   [gpml.db.detail :as db.detail]
+   [gpml.db.initiative :as db.initiative]
+   [gpml.db.language :as db.language]
+   [gpml.db.organisation :as db.organisation]
+   [gpml.db.policy :as db.policy]
+   [gpml.db.project :as db.project]
+   [gpml.db.rbac-util :as db.rbac-util]
+   [gpml.db.resource.connection :as db.resource.connection]
+   [gpml.db.resource.detail :as db.resource.detail]
+   [gpml.db.resource.tag :as db.resource.tag]
+   [gpml.domain.file :as dom.file]
+   [gpml.domain.initiative :as dom.initiative]
+   [gpml.domain.resource :as dom.resource]
+   [gpml.domain.types :as dom.types]
+   [gpml.handler.initiative :as handler.initiative]
+   [gpml.handler.organisation :as handler.org]
+   [gpml.handler.resource.geo-coverage :as handler.geo]
+   [gpml.handler.resource.permission :as h.r.permission]
+   [gpml.handler.resource.related-content :as handler.resource.related-content]
+   [gpml.handler.resource.tag :as handler.resource.tag]
+   [gpml.handler.responses :as r]
+   [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
+   [gpml.service.association :as srv.association]
+   [gpml.service.chat :as srv.chat]
+   [gpml.service.file :as srv.file]
+   [gpml.service.permissions :as srv.permissions]
+   [gpml.util :as util]
+   [gpml.util.malli :as util.malli]
+   [gpml.util.postgresql :as pg-util]
+   [gpml.util.thread-transactions :as tht]
+   [integrant.core :as ig]
+   [medley.core :as medley])
+  (:import
+   (java.sql SQLException)))
 
 ;;========================================START OF DEPRECATED CODE==============================================================
 ;; FIXME: The code below doesn't seem to be used anyhwere anymore and
@@ -437,7 +440,7 @@
                             :resource (db.resource.detail/get-resource (:spec db)
                                                                        {:table-name resource-type
                                                                         :id resource-id})}
-                           (catch Throwable t
+                           (catch Exception t
                              {:successs? false
                               :reason :exception
                               :error-details {:msg (ex-message t)}}))]
@@ -610,7 +613,7 @@
                 (r/not-found result)
                 (r/server-error result))
               (r/ok (:resource-details result))))))
-      (catch Throwable t
+      (catch Exception t
         (log logger :error ::failed-to-get-resource-details {:exception-message (.getMessage t)
                                                              :context-data {:path-params path
                                                                             :user user}})
@@ -964,7 +967,7 @@
             (map
              vector
              columns
-             (map extract-column-id (string/split (slurp "dev/resources/questionnarie-columns.csv") #";")))))
+             (map extract-column-id (string/split (slurp (io/resource "questionnarie-columns.csv")) #";")))))
 
     (defn clean-up [node]
       (->

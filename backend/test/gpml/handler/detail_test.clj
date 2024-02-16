@@ -1,18 +1,19 @@
 (ns gpml.handler.detail-test
-  (:require [clojure.java.io :as io]
-            [clojure.test :refer [deftest is testing use-fixtures]]
-            [gpml.db.country :as db.country]
-            [gpml.db.event :as db.event]
-            [gpml.db.initiative :as db.initiative]
-            [gpml.db.policy :as db.policy]
-            [gpml.db.technology :as db.technology]
-            [gpml.fixtures :as fixtures]
-            [gpml.handler.detail :as detail]
-            [gpml.seeder.main :as seeder]
-            [gpml.service.permissions :as srv.permissions]
-            [gpml.test-util :as test-util]
-            [integrant.core :as ig]
-            [ring.mock.request :as mock]))
+  (:require
+   [clojure.java.io :as io]
+   [clojure.test :refer [deftest is testing use-fixtures]]
+   [gpml.db.country :as db.country]
+   [gpml.db.event :as db.event]
+   [gpml.db.initiative :as db.initiative]
+   [gpml.db.policy :as db.policy]
+   [gpml.db.technology :as db.technology]
+   [gpml.fixtures :as fixtures]
+   [gpml.handler.detail :as detail]
+   [gpml.seeder.main :as seeder]
+   [gpml.service.permissions :as srv.permissions]
+   [gpml.test-util :as test-util]
+   [integrant.core :as ig]
+   [ring.mock.request :as mock]))
 
 (defonce ^:private default-lang-iso-code "en")
 

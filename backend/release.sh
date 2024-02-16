@@ -4,23 +4,26 @@
 set -euo pipefail
 
 find ./resources/migrations/ -name '*.up.sql' | \
-    awk -F '/' '{print substr($4,1,3)}' | \
-    sort --numeric-sort | \
-    uniq --repeated > /tmp/duplicated
+  awk -F '/' '{print substr($4,1,3)}' | \
+  sort --numeric-sort | \
+  uniq --repeated > /tmp/duplicated
 
 if [[ -s /tmp/duplicated  ]]; then
-    echo "Error: Duplicated migration prefix"
-    cat /tmp/duplicated
-    exit 1
+  echo "Error: Duplicated migration prefix"
+  cat /tmp/duplicated
+  exit 1
 fi
 
-# The only reason to build the uberjar is to get the duct_hierarhcy.edn file
-# More info: https://github.com/duct-framework/duct/issues/102#issuecomment-555545655
+# `make` isn't available in the Docker images atm - disable for now:
+# make lint test uberjar
 
-lein do eastwood, eftest, uberjar
+lein with-profile -dev,+test,+seeder,+clj-kondo clj-kondo --copy-configs --dependencies --parallel --lint '$classpath'
+lein with-profile -dev,+test,+seeder,+clj-kondo clj-kondo
+lein with-profile -user,-dev,+test,+seeder,+eastwood eastwood
+lein with-profile -user,-dev,+test,+seeder,+eftest eftest
+lein clean
+lein with-profile uberjar uberjar
 
-jar xf target/uberjar.jar duct_hierarchy.edn
-
-lein with-profile metajar metajar
-
-jar uf target/app.jar duct_hierarchy.edn
+jar tf target/uberjar/app.jar | grep --silent duct_hierarchy.edn || exit 1
+jar tf target/uberjar/app.jar | grep --silent migrations/203-add-missing-on-delete-cascade-constraints.up.sql || exit 1
+jar tf target/uberjar/app.jar | grep --silent gpml/db/action.sql || exit 1

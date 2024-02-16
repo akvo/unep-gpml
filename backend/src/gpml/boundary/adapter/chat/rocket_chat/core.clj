@@ -15,12 +15,13 @@
 
   [1] - https://www.mongodb.com/docs/manual/reference/operator/query/
   [2] - https://developer.rocket.chat/reference/api/rest-api#query-parameters"
-  (:require [camel-snake-kebab.core :refer [->camelCaseString ->kebab-case]]
-            [camel-snake-kebab.extras :as cske]
-            [duct.logger :refer [log]]
-            [gpml.boundary.port.chat :as port]
-            [gpml.util.http-client :as http-client]
-            [gpml.util.json :as json]))
+  (:require
+   [camel-snake-kebab.core :refer [->camelCaseString ->kebab-case]]
+   [camel-snake-kebab.extras :as cske]
+   [duct.logger :refer [log]]
+   [gpml.boundary.port.chat :as port]
+   [gpml.util.http-client :as http-client]
+   [gpml.util.json :as json]))
 
 (defn- get-auth-headers
   [api-key api-user-id]
@@ -71,7 +72,7 @@
         {:success? false
          :reason :failed-to-get-user-info
          :error-details body}))
-    (catch Throwable t
+    (catch Exception t
       (log logger :error :failed-to-get-user-info {:exception-message (ex-message t)
                                                    :stack-trace (map str (.getStackTrace t))})
       {:success? false
@@ -95,7 +96,7 @@
         {:success? false
          :reason :failed-to-create-user-account
          :error-details body}))
-    (catch Throwable t
+    (catch Exception t
       (log logger :error :failed-to-create-user-account {:exception-message (ex-message t)
                                                          :stack-trace (map str (.getStackTrace t))})
       {:success? false
@@ -121,7 +122,7 @@
         {:success? false
          :reason :failed-to-update-user-account
          :error-details body}))
-    (catch Throwable t
+    (catch Exception t
       (log logger :error :failed-to-update-user-account {:exception-message (ex-message t)
                                                          :stack-trace (map str (.getStackTrace t))})
       {:success? false
@@ -147,7 +148,7 @@
         {:success? false
          :reason :failed-to-delete-user-account
          :error-details body}))
-    (catch Throwable t
+    (catch Exception t
       (log logger :error :failed-to-delete-user-account {:exception-message (ex-message t)
                                                          :stack-trace (map str (.getStackTrace t))})
       {:success? false
@@ -178,7 +179,7 @@
         {:success? false
          :reason :failed-to-set-user-account-active-status
          :error-details body}))
-    (catch Throwable t
+    (catch Exception t
       (log logger :error :failed-to-set-user-account-active-status {:exception-message (ex-message t)
                                                                     :stack-trace (map str (.getStackTrace t))})
       {:success? false
@@ -202,7 +203,7 @@
         {:success? false
          :reason :failed-to-get-public-channels
          :error-details body}))
-    (catch Throwable t
+    (catch Exception t
       (log logger :error :failed-to-get-public-channels {:exception-message (ex-message t)
                                                          :stack-trace (map str (.getStackTrace t))})
       {:success? false
@@ -226,7 +227,7 @@
         {:success? false
          :reason :failed-to-get-public-channels
          :error-details body}))
-    (catch Throwable t
+    (catch Exception t
       (log logger :error :failed-to-get-public-channels {:exception-message (ex-message t)
                                                          :stack-trace (map str (.getStackTrace t))})
       {:success? false
@@ -271,7 +272,7 @@
         {:success? false
          :reason :failed-to-get-public-channels
          :error-details body}))
-    (catch Throwable t
+    (catch Exception t
       (log logger :error :failed-to-get-public-channels {:exception-message (ex-message t)
                                                          :stack-trace (map str (.getStackTrace t))})
       {:success? false
@@ -305,7 +306,7 @@
         {:success? false
          :reason :failed-to-get-private-channels
          :error-details body}))
-    (catch Throwable t
+    (catch Exception t
       (log logger :error :failed-to-get-private-channels {:exception-message (ex-message t)
                                                           :stack-trace (map str (.getStackTrace t))})
       {:success? false
@@ -359,7 +360,7 @@
                 {:success? false
                  :reason :failed-to-get-user-public-channels
                  :error-details get-public-channels-result}))))))
-    (catch Throwable t
+    (catch Exception t
       (log logger :error :failed-to-get-all-channels {:exception-message (ex-message t)
                                                       :stack-trace (map str (.getStackTrace t))})
       {:success? false
@@ -419,7 +420,7 @@
         {:success? false
          :reason :failed-to-remove-user-from-channel
          :error-details body}))
-    (catch Throwable t
+    (catch Exception t
       (log logger :error :failed-to-remove-user-from-channel {:exception-message (ex-message t)
                                                               :stack-trace (map str (.getStackTrace t))})
       {:success? false
@@ -441,7 +442,7 @@
         {:success? false
          :reason :failed-to-add-user-to-private-channel
          :error-details body}))
-    (catch Throwable t
+    (catch Exception t
       (log logger :error :failed-to-add-user-to-private-channel {:exception-message (ex-message t)
                                                                  :stack-trace (map str (.getStackTrace t))})
       {:success? false
@@ -463,7 +464,7 @@
         {:success? false
          :reason :failed-to-add-user-to-public-channel
          :error-details body}))
-    (catch Throwable t
+    (catch Exception t
       (log logger :error :failed-to-add-user-to-public-channel {:exception-message (ex-message t)
                                                                 :stack-trace (map str (.getStackTrace t))})
       {:success? false
@@ -495,7 +496,7 @@
         {:success? false
          :reason :failed-to-create-private-channel
          :error-details body}))
-    (catch Throwable t
+    (catch Exception t
       (log logger :error :failed-to-create-private-channel {:exception-message (ex-message t)
                                                             :stack-trace (map str (.getStackTrace t))})
       {:success? false
@@ -527,7 +528,7 @@
         {:success? false
          :reason :failed-to-create-channel-channel
          :error-details body}))
-    (catch Throwable t
+    (catch Exception t
       (log logger :error :failed-to-create-channel-channel {:exception-message (ex-message t)
                                                             :stack-trace (map str (.getStackTrace t))})
       {:success? false
@@ -549,7 +550,7 @@
         {:success? false
          :reason :failed-to-delete-private-channel
          :error-details body}))
-    (catch Throwable t
+    (catch Exception t
       (log logger :error :failed-to-delete-private-channel {:exception-message (ex-message t)
                                                             :stack-trace (map str (.getStackTrace t))})
       {:success? false
@@ -571,7 +572,7 @@
         {:success? false
          :reason :failed-to-delete-public-channel
          :error-details body}))
-    (catch Throwable t
+    (catch Exception t
       (log logger :error :failed-to-delete-public-channel {:exception-message (ex-message t)
                                                            :stack-trace (map str (.getStackTrace t))})
       {:success? false
@@ -597,7 +598,7 @@
         {:success? false
          :reason :failed-to-set-private-channel-custom-fields
          :error-details body}))
-    (catch Throwable t
+    (catch Exception t
       (log logger :error :failed-to-set-private-channel-custom-fields {:exception-message (ex-message t)
                                                                        :stack-trace (map str (.getStackTrace t))})
       {:success? false
@@ -623,7 +624,7 @@
         {:success? false
          :reason :failed-to-set-public-channel-custom-fields
          :error-details body}))
-    (catch Throwable t
+    (catch Exception t
       (log logger :error :failed-to-set-public-channel-custom-fields {:exception-message (ex-message t)
                                                                       :stack-trace (map str (.getStackTrace t))})
       {:success? false
@@ -646,7 +647,7 @@
         {:success? false
          :reason :failed-to-get-channel-discussions
          :error-details body}))
-    (catch Throwable t
+    (catch Exception t
       (log logger :error :failed-to-get-channel-discussions {:exception-message (ex-message t)
                                                              :stack-trace (map str (.getStackTrace t))})
       {:success? false

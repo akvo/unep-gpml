@@ -1,20 +1,22 @@
 (ns gpml.handler.project
-  (:require [clojure.java.jdbc :as jdbc]
-            [clojure.string :as str]
-            [duct.logger :refer [log]]
-            [gpml.db.project :as db.prj]
-            [gpml.domain.project :as dom.prj]
-            [gpml.domain.types :as dom.types]
-            [gpml.handler.resource.geo-coverage :as handler.geo-coverage]
-            [gpml.handler.resource.permission :as h.r.permission]
-            [gpml.handler.responses :as r]
-            [gpml.handler.util :as handler.util]
-            [gpml.service.permissions :as srv.permissions]
-            [gpml.util.malli :as util.malli]
-            [gpml.util.postgresql :as pg-util]
-            [integrant.core :as ig]
-            [malli.util :as mu])
-  (:import [java.sql SQLException]))
+  (:require
+   [clojure.java.jdbc :as jdbc]
+   [clojure.string :as str]
+   [duct.logger :refer [log]]
+   [gpml.db.project :as db.prj]
+   [gpml.domain.project :as dom.prj]
+   [gpml.domain.types :as dom.types]
+   [gpml.handler.resource.geo-coverage :as handler.geo-coverage]
+   [gpml.handler.resource.permission :as h.r.permission]
+   [gpml.handler.responses :as r]
+   [gpml.handler.util :as handler.util]
+   [gpml.service.permissions :as srv.permissions]
+   [gpml.util.malli :as util.malli]
+   [gpml.util.postgresql :as pg-util]
+   [integrant.core :as ig]
+   [malli.util :as mu])
+  (:import
+   [java.sql SQLException]))
 
 (def ^:private api-opts-schema
   [:map

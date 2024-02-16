@@ -1,22 +1,23 @@
 (ns gpml.handler.main
-  (:require [clojure.string :as str]
-            [duct.logger :refer [log]]
-            [iapetos.collector.ring :as prometheus-ring]
-            [integrant.core :as ig]
-            [malli.util :as mu]
-            [muuntaja.core :as m]
-            [reitit.coercion.malli]
-            [reitit.ring :as ring]
-            [reitit.ring.coercion :as coercion]
-            [reitit.ring.middleware.exception :as exception]
-            [reitit.ring.middleware.multipart :as multipart]
-            [reitit.ring.middleware.muuntaja :as muuntaja]
-            [reitit.ring.middleware.parameters :as parameters]
-            [reitit.swagger :as swagger]
-            [reitit.swagger-ui :as swagger-ui]
-            [ring.middleware.cors :as cors]
-            [ring.util.response :as resp]
-            [taoensso.timbre :as timbre]))
+  (:require
+   [clojure.string :as str]
+   [duct.logger :refer [log]]
+   [iapetos.collector.ring :as prometheus-ring]
+   [integrant.core :as ig]
+   [malli.util :as mu]
+   [muuntaja.core :as m]
+   [reitit.coercion.malli]
+   [reitit.ring :as ring]
+   [reitit.ring.coercion :as coercion]
+   [reitit.ring.middleware.exception :as exception]
+   [reitit.ring.middleware.multipart :as multipart]
+   [reitit.ring.middleware.muuntaja :as muuntaja]
+   [reitit.ring.middleware.parameters :as parameters]
+   [reitit.swagger :as swagger]
+   [reitit.swagger-ui :as swagger-ui]
+   [ring.middleware.cors :as cors]
+   [ring.util.response :as resp]
+   [taoensso.timbre :as timbre]))
 
 (defn- root
   [_]
@@ -62,7 +63,7 @@
                                                   (when (>= (:status response 500) 500)
                                                     (timbre/error e))
                                                   response)
-                                                (catch Throwable t
+                                                (catch Exception t
                                                   (timbre/error t "Error handling error")
                                                   (throw t))))}))
                          ;; decoding request body

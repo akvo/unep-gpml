@@ -1,10 +1,13 @@
 (ns gpml.util.sql
-  (:require [clojure.string :as str]
-            [hugsql.parameters :refer [identifier-param-quote]]
-            [java-time :as jt]
-            [java-time.pre-java8 :as jt-pre-j8]
-            [jsonista.core :as json])
-  (:import org.postgresql.util.PGobject))
+  (:require
+   [clojure.string :as str]
+   [gpml.util.malli :refer [check!]]
+   [hugsql.parameters :refer [identifier-param-quote]]
+   [java-time.api :as jt]
+   [java-time.pre-java8 :as jt-pre-j8]
+   [jsonista.core :as json])
+  (:import
+   (org.postgresql.util PGobject)))
 
 (defn is-jsonb [n]
   (contains? #{:q1 :q2 :q3 :q4
@@ -118,17 +121,17 @@
               value))))))
 
 (defn sql-timestamp->instant
-  "Convert `java.sql.timestamp` instance into `java.time.instant` one
+  "Convert `java.sql.Timestamp` instance into `java.time.Instant` one
    Return nil if there is nothing to convert."
-  [sql-timestamp]
+  [^java.sql.Timestamp sql-timestamp]
   (when sql-timestamp
     (.toInstant sql-timestamp)))
 
 (defn select-values
   "Works very much like select-keys but returns just the values."
   [emap keyseq]
-  {:pre [(coll? keyseq)
-         (map? emap)]}
+  {:pre [(check! coll? keyseq
+                 map? emap)]}
   (map emap keyseq))
 
 (defn get-insert-values
@@ -140,8 +143,8 @@
   [{:a 1 :b 2} {:b 9 :a 10} {:a 0 :b 0}])
   should always return '((1 2) (9 10) (0 0))"
   [insert-keys coll]
-  {:pre [(coll? insert-keys)
-         (every? map? coll)]}
+  {:pre [(check! coll?  insert-keys
+                 [:sequential :map] coll)]}
   (map #(select-values % insert-keys) coll))
 
 (defn entity-col->persistence-entity-col
@@ -171,8 +174,8 @@
   "Convert keyword `kw` into a Postgresql `enum-type` enum compatible object.
   `enum-type` is a string holding the name of the Postgresql enum type."
   [kw enum-type]
-  {:pre [(and (keyword? kw)
-              (string? enum-type))]}
+  {:pre [(check! keyword? kw
+                 string? enum-type)]}
   (doto (PGobject.)
     (.setType enum-type)
     (.setValue (name kw))))
@@ -180,7 +183,7 @@
 (defn instant->sql-timestamp
   "Convert clojure.java-time/Instant `instant` into a SQL Timestamp"
   [instant]
-  {:pre [(jt/instant? instant)]}
+  {:pre [(check! [:fn jt/instant?] instant)]}
   (jt-pre-j8/sql-timestamp instant "UTC"))
 
 (defn json->pg-jsonb
@@ -189,7 +192,7 @@
   into a PGObject and set the \"jsonb\" type on it. See
   https://jdbc.postgresql.org/documentation/publicapi/org/postgresql/util/PGobject.html"
   [json]
-  {:pre [(string? json)]}
+  {:pre [(check! string? json)]}
   (doto (PGobject.)
     (.setType "jsonb")
     (.setValue json)))
@@ -197,8 +200,7 @@
 (defn coll->pg-jsonb
   "Convert coll `c` into a Postgresql jsonb compatible object."
   [c]
-  {:pre [(or (coll? c)
-             (nil? c))]}
+  {:pre [(check! [:maybe coll?] c)]}
   (-> c
       json/write-value-as-string
       json->pg-jsonb))
