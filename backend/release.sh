@@ -14,7 +14,15 @@ if [[ -s /tmp/duplicated  ]]; then
   exit 1
 fi
 
-make lint test uberjar
+# `make` isn't available in the Docker images atm - disable for now:
+# make lint test uberjar
+
+lein with-profile -dev,+test,+seeder,+clj-kondo clj-kondo --copy-configs --dependencies --parallel --lint '$classpath'
+lein with-profile -dev,+test,+seeder,+clj-kondo clj-kondo
+lein with-profile -user,-dev,+test,+seeder,+eastwood eastwood
+lein with-profile -user,-dev,+test,+seeder,+eftest eftest
+lein clean
+lein with-profile uberjar uberjar
 
 jar tf target/uberjar/app.jar | grep --silent duct_hierarchy.edn || exit 1
 jar tf target/uberjar/app.jar | grep --silent migrations/203-add-missing-on-delete-cascade-constraints.up.sql || exit 1
