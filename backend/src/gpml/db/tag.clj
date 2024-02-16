@@ -129,4 +129,4 @@
   (require 'dev)
 
   (let [db (dev/db-conn)]
-    (mapv #(:tag %) (gpml.db.tag/tag-by-category db {:category "event%"}))))
+    (mapv :tag (gpml.db.tag/tag-by-category db {:category "event%"}))))
