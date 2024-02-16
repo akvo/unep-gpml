@@ -1,46 +1,19 @@
-{:skip-comments
- true
-
- :config-in-ns
- {dev
-  {:linters
-   {:refer-all
-    {:exclude #{clojure.repl}}
-
-    :unsorted-required-namespaces
-    {:level :off}
-
-    :unused-referred-var
-    {:level :off}
-
-    :unused-namespace
-    {:level :off}}}}
-
- :linters
- {:unsorted-required-namespaces
-  {:level :warning}
-
-  :refer-all
-  {:exclude #{clojure.test}}
-
-  :unresolved-symbol
-  {:exclude [(twarc.core/defjob)
-             (gpml.handler.responses/http-statuses)
-             (gpml.scheduler.leap-api-policy-importer/handle-leap-api-policy-import-job)
-             (gpml.scheduler.brs-api-importer/handle-import)]}
-
-  :unresolved-var
-  {:exclude [gpml.handler.responses
-             java-time.pre-java8/sql-timestamp]}
-
-  :single-key-in
-  {:level :warning}
-
-  :used-underscored-binding
-  {:level :warning}
-
-  :redundant-fn-wrapper
-  {:level :warning}
-
-  :missing-docstring
-  {:level :info}}}
+{:config-in-ns {dev {:linters {:refer-all {:exclude #{clojure.repl}}
+                               :unsorted-required-namespaces {:level :off}
+                               :unused-referred-var {:level :off}
+                               :unused-namespace {:level :off}}}}
+ :config-in-comment {:linters {:unresolved-var       {:level :off}
+                               :unresolved-namespace {:level :off}}}
+ :linters {:unsorted-required-namespaces {:level :warning}
+           :refer-all {:exclude #{clojure.test}}
+           :unresolved-symbol {:exclude [(twarc.core/defjob)
+                                         (gpml.handler.responses/http-statuses)
+                                         (gpml.scheduler.leap-api-policy-importer/handle-leap-api-policy-import-job)
+                                         (gpml.scheduler.brs-api-importer/handle-import)]}
+           :unresolved-var {:exclude [gpml.handler.responses
+                                      gpml.db.organisation/organisation-by-name
+                                      gpml.db.organisation/organisation-by-names
+                                      java-time.pre-java8/sql-timestamp]}
+           :single-key-in {:level :warning}
+           :used-underscored-binding {:level :warning}
+           :redundant-fn-wrapper {:level :warning}}}
