@@ -1,11 +1,13 @@
 (ns gpml.domain.file
-  (:require [clojure.string :as str]
-            [gpml.domain.miscellaneous :as dom.misc]
-            [gpml.domain.types :as dom.types]
-            [gpml.util :as util]
-            [malli.core :as m]
-            [malli.transform :as mt])
-  (:import [java.io File]))
+  (:require
+   [clojure.string :as str]
+   [gpml.domain.miscellaneous :as dom.misc]
+   [gpml.domain.types :as dom.types]
+   [gpml.util :as util]
+   [malli.core :as m]
+   [malli.transform :as mt])
+  (:import
+   (java.io File)))
 
 (def ^:const object-key-pattern
   "Pattern to define the object key of the file in the object storage.

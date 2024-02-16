@@ -1,8 +1,9 @@
 (ns gpml.db.organisation
-  {:ns-tracker/resource-deps ["organisation.sql"]}
-  (:require [gpml.util :as util]
-            [gpml.util.sql :as sql-util]
-            [hugsql.core :as hugsql]))
+  #:ns-tracker{:resource-deps ["organisation.sql"]}
+  (:require
+   [gpml.util :as util]
+   [gpml.util.sql :as sql-util]
+   [hugsql.core :as hugsql]))
 
 (declare update-organisation
          organisation-by-id

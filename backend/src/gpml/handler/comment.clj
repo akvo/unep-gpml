@@ -1,18 +1,18 @@
 (ns gpml.handler.comment
-  (:require [duct.logger :refer [log]]
-            [gpml.db.comment :as db.comment]
-            [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.db.stakeholder-association :as db.stakeholder-association]
-            [gpml.domain.types :as dom.types]
-            [gpml.handler.resource.permission :as h.r.permission]
-            [gpml.handler.responses :as r]
-            [gpml.service.permissions :as srv.permissions]
-            [gpml.util :as util]
-            [gpml.util.email :as email]
-            [integrant.core :as ig]
-            [java-time :as time]
-            [java-time.pre-java8 :as time-pre-j8]
-            [java-time.temporal]))
+  (:require
+   [duct.logger :refer [log]]
+   [gpml.db.comment :as db.comment]
+   [gpml.db.stakeholder :as db.stakeholder]
+   [gpml.db.stakeholder-association :as db.stakeholder-association]
+   [gpml.domain.types :as dom.types]
+   [gpml.handler.resource.permission :as h.r.permission]
+   [gpml.handler.responses :as r]
+   [gpml.service.permissions :as srv.permissions]
+   [gpml.util :as util]
+   [gpml.util.email :as email]
+   [integrant.core :as ig]
+   [java-time.api :as time]
+   [java-time.pre-java8 :as time-pre-j8]))
 
 (def id-param
   [:id
@@ -189,7 +189,7 @@
           (when (seq result)
             (future (send-new-comment-created-notification config comment)))
           (r/ok {:comment result})))
-      (catch Throwable t
+      (catch Exception t
         (let [log-data {:exception-message (ex-message t)
                         :exception-data (ex-data t)
                         :context-data (get-in req [:parameters :body])}]
@@ -207,7 +207,7 @@
       (r/ok {:comments (-> (map comment->api-comment comments)
                            (util/build-hierarchy {} :parent_id)
                            :children)}))
-    (catch Throwable t
+    (catch Exception t
       (let [log-data {:exception-message (ex-message t)
                       :exception-data (ex-data t)
                       :context-data (get-in req [:parameters :query])}]
@@ -229,7 +229,7 @@
         (r/forbidden {:message "Unauthorized"})
         (let [comment (api-comment->comment body-params)]
           (r/ok {:updated-comments (db.comment/update-comment (:spec db) comment)}))))
-    (catch Throwable t
+    (catch Exception t
       (let [log-data {:exception-message (ex-message t)
                       :exception-data (ex-data t)
                       :context-data (get-in req [:parameters :body])}]
@@ -249,7 +249,7 @@
                   (h.r.permission/super-admin? config (:id user)))
         (r/forbidden {:message "Unauthorized"})
         (r/ok {:deleted-comments (db.comment/delete-comment (:spec db) {:id id})})))
-    (catch Throwable t
+    (catch Exception t
       (let [log-data {:exception-message (ex-message t)
                       :exception-data (ex-data t)
                       :context-data {:comment-id (get-in req [:parameters :path])

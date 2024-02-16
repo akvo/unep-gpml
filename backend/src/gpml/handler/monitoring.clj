@@ -1,45 +1,43 @@
 (ns gpml.handler.monitoring
-  (:require [hugsql.adapter :as adapter]
-            [hugsql.adapter.clojure-java-jdbc :as adp]
-            [hugsql.core :as hugsql]
-            [iapetos.collector.exceptions :as ex]
-            [iapetos.collector.jvm :as jvm]
-            [iapetos.collector.ring :as ring]
-            [iapetos.core :as prometheus]
-            [iapetos.registry :as registry]
-            [integrant.core :as ig]
-            [taoensso.timbre :as timbre]
-            [taoensso.timbre.appenders.3rd-party.sentry :as sentry])
-  (:import [com.zaxxer.hikari HikariDataSource]
-           [com.zaxxer.hikari.metrics.prometheus PrometheusMetricsTrackerFactory]
-           [io.prometheus.client.jetty JettyStatisticsCollector QueuedThreadPoolStatisticsCollector]
-           [org.eclipse.jetty.server Server]
-           [org.eclipse.jetty.server.handler StatisticsHandler]))
+  (:require
+   [hugsql.adapter :as adapter]
+   [hugsql.adapter.clojure-java-jdbc :as adp]
+   [hugsql.core :as hugsql]
+   [iapetos.collector.exceptions :as ex]
+   [iapetos.collector.jvm :as jvm]
+   [iapetos.collector.ring :as ring]
+   [iapetos.core :as prometheus]
+   [iapetos.registry :as registry]
+   [integrant.core :as ig]
+   [taoensso.timbre :as timbre]
+   [taoensso.timbre.appenders.3rd-party.sentry :as sentry])
+  (:import
+   (com.zaxxer.hikari HikariDataSource)
+   (com.zaxxer.hikari.metrics.prometheus PrometheusMetricsTrackerFactory)
+   (io.prometheus.client.jetty JettyStatisticsCollector QueuedThreadPoolStatisticsCollector)
+   (org.eclipse.jetty.server Server)
+   (org.eclipse.jetty.server.handler StatisticsHandler)))
 
 (defmethod ig/init-key ::collector [_ _]
-  (->
-   (prometheus/collector-registry)
-   (jvm/initialize)
-   (ring/initialize)
-   (iapetos.core/register
-    (iapetos.core/histogram
-     :sql/run-duration
-     {:description "SQL query duration"
-      :labels [:query]})
-    (iapetos.core/counter
-     :sql/run-total
-     {:description "the total number of finished runs of the observed sql query."
-      :labels [:query :result]})
-    (iapetos.collector.exceptions/exception-counter
-     :sql/exceptions-total
-     {:description "the total number and type of exceptions for the observed sql query."
-      :labels [:query]}))))
+  (-> (prometheus/collector-registry)
+      (jvm/initialize)
+      (ring/initialize)
+      (iapetos.core/register (iapetos.core/histogram :sql/run-duration
+                                                     {:description "SQL query duration"
+                                                      :labels [:query]})
+                             (iapetos.core/counter :sql/run-total
+                                                   {:description "the total number of finished runs of the observed sql query."
+                                                    :labels [:query :result]})
+                             (iapetos.collector.exceptions/exception-counter :sql/exceptions-total
+                                                                             {:description "the total number and type of exceptions for the observed sql query."
+                                                                              :labels [:query]}))))
 
 (defmethod ig/init-key ::middleware [_ {:keys [collector]}]
   #(-> %
        (ring/wrap-metrics collector)))
 
 (defmacro metrics
+  {:style/indent 2}
   [metrics-collector options & body]
   `(if ~metrics-collector
      (let [labels# {:query (:fn-name ~options) :result "success"}
@@ -56,11 +54,11 @@
   adapter/HugsqlAdapter
   (execute [_ db sqlvec options]
     (metrics metrics-collector options
-             (adapter/execute jdbc-adapter db sqlvec options)))
+      (adapter/execute jdbc-adapter db sqlvec options)))
 
   (query [_ db sqlvec options]
     (metrics metrics-collector options
-             (adapter/query jdbc-adapter db sqlvec options)))
+      (adapter/query jdbc-adapter db sqlvec options)))
 
   (result-one [_ result options]
     (adapter/result-one jdbc-adapter result options))
@@ -79,9 +77,9 @@
 
 (defmethod ig/init-key ::hikaricp
   [_ {:keys [hikari-cp metrics-collector]}]
-  (let [datasource ^HikariDataSource (get-in hikari-cp [:spec :datasource])]
+  (let [^HikariDataSource datasource (get-in hikari-cp [:spec :datasource])]
     (-> datasource
-        (.unwrap javax.sql.DataSource)
+        ^HikariDataSource (.unwrap javax.sql.DataSource)
         (.setMetricsTrackerFactory
          (PrometheusMetricsTrackerFactory. (registry/raw metrics-collector))))
     (hugsql/set-adapter!
@@ -92,8 +90,7 @@
 
 (defn configure-stats [^Server jetty-server collector]
   (let [raw-collector (registry/raw collector)
-        stats-handler (doto
-                       (StatisticsHandler.)
+        stats-handler (doto (StatisticsHandler.)
                         (.setHandler (.getHandler jetty-server)))]
     (.setHandler jetty-server stats-handler)
     (.register (JettyStatisticsCollector. stats-handler) raw-collector)
@@ -113,8 +110,3 @@
                                :event-fn (fn [event]
                                            (assoc event :server_name host))})
       (assoc :min-level :error)))
-
-(comment
-
-  (println
-   (slurp "http://localhost:3000/metrics")))

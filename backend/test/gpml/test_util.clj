@@ -1,8 +1,9 @@
 (ns gpml.test-util
-  (:require [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.fixtures :as fixtures]
-            [gpml.service.permissions :as srv.permissions]
-            [integrant.core :as ig]))
+  (:require
+   [gpml.db.stakeholder :as db.stakeholder]
+   [gpml.fixtures :as fixtures]
+   [gpml.service.permissions :as srv.permissions]
+   [integrant.core :as ig]))
 
 (defn db-test-conn
   []

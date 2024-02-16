@@ -1,7 +1,8 @@
 (ns mocks.boundary.adapter.chat.rocket-chat
-  (:require [gpml.boundary.port.chat :as port]
-            [gpml.util :as util]
-            [integrant.core :as ig]))
+  (:require
+   [gpml.boundary.port.chat :as port]
+   [gpml.util :as util]
+   [integrant.core :as ig]))
 
 (defn- create-user-account
   []

@@ -1,13 +1,14 @@
 (ns gpml.handler.favorite-test
-  (:require [clojure.test :refer [are deftest is testing use-fixtures]]
-            [gpml.db.country :as db.country]
-            [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.fixtures :as fixtures]
-            [gpml.handler.favorite :as favorite]
-            [gpml.seeder.main :as seeder]
-            [integrant.core :as ig]
-            [malli.core :as malli]
-            [ring.mock.request :as mock]))
+  (:require
+   [clojure.test :refer [are deftest is testing use-fixtures]]
+   [gpml.db.country :as db.country]
+   [gpml.db.stakeholder :as db.stakeholder]
+   [gpml.fixtures :as fixtures]
+   [gpml.handler.favorite :as favorite]
+   [gpml.seeder.main :as seeder]
+   [integrant.core :as ig]
+   [malli.core :as malli]
+   [ring.mock.request :as mock]))
 
 (use-fixtures :each fixtures/with-test-system)
 

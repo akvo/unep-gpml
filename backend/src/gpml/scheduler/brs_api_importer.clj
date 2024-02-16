@@ -1,35 +1,35 @@
 (ns gpml.scheduler.brs-api-importer
-  (:require [clojure.java.jdbc :as jdbc]
-            [clojure.string :as str]
-            [duct.logger :refer [log]]
-            [gpml.boundary.port.datasource :as datasource]
-            [gpml.db.country :as db.country]
-            [gpml.db.event :as db.event]
-            [gpml.db.initiative :as db.initiative]
-            [gpml.db.organisation :as db.organisation]
-            [gpml.db.resource :as db.resource]
-            [gpml.db.resource.connection :as db.r.conn]
-            [gpml.db.resource.geo-coverage :as db.r.geo]
-            [gpml.db.resource.tag :as db.r.tag]
-            [gpml.db.resource.translation :as db.translation]
-            [gpml.db.tag :as db.tag]
-            [gpml.domain.event :as dom.event]
-            [gpml.domain.initiative :as dom.initiative]
-            [gpml.domain.resource :as dom.resource]
-            [gpml.domain.translation :as dom.translation]
-            [gpml.domain.types :as dom.types]
-            [gpml.handler.file :as handler.file]
-            [gpml.service.file :as srv.file]
-            [gpml.service.permissions :as srv.permissions]
-            [gpml.util :as util]
-            [gpml.util.image :as util.image]
-            [gpml.util.malli :as util.malli]
-            [gpml.util.sql :as sql-util]
-            [integrant.core :as ig]
-            [java-time :as jt]
-            [java-time.temporal]
-            [medley.core :as medley]
-            [twarc.core :refer [defjob]]))
+  (:require
+   [clojure.java.jdbc :as jdbc]
+   [clojure.string :as str]
+   [duct.logger :refer [log]]
+   [gpml.boundary.port.datasource :as datasource]
+   [gpml.db.country :as db.country]
+   [gpml.db.event :as db.event]
+   [gpml.db.initiative :as db.initiative]
+   [gpml.db.organisation :as db.organisation]
+   [gpml.db.resource :as db.resource]
+   [gpml.db.resource.connection :as db.r.conn]
+   [gpml.db.resource.geo-coverage :as db.r.geo]
+   [gpml.db.resource.tag :as db.r.tag]
+   [gpml.db.resource.translation :as db.translation]
+   [gpml.db.tag :as db.tag]
+   [gpml.domain.event :as dom.event]
+   [gpml.domain.initiative :as dom.initiative]
+   [gpml.domain.resource :as dom.resource]
+   [gpml.domain.translation :as dom.translation]
+   [gpml.domain.types :as dom.types]
+   [gpml.handler.file :as handler.file]
+   [gpml.service.file :as srv.file]
+   [gpml.service.permissions :as srv.permissions]
+   [gpml.util :as util]
+   [gpml.util.image :as util.image]
+   [gpml.util.malli :as util.malli]
+   [gpml.util.sql :as sql-util]
+   [integrant.core :as ig]
+   [java-time.api :as jt]
+   [medley.core :as medley]
+   [twarc.core :refer [defjob]]))
 
 (def ^:private brs-api-tag-category-name "brs api")
 
@@ -540,7 +540,7 @@
       (if update?
         (handle-entities-batch-update tx logger entity-name data-coll opts)
         (handle-entities-batch-import tx logger entity-name data-coll opts)))
-    (catch Throwable e
+    (catch Exception e
       (let [error-details {:entity-name entity-name
                            :exception-message (ex-message e)
                            :exception-data (ex-data e)
@@ -587,7 +587,7 @@
       (if (:success? result)
         result
         (delete-images config (map :image_id updated-data-coll))))
-    (catch Throwable e
+    (catch Exception e
       (let [error-details {:entity-name entity-name
                            :exception-message (ex-message e)
                            :exception-data (ex-data e)
@@ -604,7 +604,7 @@
       (let [updated-data-coll (add-gpml-image-url config tx logger entity-name data-coll)]
         (with-safe-db-transaction tx logger entity-name updated-data-coll opts)))
     {:success? true}
-    (catch Throwable e
+    (catch Exception e
       (let [error-details {:entity-name entity-name
                            :exception-message (ex-message e)
                            :exception-data (ex-data e)
@@ -622,7 +622,7 @@
       (if (:success? result)
         result
         (delete-images config (map :image_id updated-data-coll))))
-    (catch Throwable e
+    (catch Exception e
       (let [error-details {:entity-name entity-name
                            :exception-message (ex-message e)
                            :exception-data (ex-data e)
@@ -691,7 +691,7 @@
                 (save-as-gpml-entity config gpml-entity-name to-import opts)))
             (log logger :error ::failed-to-get-data-from-datasource {:result result}))
           (recur skip-token more-pages?))))
-    (catch Throwable e
+    (catch Exception e
       (log logger :error ::something-bad-happened {:exception-class (str (class e))
                                                    :exception-message (ex-message e)
                                                    :stack-trace (map str (.getStackTrace e))

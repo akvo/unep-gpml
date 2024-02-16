@@ -1,10 +1,11 @@
 (ns gpml.handler.contact
-  (:require [duct.logger :refer [log]]
-            [gpml.domain.types :as dom.types]
-            [gpml.handler.responses :as r]
-            [gpml.util :as util]
-            [gpml.util.email :as email]
-            [integrant.core :as ig]))
+  (:require
+   [duct.logger :refer [log]]
+   [gpml.domain.types :as dom.types]
+   [gpml.handler.responses :as r]
+   [gpml.util :as util]
+   [gpml.util.email :as email]
+   [integrant.core :as ig]))
 
 (defmethod ig/init-key :gpml.handler.contact/post
   [_ {:keys [contact-settings mailjet-config logger]}]
@@ -24,7 +25,7 @@
           (r/server-error {:success? false
                            :reason :could-not-send-new-contact-email
                            :error-details "Destination email address missing in config"})))
-      (catch Throwable e
+      (catch Exception e
         (log logger :error :failed-to-send-contact-email {:exception-message (ex-message e)
                                                           :exception-class (class e)})
         (r/server-error {:success? false

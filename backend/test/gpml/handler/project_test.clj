@@ -1,17 +1,18 @@
 (ns gpml.handler.project-test
-  (:require [clojure.test :refer :all]
-            [gpml.db.project :as db.prj]
-            [gpml.domain.project :as dom.prj]
-            [gpml.domain.types :as dom.types]
-            [gpml.fixtures :as fixtures]
-            [gpml.handler.project :as sut]
-            [gpml.seeder.main :as seeder]
-            [gpml.service.permissions :as srv.permissions]
-            [gpml.test-util :as test-util]
-            [gpml.util.postgresql :as pg-util]
-            [integrant.core :as ig]
-            [malli.core :as m]
-            [ring.mock.request :as mock]))
+  (:require
+   [clojure.test :refer [deftest is testing use-fixtures]]
+   [gpml.db.project :as db.prj]
+   [gpml.domain.project :as dom.prj]
+   [gpml.domain.types :as dom.types]
+   [gpml.fixtures :as fixtures]
+   [gpml.handler.project :as sut]
+   [gpml.seeder.main :as seeder]
+   [gpml.service.permissions :as srv.permissions]
+   [gpml.test-util :as test-util]
+   [gpml.util.postgresql :as pg-util]
+   [integrant.core :as ig]
+   [malli.core :as m]
+   [ring.mock.request :as mock]))
 
 (use-fixtures :each fixtures/with-test-system)
 

@@ -1,6 +1,7 @@
 (ns gpml.util.image
-  (:require [gpml.util :as util]
-            [gpml.util.http-client :as http-client]))
+  (:require
+   [gpml.util :as util]
+   [gpml.util.http-client :as http-client]))
 
 (defn download-image
   ([logger url] (download-image logger url {}))

@@ -1,10 +1,11 @@
 (ns gpml.handler.stakeholder.tag
-  (:require [clojure.data :as dt]
-            [clojure.set :as set]
-            [clojure.walk :as w]
-            [gpml.db.resource.tag :as db.resource.tag]
-            [gpml.db.tag :as db.tag]
-            [gpml.handler.resource.tag :as handler.resource.tag]))
+  (:require
+   [clojure.data :as dt]
+   [clojure.set :as set]
+   [clojure.walk :as w]
+   [gpml.db.resource.tag :as db.resource.tag]
+   [gpml.db.tag :as db.tag]
+   [gpml.handler.resource.tag :as handler.resource.tag]))
 
 (defn- add-tags-ids-for-categories
   [conn tags categories]

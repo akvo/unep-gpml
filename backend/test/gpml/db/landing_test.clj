@@ -1,14 +1,15 @@
 (ns gpml.db.landing-test
-  (:require [clojure.java.jdbc :as jdbc]
-            [clojure.test :refer [are deftest is testing use-fixtures]]
-            [gpml.db.country :as db.country]
-            [gpml.db.country-group :as db.country-group]
-            [gpml.db.event :as db.event]
-            [gpml.db.landing :as db.landing]
-            [gpml.db.resource :as db.resource]
-            [gpml.db.topic :as db.topic]
-            [gpml.fixtures :as fixtures]
-            [integrant.core :as ig]))
+  (:require
+   [clojure.java.jdbc :as jdbc]
+   [clojure.test :refer [are deftest is testing use-fixtures]]
+   [gpml.db.country :as db.country]
+   [gpml.db.country-group :as db.country-group]
+   [gpml.db.event :as db.event]
+   [gpml.db.landing :as db.landing]
+   [gpml.db.resource :as db.resource]
+   [gpml.db.topic :as db.topic]
+   [gpml.fixtures :as fixtures]
+   [integrant.core :as ig]))
 
 (use-fixtures :each fixtures/with-test-system)
 

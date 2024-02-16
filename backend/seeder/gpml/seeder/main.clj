@@ -1,26 +1,29 @@
 (ns gpml.seeder.main
-  (:require [clj-time.format :as f]
-            [clojure.java.io :as io]
-            [clojure.java.jdbc :as jdbc]
-            [clojure.set :as set]
-            [clojure.string :as str]
-            [duct.core :as duct]
-            [gpml.db.action :as db.action]
-            [gpml.db.country :as db.country]
-            [gpml.db.country-group :as db.country-group]
-            [gpml.db.currency :as db.currency]
-            [gpml.db.event :as db.event]
-            [gpml.db.language :as db.language]
-            [gpml.db.organisation :as db.organisation]
-            [gpml.db.policy :as db.policy]
-            [gpml.db.resource :as db.resource]
-            [gpml.db.tag :as db.tag]
-            [gpml.db.technology :as db.technology]
-            gpml.handler.detail
-            [gpml.seeder.util :as db.util]
-            gpml.util.postgresql
-            [integrant.core :as ig]
-            [jsonista.core :as j]))
+  (:require
+   [clj-time.format :as f]
+   [clojure.java.io :as io]
+   [clojure.java.jdbc :as jdbc]
+   [clojure.set :as set]
+   [clojure.string :as str]
+   [duct.core :as duct]
+   [gpml.db.action :as db.action]
+   [gpml.db.country :as db.country]
+   [gpml.db.country-group :as db.country-group]
+   [gpml.db.currency :as db.currency]
+   [gpml.db.event :as db.event]
+   [gpml.db.language :as db.language]
+   [gpml.db.organisation :as db.organisation]
+   [gpml.db.policy :as db.policy]
+   [gpml.db.resource :as db.resource]
+   [gpml.db.tag :as db.tag]
+   [gpml.db.technology :as db.technology]
+   [gpml.seeder.util :as db.util]
+   [integrant.core :as ig]
+   [jsonista.core :as j]))
+
+;; Load multimethods:
+(require 'gpml.handler.detail
+         'gpml.util.postgresql)
 
 (duct/load-hierarchy)
 
@@ -51,10 +54,10 @@
 
       (and (seq data)
            add-default-lang?)
-      (map #(fn [item]
-              (if (:language item)
-                item
-                (assoc item :language default-lang-iso-code)))
+      (map (fn [item]
+             (if (:language item)
+               item
+               (assoc item :language default-lang-iso-code)))
            data)
       :else
       data)))
@@ -66,7 +69,10 @@
    (parse-data (slurp (io/resource (str "files/" file-name ".json"))) opts)))
 
 (defn get-ids [cmd]
-  (reduce (fn [acc o] (conj acc (:id o))) [] cmd))
+  (reduce (fn [acc o]
+            (conj acc (:id o)))
+          []
+          cmd))
 
 (defn get-country [db x]
   (db.country/get-countries db {:filters {:names x :descriptions ["Member State"]}}))
@@ -194,32 +200,27 @@
 
 (defn seed-resources [db]
   (doseq [data (get-resources db)]
-    (try
-      (let [res-id (:id (db.resource/new-resource db data))
-            data-org (:organisation data)
-            data-geo (:geo_coverage data)
-            data-geo-type (:geo_coverage_type data)
-            data-lang (:resource_language_url data)
-            data-tag (:tags data)]
-        (when (not-empty data-org)
-          (let [res-org (mapv #(assoc {} :resource res-id :organisation %) data-org)]
-            (jdbc/insert-multi! db :resource_organisation res-org)))
-        (when (not-empty data-geo)
-          (if (= "regional" data-geo-type)
-            (let [res-geo (mapv #(assoc {} :resource res-id :country_group %) data-geo)]
-              (jdbc/insert-multi! db :resource_geo_coverage res-geo))
-            (let [res-geo (mapv #(assoc {} :resource res-id :country %) data-geo)]
-              (jdbc/insert-multi! db :resource_geo_coverage res-geo))))
-        (when (not-empty data-lang)
-          (let [res-lang (map (fn [x] (assoc x :resource res-id)) data-lang)]
-            (jdbc/insert-multi! db :resource_language_url res-lang)))
-        (when (not-empty data-tag)
-          (let [res-tag (mapv #(assoc {} :resource res-id :tag %) data-tag)]
-            (jdbc/insert-multi! db :resource_tag res-tag))))
-      (catch Exception e
-        (println data)
-        (.printStackTrace e)
-        (throw e)))))
+    (let [res-id (:id (db.resource/new-resource db data))
+          data-org (:organisation data)
+          data-geo (:geo_coverage data)
+          data-geo-type (:geo_coverage_type data)
+          data-lang (:resource_language_url data)
+          data-tag (:tags data)]
+      (when (not-empty data-org)
+        (let [res-org (mapv #(assoc {} :resource res-id :organisation %) data-org)]
+          (jdbc/insert-multi! db :resource_organisation res-org)))
+      (when (not-empty data-geo)
+        (if (= "regional" data-geo-type)
+          (let [res-geo (mapv #(assoc {} :resource res-id :country_group %) data-geo)]
+            (jdbc/insert-multi! db :resource_geo_coverage res-geo))
+          (let [res-geo (mapv #(assoc {} :resource res-id :country %) data-geo)]
+            (jdbc/insert-multi! db :resource_geo_coverage res-geo))))
+      (when (not-empty data-lang)
+        (let [res-lang (map (fn [x] (assoc x :resource res-id)) data-lang)]
+          (jdbc/insert-multi! db :resource_language_url res-lang)))
+      (when (not-empty data-tag)
+        (let [res-tag (mapv #(assoc {} :resource res-id :tag %) data-tag)]
+          (jdbc/insert-multi! db :resource_tag res-tag))))))
 
 (defn get-events [db]
   (->> (get-data "events")
@@ -254,28 +255,23 @@
 
 (defn seed-events [db]
   (doseq [data (get-events db)]
-    (try
-      (let [evt-id (:id (db.event/new-event db data))
-            data-geo (:geo_coverage data)
-            data-geo-type (:geo_coverage_type data)
-            data-lang (:event_language_url data)
-            data-tag (:tags data)]
-        (when (not-empty data-geo)
-          (if (= "regional" data-geo-type)
-            (let [evt-geo (mapv #(assoc {} :event evt-id :country_group %) data-geo)]
-              (jdbc/insert-multi! db :event_geo_coverage evt-geo))
-            (let [evt-geo (mapv #(assoc {} :event evt-id :country %) data-geo)]
-              (jdbc/insert-multi! db :event_geo_coverage evt-geo))))
-        (when (not-empty data-lang)
-          (let [evt-lang (map (fn [x] (assoc x :event evt-id)) data-lang)]
-            (jdbc/insert-multi! db :event_language_url evt-lang)))
-        (when (not-empty data-tag)
-          (let [evt-tag (mapv #(assoc {} :event evt-id :tag %) data-tag)]
-            (jdbc/insert-multi! db :event_tag evt-tag))))
-      (catch Exception e
-        (println data)
-        (.printStackTrace e)
-        (throw e)))))
+    (let [evt-id (:id (db.event/new-event db data))
+          data-geo (:geo_coverage data)
+          data-geo-type (:geo_coverage_type data)
+          data-lang (:event_language_url data)
+          data-tag (:tags data)]
+      (when (not-empty data-geo)
+        (if (= "regional" data-geo-type)
+          (let [evt-geo (mapv #(assoc {} :event evt-id :country_group %) data-geo)]
+            (jdbc/insert-multi! db :event_geo_coverage evt-geo))
+          (let [evt-geo (mapv #(assoc {} :event evt-id :country %) data-geo)]
+            (jdbc/insert-multi! db :event_geo_coverage evt-geo))))
+      (when (not-empty data-lang)
+        (let [evt-lang (map (fn [x] (assoc x :event evt-id)) data-lang)]
+          (jdbc/insert-multi! db :event_language_url evt-lang)))
+      (when (not-empty data-tag)
+        (let [evt-tag (mapv #(assoc {} :event evt-id :tag %) data-tag)]
+          (jdbc/insert-multi! db :event_tag evt-tag))))))
 
 (defn get-policies [db]
   (->> (get-data "policies")
@@ -318,20 +314,15 @@
 
 (defn seed-policies [db]
   (doseq [data (get-policies db)]
-    (try
-      (let [po-id (:id (db.policy/new-policy db data))
-            data-geo (:geo_coverage data)
-            data-tag (:tags data)]
-        (when (not-empty data-geo)
-          (let [po-geo (mapv #(assoc {} :policy po-id :country %) data-geo)]
-            (jdbc/insert-multi! db :policy_geo_coverage po-geo)))
-        (when (not-empty data-tag)
-          (let [po-tag (mapv #(assoc {} :policy po-id :tag %) data-tag)]
-            (jdbc/insert-multi! db :policy_tag po-tag))))
-      (catch Exception e
-        (println data)
-        (.printStackTrace e)
-        (throw e)))))
+    (let [po-id (:id (db.policy/new-policy db data))
+          data-geo (:geo_coverage data)
+          data-tag (:tags data)]
+      (when (not-empty data-geo)
+        (let [po-geo (mapv #(assoc {} :policy po-id :country %) data-geo)]
+          (jdbc/insert-multi! db :policy_geo_coverage po-geo)))
+      (when (not-empty data-tag)
+        (let [po-tag (mapv #(assoc {} :policy po-id :tag %) data-tag)]
+          (jdbc/insert-multi! db :policy_tag po-tag))))))
 
 (defn get-technologies [db]
   (->> (get-data "technologies")
@@ -362,20 +353,15 @@
 
 (defn seed-technologies [db]
   (doseq [data (get-technologies db)]
-    (try
-      (let [tech-id (:id (db.technology/new-technology db data))
-            data-geo (:geo_coverage data)
-            data-tag (:tags data)]
-        (when (not-empty data-geo)
-          (let [tech-geo (mapv #(assoc {} :technology tech-id :country %) data-geo)]
-            (jdbc/insert-multi! db :technology_geo_coverage tech-geo)))
-        (when (not-empty data-tag)
-          (let [tech-tag (mapv #(assoc {} :technology tech-id :tag %) data-tag)]
-            (jdbc/insert-multi! db :technology_tag tech-tag))))
-      (catch Exception e
-        (println data)
-        (.printStackTrace e)
-        (throw e)))))
+    (let [tech-id (:id (db.technology/new-technology db data))
+          data-geo (:geo_coverage data)
+          data-tag (:tags data)]
+      (when (not-empty data-geo)
+        (let [tech-geo (mapv #(assoc {} :technology tech-id :country %) data-geo)]
+          (jdbc/insert-multi! db :technology_geo_coverage tech-geo)))
+      (when (not-empty data-tag)
+        (let [tech-tag (mapv #(assoc {} :technology tech-id :tag %) data-tag)]
+          (jdbc/insert-multi! db :technology_tag tech-tag))))))
 
 (defn get-cache-id []
   (str (java.util.UUID/randomUUID) "-" (quot (System/currentTimeMillis) 1000)))
@@ -386,14 +372,12 @@
   ([db opts]
    (let [cache-id (get-cache-id)]
      (db.util/drop-constraint-country db cache-id)
-     (println "Re-seeding country...")
      (seed-countries db opts)
      (db.util/revert-constraint db cache-id))))
 
 (defn resync-country-group [db]
   (let [cache-id (get-cache-id)]
     (db.util/drop-constraint-country-group db cache-id)
-    (println "Re-seeding country-group...")
     (seed-country-groups db)
     (db.util/revert-constraint db cache-id)
     (seed-country-group-country db)))
@@ -401,41 +385,38 @@
 (defn resync-organisation [db]
   (let [cache-id (get-cache-id)]
     (db.util/drop-constraint-organisation db cache-id)
-    (println "Re-seeding organisation...")
     (seed-organisations db)
     (db.util/revert-constraint db cache-id)))
 
 (defn resync-policy [db]
   (let [cache-id (get-cache-id)]
     (db.util/drop-constraint-policy db cache-id)
-    (println "Re-seeding policy...")
     (seed-policies db)
     (db.util/revert-constraint db cache-id)))
 
 (defn resync-resource [db]
   (let [cache-id (get-cache-id)]
     (db.util/drop-constraint-resource db cache-id)
-    (println "Re-seeding resource...")
     (seed-resources db)
     (db.util/revert-constraint db cache-id)))
 
 (defn resync-technology [db]
   (let [cache-id (get-cache-id)]
     (db.util/drop-constraint-technology db cache-id)
-    (println "Re-seeding technology...")
     (seed-technologies db)
     (db.util/revert-constraint db cache-id)))
 
 (defn resync-event [db]
   (let [cache-id (get-cache-id)]
     (db.util/drop-constraint-event db cache-id)
-    (println "Re-seeding event...")
     (seed-events db)
     (db.util/revert-constraint db cache-id)))
 
 (defn revert-mapping [mapping-file]
   (reduce-kv (fn [m k v]
-               (assoc m (keyword (str v)) (-> k name Integer/parseInt))) {} mapping-file))
+               (assoc m (keyword (str v)) (-> k name Integer/parseInt)))
+             {}
+             mapping-file))
 
 (defn is-old [check mapping-file db]
   (let [example-map (first (filter #(not= (first %) (second %)) mapping-file))
@@ -460,11 +441,9 @@
                        mapping-file
                        (revert-mapping mapping-file))
         json-file (get-data (if old-data? "new_countries" "countries"))]
-    (println (str "Migrating Country from " (if old-data? "old to new" "new to old")))
     (db.util/country-id-updater db cache-id mapping-file)
     (jdbc/execute! db ["TRUNCATE TABLE country"])
     (seed-countries db {:old? (not old-data?)})
-    (println "Update countries in Initiative Data")
     (db.util/update-initiative-country db mapping-file json-file)
     (db.util/revert-constraint db cache-id)))
 
@@ -485,36 +464,25 @@
              ;; project? false
              }}]
    (jdbc/with-db-transaction [tx db]
-     (println "-- Start Seeding")
      (when country?
-       (println "Seeding country...")
        (resync-country tx)
        (resync-country-group tx))
      (when currency?
-       (println "Seeding currency...")
        (seed-currencies tx))
      (when organisation?
-       (println "Seeding organisation...")
        (resync-organisation tx))
      (when language?
-       (println "Seeding language...")
        (seed-languages tx))
      (when tag?
-       (println "Seeding tag...")
        (seed-tags tx))
      (when policy?
-       (println "Seeding policy...")
        (resync-policy tx))
      (when resource?
-       (println "Seeding resource...")
        (resync-resource tx))
      (when technology?
-       (println "Seeding technology...")
        (resync-technology tx))
      (when event?
-       (println "Seeding event...")
-       (resync-event tx))
-     (println "-- Done Seeding")))
+       (resync-event tx))))
   ([]
    (let [db (-> (dev-system)
                 (ig/init [:duct.database.sql/hikaricp])
@@ -585,8 +553,6 @@
        (filter #(= 2 (:country_group %)))
        count)
 
-  (require '[clojure.set :as set])
-
   (defn missing-names [names]
     (let [db-names (-> (get-country db names)
                        (#(map :name %))
@@ -596,7 +562,7 @@
   (->> (get-data "country_group_countries")
        vals
        (#(map missing-names %))
-       (reduce set/union)
+       (reduce set/union #{})
        (run! println))
 
   (defn geo-name-mimatches [topic]
@@ -611,6 +577,4 @@
                          set)]
       (set/difference r-countries countries)))
 
-  (println "Technologies Geo Coverage")
-  (doseq [item (geo-name-mimatches "technologies")]
-    (println item)))
+  (geo-name-mimatches "technologies"))

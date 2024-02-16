@@ -1,9 +1,10 @@
 (ns gpml.handler.programmatic.plastic-strategy
-  (:require [camel-snake-kebab.core :refer [->kebab-case]]
-            [camel-snake-kebab.extras :as cske]
-            [gpml.handler.responses :as r]
-            [gpml.service.plastic-strategy :as srv.ps]
-            [integrant.core :as ig]))
+  (:require
+   [camel-snake-kebab.core :refer [->kebab-case]]
+   [camel-snake-kebab.extras :as cske]
+   [gpml.handler.responses :as r]
+   [gpml.service.plastic-strategy :as srv.ps]
+   [integrant.core :as ig]))
 
 (def ^:private create-plastic-strategies-params-schema
   [:sequential

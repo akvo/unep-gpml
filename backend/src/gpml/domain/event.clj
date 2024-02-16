@@ -1,6 +1,7 @@
 (ns gpml.domain.event
-  (:require [gpml.domain.types :as dom.types]
-            [malli.core :as m]))
+  (:require
+   [gpml.domain.types :as dom.types]
+   [malli.core :as m]))
 
 (def sub-content-types
   "Possible value for Event `sub_content_type`"
