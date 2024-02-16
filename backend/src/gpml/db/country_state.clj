@@ -1,6 +1,7 @@
 (ns gpml.db.country-state
-  {:ns-tracker/resource-deps ["country_state.sql"]}
-  (:require [hugsql.core :as hugsql]))
+  #:ns-tracker{:resource-deps ["country_state.sql"]}
+  (:require
+   [hugsql.core :as hugsql]))
 
 (declare create-country-states
          get-country-states)

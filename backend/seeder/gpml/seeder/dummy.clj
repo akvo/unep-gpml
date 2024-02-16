@@ -1,25 +1,25 @@
 (ns gpml.seeder.dummy
-  (:require [clojure.java.io :as io]
-            [clojure.java.jdbc :as jdbc]
-            [clojure.string :as str]
-            [duct.core :as duct]
-            [gpml.db.country :as db.country]
-            [gpml.db.country-group :as db.country-group]
-            [gpml.db.event :as db.event]
-            [gpml.db.initiative :as db.initiative]
-            [gpml.db.language :as db.language]
-            [gpml.db.organisation :as db.organisation]
-            [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.db.tag :as db.tag]
-            [gpml.seeder.main :as seeder]))
+  (:require
+   [clojure.java.io :as io]
+   [clojure.java.jdbc :as jdbc]
+   [clojure.string :as str]
+   [duct.core :as duct]
+   [gpml.db.country :as db.country]
+   [gpml.db.country-group :as db.country-group]
+   [gpml.db.event :as db.event]
+   [gpml.db.initiative :as db.initiative]
+   [gpml.db.language :as db.language]
+   [gpml.db.organisation :as db.organisation]
+   [gpml.db.stakeholder :as db.stakeholder]
+   [gpml.db.tag :as db.tag]
+   [gpml.seeder.main :as seeder]))
 
 ;; Dummy Content for UI eg. Pagination, Browse, etc
 ;; Also to Create test admin profile
 
 (duct/load-hierarchy)
 
-(defn- dev-system
-  []
+(defn dev-system []
   (-> (duct/resource "gpml/config.edn")
       (duct/read-config)
       (duct/prep-config [:duct.profile/dev])))
@@ -144,7 +144,7 @@
               :duct.database.sql/hikaricp
               :spec))
 
-;; Create New Account as Admin
+  ;; Create New Account as Admin
   (get-or-create-profile db "test@akvo.org" "Testing Profile" "ADMIN" "APPROVED")
   ;; Create New Account as Unapproved user
   (get-or-create-profile db "anothertest@akvo.org" "Another Testing" "USER" "SUBMITTED")

@@ -1,28 +1,32 @@
 (ns dev
   (:refer-clojure :exclude [test])
-  (:require [clojure.java.io :as io]
-            [clojure.java.jdbc :as jdbc]
-            clojure.pprint
-            [clojure.repl :refer :all]
-            [clojure.tools.namespace.repl :refer [refresh]]
-            [duct.core :as duct]
-            [duct.core.repl :as duct-repl]
-            [eftest.runner :as eftest]
-            [gpml.seeder.main :as seeder]
-            [integrant.core :as ig]
-            [integrant.repl :refer [clear go halt init prep reset]]
-            [integrant.repl.state :refer [config system]]
-            [ns-tracker.core :refer [ns-tracker]]
-            [portal.api :as portal]))
+  (:require
+   [clojure.java.io :as io]
+   [clojure.java.jdbc :as jdbc]
+   [clojure.pprint]
+   [clojure.repl :refer :all]
+   [clojure.tools.namespace.repl :refer [refresh]]
+   [duct.core :as duct]
+   [duct.core.repl :as duct-repl]
+   [eftest.runner :as eftest]
+   [gpml.fixtures]
+   [gpml.seeder.main :as seeder]
+   [integrant.core :as ig]
+   [integrant.repl :refer [clear go halt init prep reset]]
+   [integrant.repl.state :refer [config system]]
+   [ns-tracker.core :refer [ns-tracker]]))
+
+(require 'gpml.handler.monitoring) ;; Load its multimethod
 
 (duct/load-hierarchy)
 
 (defn read-config []
-  (duct/read-config (io/resource "gpml/config.edn")))
+  (-> "gpml/config.edn" io/resource gpml.fixtures/read-config))
 
 (defn test
   ([v]
    (eftest/run-tests [v] {:fail-fast? true}))
+
   ([]
    (eftest/run-tests (eftest/find-tests "test")
                      {:fail-fast? true})))
@@ -48,14 +52,6 @@
                (clojure.pprint/print-table result)
                result))))
 
-(defn launch-portal
-  []
-  (portal/start {:portal.launcher/port 47481
-                 :portal.launcher/host "0.0.0.0"})
-  (portal/tap)
-  (portal/open {:portal.colors/theme
-                :portal.colors/solarized-light}))
-
 (def modified-namespaces
   (ns-tracker ["src/gpml/db"]))
 
@@ -74,8 +70,6 @@
   (test #'gpml.handler.profile-test/handler-put-test)
 
   config
-
-  (launch-portal)
 
   ;; run all tests
   (test)

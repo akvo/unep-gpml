@@ -1,8 +1,9 @@
 (ns gpml.db.event
-  {:ns-tracker/resource-deps ["event.sql"]}
-  (:require [gpml.util :as util]
-            [gpml.util.sql :as sql-util]
-            [hugsql.core :as hugsql]))
+  #:ns-tracker{:resource-deps ["event.sql"]}
+  (:require
+   [gpml.util :as util]
+   [gpml.util.sql :as sql-util]
+   [hugsql.core :as hugsql]))
 
 (declare new-event
          add-event-language-urls

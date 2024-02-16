@@ -1,7 +1,8 @@
 (ns gpml.util.auth0
-  (:require [clj-http.client :as client]
-            [clojure.walk :as w]
-            [jsonista.core :as j]))
+  (:require
+   [clj-http.client :as client]
+   [clojure.walk :as w]
+   [jsonista.core :as j]))
 
 (def auth0-token (atom ""))
 

@@ -1,11 +1,12 @@
 (ns gpml.handler.activity
-  (:require [clojure.string :as str]
-            [gpml.db.activity :as db.activity]
-            [gpml.handler.resource.permission :as h.r.permission]
-            [gpml.handler.responses :as r]
-            [gpml.service.permissions :as srv.permissions]
-            [integrant.core :as ig]
-            [ring.util.response :as resp]))
+  (:require
+   [clojure.string :as str]
+   [gpml.db.activity :as db.activity]
+   [gpml.handler.resource.permission :as h.r.permission]
+   [gpml.handler.responses :as r]
+   [gpml.service.permissions :as srv.permissions]
+   [integrant.core :as ig]
+   [ring.util.response :as resp]))
 
 (def ^:const activity-types
   ["bookmark_resource" "create_resource"])

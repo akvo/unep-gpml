@@ -1,9 +1,10 @@
 (ns gpml.util.http-client
-  (:require [clj-http.client :as client]
-            [diehard.core :as dh]
-            [duct.logger :refer [log]]
-            [gpml.util :as util]
-            [gpml.util.json :as json]))
+  (:require
+   [clj-http.client :as client]
+   [diehard.core :as dh]
+   [duct.logger :refer [log]]
+   [gpml.util :as util]
+   [gpml.util.json :as json]))
 
 (def ^:const default-timeout
   "Default timeout value for an connection attempt"
@@ -64,7 +65,7 @@
   (util/update-if-not-nil resp :body json/<-json))
 
 (defn do-request
-  "Like [[clj-http.client/request]] but with retries. Optionally accepts
+  "Like `clj-http.client/request` but with retries. Optionally accepts
   a map with retry configuration. Otherwise, it sets a default
   configuration."
   ([logger req] (do-request logger req {}))

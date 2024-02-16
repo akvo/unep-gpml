@@ -1,7 +1,8 @@
 (ns gpml.util.csv
-  (:require [clojure.data.csv :as csv]
-            [clojure.java.io :as io]
-            [clojure.set :as set]))
+  (:require
+   [clojure.data.csv :as csv]
+   [clojure.java.io :as io]
+   [clojure.set :as set]))
 
 (defn write-to-csv-file
   "Write CSV data to a file. Uses the `x-UTF-16LE-BOM` encoding as it is

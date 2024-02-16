@@ -1,13 +1,14 @@
 (ns gpml.handler.stakeholder-association
-  (:require [clojure.java.jdbc :as jdbc]
-            [gpml.db.favorite :as db.favorite]
-            [gpml.db.stakeholder-association :as db.stakeholder-association]
-            [gpml.domain.resource :as dom.resource]
-            [gpml.handler.resource.permission :as h.r.permission]
-            [gpml.handler.responses :as r]
-            [gpml.util :as util]
-            [integrant.core :as ig]
-            [ring.util.response :as resp]))
+  (:require
+   [clojure.java.jdbc :as jdbc]
+   [gpml.db.favorite :as db.favorite]
+   [gpml.db.stakeholder-association :as db.stakeholder-association]
+   [gpml.domain.resource :as dom.resource]
+   [gpml.handler.resource.permission :as h.r.permission]
+   [gpml.handler.responses :as r]
+   [gpml.util :as util]
+   [integrant.core :as ig]
+   [ring.util.response :as resp]))
 
 (def ^:const associations
   #{"owner" "implementor" "partner" "donor" "interested in"})

@@ -1,5 +1,6 @@
 (ns gpml.util.json
-  (:require [jsonista.core :as json]))
+  (:require
+   [jsonista.core :as json]))
 
 (defn ->json
   ([coll]

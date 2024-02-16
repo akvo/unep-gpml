@@ -1,9 +1,11 @@
 (ns gpml.db.jdbc-util
-  (:require [camel-snake-kebab.core :refer [->snake_case ->kebab-case]]
-            [camel-snake-kebab.extras :as cske]
-            [clojure.string :as str]
-            [medley.core :as medley])
-  (:import [java.sql SQLException]))
+  (:require
+   [camel-snake-kebab.core :refer [->kebab-case ->snake_case]]
+   [camel-snake-kebab.extras :as cske]
+   [clojure.string :as str]
+   [medley.core :as medley])
+  (:import
+   (java.sql SQLException)))
 
 (def ^:const integrity-constraint-violation-state-codes
   {:integrity-constraint "23000"
@@ -37,12 +39,13 @@
         {:success? false
          :reason :unknown-sql-error
          :error-details {:msg (ex-message e)}}))
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
 (defmacro with-constraint-violation-check
+  {:style/indent 1}
   [constraints & body]
   `(with-constraint-violation-check-fn
      ~constraints

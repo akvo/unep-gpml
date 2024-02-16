@@ -1,10 +1,11 @@
 (ns gpml.db.activity-test
-  (:require [clojure.test :refer [deftest is testing use-fixtures]]
-            [gpml.db.activity :as sut]
-            [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.fixtures :as fixtures]
-            [gpml.test-util :as test-util]
-            [gpml.util :as util]))
+  (:require
+   [clojure.test :refer [deftest is testing use-fixtures]]
+   [gpml.db.activity :as sut]
+   [gpml.db.stakeholder :as db.stakeholder]
+   [gpml.fixtures :as fixtures]
+   [gpml.test-util :as test-util]
+   [gpml.util :as util]))
 
 (use-fixtures :each fixtures/with-test-system)
 

@@ -1,10 +1,11 @@
 (ns gpml.util.email
-  (:require [clj-http.client :as client]
-            [clojure.string :as str]
-            [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.handler.util :as h.util]
-            [gpml.util :as util]
-            [jsonista.core :as j]))
+  (:require
+   [clj-http.client :as client]
+   [clojure.string :as str]
+   [gpml.db.stakeholder :as db.stakeholder]
+   [gpml.handler.util :as h.util]
+   [gpml.util :as util]
+   [jsonista.core :as j]))
 
 (defn make-message [sender receiver subject text html]
   {:From sender :To [receiver] :Subject subject :TextPart text :HTMLPart html})

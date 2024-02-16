@@ -1,8 +1,9 @@
 (ns gpml.domain.geo-coverage
-  (:require [gpml.util :as util]
-            [gpml.util.malli :as util.malli]
-            [malli.core :as m]
-            [malli.util :as mu]))
+  (:require
+   [gpml.util :as util]
+   [gpml.util.malli :as util.malli]
+   [malli.core :as m]
+   [malli.util :as mu]))
 
 (def GeoCoverage
   "Geo Coverage schema for countries and country groups. This is a sub

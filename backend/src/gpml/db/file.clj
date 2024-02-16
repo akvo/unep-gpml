@@ -1,7 +1,8 @@
 (ns gpml.db.file
-  {:ns-tracker/resource-deps ["file.sql"]}
-  (:require [gpml.db.jdbc-util :as jdbc-util]
-            [hugsql.core :as hugsql]))
+  #:ns-tracker{:resource-deps ["file.sql"]}
+  (:require
+   [gpml.db.jdbc-util :as jdbc-util]
+   [hugsql.core :as hugsql]))
 
 (declare create-file*
          delete-file*
@@ -19,10 +20,9 @@
 
 (defn create-file
   [conn file]
-  (jdbc-util/with-constraint-violation-check
-    [{:type :unique
-      :name "file_pkey"
-      :error-reason :already-exists}]
+  (jdbc-util/with-constraint-violation-check [{:type :unique
+                                               :name "file_pkey"
+                                               :error-reason :already-exists}]
     (create-file* conn (-> file
                            file->persistence-file
                            jdbc-util/db-params-kebab-kw->db-params-snake-kw))
@@ -38,7 +38,7 @@
         {:success? true}
         {:success? false
          :reason :not-found}))
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :error-details {:ex-message (ex-message t)}})))
 
@@ -52,7 +52,7 @@
                (comp persistence-file->file
                      jdbc-util/db-result-snake-kw->db-result-kebab-kw)
                files)})
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details (ex-message t)})))
@@ -68,7 +68,7 @@
            :file (-> result :files first)}
           {:success? false
            :reason :not-found})))
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details (ex-message t)})))

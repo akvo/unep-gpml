@@ -1,8 +1,9 @@
 (ns gpml.db.project
   {:ns-tracker/resource-deps ["project.sql"]}
-  (:require [gpml.util :as util]
-            [gpml.util.postgresql :as pg-util]
-            [hugsql.core :as hugsql]))
+  (:require
+   [gpml.util :as util]
+   [gpml.util.postgresql :as pg-util]
+   [hugsql.core :as hugsql]))
 
 (declare get-projects
          create-projects
