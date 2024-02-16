@@ -77,18 +77,18 @@
           :resource-paths ["test-resources"]
           :jvm-opts ["-Dclojure.spec.compile-asserts=true"
                      "-Dclojure.spec.check-asserts=true"]}
+   :eftest {:dependencies [[eftest "0.6.0"]]
+            :plugins [[lein-eftest "0.6.0"]]
+            :eftest {:multithread :vars
+                     ;; Please don't specify `:thread-count`, so that all cores will be used.
+                     :fail-fast? true
+                     :report clojure.test/report}}
    :dev  {:source-paths   ["dev/src"]
           :resource-paths ["dev/resources"]
           :dependencies   [[integrant/repl "0.3.2"]
                            [fipp "0.6.21"]
                            [hawk "0.2.11"]
-                           [eftest "0.5.9"]
                            [kerodon "0.9.1"]]
-          :plugins [[lein-eftest "0.5.9"]]
-          :eftest {:thread-count 4
-                   :multithread :vars
-                   :fail-fast? true
-                   :report clojure.test/report}
           :repl-options {:init-ns dev
                          :init (do
                                  (require 'dev)
@@ -102,7 +102,7 @@
               :eastwood {:linters [:all]
                          :config-files ["eastwood_cfg.clj"]
                          :ignored-faults {:reflection {gpml.service.file {:line 106}
-                                                       gpml.handler.monitoring {:line 85}}}
+                                                       gpml.handler.monitoring {:line 81}}}
                          :exclude-linters [:keyword-typos
                                            :boxed-math
                                            :unused-locals
