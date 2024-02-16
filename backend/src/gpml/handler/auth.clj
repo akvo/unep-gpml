@@ -1,17 +1,18 @@
 (ns gpml.handler.auth
-  (:require [clojure.java.jdbc :as jdbc]
-            [clojure.string :as str]
-            [duct.logger :refer [log]]
-            [gpml.domain.stakeholder :as dom.stakeholder]
-            [gpml.domain.topic-stakeholder-auth :as dom.ts-auth]
-            [gpml.domain.types :as dom.types]
-            [gpml.handler.resource.permission :as h.r.permission]
-            [gpml.handler.responses :as r]
-            [gpml.handler.util :as util]
-            [gpml.service.association :as srv.association]
-            [integrant.core :as ig]
-            [malli.util :as mu]
-            [medley.core :as medley]))
+  (:require
+   [clojure.java.jdbc :as jdbc]
+   [clojure.string :as str]
+   [duct.logger :refer [log]]
+   [gpml.domain.stakeholder :as dom.stakeholder]
+   [gpml.domain.topic-stakeholder-auth :as dom.ts-auth]
+   [gpml.domain.types :as dom.types]
+   [gpml.handler.resource.permission :as h.r.permission]
+   [gpml.handler.responses :as r]
+   [gpml.handler.util :as util]
+   [gpml.service.association :as srv.association]
+   [integrant.core :as ig]
+   [malli.util :as mu]
+   [medley.core :as medley]))
 
 (def ^:private shared-path-params
   [:map
@@ -63,7 +64,7 @@
                                                         :resource-type (str/replace resource-type \_ \-)
                                                         :resource-id resource-id}))
               (r/ok (merge {:success? true} path body))))))
-      (catch Throwable t
+      (catch Exception t
         (log logger :error ::failed-to-grant-topic-to-stakeholder {:exception-message (ex-message t)
                                                                    :exception-data (ex-data t)
                                                                    :stack-trace (.getStackTrace t)

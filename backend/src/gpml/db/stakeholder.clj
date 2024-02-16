@@ -1,10 +1,11 @@
 (ns gpml.db.stakeholder
-  {:ns-tracker/resource-deps ["stakeholder.sql"]}
-  (:require [gpml.db.jdbc-util :as jdbc-util]
-            [gpml.util :as util]
-            [gpml.util.postgresql :as util.pgsql]
-            [gpml.util.sql :as util.sql]
-            [hugsql.core :as hugsql]))
+  #:ns-tracker{:resource-deps ["stakeholder.sql"]}
+  (:require
+   [gpml.db.jdbc-util :as jdbc-util]
+   [gpml.util :as util]
+   [gpml.util.postgresql :as util.pgsql]
+   [gpml.util.sql :as util.sql]
+   [hugsql.core :as hugsql]))
 
 (declare delete-stakeholder*
          all-stakeholder
@@ -49,7 +50,7 @@
         {:success? true}
         {:success? false
          :reason :not-found}))
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :error-details {:ex-message (ex-message t)}})))
 
@@ -64,7 +65,7 @@
          :stakeholder (jdbc-util/db-result-snake-kw->db-result-kebab-kw (first stakeholders))}
         {:success? false
          :reason :not-found}))
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details (ex-message t)})))
@@ -74,13 +75,12 @@
   (let [p-stakeholder (stakeholder->p-stakeholder stakeholder)
         cols (util.sql/get-insert-columns-from-entity-col [p-stakeholder])
         values (util.sql/entity-col->persistence-entity-col [p-stakeholder])]
-    (jdbc-util/with-constraint-violation-check
-        [{:type :unique
-          :name "stakeholder_email_key"
-          :error-reason :already-exists}
-         {:type :unique
-          :name "stakeholder_chat_account_id_key"
-          :error-reason :already-exists}]
+    (jdbc-util/with-constraint-violation-check [{:type :unique
+                                                 :name "stakeholder_email_key"
+                                                 :error-reason :already-exists}
+                                                {:type :unique
+                                                 :name "stakeholder_chat_account_id_key"
+                                                 :error-reason :already-exists}]
       {:success? true
        :stakeholder (first (create-stakeholders conn {:cols cols
                                                       :values values}))})))

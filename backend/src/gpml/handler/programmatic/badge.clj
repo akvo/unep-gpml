@@ -1,13 +1,14 @@
 (ns gpml.handler.programmatic.badge
-  (:require [duct.logger :refer [log]]
-            [gpml.db.badge :as db.badge]
-            [gpml.domain.badge :as dom.badge]
-            [gpml.handler.responses :as r]
-            [gpml.service.permissions :as srv.permissions]
-            [gpml.util.malli :as util.malli]
-            [gpml.util.sql :as sql-util]
-            [gpml.util.thread-transactions :as tht]
-            [integrant.core :as ig]))
+  (:require
+   [duct.logger :refer [log]]
+   [gpml.db.badge :as db.badge]
+   [gpml.domain.badge :as dom.badge]
+   [gpml.handler.responses :as r]
+   [gpml.service.permissions :as srv.permissions]
+   [gpml.util.malli :as util.malli]
+   [gpml.util.sql :as sql-util]
+   [gpml.util.thread-transactions :as tht]
+   [integrant.core :as ig]))
 
 (defn- create-badge
   [{:keys [db logger]} badge]
@@ -62,7 +63,7 @@
         (if success?
           (r/ok result)
           (r/server-error result)))
-      (catch Throwable t
+      (catch Exception t
         (log logger :error ::create-badge-failed {:exception-message (.getMessage t)})
         (r/server-error {:success? false
                          :reason :could-not-create-badge

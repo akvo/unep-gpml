@@ -1,15 +1,16 @@
 (ns gpml.handler.programmatic.files-migrator
-  (:require [duct.logger :refer [log]]
-            [gpml.db.case-study :as db.case-study]
-            [gpml.db.event :as db.event]
-            [gpml.db.organisation :as db.organisation]
-            [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.domain.file :as dom.file]
-            [gpml.handler.responses :as r]
-            [gpml.service.file :as srv.file]
-            [gpml.util :as util]
-            [gpml.util.image :as util.image]
-            [integrant.core :as ig]))
+  (:require
+   [duct.logger :refer [log]]
+   [gpml.db.case-study :as db.case-study]
+   [gpml.db.event :as db.event]
+   [gpml.db.organisation :as db.organisation]
+   [gpml.db.stakeholder :as db.stakeholder]
+   [gpml.domain.file :as dom.file]
+   [gpml.handler.responses :as r]
+   [gpml.service.file :as srv.file]
+   [gpml.util :as util]
+   [gpml.util.image :as util.image]
+   [integrant.core :as ig]))
 
 (def ^:const ^:private available-entities
   #{:organisation :stakeholder :case_study :event})
@@ -34,7 +35,7 @@
                                  ;; request.
                                  {:headers {:user-agent "gpml/1.0.0"}})
       src)
-    (catch Throwable t
+    (catch Exception t
       (log logger :error ::failed-to-download-image {:exception-message (ex-message t)
                                                      :stack-trace (map str (.getStackTrace t))}))))
 
@@ -60,7 +61,7 @@
                                                             :file-type (keyword file_type)
                                                             :reason :creation-file-failed
                                                             :error-details {:creation-result result}}))))
-          (catch Throwable t
+          (catch Exception t
             (log logger :error ::failed-to-create-file {:entity entity-key
                                                         :id id
                                                         :file-type (keyword file_type)
@@ -123,7 +124,7 @@
                                                           limit
                                                           (assoc :limit limit))))
         (r/ok {:success? true}))
-      (catch Throwable t
+      (catch Exception t
         (let [log-data {:exception-message (ex-message t)
                         :exception-data (ex-data t)
                         :stack-trace (map str (.getStackTrace t))}]

@@ -1,7 +1,8 @@
 (ns gpml.db.plastic-strategy
-  {:ns-tracker/resource-deps ["plastic_strategy.sql"]}
-  (:require [gpml.db.jdbc-util :as jdbc-util]
-            [hugsql.core :as hugsql]))
+  #:ns-tracker{:resource-deps ["plastic_strategy.sql"]}
+  (:require
+   [gpml.db.jdbc-util :as jdbc-util]
+   [hugsql.core :as hugsql]))
 
 (declare get-plastic-strategies*
          update-plastic-strategy*
@@ -18,7 +19,7 @@
      :plastic-strategies (jdbc-util/db-result-snake-kw->db-result-kebab-kw
                           (get-plastic-strategies* conn opts)
                           \_)}
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
@@ -35,7 +36,7 @@
            :plastic-strategy (first plastic-strategies)}
           {:success? false
            :reason :not-found})))
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
@@ -50,7 +51,7 @@
          :reason :unexpected-number-of-affected-rows
          :error-details {:expected-affected-rows 1
                          :actual-affected-rows affected}}))
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
@@ -65,17 +66,16 @@
          :reason :unexpected-number-of-affected-rows
          :error-details {:expected-affected-rows (count plastic-strategies)
                          :actual-affected-rows affected}}))
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
 (defn create-plastic-strategy
   [conn plastic-strategy]
-  (jdbc-util/with-constraint-violation-check
-    [{:type :unique
-      :name "plastic_strategy_country_id_key"
-      :error-reason :already-exists}]
+  (jdbc-util/with-constraint-violation-check [{:type :unique
+                                               :name "plastic_strategy_country_id_key"
+                                               :error-reason :already-exists}]
     {:success? true
      :id (:id (create-plastic-strategy* conn plastic-strategy))}))
 
@@ -89,7 +89,7 @@
          :reason :unexpected-number-of-affected-rows
          :error-details {:expected-affected-rows 1
                          :actual-affected-rows affected}}))
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))

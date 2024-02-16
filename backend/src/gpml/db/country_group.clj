@@ -1,6 +1,7 @@
 (ns gpml.db.country-group
-  {:ns-tracker/resource-deps ["country_group.sql"]}
-  (:require [hugsql.core :as hugsql]))
+  #:ns-tracker{:resource-deps ["country_group.sql"]}
+  (:require
+   [hugsql.core :as hugsql]))
 
 (declare new-country-group
          all-country-groups

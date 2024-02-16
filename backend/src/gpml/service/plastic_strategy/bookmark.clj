@@ -1,5 +1,6 @@
 (ns gpml.service.plastic-strategy.bookmark
-  (:require [gpml.db.plastic-strategy.bookmark :as db.ps.bookmark]))
+  (:require
+   [gpml.db.plastic-strategy.bookmark :as db.ps.bookmark]))
 
 (defn handle-ps-bookmark
   [{:keys [db]} {:keys [bookmark entity-type entity-id plastic-strategy-id section-key]}]
