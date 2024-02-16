@@ -2,6 +2,7 @@
   (:require
    [clojure.string :as str]
    [clojure.walk :as w]
+   [gpml.util.malli :refer [check!]]
    [gpml.util.regular-expressions])
   (:import
    (java.io File)
@@ -87,7 +88,7 @@
   ([flat-list current-root]
    (build-hierarchy flat-list current-root :parent-id))
   ([flat-list current-root parent-id-k]
-   {:pre [(keyword? parent-id-k)]}
+   {:pre [(check! keyword? parent-id-k)]}
    (let [{:keys [direct-children others]}
          (reduce-kv (fn [m _k v]
                       (if (= (parent-id-k v) (:id current-root))

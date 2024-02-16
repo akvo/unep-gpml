@@ -1,7 +1,7 @@
 (ns gpml.util.thread-transactions
   (:require
    [duct.logger :refer [log]]
-   [malli.core :as m]))
+   [gpml.util.malli :refer [check!]]))
 
 (def ^:private transaction-schema
   [:map
@@ -28,8 +28,8 @@
 
 (defn thread-transactions
   [logger txns args-map]
-  {:pre [(m/validate transactions-schema txns)
-         (m/validate args-map-schema args-map)]}
+  {:pre [(check! transactions-schema txns
+                 args-map-schema     args-map)]}
   (if-not (seq txns)
     ;; If there are no more transactions to process, then the passed
     ;; in `args-map` is the return value of the last transaction. If we
