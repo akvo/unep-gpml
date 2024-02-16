@@ -103,7 +103,8 @@
    {:keys [object-key content type visibility]}]
   (try
     (let [{:keys [byte-buffer _size]} (file-content->byte-buffer content)]
-      (with-open [writer (storage-client/blob-writer
+      (with-open [^com.google.cloud.WriteChannel
+                  writer (storage-client/blob-writer
                           storage-client-adapter
                           (get-bucket-name config visibility)
                           object-key
