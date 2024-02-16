@@ -410,6 +410,7 @@ const SignUp = ({ match: { params }, ...props }) => {
                       loading={sending}
                       type={disabledBtn.type}
                       onClick={(e) => handleOnClickBtnSubmit(e)}
+                      style={{ paddingRight: '20px' }}
                     >
                       SUBMIT
                     </Button>

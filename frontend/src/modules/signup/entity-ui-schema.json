@@ -175,7 +175,10 @@
     "orgHeadquarter": {
       "ui:widget": "select",
       "ui:placeholder": "Search",
-      "ui:showSearch": true
+      "ui:showSearch": true,
+      "ui:options": {
+        "type": "single"
+      }
     },
     "geoCoverageType": {
       "ui:placeholder": "Choose the coverage type",

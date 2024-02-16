@@ -337,8 +337,9 @@ const Workspace = ({ profile, isAuthenticated, setLoginVisible }) => {
                       </h2>
                       <p className="h-m">
                         <Trans>
-                          Submit an application for your organisation - Akvo
-                          Spain - to become part of the GPML.
+                          Submit an application for your organisation -{' '}
+                          <b>{profile?.org?.name}</b> - to become part of the
+                          GPML.
                         </Trans>
                       </p>
                       <p className="h-xs">
