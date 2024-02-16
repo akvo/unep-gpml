@@ -94,7 +94,8 @@
                                  ((requiring-resolve 'integrant.repl/go)))
                          :host "0.0.0.0"
                          :port 47480}}
-   :cljfmt {:plugins [[lein-cljfmt "0.9.2"]]}
+   :cljfmt {:plugins [[dev.weavejester/lein-cljfmt "0.12.0"]]
+            :cljfmt {:load-config-file? true}}
    :clj-kondo {:plugins [[com.github.clj-kondo/lein-clj-kondo "2024.02.12"]]}
    :eastwood {:plugins [[jonase/eastwood "1.4.2"]]
               :eastwood {:linters [:all]
