@@ -3,7 +3,7 @@
             [clojure.walk :as w]
             [gpml.util.regular-expressions])
   (:import [java.io File]
-           [java.net URL URLEncoder]
+           [java.net URI URL URLEncoder]
            [java.util Base64]
            [java.util UUID]))
 
@@ -28,9 +28,9 @@
 (defn try-url-str
   "Tries creating a java.net.URL from the provided string `s`. If it
   fails returns false."
-  [s]
+  ^URL [^String s]
   (try
-    (URL. s)
+    (-> s URI. .toURL)
     (catch Exception  _
       false)))
 
