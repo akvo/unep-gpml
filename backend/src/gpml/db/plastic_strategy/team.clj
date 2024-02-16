@@ -28,10 +28,9 @@
 
 (defn add-ps-team-member
   [conn ps-team-member]
-  (jdbc-util/with-constraint-violation-check
-    [{:type :unique
-      :name "plastic_strategy_team_pkey"
-      :error-reason :already-exists}]
+  (jdbc-util/with-constraint-violation-check [{:type :unique
+                                               :name "plastic_strategy_team_pkey"
+                                               :error-reason :already-exists}]
     (add-ps-team-member* conn (ps-team-member->p-ps-team-member ps-team-member))
     {:success? true}))
 

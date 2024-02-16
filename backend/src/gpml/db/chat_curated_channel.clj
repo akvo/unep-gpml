@@ -21,10 +21,9 @@
 
 (defn create-chat-curated-channel
   [conn chat-curated-channel]
-  (jdbc-util/with-constraint-violation-check
-    [{:type :unique
-      :name "chat_curated_channel_pkey"
-      :error-reason :already-exists}]
+  (jdbc-util/with-constraint-violation-check [{:type :unique
+                                               :name "chat_curated_channel_pkey"
+                                               :error-reason :already-exists}]
     (create-chat-curated-channel* conn chat-curated-channel)
     {:success? true}))
 

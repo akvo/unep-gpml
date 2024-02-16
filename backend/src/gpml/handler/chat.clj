@@ -213,7 +213,7 @@
 
 (defn- get-channel-details
   [config {{:keys [query path]} :parameters :as _req}]
-  (let [ result (srv.chat/get-channel-details config (:id path) (:type query))]
+  (let [result (srv.chat/get-channel-details config (:id path) (:type query))]
     (if (:success? result)
       (r/ok (:channel result))
       (r/server-error (dissoc result :success?)))))

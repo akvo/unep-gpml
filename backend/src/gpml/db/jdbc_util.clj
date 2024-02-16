@@ -43,6 +43,7 @@
        :error-details {:msg (ex-message t)}})))
 
 (defmacro with-constraint-violation-check
+  {:style/indent 1}
   [constraints & body]
   `(with-constraint-violation-check-fn
      ~constraints
