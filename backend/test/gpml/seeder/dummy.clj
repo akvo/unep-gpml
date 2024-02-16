@@ -18,8 +18,7 @@
 
 (duct/load-hierarchy)
 
-(defn- dev-system
-  []
+(defn dev-system []
   (-> (duct/resource "gpml/config.edn")
       (duct/read-config)
       (duct/prep-config [:duct.profile/dev])))
@@ -144,7 +143,7 @@
               :duct.database.sql/hikaricp
               :spec))
 
-;; Create New Account as Admin
+  ;; Create New Account as Admin
   (get-or-create-profile db "test@akvo.org" "Testing Profile" "ADMIN" "APPROVED")
   ;; Create New Account as Unapproved user
   (get-or-create-profile db "anothertest@akvo.org" "Another Testing" "USER" "SUBMITTED")
