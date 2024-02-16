@@ -40,6 +40,7 @@
        (ring/wrap-metrics collector)))
 
 (defmacro metrics
+  {:style/indent 2}
   [metrics-collector options & body]
   `(if ~metrics-collector
      (let [labels# {:query (:fn-name ~options) :result "success"}
@@ -92,8 +93,7 @@
 
 (defn configure-stats [^Server jetty-server collector]
   (let [raw-collector (registry/raw collector)
-        stats-handler (doto
-                       (StatisticsHandler.)
+        stats-handler (doto (StatisticsHandler.)
                         (.setHandler (.getHandler jetty-server)))]
     (.setHandler jetty-server stats-handler)
     (.register (JettyStatisticsCollector. stats-handler) raw-collector)

@@ -72,10 +72,9 @@
 
 (defn create-plastic-strategy
   [conn plastic-strategy]
-  (jdbc-util/with-constraint-violation-check
-    [{:type :unique
-      :name "plastic_strategy_country_id_key"
-      :error-reason :already-exists}]
+  (jdbc-util/with-constraint-violation-check [{:type :unique
+                                               :name "plastic_strategy_country_id_key"
+                                               :error-reason :already-exists}]
     {:success? true
      :id (:id (create-plastic-strategy* conn plastic-strategy))}))
 

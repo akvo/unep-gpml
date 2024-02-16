@@ -19,10 +19,9 @@
 
 (defn create-file
   [conn file]
-  (jdbc-util/with-constraint-violation-check
-    [{:type :unique
-      :name "file_pkey"
-      :error-reason :already-exists}]
+  (jdbc-util/with-constraint-violation-check [{:type :unique
+                                               :name "file_pkey"
+                                               :error-reason :already-exists}]
     (create-file* conn (-> file
                            file->persistence-file
                            jdbc-util/db-params-kebab-kw->db-params-snake-kw))

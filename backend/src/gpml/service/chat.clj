@@ -191,7 +191,7 @@
                 (assoc context
                        :success? false
                        :reason :failed-to-get-all-channels
-                       :error-details {:result result}))))}         
+                       :error-details {:result result}))))}
          {:txn-fn
           (fn tx-add-channels-users-details
             [{:keys [channels] :as context}]

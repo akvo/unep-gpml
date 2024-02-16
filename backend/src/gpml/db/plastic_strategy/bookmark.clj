@@ -19,10 +19,9 @@
 (defn create-ps-bookmark
   [conn {:keys [entity-type] :as ps-bookmark}]
   (let [entity-name (name entity-type)]
-    (jdbc-util/with-constraint-violation-check
-      [{:type :unique
-        :name (format "plastic_strategy_%s_bookmark_pkey" entity-name)
-        :error-reason :already-exists}]
+    (jdbc-util/with-constraint-violation-check [{:type :unique
+                                                 :name (format "plastic_strategy_%s_bookmark_pkey" entity-name)
+                                                 :error-reason :already-exists}]
       (create-ps-bookmark* conn (ps-bookmark->p-ps-bookmark ps-bookmark))
       {:success? true})))
 
