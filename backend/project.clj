@@ -53,22 +53,16 @@
                  [ring-cors "0.1.13"]
                  [dev.gethop/rbac "0.1.0-alpha-7"]
                  [camel-snake-kebab "0.4.3"]]
-  :plugins [[duct/lein-duct "0.12.1"]]
   :main ^:skip-aot gpml.main
   :resource-paths ["resources" "target/resources"]
-  :prep-tasks     ["javac" "compile" ["run" ":duct/compiler"]]
-  :middleware     [lein-duct.plugin/middleware]
+  :prep-tasks     ["javac" "compile"]
   :jvm-opts ["-Djava.awt.headless=true"]
   :profiles
   {:uberjar {:aot []
-             :global-vars {*assert* false}
-             :uberjar-name "uberjar.jar"}
-   :metajar {:aot []
+             :pedantic? :abort
              :global-vars {*assert* false}
              :jar-inclusions [#"\.sql$"]
-             :jar-name "app.jar"
-             :pedantic? :abort
-             :plugins [[lein-metajar "0.1.1"]]}
+             :uberjar-name "app.jar"}
    :seeder {:main seeder
             :source-paths ["dev/src"] ;; XXX does it still work
             :resource-paths ["dev/resources"]

@@ -1,4 +1,4 @@
-.PHONY: test kondo eastwood cljfmt lint clean repl lein-repl
+.PHONY: test kondo eastwood cljfmt lint clean repl lein-repl uberjar
 HOME=$(shell echo $$HOME)
 HERE=$(shell echo $$PWD)
 
@@ -70,3 +70,6 @@ psql:
 
 psql_test:
 		psql -h localhost -p 5432 -d gpml_test -U unep
+
+uberjar: clean
+		lein with-profile uberjar uberjar
