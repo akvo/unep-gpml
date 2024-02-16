@@ -74,6 +74,7 @@
             :resource-paths ["dev/resources"]
             :prep-tasks ^:replace []}
    :test {:dependencies [[ring/ring-mock "0.4.0"]]
+          :resource-paths ["test-resources"]
           :jvm-opts ["-Dclojure.spec.compile-asserts=true"
                      "-Dclojure.spec.check-asserts=true"]}
    :dev  {:source-paths   ["dev/src"]

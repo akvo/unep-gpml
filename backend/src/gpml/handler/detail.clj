@@ -1,5 +1,6 @@
 (ns gpml.handler.detail
   (:require
+   [clojure.java.io :as io]
    [clojure.java.jdbc :as jdbc]
    [clojure.set :as set]
    [clojure.string :as str]
@@ -966,7 +967,7 @@
             (map
              vector
              columns
-             (map extract-column-id (string/split (slurp "dev/resources/questionnarie-columns.csv") #";")))))
+             (map extract-column-id (string/split (slurp (io/resource "questionnarie-columns.csv")) #";")))))
 
     (defn clean-up [node]
       (->

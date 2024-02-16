@@ -77,10 +77,9 @@
 (defn create-badge
   [conn badge]
   (try
-    (jdbc-util/with-constraint-violation-check
-      [{:type :unique
-        :name "badge_name_key"
-        :error-reason :already-exists}]
+    (jdbc-util/with-constraint-violation-check [{:type :unique
+                                                 :name "badge_name_key"
+                                                 :error-reason :already-exists}]
       {:success? true
        :id (:id (create-badge* conn badge))})
     (catch Exception t
