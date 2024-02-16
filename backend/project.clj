@@ -62,7 +62,11 @@
              :pedantic? :abort
              :global-vars {*assert* false}
              :jar-inclusions [#"\.sql$"]
-             :uberjar-name "app.jar"}
+             :uberjar-name "app.jar"
+             :plugins [[duct/lein-duct "0.12.3"]]
+             :middleware [lein-duct.plugin/middleware]
+             :main ^:skip-aot gpml.main
+             :prep-tasks ["javac" "compile" ["run" ":duct/compiler"]]}
    :seeder {:main seeder
             :source-paths ["seeder"]
             :resource-paths ["seeder-resources"]}

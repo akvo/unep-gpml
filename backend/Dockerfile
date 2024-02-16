@@ -15,7 +15,7 @@ CMD java \
     -XX:MaxRAMPercentage=70.0 \
     -server \
     -cp app.jar \
-    gpml.main :duct/migrator && \
+    clojure.main -m gpml.main :duct/migrator && \
     java \
     -Dclojure.compiler.direct-linking=true \
     -Dclojure.main.report=stderr \
@@ -27,4 +27,4 @@ CMD java \
     -XX:MaxRAMPercentage=70.0 \
     -server \
     -cp app.jar \
-    gpml.main :duct/daemon
+    clojure.main -m gpml.main :duct/daemon
