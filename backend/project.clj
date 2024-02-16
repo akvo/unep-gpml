@@ -92,8 +92,7 @@
    :eastwood {:plugins [[jonase/eastwood "1.4.2"]]
               :eastwood {:linters [:all]
                          :config-files ["eastwood_cfg.clj"]
-                         :ignored-faults {:reflection {gpml.service.file {:line 106}
-                                                       gpml.handler.monitoring {:line 81}}}
+                         :ignored-faults {}
                          :exclude-linters [:keyword-typos
                                            :boxed-math
                                            :unused-locals
