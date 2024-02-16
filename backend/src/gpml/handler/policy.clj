@@ -1,27 +1,29 @@
 (ns gpml.handler.policy
-  (:require [clojure.java.jdbc :as jdbc]
-            [clojure.set :as set]
-            [duct.logger :refer [log]]
-            [gpml.db.policy :as db.policy]
-            [gpml.domain.policy :as dom.policy]
-            [gpml.handler.file :as handler.file]
-            [gpml.handler.resource.geo-coverage :as handler.geo]
-            [gpml.handler.resource.permission :as h.r.permission]
-            [gpml.handler.resource.related-content :as handler.resource.related-content]
-            [gpml.handler.resource.tag :as handler.resource.tag]
-            [gpml.handler.responses :as r]
-            [gpml.handler.util :as handler.util]
-            [gpml.service.association :as srv.association]
-            [gpml.service.permissions :as srv.permissions]
-            [gpml.util :as util]
-            [gpml.util.email :as email]
-            [gpml.util.malli :as util.malli]
-            [gpml.util.postgresql :as pg-util]
-            [gpml.util.sql :as sql-util]
-            [integrant.core :as ig]
-            [malli.util :as mu]
-            [ring.util.response :as resp])
-  (:import [java.sql SQLException]))
+  (:require
+   [clojure.java.jdbc :as jdbc]
+   [clojure.set :as set]
+   [duct.logger :refer [log]]
+   [gpml.db.policy :as db.policy]
+   [gpml.domain.policy :as dom.policy]
+   [gpml.handler.file :as handler.file]
+   [gpml.handler.resource.geo-coverage :as handler.geo]
+   [gpml.handler.resource.permission :as h.r.permission]
+   [gpml.handler.resource.related-content :as handler.resource.related-content]
+   [gpml.handler.resource.tag :as handler.resource.tag]
+   [gpml.handler.responses :as r]
+   [gpml.handler.util :as handler.util]
+   [gpml.service.association :as srv.association]
+   [gpml.service.permissions :as srv.permissions]
+   [gpml.util :as util]
+   [gpml.util.email :as email]
+   [gpml.util.malli :as util.malli]
+   [gpml.util.postgresql :as pg-util]
+   [gpml.util.sql :as sql-util]
+   [integrant.core :as ig]
+   [malli.util :as mu]
+   [ring.util.response :as resp])
+  (:import
+   (java.sql SQLException)))
 
 (defn- create-policy
   [{:keys [logger mailjet-config] :as config}

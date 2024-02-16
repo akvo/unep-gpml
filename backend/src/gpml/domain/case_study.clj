@@ -1,10 +1,10 @@
 (ns gpml.domain.case-study
-  (:require [gpml.domain.related-content :as dom.rc]
-            [gpml.domain.types :as dom.types]
-            [gpml.util :as util]
-            [java-time :as jt]
-            [java-time.temporal]
-            [malli.core :as m]))
+  (:require
+   [gpml.domain.related-content :as dom.rc]
+   [gpml.domain.types :as dom.types]
+   [gpml.util :as util]
+   [java-time.api :as jt]
+   [malli.core :as m]))
 
 (def ^:const entity-relation-keys
   #{:geo_coverage_countries :geo_coverage_country_groups :tags
@@ -76,7 +76,7 @@
       {:description "The Case Study's creation datetime."
        :type "string"
        :format "date-time"}
-      :decode/string (fn [s] (jt/instant s))}
+      :decode/string jt/instant}
      inst?]
     [:last_modified_at
      {:optional true
@@ -84,7 +84,7 @@
       {:description "The Case Study's last modification datetime."
        :type "string"
        :format "date-time"}
-      :decode/string (fn [s] (jt/instant s))}
+      :decode/string jt/instant}
      inst?]
     [:reviewed_at
      {:optional true
@@ -92,7 +92,7 @@
       {:description "The Case Study's review's datetime."
        :type "string"
        :format "date-time"}
-      :decode/string (fn [s] (jt/instant s))}
+      :decode/string jt/instant}
      inst?]
     [:reviewed_by
      {:optional true

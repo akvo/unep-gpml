@@ -1,8 +1,9 @@
 (ns gpml.handler.programmatic.brs-api-importer
-  (:require [duct.logger :refer [log]]
-            [gpml.handler.responses :as r]
-            [gpml.scheduler.brs-api-importer :as brs-api-importer]
-            [integrant.core :as ig]))
+  (:require
+   [duct.logger :refer [log]]
+   [gpml.handler.responses :as r]
+   [gpml.scheduler.brs-api-importer :as brs-api-importer]
+   [integrant.core :as ig]))
 
 (defn- run-brs-api-importer
   [{:keys [logger] :as config}]

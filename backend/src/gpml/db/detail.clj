@@ -1,6 +1,7 @@
 (ns gpml.db.detail
-  {:ns-tracker/resource-deps ["detail.sql"]}
-  (:require [hugsql.core :as hugsql]))
+  #:ns-tracker{:resource-deps ["detail.sql"]}
+  (:require
+   [hugsql.core :as hugsql]))
 
 (declare get-topic-details
          get-entity-details

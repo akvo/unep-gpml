@@ -1,8 +1,9 @@
 (ns gpml.handler.chat-curated-channel
-  (:require [gpml.handler.resource.permission :as h.r.permission]
-            [gpml.handler.responses :as r]
-            [gpml.service.chat-curated-channel :as srv.cc-channel]
-            [integrant.core :as ig]))
+  (:require
+   [gpml.handler.resource.permission :as h.r.permission]
+   [gpml.handler.responses :as r]
+   [gpml.service.chat-curated-channel :as srv.cc-channel]
+   [integrant.core :as ig]))
 
 (def ^:private create-chat-curated-channel-params-schema
   [:map

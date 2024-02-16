@@ -1,9 +1,10 @@
 (ns gpml.db.plastic-strategy.file
-  {:ns-tracker/resource-deps ["plastic_strategy/file.sql"]}
-  (:require [gpml.db.jdbc-util :as jdbc-util]
-            [gpml.util :as util]
-            [gpml.util.postgresql :as util.pgsql]
-            [hugsql.core :as hugsql]))
+  #:ns-tracker{:resource-deps ["plastic_strategy/file.sql"]}
+  (:require
+   [gpml.db.jdbc-util :as jdbc-util]
+   [gpml.util :as util]
+   [gpml.util.postgresql :as util.pgsql]
+   [hugsql.core :as hugsql]))
 
 (declare create-ps-file*
          delete-ps-file*
@@ -17,10 +18,9 @@
 
 (defn create-ps-file
   [conn ps-file]
-  (jdbc-util/with-constraint-violation-check
-    [{:type :unique
-      :name "plastic_strategy_file_pkey"
-      :error-reason :already-exists}]
+  (jdbc-util/with-constraint-violation-check [{:type :unique
+                                               :name "plastic_strategy_file_pkey"
+                                               :error-reason :already-exists}]
     (create-ps-file* conn ps-file)
     {:success? true}))
 
@@ -34,7 +34,7 @@
          :reason :unexpected-number-of-affected-rows
          :error-details {:expected-affected-rows 1
                          :actual-affected-rows affected}}))
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
@@ -47,7 +47,7 @@
        :ps-files (->> (get-ps-files* conn p-opts)
                       jdbc-util/db-result-snake-kw->db-result-kebab-kw
                       (map p-ps-file->ps-file))})
-    (catch Throwable t
+    (catch Exception t
       (prn t)
       {:success? false
        :reason :exception
@@ -64,7 +64,7 @@
            :ps-file (-> result :ps-files first)}
           {:success? false
            :reason :not-found})))
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))

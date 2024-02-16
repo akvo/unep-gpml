@@ -1,37 +1,39 @@
 (ns gpml.fixtures
-  (:require [clojure.java.jdbc :as jdbc]
-            [clojure.string :as str]
-            [duct.core :as duct]
-            [duct.database.sql :as sql]
-            [gpml.util.email :as email]
-            [integrant.core :as ig])
-  (:import [java.util UUID]))
+  (:require
+   [clojure.java.jdbc :as jdbc]
+   [clojure.string :as str]
+   [duct.core :as duct]
+   [duct.database.sql :as sql]
+   [gpml.util.email :as email]
+   [integrant.core :as ig])
+  (:import
+   (java.util UUID)))
 
 (defonce ^:private lock (Object.))
-(defonce ^:private template-test-db-migrated? false)
-(def ^:dynamic *system*)
+(def ^:dynamic *system* nil)
 
 (duct/load-hierarchy)
 
 (defmethod ig/init-key :gpml.test/db [_ spec]
   (sql/->Boundary spec))
 
+(defn read-config [x]
+  (duct/read-config x {'gpml/eval eval}))
+
 (defn- test-system
   []
   (-> (duct/resource "gpml/config.edn")
-      (duct/read-config)
+      (read-config)
       (duct/prep-config [:duct.profile/test])))
 
 (defn- migrate-template-test-db
   []
   (locking lock
-    (when-not template-test-db-migrated?
-      (println "Migrating template db")
+    (when-not (System/getProperty "gpml.template-test-db.migrated")
       (-> (test-system)
           (ig/init [:duct/migrator])
           (ig/halt!))
-      (alter-var-root #'template-test-db-migrated? not)
-      (println "Done migrating template db"))))
+      (System/setProperty "gpml.template-test-db.migrated" "true"))))
 
 (defn- create-test-db
   [db db-name]
@@ -51,8 +53,7 @@
 (def mails-sent (atom []))
 (defn with-test-system
   [f]
-  (when-not template-test-db-migrated?
-    (migrate-template-test-db))
+  (migrate-template-test-db)
   (reset! mails-sent [])
   (let [tmp (test-system)
         new-db-name (format "test_db_%s" (uuid))

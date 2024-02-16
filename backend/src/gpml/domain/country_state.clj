@@ -1,5 +1,6 @@
 (ns gpml.domain.country-state
-  (:require [malli.core :as m]))
+  (:require
+   [malli.core :as m]))
 
 (def CountryState
   (m/schema

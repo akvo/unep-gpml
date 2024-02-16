@@ -1,5 +1,6 @@
 (ns gpml.domain.topic-stakeholder-auth
-  (:require [malli.core :as m]))
+  (:require
+   [malli.core :as m]))
 
 (def ^:const max-focal-points
   "The maximum amount of `focal-point` stakeholder in a single

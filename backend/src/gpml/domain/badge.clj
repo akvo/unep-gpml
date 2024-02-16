@@ -1,6 +1,7 @@
 (ns gpml.domain.badge
-  (:require [gpml.domain.types :as dom.types]
-            [malli.core :as m]))
+  (:require
+   [gpml.domain.types :as dom.types]
+   [malli.core :as m]))
 
 (def Badge
   "The Badge entity model"

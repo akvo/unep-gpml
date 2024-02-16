@@ -1,12 +1,13 @@
 (ns gpml.handler.organisation-detail
-  (:require [gpml.db.organisation-detail :as db.organisation-detail]
-            [gpml.handler.resource.permission :as h.r.permission]
-            [gpml.handler.responses :as r]
-            [gpml.service.file :as srv.file]
-            [gpml.service.permissions :as srv.permissions]
-            [gpml.util :as util]
-            [integrant.core :as ig]
-            [ring.util.response :as resp]))
+  (:require
+   [gpml.db.organisation-detail :as db.organisation-detail]
+   [gpml.handler.resource.permission :as h.r.permission]
+   [gpml.handler.responses :as r]
+   [gpml.service.file :as srv.file]
+   [gpml.service.permissions :as srv.permissions]
+   [gpml.util :as util]
+   [integrant.core :as ig]
+   [ring.util.response :as resp]))
 
 (defn api-organisation-detail-opts->organisation-detail-opts
   [api-organisation-detail-opts]

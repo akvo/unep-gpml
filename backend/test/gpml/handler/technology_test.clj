@@ -1,16 +1,17 @@
 (ns gpml.handler.technology-test
-  (:require [clojure.test :refer [deftest is testing use-fixtures]]
-            [gpml.db.language :as db.language]
-            [gpml.db.rbac-util :as db.rbac-util]
-            [gpml.db.tag :as db.tag]
-            [gpml.db.technology :as db.technology]
-            [gpml.domain.types :as dom.types]
-            [gpml.fixtures :as fixtures]
-            [gpml.handler.profile-test :as profile-test]
-            [gpml.handler.technology :as technology]
-            [gpml.test-util :as test-util]
-            [integrant.core :as ig]
-            [ring.mock.request :as mock]))
+  (:require
+   [clojure.test :refer [deftest is testing use-fixtures]]
+   [gpml.db.language :as db.language]
+   [gpml.db.rbac-util :as db.rbac-util]
+   [gpml.db.tag :as db.tag]
+   [gpml.db.technology :as db.technology]
+   [gpml.domain.types :as dom.types]
+   [gpml.fixtures :as fixtures]
+   [gpml.handler.profile-test :as profile-test]
+   [gpml.handler.technology :as technology]
+   [gpml.test-util :as test-util]
+   [integrant.core :as ig]
+   [ring.mock.request :as mock]))
 
 (use-fixtures :each fixtures/with-test-system)
 
@@ -25,7 +26,7 @@
    :url "https://akvo.org"
    :attachments nil
    :remarks nil
-   :country (-> (:countries data) first :id)
+   :country (-> data :countries first :id)
    :email "john@akvo.org"
    :document_preview false
    :year_founded 2021

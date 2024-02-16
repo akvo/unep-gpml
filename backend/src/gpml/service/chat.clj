@@ -1,12 +1,13 @@
 (ns gpml.service.chat
-  (:require [gpml.boundary.port.chat :as chat]
-            [gpml.db.rbac-util :as db.rbac-util]
-            [gpml.db.stakeholder :as db.sth]
-            [gpml.service.file :as srv.file]
-            [gpml.util.crypto :as util.crypto]
-            [gpml.util.email :as util.email]
-            [gpml.util.thread-transactions :as tht]
-            [medley.core :as medley]))
+  (:require
+   [gpml.boundary.port.chat :as chat]
+   [gpml.db.rbac-util :as db.rbac-util]
+   [gpml.db.stakeholder :as db.sth]
+   [gpml.service.file :as srv.file]
+   [gpml.util.crypto :as util.crypto]
+   [gpml.util.email :as util.email]
+   [gpml.util.thread-transactions :as tht]
+   [medley.core :as medley]))
 
 (def ^:private ^:const random-password-size
   10)
@@ -191,7 +192,7 @@
                 (assoc context
                        :success? false
                        :reason :failed-to-get-all-channels
-                       :error-details {:result result}))))}         
+                       :error-details {:result result}))))}
          {:txn-fn
           (fn tx-add-channels-users-details
             [{:keys [channels] :as context}]
@@ -207,7 +208,7 @@
                            {:success? true
                             :stakeholders (db.sth/get-stakeholders (:spec db)
                                                                    search-opts)}
-                           (catch Throwable t
+                           (catch Exception t
                              {:success? false
                               :reason :exception
                               :error-details {:msg (ex-message t)}}))]
@@ -270,7 +271,7 @@
                            {:success? true
                             :stakeholders (db.sth/get-stakeholders (:spec db)
                                                                    search-opts)}
-                           (catch Throwable t
+                           (catch Exception t
                              {:success? false
                               :reason :exception
                               :error-details {:msg (ex-message t)}}))]

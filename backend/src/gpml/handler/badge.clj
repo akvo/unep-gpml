@@ -1,13 +1,15 @@
 (ns gpml.handler.badge
-  (:require [camel-snake-kebab.core :refer [->kebab-case]]
-            [camel-snake-kebab.extras :as cske]
-            [duct.logger :refer [log]]
-            [gpml.db.badge :as db.badge]
-            [gpml.domain.types :as dom.types]
-            [gpml.handler.resource.permission :as h.r.permission]
-            [gpml.handler.responses :as r]
-            [integrant.core :as ig])
-  (:import [java.sql SQLException]))
+  (:require
+   [camel-snake-kebab.core :refer [->kebab-case]]
+   [camel-snake-kebab.extras :as cske]
+   [duct.logger :refer [log]]
+   [gpml.db.badge :as db.badge]
+   [gpml.domain.types :as dom.types]
+   [gpml.handler.resource.permission :as h.r.permission]
+   [gpml.handler.responses :as r]
+   [integrant.core :as ig])
+  (:import
+   (java.sql SQLException)))
 
 (defn- get-badge-by-id-or-name
   [{:keys [db]} badge-id-or-name]
@@ -41,7 +43,7 @@
           (if (= reason :not-found)
             (r/not-found {})
             (r/server-error result))))
-      (catch Throwable t
+      (catch Exception t
         (log logger :error ::get-badge-failed {:exception-message (.getMessage t)})
         (r/server-error {:success? false
                          :reason :could-not-get-badge
@@ -120,7 +122,7 @@
 
                 :else
                 (r/server-error (dissoc result :success?)))))))
-      (catch Throwable t
+      (catch Exception t
         (log logger :error ::failed-to-assign-or-unassign-badge {:exception-message (.getMessage t)})
         (let [response {:success? false
                         :reason :could-not-assign-or-unassign-badge}]

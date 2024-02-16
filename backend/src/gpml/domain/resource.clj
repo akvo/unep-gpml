@@ -1,6 +1,7 @@
 (ns gpml.domain.resource
-  (:require [gpml.domain.types :as dom.types]
-            [malli.core :as m]))
+  (:require
+   [gpml.domain.types :as dom.types]
+   [malli.core :as m]))
 
 (def ^:const types
   "Possible Resource types.

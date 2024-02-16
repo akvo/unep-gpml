@@ -1,17 +1,19 @@
 (ns gpml.util
-  (:require [clojure.string :as str]
-            [clojure.walk :as w]
-            [gpml.util.regular-expressions])
-  (:import [java.io File]
-           [java.net URL URLEncoder]
-           [java.util Base64]
-           [java.util UUID]))
+  (:require
+   [clojure.string :as str]
+   [clojure.walk :as w]
+   [gpml.util.malli :refer [check!]]
+   [gpml.util.regular-expressions])
+  (:import
+   (java.io File)
+   (java.net URI URL URLEncoder)
+   (java.util Base64 UUID)))
 
 (defn uuid
   "If no argument is passed, creates a random UUID. If the passed
   paramenter is a UUID, returns it verbatim. If it is a string
   representing a UUID value return the corresponding UUID. Any other
-  value or invalid string returns nil. "
+  value or invalid string returns nil."
   ([]
    (UUID/randomUUID))
   ([uuid]
@@ -28,9 +30,9 @@
 (defn try-url-str
   "Tries creating a java.net.URL from the provided string `s`. If it
   fails returns false."
-  [s]
+  ^URL [^String s]
   (try
-    (URL. s)
+    (-> s URI. .toURL)
     (catch Exception  _
       false)))
 
@@ -86,7 +88,7 @@
   ([flat-list current-root]
    (build-hierarchy flat-list current-root :parent-id))
   ([flat-list current-root parent-id-k]
-   {:pre [(keyword? parent-id-k)]}
+   {:pre [(check! keyword? parent-id-k)]}
    (let [{:keys [direct-children others]}
          (reduce-kv (fn [m _k v]
                       (if (= (parent-id-k v) (:id current-root))
@@ -118,7 +120,7 @@
 
 (defn decode-base64
   "Returns a byte[] from a Base64 encoded String"
-  [src]
+  [^String src]
   (.decode (Base64/getDecoder) src))
 
 (defn base64?

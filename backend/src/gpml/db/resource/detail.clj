@@ -1,9 +1,10 @@
 (ns gpml.db.resource.detail
-  {:ns-tracker/resource-deps ["resource/detail.sql"]}
-  (:require [clojure.java.jdbc :as jdbc]
-            [dev.gethop.rbac :as rbac]
-            [gpml.db.resource.related-content :as db.resource.detail]
-            [hugsql.core :as hugsql]))
+  #:ns-tracker{:resource-deps ["resource/detail.sql"]}
+  (:require
+   [clojure.java.jdbc :as jdbc]
+   [dev.gethop.rbac :as rbac]
+   [gpml.db.resource.related-content :as db.resource.detail]
+   [hugsql.core :as hugsql]))
 
 (declare get-resource
          delete-resource*)
@@ -17,7 +18,7 @@
                                                 {:resource-id id
                                                  :resource-table-name type})
     {:success? true}
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
@@ -34,7 +35,7 @@
       (when-not (= 1 (delete-resource* tx {:table-name type :id id}))
         (throw (ex-info "Failed to delete resource." {:reason :unexpected-number-of-affected-rows})))
       {:success? true})
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))

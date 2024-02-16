@@ -1,17 +1,18 @@
 (ns gpml.handler.invitation
-  (:require [clojure.string :as str]
-            [duct.logger :refer [log]]
-            [gpml.db.invitation :as db.invitation]
-            [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.handler.resource.permission :as h.r.permission]
-            [gpml.handler.responses :as r]
-            [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
-            [gpml.util :as util]
-            [gpml.util.postgresql :as pg-util]
-            [gpml.util.regular-expressions :as util.regex]
-            [integrant.core :as ig]
-            [java-time.temporal])
-  (:import [java.sql SQLException]))
+  (:require
+   [clojure.string :as str]
+   [duct.logger :refer [log]]
+   [gpml.db.invitation :as db.invitation]
+   [gpml.db.stakeholder :as db.stakeholder]
+   [gpml.handler.resource.permission :as h.r.permission]
+   [gpml.handler.responses :as r]
+   [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
+   [gpml.util :as util]
+   [gpml.util.postgresql :as pg-util]
+   [gpml.util.regular-expressions :as util.regex]
+   [integrant.core :as ig])
+  (:import
+   (java.sql SQLException)))
 
 (def ^:private get-invitations-params
   [:map
@@ -78,7 +79,7 @@
                           (conj invitations (merge invitation stakeholder-w-unwrapped-tags))))
                       []
                       invitations))))
-    (catch Throwable t
+    (catch Exception t
       (log logger :error ::get-invitations {:exception-message (.getMessage t)})
       (if (instance? SQLException t)
         (r/server-error {:success? false
