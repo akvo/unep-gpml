@@ -55,7 +55,6 @@ const ForumTitle = ({
   className = null,
   ...props
 }) => {
-  console.log(props)
   return (
     <div className={classNames(styles.headingClass, className)}>
       <span className={styles.forumType}>

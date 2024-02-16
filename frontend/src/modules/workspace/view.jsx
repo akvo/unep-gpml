@@ -8,6 +8,7 @@ import {
   Modal,
   notification,
   List,
+  Space,
 } from 'antd'
 const { Title } = Typography
 import kebabCase from 'lodash/kebabCase'
@@ -247,11 +248,19 @@ const Workspace = ({ profile, isAuthenticated, setLoginVisible }) => {
                 <h2 className="w-bold">
                   <Trans>Forums</Trans>
                 </h2>
-                <Link href="/forum">
-                  <Button withArrow="link" ghost>
-                    <Trans>View All Forums</Trans>
-                  </Button>
-                </Link>
+                <Space>
+                  <Link href="/forum">
+                    <Button withArrow="link" ghost>
+                      <Trans>View All Forums</Trans>
+                    </Button>
+                  </Link>
+                  {/* TODO: remove it soon */}
+                  <Link href="/dsc-example">
+                    <Button withArrow="link" ghost>
+                      <Trans>View All DSC Forums</Trans>
+                    </Button>
+                  </Link>
+                </Space>
               </div>
               <List
                 className="forum-list"

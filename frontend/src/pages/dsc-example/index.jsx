@@ -1,65 +1,185 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Head from 'next/head'
-import styles from './index.module.scss'
-import { Button, Space } from 'antd'
+import { Trans } from '@lingui/macro'
+import { List, Button } from 'antd'
+import { useRouter } from 'next/router'
 
-const GUEST_UUID = '23762b5b-7951-4d38-a2ed-f02185a65a17'
+import styles from '../forum/index.module.scss'
+import { loadCatalog } from '../../translations/utils'
+import ForumCard from '../../components/forum-card/forum-card'
+import ForumMembers from '../../modules/forum/forum-members'
+import { ChatStore, UIStore } from '../../store'
 
 const DSCPage = () => {
-  const [sdk, setSDK] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const allForums = ChatStore.useState((s) => s.dscForums)
+  /**
+   * TODO: accessToken should be stored in the BACKEND database
+   * to prevent create a new user with the same username when the global state/client storage was removed
+   * https://deadsimplechat.com/developer/single-sign-on/sso-using-auth-token#step2-creating-the-user
+   */
+  const accessToken = ChatStore.useState((s) => s.accessToken)
+  const profile = UIStore.useState((s) => s.profile)
+  const router = useRouter()
 
-  const openFirstChannel = async () => {
-    const { channels } = await sdk.getActiveChannels()
-    const [firstChannel] = channels
-    sdk.selectChannel(firstChannel?._id)
+  const goToForum = (forum) => {
+    router.push(`/dsc-example/${forum.id}`)
   }
-  const handleOnSetup = useCallback(async () => {
-    if (window?.DSChatSDK) {
-      const jsSDK = new window.DSChatSDK(
-        'pTDxZXWX-',
-        'chat-frame',
-        'pub_47434a7579375847583071713556774f5f7a5342557773347a514332524566654169626a6741395538414a5f7a703459'
-      )
-      // Call the connect method to connect the SDK to the Chat iFrame.
-      await jsSDK.connect()
-      setSDK(jsSDK)
-    }
-  }, [])
 
-  useEffect(() => {
-    handleOnSetup()
-  }, [handleOnSetup])
-
-  useEffect(() => {
-    const unsubscribe = () => {
-      if (sdk) {
-        sdk.on('message', (message) => {
-          console.log('New Message Arrived', message)
+  const fetchData = useCallback(async () => {
+    if (allForums.length) {
+      setLoading(false)
+    } else {
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_DSC_API_URL}/consumer/api/v1/chatrooms?auth=${process.env.NEXT_PUBLIC_DSC_PRIVATE_KEY}`
+        )
+        const data = await res.json()
+        const forums = data.map((d) => ({
+          users_count: 0,
+          name: d.name,
+          lm: '2024-02-14T15:18:31.220Z',
+          ts: '2023-08-14T14:52:31.359Z',
+          updated_at: '2024-02-14T15:18:31.308Z',
+          msgs: 0,
+          id: d.roomId,
+          t: 'c', // TODO: identify private/public forum
+          users: [],
+          avatar_url: null,
+        }))
+        ChatStore.update((s) => {
+          s.dscForums = forums
         })
+
+        setLoading(false)
+      } catch (error) {
+        setLoading(false)
+        console.error('[FORUMS]', error)
       }
     }
+  }, [loading, allForums])
 
-    return () => unsubscribe()
-  }, [sdk])
+  useEffect(() => {
+    fetchData()
+  }, [fetchData])
+
+  // const handleOnSSO = useCallback(async () => {
+  //   if (!accessToken && profile?.email) {
+  //     /**
+  //      * having CORS isssue
+  //      * NB: This is only example, we won't do SSO like this for real implementation
+  //      */
+  //     const res = await fetch(
+  //       `${process.env.NEXT_PUBLIC_DSC_API_URL}/consumer/api/v1/user?auth=${process.env.NEXT_PUBLIC_DSC_PRIVATE_KEY}`,
+  //       {
+  //         method: 'POST',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //         },
+  //         body: JSON.stringify({
+  //           username: profile.email,
+  //         }),
+  //       }
+  //     )
+  //     const { accessToken: _accessToken } = await res.json()
+  //     ChatStore.update((s) => {
+  //       s.accessToken = _accessToken
+  //     })
+  //   }
+  // }, [accessToken, profile])
+
+  // useEffect(() => {
+  //   handleOnSSO()
+  // }, [handleOnSSO])
 
   return (
-    <div className={styles.container}>
+    <>
       <Head>
-        <script src="https://cdn.deadsimplechat.com/sdk/1.2.1/dschatsdk.min.js"></script>
+        <title>Forums | UNEP GPML Digital Platform</title>
       </Head>
-      <Space>
-        <Button onClick={openFirstChannel} size="small">
-          Open first channel
-        </Button>
-      </Space>
+      <div className="container">
+        <div className={styles.forumHome}>
+          <span className="h-xs title">
+            <Trans>Forums</Trans>
+          </span>
+          {/* MY FORUMS START */}
 
-      <iframe
-        id="chat-frame"
-        src={`https://deadsimplechat.com/pTDxZXWX-?uniqueUserIdentifier=${GUEST_UUID}`}
-        width="100%"
-      />
-    </div>
+          {/* MY FORUMS END */}
+          <div className="header">
+            <div className="jumbotron">
+              <h2>
+                <Trans>All Forums</Trans>
+              </h2>
+              <p className="h-xs">
+                <Trans>
+                  Welcome to the Global Partnership on Plastic Pollution and
+                  Marine Litter (GPML) Digital Platform forums page. A space
+                  where you can interact, network, and share insights and
+                  information with other like-minded advocates on issues related
+                  to plastic pollution and marine litter strategies, models and
+                  methodologies, data harmonization, innovative financing, and
+                  Capacity Building. Your voice matters, join now and be part of
+                  the wave for change.
+                </Trans>
+              </p>
+            </div>
+          </div>
+          <section>
+            {/* ALL FORUMS START */}
+            <List
+              grid={{ column: 3, gutter: 20 }}
+              dataSource={allForums}
+              loading={loading}
+              renderItem={(item) => (
+                <List.Item>
+                  <ForumCard>
+                    <ForumCard.HStack>
+                      <ForumCard.Title {...item} />
+                    </ForumCard.HStack>
+                    <ForumCard.HStack>
+                      {item?.isView ? (
+                        <ForumMembers forum={item} />
+                      ) : (
+                        <ForumCard.LastMessage lm={item?.lm} />
+                      )}
+                      <div>
+                        {item?.isView ? (
+                          <Button
+                            size="small"
+                            onClick={() => goToForum(item)}
+                            ghost
+                          >
+                            <Trans>View</Trans>
+                          </Button>
+                        ) : (
+                          <Button
+                            size="small"
+                            withArrow="link"
+                            onClick={() => goToForum(item)}
+                          >
+                            <Trans>Chat</Trans>
+                          </Button>
+                        )}
+                      </div>
+                    </ForumCard.HStack>
+                  </ForumCard>
+                </List.Item>
+              )}
+            />
+            {/* ALL FORUMS END */}
+          </section>
+        </div>
+      </div>
+    </>
   )
+}
+
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
 }
 
 export default DSCPage
