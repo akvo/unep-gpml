@@ -26,7 +26,7 @@
    :url "https://akvo.org"
    :attachments nil
    :remarks nil
-   :country (-> (:countries data) first :id)
+   :country (-> data :countries first :id)
    :email "john@akvo.org"
    :document_preview false
    :year_founded 2021

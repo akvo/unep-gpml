@@ -18,23 +18,18 @@
            [org.eclipse.jetty.server.handler StatisticsHandler]))
 
 (defmethod ig/init-key ::collector [_ _]
-  (->
-   (prometheus/collector-registry)
-   (jvm/initialize)
-   (ring/initialize)
-   (iapetos.core/register
-    (iapetos.core/histogram
-     :sql/run-duration
-     {:description "SQL query duration"
-      :labels [:query]})
-    (iapetos.core/counter
-     :sql/run-total
-     {:description "the total number of finished runs of the observed sql query."
-      :labels [:query :result]})
-    (iapetos.collector.exceptions/exception-counter
-     :sql/exceptions-total
-     {:description "the total number and type of exceptions for the observed sql query."
-      :labels [:query]}))))
+  (-> (prometheus/collector-registry)
+      (jvm/initialize)
+      (ring/initialize)
+      (iapetos.core/register (iapetos.core/histogram :sql/run-duration
+                                                     {:description "SQL query duration"
+                                                      :labels [:query]})
+                             (iapetos.core/counter :sql/run-total
+                                                   {:description "the total number of finished runs of the observed sql query."
+                                                    :labels [:query :result]})
+                             (iapetos.collector.exceptions/exception-counter :sql/exceptions-total
+                                                                             {:description "the total number and type of exceptions for the observed sql query."
+                                                                              :labels [:query]}))))
 
 (defmethod ig/init-key ::middleware [_ {:keys [collector]}]
   #(-> %
@@ -58,11 +53,11 @@
   adapter/HugsqlAdapter
   (execute [_ db sqlvec options]
     (metrics metrics-collector options
-             (adapter/execute jdbc-adapter db sqlvec options)))
+      (adapter/execute jdbc-adapter db sqlvec options)))
 
   (query [_ db sqlvec options]
     (metrics metrics-collector options
-             (adapter/query jdbc-adapter db sqlvec options)))
+      (adapter/query jdbc-adapter db sqlvec options)))
 
   (result-one [_ result options]
     (adapter/result-one jdbc-adapter result options))
