@@ -8,9 +8,9 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_DB: gpml
-      POSTGRES_USER: unep
       POSTGRES_HOST_AUTH_METHOD: trust
+      APP_DB_NAME: gpml
+      APP_TEST_DB_NAME: gpml_test
     volumes:
-      - ./sql-init:/docker-entrypoint-initdb.d
+      - ../db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
 
