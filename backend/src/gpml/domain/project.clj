@@ -1,6 +1,7 @@
 (ns gpml.domain.project
-  (:require [gpml.domain.types :as dom.types]
-            [malli.core :as m]))
+  (:require
+   [gpml.domain.types :as dom.types]
+   [malli.core :as m]))
 
 (def project-types
   "Possible values for `project-type`."

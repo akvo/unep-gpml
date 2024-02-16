@@ -1,6 +1,7 @@
 (ns gpml.seeder.db
-  (:require [clojure.java.jdbc :as jdbc]
-            [hugsql.core :as hugsql]))
+  (:require
+   [clojure.java.jdbc :as jdbc]
+   [hugsql.core :as hugsql]))
 
 (declare get-foreign-key
          update-foreign-value

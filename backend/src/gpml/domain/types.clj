@@ -1,7 +1,8 @@
 (ns gpml.domain.types
   "Well-known domain global types definitions. These types are used
   across the domain model by several entities."
-  (:require [malli.core :as m]))
+  (:require
+   [malli.core :as m]))
 
 ;; TODO: Refactor enums to be keywords instead of strings.
 (def ^:const review-statuses

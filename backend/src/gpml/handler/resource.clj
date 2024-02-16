@@ -1,26 +1,28 @@
 (ns gpml.handler.resource
-  (:require [clojure.java.jdbc :as jdbc]
-            [clojure.set :as set]
-            [duct.logger :refer [log]]
-            [gpml.auth :as auth]
-            [gpml.db.activity :as db.activity]
-            [gpml.db.language :as db.language]
-            [gpml.db.resource :as db.resource]
-            [gpml.domain.types :as dom.types]
-            [gpml.handler.file :as handler.file]
-            [gpml.handler.resource.geo-coverage :as handler.geo]
-            [gpml.handler.resource.permission :as h.r.permission]
-            [gpml.handler.resource.related-content :as handler.resource.related-content]
-            [gpml.handler.resource.tag :as handler.resource.tag]
-            [gpml.handler.responses :as r]
-            [gpml.handler.util :as handler.util]
-            [gpml.service.association :as srv.association]
-            [gpml.service.permissions :as srv.permissions]
-            [gpml.util :as util]
-            [gpml.util.email :as email]
-            [gpml.util.sql :as sql-util]
-            [integrant.core :as ig])
-  (:import [java.sql SQLException]))
+  (:require
+   [clojure.java.jdbc :as jdbc]
+   [clojure.set :as set]
+   [duct.logger :refer [log]]
+   [gpml.auth :as auth]
+   [gpml.db.activity :as db.activity]
+   [gpml.db.language :as db.language]
+   [gpml.db.resource :as db.resource]
+   [gpml.domain.types :as dom.types]
+   [gpml.handler.file :as handler.file]
+   [gpml.handler.resource.geo-coverage :as handler.geo]
+   [gpml.handler.resource.permission :as h.r.permission]
+   [gpml.handler.resource.related-content :as handler.resource.related-content]
+   [gpml.handler.resource.tag :as handler.resource.tag]
+   [gpml.handler.responses :as r]
+   [gpml.handler.util :as handler.util]
+   [gpml.service.association :as srv.association]
+   [gpml.service.permissions :as srv.permissions]
+   [gpml.util :as util]
+   [gpml.util.email :as email]
+   [gpml.util.sql :as sql-util]
+   [integrant.core :as ig])
+  (:import
+   (java.sql SQLException)))
 
 (defn- create-resource
   [{:keys [logger mailjet-config] :as config}

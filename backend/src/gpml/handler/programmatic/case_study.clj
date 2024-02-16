@@ -1,20 +1,21 @@
 (ns gpml.handler.programmatic.case-study
-  (:require [clojure.java.jdbc :as jdbc]
-            [clojure.string :as str]
-            [duct.logger :refer [log]]
-            [gpml.db.case-study :as db.case-study]
-            [gpml.db.country :as db.country]
-            [gpml.db.country-group :as db.country-group]
-            [gpml.db.resource.tag :as db.r.tag]
-            [gpml.db.tag :as db.tag]
-            [gpml.domain.case-study :as dom.case-study]
-            [gpml.handler.resource.geo-coverage :as handler.geo-coverage]
-            [gpml.handler.responses :as r]
-            [gpml.util :as util]
-            [gpml.util.malli :as util.malli]
-            [gpml.util.sql :as sql-util]
-            [integrant.core :as ig]
-            [malli.util :as mu]))
+  (:require
+   [clojure.java.jdbc :as jdbc]
+   [clojure.string :as str]
+   [duct.logger :refer [log]]
+   [gpml.db.case-study :as db.case-study]
+   [gpml.db.country :as db.country]
+   [gpml.db.country-group :as db.country-group]
+   [gpml.db.resource.tag :as db.r.tag]
+   [gpml.db.tag :as db.tag]
+   [gpml.domain.case-study :as dom.case-study]
+   [gpml.handler.resource.geo-coverage :as handler.geo-coverage]
+   [gpml.handler.responses :as r]
+   [gpml.util :as util]
+   [gpml.util.malli :as util.malli]
+   [gpml.util.sql :as sql-util]
+   [integrant.core :as ig]
+   [malli.util :as mu]))
 
 (defn- remove-tags-duplicates
   [tags]
@@ -169,7 +170,7 @@
                           api-case-studies)]
         (r/ok {:success? true
                :inserted-values (count results)})))
-    (catch Throwable e
+    (catch Exception e
       (log logger :error ::failed-to-create-case-studies {:exception-message (ex-message e)
                                                           :exception-class (class e)})
       (r/server-error {:success? false

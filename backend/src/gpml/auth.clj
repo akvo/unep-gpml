@@ -1,11 +1,13 @@
 (ns gpml.auth
-  (:require [gpml.db.stakeholder :as db.stakeholder]
-            [integrant.core :as ig]
-            [malli.core :as malli])
-  (:import [com.auth0.jwk JwkProvider JwkProviderBuilder]
-           [com.auth0.jwt JWT]
-           [com.auth0.jwt.impl JsonNodeClaim]
-           [com.auth0.utils.tokens IdTokenVerifier PublicKeyProvider SignatureVerifier]))
+  (:require
+   [gpml.db.stakeholder :as db.stakeholder]
+   [integrant.core :as ig]
+   [malli.core :as malli])
+  (:import
+   (com.auth0.jwk JwkProvider JwkProviderBuilder)
+   (com.auth0.jwt JWT)
+   (com.auth0.jwt.impl JsonNodeClaim)
+   (com.auth0.utils.tokens IdTokenVerifier PublicKeyProvider SignatureVerifier)))
 
 (def verifier-opts
   [:map
@@ -19,13 +21,13 @@
        (ex-info "Invalid IdToken verifier options"
                 (malli/explain verifier-opts opts)))))
 
-(defn signature-verifier [issuer]
-  (let [jwk-provider (-> issuer
-                         (JwkProviderBuilder.)
-                         (.build))
+(defn signature-verifier [^String issuer]
+  (let [^JwkProvider jwk-provider (-> issuer
+                                      (JwkProviderBuilder.)
+                                      (.build))
         public-key-provider (reify PublicKeyProvider
                               (getPublicKeyById [_this key-id]
-                                (.getPublicKey (.get ^JwkProvider jwk-provider key-id))))]
+                                (.getPublicKey (.get jwk-provider ^String key-id))))]
     (SignatureVerifier/forRS256 public-key-provider)))
 
 (defn token-verifier [{:keys [issuer audience signature-verifier]}]

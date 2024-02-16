@@ -1,7 +1,8 @@
 (ns gpml.handler.country-group
-  (:require [gpml.db.country-group :as db.country-group]
-            [integrant.core :as ig]
-            [ring.util.response :as resp]))
+  (:require
+   [gpml.db.country-group :as db.country-group]
+   [integrant.core :as ig]
+   [ring.util.response :as resp]))
 
 (defmethod ig/init-key :gpml.handler.country-group/get [_ {:keys [db]}]
   (fn [{{{:keys [id]} :path} :parameters}]

@@ -1,25 +1,27 @@
 (ns gpml.handler.stakeholder
-  (:require [clojure.java.jdbc :as jdbc]
-            [clojure.string :as str]
-            [duct.logger :refer [log]]
-            [gpml.db.organisation :as db.organisation]
-            [gpml.db.resource.tag :as db.resource.tag]
-            [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.domain.stakeholder :as dom.stakeholder]
-            [gpml.domain.types :as dom.types]
-            [gpml.handler.resource.geo-coverage :as handler.geo]
-            [gpml.handler.resource.permission :as h.r.permission]
-            [gpml.handler.responses :as r]
-            [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
-            [gpml.handler.util :as handler.util]
-            [gpml.service.chat :as srv.chat]
-            [gpml.service.permissions :as srv.permissions]
-            [gpml.service.stakeholder :as srv.stakeholder]
-            [gpml.util.email :as email]
-            [gpml.util.geo :as geo]
-            [integrant.core :as ig]
-            [ring.util.response :as resp])
-  (:import [java.sql SQLException]))
+  (:require
+   [clojure.java.jdbc :as jdbc]
+   [clojure.string :as str]
+   [duct.logger :refer [log]]
+   [gpml.db.organisation :as db.organisation]
+   [gpml.db.resource.tag :as db.resource.tag]
+   [gpml.db.stakeholder :as db.stakeholder]
+   [gpml.domain.stakeholder :as dom.stakeholder]
+   [gpml.domain.types :as dom.types]
+   [gpml.handler.resource.geo-coverage :as handler.geo]
+   [gpml.handler.resource.permission :as h.r.permission]
+   [gpml.handler.responses :as r]
+   [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
+   [gpml.handler.util :as handler.util]
+   [gpml.service.chat :as srv.chat]
+   [gpml.service.permissions :as srv.permissions]
+   [gpml.service.stakeholder :as srv.stakeholder]
+   [gpml.util.email :as email]
+   [gpml.util.geo :as geo]
+   [integrant.core :as ig]
+   [ring.util.response :as resp])
+  (:import
+   (java.sql SQLException)))
 
 (def roles-re (->> dom.stakeholder/role-types
                    (str/join "|")
@@ -187,7 +189,7 @@
                      (assoc :org (db.organisation/organisation-by-id
                                   conn
                                   {:id (:affiliation new-sth)})))))
-    (catch Throwable t
+    (catch Exception t
       (let [{:keys [reason]} (ex-data t)]
         (log logger :error ::failed-to-create-or-update-stakeholder {:exception-message (ex-message t)})
         (if (= reason :organisation-name-already-exists)
@@ -418,7 +420,7 @@
                         (r/ok {:status "success"})
                         (throw (ex-info "Error updating user chat account role"
                                         {:reason :error-updating-user-chat-account-role}))))))))))
-        (catch Throwable e
+        (catch Exception e
           (log logger :error ::failed-to-update-stakeholder-role {:exception-message (ex-message e)})
           (let [response {:success? false
                           :reason :could-not-update-stakeholder-role}]

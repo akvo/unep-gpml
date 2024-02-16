@@ -1,13 +1,14 @@
 (ns gpml.handler.resource.translation-test
-  (:require [clojure.test :refer [deftest is testing use-fixtures]]
-            [gpml.db.event :as db.event]
-            [gpml.fixtures :as fixtures]
-            [gpml.handler.resource.translation :as res-translation]
-            [gpml.seeder.main :as seeder]
-            [gpml.service.permissions :as srv.permissions]
-            [gpml.test-util :as test-util]
-            [integrant.core :as ig]
-            [ring.mock.request :as mock]))
+  (:require
+   [clojure.test :refer [deftest is testing use-fixtures]]
+   [gpml.db.event :as db.event]
+   [gpml.fixtures :as fixtures]
+   [gpml.handler.resource.translation :as res-translation]
+   [gpml.seeder.main :as seeder]
+   [gpml.service.permissions :as srv.permissions]
+   [gpml.test-util :as test-util]
+   [integrant.core :as ig]
+   [ring.mock.request :as mock]))
 
 (defonce ^:private default-lang-iso-code "en")
 

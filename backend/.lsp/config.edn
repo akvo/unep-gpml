@@ -1,2 +1,2 @@
-{:clean {:ns-inner-blocks-indentation :same-line
-         :ns-import-classes-indentation :same-line}}
+{:clean {:ns-inner-blocks-indentation :next-line
+         :ns-import-classes-indentation :next-line}}

@@ -1,27 +1,25 @@
 (ns gpml.scheduler.leap-api-policy-importer
-  (:require [clj-http.client :as client]
-            [clojure.java.jdbc :as jdbc]
-            [clojure.string :as str]
-            [clojure.walk :as w]
-            [duct.logger :refer [log]]
-            [gpml.db.country :as db.country]
-            [gpml.db.country-group :as db.country-group]
-            [gpml.db.detail :as db.detail]
-            [gpml.db.language :as db.language]
-            [gpml.db.policy :as db.policy]
-            [gpml.db.resource.tag :as db.resource.tag]
-            [gpml.db.tag :as db.tag]
-            [gpml.domain.policy :as dom.policy]
-            [gpml.service.permissions :as srv.permissions]
-            [gpml.util :as util]
-            [gpml.util.sql :as sql-util]
-            [integrant.core :as ig]
-            [java-time :as jt]
-            [java-time.core]
-            [java-time.local]
-            [java-time.temporal]
-            [jsonista.core :as j]
-            [twarc.core :refer [defjob]]))
+  (:require
+   [clj-http.client :as client]
+   [clojure.java.jdbc :as jdbc]
+   [clojure.string :as str]
+   [clojure.walk :as w]
+   [duct.logger :refer [log]]
+   [gpml.db.country :as db.country]
+   [gpml.db.country-group :as db.country-group]
+   [gpml.db.detail :as db.detail]
+   [gpml.db.language :as db.language]
+   [gpml.db.policy :as db.policy]
+   [gpml.db.resource.tag :as db.resource.tag]
+   [gpml.db.tag :as db.tag]
+   [gpml.domain.policy :as dom.policy]
+   [gpml.service.permissions :as srv.permissions]
+   [gpml.util :as util]
+   [gpml.util.sql :as sql-util]
+   [integrant.core :as ig]
+   [java-time.api :as jt]
+   [jsonista.core :as j]
+   [twarc.core :refer [defjob]]))
 
 (defonce ^:private leap-api-base-url "https://leap.unep.org/informea/api/2.0/legislation")
 (defonce ^:private leap-api-conn-timeout-ms 60000)
@@ -829,7 +827,7 @@
                                             :policy-status-opts dom.policy/statuses
                                             :policy-sub-content-types dom.policy/sub-content-types
                                             :policy-tag-category-id (:id policy-tag-category)}))
-    (catch Throwable e
+    (catch Exception e
       (let [error-details {:error-code (class e)
                            :message (.getMessage e)
                            :stack-trace (map str (.getStackTrace e))}]
