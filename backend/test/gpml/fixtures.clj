@@ -9,7 +9,7 @@
 
 (defonce ^:private lock (Object.))
 (defonce ^:private template-test-db-migrated? false)
-(def ^:dynamic *system*)
+(def ^:dynamic *system* nil)
 
 (duct/load-hierarchy)
 
