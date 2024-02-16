@@ -2,7 +2,32 @@
   (:refer-clojure :exclude [dissoc keys])
   (:require
    [malli.core :as m]
+   [malli.error]
    [malli.util :as mu]))
+
+(defn check-one [schema val quoted]
+  (if (m/validate schema val)
+    true
+    (let [x (m/explain schema val)]
+      (throw (ex-info "Schema validation failed"
+                      (assoc x
+                             :quoted quoted
+                             :humanized (malli.error/humanize x)))))))
+
+(defmacro check!
+  "Accepts pairs of specs and vals.
+
+  Performs Malli validation over each pair,
+  failing with an informative exception otherwise.
+
+  Especially useful as `:pre`- / `:post`-conditions."
+  [& spec-val-pairs]
+  {:pre [(check-one [:fn seq] spec-val-pairs 'spec-val-pairs)
+         (check-one [:fn even?] (count spec-val-pairs) 'spec-val-pairs)]}
+  `(do
+     ~@(mapv (fn [[spec val]]
+               (list `check-one spec val (list 'quote val)))
+             (partition 2 spec-val-pairs))))
 
 (defn dissoc
   "Like `malli.util/dissoc` but accepts a sequence of keys `ks` to be
