@@ -79,7 +79,7 @@
   [_ {:keys [hikari-cp metrics-collector]}]
   (let [^HikariDataSource datasource (get-in hikari-cp [:spec :datasource])]
     (-> datasource
-        (.unwrap javax.sql.DataSource)
+        ^HikariDataSource (.unwrap javax.sql.DataSource)
         (.setMetricsTrackerFactory
          (PrometheusMetricsTrackerFactory. (registry/raw metrics-collector))))
     (hugsql/set-adapter!
