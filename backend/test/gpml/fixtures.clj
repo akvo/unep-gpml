@@ -9,7 +9,6 @@
   (:import [java.util UUID]))
 
 (defonce ^:private lock (Object.))
-(defonce ^:private template-test-db-migrated? false)
 (def ^:dynamic *system* nil)
 
 (duct/load-hierarchy)
@@ -26,13 +25,11 @@
 (defn- migrate-template-test-db
   []
   (locking lock
-    (when-not template-test-db-migrated?
-      (println "Migrating template db")
+    (when-not (System/getProperty "gpml.template-test-db.migrated")
       (-> (test-system)
           (ig/init [:duct/migrator])
           (ig/halt!))
-      (alter-var-root #'template-test-db-migrated? not)
-      (println "Done migrating template db"))))
+      (System/setProperty "gpml.template-test-db.migrated" "true"))))
 
 (defn- create-test-db
   [db db-name]
@@ -52,8 +49,7 @@
 (def mails-sent (atom []))
 (defn with-test-system
   [f]
-  (when-not template-test-db-migrated?
-    (migrate-template-test-db))
+  (migrate-template-test-db)
   (reset! mails-sent [])
   (let [tmp (test-system)
         new-db-name (format "test_db_%s" (uuid))
