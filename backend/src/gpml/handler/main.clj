@@ -16,13 +16,13 @@
    [reitit.swagger :as swagger]
    [reitit.swagger-ui :as swagger-ui]
    [ring.middleware.cors :as cors]
-   [ring.util.response :as resp]
-   [taoensso.timbre :as timbre]))
+   [ring.util.response :as resp]))
 
 (defn- root [_]
   (resp/response {:status "OK"}))
 
-(defn- router [{:keys [routes collector cors-allowed-origins]}]
+(defn- router [{:keys [routes logger collector cors-allowed-origins]}]
+  {:pre [logger]}
   (ring/router
    routes
    {:data {:muuntaja m/instance
@@ -44,13 +44,13 @@
                          :access-control-allow-methods [:get :post :delete :put]]
                         ;; swagger feature
                         swagger/swagger-feature
-                         ;; query-params & form-params
+                        ;; query-params & form-params
                         parameters/parameters-middleware
-                         ;; content-negotiation
+                        ;; content-negotiation
                         muuntaja/format-negotiate-middleware
-                         ;; encoding response body
+                        ;; encoding response body
                         muuntaja/format-response-middleware
-                         ;; exception handling
+                        ;; exception handling
                         (exception/create-exception-middleware
                          (merge
                           exception/default-handlers
@@ -59,18 +59,18 @@
                                               (try
                                                 (let [response (handler e request)]
                                                   (when (>= (:status response 500) 500)
-                                                    (timbre/error e))
+                                                    (log logger :error-in-request-handler e))
                                                   response)
-                                                (catch Exception t
-                                                  (timbre/error t "Error handling error")
-                                                  (throw t))))}))
-                         ;; decoding request body
+                                                (catch Exception inner-e
+                                                  (log logger :error-while-error-handling inner-e)
+                                                  (throw inner-e))))}))
+                        ;; decoding request body
                         muuntaja/format-request-middleware
-                         ;; coercing response bodys
+                        ;; coercing response bodys
                         coercion/coerce-response-middleware
-                         ;; coercing request parameters
+                        ;; coercing request parameters
                         coercion/coerce-request-middleware
-                         ;; multipart
+                        ;; multipart
                         multipart/multipart-middleware
 
                         (fn [handler]
@@ -81,7 +81,7 @@
 
 (defmethod ig/init-key :gpml.handler.main/handler
   [_ {:keys [collector logger] :as config}]
-  (log logger :info ::initialising-handlers {})
+  (log logger :info :initialising-handlers {})
   (ring/ring-handler (router config)
                      (ring/routes
                       (swagger-ui/create-swagger-ui-handler {:path "/api/docs"

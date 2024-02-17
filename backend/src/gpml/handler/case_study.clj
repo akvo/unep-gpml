@@ -132,7 +132,7 @@
                    :id cs-id})))
         (r/forbidden {:message "Unauthorized"}))
       (catch Exception e
-        (log logger :error ::failed-to-create-case-study {:exception-message (.getMessage e)})
+        (log logger :error :failed-to-create-case-study e)
         (let [response {:success? false
                         :reason :could-not-create-case-study}]
 

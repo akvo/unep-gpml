@@ -67,10 +67,9 @@
           {:success? false
            :error-details body})))
     (catch Exception e
-      (let [error-details {:exeception-message (ex-message e)}]
-        (log logger :error ::failed-to-get-data error-details)
-        {:success? false
-         :error-details error-details}))))
+      (log logger :error :failed-to-get-data e)
+      {:success? false
+       :error-details {:exeception-message (ex-message e)}})))
 
 (defn map->BRS [m]
   (with-meta m

@@ -774,14 +774,14 @@
                              (update :operation-result #(merge-with + % (dissoc import-result :created-tags)))
                              (update :batch-idx inc)
                              (update :tags-by-normalized-name #(merge % (:created-tags import-result))))))
-                (log logger :info ::leap-api-policy-importer.import-completed
+                (log logger :info :leap-api-policy-importer.import-completed
                      {:result (merge {:success? true}
                                      operation-status)})))
-            (log logger :error ::leap-api-policy-importer.import-failed
+            (log logger :error :leap-api-policy-importer.import-failed
                  (merge {:success? false}
                         (select-keys leap-policies-resp [:status :reason-phrase])
                         operation-status))))
-        (log logger :info ::leap-api-policy-importer.import-completed-with-limit
+        (log logger :info :leap-api-policy-importer.import-completed-with-limit
              {:result (merge {:success? true}
                              operation-status)})))))
 
@@ -827,10 +827,7 @@
                                             :policy-sub-content-types dom.policy/sub-content-types
                                             :policy-tag-category-id (:id policy-tag-category)}))
     (catch Exception e
-      (let [error-details {:error-code (class e)
-                           :message (.getMessage e)
-                           :stack-trace (map str (.getStackTrace e))}]
-        (log logger :error ::leap-api-policy-importer.import-failed error-details)))))
+      (log logger :error :leap-api-policy-importer.import-failed e))))
 
 (defjob handle-leap-api-policy-import-job
   [_scheduler config]

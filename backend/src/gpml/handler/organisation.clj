@@ -23,7 +23,8 @@
    [gpml.util.postgresql :as pg-util]
    [integrant.core :as ig]
    [malli.util :as mu]
-   [ring.util.response :as resp])
+   [ring.util.response :as resp]
+   [taoensso.timbre :as timbre])
   (:import
    (java.sql SQLException)))
 
@@ -180,7 +181,7 @@
               (resp/created referrer {:success? true
                                       :org (assoc body-params :id org-id)})))))
       (catch Exception e
-        (log logger :error ::create-org-failed {:exception-message (.getMessage e)})
+        (log logger :error :create-org-failed e)
         (if (instance? SQLException e)
           (if (= :unique-constraint-violation (pg-util/get-sql-state e))
             {:status 409
@@ -229,15 +230,15 @@
                 (r/server-error result))))
         (r/forbidden {:message "Unauthorized"}))
       (catch Exception t
-        (let [log-data {:exception-message (ex-message t)
-                        :exception-data (ex-data t)
-                        :context-data (assoc body-params
-                                             :id (get-in parameters [:path :id]))}]
-          (log logger :error :failed-to-update-organisation log-data)
-          (log logger :debug :failed-to-update-organisation (assoc log-data :stack-trace (.getStackTrace t)))
+        (let [context (assoc body-params
+                             :id (get-in parameters [:path :id]))]
+          (timbre/with-context+ context
+            (log logger :error :failed-to-update-organisation t))
           (r/server-error {:success? false
                            :reason :exception
-                           :error-details log-data}))))))
+                           :error-details (assoc context
+                                                 :exception-message (ex-message t)
+                                                 :exception-data (ex-data t))}))))))
 (defmethod ig/init-key :gpml.handler.organisation/put-params [_ _]
   (-> dom.organisation/Organisation
       (util.malli/dissoc [:id :created :modified :review_status
@@ -279,7 +280,7 @@
             (r/server-error result)))
         (r/forbidden {:message "Unauthorized"}))
       (catch Exception e
-        (log logger :error ::failed-to-req-org-to-member-conversion {:exception-message (ex-message e)})
+        (log logger :error :failed-to-req-org-to-member-conversion e)
         (let [response {:success? false
                         :reason :could-not-req-org-to-member-conversion}]
           (if (instance? SQLException e)
@@ -368,14 +369,11 @@
                             first
                             :count)}))
       (catch Exception t
-        (let [log-data {:exception-message (ex-message t)
-                        :exception-data (ex-data t)
-                        :context-data (get-in req [:parameters :query])}]
-          (log logger :error :failed-to-list-organisations log-data)
-          (log logger :debug :failed-to-list-organisations (assoc log-data :stack-trace (.getStackTrace t)))
-          (r/server-error {:success? false
-                           :reason :failed-to-list-organisations
-                           :error-details {:msg (:exception-message log-data)}}))))))
+        (timbre/with-context+ (get-in req [:parameters :query])
+          (log logger :error :failed-to-list-organisations t))
+        (r/server-error {:success? false
+                         :reason :failed-to-list-organisations
+                         :error-details {:msg (:exception-message (ex-message t))}})))))
 
 (def order-by-fields
   #{"name"

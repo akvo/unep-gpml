@@ -122,7 +122,7 @@
                         :message "New initiative created"
                         :id initiative-id}))))
       (catch Exception e
-        (log logger :error ::failed-to-create-initiative {:exception-message (.getMessage e)})
+        (log logger :error :failed-to-create-initiative e)
         (let [response {:success? false
                         :reason :could-not-create-initiative}]
 

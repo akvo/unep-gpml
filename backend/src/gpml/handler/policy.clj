@@ -147,7 +147,7 @@
                                            :message "New policy created"
                                            :id policy-id}))))
       (catch Exception e
-        (log logger :error ::failed-to-create-policy {:exception-message (.getMessage e)})
+        (log logger :error :failed-to-create-policy e)
         (let [response {:status 500
                         :body {:success? false
                                :reason :could-not-create-policy}}]

@@ -12,7 +12,8 @@
    [gpml.util.malli :as util.malli]
    [integrant.core :as ig]
    [malli.util :as mu]
-   [ring.util.response :as resp])
+   [ring.util.response :as resp]
+   [taoensso.timbre :as timbre])
   (:import
    (java.sql SQLException)))
 
@@ -207,8 +208,8 @@
         (let [reason (or (:reason (ex-data t)) :could-not-create-tag)
               response {:success? false
                         :reason reason}]
-          (log logger :error ::failed-to-create-tag {:exception-message (.getMessage t)
-                                                     :reason reason})
+          (timbre/with-context+ response
+            (log logger :error :failed-to-create-tag t))
           (if (instance? SQLException t)
             (r/server-error response)
             (r/server-error (assoc-in response [:error-details :error] (.getMessage t)))))))))

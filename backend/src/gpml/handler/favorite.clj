@@ -115,7 +115,7 @@
         (r/ok {:success? true
                :message "OK"}))
       (catch Exception e
-        (log logger :error ::failed-to-create-association {:exception-message (.getMessage e)})
+        (log logger :error :failed-to-create-association e)
         (r/server-error {:success? false
                          :reason :failed-to-create-association
                          :error-details {:error (if (instance? SQLException e)

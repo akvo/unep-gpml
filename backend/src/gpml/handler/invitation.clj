@@ -78,7 +78,7 @@
                       []
                       invitations))))
     (catch Exception t
-      (log logger :error ::get-invitations {:exception-message (.getMessage t)})
+      (log logger :error :get-invitations t)
       (if (instance? SQLException t)
         (r/server-error {:success? false
                          :reason (pg-util/get-sql-state t)})
@@ -104,7 +104,7 @@
               (r/ok {})
               (r/server-error (dissoc result :success?)))))))
     (catch Exception e
-      (log logger :error ::failed-to-accept-invitation {:exception-message (.getMessage e)})
+      (log logger :error :failed-to-accept-invitation e)
       (if (instance? SQLException e)
         (r/server-error {:reason (pg-util/get-sql-state e)})
         (r/server-error {:reason :could-not-update-invitation

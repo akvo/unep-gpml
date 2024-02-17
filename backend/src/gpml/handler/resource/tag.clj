@@ -58,7 +58,7 @@
           (send-new-tags-admins-pending-approval-notification conn mailjet-config new-tags)
           {:success? true})
         (catch Exception e
-          (log logger :error ::failed-to-create-tag {:exception-message (.getMessage e)})
+          (log logger :error :failed-to-create-tag e)
           (if (instance? SQLException e)
             (let [reason (pg-util/get-sql-state e)]
               (when-not handle-errors?

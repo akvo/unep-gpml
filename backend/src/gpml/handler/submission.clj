@@ -21,7 +21,8 @@
    [integrant.core :as ig]
    [malli.core :as m]
    [malli.transform :as mt]
-   [ring.util.response :as resp])
+   [ring.util.response :as resp]
+   [taoensso.timbre :as timbre])
   (:import
    (java.sql SQLException)))
 
@@ -127,13 +128,10 @@
                                                  (add-images-urls config))))]
           (resp/response submission)))
       (catch Exception t
-        (let [log-data {:exception-message (ex-message t)
-                        :exception-data (ex-data t)
-                        :context-data query}]
-          (log logger :error :failed-to-get-submissions log-data)
-          (log logger :debug :failed-to-get-submissions (assoc log-data :stack-trace (.getStackTrace t)))
-          (r/server-error {:success? false
-                           :reason :failed-to-get-submissions}))))))
+        (timbre/with-context+ query
+          (log logger :error :failed-to-get-submissions t))
+        (r/server-error {:success? false
+                         :reason :failed-to-get-submissions})))))
 
 (defn- handle-stakeholder-role-change [config stakeholder-id review-status]
   (if (= review-status "APPROVED")
@@ -189,15 +187,10 @@
                        :message "Successfuly Updated"
                        :data resource-details}))))))
       (catch Exception t
-        (let [log-data {:exception-message (ex-message t)
-                        :exception-data (ex-data t)
-                        :context-data body-params}]
-          (log logger :error :failed-to-update-submission {:exception-message (ex-message t)
-                                                           :exception-data (ex-data t)
-                                                           :context-data body-params})
-          (log logger :debug :failed-to-update-submission (assoc log-data :stack-trace (.getStackTrace t)))
-          (r/server-error {:success? false
-                           :reason :failed-to-update-submission}))))))
+        (timbre/with-context+ body-params
+          (log logger :error :failed-to-update-submission t))
+        (r/server-error {:success? false
+                         :reason :failed-to-update-submission})))))
 
 (defn- add-stakeholder-extra-details [conn stakeholder]
   (let [email (:email (db.stakeholder/stakeholder-by-id conn {:id (:id stakeholder)}))
@@ -245,11 +238,9 @@
           (r/forbidden {:message "Unauthorized"})
           (get-detail config path)))
       (catch Exception t
-        (log logger :error ::failed-to-get-submission-detail {:exception-message (ex-message t)
-                                                              :exception-data (ex-data t)
-                                                              :stack-trace (.getStackTrace t)
-                                                              :context-data {:params path
-                                                                             :user user}})
+        (timbre/with-context+ {:params path
+                               :user user}
+          (log logger :error :failed-to-get-submission-detail t))
         (if (instance? SQLException t)
           (r/server-error {:success? false
                            :reason (pg-util/get-sql-state t)})

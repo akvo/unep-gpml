@@ -165,8 +165,7 @@
         (r/ok {:success? true
                :inserted-values (count results)})))
     (catch Exception e
-      (log logger :error ::failed-to-create-case-studies {:exception-message (ex-message e)
-                                                          :exception-class (class e)})
+      (log logger :error :failed-to-create-case-studies e)
       (r/server-error {:success? false
                        :reason (or (:reason (ex-data e)) :failed-to-create-case-studies)
                        :error-details {:error (ex-message e)}}))))

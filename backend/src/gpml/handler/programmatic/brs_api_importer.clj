@@ -11,11 +11,10 @@
     (r/ok {:success? true
            :message "Import job started."})
     (catch Exception e
-      (let [error-details {:exception-message (ex-message e)}]
-        (log logger :error ::failed-to-run-brs-api-importer error-details)
-        (r/server-error {:success? false
-                         :reason :failed-to-run-brs-api-importer
-                         :error-details error-details})))))
+      (log logger :error :failed-to-run-brs-api-importer e)
+      (r/server-error {:success? false
+                       :reason :failed-to-run-brs-api-importer
+                       :error-details {:exception-message (ex-message e)}}))))
 
 (defmethod ig/init-key :gpml.handler.programmatic.brs-api-importer/post
   [_ config]

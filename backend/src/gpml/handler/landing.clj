@@ -197,7 +197,7 @@
                       :country_group_counts country_group_counts
                       :summary summary-data}))
     (catch Exception e
-      (log logger :error ::failed-to-get-resource-map-counts {:exception-message (.getMessage e)})
+      (log logger :error :failed-to-get-resource-map-counts e)
       (r/server-error {:success? false
                        :reason :failed-to-get-resource-map-counts
                        :error-details {:error (if (instance? SQLException e)

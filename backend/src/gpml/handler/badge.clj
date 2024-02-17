@@ -42,7 +42,7 @@
             (r/not-found {})
             (r/server-error result))))
       (catch Exception t
-        (log logger :error ::get-badge-failed {:exception-message (.getMessage t)})
+        (log logger :error :get-badge-failed t)
         (r/server-error {:success? false
                          :reason :could-not-get-badge
                          :error-details {:message (.getMessage t)}})))))
@@ -121,7 +121,7 @@
                 :else
                 (r/server-error (dissoc result :success?)))))))
       (catch Exception t
-        (log logger :error ::failed-to-assign-or-unassign-badge {:exception-message (.getMessage t)})
+        (log logger :error :failed-to-assign-or-unassign-badge t)
         (let [response {:success? false
                         :reason :could-not-assign-or-unassign-badge}]
 

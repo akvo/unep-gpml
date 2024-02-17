@@ -18,9 +18,7 @@
   (try
     (f m)
     (catch Exception e
-      (log logger :error ::tht-transaction-exception {:reason (str (class e))
-                                                      :message (.getMessage e)
-                                                      :stack-trace (map str (.getStackTrace e))})
+      (log logger :error :tht-transaction-exception e)
       (merge m {:success? false
                 :error-details {:reason (str (class e))
                                 :message (.getMessage e)}}))))

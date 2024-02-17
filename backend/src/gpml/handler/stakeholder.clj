@@ -185,7 +185,7 @@
                                   {:id (:affiliation new-sth)})))))
     (catch Exception t
       (let [{:keys [reason]} (ex-data t)]
-        (log logger :error ::failed-to-create-or-update-stakeholder {:exception-message (ex-message t)})
+        (log logger :error :failed-to-create-or-update-stakeholder t)
         (if (= reason :organisation-name-already-exists)
           (r/conflict {:success? false
                        :reason reason})
@@ -216,7 +216,7 @@
                             partial-tags-override-rel-cats)
         (resp/status {:success? true} 204))
       (catch Exception e
-        (log logger :error ::failed-to-update-stakeholder {:exception-message (.getMessage e)})
+        (log logger :error :failed-to-update-stakeholder e)
         (let [response {:status 500
                         :body {:success? false
                                :reason :could-not-update-stakeholder}}]
@@ -415,7 +415,7 @@
                         (throw (ex-info "Error updating user chat account role"
                                         {:reason :error-updating-user-chat-account-role}))))))))))
         (catch Exception e
-          (log logger :error ::failed-to-update-stakeholder-role {:exception-message (ex-message e)})
+          (log logger :error :failed-to-update-stakeholder-role e)
           (let [response {:success? false
                           :reason :could-not-update-stakeholder-role}]
             (if (instance? SQLException e)
@@ -455,7 +455,7 @@
                               partial-tags-override-rel-cats)
           (resp/status {:success? true} 204))
         (catch Exception e
-          (log logger :error ::failed-to-update-stakeholder {:exception-message (.getMessage e)})
+          (log logger :error :failed-to-update-stakeholder e)
           (let [response {:status 500
                           :body {:success? false
                                  :reason :could-not-update-stakeholder}}]
