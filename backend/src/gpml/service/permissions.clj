@@ -3,12 +3,12 @@
    [dev.gethop.rbac :as rbac]
    [gpml.db.rbac-util :as db.rbac-util]))
 
-(def ^:const root-app-resource-id 0)
-(def ^:const root-app-context-type :application)
+(def root-app-resource-id 0)
+(def root-app-context-type :application)
 
-(def ^:const root-app-context-id #uuid"00000000-0000-0000-0000-000000000000")
+(def root-app-context-id #uuid"00000000-0000-0000-0000-000000000000")
 
-(def ^:const organisation-context-type :organisation)
+(def organisation-context-type :organisation)
 
 (defn- create-resource-context*
   "FIXME: Add docstring"

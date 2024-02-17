@@ -5,7 +5,7 @@
    [gpml.domain.types :as dom.types]
    [hugsql.core :as hugsql]))
 
-(def ^:const default-limit 100)
+(def default-limit 100)
 
 (declare get-resources)
 

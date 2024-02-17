@@ -4,7 +4,7 @@
    [integrant.core :as ig]
    [ring.util.response :as resp]))
 
-(def ^:const default-api-limit 100)
+(def default-api-limit 100)
 
 (defn- api-opts->opts
   [{:keys [q limit]

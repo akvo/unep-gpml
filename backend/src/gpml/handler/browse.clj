@@ -20,10 +20,10 @@
   (:import
    (java.sql SQLException)))
 
-(def ^:const topic-re (util.regex/comma-separated-enums-re dom.types/topic-types))
-(def ^:const ^:private order-by-fields ["title" "description" "id" "featured"])
-(def ^:const ^:private default-limit 50)
-(def ^:const ^:private default-offset 0)
+(def topic-re (util.regex/comma-separated-enums-re dom.types/topic-types))
+(def ^:private order-by-fields ["title" "description" "id" "featured"])
+(def ^:private default-limit 50)
+(def ^:private default-offset 0)
 
 (def api-opts-schema
   "Browse API's filter options."

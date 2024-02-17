@@ -5,26 +5,26 @@
    [malli.core :as m]))
 
 ;; TODO: Refactor enums to be keywords instead of strings.
-(def ^:const review-statuses
+(def review-statuses
   "Possible `review_status` values. This represent state of a domain
   model entity (Organisation, Stakeholder, Event, Policy, Technology,
   Resource, Initiative)."
   #{"APPROVED" "SUBMITTED" "REJECTED"})
 
-(def ^:const reviewer-review-statuses
+(def reviewer-review-statuses
   "Possible `reviewer_review_status` values. This represent the state of
   each review submitted to the platform."
   #{"ACCEPTED" "PENDING" "REJECTED"})
 
 ;; TODO: Refactor enums to be keywords instead of strings.
-(def ^:const geo-coverage-types
+(def geo-coverage-types
   "Possible `geo_coverage_type` values. This represent the geo coverage
   type of a domain model entity (Organisation, Stakeholder, Event,
   Policy, Technology, Resource, Initiative)."
   #{"global" "national" "transnational" "sub-national"})
 
 ;; TODO: Refactor enums to be keywords instead of strings.
-(def ^:const association-types
+(def association-types
   "Possible `<resource>_association` values. This represent
   association type of a domain model resource (Policy, Event,
   Technology, Resource and Initiative)."
@@ -35,16 +35,16 @@
     "resource_editor"
     "partner"})
 
-(def ^:const default-resource-source
+(def default-resource-source
   "Default source type for all platform resources."
   :gpml)
 
-(def ^:const resource-source-types
+(def resource-source-types
   "Source (platform) of a resource."
   #{:gpml
     :cobsea})
 
-(def ^:const topic-entity-tables
+(def topic-entity-tables
   "The list of tables considered as topics in the current model of the
   GPML platform as of 2022-03-16."
   #{"event"
@@ -54,7 +54,7 @@
     "case_study"
     "resource"})
 
-(def ^:const topic-types
+(def topic-types
   #{"action_plan"
     "case_study"
     "event"
@@ -67,7 +67,7 @@
     "technical_resource"
     "technology"})
 
-(def ^:const resources-types
+(def resources-types
   "Resources types currently on the platform. Note that `resources` is
   in plural which means the set of all resources in the platform. It
   does not refer to the `resource` entity table."
@@ -80,32 +80,32 @@
     "technical_resource"
     "action_plan"})
 
-(def ^:const plastic-strategy-bookmarkable-entity-types
+(def plastic-strategy-bookmarkable-entity-types
   (set (map keyword (conj topic-entity-tables "organisation"))))
 
-(def ^:const badge-assignable-entity-types
+(def badge-assignable-entity-types
   (set (map keyword (conj topic-entity-tables "organisation" "stakeholder" "project"))))
 
-(def ^:const file-visibility
+(def file-visibility
   "Informs about a file's accessability privilegies."
   #{:private
     :public})
 
-(def ^:const chat-account-statuses
+(def chat-account-statuses
   #{:pending-activation
     :active
     :inactive})
 
-(def ^:const plastic-strategy-team-types
+(def plastic-strategy-team-types
   #{:steering-committee
     :project-team})
 
-(def ^:const plastic-strategy-team-roles
+(def plastic-strategy-team-roles
   #{:viewer
     :editor
     :admin})
 
-(def ^:const badge-type
+(def badge-type
   #{:country-verified
     :verified
     :expert-verified
@@ -113,7 +113,7 @@
     :partner-verified
     :coe-verified})
 
-(def ^:const enum-types
+(def enum-types
   {:review-status review-statuses
    :reviewer-status reviewer-review-statuses
    :geo-coverage-type geo-coverage-types

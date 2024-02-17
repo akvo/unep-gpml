@@ -1,6 +1,6 @@
 (ns gpml.domain.related-content)
 
-(def ^:const resource-types
+(def resource-types
   "Allowed resource types for related content. Note that `resource`
   entity is treated differently and it's subtypes are used instead of
   the table name to define domain level resource types. This is not
@@ -15,7 +15,7 @@
     "action_plan"
     "case_study"})
 
-(def ^:const relation-types
+(def relation-types
   "Possible resource relation types.
 
   NOTE: Currently the types refer to a relationship between two

@@ -125,7 +125,7 @@
                        v)}))
        distinct))
 
-(def ^:const ^:private initiative-rename-key-mapping
+(def ^:private initiative-rename-key-mapping
   {:q40 :info_resource_links
    :q4 :main_focus
    :q16 :main_activity_owner

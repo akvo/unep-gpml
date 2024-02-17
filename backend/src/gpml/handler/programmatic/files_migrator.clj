@@ -12,7 +12,7 @@
    [gpml.util.image :as util.image]
    [integrant.core :as ig]))
 
-(def ^:const ^:private available-entities
+(def ^:private available-entities
   #{:organisation :stakeholder :case_study :event})
 
 (def ^:private run-file-migrator-params-schema
