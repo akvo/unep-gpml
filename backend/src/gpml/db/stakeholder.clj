@@ -40,8 +40,7 @@
   [stakeholder]
   (util/update-if-not-nil stakeholder :review_status util.pgsql/->PGEnum "REVIEW_STATUS"))
 
-(defn delete-stakeholder
-  [conn stakeholder-id]
+(defn delete-stakeholder [conn stakeholder-id]
   (try
     (let [affected (delete-stakeholder*
                     conn
@@ -54,8 +53,7 @@
       {:success? false
        :error-details {:ex-message (ex-message t)}})))
 
-(defn get-stakeholder
-  [conn opts]
+(defn get-stakeholder [conn opts]
   (try
     (let [stakeholders (get-stakeholders
                         conn
@@ -70,8 +68,7 @@
        :reason :exception
        :error-details (ex-message t)})))
 
-(defn create-stakeholder
-  [conn stakeholder]
+(defn create-stakeholder [conn stakeholder]
   (let [p-stakeholder (stakeholder->p-stakeholder stakeholder)
         cols (util.sql/get-insert-columns-from-entity-col [p-stakeholder])
         values (util.sql/entity-col->persistence-entity-col [p-stakeholder])]

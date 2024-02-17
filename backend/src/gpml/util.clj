@@ -191,6 +191,5 @@
   (and string?
        (re-matches gpml.util.regular-expressions/email-re email)))
 
-(defn encode-url-param
-  [^String param]
+(defn encode-url-param [^String param]
   (URLEncoder/encode param "utf-8"))

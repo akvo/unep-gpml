@@ -23,19 +23,18 @@
   (:import
    (java.sql SQLException)))
 
-(defn- create-event
-  [{:keys [logger mailjet-config] :as config}
-   conn
-   user
-   {:keys [tags urls title start_date end_date
-           description remarks geo_coverage_type
-           country city geo_coverage_value image thumbnail
-           geo_coverage_countries geo_coverage_country_groups
-           geo_coverage_value_subnational_city geo_coverage_country_states
-           created_by owners url info_docs sub_content_type
-           recording document_preview related_content
-           entity_connections individual_connections language
-           capacity_building source]}]
+(defn- create-event [{:keys [logger mailjet-config] :as config}
+                     conn
+                     user
+                     {:keys [tags urls title start_date end_date
+                             description remarks geo_coverage_type
+                             country city geo_coverage_value image thumbnail
+                             geo_coverage_countries geo_coverage_country_groups
+                             geo_coverage_value_subnational_city geo_coverage_country_states
+                             created_by owners url info_docs sub_content_type
+                             recording document_preview related_content
+                             entity_connections individual_connections language
+                             capacity_building source]}]
   (let [image-id (when (seq image)
                    (handler.file/create-file config conn image :event :images :public))
         thumbnail-id (when (seq thumbnail)

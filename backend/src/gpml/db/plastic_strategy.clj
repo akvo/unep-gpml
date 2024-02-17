@@ -12,8 +12,7 @@
 
 (hugsql/def-db-fns "gpml/db/plastic_strategy.sql")
 
-(defn get-plastic-strategies
-  [conn opts]
+(defn get-plastic-strategies [conn opts]
   (try
     {:success? true
      :plastic-strategies (jdbc-util/db-result-snake-kw->db-result-kebab-kw
@@ -24,8 +23,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn get-plastic-strategy
-  [conn opts]
+(defn get-plastic-strategy [conn opts]
   (try
     (let [{:keys [success? plastic-strategies] :as result}
           (get-plastic-strategies conn opts)]
@@ -41,8 +39,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn update-plastic-strategy
-  [conn update-opts]
+(defn update-plastic-strategy [conn update-opts]
   (try
     (let [affected (update-plastic-strategy* conn update-opts)]
       (if (= affected 1)
@@ -56,8 +53,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn create-plastic-strategies
-  [conn plastic-strategies]
+(defn create-plastic-strategies [conn plastic-strategies]
   (try
     (let [affected (create-plastic-strategies* conn {:plastic-strategy plastic-strategies})]
       (if (= affected (count plastic-strategies))
@@ -71,16 +67,14 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn create-plastic-strategy
-  [conn plastic-strategy]
+(defn create-plastic-strategy [conn plastic-strategy]
   (jdbc-util/with-constraint-violation-check [{:type :unique
                                                :name "plastic_strategy_country_id_key"
                                                :error-reason :already-exists}]
     {:success? true
      :id (:id (create-plastic-strategy* conn plastic-strategy))}))
 
-(defn delete-plastic-strategy
-  [conn plastic-strategy-id]
+(defn delete-plastic-strategy [conn plastic-strategy-id]
   (try
     (let [affected (delete-plastic-strategy* conn {:id plastic-strategy-id})]
       (if (= affected 1)

@@ -71,8 +71,7 @@
      {:decode/string (fn [s] (str/split s #","))}
      (apply conj [:enum] dom.prj/project-stages)]]])
 
-(defn- create-project
-  [{:keys [db logger]} {:keys [parameters user] :as _req}]
+(defn- create-project [{:keys [db logger]} {:keys [parameters user] :as _req}]
   (try
     (jdbc/with-db-transaction [tx (:spec db)]
       (let [body (:body parameters)
@@ -123,8 +122,7 @@
                                                 (pg-util/get-sql-state e)
                                                 (.getMessage e))}}))))
 
-(defn- get-projects
-  [{:keys [db logger]} {:keys [parameters user]}]
+(defn- get-projects [{:keys [db logger]} {:keys [parameters user]}]
   (try
     (let [db-opts (-> (:query parameters)
                       (assoc :stakeholders_ids [(:id user)])
@@ -142,8 +140,7 @@
                                 (pg-util/get-sql-state e)
                                 (.getMessage e))}})))
 
-(defn- update-project
-  [{:keys [db logger]} {:keys [parameters]}]
+(defn- update-project [{:keys [db logger]} {:keys [parameters]}]
   (try
     (jdbc/with-db-transaction [conn (:spec db)]
       (let [id (get-in parameters [:path :id])
@@ -194,8 +191,7 @@
                                                 (pg-util/get-sql-state e)
                                                 (.getMessage e))}}))))
 
-(defn- delete-project
-  [{:keys [db logger]} {:keys [parameters]}]
+(defn- delete-project [{:keys [db logger]} {:keys [parameters]}]
   (try
     (let [project-id (get-in parameters [:path :id])
           opts {:ids [project-id]}

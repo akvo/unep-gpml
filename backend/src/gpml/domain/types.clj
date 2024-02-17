@@ -130,8 +130,7 @@
    :badge-assignable-entity-type badge-assignable-entity-types
    :badge-type badge-type})
 
-(defn get-type-schema
-  [type-name]
+(defn get-type-schema [type-name]
   (m/schema
    [:and
     [:keyword]

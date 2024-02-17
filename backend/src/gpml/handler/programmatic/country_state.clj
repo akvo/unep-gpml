@@ -22,9 +22,8 @@
     [:state_code [string? {:min 1}]]
     [:type {:optional true} [string? {:min 1}]]]])
 
-(defn- create-country-states
-  [{:keys [db logger]}
-   {{{{:keys [tempfile]} :file} :multipart} :parameters}]
+(defn- create-country-states [{:keys [db logger]}
+                              {{{{:keys [tempfile]} :file} :multipart} :parameters}]
   (try
     (with-open [reader (io/reader tempfile)]
       (let [country-states-csv (m/decode country-state-csv-schema

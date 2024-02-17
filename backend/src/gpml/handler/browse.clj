@@ -324,8 +324,7 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
            :thumbnail (get-in files [thumbnail_id :url])
            :stakeholder_connections connections)))
 
-(defn- add-geo-coverage-countries-filters
-  [{:keys [db]} {:keys [countries] :as api-search-opts}]
+(defn- add-geo-coverage-countries-filters [{:keys [db]} {:keys [countries] :as api-search-opts}]
   (let [opts {:filters {:countries-ids countries}}
         transnational (->> (db.country-group/get-country-groups-by-countries (:spec db) opts)
                            (map :id)
@@ -334,8 +333,7 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
            :geo-coverage-countries countries
            :geo-coverage-country-groups transnational)))
 
-(defn- add-geo-coverage-country-groups-filters
-  [{:keys [db]} {:keys [country-groups] :as api-search-opts}]
+(defn- add-geo-coverage-country-groups-filters [{:keys [db]} {:keys [country-groups] :as api-search-opts}]
   (let [opts {:filters {:country-groups country-groups}}
         country-group-countries (db.country-group/get-country-groups-countries (:spec db) opts)
         geo-coverage-countries (map :id country-group-countries)]
@@ -343,8 +341,7 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
            :geo-coverage-country-groups country-groups
            :geo-coverage-countries (set geo-coverage-countries))))
 
-(defn- add-geo-coverage-filters
-  [config {:keys [countries country-groups] :as api-search-opts}]
+(defn- add-geo-coverage-filters [config {:keys [countries country-groups] :as api-search-opts}]
   (cond
     (seq countries)
     (add-geo-coverage-countries-filters config api-search-opts)
@@ -355,8 +352,7 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
     :else
     api-search-opts))
 
-(defn- add-plastic-strategy-filters
-  [config {:keys [ps-country-iso-code-a2] :as api-search-opts}]
+(defn- add-plastic-strategy-filters [config {:keys [ps-country-iso-code-a2] :as api-search-opts}]
   (if-not ps-country-iso-code-a2
     api-search-opts
     (let [search-opts {:filters {:countries-iso-codes-a2 [ps-country-iso-code-a2]}}
@@ -366,8 +362,7 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
         (assoc api-search-opts :plastic-strategy-id (:id plastic-strategy))
         api-search-opts))))
 
-(defn- browse-response
-  [{:keys [logger] {db :spec} :db :as config} query approved? admin]
+(defn- browse-response [{:keys [logger] {db :spec} :db :as config} query approved? admin]
   (try
     (let [api-search-opts (->> query
                                (api-filters->filters)

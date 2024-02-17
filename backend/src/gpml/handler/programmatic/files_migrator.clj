@@ -23,8 +23,7 @@
      (apply conj [:enum] available-entities)]]
    [:limit {:optional true} pos-int?]])
 
-(defn- get-file-payload
-  [{:keys [logger]} src]
+(defn- get-file-payload [{:keys [logger]} src]
   (try
     (if (util/try-url-str src)
       (util.image/download-image logger
@@ -39,10 +38,9 @@
       (log logger :error ::failed-to-download-image {:exception-message (ex-message t)
                                                      :stack-trace (map str (.getStackTrace t))}))))
 
-(defn migrate-files
-  [{:keys [db logger] :as config}
-   {:keys [get-files-to-migrate-fn update-entity-fn
-           limit entity-key visibility]}]
+(defn migrate-files [{:keys [db logger] :as config}
+                     {:keys [get-files-to-migrate-fn update-entity-fn
+                             limit entity-key visibility]}]
   (let [conn (:spec db)
         images (get-files-to-migrate-fn conn
                                         {:limit limit})]

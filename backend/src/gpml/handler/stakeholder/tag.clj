@@ -7,8 +7,7 @@
    [gpml.db.tag :as db.tag]
    [gpml.handler.resource.tag :as handler.resource.tag]))
 
-(defn- add-tags-ids-for-categories
-  [conn tags categories]
+(defn- add-tags-ids-for-categories [conn tags categories]
   (if-let [filtered-tags (seq (filter #(some #{(:tag_category %)} categories) tags))]
     (let [result (db.tag/tag-by-tags conn {:tags (map :tag filtered-tags)})]
       (map (fn [{tag-name :tag :as tag}]
@@ -46,8 +45,7 @@
               (w/keywordize-keys)
               (select-keys [:seeking :offering :expertise]))))
 
-(defn- tag-diff
-  [new-tags old-tags old-tags-to-keep]
+(defn- tag-diff [new-tags old-tags old-tags-to-keep]
   (let [old-tags (->> old-tags
                       (map (comp #(set/rename-keys % {:tag_relation_category :tag_category})
                                  #(select-keys % [:tag :tag_relation_category])))

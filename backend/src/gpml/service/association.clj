@@ -33,8 +33,7 @@
     (fn [x] (or (:id x) x))
     (concat new-acs old-acs))))
 
-(defn- get-sth-org-role-assignments
-  [conn resource-type resource-id org-id]
+(defn- get-sth-org-role-assignments [conn resource-type resource-id org-id]
   (if-let [focal-points (seq (db.res.acs/get-resource-associations
                               conn
                               {:table "stakeholder_organisation"
@@ -99,8 +98,7 @@
          org-associations))
       [])))
 
-(defn- get-sth-org-focal-point-role-assignments
-  [conn org-id sth-id]
+(defn- get-sth-org-focal-point-role-assignments [conn org-id sth-id]
   (let [associations (db.res.acs/get-all-organisation-owner-associations*
                       conn
                       {:org-id org-id})]
@@ -170,8 +168,7 @@
    []
    sth-associations))
 
-(defn- get-resource-owners-to-keep
-  [conn resource-id resource-table-suffix org-associations]
+(defn- get-resource-owners-to-keep [conn resource-id resource-table-suffix org-associations]
   (let [owner-orgs (map :organisation (filter #(= "owner" (:role %)) org-associations))]
     (if (seq owner-orgs)
       (->> (db.res.acs/get-orgs-focal-points-associations-on-resource

@@ -4,8 +4,7 @@
    [gpml.util :as util]
    [integrant.core :as ig]))
 
-(defn- create-user-account
-  []
+(defn- create-user-account []
   {:success? true
    :user {:id (str (util/uuid))
           :active true}})

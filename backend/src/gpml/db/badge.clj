@@ -29,8 +29,7 @@
       (util/update-if-not-nil :badge-assignment-entity-col name)
       (util/update-if-not-nil :badge-assignment-table name)))
 
-(defn add-badge-assignment
-  [conn badge-assignment entity-type]
+(defn add-badge-assignment [conn badge-assignment entity-type]
   (let [entity-name (name entity-type)]
     (jdbc-util/with-constraint-violation-check [{:type :unique
                                                  :name (format "%s_badge_pkey" entity-name)
@@ -44,8 +43,7 @@
       (add-badge-assignment* conn (badge-assignment->p-badge-assignment badge-assignment))
       {:success? true})))
 
-(defn remove-badge-assignment
-  [conn badge-assignment]
+(defn remove-badge-assignment [conn badge-assignment]
   (try
     (let [p-badge-assignment (badge-assignment->p-badge-assignment badge-assignment)
           affected (remove-badge-assignment* conn p-badge-assignment)]
@@ -60,8 +58,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn delete-badge
-  [conn badge-id]
+(defn delete-badge [conn badge-id]
   (try
     (let [affected (delete-badge*
                     conn
@@ -74,8 +71,7 @@
       {:success? false
        :error-details {:ex-message (ex-message t)}})))
 
-(defn create-badge
-  [conn badge]
+(defn create-badge [conn badge]
   (try
     (jdbc-util/with-constraint-violation-check [{:type :unique
                                                  :name "badge_name_key"
@@ -87,8 +83,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn get-badge-by-id-or-name
-  [conn opts]
+(defn get-badge-by-id-or-name [conn opts]
   (try
     (let [badge (get-badge-by-id-or-name*
                  conn

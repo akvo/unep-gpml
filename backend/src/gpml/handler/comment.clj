@@ -140,8 +140,7 @@
       (util/replace-in-keys #"_" "-")
       (util/update-if-not-nil :resource-id #(Integer/parseInt %))))
 
-(defn- send-new-comment-created-notification
-  [{:keys [db mailjet-config]} {:keys [resource-id resource-type author-id]}]
+(defn- send-new-comment-created-notification [{:keys [db mailjet-config]} {:keys [resource-id resource-type author-id]}]
   (let [resource-type (if (some #{resource-type} ["financing_resource" "action_plan" "technical_resource"])
                         "resource"
                         resource-type)
@@ -171,8 +170,7 @@
                                                             (:app-domain mailjet-config))]
                           [])))))
 
-(defn- create-comment
-  [{:keys [db logger] :as config} req]
+(defn- create-comment [{:keys [db logger] :as config} req]
   (let [user (:user req)]
     (try
       (if-not (h.r.permission/operation-allowed?
@@ -199,8 +197,7 @@
                            :reason :failed-to-create-comment
                            :error-details {:msg (ex-message t)}}))))))
 
-(defn- get-resource-comments
-  [{:keys [db logger]} {{:keys [query]} :parameters :as req}]
+(defn- get-resource-comments [{:keys [db logger]} {{:keys [query]} :parameters :as req}]
   (try
     (let [opts (api-opts->opts query)
           comments (db.comment/get-resource-comments (:spec db) opts)]
@@ -217,8 +214,7 @@
                          :reason :failed-to-get-comments
                          :error-details {:msg (ex-message t)}})))))
 
-(defn- update-comment
-  [{:keys [db logger]} req]
+(defn- update-comment [{:keys [db logger]} req]
   (try
     (let [user (:user req)
           body-params (get-in req [:parameters :body])
@@ -239,8 +235,7 @@
                          :reason :failed-to-update-comment
                          :error-details {:msg (ex-message t)}})))))
 
-(defn- delete-comment
-  [{:keys [db logger] :as config} {{{:keys [id]} :path} :parameters user :user :as req}]
+(defn- delete-comment [{:keys [db logger] :as config} {{{:keys [id]} :path} :parameters user :user :as req}]
   (try
     (let [comment (first (db.comment/get-resource-comments
                           (:spec db)

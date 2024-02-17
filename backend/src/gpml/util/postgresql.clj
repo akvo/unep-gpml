@@ -22,8 +22,7 @@
       :other-sql-error)
     :other-sql-error))
 
-(defn- parse-json
-  [s]
+(defn- parse-json [s]
   (j/read-value s j/keyword-keys-object-mapper))
 
 (defn val->jsonb

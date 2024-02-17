@@ -46,11 +46,10 @@
                         related_content))
     (throw (ex-info "Failed to create case study's related content" {}))))
 
-(defn- create-case-study
-  [{:keys [logger mailjet-config] :as config}
-   conn
-   user
-   {:keys [body]}]
+(defn- create-case-study [{:keys [logger mailjet-config] :as config}
+                          conn
+                          user
+                          {:keys [body]}]
   (let [{:keys [geo_coverage_countries geo_coverage_country_groups geo_coverage_country_states
                 tags geo_coverage_type individual_connections entity_connections related_content
                 image thumbnail created_by]} body

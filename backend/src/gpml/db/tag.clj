@@ -30,8 +30,7 @@
 (defn popular-tags->db-popular-tags [popular-tags]
   (str "('" (str/join "','" popular-tags) "')"))
 
-(defn- generic-topic-tag-count-query
-  [entity-name]
+(defn- generic-topic-tag-count-query [entity-name]
   (apply format "SELECT t.id, t.tag, COUNT(*) AS count
                  FROM %s e
                  JOIN %s_tag et ON et.%s = e.id
@@ -58,8 +57,7 @@
            dom.types/topic-entity-tables)
    ")"))
 
-(defn- generic-more-topic-tag-count-query
-  [entity-name ids]
+(defn- generic-more-topic-tag-count-query [entity-name ids]
   (apply format "SELECT t.id, t.tag, COUNT(*) AS count
                  FROM %s e
                  JOIN %s_tag et ON et.%s = e.id
@@ -87,8 +85,7 @@
            opts)
    ")"))
 
-(defn- generic-topic-tag-subset-query
-  [entity-name]
+(defn- generic-topic-tag-subset-query [entity-name]
   (apply format "SELECT ARRAY_AGG(DISTINCT e.id) AS ids, t.tag, '%s' AS type
                  FROM %s e
                  JOIN %s_tag et ON et.%s = e.id

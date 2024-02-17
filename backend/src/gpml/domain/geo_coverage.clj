@@ -23,15 +23,13 @@
     [:fn (fn [{:keys [resource event policy technology organisation]}]
            (util/xor? resource event policy technology organisation))]]))
 
-(defn- initial-geo-coverage
-  [entity-key]
+(defn- initial-geo-coverage [entity-key]
   (let [schema-keys (->> (mu/get GeoCoverage 0)
                          util.malli/keys
                          (remove (comp not #{entity-key :country :country_group :country_state})))]
     (zipmap schema-keys (repeat nil))))
 
-(defn- build-geo-coverage-coll
-  [geo-coverage-coll entity-key entity-id geo-key geo-ids]
+(defn- build-geo-coverage-coll [geo-coverage-coll entity-key entity-id geo-key geo-ids]
   (map #(assoc geo-coverage-coll
                entity-key entity-id
                geo-key %)

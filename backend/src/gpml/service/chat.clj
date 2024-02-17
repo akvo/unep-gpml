@@ -25,8 +25,7 @@
                                  :verified true)]
     (chat/create-user-account chat-adapter chat-user-account)))
 
-(defn- set-stakeholder-chat-account-details
-  [{:keys [db]} user-id {chat-account-id :id active :active}]
+(defn- set-stakeholder-chat-account-details [{:keys [db]} user-id {chat-account-id :id active :active}]
   (let [chat-account-status (if active "active" "inactive")
         affected (db.sth/update-stakeholder (:spec db)
                                             {:id user-id
@@ -40,8 +39,7 @@
       {:success? false
        :reason :failed-to-update-stakeholder})))
 
-(defn create-user-account
-  [{:keys [db chat-adapter logger] :as config} user-id]
+(defn create-user-account [{:keys [db chat-adapter logger] :as config} user-id]
   (let [transactions [{:txn-fn
                        (fn get-stakeholder
                          [{:keys [user-id] :as context}]
@@ -92,8 +90,7 @@
                  :user-id user-id}]
     (tht/thread-transactions logger transactions context)))
 
-(defn set-user-account-active-status
-  [{:keys [db chat-adapter logger]} user chat-account-status]
+(defn set-user-account-active-status [{:keys [db chat-adapter logger]} user chat-account-status]
   (let [transactions [{:txn-fn
                        (fn set-chat-user-account-active-stauts
                          [{:keys [user chat-account-status] :as context}]
@@ -133,16 +130,13 @@
                  :chat-account-status chat-account-status}]
     (tht/thread-transactions logger transactions context)))
 
-(defn update-user-account
-  [{:keys [chat-adapter]} chat-account-id updates]
+(defn update-user-account [{:keys [chat-adapter]} chat-account-id updates]
   (chat/update-user-account chat-adapter chat-account-id updates))
 
-(defn delete-user-account
-  [{:keys [chat-adapter]} chat-account-id opts]
+(defn delete-user-account [{:keys [chat-adapter]} chat-account-id opts]
   (chat/delete-user-account chat-adapter chat-account-id opts))
 
-(defn get-user-joined-channels
-  [{:keys [chat-adapter]} chat-account-id]
+(defn get-user-joined-channels [{:keys [chat-adapter]} chat-account-id]
   (chat/get-user-joined-channels chat-adapter chat-account-id))
 
 (defn get-private-channels
@@ -163,8 +157,7 @@
          result)
        result))))
 
-(defn- add-users-pictures-urls
-  [config users]
+(defn- add-users-pictures-urls [config users]
   (map
    (fn [user]
      (if-not (seq (:picture_file user))
@@ -177,8 +170,7 @@
            user))))
    users))
 
-(defn get-all-channels
-  [{:keys [db chat-adapter logger] :as config} opts]
+(defn get-all-channels [{:keys [db chat-adapter logger] :as config} opts]
   (let [transactions
         [{:txn-fn
           (fn tx-get-all-channels
@@ -235,8 +227,7 @@
                  :opts opts}]
     (tht/thread-transactions logger transactions context)))
 
-(defn get-channel-details
-  [{:keys [db chat-adapter logger] :as config} channel-id channel-type]
+(defn get-channel-details [{:keys [db chat-adapter logger] :as config} channel-id channel-type]
   (let [transactions
         [{:txn-fn
           (fn tx-get-channel
@@ -287,51 +278,41 @@
                  :channel-type channel-type}]
     (tht/thread-transactions logger transactions context)))
 
-(defn remove-user-from-channel
-  [{:keys [chat-adapter]} chat-account-id channel-id channel-type]
+(defn remove-user-from-channel [{:keys [chat-adapter]} chat-account-id channel-id channel-type]
   (chat/remove-user-from-channel chat-adapter
                                  chat-account-id
                                  channel-id
                                  channel-type))
 
-(defn add-user-to-private-channel
-  [{:keys [chat-adapter]} chat-account-id channel-id]
+(defn add-user-to-private-channel [{:keys [chat-adapter]} chat-account-id channel-id]
   (chat/add-user-to-private-channel chat-adapter
                                     chat-account-id
                                     channel-id))
 
-(defn add-user-to-public-channel
-  [{:keys [chat-adapter]} chat-account-id channel-id]
+(defn add-user-to-public-channel [{:keys [chat-adapter]} chat-account-id channel-id]
   (chat/add-user-to-public-channel chat-adapter
                                    chat-account-id
                                    channel-id))
 
-(defn create-private-channel
-  [{:keys [chat-adapter]} channel]
+(defn create-private-channel [{:keys [chat-adapter]} channel]
   (chat/create-private-channel chat-adapter channel))
 
-(defn set-private-channel-custom-fields
-  [{:keys [chat-adapter]} channel-id custom-fields]
+(defn set-private-channel-custom-fields [{:keys [chat-adapter]} channel-id custom-fields]
   (chat/set-private-channel-custom-fields chat-adapter channel-id custom-fields))
 
-(defn create-public-channel
-  [{:keys [chat-adapter]} channel]
+(defn create-public-channel [{:keys [chat-adapter]} channel]
   (chat/create-public-channel chat-adapter channel))
 
-(defn set-public-channel-custom-fields
-  [{:keys [chat-adapter]} channel-id custom-fields]
+(defn set-public-channel-custom-fields [{:keys [chat-adapter]} channel-id custom-fields]
   (chat/set-public-channel-custom-fields chat-adapter channel-id custom-fields))
 
-(defn delete-private-channel
-  [{:keys [chat-adapter]} channel-id]
+(defn delete-private-channel [{:keys [chat-adapter]} channel-id]
   (chat/delete-private-channel chat-adapter channel-id))
 
-(defn delete-public-channel
-  [{:keys [chat-adapter]} channel-id]
+(defn delete-public-channel [{:keys [chat-adapter]} channel-id]
   (chat/delete-public-channel chat-adapter channel-id))
 
-(defn send-private-channel-invitation-request
-  [{:keys [db mailjet-config]} user channel-id channel-name]
+(defn send-private-channel-invitation-request [{:keys [db mailjet-config]} user channel-id channel-name]
   (let [super-admins (db.rbac-util/get-super-admins-details (:spec db) {})]
     (util.email/notify-admins-new-chat-private-channel-invitation-request
      mailjet-config

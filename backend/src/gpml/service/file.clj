@@ -27,14 +27,12 @@
     :else
     {:byte-buffer content}))
 
-(defn- get-bucket-name
-  [{:keys [private-storage-bucket-name public-storage-bucket-name]} visibility]
+(defn- get-bucket-name [{:keys [private-storage-bucket-name public-storage-bucket-name]} visibility]
   (if (= :private visibility)
     private-storage-bucket-name
     public-storage-bucket-name))
 
-(defn persist-file
-  [{:keys [logger]} conn file]
+(defn persist-file [{:keys [logger]} conn file]
   (let [file-to-persist (select-keys file [:id :object-key :name
                                            :extension :alt-desc :visibility
                                            :type :created-at :last-updated-at])
@@ -44,31 +42,27 @@
                                                    :error-details (:reason result)}))
     result))
 
-(defn- get-public-file-url
-  [{:keys [storage-api-host-name public-storage-bucket-name]} file]
+(defn- get-public-file-url [{:keys [storage-api-host-name public-storage-bucket-name]} file]
   {:success? true
    :url (format "https://%s/%s/%s"
                 storage-api-host-name
                 public-storage-bucket-name
                 (:object-key file))})
 
-(defn- get-private-file-url
-  [{:keys [storage-client-adapter
-           private-storage-bucket-name
-           private-storage-signed-url-lifespan]} file]
+(defn- get-private-file-url [{:keys [storage-client-adapter
+                                     private-storage-bucket-name
+                                     private-storage-signed-url-lifespan]} file]
   (storage-client-ext/get-blob-signed-url storage-client-adapter
                                           private-storage-bucket-name
                                           (:object-key file)
                                           private-storage-signed-url-lifespan))
 
-(defn get-file-url
-  [config file]
+(defn get-file-url [config file]
   (if (= (:visibility file) :private)
     (get-private-file-url config file)
     (get-public-file-url config file)))
 
-(defn add-files-urls
-  [config files]
+(defn add-files-urls [config files]
   (map
    (fn [file]
      (let [{:keys [success? url]}
@@ -78,8 +72,7 @@
          file)))
    files))
 
-(defn get-file
-  [config conn search-opts]
+(defn get-file [config conn search-opts]
   (let [get-file-result (db.file/get-file conn search-opts)]
     (if-not (:success? get-file-result)
       get-file-result
@@ -90,17 +83,15 @@
            :file (assoc file :url (:url get-file-url-result))}
           get-file-url-result)))))
 
-(defn get-files
-  [config conn search-opts]
+(defn get-files [config conn search-opts]
   (let [result (db.file/get-files conn search-opts)]
     (if-not (:success? result)
       result
       {:success? true
        :files (add-files-urls config (:files result))})))
 
-(defn- upload-file
-  [{:keys [storage-client-adapter] :as config}
-   {:keys [object-key content type visibility]}]
+(defn- upload-file [{:keys [storage-client-adapter] :as config}
+                    {:keys [object-key content type visibility]}]
   (try
     (let [{:keys [byte-buffer _size]} (file-content->byte-buffer content)]
       (with-open [^com.google.cloud.WriteChannel
@@ -116,8 +107,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn create-file
-  [{:keys [logger] :as config} conn file]
+(defn create-file [{:keys [logger] :as config} conn file]
   (let [context {:success? true
                  :file file}
         transactions
@@ -147,8 +137,7 @@
                   (merge context (assoc result :reason :could-not-store-file-in-obj-storage))))))}]]
     (tht/thread-transactions logger transactions context)))
 
-(defn delete-file
-  [{:keys [storage-client-adapter logger] :as config} conn search-filters & {:keys [skip-obj-storage?]}]
+(defn delete-file [{:keys [storage-client-adapter logger] :as config} conn search-filters & {:keys [skip-obj-storage?]}]
   (let [context {:success? true
                  :search-filters search-filters}
         transactions

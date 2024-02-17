@@ -109,8 +109,7 @@
 (defmethod ig/init-key :gpml.handler.resource.translation/delete-params [_ _]
   delete-params)
 
-(defn- api-translation-translation
-  [api-translation resource-col topic-id]
+(defn- api-translation-translation [api-translation resource-col topic-id]
   (assoc api-translation resource-col topic-id))
 
 (defn- valid-translation-languages?

@@ -5,15 +5,13 @@
    [gpml.service.permissions :as srv.permissions]
    [integrant.core :as ig]))
 
-(defn db-test-conn
-  []
+(defn db-test-conn []
   (-> fixtures/*system*
       (ig/init [:duct.database.sql/hikaricp])
       :duct.database.sql/hikaricp
       :spec))
 
-(defn create-test-stakeholder
-  [{:keys [db logger]} email review-status role]
+(defn create-test-stakeholder [{:keys [db logger]} email review-status role]
   (let [conn (:spec db)
         info {:picture "https://picsum.photos/200"
               :cv nil

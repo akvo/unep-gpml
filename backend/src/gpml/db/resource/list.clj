@@ -11,8 +11,7 @@
 
 (hugsql/def-db-fns "gpml/db/resource/list.sql" {:quoting :ansi})
 
-(defn generate-get-resources-query
-  []
+(defn generate-get-resources-query []
   (str/join " UNION ALL "
             (for [table dom.types/topic-entity-tables]
               (let [title-column (case table

@@ -114,16 +114,13 @@ again, please visit this URL: %s/edit-%s/%s
           (h.util/get-display-topic-type topic-type topic-item)
           (str/lower-case review-status)))
 
-(defn notify-private-channel-invitation-request-subject
-  [app-name channel-name]
+(defn notify-private-channel-invitation-request-subject [app-name channel-name]
   (format "[%s] Request to Join %s" app-name channel-name))
 
-(defn notify-user-about-chat-private-channel-invitation-request-accepted-subject
-  [app-name channel-name]
+(defn notify-user-about-chat-private-channel-invitation-request-accepted-subject [app-name channel-name]
   (format "[%s] You've joined %s" app-name channel-name))
 
-(defn notify-private-channel-invitation-request-text
-  [user-name channel-name review-request-link]
+(defn notify-private-channel-invitation-request-text [user-name channel-name review-request-link]
   (format "%s wants to join %s
 
 Visit the link below to review the request:
@@ -135,8 +132,7 @@ Visit the link below to review the request:
           channel-name
           review-request-link))
 
-(defn notify-user-about-chat-private-channel-invitation-request-accepted-text
-  [channel-name base-url]
+(defn notify-user-about-chat-private-channel-invitation-request-accepted-text [channel-name base-url]
   (format "Your request to join %s channel on the GPML platform was approved.
 
 View the forums in your GPML workspace:
@@ -161,12 +157,10 @@ View the forums in your GPML workspace:
 (defn new-resource-comment-subject [comment-author]
   (format "%s commented on your resource" comment-author))
 
-(defn- notify-user-about-plastic-strategy-invitation-subject
-  [app-name]
+(defn- notify-user-about-plastic-strategy-invitation-subject [app-name]
   (format "[%s] You have been invited to participate in a Plastic Strategy on GPML Platform" app-name))
 
-(defn- notify-user-about-plastic-strategy-invitation-text
-  [app-domain user-full-name country-name]
+(defn- notify-user-about-plastic-strategy-invitation-text [app-domain user-full-name country-name]
   (format "Dear %s,
 
 You have been invited to participate in the Plastic Strategy for %s country.
@@ -232,8 +226,7 @@ To accept this invitation please visit %s and sign up to GPML Platform.
         htmls (repeat nil)]
     (send-email mailjet-config sender subject receivers texts htmls)))
 
-(defn notify-admins-new-chat-private-channel-invitation-request
-  [mailjet-config admins user channel-id channel-name]
+(defn notify-admins-new-chat-private-channel-invitation-request [mailjet-config admins user channel-id channel-name]
   (let [sender unep-sender
         subject (notify-private-channel-invitation-request-subject
                  (:app-name mailjet-config)
@@ -261,8 +254,7 @@ To accept this invitation please visit %s and sign up to GPML Platform.
        :reason :failed-to-send-email
        :error-details body})))
 
-(defn notify-user-about-chat-private-channel-invitation-request-accepted
-  [mailjet-config user channel-name]
+(defn notify-user-about-chat-private-channel-invitation-request-accepted [mailjet-config user channel-name]
   (let [sender unep-sender
         subject (notify-user-about-chat-private-channel-invitation-request-accepted-subject
                  (:app-name mailjet-config)
@@ -280,8 +272,7 @@ To accept this invitation please visit %s and sign up to GPML Platform.
        :reason :failed-to-send-email
        :error-details body})))
 
-(defn notify-user-about-plastic-strategy-invitation
-  [mailjet-config user plastic-strategy]
+(defn notify-user-about-plastic-strategy-invitation [mailjet-config user plastic-strategy]
   (let [sender unep-sender
         subject (notify-user-about-plastic-strategy-invitation-subject (:app-name mailjet-config))
         user-full-name (get-user-full-name user)
@@ -299,12 +290,10 @@ To accept this invitation please visit %s and sign up to GPML Platform.
        :reason :failed-to-send-email
        :error-details body})))
 
-(defn notify-user-added-to-plastic-strategy-team-subject
-  [country-name]
+(defn notify-user-added-to-plastic-strategy-team-subject [country-name]
   (format "You've been added to Plastic Strategy %s" country-name))
 
-(defn notify-user-added-to-plastic-strategy-team-text
-  [user-full-name country-name app-domain]
+(defn notify-user-added-to-plastic-strategy-team-text [user-full-name country-name app-domain]
   (format "Dear %s,
 
 You now have access to Plastic Strategy %s in the GPML Digital Platform.
@@ -313,8 +302,7 @@ It is now accessible through your workspace below
 
 - UNEP GPML Digital Platform" user-full-name country-name app-domain))
 
-(defn notify-user-added-to-plastic-strategy-team
-  [mailjet-config user plastic-strategy]
+(defn notify-user-added-to-plastic-strategy-team [mailjet-config user plastic-strategy]
   (let [sender unep-sender
         subject (notify-user-added-to-plastic-strategy-team-subject
                  (get-in plastic-strategy [:country :name]))

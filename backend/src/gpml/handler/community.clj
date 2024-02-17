@@ -175,8 +175,7 @@
         picture-file-url (get-in files-w-urls [picture-id :url])]
     (assoc community-member :picture picture-file-url)))
 
-(defn get-community-members
-  [{:keys [db logger] :as config} req]
+(defn get-community-members [{:keys [db logger] :as config} req]
   (try
     (let [conn (:spec db)
           query-params (get-in req [:parameters :query])

@@ -280,8 +280,7 @@
                 data-queries)))
 ;;========================================END OF DEPRECATED CODE==============================================================
 
-(defn- resolve-resource-type
-  [resource-type]
+(defn- resolve-resource-type [resource-type]
   (cond
     (some #{resource-type} dom.resource/types)
     "resource"
@@ -308,8 +307,7 @@
      []
      related-contents)))
 
-(defn- add-stakeholder-connections
-  [db resource-type resource]
+(defn- add-stakeholder-connections [db resource-type resource]
   (let [search-opts {:resource-id (:id resource)
                      :resource-type resource-type}
         sth-conns (->> (db.resource.connection/get-resource-stakeholder-connections db search-opts)
@@ -321,8 +319,7 @@
                                :tags))))]
     (assoc resource :stakeholder_connections sth-conns)))
 
-(defn- add-files-urls
-  [config resource]
+(defn- add-files-urls [config resource]
   (let [{:keys [files image_id thumbnail_id picture_id logo_id]} resource
         resource-type (:type resource)
         files-w-urls (->> files
@@ -341,13 +338,12 @@
              :image (get-in files-w-urls [image_id :url])
              :thumbnail (get-in files-w-urls [thumbnail_id :url])))))
 
-(defn- add-extra-details
-  [{:keys [db] :as config} {:keys [id affiliation] :as resource} resource-type
-   {:keys [files-urls? owners? tags? entity-connections?
-           stakeholder-connections? related-content? affiliation?]
-    :or {files-urls? true owners? true tags? true entity-connections? true
-         stakeholder-connections? true related-content? true
-         affiliation? false}}]
+(defn- add-extra-details [{:keys [db] :as config} {:keys [id affiliation] :as resource} resource-type
+                          {:keys [files-urls? owners? tags? entity-connections?
+                                  stakeholder-connections? related-content? affiliation?]
+                           :or {files-urls? true owners? true tags? true entity-connections? true
+                                stakeholder-connections? true related-content? true
+                                affiliation? false}}]
   (let [conn (:spec db)
         api-resource-type (if-not (= "resource" resource-type)
                             resource-type
@@ -429,8 +425,7 @@
 (defmethod extra-details :nothing [_ _ _]
   nil)
 
-(defn- delete-resource
-  [{:keys [db logger] :as config} resource-id resource-type rbac-context-type]
+(defn- delete-resource [{:keys [db logger] :as config} resource-id resource-type rbac-context-type]
   (let [transactions
         [{:txn-fn
           (fn tx-get-resource
@@ -541,8 +536,7 @@
         (dissoc :json)
         (merge json))))
 
-(defn- get-detail
-  [{:keys [db] :as config} topic-id topic-type query]
+(defn- get-detail [{:keys [db] :as config} topic-id topic-type query]
   (let [conn (:spec db)
         resource-details (-> (get-detail* conn topic-type topic-id query)
                              (dissoc :tags :remarks :abstract :description))
@@ -670,8 +664,7 @@
       :id id
       :organisation org-id})))
 
-(defn update-blank-resource-image
-  [config conn resource-type resource-id file-id-key old-file-id]
+(defn update-blank-resource-image [config conn resource-type resource-id file-id-key old-file-id]
   (if old-file-id
     (let [result (srv.file/delete-file config conn {:id old-file-id})]
       (if (:success? result)
@@ -721,8 +714,7 @@
                                  image-payload)
         (throw (ex-info "Failed to delete old resource image file" {:result result}))))))
 
-(defn update-resource-image
-  [config conn resource-type resource-id image-key image-payload]
+(defn update-resource-image [config conn resource-type resource-id image-key image-payload]
   (let [resource (get-detail* conn resource-type resource-id {})
         file-id-key (keyword (str (name image-key) "_id"))
         old-file-id (util/uuid (get resource file-id-key))]
@@ -741,15 +733,14 @@
                               old-file-id
                               image-payload))))
 
-(defn- update-resource
-  [{:keys [logger mailjet-config] :as config}
-   conn
-   topic-type
-   id
-   {:keys [geo_coverage_countries
-           geo_coverage_country_groups
-           geo_coverage_country_states
-           geo_coverage_type] :as updates}]
+(defn- update-resource [{:keys [logger mailjet-config] :as config}
+                        conn
+                        topic-type
+                        id
+                        {:keys [geo_coverage_countries
+                                geo_coverage_country_groups
+                                geo_coverage_country_states
+                                geo_coverage_type] :as updates}]
   (let [updates (assoc updates :id id)
         table (cond
                 (contains? dom.resource/types topic-type) "resource"
@@ -811,11 +802,10 @@
                                         :resource-id id})
     status))
 
-(defn- update-initiative
-  [{:keys [logger mailjet-config] :as config}
-   conn
-   id
-   initiative]
+(defn- update-initiative [{:keys [logger mailjet-config] :as config}
+                          conn
+                          id
+                          initiative]
   (let [dom-keys (util.malli/keys dom.initiative/Initiative)
         api-initiative (assoc initiative :id id)
         tags (remove nil? (:tags api-initiative))

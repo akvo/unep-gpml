@@ -41,8 +41,7 @@
   attempting to fulfill the request."
   502)
 
-(defn- fallback
-  [_value exception]
+(defn- fallback [_value exception]
   (let [status (condp instance? exception
                  ;; Socket layer related exceptions
                  java.net.UnknownHostException :unknown-host
@@ -53,8 +52,7 @@
                  java.lang.Exception :unknown-reason)]
     {:status status}))
 
-(defn- retry-policy
-  [max-retries backoff-ms]
+(defn- retry-policy [max-retries backoff-ms]
   (dh/retry-policy-from-config
    {:max-retries max-retries
     :backoff-ms backoff-ms

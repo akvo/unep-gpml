@@ -11,8 +11,7 @@
   (:import
    (java.sql SQLException)))
 
-(defn- create-organisation
-  [{:keys [db logger] :as config} req]
+(defn- create-organisation [{:keys [db logger] :as config} req]
   (try
     (jdbc/with-db-transaction [tx (:spec db)]
       (r/ok {:success? true

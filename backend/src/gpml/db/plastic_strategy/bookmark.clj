@@ -17,8 +17,7 @@
       (util/update-if-not-nil :ps-bookmark-table name)
       (dissoc :entity-type)))
 
-(defn create-ps-bookmark
-  [conn {:keys [entity-type] :as ps-bookmark}]
+(defn create-ps-bookmark [conn {:keys [entity-type] :as ps-bookmark}]
   (let [entity-name (name entity-type)]
     (jdbc-util/with-constraint-violation-check [{:type :unique
                                                  :name (format "plastic_strategy_%s_bookmark_pkey" entity-name)
@@ -26,8 +25,7 @@
       (create-ps-bookmark* conn (ps-bookmark->p-ps-bookmark ps-bookmark))
       {:success? true})))
 
-(defn delete-ps-bookmark
-  [conn ps-bookmark]
+(defn delete-ps-bookmark [conn ps-bookmark]
   (try
     (let [p-ps-bookmark (ps-bookmark->p-ps-bookmark ps-bookmark)
           affected (delete-ps-bookmark* conn p-ps-bookmark)]

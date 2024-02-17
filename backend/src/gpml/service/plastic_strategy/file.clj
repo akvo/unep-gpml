@@ -6,8 +6,7 @@
    [gpml.service.file :as srv.file]
    [gpml.util.thread-transactions :as tht]))
 
-(defn create-ps-file
-  [{:keys [db logger] :as config} ps-file]
+(defn create-ps-file [{:keys [db logger] :as config} ps-file]
   (let [transactions
         [{:txn-fn
           (fn tx-upload-ps-file-to-obj-storage
@@ -43,8 +42,7 @@
                  :ps-file ps-file}]
     (tht/thread-transactions logger transactions context)))
 
-(defn delete-ps-file
-  [{:keys [db logger] :as config} ps-file]
+(defn delete-ps-file [{:keys [db logger] :as config} ps-file]
   (let [transactions
         [{:txn-fn
           (fn tx-delete-ps-file
@@ -80,8 +78,7 @@
                  :ps-file ps-file}]
     (tht/thread-transactions logger transactions context)))
 
-(defn get-ps-files
-  [{:keys [db] :as config} opts]
+(defn get-ps-files [{:keys [db] :as config} opts]
   (let [result (db.ps.file/get-ps-files (:spec db) opts)]
     (if-not (:success? result)
       result

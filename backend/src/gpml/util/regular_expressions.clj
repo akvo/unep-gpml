@@ -17,6 +17,5 @@
   - /Date(-1656429300000+0145)/"
   #"\\?\/Date\(([-]?\d+)([-+]\d+)?\)\\?\/")
 
-(defn comma-separated-enums-re
-  [enum-coll]
+(defn comma-separated-enums-re [enum-coll]
   (re-pattern (format "^(%1$s)((,(%1$s))+)?$" (str/join "|" enum-coll))))

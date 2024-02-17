@@ -32,8 +32,7 @@
    "action_plan" "resource"
    "technical_resource" "resource"})
 
-(defn- rename-tables
-  [tables]
+(defn- rename-tables [tables]
   (let [tables-to-rename (filter #(some #{%} (keys table-rename-mapping)) tables)
         renamed-tables (set (map #(get table-rename-mapping %) tables-to-rename))]
     (concat renamed-tables (remove #(some #{%} tables-to-rename) tables))))
@@ -82,8 +81,7 @@
    e.remarks AS summary,
    e.*")
 
-(defn- generic-topic-search-text-field-query
-  [search-text-field]
+(defn- generic-topic-search-text-field-query [search-text-field]
   (format "COALESCE(e.%s, '')" search-text-field))
 
 (defn- initiative-topic-search-text-field-query
@@ -114,8 +112,7 @@
           ""
           search-text-fields))
 
-(defn- get-table-specific-cols-exp
-  [entity-name]
+(defn- get-table-specific-cols-exp [entity-name]
   (case entity-name
     "initiative" initiative-cols
     "policy" policy-cols
@@ -124,14 +121,13 @@
     "case_study" case-study-cols
     "e.*"))
 
-(defn- build-topic-data-query
-  [entity-name
-   {:keys [id entity tag representative-group
-           geo-coverage-types sub-content-type
-           search-text review-status featured capacity-building upcoming
-           plastic-strategy-id ps-bookmark-sections-keys
-           badges inc-entity-connections?] :as _params}
-   {:keys [search-text-fields] :as _opts}]
+(defn- build-topic-data-query [entity-name
+                               {:keys [id entity tag representative-group
+                                       geo-coverage-types sub-content-type
+                                       search-text review-status featured capacity-building upcoming
+                                       plastic-strategy-id ps-bookmark-sections-keys
+                                       badges inc-entity-connections?] :as _params}
+                               {:keys [search-text-fields] :as _opts}]
   (let [entity-connections-join (if-not (or (seq entity)
                                             (seq representative-group)
                                             inc-entity-connections?)
@@ -290,16 +286,14 @@
 	  cte_%s_data d"
          (concat [topic-name-query] (repeat 2 entity-name))))
 
-(defn- generic-topic-name-query
-  [topic-name]
+(defn- generic-topic-name-query [topic-name]
   (format "'%s'::text" topic-name))
 
 (def ^:private resource-topic-name-query
   "replace(lower(d.type), ' ', '_')")
 
 ;;======================= Topic CTE query =================================
-(defn- generic-topic-cte-query
-  [entity-name]
+(defn- generic-topic-cte-query [entity-name]
   (format
    "SELECT
        cte.topic,
@@ -450,8 +444,7 @@
    ON TRUE
    GROUP BY 1")
 
-(defn- generate-count-aggregate-query
-  [{:keys [tags-to-count capacity-building]}]
+(defn- generate-count-aggregate-query [{:keys [tags-to-count capacity-building]}]
   (str
    count-aggregate-query-raw-sql
    (when (seq tags-to-count)
@@ -459,8 +452,7 @@
    (when-not (nil? capacity-building)
      (str " UNION ALL " capacity-building-count-aggregate-query-raw-sql))))
 
-(defn- generate-get-topics-query
-  [{:keys [order-by limit offset descending upcoming topic]}]
+(defn- generate-get-topics-query [{:keys [order-by limit offset descending upcoming topic]}]
   (let [order (if descending "DESC" "ASC")
         order-by-clause (cond
 			  ;; We assume the upcoming filter will always
@@ -496,8 +488,7 @@
     (generate-count-aggregate-query opts)
     (generate-get-topics-query opts)))
 
-(defn- generic-json-array-lookup-cond
-  [json-column values-to-lookup]
+(defn- generic-json-array-lookup-cond [json-column values-to-lookup]
   (format
    "(SELECT COUNT(*)
      FROM json_array_elements_text((CASE WHEN (%s::TEXT = '') IS NOT FALSE THEN '[]'::JSON
