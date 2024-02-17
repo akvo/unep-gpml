@@ -25,8 +25,7 @@
      (seq message)
      (str/includes? message (:name constraint)))))
 
-(defn with-constraint-violation-check-fn
-  [constraints body-fn]
+(defn with-constraint-violation-check-fn [constraints body-fn]
   (try
     (body-fn)
     (catch SQLException e

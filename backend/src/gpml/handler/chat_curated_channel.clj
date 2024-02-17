@@ -23,8 +23,7 @@
                :allowEmptyValue false}}
     [:string {:min 1}]]])
 
-(defn- get-chat-curated-channels
-  [config {:keys [user]}]
+(defn- get-chat-curated-channels [config {:keys [user]}]
   (if-not (h.r.permission/operation-allowed?
            config
            {:user-id (:id user)
@@ -39,8 +38,7 @@
                :chat_curated_channels (:chat-curated-channels result)})
         (r/server-error result)))))
 
-(defn- create-chat-curated-channel
-  [config {:keys [user] :as req}]
+(defn- create-chat-curated-channel [config {:keys [user] :as req}]
   (if-not (h.r.permission/super-admin? config (:id user))
     (r/forbidden {:message "Unauthorized"})
     (let [chat-curated-channel-id (get-in req [:parameters :body :id])
@@ -50,8 +48,7 @@
         (r/ok result)
         (r/server-error result)))))
 
-(defn- delete-chat-curated-channel
-  [config {:keys [user] :as req}]
+(defn- delete-chat-curated-channel [config {:keys [user] :as req}]
   (if-not (h.r.permission/super-admin? config (:id user))
     (r/forbidden {:message "Unauthorized"})
     (let [chat-curated-channel-id (get-in req [:parameters :path :id])

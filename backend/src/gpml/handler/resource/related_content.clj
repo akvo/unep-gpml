@@ -18,8 +18,7 @@
    :policy {:abstract :description}
    :resource {:summary :description}})
 
-(defn- unwrap-related-contents
-  [related-contents]
+(defn- unwrap-related-contents [related-contents]
   (->> related-contents
        (map
         (fn [{:keys [resource_type resource_data]}]

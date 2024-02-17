@@ -174,10 +174,9 @@
     true
     (assoc :review-status "APPROVED")))
 
-(defn- get-resource-map-counts
-  [{:keys [db logger]}
-   {{:keys [query]} :parameters
-    user :user}]
+(defn- get-resource-map-counts [{:keys [db logger]}
+                                {{:keys [query]} :parameters
+                                 user :user}]
   (try
     (let [conn (:spec db)
           opts (api-opts->opts (assoc query :user-id (:id user)))

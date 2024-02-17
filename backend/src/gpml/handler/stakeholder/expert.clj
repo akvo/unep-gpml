@@ -137,9 +137,8 @@
       (select-keys [:first_name :last_name :email])
       (assoc :review_status (pg-util/->PGEnum "INVITED" "review_status"))))
 
-(defn- get-experts
-  [{:keys [logger] {:keys [spec]} :db}
-   {{:keys [query]} :parameters :as _req}]
+(defn- get-experts [{:keys [logger] {:keys [spec]} :db}
+                    {{:keys [query]} :parameters :as _req}]
   (try
     (let [opts (api-opts->opts query)
           country-groups-countries (when (seq (get-in opts [:filters :country-groups]))
@@ -162,8 +161,7 @@
           response
           (assoc-in response [:body :error-details :error] (.getMessage e)))))))
 
-(defn- send-invitation-emails
-  [{:keys [mailjet-config app-domain logger]} invitations]
+(defn- send-invitation-emails [{:keys [mailjet-config app-domain logger]} invitations]
   (try
     (doseq [{invitation-id :id
              first-name :first_name
@@ -187,9 +185,8 @@
 
 ;; TODO: Improve how we deal with errors here, since we should rollback invitation processes one by one, as otherwise
 ;; we might rollback all of them while the notifications or some of them have been sent already.
-(defn- invite-experts
-  [{:keys [db mailjet-config logger] :as config}
-   {{:keys [body]} :parameters}]
+(defn- invite-experts [{:keys [db mailjet-config logger] :as config}
+                       {{:keys [body]} :parameters}]
   (try
     (jdbc/with-db-transaction [conn (:spec db)]
       (let [experts (map api-expert->expert body)
@@ -262,9 +259,8 @@
            {:success? false
             :reason reason}))))))
 
-(defn- generate-admins-expert-suggestion-text
-  [{:keys [email expertise suggested_expertise] :as expert}
-   user-full-name admin-full-name]
+(defn- generate-admins-expert-suggestion-text [{:keys [email expertise suggested_expertise] :as expert}
+                                               user-full-name admin-full-name]
   (format
    "Dear %s,
 
@@ -281,9 +277,8 @@ User %s is suggesting an expert with the following information:
    (if-not (seq expertise) "" (str "- Expertise: " expertise))
    (if-not (seq suggested_expertise) "" (str "- Suggested Expertise: " suggested_expertise))))
 
-(defn- suggest-expert
-  [{:keys [db logger mailjet-config]}
-   {{:keys [body]} :parameters user :user}]
+(defn- suggest-expert [{:keys [db logger mailjet-config]}
+                       {{:keys [body]} :parameters user :user}]
   (try
     (let [expert (-> body
                      (util/update-if-not-nil :expertise #(str/join "," %))

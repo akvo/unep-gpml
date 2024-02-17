@@ -46,12 +46,10 @@
        (not (contains? associations (keyword topic)))
        (set/superset? ((keyword topic) associations) association)))]])
 
-(defn- get-stakeholder-id
-  [db email]
+(defn- get-stakeholder-id [db email]
   (:id (db.stakeholder/approved-stakeholder-by-email db {:email email})))
 
-(defn- get-favorites
-  [db stakeholder topic-type topic-id]
+(defn- get-favorites [db stakeholder topic-type topic-id]
   (let [topic (api-util/get-internal-topic-type topic-type)
         data (db.favorite/association-by-stakeholder-topic db {:stakeholder-id stakeholder
                                                                :resource-col topic
@@ -75,8 +73,7 @@
     "other_stakeholder"
     topic))
 
-(defn- expand-associations
-  [{:keys [topic topic_id association]}]
+(defn- expand-associations [{:keys [topic topic_id association]}]
   (vec (for [a association]
          (let [column-name (topic->column-name topic)]
            {:topic topic

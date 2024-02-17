@@ -78,8 +78,7 @@
         :resource-id resource-id}
        parent-context))))
 
-(defn delete-resource-context
-  [{:keys [conn logger]} {:keys [resource-id context-type-name]}]
+(defn delete-resource-context [{:keys [conn logger]} {:keys [resource-id context-type-name]}]
   (let [result (rbac/delete-context!
                 conn
                 logger

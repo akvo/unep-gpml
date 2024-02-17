@@ -61,8 +61,7 @@
                     :default "3"}
             string?]]})
 
-(defn- add-member-picture-url
-  [config member]
+(defn- add-member-picture-url [config member]
   (if-not (:picture_id member)
     (assoc member :picture nil)
     (let [file {:id (:picture_id member)

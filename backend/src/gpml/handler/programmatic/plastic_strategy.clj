@@ -25,8 +25,7 @@
        :allowEmptyValue false}}
      [:string {:min 1}]]]])
 
-(defn- create-plastic-strategies
-  [config req]
+(defn- create-plastic-strategies [config req]
   (let [pses-payload (cske/transform-keys ->kebab-case (get-in req [:parameters :body]))
         result (srv.ps/create-plastic-strategies config pses-payload)]
     (if (:success? result)

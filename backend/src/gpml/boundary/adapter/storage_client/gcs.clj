@@ -7,12 +7,10 @@
    (com.google.cloud.storage BlobId BlobInfo Storage Storage$SignUrlOption)
    (java.util.concurrent TimeUnit)))
 
-(defn- delete-blob
-  [^Storage storage bucket-name blob-name]
+(defn- delete-blob [^Storage storage bucket-name blob-name]
   {:success? (.delete storage ^BlobId (BlobId/of bucket-name blob-name))})
 
-(defn- get-blob-signed-url
-  [^Storage storage bucket-name blob-name url-lifespan]
+(defn- get-blob-signed-url [^Storage storage bucket-name blob-name url-lifespan]
   (try
     (let [blob-id ^BlobId (BlobId/of bucket-name blob-name)
           blob-info ^BlobInfo (.build (BlobInfo/newBuilder blob-id))

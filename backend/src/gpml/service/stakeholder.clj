@@ -17,8 +17,7 @@
    [gpml.util.thread-transactions :as tht]
    [medley.core :as medley]))
 
-(defn create-stakeholder
-  [{:keys [db logger mailjet-config] :as config} stakeholder]
+(defn create-stakeholder [{:keys [db logger mailjet-config] :as config} stakeholder]
   (let [conn (:spec db)
         context {:success? true
                  :stakeholder stakeholder}
@@ -221,8 +220,7 @@
                        :error-details {:result result}))))}]]
     (tht/thread-transactions logger transactions context)))
 
-(defn update-stakeholder
-  [{:keys [db logger mailjet-config] :as config} stakeholder partial-tags-override-rel-cats]
+(defn update-stakeholder [{:keys [db logger mailjet-config] :as config} stakeholder partial-tags-override-rel-cats]
   (let [conn (:spec db)
         context {:success? true
                  :stakeholder stakeholder}
@@ -487,8 +485,7 @@
                          :error-details {:result result})))))}]]
     (tht/thread-transactions logger transactions context)))
 
-(defn get-stakeholder-profile
-  [{:keys [db logger] :as config} stakeholder-id]
+(defn get-stakeholder-profile [{:keys [db logger] :as config} stakeholder-id]
   (let [conn (:spec db)
         context {:success? true
                  :stakeholder-id stakeholder-id}

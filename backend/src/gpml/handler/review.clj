@@ -52,8 +52,7 @@
   [reviewer]
   (select-keys reviewer [:id :first_name :last_name :email :role]))
 
-(defn- get-reviewers
-  [{:keys [db logger]} query]
+(defn- get-reviewers [{:keys [db logger]} query]
   (try
     (let [opts (api-opts->opts query)
           conn (:spec db)
@@ -96,8 +95,7 @@
                       (list nil))
     (conj c review)))
 
-(defn- new-multiple-review
-  [logger db mailjet-config topic-type topic-id reviewers assigned-by]
+(defn- new-multiple-review [logger db mailjet-config topic-type topic-id reviewers assigned-by]
   (let [topic-type* (util/get-internal-topic-type topic-type)]
     (jdbc/with-db-transaction [conn (:spec db)]
       (db.review/delete-reviews conn {:topic-type topic-type* :topic-id topic-id})
@@ -110,8 +108,7 @@
                                        []
                                        reviewers)}))))
 
-(defn- change-reviewers
-  [logger db mailjet-config topic-type topic-id reviewers user]
+(defn- change-reviewers [logger db mailjet-config topic-type topic-id reviewers user]
   (let [topic-type* (util/get-internal-topic-type topic-type)
         assigned-by (:id user)]
     (jdbc/with-db-transaction [tx (:spec db)]
@@ -144,8 +141,7 @@
                                                                 :topic-id topic-id
                                                                 :assigned-by assigned-by}) [] reviewers-to-create))})))))
 
-(defn- update-review-status
-  [db mailjet-config topic-type topic-id review-status review-comment user]
+(defn- update-review-status [db mailjet-config topic-type topic-id review-status review-comment user]
   (let [topic-type* (util/get-internal-topic-type topic-type)]
     (jdbc/with-db-transaction [conn (:spec db)]
       (if-let [review (first (db.review/reviews-filter
@@ -170,8 +166,7 @@
           (r/not-found))
         (r/not-found)))))
 
-(defn- list-reviews
-  [db reviewer page limit status only]
+(defn- list-reviews [db reviewer page limit status only]
   (let [conn (:spec db)
         review-status (and status (str/split status #","))
         params {:reviewer (:id reviewer) :page page :limit limit :review-status review-status

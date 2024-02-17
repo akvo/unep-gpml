@@ -8,8 +8,7 @@
    [gpml.util :as util]
    [gpml.util.thread-transactions :as tht]))
 
-(defn invite-user
-  [{:keys [db logger]} invitation-payload]
+(defn invite-user [{:keys [db logger]} invitation-payload]
   (let [transactions
         [{:txn-fn
           (fn tx-create-stakeholder

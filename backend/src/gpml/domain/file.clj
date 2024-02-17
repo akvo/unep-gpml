@@ -58,15 +58,13 @@
   {"application/vnd.oasis.opendocument.text" "odt"
    "application/vnd.openxmlformats-officedocument.wordprocessingml.document" "docx"})
 
-(defn create-file-object-key
-  [entity-key file-key file-id]
+(defn create-file-object-key [entity-key file-key file-id]
   (-> object-key-pattern
       (str/replace #"ENTITY-KEY" (name entity-key))
       (str/replace #"FILE-KEY" (name file-key))
       (str/replace #"FILE-ID" (str file-id))))
 
-(defn decode-file
-  [file]
+(defn decode-file [file]
   (m/decode file-schema file mt/string-transformer))
 
 (defn base64->file

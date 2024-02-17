@@ -27,23 +27,20 @@
              :$inlinecount "allpages"
              :$format "json"}})
 
-(defn- get-result-from-body
-  [entity body]
+(defn- get-result-from-body [entity body]
   (case entity
     (:publication :project) (get body :value)
     :meeting (get-in body [:d :results])
     body))
 
-(defn- get-count-from-body
-  [entity body]
+(defn- get-count-from-body [entity body]
   (case entity
     (:publication :project) (Integer/parseInt (get body :odata.count))
     :meeting (Integer/parseInt (get-in body [:d :__count]))))
 
-(defn- get-data
-  [{:keys [logger api-url records-per-page endpoints retry-config] :as config}
-   {:keys [entity skip-token]
-    :or {skip-token 0}}]
+(defn- get-data [{:keys [logger api-url records-per-page endpoints retry-config] :as config}
+                 {:keys [entity skip-token]
+                  :or {skip-token 0}}]
   (try
     (if-not (get (set (keys endpoints)) entity)
       {:success? false

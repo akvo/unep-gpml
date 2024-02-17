@@ -24,8 +24,7 @@
                                            (merge tag {:type "tag"})))
    new-tags))
 
-(defn- prep-resource-tags
-  [resource-name resource-id tags-ids tag-category]
+(defn- prep-resource-tags [resource-name resource-id tags-ids tag-category]
   (if (= resource-name "stakeholder")
     (map #(vector resource-id % tag-category) tags-ids)
     (map (partial vector resource-id) tags-ids)))

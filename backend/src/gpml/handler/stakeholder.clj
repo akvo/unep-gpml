@@ -55,13 +55,12 @@
                                                     (select-keys stakeholder (conj common-keys :email))
                                                     (select-keys stakeholder common-keys))))))}))))
 
-(defn- make-profile
-  [{:keys [title first_name last_name email
-           idp_usernames linked_in public_database
-           public_email affiliation
-           job_title twitter
-           country about
-           cv picture org tags]}]
+(defn- make-profile [{:keys [title first_name last_name email
+                             idp_usernames linked_in public_database
+                             public_email affiliation
+                             job_title twitter
+                             country about
+                             cv picture org tags]}]
   {:title             title
    :first_name        first_name
    :last_name         last_name
@@ -80,16 +79,15 @@
    :org               org
    :tags              tags})
 
-(defn- create-profile
-  [{:keys [id about
-           title first-name role
-           last-name idp-usernames
-           linked-in cv picture twitter email
-           affiliation job-title
-           country geo-coverage-type
-           reviewed-at reviewed-by review-status
-           organisation-role public-email
-           tags org chat-account-id chat-account-status]}]
+(defn- create-profile [{:keys [id about
+                               title first-name role
+                               last-name idp-usernames
+                               linked-in cv picture twitter email
+                               affiliation job-title
+                               country geo-coverage-type
+                               reviewed-at reviewed-by review-status
+                               organisation-role public-email
+                               tags org chat-account-id chat-account-status]}]
   (let [{:keys [seeking offering expertise]} (->> tags
                                                   (group-by :tag_relation_category)
                                                   (reduce-kv (fn [m k v] (assoc m (keyword k) (map :tag v))) {}))]
@@ -122,8 +120,7 @@
      :chat_account_id chat-account-id
      :chat_account_status chat-account-status}))
 
-(defn- get-stakeholder-profile
-  [config stakeholder-id]
+(defn- get-stakeholder-profile [config stakeholder-id]
   (let [result (srv.stakeholder/get-stakeholder-profile config stakeholder-id)]
     (when (:success? result)
       (create-profile (:stakeholder result)))))
@@ -135,16 +132,14 @@
       (r/ok (or (get-stakeholder-profile config user-id) {}))
       (r/ok {}))))
 
-(defn- create-stakeholder
-  [config stakeholder]
+(defn- create-stakeholder [config stakeholder]
   (let [result (srv.stakeholder/create-stakeholder config
                                                    stakeholder)]
     (if (:success? result)
       (get-in result [:stakeholder :id])
       (throw (ex-info "Failed to create stakeholder" result)))))
 
-(defn- update-stakeholder
-  [config stakeholder partial-tags-override-rel-cats]
+(defn- update-stakeholder [config stakeholder partial-tags-override-rel-cats]
   (let [result (srv.stakeholder/update-stakeholder config
                                                    stakeholder
                                                    partial-tags-override-rel-cats)]
@@ -152,10 +147,9 @@
       (get-in result [:stakeholder :id])
       (throw (ex-info "Failed to update stakeholder" {:result result})))))
 
-(defn- save-stakeholder
-  [{:keys [db logger mailjet-config] :as config}
-   {{:keys [body]} :parameters
-    :keys [jwt-claims headers] :as _req}]
+(defn- save-stakeholder [{:keys [db logger mailjet-config] :as config}
+                         {{:keys [body]} :parameters
+                          :keys [jwt-claims headers] :as _req}]
   (try
     (let [conn (:spec db)
           org (:org body)

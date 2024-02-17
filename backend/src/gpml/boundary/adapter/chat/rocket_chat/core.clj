@@ -23,8 +23,7 @@
    [gpml.util.http-client :as http-client]
    [gpml.util.json :as json]))
 
-(defn- get-auth-headers
-  [api-key api-user-id]
+(defn- get-auth-headers [api-key api-user-id]
   {"X-Auth-Token" api-key
    "X-User-Id" api-user-id})
 
@@ -32,8 +31,7 @@
   [x]
   (->camelCaseString x :separator \-))
 
-(defn- parse-query-and-fields-opts
-  [{:keys [fields query]}]
+(defn- parse-query-and-fields-opts [{:keys [fields query]}]
   (cond-> {}
     query
     (assoc :query (json/->json (cske/transform-keys kebab-case->camel-case-string query)))
@@ -41,12 +39,10 @@
     fields
     (assoc :fields (json/->json (cske/transform-keys kebab-case->camel-case-string fields)))))
 
-(defn- add-channel-avatar-url
-  [api-domain-url {:keys [id] :as channel}]
+(defn- add-channel-avatar-url [api-domain-url {:keys [id] :as channel}]
   (assoc channel :avatar-url (format "%s/avatar/room/%s" api-domain-url id)))
 
-(defn- build-api-endpoint-url
-  [{:keys [api-domain-url api-url-path]} endpoint-url-path]
+(defn- build-api-endpoint-url [{:keys [api-domain-url api-url-path]} endpoint-url-path]
   (str api-domain-url api-url-path endpoint-url-path))
 
 (defn- get-user-info*
@@ -186,8 +182,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn- get-public-channel-users
-  [{:keys [logger api-key api-user-id] :as adapter} channel-id opts]
+(defn- get-public-channel-users [{:keys [logger api-key api-user-id] :as adapter} channel-id opts]
   (try
     (let [query-params (assoc opts :room-id channel-id)
           {:keys [status body]}
@@ -210,8 +205,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn- get-private-channel-users
-  [{:keys [logger api-key api-user-id] :as adapter} channel-id opts]
+(defn- get-private-channel-users [{:keys [logger api-key api-user-id] :as adapter} channel-id opts]
   (try
     (let [query-params (assoc opts :room-id channel-id)
           {:keys [status body]}
@@ -234,8 +228,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn- add-channel-details
-  [{:keys [logger api-domain-url] :as adapter} channel]
+(defn- add-channel-details [{:keys [logger api-domain-url] :as adapter} channel]
   (let [result (if (= (:t channel) "c")
                  (get-public-channel-users adapter (:id channel) {})
                  (get-private-channel-users adapter (:id channel) {}))]

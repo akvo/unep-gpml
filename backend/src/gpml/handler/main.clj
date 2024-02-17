@@ -19,12 +19,10 @@
    [ring.util.response :as resp]
    [taoensso.timbre :as timbre]))
 
-(defn- root
-  [_]
+(defn- root [_]
   (resp/response {:status "OK"}))
 
-(defn- router
-  [{:keys [routes collector cors-allowed-origins]}]
+(defn- router [{:keys [routes collector cors-allowed-origins]}]
   (ring/router
    routes
    {:data {:muuntaja m/instance

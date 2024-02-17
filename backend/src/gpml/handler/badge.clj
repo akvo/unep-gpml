@@ -11,16 +11,14 @@
   (:import
    (java.sql SQLException)))
 
-(defn- get-badge-by-id-or-name
-  [{:keys [db]} badge-id-or-name]
+(defn- get-badge-by-id-or-name [{:keys [db]} badge-id-or-name]
   (db.badge/get-badge-by-id-or-name
    (:spec db)
    (if (integer? badge-id-or-name)
      {:id badge-id-or-name}
      {:name badge-id-or-name})))
 
-(defn- handle-badge-assignment
-  [{:keys [db]} {:keys [assign entity-type entity-id badge-id assigned-by]}]
+(defn- handle-badge-assignment [{:keys [db]} {:keys [assign entity-type entity-id badge-id assigned-by]}]
   (let [badge-assignment-table (keyword (format "%s_badge" (name entity-type)))
         badge-assignment-entity-col (keyword (format "%s_id" (name entity-type)))
         badge-assignment {:badge-assignment-table badge-assignment-table

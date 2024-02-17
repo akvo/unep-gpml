@@ -5,8 +5,7 @@
    [gpml.scheduler.brs-api-importer :as brs-api-importer]
    [integrant.core :as ig]))
 
-(defn- run-brs-api-importer
-  [{:keys [logger] :as config}]
+(defn- run-brs-api-importer [{:keys [logger] :as config}]
   (try
     (future (brs-api-importer/import-or-update-entities config))
     (r/ok {:success? true

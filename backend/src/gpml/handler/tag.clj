@@ -121,8 +121,7 @@
               :resource-id tag-id})))
         created-tag-ids))))
 
-(defn all-tags
-  [db query]
+(defn all-tags [db query]
   (reduce-kv (fn [m k v]
                (assoc m k (mapv #(dissoc % :category) v)))
              {}
@@ -137,8 +136,7 @@
     (seq tags)
     (assoc-in [:filters :tags] (str/split tags #","))))
 
-(defn- update-tag
-  [{:keys [db]} req]
+(defn- update-tag [{:keys [db]} req]
   (let [body-params (get-in req [:parameters :body])]
     {:updated-tags (db.tag/update-tag (:spec db) {:id (:id body-params)
                                                   :updates (-> body-params
@@ -195,8 +193,7 @@
   [_ _]
   {200 {:body put-response}})
 
-(defn- create-tag
-  [{:keys [db logger]} tag]
+(defn- create-tag [{:keys [db logger]} tag]
   (first (create-tags (:spec db) logger [tag] (:tag_category tag))))
 
 (defmethod ig/init-key :gpml.handler.tag/post

@@ -51,8 +51,7 @@
       (r/ok (:plastic-strategies result))
       (r/server-error (dissoc result :success?)))))
 
-(defn- get-plastic-strategies
-  [config {:keys [user] :as req}]
+(defn- get-plastic-strategies [config {:keys [user] :as req}]
   (let [query-params (cske/transform-keys #(->kebab-case % :separator \_)
                                           (get-in req [:parameters :query]))
         search-opts {:filters query-params}]
@@ -60,8 +59,7 @@
       (get-plastic-strategies* config search-opts)
       (get-plastic-strategies* config (assoc-in search-opts [:filters :rbac-user-id] (:id user))))))
 
-(defn- get-plastic-strategy
-  [config {:keys [user] :as req}]
+(defn- get-plastic-strategy [config {:keys [user] :as req}]
   (let [country-iso-code-a2 (get-in req [:parameters :path :iso_code_a2])
         search-opts {:filters {:countries-iso-codes-a2 [country-iso-code-a2]}}
         {:keys [success? plastic-strategy reason] :as result}
@@ -79,8 +77,7 @@
         (r/not-found {})
         (r/server-error (dissoc result :success?))))))
 
-(defn- update-plastic-strategy
-  [config {:keys [user] :as req}]
+(defn- update-plastic-strategy [config {:keys [user] :as req}]
   (let [country-iso-code-a2 (get-in req [:parameters :path :iso_code_a2])
         search-opts {:filters {:countries-iso-codes-a2 [country-iso-code-a2]}}
         {:keys [success? plastic-strategy reason] :as get-ps-result}

@@ -27,14 +27,13 @@
   (:import
    (java.sql SQLException)))
 
-(defn create
-  [{:keys [logger mailjet-config] :as config}
-   conn
-   {:keys [logo
-           geo_coverage_type
-           geo_coverage_country_groups
-           geo_coverage_countries
-           geo_coverage_country_states] :as org}]
+(defn create [{:keys [logger mailjet-config] :as config}
+              conn
+              {:keys [logo
+                      geo_coverage_type
+                      geo_coverage_country_groups
+                      geo_coverage_countries
+                      geo_coverage_country_states] :as org}]
   (let [logo-id (when (seq logo)
                   (handler.file/create-file config conn logo :organisation :images :private))
         geo-coverage-type (keyword geo_coverage_type)
@@ -64,8 +63,7 @@
       :resource-id org-id})
     org-id))
 
-(defn- handle-logo-update
-  [config conn org-id logo-payload]
+(defn- handle-logo-update [config conn org-id logo-payload]
   (let [old-org (db.organisation/organisation-by-id conn {:id org-id})
         old-logo-id (:logo_id old-org)
         delete-result (if-not old-logo-id
@@ -81,14 +79,13 @@
                                   :private))
       (throw (ex-info "Failed to delete old organisation logo" {:result delete-result})))))
 
-(defn update-org
-  [{:keys [logger mailjet-config] :as config}
-   conn
-   {:keys [logo
-           geo_coverage_type
-           geo_coverage_country_groups
-           geo_coverage_countries
-           geo_coverage_country_states] :as org}]
+(defn update-org [{:keys [logger mailjet-config] :as config}
+                  conn
+                  {:keys [logo
+                          geo_coverage_type
+                          geo_coverage_country_groups
+                          geo_coverage_countries
+                          geo_coverage_country_states] :as org}]
   (let [org-id (:id org)
         logo-to-update? (contains? (set (keys org)) :logo)
         new-logo-id (when logo-to-update?
@@ -297,8 +294,7 @@
 (def ^:private default-list-api-limit 50)
 (def ^:private default-list-api-page 0)
 
-(defn- add-plastic-strategy-filters
-  [config {:keys [ps-country-iso-code-a2] :as api-search-opts}]
+(defn- add-plastic-strategy-filters [config {:keys [ps-country-iso-code-a2] :as api-search-opts}]
   (if-not ps-country-iso-code-a2
     api-search-opts
     (let [search-opts {:filters {:countries-iso-codes-a2 [ps-country-iso-code-a2]}}

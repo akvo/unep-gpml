@@ -105,30 +105,26 @@
                :enum channel-types}}
     (apply conj [:enum] channel-types)]])
 
-(defn- create-user-account
-  [config {:keys [user]}]
+(defn- create-user-account [config {:keys [user]}]
   (let [result (srv.chat/create-user-account config (:id user))]
     (if (:success? result)
       (r/ok (:stakeholder result))
       (r/server-error (dissoc result :success?)))))
 
-(defn- set-user-account-active-status
-  [config {:keys [user parameters]}]
+(defn- set-user-account-active-status [config {:keys [user parameters]}]
   (let [chat-account-status (-> parameters :body :chat_account_status)
         result (srv.chat/set-user-account-active-status config user chat-account-status)]
     (if (:success? result)
       (r/ok {})
       (r/server-error (dissoc result :success?)))))
 
-(defn- get-user-joined-channels
-  [config {:keys [user]}]
+(defn- get-user-joined-channels [config {:keys [user]}]
   (let [result (srv.chat/get-user-joined-channels config (:chat_account_id user))]
     (if (:success? result)
       (r/ok (cske/transform-keys ->snake_case (:channels result)))
       (r/server-error (dissoc result :success?)))))
 
-(defn- get-private-channels
-  [config {:keys [user]}]
+(defn- get-private-channels [config {:keys [user]}]
   (if-not (h.r.permission/operation-allowed?
            config
            {:user-id (:id user)
@@ -141,16 +137,14 @@
         (r/ok (cske/transform-keys ->snake_case (:channels result)))
         (r/server-error (dissoc result :success?))))))
 
-(defn- get-all-channels
-  [config {:keys [parameters]}]
+(defn- get-all-channels [config {:keys [parameters]}]
   (let [search-opts (:query parameters)
         result (srv.chat/get-all-channels config search-opts)]
     (if (:success? result)
       (r/ok (cske/transform-keys ->snake_case (:channels result)))
       (r/server-error (dissoc result :success?)))))
 
-(defn- get-public-channels
-  [config {:keys [user]}]
+(defn- get-public-channels [config {:keys [user]}]
   (if-not (h.r.permission/operation-allowed?
            config
            {:user-id (:id user)
@@ -163,8 +157,7 @@
         (r/ok (cske/transform-keys ->snake_case (:channels result)))
         (r/server-error (dissoc result :success?))))))
 
-(defn- send-private-channel-invitation-request
-  [config {:keys [user parameters]}]
+(defn- send-private-channel-invitation-request [config {:keys [user parameters]}]
   (if-not (h.r.permission/operation-allowed?
            config
            {:user-id (:id user)
@@ -183,8 +176,7 @@
         (r/ok {})
         (r/server-error (dissoc result :success?))))))
 
-(defn- remove-user-from-channel
-  [config {:keys [user parameters]}]
+(defn- remove-user-from-channel [config {:keys [user parameters]}]
   (let [{:keys [channel_id channel_type]} (:body parameters)
         result (srv.chat/remove-user-from-channel config
                                                   (:chat_account_id user)
@@ -194,8 +186,7 @@
       (r/ok {})
       (r/server-error (dissoc result :success?)))))
 
-(defn- add-user-to-private-channel
-  [{:keys [db mailjet-config] :as config} parameters]
+(defn- add-user-to-private-channel [{:keys [db mailjet-config] :as config} parameters]
   (let [{:keys [channel_id channel_name user_id]} (:body parameters)
         target-user (db.stakeholder/get-stakeholder-by-id (:spec db) {:id user_id})]
     (if (seq target-user)
@@ -212,8 +203,7 @@
           (r/server-error (dissoc result :success?))))
       (r/server-error {:reason :user-not-found}))))
 
-(defn- get-channel-details
-  [config {{:keys [query path]} :parameters :as _req}]
+(defn- get-channel-details [config {{:keys [query path]} :parameters :as _req}]
   (let [result (srv.chat/get-channel-details config (:id path) (:type query))]
     (if (:success? result)
       (r/ok (:channel result))

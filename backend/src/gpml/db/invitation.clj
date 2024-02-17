@@ -22,8 +22,7 @@
   [invitation]
   (util/update-if-not-nil invitation :type util.pgsql/->PGEnum "invitation_type"))
 
-(defn get-invitations
-  [conn opts]
+(defn get-invitations [conn opts]
   (try
     {:success? true
      :invitations (->> (get-invitations* conn opts)
@@ -34,8 +33,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn get-invitation
-  [conn opts]
+(defn get-invitation [conn opts]
   (try
     (let [{:keys [success? invitations]} (get-invitations conn opts)]
       (if (and success?
@@ -49,8 +47,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn create-invitations
-  [conn invitations]
+(defn create-invitations [conn invitations]
   (try
     (let [p-invitations (jdbc-util/db-params-kebab-kw->db-params-snake-kw
                          (map invitation->p-invitation invitations))
@@ -70,8 +67,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn create-invitation
-  [conn invitation]
+(defn create-invitation [conn invitation]
   (try
     (let [result (create-invitations conn [invitation])]
       (if (:success? result)
@@ -83,8 +79,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn accept-invitation
-  [conn invitation-id]
+(defn accept-invitation [conn invitation-id]
   (try
     (let [affected (accept-invitation* conn {:id invitation-id})]
       (if (= affected 1)
@@ -98,8 +93,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn delete-invitation
-  [conn invitation-id]
+(defn delete-invitation [conn invitation-id]
   (try
     (let [affected (delete-invitation* conn {:id invitation-id})]
       (if (= affected 1)

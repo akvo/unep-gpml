@@ -10,8 +10,7 @@
    [gpml.util.thread-transactions :as tht]
    [integrant.core :as ig]))
 
-(defn- create-badge
-  [{:keys [db logger]} badge]
+(defn- create-badge [{:keys [db logger]} badge]
   (let [transactions [{:txn-fn
                        (fn create-badge
                          [context]

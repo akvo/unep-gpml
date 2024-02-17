@@ -54,8 +54,7 @@
   [html]
   (.text (Jsoup/parse (Entities/unescape html))))
 
-(defn- get-project-geo-coverage-type
-  [beneficiaries global?]
+(defn- get-project-geo-coverage-type [beneficiaries global?]
   (cond
     global?
     {"global" "Global"}
@@ -66,8 +65,7 @@
     :else
     {"national" "National"}))
 
-(defn- get-meeting-geo-coverage-type
-  [country]
+(defn- get-meeting-geo-coverage-type [country]
   (if (seq country)
     :national
     :global))

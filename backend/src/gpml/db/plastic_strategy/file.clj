@@ -16,16 +16,14 @@
   [p-ps-file]
   (util/update-if-not-nil p-ps-file :visibility keyword))
 
-(defn create-ps-file
-  [conn ps-file]
+(defn create-ps-file [conn ps-file]
   (jdbc-util/with-constraint-violation-check [{:type :unique
                                                :name "plastic_strategy_file_pkey"
                                                :error-reason :already-exists}]
     (create-ps-file* conn ps-file)
     {:success? true}))
 
-(defn delete-ps-file
-  [conn ps-file]
+(defn delete-ps-file [conn ps-file]
   (try
     (let [affected (delete-ps-file* conn ps-file)]
       (if (= affected 1)
@@ -39,8 +37,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn get-ps-files
-  [conn opts]
+(defn get-ps-files [conn opts]
   (try
     (let [p-opts (update opts :filters #(util/update-if-not-nil % :files-ids util.pgsql/->JDBCArray "uuid"))]
       {:success? true
@@ -53,8 +50,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn get-ps-file
-  [conn opts]
+(defn get-ps-file [conn opts]
   (try
     (let [result (get-ps-files conn opts)]
       (if-not (:success? result)

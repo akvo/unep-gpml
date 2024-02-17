@@ -20,14 +20,12 @@
 (defn read-config [x]
   (duct/read-config x {'gpml/eval eval}))
 
-(defn- test-system
-  []
+(defn- test-system []
   (-> (duct/resource "gpml/config.edn")
       (read-config)
       (duct/prep-config [:duct.profile/test])))
 
-(defn- migrate-template-test-db
-  []
+(defn- migrate-template-test-db []
   (locking lock
     (when-not (System/getProperty "gpml.template-test-db.migrated")
       (-> (test-system)
@@ -35,8 +33,7 @@
           (ig/halt!))
       (System/setProperty "gpml.template-test-db.migrated" "true"))))
 
-(defn- create-test-db
-  [db db-name]
+(defn- create-test-db [db db-name]
   (let [sql (format "CREATE DATABASE %s
                WITH OWNER = unep
                  TEMPLATE = gpml_test
@@ -45,14 +42,12 @@
                  LC_CTYPE = 'en_US.UTF-8';" db-name)]
     (jdbc/execute! db [sql] {:transaction? false})))
 
-(defn- adapt-jdbc-url
-  [url db-name]
+(defn- adapt-jdbc-url [url db-name]
   (str/replace url "gpml_test" db-name))
 
 (defn uuid [] (str/replace (str (UUID/randomUUID)) "-" "_"))
 (def mails-sent (atom []))
-(defn with-test-system
-  [f]
+(defn with-test-system [f]
   (migrate-template-test-db)
   (reset! mails-sent [])
   (let [tmp (test-system)

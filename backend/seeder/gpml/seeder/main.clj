@@ -29,8 +29,7 @@
 
 (defonce ^:private default-lang-iso-code "en")
 
-(defn- dev-system
-  []
+(defn- dev-system []
   (-> (duct/resource "gpml/config.edn")
       (duct/read-config)
       (duct/prep-config [:duct.profile/dev])))

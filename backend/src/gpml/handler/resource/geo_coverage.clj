@@ -74,8 +74,7 @@
                                                         :insert-cols insert-cols
                                                         :insert-values insert-values})))
 
-(defn create-resource-geo-coverage
-  [conn entity-key entity-id geo-coverage-type {:keys [countries country-groups country-states]}]
+(defn create-resource-geo-coverage [conn entity-key entity-id geo-coverage-type {:keys [countries country-groups country-states]}]
   (if-not (and (or (seq countries)
                    (seq country-groups)
                    (seq country-states))
@@ -96,8 +95,7 @@
         {:success? true}
         {:success? false}))))
 
-(defn delete-resource-geo-coverage
-  [conn entity-key entity-id]
+(defn delete-resource-geo-coverage [conn entity-key entity-id]
   (try
     (let [affected-rows
           (db.geo-coverage/delete-resource-geo-coverage conn
@@ -112,8 +110,7 @@
        :error-details {:exception-type (class e)
                        :exception-message (ex-message e)}})))
 
-(defn update-resource-geo-coverage
-  [conn entity-key entity-id geo-coverage-type geo-coverage]
+(defn update-resource-geo-coverage [conn entity-key entity-id geo-coverage-type geo-coverage]
   (let [result (delete-resource-geo-coverage conn
                                              entity-key
                                              entity-id)]
