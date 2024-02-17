@@ -112,8 +112,7 @@
     [:image_id [:uuid]]
     [:thumbnail_id [:uuid]]]))
 
-(defn- question-answer->initiative-prop
-  [question-answer]
+(defn- question-answer->initiative-prop [question-answer]
   (->> (if (map? question-answer)
          [question-answer]
          question-answer)

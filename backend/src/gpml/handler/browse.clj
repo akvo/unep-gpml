@@ -304,8 +304,7 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
     true
     (assoc :review-status "APPROVED")))
 
-(defn- resource->api-resource
-  [config resource]
+(defn- resource->api-resource [config resource]
   (let [conn (get-in config [:db :spec])
         {:keys [topic json]} resource
         resource-type (handler.util/get-internal-topic-type topic)

@@ -40,8 +40,7 @@
      [:string {:min 1}]
      [:re util.regex/uuid-regex]]]])
 
-(defn- api-opts->opts
-  [{:keys [id emails stakeholders_ids ids pending]}]
+(defn- api-opts->opts [{:keys [id emails stakeholders_ids ids pending]}]
   (cond-> {}
     (not (nil? pending))
     (assoc-in [:filters :pending?] pending)

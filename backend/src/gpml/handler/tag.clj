@@ -127,8 +127,7 @@
              {}
              (group-by :category (db.tag/all-tags db query))))
 
-(defn- api-opts->opts
-  [{:keys [limit tags]}]
+(defn- api-opts->opts [{:keys [limit tags]}]
   (cond-> {}
     limit
     (assoc :limit limit)

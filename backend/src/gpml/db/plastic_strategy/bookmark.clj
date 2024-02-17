@@ -10,8 +10,7 @@
 
 (hugsql/def-db-fns "gpml/db/plastic_strategy/bookmark.sql" {:quoting :ansi})
 
-(defn- ps-bookmark->p-ps-bookmark
-  [ps-bookmark]
+(defn- ps-bookmark->p-ps-bookmark [ps-bookmark]
   (-> ps-bookmark
       (util/update-if-not-nil :ps-bookmark-entity-col name)
       (util/update-if-not-nil :ps-bookmark-table name)

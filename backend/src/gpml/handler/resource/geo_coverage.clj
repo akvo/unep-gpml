@@ -66,8 +66,7 @@
      {:min 1 :error/message "Need at least one geo coverage value"}
      [:int {:min 1}]]]])
 
-(defn- create-resource-geo-coverage*
-  [conn table geo-coverage]
+(defn- create-resource-geo-coverage* [conn table geo-coverage]
   (let [insert-cols (util.sql/get-insert-columns-from-entity-col geo-coverage)
         insert-values (util.sql/entity-col->persistence-entity-col geo-coverage)]
     (db.geo-coverage/create-resource-geo-coverage conn {:table table

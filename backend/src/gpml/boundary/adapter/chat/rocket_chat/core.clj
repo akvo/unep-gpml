@@ -27,8 +27,7 @@
   {"X-Auth-Token" api-key
    "X-User-Id" api-user-id})
 
-(defn- kebab-case->camel-case-string
-  [x]
+(defn- kebab-case->camel-case-string [x]
   (->camelCaseString x :separator \-))
 
 (defn- parse-query-and-fields-opts [{:keys [fields query]}]
@@ -75,8 +74,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn create-user-account*
-  [{:keys [logger api-key api-user-id] :as adapter} user]
+(defn create-user-account* [{:keys [logger api-key api-user-id] :as adapter} user]
   (try
     (let [{:keys [status body]}
           (http-client/do-request logger
@@ -99,8 +97,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn update-user-account*
-  [{:keys [logger api-key api-user-id] :as adapter} user-id updates]
+(defn update-user-account* [{:keys [logger api-key api-user-id] :as adapter} user-id updates]
   (try
     (let [req-body (cske/transform-keys ->camelCaseString {:user-id user-id
                                                            :data updates})
@@ -125,8 +122,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn delete-user-account*
-  [{:keys [logger api-key api-user-id] :as adapter} user-id opts]
+(defn delete-user-account* [{:keys [logger api-key api-user-id] :as adapter} user-id opts]
   (try
     (let [req-body (cond-> {:user-id user-id}
                      (contains? opts :confirm-relinquish)
@@ -238,8 +234,7 @@
         (log logger :error :failed-to-get-channel-users result)
         (add-channel-avatar-url api-domain-url channel)))))
 
-(defn get-public-channels*
-  [{:keys [logger api-key api-user-id] :as adapter} opts]
+(defn get-public-channels* [{:keys [logger api-key api-user-id] :as adapter} opts]
   (try
     (let [query-params (parse-query-and-fields-opts
                         (cond-> opts
@@ -272,8 +267,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn get-private-channels*
-  [{:keys [logger api-key api-user-id] :as adapter} opts]
+(defn get-private-channels* [{:keys [logger api-key api-user-id] :as adapter} opts]
   (try
     (let [query-params (parse-query-and-fields-opts
                         (cond-> opts
@@ -306,8 +300,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn get-all-channels*
-  [{:keys [logger api-key api-user-id] :as adapter} opts]
+(defn get-all-channels* [{:keys [logger api-key api-user-id] :as adapter} opts]
   (try
     (let [query-params (cond-> {}
                          (:name opts)
@@ -360,8 +353,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn get-user-joined-channels*
-  [adapter user-id]
+(defn get-user-joined-channels* [adapter user-id]
   (let [result (port/get-user-info adapter user-id {:fields {:user-rooms 1}})]
     (if-not (:success? result)
       {:success? false
@@ -395,8 +387,7 @@
                :reason :failed-to-get-user-public-channels
                :error-details get-public-channels-result})))))))
 
-(defn remove-user-from-channel*
-  [{:keys [logger api-key api-user-id] :as adapter} user-id channel-id channel-type]
+(defn remove-user-from-channel* [{:keys [logger api-key api-user-id] :as adapter} user-id channel-id channel-type]
   (try
     (let [endpoint (if (= channel-type "c")
                      "/channels.kick"
@@ -420,8 +411,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn add-user-to-private-channel*
-  [{:keys [logger api-key api-user-id] :as adapter} user-id channel-id]
+(defn add-user-to-private-channel* [{:keys [logger api-key api-user-id] :as adapter} user-id channel-id]
   (try
     (let [{:keys [status body]}
           (http-client/do-request logger
@@ -442,8 +432,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn add-user-to-public-channel*
-  [{:keys [logger api-key api-user-id] :as adapter} user-id channel-id]
+(defn add-user-to-public-channel* [{:keys [logger api-key api-user-id] :as adapter} user-id channel-id]
   (try
     (let [{:keys [status body]}
           (http-client/do-request logger
@@ -464,8 +453,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn create-private-channel*
-  [{:keys [logger api-key api-user-id] :as adapter} channel]
+(defn create-private-channel* [{:keys [logger api-key api-user-id] :as adapter} channel]
   (try
     (let [req-body (cske/transform-keys
                     ->camelCaseString
@@ -496,8 +484,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn create-public-channel*
-  [{:keys [logger api-key api-user-id] :as adapter} channel]
+(defn create-public-channel* [{:keys [logger api-key api-user-id] :as adapter} channel]
   (try
     (let [req-body (cske/transform-keys
                     ->camelCaseString
@@ -528,8 +515,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn delete-private-channel*
-  [{:keys [logger api-key api-user-id] :as adapter} channel-id]
+(defn delete-private-channel* [{:keys [logger api-key api-user-id] :as adapter} channel-id]
   (try
     (let [{:keys [status body]}
           (http-client/do-request logger
@@ -550,8 +536,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn delete-public-channel*
-  [{:keys [logger api-key api-user-id] :as adapter} channel-id]
+(defn delete-public-channel* [{:keys [logger api-key api-user-id] :as adapter} channel-id]
   (try
     (let [{:keys [status body]}
           (http-client/do-request logger
@@ -572,8 +557,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn set-private-channel-custom-fields*
-  [{:keys [logger api-key api-user-id] :as adapter} channel-id custom-fields]
+(defn set-private-channel-custom-fields* [{:keys [logger api-key api-user-id] :as adapter} channel-id custom-fields]
   (try
     (let [req-body (cske/transform-keys
                     ->camelCaseString
@@ -598,8 +582,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn set-public-channel-custom-fields*
-  [{:keys [logger api-key api-user-id] :as adapter} channel-id custom-fields]
+(defn set-public-channel-custom-fields* [{:keys [logger api-key api-user-id] :as adapter} channel-id custom-fields]
   (try
     (let [req-body (cske/transform-keys
                     ->camelCaseString
@@ -624,8 +607,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn get-channel-discussions*
-  [{:keys [logger api-key api-user-id] :as adapter} channel-id]
+(defn get-channel-discussions* [{:keys [logger api-key api-user-id] :as adapter} channel-id]
   (try
     (let [{:keys [status body]}
           (http-client/do-request logger

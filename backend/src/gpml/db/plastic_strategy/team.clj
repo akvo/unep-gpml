@@ -13,16 +13,14 @@
 
 (hugsql/def-db-fns "gpml/db/plastic_strategy/team.sql")
 
-(defn- ps-team-member->p-ps-team-member
-  [ps-team-member]
+(defn- ps-team-member->p-ps-team-member [ps-team-member]
   (-> ps-team-member
       (util/update-if-not-nil :role name)
       (util/update-if-not-nil :teams (comp
                                       #(util.pgsql/->JDBCArray % "plastic_strategy_team_type")
                                       #(map name %)))))
 
-(defn- p-ps-team-member->ps-team-member
-  [p-ps-team-member]
+(defn- p-ps-team-member->ps-team-member [p-ps-team-member]
   (-> p-ps-team-member
       (util/update-if-not-nil :role keyword)
       (util/update-if-not-nil :teams #(map keyword %))))

@@ -106,8 +106,7 @@
                   :type "string"}}
        [:string {:min 1}]]]]]])
 
-(defn- api-opts->opts
-  [{:keys [page_size page_n tags countries country_groups]}]
+(defn- api-opts->opts [{:keys [page_size page_n tags countries country_groups]}]
   (cond-> {}
     page_size
     (assoc :page-size page_size)
@@ -127,12 +126,10 @@
     true
     (assoc-in [:filters :experts?] true)))
 
-(defn- expert->api-expert
-  [expert]
+(defn- expert->api-expert [expert]
   (merge expert (handler.stakeholder.tag/unwrap-tags expert)))
 
-(defn- api-expert->expert
-  [api-expert]
+(defn- api-expert->expert [api-expert]
   (-> api-expert
       (select-keys [:first_name :last_name :email])
       (assoc :review_status (pg-util/->PGEnum "INVITED" "review_status"))))

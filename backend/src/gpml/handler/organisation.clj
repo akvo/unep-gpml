@@ -304,13 +304,12 @@
         (assoc api-search-opts :plastic-strategy-id (:id plastic-strategy))
         api-search-opts))))
 
-(defn- list-api-params->opts
-  [{:keys [geo_coverage_types is_member types tags limit ps_bookmarked
-           page order_by descending ps_country_iso_code_a2 ps_bookmark_sections_keys
-           badges]
-    :or {limit default-list-api-limit
-         page default-list-api-page}
-    :as api-params}]
+(defn- list-api-params->opts [{:keys [geo_coverage_types is_member types tags limit ps_bookmarked
+                                      page order_by descending ps_country_iso_code_a2 ps_bookmark_sections_keys
+                                      badges]
+                               :or {limit default-list-api-limit
+                                    page default-list-api-page}
+                               :as api-params}]
   (cond-> {}
     page
     (assoc :page page)

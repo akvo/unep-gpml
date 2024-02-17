@@ -12,8 +12,7 @@
 
 (hugsql/def-db-fns "gpml/db/plastic_strategy/file.sql" {:quoting :ansi})
 
-(defn p-ps-file->ps-file
-  [p-ps-file]
+(defn p-ps-file->ps-file [p-ps-file]
   (util/update-if-not-nil p-ps-file :visibility keyword))
 
 (defn create-ps-file [conn ps-file]

@@ -116,10 +116,9 @@
                                   :allowEmptyValue false}}
     boolean?]])
 
-(defn- api-opts->opts
-  [{:keys [startDate endDate user-id favorites country transnational
-           topic tag affiliation representativeGroup subContentType entity
-           entityGroup q capacity_building featured]}]
+(defn- api-opts->opts [{:keys [startDate endDate user-id favorites country transnational
+                               topic tag affiliation representativeGroup subContentType entity
+                               entityGroup q capacity_building featured]}]
   (cond-> {}
 
     startDate

@@ -50,8 +50,7 @@
      ~constraints
      (fn [] ~@body)))
 
-(defn db-params-kebab-kw->db-params-snake-kw
-  [db-params]
+(defn db-params-kebab-kw->db-params-snake-kw [db-params]
   (cske/transform-keys ->snake_case db-params))
 
 (defn db-result-snake-kw->db-result-kebab-kw

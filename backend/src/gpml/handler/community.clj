@@ -113,11 +113,10 @@
                :allowEmptyValue true}}
     [:int {:min 0}]]])
 
-(defn api-params->opts
-  [{:keys [q country tag networkType affiliation representativeGroup geoCoverageType
-           limit page transnational orderBy descending entity isMember]
-    :or {limit default-api-limit
-         page 0}}]
+(defn api-params->opts [{:keys [q country tag networkType affiliation representativeGroup geoCoverageType
+                                limit page transnational orderBy descending entity isMember]
+                         :or {limit default-api-limit
+                              page 0}}]
   (cond-> {}
     page
     (assoc :page page)
@@ -165,8 +164,7 @@
     (seq q)
     (assoc-in [:filters :search-text] (str/trim q))))
 
-(defn- community-member->api-community-member
-  [config community-member]
+(defn- community-member->api-community-member [config community-member]
   (let [{files :files picture-id :picture_id} community-member
         files-w-urls (->> files
                           (map dom.file/decode-file)

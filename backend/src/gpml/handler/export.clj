@@ -31,8 +31,7 @@
                                  src-dst-files-keys-mapping)]
       (apply dissoc updated-export (concat [:files] (keys src-dst-files-keys-mapping))))))
 
-(defn- org->org-export
-  [{:keys [app-domain] :as config} src-dst-files-keys-mapping org]
+(defn- org->org-export [{:keys [app-domain] :as config} src-dst-files-keys-mapping org]
   (as-> org export
     (dissoc export :is_member)
     (assoc export :platform-link (str app-domain "/organisation/" (:id org)))

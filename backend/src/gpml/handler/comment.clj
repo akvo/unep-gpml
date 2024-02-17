@@ -122,20 +122,17 @@
                                  :type "integer"}}
     [:int {:min 0}]]])
 
-(defn- api-comment->comment
-  [api-comment]
+(defn- api-comment->comment [api-comment]
   (-> api-comment
       (util/replace-in-keys #"_" "-")
       (assoc :updated-at (time-pre-j8/sql-timestamp (time/instant) "UTC"))))
 
-(defn- comment->api-comment
-  [comment]
+(defn- comment->api-comment [comment]
   (-> comment
       (update :created_at time/to-millis-from-epoch)
       (update :updated_at time/to-millis-from-epoch)))
 
-(defn- api-opts->opts
-  [api-opts]
+(defn- api-opts->opts [api-opts]
   (-> api-opts
       (util/replace-in-keys #"_" "-")
       (util/update-if-not-nil :resource-id #(Integer/parseInt %))))

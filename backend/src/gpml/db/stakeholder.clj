@@ -36,8 +36,7 @@
 
 (hugsql/def-db-fns "gpml/db/stakeholder.sql" {:quoting :ansi})
 
-(defn- stakeholder->p-stakeholder
-  [stakeholder]
+(defn- stakeholder->p-stakeholder [stakeholder]
   (util/update-if-not-nil stakeholder :review_status util.pgsql/->PGEnum "REVIEW_STATUS"))
 
 (defn delete-stakeholder [conn stakeholder-id]

@@ -25,14 +25,12 @@
 (defn- parse-json [s]
   (j/read-value s j/keyword-keys-object-mapper))
 
-(defn val->jsonb
-  [value]
+(defn val->jsonb [value]
   (doto (PGobject.)
     (.setType "jsonb")
     (.setValue (j/write-value-as-string value))))
 
-(defn pgobject->val
-  [^PGobject obj]
+(defn pgobject->val [^PGobject obj]
   (let [t (.getType obj)
         v (.getValue obj)]
     (case t

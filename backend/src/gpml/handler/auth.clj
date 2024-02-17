@@ -20,8 +20,7 @@
    [:topic-id [:int {:min 0}]]
    [:stakeholder [:int {:min 0}]]])
 
-(defn- ->sth-associations
-  [stakeholders associations]
+(defn- ->sth-associations [stakeholders associations]
   (reduce (fn [updated-associations {:keys [id roles]}]
             (let [old-acs (medley/find-first (fn [acs]
                                                (and (= (:stakeholder acs) id)

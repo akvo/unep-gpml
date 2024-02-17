@@ -44,8 +44,7 @@
     [:sequential
      [:map]]]])
 
-(defn- get-plastic-strategies*
-  [config search-opts]
+(defn- get-plastic-strategies* [config search-opts]
   (let [result (srv.ps/get-plastic-strategies config search-opts)]
     (if (:success? result)
       (r/ok (:plastic-strategies result))

@@ -13,14 +13,12 @@
 (def associations
   #{"owner" "implementor" "partner" "donor" "interested in"})
 
-(defn- api-associated-topics-opts->associated-topics-opts
-  [api-associated-topics-opts]
+(defn- api-associated-topics-opts->associated-topics-opts [api-associated-topics-opts]
   (-> api-associated-topics-opts
       (util/update-if-not-nil :page #(Integer/parseInt %))
       (util/update-if-not-nil :limit #(Integer/parseInt %))))
 
-(defn- associated-topics->api-associated-topics
-  [associated-topics]
+(defn- associated-topics->api-associated-topics [associated-topics]
   (-> (:json associated-topics)
       (merge (select-keys associated-topics [:stakeholder_connections :entity_connections]))
       (assoc :type (:topic associated-topics))))
