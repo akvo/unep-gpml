@@ -25,7 +25,7 @@
             (let [result (srv.file/delete-file config (:spec db)
                                                {:filters {:id id}})]
               (when-not (:success? result)
-                (log logger :error ::failed-to-rollback-upload-ps-file {:result result})))
+                (log logger :error :failed-to-rollback-upload-ps-file {:result result})))
             (dissoc context :ps-file))}
          {:txn-fn
           (fn tx-create-ps-file
@@ -60,7 +60,7 @@
             (let [result (db.ps.file/create-ps-file (:spec db)
                                                     ps-file)]
               (when-not (:success? result)
-                (log logger :error ::failed-to-rollback-delete-ps-file {:result result})))
+                (log logger :error :failed-to-rollback-delete-ps-file {:result result})))
             context)}
          {:txn-fn
           (fn tx-delete-ps-file-from-obj-storage

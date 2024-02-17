@@ -54,7 +54,7 @@
                           :reason :invalid-parameter-type
                           :error-details (m/explain country-state-csv-schema country-states-csv)}))))
     (catch Exception e
-      (log logger :error ::failed-to-import-country-states {:exception-message (ex-message e)})
+      (log logger :error :failed-to-import-country-states e)
       (r/server-error {:success? false
                        :reason :failed-to-import-country-states
                        :error-details {:exception-message (ex-message e)

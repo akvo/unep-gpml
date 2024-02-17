@@ -10,7 +10,7 @@
    [iapetos.registry :as registry]
    [integrant.core :as ig]
    [taoensso.timbre :as timbre]
-   [taoensso.timbre.appenders.3rd-party.sentry :as sentry])
+   [taoensso.timbre.appenders.community.sentry :as sentry])
   (:import
    (com.zaxxer.hikari HikariDataSource)
    (com.zaxxer.hikari.metrics.prometheus PrometheusMetricsTrackerFactory)

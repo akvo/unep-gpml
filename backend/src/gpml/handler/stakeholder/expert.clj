@@ -19,7 +19,8 @@
    [integrant.core :as ig]
    [jsonista.core :as json]
    [malli.util :as mu]
-   [ring.util.response :as resp])
+   [ring.util.response :as resp]
+   [taoensso.timbre :as timbre])
   (:import
    (java.sql SQLException)))
 
@@ -153,7 +154,7 @@
                       :count (get-in experts-count ["experts" 0 :counts])
                       :count_by_country (get-in experts-count ["countries" 0 :counts])}))
     (catch Exception e
-      (log logger :error ::failed-to-get-experts {:exception-message (.getMessage e)})
+      (log logger :error :failed-to-get-experts e)
       (let [response {:status 500
                       :body {:success? false
                              :reason :could-not-get-experts}}]
@@ -176,12 +177,15 @@
                                                     [msg]
                                                     [nil])]
         (when-not (<= 200 status 299)
-          (log logger :error ::send-invitation-email-failed {:context-data invitation
-                                                             :email-msg msg
-                                                             :response-body (json/read-value body json/keyword-keys-object-mapper)}))))
+          (timbre/with-context+ invitation
+            (log logger :error :send-invitation-email-failed {:email-msg msg
+                                                              :response-body (try
+                                                                               (json/read-value body json/keyword-keys-object-mapper)
+                                                                               (catch Exception _
+                                                                                 body))})))))
     (catch Exception e
-      (log logger :error ::send-invitation-emails-failed {:exception-message (.getMessage e)
-                                                          :context-data {:invitations invitations}}))))
+      (timbre/with-context+ {:invitations invitations}
+        (log logger :error :send-invitation-emails-failed e)))))
 
 ;; TODO: Improve how we deal with errors here, since we should rollback invitation processes one by one, as otherwise
 ;; we might rollback all of them while the notifications or some of them have been sent already.
@@ -244,10 +248,8 @@
         (r/ok {:success? true
                :invited-experts (map #(update % :id str) invitations)})))
     (catch Exception t
-      (log logger :error ::invite-experts-error {:exception-message (ex-message t)
-                                                 :exception-data (ex-data t)
-                                                 :stack-trace (.getStackTrace t)
-                                                 :context-data body})
+      (timbre/with-context+ body
+        (log logger :error :invite-experts-error t))
       (if (instance? SQLException t)
         (r/server-error
          {:success? false
@@ -298,15 +300,12 @@ User %s is suggesting an expert with the following information:
                 :reason :could-not-send-expert-suggestion-emails
                 :error-details (json/read-value body)}}))
     (catch Exception e
-      (let [context-data {:body body
-                          :user user}]
-        (log logger :debug ::failed-to-send-expert-suggestion-emails {:exception e
-                                                                      :context-data context-data})
-        (log logger :error ::failed-to-send-expert-suggestion-emails {:exception-message (.getMessage e)
-                                                                      :context-data context-data})
-        {:status 500
-         :body {:reason :failed-to-send-expert-suggestion-emails
-                :error-details {:error (.getMessage e)}}}))))
+      (timbre/with-context+ {:body body
+                             :user user}
+        (log logger :error :failed-to-send-expert-suggestion-emails e))
+      {:status 500
+       :body {:reason :failed-to-send-expert-suggestion-emails
+              :error-details {:error (.getMessage e)}}})))
 
 (defmethod ig/init-key :gpml.handler.stakeholder.expert/get
   [_ config]

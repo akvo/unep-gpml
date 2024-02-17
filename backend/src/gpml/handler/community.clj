@@ -9,7 +9,8 @@
    [gpml.service.file :as srv.file]
    [gpml.util.regular-expressions :as util.regex]
    [integrant.core :as ig]
-   [medley.core :as medley]))
+   [medley.core :as medley]
+   [taoensso.timbre :as timbre]))
 
 (def community-network-types ["organisation" "stakeholder"])
 (def geo-coverage-types ["Transnational" "National" "Global" "Sub-national"])
@@ -192,14 +193,11 @@
       (r/ok {:results results
              :counts (db.community/get-community-members conn (assoc modified-filters :count-only? true))}))
     (catch Exception t
-      (let [log-data {:exception-message (ex-message t)
-                      :exception-data (ex-data t)
-                      :context-data (get-in req [:parameters :query])}]
-        (log logger :error :failed-to-get-community-members log-data)
-        (log logger :debug :failed-to-get-community-members (assoc log-data :stack-trace (.getStackTrace t)))
-        (r/server-error {:success? false
-                         :reason :failed-to-get-community-members
-                         :error-details {:msg (:exception-message log-data)}})))))
+      (timbre/with-context+ (get-in req [:parameters :query])
+        (log logger :error :failed-to-get-community-members t))
+      (r/server-error {:success? false
+                       :reason :failed-to-get-community-members
+                       :error-details {:msg (:exception-message (ex-message t))}}))))
 
 (defmethod ig/init-key :gpml.handler.community/get [_ config]
   (fn [req]

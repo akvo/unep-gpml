@@ -17,7 +17,7 @@
       (r/ok {:success? true
              :org-id (handler.org/create config tx (:body-params req))}))
     (catch Exception e
-      (log logger :error ::create-org-failed {:exception-message (.getMessage e)})
+      (log logger :error :create-org-failed e)
       (if (instance? SQLException e)
         (if (= :unique-constraint-violation (pg-util/get-sql-state e))
           (r/conflict {:success? false

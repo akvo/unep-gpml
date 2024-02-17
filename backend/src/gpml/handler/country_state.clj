@@ -46,7 +46,7 @@
            :country_states (db.country-state/get-country-states (:spec db)
                                                                 {:filters query})})
     (catch Exception e
-      (log logger :error ::failed-to-get-country-states {:exception-message (ex-message e)})
+      (log logger :error :failed-to-get-country-states e)
       (r/server-error {:success? false
                        :reason :failed-to-get-country-states
                        :error-details {:error (class e)}}))))

@@ -10,7 +10,8 @@
    [gpml.service.file :as srv.file]
    [gpml.util :as util]
    [gpml.util.image :as util.image]
-   [integrant.core :as ig]))
+   [integrant.core :as ig]
+   [taoensso.timbre :as timbre]))
 
 (def ^:private available-entities
   #{:organisation :stakeholder :case_study :event})
@@ -35,8 +36,7 @@
                                  {:headers {:user-agent "gpml/1.0.0"}})
       src)
     (catch Exception t
-      (log logger :error ::failed-to-download-image {:exception-message (ex-message t)
-                                                     :stack-trace (map str (.getStackTrace t))}))))
+      (log logger :error :failed-to-download-image t))))
 
 (defn migrate-files [{:keys [db logger] :as config}
                      {:keys [get-files-to-migrate-fn update-entity-fn
@@ -45,7 +45,7 @@
         images (get-files-to-migrate-fn conn
                                         {:limit limit})]
     (if-not (seq images)
-      (log logger :info ::no-files-to-migrate {:entity entity-key})
+      (log logger :info :no-files-to-migrate {:entity entity-key})
       (doseq [{:keys [id file_type file_key content]} images]
         (try
           (when-let [file-payload (get-file-payload config content)]
@@ -54,19 +54,17 @@
                   result (srv.file/create-file config conn file)]
               (if (:success? result)
                 (update-entity-fn conn id {file-fkey (:id file)})
-                (log logger :error ::failed-to-create-file {:entity entity-key
-                                                            :id id
-                                                            :file-type (keyword file_type)
-                                                            :reason :creation-file-failed
-                                                            :error-details {:creation-result result}}))))
+                (log logger :error :failed-to-create-file {:entity entity-key
+                                                           :id id
+                                                           :file-type (keyword file_type)
+                                                           :reason :creation-file-failed
+                                                           :error-details {:creation-result result}}))))
           (catch Exception t
-            (log logger :error ::failed-to-create-file {:entity entity-key
-                                                        :id id
-                                                        :file-type (keyword file_type)
-                                                        :reason :exception
-                                                        :error-details {:exception-message (ex-message t)
-                                                                        :stack-trace (map str (.getStackTrace t))}})))))
-    (log logger :info ::finished-migrating-files {:entity entity-key})))
+            (timbre/with-context+ {:entity entity-key
+                                   :id id
+                                   :file-type (keyword file_type)}
+              (log logger :error :failed-to-create-file t))))))
+    (log logger :info :finished-migrating-files {:entity entity-key})))
 
 (defmulti migrate-entity-files
   (fn [_ entity-key _] entity-key))
@@ -123,13 +121,11 @@
                                                           (assoc :limit limit))))
         (r/ok {:success? true}))
       (catch Exception t
-        (let [log-data {:exception-message (ex-message t)
-                        :exception-data (ex-data t)
-                        :stack-trace (map str (.getStackTrace t))}]
-          (log logger :error ::failed-to-migrate-files log-data)
-          (r/server-error {:success? false
-                           :reason :exception
-                           :error-details log-data}))))))
+        (log logger :error :failed-to-migrate-files t)
+        (r/server-error {:success? false
+                         :reason :exception
+                         :error-details {:exception-message (ex-message t)
+                                         :exception-data (ex-data t)}})))))
 
 (defmethod ig/init-key :gpml.handler.programmatic.files-migrator/post-params
   [_ _]

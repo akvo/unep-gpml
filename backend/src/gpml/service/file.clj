@@ -37,8 +37,8 @@
                                            :type :created-at :last-updated-at])
         {:keys [success?] :as result} (db.file/create-file conn file-to-persist)]
     (when-not success?
-      (log logger :error ::could-not-persist-file {:file file-to-persist
-                                                   :error-details (:reason result)}))
+      (log logger :error :could-not-persist-file {:file file-to-persist
+                                                  :error-details (:reason result)}))
     result))
 
 (defn- get-public-file-url [{:keys [storage-api-host-name public-storage-bucket-name]} file]
@@ -116,14 +116,14 @@
               (if success?
                 context
                 (do
-                  (log logger :error ::persist-file-error {:file (dissoc file :content)
-                                                           :reason (:error-details result)})
+                  (log logger :error :persist-file-error {:file (dissoc file :content)
+                                                          :reason (:error-details result)})
                   (merge context (assoc result :reason :could-not-persist-file))))))
           :rollback-fn
           (fn rollback-create-file-persistence [{:keys [file] :as context}]
             (let [{:keys [success?]} (db.file/delete-file conn (:id file))]
               (when-not success?
-                (log logger :error ::rollback-create-file-persistence {:file (dissoc file :content)}))
+                (log logger :error :rollback-create-file-persistence {:file (dissoc file :content)}))
               context))}
          {:txn-fn
           (fn create-file-obj-storage [{:keys [file] :as context}]
@@ -131,8 +131,8 @@
               (if success?
                 context
                 (do
-                  (log logger :error ::upload-file-obj-storage-error {:file (dissoc file :content)
-                                                                      :reason (:error-details result)})
+                  (log logger :error :upload-file-obj-storage-error {:file (dissoc file :content)
+                                                                     :reason (:error-details result)})
                   (merge context (assoc result :reason :could-not-store-file-in-obj-storage))))))}]]
     (tht/thread-transactions logger transactions context)))
 
@@ -148,23 +148,23 @@
               (if success?
                 (assoc context :file file)
                 (do
-                  (log logger :error ::get-file-for-deletion-error {:search-filters search-filters
-                                                                    :reason (:error-details result)})
+                  (log logger :error :get-file-for-deletion-error {:search-filters search-filters
+                                                                   :reason (:error-details result)})
                   (merge context result)))))}
          {:txn-fn
           (fn delete-persisted-file [{:keys [file] :as context}]
             (let [result (db.file/delete-file conn (:id file))]
               (if-not (:success? result)
                 (do
-                  (log logger :error ::delete-persisted-file-error {:object-key (:object-key file)
-                                                                    :reason (:error-details result)})
+                  (log logger :error :delete-persisted-file-error {:object-key (:object-key file)
+                                                                   :reason (:error-details result)})
                   (merge context (assoc result :reason :could-not-delete-persisted-file)))
                 context)))
           :rollback-fn
           (fn rollback-delete-persisted-file [{:keys [file] :as context}]
             (let [{:keys [success?]} (db.file/create-file conn file)]
               (when-not success?
-                (log logger :error ::rollback-delete-persisted-file {:file file}))
+                (log logger :error :rollback-delete-persisted-file {:file file}))
               context))}
          {:txn-fn
           (fn delete-file-in-obj-storage [{:keys [file] :as context}]
@@ -176,8 +176,8 @@
                     {:success? true})]
               (if-not success?
                 (do
-                  (log logger :error ::delete-file-in-obj-storage-error {:object-key (:object-key file)
-                                                                         :reason (:error-details result)})
+                  (log logger :error :delete-file-in-obj-storage-error {:object-key (:object-key file)
+                                                                        :reason (:error-details result)})
                   (merge context (assoc result :reason :could-not-delete-file-in-obj-storage)))
                 context)))}]]
     (tht/thread-transactions logger transactions context)))

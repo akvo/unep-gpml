@@ -200,8 +200,7 @@
                         :id (:id result)})))
         (r/forbidden {:message "Unauthorized"}))
       (catch Exception t
-        (log logger :error ::failed-to-create-event {:exception-message (.getMessage t)
-                                                     :exception-data (ex-data t)})
+        (log logger :error :failed-to-create-event t)
         (let [response {:success? false
                         :reason :failed-to-create-event}]
           (if (instance? SQLException t)

@@ -16,7 +16,8 @@
    [gpml.util.postgresql :as pg-util]
    [gpml.util.regular-expressions :as util.regex]
    [integrant.core :as ig]
-   [medley.core :as medley])
+   [medley.core :as medley]
+   [taoensso.timbre :as timbre])
   (:import
    (java.sql SQLException)))
 
@@ -378,14 +379,14 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
           counts (->> (assoc api-search-opts :count-only? true)
                       (db.topic/get-topics db))
           count-topics-exec-time (- (System/currentTimeMillis) count-topics-start-time)]
-      (log logger :info ::query-exec-time {:get-topics-exec-time (str get-topics-exec-time "ms")
-                                           :count-topics-exec-time (str count-topics-exec-time "ms")})
+      (log logger :info :query-exec-time {:get-topics-exec-time (str get-topics-exec-time "ms")
+                                          :count-topics-exec-time (str count-topics-exec-time "ms")})
       (r/ok {:success? true
              :results results
              :counts counts}))
     (catch Exception t
-      (log logger :error :failed-to-get-topics {:exception-message (ex-message t)
-                                                :context-data {:query-params query}})
+      (timbre/with-context+ query
+        (log logger :error :failed-to-get-topics t))
       (let [response {:success? false
                       :reason :could-not-get-topics}]
         (if (instance? SQLException t)
