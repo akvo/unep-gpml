@@ -9,7 +9,7 @@
   (:import
    (java.io File)))
 
-(def ^:const object-key-pattern
+(def object-key-pattern
   "Pattern to define the object key of the file in the object storage.
   Example:
 
@@ -51,7 +51,7 @@
      {:optional true}
      inst?]]))
 
-(def ^:const mime-types->common-extensions-mapping
+(def mime-types->common-extensions-mapping
   "There are much more mime-types and extensions but we are just mapping
   the ones used in GPML and omiting those that can be inferred from
   the mime-type directly."

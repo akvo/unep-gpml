@@ -9,7 +9,7 @@
    [gpml.util.thread-transactions :as tht]
    [medley.core :as medley]))
 
-(def ^:private ^:const random-password-size
+(def ^:private random-password-size
   10)
 
 (defn- create-user-account*

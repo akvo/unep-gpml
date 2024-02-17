@@ -11,12 +11,12 @@
    [integrant.core :as ig]
    [medley.core :as medley]))
 
-(def ^:const community-network-types ["organisation" "stakeholder"])
-(def ^:const geo-coverage-types ["Transnational" "National" "Global" "Sub-national"])
-(def ^:const geo-coverage-types-re (util.regex/comma-separated-enums-re geo-coverage-types))
-(def ^:const network-types-re (util.regex/comma-separated-enums-re community-network-types))
-(def ^:const default-api-limit 8)
-(def ^:const order-by-fields ["name"])
+(def community-network-types ["organisation" "stakeholder"])
+(def geo-coverage-types ["Transnational" "National" "Global" "Sub-national"])
+(def geo-coverage-types-re (util.regex/comma-separated-enums-re geo-coverage-types))
+(def network-types-re (util.regex/comma-separated-enums-re community-network-types))
+(def default-api-limit 8)
+(def order-by-fields ["name"])
 
 (def get-community-members-query-params
   [:map

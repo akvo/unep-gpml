@@ -8,7 +8,7 @@
 
 (hugsql/def-db-fns "gpml/db/topic.sql" {:quoting :ansi})
 
-(def ^:const generic-cte-opts
+(def generic-cte-opts
   "Common set of options for all CTE generation functions."
   {:tables ["event" "technology" "policy" "initiative" "resource" "case_study"]
    :search-text-fields {"event" ["title" "description" "remarks"]
@@ -19,11 +19,11 @@
                         "case_study" ["title" "description"]}})
 
 #_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
-(def ^:const generic-entity-cte-opts
+(def generic-entity-cte-opts
   "Common set of options for entity related CTE generation functions."
   {:tables ["stakeholder" "organisation"]})
 
-(def ^:const table-rename-mapping
+(def table-rename-mapping
   "Some topics like financing_resource aren't the real table
   names we want to query. Therefore, when passing the following topic
   options as tables we need to rename them to their proper source
@@ -38,7 +38,7 @@
         renamed-tables (set (map #(get table-rename-mapping %) tables-to-rename))]
     (concat renamed-tables (remove #(some #{%} tables-to-rename) tables))))
 
-(def ^:const ^:private initiative-cols
+(def ^:private initiative-cols
   "e.id,
    NULL::text AS uuid,
    NULL::text AS phase,
@@ -65,19 +65,19 @@
    e.image_id,
    e.thumbnail_id")
 
-(def ^:const ^:private policy-cols
+(def ^:private policy-cols
   "e.abstract AS summary,
    e.*")
 
-(def ^:const ^:private event-cols
+(def ^:private event-cols
   "e.description AS summary,
    e.*")
 
-(def ^:const ^:private case-study-cols
+(def ^:private case-study-cols
   "e.description AS summary,
    e.*")
 
-(def ^:const ^:private technology-cols
+(def ^:private technology-cols
   "e.name AS title,
    e.remarks AS summary,
    e.*")
@@ -294,7 +294,7 @@
   [topic-name]
   (format "'%s'::text" topic-name))
 
-(def ^:const ^:private resource-topic-name-query
+(def ^:private resource-topic-name-query
   "replace(lower(d.type), ' ', '_')")
 
 ;;======================= Topic CTE query =================================
@@ -419,15 +419,15 @@
        topic-ctes
        topic-cte]))))
 
-(def ^:const ^:private count-aggregate-query-raw-sql
+(def ^:private count-aggregate-query-raw-sql
   "SELECT topic, COUNT(*) FROM cte_results GROUP BY topic")
 
-(def ^:const ^:private capacity-building-count-aggregate-query-raw-sql
+(def ^:private capacity-building-count-aggregate-query-raw-sql
   "SELECT 'capacity_building' AS topic, COUNT(*)
    FROM cte_results
    WHERE CAST(json->>'capacity_building' AS BOOLEAN) IS TRUE")
 
-(def ^:const  ^:private tags-count-aggregate-hugsql
+(def  ^:private tags-count-aggregate-hugsql
   "This fragment counts tags ignoring duplicates when comparing them as lowercase,
    since that is the desired behaviour.
 

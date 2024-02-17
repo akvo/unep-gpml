@@ -7,7 +7,7 @@
   (:import
    (java.sql SQLException)))
 
-(def ^:const integrity-constraint-violation-state-codes
+(def integrity-constraint-violation-state-codes
   {:integrity-constraint "23000"
    :restrict "23001"
    :not-null "23502"

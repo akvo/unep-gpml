@@ -10,7 +10,7 @@
    [integrant.core :as ig]
    [ring.util.response :as resp]))
 
-(def ^:const associations
+(def associations
   #{"owner" "implementor" "partner" "donor" "interested in"})
 
 (defn- api-associated-topics-opts->associated-topics-opts

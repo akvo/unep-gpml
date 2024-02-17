@@ -16,7 +16,7 @@
   (:import
    (java.sql SQLException)))
 
-(def ^:const get-popular-topics-tags-params
+(def get-popular-topics-tags-params
   [:map
    [:tags
     {:optional true
@@ -32,7 +32,7 @@
                :allowEmptyValue true}}
     [:int {:min 0}]]])
 
-(def ^:const put-params
+(def put-params
   [:map
    [:id
     {:optional false
@@ -78,7 +78,7 @@
                :allowEmptyValue true}}
     [:string {:min 1}]]])
 
-(def ^:const put-response
+(def put-response
   [:map
    [:updated-tags
     {:swagger {:description "Number of updated tags"

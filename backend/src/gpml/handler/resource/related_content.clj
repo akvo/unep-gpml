@@ -7,10 +7,10 @@
    [gpml.handler.util :as handler.util]
    [gpml.util.sql :as sql-util]))
 
-(def ^:const ^:private related-content-shared-keys
+(def ^:private related-content-shared-keys
   [:id :title :description :image :thumbnail])
 
-(def ^:const ^:private related-content-non-shared-keys-mapping
+(def ^:private related-content-non-shared-keys-mapping
   {:initiative {:q2 :title
                 :q3 :description
                 :qimage :image}

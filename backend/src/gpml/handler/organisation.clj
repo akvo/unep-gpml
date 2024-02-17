@@ -294,8 +294,8 @@
    :body (-> dom.organisation/Organisation
              (util.malli/dissoc
               [:id :is_member :created :modified :reviewed_at :reviewed_by :review_status]))})
-(def ^:const ^:private default-list-api-limit 50)
-(def ^:const ^:private default-list-api-page 0)
+(def ^:private default-list-api-limit 50)
+(def ^:private default-list-api-page 0)
 
 (defn- add-plastic-strategy-filters
   [config {:keys [ps-country-iso-code-a2] :as api-search-opts}]
@@ -382,7 +382,7 @@
                            :reason :failed-to-list-organisations
                            :error-details {:msg (:exception-message log-data)}}))))))
 
-(def ^:const order-by-fields
+(def order-by-fields
   #{"name"
     "type"
     "geo_coverage_type"

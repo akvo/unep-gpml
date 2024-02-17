@@ -3,7 +3,7 @@
    [gpml.domain.types :as dom.types]
    [malli.core :as m]))
 
-(def ^:const role-types
+(def role-types
   "Stakeholder role types in the platform"
   #{"ADMIN" "USER" "REVIEWER"})
 

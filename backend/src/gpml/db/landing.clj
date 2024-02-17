@@ -6,8 +6,8 @@
    [gpml.domain.types :as dom.types]
    [hugsql.core :as hugsql]))
 
-(def ^:const ^:private non-transnational-geo-coverage-types ["national" "sub-national"])
-(def ^:const ^:private transnational-geo-coverage-types ["transnational"])
+(def ^:private non-transnational-geo-coverage-types ["national" "sub-national"])
+(def ^:private transnational-geo-coverage-types ["transnational"])
 
 (declare map-counts summary)
 

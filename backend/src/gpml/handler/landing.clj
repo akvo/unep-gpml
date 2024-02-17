@@ -14,8 +14,8 @@
   (:import
    (java.sql SQLException)))
 
-(def ^:const ^:private topic-re (util.regex/comma-separated-enums-re dom.types/topic-types))
-(def ^:const ^:private entity-groups ["topic" "community"])
+(def ^:private topic-re (util.regex/comma-separated-enums-re dom.types/topic-types))
+(def ^:private entity-groups ["topic" "community"])
 
 (def ^:private query-params
   [:map
