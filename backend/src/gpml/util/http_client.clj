@@ -4,7 +4,8 @@
    [diehard.core :as dh]
    [duct.logger :refer [log]]
    [gpml.util :as util]
-   [gpml.util.json :as json]))
+   [gpml.util.json :as json]
+   [taoensso.timbre :as timbre]))
 
 (def default-timeout
   "Default timeout value for an connection attempt"
@@ -66,7 +67,9 @@
   "Like `clj-http.client/request` but with retries. Optionally accepts
   a map with retry configuration. Otherwise, it sets a default
   configuration."
-  ([logger req] (do-request logger req {}))
+  ([logger req]
+   (do-request logger req {}))
+
   ([logger req {:keys [timeout max-retries backoff-ms]
                 :or {timeout default-timeout
                      max-retries default-max-retries
@@ -74,16 +77,14 @@
    (let [request-id (util/uuid)]
      (dh/with-retry {:policy (retry-policy max-retries backoff-ms)
                      :fallback fallback
-                     :on-retry
-                     (fn [_ ex]
-                       (log logger :error ::do-request-retry {:request-id request-id
-                                                              :request req
-                                                              :exception (class ex)}))
-                     :on-failure
-                     (fn [_ ex]
-                       (log logger :error ::do-request-failure {:request-id request-id
-                                                                :request req
-                                                                :exception (class ex)}))}
+                     :on-retry (fn [_ e]
+                                 (timbre/with-context+ {:request-id request-id
+                                                        :request req}
+                                   (log logger :error :do-request-retry e)))
+                     :on-failure (fn [_ e]
+                                   (timbre/with-context+ {:request-id request-id
+                                                          :request req}
+                                     (log logger :error :do-request-failure e)))}
        (client/request (merge req {:content-type :json
                                    :connection-timeout timeout
                                    :socket-timeout timeout

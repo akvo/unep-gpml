@@ -519,14 +519,11 @@
         (handle-entities-batch-update tx logger entity-name data-coll opts)
         (handle-entities-batch-import tx logger entity-name data-coll opts)))
     (catch Exception e
-      (let [error-details {:entity-name entity-name
-                           :exception-message (ex-message e)
-                           :exception-data (ex-data e)
-                           :stack-trace (map str (.getStackTrace e))}]
-        (log logger :error ::failed-to-save-entity error-details)
+      (let [reason (keyword (str "failed-to-save-" entity-name))]
+        (log logger :error reason e)
         {:success? false
-         :reason :failed-to-save-entity
-         :error-details error-details}))))
+         :reason reason
+         :error-details e}))))
 
 (defn- add-gpml-image-url [config conn logger entity-name data-coll]
   (reduce
@@ -564,14 +561,11 @@
         result
         (delete-images config (map :image_id updated-data-coll))))
     (catch Exception e
-      (let [error-details {:entity-name entity-name
-                           :exception-message (ex-message e)
-                           :exception-data (ex-data e)
-                           :stack-trace (map str (.getStackTrace e))}]
-        (log logger :error ::failed-to-save-entity error-details)
+      (let [reason (keyword (str "failed-to-save-" entity-name))]
+        (log logger :error reason e)
         {:success? false
-         :reason :failed-to-save-entity
-         :error-details error-details}))))
+         :reason reason
+         :error-details reason}))))
 
 (defmethod save-as-gpml-entity* :event
   [{:keys [logger db] :as config} entity-name data-coll opts]
@@ -581,14 +575,11 @@
         (with-safe-db-transaction tx logger entity-name updated-data-coll opts)))
     {:success? true}
     (catch Exception e
-      (let [error-details {:entity-name entity-name
-                           :exception-message (ex-message e)
-                           :exception-data (ex-data e)
-                           :stack-trace (map str (.getStackTrace e))}]
-        (log logger :error ::failed-to-save-entity error-details)
+      (let [reason (keyword (str "failed-to-save-" entity-name))]
+        (log logger :error reason e)
         {:success? false
-         :reason :failed-to-save-entity
-         :error-details error-details}))))
+         :reason reason
+         :error-details e}))))
 
 (defmethod save-as-gpml-entity* :initiative
   [{:keys [db logger] :as config} entity-name data-coll opts]
@@ -599,14 +590,11 @@
         result
         (delete-images config (map :image_id updated-data-coll))))
     (catch Exception e
-      (let [error-details {:entity-name entity-name
-                           :exception-message (ex-message e)
-                           :exception-data (ex-data e)
-                           :stack-trace (map str (.getStackTrace e))}]
-        (log logger :error ::failed-to-save-entity error-details)
+      (let [reason (keyword (str "failed-to-save-" entity-name))]
+        (log logger :error reason e)
         {:success? false
-         :reason :failed-to-save-entity
-         :error-details error-details}))))
+         :reason reason
+         :error-details e}))))
 
 (defn- save-as-gpml-entity [{:keys [logger] :as config} entity-name data-coll opts]
   (let [started-at (System/currentTimeMillis)
@@ -633,13 +621,13 @@
                 (if (seq old-entity)
                   (if (jt/after? brs_api_modified (sql-util/sql-timestamp->instant old-brs-api-modified))
                     (do
-                      (log logger :debug ::updating-entity {:entity entity-name
-                                                            :gpml-id id
-                                                            :brs-api-id brs_api_id})
+                      (log logger :debug :updating-entity {:entity entity-name
+                                                           :gpml-id id
+                                                           :brs-api-id brs_api_id})
                       (update acc :to-update conj (assoc entity :id id)))
                     (do
-                      (log logger :debug ::skipping-entity {:entity entity-name
-                                                            :brs-api-id brs_api_id})
+                      (log logger :debug :skipping-entity {:entity entity-name
+                                                           :brs-api-id brs_api_id})
                       acc))
                   (update acc :to-import conj entity))))
             {}
@@ -662,14 +650,11 @@
                 (save-as-gpml-entity config gpml-entity-name to-update (assoc opts :update? true)))
               (when (seq to-import)
                 (save-as-gpml-entity config gpml-entity-name to-import opts)))
-            (log logger :error ::failed-to-get-data-from-datasource {:result result}))
+            (log logger :error :failed-to-get-data-from-datasource {:result result}))
           (recur skip-token more-pages?))))
     (catch Exception e
-      (log logger :error ::something-bad-happened {:exception-class (str (class e))
-                                                   :exception-message (ex-message e)
-                                                   :stack-trace (map str (.getStackTrace e))
-                                                   :entity gpml-entity-name})))
-  (log logger :info ::finished {}))
+      (log logger :error (keyword (str "exception-processing-" gpml-entity-name)) e)))
+  (log logger :info :finished {}))
 
 (defn import-or-update-entities
   "Imports and/or updates existing data records from BRS API."

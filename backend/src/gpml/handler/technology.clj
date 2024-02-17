@@ -150,7 +150,7 @@
                         :message "New technology created"
                         :id technology-id}))))
       (catch Exception e
-        (log logger :error ::failed-to-create-technology {:exception-message (.getMessage e)})
+        (log logger :error :failed-to-create-technology e)
         (let [response {:success? false
                         :reason :could-not-create-technology}]
 

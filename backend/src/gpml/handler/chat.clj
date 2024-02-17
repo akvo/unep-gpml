@@ -267,7 +267,7 @@
       (try
         (add-user-to-private-channel config parameters)
         (catch Exception t
-          (log logger :error ::failed-to-add-user-to-private-channel {:exception-message (ex-message t)})
+          (log logger :error :failed-to-add-user-to-private-channel t)
           (let [response {:success? false
                           :reason :could-not-add-user-to-private-channel}]
             (r/server-error (assoc-in response [:error-details :error] (ex-message t))))))

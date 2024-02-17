@@ -16,7 +16,8 @@
    [gpml.util.regular-expressions :as util.regex]
    [integrant.core :as ig]
    [malli.util :as mu]
-   [ring.util.response :as resp])
+   [ring.util.response :as resp]
+   [taoensso.timbre :as timbre])
   (:import
    (java.sql SQLException)))
 
@@ -58,7 +59,7 @@
       (resp/response {:success? true
                       :reviewers (map reviewer->api-reviewer reviewers)}))
     (catch Exception e
-      (log logger :error ::failed-to-get-reviewers {:exception-message (.getMessage e)})
+      (log logger :error :failed-to-get-reviewers e)
       (let [response {:status 500
                       :body {:success? false
                              :reason :could-not-get-reviewers}}]
@@ -144,7 +145,7 @@
       (if-let [review (first (db.review/reviews-filter
                               conn
                               {:topic-type topic-type* :topic-id topic-id :reviewer (:id user)}))]
-                                ;; If assigned to the current-user
+        ;; If assigned to the current-user
         (if (= (:reviewer review) (:id user))
           (let [review-id (db.review/update-review-status
                            conn
@@ -191,13 +192,10 @@
         (new-multiple-review logger db mailjet-config topic-type topic-id reviewers (:id user))
         (r/forbidden {:message "Unauthorized"}))
       (catch Exception t
-        (let [log-data {:exception-message (ex-message t)
-                        :exception-data (ex-data t)
-                        :context-data {:req-params (:parameters req)
-                                       :user-id (:id user)}}]
-          (log logger :error :failed-add-multiple-reviews log-data)
-          (log logger :debug :failed-add-multiple-reviews (assoc log-data :stack-trace (.getStackTrace t)))
-          (r/server-error {:success? false}))))))
+        (timbre/with-context+ {:req-params (:parameters req)
+                               :user-id (:id user)}
+          (log logger :error :failed-add-multiple-reviews t))
+        (r/server-error {:success? false})))))
 
 (defn- get-reviews [db topic-type topic-id]
   (let [conn (:spec db)

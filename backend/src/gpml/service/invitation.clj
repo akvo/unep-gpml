@@ -37,7 +37,7 @@
             [{{:keys [user]} :invitation-payload :as context}]
             (let [result (db.stakeholder/delete-stakeholder (:spec db) (:id user))]
               (when-not (:success? result)
-                (log logger :error ::failed-to-rollback-create-stakeholder {:result result})))
+                (log logger :error :failed-to-rollback-create-stakeholder {:result result})))
             context)}
          {:txn-fn
           (fn tx-create-rbac-context
@@ -60,7 +60,7 @@
                                                                   {:context-type :stakeholder
                                                                    :resource-id user-id})]
               (when-not (:success? result)
-                (log logger :error ::failed-to-rollback-create-rbac-context {:result result})))
+                (log logger :error :failed-to-rollback-create-rbac-context {:result result})))
             context)}
          {:txn-fn
           (fn tx-assign-unapproved-rbac-role
@@ -114,7 +114,7 @@
             [{{:keys [id]} :invitation :as context}]
             (let [result (db.invitation/delete-invitation (:spec db) id)]
               (when-not (:success? result)
-                (log logger :error ::failed-to-rollback-create-invitation {:result result})))
+                (log logger :error :failed-to-rollback-create-invitation {:result result})))
             context)}
          {:txn-fn
           (fn tx-notify-user-about-invitation

@@ -116,8 +116,7 @@
               review-status (:review_status query)]
           (r/ok (export config export-type review-status))))
       (catch Exception e
-        (log logger :error :failed-to-create-export-file {:exception (class e)
-                                                          :exception-message (ex-message e)})
+        (log logger :error :failed-to-create-export-file e)
         (r/server-error {:success? false
                          :reason :failed-to-create-export-file})))))
 

@@ -154,7 +154,7 @@
                         :message "New resource created"
                         :id resource-id}))))
       (catch Exception e
-        (log logger :error ::failed-to-create-resource {:exception-message (.getMessage e)})
+        (log logger :error :failed-to-create-resource e)
         (let [response {:success? false
                         :reason :could-not-create-resource}]
 

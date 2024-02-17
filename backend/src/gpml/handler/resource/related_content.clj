@@ -55,7 +55,7 @@
         {:success? true}
         {:success? false}))
     (catch Exception e
-      (log logger :error :could-not-create-related-contents {:exception-message (.getMessage e)})
+      (log logger :error :could-not-create-related-contents e)
       {:success? false
        :reason :could-not-create-related-contents
        :error-details {:message (.getMessage e)}})))

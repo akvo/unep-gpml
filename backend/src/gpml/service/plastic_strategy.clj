@@ -35,7 +35,7 @@
             [{:keys [plastic-strategy] :as context}]
             (let [result (db.ps/delete-plastic-strategy (:spec db) (:id plastic-strategy))]
               (when-not (:success? result)
-                (log logger :error ::failed-to-delete-plastic-strategy {:result result})))
+                (log logger :error :failed-to-delete-plastic-strategy {:result result})))
             context)}
          {:txn-fn
           (fn tx-get-plastic-strategy
@@ -69,7 +69,7 @@
                                                                   {:context-type-name :plastic-strategy
                                                                    :resource-id (:id plastic-strategy)})]
               (when-not (:success? result)
-                (log logger :error ::failed-to-delete-plastic-strategy-rbac-context {:result result})))
+                (log logger :error :failed-to-delete-plastic-strategy-rbac-context {:result result})))
             context)}
          {:txn-fn
           (fn tx-create-plastic-strategy-chat-channel
@@ -88,7 +88,7 @@
             [{:keys [channel] :as context}]
             (let [result (srv.chat/delete-public-channel config (:id channel))]
               (when-not (:success? result)
-                (log logger :error ::failed-to-rollback-create-plastic-strategy-chat-channel {:result result})))
+                (log logger :error :failed-to-rollback-create-plastic-strategy-chat-channel {:result result})))
             context)}
          {:txn-fn
           (fn tx-set-plastic-strategy-channel-custom-fields
@@ -190,7 +190,7 @@
                                   :logger logger}
                                  role-unassignments))]
               (when-not (:success? result)
-                (log logger :error ::rollback-assign-plastic-strategy-rbac-role {:reason result}))
+                (log logger :error :rollback-assign-plastic-strategy-rbac-role {:reason result}))
               context))}
          {:txn-fn
           (fn create-chat-account

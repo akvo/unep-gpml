@@ -106,7 +106,7 @@
                                                          (:chat-account-id ps-team-member)
                                                          {})]
                 (if-not (:success? result)
-                  (log logger :error ::failed-to-rollback-create-chat-account {:result result})
+                  (log logger :error :failed-to-rollback-create-chat-account {:result result})
                   (db.stakeholder/update-stakeholder (:spec db) {:id (:id ps-team-member)
                                                                  :chat_account_id nil
                                                                  :chat_account_status nil}))
@@ -131,7 +131,7 @@
                           ps-team-member
                           plastic-strategy)]
               (when-not (:success? result)
-                (log logger :error ::failed-to-notify-user-added-to-ps-team {:result result})))
+                (log logger :error :failed-to-notify-user-added-to-ps-team {:result result})))
             context)}]
         context {:success? true
                  :ps-team-member ps-team-member
@@ -365,7 +365,7 @@
                 (if (:success? result)
                   context
                   (do
-                    (log logger :error ::failed-to-rollback-unassign-ps-team-member-rbac-role {:result result})
+                    (log logger :error :failed-to-rollback-unassign-ps-team-member-rbac-role {:result result})
                     context)))))}
          {:txn-fn
           (fn tx-delete-ps-team-member
