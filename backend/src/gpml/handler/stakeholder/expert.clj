@@ -140,7 +140,10 @@
     (let [opts (api-opts->opts query)
           country-groups-countries (when (seq (get-in opts [:filters :country-groups]))
                                      (map :id (db.country-group/get-country-groups-countries spec opts)))
-          experts (db.stakeholder/get-experts spec (update-in opts [:filters :countries] #(set (concat % country-groups-countries))))
+          get-experts-options (-> opts
+                                  (update-in [:filters :countries] into country-groups-countries)
+                                  (update-in [:filters :countries] set))
+          experts (db.stakeholder/get-experts spec get-experts-options)
           experts-count (->> (db.stakeholder/get-experts spec (assoc opts :count-only? true))
                              (map vals)
                              (flatten)

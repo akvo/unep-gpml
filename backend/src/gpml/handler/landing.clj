@@ -184,9 +184,10 @@
                           (let [opts {:filters {:country-groups (get opts :country-groups)}}
                                 country-group-countries (db.country-group/get-country-groups-countries opts)
                                 geo-coverage-countries (map :id country-group-countries)]
-                            (assoc opts :geo-coverage-countries (set (concat
-                                                                      (get opts :countries)
-                                                                      geo-coverage-countries)))))
+                            (assoc opts :geo-coverage-countries (into #{}
+                                                                      cat
+                                                                      [(get opts :countries)
+                                                                       geo-coverage-countries]))))
           summary-data (->> (gpml.db.landing/summary conn)
                             (mapv (fn [{:keys [resource_type count country_count]}]
                                     {(keyword resource_type) count :countries country_count})))

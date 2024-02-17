@@ -89,10 +89,12 @@
                                db.tag/tag->db-tag
                                false
                                tags-to-create))
-            tag-relations-to-create (map (fn [tag]
-                                           {:case_study case-study-id
-                                            :tag (:id tag)})
-                                         (concat stored-tags created-tags))
+            tag-relations-to-create (into []
+                                          (comp cat
+                                                (map (fn [tag]
+                                                       {:case_study case-study-id
+                                                        :tag (:id tag)})))
+                                          [stored-tags created-tags])
             {created-tag-relations-success? :success?}
             (when (seq tag-relations-to-create)
               (create-entities conn

@@ -119,14 +119,16 @@
           brs-tags))
 
 (defn- build-tags-relations [entity-name brs-entities brs-tags-relations stored-tags]
-  (apply
-   concat
-   (map (fn [{:keys [id brs_api_id]}]
-          (map (fn [{:keys [tag]}]
-                 {entity-name id
-                  :tag (get-in stored-tags [(str/lower-case tag) 0 :id])})
-               (get (group-by :brs_api_id brs-tags-relations) brs_api_id)))
-        brs-entities)))
+  (into []
+        (comp (map (fn [{:keys [id brs_api_id]}]
+                     (mapv (fn [{:keys [tag]}]
+                             {entity-name id
+                              :tag (get-in stored-tags [(str/lower-case tag) 0 :id])})
+                           (-> :brs_api_id
+                               (group-by brs-tags-relations)
+                               (get brs_api_id)))))
+              cat)
+        brs-entities))
 
 (defn- build-geo-coverage-relations [entity-name brs-entities brs-geo-coverage]
   (map (fn [{:keys [brs_api_id country]}]
@@ -386,15 +388,15 @@
                     translations-table-data (->> translation-keys
                                                  (select-keys domain-entity-data)
                                                  vals
-                                                 (apply concat)
+                                                 (reduce into [])
                                                  (remove #(= (:language %) "en")))
                     geo-coverage-table-data (add-country-id countries-by-iso-code geo-coverage)]
                 (-> acc
                     (update :entity-table-data conj entity-table-data)
-                    (update :translations-table-data concat translations-table-data)
-                    (update :tags-table-data concat (:tags data))
-                    (update :geo-coverage-table-data concat geo-coverage-table-data)
-                    (update :connections-table-data concat (:entity_connections data)))))
+                    (update :translations-table-data into translations-table-data)
+                    (update :tags-table-data into (:tags data))
+                    (update :geo-coverage-table-data into geo-coverage-table-data)
+                    (update :connections-table-data into (:entity_connections data)))))
             {}
             data-coll)))
 

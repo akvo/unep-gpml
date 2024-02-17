@@ -7,31 +7,31 @@
    [medley.core :as medley]))
 
 (defn get-associations-diff
-  "FIXME:"
   [new-acs old-acs]
-  (reduce
-   (fn [acs-diff {:keys [id] :as acs}]
-     (let [in-existing (some #(when (= id (:id %)) %) old-acs)
-           in-updated (some #(when (= id (:id %)) %) new-acs)
-           to-create? (not id)]
-       (cond
-         to-create?
-         (update acs-diff :to-create conj acs)
+  (->> old-acs
+       (into new-acs)
+       (medley/distinct-by (fn [x]
+                             (or (:id x)
+                                 x)))
+       (reduce (fn [acs-diff {:keys [id] :as acs}]
+                 (let [in-existing (some #(when (= id (:id %)) %) old-acs)
+                       in-updated (some #(when (= id (:id %)) %) new-acs)
+                       to-create? (not id)]
+                   (cond
+                     to-create?
+                     (update acs-diff :to-create conj acs)
 
-         (and in-existing (not in-updated))
-         (update acs-diff :to-delete conj in-existing)
+                     (and in-existing (not in-updated))
+                     (update acs-diff :to-delete conj in-existing)
 
-         (and in-updated in-existing (not= (:role in-updated) (:role in-existing)))
-         (update acs-diff :to-update conj (assoc in-updated :old-role (:role in-existing)))
+                     (and in-updated in-existing (not= (:role in-updated) (:role in-existing)))
+                     (update acs-diff :to-update conj (assoc in-updated :old-role (:role in-existing)))
 
-         :else
-         acs-diff)))
-   {:to-create []
-    :to-delete []
-    :to-update []}
-   (medley/distinct-by
-    (fn [x] (or (:id x) x))
-    (concat new-acs old-acs))))
+                     :else
+                     acs-diff)))
+               {:to-create []
+                :to-delete []
+                :to-update []})))
 
 (defn- get-sth-org-role-assignments [conn resource-type resource-id org-id]
   (if-let [focal-points (seq (db.res.acs/get-resource-associations
@@ -60,7 +60,7 @@
        org-role-assignments
        (let [rbac-role-assignments (get-sth-org-role-assignments conn resource-type resource-id organisation)]
          (if (seq rbac-role-assignments)
-           (concat org-role-assignments rbac-role-assignments)
+           (into  org-role-assignments rbac-role-assignments)
            org-role-assignments))))
    []
    org-associations))
@@ -205,11 +205,13 @@
                            :filters {:resource-id resource-id}})
         {:keys [to-create to-update to-delete]}
         (get-associations-diff sth-associations old-associations)
-        to-save (->> (concat to-create to-update)
-                     (remove #(get old-resource-owners-editors (:stakeholder %))))
+        to-save (into []
+                      (comp cat
+                            (remove #(get old-resource-owners-editors (:stakeholder %))))
+                      [to-create to-update])
         role-unassignments (sth-associations->rbac-role-unassignments
                             conn
-                            (concat to-delete to-update)
+                            (into to-delete to-update)
                             resource-type
                             resource-id)
         role-assignments (sth-associations->rbac-role-assignments
@@ -263,7 +265,7 @@
                            :filters {:resource-id resource-id}})
         {:keys [to-create to-delete to-update]}
         (get-associations-diff org-associations old-associations)
-        to-save (concat to-create to-update)
+        to-save (into to-create to-update)
         ;; Organisation association are very tricky because they have
         ;; the `focal-point` system. If organisation A has focal point
         ;; Z, and organisation B has focal-point Z and Y it can lead
@@ -296,7 +298,7 @@
                                  conn
                                  resource-type
                                  resource-id
-                                 (concat to-delete to-update))
+                                 (into to-delete to-update))
                                 (remove #(get resource-owners-to-keep (:user-id %)))
                                 (medley/distinct-by (juxt :user-id :resource-id)))
         role-assignments (->> (org-associations->rbac-role-assignments
