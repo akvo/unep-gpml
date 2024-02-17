@@ -10,12 +10,10 @@
 
 (hugsql/def-db-fns "gpml/db/file.sql")
 
-(defn- file->persistence-file
-  [file]
+(defn- file->persistence-file [file]
   (update file :visibility name))
 
-(defn- persistence-file->file
-  [persistence-file]
+(defn- persistence-file->file [persistence-file]
   (update persistence-file :visibility keyword))
 
 (defn create-file [conn file]

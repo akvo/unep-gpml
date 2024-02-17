@@ -158,8 +158,7 @@
       (throw (ex-info "Failed to save all translations" {:expected (count translations)
                                                          :actual (first result)})))))
 
-(defn- create-entities*
-  [tx logger entity-name db-create-fn db-transformer-fn relation? data-coll]
+(defn- create-entities* [tx logger entity-name db-create-fn db-transformer-fn relation? data-coll]
   (let [insert-cols (keys (first data-coll))
         insert-values (->> data-coll
                            (map db-transformer-fn)
@@ -185,8 +184,7 @@
       (throw (ex-info (str "Failed to create all " (name entity-name) "s.") {:expected (count data-coll)
                                                                              :actual (count result)})))))
 
-(defn- update-entities*
-  [tx entity-name db-update-fn db-transformer-fn data-coll]
+(defn- update-entities* [tx entity-name db-update-fn db-transformer-fn data-coll]
   (let [expected (count data-coll)
         db-entities (map db-transformer-fn data-coll)
         affected (reduce (fn [acc {:keys [id] :as db-entity}]

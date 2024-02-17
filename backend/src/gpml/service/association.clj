@@ -145,8 +145,7 @@
    []
    sth-associations))
 
-(defn- sth-associations->rbac-role-assignments
-  [conn sth-associations resource-type resource-id]
+(defn- sth-associations->rbac-role-assignments [conn sth-associations resource-type resource-id]
   (reduce
    (fn [role-assignments {:keys [stakeholder role]}]
      (cond

@@ -525,8 +525,7 @@
                            :reason :could-not-delete-resource
                            :error-details {:error-message (.getMessage e)}}))))))
 
-(defn- get-detail*
-  [conn table-name id opts]
+(defn- get-detail* [conn table-name id opts]
   (let [opts (merge opts {:topic-type table-name :id id :badges true})
         {:keys [json] :as result}
         (if (get #{"organisation" "stakeholder"} table-name)
@@ -680,8 +679,7 @@
       :id resource-id
       :updates {file-id-key nil}})))
 
-(defn- update-resource-image**
-  [config conn resource-type resource-id file-id-key image-payload]
+(defn- update-resource-image** [config conn resource-type resource-id file-id-key image-payload]
   (let [new-file (dom.file/base64->file image-payload
                                         (keyword resource-type)
                                         :images
@@ -695,8 +693,7 @@
         :id resource-id
         :updates {file-id-key (get-in result [:file :id])}}))))
 
-(defn- update-resource-image*
-  [config conn resource-type resource-id file-id-key old-file-id image-payload]
+(defn- update-resource-image* [config conn resource-type resource-id file-id-key old-file-id image-payload]
   (if-not old-file-id
     (update-resource-image** config
                              conn

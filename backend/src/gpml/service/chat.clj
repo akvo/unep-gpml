@@ -12,8 +12,7 @@
 (def ^:private random-password-size
   10)
 
-(defn- create-user-account*
-  [{:keys [chat-adapter]} chat-user]
+(defn- create-user-account* [{:keys [chat-adapter]} chat-user]
   (let [password (util.crypto/create-crypto-random-hex-string random-password-size)
         chat-user-account (assoc chat-user
                                  :password password

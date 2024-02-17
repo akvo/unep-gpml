@@ -36,8 +36,7 @@
        (format "^(%1$s)((,(%1$s))+)?$")
        re-pattern))
 
-(defn- api-opts->opts
-  [{:keys [roles q]}]
+(defn- api-opts->opts [{:keys [roles q]}]
   (cond-> {}
     (seq roles)
     (assoc-in [:filters :roles] (str/split roles #","))
@@ -48,8 +47,7 @@
     true
     (assoc-in [:filters :review-statuses] ["APPROVED"])))
 
-(defn- reviewer->api-reviewer
-  [reviewer]
+(defn- reviewer->api-reviewer [reviewer]
   (select-keys reviewer [:id :first_name :last_name :email :role]))
 
 (defn- get-reviewers [{:keys [db logger]} query]
@@ -69,8 +67,7 @@
           response
           (assoc response :error-details {:error (.getMessage e)}))))))
 
-(defn- new-review*
-  [{:keys [logger conn mailjet-config topic-type topic-id assigned-by]} c reviewer-id]
+(defn- new-review* [{:keys [logger conn mailjet-config topic-type topic-id assigned-by]} c reviewer-id]
   (let [params {:topic-type topic-type
                 :topic-id topic-id
                 :assigned-by assigned-by

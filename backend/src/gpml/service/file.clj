@@ -10,8 +10,7 @@
    (com.google.cloud WriteChannel)
    (java.nio ByteBuffer)))
 
-(defn- file-content->byte-buffer
-  [content]
+(defn- file-content->byte-buffer [content]
   (cond
     (string? content)
     (let [file-content (util/decode-base64 content)

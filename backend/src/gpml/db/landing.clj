@@ -20,8 +20,7 @@
                  (assoc-in [:transnational_counts (keyword %)] 0)))
        (apply merge-with into)))
 
-(defn- get-resource-map-counts*
-  [conn opts]
+(defn- get-resource-map-counts* [conn opts]
   (let [modified-opts (if (= :topic (:entity-group opts))
                         (merge opts {:geo-coverage-types (concat non-transnational-geo-coverage-types transnational-geo-coverage-types)})
                         opts)

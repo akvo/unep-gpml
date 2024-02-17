@@ -23,8 +23,7 @@
   (-> badge
       (util/update-if-not-nil :type #(sql-util/keyword->pg-enum % "badge_type"))))
 
-(defn- badge-assignment->p-badge-assignment
-  [badge-assignment]
+(defn- badge-assignment->p-badge-assignment [badge-assignment]
   (-> badge-assignment
       (util/update-if-not-nil :badge-assignment-entity-col name)
       (util/update-if-not-nil :badge-assignment-table name)))

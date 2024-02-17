@@ -5,8 +5,7 @@
    [gpml.domain.resource :as dom.resource]
    [gpml.service.permissions :as srv.permissions]))
 
-(defn entity-type->context-type
-  [entity-type]
+(defn entity-type->context-type [entity-type]
   (cond
     (some #{entity-type} dom.resource/types)
     :resource

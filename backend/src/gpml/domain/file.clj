@@ -67,8 +67,7 @@
 (defn decode-file [file]
   (m/decode file-schema file mt/string-transformer))
 
-(defn base64->file
-  [payload entity-key file-key visibility]
+(defn base64->file [payload entity-key file-key visibility]
   (let [[_ ^String mime-type ^String content] (re-find #"^data:(\S+);base64,(.*)$" payload)
         [_ mime-type-suffix] (str/split mime-type #"\/")
         extension (get mime-types->common-extensions-mapping mime-type mime-type-suffix)

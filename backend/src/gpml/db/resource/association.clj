@@ -17,16 +17,14 @@
 
 (hugsql/def-db-fns "gpml/db/resource/association.sql" {:quoting :ansi})
 
-(defn get-all-organisation-owner-associations*
-  [conn {:keys [org-id]}]
+(defn get-all-organisation-owner-associations* [conn {:keys [org-id]}]
   (get-all-organisation-owner-associations
    conn
    {:org-id org-id
     :all-organisation-resource-owner-associations-query
     (all-organisation-resource-owner-associations-query {})}))
 
-(defn get-sth-org-focal-point-resources-associations*
-  [conn opts]
+(defn get-sth-org-focal-point-resources-associations* [conn opts]
   (get-sth-org-focal-point-resources-associations
    conn
    (merge

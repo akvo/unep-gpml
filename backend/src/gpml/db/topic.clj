@@ -330,8 +330,7 @@
     (generic-topic-query topic-name-query entity-name)))
 
 ;;======================= Core functions to generate topic CTEs ================
-(defn- generate-ctes*
-  [cte-type query-builder-fn params opts]
+(defn- generate-ctes* [cte-type query-builder-fn params opts]
   (reduce (fn [ctes entity-name]
             (let [normalized-cte-type (str/replace (name cte-type) "-" "_")
                   cte-name (str "cte_" entity-name "_" normalized-cte-type)

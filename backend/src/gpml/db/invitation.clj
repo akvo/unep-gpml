@@ -14,12 +14,10 @@
 
 (hugsql/def-db-fns "gpml/db/invitation.sql" {:quoting :ansi})
 
-(defn- p-invitation->invitation
-  [p-invitation]
+(defn- p-invitation->invitation [p-invitation]
   (util/update-if-not-nil p-invitation :type keyword))
 
-(defn- invitation->p-invitation
-  [invitation]
+(defn- invitation->p-invitation [invitation]
   (util/update-if-not-nil invitation :type util.pgsql/->PGEnum "invitation_type"))
 
 (defn get-invitations [conn opts]

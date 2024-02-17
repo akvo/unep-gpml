@@ -5,4 +5,5 @@
   to have a delete operation implementation."
   :extend-via-metadata true
   (get-blob-signed-url [this bucket-name blob-name url-lifespan])
+
   (delete-blob [this bucket-name blob-name]))
