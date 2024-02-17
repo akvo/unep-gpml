@@ -438,8 +438,8 @@
          {:txn-fn
           (fn update-stakeholder
             [{:keys [stakeholder old-stakeholder invited? picture-file cv-file] :as context}]
-            (let [idp-usernames (-> (concat (:idp-usernames old-stakeholder)
-                                            (:idp_usernames stakeholder))
+            (let [idp-usernames (-> (into (:idp-usernames old-stakeholder)
+                                          (:idp_usernames stakeholder))
                                     distinct
                                     vec)
                   org-id (get-in stakeholder [:org :id])

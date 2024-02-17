@@ -30,10 +30,10 @@
     (zipmap schema-keys (repeat nil))))
 
 (defn- build-geo-coverage-coll [geo-coverage-coll entity-key entity-id geo-key geo-ids]
-  (map #(assoc geo-coverage-coll
-               entity-key entity-id
-               geo-key %)
-       geo-ids))
+  (mapv #(assoc geo-coverage-coll
+                entity-key entity-id
+                geo-key %)
+        geo-ids))
 
 (defn ->geo-coverage
   "Given the collections of `countries`, `country-groups` and
@@ -52,12 +52,12 @@
   (let [geo-coverage (initial-geo-coverage entity-key)]
     (cond
       (= :sub-national geo-coverage-type)
-      (concat (build-geo-coverage-coll geo-coverage entity-key entity-id :country countries)
-              (build-geo-coverage-coll geo-coverage entity-key entity-id :country_state country-states))
+      (into (build-geo-coverage-coll geo-coverage entity-key entity-id :country countries)
+            (build-geo-coverage-coll geo-coverage entity-key entity-id :country_state country-states))
 
       (= :national geo-coverage-type)
       (build-geo-coverage-coll geo-coverage entity-key entity-id :country countries)
 
       (= :transnational geo-coverage-type)
-      (concat (build-geo-coverage-coll geo-coverage entity-key entity-id :country countries)
-              (build-geo-coverage-coll geo-coverage entity-key entity-id :country_group country-groups)))))
+      (into (build-geo-coverage-coll geo-coverage entity-key entity-id :country countries)
+            (build-geo-coverage-coll geo-coverage entity-key entity-id :country_group country-groups)))))

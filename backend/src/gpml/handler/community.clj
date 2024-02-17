@@ -182,9 +182,10 @@
                              (let [cgc-search-opts {:filters {:country-groups (get-in api-search-opts [:filters :transnational])}}
                                    country-group-countries (db.country-group/get-country-groups-countries conn cgc-search-opts)
                                    geo-coverage-countries (map :id country-group-countries)]
-                               (assoc-in api-search-opts [:filters :country] (set (concat
-                                                                                   (get-in api-search-opts [:filters :country])
-                                                                                   geo-coverage-countries))))
+                               (assoc-in api-search-opts [:filters :country] (into #{}
+                                                                                   cat
+                                                                                   [(get-in api-search-opts [:filters :country])
+                                                                                    geo-coverage-countries])))
                              api-search-opts)
           results (->> (db.community/get-community-members conn modified-filters)
                        (map (partial community-member->api-community-member config)))]
