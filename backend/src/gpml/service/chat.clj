@@ -72,7 +72,7 @@
                        :rollback-fn
                        (fn rollback-create-chat-user-account
                          [{:keys [chat-user-account] :as context}]
-                         (chat/delete-user-account chat-adapter (:id chat-user-account))
+                         (chat/delete-user-account chat-adapter (:id chat-user-account) {})
                          context)}
                       {:txn-fn
                        (fn update-stakeholder
@@ -98,7 +98,8 @@
                                chat-account-id (:chat_account_id user)
                                result (chat/set-user-account-active-status chat-adapter
                                                                            chat-account-id
-                                                                           active?)]
+                                                                           active?
+                                                                           {})]
                            (if (:success? result)
                              context
                              (assoc context
@@ -110,7 +111,8 @@
                          [{:keys [user] :as context}]
                          (chat/set-user-account-active-status chat-adapter
                                                               (:chat_account_id user)
-                                                              (= (keyword (:chat_account_status user)) :active))
+                                                              (= (keyword (:chat_account_status user)) :active)
+                                                              {})
                          context)}
                       {:txn-fn
                        (fn update-stakeholder-chat-account-status

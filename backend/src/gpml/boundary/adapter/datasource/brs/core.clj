@@ -38,9 +38,9 @@
     (:publication :project) (Integer/parseInt (get body :odata.count))
     :meeting (Integer/parseInt (get-in body [:d :__count]))))
 
-(defn- get-data [{:keys [logger api-url records-per-page endpoints retry-config] :as config}
-                 {:keys [entity skip-token]
-                  :or {skip-token 0}}]
+(defn get-data [{:keys [logger api-url records-per-page endpoints retry-config] :as config}
+                {:keys [entity skip-token]
+                 :or {skip-token 0}}]
   (try
     (if-not (get (set (keys endpoints)) entity)
       {:success? false
@@ -72,7 +72,6 @@
         {:success? false
          :error-details error-details}))))
 
-(defrecord BRS [logger api-url records-per-page endpoints retry-config]
-  port/Datasource
-  (get-data [this opts]
-    (get-data this opts)))
+(defn map->BRS [m]
+  (with-meta m
+    {`port/get-data get-data}))
