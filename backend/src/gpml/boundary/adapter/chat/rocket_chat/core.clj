@@ -342,7 +342,7 @@
                                         {:query {:_id {:$in public-channels-ids}}})]
               (if success?
                 {:success? true
-                 :channels (concat private-channels public-channels)}
+                 :channels (into private-channels public-channels)}
                 {:success? false
                  :reason :failed-to-get-user-public-channels
                  :error-details get-public-channels-result}))))))
@@ -382,7 +382,7 @@
                                       {:query {:_id {:$in public-channels-ids}}})]
             (if success?
               {:success? true
-               :channels (concat private-channels public-channels)}
+               :channels (into private-channels public-channels)}
               {:success? false
                :reason :failed-to-get-user-public-channels
                :error-details get-public-channels-result})))))))

@@ -23,6 +23,6 @@
     (apply format "SELECT se.*, row_to_json(e.*) AS resource FROM stakeholder_%s se
                    JOIN %s e ON e.id = se.%s
                    %s;"
-           (concat (repeat 3 resource-type) [(if (seq where-cond)
-                                               (str "WHERE 1=1 " where-cond)
-                                               "")]))))
+           (into (repeat 3 resource-type) [(if (seq where-cond)
+                                             (str "WHERE 1=1 " where-cond)
+                                             "")]))))

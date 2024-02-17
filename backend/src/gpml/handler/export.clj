@@ -19,7 +19,7 @@
 
 (defn- add-export-files-urls [config src-dst-files-keys-mapping {:keys [files] :as export}]
   (if-not (seq files)
-    (apply dissoc export (concat [:files] (keys src-dst-files-keys-mapping)))
+    (apply dissoc export (into [:files] (keys src-dst-files-keys-mapping)))
     (let [files-w-urls (->> files
                             (map dom.file/decode-file)
                             (srv.file/add-files-urls config)
@@ -29,7 +29,7 @@
                                           dst-file-key (get-in files-w-urls [(get updated-export src-file-key) :url])))
                                  export
                                  src-dst-files-keys-mapping)]
-      (apply dissoc updated-export (concat [:files] (keys src-dst-files-keys-mapping))))))
+      (apply dissoc updated-export (into [:files] (keys src-dst-files-keys-mapping))))))
 
 (defn- org->org-export [{:keys [app-domain] :as config} src-dst-files-keys-mapping org]
   (as-> org export

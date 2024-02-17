@@ -34,8 +34,12 @@
 
 (defn- rename-tables [tables]
   (let [tables-to-rename (filter #(some #{%} (keys table-rename-mapping)) tables)
-        renamed-tables (set (map #(get table-rename-mapping %) tables-to-rename))]
-    (concat renamed-tables (remove #(some #{%} tables-to-rename) tables))))
+        renamed-tables (into #{}
+                             (map #(get table-rename-mapping %))
+                             tables-to-rename)]
+    (into renamed-tables
+          (remove #(some #{%} tables-to-rename))
+          tables)))
 
 (def ^:private initiative-cols
   "e.id,
@@ -260,19 +264,19 @@
    %s
    %s
    GROUP BY e.id %s"
-     (concat [table-specific-cols]
-             [geo-coverage-select]
-             [ps-bookmark-select]
-             [badges-select]
-             [entity-connections-select]
-             (repeat 3 entity-name)
-             [files-join]
-             [entity-connections-join]
-             [geo-coverage-join]
-             [ps-bookmark-join]
-             [badges-join]
-             [where-cond]
-             [ps-bookmark-group-by]))))
+     (reduce into [] [[table-specific-cols]
+                      [geo-coverage-select]
+                      [ps-bookmark-select]
+                      [badges-select]
+                      [entity-connections-select]
+                      (repeat 3 entity-name)
+                      [files-join]
+                      [entity-connections-join]
+                      [geo-coverage-join]
+                      [ps-bookmark-join]
+                      [badges-join]
+                      [where-cond]
+                      [ps-bookmark-group-by]]))))
 
 ;;======================= Topic queries =================================
 (defn- generic-topic-query
@@ -284,7 +288,7 @@
 	  row_to_json(d.*) AS json
 	FROM
 	  cte_%s_data d"
-         (concat [topic-name-query] (repeat 2 entity-name))))
+         (into [topic-name-query] (repeat 2 entity-name))))
 
 (defn- generic-topic-name-query [topic-name]
   (format "'%s'::text" topic-name))
@@ -378,9 +382,9 @@
   (let [tables (if (seq topic)
                  topic
                  (:tables gpml.db.topic/generic-cte-opts))
-	;; If we ever need to add
-	;; `sub_content_type` to case study, remove
-	;; this conditional and binding.
+	      ;; If we ever need to add
+	      ;; `sub_content_type` to case study, remove
+	      ;; this conditional and binding.
         filtered-tables (if (seq sub-content-type)
                           (vec (remove #{"case_study"} tables))
                           tables)
@@ -454,10 +458,10 @@
 (defn- generate-get-topics-query [{:keys [order-by limit offset descending upcoming topic]}]
   (let [order (if descending "DESC" "ASC")
         order-by-clause (cond
-			  ;; We assume the upcoming filter will always
-			  ;; be together with the event topic. The
-			  ;; browse API disallows its usage if there
-			  ;; are multiple topics.
+			                    ;; We assume the upcoming filter will always
+			                    ;; be together with the event topic. The
+			                    ;; browse API disallows its usage if there
+			                    ;; are multiple topics.
                           (and upcoming (= (first topic) "event"))
                           "ORDER BY json->>'start_date' ASC"
 

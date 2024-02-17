@@ -296,10 +296,10 @@
                        ;; that are meant to be merged together.
                        (cond
                          (get #{:tags :keywords} brs-field)
-                         (concat (:tags acc) parsed-value)
+                         (into (:tags acc) parsed-value)
 
                          (get #{:Implementedby :Donors} brs-field)
-                         (concat (:entity_connections acc) parsed-value)
+                         (into (:entity_connections acc) parsed-value)
 
                          (= :isGlobal brs-field)
                          (get-project-geo-coverage-type (:Beneficiaries brs-entity) parsed-value)
