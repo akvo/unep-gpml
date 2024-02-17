@@ -45,7 +45,7 @@
 (defn- build-api-endpoint-url [{:keys [api-domain-url api-url-path]} endpoint-url-path]
   (str api-domain-url api-url-path endpoint-url-path))
 
-(defn- get-user-info*
+(defn get-user-info*
   "Gets the RocketChat user information. User joined rooms can also be
   included in the response if `:user-rooms` is set to `1` in the
   `:fields` map in `opts`."
@@ -75,7 +75,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn- create-user-account*
+(defn create-user-account*
   [{:keys [logger api-key api-user-id] :as adapter} user]
   (try
     (let [{:keys [status body]}
@@ -99,7 +99,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn- update-user-account*
+(defn update-user-account*
   [{:keys [logger api-key api-user-id] :as adapter} user-id updates]
   (try
     (let [req-body (cske/transform-keys ->camelCaseString {:user-id user-id
@@ -125,7 +125,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn- delete-user-account*
+(defn delete-user-account*
   [{:keys [logger api-key api-user-id] :as adapter} user-id opts]
   (try
     (let [req-body (cond-> {:user-id user-id}
@@ -151,7 +151,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn- set-user-account-active-status*
+(defn set-user-account-active-status*
   "Actives or deactives user account. When `active?` is `false` and
   setting the `opts` `:confirm-relinquish` to `true`, allows user to
   be deactivated even if it is the last owner of a room[1].
@@ -238,7 +238,7 @@
         (log logger :error :failed-to-get-channel-users result)
         (add-channel-avatar-url api-domain-url channel)))))
 
-(defn- get-public-channels*
+(defn get-public-channels*
   [{:keys [logger api-key api-user-id] :as adapter} opts]
   (try
     (let [query-params (parse-query-and-fields-opts
@@ -272,7 +272,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn- get-private-channels*
+(defn get-private-channels*
   [{:keys [logger api-key api-user-id] :as adapter} opts]
   (try
     (let [query-params (parse-query-and-fields-opts
@@ -306,7 +306,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn- get-all-channels*
+(defn get-all-channels*
   [{:keys [logger api-key api-user-id] :as adapter} opts]
   (try
     (let [query-params (cond-> {}
@@ -360,9 +360,9 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn- get-user-joined-channels*
+(defn get-user-joined-channels*
   [adapter user-id]
-  (let [result (get-user-info* adapter user-id {:fields {:user-rooms 1}})]
+  (let [result (port/get-user-info adapter user-id {:fields {:user-rooms 1}})]
     (if-not (:success? result)
       {:success? false
        :reason :failed-to-get-user-information
@@ -395,7 +395,7 @@
                :reason :failed-to-get-user-public-channels
                :error-details get-public-channels-result})))))))
 
-(defn- remove-user-from-channel*
+(defn remove-user-from-channel*
   [{:keys [logger api-key api-user-id] :as adapter} user-id channel-id channel-type]
   (try
     (let [endpoint (if (= channel-type "c")
@@ -420,7 +420,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn- add-user-to-private-channel*
+(defn add-user-to-private-channel*
   [{:keys [logger api-key api-user-id] :as adapter} user-id channel-id]
   (try
     (let [{:keys [status body]}
@@ -442,7 +442,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn- add-user-to-public-channel*
+(defn add-user-to-public-channel*
   [{:keys [logger api-key api-user-id] :as adapter} user-id channel-id]
   (try
     (let [{:keys [status body]}
@@ -464,7 +464,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn- create-private-channel*
+(defn create-private-channel*
   [{:keys [logger api-key api-user-id] :as adapter} channel]
   (try
     (let [req-body (cske/transform-keys
@@ -496,7 +496,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn- create-public-channel*
+(defn create-public-channel*
   [{:keys [logger api-key api-user-id] :as adapter} channel]
   (try
     (let [req-body (cske/transform-keys
@@ -528,7 +528,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn- delete-private-channel*
+(defn delete-private-channel*
   [{:keys [logger api-key api-user-id] :as adapter} channel-id]
   (try
     (let [{:keys [status body]}
@@ -550,7 +550,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn- delete-public-channel*
+(defn delete-public-channel*
   [{:keys [logger api-key api-user-id] :as adapter} channel-id]
   (try
     (let [{:keys [status body]}
@@ -572,7 +572,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn- set-private-channel-custom-fields*
+(defn set-private-channel-custom-fields*
   [{:keys [logger api-key api-user-id] :as adapter} channel-id custom-fields]
   (try
     (let [req-body (cske/transform-keys
@@ -598,7 +598,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn- set-public-channel-custom-fields*
+(defn set-public-channel-custom-fields*
   [{:keys [logger api-key api-user-id] :as adapter} channel-id custom-fields]
   (try
     (let [req-body (cske/transform-keys
@@ -624,7 +624,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn- get-channel-discussions*
+(defn get-channel-discussions*
   [{:keys [logger api-key api-user-id] :as adapter} channel-id]
   (try
     (let [{:keys [status body]}
@@ -647,49 +647,24 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defrecord RocketChat [api-domain-url api-url-path api-key api-user-id logger]
-  port/Chat
-  (create-user-account [this user]
-    (create-user-account* this user))
-  (update-user-account [this user-id updates]
-    (update-user-account* this user-id updates))
-  (delete-user-account [this user-id]
-    (delete-user-account* this user-id {}))
-  (delete-user-account [this user-id opts]
-    (delete-user-account* this user-id opts))
-  (set-user-account-active-status [this user-id active?]
-    (set-user-account-active-status* this user-id active? {}))
-  (set-user-account-active-status [this user-id active? opts]
-    (set-user-account-active-status* this user-id active? opts))
-  (get-public-channels [this opts]
-    (get-public-channels* this opts))
-  (get-private-channels [this opts]
-    (get-private-channels* this opts))
-  (get-all-channels [this opts]
-    (get-all-channels* this opts))
-  (get-user-info [this user-id]
-    (get-user-info* this user-id {}))
-  (get-user-info [this user-id opts]
-    (get-user-info* this user-id opts))
-  (get-user-joined-channels [this user-id]
-    (get-user-joined-channels* this user-id))
-  (remove-user-from-channel [this user-id channel-id channel-type]
-    (remove-user-from-channel* this user-id channel-id channel-type))
-  (add-user-to-private-channel [this user-id channel-id]
-    (add-user-to-private-channel* this user-id channel-id))
-  (add-user-to-public-channel [this user-id channel-id]
-    (add-user-to-public-channel* this user-id channel-id))
-  (create-private-channel [this channel]
-    (create-private-channel* this channel))
-  (set-private-channel-custom-fields [this channel-id custom-fields]
-    (set-private-channel-custom-fields* this channel-id custom-fields))
-  (delete-private-channel [this channel-id]
-    (delete-private-channel* this channel-id))
-  (create-public-channel [this channel]
-    (create-public-channel* this channel))
-  (set-public-channel-custom-fields [this channel-id custom-fields]
-    (set-public-channel-custom-fields* this channel-id custom-fields))
-  (delete-public-channel [this channel-id]
-    (delete-public-channel* this channel-id))
-  (get-channel-discussions [this channel-id]
-    (get-channel-discussions* this channel-id)))
+(defn map->RocketChat [m]
+  (with-meta m
+    {`port/add-user-to-private-channel       add-user-to-private-channel*
+     `port/add-user-to-public-channel        add-user-to-public-channel*
+     `port/create-private-channel            create-private-channel*
+     `port/create-public-channel             create-public-channel*
+     `port/create-user-account               create-user-account*
+     `port/delete-private-channel            delete-private-channel*
+     `port/delete-public-channel             delete-public-channel*
+     `port/delete-user-account               delete-user-account*
+     `port/get-all-channels                  get-all-channels*
+     `port/get-channel-discussions           get-channel-discussions*
+     `port/get-private-channels              get-private-channels*
+     `port/get-public-channels               get-public-channels*
+     `port/get-user-info                     get-user-info*
+     `port/get-user-joined-channels          get-user-joined-channels*
+     `port/remove-user-from-channel          remove-user-from-channel*
+     `port/set-private-channel-custom-fields set-private-channel-custom-fields*
+     `port/set-public-channel-custom-fields  set-public-channel-custom-fields*
+     `port/set-user-account-active-status    set-user-account-active-status*
+     `port/update-user-account               update-user-account*}))

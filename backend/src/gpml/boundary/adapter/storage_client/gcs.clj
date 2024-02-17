@@ -1,16 +1,18 @@
 (ns gpml.boundary.adapter.storage-client.gcs
   (:require
    [clj-gcp.storage.core]
-   [gpml.boundary.port.storage-client :as port])
+   [gpml.boundary.port.storage-client :as port]
+   [integrant.core :as ig])
   (:import
-   (clj_gcp.storage.core GCSStorageClient)
    (com.google.cloud.storage BlobId BlobInfo Storage Storage$SignUrlOption)
    (java.util.concurrent TimeUnit)))
 
-(defn- delete-blob [^Storage storage bucket-name blob-name]
+(defn delete-blob [{^Storage storage :gservice} bucket-name blob-name]
+  {:pre [storage]}
   {:success? (.delete storage ^BlobId (BlobId/of bucket-name blob-name))})
 
-(defn- get-blob-signed-url [^Storage storage bucket-name blob-name url-lifespan]
+(defn get-blob-signed-url [{^Storage storage :gservice} bucket-name blob-name url-lifespan]
+  {:pre [storage]}
   (try
     (let [blob-id ^BlobId (BlobId/of bucket-name blob-name)
           blob-info ^BlobInfo (.build (BlobInfo/newBuilder blob-id))
@@ -26,9 +28,12 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(extend-type GCSStorageClient
-  port/StorageClient
-  (get-blob-signed-url [{:keys [gservice]} bucket-name blob-name url-lifespan]
-    (get-blob-signed-url gservice bucket-name blob-name url-lifespan))
-  (delete-blob [{:keys [gservice]} bucket-name blob-name]
-    (delete-blob gservice bucket-name blob-name)))
+(defn ->gcs-storage-client []
+  (vary-meta (clj-gcp.storage.core/->gcs-storage-client)
+             merge
+             {`port/get-blob-signed-url get-blob-signed-url
+              `port/delete-blob         delete-blob}))
+
+(defmethod ig/init-key ::client
+  [_ _]
+  (->gcs-storage-client))
