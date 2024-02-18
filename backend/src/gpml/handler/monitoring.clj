@@ -98,7 +98,6 @@
 
 (defmethod ig/init-key ::jetty-configurator [_ {:keys [collector]}]
   (fn [jetty-server]
-    (prn (class jetty-server))
     (configure-stats jetty-server collector)))
 
 (defmethod ig/init-key ::sentry-logger [_ {:keys [dsn version host env]}]

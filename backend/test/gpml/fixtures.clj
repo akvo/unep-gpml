@@ -87,9 +87,3 @@
                                                              :htmls     htmls}))]
       (binding [*system* system]
         (f)))))
-
-(comment
-
-  (with-test-system
-    (fn []
-      (prn *system*))))
