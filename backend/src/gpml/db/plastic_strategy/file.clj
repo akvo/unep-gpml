@@ -44,7 +44,6 @@
                       jdbc-util/db-result-snake-kw->db-result-kebab-kw
                       (map p-ps-file->ps-file))})
     (catch Exception t
-      (prn t)
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
