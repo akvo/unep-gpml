@@ -8,7 +8,7 @@
 
 (hugsql/def-db-fns "gpml/db/topic.sql" {:quoting :ansi})
 
-(def ^:const generic-cte-opts
+(def generic-cte-opts
   "Common set of options for all CTE generation functions."
   {:tables ["event" "technology" "policy" "initiative" "resource" "case_study"]
    :search-text-fields {"event" ["title" "description" "remarks"]
@@ -19,11 +19,11 @@
                         "case_study" ["title" "description"]}})
 
 #_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
-(def ^:const generic-entity-cte-opts
+(def generic-entity-cte-opts
   "Common set of options for entity related CTE generation functions."
   {:tables ["stakeholder" "organisation"]})
 
-(def ^:const table-rename-mapping
+(def table-rename-mapping
   "Some topics like financing_resource aren't the real table
   names we want to query. Therefore, when passing the following topic
   options as tables we need to rename them to their proper source
@@ -32,13 +32,16 @@
    "action_plan" "resource"
    "technical_resource" "resource"})
 
-(defn- rename-tables
-  [tables]
+(defn- rename-tables [tables]
   (let [tables-to-rename (filter #(some #{%} (keys table-rename-mapping)) tables)
-        renamed-tables (set (map #(get table-rename-mapping %) tables-to-rename))]
-    (concat renamed-tables (remove #(some #{%} tables-to-rename) tables))))
+        renamed-tables (into #{}
+                             (map #(get table-rename-mapping %))
+                             tables-to-rename)]
+    (into renamed-tables
+          (remove #(some #{%} tables-to-rename))
+          tables)))
 
-(def ^:const ^:private initiative-cols
+(def ^:private initiative-cols
   "e.id,
    NULL::text AS uuid,
    NULL::text AS phase,
@@ -65,25 +68,24 @@
    e.image_id,
    e.thumbnail_id")
 
-(def ^:const ^:private policy-cols
+(def ^:private policy-cols
   "e.abstract AS summary,
    e.*")
 
-(def ^:const ^:private event-cols
+(def ^:private event-cols
   "e.description AS summary,
    e.*")
 
-(def ^:const ^:private case-study-cols
+(def ^:private case-study-cols
   "e.description AS summary,
    e.*")
 
-(def ^:const ^:private technology-cols
+(def ^:private technology-cols
   "e.name AS title,
    e.remarks AS summary,
    e.*")
 
-(defn- generic-topic-search-text-field-query
-  [search-text-field]
+(defn- generic-topic-search-text-field-query [search-text-field]
   (format "COALESCE(e.%s, '')" search-text-field))
 
 (defn- initiative-topic-search-text-field-query
@@ -114,8 +116,7 @@
           ""
           search-text-fields))
 
-(defn- get-table-specific-cols-exp
-  [entity-name]
+(defn- get-table-specific-cols-exp [entity-name]
   (case entity-name
     "initiative" initiative-cols
     "policy" policy-cols
@@ -124,14 +125,13 @@
     "case_study" case-study-cols
     "e.*"))
 
-(defn- build-topic-data-query
-  [entity-name
-   {:keys [id entity tag representative-group
-           geo-coverage-types sub-content-type
-           search-text review-status featured capacity-building upcoming
-           plastic-strategy-id ps-bookmark-sections-keys
-           badges inc-entity-connections?] :as _params}
-   {:keys [search-text-fields] :as _opts}]
+(defn- build-topic-data-query [entity-name
+                               {:keys [id entity tag representative-group
+                                       geo-coverage-types sub-content-type
+                                       search-text review-status featured capacity-building upcoming
+                                       plastic-strategy-id ps-bookmark-sections-keys
+                                       badges inc-entity-connections?] :as _params}
+                               {:keys [search-text-fields] :as _opts}]
   (let [entity-connections-join (if-not (or (seq entity)
                                             (seq representative-group)
                                             inc-entity-connections?)
@@ -181,13 +181,13 @@
         ps-bookmark-group-by (if-not plastic-strategy-id
                                ""
                                (format ", psb.%s_id" entity-name))
-        badges-join (if-not (nil? badges)
+        badges-join (if (some? badges)
                       (format "LEFT JOIN %s_badge eb ON eb.%s_id = e.id
 			       LEFT JOIN badge b ON b.id = eb.badge_id"
                               entity-name
                               entity-name)
                       "")
-        badges-select (if-not (nil? badges)
+        badges-select (if (some? badges)
                         (format "COALESCE(json_agg(
 				   DISTINCT jsonb_build_object(
 				     'badge_id', eb.badge_id,
@@ -264,19 +264,19 @@
    %s
    %s
    GROUP BY e.id %s"
-     (concat [table-specific-cols]
-             [geo-coverage-select]
-             [ps-bookmark-select]
-             [badges-select]
-             [entity-connections-select]
-             (repeat 3 entity-name)
-             [files-join]
-             [entity-connections-join]
-             [geo-coverage-join]
-             [ps-bookmark-join]
-             [badges-join]
-             [where-cond]
-             [ps-bookmark-group-by]))))
+     (reduce into [] [[table-specific-cols]
+                      [geo-coverage-select]
+                      [ps-bookmark-select]
+                      [badges-select]
+                      [entity-connections-select]
+                      (repeat 3 entity-name)
+                      [files-join]
+                      [entity-connections-join]
+                      [geo-coverage-join]
+                      [ps-bookmark-join]
+                      [badges-join]
+                      [where-cond]
+                      [ps-bookmark-group-by]]))))
 
 ;;======================= Topic queries =================================
 (defn- generic-topic-query
@@ -288,18 +288,16 @@
 	  row_to_json(d.*) AS json
 	FROM
 	  cte_%s_data d"
-         (concat [topic-name-query] (repeat 2 entity-name))))
+         (into [topic-name-query] (repeat 2 entity-name))))
 
-(defn- generic-topic-name-query
-  [topic-name]
+(defn- generic-topic-name-query [topic-name]
   (format "'%s'::text" topic-name))
 
-(def ^:const ^:private resource-topic-name-query
+(def ^:private resource-topic-name-query
   "replace(lower(d.type), ' ', '_')")
 
 ;;======================= Topic CTE query =================================
-(defn- generic-topic-cte-query
-  [entity-name]
+(defn- generic-topic-cte-query [entity-name]
   (format
    "SELECT
        cte.topic,
@@ -336,8 +334,7 @@
     (generic-topic-query topic-name-query entity-name)))
 
 ;;======================= Core functions to generate topic CTEs ================
-(defn- generate-ctes*
-  [cte-type query-builder-fn params opts]
+(defn- generate-ctes* [cte-type query-builder-fn params opts]
   (reduce (fn [ctes entity-name]
             (let [normalized-cte-type (str/replace (name cte-type) "-" "_")
                   cte-name (str "cte_" entity-name "_" normalized-cte-type)
@@ -385,9 +382,9 @@
   (let [tables (if (seq topic)
                  topic
                  (:tables gpml.db.topic/generic-cte-opts))
-	;; If we ever need to add
-	;; `sub_content_type` to case study, remove
-	;; this conditional and binding.
+	      ;; If we ever need to add
+	      ;; `sub_content_type` to case study, remove
+	      ;; this conditional and binding.
         filtered-tables (if (seq sub-content-type)
                           (vec (remove #{"case_study"} tables))
                           tables)
@@ -419,15 +416,15 @@
        topic-ctes
        topic-cte]))))
 
-(def ^:const ^:private count-aggregate-query-raw-sql
+(def ^:private count-aggregate-query-raw-sql
   "SELECT topic, COUNT(*) FROM cte_results GROUP BY topic")
 
-(def ^:const ^:private capacity-building-count-aggregate-query-raw-sql
+(def ^:private capacity-building-count-aggregate-query-raw-sql
   "SELECT 'capacity_building' AS topic, COUNT(*)
    FROM cte_results
    WHERE CAST(json->>'capacity_building' AS BOOLEAN) IS TRUE")
 
-(def ^:const  ^:private tags-count-aggregate-hugsql
+(def  ^:private tags-count-aggregate-hugsql
   "This fragment counts tags ignoring duplicates when comparing them as lowercase,
    since that is the desired behaviour.
 
@@ -450,23 +447,21 @@
    ON TRUE
    GROUP BY 1")
 
-(defn- generate-count-aggregate-query
-  [{:keys [tags-to-count capacity-building]}]
+(defn- generate-count-aggregate-query [{:keys [tags-to-count capacity-building]}]
   (str
    count-aggregate-query-raw-sql
    (when (seq tags-to-count)
      (str " UNION ALL " tags-count-aggregate-hugsql))
-   (when-not (nil? capacity-building)
+   (when (some? capacity-building)
      (str " UNION ALL " capacity-building-count-aggregate-query-raw-sql))))
 
-(defn- generate-get-topics-query
-  [{:keys [order-by limit offset descending upcoming topic]}]
+(defn- generate-get-topics-query [{:keys [order-by limit offset descending upcoming topic]}]
   (let [order (if descending "DESC" "ASC")
         order-by-clause (cond
-			  ;; We assume the upcoming filter will always
-			  ;; be together with the event topic. The
-			  ;; browse API disallows its usage if there
-			  ;; are multiple topics.
+			                    ;; We assume the upcoming filter will always
+			                    ;; be together with the event topic. The
+			                    ;; browse API disallows its usage if there
+			                    ;; are multiple topics.
                           (and upcoming (= (first topic) "event"))
                           "ORDER BY json->>'start_date' ASC"
 
@@ -496,8 +491,7 @@
     (generate-count-aggregate-query opts)
     (generate-get-topics-query opts)))
 
-(defn- generic-json-array-lookup-cond
-  [json-column values-to-lookup]
+(defn- generic-json-array-lookup-cond [json-column values-to-lookup]
   (format
    "(SELECT COUNT(*)
      FROM json_array_elements_text((CASE WHEN (%s::TEXT = '') IS NOT FALSE THEN '[]'::JSON

@@ -9,8 +9,7 @@
    [integrant.core :as ig]
    [ring.util.response :as resp]))
 
-(defn api-organisation-detail-opts->organisation-detail-opts
-  [api-organisation-detail-opts]
+(defn api-organisation-detail-opts->organisation-detail-opts [api-organisation-detail-opts]
   (-> api-organisation-detail-opts
       (util/update-if-not-nil :page #(Integer/parseInt %))
       (util/update-if-not-nil :limit #(Integer/parseInt %))))
@@ -61,8 +60,7 @@
                     :default "3"}
             string?]]})
 
-(defn- add-member-picture-url
-  [config member]
+(defn- add-member-picture-url [config member]
   (if-not (:picture_id member)
     (assoc member :picture nil)
     (let [file {:id (:picture_id member)

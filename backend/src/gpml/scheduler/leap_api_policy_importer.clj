@@ -341,25 +341,25 @@
               (let [policy (build-policy-item-data policy-batch-item opts)
                     {:keys [country leap_api_id]} policy
                     tags (:tags policy)
-                    registered-tags-set (->> policies-acc
-                                             :new-tags
-                                             (mapv #(get % :normalized-tag-name))
-                                             set)
-                    new-tags (->> tags
-                                  (filter #(nil? (:tag-id %)))
-                                  (filter #(not (get registered-tags-set (:normalized-tag-name %)))))
-                    policies-acc-with-geo-coverage (if-not (nil? country)
-                                                     (update
-                                                      policies-acc
-                                                      :policy-geo-coverage
-                                                      #(vec (conj % {:country-id country
-                                                                     :leap-api-id leap_api_id})))
+                    registered-tags-set (into #{}
+                                              (map #(get % :normalized-tag-name))
+                                              (:new-tags policies-acc))
+                    new-tags (into []
+                                   (comp (remove :tag-id)
+                                         (remove #(get registered-tags-set (:normalized-tag-name %))))
+                                   tags)
+                    policies-acc-with-geo-coverage (if (some? country)
+                                                     (update policies-acc
+                                                             :policy-geo-coverage
+                                                             conj
+                                                             {:country-id country
+                                                              :leap-api-id leap_api_id})
                                                      policies-acc)
                     updated-policies-acc (-> policies-acc-with-geo-coverage
-                                             (update :policy-tags #(vec (concat % tags)))
-                                             (update :policies #(vec (conj % policy))))]
+                                             (update :policy-tags into tags)
+                                             (update :policies conj policy))]
                 (if (seq new-tags)
-                  (update updated-policies-acc :new-tags #(vec (concat % new-tags)))
+                  (update updated-policies-acc :new-tags into new-tags)
                   updated-policies-acc)))
             policies-data-acc
             policies-batch-items)))
@@ -382,26 +382,25 @@
                     policy-to-update (merge (select-keys existing-policy [:id])
                                             (build-policy-item-data policy-batch-item opts))
                     tags (:tags policy-to-update)
-                    registered-tags-set (->> policies-acc
-                                             :new-tags
-                                             (mapv #(get % :normalized-tag-name))
-                                             set)
-                    new-tags (->> tags
-                                  (filter #(nil? (:tag-id %)))
-                                  (filter #(not (get registered-tags-set (:normalized-tag-name %)))))
-
-                    policies-acc-with-geo-coverage (if-not (nil? country)
+                    registered-tags-set (into #{}
+                                              (map #(get % :normalized-tag-name))
+                                              (:new-tags policies-acc))
+                    new-tags (into []
+                                   (comp (remove :tag-id)
+                                         (remove #(get registered-tags-set (:normalized-tag-name %))))
+                                   tags)
+                    policies-acc-with-geo-coverage (if (some? country)
                                                      (update
                                                       policies-acc
                                                       :policy-geo-coverage
-                                                      #(vec (conj % {:country-id country
-                                                                     :leap-api-id leap_api_id})))
+                                                      conj {:country-id country
+                                                            :leap-api-id leap_api_id})
                                                      policies-acc)
                     updated-policies-acc (-> policies-acc-with-geo-coverage
-                                             (update :policy-tags #(vec (concat % tags)))
-                                             (update :policies #(vec (conj % policy-to-update))))]
+                                             (update :policy-tags into tags)
+                                             (update :policies conj policy-to-update))]
                 (if (seq new-tags)
-                  (update updated-policies-acc :new-tags #(vec (concat % new-tags)))
+                  (update updated-policies-acc :new-tags into new-tags)
                   updated-policies-acc)))
             policies-data-acc
             existing-policies)))
@@ -775,14 +774,14 @@
                              (update :operation-result #(merge-with + % (dissoc import-result :created-tags)))
                              (update :batch-idx inc)
                              (update :tags-by-normalized-name #(merge % (:created-tags import-result))))))
-                (log logger :info ::leap-api-policy-importer.import-completed
+                (log logger :info :leap-api-policy-importer.import-completed
                      {:result (merge {:success? true}
                                      operation-status)})))
-            (log logger :error ::leap-api-policy-importer.import-failed
+            (log logger :error :leap-api-policy-importer.import-failed
                  (merge {:success? false}
                         (select-keys leap-policies-resp [:status :reason-phrase])
                         operation-status))))
-        (log logger :info ::leap-api-policy-importer.import-completed-with-limit
+        (log logger :info :leap-api-policy-importer.import-completed-with-limit
              {:result (merge {:success? true}
                              operation-status)})))))
 
@@ -828,10 +827,7 @@
                                             :policy-sub-content-types dom.policy/sub-content-types
                                             :policy-tag-category-id (:id policy-tag-category)}))
     (catch Exception e
-      (let [error-details {:error-code (class e)
-                           :message (.getMessage e)
-                           :stack-trace (map str (.getStackTrace e))}]
-        (log logger :error ::leap-api-policy-importer.import-failed error-details)))))
+      (log logger :error :leap-api-policy-importer.import-failed e))))
 
 (defjob handle-leap-api-policy-import-job
   [_scheduler config]

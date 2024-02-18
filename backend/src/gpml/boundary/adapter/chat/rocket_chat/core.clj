@@ -21,19 +21,17 @@
    [duct.logger :refer [log]]
    [gpml.boundary.port.chat :as port]
    [gpml.util.http-client :as http-client]
-   [gpml.util.json :as json]))
+   [gpml.util.json :as json]
+   [gpml.util.malli :refer [check!]]))
 
-(defn- get-auth-headers
-  [api-key api-user-id]
+(defn- get-auth-headers [api-key api-user-id]
   {"X-Auth-Token" api-key
    "X-User-Id" api-user-id})
 
-(defn- kebab-case->camel-case-string
-  [x]
+(defn- kebab-case->camel-case-string [x]
   (->camelCaseString x :separator \-))
 
-(defn- parse-query-and-fields-opts
-  [{:keys [fields query]}]
+(defn- parse-query-and-fields-opts [{:keys [fields query]}]
   (cond-> {}
     query
     (assoc :query (json/->json (cske/transform-keys kebab-case->camel-case-string query)))
@@ -41,15 +39,13 @@
     fields
     (assoc :fields (json/->json (cske/transform-keys kebab-case->camel-case-string fields)))))
 
-(defn- add-channel-avatar-url
-  [api-domain-url {:keys [id] :as channel}]
+(defn- add-channel-avatar-url [api-domain-url {:keys [id] :as channel}]
   (assoc channel :avatar-url (format "%s/avatar/room/%s" api-domain-url id)))
 
-(defn- build-api-endpoint-url
-  [{:keys [api-domain-url api-url-path]} endpoint-url-path]
+(defn- build-api-endpoint-url [{:keys [api-domain-url api-url-path]} endpoint-url-path]
   (str api-domain-url api-url-path endpoint-url-path))
 
-(defn- get-user-info*
+(defn get-user-info*
   "Gets the RocketChat user information. User joined rooms can also be
   included in the response if `:user-rooms` is set to `1` in the
   `:fields` map in `opts`."
@@ -73,14 +69,12 @@
          :reason :failed-to-get-user-info
          :error-details body}))
     (catch Exception t
-      (log logger :error :failed-to-get-user-info {:exception-message (ex-message t)
-                                                   :stack-trace (map str (.getStackTrace t))})
+      (log logger :error :failed-to-get-user-info t)
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn- create-user-account*
-  [{:keys [logger api-key api-user-id] :as adapter} user]
+(defn create-user-account* [{:keys [logger api-key api-user-id] :as adapter} user]
   (try
     (let [{:keys [status body]}
           (http-client/do-request logger
@@ -97,14 +91,12 @@
          :reason :failed-to-create-user-account
          :error-details body}))
     (catch Exception t
-      (log logger :error :failed-to-create-user-account {:exception-message (ex-message t)
-                                                         :stack-trace (map str (.getStackTrace t))})
+      (log logger :error :failed-to-create-user-account t)
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn- update-user-account*
-  [{:keys [logger api-key api-user-id] :as adapter} user-id updates]
+(defn update-user-account* [{:keys [logger api-key api-user-id] :as adapter} user-id updates]
   (try
     (let [req-body (cske/transform-keys ->camelCaseString {:user-id user-id
                                                            :data updates})
@@ -123,14 +115,12 @@
          :reason :failed-to-update-user-account
          :error-details body}))
     (catch Exception t
-      (log logger :error :failed-to-update-user-account {:exception-message (ex-message t)
-                                                         :stack-trace (map str (.getStackTrace t))})
+      (log logger :error :failed-to-update-user-account t)
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn- delete-user-account*
-  [{:keys [logger api-key api-user-id] :as adapter} user-id opts]
+(defn delete-user-account* [{:keys [logger api-key api-user-id] :as adapter} user-id opts]
   (try
     (let [req-body (cond-> {:user-id user-id}
                      (contains? opts :confirm-relinquish)
@@ -149,13 +139,12 @@
          :reason :failed-to-delete-user-account
          :error-details body}))
     (catch Exception t
-      (log logger :error :failed-to-delete-user-account {:exception-message (ex-message t)
-                                                         :stack-trace (map str (.getStackTrace t))})
+      (log logger :error :failed-to-delete-user-account t)
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn- set-user-account-active-status*
+(defn set-user-account-active-status*
   "Actives or deactives user account. When `active?` is `false` and
   setting the `opts` `:confirm-relinquish` to `true`, allows user to
   be deactivated even if it is the last owner of a room[1].
@@ -180,14 +169,12 @@
          :reason :failed-to-set-user-account-active-status
          :error-details body}))
     (catch Exception t
-      (log logger :error :failed-to-set-user-account-active-status {:exception-message (ex-message t)
-                                                                    :stack-trace (map str (.getStackTrace t))})
+      (log logger :error :failed-to-set-user-account-active-status t)
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn- get-public-channel-users
-  [{:keys [logger api-key api-user-id] :as adapter} channel-id opts]
+(defn- get-public-channel-users [{:keys [logger api-key api-user-id] :as adapter} channel-id opts]
   (try
     (let [query-params (assoc opts :room-id channel-id)
           {:keys [status body]}
@@ -204,14 +191,12 @@
          :reason :failed-to-get-public-channels
          :error-details body}))
     (catch Exception t
-      (log logger :error :failed-to-get-public-channels {:exception-message (ex-message t)
-                                                         :stack-trace (map str (.getStackTrace t))})
+      (log logger :error :failed-to-get-public-channels t)
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn- get-private-channel-users
-  [{:keys [logger api-key api-user-id] :as adapter} channel-id opts]
+(defn- get-private-channel-users [{:keys [logger api-key api-user-id] :as adapter} channel-id opts]
   (try
     (let [query-params (assoc opts :room-id channel-id)
           {:keys [status body]}
@@ -228,14 +213,12 @@
          :reason :failed-to-get-public-channels
          :error-details body}))
     (catch Exception t
-      (log logger :error :failed-to-get-public-channels {:exception-message (ex-message t)
-                                                         :stack-trace (map str (.getStackTrace t))})
+      (log logger :error :failed-to-get-public-channels t)
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn- add-channel-details
-  [{:keys [logger api-domain-url] :as adapter} channel]
+(defn- add-channel-details [{:keys [logger api-domain-url] :as adapter} channel]
   (let [result (if (= (:t channel) "c")
                  (get-public-channel-users adapter (:id channel) {})
                  (get-private-channel-users adapter (:id channel) {}))]
@@ -245,8 +228,7 @@
         (log logger :error :failed-to-get-channel-users result)
         (add-channel-avatar-url api-domain-url channel)))))
 
-(defn- get-public-channels*
-  [{:keys [logger api-key api-user-id] :as adapter} opts]
+(defn get-public-channels* [{:keys [logger api-key api-user-id] :as adapter} opts]
   (try
     (let [query-params (parse-query-and-fields-opts
                         (cond-> opts
@@ -273,14 +255,12 @@
          :reason :failed-to-get-public-channels
          :error-details body}))
     (catch Exception t
-      (log logger :error :failed-to-get-public-channels {:exception-message (ex-message t)
-                                                         :stack-trace (map str (.getStackTrace t))})
+      (log logger :error :failed-to-get-public-channels t)
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn- get-private-channels*
-  [{:keys [logger api-key api-user-id] :as adapter} opts]
+(defn get-private-channels* [{:keys [logger api-key api-user-id] :as adapter} opts]
   (try
     (let [query-params (parse-query-and-fields-opts
                         (cond-> opts
@@ -307,14 +287,12 @@
          :reason :failed-to-get-private-channels
          :error-details body}))
     (catch Exception t
-      (log logger :error :failed-to-get-private-channels {:exception-message (ex-message t)
-                                                          :stack-trace (map str (.getStackTrace t))})
+      (log logger :error :failed-to-get-private-channels t)
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn- get-all-channels*
-  [{:keys [logger api-key api-user-id] :as adapter} opts]
+(defn get-all-channels* [{:keys [logger api-key api-user-id] :as adapter} opts]
   (try
     (let [query-params (cond-> {}
                          (:name opts)
@@ -356,20 +334,18 @@
                                         {:query {:_id {:$in public-channels-ids}}})]
               (if success?
                 {:success? true
-                 :channels (concat private-channels public-channels)}
+                 :channels (into private-channels public-channels)}
                 {:success? false
                  :reason :failed-to-get-user-public-channels
                  :error-details get-public-channels-result}))))))
     (catch Exception t
-      (log logger :error :failed-to-get-all-channels {:exception-message (ex-message t)
-                                                      :stack-trace (map str (.getStackTrace t))})
+      (log logger :error :failed-to-get-all-channels t)
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn- get-user-joined-channels*
-  [adapter user-id]
-  (let [result (get-user-info* adapter user-id {:fields {:user-rooms 1}})]
+(defn get-user-joined-channels* [adapter user-id]
+  (let [result (port/get-user-info adapter user-id {:fields {:user-rooms 1}})]
     (if-not (:success? result)
       {:success? false
        :reason :failed-to-get-user-information
@@ -397,13 +373,12 @@
                                       {:query {:_id {:$in public-channels-ids}}})]
             (if success?
               {:success? true
-               :channels (concat private-channels public-channels)}
+               :channels (into private-channels public-channels)}
               {:success? false
                :reason :failed-to-get-user-public-channels
                :error-details get-public-channels-result})))))))
 
-(defn- remove-user-from-channel*
-  [{:keys [logger api-key api-user-id] :as adapter} user-id channel-id channel-type]
+(defn remove-user-from-channel* [{:keys [logger api-key api-user-id] :as adapter} user-id channel-id channel-type]
   (try
     (let [endpoint (if (= channel-type "c")
                      "/channels.kick"
@@ -421,14 +396,12 @@
          :reason :failed-to-remove-user-from-channel
          :error-details body}))
     (catch Exception t
-      (log logger :error :failed-to-remove-user-from-channel {:exception-message (ex-message t)
-                                                              :stack-trace (map str (.getStackTrace t))})
+      (log logger :error :failed-to-remove-user-from-channel t)
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn- add-user-to-private-channel*
-  [{:keys [logger api-key api-user-id] :as adapter} user-id channel-id]
+(defn add-user-to-private-channel* [{:keys [logger api-key api-user-id] :as adapter} user-id channel-id]
   (try
     (let [{:keys [status body]}
           (http-client/do-request logger
@@ -443,14 +416,12 @@
          :reason :failed-to-add-user-to-private-channel
          :error-details body}))
     (catch Exception t
-      (log logger :error :failed-to-add-user-to-private-channel {:exception-message (ex-message t)
-                                                                 :stack-trace (map str (.getStackTrace t))})
+      (log logger :error :failed-to-add-user-to-private-channel t)
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn- add-user-to-public-channel*
-  [{:keys [logger api-key api-user-id] :as adapter} user-id channel-id]
+(defn add-user-to-public-channel* [{:keys [logger api-key api-user-id] :as adapter} user-id channel-id]
   (try
     (let [{:keys [status body]}
           (http-client/do-request logger
@@ -465,14 +436,12 @@
          :reason :failed-to-add-user-to-public-channel
          :error-details body}))
     (catch Exception t
-      (log logger :error :failed-to-add-user-to-public-channel {:exception-message (ex-message t)
-                                                                :stack-trace (map str (.getStackTrace t))})
+      (log logger :error :failed-to-add-user-to-public-channel t)
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn- create-private-channel*
-  [{:keys [logger api-key api-user-id] :as adapter} channel]
+(defn create-private-channel* [{:keys [logger api-key api-user-id] :as adapter} channel]
   (try
     (let [req-body (cske/transform-keys
                     ->camelCaseString
@@ -497,14 +466,12 @@
          :reason :failed-to-create-private-channel
          :error-details body}))
     (catch Exception t
-      (log logger :error :failed-to-create-private-channel {:exception-message (ex-message t)
-                                                            :stack-trace (map str (.getStackTrace t))})
+      (log logger :error :failed-to-create-private-channel t)
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn- create-public-channel*
-  [{:keys [logger api-key api-user-id] :as adapter} channel]
+(defn create-public-channel* [{:keys [logger api-key api-user-id] :as adapter} channel]
   (try
     (let [req-body (cske/transform-keys
                     ->camelCaseString
@@ -529,14 +496,12 @@
          :reason :failed-to-create-channel-channel
          :error-details body}))
     (catch Exception t
-      (log logger :error :failed-to-create-channel-channel {:exception-message (ex-message t)
-                                                            :stack-trace (map str (.getStackTrace t))})
+      (log logger :error :failed-to-create-channel-channel t)
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn- delete-private-channel*
-  [{:keys [logger api-key api-user-id] :as adapter} channel-id]
+(defn delete-private-channel* [{:keys [logger api-key api-user-id] :as adapter} channel-id]
   (try
     (let [{:keys [status body]}
           (http-client/do-request logger
@@ -551,14 +516,12 @@
          :reason :failed-to-delete-private-channel
          :error-details body}))
     (catch Exception t
-      (log logger :error :failed-to-delete-private-channel {:exception-message (ex-message t)
-                                                            :stack-trace (map str (.getStackTrace t))})
+      (log logger :error :failed-to-delete-private-channel t)
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn- delete-public-channel*
-  [{:keys [logger api-key api-user-id] :as adapter} channel-id]
+(defn delete-public-channel* [{:keys [logger api-key api-user-id] :as adapter} channel-id]
   (try
     (let [{:keys [status body]}
           (http-client/do-request logger
@@ -573,14 +536,12 @@
          :reason :failed-to-delete-public-channel
          :error-details body}))
     (catch Exception t
-      (log logger :error :failed-to-delete-public-channel {:exception-message (ex-message t)
-                                                           :stack-trace (map str (.getStackTrace t))})
+      (log logger :error :failed-to-delete-public-channel t)
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn- set-private-channel-custom-fields*
-  [{:keys [logger api-key api-user-id] :as adapter} channel-id custom-fields]
+(defn set-private-channel-custom-fields* [{:keys [logger api-key api-user-id] :as adapter} channel-id custom-fields]
   (try
     (let [req-body (cske/transform-keys
                     ->camelCaseString
@@ -599,14 +560,12 @@
          :reason :failed-to-set-private-channel-custom-fields
          :error-details body}))
     (catch Exception t
-      (log logger :error :failed-to-set-private-channel-custom-fields {:exception-message (ex-message t)
-                                                                       :stack-trace (map str (.getStackTrace t))})
+      (log logger :error :failed-to-set-private-channel-custom-fields t)
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn- set-public-channel-custom-fields*
-  [{:keys [logger api-key api-user-id] :as adapter} channel-id custom-fields]
+(defn set-public-channel-custom-fields* [{:keys [logger api-key api-user-id] :as adapter} channel-id custom-fields]
   (try
     (let [req-body (cske/transform-keys
                     ->camelCaseString
@@ -625,14 +584,12 @@
          :reason :failed-to-set-public-channel-custom-fields
          :error-details body}))
     (catch Exception t
-      (log logger :error :failed-to-set-public-channel-custom-fields {:exception-message (ex-message t)
-                                                                      :stack-trace (map str (.getStackTrace t))})
+      (log logger :error :failed-to-set-public-channel-custom-fields t)
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn- get-channel-discussions*
-  [{:keys [logger api-key api-user-id] :as adapter} channel-id]
+(defn get-channel-discussions* [{:keys [logger api-key api-user-id] :as adapter} channel-id]
   (try
     (let [{:keys [status body]}
           (http-client/do-request logger
@@ -648,55 +605,36 @@
          :reason :failed-to-get-channel-discussions
          :error-details body}))
     (catch Exception t
-      (log logger :error :failed-to-get-channel-discussions {:exception-message (ex-message t)
-                                                             :stack-trace (map str (.getStackTrace t))})
+      (log logger :error :failed-to-get-channel-discussions t)
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defrecord RocketChat [api-domain-url api-url-path api-key api-user-id logger]
-  port/Chat
-  (create-user-account [this user]
-    (create-user-account* this user))
-  (update-user-account [this user-id updates]
-    (update-user-account* this user-id updates))
-  (delete-user-account [this user-id]
-    (delete-user-account* this user-id {}))
-  (delete-user-account [this user-id opts]
-    (delete-user-account* this user-id opts))
-  (set-user-account-active-status [this user-id active?]
-    (set-user-account-active-status* this user-id active? {}))
-  (set-user-account-active-status [this user-id active? opts]
-    (set-user-account-active-status* this user-id active? opts))
-  (get-public-channels [this opts]
-    (get-public-channels* this opts))
-  (get-private-channels [this opts]
-    (get-private-channels* this opts))
-  (get-all-channels [this opts]
-    (get-all-channels* this opts))
-  (get-user-info [this user-id]
-    (get-user-info* this user-id {}))
-  (get-user-info [this user-id opts]
-    (get-user-info* this user-id opts))
-  (get-user-joined-channels [this user-id]
-    (get-user-joined-channels* this user-id))
-  (remove-user-from-channel [this user-id channel-id channel-type]
-    (remove-user-from-channel* this user-id channel-id channel-type))
-  (add-user-to-private-channel [this user-id channel-id]
-    (add-user-to-private-channel* this user-id channel-id))
-  (add-user-to-public-channel [this user-id channel-id]
-    (add-user-to-public-channel* this user-id channel-id))
-  (create-private-channel [this channel]
-    (create-private-channel* this channel))
-  (set-private-channel-custom-fields [this channel-id custom-fields]
-    (set-private-channel-custom-fields* this channel-id custom-fields))
-  (delete-private-channel [this channel-id]
-    (delete-private-channel* this channel-id))
-  (create-public-channel [this channel]
-    (create-public-channel* this channel))
-  (set-public-channel-custom-fields [this channel-id custom-fields]
-    (set-public-channel-custom-fields* this channel-id custom-fields))
-  (delete-public-channel [this channel-id]
-    (delete-public-channel* this channel-id))
-  (get-channel-discussions [this channel-id]
-    (get-channel-discussions* this channel-id)))
+(defn map->RocketChat [m]
+  {:pre [(check! [:map
+                  [:api-domain-url some?]
+                  [:api-url-path some?]
+                  [:api-key some?]
+                  [:api-user-id some?]
+                  [:logger some?]]
+                 m)]}
+  (with-meta m
+    {`port/add-user-to-private-channel       add-user-to-private-channel*
+     `port/add-user-to-public-channel        add-user-to-public-channel*
+     `port/create-private-channel            create-private-channel*
+     `port/create-public-channel             create-public-channel*
+     `port/create-user-account               create-user-account*
+     `port/delete-private-channel            delete-private-channel*
+     `port/delete-public-channel             delete-public-channel*
+     `port/delete-user-account               delete-user-account*
+     `port/get-all-channels                  get-all-channels*
+     `port/get-channel-discussions           get-channel-discussions*
+     `port/get-private-channels              get-private-channels*
+     `port/get-public-channels               get-public-channels*
+     `port/get-user-info                     get-user-info*
+     `port/get-user-joined-channels          get-user-joined-channels*
+     `port/remove-user-from-channel          remove-user-from-channel*
+     `port/set-private-channel-custom-fields set-private-channel-custom-fields*
+     `port/set-public-channel-custom-fields  set-public-channel-custom-fields*
+     `port/set-user-account-active-status    set-user-account-active-status*
+     `port/update-user-account               update-user-account*}))

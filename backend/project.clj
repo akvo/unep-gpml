@@ -18,6 +18,8 @@
                  [com.google.cloud.sql/postgres-socket-factory "1.2.0"]
                  [com.google.cloud/google-cloud-storage "2.26.0" :exclusions [org.checkerframework/checker-qual]]
                  [com.layerware/hugsql "0.5.1"]
+                 [com.taoensso/encore "3.80.0"]
+                 [com.taoensso/timbre "6.3.1"]
                  [com.zaxxer/HikariCP "3.4.5" :exclusions [org.slf4j/slf4j-api]]
                  [dev.gethop/rbac "0.1.0-alpha-7"]
                  [diehard "0.10.3" :exclusions [org.clojure/spec.alpha]]

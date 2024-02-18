@@ -6,8 +6,7 @@
    [gpml.service.file :as srv.file]
    [gpml.util.thread-transactions :as tht]))
 
-(defn create-ps-file
-  [{:keys [db logger] :as config} ps-file]
+(defn create-ps-file [{:keys [db logger] :as config} ps-file]
   (let [transactions
         [{:txn-fn
           (fn tx-upload-ps-file-to-obj-storage
@@ -26,7 +25,7 @@
             (let [result (srv.file/delete-file config (:spec db)
                                                {:filters {:id id}})]
               (when-not (:success? result)
-                (log logger :error ::failed-to-rollback-upload-ps-file {:result result})))
+                (log logger :error :failed-to-rollback-upload-ps-file {:result result})))
             (dissoc context :ps-file))}
          {:txn-fn
           (fn tx-create-ps-file
@@ -43,8 +42,7 @@
                  :ps-file ps-file}]
     (tht/thread-transactions logger transactions context)))
 
-(defn delete-ps-file
-  [{:keys [db logger] :as config} ps-file]
+(defn delete-ps-file [{:keys [db logger] :as config} ps-file]
   (let [transactions
         [{:txn-fn
           (fn tx-delete-ps-file
@@ -62,7 +60,7 @@
             (let [result (db.ps.file/create-ps-file (:spec db)
                                                     ps-file)]
               (when-not (:success? result)
-                (log logger :error ::failed-to-rollback-delete-ps-file {:result result})))
+                (log logger :error :failed-to-rollback-delete-ps-file {:result result})))
             context)}
          {:txn-fn
           (fn tx-delete-ps-file-from-obj-storage
@@ -80,8 +78,7 @@
                  :ps-file ps-file}]
     (tht/thread-transactions logger transactions context)))
 
-(defn get-ps-files
-  [{:keys [db] :as config} opts]
+(defn get-ps-files [{:keys [db] :as config} opts]
   (let [result (db.ps.file/get-ps-files (:spec db) opts)]
     (if-not (:success? result)
       result

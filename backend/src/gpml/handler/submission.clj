@@ -21,7 +21,8 @@
    [integrant.core :as ig]
    [malli.core :as m]
    [malli.transform :as mt]
-   [ring.util.response :as resp])
+   [ring.util.response :as resp]
+   [taoensso.timbre :as timbre])
   (:import
    (java.sql SQLException)))
 
@@ -65,15 +66,13 @@
                       d)) data)]
     data))
 
-(defn- get-image-key
-  [entity-key]
+(defn- get-image-key [entity-key]
   (case entity-key
     :stakeholder :picture_id
     :organisation :logo_id
     :image_id))
 
-(defn- submission-detail
-  [config conn params]
+(defn- submission-detail [config conn params]
   (let [entity-key (keyword (:table-name params))
         data (db.submission/detail conn params)
         creator-id (:created_by data)
@@ -91,8 +90,7 @@
            :created_by_email (:email creator)
            :creator creator)))
 
-(defn- add-stakeholder-tags
-  [conn submission-data]
+(defn- add-stakeholder-tags [conn submission-data]
   (map
    (fn [item]
      (if-not (= "stakeholder" (:topic item))
@@ -104,8 +102,7 @@
          (merge item (handler.stakeholder.tag/unwrap-tags (assoc item :tags tags))))))
    submission-data))
 
-(defn- add-images-urls
-  [config submissions]
+(defn- add-images-urls [config submissions]
   (map
    (fn [submission]
      (if-not (get-in submission [:image :id])
@@ -131,16 +128,12 @@
                                                  (add-images-urls config))))]
           (resp/response submission)))
       (catch Exception t
-        (let [log-data {:exception-message (ex-message t)
-                        :exception-data (ex-data t)
-                        :context-data query}]
-          (log logger :error :failed-to-get-submissions log-data)
-          (log logger :debug :failed-to-get-submissions (assoc log-data :stack-trace (.getStackTrace t)))
-          (r/server-error {:success? false
-                           :reason :failed-to-get-submissions}))))))
+        (timbre/with-context+ query
+          (log logger :error :failed-to-get-submissions t))
+        (r/server-error {:success? false
+                         :reason :failed-to-get-submissions})))))
 
-(defn- handle-stakeholder-role-change
-  [config stakeholder-id review-status]
+(defn- handle-stakeholder-role-change [config stakeholder-id review-status]
   (if (= review-status "APPROVED")
     (let [result (first (srv.permissions/unassign-roles-from-users config
                                                                    [{:role-name :unapproved-user
@@ -156,8 +149,7 @@
         (throw (ex-info "Failed to unassign role from user" {:user-id stakeholder-id}))))
     (srv.permissions/unassign-all-roles config stakeholder-id)))
 
-(defn- notify-admins-submission-status
-  [{:keys [mailjet-config]} resource-type resource-details]
+(defn- notify-admins-submission-status [{:keys [mailjet-config]} resource-type resource-details]
   (let [creator (:creator resource-details)
         review-status (:review_status resource-details)]
     (email/send-email mailjet-config
@@ -195,18 +187,12 @@
                        :message "Successfuly Updated"
                        :data resource-details}))))))
       (catch Exception t
-        (let [log-data {:exception-message (ex-message t)
-                        :exception-data (ex-data t)
-                        :context-data body-params}]
-          (log logger :error :failed-to-update-submission {:exception-message (ex-message t)
-                                                           :exception-data (ex-data t)
-                                                           :context-data body-params})
-          (log logger :debug :failed-to-update-submission (assoc log-data :stack-trace (.getStackTrace t)))
-          (r/server-error {:success? false
-                           :reason :failed-to-update-submission}))))))
+        (timbre/with-context+ body-params
+          (log logger :error :failed-to-update-submission t))
+        (r/server-error {:success? false
+                         :reason :failed-to-update-submission})))))
 
-(defn- add-stakeholder-extra-details
-  [conn stakeholder]
+(defn- add-stakeholder-extra-details [conn stakeholder]
   (let [email (:email (db.stakeholder/stakeholder-by-id conn {:id (:id stakeholder)}))
         org (db.organisation/organisation-by-id conn {:id (:affiliation stakeholder)})
         tags (db.resource.tag/get-resource-tags conn {:table "stakeholder_tag"
@@ -223,8 +209,7 @@
       true
       (assoc :email email))))
 
-(defn- get-detail
-  [{:keys [db] :as config} params]
+(defn- get-detail [{:keys [db] :as config} params]
   (let [conn (:spec db)
         submission (:submission params)
         initiative? (= submission "initiative")
@@ -253,11 +238,9 @@
           (r/forbidden {:message "Unauthorized"})
           (get-detail config path)))
       (catch Exception t
-        (log logger :error ::failed-to-get-submission-detail {:exception-message (ex-message t)
-                                                              :exception-data (ex-data t)
-                                                              :stack-trace (.getStackTrace t)
-                                                              :context-data {:params path
-                                                                             :user user}})
+        (timbre/with-context+ {:params path
+                               :user user}
+          (log logger :error :failed-to-get-submission-detail t))
         (if (instance? SQLException t)
           (r/server-error {:success? false
                            :reason (pg-util/get-sql-state t)})

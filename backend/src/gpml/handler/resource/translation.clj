@@ -11,7 +11,8 @@
    [gpml.handler.util :as handler.util]
    [gpml.util.sql :as sql-util]
    [integrant.core :as ig]
-   [ring.util.response :as resp])
+   [ring.util.response :as resp]
+   [taoensso.timbre :as timbre])
   (:import
    (java.sql SQLException)))
 
@@ -109,8 +110,7 @@
 (defmethod ig/init-key :gpml.handler.resource.translation/delete-params [_ _]
   delete-params)
 
-(defn- api-translation-translation
-  [api-translation resource-col topic-id]
+(defn- api-translation-translation [api-translation resource-col topic-id]
   (assoc api-translation resource-col topic-id))
 
 (defn- valid-translation-languages?
@@ -161,16 +161,14 @@
                 (r/bad-request body))
               (r/forbidden {:message "Unauthorized"})))))
       (catch Exception t
-        (let [log-data {:exception-message (ex-message t)
-                        :context-data {:path-params path
-                                       :body-params body}}]
-          (log logger :error ::failed-to-create-or-edit-resource-translations log-data)
-          (log logger :debug ::failed-to-create-or-edit-resource-translations (assoc log-data :stack-trace (.getStackTrace t)))
-          (let [response {:success? false
-                          :reason :failed-to-create-or-edit-resource-translations}]
-            (if (instance? SQLException t)
-              (r/server-error response)
-              (r/server-error (assoc-in response [:error-details :error] (ex-message t))))))))))
+        (timbre/with-context+ {:path-params path
+                               :body-params body}
+          (log logger :error :failed-to-create-or-edit-resource-translations t))
+        (let [response {:success? false
+                        :reason :failed-to-create-or-edit-resource-translations}]
+          (if (instance? SQLException t)
+            (r/server-error response)
+            (r/server-error (assoc-in response [:error-details :error] (ex-message t)))))))))
 
 (defmethod ig/init-key :gpml.handler.resource.translation/delete
   [_ {:keys [db logger] :as config}]
@@ -214,9 +212,9 @@
                       :reason :no-translations-deleted}}))
           handler.util/unauthorized))
       (catch Exception e
-        (log logger :error ::failed-to-delete-resource-translations {:exception-message (.getMessage e)
-                                                                     :context-data {:path-params path
-                                                                                    :body-params body}})
+        (timbre/with-context+ {:path-params path
+                               :body-params body}
+          (log logger :error :failed-to-delete-resource-translations e))
         (let [response {:status 500
                         :body {:success? false
                                :reason :failed-to-delete-resource-translations}}]
@@ -269,9 +267,9 @@
             (resp/response result))
           handler.util/unauthorized))
       (catch Exception e
-        (log logger :error ::failed-to-get-resource-translations {:exception-message (.getMessage e)
-                                                                  :context-data {:path-params path
-                                                                                 :user user}})
+        (timbre/with-context+ {:path-params path
+                               :user user}
+          (log logger :error :failed-to-get-resource-translations e))
         (let [response {:status 500
                         :body {:success? false
                                :reason :failed-to-get-resource-translations}}]

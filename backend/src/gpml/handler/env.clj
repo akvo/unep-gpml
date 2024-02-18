@@ -4,8 +4,7 @@
    [jsonista.core :as j]
    [ring.util.response :as resp]))
 
-(defn make-env
-  [opts]
+(defn make-env [opts]
   (format "var __ENV__ = %s;" (j/write-value-as-string opts)))
 
 (defmethod ig/init-key ::get [_ opts]

@@ -12,11 +12,12 @@
    [gpml.util.malli :as util.malli]
    [integrant.core :as ig]
    [malli.util :as mu]
-   [ring.util.response :as resp])
+   [ring.util.response :as resp]
+   [taoensso.timbre :as timbre])
   (:import
    (java.sql SQLException)))
 
-(def ^:const get-popular-topics-tags-params
+(def get-popular-topics-tags-params
   [:map
    [:tags
     {:optional true
@@ -32,7 +33,7 @@
                :allowEmptyValue true}}
     [:int {:min 0}]]])
 
-(def ^:const put-params
+(def put-params
   [:map
    [:id
     {:optional false
@@ -78,7 +79,7 @@
                :allowEmptyValue true}}
     [:string {:min 1}]]])
 
-(def ^:const put-response
+(def put-response
   [:map
    [:updated-tags
     {:swagger {:description "Number of updated tags"
@@ -121,15 +122,13 @@
               :resource-id tag-id})))
         created-tag-ids))))
 
-(defn all-tags
-  [db query]
+(defn all-tags [db query]
   (reduce-kv (fn [m k v]
                (assoc m k (mapv #(dissoc % :category) v)))
              {}
              (group-by :category (db.tag/all-tags db query))))
 
-(defn- api-opts->opts
-  [{:keys [limit tags]}]
+(defn- api-opts->opts [{:keys [limit tags]}]
   (cond-> {}
     limit
     (assoc :limit limit)
@@ -137,8 +136,7 @@
     (seq tags)
     (assoc-in [:filters :tags] (str/split tags #","))))
 
-(defn- update-tag
-  [{:keys [db]} req]
+(defn- update-tag [{:keys [db]} req]
   (let [body-params (get-in req [:parameters :body])]
     {:updated-tags (db.tag/update-tag (:spec db) {:id (:id body-params)
                                                   :updates (-> body-params
@@ -195,8 +193,7 @@
   [_ _]
   {200 {:body put-response}})
 
-(defn- create-tag
-  [{:keys [db logger]} tag]
+(defn- create-tag [{:keys [db logger]} tag]
   (first (create-tags (:spec db) logger [tag] (:tag_category tag))))
 
 (defmethod ig/init-key :gpml.handler.tag/post
@@ -211,8 +208,8 @@
         (let [reason (or (:reason (ex-data t)) :could-not-create-tag)
               response {:success? false
                         :reason reason}]
-          (log logger :error ::failed-to-create-tag {:exception-message (.getMessage t)
-                                                     :reason reason})
+          (timbre/with-context+ response
+            (log logger :error :failed-to-create-tag t))
           (if (instance? SQLException t)
             (r/server-error response)
             (r/server-error (assoc-in response [:error-details :error] (.getMessage t)))))))))

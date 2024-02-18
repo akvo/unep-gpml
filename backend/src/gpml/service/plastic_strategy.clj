@@ -7,21 +7,17 @@
    [gpml.service.permissions :as srv.permissions]
    [gpml.util.thread-transactions :as tht]))
 
-(defn get-plastic-strategies
-  [{:keys [db]} search-opts]
+(defn get-plastic-strategies [{:keys [db]} search-opts]
   (db.ps/get-plastic-strategies (:spec db) search-opts))
 
-(defn get-plastic-strategy
-  [{:keys [db]} search-opts]
+(defn get-plastic-strategy [{:keys [db]} search-opts]
   (db.ps/get-plastic-strategy (:spec db) search-opts))
 
-(defn update-plastic-strategy
-  [{:keys [db]} {:keys [id steps]}]
+(defn update-plastic-strategy [{:keys [db]} {:keys [id steps]}]
   (db.ps/update-plastic-strategy (:spec db) {:id id
                                              :updates {:steps steps}}))
 
-(defn create-plastic-strategy
-  [{:keys [db logger] :as config} ps-payload]
+(defn create-plastic-strategy [{:keys [db logger] :as config} ps-payload]
   (let [transactions
         [{:txn-fn
           (fn tx-create-plastic-strategy
@@ -39,7 +35,7 @@
             [{:keys [plastic-strategy] :as context}]
             (let [result (db.ps/delete-plastic-strategy (:spec db) (:id plastic-strategy))]
               (when-not (:success? result)
-                (log logger :error ::failed-to-delete-plastic-strategy {:result result})))
+                (log logger :error :failed-to-delete-plastic-strategy {:result result})))
             context)}
          {:txn-fn
           (fn tx-get-plastic-strategy
@@ -73,7 +69,7 @@
                                                                   {:context-type-name :plastic-strategy
                                                                    :resource-id (:id plastic-strategy)})]
               (when-not (:success? result)
-                (log logger :error ::failed-to-delete-plastic-strategy-rbac-context {:result result})))
+                (log logger :error :failed-to-delete-plastic-strategy-rbac-context {:result result})))
             context)}
          {:txn-fn
           (fn tx-create-plastic-strategy-chat-channel
@@ -92,7 +88,7 @@
             [{:keys [channel] :as context}]
             (let [result (srv.chat/delete-public-channel config (:id channel))]
               (when-not (:success? result)
-                (log logger :error ::failed-to-rollback-create-plastic-strategy-chat-channel {:result result})))
+                (log logger :error :failed-to-rollback-create-plastic-strategy-chat-channel {:result result})))
             context)}
          {:txn-fn
           (fn tx-set-plastic-strategy-channel-custom-fields
@@ -124,8 +120,7 @@
                  :chat-channel-name (:chat-channel-name ps-payload)}]
     (tht/thread-transactions logger transactions context)))
 
-(defn create-plastic-strategies
-  [config pses-payload]
+(defn create-plastic-strategies [config pses-payload]
   (let [results (map (partial create-plastic-strategy config) pses-payload)]
     (if (every? :success? results)
       {:success? true}
@@ -134,8 +129,7 @@
        :error-details {:msg "Partial failure"
                        :failed-results (filter (comp not :success?) results)}})))
 
-(defn setup-invited-plastic-strategy-user
-  [{:keys [db logger] :as config} user-id]
+(defn setup-invited-plastic-strategy-user [{:keys [db logger] :as config} user-id]
   (let [transactions
         [{:txn-fn
           (fn get-plastic-strategy-team-member
@@ -196,7 +190,7 @@
                                   :logger logger}
                                  role-unassignments))]
               (when-not (:success? result)
-                (log logger :error ::rollback-assign-plastic-strategy-rbac-role {:reason result}))
+                (log logger :error :rollback-assign-plastic-strategy-rbac-role {:reason result}))
               context))}
          {:txn-fn
           (fn create-chat-account

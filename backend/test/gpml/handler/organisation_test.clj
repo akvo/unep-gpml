@@ -12,8 +12,7 @@
 
 (use-fixtures :each fixtures/with-test-system)
 
-(defn- create-random-stakeholder
-  [db {:keys [first-name last-name review-status email]}]
+(defn- create-random-stakeholder [db {:keys [first-name last-name review-status email]}]
   (let [profile {:email email
                  :first_name first-name
                  :geo_coverage_type nil

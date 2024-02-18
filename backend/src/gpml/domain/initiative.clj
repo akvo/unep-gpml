@@ -112,8 +112,7 @@
     [:image_id [:uuid]]
     [:thumbnail_id [:uuid]]]))
 
-(defn- question-answer->initiative-prop
-  [question-answer]
+(defn- question-answer->initiative-prop [question-answer]
   (->> (if (map? question-answer)
          [question-answer]
          question-answer)
@@ -125,7 +124,7 @@
                        v)}))
        distinct))
 
-(def ^:const ^:private initiative-rename-key-mapping
+(def ^:private initiative-rename-key-mapping
   {:q40 :info_resource_links
    :q4 :main_focus
    :q16 :main_activity_owner
