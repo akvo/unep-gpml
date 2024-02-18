@@ -3,7 +3,8 @@
    [duct.logger :refer [log]]
    [gpml.boundary.adapter.datasource.brs.field-parser :as brs.f-parser]
    [gpml.boundary.port.datasource :as port]
-   [gpml.util.http-client :as http-client]))
+   [gpml.util.http-client :as http-client]
+   [gpml.util.malli :refer [check!]]))
 
 (def ^:private brs-api-odata-queries
   "OData query parameters for each entity we want to import. These are
@@ -72,5 +73,12 @@
        :error-details {:exeception-message (ex-message e)}})))
 
 (defn map->BRS [m]
+  {:pre [(check! [:map
+                  [:logger some?]
+                  [:api-url some?]
+                  [:records-per-page some?]
+                  [:endpoints some?]
+                  [:retry-config some?]]
+                 m)]}
   (with-meta m
     {`port/get-data get-data}))

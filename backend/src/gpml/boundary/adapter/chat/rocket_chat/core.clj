@@ -21,7 +21,8 @@
    [duct.logger :refer [log]]
    [gpml.boundary.port.chat :as port]
    [gpml.util.http-client :as http-client]
-   [gpml.util.json :as json]))
+   [gpml.util.json :as json]
+   [gpml.util.malli :refer [check!]]))
 
 (defn- get-auth-headers [api-key api-user-id]
   {"X-Auth-Token" api-key
@@ -610,6 +611,13 @@
        :error-details {:msg (ex-message t)}})))
 
 (defn map->RocketChat [m]
+  {:pre [(check! [:map
+                  [:api-domain-url some?]
+                  [:api-url-path some?]
+                  [:api-key some?]
+                  [:api-user-id some?]
+                  [:logger some?]]
+                 m)]}
   (with-meta m
     {`port/add-user-to-private-channel       add-user-to-private-channel*
      `port/add-user-to-public-channel        add-user-to-public-channel*
