@@ -532,7 +532,7 @@
        (if-not url
          (conj acc entity)
          (let [downloaded-image (util.image/download-image logger url)
-               image-id (when-not (nil? downloaded-image)
+               image-id (when (some? downloaded-image)
                           (handler.file/create-file config
                                                     conn
                                                     downloaded-image

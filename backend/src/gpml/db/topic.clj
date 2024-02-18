@@ -181,13 +181,13 @@
         ps-bookmark-group-by (if-not plastic-strategy-id
                                ""
                                (format ", psb.%s_id" entity-name))
-        badges-join (if-not (nil? badges)
+        badges-join (if (some? badges)
                       (format "LEFT JOIN %s_badge eb ON eb.%s_id = e.id
 			       LEFT JOIN badge b ON b.id = eb.badge_id"
                               entity-name
                               entity-name)
                       "")
-        badges-select (if-not (nil? badges)
+        badges-select (if (some? badges)
                         (format "COALESCE(json_agg(
 				   DISTINCT jsonb_build_object(
 				     'badge_id', eb.badge_id,
@@ -452,7 +452,7 @@
    count-aggregate-query-raw-sql
    (when (seq tags-to-count)
      (str " UNION ALL " tags-count-aggregate-hugsql))
-   (when-not (nil? capacity-building)
+   (when (some? capacity-building)
      (str " UNION ALL " capacity-building-count-aggregate-query-raw-sql))))
 
 (defn- generate-get-topics-query [{:keys [order-by limit offset descending upcoming topic]}]

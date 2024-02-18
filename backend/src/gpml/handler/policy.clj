@@ -71,10 +71,10 @@
                       :created_by created_by
                       :review_status "SUBMITTED"
                       :language language}
-               (not (nil? capacity_building))
+               (some? capacity_building)
                (assoc :capacity_building capacity_building)
 
-               (not (nil? source))
+               (some? source)
                (assoc :source source)
 
                image-id

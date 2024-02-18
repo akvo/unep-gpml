@@ -275,7 +275,7 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
     (seq orderBy)
     (assoc :order-by orderBy)
 
-    (not (nil? descending))
+    (some? descending)
     (assoc :descending descending)
 
     (seq q)
@@ -284,7 +284,7 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
     featured
     (assoc :featured featured)
 
-    (not (nil? badges))
+    (some? badges)
     (assoc :badges badges)
 
     upcoming

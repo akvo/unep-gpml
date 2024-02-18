@@ -68,7 +68,7 @@
                       :document_preview document_preview
                       :language language
                       :source source}
-               (not (nil? capacity_building))
+               (some? capacity_building)
                (assoc :capacity_building capacity_building)
 
                image-id
