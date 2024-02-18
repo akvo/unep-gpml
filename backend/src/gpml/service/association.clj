@@ -6,8 +6,7 @@
    [gpml.service.permissions :as srv.permissions]
    [medley.core :as medley]))
 
-(defn get-associations-diff
-  [new-acs old-acs]
+(defn get-associations-diff [new-acs old-acs]
   (->> old-acs
        (into new-acs)
        (medley/distinct-by (fn [x]
@@ -51,9 +50,7 @@
      focal-points)
     []))
 
-(defn org-associations->rbac-role-assignments
-  "FIXME:"
-  [conn resource-type resource-id org-associations]
+(defn org-associations->rbac-role-assignments [conn resource-type resource-id org-associations]
   (reduce
    (fn [org-role-assignments {:keys [organisation old-role role]}]
      (if-not (get #{"owner"} (or old-role role))
@@ -113,9 +110,7 @@
        associations)
       [])))
 
-(defn sth-associations->rbac-role-unassignments
-  "FIXME:"
-  [conn sth-associations resource-type resource-id]
+(defn sth-associations->rbac-role-unassignments [conn sth-associations resource-type resource-id]
   (reduce
    (fn [role-unassignments {:keys [stakeholder old-role role]}]
      (cond
@@ -180,15 +175,11 @@
            set)
       #{})))
 
-(defn get-associations
-  "FIXME:"
-  [{:keys [conn _logger]} opts]
+(defn get-associations [{:keys [conn _logger]} opts]
   (db.res.acs/get-resource-associations conn opts))
 
-(defn save-sth-associations
-  "FIXME:"
-  [{:keys [conn] :as config}
-   {:keys [sth-associations resource-type resource-id]}]
+(defn save-sth-associations [{:keys [conn] :as config}
+                             {:keys [sth-associations resource-type resource-id]}]
   (let [table-suffix (str/replace resource-type \- \_)
         old-resource-owners-editors
         (->> (db.rbac-util/get-users-with-granted-permission-on-resource
@@ -246,10 +237,8 @@
        config
        role-assignments))))
 
-(defn save-org-associations
-  "FIXME:"
-  [{:keys [conn] :as config}
-   {:keys [org-associations resource-type resource-id]}]
+(defn save-org-associations [{:keys [conn] :as config}
+                             {:keys [org-associations resource-type resource-id]}]
   (let [table-suffix (str/replace resource-type \- \_)
         old-resource-owners (->> (db.rbac-util/get-users-with-granted-permission-on-resource
                                   conn
@@ -335,9 +324,7 @@
        config
        role-assignments))))
 
-(defn save-associations
-  "FIXME:"
-  [config {:keys [org-associations sth-associations _resource-type _resource-id] :as opts}]
+(defn save-associations [config {:keys [org-associations sth-associations _resource-type _resource-id] :as opts}]
   (when (seq org-associations)
     (save-org-associations config opts))
   (when (seq sth-associations)

@@ -22,9 +22,7 @@
   (:import
    (java.sql SQLException)))
 
-(defn- handle-geo-coverage
-  "FIXME: Add docstring"
-  [conn cs-id geo-coverage-type geo-coverage-countries geo-coverage-country-groups geo-coverage-country-states]
+(defn- handle-geo-coverage [conn cs-id geo-coverage-type geo-coverage-countries geo-coverage-country-groups geo-coverage-country-states]
   (let [result (handler.geo/create-resource-geo-coverage conn
                                                          :case_study
                                                          cs-id
@@ -35,9 +33,7 @@
     (when-not (:success? result)
       (throw (ex-info "Failed to create case study's geo coverage" result)))))
 
-(defn- handle-related-content
-  "FIXME: Add docstring"
-  [conn logger cs-id related_content]
+(defn- handle-related-content [conn logger cs-id related_content]
   (when-not (:success? (handler.resource.related-content/create-related-contents
                         conn
                         logger
