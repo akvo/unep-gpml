@@ -4,7 +4,7 @@
    [gpml.util :as util]
    [malli.core :as m]))
 
-(def ^:const popular-tags
+(def popular-tags
   "Set of tags that are considered popular. This is a harcoded value and
   is a predefined value for getting tags count per resource."
   #{"plastics"
@@ -14,7 +14,7 @@
     "product by design"
     "source to sea"})
 
-(def ^:const default-review-status
+(def default-review-status
   "Default review status for a tag."
   "APPROVED")
 

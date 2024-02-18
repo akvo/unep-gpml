@@ -22,9 +22,7 @@
   (:import
    (java.sql SQLException)))
 
-(defn- handle-geo-coverage
-  "FIXME: Add docstring"
-  [conn cs-id geo-coverage-type geo-coverage-countries geo-coverage-country-groups geo-coverage-country-states]
+(defn- handle-geo-coverage [conn cs-id geo-coverage-type geo-coverage-countries geo-coverage-country-groups geo-coverage-country-states]
   (let [result (handler.geo/create-resource-geo-coverage conn
                                                          :case_study
                                                          cs-id
@@ -35,9 +33,7 @@
     (when-not (:success? result)
       (throw (ex-info "Failed to create case study's geo coverage" result)))))
 
-(defn- handle-related-content
-  "FIXME: Add docstring"
-  [conn logger cs-id related_content]
+(defn- handle-related-content [conn logger cs-id related_content]
   (when-not (:success? (handler.resource.related-content/create-related-contents
                         conn
                         logger
@@ -46,11 +42,10 @@
                         related_content))
     (throw (ex-info "Failed to create case study's related content" {}))))
 
-(defn- create-case-study
-  [{:keys [logger mailjet-config] :as config}
-   conn
-   user
-   {:keys [body]}]
+(defn- create-case-study [{:keys [logger mailjet-config] :as config}
+                          conn
+                          user
+                          {:keys [body]}]
   (let [{:keys [geo_coverage_countries geo_coverage_country_groups geo_coverage_country_states
                 tags geo_coverage_type individual_connections entity_connections related_content
                 image thumbnail created_by]} body
@@ -133,7 +128,7 @@
                    :id cs-id})))
         (r/forbidden {:message "Unauthorized"}))
       (catch Exception e
-        (log logger :error ::failed-to-create-case-study {:exception-message (.getMessage e)})
+        (log logger :error :failed-to-create-case-study e)
         (let [response {:success? false
                         :reason :could-not-create-case-study}]
 

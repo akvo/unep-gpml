@@ -6,7 +6,8 @@
                      gpml.scheduler {:linters {:unused-binding {:level :off}}}}
  :config-in-comment {:linters {:unresolved-var       {:level :off}
                                :unresolved-namespace {:level :off}}}
- :linters           {:discouraged-var                       {clojure.core/read-string {:message "Please prefer clojure.edn/read-string"}}
+ :linters           {:discouraged-var                       {clojure.core/read-string     {:message "Please prefer clojure.edn/read-string"}
+                                                             taoensso.timbre/with-context {:message "Please prefer taoensso.timbre/with-context+"}}
                      :docstring-leading-trailing-whitespace {:level :warning}
                      :keyword-binding                       {:level :warning}
                      :reduce-without-init                   {:level :warning}

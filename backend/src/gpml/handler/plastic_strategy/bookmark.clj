@@ -39,8 +39,7 @@
                :allowEmptyValue false}}
     [:string {:min 1}]]])
 
-(defn- handle-ps-bookmark
-  [config {:keys [user parameters]}]
+(defn- handle-ps-bookmark [config {:keys [user parameters]}]
   (let [country-iso-code-a2 (get-in parameters [:path :iso_code_a2])
         search-opts {:filters {:countries-iso-codes-a2 [country-iso-code-a2]}}
         {:keys [success? plastic-strategy reason] :as get-ps-result}

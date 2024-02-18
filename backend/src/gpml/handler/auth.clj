@@ -12,7 +12,8 @@
    [gpml.service.association :as srv.association]
    [integrant.core :as ig]
    [malli.util :as mu]
-   [medley.core :as medley]))
+   [medley.core :as medley]
+   [taoensso.timbre :as timbre]))
 
 (def ^:private shared-path-params
   [:map
@@ -20,8 +21,7 @@
    [:topic-id [:int {:min 0}]]
    [:stakeholder [:int {:min 0}]]])
 
-(defn- ->sth-associations
-  [stakeholders associations]
+(defn- ->sth-associations [stakeholders associations]
   (reduce (fn [updated-associations {:keys [id roles]}]
             (let [old-acs (medley/find-first (fn [acs]
                                                (and (= (:stakeholder acs) id)
@@ -65,10 +65,8 @@
                                                         :resource-id resource-id}))
               (r/ok (merge {:success? true} path body))))))
       (catch Exception t
-        (log logger :error ::failed-to-grant-topic-to-stakeholder {:exception-message (ex-message t)
-                                                                   :exception-data (ex-data t)
-                                                                   :stack-trace (.getStackTrace t)
-                                                                   :context-data path})
+        (timbre/with-context+ path
+          (log logger :error :failed-to-grant-topic-to-stakeholder t))
         (let [{:keys [reason]} (ex-data t)]
           (if (= reason :maximum-focal-points-reached)
             (r/bad-request {:success? false

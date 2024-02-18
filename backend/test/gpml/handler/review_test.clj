@@ -12,8 +12,7 @@
 
 (use-fixtures :each fixtures/with-test-system)
 
-(defn- create-review
-  [{:keys [db logger]} topic-type topic-id assigned-by reviewer-id]
+(defn- create-review [{:keys [db logger]} topic-type topic-id assigned-by reviewer-id]
   (let [conn (:spec db)
         review (db.review/new-review
                 conn

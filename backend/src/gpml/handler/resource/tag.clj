@@ -24,8 +24,7 @@
                                            (merge tag {:type "tag"})))
    new-tags))
 
-(defn- prep-resource-tags
-  [resource-name resource-id tags-ids tag-category]
+(defn- prep-resource-tags [resource-name resource-id tags-ids tag-category]
   (if (= resource-name "stakeholder")
     (map #(vector resource-id % tag-category) tags-ids)
     (map (partial vector resource-id) tags-ids)))
@@ -49,7 +48,9 @@
         {:success? true})
       (try
         (let [new-tags-ids (handler.tag/create-tags conn logger tags tag-category)
-              tags-to-add (concat (remove nil? tags-ids) new-tags-ids)
+              tags-to-add (into []
+                                (comp cat (remove nil?))
+                                [tags-ids new-tags-ids])
               resource-tags-to-add (prep-resource-tags resource-name resource-id tags-to-add tag-category)
               new-tags (db.resource.tag/create-resource-tags conn {:table table
                                                                    :resource-col resource-name
@@ -57,7 +58,7 @@
           (send-new-tags-admins-pending-approval-notification conn mailjet-config new-tags)
           {:success? true})
         (catch Exception e
-          (log logger :error ::failed-to-create-tag {:exception-message (.getMessage e)})
+          (log logger :error :failed-to-create-tag e)
           (if (instance? SQLException e)
             (let [reason (pg-util/get-sql-state e)]
               (when-not handle-errors?

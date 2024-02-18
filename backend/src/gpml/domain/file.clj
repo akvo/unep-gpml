@@ -9,7 +9,7 @@
   (:import
    (java.io File)))
 
-(def ^:const object-key-pattern
+(def object-key-pattern
   "Pattern to define the object key of the file in the object storage.
   Example:
 
@@ -51,26 +51,23 @@
      {:optional true}
      inst?]]))
 
-(def ^:const mime-types->common-extensions-mapping
+(def mime-types->common-extensions-mapping
   "There are much more mime-types and extensions but we are just mapping
   the ones used in GPML and omiting those that can be inferred from
   the mime-type directly."
   {"application/vnd.oasis.opendocument.text" "odt"
    "application/vnd.openxmlformats-officedocument.wordprocessingml.document" "docx"})
 
-(defn create-file-object-key
-  [entity-key file-key file-id]
+(defn create-file-object-key [entity-key file-key file-id]
   (-> object-key-pattern
       (str/replace #"ENTITY-KEY" (name entity-key))
       (str/replace #"FILE-KEY" (name file-key))
       (str/replace #"FILE-ID" (str file-id))))
 
-(defn decode-file
-  [file]
+(defn decode-file [file]
   (m/decode file-schema file mt/string-transformer))
 
-(defn base64->file
-  [payload entity-key file-key visibility]
+(defn base64->file [payload entity-key file-key visibility]
   (let [[_ ^String mime-type ^String content] (re-find #"^data:(\S+);base64,(.*)$" payload)
         [_ mime-type-suffix] (str/split mime-type #"\/")
         extension (get mime-types->common-extensions-mapping mime-type mime-type-suffix)

@@ -41,8 +41,7 @@
 
 (integrant.repl/set-prep! #(duct/prep-config (read-config) profiles))
 
-(defn db-conn
-  []
+(defn db-conn []
   (-> system :duct.database.sql/hikaricp :spec))
 
 (defn db-q
@@ -55,8 +54,7 @@
 (def modified-namespaces
   (ns-tracker ["src/gpml/db"]))
 
-(defn refresh-all
-  []
+(defn refresh-all []
   (doseq [ns-sym (modified-namespaces)]
     (require ns-sym :reload))
   (refresh))

@@ -6,8 +6,8 @@
    [gpml.domain.types :as dom.types]
    [hugsql.core :as hugsql]))
 
-(def ^:const ^:private non-transnational-geo-coverage-types ["national" "sub-national"])
-(def ^:const ^:private transnational-geo-coverage-types ["transnational"])
+(def ^:private non-transnational-geo-coverage-types ["national" "sub-national"])
+(def ^:private transnational-geo-coverage-types ["transnational"])
 
 (declare map-counts summary)
 
@@ -20,10 +20,10 @@
                  (assoc-in [:transnational_counts (keyword %)] 0)))
        (apply merge-with into)))
 
-(defn- get-resource-map-counts*
-  [conn opts]
+(defn- get-resource-map-counts* [conn opts]
   (let [modified-opts (if (= :topic (:entity-group opts))
-                        (merge opts {:geo-coverage-types (concat non-transnational-geo-coverage-types transnational-geo-coverage-types)})
+                        (merge opts {:geo-coverage-types (into non-transnational-geo-coverage-types
+                                                               transnational-geo-coverage-types)})
                         opts)
         {:keys [country_counts transnational_counts country_group_counts]}
         (:result (map-counts conn modified-opts))]
@@ -31,7 +31,7 @@
                       (fn [acc [_ counts]]
                         (conj acc (merge-with into default-topic-counts (apply merge counts))))
                       []
-                      (group-by :country_id (concat country_counts transnational_counts)))
+                      (group-by :country_id (into country_counts transnational_counts)))
      :country_group_counts country_group_counts}))
 
 (defn get-resource-map-counts
@@ -43,5 +43,5 @@
         all-countries (->> (db.country/get-countries conn {}) (map :id) set)
         missing-countries (remove nil? (set/difference all-countries included-countries))
         missing-counts (map #(merge {:country_id %} default-topic-counts) missing-countries)]
-    {:country_counts (concat country_counts missing-counts)
+    {:country_counts (into country_counts missing-counts)
      :country_group_counts country_group_counts}))
