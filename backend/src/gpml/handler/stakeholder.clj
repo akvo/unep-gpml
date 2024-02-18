@@ -256,32 +256,27 @@
                              :limit limit})]
           (cond
             (and (seq stakeholders) (= (count stakeholders) limit))
-            (resp/response {:suggested_profiles (->> stakeholders
-                                                     (mapv #(get-stakeholder-profile config (:id %)))
-                                                     (remove nil?)
-                                                     vec)})
+            (resp/response {:suggested_profiles (into []
+                                                      (keep #(get-stakeholder-profile config (:id %)))
+                                                      stakeholders)})
 
-            (not (seq stakeholders)) (resp/response {:suggested_profiles (->> (db.stakeholder/get-recent-active-stakeholders
-                                                                               (:spec db)
-                                                                               {:limit limit
-                                                                                :stakeholder-ids [(:id stakeholder)]})
-                                                                              (mapv #(get-stakeholder-profile config (:id %)))
-                                                                              (remove nil?)
-                                                                              vec)})
+            (not (seq stakeholders)) (resp/response {:suggested_profiles (into []
+                                                                               (keep #(get-stakeholder-profile config (:id %)))
+                                                                               (db.stakeholder/get-recent-active-stakeholders
+                                                                                (:spec db)
+                                                                                {:limit limit
+                                                                                 :stakeholder-ids [(:id stakeholder)]}))})
 
             :else
-            (resp/response {:suggested_profiles (->> (db.stakeholder/get-recent-active-stakeholders
-                                                      (:spec db)
-                                                      {:limit (- limit (count stakeholders))
-                                                       :stakeholder-ids (conj
-                                                                         (->> stakeholders
-                                                                              (mapv #(get % :id))
-                                                                              (remove nil?))
-                                                                         (:id stakeholder))})
-                                                     (apply conj (vec stakeholders))
-                                                     (mapv #(get-stakeholder-profile config (:id %)))
-                                                     (remove nil?)
-                                                     vec)})))
+            (resp/response {:suggested_profiles (into []
+                                                      (keep #(get-stakeholder-profile config (:id %)))
+                                                      (->> (db.stakeholder/get-recent-active-stakeholders
+                                                            (:spec db)
+                                                            {:limit (- limit (count stakeholders))
+                                                             :stakeholder-ids (into [(:id stakeholder)]
+                                                                                    (keep :id)
+                                                                                    stakeholders)})
+                                                           (apply conj (vec stakeholders))))})))
         (resp/response {:suggested_profiles []})))))
 
 (def org-schema

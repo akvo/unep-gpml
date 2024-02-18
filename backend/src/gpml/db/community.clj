@@ -47,7 +47,7 @@
                      (seq entity)
                      (str " AND id IN (:v*:filters.entity)")
 
-                     (not (nil? is-member))
+                     (some? is-member)
                      (str " AND is_member IS " is-member))]
 
     (if (:count-only? params)

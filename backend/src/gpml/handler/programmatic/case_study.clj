@@ -35,9 +35,9 @@
             tags)))
 
 (defn- parse-geo-coverage-group-values [geo-coverage-group values]
-  (->> values
-       (map #(get-in geo-coverage-group [% 0 :id]))
-       (remove nil?)))
+  (into []
+        (keep #(get-in geo-coverage-group [% 0 :id]))
+        values))
 
 (defn- handle-geo-coverage [conn case-study-id geo-coverage-type geo-coverage-values countries country-groups]
   (if (= geo-coverage-type :global)

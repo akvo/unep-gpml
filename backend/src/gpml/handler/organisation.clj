@@ -328,13 +328,13 @@
     (seq tags)
     (assoc-in [:filters :tags] tags)
 
-    (not (nil? is_member))
+    (some? is_member)
     (assoc-in [:filters :is-member] is_member)
 
     (seq order_by)
     (assoc :order-by order_by)
 
-    (not (nil? descending))
+    (some? descending)
     (assoc :descending descending)
 
     (seq (:name api-params))
@@ -346,10 +346,10 @@
     (seq ps_bookmark_sections_keys)
     (assoc-in [:filters :ps-bookmark-sections-keys] ps_bookmark_sections_keys)
 
-    (not (nil? ps_bookmarked))
+    (some? ps_bookmarked)
     (assoc-in [:filters :ps-bookmarked] ps_bookmarked)
 
-    (not (nil? badges))
+    (some? badges)
     (assoc :badges badges)))
 
 (defmethod ig/init-key :gpml.handler.organisation/list

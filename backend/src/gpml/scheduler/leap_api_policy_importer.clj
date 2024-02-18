@@ -348,7 +348,7 @@
                                    (comp (remove :tag-id)
                                          (remove #(get registered-tags-set (:normalized-tag-name %))))
                                    tags)
-                    policies-acc-with-geo-coverage (if-not (nil? country)
+                    policies-acc-with-geo-coverage (if (some? country)
                                                      (update policies-acc
                                                              :policy-geo-coverage
                                                              conj
@@ -389,7 +389,7 @@
                                    (comp (remove :tag-id)
                                          (remove #(get registered-tags-set (:normalized-tag-name %))))
                                    tags)
-                    policies-acc-with-geo-coverage (if-not (nil? country)
+                    policies-acc-with-geo-coverage (if (some? country)
                                                      (update
                                                       policies-acc
                                                       :policy-geo-coverage

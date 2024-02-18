@@ -65,7 +65,7 @@
                          [to-add _to-delete to-keep] (dt/diff new-tags old-tags)
                          tags-to-create (into []
                                               (comp (map #(assoc {} :tag % :tag_category category))
-                                                    (filter #(not (nil? (:tag %)))))
+                                                    (filter :tag))
                                               (into to-add to-keep))]
                      (assoc acc category tags-to-create)))
                  {})
