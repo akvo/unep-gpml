@@ -72,7 +72,7 @@
 
 (defn list-organisations-badges-partial-select [params]
   (let [{:keys [badges]} params]
-    (when-not (nil? badges)
+    (when (some? badges)
       "COALESCE(
          jsonb_agg(
            DISTINCT jsonb_build_object(

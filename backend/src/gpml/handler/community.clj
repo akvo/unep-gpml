@@ -153,13 +153,13 @@
     (seq entity)
     (assoc-in [:filters :entity] (map #(Integer/parseInt %) (str/split entity #",")))
 
-    (not (nil? isMember))
+    (some? isMember)
     (assoc-in [:filters :is-member] isMember)
 
     (seq orderBy)
     (assoc :order-by orderBy)
 
-    (not (nil? descending))
+    (some? descending)
     (assoc :descending descending)
 
     (seq q)

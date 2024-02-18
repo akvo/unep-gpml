@@ -42,7 +42,7 @@
 
 (defn- api-opts->opts [{:keys [id emails stakeholders_ids ids pending]}]
   (cond-> {}
-    (not (nil? pending))
+    (some? pending)
     (assoc-in [:filters :pending?] pending)
 
     (seq emails)

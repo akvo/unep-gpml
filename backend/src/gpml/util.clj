@@ -48,7 +48,7 @@
   "Updates a map `m` key `k` if the value of `k` is not nil. Otherwise
   returns the `m` unchanged."
   [m k update-fn & args]
-  (if-not (nil? (get m k))
+  (if (some? (get m k))
     (apply update m k update-fn args)
     m))
 
@@ -150,7 +150,9 @@
   "Same as select-keys but for values and respecting the order of `ks`.
    `nil` values are removed from the final output."
   [m ks]
-  (remove nil? (map #(get m %) ks)))
+  (into []
+        (keep #(get m %))
+        ks))
 
 (defn apply-select-values
   "Applies the `select-values` function to a collection of maps `coll`."
@@ -160,14 +162,11 @@
 (defn dissoc-nil-or-empty-val-keys
   "Dissoc keys from map `m` which have `nil` or empty strings values."
   [m]
-  (apply
-   dissoc
-   m
-   (for [[k v] m
-         :when (or (and (string? v)
-                        (not (seq v)))
-                   (nil? v))]
-     k)))
+  (apply dissoc m (for [[k v] m
+                        :when (or (and (string? v)
+                                       (not (seq v)))
+                                  (nil? v))]
+                    k)))
 
 (defn xor?
   "Returns the xor of all its arguments. The elements are considered

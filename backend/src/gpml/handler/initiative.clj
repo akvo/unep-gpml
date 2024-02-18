@@ -62,7 +62,7 @@
                thumbnail-id
                (assoc :thumbnail_id thumbnail-id)
 
-               (not (nil? capacity_building))
+               (some? capacity_building)
                (assoc :capacity_building capacity_building))
         initiative-id (:id (db.initiative/new-initiative
                             conn
