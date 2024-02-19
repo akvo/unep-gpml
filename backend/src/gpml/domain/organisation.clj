@@ -4,7 +4,7 @@
    [gpml.util :as util]
    [malli.core :as m]))
 
-(def ^:const types
+(def types
   "Organisation's possible types.
 
   TODO: this is not an enforced enum in the database model. Please

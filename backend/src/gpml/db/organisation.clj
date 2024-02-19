@@ -27,8 +27,7 @@
       (util/update-if-not-nil :geo_coverage_type sql-util/keyword->pg-enum "geo_coverage_type")
       (util/update-if-not-nil :review_status sql-util/keyword->pg-enum "review_status")))
 
-(defn list-organisations-query-and-filters
-  [params]
+(defn list-organisations-query-and-filters [params]
   (let [{:keys [count-only? limit page order-by descending]} params
         processed-order-by (if (= "not_ps_bookmarked" order-by)
                              "ps_bookmarked"
@@ -59,8 +58,7 @@
               (or order-by "")
               (or pagination "")))))
 
-(defn list-organisations-ps-bookmark-partial-select
-  [params]
+(defn list-organisations-ps-bookmark-partial-select [params]
   (let [{:keys [plastic-strategy-id]} params]
     (when plastic-strategy-id
       "json_agg(
@@ -72,10 +70,9 @@
        ) FILTER (WHERE psb.plastic_strategy_id IS NOT NULL) AS plastic_strategy_bookmarks,
        (psb.organisation_id IS NOT NULL)::boolean AS ps_bookmarked,")))
 
-(defn list-organisations-badges-partial-select
-  [params]
+(defn list-organisations-badges-partial-select [params]
   (let [{:keys [badges]} params]
-    (when-not (nil? badges)
+    (when (some? badges)
       "COALESCE(
          jsonb_agg(
            DISTINCT jsonb_build_object(
@@ -88,8 +85,7 @@
          ) FILTER (WHERE oba.badge_id IS NOT NULL),
         '[]'::jsonb) AS assigned_badges,")))
 
-(defn list-organisations-strengths-cto
-  [{:keys [plastic-strategy-id]}]
+(defn list-organisations-strengths-cto [{:keys [plastic-strategy-id]}]
   (let [bookmarked-initiatives-join (if-not plastic-strategy-id
                                       ""
                                       (format
@@ -105,8 +101,7 @@
               "psib.initiative_id")
             bookmarked-initiatives-join)))
 
-(defn list-organisations-cto-query-filter-and-params
-  [params]
+(defn list-organisations-cto-query-filter-and-params [params]
   (let [{:keys [filters plastic-strategy-id]} params
         {:keys [geo-coverage-types types review-status tags ps-bookmark-sections-keys]} filters
         ps-bookmark-section-keys-join-cond (if-not ps-bookmark-sections-keys

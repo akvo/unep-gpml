@@ -11,14 +11,13 @@
   (:import
    (java.sql SQLException)))
 
-(defn- create-organisation
-  [{:keys [db logger] :as config} req]
+(defn- create-organisation [{:keys [db logger] :as config} req]
   (try
     (jdbc/with-db-transaction [tx (:spec db)]
       (r/ok {:success? true
              :org-id (handler.org/create config tx (:body-params req))}))
     (catch Exception e
-      (log logger :error ::create-org-failed {:exception-message (.getMessage e)})
+      (log logger :error :create-org-failed e)
       (if (instance? SQLException e)
         (if (= :unique-constraint-violation (pg-util/get-sql-state e))
           (r/conflict {:success? false

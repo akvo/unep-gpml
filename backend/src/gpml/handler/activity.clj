@@ -8,13 +8,13 @@
    [integrant.core :as ig]
    [ring.util.response :as resp]))
 
-(def ^:const activity-types
+(def activity-types
   ["bookmark_resource" "create_resource"])
 
 (def activity-types-error-msg-cfg
   {:error/message (str "should be: " (str/join "|" activity-types))})
 
-(def ^:const activity-types-enum
+(def activity-types-enum
   (apply vector :enum activity-types-error-msg-cfg activity-types))
 
 (def activity-schema

@@ -9,14 +9,15 @@
    [gpml.service.file :as srv.file]
    [gpml.util.regular-expressions :as util.regex]
    [integrant.core :as ig]
-   [medley.core :as medley]))
+   [medley.core :as medley]
+   [taoensso.timbre :as timbre]))
 
-(def ^:const community-network-types ["organisation" "stakeholder"])
-(def ^:const geo-coverage-types ["Transnational" "National" "Global" "Sub-national"])
-(def ^:const geo-coverage-types-re (util.regex/comma-separated-enums-re geo-coverage-types))
-(def ^:const network-types-re (util.regex/comma-separated-enums-re community-network-types))
-(def ^:const default-api-limit 8)
-(def ^:const order-by-fields ["name"])
+(def community-network-types ["organisation" "stakeholder"])
+(def geo-coverage-types ["Transnational" "National" "Global" "Sub-national"])
+(def geo-coverage-types-re (util.regex/comma-separated-enums-re geo-coverage-types))
+(def network-types-re (util.regex/comma-separated-enums-re community-network-types))
+(def default-api-limit 8)
+(def order-by-fields ["name"])
 
 (def get-community-members-query-params
   [:map
@@ -113,11 +114,10 @@
                :allowEmptyValue true}}
     [:int {:min 0}]]])
 
-(defn api-params->opts
-  [{:keys [q country tag networkType affiliation representativeGroup geoCoverageType
-           limit page transnational orderBy descending entity isMember]
-    :or {limit default-api-limit
-         page 0}}]
+(defn api-params->opts [{:keys [q country tag networkType affiliation representativeGroup geoCoverageType
+                                limit page transnational orderBy descending entity isMember]
+                         :or {limit default-api-limit
+                              page 0}}]
   (cond-> {}
     page
     (assoc :page page)
@@ -153,20 +153,19 @@
     (seq entity)
     (assoc-in [:filters :entity] (map #(Integer/parseInt %) (str/split entity #",")))
 
-    (not (nil? isMember))
+    (some? isMember)
     (assoc-in [:filters :is-member] isMember)
 
     (seq orderBy)
     (assoc :order-by orderBy)
 
-    (not (nil? descending))
+    (some? descending)
     (assoc :descending descending)
 
     (seq q)
     (assoc-in [:filters :search-text] (str/trim q))))
 
-(defn- community-member->api-community-member
-  [config community-member]
+(defn- community-member->api-community-member [config community-member]
   (let [{files :files picture-id :picture_id} community-member
         files-w-urls (->> files
                           (map dom.file/decode-file)
@@ -175,8 +174,7 @@
         picture-file-url (get-in files-w-urls [picture-id :url])]
     (assoc community-member :picture picture-file-url)))
 
-(defn get-community-members
-  [{:keys [db logger] :as config} req]
+(defn get-community-members [{:keys [db logger] :as config} req]
   (try
     (let [conn (:spec db)
           query-params (get-in req [:parameters :query])
@@ -185,23 +183,21 @@
                              (let [cgc-search-opts {:filters {:country-groups (get-in api-search-opts [:filters :transnational])}}
                                    country-group-countries (db.country-group/get-country-groups-countries conn cgc-search-opts)
                                    geo-coverage-countries (map :id country-group-countries)]
-                               (assoc-in api-search-opts [:filters :country] (set (concat
-                                                                                   (get-in api-search-opts [:filters :country])
-                                                                                   geo-coverage-countries))))
+                               (assoc-in api-search-opts [:filters :country] (into #{}
+                                                                                   cat
+                                                                                   [(get-in api-search-opts [:filters :country])
+                                                                                    geo-coverage-countries])))
                              api-search-opts)
           results (->> (db.community/get-community-members conn modified-filters)
                        (map (partial community-member->api-community-member config)))]
       (r/ok {:results results
              :counts (db.community/get-community-members conn (assoc modified-filters :count-only? true))}))
     (catch Exception t
-      (let [log-data {:exception-message (ex-message t)
-                      :exception-data (ex-data t)
-                      :context-data (get-in req [:parameters :query])}]
-        (log logger :error :failed-to-get-community-members log-data)
-        (log logger :debug :failed-to-get-community-members (assoc log-data :stack-trace (.getStackTrace t)))
-        (r/server-error {:success? false
-                         :reason :failed-to-get-community-members
-                         :error-details {:msg (:exception-message log-data)}})))))
+      (timbre/with-context+ (get-in req [:parameters :query])
+        (log logger :error :failed-to-get-community-members t))
+      (r/server-error {:success? false
+                       :reason :failed-to-get-community-members
+                       :error-details {:msg (:exception-message (ex-message t))}}))))
 
 (defmethod ig/init-key :gpml.handler.community/get [_ config]
   (fn [req]

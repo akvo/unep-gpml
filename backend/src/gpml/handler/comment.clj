@@ -12,7 +12,8 @@
    [gpml.util.email :as email]
    [integrant.core :as ig]
    [java-time.api :as time]
-   [java-time.pre-java8 :as time-pre-j8]))
+   [java-time.pre-java8 :as time-pre-j8]
+   [taoensso.timbre :as timbre]))
 
 (def id-param
   [:id
@@ -122,26 +123,22 @@
                                  :type "integer"}}
     [:int {:min 0}]]])
 
-(defn- api-comment->comment
-  [api-comment]
+(defn- api-comment->comment [api-comment]
   (-> api-comment
       (util/replace-in-keys #"_" "-")
       (assoc :updated-at (time-pre-j8/sql-timestamp (time/instant) "UTC"))))
 
-(defn- comment->api-comment
-  [comment]
+(defn- comment->api-comment [comment]
   (-> comment
       (update :created_at time/to-millis-from-epoch)
       (update :updated_at time/to-millis-from-epoch)))
 
-(defn- api-opts->opts
-  [api-opts]
+(defn- api-opts->opts [api-opts]
   (-> api-opts
       (util/replace-in-keys #"_" "-")
       (util/update-if-not-nil :resource-id #(Integer/parseInt %))))
 
-(defn- send-new-comment-created-notification
-  [{:keys [db mailjet-config]} {:keys [resource-id resource-type author-id]}]
+(defn- send-new-comment-created-notification [{:keys [db mailjet-config]} {:keys [resource-id resource-type author-id]}]
   (let [resource-type (if (some #{resource-type} ["financing_resource" "action_plan" "technical_resource"])
                         "resource"
                         resource-type)
@@ -171,8 +168,7 @@
                                                             (:app-domain mailjet-config))]
                           [])))))
 
-(defn- create-comment
-  [{:keys [db logger] :as config} req]
+(defn- create-comment [{:keys [db logger] :as config} req]
   (let [user (:user req)]
     (try
       (if-not (h.r.permission/operation-allowed?
@@ -190,17 +186,13 @@
             (future (send-new-comment-created-notification config comment)))
           (r/ok {:comment result})))
       (catch Exception t
-        (let [log-data {:exception-message (ex-message t)
-                        :exception-data (ex-data t)
-                        :context-data (get-in req [:parameters :body])}]
-          (log logger :error ::failed-to-create-comment log-data)
-          (log logger :debug ::failed-to-create-comment (assoc log-data :stack-trace (.getStackTrace t)))
-          (r/server-error {:sucess? false
-                           :reason :failed-to-create-comment
-                           :error-details {:msg (ex-message t)}}))))))
+        (timbre/with-context+ (get-in req [:parameters :body])
+          (log logger :error :failed-to-create-comment t))
+        (r/server-error {:sucess? false
+                         :reason :failed-to-create-comment
+                         :error-details {:msg (ex-message t)}})))))
 
-(defn- get-resource-comments
-  [{:keys [db logger]} {{:keys [query]} :parameters :as req}]
+(defn- get-resource-comments [{:keys [db logger]} {{:keys [query]} :parameters :as req}]
   (try
     (let [opts (api-opts->opts query)
           comments (db.comment/get-resource-comments (:spec db) opts)]
@@ -208,17 +200,13 @@
                            (util/build-hierarchy {} :parent_id)
                            :children)}))
     (catch Exception t
-      (let [log-data {:exception-message (ex-message t)
-                      :exception-data (ex-data t)
-                      :context-data (get-in req [:parameters :query])}]
-        (log logger :error ::failed-to-get-comments log-data)
-        (log logger :debug ::failed-to-get-comments (assoc log-data :stack-trace (.getStackTrace t)))
-        (r/server-error {:sucess? false
-                         :reason :failed-to-get-comments
-                         :error-details {:msg (ex-message t)}})))))
+      (timbre/with-context+ (get-in req [:parameters :query])
+        (log logger :error :failed-to-get-comments t))
+      (r/server-error {:sucess? false
+                       :reason :failed-to-get-comments
+                       :error-details {:msg (ex-message t)}}))))
 
-(defn- update-comment
-  [{:keys [db logger]} req]
+(defn- update-comment [{:keys [db logger]} req]
   (try
     (let [user (:user req)
           body-params (get-in req [:parameters :body])
@@ -230,17 +218,13 @@
         (let [comment (api-comment->comment body-params)]
           (r/ok {:updated-comments (db.comment/update-comment (:spec db) comment)}))))
     (catch Exception t
-      (let [log-data {:exception-message (ex-message t)
-                      :exception-data (ex-data t)
-                      :context-data (get-in req [:parameters :body])}]
-        (log logger :error ::failed-to-update-comment log-data)
-        (log logger :debug ::failed-to-update-comment (assoc log-data :stack-trace (.getStackTrace t)))
-        (r/server-error {:sucess? false
-                         :reason :failed-to-update-comment
-                         :error-details {:msg (ex-message t)}})))))
+      (timbre/with-context+ (get-in req [:parameters :body])
+        (log logger :error :failed-to-update-comment t))
+      (r/server-error {:sucess? false
+                       :reason :failed-to-update-comment
+                       :error-details {:msg (ex-message t)}}))))
 
-(defn- delete-comment
-  [{:keys [db logger] :as config} {{{:keys [id]} :path} :parameters user :user :as req}]
+(defn- delete-comment [{:keys [db logger] :as config} {{{:keys [id]} :path} :parameters user :user :as req}]
   (try
     (let [comment (first (db.comment/get-resource-comments
                           (:spec db)
@@ -250,15 +234,12 @@
         (r/forbidden {:message "Unauthorized"})
         (r/ok {:deleted-comments (db.comment/delete-comment (:spec db) {:id id})})))
     (catch Exception t
-      (let [log-data {:exception-message (ex-message t)
-                      :exception-data (ex-data t)
-                      :context-data {:comment-id (get-in req [:parameters :path])
-                                     :user user}}]
-        (log logger :error ::failed-to-delete-comment log-data)
-        (log logger :debug ::failed-to-delete-comment (assoc log-data :stack-trace (.getStackTrace t)))
-        (r/server-error {:sucess? false
-                         :reason :failed-to-delete-comment
-                         :error-details {:msg (ex-message t)}})))))
+      (timbre/with-context+ {:comment-id (get-in req [:parameters :path])
+                             :user user}
+        (log logger :error :failed-to-delete-comment t))
+      (r/server-error {:sucess? false
+                       :reason :failed-to-delete-comment
+                       :error-details {:msg (ex-message t)}}))))
 
 (defmethod ig/init-key :gpml.handler.comment/post [_ config]
   (fn [req]

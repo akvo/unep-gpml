@@ -16,7 +16,8 @@
    [gpml.util.regular-expressions :as util.regex]
    [integrant.core :as ig]
    [malli.util :as mu]
-   [ring.util.response :as resp])
+   [ring.util.response :as resp]
+   [taoensso.timbre :as timbre])
   (:import
    (java.sql SQLException)))
 
@@ -36,8 +37,7 @@
        (format "^(%1$s)((,(%1$s))+)?$")
        re-pattern))
 
-(defn- api-opts->opts
-  [{:keys [roles q]}]
+(defn- api-opts->opts [{:keys [roles q]}]
   (cond-> {}
     (seq roles)
     (assoc-in [:filters :roles] (str/split roles #","))
@@ -48,12 +48,10 @@
     true
     (assoc-in [:filters :review-statuses] ["APPROVED"])))
 
-(defn- reviewer->api-reviewer
-  [reviewer]
+(defn- reviewer->api-reviewer [reviewer]
   (select-keys reviewer [:id :first_name :last_name :email :role]))
 
-(defn- get-reviewers
-  [{:keys [db logger]} query]
+(defn- get-reviewers [{:keys [db logger]} query]
   (try
     (let [opts (api-opts->opts query)
           conn (:spec db)
@@ -61,7 +59,7 @@
       (resp/response {:success? true
                       :reviewers (map reviewer->api-reviewer reviewers)}))
     (catch Exception e
-      (log logger :error ::failed-to-get-reviewers {:exception-message (.getMessage e)})
+      (log logger :error :failed-to-get-reviewers e)
       (let [response {:status 500
                       :body {:success? false
                              :reason :could-not-get-reviewers}}]
@@ -70,8 +68,7 @@
           response
           (assoc response :error-details {:error (.getMessage e)}))))))
 
-(defn- new-review*
-  [{:keys [logger conn mailjet-config topic-type topic-id assigned-by]} c reviewer-id]
+(defn- new-review* [{:keys [logger conn mailjet-config topic-type topic-id assigned-by]} c reviewer-id]
   (let [params {:topic-type topic-type
                 :topic-id topic-id
                 :assigned-by assigned-by
@@ -96,8 +93,7 @@
                       (list nil))
     (conj c review)))
 
-(defn- new-multiple-review
-  [logger db mailjet-config topic-type topic-id reviewers assigned-by]
+(defn- new-multiple-review [logger db mailjet-config topic-type topic-id reviewers assigned-by]
   (let [topic-type* (util/get-internal-topic-type topic-type)]
     (jdbc/with-db-transaction [conn (:spec db)]
       (db.review/delete-reviews conn {:topic-type topic-type* :topic-id topic-id})
@@ -110,8 +106,7 @@
                                        []
                                        reviewers)}))))
 
-(defn- change-reviewers
-  [logger db mailjet-config topic-type topic-id reviewers user]
+(defn- change-reviewers [logger db mailjet-config topic-type topic-id reviewers user]
   (let [topic-type* (util/get-internal-topic-type topic-type)
         assigned-by (:id user)]
     (jdbc/with-db-transaction [tx (:spec db)]
@@ -144,14 +139,13 @@
                                                                 :topic-id topic-id
                                                                 :assigned-by assigned-by}) [] reviewers-to-create))})))))
 
-(defn- update-review-status
-  [db mailjet-config topic-type topic-id review-status review-comment user]
+(defn- update-review-status [db mailjet-config topic-type topic-id review-status review-comment user]
   (let [topic-type* (util/get-internal-topic-type topic-type)]
     (jdbc/with-db-transaction [conn (:spec db)]
       (if-let [review (first (db.review/reviews-filter
                               conn
                               {:topic-type topic-type* :topic-id topic-id :reviewer (:id user)}))]
-                                ;; If assigned to the current-user
+        ;; If assigned to the current-user
         (if (= (:reviewer review) (:id user))
           (let [review-id (db.review/update-review-status
                            conn
@@ -170,8 +164,7 @@
           (r/not-found))
         (r/not-found)))))
 
-(defn- list-reviews
-  [db reviewer page limit status only]
+(defn- list-reviews [db reviewer page limit status only]
   (let [conn (:spec db)
         review-status (and status (str/split status #","))
         params {:reviewer (:id reviewer) :page page :limit limit :review-status review-status
@@ -199,13 +192,10 @@
         (new-multiple-review logger db mailjet-config topic-type topic-id reviewers (:id user))
         (r/forbidden {:message "Unauthorized"}))
       (catch Exception t
-        (let [log-data {:exception-message (ex-message t)
-                        :exception-data (ex-data t)
-                        :context-data {:req-params (:parameters req)
-                                       :user-id (:id user)}}]
-          (log logger :error :failed-add-multiple-reviews log-data)
-          (log logger :debug :failed-add-multiple-reviews (assoc log-data :stack-trace (.getStackTrace t)))
-          (r/server-error {:success? false}))))))
+        (timbre/with-context+ {:req-params (:parameters req)
+                               :user-id (:id user)}
+          (log logger :error :failed-add-multiple-reviews t))
+        (r/server-error {:success? false})))))
 
 (defn- get-reviews [db topic-type topic-id]
   (let [conn (:spec db)

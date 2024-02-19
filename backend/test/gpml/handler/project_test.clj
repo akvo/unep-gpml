@@ -16,8 +16,7 @@
 
 (use-fixtures :each fixtures/with-test-system)
 
-(defn- random-project-data
-  []
+(defn- random-project-data []
   {:title "test project"
    :geo_coverage_type (rand-nth (vec dom.types/geo-coverage-types))
    :type (first dom.prj/project-types)
@@ -27,8 +26,7 @@
    :geo_coverage_country_groups [151]
    :source dom.types/default-resource-source})
 
-(defn- create-random-project
-  [db stakeholder-id]
+(defn- create-random-project [db stakeholder-id]
   (let [db-project (-> (random-project-data)
                        (assoc :stakeholder_id stakeholder-id)
                        (db.prj/project->db-project))

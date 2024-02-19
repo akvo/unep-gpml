@@ -9,8 +9,7 @@
    (java.io ByteArrayInputStream)
    (java.util Base64)))
 
-(defn create-file
-  [config conn file-payload entity-key file-key visibility-key]
+(defn create-file [config conn file-payload entity-key file-key visibility-key]
   (let [file (dom.file/base64->file file-payload entity-key file-key visibility-key)
         result (srv.file/create-file config conn file)]
     (if (:success? result)

@@ -45,8 +45,7 @@
 (def ^:private get-ps-files-query-params-schema
   (mu/optional-keys (mu/select-keys create-ps-file-body-params-schema [:section_key])))
 
-(defn- create-ps-file
-  [config {:keys [user] {:keys [path body]} :parameters :as _req}]
+(defn- create-ps-file [config {:keys [user] {:keys [path body]} :parameters :as _req}]
   (let [country-iso-code-a2 (:iso_code_a2 path)
         search-opts {:filters {:countries-iso-codes-a2 [country-iso-code-a2]}}
         {:keys [success? plastic-strategy reason] :as get-ps-result}
@@ -70,8 +69,7 @@
             (r/ok {})
             (r/server-error (dissoc result :success?))))))))
 
-(defn- delete-ps-file
-  [config {:keys [user] {:keys [path body]} :parameters :as _req}]
+(defn- delete-ps-file [config {:keys [user] {:keys [path body]} :parameters :as _req}]
   (let [country-iso-code-a2 (:iso_code_a2 path)
         search-opts {:filters {:countries-iso-codes-a2 [country-iso-code-a2]}}
         {:keys [success? plastic-strategy reason] :as get-ps-result}
@@ -95,8 +93,7 @@
             (r/ok {})
             (r/server-error (dissoc result :success?))))))))
 
-(defn- get-ps-files
-  [config {:keys [user] {:keys [path query]} :parameters :as _req}]
+(defn- get-ps-files [config {:keys [user] {:keys [path query]} :parameters :as _req}]
   (let [country-iso-code-a2 (:iso_code_a2 path)
         search-opts {:filters {:countries-iso-codes-a2 [country-iso-code-a2]}}
         {:keys [success? plastic-strategy reason] :as get-ps-result}

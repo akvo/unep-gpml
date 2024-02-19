@@ -7,8 +7,7 @@
   (:import
    (clj_gcp.storage.core FileSystemStorageClient)))
 
-(defn- delete-blob
-  [{:keys [base-path]} bucket blob-name]
+(defn- delete-blob [{:keys [base-path]} bucket blob-name]
   (try
     (let [file (io/file base-path bucket blob-name)]
       (io/delete-file file)
@@ -18,8 +17,7 @@
        :reason :could-not-delete-file
        :error-details {:exception-message (ex-message e)}})))
 
-(defn- get-blob-signed-url
-  [{:keys [base-path]} bucket-name blob-name]
+(defn- get-blob-signed-url [{:keys [base-path]} bucket-name blob-name]
   (try
     (let [file (io/file base-path bucket-name blob-name)]
       {:success? true

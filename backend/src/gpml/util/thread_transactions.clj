@@ -14,20 +14,16 @@
 (def ^:private args-map-schema
   [:map])
 
-(defn- safe-run
-  [logger f m]
+(defn- safe-run [logger f m]
   (try
     (f m)
     (catch Exception e
-      (log logger :error ::tht-transaction-exception {:reason (str (class e))
-                                                      :message (.getMessage e)
-                                                      :stack-trace (map str (.getStackTrace e))})
+      (log logger :error :tht-transaction-exception e)
       (merge m {:success? false
                 :error-details {:reason (str (class e))
                                 :message (.getMessage e)}}))))
 
-(defn thread-transactions
-  [logger txns args-map]
+(defn thread-transactions [logger txns args-map]
   {:pre [(check! transactions-schema txns
                  args-map-schema     args-map)]}
   (if-not (seq txns)

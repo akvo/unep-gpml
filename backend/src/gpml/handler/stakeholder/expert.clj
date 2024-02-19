@@ -19,7 +19,8 @@
    [integrant.core :as ig]
    [jsonista.core :as json]
    [malli.util :as mu]
-   [ring.util.response :as resp])
+   [ring.util.response :as resp]
+   [taoensso.timbre :as timbre])
   (:import
    (java.sql SQLException)))
 
@@ -106,8 +107,7 @@
                   :type "string"}}
        [:string {:min 1}]]]]]])
 
-(defn- api-opts->opts
-  [{:keys [page_size page_n tags countries country_groups]}]
+(defn- api-opts->opts [{:keys [page_size page_n tags countries country_groups]}]
   (cond-> {}
     page_size
     (assoc :page-size page_size)
@@ -127,24 +127,24 @@
     true
     (assoc-in [:filters :experts?] true)))
 
-(defn- expert->api-expert
-  [expert]
+(defn- expert->api-expert [expert]
   (merge expert (handler.stakeholder.tag/unwrap-tags expert)))
 
-(defn- api-expert->expert
-  [api-expert]
+(defn- api-expert->expert [api-expert]
   (-> api-expert
       (select-keys [:first_name :last_name :email])
       (assoc :review_status (pg-util/->PGEnum "INVITED" "review_status"))))
 
-(defn- get-experts
-  [{:keys [logger] {:keys [spec]} :db}
-   {{:keys [query]} :parameters :as _req}]
+(defn- get-experts [{:keys [logger] {:keys [spec]} :db}
+                    {{:keys [query]} :parameters :as _req}]
   (try
     (let [opts (api-opts->opts query)
           country-groups-countries (when (seq (get-in opts [:filters :country-groups]))
                                      (map :id (db.country-group/get-country-groups-countries spec opts)))
-          experts (db.stakeholder/get-experts spec (update-in opts [:filters :countries] #(set (concat % country-groups-countries))))
+          get-experts-options (-> opts
+                                  (update-in [:filters :countries] into country-groups-countries)
+                                  (update-in [:filters :countries] set))
+          experts (db.stakeholder/get-experts spec get-experts-options)
           experts-count (->> (db.stakeholder/get-experts spec (assoc opts :count-only? true))
                              (map vals)
                              (flatten)
@@ -154,7 +154,7 @@
                       :count (get-in experts-count ["experts" 0 :counts])
                       :count_by_country (get-in experts-count ["countries" 0 :counts])}))
     (catch Exception e
-      (log logger :error ::failed-to-get-experts {:exception-message (.getMessage e)})
+      (log logger :error :failed-to-get-experts e)
       (let [response {:status 500
                       :body {:success? false
                              :reason :could-not-get-experts}}]
@@ -162,8 +162,7 @@
           response
           (assoc-in response [:body :error-details :error] (.getMessage e)))))))
 
-(defn- send-invitation-emails
-  [{:keys [mailjet-config app-domain logger]} invitations]
+(defn- send-invitation-emails [{:keys [mailjet-config app-domain logger]} invitations]
   (try
     (doseq [{invitation-id :id
              first-name :first_name
@@ -178,18 +177,20 @@
                                                     [msg]
                                                     [nil])]
         (when-not (<= 200 status 299)
-          (log logger :error ::send-invitation-email-failed {:context-data invitation
-                                                             :email-msg msg
-                                                             :response-body (json/read-value body json/keyword-keys-object-mapper)}))))
+          (timbre/with-context+ invitation
+            (log logger :error :send-invitation-email-failed {:email-msg msg
+                                                              :response-body (try
+                                                                               (json/read-value body json/keyword-keys-object-mapper)
+                                                                               (catch Exception _
+                                                                                 body))})))))
     (catch Exception e
-      (log logger :error ::send-invitation-emails-failed {:exception-message (.getMessage e)
-                                                          :context-data {:invitations invitations}}))))
+      (timbre/with-context+ {:invitations invitations}
+        (log logger :error :send-invitation-emails-failed e)))))
 
 ;; TODO: Improve how we deal with errors here, since we should rollback invitation processes one by one, as otherwise
 ;; we might rollback all of them while the notifications or some of them have been sent already.
-(defn- invite-experts
-  [{:keys [db mailjet-config logger] :as config}
-   {{:keys [body]} :parameters}]
+(defn- invite-experts [{:keys [db mailjet-config logger] :as config}
+                       {{:keys [body]} :parameters}]
   (try
     (jdbc/with-db-transaction [conn (:spec db)]
       (let [experts (map api-expert->expert body)
@@ -247,10 +248,8 @@
         (r/ok {:success? true
                :invited-experts (map #(update % :id str) invitations)})))
     (catch Exception t
-      (log logger :error ::invite-experts-error {:exception-message (ex-message t)
-                                                 :exception-data (ex-data t)
-                                                 :stack-trace (.getStackTrace t)
-                                                 :context-data body})
+      (timbre/with-context+ body
+        (log logger :error :invite-experts-error t))
       (if (instance? SQLException t)
         (r/server-error
          {:success? false
@@ -262,9 +261,8 @@
            {:success? false
             :reason reason}))))))
 
-(defn- generate-admins-expert-suggestion-text
-  [{:keys [email expertise suggested_expertise] :as expert}
-   user-full-name admin-full-name]
+(defn- generate-admins-expert-suggestion-text [{:keys [email expertise suggested_expertise] :as expert}
+                                               user-full-name admin-full-name]
   (format
    "Dear %s,
 
@@ -281,9 +279,8 @@ User %s is suggesting an expert with the following information:
    (if-not (seq expertise) "" (str "- Expertise: " expertise))
    (if-not (seq suggested_expertise) "" (str "- Suggested Expertise: " suggested_expertise))))
 
-(defn- suggest-expert
-  [{:keys [db logger mailjet-config]}
-   {{:keys [body]} :parameters user :user}]
+(defn- suggest-expert [{:keys [db logger mailjet-config]}
+                       {{:keys [body]} :parameters user :user}]
   (try
     (let [expert (-> body
                      (util/update-if-not-nil :expertise #(str/join "," %))
@@ -303,15 +300,12 @@ User %s is suggesting an expert with the following information:
                 :reason :could-not-send-expert-suggestion-emails
                 :error-details (json/read-value body)}}))
     (catch Exception e
-      (let [context-data {:body body
-                          :user user}]
-        (log logger :debug ::failed-to-send-expert-suggestion-emails {:exception e
-                                                                      :context-data context-data})
-        (log logger :error ::failed-to-send-expert-suggestion-emails {:exception-message (.getMessage e)
-                                                                      :context-data context-data})
-        {:status 500
-         :body {:reason :failed-to-send-expert-suggestion-emails
-                :error-details {:error (.getMessage e)}}}))))
+      (timbre/with-context+ {:body body
+                             :user user}
+        (log logger :error :failed-to-send-expert-suggestion-emails e))
+      {:status 500
+       :body {:reason :failed-to-send-expert-suggestion-emails
+              :error-details {:error (.getMessage e)}}})))
 
 (defmethod ig/init-key :gpml.handler.stakeholder.expert/get
   [_ config]

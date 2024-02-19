@@ -2,8 +2,7 @@
   (:require
    [gpml.db.plastic-strategy.bookmark :as db.ps.bookmark]))
 
-(defn handle-ps-bookmark
-  [{:keys [db]} {:keys [bookmark entity-type entity-id plastic-strategy-id section-key]}]
+(defn handle-ps-bookmark [{:keys [db]} {:keys [bookmark entity-type entity-id plastic-strategy-id section-key]}]
   (let [ps-bookmark-table (keyword (format "plastic_strategy_%s_bookmark" (name entity-type)))
         ps-bookmark-entity-col (keyword (format "%s_id" (name entity-type)))
         ps-bookmark {:ps-bookmark-table ps-bookmark-table

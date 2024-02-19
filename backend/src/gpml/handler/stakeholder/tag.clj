@@ -7,8 +7,7 @@
    [gpml.db.tag :as db.tag]
    [gpml.handler.resource.tag :as handler.resource.tag]))
 
-(defn- add-tags-ids-for-categories
-  [conn tags categories]
+(defn- add-tags-ids-for-categories [conn tags categories]
   (if-let [filtered-tags (seq (filter #(some #{(:tag_category %)} categories) tags))]
     (let [result (db.tag/tag-by-tags conn {:tags (map :tag filtered-tags)})]
       (map (fn [{tag-name :tag :as tag}]
@@ -30,7 +29,11 @@
          {:tag \"barz\" :tag_category \"expertise\"}]`"
   [stakeholder]
   (reduce (fn [acc [category tags]]
-            (concat acc (map (fn [tag] {:tag tag :tag_category (name category)}) tags)))
+            (into acc
+                  (map (fn [tag]
+                         {:tag tag
+                          :tag_category (name category)}))
+                  tags))
           []
           (select-keys stakeholder [:seeking :offering :expertise])))
 
@@ -46,28 +49,28 @@
               (w/keywordize-keys)
               (select-keys [:seeking :offering :expertise]))))
 
-(defn- tag-diff
-  [new-tags old-tags old-tags-to-keep]
+(defn- tag-diff [new-tags old-tags old-tags-to-keep]
   (let [old-tags (->> old-tags
                       (map (comp #(set/rename-keys % {:tag_relation_category :tag_category})
                                  #(select-keys % [:tag :tag_relation_category])))
                       (group-by :tag_category))
-        old-tags-to-keep-normalized (->> old-tags-to-keep
-                                         (map (comp #(set/rename-keys % {:tag_relation_category :tag_category})
-                                                    #(select-keys % [:tag :tag_relation_category]))))
-        new-tags (group-by :tag_category (concat new-tags old-tags-to-keep-normalized))]
-    (->> (reduce (fn [acc [category tags]]
+        new-tags (group-by :tag_category (into new-tags
+                                               (map (comp #(set/rename-keys % {:tag_relation_category :tag_category})
+                                                          #(select-keys % [:tag :tag_relation_category])))
+                                               old-tags-to-keep))]
+    (->> new-tags
+         (reduce (fn [acc [category tags]]
                    (let [old-tags (map :tag (get old-tags category))
                          new-tags (map :tag tags)
                          [to-add _to-delete to-keep] (dt/diff new-tags old-tags)
-                         tags-to-create (into [] (comp (map #(assoc {} :tag % :tag_category category))
-                                                       (filter #(not (nil? (:tag %)))))
-                                              (concat to-add to-keep))]
+                         tags-to-create (into []
+                                              (comp (map #(assoc {} :tag % :tag_category category))
+                                                    (filter :tag))
+                                              (into to-add to-keep))]
                      (assoc acc category tags-to-create)))
-                 {}
-                 new-tags)
+                 {})
          (vals)
-         (apply concat))))
+         (reduce into []))))
 
 (defn save-stakeholder-tags
   "Saves the stakeholder tags. Tag resolution is done by name to check

@@ -24,21 +24,20 @@
   (:import
    (java.sql SQLException)))
 
-(defn- create-resource
-  [{:keys [logger mailjet-config] :as config}
-   conn
-   user
-   {:keys [resource_type title publish_year
-           summary value value_currency
-           value_remarks valid_from valid_to image
-           geo_coverage_type geo_coverage_value
-           geo_coverage_countries geo_coverage_country_groups
-           geo_coverage_value_subnational_city geo_coverage_country_states
-           attachments country urls tags remarks thumbnail
-           created_by url info_docs sub_content_type related_content
-           first_publication_date latest_amendment_date document_preview
-           entity_connections individual_connections language
-           capacity_building source]}]
+(defn- create-resource [{:keys [logger mailjet-config] :as config}
+                        conn
+                        user
+                        {:keys [resource_type title publish_year
+                                summary value value_currency
+                                value_remarks valid_from valid_to image
+                                geo_coverage_type geo_coverage_value
+                                geo_coverage_countries geo_coverage_country_groups
+                                geo_coverage_value_subnational_city geo_coverage_country_states
+                                attachments country urls tags remarks thumbnail
+                                created_by url info_docs sub_content_type related_content
+                                first_publication_date latest_amendment_date document_preview
+                                entity_connections individual_connections language
+                                capacity_building source]}]
   (let [image-id (when (seq image)
                    (handler.file/create-file config conn image :resource :images :public))
         thumbnail-id (when (seq thumbnail)
@@ -69,7 +68,7 @@
                       :document_preview document_preview
                       :language language
                       :source source}
-               (not (nil? capacity_building))
+               (some? capacity_building)
                (assoc :capacity_building capacity_building)
 
                image-id
@@ -155,7 +154,7 @@
                         :message "New resource created"
                         :id resource-id}))))
       (catch Exception e
-        (log logger :error ::failed-to-create-resource {:exception-message (.getMessage e)})
+        (log logger :error :failed-to-create-resource e)
         (let [response {:success? false
                         :reason :could-not-create-resource}]
 

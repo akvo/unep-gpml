@@ -7,7 +7,7 @@
   (:import
    (java.sql SQLException)))
 
-(def ^:const integrity-constraint-violation-state-codes
+(def integrity-constraint-violation-state-codes
   {:integrity-constraint "23000"
    :restrict "23001"
    :not-null "23502"
@@ -25,8 +25,7 @@
      (seq message)
      (str/includes? message (:name constraint)))))
 
-(defn with-constraint-violation-check-fn
-  [constraints body-fn]
+(defn with-constraint-violation-check-fn [constraints body-fn]
   (try
     (body-fn)
     (catch SQLException e
@@ -51,8 +50,7 @@
      ~constraints
      (fn [] ~@body)))
 
-(defn db-params-kebab-kw->db-params-snake-kw
-  [db-params]
+(defn db-params-kebab-kw->db-params-snake-kw [db-params]
   (cske/transform-keys ->snake_case db-params))
 
 (defn db-result-snake-kw->db-result-kebab-kw

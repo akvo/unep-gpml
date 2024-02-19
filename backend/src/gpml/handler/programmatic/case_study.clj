@@ -17,15 +17,13 @@
    [integrant.core :as ig]
    [malli.util :as mu]))
 
-(defn- remove-tags-duplicates
-  [tags]
+(defn- remove-tags-duplicates [tags]
   (->> tags
        (group-by str/lower-case)
        vals
        (map first)))
 
-(defn- build-tags-to-create
-  [tags stored-tags tag-category-id]
+(defn- build-tags-to-create [tags stored-tags tag-category-id]
   (let [lowered-case-stored-tags (map (comp str/lower-case :tag) stored-tags)]
     (reduce (fn [tags-to-create tag]
               (if (get (set lowered-case-stored-tags) (str/lower-case tag))
@@ -36,14 +34,12 @@
             []
             tags)))
 
-(defn- parse-geo-coverage-group-values
-  [geo-coverage-group values]
-  (->> values
-       (map #(get-in geo-coverage-group [% 0 :id]))
-       (remove nil?)))
+(defn- parse-geo-coverage-group-values [geo-coverage-group values]
+  (into []
+        (keep #(get-in geo-coverage-group [% 0 :id]))
+        values))
 
-(defn- handle-geo-coverage
-  [conn case-study-id geo-coverage-type geo-coverage-values countries country-groups]
+(defn- handle-geo-coverage [conn case-study-id geo-coverage-type geo-coverage-values countries country-groups]
   (if (= geo-coverage-type :global)
     {:success? true}
     (let [parsed-geo-coverage-values (->> (str/split geo-coverage-values #",")
@@ -59,8 +55,7 @@
                                                          {:countries geo-coverage-countries
                                                           :country-groups geo-coverage-country-groups}))))
 
-(defn- create-entities
-  [conn entity-name db-create-fn db-transformer-fn relation? data-coll]
+(defn- create-entities [conn entity-name db-create-fn db-transformer-fn relation? data-coll]
   (let [insert-cols (keys (first data-coll))
         insert-values (->> data-coll
                            (map db-transformer-fn)
@@ -76,8 +71,7 @@
        :result result}
       {:success? false})))
 
-(defn- handle-tags
-  [conn case-study-id tag-values tag-category-id]
+(defn- handle-tags [conn case-study-id tag-values tag-category-id]
   (let [tags (->> (str/split tag-values #",")
                   (map str/trim)
                   (remove-tags-duplicates))]
@@ -95,10 +89,12 @@
                                db.tag/tag->db-tag
                                false
                                tags-to-create))
-            tag-relations-to-create (map (fn [tag]
-                                           {:case_study case-study-id
-                                            :tag (:id tag)})
-                                         (concat stored-tags created-tags))
+            tag-relations-to-create (into []
+                                          (comp cat
+                                                (map (fn [tag]
+                                                       {:case_study case-study-id
+                                                        :tag (:id tag)})))
+                                          [stored-tags created-tags])
             {created-tag-relations-success? :success?}
             (when (seq tag-relations-to-create)
               (create-entities conn
@@ -111,8 +107,7 @@
           {:success? true}
           {:success? false})))))
 
-(defn- create-case-study
-  [conn api-case-study {:keys [countries country-groups tag-category-id]}]
+(defn- create-case-study [conn api-case-study {:keys [countries country-groups tag-category-id]}]
   (let [url (:platform_link api-case-study)
         geo-coverage (:geo_coverage api-case-study)
         [geo-coverage-type geo-coverage-values] (str/split geo-coverage #":\s")
@@ -151,8 +146,7 @@
     {:success? true
      :id case-study-id}))
 
-(defn- create-case-studies
-  [{:keys [db logger]} req]
+(defn- create-case-studies [{:keys [db logger]} req]
   (try
     (jdbc/with-db-transaction [tx (:spec db)]
       (let [api-case-studies (get-in req [:parameters :body])
@@ -171,8 +165,7 @@
         (r/ok {:success? true
                :inserted-values (count results)})))
     (catch Exception e
-      (log logger :error ::failed-to-create-case-studies {:exception-message (ex-message e)
-                                                          :exception-class (class e)})
+      (log logger :error :failed-to-create-case-studies e)
       (r/server-error {:success? false
                        :reason (or (:reason (ex-data e)) :failed-to-create-case-studies)
                        :error-details {:error (ex-message e)}}))))
