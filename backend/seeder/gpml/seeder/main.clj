@@ -23,6 +23,7 @@
 
 ;; Load multimethods:
 (require 'gpml.handler.detail
+         'gpml.timbre-logger
          'gpml.util.postgresql)
 
 (duct/load-hierarchy)
