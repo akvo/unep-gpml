@@ -38,7 +38,7 @@ const slides = {
       'https://docs.google.com/presentation/d/1L6h-1YnErb6ghP-xEVkViEPSdSynDr5aD5ZTGmxKQh0/embed?start=false&loop=false&delayms=60000',
     fiji:
       'https://docs.google.com/presentation/d/1Ao3F0mRpJIAkHc2cLD9HIFZ5QHK0vPzLPsl9pbMAMqk/embed?start=false&loop=false&delayms=60000',
-    'country-a':
+    jamaica:
       'https://docs.google.com/presentation/d/1FZhHoclXPLdYHxuZKnOcCluNbFNw41DUn3x2Xci-VJg/embed?start=false&loop=false&delayms=60000',
   },
   es: {
@@ -74,7 +74,7 @@ const slides = {
       'https://docs.google.com/presentation/d/1lucY98UD957MXWHGXle4wkEX0yvOrewLUnQgVDEwcVY/embed?start=false&loop=false&delayms=60000',
     vanuatu:
       'https://docs.google.com/presentation/d/1RcmixBoPTFIgBHMSR6lomKMFCZQAAOlWpZfzRdkLcEQ/embed?start=false&loop=false&delayms=60000',
-    'country-a':
+    jamaica:
       'https://docs.google.com/presentation/d/1VLVGtIeIVFBC3tSgX0gkTl_nhzgBlfjoBEiCkrlsaHY/embed?start=false&loop=false&delayms=60000',
   },
   fr: {
@@ -110,7 +110,7 @@ const slides = {
       'https://docs.google.com/presentation/d/1VtYLvKeRmMYpVxF5urKYBs2Njg2_ljeqtjEDyXhy2RY/embed?start=false&loop=false&delayms=60000',
     vanuatu:
       'https://docs.google.com/presentation/d/14EnATU9J2vgOFqgsgsRAbeqI9v7ydWOIkTIrCY0b7V8/embed?start=false&loop=false&delayms=60000',
-    'country-a':
+    jamaica:
       'https://docs.google.com/presentation/d/1ynfNAdufTONyV__OJ9JT3cLSnlWUvX8SIKT1OEksuXk/embed?start=false&loop=false&delayms=60000',
   },
 }
