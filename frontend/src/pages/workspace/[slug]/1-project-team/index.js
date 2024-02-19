@@ -38,6 +38,8 @@ const slides = {
       'https://docs.google.com/presentation/d/179ehHu5GjAT654FGodjXbsPsGDRyPQrEUjn4u3ra50c/embed?start=false&loop=false&delayms=60000',
     fiji:
       'https://docs.google.com/presentation/d/1TmjOpPlOQQZVwGkZBTftkkiM_uwAqXBY2LKsWhPrwXQ/embed?start=false&loop=false&delayms=60000',
+    'country-a':
+      'https://docs.google.com/presentation/d/1ABz6HmVJSsuP4PbkKiw5cimgV5qQIa6TrY8a74w3ls8/embed?start=false&loop=false&delayms=60000',
   },
   es: {
     peru:
@@ -72,6 +74,8 @@ const slides = {
       'https://docs.google.com/presentation/d/1HcfXhnowCj5SYi1TntF03otZ7KIIcG-TU30M7A0YNYs/embed?start=false&loop=false&delayms=60000',
     vanuatu:
       'https://docs.google.com/presentation/d/1qrS4hYFnXjJ2AwYij3eod7oiY5Bx9msJv1qDw4XyDXQ/embed?start=false&loop=false&delayms=60000',
+      'country-a':
+        'https://docs.google.com/presentation/d/1GW897YD2HCV86aiRrVmodUqLRVFGj3yPHU7OnfAoN68/embed?start=false&loop=false&delayms=60000',
   },
   fr: {
     senegal:
@@ -106,6 +110,8 @@ const slides = {
       'https://docs.google.com/presentation/d/1TGcC6Iiz_MF3e2DZ7hG-p1NN5-WhigNpemrLCX0y3_Y/embed?start=false&loop=false&delayms=60000',
     vanuatu:
       'https://docs.google.com/presentation/d/19u-r0Jl0EFQzJ5LWuYkvAsOeuSuUNassaQA01Pi_39U/embed?start=false&loop=false&delayms=60000',
+      'country-a':
+        'https://docs.google.com/presentation/d/1gLAenFZYoBnW5lh7gRJOcTcKY1EDyXJLFIVH-gKp5kE/embed?start=false&loop=false&delayms=60000',
   },
 }
 
