@@ -77,7 +77,7 @@
 
 (defmethod ig/init-key ::hikaricp
   [_ {:keys [hikari-cp metrics-collector]}]
-  (let [^HikariDataSource datasource (get-in hikari-cp [:spec :datasource])]
+  (let [^javax.sql.DataSource datasource (get-in hikari-cp [:spec :datasource])]
     (-> datasource
         ^HikariDataSource (.unwrap javax.sql.DataSource)
         (.setMetricsTrackerFactory
