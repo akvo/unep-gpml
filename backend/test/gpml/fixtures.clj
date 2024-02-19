@@ -5,10 +5,8 @@
    [clojure.string :as str]
    [duct.core :as duct]
    [duct.database.sql :as sql]
-   [duct.logger.timbre]
    [gpml.util.email :as email]
-   [integrant.core :as ig]
-   [taoensso.timbre :as timbre])
+   [integrant.core :as ig])
   (:import
    (java.util UUID)))
 
@@ -22,22 +20,6 @@
 
 (defn read-config [x]
   (duct/read-config x {'gpml/eval eval}))
-
-;; Override the original :duct.logger/timbre so that it keeps appenders already present `in timbre/*config*`.
-;; (Will PR)
-(defmethod ig/init-key :duct.logger/timbre [_ config]
-  (let [timbre-logger (duct.logger.timbre/->TimbreLogger config)
-        prev-root timbre/*config*]
-    (if (:set-root-config? config)
-      (do
-        (timbre/merge-config! (assoc config :middleware (->> timbre/*config*
-                                                             :middleware
-                                                             (remove #{duct.logger.timbre/wrap-legacy-logs})
-                                                             (into [duct.logger.timbre/wrap-legacy-logs]))))
-        (-> timbre/*config* ;; also log to the cider appender
-            duct.logger.timbre/->TimbreLogger
-            (assoc :prev-root-config prev-root)))
-      timbre-logger)))
 
 (defn- test-system []
   (-> (duct/resource "gpml/config.edn")
