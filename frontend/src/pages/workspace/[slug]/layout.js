@@ -246,6 +246,9 @@ const NestedLayout = ({ children }) => {
     })
   }, [])
 
+  let psCountryName = psItem?.country?.name
+  if (psCountryName === 'Jamaica') psCountryName = 'Country A'
+
   return (
     <div className={styles.plasticStrategyView}>
       <div className={styles.sidebar}>
@@ -254,9 +257,7 @@ const NestedLayout = ({ children }) => {
             <div className="caps-heading-s">
               <Trans>plastic strategy</Trans>
             </div>
-            <h5 className="h-m m-semi">
-              {psItem?.country?.name || t`Loading...`}
-            </h5>
+            <h5 className="h-m m-semi">{psCountryName || t`Loading...`}</h5>
             <div className="progress-bar">
               <div className="fill" style={{ width: `${progress}%` }}></div>
             </div>
