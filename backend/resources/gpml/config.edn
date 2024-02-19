@@ -786,7 +786,7 @@
   {:db #ig/ref :duct.database/sql
    :logger #ig/ref :duct/logger
    :scheduler #ig/ref :gpml/scheduler
-   :storage-client-adapter #ig/ref :clj-gcp.storage/client
+   :storage-client-adapter #ig/ref :gpml.boundary.adapter.storage-client.gcs/client
    :brs-ds-adapter #ig/ref :gpml.boundary.adapter.datasource/brs
    :chat-adapter #ig/ref :gpml.boundary.adapter.chat/rocket-chat
    :auth0 #ig/ref :gpml.config/auth0
@@ -1072,7 +1072,7 @@
   :gpml.handler.programmatic.badge/post #ig/ref :gpml.config/common
   :gpml.handler.programmatic.badge/post-params {}
 
-  :clj-gcp.storage/client {}
+  :gpml.boundary.adapter.storage-client.gcs/client {}
 
   :gpml.boundary.adapter.chat/rocket-chat
   {:api-domain-url #duct/env ["CHAT_API_DOMAIN_URL" Str]
@@ -1152,13 +1152,14 @@
  :duct.profile/local #duct/include "local.edn"
  :duct.profile/test  #duct/include "test.edn"
  :duct.profile/prod
- {:gpml.handler.main/handler {:collector #ig/ref :gpml.handler.monitoring/collector}
+ {:gpml.timbre-logger.json/logger {}
+  :gpml.handler.main/handler {:collector #ig/ref :gpml.handler.monitoring/collector}
   :duct.server.http/jetty {:configurator #ig/ref :gpml.handler.monitoring/jetty-configurator}
   :duct.logger/timbre
   {:min-level     :warn
    :level         :info
    :set-root-config? true
-   :appenders {:out #ig/ref :duct.logger.timbre/println
+   :appenders {:out #ig/ref :gpml.timbre-logger.json/logger ;; Emitting JSON in production results in structured logging. See https://github.com/akvo/unep-gpml/issues/1786
                :sentry #ig/ref :gpml.handler.monitoring/sentry-logger}}
 
   :duct.logger.timbre/println {}

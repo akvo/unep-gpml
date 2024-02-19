@@ -10,16 +10,13 @@
 
 (hugsql/def-db-fns "gpml/db/file.sql")
 
-(defn- file->persistence-file
-  [file]
+(defn- file->persistence-file [file]
   (update file :visibility name))
 
-(defn- persistence-file->file
-  [persistence-file]
+(defn- persistence-file->file [persistence-file]
   (update persistence-file :visibility keyword))
 
-(defn create-file
-  [conn file]
+(defn create-file [conn file]
   (jdbc-util/with-constraint-violation-check [{:type :unique
                                                :name "file_pkey"
                                                :error-reason :already-exists}]
@@ -28,8 +25,7 @@
                            jdbc-util/db-params-kebab-kw->db-params-snake-kw))
     {:success? true}))
 
-(defn delete-file
-  [conn file-id]
+(defn delete-file [conn file-id]
   (try
     (let [affected (delete-file*
                     conn
@@ -42,8 +38,7 @@
       {:success? false
        :error-details {:ex-message (ex-message t)}})))
 
-(defn get-files
-  [conn opts]
+(defn get-files [conn opts]
   (try
     (let [db-params (jdbc-util/db-params-kebab-kw->db-params-snake-kw opts)
           files (get-files* conn db-params)]
@@ -57,8 +52,7 @@
        :reason :exception
        :error-details (ex-message t)})))
 
-(defn get-file
-  [conn opts]
+(defn get-file [conn opts]
   (try
     (let [result (get-files conn opts)]
       (if-not (:success? result)

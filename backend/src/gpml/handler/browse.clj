@@ -16,14 +16,15 @@
    [gpml.util.postgresql :as pg-util]
    [gpml.util.regular-expressions :as util.regex]
    [integrant.core :as ig]
-   [medley.core :as medley])
+   [medley.core :as medley]
+   [taoensso.timbre :as timbre])
   (:import
    (java.sql SQLException)))
 
-(def ^:const topic-re (util.regex/comma-separated-enums-re dom.types/topic-types))
-(def ^:const ^:private order-by-fields ["title" "description" "id" "featured"])
-(def ^:const ^:private default-limit 50)
-(def ^:const ^:private default-offset 0)
+(def topic-re (util.regex/comma-separated-enums-re dom.types/topic-types))
+(def ^:private order-by-fields ["title" "description" "id" "featured"])
+(def ^:private default-limit 50)
+(def ^:private default-offset 0)
 
 (def api-opts-schema
   "Browse API's filter options."
@@ -274,7 +275,7 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
     (seq orderBy)
     (assoc :order-by orderBy)
 
-    (not (nil? descending))
+    (some? descending)
     (assoc :descending descending)
 
     (seq q)
@@ -283,7 +284,7 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
     featured
     (assoc :featured featured)
 
-    (not (nil? badges))
+    (some? badges)
     (assoc :badges badges)
 
     upcoming
@@ -304,8 +305,7 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
     true
     (assoc :review-status "APPROVED")))
 
-(defn- resource->api-resource
-  [config resource]
+(defn- resource->api-resource [config resource]
   (let [conn (get-in config [:db :spec])
         {:keys [topic json]} resource
         resource-type (handler.util/get-internal-topic-type topic)
@@ -324,8 +324,7 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
            :thumbnail (get-in files [thumbnail_id :url])
            :stakeholder_connections connections)))
 
-(defn- add-geo-coverage-countries-filters
-  [{:keys [db]} {:keys [countries] :as api-search-opts}]
+(defn- add-geo-coverage-countries-filters [{:keys [db]} {:keys [countries] :as api-search-opts}]
   (let [opts {:filters {:countries-ids countries}}
         transnational (->> (db.country-group/get-country-groups-by-countries (:spec db) opts)
                            (map :id)
@@ -334,8 +333,7 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
            :geo-coverage-countries countries
            :geo-coverage-country-groups transnational)))
 
-(defn- add-geo-coverage-country-groups-filters
-  [{:keys [db]} {:keys [country-groups] :as api-search-opts}]
+(defn- add-geo-coverage-country-groups-filters [{:keys [db]} {:keys [country-groups] :as api-search-opts}]
   (let [opts {:filters {:country-groups country-groups}}
         country-group-countries (db.country-group/get-country-groups-countries (:spec db) opts)
         geo-coverage-countries (map :id country-group-countries)]
@@ -343,8 +341,7 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
            :geo-coverage-country-groups country-groups
            :geo-coverage-countries (set geo-coverage-countries))))
 
-(defn- add-geo-coverage-filters
-  [config {:keys [countries country-groups] :as api-search-opts}]
+(defn- add-geo-coverage-filters [config {:keys [countries country-groups] :as api-search-opts}]
   (cond
     (seq countries)
     (add-geo-coverage-countries-filters config api-search-opts)
@@ -355,8 +352,7 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
     :else
     api-search-opts))
 
-(defn- add-plastic-strategy-filters
-  [config {:keys [ps-country-iso-code-a2] :as api-search-opts}]
+(defn- add-plastic-strategy-filters [config {:keys [ps-country-iso-code-a2] :as api-search-opts}]
   (if-not ps-country-iso-code-a2
     api-search-opts
     (let [search-opts {:filters {:countries-iso-codes-a2 [ps-country-iso-code-a2]}}
@@ -366,8 +362,7 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
         (assoc api-search-opts :plastic-strategy-id (:id plastic-strategy))
         api-search-opts))))
 
-(defn- browse-response
-  [{:keys [logger] {db :spec} :db :as config} query approved? admin]
+(defn- browse-response [{:keys [logger] {db :spec} :db :as config} query approved? admin]
   (try
     (let [api-search-opts (->> query
                                (api-filters->filters)
@@ -384,14 +379,14 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
           counts (->> (assoc api-search-opts :count-only? true)
                       (db.topic/get-topics db))
           count-topics-exec-time (- (System/currentTimeMillis) count-topics-start-time)]
-      (log logger :info ::query-exec-time {:get-topics-exec-time (str get-topics-exec-time "ms")
-                                           :count-topics-exec-time (str count-topics-exec-time "ms")})
+      (log logger :info :query-exec-time {:get-topics-exec-time (str get-topics-exec-time "ms")
+                                          :count-topics-exec-time (str count-topics-exec-time "ms")})
       (r/ok {:success? true
              :results results
              :counts counts}))
     (catch Exception t
-      (log logger :error :failed-to-get-topics {:exception-message (ex-message t)
-                                                :context-data {:query-params query}})
+      (timbre/with-context+ query
+        (log logger :error :failed-to-get-topics t))
       (let [response {:success? false
                       :reason :could-not-get-topics}]
         (if (instance? SQLException t)

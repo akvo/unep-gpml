@@ -14,9 +14,10 @@
    [integrant.core :as ig]
    [integrant.repl :refer [clear go halt init prep reset]]
    [integrant.repl.state :refer [config system]]
-   [ns-tracker.core :refer [ns-tracker]]))
+   [ns-tracker.core :refer [ns-tracker]]
+   [taoensso.timbre :as timbre]))
 
-(require 'gpml.handler.monitoring) ;; Load its multimethod
+(require 'gpml.main) ;; Load core multimethods, transitively
 
 (duct/load-hierarchy)
 
@@ -41,8 +42,7 @@
 
 (integrant.repl/set-prep! #(duct/prep-config (read-config) profiles))
 
-(defn db-conn
-  []
+(defn db-conn []
   (-> system :duct.database.sql/hikaricp :spec))
 
 (defn db-q
@@ -55,8 +55,7 @@
 (def modified-namespaces
   (ns-tracker ["src/gpml/db"]))
 
-(defn refresh-all
-  []
+(defn refresh-all []
   (doseq [ns-sym (modified-namespaces)]
     (require ns-sym :reload))
   (refresh))
@@ -107,3 +106,8 @@
                 :resource? true
                 :technology? true
                 :project? true}))
+
+(when (= "vemv" (System/getenv "USER"))
+  ;; Disable the default Timbre logger, given I prefer the CIDER logger
+  ;; (https://docs.cider.mx/cider/debugging/logging.html )
+  (timbre/set-config! (update timbre/*config* :appenders dissoc :println)))

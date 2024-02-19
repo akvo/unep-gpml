@@ -10,7 +10,7 @@
    [iapetos.registry :as registry]
    [integrant.core :as ig]
    [taoensso.timbre :as timbre]
-   [taoensso.timbre.appenders.3rd-party.sentry :as sentry])
+   [taoensso.timbre.appenders.community.sentry :as sentry])
   (:import
    (com.zaxxer.hikari HikariDataSource)
    (com.zaxxer.hikari.metrics.prometheus PrometheusMetricsTrackerFactory)
@@ -77,7 +77,7 @@
 
 (defmethod ig/init-key ::hikaricp
   [_ {:keys [hikari-cp metrics-collector]}]
-  (let [^HikariDataSource datasource (get-in hikari-cp [:spec :datasource])]
+  (let [^javax.sql.DataSource datasource (get-in hikari-cp [:spec :datasource])]
     (-> datasource
         ^HikariDataSource (.unwrap javax.sql.DataSource)
         (.setMetricsTrackerFactory
@@ -98,7 +98,6 @@
 
 (defmethod ig/init-key ::jetty-configurator [_ {:keys [collector]}]
   (fn [jetty-server]
-    (prn (class jetty-server))
     (configure-stats jetty-server collector)))
 
 (defmethod ig/init-key ::sentry-logger [_ {:keys [dsn version host env]}]

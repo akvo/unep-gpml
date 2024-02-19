@@ -6,7 +6,7 @@
    [java-time.api :as jt]
    [malli.core :as m]))
 
-(def ^:const entity-relation-keys
+(def entity-relation-keys
   #{:geo_coverage_countries :geo_coverage_country_groups :tags
     :individual_connections :entity_connections :related_content})
 

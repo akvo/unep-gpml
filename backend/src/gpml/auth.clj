@@ -14,8 +14,7 @@
    [:issuer [:re #"^https://\S+/$"]]
    [:audience [:re #"^\S+$"]]])
 
-(defn validate-opts
-  [opts]
+(defn validate-opts [opts]
   (or (malli/validate verifier-opts opts)
       (throw
        (ex-info "Invalid IdToken verifier options"
@@ -36,8 +35,7 @@
                          audience
                          signature-verifier)))
 
-(defn get-claims
-  [token]
+(defn get-claims [token]
   (reduce-kv (fn [m ^String k ^JsonNodeClaim v]
                (assoc m (keyword k) (case k
                                       "email_verified" (.asBoolean v)
@@ -80,15 +78,13 @@
       :auth-error-message "Authentication required"
       :status 401})))
 
-(defn get-user-info
-  [conn {:keys [jwt-claims]}]
+(defn get-user-info [conn {:keys [jwt-claims]}]
   (let [stakeholder (and (:email jwt-claims)
                          (db.stakeholder/stakeholder-by-email conn jwt-claims))]
     {:approved? (= "APPROVED" (:review_status stakeholder))
      :user (or stakeholder nil)}))
 
-(defn id-token-verifier
-  [signature-verifier opts]
+(defn id-token-verifier [signature-verifier opts]
   (fn [token]
     (let [id-token-verifier (token-verifier (assoc opts :signature-verifier signature-verifier))]
       (try
@@ -108,8 +104,7 @@
               user-info (get-user-info conn auth-info)]
           (handler (merge request auth-info user-info)))))))
 
-(defn- auth-middleware-programmatic
-  [opts]
+(defn- auth-middleware-programmatic [opts]
   (fn [handler]
     (let [signature-verifier (signature-verifier (:issuer opts))]
       (fn [request]

@@ -11,16 +11,14 @@
   (:import
    (java.sql SQLException)))
 
-(defn- get-badge-by-id-or-name
-  [{:keys [db]} badge-id-or-name]
+(defn- get-badge-by-id-or-name [{:keys [db]} badge-id-or-name]
   (db.badge/get-badge-by-id-or-name
    (:spec db)
    (if (integer? badge-id-or-name)
      {:id badge-id-or-name}
      {:name badge-id-or-name})))
 
-(defn- handle-badge-assignment
-  [{:keys [db]} {:keys [assign entity-type entity-id badge-id assigned-by]}]
+(defn- handle-badge-assignment [{:keys [db]} {:keys [assign entity-type entity-id badge-id assigned-by]}]
   (let [badge-assignment-table (keyword (format "%s_badge" (name entity-type)))
         badge-assignment-entity-col (keyword (format "%s_id" (name entity-type)))
         badge-assignment {:badge-assignment-table badge-assignment-table
@@ -44,7 +42,7 @@
             (r/not-found {})
             (r/server-error result))))
       (catch Exception t
-        (log logger :error ::get-badge-failed {:exception-message (.getMessage t)})
+        (log logger :error :get-badge-failed t)
         (r/server-error {:success? false
                          :reason :could-not-get-badge
                          :error-details {:message (.getMessage t)}})))))
@@ -123,7 +121,7 @@
                 :else
                 (r/server-error (dissoc result :success?)))))))
       (catch Exception t
-        (log logger :error ::failed-to-assign-or-unassign-badge {:exception-message (.getMessage t)})
+        (log logger :error :failed-to-assign-or-unassign-badge t)
         (let [response {:success? false
                         :reason :could-not-assign-or-unassign-badge}]
 

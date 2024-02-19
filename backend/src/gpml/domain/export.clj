@@ -1,10 +1,10 @@
 (ns gpml.domain.export)
 
-(def ^:const export-types
+(def export-types
   "The available exportable database entities supported by GPML."
   #{"users" "entities" "non-member-entities" "topics" "tags"})
 
-(def ^:const entities-key-map
+(def entities-key-map
   "Organisation database entity CSV file columns key mapping."
   {:id "ID"
    :name "Name"
@@ -31,7 +31,7 @@
    :modified "Modified"
    :platform-link "Platform Link"})
 
-(def ^:const sorted-entity-columns
+(def sorted-entity-columns
   "Sorted organisation's CSV file columns."
   ["ID"
    "Name"
@@ -58,7 +58,7 @@
    "Modified"
    "Platform Link"])
 
-(def ^:const users-key-map
+(def users-key-map
   "Stakeholder database entity CSV file columns key mapping."
   {:id "ID"
    :title "Title"
@@ -89,7 +89,7 @@
    :chat_account_id "Chat Account ID"
    :chat_account_status "Chat Account Status"})
 
-(def ^:const sorted-user-columns
+(def sorted-user-columns
   "Sorted user's CSV file columns."
   ["ID"
    "Title"
@@ -120,7 +120,7 @@
    "Chat Account ID"
    "Chat Account Status"])
 
-(def ^:const tags-key-map
+(def tags-key-map
   "Tag database entity CSV file columns key mapping."
   {:id "ID"
    :tag_category "Category"
@@ -131,7 +131,7 @@
    :definition "Definition"
    :ontology_ref_link "Ontology"})
 
-(def ^:const sorted-tag-columns
+(def sorted-tag-columns
   "Sorted tag's CSV file columns."
   ["ID"
    "Category"
@@ -142,7 +142,7 @@
    "Definition"
    "Ontology"])
 
-(def ^:const topics-key-map
+(def topics-key-map
   "GPML platform resources' CSV file columns key mapping. All resources
   managed by the platform (Event, Policy, Technology, Resource and
   Initiative)"
@@ -257,7 +257,7 @@
    :q22 "Q22",
    :q4_4_4 "Q4_4_4"})
 
-(def ^:const sorted-topic-columns
+(def sorted-topic-columns
   "GPML platform sorted resources CSV file columns. All resources
   managed by the platform (Event, Policy, Technology, Resource and Initiative)"
   ["ID"

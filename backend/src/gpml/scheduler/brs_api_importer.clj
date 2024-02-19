@@ -49,36 +49,31 @@
                 :source dom.types/default-resource-source}
    :tag {:review_status :SUBMITTED}})
 
-(defn- get-entity-schema-keys
-  [entity-name]
+(defn- get-entity-schema-keys [entity-name]
   (case entity-name
     :resource (util.malli/keys dom.resource/Resource)
     :event (util.malli/keys dom.event/Event)
     :initiative (util.malli/keys dom.initiative/Initiative)
     []))
 
-(defn- remove-tags-duplicates
-  [tags]
+(defn- remove-tags-duplicates [tags]
   (->> tags
        (group-by (comp str/lower-case :tag))
        vals
        (map first)))
 
-(defn- get-brs-tag-category-id
-  [conn]
+(defn- get-brs-tag-category-id [conn]
   (->> (db.tag/get-tag-categories conn {:filters {:categories [brs-api-tag-category-name]}})
        first
        :id))
 
-(defn- get-english-translation-value
-  [value]
+(defn- get-english-translation-value [value]
   (->> value
        (filter #(= (:language %) "en"))
        first
        :value))
 
-(defn- get-entity-translation-keys
-  [entity-name]
+(defn- get-entity-translation-keys [entity-name]
   (get dom.translation/translatable-fields-by-entity entity-name))
 
 (defn- default-to-en-translations
@@ -93,8 +88,7 @@
    entity-data
    translation-keys))
 
-(defn- add-country-id
-  [countries-by-iso-code geo-coverage]
+(defn- add-country-id [countries-by-iso-code geo-coverage]
   (map (fn [{:keys [iso_code_a2 iso_code_a3] :as geo}]
          (assoc geo :country (-> (medley/find-first
                                   (fn [[iso-codes _]]
@@ -105,8 +99,7 @@
                                  :id)))
        geo-coverage))
 
-(defn- build-translations
-  [entity-name brs-entities brs-translations]
+(defn- build-translations [entity-name brs-entities brs-translations]
   (map (fn [{:keys [brs_api_id] :as translation}]
          (let [resource-id (get-in brs-entities [brs_api_id 0 :id])]
            (-> translation
@@ -114,8 +107,7 @@
                (dissoc :brs_api_id))))
        brs-translations))
 
-(defn- build-tags
-  [brs-tag-category-id brs-tags stored-tags]
+(defn- build-tags [brs-tag-category-id brs-tags stored-tags]
   (reduce (fn [acc {:keys [tag] :as tag-m}]
             (if (get (set stored-tags) (str/lower-case tag))
               acc
@@ -126,26 +118,25 @@
           []
           brs-tags))
 
-(defn- build-tags-relations
-  [entity-name brs-entities brs-tags-relations stored-tags]
-  (apply
-   concat
-   (map (fn [{:keys [id brs_api_id]}]
-          (map (fn [{:keys [tag]}]
-                 {entity-name id
-                  :tag (get-in stored-tags [(str/lower-case tag) 0 :id])})
-               (get (group-by :brs_api_id brs-tags-relations) brs_api_id)))
-        brs-entities)))
+(defn- build-tags-relations [entity-name brs-entities brs-tags-relations stored-tags]
+  (into []
+        (comp (map (fn [{:keys [id brs_api_id]}]
+                     (mapv (fn [{:keys [tag]}]
+                             {entity-name id
+                              :tag (get-in stored-tags [(str/lower-case tag) 0 :id])})
+                           (-> :brs_api_id
+                               (group-by brs-tags-relations)
+                               (get brs_api_id)))))
+              cat)
+        brs-entities))
 
-(defn- build-geo-coverage-relations
-  [entity-name brs-entities brs-geo-coverage]
+(defn- build-geo-coverage-relations [entity-name brs-entities brs-geo-coverage]
   (map (fn [{:keys [brs_api_id country]}]
          {entity-name (get-in brs-entities [brs_api_id 0 :id])
           :country country})
        brs-geo-coverage))
 
-(defn- build-connections-relations
-  [entity-name entities brs-org-connections organisations]
+(defn- build-connections-relations [entity-name entities brs-org-connections organisations]
   (reduce (fn [acc {:keys [brs_api_id name role]}]
             (let [org-id (get-in organisations [(str/lower-case name) 0 :id])]
               (if-not org-id
@@ -156,8 +147,7 @@
           []
           brs-org-connections))
 
-(defn- save-translations
-  [tx entity-name translations]
+(defn- save-translations [tx entity-name translations]
   (let [insert-cols (-> translations first keys)
         insert-values (sql-util/get-insert-values insert-cols translations)
         result (db.translation/create-or-update-translations tx
@@ -170,8 +160,7 @@
       (throw (ex-info "Failed to save all translations" {:expected (count translations)
                                                          :actual (first result)})))))
 
-(defn- create-entities*
-  [tx logger entity-name db-create-fn db-transformer-fn relation? data-coll]
+(defn- create-entities* [tx logger entity-name db-create-fn db-transformer-fn relation? data-coll]
   (let [insert-cols (keys (first data-coll))
         insert-values (->> data-coll
                            (map db-transformer-fn)
@@ -197,8 +186,7 @@
       (throw (ex-info (str "Failed to create all " (name entity-name) "s.") {:expected (count data-coll)
                                                                              :actual (count result)})))))
 
-(defn- update-entities*
-  [tx entity-name db-update-fn db-transformer-fn data-coll]
+(defn- update-entities* [tx entity-name db-update-fn db-transformer-fn data-coll]
   (let [expected (count data-coll)
         db-entities (map db-transformer-fn data-coll)
         affected (reduce (fn [acc {:keys [id] :as db-entity}]
@@ -282,8 +270,7 @@
                     false
                     data-coll))
 
-(defn- create-resource-geo-coverage-entities
-  [tx logger entity-name data-coll]
+(defn- create-resource-geo-coverage-entities [tx logger entity-name data-coll]
   (create-entities* tx
                     logger
                     entity-name
@@ -292,8 +279,7 @@
                     true
                     data-coll))
 
-(defn- create-resource-tag-entities
-  [tx logger entity-name data-coll]
+(defn- create-resource-tag-entities [tx logger entity-name data-coll]
   (create-entities* tx
                     logger
                     entity-name
@@ -302,8 +288,7 @@
                     true
                     data-coll))
 
-(defn- create-resource-entity-connections
-  [tx logger entity-name association-type data-coll]
+(defn- create-resource-entity-connections [tx logger entity-name association-type data-coll]
   (create-entities* tx
                     logger
                     entity-name
@@ -336,22 +321,19 @@
   [tx logger entity-name data-coll]
   (create-resource-tag-entities tx logger entity-name data-coll))
 
-(defn- handle-translations-batch-import-or-update
-  [tx entity-name entities-by-brs-api-id translations-table-data]
+(defn- handle-translations-batch-import-or-update [tx entity-name entities-by-brs-api-id translations-table-data]
   (let [translations-to-create-or-update
         (build-translations entity-name entities-by-brs-api-id translations-table-data)]
     (when (seq translations-to-create-or-update)
       (save-translations tx entity-name translations-to-create-or-update))))
 
-(defn- handle-geo-coverage-batch-import
-  [tx logger entity-name entities-by-brs-api-id geo-coverage-table-data]
+(defn- handle-geo-coverage-batch-import [tx logger entity-name entities-by-brs-api-id geo-coverage-table-data]
   (let [geo-coverage-to-create
         (build-geo-coverage-relations entity-name entities-by-brs-api-id geo-coverage-table-data)]
     (when (seq geo-coverage-to-create)
       (create-entities tx logger (keyword (str (name entity-name) "_geo_coverage")) geo-coverage-to-create))))
 
-(defn- handle-tags-batch-import
-  [tx logger entity-name entities tags-table-data {:keys [brs-tag-category-id old-tags-relations]}]
+(defn- handle-tags-batch-import [tx logger entity-name entities tags-table-data {:keys [brs-tag-category-id old-tags-relations]}]
   (let [tags-without-duplicates (remove-tags-duplicates tags-table-data)
         tags (map :tag tags-without-duplicates)
         tags-db-opts {:filters (db.tag/opts->db-opts {:tags tags})}
@@ -371,8 +353,7 @@
     {:created-tags (count created-tags)
      :created-tags-relations (count created-tags-relations)}))
 
-(defn- handle-entity-connections
-  [tx logger entity-name entities connections-table-data {:keys [old-connections-relations]}]
+(defn- handle-entity-connections [tx logger entity-name entities connections-table-data {:keys [old-connections-relations]}]
   (let [db-opts {:filters {:names (map :name connections-table-data)}}
         organisations (->> (db.organisation/get-organisations tx db-opts)
                            (group-by (comp str/lower-case :name)))
@@ -407,20 +388,19 @@
                     translations-table-data (->> translation-keys
                                                  (select-keys domain-entity-data)
                                                  vals
-                                                 (apply concat)
+                                                 (reduce into [])
                                                  (remove #(= (:language %) "en")))
                     geo-coverage-table-data (add-country-id countries-by-iso-code geo-coverage)]
                 (-> acc
                     (update :entity-table-data conj entity-table-data)
-                    (update :translations-table-data concat translations-table-data)
-                    (update :tags-table-data concat (:tags data))
-                    (update :geo-coverage-table-data concat geo-coverage-table-data)
-                    (update :connections-table-data concat (:entity_connections data)))))
+                    (update :translations-table-data into translations-table-data)
+                    (update :tags-table-data into (:tags data))
+                    (update :geo-coverage-table-data into geo-coverage-table-data)
+                    (update :connections-table-data into (:entity_connections data)))))
             {}
             data-coll)))
 
-(defn- handle-entities-batch-import
-  [tx logger entity-name data-coll opts]
+(defn- handle-entities-batch-import [tx logger entity-name data-coll opts]
   (let [;; Entities data normalization
         {:keys [entity-table-data translations-table-data tags-table-data
                 geo-coverage-table-data connections-table-data]}
@@ -464,8 +444,7 @@
                :resource-geo-coverage-created (count created-geo-coverage)
                :entity-connections-created (count created-connections)}}))
 
-(defn- handle-entities-batch-update
-  [tx logger entity-name data-coll opts]
+(defn- handle-entities-batch-update [tx logger entity-name data-coll opts]
   (let [;; Entities data normalization
         {:keys [entity-table-data translations-table-data tags-table-data
                 geo-coverage-table-data connections-table-data]}
@@ -533,32 +512,27 @@
                :created-tags-relations created-tags-relations
                :created-tags created-tags}}))
 
-(defn- with-safe-db-transaction
-  [?tx logger entity-name data-coll {:keys [update?] :as opts}]
+(defn- with-safe-db-transaction [?tx logger entity-name data-coll {:keys [update?] :as opts}]
   (try
     (jdbc/with-db-transaction [tx ?tx]
       (if update?
         (handle-entities-batch-update tx logger entity-name data-coll opts)
         (handle-entities-batch-import tx logger entity-name data-coll opts)))
     (catch Exception e
-      (let [error-details {:entity-name entity-name
-                           :exception-message (ex-message e)
-                           :exception-data (ex-data e)
-                           :stack-trace (map str (.getStackTrace e))}]
-        (log logger :error ::failed-to-save-entity error-details)
+      (let [reason (keyword (str "failed-to-save-" entity-name))]
+        (log logger :error reason e)
         {:success? false
-         :reason :failed-to-save-entity
-         :error-details error-details}))))
+         :reason reason
+         :error-details e}))))
 
-(defn- add-gpml-image-url
-  [config conn logger entity-name data-coll]
+(defn- add-gpml-image-url [config conn logger entity-name data-coll]
   (reduce
    (fn [acc {:keys [image qimage] :as entity}]
      (let [url (or image qimage)]
        (if-not url
          (conj acc entity)
          (let [downloaded-image (util.image/download-image logger url)
-               image-id (when-not (nil? downloaded-image)
+               image-id (when (some? downloaded-image)
                           (handler.file/create-file config
                                                     conn
                                                     downloaded-image
@@ -569,8 +543,7 @@
    []
    data-coll))
 
-(defn- delete-images
-  [{:keys [db] :as config} images-ids]
+(defn- delete-images [{:keys [db] :as config} images-ids]
   (doseq [image-id images-ids
           :when image-id]
     (srv.file/delete-file config (:spec db) {:id image-id})))
@@ -588,14 +561,11 @@
         result
         (delete-images config (map :image_id updated-data-coll))))
     (catch Exception e
-      (let [error-details {:entity-name entity-name
-                           :exception-message (ex-message e)
-                           :exception-data (ex-data e)
-                           :stack-trace (map str (.getStackTrace e))}]
-        (log logger :error ::failed-to-save-entity error-details)
+      (let [reason (keyword (str "failed-to-save-" entity-name))]
+        (log logger :error reason e)
         {:success? false
-         :reason :failed-to-save-entity
-         :error-details error-details}))))
+         :reason reason
+         :error-details reason}))))
 
 (defmethod save-as-gpml-entity* :event
   [{:keys [logger db] :as config} entity-name data-coll opts]
@@ -605,14 +575,11 @@
         (with-safe-db-transaction tx logger entity-name updated-data-coll opts)))
     {:success? true}
     (catch Exception e
-      (let [error-details {:entity-name entity-name
-                           :exception-message (ex-message e)
-                           :exception-data (ex-data e)
-                           :stack-trace (map str (.getStackTrace e))}]
-        (log logger :error ::failed-to-save-entity error-details)
+      (let [reason (keyword (str "failed-to-save-" entity-name))]
+        (log logger :error reason e)
         {:success? false
-         :reason :failed-to-save-entity
-         :error-details error-details}))))
+         :reason reason
+         :error-details e}))))
 
 (defmethod save-as-gpml-entity* :initiative
   [{:keys [db logger] :as config} entity-name data-coll opts]
@@ -623,17 +590,13 @@
         result
         (delete-images config (map :image_id updated-data-coll))))
     (catch Exception e
-      (let [error-details {:entity-name entity-name
-                           :exception-message (ex-message e)
-                           :exception-data (ex-data e)
-                           :stack-trace (map str (.getStackTrace e))}]
-        (log logger :error ::failed-to-save-entity error-details)
+      (let [reason (keyword (str "failed-to-save-" entity-name))]
+        (log logger :error reason e)
         {:success? false
-         :reason :failed-to-save-entity
-         :error-details error-details}))))
+         :reason reason
+         :error-details e}))))
 
-(defn- save-as-gpml-entity
-  [{:keys [logger] :as config} entity-name data-coll opts]
+(defn- save-as-gpml-entity [{:keys [logger] :as config} entity-name data-coll opts]
   (let [started-at (System/currentTimeMillis)
         result (save-as-gpml-entity* config entity-name data-coll opts)
         finished-at (System/currentTimeMillis)
@@ -644,8 +607,7 @@
                        :elapsed-time elapsed-time)]
     (log logger :info (keyword (format "finished-saving-%ss" (name entity-name))) metrics)))
 
-(defn- get-import-and-update-entities
-  [{:keys [db logger]} entity-name entities]
+(defn- get-import-and-update-entities [{:keys [db logger]} entity-name entities]
   (let [conn (:spec db)
         db-opts {:filters {:brs-api-ids (map :brs_api_id entities)}}
         stored-entities (->> (case entity-name
@@ -659,22 +621,21 @@
                 (if (seq old-entity)
                   (if (jt/after? brs_api_modified (sql-util/sql-timestamp->instant old-brs-api-modified))
                     (do
-                      (log logger :debug ::updating-entity {:entity entity-name
-                                                            :gpml-id id
-                                                            :brs-api-id brs_api_id})
+                      (log logger :debug :updating-entity {:entity entity-name
+                                                           :gpml-id id
+                                                           :brs-api-id brs_api_id})
                       (update acc :to-update conj (assoc entity :id id)))
                     (do
-                      (log logger :debug ::skipping-entity {:entity entity-name
-                                                            :brs-api-id brs_api_id})
+                      (log logger :debug :skipping-entity {:entity entity-name
+                                                           :brs-api-id brs_api_id})
                       acc))
                   (update acc :to-import conj entity))))
             {}
             entities)))
 
-(defn- import-or-update-entity
-  [{:keys [brs-ds-adapter logger] :as config}
-   {:keys [gpml-entity-name brs-entity-name]}
-   opts]
+(defn- import-or-update-entity [{:keys [brs-ds-adapter logger] :as config}
+                                {:keys [gpml-entity-name brs-entity-name]}
+                                opts]
   (try
     (loop [skip-token 0
            more-pages? true]
@@ -689,14 +650,11 @@
                 (save-as-gpml-entity config gpml-entity-name to-update (assoc opts :update? true)))
               (when (seq to-import)
                 (save-as-gpml-entity config gpml-entity-name to-import opts)))
-            (log logger :error ::failed-to-get-data-from-datasource {:result result}))
+            (log logger :error :failed-to-get-data-from-datasource {:result result}))
           (recur skip-token more-pages?))))
     (catch Exception e
-      (log logger :error ::something-bad-happened {:exception-class (str (class e))
-                                                   :exception-message (ex-message e)
-                                                   :stack-trace (map str (.getStackTrace e))
-                                                   :entity gpml-entity-name})))
-  (log logger :info ::finished {}))
+      (log logger :error (keyword (str "exception-processing-" gpml-entity-name)) e)))
+  (log logger :info :finished {}))
 
 (defn import-or-update-entities
   "Imports and/or updates existing data records from BRS API."

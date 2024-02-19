@@ -25,22 +25,21 @@
   (:import
    (java.sql SQLException)))
 
-(defn- create-policy
-  [{:keys [logger mailjet-config] :as config}
-   conn
-   user
-   {:keys [title original_title abstract url
-           data_source type_of_law record_number
-           first_publication_date latest_amendment_date
-           status country geo_coverage_type
-           geo_coverage_value implementing_mea subnational_city
-           geo_coverage_countries geo_coverage_country_groups
-           geo_coverage_country_states
-           tags created_by image thumbnail language
-           owners info_docs sub_content_type
-           document_preview related_content topics
-           attachments remarks entity_connections individual_connections
-           capacity_building source]}]
+(defn- create-policy [{:keys [logger mailjet-config] :as config}
+                      conn
+                      user
+                      {:keys [title original_title abstract url
+                              data_source type_of_law record_number
+                              first_publication_date latest_amendment_date
+                              status country geo_coverage_type
+                              geo_coverage_value implementing_mea subnational_city
+                              geo_coverage_countries geo_coverage_country_groups
+                              geo_coverage_country_states
+                              tags created_by image thumbnail language
+                              owners info_docs sub_content_type
+                              document_preview related_content topics
+                              attachments remarks entity_connections individual_connections
+                              capacity_building source]}]
   (let [image-id (when (seq image)
                    (handler.file/create-file config conn image :policy :images :public))
         thumbnail-id (when (seq thumbnail)
@@ -72,10 +71,10 @@
                       :created_by created_by
                       :review_status "SUBMITTED"
                       :language language}
-               (not (nil? capacity_building))
+               (some? capacity_building)
                (assoc :capacity_building capacity_building)
 
-               (not (nil? source))
+               (some? source)
                (assoc :source source)
 
                image-id
@@ -148,7 +147,7 @@
                                            :message "New policy created"
                                            :id policy-id}))))
       (catch Exception e
-        (log logger :error ::failed-to-create-policy {:exception-message (.getMessage e)})
+        (log logger :error :failed-to-create-policy e)
         (let [response {:status 500
                         :body {:success? false
                                :reason :could-not-create-policy}}]
