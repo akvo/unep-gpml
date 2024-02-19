@@ -373,6 +373,7 @@
         margin-top: 12px;
         display: flex;
         align-items: flex-start;
+        overflow-y: hidden;
         & > b {
           width: fit-content;
           margin-right: 10px;
