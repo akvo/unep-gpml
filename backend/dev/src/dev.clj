@@ -15,7 +15,8 @@
    [integrant.repl :refer [clear go halt init prep reset]]
    [integrant.repl.state :refer [config system]]
    [ns-tracker.core :refer [ns-tracker]]
-   [taoensso.timbre :as timbre]))
+   [taoensso.timbre :as timbre]
+   [gpml.seeder.dummy :refer [get-or-create-profile]]))
 
 (require 'gpml.main) ;; Load core multimethods, transitively
 
@@ -45,6 +46,12 @@
 (defn db-conn []
   (-> system :duct.database.sql/hikaricp :spec))
 
+(defn component [c]
+  (get system c))
+
+(defn logger []
+  (component :duct.logger/timbre))
+
 (defn db-q
   ([q] (db-q q false))
   ([q pp?] (let [result (jdbc/query (db-conn) q)]
@@ -59,6 +66,13 @@
   (doseq [ns-sym (modified-namespaces)]
     (require ns-sym :reload))
   (refresh))
+
+(defn make-user! []
+  (get-or-create-profile (db-conn)
+                         (format "a%s@akvo.org" (random-uuid))
+                         (format "Random User %s" (random-uuid))
+                         "USER"
+                         "APPROVED"))
 
 (comment
 

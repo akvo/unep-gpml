@@ -778,7 +778,7 @@
   :scheduler                           #ig/ref :gpml/scheduler
   :storage-client-adapter              #ig/ref :gpml.boundary.adapter.storage-client.gcs/client
   :brs-ds-adapter                      #ig/ref :gpml.boundary.adapter.datasource/brs
-  :chat-adapter                        #ig/ref :gpml.boundary.adapter.chat/rocket-chat
+  :chat-adapter                        #ig/ref :gpml.boundary.adapter.chat/ds-chat
   :auth0                               #ig/ref :gpml.config/auth0
   :mailjet-config                      #ig/ref :gpml.config/mailjet
   :app-name                            #duct/env ["APP_NAME" Str]
@@ -1015,11 +1015,8 @@
  :gpml.handler.programmatic.badge/post-params                       {}
  :gpml.boundary.adapter.storage-client.gcs/client                   {}
 
- :gpml.boundary.adapter.chat/rocket-chat      {:api-domain-url #duct/env ["CHAT_API_DOMAIN_URL" Str]
-                                               :api-url-path   #duct/env ["CHAT_API_URL_PATH" Str]
-                                               :api-key        #duct/env ["CHAT_API_KEY" Str]
-                                               :api-user-id    #duct/env ["CHAT_API_USER_ID" Str]
-                                               :logger         #ig/ref :duct/logger}
+ :gpml.boundary.adapter.chat/ds-chat          {:api-key #duct/env ["DEAD_SIMPLE_CHAT_API_KEY" Str]
+                                               :logger  #ig/ref :duct/logger}
  :duct.migrator/ragtime                       {:migrations #ig/ref :duct.migrator.ragtime/resources
                                                :logger     #ig/ref :duct/logger
                                                :strategy   :raise-error}
