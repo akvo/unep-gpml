@@ -10,9 +10,9 @@
     true
     (let [x (m/explain schema val)]
       (throw (ex-info "Schema validation failed"
-                      (assoc x
-                             :quoted quoted
-                             :humanized (malli.error/humanize x)))))))
+                      (cond-> x
+                        (not= quoted val) (assoc :quoted quoted)
+                        true              (assoc :humanized (malli.error/humanize x))))))))
 
 (defmacro check!
   "Accepts pairs of specs and vals.
