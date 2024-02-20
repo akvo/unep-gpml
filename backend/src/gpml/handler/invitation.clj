@@ -40,10 +40,9 @@
      [:string {:min 1}]
      [:re util.regex/uuid-regex]]]])
 
-(defn- api-opts->opts
-  [{:keys [id emails stakeholders_ids ids pending]}]
+(defn- api-opts->opts [{:keys [id emails stakeholders_ids ids pending]}]
   (cond-> {}
-    (not (nil? pending))
+    (some? pending)
     (assoc-in [:filters :pending?] pending)
 
     (seq emails)
@@ -58,9 +57,8 @@
     id
     (assoc :id (util/uuid id))))
 
-(defn- get-invitations
-  [{:keys [db logger] :as config}
-   {{:keys [query]} :parameters user :user}]
+(defn- get-invitations [{:keys [db logger] :as config}
+                        {{:keys [query]} :parameters user :user}]
   (try
     (if-not (h.r.permission/super-admin? config (:id user))
       (r/forbidden {:message "Unauthorized"})
@@ -80,7 +78,7 @@
                       []
                       invitations))))
     (catch Exception t
-      (log logger :error ::get-invitations {:exception-message (.getMessage t)})
+      (log logger :error :get-invitations t)
       (if (instance? SQLException t)
         (r/server-error {:success? false
                          :reason (pg-util/get-sql-state t)})
@@ -88,9 +86,8 @@
                          :reason :could-not-get-invitations
                          :error-details {:message (.getMessage t)}})))))
 
-(defn- accept-invitation
-  [{:keys [db logger]}
-   {{:keys [query path]} :parameters user :user}]
+(defn- accept-invitation [{:keys [db logger]}
+                          {{:keys [query path]} :parameters user :user}]
   (try
     (let [opts (api-opts->opts (merge query path))
           {:keys [success? invitation reason] :as get-invitation-result}
@@ -107,7 +104,7 @@
               (r/ok {})
               (r/server-error (dissoc result :success?)))))))
     (catch Exception e
-      (log logger :error ::failed-to-accept-invitation {:exception-message (.getMessage e)})
+      (log logger :error :failed-to-accept-invitation e)
       (if (instance? SQLException e)
         (r/server-error {:reason (pg-util/get-sql-state e)})
         (r/server-error {:reason :could-not-update-invitation

@@ -17,8 +17,7 @@
    [gpml.util.thread-transactions :as tht]
    [medley.core :as medley]))
 
-(defn create-stakeholder
-  [{:keys [db logger mailjet-config] :as config} stakeholder]
+(defn create-stakeholder [{:keys [db logger mailjet-config] :as config} stakeholder]
   (let [conn (:spec db)
         context {:success? true
                  :stakeholder stakeholder}
@@ -204,7 +203,7 @@
                                   :logger logger}
                                  role-unassignments))]
               (when-not (:success? result)
-                (log logger :error ::failed-to-rollback-assign-role-to-stakeholder {:result result})))
+                (log logger :error :failed-to-rollback-assign-role-to-stakeholder {:result result})))
             context)}
          {:txn-fn
           (fn create-chat-account
@@ -221,8 +220,7 @@
                        :error-details {:result result}))))}]]
     (tht/thread-transactions logger transactions context)))
 
-(defn update-stakeholder
-  [{:keys [db logger mailjet-config] :as config} stakeholder partial-tags-override-rel-cats]
+(defn update-stakeholder [{:keys [db logger mailjet-config] :as config} stakeholder partial-tags-override-rel-cats]
   (let [conn (:spec db)
         context {:success? true
                  :stakeholder stakeholder}
@@ -401,7 +399,7 @@
                                     :logger logger}
                                    role-assignments))]
                 (when-not (:success? result)
-                  (log logger :error ::rollback-unassign-unapproved-user-role {:reason result})))))}
+                  (log logger :error :rollback-unassign-unapproved-user-role {:reason result})))))}
          {:txn-fn
           (fn assign-approved-user-role
             [{:keys [old-stakeholder invited?] :as context}]
@@ -435,13 +433,13 @@
                                     :logger logger}
                                    role-unassignments))]
                 (when-not (:success? result)
-                  (log logger :error ::rollback-assign-approved-user-role {:reason result}))
+                  (log logger :error :rollback-assign-approved-user-role {:reason result}))
                 context)))}
          {:txn-fn
           (fn update-stakeholder
             [{:keys [stakeholder old-stakeholder invited? picture-file cv-file] :as context}]
-            (let [idp-usernames (-> (concat (:idp-usernames old-stakeholder)
-                                            (:idp_usernames stakeholder))
+            (let [idp-usernames (-> (into (:idp-usernames old-stakeholder)
+                                          (:idp_usernames stakeholder))
                                     distinct
                                     vec)
                   org-id (get-in stakeholder [:org :id])
@@ -470,7 +468,7 @@
             [{:keys [old-stakeholder] :as context}]
             (let [affected (db.stakeholder/update-stakeholder conn old-stakeholder)]
               (when-not (= 1 affected)
-                (log logger :error ::rollback-update-stakeholder {:id (:id old-stakeholder)})))
+                (log logger :error :rollback-update-stakeholder {:id (:id old-stakeholder)})))
             context)}
          {:txn-fn
           (fn setup-invited-plastic-strategy-user
@@ -487,8 +485,7 @@
                          :error-details {:result result})))))}]]
     (tht/thread-transactions logger transactions context)))
 
-(defn get-stakeholder-profile
-  [{:keys [db logger] :as config} stakeholder-id]
+(defn get-stakeholder-profile [{:keys [db logger] :as config} stakeholder-id]
   (let [conn (:spec db)
         context {:success? true
                  :stakeholder-id stakeholder-id}

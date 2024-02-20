@@ -61,8 +61,7 @@
 (def ^:private delete-ps-team-member-body-params-schema
   (mu/select-keys add-ps-team-member-body-params-schema [:user_id]))
 
-(defn- add-ps-team-member
-  [config {:keys [user] {:keys [path body]} :parameters}]
+(defn- add-ps-team-member [config {:keys [user] {:keys [path body]} :parameters}]
   (let [country-iso-code-a2 (:iso_code_a2 path)
         search-opts {:filters {:countries-iso-codes-a2 [country-iso-code-a2]}}
         {:keys [success? plastic-strategy reason] :as get-ps-result}
@@ -89,8 +88,7 @@
               (r/conflict {:reason :ps-team-member-already-exists})
               (r/server-error (dissoc result :success?)))))))))
 
-(defn- update-ps-team-member
-  [config {:keys [user] {:keys [path body]} :parameters}]
+(defn- update-ps-team-member [config {:keys [user] {:keys [path body]} :parameters}]
   (let [country-iso-code-a2 (:iso_code_a2 path)
         search-opts {:filters {:countries-iso-codes-a2 [country-iso-code-a2]}}
         {:keys [success? plastic-strategy reason] :as get-ps-result}
@@ -114,8 +112,7 @@
             (r/ok {})
             (r/server-error (dissoc result :success?))))))))
 
-(defn- get-ps-team-members
-  [config req]
+(defn- get-ps-team-members [config req]
   (let [country-iso-code-a2 (get-in req [:parameters :path :iso_code_a2])
         result (srv.ps.team/get-ps-team-members config
                                                 country-iso-code-a2)]
@@ -125,8 +122,7 @@
         (r/not-found {})
         (r/server-error (dissoc result :success?))))))
 
-(defn- invite-user-to-ps-team
-  [config {{:keys [path body]} :parameters}]
+(defn- invite-user-to-ps-team [config {{:keys [path body]} :parameters}]
   (let [country-iso-code-a2 (:iso_code_a2 path)
         search-opts {:filters {:countries-iso-codes-a2 [country-iso-code-a2]}}
         {:keys [success? plastic-strategy reason] :as get-ps-result}
@@ -144,8 +140,7 @@
             (r/conflict {:reason :already-exists})
             (r/server-error (dissoc result :success?))))))))
 
-(defn- delete-ps-team-member
-  [config {:keys [user] {:keys [path body]} :parameters}]
+(defn- delete-ps-team-member [config {:keys [user] {:keys [path body]} :parameters}]
   (let [country-iso-code-a2 (:iso_code_a2 path)
         search-opts {:filters {:countries-iso-codes-a2 [country-iso-code-a2]}}
         {:keys [success? plastic-strategy reason] :as get-ps-result}

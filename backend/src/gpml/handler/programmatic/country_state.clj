@@ -22,9 +22,8 @@
     [:state_code [string? {:min 1}]]
     [:type {:optional true} [string? {:min 1}]]]])
 
-(defn- create-country-states
-  [{:keys [db logger]}
-   {{{{:keys [tempfile]} :file} :multipart} :parameters}]
+(defn- create-country-states [{:keys [db logger]}
+                              {{{{:keys [tempfile]} :file} :multipart} :parameters}]
   (try
     (with-open [reader (io/reader tempfile)]
       (let [country-states-csv (m/decode country-state-csv-schema
@@ -55,7 +54,7 @@
                           :reason :invalid-parameter-type
                           :error-details (m/explain country-state-csv-schema country-states-csv)}))))
     (catch Exception e
-      (log logger :error ::failed-to-import-country-states {:exception-message (ex-message e)})
+      (log logger :error :failed-to-import-country-states e)
       (r/server-error {:success? false
                        :reason :failed-to-import-country-states
                        :error-details {:exception-message (ex-message e)

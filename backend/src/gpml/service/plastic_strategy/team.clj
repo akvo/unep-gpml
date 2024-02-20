@@ -10,8 +10,7 @@
    [gpml.util.email :as util.email]
    [gpml.util.thread-transactions :as tht]))
 
-(defn- assign-ps-team-member-role
-  [{:keys [db logger]} ps-team-member]
+(defn- assign-ps-team-member-role [{:keys [db logger]} ps-team-member]
   (let [role-name (keyword (format "plastic-strategy-%s" (name (:role ps-team-member))))
         role-assignments [{:role-name role-name
                            :context-type :plastic-strategy
@@ -21,8 +20,7 @@
                                                    :logger logger}
                                                   role-assignments))))
 
-(defn add-ps-team-member
-  [{:keys [db logger mailjet-config] :as config} plastic-strategy ps-team-member]
+(defn add-ps-team-member [{:keys [db logger mailjet-config] :as config} plastic-strategy ps-team-member]
   (let [transactions
         [{:txn-fn
           (fn tx-add-ps-team-member
@@ -108,7 +106,7 @@
                                                          (:chat-account-id ps-team-member)
                                                          {})]
                 (if-not (:success? result)
-                  (log logger :error ::failed-to-rollback-create-chat-account {:result result})
+                  (log logger :error :failed-to-rollback-create-chat-account {:result result})
                   (db.stakeholder/update-stakeholder (:spec db) {:id (:id ps-team-member)
                                                                  :chat_account_id nil
                                                                  :chat_account_status nil}))
@@ -133,15 +131,14 @@
                           ps-team-member
                           plastic-strategy)]
               (when-not (:success? result)
-                (log logger :error ::failed-to-notify-user-added-to-ps-team {:result result})))
+                (log logger :error :failed-to-notify-user-added-to-ps-team {:result result})))
             context)}]
         context {:success? true
                  :ps-team-member ps-team-member
                  :plastic-strategy plastic-strategy}]
     (tht/thread-transactions logger transactions context)))
 
-(defn update-ps-team-member
-  [{:keys [db logger] :as config} ps-team-member]
+(defn update-ps-team-member [{:keys [db logger] :as config} ps-team-member]
   (let [transactions
         [{:txn-fn
           (fn tx-get-old-ps-team-member
@@ -229,8 +226,7 @@
                  :ps-team-member ps-team-member}]
     (tht/thread-transactions logger transactions context)))
 
-(defn get-ps-team-members
-  [{:keys [db] :as config} country-iso-code-a2]
+(defn get-ps-team-members [{:keys [db] :as config} country-iso-code-a2]
   (let [search-opts {:filters {:countries-iso-codes-a2 [country-iso-code-a2]}}
         {:keys [success? plastic-strategy] :as result}
         (srv.ps/get-plastic-strategy config search-opts)]
@@ -239,8 +235,7 @@
                                       {:filters {:plastic-strategies-ids [(:id plastic-strategy)]}})
       result)))
 
-(defn invite-user-to-ps-team
-  [{:keys [db logger mailjet-config] :as config} ps-team-invitation]
+(defn invite-user-to-ps-team [{:keys [db logger mailjet-config] :as config} ps-team-invitation]
   (let [transactions
         [{:txn-fn
           (fn tx-invite-user
@@ -286,8 +281,7 @@
                  :ps-team-invitation ps-team-invitation}]
     (tht/thread-transactions logger transactions context)))
 
-(defn delete-ps-team-member
-  [{:keys [db logger] :as config} plastic-strategy user-id]
+(defn delete-ps-team-member [{:keys [db logger] :as config} plastic-strategy user-id]
   (let [transactions
         [{:txn-fn
           (fn tx-get-ps-team-member
@@ -371,7 +365,7 @@
                 (if (:success? result)
                   context
                   (do
-                    (log logger :error ::failed-to-rollback-unassign-ps-team-member-rbac-role {:result result})
+                    (log logger :error :failed-to-rollback-unassign-ps-team-member-rbac-role {:result result})
                     context)))))}
          {:txn-fn
           (fn tx-delete-ps-team-member

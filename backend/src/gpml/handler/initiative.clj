@@ -23,11 +23,10 @@
   (:import
    (java.sql SQLException)))
 
-(defn- add-geo-initiative
-  [conn initiative-id geo-coverage-type
-   {:keys [geo_coverage_country_groups
-           geo_coverage_countries
-           geo_coverage_country_states]}]
+(defn- add-geo-initiative [conn initiative-id geo-coverage-type
+                           {:keys [geo_coverage_country_groups
+                                   geo_coverage_countries
+                                   geo_coverage_country_states]}]
   (handler.geo/create-resource-geo-coverage conn
                                             :initiative
                                             initiative-id
@@ -44,12 +43,11 @@
   {:geo_coverage_country_groups (mapv (comp #(Integer/parseInt %) name ffirst) (:q24_4 params))
    :geo_coverage_countries (mapv (comp #(Integer/parseInt %) name ffirst) (:q24_2 params))})
 
-(defn- create-initiative
-  [{:keys [logger mailjet-config] :as config}
-   conn
-   user
-   {:keys [q24 tags related_content created_by
-           entity_connections individual_connections qimage thumbnail capacity_building] :as initiative}]
+(defn- create-initiative [{:keys [logger mailjet-config] :as config}
+                          conn
+                          user
+                          {:keys [q24 tags related_content created_by
+                                  entity_connections individual_connections qimage thumbnail capacity_building] :as initiative}]
   (let [image-id (when (seq qimage)
                    (handler.file/create-file config conn qimage :initiative :images :public))
         thumbnail-id (when (seq thumbnail)
@@ -64,7 +62,7 @@
                thumbnail-id
                (assoc :thumbnail_id thumbnail-id)
 
-               (not (nil? capacity_building))
+               (some? capacity_building)
                (assoc :capacity_building capacity_building))
         initiative-id (:id (db.initiative/new-initiative
                             conn
@@ -124,7 +122,7 @@
                         :message "New initiative created"
                         :id initiative-id}))))
       (catch Exception e
-        (log logger :error ::failed-to-create-initiative {:exception-message (.getMessage e)})
+        (log logger :error :failed-to-create-initiative e)
         (let [response {:success? false
                         :reason :could-not-create-initiative}]
 
@@ -132,8 +130,7 @@
             (r/server-error response)
             (r/server-error (assoc-in response [:body :error-details :error] (.getMessage e)))))))))
 
-(defn- expand-related-initiative-content
-  [conn initiative-id]
+(defn- expand-related-initiative-content [conn initiative-id]
   (let [related_content (handler.resource.related-content/get-related-contents conn initiative-id "initiative")]
     (for [item related_content]
       (merge item

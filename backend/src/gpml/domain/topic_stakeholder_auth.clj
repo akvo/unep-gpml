@@ -2,7 +2,7 @@
   (:require
    [malli.core :as m]))
 
-(def ^:const max-focal-points
+(def max-focal-points
   "The maximum amount of `focal-point` stakeholder in a single
   resource. If resource already have 2 `focal-point` stakeholders the
   system must not allow a third `focal-point` role
@@ -10,11 +10,11 @@
   `organisation` resources."
   2)
 
-(def ^:const role-types
+(def role-types
   "Topic Stakeholder Auth possible role types"
   #{"owner" "focal-point"})
 
-(def ^:const resource-types
+(def resource-types
   "Topic Stakeholder Auth possible resource types with applicable
   roles/permissions. This does not refer to the `resource` entity but
   to the platform's resources in general."

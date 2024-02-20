@@ -5,17 +5,15 @@
    [gpml.domain.resource :as dom.resource]
    [gpml.service.permissions :as srv.permissions]))
 
-(defn entity-type->context-type
-  [entity-type]
+(defn entity-type->context-type [entity-type]
   (cond
     (some #{entity-type} dom.resource/types)
     :resource
 
     :else (keyword (str/replace entity-type "_" "-"))))
 
-;; TODO: Add pre condition for ensuring a valid operation-type value
+;; TODO: Add :pre condition for ensuring a valid operation-type value
 (defn operation-allowed?
-  "FIXME: Add docstring"
   [{:keys [db logger]}
    {:keys [user-id entity-type entity-id operation-type root-context? custom-permission custom-context-type]}]
   (let [context-type-entity (entity-type->context-type (name entity-type))
@@ -42,8 +40,6 @@
        context-type)
      permission)))
 
-(defn super-admin?
-  "FIXME: Add docstring"
-  [{:keys [db logger]} user-id]
+(defn super-admin? [{:keys [db logger]} user-id]
   (let [{:keys [success? super-admin?]} (rbac/super-admin? (:spec db) logger user-id)]
     (and success? super-admin?)))

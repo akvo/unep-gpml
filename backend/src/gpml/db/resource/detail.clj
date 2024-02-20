@@ -11,8 +11,7 @@
 
 (hugsql/def-db-fns "gpml/db/resource/detail.sql" {:quoting :ansi})
 
-(defn- delete-resource-related-contents
-  [conn {:keys [id type]}]
+(defn- delete-resource-related-contents [conn {:keys [id type]}]
   (try
     (db.resource.detail/delete-related-contents conn
                                                 {:resource-id id
@@ -23,8 +22,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn delete-resource
-  [conn logger {:keys [id type rbac-context-type] :as opts}]
+(defn delete-resource [conn logger {:keys [id type rbac-context-type] :as opts}]
   (try
     (jdbc/with-db-transaction [tx conn]
       (when-not (:success? (rbac/delete-context! tx logger {:context-type-name rbac-context-type

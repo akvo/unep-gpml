@@ -23,18 +23,18 @@
    [gpml.util.postgresql :as pg-util]
    [integrant.core :as ig]
    [malli.util :as mu]
-   [ring.util.response :as resp])
+   [ring.util.response :as resp]
+   [taoensso.timbre :as timbre])
   (:import
    (java.sql SQLException)))
 
-(defn create
-  [{:keys [logger mailjet-config] :as config}
-   conn
-   {:keys [logo
-           geo_coverage_type
-           geo_coverage_country_groups
-           geo_coverage_countries
-           geo_coverage_country_states] :as org}]
+(defn create [{:keys [logger mailjet-config] :as config}
+              conn
+              {:keys [logo
+                      geo_coverage_type
+                      geo_coverage_country_groups
+                      geo_coverage_countries
+                      geo_coverage_country_states] :as org}]
   (let [logo-id (when (seq logo)
                   (handler.file/create-file config conn logo :organisation :images :private))
         geo-coverage-type (keyword geo_coverage_type)
@@ -64,8 +64,7 @@
       :resource-id org-id})
     org-id))
 
-(defn- handle-logo-update
-  [config conn org-id logo-payload]
+(defn- handle-logo-update [config conn org-id logo-payload]
   (let [old-org (db.organisation/organisation-by-id conn {:id org-id})
         old-logo-id (:logo_id old-org)
         delete-result (if-not old-logo-id
@@ -81,14 +80,13 @@
                                   :private))
       (throw (ex-info "Failed to delete old organisation logo" {:result delete-result})))))
 
-(defn update-org
-  [{:keys [logger mailjet-config] :as config}
-   conn
-   {:keys [logo
-           geo_coverage_type
-           geo_coverage_country_groups
-           geo_coverage_countries
-           geo_coverage_country_states] :as org}]
+(defn update-org [{:keys [logger mailjet-config] :as config}
+                  conn
+                  {:keys [logo
+                          geo_coverage_type
+                          geo_coverage_country_groups
+                          geo_coverage_countries
+                          geo_coverage_country_states] :as org}]
   (let [org-id (:id org)
         logo-to-update? (contains? (set (keys org)) :logo)
         new-logo-id (when logo-to-update?
@@ -183,7 +181,7 @@
               (resp/created referrer {:success? true
                                       :org (assoc body-params :id org-id)})))))
       (catch Exception e
-        (log logger :error ::create-org-failed {:exception-message (.getMessage e)})
+        (log logger :error :create-org-failed e)
         (if (instance? SQLException e)
           (if (= :unique-constraint-violation (pg-util/get-sql-state e))
             {:status 409
@@ -232,15 +230,15 @@
                 (r/server-error result))))
         (r/forbidden {:message "Unauthorized"}))
       (catch Exception t
-        (let [log-data {:exception-message (ex-message t)
-                        :exception-data (ex-data t)
-                        :context-data (assoc body-params
-                                             :id (get-in parameters [:path :id]))}]
-          (log logger :error :failed-to-update-organisation log-data)
-          (log logger :debug :failed-to-update-organisation (assoc log-data :stack-trace (.getStackTrace t)))
+        (let [context (assoc body-params
+                             :id (get-in parameters [:path :id]))]
+          (timbre/with-context+ context
+            (log logger :error :failed-to-update-organisation t))
           (r/server-error {:success? false
                            :reason :exception
-                           :error-details log-data}))))))
+                           :error-details (assoc context
+                                                 :exception-message (ex-message t)
+                                                 :exception-data (ex-data t))}))))))
 (defmethod ig/init-key :gpml.handler.organisation/put-params [_ _]
   (-> dom.organisation/Organisation
       (util.malli/dissoc [:id :created :modified :review_status
@@ -282,7 +280,7 @@
             (r/server-error result)))
         (r/forbidden {:message "Unauthorized"}))
       (catch Exception e
-        (log logger :error ::failed-to-req-org-to-member-conversion {:exception-message (ex-message e)})
+        (log logger :error :failed-to-req-org-to-member-conversion e)
         (let [response {:success? false
                         :reason :could-not-req-org-to-member-conversion}]
           (if (instance? SQLException e)
@@ -294,11 +292,10 @@
    :body (-> dom.organisation/Organisation
              (util.malli/dissoc
               [:id :is_member :created :modified :reviewed_at :reviewed_by :review_status]))})
-(def ^:const ^:private default-list-api-limit 50)
-(def ^:const ^:private default-list-api-page 0)
+(def ^:private default-list-api-limit 50)
+(def ^:private default-list-api-page 0)
 
-(defn- add-plastic-strategy-filters
-  [config {:keys [ps-country-iso-code-a2] :as api-search-opts}]
+(defn- add-plastic-strategy-filters [config {:keys [ps-country-iso-code-a2] :as api-search-opts}]
   (if-not ps-country-iso-code-a2
     api-search-opts
     (let [search-opts {:filters {:countries-iso-codes-a2 [ps-country-iso-code-a2]}}
@@ -308,13 +305,12 @@
         (assoc api-search-opts :plastic-strategy-id (:id plastic-strategy))
         api-search-opts))))
 
-(defn- list-api-params->opts
-  [{:keys [geo_coverage_types is_member types tags limit ps_bookmarked
-           page order_by descending ps_country_iso_code_a2 ps_bookmark_sections_keys
-           badges]
-    :or {limit default-list-api-limit
-         page default-list-api-page}
-    :as api-params}]
+(defn- list-api-params->opts [{:keys [geo_coverage_types is_member types tags limit ps_bookmarked
+                                      page order_by descending ps_country_iso_code_a2 ps_bookmark_sections_keys
+                                      badges]
+                               :or {limit default-list-api-limit
+                                    page default-list-api-page}
+                               :as api-params}]
   (cond-> {}
     page
     (assoc :page page)
@@ -332,13 +328,13 @@
     (seq tags)
     (assoc-in [:filters :tags] tags)
 
-    (not (nil? is_member))
+    (some? is_member)
     (assoc-in [:filters :is-member] is_member)
 
     (seq order_by)
     (assoc :order-by order_by)
 
-    (not (nil? descending))
+    (some? descending)
     (assoc :descending descending)
 
     (seq (:name api-params))
@@ -350,10 +346,10 @@
     (seq ps_bookmark_sections_keys)
     (assoc-in [:filters :ps-bookmark-sections-keys] ps_bookmark_sections_keys)
 
-    (not (nil? ps_bookmarked))
+    (some? ps_bookmarked)
     (assoc-in [:filters :ps-bookmarked] ps_bookmarked)
 
-    (not (nil? badges))
+    (some? badges)
     (assoc :badges badges)))
 
 (defmethod ig/init-key :gpml.handler.organisation/list
@@ -373,16 +369,13 @@
                             first
                             :count)}))
       (catch Exception t
-        (let [log-data {:exception-message (ex-message t)
-                        :exception-data (ex-data t)
-                        :context-data (get-in req [:parameters :query])}]
-          (log logger :error :failed-to-list-organisations log-data)
-          (log logger :debug :failed-to-list-organisations (assoc log-data :stack-trace (.getStackTrace t)))
-          (r/server-error {:success? false
-                           :reason :failed-to-list-organisations
-                           :error-details {:msg (:exception-message log-data)}}))))))
+        (timbre/with-context+ (get-in req [:parameters :query])
+          (log logger :error :failed-to-list-organisations t))
+        (r/server-error {:success? false
+                         :reason :failed-to-list-organisations
+                         :error-details {:msg (:exception-message (ex-message t))}})))))
 
-(def ^:const order-by-fields
+(def order-by-fields
   #{"name"
     "type"
     "geo_coverage_type"

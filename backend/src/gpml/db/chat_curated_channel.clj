@@ -10,8 +10,7 @@
 
 (hugsql/def-db-fns "gpml/db/chat_curated_channel.sql")
 
-(defn get-chat-curated-channels
-  [conn opts]
+(defn get-chat-curated-channels [conn opts]
   (try
     {:success? true
      :chat-curated-channels (get-chat-curated-channels* conn opts)}
@@ -20,16 +19,14 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn create-chat-curated-channel
-  [conn chat-curated-channel]
+(defn create-chat-curated-channel [conn chat-curated-channel]
   (jdbc-util/with-constraint-violation-check [{:type :unique
                                                :name "chat_curated_channel_pkey"
                                                :error-reason :already-exists}]
     (create-chat-curated-channel* conn chat-curated-channel)
     {:success? true}))
 
-(defn delete-chat-curated-channel
-  [conn chat-curated-channel-id]
+(defn delete-chat-curated-channel [conn chat-curated-channel-id]
   (try
     (let [affected (delete-chat-curated-channel* conn {:id chat-curated-channel-id})]
       (if (= affected 1)
