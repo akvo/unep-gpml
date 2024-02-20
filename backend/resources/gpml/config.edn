@@ -918,7 +918,7 @@
                                  :clientId #duct/env "OIDC_AUDIENCE"
                                  :audience #duct/env "OIDC_AUDIENCE_M2M"}
                          :sentry {:dsn #duct/env "SENTRY_DSN"
-                                  :environment #duct/env "ENV_NAME"}}
+                                  :environment #duct/env ["ENV_NAME" Str]}}
 
   :gpml.handler.auth/post-topic-auth #ig/ref :gpml.config/common
   :gpml.handler.auth/post-topic-auth-params {}
@@ -1166,7 +1166,7 @@
 
   :gpml.handler.monitoring/sentry-logger
   {:dsn #duct/env "SENTRY_DSN"
-   :env #duct/env "ENV_NAME"
+   :env #duct/env ["ENV_NAME" Str]
    :host #duct/env "POD_NAME"
    :version #duct/env "APP_VERSION"}}
 
