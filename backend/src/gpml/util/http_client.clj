@@ -74,7 +74,8 @@
                 :or {timeout default-timeout
                      max-retries default-max-retries
                      backoff-ms default-backoff-ms}}]
-   (let [request-id (util/uuid)]
+   (let [request-id (util/uuid)
+         logged-req (select-keys req [:url :method])]
      (dh/with-retry {:policy (retry-policy max-retries backoff-ms)
                      :fallback fallback
                      :on-retry (fn [_ e]
@@ -85,7 +86,13 @@
                                    (timbre/with-context+ {:request-id request-id
                                                           :request req}
                                      (log logger :error :do-request-failure e)))}
-       (client/request (merge req {:content-type :json
-                                   :connection-timeout timeout
-                                   :socket-timeout timeout
-                                   :throw-exceptions false}))))))
+       (timbre/with-context+ {:request-id request-id
+                              :request req}
+         (log logger :info :requesting logged-req)
+         (let [response (client/request (merge req {:content-type :json
+                                                    :connection-timeout timeout
+                                                    :socket-timeout timeout
+                                                    :throw-exceptions false}))]
+           (timbre/with-context+ {:response response}
+             (log logger :info :request-completed logged-req))
+           response))))))
