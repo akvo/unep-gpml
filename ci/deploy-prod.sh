@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #shellcheck disable=SC2039
 
-set -exuo pipefail
+set -Eeuxo pipefail
 
 [[ "${CI_BRANCH}" !=  "main" && ! "${CI_TAG:=}" =~ promote.* ]] && { echo "Branch different than main and not a tag. Skip deploy"; exit 0; }
 [[ "${CI_PULL_REQUEST}" ==  "true" ]] && { echo "Pull request. Skip deploy"; exit 0; }
