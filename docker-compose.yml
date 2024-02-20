@@ -48,6 +48,9 @@ services:
       - CHAT_API_KEY
       - CHAT_API_USER_ID
   frontend:
+    build:
+      context: ./frontend/
+      dockerfile: Dockerfile
     environment:
       - PORT=3001
       - APP_DOMAIN

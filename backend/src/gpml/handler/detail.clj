@@ -5,6 +5,7 @@
    [clojure.set :as set]
    [clojure.string :as str]
    [duct.logger :refer [log]]
+   [gpml.boundary.port.chat :as port.chat]
    [gpml.db.action :as db.action]
    [gpml.db.action-detail :as db.action-detail]
    [gpml.db.country]
@@ -452,9 +453,9 @@
             (if-not (and (= resource-type "stakeholder")
                          (seq (:chat_account_id resource)))
               context
-              (let [result (srv.chat/delete-user-account config
-                                                         (:chat_account_id resource)
-                                                         {})]
+              (let [result (port.chat/delete-user-account (:chat-adapter config)
+                                                          (:chat_account_id resource)
+                                                          {})]
                 (if (:success? result)
                   context
                   (assoc context
