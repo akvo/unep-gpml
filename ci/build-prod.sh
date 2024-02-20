@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #shellcheck disable=SC2039
 
-set -exuo pipefail
+set -Eeuxo pipefail
 
 [[ -z "${CI_TAG:=}" ]] && { echo "Skip build"; exit 0; }
 
