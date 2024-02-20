@@ -22,7 +22,8 @@
    [gpml.boundary.port.chat :as port]
    [gpml.util.http-client :as http-client]
    [gpml.util.json :as json]
-   [gpml.util.malli :refer [check!]]))
+   [gpml.util.malli :refer [check!]]
+   [taoensso.timbre :as timbre]))
 
 (defn- get-auth-headers [api-key api-user-id]
   {"X-Auth-Token" api-key
@@ -219,13 +220,15 @@
        :error-details {:msg (ex-message t)}})))
 
 (defn- add-channel-details [{:keys [logger api-domain-url] :as adapter} channel]
-  (let [result (if (= (:t channel) "c")
-                 (get-public-channel-users adapter (:id channel) {})
-                 (get-private-channel-users adapter (:id channel) {}))]
+  (let [channel-id (:id channel)
+        result (if (= (:t channel) "c")
+                 (get-public-channel-users adapter channel-id {})
+                 (get-private-channel-users adapter channel-id {}))]
     (if (:success? result)
       (add-channel-avatar-url api-domain-url (assoc channel :users (:users result)))
       (do
-        (log logger :error :failed-to-get-channel-users result)
+        (timbre/with-context+ {:channel channel}
+          (log logger :error :failed-to-get-channel-users result))
         (add-channel-avatar-url api-domain-url channel)))))
 
 (defn get-public-channels* [{:keys [logger api-key api-user-id] :as adapter} opts]
