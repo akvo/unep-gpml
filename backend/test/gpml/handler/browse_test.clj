@@ -52,7 +52,8 @@
 
 (deftest db-filter-based-on-query-params
   (letfn [(decode-params [params]
-            (malli/decode browse/api-opts-schema params mt/string-transformer))]
+            (malli/decode (browse/api-opts-schema {:logger (:duct.logger/timbre fixtures/*system*)})
+                          params mt/string-transformer))]
     (testing "Default filter values"
       (is (= (browse/api-filters->filters (decode-params {})) {:offset 0 :limit 50 :review-status "APPROVED"})))
     (testing "Country is not empty"

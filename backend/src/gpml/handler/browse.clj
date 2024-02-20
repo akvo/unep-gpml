@@ -26,8 +26,10 @@
 (def ^:private default-limit 50)
 (def ^:private default-offset 0)
 
-(def api-opts-schema
+(defn api-opts-schema
   "Browse API's filter options."
+  [{:keys [logger]}]
+  {:pre [logger]}
   [:and
    [:map
     ;; TODO: rename `country` to `countries`. Sync with FE.
@@ -39,8 +41,13 @@
      [:set
       {:decode/string
        (fn [s]
-         (->> (set (str/split s #","))
-              (map #(Integer/parseInt %))))}
+         (try
+           (->> (set (str/split s #","))
+                (map #(Integer/parseInt %)))
+           (catch Exception e
+             (timbre/with-context {:s s}
+               (log logger :error :decoding-failed e))
+             (throw e))))}
       pos-int?]]
     ;; TODO: rename `transnational` to `country-groups`. Sync with FE.
     [:transnational {:optional true
@@ -49,7 +56,13 @@
                                :collectionFormat "csv"
                                :allowEmptyValue false}}
      [:set
-      {:decode/string (fn [s] (set (map #(Integer/parseInt %) (str/split s #","))))}
+      {:decode/string (fn [s]
+                        (try
+                          (set (map #(Integer/parseInt %) (str/split s #",")))
+                          (catch Exception e
+                            (timbre/with-context {:s s}
+                              (log logger :error :decoding-failed e))
+                            (throw e))))}
       pos-int?]]
     [:topic {:optional true
              :swagger {:description (format "Comma separated list of topics to filter: %s" (str/join "," dom.types/topic-types))
@@ -57,7 +70,13 @@
                        :collectionFormat "csv"
                        :allowEmptyValue false}}
      [:set
-      {:decode/string (fn [s] (set (str/split s #",")))}
+      {:decode/string (fn [s]
+                        (try
+                          (set (str/split s #","))
+                          (catch Exception e
+                            (timbre/with-context {:s s}
+                              (log logger :error :decoding-failed e))
+                            (throw e))))}
       (apply conj [:enum] dom.types/topic-types)]]
     [:tag {:optional true
            :swagger {:description "Comma separated list of tags"
@@ -65,7 +84,13 @@
                      :collectionFormat "csv"
                      :allowEmptyValue false}}
      [:set
-      {:decode/string (fn [s] (set (str/split s #",")))}
+      {:decode/string (fn [s]
+                        (try
+                          (set (str/split s #","))
+                          (catch Exception e
+                            (timbre/with-context {:s s}
+                              (log logger :error :decoding-failed e))
+                            (throw e))))}
       string?]]
     [:q {:optional true
          :swagger {:description "Text search term to be found on the different topics"
@@ -103,28 +128,52 @@
                                      :type "string"
                                      :allowEmptyValue false}}
      [:set
-      {:decode/string (fn [s] (set (str/split s #",")))}
+      {:decode/string (fn [s]
+                        (try
+                          (set (str/split s #","))
+                          (catch Exception e
+                            (timbre/with-context {:s s}
+                              (log logger :error :decoding-failed e))
+                            (throw e))))}
       string?]]
     [:affiliation {:optional true
                    :swagger {:description "Comma separated list of affiliation ids (i.e., organisation ids)"
                              :type "string"
                              :allowEmptyValue false}}
      [:set
-      {:decode/string (fn [s] (set (map #(Integer/parseInt %) (str/split s #","))))}
+      {:decode/string (fn [s]
+                        (try
+                          (set (map #(Integer/parseInt %) (str/split s #",")))
+                          (catch Exception e
+                            (timbre/with-context {:s s}
+                              (log logger :error :decoding-failed e))
+                            (throw e))))}
       pos-int?]]
     [:subContentType {:optional true
                       :swagger {:description "Comma separated list of a topic's subContentTypes"
                                 :type "string"
                                 :allowEmptyValue false}}
      [:set
-      {:decode/string (fn [s] (set (str/split s #",")))}
+      {:decode/string (fn [s]
+                        (try
+                          (set (str/split s #","))
+                          (catch Exception e
+                            (timbre/with-context {:s s}
+                              (log logger :error :decoding-failed e))
+                            (throw e))))}
       string?]]
     [:entity {:optional true
               :swagger {:description "Comma separated list of entity IDs"
                         :type "string"
                         :allowEmptyValue false}}
      [:set
-      {:decode/string (fn [s] (set (map #(Integer/parseInt %) (str/split s #","))))}
+      {:decode/string (fn [s]
+                        (try
+                          (set (map #(Integer/parseInt %) (str/split s #",")))
+                          (catch Exception e
+                            (timbre/with-context {:s s}
+                              (log logger :error :decoding-failed e))
+                            (throw e))))}
       pos-int?]]
     [:orderBy {:optional true
                :swagger {:description "One of the following properties to order the list of results: title, description, id"
@@ -135,7 +184,13 @@
                         :swagger {:description "Includes the counts for the specified tags which is a comma separated list of approved tags."
                                   :type "string"}}
      [:set
-      {:decode/string (fn [s] (set (str/split s #",")))}
+      {:decode/string (fn [s]
+                        (try
+                          (set (str/split s #","))
+                          (catch Exception e
+                            (timbre/with-context {:s s}
+                              (log logger :error :decoding-failed e))
+                            (throw e))))}
       string?]]
     [:descending {:optional true
                   :swagger {:description "Order results in descending order: true or false"
@@ -186,7 +241,13 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
                 :type "string"
                 :allowEmptyValue false}}
      [:vector
-      {:decode/string (fn [s] (str/split s #","))}
+      {:decode/string (fn [s]
+                        (try
+                          (str/split s #",")
+                          (catch Exception e
+                            (timbre/with-context {:s s}
+                              (log logger :error :decoding-failed e))
+                            (throw e))))}
       [:string {:min 1}]]]
     [:badges {:optional true
               :swagger {:description "Boolean flag to load badges-related metadata"
@@ -397,11 +458,10 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
   (fn [{{:keys [query]} :parameters
         approved? :approved?
         user :user}]
-    (#'browse-response
-     config
-     (merge query {:user-id (:id user)})
-     approved?
-     (h.r.permission/super-admin? config (:id user)))))
+    (#'browse-response config
+                       (merge query {:user-id (:id user)})
+                       approved?
+                       (h.r.permission/super-admin? config (:id user)))))
 
-(defmethod ig/init-key :gpml.handler.browse/query-params [_ _]
-  api-opts-schema)
+(defmethod ig/init-key :gpml.handler.browse/query-params [_ config]
+  (api-opts-schema config))
