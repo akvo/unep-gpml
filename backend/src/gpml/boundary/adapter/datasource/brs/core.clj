@@ -48,7 +48,7 @@
        :reason :entity-not-supported}
       (let [endpoint (get endpoints entity)
             {:keys [status body]}
-            (http-client/do-request logger
+            (http-client/request logger
                                     {:method :get
                                      :url (str api-url endpoint)
                                      :as :json-keyword-keys

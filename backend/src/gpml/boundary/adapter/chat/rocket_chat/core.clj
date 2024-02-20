@@ -56,7 +56,7 @@
                            (parse-query-and-fields-opts)
                            (assoc :user-id user-id))
           {:keys [status body]}
-          (http-client/do-request logger
+          (http-client/request logger
                                   {:url (build-api-endpoint-url adapter "/users.info")
                                    :method :get
                                    :query-params (cske/transform-keys ->camelCaseString query-params)
@@ -78,7 +78,7 @@
 (defn create-user-account* [{:keys [logger api-key api-user-id] :as adapter} user]
   (try
     (let [{:keys [status body]}
-          (http-client/do-request logger
+          (http-client/request logger
                                   {:url (build-api-endpoint-url adapter "/users.create")
                                    :method :post
                                    :body (json/->json (cske/transform-keys ->camelCaseString user))
@@ -102,7 +102,7 @@
     (let [req-body (cske/transform-keys ->camelCaseString {:user-id user-id
                                                            :data updates})
           {:keys [status body]}
-          (http-client/do-request logger
+          (http-client/request logger
                                   {:url (build-api-endpoint-url adapter "/users.update")
                                    :method :post
                                    :body (json/->json req-body)
@@ -127,7 +127,7 @@
                      (contains? opts :confirm-relinquish)
                      (assoc :confirm-relinquish (:confirm-relinquish opts)))
           {:keys [status body]}
-          (http-client/do-request logger
+          (http-client/request logger
                                   {:url (build-api-endpoint-url adapter "/users.delete")
                                    :method :post
                                    :body (json/->json (cske/transform-keys ->camelCaseString req-body))
@@ -157,7 +157,7 @@
                      (contains? opts :confirm-relinquish)
                      (assoc :confirm-relinquish (:confirm-relinquish opts)))
           {:keys [status body]}
-          (http-client/do-request logger
+          (http-client/request logger
                                   {:url (build-api-endpoint-url adapter "/users.setActiveStatus")
                                    :method :post
                                    :body (json/->json (cske/transform-keys ->camelCaseString req-body))
@@ -179,7 +179,7 @@
   (try
     (let [query-params (assoc opts :room-id channel-id)
           {:keys [status body]}
-          (http-client/do-request logger
+          (http-client/request logger
                                   {:url (build-api-endpoint-url adapter "/channels.members")
                                    :method :get
                                    :query-params (cske/transform-keys ->camelCaseString query-params)
@@ -201,7 +201,7 @@
   (try
     (let [query-params (assoc opts :room-id channel-id)
           {:keys [status body]}
-          (http-client/do-request logger
+          (http-client/request logger
                                   {:url (build-api-endpoint-url adapter "/groups.members")
                                    :method :get
                                    :query-params (cske/transform-keys ->camelCaseString query-params)
@@ -243,7 +243,7 @@
                           (update :query (fn [q] {:$and [{:prid {:$exists false}}
                                                          q]}))))
           {:keys [status body]}
-          (http-client/do-request logger
+          (http-client/request logger
                                   {:url (build-api-endpoint-url adapter "/channels.list")
                                    :method :get
                                    :query-params (cske/transform-keys ->camelCaseString query-params)
@@ -275,7 +275,7 @@
                           (update :query (fn [q] {:$and [{:prid {:$exists false}}
                                                          q]}))))
           {:keys [status body]}
-          (http-client/do-request logger
+          (http-client/request logger
                                   {:url (build-api-endpoint-url adapter "/groups.listAll")
                                    :method :get
                                    :query-params (cske/transform-keys ->camelCaseString query-params)
@@ -304,7 +304,7 @@
                          (:types opts)
                          (assoc :types (:types opts)))
           {:keys [status body]}
-          (http-client/do-request logger
+          (http-client/request logger
                                   {:url (build-api-endpoint-url adapter "/rooms.adminRooms")
                                    :method :get
                                    :query-params (cske/transform-keys ->camelCaseString query-params)
@@ -387,7 +387,7 @@
                      "/channels.kick"
                      "/groups.kick")
           {:keys [status body]}
-          (http-client/do-request logger
+          (http-client/request logger
                                   {:url (build-api-endpoint-url adapter endpoint)
                                    :method :post
                                    :body (json/->json {:roomId channel-id :userId user-id})
@@ -407,7 +407,7 @@
 (defn add-user-to-private-channel* [{:keys [logger api-key api-user-id] :as adapter} user-id channel-id]
   (try
     (let [{:keys [status body]}
-          (http-client/do-request logger
+          (http-client/request logger
                                   {:url (build-api-endpoint-url adapter "/groups.invite")
                                    :method :post
                                    :body (json/->json {:roomId channel-id :userId user-id})
@@ -427,7 +427,7 @@
 (defn add-user-to-public-channel* [{:keys [logger api-key api-user-id] :as adapter} user-id channel-id]
   (try
     (let [{:keys [status body]}
-          (http-client/do-request logger
+          (http-client/request logger
                                   {:url (build-api-endpoint-url adapter "/channels.invite")
                                    :method :post
                                    :body (json/->json {:roomId channel-id :userId user-id})
@@ -456,7 +456,7 @@
                     ;; issue to fix this).
                     (assoc channel :exclude-self false))
           {:keys [status body]}
-          (http-client/do-request logger
+          (http-client/request logger
                                   {:url (build-api-endpoint-url adapter "/groups.create")
                                    :method :post
                                    :body (json/->json req-body)
@@ -486,7 +486,7 @@
                     ;; issue to fix this).
                     (assoc channel :exclude-self false))
           {:keys [status body]}
-          (http-client/do-request logger
+          (http-client/request logger
                                   {:url (build-api-endpoint-url adapter "/channels.create")
                                    :method :post
                                    :body (json/->json req-body)
@@ -507,7 +507,7 @@
 (defn delete-private-channel* [{:keys [logger api-key api-user-id] :as adapter} channel-id]
   (try
     (let [{:keys [status body]}
-          (http-client/do-request logger
+          (http-client/request logger
                                   {:url (build-api-endpoint-url adapter "/groups.delete")
                                    :method :post
                                    :body (json/->json {:roomId channel-id})
@@ -527,7 +527,7 @@
 (defn delete-public-channel* [{:keys [logger api-key api-user-id] :as adapter} channel-id]
   (try
     (let [{:keys [status body]}
-          (http-client/do-request logger
+          (http-client/request logger
                                   {:url (build-api-endpoint-url adapter "/channels.delete")
                                    :method :post
                                    :body (json/->json {:roomId channel-id})
@@ -550,7 +550,7 @@
                     ->camelCaseString
                     {:room-id channel-id :custom-fields custom-fields})
           {:keys [status body]}
-          (http-client/do-request logger
+          (http-client/request logger
                                   {:url (build-api-endpoint-url adapter "/groups.setCustomFields")
                                    :method :post
                                    :body (json/->json req-body)
@@ -574,7 +574,7 @@
                     ->camelCaseString
                     {:room-id channel-id :custom-fields custom-fields})
           {:keys [status body]}
-          (http-client/do-request logger
+          (http-client/request logger
                                   {:url (build-api-endpoint-url adapter "/channels.setCustomFields")
                                    :method :post
                                    :body (json/->json req-body)
@@ -595,7 +595,7 @@
 (defn get-channel-discussions* [{:keys [logger api-key api-user-id] :as adapter} channel-id]
   (try
     (let [{:keys [status body]}
-          (http-client/do-request logger
+          (http-client/request logger
                                   {:url (build-api-endpoint-url adapter "/rooms.getDiscussions")
                                    :method :get
                                    :query-params {:roomId channel-id}

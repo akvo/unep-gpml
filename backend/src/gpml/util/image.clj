@@ -7,7 +7,7 @@
   ([logger url] (download-image logger url {}))
   ([logger url req-opts]
    (let [{:keys [status headers body]}
-         (http-client/do-request logger
+         (http-client/request logger
                                  (merge
                                   {:method :get
                                    :url url

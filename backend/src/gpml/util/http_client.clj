@@ -63,12 +63,13 @@
   [_req resp]
   (util/update-if-not-nil resp :body json/<-json))
 
-(defn do-request
-  "Like `clj-http.client/request` but with retries. Optionally accepts
-  a map with retry configuration. Otherwise, it sets a default
-  configuration."
+(defn request
+  "Like `clj-http.client/request`, but with retries.
+
+  Optionally accepts a map with retry configuration.
+  Otherwise, it sets a default configuration."
   ([logger req]
-   (do-request logger req {}))
+   (request logger req {}))
 
   ([logger req {:keys [timeout max-retries backoff-ms]
                 :or {timeout default-timeout
@@ -81,11 +82,11 @@
                      :on-retry (fn [_ e]
                                  (timbre/with-context+ {:request-id request-id
                                                         :request req}
-                                   (log logger :error :do-request-retry e)))
+                                   (log logger :error :request-retry e)))
                      :on-failure (fn [_ e]
                                    (timbre/with-context+ {:request-id request-id
                                                           :request req}
-                                     (log logger :error :do-request-failure e)))}
+                                     (log logger :error :request-failure e)))}
        (timbre/with-context+ {:request-id request-id
                               :request req}
          (log logger :info :requesting logged-req)
