@@ -40,7 +40,8 @@
    [gpml.util.postgresql :as pg-util]
    [gpml.util.thread-transactions :as tht]
    [integrant.core :as ig]
-   [medley.core :as medley])
+   [medley.core :as medley]
+   [taoensso.timbre :as timbre])
   (:import
    (java.sql SQLException)))
 
@@ -128,38 +129,38 @@
    :outcome_and_impact {:action-code 43374934
                         :format-fn #'first-child-replacing-other}
 
-   ;;Funding Type: CE_ CF
+   ;; Funding Type: CE_ CF
    :funding {:action-code 43374920
              :format-fn (fn funding [_ action]
                           (when action
                             {:types (map other-or-name (:children action))
                              :name (get action :value-entered)}))}
    ;; action detail in parent node. Should we delete if no action detail even if there is some child?
-   ;Funding Name: CG
-   ; (def "funding name" 43374844 :action-detail)              ;; this is under Funding type!
+   ;; Funding Name: CG
+   ;; (def "funding name" 43374844 :action-detail)              ;; this is under Funding type!
 
-   ;Focus Area: Column BK_BL
+   ;; Focus Area: Column BK_BL
    :focus_area {:action-code 43374915
                 :format-fn #'all-of-the-above}
 
-   ;Lifecycle Phase: Column BM_BN
+   ;; Lifecycle Phase: Column BM_BN
    :lifecycle_phase {:action-code 43374916
                      :format-fn #'all-of-the-above}
 
-   ;Sector: Column BY_BZ
+   ;; Sector: Column BY_BZ
    :sector {:action-code 43374905
             :format-fn #'all-of-the-above}
 
-   ;Activity Owner: Column AR, AS
+   ;; Activity Owner: Column AR, AS
    :activity_owner {:action-code 43374862
                     :format-fn #'nested-all-of-the-above}
    ;; all these are children of "activity owner"
-   ;Entity Type (only the one selected):
-   ;Public Administration: Column AT, AU
-   ;Private Sector: Column AV, AW
-   ;Third Sector: Column AX, AY
+   ;; Entity Type (only the one selected):
+   ;; Public Administration: Column AT, AU
+   ;; Private Sector: Column AV, AW
+   ;; Third Sector: Column AX, AY
 
-   ;Activity Term: CH_CI
+   ;; Activity Term: CH_CI
    :activity_term {:action-code 43374943
                    :format-fn #'first-child-replacing-other}
    :currency_amount_invested {:action-detail-codes [43374846]
@@ -171,7 +172,7 @@
                       :format-fn #'value-list}
    :info_monitoring_data {:action-detail-codes [43374796]
                           :format-fn #'value-list}
-   :info_resource_links {:action-detail-codes [43374810     ;; this is the parent of the rest
+   :info_resource_links {:action-detail-codes [43374810 ;; this is the parent of the rest
                                                43374839
                                                43374835
                                                43374837
@@ -185,11 +186,11 @@
    ;; Amount invested and contribution are already in the project table.
    ;; They are missing the currency but right now all values are in USD, so we can hardcode it.
    ;; Amount invested
-   ;:amount_invested {:amount 43374826
-   ;                  :currency 43374846}
+                                        ;:amount_invested {:amount 43374826
+   ;;                  :currency 43374846}
    ;; In Kind Contributions: CD – CC
-   ;:in_kind_contribution {:amount 43374827
-   ;                       :currency 43374836}
+                                        ;:in_kind_contribution {:amount 43374827
+   ;;                       :currency 43374836}
    })
 (defonce cached-hierarchies (atom {}))
 
@@ -280,8 +281,7 @@
                 data-queries)))
 ;;========================================END OF DEPRECATED CODE==============================================================
 
-(defn- resolve-resource-type
-  [resource-type]
+(defn- resolve-resource-type [resource-type]
   (cond
     (some #{resource-type} dom.resource/types)
     "resource"
@@ -308,8 +308,7 @@
      []
      related-contents)))
 
-(defn- add-stakeholder-connections
-  [db resource-type resource]
+(defn- add-stakeholder-connections [db resource-type resource]
   (let [search-opts {:resource-id (:id resource)
                      :resource-type resource-type}
         sth-conns (->> (db.resource.connection/get-resource-stakeholder-connections db search-opts)
@@ -321,8 +320,7 @@
                                :tags))))]
     (assoc resource :stakeholder_connections sth-conns)))
 
-(defn- add-files-urls
-  [config resource]
+(defn- add-files-urls [config resource]
   (let [{:keys [files image_id thumbnail_id picture_id logo_id]} resource
         resource-type (:type resource)
         files-w-urls (->> files
@@ -341,13 +339,12 @@
              :image (get-in files-w-urls [image_id :url])
              :thumbnail (get-in files-w-urls [thumbnail_id :url])))))
 
-(defn- add-extra-details
-  [{:keys [db] :as config} {:keys [id affiliation] :as resource} resource-type
-   {:keys [files-urls? owners? tags? entity-connections?
-           stakeholder-connections? related-content? affiliation?]
-    :or {files-urls? true owners? true tags? true entity-connections? true
-         stakeholder-connections? true related-content? true
-         affiliation? false}}]
+(defn- add-extra-details [{:keys [db] :as config} {:keys [id affiliation] :as resource} resource-type
+                          {:keys [files-urls? owners? tags? entity-connections?
+                                  stakeholder-connections? related-content? affiliation?]
+                           :or {files-urls? true owners? true tags? true entity-connections? true
+                                stakeholder-connections? true related-content? true
+                                affiliation? false}}]
   (let [conn (:spec db)
         api-resource-type (if-not (= "resource" resource-type)
                             resource-type
@@ -429,8 +426,7 @@
 (defmethod extra-details :nothing [_ _ _]
   nil)
 
-(defn- delete-resource
-  [{:keys [db logger] :as config} resource-id resource-type rbac-context-type]
+(defn- delete-resource [{:keys [db logger] :as config} resource-id resource-type rbac-context-type]
   (let [transactions
         [{:txn-fn
           (fn tx-get-resource
@@ -475,7 +471,7 @@
                 (if (:success? result)
                   context
                   (do
-                    (log logger :error ::failed-to-rollback-delete-chat-account {:result result})
+                    (log logger :error :failed-to-rollback-delete-chat-account {:result result})
                     context)))))}
          {:txn-fn
           (fn tx-delete-resource
@@ -515,13 +511,13 @@
             (if (:success? result)
               (r/ok {})
               (do
-                (log logger :error ::failed-to-delete-resource {:id topic-id
-                                                                :type topic-type
-                                                                :result result})
+                (log logger :error :failed-to-delete-resource {:id topic-id
+                                                               :type topic-type
+                                                               :result result})
                 (r/server-error (dissoc result :success?)))))))
       (catch Exception e
-        (log logger :error ::delete-resource-failed {:exception-message (.getMessage e)
-                                                     :context-data path})
+        (timbre/with-context+ path)
+        (log logger :error :delete-resource-failed e)
         (if (instance? SQLException e)
           (r/server-error {:success? false
                            :reason :could-not-delete-resource
@@ -530,8 +526,7 @@
                            :reason :could-not-delete-resource
                            :error-details {:error-message (.getMessage e)}}))))))
 
-(defn- get-detail*
-  [conn table-name id opts]
+(defn- get-detail* [conn table-name id opts]
   (let [opts (merge opts {:topic-type table-name :id id :badges true})
         {:keys [json] :as result}
         (if (get #{"organisation" "stakeholder"} table-name)
@@ -541,8 +536,7 @@
         (dissoc :json)
         (merge json))))
 
-(defn- get-detail
-  [{:keys [db] :as config} topic-id topic-type query]
+(defn- get-detail [{:keys [db] :as config} topic-id topic-type query]
   (let [conn (:spec db)
         resource-details (-> (get-detail* conn topic-type topic-id query)
                              (dissoc :tags :remarks :abstract :description))
@@ -614,9 +608,9 @@
                 (r/server-error result))
               (r/ok (:resource-details result))))))
       (catch Exception t
-        (log logger :error ::failed-to-get-resource-details {:exception-message (.getMessage t)
-                                                             :context-data {:path-params path
-                                                                            :user user}})
+        (timbre/with-context+ {:path-params path
+                               :user user}
+          (log logger :error :failed-to-get-resource-details t))
         (if (instance? SQLException t)
           (r/server-error {:success? true
                            :reason (pg-util/get-sql-state t)})
@@ -670,8 +664,7 @@
       :id id
       :organisation org-id})))
 
-(defn update-blank-resource-image
-  [config conn resource-type resource-id file-id-key old-file-id]
+(defn update-blank-resource-image [config conn resource-type resource-id file-id-key old-file-id]
   (if old-file-id
     (let [result (srv.file/delete-file config conn {:id old-file-id})]
       (if (:success? result)
@@ -687,8 +680,7 @@
       :id resource-id
       :updates {file-id-key nil}})))
 
-(defn- update-resource-image**
-  [config conn resource-type resource-id file-id-key image-payload]
+(defn- update-resource-image** [config conn resource-type resource-id file-id-key image-payload]
   (let [new-file (dom.file/base64->file image-payload
                                         (keyword resource-type)
                                         :images
@@ -702,8 +694,7 @@
         :id resource-id
         :updates {file-id-key (get-in result [:file :id])}}))))
 
-(defn- update-resource-image*
-  [config conn resource-type resource-id file-id-key old-file-id image-payload]
+(defn- update-resource-image* [config conn resource-type resource-id file-id-key old-file-id image-payload]
   (if-not old-file-id
     (update-resource-image** config
                              conn
@@ -721,8 +712,7 @@
                                  image-payload)
         (throw (ex-info "Failed to delete old resource image file" {:result result}))))))
 
-(defn update-resource-image
-  [config conn resource-type resource-id image-key image-payload]
+(defn update-resource-image [config conn resource-type resource-id image-key image-payload]
   (let [resource (get-detail* conn resource-type resource-id {})
         file-id-key (keyword (str (name image-key) "_id"))
         old-file-id (util/uuid (get resource file-id-key))]
@@ -741,15 +731,14 @@
                               old-file-id
                               image-payload))))
 
-(defn- update-resource
-  [{:keys [logger mailjet-config] :as config}
-   conn
-   topic-type
-   id
-   {:keys [geo_coverage_countries
-           geo_coverage_country_groups
-           geo_coverage_country_states
-           geo_coverage_type] :as updates}]
+(defn- update-resource [{:keys [logger mailjet-config] :as config}
+                        conn
+                        topic-type
+                        id
+                        {:keys [geo_coverage_countries
+                                geo_coverage_country_groups
+                                geo_coverage_country_states
+                                geo_coverage_type] :as updates}]
   (let [updates (assoc updates :id id)
         table (cond
                 (contains? dom.resource/types topic-type) "resource"
@@ -811,11 +800,10 @@
                                         :resource-id id})
     status))
 
-(defn- update-initiative
-  [{:keys [logger mailjet-config] :as config}
-   conn
-   id
-   initiative]
+(defn- update-initiative [{:keys [logger mailjet-config] :as config}
+                          conn
+                          id
+                          initiative]
   (let [dom-keys (util.malli/keys dom.initiative/Initiative)
         api-initiative (assoc initiative :id id)
         tags (remove nil? (:tags api-initiative))
@@ -881,9 +869,9 @@
                                  :reason :failed-to-update-resource-details})))))
 
         (catch Exception e
-          (log logger :error ::failed-to-update-resource-details {:exception-message (.getMessage e)
-                                                                  :context-data {:path-params path
-                                                                                 :body-params body}})
+          (timbre/with-context+ {:path-params path
+                                 :body-params body}
+            (log logger :error :failed-to-update-resource-details e))
           ;; TODO: Improve this: we are re-doing some things that we do in the successful path.
           ;; Besides, we should try to wrap this code as well inside another try-catch block.
           (doseq [[image-key _] (select-keys body [(if initiative? :qimage :image) :thumbnail])

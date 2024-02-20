@@ -1,4 +1,4 @@
-.PHONY: test kondo eastwood cljfmt lint clean repl lein-repl uberjar
+.PHONY: test kondo eastwood cljfmt lint clean repl lein-repl uberjar pedantic
 HOME=$(shell echo $$HOME)
 HERE=$(shell echo $$PWD)
 
@@ -56,7 +56,10 @@ kondo: .make_kondo_prep clean
 
 repl: lein-repl
 
-lint: kondo cljfmt eastwood
+pedantic:
+	lein with-profile uberjar deps
+
+lint: pedantic kondo cljfmt eastwood
 
 psql:
 		psql -h localhost -p 5432 -d gpml -U unep

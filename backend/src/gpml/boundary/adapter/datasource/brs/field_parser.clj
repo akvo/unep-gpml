@@ -50,12 +50,10 @@
 ;; Looks like all descriptions coming from BRS API are enclosed in
 ;; escaped or plain HTML. So, we always unescape first and then parse
 ;; the HTML to finally get the text from it.
-(defn- html->plain-text
-  [html]
+(defn- html->plain-text [html]
   (.text (Jsoup/parse (Entities/unescape html))))
 
-(defn- get-project-geo-coverage-type
-  [beneficiaries global?]
+(defn- get-project-geo-coverage-type [beneficiaries global?]
   (cond
     global?
     {"global" "Global"}
@@ -66,22 +64,19 @@
     :else
     {"national" "National"}))
 
-(defn- get-meeting-geo-coverage-type
-  [country]
+(defn- get-meeting-geo-coverage-type [country]
   (if (seq country)
     :national
     :global))
 
-(defn- value->instant
-  [value]
+(defn- value->instant [value]
   (when (seq value)
     (-> value
         (jt/local-date-time)
         (jt/zoned-date-time (jt/zone-id "UTC"))
         (jt/instant))))
 
-(defn- dot-net-json-date->offset-date-time
-  [value]
+(defn- dot-net-json-date->offset-date-time [value]
   (when (seq value)
     (let [[_ millis offset] (re-find util.regex/dot-net-json-date-re value)]
       (-> (Long/parseLong millis)
@@ -90,8 +85,7 @@
                                  (jt/zone-offset offset)
                                  (jt/zone-id "UTC")))))))
 
-(defn- value->geo-coverage
-  [brs-api-id value]
+(defn- value->geo-coverage [brs-api-id value]
   (map (fn [{:keys [country]}]
          (let [country-code (str/upper-case country)]
            (cond-> {:brs_api_id brs-api-id}
@@ -102,16 +96,14 @@
              (assoc :iso_code_a3 country-code))))
        value))
 
-(defn- value->entity-connections
-  [brs-api-id value role]
+(defn- value->entity-connections [brs-api-id value role]
   (map (fn [{:keys [Name]}]
          {:brs_api_id brs-api-id
           :name Name
           :role role})
        value))
 
-(defn- value->tags
-  [brs-api-id value]
+(defn- value->tags [brs-api-id value]
   (reduce (fn [acc tag]
             (if (seq tag)
               (conj acc {:tag (str/trim tag)
@@ -289,8 +281,7 @@
   [_ _ _ _ value]
   value)
 
-(defn- brs-resource->gpml-resource*
-  [config entity-name {:keys [id] :as brs-entity}]
+(defn- brs-resource->gpml-resource* [config entity-name {:keys [id] :as brs-entity}]
   (reduce (fn [acc [brs-field value]]
             (let [gpml-field (get-in brs-field->gpml-field [entity-name brs-field] brs-field)
                   parsed-value (parse-brs-field config (str/lower-case id) entity-name brs-field value)]
@@ -305,10 +296,10 @@
                        ;; that are meant to be merged together.
                        (cond
                          (get #{:tags :keywords} brs-field)
-                         (concat (:tags acc) parsed-value)
+                         (into (:tags acc) parsed-value)
 
                          (get #{:Implementedby :Donors} brs-field)
-                         (concat (:entity_connections acc) parsed-value)
+                         (into (:entity_connections acc) parsed-value)
 
                          (= :isGlobal brs-field)
                          (get-project-geo-coverage-type (:Beneficiaries brs-entity) parsed-value)

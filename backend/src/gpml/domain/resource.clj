@@ -3,7 +3,7 @@
    [gpml.domain.types :as dom.types]
    [malli.core :as m]))
 
-(def ^:const types
+(def types
   "Possible Resource types.
 
   FIXME: this currently is not an enum value

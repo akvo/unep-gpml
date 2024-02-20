@@ -23,14 +23,14 @@
 
 ;; Load multimethods:
 (require 'gpml.handler.detail
+         'gpml.timbre-logger
          'gpml.util.postgresql)
 
 (duct/load-hierarchy)
 
 (defonce ^:private default-lang-iso-code "en")
 
-(defn- dev-system
-  []
+(defn- dev-system []
   (-> (duct/resource "gpml/config.edn")
       (duct/read-config)
       (duct/prep-config [:duct.profile/dev])))
@@ -90,10 +90,11 @@
   (db.tag/tag-by-tags db {:tags x}))
 
 (defn get-language [db x]
-  (remove nil?
-          (mapv (fn [y]
-                  (if-let [language-id (db.language/language-by-name db {:name (:language y)})]
-                    (assoc y :url (:url y) :language (:id language-id)) nil)) x)))
+  (into []
+        (keep (fn [y]
+                (if-let [language-id (db.language/language-by-name db {:name (:language y)})]
+                  (assoc y :url (:url y) :language (:id language-id)) nil)))
+        x))
 
 (defn get-action [db x]
   (db.action/action-by-code db {:code x}))

@@ -7,10 +7,10 @@
    [gpml.handler.util :as handler.util]
    [gpml.util.sql :as sql-util]))
 
-(def ^:const ^:private related-content-shared-keys
+(def ^:private related-content-shared-keys
   [:id :title :description :image :thumbnail])
 
-(def ^:const ^:private related-content-non-shared-keys-mapping
+(def ^:private related-content-non-shared-keys-mapping
   {:initiative {:q2 :title
                 :q3 :description
                 :qimage :image}
@@ -18,8 +18,7 @@
    :policy {:abstract :description}
    :resource {:summary :description}})
 
-(defn- unwrap-related-contents
-  [related-contents]
+(defn- unwrap-related-contents [related-contents]
   (->> related-contents
        (map
         (fn [{:keys [resource_type resource_data]}]
@@ -56,7 +55,7 @@
         {:success? true}
         {:success? false}))
     (catch Exception e
-      (log logger :error :could-not-create-related-contents {:exception-message (.getMessage e)})
+      (log logger :error :could-not-create-related-contents e)
       {:success? false
        :reason :could-not-create-related-contents
        :error-details {:message (.getMessage e)}})))

@@ -3,16 +3,14 @@
    [dev.gethop.rbac :as rbac]
    [gpml.db.rbac-util :as db.rbac-util]))
 
-(def ^:const root-app-resource-id 0)
-(def ^:const root-app-context-type :application)
+(def root-app-resource-id 0)
+(def root-app-context-type :application)
 
-(def ^:const root-app-context-id #uuid"00000000-0000-0000-0000-000000000000")
+(def root-app-context-id #uuid"00000000-0000-0000-0000-000000000000")
 
-(def ^:const organisation-context-type :organisation)
+(def organisation-context-type :organisation)
 
-(defn- create-resource-context*
-  "FIXME: Add docstring"
-  [{:keys [conn logger]} {:keys [context-type resource-id parent-context-type parent-resource-id]}]
+(defn- create-resource-context* [{:keys [conn logger]} {:keys [context-type resource-id parent-context-type parent-resource-id]}]
   (let [{success? :success? parent-context :context} (rbac/get-context conn
                                                                        logger
                                                                        (or parent-context-type
@@ -24,9 +22,7 @@
                          :resource-id resource-id}]
         (rbac/create-context! conn logger new-context parent-context)))))
 
-(defn assign-roles-to-users
-  "FIXME: Add docstring"
-  [{:keys [conn logger]} role-assignments]
+(defn assign-roles-to-users [{:keys [conn logger]} role-assignments]
   (let [parsed-role-assignments (mapv (fn [{:keys [role-name context-type resource-id user-id]}]
                                         {:role (:role (rbac/get-role-by-name conn logger role-name))
                                          :context (:context (rbac/get-context conn logger context-type resource-id))
@@ -34,9 +30,7 @@
                                       role-assignments)]
     (rbac/assign-roles! conn logger parsed-role-assignments)))
 
-(defn unassign-roles-from-users
-  "FIXME: Add docstring"
-  [{:keys [conn logger]} role-unassignments]
+(defn unassign-roles-from-users [{:keys [conn logger]} role-unassignments]
   (let [parsed-role-unassignments (mapv (fn [{:keys [role-name context-type resource-id user-id]}]
                                           {:role (:role (rbac/get-role-by-name conn logger role-name))
                                            :context (:context (rbac/get-context conn logger context-type resource-id))
@@ -44,14 +38,10 @@
                                         role-unassignments)]
     (rbac/unassign-roles! conn logger parsed-role-unassignments)))
 
-(defn unassign-all-roles
-  "FIXME: Add docstring"
-  [{:keys [conn]} user-id]
+(defn unassign-all-roles [{:keys [conn]} user-id]
   (db.rbac-util/unassign-all-roles conn {:user-id user-id}))
 
-(defn create-resource-context
-  "FIXME: Add docstring"
-  [config {:keys [context-type resource-id]}]
+(defn create-resource-context [config {:keys [context-type resource-id]}]
   (create-resource-context*
    config
    {:context-type context-type
@@ -59,9 +49,7 @@
     :parent-resource-id root-app-resource-id
     :parent-context-type root-app-context-type}))
 
-(defn get-resource-context
-  "FIXME: Add docstring"
-  [{:keys [conn logger]} context-type resource-id]
+(defn get-resource-context [{:keys [conn logger]} context-type resource-id]
   (rbac/get-context conn logger context-type resource-id))
 
 (defn create-resource-contexts-under-root
@@ -78,8 +66,7 @@
         :resource-id resource-id}
        parent-context))))
 
-(defn delete-resource-context
-  [{:keys [conn logger]} {:keys [resource-id context-type-name]}]
+(defn delete-resource-context [{:keys [conn logger]} {:keys [resource-id context-type-name]}]
   (let [result (rbac/delete-context!
                 conn
                 logger
@@ -89,9 +76,7 @@
       result
       (assoc result :reason :failed-to-delete-context))))
 
-(defn assign-roles-to-users-from-connections
-  "FIXME: Add docstring"
-  [config {:keys [individual-connections context-type resource-id]}]
+(defn assign-roles-to-users-from-connections [config {:keys [individual-connections context-type resource-id]}]
   (let [individual-connections-for-perms (->> individual-connections
                                               (filter #(contains? #{:owner :resource_editor} (-> % :role keyword)))
                                               distinct)

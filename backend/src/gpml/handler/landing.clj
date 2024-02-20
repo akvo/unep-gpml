@@ -14,8 +14,8 @@
   (:import
    (java.sql SQLException)))
 
-(def ^:const ^:private topic-re (util.regex/comma-separated-enums-re dom.types/topic-types))
-(def ^:const ^:private entity-groups ["topic" "community"])
+(def ^:private topic-re (util.regex/comma-separated-enums-re dom.types/topic-types))
+(def ^:private entity-groups ["topic" "community"])
 
 (def ^:private query-params
   [:map
@@ -116,10 +116,9 @@
                                   :allowEmptyValue false}}
     boolean?]])
 
-(defn- api-opts->opts
-  [{:keys [startDate endDate user-id favorites country transnational
-           topic tag affiliation representativeGroup subContentType entity
-           entityGroup q capacity_building featured]}]
+(defn- api-opts->opts [{:keys [startDate endDate user-id favorites country transnational
+                               topic tag affiliation representativeGroup subContentType entity
+                               entityGroup q capacity_building featured]}]
   (cond-> {}
 
     startDate
@@ -174,10 +173,9 @@
     true
     (assoc :review-status "APPROVED")))
 
-(defn- get-resource-map-counts
-  [{:keys [db logger]}
-   {{:keys [query]} :parameters
-    user :user}]
+(defn- get-resource-map-counts [{:keys [db logger]}
+                                {{:keys [query]} :parameters
+                                 user :user}]
   (try
     (let [conn (:spec db)
           opts (api-opts->opts (assoc query :user-id (:id user)))
@@ -186,9 +184,10 @@
                           (let [opts {:filters {:country-groups (get opts :country-groups)}}
                                 country-group-countries (db.country-group/get-country-groups-countries opts)
                                 geo-coverage-countries (map :id country-group-countries)]
-                            (assoc opts :geo-coverage-countries (set (concat
-                                                                      (get opts :countries)
-                                                                      geo-coverage-countries)))))
+                            (assoc opts :geo-coverage-countries (into #{}
+                                                                      cat
+                                                                      [(get opts :countries)
+                                                                       geo-coverage-countries]))))
           summary-data (->> (gpml.db.landing/summary conn)
                             (mapv (fn [{:keys [resource_type count country_count]}]
                                     {(keyword resource_type) count :countries country_count})))
@@ -198,7 +197,7 @@
                       :country_group_counts country_group_counts
                       :summary summary-data}))
     (catch Exception e
-      (log logger :error ::failed-to-get-resource-map-counts {:exception-message (.getMessage e)})
+      (log logger :error :failed-to-get-resource-map-counts e)
       (r/server-error {:success? false
                        :reason :failed-to-get-resource-map-counts
                        :error-details {:error (if (instance? SQLException e)

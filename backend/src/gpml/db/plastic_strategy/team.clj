@@ -13,30 +13,26 @@
 
 (hugsql/def-db-fns "gpml/db/plastic_strategy/team.sql")
 
-(defn- ps-team-member->p-ps-team-member
-  [ps-team-member]
+(defn- ps-team-member->p-ps-team-member [ps-team-member]
   (-> ps-team-member
       (util/update-if-not-nil :role name)
       (util/update-if-not-nil :teams (comp
                                       #(util.pgsql/->JDBCArray % "plastic_strategy_team_type")
                                       #(map name %)))))
 
-(defn- p-ps-team-member->ps-team-member
-  [p-ps-team-member]
+(defn- p-ps-team-member->ps-team-member [p-ps-team-member]
   (-> p-ps-team-member
       (util/update-if-not-nil :role keyword)
       (util/update-if-not-nil :teams #(map keyword %))))
 
-(defn add-ps-team-member
-  [conn ps-team-member]
+(defn add-ps-team-member [conn ps-team-member]
   (jdbc-util/with-constraint-violation-check [{:type :unique
                                                :name "plastic_strategy_team_pkey"
                                                :error-reason :already-exists}]
     (add-ps-team-member* conn (ps-team-member->p-ps-team-member ps-team-member))
     {:success? true}))
 
-(defn update-ps-team-member
-  [conn ps-team-member-updates]
+(defn update-ps-team-member [conn ps-team-member-updates]
   (try
     (let [p-ps-team-member-updates (update ps-team-member-updates :updates ps-team-member->p-ps-team-member)
           affected (update-ps-team-member* conn p-ps-team-member-updates)]
@@ -51,8 +47,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn delete-ps-team-member
-  [conn plastic-strategy-id user-id]
+(defn delete-ps-team-member [conn plastic-strategy-id user-id]
   (try
     (let [affected (delete-ps-team-member* conn
                                            {:plastic-strategy-id plastic-strategy-id
@@ -68,8 +63,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn get-ps-team-members
-  [conn opts]
+(defn get-ps-team-members [conn opts]
   (try
     {:success? true
      :ps-team-members (->> (get-ps-team-members* conn opts)
@@ -80,8 +74,7 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn get-ps-team-member
-  [conn opts]
+(defn get-ps-team-member [conn opts]
   (try
     (let [{:keys [success? ps-team-members] :as result}
           (get-ps-team-members conn opts)]

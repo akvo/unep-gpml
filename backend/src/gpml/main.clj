@@ -6,6 +6,8 @@
   (binding [*assert* false]
     ;; Load multimethods:
     (require 'gpml.handler.detail
+             'gpml.timbre-logger
+             'gpml.timbre-logger.json
              'gpml.util.postgresql)
     (require 'duct.core)
     (@(requiring-resolve 'duct.core/load-hierarchy))

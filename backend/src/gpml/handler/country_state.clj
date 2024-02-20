@@ -40,14 +40,13 @@
      {:decode/string (fn [s] (map #(Integer/parseInt %) (str/split s #",")))}
      pos-int?]]])
 
-(defn- get-country-states
-  [{:keys [db logger]} {{:keys [query]} :parameters :as _req}]
+(defn- get-country-states [{:keys [db logger]} {{:keys [query]} :parameters :as _req}]
   (try
     (r/ok {:success? true
            :country_states (db.country-state/get-country-states (:spec db)
                                                                 {:filters query})})
     (catch Exception e
-      (log logger :error ::failed-to-get-country-states {:exception-message (ex-message e)})
+      (log logger :error :failed-to-get-country-states e)
       (r/server-error {:success? false
                        :reason :failed-to-get-country-states
                        :error-details {:error (class e)}}))))

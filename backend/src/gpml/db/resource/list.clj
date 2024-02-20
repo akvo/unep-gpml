@@ -5,14 +5,13 @@
    [gpml.domain.types :as dom.types]
    [hugsql.core :as hugsql]))
 
-(def ^:const default-limit 100)
+(def default-limit 100)
 
 (declare get-resources)
 
 (hugsql/def-db-fns "gpml/db/resource/list.sql" {:quoting :ansi})
 
-(defn generate-get-resources-query
-  []
+(defn generate-get-resources-query []
   (str/join " UNION ALL "
             (for [table dom.types/topic-entity-tables]
               (let [title-column (case table

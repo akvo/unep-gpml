@@ -8,8 +8,7 @@
 
 (hugsql/def-db-fns "gpml/db/community.sql" {:quoting :ansi})
 
-(defn get-community-members-query-and-filters
-  [params]
+(defn get-community-members-query-and-filters [params]
   (let [{:keys [count-only? limit page filters order-by descending]} params
         {:keys [search-text network-type affiliation geo-coverage-type transnational
                 country tag representative-group entity is-member]} filters
@@ -48,7 +47,7 @@
                      (seq entity)
                      (str " AND id IN (:v*:filters.entity)")
 
-                     (not (nil? is-member))
+                     (some? is-member)
                      (str " AND is_member IS " is-member))]
 
     (if (:count-only? params)

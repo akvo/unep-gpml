@@ -14,7 +14,8 @@
    [gpml.util.malli :as util.malli]
    [gpml.util.postgresql :as pg-util]
    [integrant.core :as ig]
-   [malli.util :as mu])
+   [malli.util :as mu]
+   [taoensso.timbre :as timbre])
   (:import
    [java.sql SQLException]))
 
@@ -71,8 +72,7 @@
      {:decode/string (fn [s] (str/split s #","))}
      (apply conj [:enum] dom.prj/project-stages)]]])
 
-(defn- create-project
-  [{:keys [db logger]} {:keys [parameters user] :as _req}]
+(defn- create-project [{:keys [db logger]} {:keys [parameters user] :as _req}]
   (try
     (jdbc/with-db-transaction [tx (:spec db)]
       (let [body (:body parameters)
@@ -115,16 +115,15 @@
           (throw (ex-info "Failed to create project" {:inserted-values inserted-values})))
         (r/ok {:success? true :project_id project-id})))
     (catch Exception e
-      (log logger :error ::failed-to-create-project {:exception-message (.getMessage e)
-                                                     :context-data parameters})
+      (timbre/with-context+ parameters)
+      (log logger :error :failed-to-create-project e)
       (r/server-error {:success? false
                        :reason :failed-to-create-project
                        :error-details {:error (if (instance? SQLException e)
                                                 (pg-util/get-sql-state e)
                                                 (.getMessage e))}}))))
 
-(defn- get-projects
-  [{:keys [db logger]} {:keys [parameters user]}]
+(defn- get-projects [{:keys [db logger]} {:keys [parameters user]}]
   (try
     (let [db-opts (-> (:query parameters)
                       (assoc :stakeholders_ids [(:id user)])
@@ -134,16 +133,15 @@
       {:success? true
        :projects (map db.prj/db-project->project results)})
     (catch Exception e
-      (log logger :error ::failed-to-get-projects {:exception-message (.getMessage e)
-                                                   :context-data parameters})
+      (timbre/with-context+ parameters
+        (log logger :error :failed-to-get-projects e))
       {:success? false
        :reason :failed-to-get-projects
        :error-details {:error (if (instance? SQLException e)
                                 (pg-util/get-sql-state e)
                                 (.getMessage e))}})))
 
-(defn- update-project
-  [{:keys [db logger]} {:keys [parameters]}]
+(defn- update-project [{:keys [db logger]} {:keys [parameters]}]
   (try
     (jdbc/with-db-transaction [conn (:spec db)]
       (let [id (get-in parameters [:path :id])
@@ -186,16 +184,15 @@
               (throw (ex-info "Failed to update project" {:updated-values updated-values})))
             (r/ok {:success? true})))))
     (catch Exception e
-      (log logger :error ::failed-to-update-project {:exception-message (.getMessage e)
-                                                     :context-data {:parameters parameters}})
+      (timbre/with-context+ parameters
+        (log logger :error :failed-to-update-project e))
       (r/server-error {:success? false
                        :reason :failed-to-update-project
                        :error-details {:error (if (instance? SQLException e)
                                                 (pg-util/get-sql-state e)
                                                 (.getMessage e))}}))))
 
-(defn- delete-project
-  [{:keys [db logger]} {:keys [parameters]}]
+(defn- delete-project [{:keys [db logger]} {:keys [parameters]}]
   (try
     (let [project-id (get-in parameters [:path :id])
           opts {:ids [project-id]}
@@ -215,8 +212,8 @@
         (r/server-error {:success? false
                          :reason :could-not-delete-project})))
     (catch Exception e
-      (log logger :error ::failed-to-delete-project {:exception-message (.getMessage e)
-                                                     :context-data {:parameters parameters}})
+      (timbre/with-context+ parameters
+        (log logger :error :failed-to-delete-project e))
       (r/server-error {:success? false
                        :reason :failed-to-delete-project
                        :error-details {:error (if (instance? SQLException e)

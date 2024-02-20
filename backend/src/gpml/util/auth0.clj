@@ -12,8 +12,7 @@
        j/read-value
        w/keywordize-keys))
 
-(defn fetch-auth0-users
-  [domain]
+(defn fetch-auth0-users [domain]
   (client/get (format "%sapi/v2/users" domain)
               {:content-type :json
                :throw-exceptions false

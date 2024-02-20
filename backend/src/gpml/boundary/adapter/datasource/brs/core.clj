@@ -3,7 +3,8 @@
    [duct.logger :refer [log]]
    [gpml.boundary.adapter.datasource.brs.field-parser :as brs.f-parser]
    [gpml.boundary.port.datasource :as port]
-   [gpml.util.http-client :as http-client]))
+   [gpml.util.http-client :as http-client]
+   [gpml.util.malli :refer [check!]]))
 
 (def ^:private brs-api-odata-queries
   "OData query parameters for each entity we want to import. These are
@@ -27,23 +28,20 @@
              :$inlinecount "allpages"
              :$format "json"}})
 
-(defn- get-result-from-body
-  [entity body]
+(defn- get-result-from-body [entity body]
   (case entity
     (:publication :project) (get body :value)
     :meeting (get-in body [:d :results])
     body))
 
-(defn- get-count-from-body
-  [entity body]
+(defn- get-count-from-body [entity body]
   (case entity
     (:publication :project) (Integer/parseInt (get body :odata.count))
     :meeting (Integer/parseInt (get-in body [:d :__count]))))
 
-(defn- get-data
-  [{:keys [logger api-url records-per-page endpoints retry-config] :as config}
-   {:keys [entity skip-token]
-    :or {skip-token 0}}]
+(defn get-data [{:keys [logger api-url records-per-page endpoints retry-config] :as config}
+                {:keys [entity skip-token]
+                 :or {skip-token 0}}]
   (try
     (if-not (get (set (keys endpoints)) entity)
       {:success? false
@@ -70,12 +68,17 @@
           {:success? false
            :error-details body})))
     (catch Exception e
-      (let [error-details {:exeception-message (ex-message e)}]
-        (log logger :error ::failed-to-get-data error-details)
-        {:success? false
-         :error-details error-details}))))
+      (log logger :error :failed-to-get-data e)
+      {:success? false
+       :error-details {:exeception-message (ex-message e)}})))
 
-(defrecord BRS [logger api-url records-per-page endpoints retry-config]
-  port/Datasource
-  (get-data [this opts]
-    (get-data this opts)))
+(defn map->BRS [m]
+  {:pre [(check! [:map
+                  [:logger some?]
+                  [:api-url some?]
+                  [:records-per-page some?]
+                  [:endpoints some?]
+                  [:retry-config some?]]
+                 m)]}
+  (with-meta m
+    {`port/get-data get-data}))
