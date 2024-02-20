@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 #shellcheck disable=SC2039
 
-set -euo pipefail
+set -Eeuxo pipefail
 
 wait4ports -q -s 1 -t 120 tcp://localhost:80 tcp://localhost:3000 tcp://db:5432
 
 http_get() {
-    url="${1}"
-    shift
-    code="${1}"
-    shift
-    curl --verbose --url "${url}" "$@" 2>&1 | grep "< HTTP.*${code}"
+  url="${1}"
+  shift
+  code="${1}"
+  shift
+  curl --verbose --url "${url}" "$@" 2>&1 | grep "< HTTP.*${code}"
 }
 
 http_get "http://localhost/index.html" 200
