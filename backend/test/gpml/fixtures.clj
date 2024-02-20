@@ -22,7 +22,7 @@
   (duct/read-config x {'gpml/eval eval}))
 
 (defn- test-system []
-  (-> (duct/resource "gpml/config.edn")
+  (-> (duct/resource "gpml/duct.edn")
       (read-config)
       (duct/prep-config (cond-> [:duct.profile/test]
                           (io/resource "local.edn")

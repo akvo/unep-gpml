@@ -17,6 +17,6 @@
           exec-config @(requiring-resolve 'duct.core/exec-config)
           keys     (or (parse-keys args) [:duct/daemon])
           profiles [:duct.profile/prod]]
-      (-> (resource "gpml/config.edn")
+      (-> (resource "gpml/duct.edn")
           (read-config)
           (exec-config profiles keys)))))

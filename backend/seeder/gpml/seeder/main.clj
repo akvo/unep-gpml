@@ -31,8 +31,8 @@
 (defonce ^:private default-lang-iso-code "en")
 
 (defn- dev-system []
-  (-> (duct/resource "gpml/config.edn")
-      (duct/read-config)
+  (-> (duct/resource "gpml/duct.edn")
+      (duct/read-config {'gpml/eval eval})
       (duct/prep-config [:duct.profile/dev])))
 
 (defn parse-date [x]

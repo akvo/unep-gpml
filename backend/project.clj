@@ -60,6 +60,7 @@
                  [org.eclipse.jetty/jetty-servlet "9.4.31.v20200723"]
                  [org.jsoup/jsoup "1.15.3"]
                  [org.postgresql/postgresql "42.2.18"]
+                 [org.slf4j/slf4j-nop "2.0.12"]
                  [ovotech/clj-gcp "0.6.15" :exclusions [com.google.auth/google-auth-library-oauth2-http
                                                         cheshire
                                                         clj-time]]

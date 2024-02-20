@@ -1,0 +1,15 @@
+{:gpml.timbre-logger.json/logger        {}
+ :gpml.handler.main/handler             {:collector #ig/ref :gpml.handler.monitoring/collector}
+ :duct.server.http/jetty                {:configurator #ig/ref :gpml.handler.monitoring/jetty-configurator}
+ :duct.logger/timbre                    {:min-level        :warn
+                                         :level            :info
+                                         :set-root-config? true
+                                         ;; Emitting JSON in production results in structured logging.
+                                         ;; See https://github.com/akvo/unep-gpml/issues/1786
+                                         :appenders        {:out    #ig/ref :gpml.timbre-logger.json/logger
+                                                            :sentry #ig/ref :gpml.handler.monitoring/sentry-logger}}
+ :duct.logger.timbre/println            {}
+ :gpml.handler.monitoring/sentry-logger {:dsn     #duct/env "SENTRY_DSN"
+                                         :env     #duct/env ["ENV_NAME" Str]
+                                         :host    #duct/env "POD_NAME"
+                                         :version #duct/env "APP_VERSION"}}
