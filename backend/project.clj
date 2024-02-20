@@ -1,3 +1,7 @@
+(def jackson-version
+  "Ensuring a consistent and recent Jackson version helps avoiding a variety of issues."
+  "2.16.1")
+
 (defproject gpml "1.0.0"
   :description "UNEP - GPML Digital Platform"
   :url "https://www.gpmarinelitter.org/what-we-do/gpml-digital-platform"
@@ -6,17 +10,24 @@
   :min-lein-version "2.0.0"
   :dependencies [[camel-snake-kebab "0.4.3"]
                  [clj-commons/iapetos "0.1.13" :exclusions [io.prometheus/simpleclient]]
-                 [clj-http "3.12.0"]
+                 [clj-http "3.12.3"]
                  [clj-time "0.12.0"]
                  [clojure.java-time "1.4.2"]
-                 [commons-codec "1.15"]
-                 [com.auth0/auth0 "1.25.0" :exclusions [org.jetbrains.kotlin/kotlin-stdlib-common
-                                                        com.fasterxml.jackson.core/jackson-databind]]
-                 [com.auth0/java-jwt "3.12.0" :exclusions [com.fasterxml.jackson.core/jackson-databind]]
-                 [com.auth0/jwks-rsa "0.15.0" :exclusions [com.fasterxml.jackson.core/jackson-databind
-                                                           com.google.guava/guava]]
-                 [com.google.cloud.sql/postgres-socket-factory "1.2.0"]
-                 [com.google.cloud/google-cloud-storage "2.26.0" :exclusions [org.checkerframework/checker-qual]]
+                 [commons-codec "1.16.1"]
+                 [com.auth0/auth0 "1.25.0" :exclusions [org.jetbrains.kotlin/kotlin-stdlib-common]]
+                 [com.auth0/java-jwt "3.12.0"]
+                 [com.auth0/jwks-rsa "0.15.0"]
+                 [com.fasterxml.jackson.core/jackson-annotations ~jackson-version]
+                 [com.fasterxml.jackson.core/jackson-core ~jackson-version]
+                 [com.fasterxml.jackson.core/jackson-databind ~jackson-version]
+                 [com.fasterxml.jackson.dataformat/jackson-dataformat-cbor ~jackson-version]
+                 [com.fasterxml.jackson.datatype/jackson-datatype-jsr310 ~jackson-version]
+                 [com.fasterxml.jackson.dataformat/jackson-dataformat-smile ~jackson-version]
+                 [com.google.cloud.sql/postgres-socket-factory "1.16.0"]
+                 [com.google.cloud/google-cloud-storage "2.34.0" :exclusions [com.google.guava/failureaccess
+                                                                              org.checkerframework/checker-qual]]
+                 [com.google.errorprone/error_prone_annotations "2.24.1"]
+                 [com.google.guava/guava "33.0.0-jre"]
                  [com.layerware/hugsql "0.5.1"]
                  [com.taoensso/encore "3.80.0"]
                  [com.taoensso/timbre "6.3.1"]
@@ -25,12 +36,13 @@
                  [diehard "0.10.3" :exclusions [org.clojure/spec.alpha]]
                  [duct/core "0.8.0"]
                  [duct/module.logging "0.5.0"]
-                 [duct/module.sql "0.6.1" :exclusions [medley]]
-                 [duct/module.web "0.7.1" :exclusions [medley ring/ring-core]]
+                 [duct/module.sql "0.6.1"]
+                 [duct/module.web "0.7.1" :exclusions [ring/ring-core]]
                  [integrant "0.8.0"]
                  [io.prometheus/simpleclient_hotspot "0.9.0"]
                  [io.prometheus/simpleclient_jetty "0.9.0"]
                  [io.prometheus/simpleclient_jetty_jdk8 "0.9.0"]
+                 [medley "1.4.0"]
                  [metosin/jsonista "0.3.6"]
                  [metosin/reitit-malli "0.5.18" :exclusions [org.clojure/tools.reader
                                                              org.clojure/core.rrb-vector]]
@@ -39,17 +51,17 @@
                  [metosin/reitit-ring "0.5.18" :exclusions [ring/ring-core]]
                  [metosin/reitit-swagger "0.5.18"]
                  [metosin/reitit-swagger-ui "0.5.18" :exclusions [ring/ring-core]]
+                 [org.apache.httpcomponents/httpclient "4.5.14"]
+                 [org.apache.httpcomponents/httpcore "4.4.16"]
                  [org.clojure/clojure "1.11.1"]
+                 [org.clojure/core.async "1.6.681"]
                  [org.clojure/data.csv "1.0.0"]
                  [org.eclipse.jetty/jetty-server "9.4.31.v20200723"]
                  [org.eclipse.jetty/jetty-servlet "9.4.31.v20200723"]
                  [org.jsoup/jsoup "1.15.3"]
                  [org.postgresql/postgresql "42.2.18"]
-                 [ovotech/clj-gcp "0.6.15" :exclusions [com.google.errorprone/error_prone_annotations
-                                                        com.google.auth/google-auth-library-oauth2-http
-                                                        com.google.guava/guava
+                 [ovotech/clj-gcp "0.6.15" :exclusions [com.google.auth/google-auth-library-oauth2-http
                                                         cheshire
-                                                        medley
                                                         clj-time]]
                  [raven-clj "1.5.2" :exclusions [cheshire]]
                  [ring-cors "0.1.13"]
