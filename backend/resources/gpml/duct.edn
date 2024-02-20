@@ -1,0 +1,8 @@
+{:duct.profile/base   #duct/include "gpml/duct.base.edn"
+ :duct.profile/dev    #duct/include "dev.edn"
+ :duct.profile/local  #duct/include "local.edn"
+ :duct.profile/test   #duct/include "test.edn"
+ :duct.profile/prod   #duct/include "gpml/duct.prod.edn"
+ :duct.module/logging {}
+ :duct.module/sql     {}
+ :duct.module/web     {}}
