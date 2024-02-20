@@ -1,8 +1,9 @@
 (ns gpml.handler.resource.permission
-  (:require [clojure.string :as str]
-            [dev.gethop.rbac :as rbac]
-            [gpml.domain.resource :as dom.resource]
-            [gpml.service.permissions :as srv.permissions]))
+  (:require
+   [clojure.string :as str]
+   [dev.gethop.rbac :as rbac]
+   [gpml.domain.resource :as dom.resource]
+   [gpml.service.permissions :as srv.permissions]))
 
 (defn entity-type->context-type
   [entity-type]

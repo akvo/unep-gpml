@@ -8,7 +8,9 @@
     :headers {}
     :body    body}))
 
-(defmacro http-status [code sym]
+(defmacro http-status
+  {:style/indent 1}
+  [code sym]
   `(def ~sym (partial response ~code)))
 
 (defmacro http-statuses [& pairs]

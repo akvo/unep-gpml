@@ -1,19 +1,20 @@
 (ns gpml.handler.browse-test
-  (:require [clojure.string :as str]
-            [clojure.test :refer [are deftest is testing use-fixtures]]
-            [gpml.db.favorite :as db.favorite]
-            [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.db.topic-test :as db.topic-test]
-            [gpml.domain.types :as dom.types]
-            [gpml.fixtures :as fixtures]
-            [gpml.handler.browse :as browse]
-            [gpml.seeder.main :as seeder]
-            [gpml.test-util :as test-util]
-            [gpml.util.regular-expressions :as util.regex]
-            [integrant.core :as ig]
-            [malli.core :as malli]
-            [malli.transform :as mt]
-            [ring.mock.request :as mock]))
+  (:require
+   [clojure.string :as str]
+   [clojure.test :refer [are deftest is testing use-fixtures]]
+   [gpml.db.favorite :as db.favorite]
+   [gpml.db.stakeholder :as db.stakeholder]
+   [gpml.db.topic-test :as db.topic-test]
+   [gpml.domain.types :as dom.types]
+   [gpml.fixtures :as fixtures]
+   [gpml.handler.browse :as browse]
+   [gpml.seeder.main :as seeder]
+   [gpml.test-util :as test-util]
+   [gpml.util.regular-expressions :as util.regex]
+   [integrant.core :as ig]
+   [malli.core :as malli]
+   [malli.transform :as mt]
+   [ring.mock.request :as mock]))
 
 (use-fixtures :each fixtures/with-test-system)
 

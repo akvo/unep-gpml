@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  database:
+    build:
+      context: .
+    image: postgres:12-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+      APP_DB_NAME: gpml
+      APP_TEST_DB_NAME: gpml_test
+    volumes:
+      - ../db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+

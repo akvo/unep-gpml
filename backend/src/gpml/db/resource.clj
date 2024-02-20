@@ -1,7 +1,8 @@
 (ns gpml.db.resource
-  (:require [gpml.util :as util]
-            [gpml.util.sql :as sql-util]
-            [hugsql.core :as hugsql]))
+  (:require
+   [gpml.util :as util]
+   [gpml.util.sql :as sql-util]
+   [hugsql.core :as hugsql]))
 
 (declare create-resources
          new-resource

@@ -14,3 +14,5 @@ pom.xml.asc
 /dev/src/local.clj
 .eastwood
 flycheck_.dir-locals.elc
+test-resources/cache/*.json
+seeder-resources/cache/*.json

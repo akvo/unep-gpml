@@ -1,5 +1,6 @@
 (ns gpml.domain.miscellaneous
-  (:require [malli.core :as m]))
+  (:require
+   [malli.core :as m]))
 
 (def base64-schema
   (m/schema

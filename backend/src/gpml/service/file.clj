@@ -1,13 +1,14 @@
 (ns gpml.service.file
-  (:require [clj-gcp.storage.core :as storage-client]
-            [duct.logger :refer [log]]
-            [gpml.boundary.adapter.storage-client.gcs]      ;; We need to require it to extend the Record there
-            [gpml.boundary.port.storage-client :as storage-client-ext]
-            [gpml.db.file :as db.file]
-            [gpml.util :as util]
-            [gpml.util.thread-transactions :as tht])
-  (:import [com.google.cloud WriteChannel]
-           [java.nio ByteBuffer]))
+  (:require
+   [clj-gcp.storage.core :as storage-client]
+   [duct.logger :refer [log]]
+   [gpml.boundary.port.storage-client :as storage-client-ext]
+   [gpml.db.file :as db.file]
+   [gpml.util :as util]
+   [gpml.util.thread-transactions :as tht])
+  (:import
+   (com.google.cloud WriteChannel)
+   (java.nio ByteBuffer)))
 
 (defn- file-content->byte-buffer
   [content]
@@ -102,14 +103,15 @@
    {:keys [object-key content type visibility]}]
   (try
     (let [{:keys [byte-buffer _size]} (file-content->byte-buffer content)]
-      (with-open [writer (storage-client/blob-writer
+      (with-open [^com.google.cloud.WriteChannel
+                  writer (storage-client/blob-writer
                           storage-client-adapter
                           (get-bucket-name config visibility)
                           object-key
                           {:content-type type})]
         (.write ^WriteChannel writer byte-buffer))
       {:success? true})
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))

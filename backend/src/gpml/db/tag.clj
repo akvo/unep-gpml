@@ -1,11 +1,12 @@
 (ns gpml.db.tag
-  {:ns-tracker/resource-deps ["tag.sql"]}
-  (:require [clojure.string :as str]
-            [gpml.domain.tag :as dom.tag]
-            [gpml.domain.types :as dom.types]
-            [gpml.util :as util]
-            [gpml.util.sql :as sql-util]
-            [hugsql.core :as hugsql]))
+  #:ns-tracker{:resource-deps ["tag.sql"]}
+  (:require
+   [clojure.string :as str]
+   [gpml.domain.tag :as dom.tag]
+   [gpml.domain.types :as dom.types]
+   [gpml.util :as util]
+   [gpml.util.sql :as sql-util]
+   [hugsql.core :as hugsql]))
 
 (declare get-tags
          tag-by-tags
@@ -129,4 +130,4 @@
   (require 'dev)
 
   (let [db (dev/db-conn)]
-    (mapv #(:tag %) (gpml.db.tag/tag-by-category db {:category "event%"}))))
+    (mapv :tag (gpml.db.tag/tag-by-category db {:category "event%"}))))

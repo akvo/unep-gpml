@@ -1,9 +1,10 @@
 (ns gpml.db.initiative
-  {:ns-tracker/resource-deps ["initiative.sql"]}
-  (:require [gpml.util :as util]
-            [gpml.util.postgresql :as pg-util]
-            [gpml.util.sql :as sql-util]
-            [hugsql.core :as hugsql]))
+  #:ns-tracker{:resource-deps ["initiative.sql"]}
+  (:require
+   [gpml.util :as util]
+   [gpml.util.postgresql :as pg-util]
+   [gpml.util.sql :as sql-util]
+   [hugsql.core :as hugsql]))
 
 (declare new-initiative
          initiative-by-id

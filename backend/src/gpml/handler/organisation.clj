@@ -1,29 +1,31 @@
 (ns gpml.handler.organisation
-  (:require [clojure.java.jdbc :as jdbc]
-            [clojure.string :as str]
-            [duct.logger :refer [log]]
-            [gpml.db.organisation :as db.organisation]
-            [gpml.db.resource.tag :as db.resource.tag]
-            [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.domain.organisation :as dom.organisation]
-            [gpml.domain.types :as dom.types]
-            [gpml.handler.file :as handler.file]
-            [gpml.handler.resource.geo-coverage :as handler.geo]
-            [gpml.handler.resource.permission :as h.r.permission]
-            [gpml.handler.resource.tag :as handler.resource.tag]
-            [gpml.handler.responses :as r]
-            [gpml.service.file :as srv.file]
-            [gpml.service.permissions :as srv.permissions]
-            [gpml.service.plastic-strategy :as srv.ps]
-            [gpml.util :as util]
-            [gpml.util.email :as email]
-            [gpml.util.geo :as geo]
-            [gpml.util.malli :as util.malli]
-            [gpml.util.postgresql :as pg-util]
-            [integrant.core :as ig]
-            [malli.util :as mu]
-            [ring.util.response :as resp])
-  (:import [java.sql SQLException]))
+  (:require
+   [clojure.java.jdbc :as jdbc]
+   [clojure.string :as str]
+   [duct.logger :refer [log]]
+   [gpml.db.organisation :as db.organisation]
+   [gpml.db.resource.tag :as db.resource.tag]
+   [gpml.db.stakeholder :as db.stakeholder]
+   [gpml.domain.organisation :as dom.organisation]
+   [gpml.domain.types :as dom.types]
+   [gpml.handler.file :as handler.file]
+   [gpml.handler.resource.geo-coverage :as handler.geo]
+   [gpml.handler.resource.permission :as h.r.permission]
+   [gpml.handler.resource.tag :as handler.resource.tag]
+   [gpml.handler.responses :as r]
+   [gpml.service.file :as srv.file]
+   [gpml.service.permissions :as srv.permissions]
+   [gpml.service.plastic-strategy :as srv.ps]
+   [gpml.util :as util]
+   [gpml.util.email :as email]
+   [gpml.util.geo :as geo]
+   [gpml.util.malli :as util.malli]
+   [gpml.util.postgresql :as pg-util]
+   [integrant.core :as ig]
+   [malli.util :as mu]
+   [ring.util.response :as resp])
+  (:import
+   (java.sql SQLException)))
 
 (defn create
   [{:keys [logger mailjet-config] :as config}
@@ -229,7 +231,7 @@
             (if success? (r/ok {})
                 (r/server-error result))))
         (r/forbidden {:message "Unauthorized"}))
-      (catch Throwable t
+      (catch Exception t
         (let [log-data {:exception-message (ex-message t)
                         :exception-data (ex-data t)
                         :context-data (assoc body-params
@@ -279,7 +281,7 @@
               (r/ok result))
             (r/server-error result)))
         (r/forbidden {:message "Unauthorized"}))
-      (catch Throwable e
+      (catch Exception e
         (log logger :error ::failed-to-req-org-to-member-conversion {:exception-message (ex-message e)})
         (let [response {:success? false
                         :reason :could-not-req-org-to-member-conversion}]
@@ -370,7 +372,7 @@
                             (db.organisation/list-organisations conn)
                             first
                             :count)}))
-      (catch Throwable t
+      (catch Exception t
         (let [log-data {:exception-message (ex-message t)
                         :exception-data (ex-data t)
                         :context-data (get-in req [:parameters :query])}]

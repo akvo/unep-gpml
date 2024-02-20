@@ -1,22 +1,24 @@
 (ns gpml.handler.review
-  (:require [clojure.java.jdbc :as jdbc]
-            [clojure.set :as set]
-            [clojure.string :as str]
-            [duct.logger :refer [log]]
-            [gpml.db.review :as db.review]
-            [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.domain.stakeholder :as dom.stakeholder]
-            [gpml.domain.types :as dom.types]
-            [gpml.handler.resource.permission :as h.r.permission]
-            [gpml.handler.responses :as r]
-            [gpml.handler.util :as util]
-            [gpml.service.permissions :as srv.permissions]
-            [gpml.util.email :as email]
-            [gpml.util.regular-expressions :as util.regex]
-            [integrant.core :as ig]
-            [malli.util :as mu]
-            [ring.util.response :as resp])
-  (:import [java.sql SQLException]))
+  (:require
+   [clojure.java.jdbc :as jdbc]
+   [clojure.set :as set]
+   [clojure.string :as str]
+   [duct.logger :refer [log]]
+   [gpml.db.review :as db.review]
+   [gpml.db.stakeholder :as db.stakeholder]
+   [gpml.domain.stakeholder :as dom.stakeholder]
+   [gpml.domain.types :as dom.types]
+   [gpml.handler.resource.permission :as h.r.permission]
+   [gpml.handler.responses :as r]
+   [gpml.handler.util :as util]
+   [gpml.service.permissions :as srv.permissions]
+   [gpml.util.email :as email]
+   [gpml.util.regular-expressions :as util.regex]
+   [integrant.core :as ig]
+   [malli.util :as mu]
+   [ring.util.response :as resp])
+  (:import
+   (java.sql SQLException)))
 
 (defn- reviews-by-reviewer-id [conn opts]
   (map (fn [{:keys [details] :as review}]
@@ -196,7 +198,7 @@
       (if (h.r.permission/super-admin? config (:id user))
         (new-multiple-review logger db mailjet-config topic-type topic-id reviewers (:id user))
         (r/forbidden {:message "Unauthorized"}))
-      (catch Throwable t
+      (catch Exception t
         (let [log-data {:exception-message (ex-message t)
                         :exception-data (ex-data t)
                         :context-data {:req-params (:parameters req)

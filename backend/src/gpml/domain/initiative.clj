@@ -1,8 +1,9 @@
 (ns gpml.domain.initiative
-  (:require [clojure.set :as set]
-            [gpml.domain.types :as dom.types]
-            [gpml.util :as util]
-            [malli.core :as m]))
+  (:require
+   [clojure.set :as set]
+   [gpml.domain.types :as dom.types]
+   [gpml.util :as util]
+   [malli.core :as m]))
 
 (def Initiative
   "The Initiative entity schema. Not all fields for initiative are

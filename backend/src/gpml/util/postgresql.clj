@@ -1,8 +1,10 @@
 (ns gpml.util.postgresql
-  (:require [clojure.java.jdbc :as jdbc]
-            [jsonista.core :as j])
-  (:import [java.sql PreparedStatement SQLException]
-           [org.postgresql.util PGobject]))
+  (:require
+   [clojure.java.jdbc :as jdbc]
+   [jsonista.core :as j])
+  (:import
+   (java.sql PreparedStatement SQLException)
+   (org.postgresql.util PGobject)))
 
 (defn get-sql-state
   "Gets the SQL state from a SQLException object and returns the keyword
@@ -44,7 +46,7 @@
   (set-parameter [_ stmt ix]
     (let [as-array (into-array Object elements)
           jdbc-array (.createArrayOf (.getConnection ^PreparedStatement stmt) type-name as-array)]
-      (.setArray stmt ix jdbc-array))))
+      (.setArray ^PreparedStatement stmt ix jdbc-array))))
 
 (deftype PGEnum [value type-name]
   jdbc/ISQLParameter

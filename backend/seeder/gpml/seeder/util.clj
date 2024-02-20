@@ -1,11 +1,13 @@
 (ns gpml.seeder.util
-  (:require [clojure.java.io :as io]
-            [gpml.db.initiative :as db.initiative]
-            [gpml.seeder.db :as seeder.db]
-            [jsonista.core :as j]))
+  (:require
+   [clojure.edn :as edn]
+   [clojure.java.io :as io]
+   [gpml.db.initiative :as db.initiative]
+   [gpml.seeder.db :as seeder.db]
+   [jsonista.core :as j]))
 
-(def ^:private json-path "dev/resources/files/")
-(def ^:private cache-path "dev/resources/cache/")
+(def ^:private json-path "seeder-resources/files/")
+(def ^:private cache-path "seeder-resources/cache/")
 
 (defn is-empty [db x]
   (= 0 (:count (seeder.db/get-count db {:tbl x}))))
@@ -26,7 +28,7 @@
   (io/delete-file (java.io.File. (str cache-path cache-id ".json"))))
 
 (defn get-id-from-json [json-file]
-  (mapv #(:id %) (parse-json (str json-path json-file))))
+  (mapv :id (parse-json (str json-path json-file))))
 
 (defn drop-all-constraint [db data]
   (let [table (seeder.db/get-foreign-key db data)
@@ -41,16 +43,14 @@
       (doseq [child (:child data)]
         (seeder.db/delete-rows db {:tbl child
                                    :ids ids
-                                   :col (:table data)}))))
-  (println (str "Ref " (:table data) " removed")))
+                                   :col (:table data)})))))
 
 (defn revert-constraint [db cache-id]
   (let [table (read-cache cache-id)]
     (doseq [query (:deps table)]
       (seeder.db/add-constraint db query))
     (seeder.db/set-default-sequence db table)
-    (delete-cache cache-id)
-    (println (str "Ref " (:tbl table) " added"))))
+    (delete-cache cache-id)))
 
 (defn drop-constraint-country [db cache-id]
   (drop-all-constraint db {:cache cache-id
@@ -114,20 +114,18 @@
 (defn country-id-updater [db cache-id mapping-file]
   (let [table (seeder.db/get-foreign-key db {:table "country"})
         new-map-list (mapv (fn [i] {:new_id (-> i second)
-                                    :old_id (-> i first name read-string)})
+                                    :old_id (-> i first name edn/read-string)})
                            mapping-file)]
     (write-cache table cache-id)
     (doseq [query (:deps table)]
       (seeder.db/drop-constraint db query)
-      (println (str "Updating " (:col query) " on " (:tbl query)))
       (let [changed (atom nil)]
         (doseq [option new-map-list]
           (let [exclude-rows {:exclude @changed}
                 rows (seeder.db/update-foreign-value
                       db
                       (merge query option exclude-rows))]
-            (swap! changed #(apply conj % (map :id rows)))))))
-    (println (str "Ref country removed"))))
+            (swap! changed #(apply conj % (map :id rows)))))))))
 
 ;; initiative updater
 (defn new-initiative-object-id [[k _] mapping json-file]

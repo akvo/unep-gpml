@@ -1,10 +1,11 @@
 (ns gpml.handler.country-test
-  (:require [clojure.test :refer [deftest is testing use-fixtures]]
-            [gpml.db.country :as db.country]
-            [gpml.fixtures :as fixtures]
-            [gpml.handler.country :as country]
-            [integrant.core :as ig]
-            [ring.mock.request :as mock]))
+  (:require
+   [clojure.test :refer [deftest is testing use-fixtures]]
+   [gpml.db.country :as db.country]
+   [gpml.fixtures :as fixtures]
+   [gpml.handler.country :as country]
+   [integrant.core :as ig]
+   [ring.mock.request :as mock]))
 
 (use-fixtures :each fixtures/with-test-system)
 

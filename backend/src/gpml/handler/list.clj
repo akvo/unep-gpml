@@ -1,7 +1,8 @@
 (ns gpml.handler.list
-  (:require [gpml.db.resource.list :as db.resource.list]
-            [integrant.core :as ig]
-            [ring.util.response :as resp]))
+  (:require
+   [gpml.db.resource.list :as db.resource.list]
+   [integrant.core :as ig]
+   [ring.util.response :as resp]))
 
 (def ^:const default-api-limit 100)
 

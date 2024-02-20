@@ -1,25 +1,27 @@
 (ns gpml.handler.stakeholder.expert
-  (:require [camel-snake-kebab.core :refer [->snake_case]]
-            [camel-snake-kebab.extras :as cske]
-            [clojure.java.jdbc :as jdbc]
-            [clojure.string :as str]
-            [duct.logger :refer [log]]
-            [gpml.db.country-group :as db.country-group]
-            [gpml.db.invitation :as db.invitation]
-            [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.handler.resource.permission :as h.r.permission]
-            [gpml.handler.responses :as r]
-            [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
-            [gpml.service.permissions :as srv.permissions]
-            [gpml.util :as util]
-            [gpml.util.email :as email]
-            [gpml.util.postgresql :as pg-util]
-            [gpml.util.sql :as util.sql]
-            [integrant.core :as ig]
-            [jsonista.core :as json]
-            [malli.util :as mu]
-            [ring.util.response :as resp])
-  (:import [java.sql SQLException]))
+  (:require
+   [camel-snake-kebab.core :refer [->snake_case]]
+   [camel-snake-kebab.extras :as cske]
+   [clojure.java.jdbc :as jdbc]
+   [clojure.string :as str]
+   [duct.logger :refer [log]]
+   [gpml.db.country-group :as db.country-group]
+   [gpml.db.invitation :as db.invitation]
+   [gpml.db.stakeholder :as db.stakeholder]
+   [gpml.handler.resource.permission :as h.r.permission]
+   [gpml.handler.responses :as r]
+   [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
+   [gpml.service.permissions :as srv.permissions]
+   [gpml.util :as util]
+   [gpml.util.email :as email]
+   [gpml.util.postgresql :as pg-util]
+   [gpml.util.sql :as util.sql]
+   [integrant.core :as ig]
+   [jsonista.core :as json]
+   [malli.util :as mu]
+   [ring.util.response :as resp])
+  (:import
+   (java.sql SQLException)))
 
 (def ^:private get-experts-params
   [:map
@@ -244,7 +246,7 @@
         (future (send-invitation-emails config invitations))
         (r/ok {:success? true
                :invited-experts (map #(update % :id str) invitations)})))
-    (catch Throwable t
+    (catch Exception t
       (log logger :error ::invite-experts-error {:exception-message (ex-message t)
                                                  :exception-data (ex-data t)
                                                  :stack-trace (.getStackTrace t)

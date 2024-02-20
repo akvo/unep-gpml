@@ -1,7 +1,9 @@
 (ns gpml.db
-  (:require [clojure.java.jdbc :as jdbc]
-            [integrant.core :as ig])
-  (:import org.postgresql.jdbc.PgArray))
+  (:require
+   [clojure.java.jdbc :as jdbc]
+   [integrant.core :as ig])
+  (:import
+   (org.postgresql.jdbc PgArray)))
 
 (defmethod ig/init-key :gpml.db/spec [_ {:keys [db]}]
   (:spec db))

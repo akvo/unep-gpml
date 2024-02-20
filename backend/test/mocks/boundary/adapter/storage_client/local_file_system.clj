@@ -1,9 +1,11 @@
 (ns mocks.boundary.adapter.storage-client.local-file-system
-  (:require [clj-gcp.storage.core :as gcs]
-            [clojure.java.io :as io]
-            [gpml.boundary.port.storage-client :as port]
-            [integrant.core :as ig])
-  (:import [clj_gcp.storage.core FileSystemStorageClient]))
+  (:require
+   [clj-gcp.storage.core :as gcs]
+   [clojure.java.io :as io]
+   [gpml.boundary.port.storage-client :as port]
+   [integrant.core :as ig])
+  (:import
+   (clj_gcp.storage.core FileSystemStorageClient)))
 
 (defn- delete-blob
   [{:keys [base-path]} bucket blob-name]
@@ -22,7 +24,7 @@
     (let [file (io/file base-path bucket-name blob-name)]
       {:success? true
        :url (.toURL (.toURI file))})
-    (catch Throwable t
+    (catch Exception t
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))

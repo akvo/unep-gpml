@@ -1,22 +1,24 @@
 (ns gpml.handler.browse
-  (:require [clojure.string :as str]
-            [duct.logger :refer [log]]
-            [gpml.db.country-group :as db.country-group]
-            [gpml.db.resource.connection :as db.resource.connection]
-            [gpml.db.topic :as db.topic]
-            [gpml.domain.file :as dom.file]
-            [gpml.domain.resource :as dom.resource]
-            [gpml.domain.types :as dom.types]
-            [gpml.handler.resource.permission :as h.r.permission]
-            [gpml.handler.responses :as r]
-            [gpml.handler.util :as handler.util]
-            [gpml.service.file :as srv.file]
-            [gpml.service.plastic-strategy :as srv.ps]
-            [gpml.util.postgresql :as pg-util]
-            [gpml.util.regular-expressions :as util.regex]
-            [integrant.core :as ig]
-            [medley.core :as medley])
-  (:import [java.sql SQLException]))
+  (:require
+   [clojure.string :as str]
+   [duct.logger :refer [log]]
+   [gpml.db.country-group :as db.country-group]
+   [gpml.db.resource.connection :as db.resource.connection]
+   [gpml.db.topic :as db.topic]
+   [gpml.domain.file :as dom.file]
+   [gpml.domain.resource :as dom.resource]
+   [gpml.domain.types :as dom.types]
+   [gpml.handler.resource.permission :as h.r.permission]
+   [gpml.handler.responses :as r]
+   [gpml.handler.util :as handler.util]
+   [gpml.service.file :as srv.file]
+   [gpml.service.plastic-strategy :as srv.ps]
+   [gpml.util.postgresql :as pg-util]
+   [gpml.util.regular-expressions :as util.regex]
+   [integrant.core :as ig]
+   [medley.core :as medley])
+  (:import
+   (java.sql SQLException)))
 
 (def ^:const topic-re (util.regex/comma-separated-enums-re dom.types/topic-types))
 (def ^:const ^:private order-by-fields ["title" "description" "id" "featured"])
@@ -387,7 +389,7 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
       (r/ok {:success? true
              :results results
              :counts counts}))
-    (catch Throwable t
+    (catch Exception t
       (log logger :error :failed-to-get-topics {:exception-message (ex-message t)
                                                 :context-data {:query-params query}})
       (let [response {:success? false

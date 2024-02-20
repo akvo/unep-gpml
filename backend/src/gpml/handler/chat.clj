@@ -1,14 +1,15 @@
 (ns gpml.handler.chat
-  (:require [camel-snake-kebab.core :refer [->snake_case]]
-            [camel-snake-kebab.extras :as cske]
-            [duct.logger :refer [log]]
-            [gpml.db.stakeholder :as db.stakeholder]
-            [gpml.domain.types :as dom.types]
-            [gpml.handler.resource.permission :as h.r.permission]
-            [gpml.handler.responses :as r]
-            [gpml.service.chat :as srv.chat]
-            [gpml.util.email :as email]
-            [integrant.core :as ig]))
+  (:require
+   [camel-snake-kebab.core :refer [->snake_case]]
+   [camel-snake-kebab.extras :as cske]
+   [duct.logger :refer [log]]
+   [gpml.db.stakeholder :as db.stakeholder]
+   [gpml.domain.types :as dom.types]
+   [gpml.handler.resource.permission :as h.r.permission]
+   [gpml.handler.responses :as r]
+   [gpml.service.chat :as srv.chat]
+   [gpml.util.email :as email]
+   [integrant.core :as ig]))
 
 (def ^:private channel-types
   #{"c" "p"})
@@ -213,7 +214,7 @@
 
 (defn- get-channel-details
   [config {{:keys [query path]} :parameters :as _req}]
-  (let [ result (srv.chat/get-channel-details config (:id path) (:type query))]
+  (let [result (srv.chat/get-channel-details config (:id path) (:type query))]
     (if (:success? result)
       (r/ok (:channel result))
       (r/server-error (dissoc result :success?)))))
@@ -275,7 +276,7 @@
     (if (h.r.permission/super-admin? config (:id user))
       (try
         (add-user-to-private-channel config parameters)
-        (catch Throwable t
+        (catch Exception t
           (log logger :error ::failed-to-add-user-to-private-channel {:exception-message (ex-message t)})
           (let [response {:success? false
                           :reason :could-not-add-user-to-private-channel}]
