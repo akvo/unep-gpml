@@ -1,0 +1,5 @@
+{:duct.database.sql/hikaricp {:jdbc-url #duct/env ["DATABASE_TEST_URL" Str :or "jdbc:postgresql://db/gpml_test?user=unep&password=password"]
+                              :idle-timeout 10000
+                              :minimum-idle 0
+                              :logger false ;; too noisy while seeding. Is suitable in dev but not in test.
+                              :maximum-pool-size #gpml/eval (.availableProcessors (Runtime/getRuntime))}} ;; matches the eftest :thread-count

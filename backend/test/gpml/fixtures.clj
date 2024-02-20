@@ -26,7 +26,11 @@
       (read-config)
       (duct/prep-config (cond-> [:duct.profile/test]
                           (io/resource "local.edn")
-                          (conj :duct.profile/local)))))
+                          (conj :duct.profile/local)
+
+                          #_ #_ ;; XXX enable
+                          (io/resource "localtest.edn")
+                          (conj :duct.profile/localtest)))))
 
 (defn- migrate-template-test-db []
   (locking lock

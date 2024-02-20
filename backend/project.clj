@@ -98,7 +98,9 @@
                      :report clojure.test/report}}
    :dev  {:source-paths   ["dev/src"]
           :resource-paths ["dev/resources"]
-          :dependencies   [[fipp "0.6.21"]
+          :dependencies   [[com.github.seancorfield/honeysql "2.5.1103"]
+                           [com.github.seancorfield/next.jdbc "1.3.909"]
+                           [fipp "0.6.21"]
                            [hawk "0.2.11"]
                            [integrant/repl "0.3.2"]
                            [kerodon "0.9.1"]
@@ -107,7 +109,8 @@
                          :init (do
                                  (require 'dev)
                                  (in-ns 'dev)
-                                 (integrant.repl/reset))
+                                 (when-not (System/getProperty "unep.gpml.skip-reset-on-startup")
+                                   (@(requiring-resolve 'integrant.repl/reset))))
                          :host "0.0.0.0"
                          :port 47480}}
    :cljfmt {:plugins [[dev.weavejester/lein-cljfmt "0.12.0"]]
