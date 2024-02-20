@@ -110,7 +110,7 @@ frontend_build_staging
 strapi_build
 nginx_build
 
-if ! dci run -T ci ./basic.sh; then
+if ! dci run --no-TTY ci ./basic.sh; then
   echo "Build failed when running basic.sh. Logs:"
   dci logs
   exit 1
