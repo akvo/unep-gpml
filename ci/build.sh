@@ -111,7 +111,7 @@ strapi_build
 nginx_build
 
 if ! dci run -T ci ./basic.sh; then
+  echo "Build failed when running basic.sh. Logs:"
   dci logs
-  echo "Build failed when running basic.sh"
   exit 1
 fi
