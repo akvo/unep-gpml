@@ -9,6 +9,9 @@
    [iapetos.core :as prometheus]
    [iapetos.registry :as registry]
    [integrant.core :as ig]
+   [raven-clj.core :as raven]
+   [raven-clj.interfaces :as interfaces]
+   [taoensso.encore :as enc]
    [taoensso.timbre :as timbre]
    [taoensso.timbre.appenders.community.sentry :as sentry])
   (:import
@@ -99,6 +102,52 @@
 (defmethod ig/init-key ::jetty-configurator [_ {:keys [collector]}]
   (fn [jetty-server]
     (configure-stats jetty-server collector)))
+
+(defn sentry-appender
+  "Adds, over the original `#'sentry/sentry-appender`,
+  the ability to skip messages that don't contain exceptions.
+
+  It also preserves `:file` and `:line` info."
+  [dsn & [opts]]
+  (let [{:keys [event-fn] :or {event-fn identity}} opts
+        base-event
+        (->> (select-keys opts [:tags :environment :release :modules])
+             (filter (comp not nil? second))
+             (into {}))]
+
+    {:enabled?  true
+     :async?    true
+     :min-level :warn ;; Reasonable default given how Sentry works
+     :fn
+     (fn [data]
+       (let [{:keys [level ?err msg_ ?ns-str ?file ?line context]} data
+
+             ?ex-data (ex-data ?err)
+             extra
+             (cond-> context
+               (and ?ex-data (not (contains? context :ex-data)))
+               (assoc :ex-data
+                      (enc/get-substr-by-idx (str ?ex-data) 0 4096)))
+
+             event
+             (as-> base-event event
+               (merge event
+                      {:message (force msg_)
+                       :logger  ?ns-str
+                       :file    ?file
+                       :line    ?line
+                       :level   (get @#'sentry/timbre->sentry-levels level)}
+                      (when extra
+                        {:extra extra}))
+
+               (if ?err
+                 (interfaces/stacktrace event ?err)
+                 event)
+
+               (event-fn event))]
+
+         (when ?err ;; Only post to Sentry actual exceptions - not simply messages of ERROR level
+           (raven/capture dsn event))))}))
 
 (defmethod ig/init-key ::sentry-logger [_ {:keys [dsn version host env]}]
   (assert dsn)
