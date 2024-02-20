@@ -20,8 +20,8 @@
 (duct/load-hierarchy)
 
 (defn dev-system []
-  (-> (duct/resource "gpml/config.edn")
-      (duct/read-config)
+  (-> (duct/resource "gpml/duct.edn")
+      (duct/read-config {'gpml/eval eval})
       (duct/prep-config [:duct.profile/dev])))
 
 (def lorem "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas luctus eros at consequat accumsan. Integer massa ligula, blandit at commodo vitae, vestibulum et erat.")
