@@ -9,7 +9,6 @@ CMD java \
     -Dclojure.main.report=stderr \
     -XX:-OmitStackTraceInFastThrow \
     -Djava.awt.headless=true \
-    -XshowSettings:vm \
     -XX:+UnlockExperimentalVMOptions \
     -XX:+UseContainerSupport \
     -XX:MaxRAMPercentage=70.0 \
@@ -21,7 +20,6 @@ CMD java \
     -Dclojure.main.report=stderr \
     -XX:-OmitStackTraceInFastThrow \
     -Djava.awt.headless=true \
-    -XshowSettings:vm \
     -XX:+UnlockExperimentalVMOptions \
     -XX:+UseContainerSupport \
     -XX:MaxRAMPercentage=70.0 \
