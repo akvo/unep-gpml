@@ -1,8 +1,22 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect } from 'react'
+import { ChatStore } from '../store'
 
 const DSCIframe = ({ roomId, accessToken, frameId = 'chat-frame' }) => {
-  const [sdk, setSDK] = useState(null)
+  const sdk = ChatStore.useState((s) => s.sdk)
   const iframeURL = `${process.env.NEXT_PUBLIC_DSC_URL}/${roomId}?accessToken=${accessToken}`
+
+  const getActiveChannels = useCallback(async () => {
+    if (sdk) {
+      const { channels } = await sdk.getActiveChannels()
+      ChatStore.update((s) => {
+        s.channels = channels
+      })
+    }
+  }, [sdk])
+
+  useEffect(() => {
+    getActiveChannels()
+  }, [getActiveChannels])
 
   useEffect(() => {
     ;(async () => {
@@ -10,26 +24,39 @@ const DSCIframe = ({ roomId, accessToken, frameId = 'chat-frame' }) => {
       // 1. Chat Room Id
       // 2. ID of the iFrame tag
       // 3. Dead Simple Chat Public API Key.
-      if (window?.DSChatSDK && !sdk) {
-        const sdk = new window.DSChatSDK(
-          roomId,
-          frameId,
-          process.env.NEXT_PUBLIC_DSC_PUBLIC_KEY
-        )
-        // Call the connect method to connect the SDK to the Chat iFrame.
-        await sdk.connect()
-        setSDK(sdk)
+      if (window?.DSChatSDK) {
+        ChatStore.update((s) => {
+          s.channels = []
+        })
+        try {
+          const jsSDK = new window.DSChatSDK(
+            roomId,
+            frameId,
+            process.env.NEXT_PUBLIC_DSC_PUBLIC_KEY
+          )
+          // Call the connect method to connect the SDK to the Chat iFrame.
+          await jsSDK.connect()
+          ChatStore.update((s) => {
+            s.sdk = jsSDK
+          })
+        } catch (error) {
+          console.error('SDK', error)
+        }
       }
     })()
-  }, [sdk])
+  }, [window?.DSChatSDK])
 
   useEffect(() => {
     const unsubscribe = () => {
-      if (sdk) {
-        sdk.on('message', (message) => {
-          console.log('New Message Arrived', message)
-        })
-      }
+      sdk?.on('message', (message) => {
+        console.log('New Message Arrived', message)
+      })
+      sdk?.on('not_authorized', (message) => {
+        console.log('not_authorized', message)
+      })
+      sdk?.on('channelSelected', (channelInfo) => {
+        console.log('Channel Selected:', channelInfo)
+      })
     }
 
     return () => unsubscribe()
