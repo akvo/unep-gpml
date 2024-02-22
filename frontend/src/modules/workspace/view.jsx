@@ -247,7 +247,7 @@ const Workspace = ({ profile, isAuthenticated, setLoginVisible }) => {
                 <h2 className="w-bold">
                   <Trans>Forums</Trans>
                 </h2>
-                <Link href="/forum">
+                <Link href="/forum-dsc">{/* TODO: replace with forum, once the BE ready */}
                   <Button withArrow="link" ghost>
                     <Trans>View All Forums</Trans>
                   </Button>
