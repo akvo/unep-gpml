@@ -13,7 +13,7 @@ SELECT *
 FROM :i:table
 WHERE 1=1
 --~(when (seq (get-in params [:filters :resources-ids])) " AND :i:resource-col IN (:v*:filters.resources-ids)")
---~(when (seq (get-in params [:filters :countries-ids])) " AND country IN (:v*:filters.countries-ids)")N
+--~(when (seq (get-in params [:filters :countries-ids])) " AND country IN (:v*:filters.countries-ids)")
 --~(when (seq (get-in params [:filters :country-groups-ids])) " AND country_group IN (:v*:filters.country-groups-ids)")
 ;
 
