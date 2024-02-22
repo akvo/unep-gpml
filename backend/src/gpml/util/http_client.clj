@@ -61,8 +61,16 @@
 
 (defmethod client/coerce-response-body :json-keyword-keys
   [_req resp]
-  (util/update-if-not-nil resp :body json/<-json))
+  (try
+    (cond-> resp
+      (some-> resp :body string?) (update :body json/<-json))
+    (catch com.fasterxml.jackson.core.JsonParseException e
+      (timbre/with-context+ {:resp resp}
+        (timbre/error e))
+      (throw e))))
 
+;; XXX behaves very badly on 404, it's a combination of things
+;; try not performing :json-keyword-keys if :body is absent or not a string
 (defn request
   "Like `clj-http.client/request`, but with retries.
 
