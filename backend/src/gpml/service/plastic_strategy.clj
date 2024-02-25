@@ -1,6 +1,7 @@
 (ns gpml.service.plastic-strategy
   (:require
    [duct.logger :refer [log]]
+   [gpml.boundary.port.chat :as port.chat]
    [gpml.db.plastic-strategy :as db.ps]
    [gpml.db.plastic-strategy.team :as db.ps.team]
    [gpml.service.chat :as srv.chat]
@@ -76,7 +77,7 @@
             [{:keys [chat-channel-name] :as context}]
             (let [channel {:name chat-channel-name
                            :read-only false}
-                  result (srv.chat/create-public-channel config channel)]
+                  result (port.chat/create-public-channel (:chat-adapter config) channel)]
               (if (:success? result)
                 (assoc context :channel (:channel result))
                 (assoc context
@@ -86,7 +87,7 @@
           :rollback-fn
           (fn rollback-create-plastic-strategy-chat-channel
             [{:keys [channel] :as context}]
-            (let [result (srv.chat/delete-public-channel config (:id channel))]
+            (let [result (port.chat/delete-public-channel (:chat-adapter config) (:id channel))]
               (when-not (:success? result)
                 (log logger :error :failed-to-rollback-create-plastic-strategy-chat-channel {:result result})))
             context)}
@@ -94,9 +95,9 @@
           (fn tx-set-plastic-strategy-channel-custom-fields
             [{:keys [plastic-strategy channel] :as context}]
             (let [custom-fields {:ps-country-iso-code-a2 (get-in plastic-strategy [:country :iso-code-a2])}
-                  result (srv.chat/set-public-channel-custom-fields config
-                                                                    (:id channel)
-                                                                    custom-fields)]
+                  result (port.chat/set-public-channel-custom-fields (:chat-adapter config)
+                                                                     (:id channel)
+                                                                     custom-fields)]
               (if (:success? result)
                 context
                 (assoc context
@@ -204,16 +205,16 @@
           :rollback-fn
           (fn rollback-create-chat-account
             [{:keys [chat-account-id] :as context}]
-            (let [result (srv.chat/delete-user-account config chat-account-id {})]
+            (let [result (port.chat/delete-user-account (:chat-adapter config) chat-account-id {})]
               (when-not (:success? result)
                 (log logger :error :failed-to-rollback-create-chat-account {:result result})))
             context)}
          {:txn-fn
           (fn add-user-to-ps-channel
             [{:keys [plastic-strategy chat-account-id] :as context}]
-            (let [result (srv.chat/add-user-to-public-channel config
-                                                              chat-account-id
-                                                              (:chat-channel-id plastic-strategy))]
+            (let [result (port.chat/add-user-to-public-channel (:chat-adapter config)
+                                                               chat-account-id
+                                                               (:chat-channel-id plastic-strategy))]
               (if (:success? result)
                 context
                 (assoc context

@@ -23,6 +23,7 @@
                 :error-details {:reason (str (class e))
                                 :message (.getMessage e)}}))))
 
+;; TODO - wrap in `with-transaction`? (drawback: some "transactions" can be unrelated to DB e.g. http calls from what I've seen)
 (defn thread-transactions [logger txns args-map]
   {:pre [(check! transactions-schema txns
                  args-map-schema     args-map)]}

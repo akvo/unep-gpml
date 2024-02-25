@@ -10,15 +10,16 @@
    [duct.core.repl :as duct-repl]
    [eftest.runner :as eftest]
    [gpml.fixtures]
+   [gpml.seeder.dummy :refer [get-or-create-profile]]
    [gpml.seeder.main :as seeder]
    [integrant.core :as ig]
    [integrant.repl :refer [clear go halt init prep reset]]
    [integrant.repl.state :refer [config system]]
    [ns-tracker.core :refer [ns-tracker]]
-   [taoensso.timbre :as timbre]
-   [gpml.seeder.dummy :refer [get-or-create-profile]]))
+   [taoensso.timbre :as timbre]))
 
 (require 'gpml.main) ;; Load core multimethods, transitively
+(require 'malli.provider)
 
 (duct/load-hierarchy)
 
@@ -46,6 +47,9 @@
 (defn db-conn []
   (-> system :duct.database.sql/hikaricp :spec))
 
+(defn conn []
+  (db-conn))
+
 (defn component [c]
   (get system c))
 
@@ -67,9 +71,9 @@
     (require ns-sym :reload))
   (refresh))
 
-(defn make-user! []
+(defn make-user! [& [email]]
   (get-or-create-profile (db-conn)
-                         (format "a%s@akvo.org" (random-uuid))
+                         (or email (format "a%s@akvo.org" (random-uuid)))
                          (format "Random User %s" (random-uuid))
                          "USER"
                          "APPROVED"))

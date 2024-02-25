@@ -43,15 +43,16 @@
   502)
 
 (defn- fallback [_value exception]
-  (let [status (condp instance? exception
+  (let [reason (condp instance? exception
                  ;; Socket layer related exceptions
                  java.net.UnknownHostException :unknown-host
                  java.net.ConnectException :connection-refused
-                 java.net.SocketTimeoutException gateway-timeout
+                 java.net.SocketTimeoutException :gateway-timeout
 
                  ;; Any other kind of exception
                  java.lang.Exception :unknown-reason)]
-    {:status status}))
+    {:status 500 ;; use a reasonable number (this used to be a keyword - changed to avoid errors on arithmetic)
+     :reason reason}))
 
 (defn- retry-policy [max-retries backoff-ms]
   (dh/retry-policy-from-config
@@ -62,8 +63,14 @@
 (defmethod client/coerce-response-body :json-keyword-keys
   [_req resp]
   (try
-    (cond-> resp
-      (some-> resp :body string?) (update :body json/<-json))
+    (-> resp
+        (update :body (fn [x]
+                        (cond-> x
+                          (instance? java.io.InputStream x)
+                          slurp)))
+        (update :body (fn [x]
+                        (cond-> x
+                          (string? x) json/<-json))))
     (catch com.fasterxml.jackson.core.JsonParseException e
       (timbre/with-context+ {:resp resp}
         (timbre/error e))
@@ -83,7 +90,9 @@
                 :or {timeout default-timeout
                      max-retries default-max-retries
                      backoff-ms default-backoff-ms}}]
-   (let [request-id (util/uuid)
+   (let [req (cond-> req
+               (not (:method req)) (assoc :method :get))
+         request-id (util/uuid)
          logged-req (select-keys req [:url :method])]
      (dh/with-retry {:policy (retry-policy max-retries backoff-ms)
                      :fallback fallback

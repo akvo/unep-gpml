@@ -1,148 +1,48 @@
 (ns gpml.handler.chat
   (:require
-   [camel-snake-kebab.core :refer [->snake_case]]
-   [camel-snake-kebab.extras :as cske]
-   [duct.logger :refer [log]]
+   [gpml.boundary.adapter.chat.ds-chat :as ds-chat]
+   [gpml.boundary.port.chat :as port.chat]
    [gpml.db.stakeholder :as db.stakeholder]
-   [gpml.domain.types :as dom.types]
    [gpml.handler.resource.permission :as h.r.permission]
    [gpml.handler.responses :as r]
    [gpml.service.chat :as srv.chat]
    [gpml.util.email :as email]
-   [integrant.core :as ig]))
+   [gpml.util.malli :refer [check!]]
+   [integrant.core :as ig]
+   [malli.core :as malli]
+   [malli.util :as mu]
+   [gpml.util.http-client :as http-client]))
 
-(def ^:private channel-types
-  #{"c" "p"})
-
-(def ^:private set-user-account-active-status-params-schema
-  [:map
-   [:chat_account_status
-    {:optional false
-     :swagger {:description "The user chat account status"
-               :type "string"
-               :enum (map str dom.types/chat-account-statuses)}}
-    (dom.types/get-type-schema :chat-account-status)]])
-
-(def ^:private send-private-channel-invitation-request-params-schema
-  [:map
-   [:channel_id
-    {:optional false
-     :swagger {:description "The channel id"
-               :type "string"
-               :allowEmptyValue false}}
-    [:string {:min 1}]]
-   [:channel_name
-    {:optional false
-     :swagger {:description "The channel name"
-               :type "string"
-               :allowEmptyValue false}}
-    [:string {:min 1}]]])
-
-(def ^:private add-user-to-private-channel-params-schema
-  [:map
-   [:channel_id
-    {:optional false
-     :swagger {:description "The channel id"
-               :type "string"
-               :allowEmptyValue false}}
-    [:string {:min 1}]]
-   [:channel_name
-    {:optional false
-     :swagger {:description "The channel name"
-               :type "string"
-               :allowEmptyValue false}}
-    [:string {:min 1}]]
-   [:user_id
-    {:optional false
-     :swagger {:description "The user's identifier in GPML"
-               :type "integer"
-               :allowEmptyValue false}}
-    [:fn
-     {:error/message "Not a valid user identifier. It should be a positive integer."}
-     pos-int?]]])
-
-(def ^:private get-all-channels-params-schema
-  [:map
-   [:name
-    {:optional true
-     :swagger {:description "The channel name"
-               :type "string"
-               :allowEmptyValue false}}
-    [:string {:min 1}]]
-   [:types
-    {:optional true
-     :swagger {:description "The channel types: c = public, p = private"}}
-    [:vector
-     {:decode/string (fn [x] (if (string? x) [x] x))}
-     [:enum "c" "p"]]]])
-
-(def ^:private remove-user-from-channel-params-schema
-  [:map
-   [:channel_id
-    {:swagger {:description "The channel ID"
-               :type "string"
-               :allowEmptyValue false}}
-    [:string {:min 1}]]
-   [:channel_type
-    {:swagger {:description "The channel type: c = public, p = private"
-               :type "string"
-               :enum channel-types}}
-    (apply conj [:enum] channel-types)]])
-
-(def ^:private get-channel-details-path-params-schema
-  [:map
-   [:id
-    {:swagger {:description "The channel ID."
-               :type "string"
-               :allowEmptyValue false}}
-    [:string {:min 1}]]])
-
-(def ^:private get-channel-details-query-params-schema
-  [:map
-   [:type
-    {:swagger {:description "The channel type: c = public, p = private"
-               :type "string"
-               :enum channel-types}}
-    (apply conj [:enum] channel-types)]])
-
-(defn- create-user-account [config {:keys [user]}]
+(defn- create-user-account [config {:keys [user] :as _req}]
   (let [result (srv.chat/create-user-account config (:id user))]
     (if (:success? result)
       (r/ok (:stakeholder result))
-      (r/server-error (dissoc result :success?)))))
+      (r/server-error result))))
 
 (defn- set-user-account-active-status [config {:keys [user parameters]}]
   (let [chat-account-status (-> parameters :body :chat_account_status)
         result (srv.chat/set-user-account-active-status config user chat-account-status)]
     (if (:success? result)
       (r/ok {})
-      (r/server-error (dissoc result :success?)))))
+      (r/server-error result))))
 
 (defn- get-user-joined-channels [config {:keys [user]}]
-  (let [result (srv.chat/get-user-joined-channels config (:chat_account_id user))]
+  (let [result (port.chat/get-user-joined-channels (:chat-adapter config) (:chat_account_id user))]
     (if (:success? result)
-      (r/ok (cske/transform-keys ->snake_case (:channels result)))
-      (r/server-error (dissoc result :success?)))))
+      (r/ok result)
+      (r/server-error result))))
 
 (defn- get-private-channels [config {:keys [user]}]
-  (if-not (h.r.permission/operation-allowed?
-           config
-           {:user-id (:id user)
-            :entity-type :application
-            :custom-permission :list-chat-private-channels
-            :root-context? true})
+  (if-not (h.r.permission/operation-allowed? config
+                                             {:user-id (:id user)
+                                              :entity-type :application
+                                              :custom-permission :list-chat-private-channels
+                                              :root-context? true})
     (r/forbidden {:message "Unauthorized"})
-    (let [result (srv.chat/get-private-channels config)]
+    (let [result (port.chat/get-private-channels (:chat-adapter config) {})]
       (if (:success? result)
-        (r/ok (cske/transform-keys ->snake_case (:channels result)))
-        (r/server-error (dissoc result :success?))))))
-
-(defn- get-all-channels [config {:keys [parameters]}]
-  (let [search-opts (:query parameters)
-        result (srv.chat/get-all-channels config search-opts)]
-    (if (:success? result)
-      (r/ok (cske/transform-keys ->snake_case (:channels result)))
-      (r/server-error (dissoc result :success?)))))
+        (r/ok result)
+        (r/server-error result)))))
 
 (defn- get-public-channels [config {:keys [user]}]
   (if-not (h.r.permission/operation-allowed?
@@ -152,10 +52,10 @@
             :custom-permission :list-chat-public-channels
             :root-context? true})
     (r/forbidden {:message "Unauthorized"})
-    (let [result (srv.chat/get-public-channels config)]
+    (let [result (port.chat/get-public-channels (:chat-adapter config) {})]
       (if (:success? result)
-        (r/ok (cske/transform-keys ->snake_case (:channels result)))
-        (r/server-error (dissoc result :success?))))))
+        (r/ok result)
+        (r/server-error result)))))
 
 (defn- send-private-channel-invitation-request [config {:keys [user parameters]}]
   (if-not (h.r.permission/operation-allowed?
@@ -167,127 +67,206 @@
     (r/forbidden {:message "Unauthorized"})
     (let [channel-name (get-in parameters [:body :channel_name])
           channel-id (get-in parameters [:body :channel_id])
-          result (srv.chat/send-private-channel-invitation-request
-                  config
-                  user
-                  channel-id
-                  channel-name)]
+          result (srv.chat/send-private-channel-invitation-request config
+                                                                   user
+                                                                   channel-id
+                                                                   channel-name)]
       (if (:success? result)
-        (r/ok {})
-        (r/server-error (dissoc result :success?))))))
+        (r/ok result)
+        (r/server-error result)))))
 
 (defn- remove-user-from-channel [config {:keys [user parameters]}]
-  (let [{:keys [channel_id channel_type]} (:body parameters)
-        result (srv.chat/remove-user-from-channel config
-                                                  (:chat_account_id user)
-                                                  channel_id
-                                                  channel_type)]
+  (let [{:keys [channel_id]} (:body parameters)
+        result (port.chat/remove-user-from-channel (:chat-adapter config)
+                                                   (:chat_account_id user)
+                                                   channel_id
+                                                   {})]
     (if (:success? result)
-      (r/ok {})
-      (r/server-error (dissoc result :success?)))))
+      (r/ok result)
+      (r/server-error result))))
 
 (defn- add-user-to-private-channel [{:keys [db mailjet-config] :as config} parameters]
   (let [{:keys [channel_id channel_name user_id]} (:body parameters)
         target-user (db.stakeholder/get-stakeholder-by-id (:spec db) {:id user_id})]
     (if (seq target-user)
-      (let [result (srv.chat/add-user-to-private-channel config
-                                                         (:chat_account_id target-user)
-                                                         channel_id)]
+      (let [result (port.chat/add-user-to-private-channel (:chat-adapter config)
+                                                          (:chat_account_id target-user)
+                                                          channel_id)]
         (if (:success? result)
           (do
-            (email/notify-user-about-chat-private-channel-invitation-request-accepted
-             mailjet-config
-             target-user
-             channel_name)
-            (r/ok {}))
-          (r/server-error (dissoc result :success?))))
-      (r/server-error {:reason :user-not-found}))))
+            (email/notify-user-about-chat-private-channel-invitation-request-accepted mailjet-config
+                                                                                      target-user
+                                                                                      channel_name)
+            (r/ok result))
+          (r/server-error result)))
+      (r/server-error {:success? false
+                       :reason :user-not-found}))))
 
-(defn- get-channel-details [config {{:keys [query path]} :parameters :as _req}]
-  (let [result (srv.chat/get-channel-details config (:id path) (:type query))]
-    (if (:success? result)
-      (r/ok (:channel result))
-      (r/server-error (dissoc result :success?)))))
+(defn Result [success?]
+  [:map
+   [:success? {:json-schema/example success?}
+    boolean?]])
 
-(defmethod ig/init-key :gpml.handler.chat/post
-  [_ config]
-  (fn [req]
-    (create-user-account config req)))
+(defn- result-with [success? & [[k v :as entry]]]
+  {:pre [(check! boolean? success?)]}
+  (malli/schema (if entry
+                  (mu/assoc (Result success?) k v)
+                  (Result success?))))
 
-(defmethod ig/init-key :gpml.handler.chat/put
-  [_ config]
-  (fn [req]
-    (set-user-account-active-status config req)))
+(defn success-with [& [entry]]
+  (result-with true entry))
 
-(defmethod ig/init-key :gpml.handler.chat/put-params
-  [_ _]
-  {:body set-user-account-active-status-params-schema})
+(defn failure-with [& [entry]]
+  (result-with false entry))
 
-(defmethod ig/init-key :gpml.handler.chat/get-private-channels
-  [_ config]
-  (fn [req]
-    (get-private-channels config req)))
+(defmethod ig/init-key :gpml.handler.chat/dcs-user-routes
+  [_ {:keys [middleware config]}]
+  {:pre [(seq middleware)
+         (seq config)]}
+  ["/user"
+   ["/account"
+    {:post {:summary    "Create a chat user account"
+            :middleware middleware
+            :swagger    {:tags ["chat"]}
+            :handler    (fn do-create-user-account [req]
+                          (create-user-account config req))
+            :responses  {:200 {:body any?}
+                         :500 {:body (failure-with)}}}
+     :put  {:summary    "Update chat user account status"
+            :middleware middleware
+            :swagger    {:tags ["chat"]}
+            :handler    (fn do-set-user-account-active-status [req]
+                          (set-user-account-active-status config req))
+            :parameters {:body [:map
+                                [:active
+                                 {:optional false}
+                                 boolean?]]}
+            :responses {:200 {:body any?}
+                        :500 {:body any?}}}}]
+   ["/channel"
+    {:get {:summary    "Get all user joined channels"
+           :middleware middleware
+           :swagger    {:tags ["chat"]}
+           :handler    (fn do-get-user-joined-channels [req]
+                         (get-user-joined-channels config req))
+           :responses {:200 {:body (success-with [:channels [:sequential ds-chat/Channel]])}
+                       :500 {:body (failure-with)}}}}]])
 
-(defmethod ig/init-key :gpml.handler.chat/get-public-channels
-  [_ config]
-  (fn [req]
-    (get-public-channels config req)))
+(defmethod ig/init-key :gpml.handler.chat/dcs-channel-routes
+  [_ {:keys [middleware]
+      {:keys [logger] :as config} :config}]
+  {:pre [(seq middleware)
+         (seq config)
+         logger]}
+  ["/channel"
+   ["/leave"
+    {:post {:summary    "Remove the callee user from the channel"
+            :middleware middleware
+            :swagger    {:tags ["chat"]}
+            :handler    (fn do-remove-user-from-channel [req]
+                          (remove-user-from-channel config req))
+            :parameters {:body [:map
+                                [:channel_id
+                                 {:swagger {:type "string"
+                                            :allowEmptyValue false}}
+                                 [:string {:min 1}]]]}
+            :responses {:200 {:body (success-with)}
+                        :500 {:body (failure-with)}}}}]
+   ["/all"
+    {:get {:summary    "Get all channels in the server"
+           :swagger    {:tags ["chat"]}
+           :handler    (fn do-get-all-channels [_req]
+                         (let [result (port.chat/get-all-channels (:chat-adapter config) {})]
+                           (if (:success? result)
+                             (r/ok result)
+                             (r/server-error result))))
+           :responses {:200 {:body (success-with [:channels [:sequential ds-chat/Channel]])}
+                       :500 {:body (failure-with)}}}}]
+   ["/details"
+    ["/{id}"
+     {:get {:summary    "Get channel details"
+            :middleware middleware
+            :swagger    {:tags ["chat"] :security [{:id_token []}]}
+            :handler    (fn get-channel-details [config {{:keys [path]} :parameters :as _req}]
+                          (let [result (srv.chat/get-channel-details config (:id path))]
+                            (if (:success? result)
+                              (r/ok result)
+                              (r/server-error result))))
+            :parameters {:path [:map
+                                [:id
+                                 {:swagger {:description "The channel ID."
+                                            :type "string"
+                                            :allowEmptyValue false}}
+                                 [:string {:min 1}]]]}
+            :responses {:200 {:body (success-with #_[:channel ds-chat/Channel])} ;; n.b. returns channels + users.
+                        :500 {:body (failure-with)}}}}]]
+   ["/private"
+    [""
+     {:get  {:summary    "Get all private channels in the server"
+             :middleware middleware
+             :swagger    {:tags ["chat"]}
+             :handler    (fn do-get-private-channels [req]
+                           (get-private-channels config req))
+             :responses {:200 {:body (success-with [:channels [:sequential ds-chat/Channel]])}
+                         :500 {:body (failure-with)}}}
+      :post {:summary    "Send private channel invitation request"
+             :middleware middleware
+             :swagger    {:tags ["chat"]}
+             :handler    (fn do-send-private-channel-invitation-request [req]
+                           (send-private-channel-invitation-request config req))
+             :parameters {:body [:map
+                                 [:channel_id
+                                  {:optional false
+                                   :swagger {:description "The channel id"
+                                             :type "string"
+                                             :allowEmptyValue false}}
+                                  [:string {:min 1}]]
+                                 [:channel_name
+                                  {:optional false
+                                   :swagger {:description "The channel name"
+                                             :type "string"
+                                             :allowEmptyValue false}}
+                                  [:string {:min 1}]]]}
+             :responses {:200 {:body (success-with)}
+                         :500 {:body (failure-with)}}}}]
+    ["/add-user"
+     {:post {:summary    "Allows admins to add another user to a private channel."
+             :middleware middleware
+             :swagger    {:tags ["chat"]}
+             :handler    (fn do-add-user-to-private-channel [{parameters :parameters user :user}]
+                           (if (h.r.permission/super-admin? config (:id user))
+                             (add-user-to-private-channel config parameters)
+                             (r/forbidden {:message "Unauthorized"})))
+             :parameters {:body [:map
+                                 [:channel_id
+                                  {:optional false
+                                   :swagger {:type "string"
+                                             :allowEmptyValue false}}
+                                  [:string {:min 1}]]
+                                 [:channel_name
+                                  {:optional false
+                                   :swagger {:type "string"
+                                             :allowEmptyValue false}}
+                                  [:string {:min 1}]]
+                                 [:user_id
+                                  {:optional false
+                                   :swagger {:description "The user's identifier in GPML"
+                                             :type "integer"
+                                             :allowEmptyValue false}}
+                                  [:fn
+                                   {:error/message "Not a valid user identifier. It should be a positive integer."}
+                                   pos-int?]]]}
+             :responses {:200 {:body (success-with)}
+                         :500 {:body (failure-with)}}}}]]
+   ["/public"
+    {:get {:summary    "Get all public channels in the server"
+           :middleware middleware
+           :swagger    {:tags ["chat"]}
+           :handler    (fn do-get-public-channels [req]
+                         (get-public-channels config req))
+           :responses {:200 {:body (success-with [:channels [:sequential ds-chat/Channel]])}
+                       :500 {:body (failure-with)}}}}]])
 
-(defmethod ig/init-key :gpml.handler.chat/get-all-channels
-  [_ config]
-  (fn [req]
-    (get-all-channels config req)))
-
-(defmethod ig/init-key :gpml.handler.chat/get-all-channels-params
-  [_ _]
-  {:query get-all-channels-params-schema})
-
-(defmethod ig/init-key :gpml.handler.chat/get-user-joined-channels
-  [_ config]
-  (fn [req]
-    (get-user-joined-channels config req)))
-
-(defmethod ig/init-key :gpml.handler.chat/send-private-channel-invitation-request
-  [_ config]
-  (fn [req]
-    (send-private-channel-invitation-request config req)))
-
-(defmethod ig/init-key :gpml.handler.chat/send-private-channel-invitation-request-params
-  [_ _]
-  {:body send-private-channel-invitation-request-params-schema})
-
-(defmethod ig/init-key :gpml.handler.chat/add-user-to-private-channel-params
-  [_ _]
-  {:body add-user-to-private-channel-params-schema})
-
-(defmethod ig/init-key :gpml.handler.chat/add-user-to-private-channel
-  [_ {:keys [logger] :as config}]
-  (fn [{parameters :parameters user :user}]
-    (if (h.r.permission/super-admin? config (:id user))
-      (try
-        (add-user-to-private-channel config parameters)
-        (catch Exception t
-          (log logger :error :failed-to-add-user-to-private-channel t)
-          (let [response {:success? false
-                          :reason :could-not-add-user-to-private-channel}]
-            (r/server-error (assoc-in response [:error-details :error] (ex-message t))))))
-      (r/forbidden {:message "Unauthorized"}))))
-
-(defmethod ig/init-key :gpml.handler.chat/remove-user-from-channel
-  [_ config]
-  (fn [req]
-    (remove-user-from-channel config req)))
-
-(defmethod ig/init-key :gpml.handler.chat/remove-user-from-channel-params
-  [_ _]
-  {:body remove-user-from-channel-params-schema})
-
-(defmethod ig/init-key :gpml.handler.chat/get-channel-details
-  [_ config]
-  (fn [req]
-    (get-channel-details config req)))
-
-(defmethod ig/init-key :gpml.handler.chat/get-channel-details-params
-  [_ _]
-  {:path get-channel-details-path-params-schema
-   :query get-channel-details-query-params-schema})
+(comment
+  (http-client/request (dev/logger)
+                       {:url "http://localhost:3000/api/chat/user/channel"}))

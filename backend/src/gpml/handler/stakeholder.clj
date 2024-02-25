@@ -3,6 +3,7 @@
    [clojure.java.jdbc :as jdbc]
    [clojure.string :as str]
    [duct.logger :refer [log]]
+   [gpml.boundary.port.chat :as port.chat]
    [gpml.db.organisation :as db.organisation]
    [gpml.db.resource.tag :as db.resource.tag]
    [gpml.db.stakeholder :as db.stakeholder]
@@ -13,7 +14,6 @@
    [gpml.handler.responses :as r]
    [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
    [gpml.handler.util :as handler.util]
-   [gpml.service.chat :as srv.chat]
    [gpml.service.permissions :as srv.permissions]
    [gpml.service.stakeholder :as srv.stakeholder]
    [gpml.util.email :as email]
@@ -402,9 +402,9 @@
                     (let [roles (if (= role "ADMIN")
                                   ["user" "moderator"]
                                   ["user"])
-                          result (srv.chat/update-user-account config
-                                                               (:chat_account_id target-user)
-                                                               {:roles roles})]
+                          result (port.chat/update-user-account (:chat-adapter config)
+                                                                (:chat_account_id target-user)
+                                                                {:roles roles})]
                       (if (:success? result)
                         (r/ok {:status "success"})
                         (throw (ex-info "Error updating user chat account role"

@@ -49,13 +49,13 @@
       (let [endpoint (get endpoints entity)
             {:keys [status body]}
             (http-client/request logger
-                                    {:method :get
-                                     :url (str api-url endpoint)
-                                     :as :json-keyword-keys
-                                     :query-params (-> (get brs-api-odata-queries entity)
-                                                       (assoc :$top records-per-page)
-                                                       (merge (when skip-token {:$skip skip-token})))}
-                                    retry-config)]
+                                 {:method :get
+                                  :url (str api-url endpoint)
+                                  :as :json-keyword-keys
+                                  :query-params (-> (get brs-api-odata-queries entity)
+                                                    (assoc :$top records-per-page)
+                                                    (merge (when skip-token {:$skip skip-token})))}
+                                 retry-config)]
         (if (<= 200 status 299)
           (let [total-entities (get-count-from-body entity body)
                 new-skip-token (+ skip-token records-per-page)

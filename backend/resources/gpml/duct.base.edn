@@ -575,7 +575,7 @@
                                     :parameters #ig/ref :gpml.handler.case-study/post-params
                                     :responses  #ig/ref :gpml.handler.case-study/post-responses}}]]
                           ["/chat"
-                           ["/curated-channel"
+                           ["/curated-channel" ;; NOTE: curated-channels are unused atm
                             [""
                              {:get  {:summary    "Get the list of curated channels"
                                      :middleware [#ig/ref :gpml.auth/auth-middleware
@@ -595,72 +595,9 @@
                                        :swagger    {:tags ["chat" "curated-channel"]}
                                        :handler    #ig/ref :gpml.handler.chat-curated-channel/delete
                                        :parameters #ig/ref :gpml.handler.chat-curated-channel/delete-params}}]]
-                           ["/user"
-                            ["/account"
-                             {:post {:summary    "Create a chat user account"
-                                     :middleware [#ig/ref :gpml.auth/auth-middleware
-                                                  #ig/ref :gpml.auth/auth-required]
-                                     :swagger    {:tags ["chat"]}
-                                     :handler    #ig/ref :gpml.handler.chat/post}
-                              :put  {:summary    "Update chat user account status"
-                                     :middleware [#ig/ref :gpml.auth/auth-middleware
-                                                  #ig/ref :gpml.auth/auth-required]
-                                     :swagger    {:tags ["chat"]}
-                                     :handler    #ig/ref :gpml.handler.chat/put
-                                     :parameters #ig/ref :gpml.handler.chat/put-params}}]
-                            ["/channel"
-                             {:get {:summary    "Get all user joined channels"
-                                    :middleware [#ig/ref :gpml.auth/auth-middleware
-                                                 #ig/ref :gpml.auth/auth-required]
-                                    :swagger    {:tags ["chat"]}
-                                    :handler    #ig/ref :gpml.handler.chat/get-user-joined-channels}}]]
-                           ["/channel"
-                            ["/leave"
-                             {:post {:summary    "Remove the callee user from the channel"
-                                     :middleware [#ig/ref :gpml.auth/auth-middleware
-                                                  #ig/ref :gpml.auth/auth-required]
-                                     :swagger    {:tags ["chat"]}
-                                     :handler    #ig/ref :gpml.handler.chat/remove-user-from-channel
-                                     :parameters #ig/ref :gpml.handler.chat/remove-user-from-channel-params}}]
-                            ["/all"
-                             {:get {:summary    "Get all channels in the server"
-                                    :swagger    {:tags ["chat"]}
-                                    :handler    #ig/ref :gpml.handler.chat/get-all-channels
-                                    :parameters #ig/ref :gpml.handler.chat/get-all-channels-params}}]
-                            ["/details"
-                             ["/{id}"
-                              {:get {:summary    "Get channel details"
-                                     :middleware [#ig/ref :gpml.auth/auth-middleware
-                                                  #ig/ref :gpml.auth/auth-required]
-                                     :swagger    {:tags ["chat"] :security [{:id_token []}]}
-                                     :handler    #ig/ref :gpml.handler.chat/get-channel-details
-                                     :parameters #ig/ref :gpml.handler.chat/get-channel-details-params}}]]
-                            ["/private"
-                             [""
-                              {:get  {:summary    "Get all private channels in the server"
-                                      :middleware [#ig/ref :gpml.auth/auth-middleware
-                                                   #ig/ref :gpml.auth/auth-required]
-                                      :swagger    {:tags ["chat"]}
-                                      :handler    #ig/ref :gpml.handler.chat/get-private-channels}
-                               :post {:summary    "Send private channel invitation request"
-                                      :middleware [#ig/ref :gpml.auth/auth-middleware
-                                                   #ig/ref :gpml.auth/auth-required]
-                                      :swagger    {:tags ["chat"]}
-                                      :handler    #ig/ref :gpml.handler.chat/send-private-channel-invitation-request
-                                      :parameters #ig/ref :gpml.handler.chat/send-private-channel-invitation-request-params}}]
-                             ["/add-user"
-                              {:post {:summary    "Adds user to private channel"
-                                      :middleware [#ig/ref :gpml.auth/auth-middleware
-                                                   #ig/ref :gpml.auth/auth-required]
-                                      :swagger    {:tags ["chat"]}
-                                      :handler    #ig/ref :gpml.handler.chat/add-user-to-private-channel
-                                      :parameters #ig/ref :gpml.handler.chat/add-user-to-private-channel-params}}]]
-                            ["/public"
-                             {:get {:summary    "Get all public channels in the server"
-                                    :middleware [#ig/ref :gpml.auth/auth-middleware
-                                                 #ig/ref :gpml.auth/auth-required]
-                                    :swagger    {:tags ["chat"]}
-                                    :handler    #ig/ref :gpml.handler.chat/get-public-channels}}]]]
+
+                           #ig/ref :gpml.handler.chat/dcs-user-routes
+                           #ig/ref :gpml.handler.chat/dcs-channel-routes]
                           ["/plastic-strategy"
                            [""
                             {:get {:summary    "Get all plastic strategies"
@@ -965,22 +902,12 @@
  :gpml.handler.chat-curated-channel/delete                          #ig/ref :gpml.config/common
  :gpml.handler.chat-curated-channel/post-params                     {}
  :gpml.handler.chat-curated-channel/delete-params                   {}
- :gpml.handler.chat/post                                            #ig/ref :gpml.config/common
- :gpml.handler.chat/put                                             #ig/ref :gpml.config/common
- :gpml.handler.chat/put-params                                      {}
- :gpml.handler.chat/get-private-channels                            #ig/ref :gpml.config/common
- :gpml.handler.chat/get-public-channels                             #ig/ref :gpml.config/common
- :gpml.handler.chat/get-all-channels                                #ig/ref :gpml.config/common
- :gpml.handler.chat/get-all-channels-params                         {}
- :gpml.handler.chat/get-user-joined-channels                        #ig/ref :gpml.config/common
- :gpml.handler.chat/send-private-channel-invitation-request         #ig/ref :gpml.config/common
- :gpml.handler.chat/send-private-channel-invitation-request-params  {}
- :gpml.handler.chat/add-user-to-private-channel                     #ig/ref :gpml.config/common
- :gpml.handler.chat/add-user-to-private-channel-params              {}
- :gpml.handler.chat/remove-user-from-channel                        #ig/ref :gpml.config/common
- :gpml.handler.chat/remove-user-from-channel-params                 {}
- :gpml.handler.chat/get-channel-details                             #ig/ref :gpml.config/common
- :gpml.handler.chat/get-channel-details-params                      {}
+ :gpml.handler.chat/dcs-user-routes                                 {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                                  #ig/ref :gpml.auth/auth-required]
+                                                                     :config     #ig/ref :gpml.config/common}
+ :gpml.handler.chat/dcs-channel-routes                              {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                                  #ig/ref :gpml.auth/auth-required]
+                                                                     :config     #ig/ref :gpml.config/common}
  :gpml.handler.plastic-strategy/get-all                             #ig/ref :gpml.config/common
  :gpml.handler.plastic-strategy/get-all-params                      {}
  :gpml.handler.plastic-strategy/get                                 #ig/ref :gpml.config/common

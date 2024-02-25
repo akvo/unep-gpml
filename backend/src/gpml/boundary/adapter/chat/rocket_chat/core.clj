@@ -57,12 +57,12 @@
                            (assoc :user-id user-id))
           {:keys [status body]}
           (http-client/request logger
-                                  {:url (build-api-endpoint-url adapter "/users.info")
-                                   :method :get
-                                   :query-params (cske/transform-keys ->camelCaseString query-params)
-                                   :content-type :json
-                                   :headers (get-auth-headers api-key api-user-id)
-                                   :as :json-keyword-keys})]
+                               {:url (build-api-endpoint-url adapter "/users.info")
+                                :method :get
+                                :query-params (cske/transform-keys ->camelCaseString query-params)
+                                :content-type :json
+                                :headers (get-auth-headers api-key api-user-id)
+                                :as :json-keyword-keys})]
       (if (<= 200 status 299)
         {:success? true
          :user (cske/transform-keys ->kebab-case (:user body))}
@@ -79,12 +79,12 @@
   (try
     (let [{:keys [status body]}
           (http-client/request logger
-                                  {:url (build-api-endpoint-url adapter "/users.create")
-                                   :method :post
-                                   :body (json/->json (cske/transform-keys ->camelCaseString user))
-                                   :content-type :json
-                                   :headers (get-auth-headers api-key api-user-id)
-                                   :as :json-keyword-keys})]
+                               {:url (build-api-endpoint-url adapter "/users.create")
+                                :method :post
+                                :body (json/->json (cske/transform-keys ->camelCaseString user))
+                                :content-type :json
+                                :headers (get-auth-headers api-key api-user-id)
+                                :as :json-keyword-keys})]
       (if (<= 200 status 299)
         {:success? true
          :user (cske/transform-keys ->kebab-case (:user body))}
@@ -103,12 +103,12 @@
                                                            :data updates})
           {:keys [status body]}
           (http-client/request logger
-                                  {:url (build-api-endpoint-url adapter "/users.update")
-                                   :method :post
-                                   :body (json/->json req-body)
-                                   :content-type :json
-                                   :headers (get-auth-headers api-key api-user-id)
-                                   :as :json-keyword-keys})]
+                               {:url (build-api-endpoint-url adapter "/users.update")
+                                :method :post
+                                :body (json/->json req-body)
+                                :content-type :json
+                                :headers (get-auth-headers api-key api-user-id)
+                                :as :json-keyword-keys})]
       (if (<= 200 status 299)
         {:success? true
          :user (cske/transform-keys ->kebab-case (:user body))}
@@ -128,12 +128,12 @@
                      (assoc :confirm-relinquish (:confirm-relinquish opts)))
           {:keys [status body]}
           (http-client/request logger
-                                  {:url (build-api-endpoint-url adapter "/users.delete")
-                                   :method :post
-                                   :body (json/->json (cske/transform-keys ->camelCaseString req-body))
-                                   :content-type :json
-                                   :headers (get-auth-headers api-key api-user-id)
-                                   :as :json-keyword-keys})]
+                               {:url (build-api-endpoint-url adapter "/users.delete")
+                                :method :post
+                                :body (json/->json (cske/transform-keys ->camelCaseString req-body))
+                                :content-type :json
+                                :headers (get-auth-headers api-key api-user-id)
+                                :as :json-keyword-keys})]
       (if (<= 200 status 299)
         {:success? true}
         {:success? false
@@ -158,11 +158,11 @@
                      (assoc :confirm-relinquish (:confirm-relinquish opts)))
           {:keys [status body]}
           (http-client/request logger
-                                  {:url (build-api-endpoint-url adapter "/users.setActiveStatus")
-                                   :method :post
-                                   :body (json/->json (cske/transform-keys ->camelCaseString req-body))
-                                   :headers (get-auth-headers api-key api-user-id)
-                                   :as :json-keyword-keys})]
+                               {:url (build-api-endpoint-url adapter "/users.setActiveStatus")
+                                :method :post
+                                :body (json/->json (cske/transform-keys ->camelCaseString req-body))
+                                :headers (get-auth-headers api-key api-user-id)
+                                :as :json-keyword-keys})]
       (if (<= 200 status 299)
         {:success? true
          :user (cske/transform-keys ->kebab-case (:user body))}
@@ -180,11 +180,11 @@
     (let [query-params (assoc opts :room-id channel-id)
           {:keys [status body]}
           (http-client/request logger
-                                  {:url (build-api-endpoint-url adapter "/channels.members")
-                                   :method :get
-                                   :query-params (cske/transform-keys ->camelCaseString query-params)
-                                   :headers (get-auth-headers api-key api-user-id)
-                                   :as :json-keyword-keys})]
+                               {:url (build-api-endpoint-url adapter "/channels.members")
+                                :method :get
+                                :query-params (cske/transform-keys ->camelCaseString query-params)
+                                :headers (get-auth-headers api-key api-user-id)
+                                :as :json-keyword-keys})]
       (if (<= 200 status 299)
         {:success? true
          :users (cske/transform-keys ->kebab-case (:members body))}
@@ -202,11 +202,11 @@
     (let [query-params (assoc opts :room-id channel-id)
           {:keys [status body]}
           (http-client/request logger
-                                  {:url (build-api-endpoint-url adapter "/groups.members")
-                                   :method :get
-                                   :query-params (cske/transform-keys ->camelCaseString query-params)
-                                   :headers (get-auth-headers api-key api-user-id)
-                                   :as :json-keyword-keys})]
+                               {:url (build-api-endpoint-url adapter "/groups.members")
+                                :method :get
+                                :query-params (cske/transform-keys ->camelCaseString query-params)
+                                :headers (get-auth-headers api-key api-user-id)
+                                :as :json-keyword-keys})]
       (if (<= 200 status 299)
         {:success? true
          :users (cske/transform-keys ->kebab-case (:members body))}
@@ -244,11 +244,11 @@
                                                          q]}))))
           {:keys [status body]}
           (http-client/request logger
-                                  {:url (build-api-endpoint-url adapter "/channels.list")
-                                   :method :get
-                                   :query-params (cske/transform-keys ->camelCaseString query-params)
-                                   :headers (get-auth-headers api-key api-user-id)
-                                   :as :json-keyword-keys})]
+                               {:url (build-api-endpoint-url adapter "/channels.list")
+                                :method :get
+                                :query-params (cske/transform-keys ->camelCaseString query-params)
+                                :headers (get-auth-headers api-key api-user-id)
+                                :as :json-keyword-keys})]
       (if (<= 200 status 299)
         {:success? true
          :channels (->> (:channels body)
@@ -276,11 +276,11 @@
                                                          q]}))))
           {:keys [status body]}
           (http-client/request logger
-                                  {:url (build-api-endpoint-url adapter "/groups.listAll")
-                                   :method :get
-                                   :query-params (cske/transform-keys ->camelCaseString query-params)
-                                   :headers (get-auth-headers api-key api-user-id)
-                                   :as :json-keyword-keys})]
+                               {:url (build-api-endpoint-url adapter "/groups.listAll")
+                                :method :get
+                                :query-params (cske/transform-keys ->camelCaseString query-params)
+                                :headers (get-auth-headers api-key api-user-id)
+                                :as :json-keyword-keys})]
       (if (<= 200 status 299)
         {:success? true
          :channels (->> (:groups body)
@@ -305,11 +305,11 @@
                          (assoc :types (:types opts)))
           {:keys [status body]}
           (http-client/request logger
-                                  {:url (build-api-endpoint-url adapter "/rooms.adminRooms")
-                                   :method :get
-                                   :query-params (cske/transform-keys ->camelCaseString query-params)
-                                   :headers (get-auth-headers api-key api-user-id)
-                                   :as :json-keyword-keys})]
+                               {:url (build-api-endpoint-url adapter "/rooms.adminRooms")
+                                :method :get
+                                :query-params (cske/transform-keys ->camelCaseString query-params)
+                                :headers (get-auth-headers api-key api-user-id)
+                                :as :json-keyword-keys})]
       (if-not (<= 200 status 299)
         {:success? false
          :reason :failed-to-get-all-channels
@@ -388,11 +388,11 @@
                      "/groups.kick")
           {:keys [status body]}
           (http-client/request logger
-                                  {:url (build-api-endpoint-url adapter endpoint)
-                                   :method :post
-                                   :body (json/->json {:roomId channel-id :userId user-id})
-                                   :headers (get-auth-headers api-key api-user-id)
-                                   :as :json-keyword-keys})]
+                               {:url (build-api-endpoint-url adapter endpoint)
+                                :method :post
+                                :body (json/->json {:roomId channel-id :userId user-id})
+                                :headers (get-auth-headers api-key api-user-id)
+                                :as :json-keyword-keys})]
       (if (<= 200 status 299)
         {:success? true}
         {:success? false
@@ -408,11 +408,11 @@
   (try
     (let [{:keys [status body]}
           (http-client/request logger
-                                  {:url (build-api-endpoint-url adapter "/groups.invite")
-                                   :method :post
-                                   :body (json/->json {:roomId channel-id :userId user-id})
-                                   :headers (get-auth-headers api-key api-user-id)
-                                   :as :json-keyword-keys})]
+                               {:url (build-api-endpoint-url adapter "/groups.invite")
+                                :method :post
+                                :body (json/->json {:roomId channel-id :userId user-id})
+                                :headers (get-auth-headers api-key api-user-id)
+                                :as :json-keyword-keys})]
       (if (<= 200 status 299)
         {:success? true}
         {:success? false
@@ -428,11 +428,11 @@
   (try
     (let [{:keys [status body]}
           (http-client/request logger
-                                  {:url (build-api-endpoint-url adapter "/channels.invite")
-                                   :method :post
-                                   :body (json/->json {:roomId channel-id :userId user-id})
-                                   :headers (get-auth-headers api-key api-user-id)
-                                   :as :json-keyword-keys})]
+                               {:url (build-api-endpoint-url adapter "/channels.invite")
+                                :method :post
+                                :body (json/->json {:roomId channel-id :userId user-id})
+                                :headers (get-auth-headers api-key api-user-id)
+                                :as :json-keyword-keys})]
       (if (<= 200 status 299)
         {:success? true}
         {:success? false
@@ -457,11 +457,11 @@
                     (assoc channel :exclude-self false))
           {:keys [status body]}
           (http-client/request logger
-                                  {:url (build-api-endpoint-url adapter "/groups.create")
-                                   :method :post
-                                   :body (json/->json req-body)
-                                   :headers (get-auth-headers api-key api-user-id)
-                                   :as :json-keyword-keys})]
+                               {:url (build-api-endpoint-url adapter "/groups.create")
+                                :method :post
+                                :body (json/->json req-body)
+                                :headers (get-auth-headers api-key api-user-id)
+                                :as :json-keyword-keys})]
       (if (<= 200 status 299)
         {:success? true
          :channel (cske/transform-keys ->kebab-case (:group body))}
@@ -487,11 +487,11 @@
                     (assoc channel :exclude-self false))
           {:keys [status body]}
           (http-client/request logger
-                                  {:url (build-api-endpoint-url adapter "/channels.create")
-                                   :method :post
-                                   :body (json/->json req-body)
-                                   :headers (get-auth-headers api-key api-user-id)
-                                   :as :json-keyword-keys})]
+                               {:url (build-api-endpoint-url adapter "/channels.create")
+                                :method :post
+                                :body (json/->json req-body)
+                                :headers (get-auth-headers api-key api-user-id)
+                                :as :json-keyword-keys})]
       (if (<= 200 status 299)
         {:success? true
          :channel (cske/transform-keys ->kebab-case (:channel body))}
@@ -508,11 +508,11 @@
   (try
     (let [{:keys [status body]}
           (http-client/request logger
-                                  {:url (build-api-endpoint-url adapter "/groups.delete")
-                                   :method :post
-                                   :body (json/->json {:roomId channel-id})
-                                   :headers (get-auth-headers api-key api-user-id)
-                                   :as :json-keyword-keys})]
+                               {:url (build-api-endpoint-url adapter "/groups.delete")
+                                :method :post
+                                :body (json/->json {:roomId channel-id})
+                                :headers (get-auth-headers api-key api-user-id)
+                                :as :json-keyword-keys})]
       (if (<= 200 status 299)
         {:success? true}
         {:success? false
@@ -528,11 +528,11 @@
   (try
     (let [{:keys [status body]}
           (http-client/request logger
-                                  {:url (build-api-endpoint-url adapter "/channels.delete")
-                                   :method :post
-                                   :body (json/->json {:roomId channel-id})
-                                   :headers (get-auth-headers api-key api-user-id)
-                                   :as :json-keyword-keys})]
+                               {:url (build-api-endpoint-url adapter "/channels.delete")
+                                :method :post
+                                :body (json/->json {:roomId channel-id})
+                                :headers (get-auth-headers api-key api-user-id)
+                                :as :json-keyword-keys})]
       (if (<= 200 status 299)
         {:success? true}
         {:success? false
@@ -551,11 +551,11 @@
                     {:room-id channel-id :custom-fields custom-fields})
           {:keys [status body]}
           (http-client/request logger
-                                  {:url (build-api-endpoint-url adapter "/groups.setCustomFields")
-                                   :method :post
-                                   :body (json/->json req-body)
-                                   :headers (get-auth-headers api-key api-user-id)
-                                   :as :json-keyword-keys})]
+                               {:url (build-api-endpoint-url adapter "/groups.setCustomFields")
+                                :method :post
+                                :body (json/->json req-body)
+                                :headers (get-auth-headers api-key api-user-id)
+                                :as :json-keyword-keys})]
       (if (<= 200 status 299)
         {:success? true
          :channel (cske/transform-keys ->kebab-case (:group body))}
@@ -575,11 +575,11 @@
                     {:room-id channel-id :custom-fields custom-fields})
           {:keys [status body]}
           (http-client/request logger
-                                  {:url (build-api-endpoint-url adapter "/channels.setCustomFields")
-                                   :method :post
-                                   :body (json/->json req-body)
-                                   :headers (get-auth-headers api-key api-user-id)
-                                   :as :json-keyword-keys})]
+                               {:url (build-api-endpoint-url adapter "/channels.setCustomFields")
+                                :method :post
+                                :body (json/->json req-body)
+                                :headers (get-auth-headers api-key api-user-id)
+                                :as :json-keyword-keys})]
       (if (<= 200 status 299)
         {:success? true
          :channel (cske/transform-keys ->kebab-case (:group body))}
@@ -596,11 +596,11 @@
   (try
     (let [{:keys [status body]}
           (http-client/request logger
-                                  {:url (build-api-endpoint-url adapter "/rooms.getDiscussions")
-                                   :method :get
-                                   :query-params {:roomId channel-id}
-                                   :headers (get-auth-headers api-key api-user-id)
-                                   :as :json-keyword-keys})]
+                               {:url (build-api-endpoint-url adapter "/rooms.getDiscussions")
+                                :method :get
+                                :query-params {:roomId channel-id}
+                                :headers (get-auth-headers api-key api-user-id)
+                                :as :json-keyword-keys})]
       (if (<= 200 status 299)
         {:success? true
          :discussions (cske/transform-keys ->kebab-case (:discussions body))}

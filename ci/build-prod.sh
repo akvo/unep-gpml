@@ -17,28 +17,28 @@ mkdir -p "${lein_path}"
 mkdir -p "${m2_path}"
 
 dc () {
-    docker-compose \
-	--ansi never \
-	"$@"
+  docker-compose \
+	  --ansi never \
+	  "$@"
 }
 export -f dc
 
 frontend_build () {
-    rm -rf frontend/.env
-    echo 'REACT_APP_AUTH0_CLIENT_ID="mSuWoeUEN3Z8XWZMbUqiOIOHwdk0R6dm"' >> frontend/.env
-    echo 'REACT_APP_AUTH0_DOMAIN="auth.gpmarinelitter.org"' >> frontend/.env
-    echo 'NEXT_PUBLIC_CHAT_API_DOMAIN_URL="https://rocket-chat-unep.akvo.org"' >> frontend/.env
-    echo 'NEXT_PUBLIC_ENV=prod' >> frontend/.env
+  rm -rf frontend/.env
+  echo 'REACT_APP_AUTH0_CLIENT_ID="mSuWoeUEN3Z8XWZMbUqiOIOHwdk0R6dm"' >> frontend/.env
+  echo 'REACT_APP_AUTH0_DOMAIN="auth.gpmarinelitter.org"' >> frontend/.env
+  echo 'NEXT_PUBLIC_CHAT_API_DOMAIN_URL="https://rocket-chat-unep.akvo.org"' >> frontend/.env
+  echo 'NEXT_PUBLIC_ENV=prod' >> frontend/.env
 
-    dc run \
-       --rm \
-       --no-deps \
-       frontend \
-       bash release.sh
+  dc run \
+     --rm \
+     --no-deps \
+     frontend \
+     bash release.sh
 
-    docker build \
-	   --tag "${image_prefix}/frontend:latest-prod" \
-	   --tag "${image_prefix}/frontend:${CI_COMMIT}-prod" frontend
+  docker build \
+	       --tag "${image_prefix}/frontend:latest-prod" \
+	       --tag "${image_prefix}/frontend:${CI_COMMIT}-prod" frontend
 }
 
 frontend_build

@@ -57,11 +57,11 @@
   adapter/HugsqlAdapter
   (execute [_ db sqlvec options]
     (metrics metrics-collector options
-             (adapter/execute jdbc-adapter db sqlvec options)))
+      (adapter/execute jdbc-adapter db sqlvec options)))
 
   (query [_ db sqlvec options]
     (metrics metrics-collector options
-             (adapter/query jdbc-adapter db sqlvec options)))
+      (adapter/query jdbc-adapter db sqlvec options)))
 
   (result-one [_ result options]
     (adapter/result-one jdbc-adapter result options))

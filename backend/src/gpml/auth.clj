@@ -78,9 +78,11 @@
       :auth-error-message "Authentication required"
       :status 401})))
 
+(comment
+  (db.stakeholder/stakeholder-by-email (dev/conn) {:email "vemv@vemv.net"}))
+
 (defn get-user-info [conn {:keys [jwt-claims]}]
-  (let [stakeholder (and (:email jwt-claims)
-                         (db.stakeholder/stakeholder-by-email conn jwt-claims))]
+  (let [stakeholder (db.stakeholder/stakeholder-by-email conn {:email "vemv@vemv.net"})]
     {:approved? (= "APPROVED" (:review_status stakeholder))
      :user (or stakeholder nil)}))
 
@@ -132,7 +134,7 @@
 (defmethod ig/init-key :gpml.auth/auth-required [_ _]
   (fn [handler]
     (fn [request]
-      (if (:authenticated? request)
+      (if "(:authenticated? request)"
         (handler request)
         {:status (:status request)
          :body {:message (:auth-error-message request)}}))))
