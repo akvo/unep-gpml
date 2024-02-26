@@ -89,12 +89,11 @@
                               :body (json/->json user)
                               :content-type :json
                               :as :json-keyword-keys})
-        {_access-token :access-token :as obj} body]
-    ;; XXX persist access-token
-    ;; XXX persist user-id. Necessary for https://deadsimplechat.com/developer/rest-api/put-update-user
+        obj (cske/transform-keys ->kebab-case body)]
     (if (<= 200 status 299)
       {:success? true
-       :user (select-keys obj [:username :userId :isModerator])}
+       :user (-> obj
+                 (select-keys [:username :user-id :is-moderator :access-token]))}
       {:success? false
        :reason :failed-to-create-user-account
        :error-details body})))
