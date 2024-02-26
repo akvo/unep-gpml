@@ -1,4 +1,6 @@
 {:duct.core/project-ns gpml
+ :gpml.handler.programmatic/common-middleware [#ig/ref :gpml.auth/auth-middleware-gpml-programmatic
+                                               #ig/ref :gpml.auth/auth-required]
  :gpml.handler.main/handler
  {:routes               [["/"
                           {:get {:no-doc  true
@@ -519,8 +521,7 @@
                                       :parameters #ig/ref :gpml.handler.project/delete-params
                                       :responses  #ig/ref :gpml.handler.project/delete-responses
                                       :handler    #ig/ref :gpml.handler.project/delete}}]]
-                          ["/programmatic" {:middleware [#ig/ref :gpml.auth/auth-middleware-gpml-programmatic
-                                                         #ig/ref :gpml.auth/auth-required]}
+                          ["/programmatic" {:middleware #ig/ref :gpml.handler.programmatic/common-middleware}
                            ["/organisation"
                             {:post {:summary    "Creates an organisation"
                                     :swagger    {:tags ["organisation" "programmatic"]}
@@ -556,6 +557,7 @@
                                     :swagger    {:tags ["badge"] :security [{:id_token []}]}
                                     :handler    #ig/ref :gpml.handler.programmatic.badge/post
                                     :parameters #ig/ref :gpml.handler.programmatic.badge/post-params}}]]
+
                           ["/subscribe"
                            {:post {:summary    "Send an email to GPML Secretariat about a new subscription request"
                                    :swagger    {:tags ["subscribe"]}
