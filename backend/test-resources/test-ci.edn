@@ -1,0 +1,14 @@
+{:gpml.timbre-logger.json/logger        {} ;; favor JSON format - more compact for CI
+ :duct.logger.timbre/println            {} ;; do println
+ :duct.logger/timbre {:min-level        :debug ;; log verbosedely
+                      :level            :debug
+                      :set-root-config? true
+                      ;; Emitting JSON in production results in structured logging.
+                      ;; See https://github.com/akvo/unep-gpml/issues/1786
+                      :appenders        {:out    #ig/ref :gpml.timbre-logger.json/logger}}
+ ;; adds a :logger
+ :duct.database.sql/hikaricp {:jdbc-url #duct/env ["DATABASE_TEST_URL" Str :or "jdbc:postgresql://db/gpml_test?user=unep&password=password"]
+                              :idle-timeout 10000
+                              :logger #ig/ref :duct/logger
+                              :minimum-idle 0
+                              :maximum-pool-size #gpml/eval (.availableProcessors (Runtime/getRuntime))}} ;; matches the eftest :thread-count
