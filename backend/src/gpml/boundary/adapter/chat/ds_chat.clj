@@ -3,6 +3,7 @@
   (:require
    [camel-snake-kebab.core :refer [->camelCaseString ->kebab-case]]
    [camel-snake-kebab.extras :as cske]
+   [clojure.set :as set]
    [clojure.string :as string]
    [duct.logger :refer [log]]
    [gpml.boundary.port.chat :as port]
@@ -11,8 +12,7 @@
    [gpml.util.json :as json]
    [gpml.util.malli :refer [check!]]
    [integrant.core :as ig]
-   [malli.core :as malli]
-   [clojure.set :as set]))
+   [malli.core :as malli]))
 
 ;; XXX use cske/transform-keys consistently. note that this ns is used by misc services - not only frontend.
 
