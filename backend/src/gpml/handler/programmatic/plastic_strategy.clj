@@ -29,7 +29,7 @@
   (let [pses-payload (cske/transform-keys ->kebab-case (get-in req [:parameters :body]))
         result (srv.ps/create-plastic-strategies config pses-payload)]
     (if (:success? result)
-      (r/ok {})
+      (r/ok result)
       (r/server-error (dissoc result :success?)))))
 
 (defmethod ig/init-key :gpml.handler.programmatic.plastic-strategy/post
