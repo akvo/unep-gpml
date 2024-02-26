@@ -283,7 +283,8 @@
 
   (http-client/request (dev/logger)
                        {:url "http://localhost:3000/api/chat/user/account"
-                        :method :post})
+                        :method :post
+                        :as :json-keyword-keys})
 
   ;; 2.
 
@@ -296,7 +297,7 @@
                         :content-type :json
                         :as :json-keyword-keys})
 
-;; ---
+  ;; ---
 
   (http-client/request (dev/logger)
                        {:url "http://localhost:3000/api/chat/user/channel"}))
