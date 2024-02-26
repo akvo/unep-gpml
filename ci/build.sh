@@ -38,6 +38,7 @@ backend_build () {
      bash release.sh
 
   docker build \
+         --quiet \
 	       --tag "${image_prefix}/backend:latest" \
          --tag "${image_prefix}/backend:${CI_COMMIT}-staging" \
          --tag "${image_prefix}/backend:${CI_COMMIT}-prod" \
@@ -59,6 +60,7 @@ frontend_build () {
      bash release.sh
 
   docker build \
+         --quiet \
 	       --tag "${image_prefix}/frontend:latest" \
 	       --tag "${image_prefix}/frontend:${CI_COMMIT}" frontend
 }
@@ -78,12 +80,14 @@ frontend_build_staging () {
      bash release.sh
 
   docker build \
+         --quiet \
          --tag "${image_prefix}/frontend:${CI_COMMIT}-staging" frontend
 }
 
 
 nginx_build () {
   docker build \
+         --quiet \
          --tag "${image_prefix}/nginx:latest" \
          --tag "${image_prefix}/nginx:${CI_COMMIT}-staging" \
          --tag "${image_prefix}/nginx:${CI_COMMIT}-prod" \
@@ -92,6 +96,7 @@ nginx_build () {
 
 strapi_build () {
   docker build -f strapi/Dockerfile.prod \
+         --quiet \
          --tag "${image_prefix}/strapi:latest" \
          --tag "${image_prefix}/strapi:${CI_COMMIT}-staging" \
          --tag "${image_prefix}/strapi:${CI_COMMIT}-prod" \
