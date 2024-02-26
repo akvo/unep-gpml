@@ -117,7 +117,8 @@
                                                         {:id (:id plastic-strategy)
                                                          :updates {:chat-channel-id (:id channel)}})]
               (if (:success? result)
-                {:success? true}
+                {:success? true
+                 :channel channel}
                 (assoc context
                        :success? false
                        :reason :failed-to-update-plastic-strategy-with-channel-id
@@ -130,7 +131,8 @@
 (defn create-plastic-strategies [config pses-payload]
   (let [results (mapv (partial create-plastic-strategy config) pses-payload)]
     (if (every? :success? results)
-      {:success? true}
+      {:success? true
+       :channels (mapv :channel results)}
       {:success? false
        :reason :failed-to-create-all-plastic-strategies
        :error-details {:msg "Partial failure"
