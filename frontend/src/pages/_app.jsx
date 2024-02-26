@@ -208,13 +208,45 @@ function MyApp({ Component, pageProps }) {
         let resp = await api.get('/profile')
         setState((prevState) => ({ ...prevState, loadingProfile: false }))
         if (resp.data && Object.keys(resp.data).length === 0) {
-          router.push(
-            {
-              pathname: '/onboarding',
-              query: { data: JSON.stringify(authResult?.idTokenPayload) },
-            },
-            '/onboarding'
-          )
+          const formData = {
+            firstName: authResult.idTokenPayload[
+              'https://digital.gpmarinelitter.org/user_metadata'
+            ]
+              ? authResult.idTokenPayload[
+                  'https://digital.gpmarinelitter.org/user_metadata'
+                ].firstName
+              : authResult.idTokenPayload['given_name']
+              ? authResult.idTokenPayload['given_name']
+              : '',
+            lastName: authResult.idTokenPayload[
+              'https://digital.gpmarinelitter.org/user_metadata'
+            ]
+              ? authResult.idTokenPayload[
+                  'https://digital.gpmarinelitter.org/user_metadata'
+                ].lastName
+              : authResult.idTokenPayload['family_name']
+              ? authResult.idTokenPayload['family_name']
+              : '',
+            title: authResult.idTokenPayload[
+              'https://digital.gpmarinelitter.org/user_metadata'
+            ]
+              ? authResult.idTokenPayload[
+                  'https://digital.gpmarinelitter.org/user_metadata'
+                ].title
+              : '',
+            publicEmail: false,
+            publicDatabase: true,
+          }
+          api.post('/profile', formData).then((res) => {
+            UIStore.update((e) => {
+              e.profile = {
+                ...res.data,
+                email: authResult?.idTokenPayload?.email,
+                emailVerified: authResult?.idTokenPayload?.email_verified,
+              }
+            })
+            router.push('/workspace')
+          })
         } else {
           localStorage.removeItem('redirect_on_login')
         }
