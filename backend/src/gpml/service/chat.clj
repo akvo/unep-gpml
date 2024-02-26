@@ -1,11 +1,11 @@
 (ns gpml.service.chat
   (:require
+   [duct.logger :refer [log]]
    [gpml.boundary.adapter.chat.ds-chat :as ds-chat]
    [gpml.boundary.port.chat :as port.chat]
    [gpml.db.rbac-util :as db.rbac-util]
    [gpml.db.stakeholder :as db.sth]
    [gpml.service.file :as srv.file]
-   [gpml.util.crypto :as util.crypto]
    [gpml.util.email :as util.email]
    [gpml.util.thread-transactions :as tht]))
 
@@ -36,9 +36,11 @@
                            (if (:success? result)
                              (assoc context :stakeholder (:stakeholder result))
                              (if (= (:reason result) :not-found)
-                               (assoc context
-                                      :success? false
-                                      :reason :not-found)
+                               (do
+                                 (log logger :info :user-not-found {:user-id user-id})
+                                 (assoc context
+                                        :success? false
+                                        :reason :not-found))
                                (assoc context
                                       :success? false
                                       :reason (:reason result)
