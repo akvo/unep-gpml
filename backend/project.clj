@@ -109,7 +109,8 @@
                          :init (do
                                  (require 'dev)
                                  (in-ns 'dev)
-                                 (when-not (System/getProperty "unep.gpml.skip-reset-on-startup")
+                                 (if (System/getProperty "unep.gpml.skip-reset-on-startup")
+                                   (println "Not resetting on startup")
                                    (@(requiring-resolve 'integrant.repl/reset))))
                          :host "0.0.0.0"
                          :port 47480}}
