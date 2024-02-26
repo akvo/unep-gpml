@@ -9,21 +9,18 @@
    [gpml.util.email :as util.email]
    [gpml.util.thread-transactions :as tht]))
 
-(def ^:private random-password-size
-  10)
-
 (defn- set-stakeholder-chat-account-details [{:keys [db]} {:keys [chat-account-id user-id]}]
   {:pre [chat-account-id user-id]}
   (let [chat-account-status "active"
         affected (db.sth/update-stakeholder (:spec db)
                                             {:id user-id
                                              :chat_account_id chat-account-id
-                                             :chat_account_status "active"})]
+                                             :chat_account_status chat-account-status})]
     (if (= affected 1)
       {:success? true
        :stakeholder {:id user-id
                      :chat-account-id chat-account-id
-                     :chat-account-status "active"}}
+                     :chat-account-status chat-account-status}}
       {:success? false
        :reason :failed-to-update-stakeholder})))
 
