@@ -78,10 +78,9 @@
       :auth-error-message "Authentication required"
       :status 401})))
 
-(comment (db.stakeholder/stakeholder-by-email (dev/conn) {:email "vemv@vemv.net"}))
-
 (defn get-user-info [conn {:keys [jwt-claims]}]
-  (let [stakeholder (db.stakeholder/stakeholder-by-email conn {:email "vemv@vemv.net"})]
+  (let [stakeholder (and (:email jwt-claims)
+                         (db.stakeholder/stakeholder-by-email conn jwt-claims))]
     {:approved? (= "APPROVED" (:review_status stakeholder))
      :user (or stakeholder nil)}))
 
@@ -109,7 +108,20 @@
   (fn [handler]
     (let [signature-verifier (signature-verifier (:issuer opts))]
       (fn [request]
-        (handler (merge request {:user {:role :programmatic-access}}))))))
+        (let [auth-info (check-authentication
+                         request
+                         (id-token-verifier signature-verifier opts)
+                         :programmatic)
+              user-info {:user {:role :programmatic-access}}]
+          (cond
+            (:authenticated? auth-info)
+            (handler (merge request auth-info user-info))
+
+            (seq auth-info)
+            (handler (merge request auth-info))
+
+            :else
+            (handler request)))))))
 
 (defmethod ig/init-key :gpml.auth/auth-middleware-auth0-actions [_ opts]
   (auth-middleware-programmatic opts))
@@ -120,7 +132,7 @@
 (defmethod ig/init-key :gpml.auth/auth-required [_ _]
   (fn [handler]
     (fn [request]
-      (if "(:authenticated? request)"
+      (if (:authenticated? request)
         (handler request)
         {:status (:status request)
          :body {:message (:auth-error-message request)}}))))
