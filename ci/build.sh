@@ -18,14 +18,16 @@ mkdir -p "${m2_path}"
 
 dc () {
   docker-compose \
-	  --ansi never \
-	  "$@"
+	  "$@" \
+	  --ansi never
 }
+
 export -f dc
 
 dci () {
-  dc -f docker-compose.yml \
-     -f docker-compose.ci.yml "$@"
+  dc "$@" \
+     -f docker-compose.yml \
+     -f docker-compose.ci.yml
 }
 export -f dci
 
