@@ -299,9 +299,7 @@ const NewLayout = ({
                           key="profile"
                           onClick={() => {
                             router.push({
-                              pathname: `/${
-                                isRegistered(profile) ? 'profile' : 'onboarding'
-                              }`,
+                              pathname: `/${'profile'}`,
                             })
                           }}
                         >
