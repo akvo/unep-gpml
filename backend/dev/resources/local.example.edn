@@ -1,0 +1,6 @@
+;; You can rename this file to `local.edn` in order to activate it.
+{:dev/bypass-auth                      {}
+ :gpml.handler.chat/dcs-user-routes    {:middleware ^:replace [#ig/ref :dev/bypass-auth]
+                                        :config     #ig/ref :gpml.config/common}
+ :gpml.handler.chat/dcs-channel-routes {:middleware ^:replace [#ig/ref :dev/bypass-auth]
+                                        :config     #ig/ref :gpml.config/common}}

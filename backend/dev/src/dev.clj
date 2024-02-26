@@ -45,8 +45,6 @@
 (when (io/resource "local.clj")
   (load "local"))
 
-(integrant.repl/set-prep! #(duct/prep-config (read-config) profiles))
-
 (defn db-conn []
   (-> system :duct.database.sql/hikaricp :spec))
 
@@ -139,3 +137,12 @@
   ;; Disable the default Timbre logger, given I prefer the CIDER logger
   ;; (https://docs.cider.mx/cider/debugging/logging.html )
   (timbre/set-config! (update timbre/*config* :appenders dissoc :println)))
+
+(defmethod ig/init-key :dev/bypass-auth [_ _]
+  (fn [handler]
+    (fn [request]
+      (let [user (or (gpml.db.stakeholder/stakeholder-by-email (conn) {:email "vemv@vemv.net"})
+                     (make-user! "vemv@vemv.net"))]
+        (handler (assoc request :user user))))))
+
+(integrant.repl/set-prep! #(duct/prep-config (read-config) profiles))
