@@ -122,7 +122,7 @@
 
 (defmethod ig/init-key :gpml.handler.chat/dcs-user-routes
   [_ {:keys [middleware config]}]
-  {:pre [(seq middleware)
+  {:pre [(vector? middleware)
          (seq config)]}
   ["/user"
    ["/account"
@@ -156,7 +156,7 @@
 (defmethod ig/init-key :gpml.handler.chat/dcs-channel-routes
   [_ {:keys [middleware]
       {:keys [logger] :as config} :config}]
-  {:pre [(seq middleware)
+  {:pre [(vector? middleware)
          (seq config)
          logger]}
   ["/channel"
