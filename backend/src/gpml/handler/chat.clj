@@ -11,7 +11,8 @@
    [integrant.core :as ig]
    [malli.core :as malli]
    [malli.util :as mu]
-   [gpml.util.http-client :as http-client]))
+   [gpml.util.http-client :as http-client]
+   [gpml.util.json :as json]))
 
 (defn- create-user-account [config {:keys [user] :as _req}]
   (let [result (srv.chat/create-user-account config (:id user))]
@@ -268,5 +269,37 @@
                        :500 {:body (failure-with)}}}}]])
 
 (comment
+  (dev/make-user! "vemv@vemv.net")
+  (gpml.db.stakeholder/stakeholder-by-email (dev/conn) {:email "vemv@vemv.net"})
+
+  (dev/q {:select :*
+          :from :plastic_strategy})
+
+  (dev/q {:select :*
+          :from :country
+          :where [:= :id 454]})
+
+  ;; 1.
+
   (http-client/request (dev/logger)
-                       {:url "http://localhost:3000/api/chat/user/channel"}))
+                       {:url "http://localhost:3000/api/chat/user/account"
+                        :method :post})
+
+  ;; 2.
+
+  ;; create PSs so that a public chat will be created:
+  (http-client/request (dev/logger)
+                       {:url "http://localhost:3000/api/programmatic/plastic-strategy"
+                        :method :post
+                        :body (json/->json [{:country_id 454 ;; select * from country;
+                                             :chat_channel_name "ddfds"}])
+                        :content-type :json
+                        :as :json-keyword-keys})
+
+
+  ;; ---
+
+  (http-client/request (dev/logger)
+                       {:url "http://localhost:3000/api/chat/user/channel"})
+
+  )

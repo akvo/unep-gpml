@@ -6,7 +6,8 @@
    [gpml.db.plastic-strategy.team :as db.ps.team]
    [gpml.service.chat :as srv.chat]
    [gpml.service.permissions :as srv.permissions]
-   [gpml.util.thread-transactions :as tht]))
+   [gpml.util.thread-transactions :as tht]
+   [taoensso.timbre :as timbre]))
 
 (defn get-plastic-strategies [{:keys [db]} search-opts]
   (db.ps/get-plastic-strategies (:spec db) search-opts))
@@ -36,7 +37,8 @@
             [{:keys [plastic-strategy] :as context}]
             (let [result (db.ps/delete-plastic-strategy (:spec db) (:id plastic-strategy))]
               (when-not (:success? result)
-                (log logger :error :failed-to-delete-plastic-strategy {:result result})))
+                (timbre/with-context+ {::context context}
+                  (log logger :error :failed-to-delete-plastic-strategy {:result result}))))
             context)}
          {:txn-fn
           (fn tx-get-plastic-strategy
@@ -70,14 +72,13 @@
                                                                   {:context-type-name :plastic-strategy
                                                                    :resource-id (:id plastic-strategy)})]
               (when-not (:success? result)
-                (log logger :error :failed-to-delete-plastic-strategy-rbac-context {:result result})))
+                (timbre/with-context+ {::context context}
+                  (log logger :error :failed-to-delete-plastic-strategy-rbac-context {:result result}))))
             context)}
          {:txn-fn
           (fn tx-create-plastic-strategy-chat-channel
             [{:keys [chat-channel-name] :as context}]
-            (let [channel {:name chat-channel-name
-                           :read-only false}
-                  result (port.chat/create-public-channel (:chat-adapter config) channel)]
+            (let [result (port.chat/create-public-channel (:chat-adapter config) {:name chat-channel-name})]
               (if (:success? result)
                 (assoc context :channel (:channel result))
                 (assoc context
@@ -87,18 +88,22 @@
           :rollback-fn
           (fn rollback-create-plastic-strategy-chat-channel
             [{:keys [channel] :as context}]
-            (let [result (port.chat/delete-public-channel (:chat-adapter config) (:id channel))]
+            (let [result (port.chat/delete-public-channel (:chat-adapter config)
+                                                          (:id channel))]
               (when-not (:success? result)
-                (log logger :error :failed-to-rollback-create-plastic-strategy-chat-channel {:result result})))
+                (timbre/with-context+ {::context context}
+                  (log logger :error :failed-to-rollback-create-plastic-strategy-chat-channel {:result result}))))
             context)}
          {:txn-fn
           (fn tx-set-plastic-strategy-channel-custom-fields
             [{:keys [plastic-strategy channel] :as context}]
             (let [custom-fields {:ps-country-iso-code-a2 (get-in plastic-strategy [:country :iso-code-a2])}
-                  result (port.chat/set-public-channel-custom-fields (:chat-adapter config)
-                                                                     (:id channel)
-                                                                     custom-fields)]
-              (if (:success? result)
+                  result {}
+                  #_ ;; XXX
+                  (port.chat/set-public-channel-custom-fields (:chat-adapter config)
+                                                              (:id channel)
+                                                              custom-fields)]
+              (if 1  ;; (:success? result)
                 context
                 (assoc context
                        :success? false
@@ -122,13 +127,15 @@
     (tht/thread-transactions logger transactions context)))
 
 (defn create-plastic-strategies [config pses-payload]
-  (let [results (map (partial create-plastic-strategy config) pses-payload)]
+  (let [results (mapv (partial create-plastic-strategy config) pses-payload)]
     (if (every? :success? results)
       {:success? true}
       {:success? false
        :reason :failed-to-create-all-plastic-strategies
        :error-details {:msg "Partial failure"
-                       :failed-results (filter (comp not :success?) results)}})))
+                       :failed-results (into []
+                                             (remove :success?)
+                                             results)}})))
 
 (defn setup-invited-plastic-strategy-user [{:keys [db logger] :as config} user-id]
   (let [transactions
@@ -191,7 +198,8 @@
                                   :logger logger}
                                  role-unassignments))]
               (when-not (:success? result)
-                (log logger :error :rollback-assign-plastic-strategy-rbac-role {:reason result}))
+                (timbre/with-context+ {::context context}
+                  (log logger :error :rollback-assign-plastic-strategy-rbac-role {:reason result})))
               context))}
          {:txn-fn
           (fn create-chat-account
@@ -207,7 +215,8 @@
             [{:keys [chat-account-id] :as context}]
             (let [result (port.chat/delete-user-account (:chat-adapter config) chat-account-id {})]
               (when-not (:success? result)
-                (log logger :error :failed-to-rollback-create-chat-account {:result result})))
+                (timbre/with-context+ {::context context}
+                  (log logger :error :failed-to-rollback-create-chat-account {:result result}))))
             context)}
          {:txn-fn
           (fn add-user-to-ps-channel

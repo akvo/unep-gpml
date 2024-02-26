@@ -78,8 +78,7 @@
       :auth-error-message "Authentication required"
       :status 401})))
 
-(comment
-  (db.stakeholder/stakeholder-by-email (dev/conn) {:email "vemv@vemv.net"}))
+(comment (db.stakeholder/stakeholder-by-email (dev/conn) {:email "vemv@vemv.net"}))
 
 (defn get-user-info [conn {:keys [jwt-claims]}]
   (let [stakeholder (db.stakeholder/stakeholder-by-email conn {:email "vemv@vemv.net"})]
@@ -110,20 +109,7 @@
   (fn [handler]
     (let [signature-verifier (signature-verifier (:issuer opts))]
       (fn [request]
-        (let [auth-info (check-authentication
-                         request
-                         (id-token-verifier signature-verifier opts)
-                         :programmatic)
-              user-info {:user {:role :programmatic-access}}]
-          (cond
-            (:authenticated? auth-info)
-            (handler (merge request auth-info user-info))
-
-            (seq auth-info)
-            (handler (merge request auth-info))
-
-            :else
-            (handler request)))))))
+        (handler (merge request {:user {:role :programmatic-access}}))))))
 
 (defmethod ig/init-key :gpml.auth/auth-middleware-auth0-actions [_ opts]
   (auth-middleware-programmatic opts))

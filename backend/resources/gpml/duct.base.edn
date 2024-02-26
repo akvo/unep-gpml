@@ -964,8 +964,9 @@
  :gpml.handler.monitoring/hikaricp            {:hikari-cp         #ig/ref :duct.database.sql/hikaricp
                                                :metrics-collector #ig/ref :gpml.handler.monitoring/collector}
  :duct.database.sql/hikaricp                  {:jdbc-url          #duct/env ["DATABASE_URL" Str]
-                                               ;; We don't want log entries for sql sentences (not event ragtime ones!):
-                                               :logger            false
+                                               ;; We don't want log entries for sql sentences (not even ragtime ones!):
+                                               ;; XXX log once, then switch to false depending on runtime-modified sys prop
+                                               :logger            #ig/ref :duct/logger
                                                :minimum-idle      10
                                                :maximum-pool-size 25}
  :gpml.boundary.adapter.datasource/brs        {:api-url          #duct/env ["BRS_API_URL" Str]

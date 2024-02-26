@@ -1,7 +1,8 @@
 (ns gpml.util.thread-transactions
   (:require
    [duct.logger :refer [log]]
-   [gpml.util.malli :refer [check!]]))
+   [gpml.util.malli :refer [check!]]
+   [taoensso.timbre :as timbre]))
 
 (def ^:private transaction-schema
   [:map
@@ -18,7 +19,8 @@
   (try
     (f m)
     (catch Exception e
-      (log logger :error :tht-transaction-exception e)
+      (timbre/with-context+ {::context m}
+        (log logger :error :thread-transactions-exception e))
       (merge m {:success? false
                 :error-details {:reason (str (class e))
                                 :message (.getMessage e)}}))))

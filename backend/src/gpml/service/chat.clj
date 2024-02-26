@@ -1,5 +1,6 @@
 (ns gpml.service.chat
   (:require
+   [gpml.boundary.adapter.chat.ds-chat :as ds-chat]
    [gpml.boundary.port.chat :as port.chat]
    [gpml.db.rbac-util :as db.rbac-util]
    [gpml.db.stakeholder :as db.sth]
@@ -11,29 +12,18 @@
 (def ^:private random-password-size
   10)
 
-(defn- create-user-account* [{:keys [chat-adapter]} chat-user]
-  (let [password (util.crypto/create-crypto-random-hex-string random-password-size)
-        chat-user-account (assoc chat-user ;; XXX adapt
-                                 :password password
-                                 :active true
-                                 :roles ["user"]
-                                 :join-default-channels false
-                                 :require-password-change false
-                                 :send-welcome-email false
-                                 :verified true)]
-    (port.chat/create-user-account chat-adapter chat-user-account)))
-
-(defn- set-stakeholder-chat-account-details [{:keys [db]} user-id {chat-account-id :id active :active}]
-  (let [chat-account-status (if active "active" "inactive")
+(defn- set-stakeholder-chat-account-details [{:keys [db]} {:keys [chat-account-id user-id]}]
+  {:pre [chat-account-id user-id]}
+  (let [chat-account-status "active"
         affected (db.sth/update-stakeholder (:spec db)
                                             {:id user-id
                                              :chat_account_id chat-account-id
-                                             :chat_account_status chat-account-status})]
+                                             :chat_account_status "active"})]
     (if (= affected 1)
       {:success? true
        :stakeholder {:id user-id
                      :chat-account-id chat-account-id
-                     :chat-account-status chat-account-status}}
+                     :chat-account-status "active"}}
       {:success? false
        :reason :failed-to-update-stakeholder})))
 
@@ -56,13 +46,19 @@
                       {:txn-fn
                        (fn create-chat-user-account
                          [{:keys [stakeholder] :as context}]
-                         (let [{:keys [first-name last-name email]} stakeholder
-                               user {:name (str first-name " " last-name) ;; xxx user
-                                     :email email
-                                     :username email}
-                               result (create-user-account* config user)]
+                         (let [{:keys [email id]} stakeholder
+                               chat-user-id (ds-chat/make-unique-user-identifier)
+                               result (port.chat/create-user-account (:chat-adapter config)
+                                                                     ;; gpml.boundary.adapter.chat.ds-chat/NewUser
+                                                                     {:uniqueUserIdentifier chat-user-id
+                                                                      :externalUserId (str id)
+                                                                      :isModerator false
+                                                                      :email email
+                                                                      :username email})]
                            (if (:success? result)
-                             (assoc context :chat-user-account (:user result))
+                             (assoc context
+                                    :chat-user-account (:user result)
+                                    :chat-user-id chat-user-id)
                              (assoc context
                                     :success? false
                                     :reason (:reason result)
@@ -73,11 +69,11 @@
                          (port.chat/delete-user-account chat-adapter (:id chat-user-account) {})
                          context)}
                       {:txn-fn
-                       (fn update-stakeholder
-                         [{:keys [user-id chat-user-account] :as context}]
+                       (fn update-stakeholder [{:keys [user-id chat-user-id] :as context}]
+                         {:pre [user-id chat-user-id]}
                          (let [result (set-stakeholder-chat-account-details config
-                                                                            user-id
-                                                                            chat-user-account)]
+                                                                            {:chat-account-id chat-user-id
+                                                                             :user-id user-id})]
                            (if (:success? result)
                              (assoc context :stakeholder (:stakeholder result))
                              (assoc context

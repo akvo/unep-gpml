@@ -1,8 +1,10 @@
-{:duct.profile/base   #duct/include "gpml/duct.base.edn"
- :duct.profile/prod   #duct/include "gpml/duct.prod.edn"
- :duct.profile/dev    #duct/include "dev.edn"
- :duct.profile/test   #duct/include "test.edn"
- :duct.profile/local  #duct/include "local.edn"
- :duct.module/logging {}
- :duct.module/sql     {}
- :duct.module/web     {}}
+{:duct.profile/base      #duct/include "gpml/duct.base.edn"
+ :duct.profile/prod      #duct/include "gpml/duct.prod.edn"
+ :duct.profile/dev       #duct/include "dev.edn"
+ :duct.profile/test      #duct/include "test.edn"
+ :duct.profile/local     #duct/include "local.edn"
+ ;; XXX must define shit
+ ;; :duct.profile/localtest #duct/include "localtest.edn"
+ :duct.module/logging    {}
+ :duct.module/sql        {}
+ :duct.module/web        {}}

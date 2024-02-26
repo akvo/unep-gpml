@@ -11,9 +11,10 @@
    [gpml.util.json :as json]
    [gpml.util.malli :refer [check!]]
    [integrant.core :as ig]
-   [malli.core :as malli]))
+   [malli.core :as malli]
+   [clojure.set :as set]))
 
-;; XXX use Malli-based validation at the edges, decoupled from `check!`
+;; XXX use cske/transform-keys consistently. note that this ns is used by misc services - not only frontend.
 
 (def DSCInternalId
   (malli/schema [:and
@@ -274,7 +275,7 @@
 (def NewChannel
   [:map {:closed true}
    [:name string?]
-   [:description [:maybe string?]]])
+   [:description {:optional true} [:maybe string?]]])
 
 (def public-permission-level "provisioned_users")
 
@@ -284,15 +285,12 @@
   {:pre [(check! NewChannel channel
                  [:fn #{public-permission-level private-permission-level}] permission-level)]}
   (let [req-body (cske/transform-keys ->camelCaseString (cond-> channel
-                                                          (not (:description channel))
-                                                          (dissoc :description)
-
-                                                          true
-                                                          (assoc :defaultNotificationEnabled "off"
-                                                                 :name (:name channel)
-                                                                 :fileSharingMode "fileAndImageSharing"
-                                                                 :chatRoomPermissionLevel permission-level
-                                                                 :enableChannels "on")))
+                                                          (:description channel) (assoc :description (:description channel))
+                                                          true (assoc :defaultNotificationEnabled "off"
+                                                                      :name (:name channel)
+                                                                      :fileSharingMode "fileAndImageSharing"
+                                                                      :chatRoomPermissionLevel permission-level
+                                                                      :enableChannels "on")))
         {:keys [status body]}
         (http-client/request logger
                              {:url (build-api-endpoint-url "/api/v1/chatroom/")
@@ -303,7 +301,8 @@
     (try
       (if (<= 200 status 299)
         {:success? true
-         :channel (select-keys (cske/transform-keys ->kebab-case body) [:room-id :url])}
+         :channel (set/rename-keys (select-keys (cske/transform-keys ->kebab-case body) [:room-id :url])
+                                   {:room-id :id})}
         {:success? false
          :reason :failed-to-create-channel
          :error-details body})
@@ -438,10 +437,11 @@
                       {:room-id "8BSYDSjgT"
                        :channel-name (str (random-uuid))})
 
-  @(def uniqueUserIdentifier (make-unique-user-identifier))
-
   ;; 1
-  (let [{:keys [id email first_name last_name]} (dev/make-user! "vemv@vemv.net")]
+  (let [{:keys [id email first_name last_name chat_account_id]} (dev/make-user! "vemv@vemv.net")]
+
+    @(def uniqueUserIdentifier (doto chat_account_id assert))
+
     @(def a-user (port/create-user-account (dev/component :gpml.boundary.adapter.chat/ds-chat)
                                            {:uniqueUserIdentifier uniqueUserIdentifier
                                             :externalUserId (str id)

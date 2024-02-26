@@ -12,9 +12,12 @@
    [gpml.fixtures]
    [gpml.seeder.dummy :refer [get-or-create-profile]]
    [gpml.seeder.main :as seeder]
+   [honey.sql]
    [integrant.core :as ig]
    [integrant.repl :refer [clear go halt init prep reset]]
    [integrant.repl.state :refer [config system]]
+   [next.jdbc]
+   [next.jdbc.connection :as connection]
    [ns-tracker.core :refer [ns-tracker]]
    [taoensso.timbre :as timbre]))
 
@@ -37,7 +40,7 @@
 (def profiles
   [:duct.profile/dev :duct.profile/local])
 
-(clojure.tools.namespace.repl/set-refresh-dirs "dev/src" "src" "test")
+(clojure.tools.namespace.repl/set-refresh-dirs "dev/src" "src" "test" "seeder")
 
 (when (io/resource "local.clj")
   (load "local"))
@@ -63,6 +66,12 @@
                (clojure.pprint/print-table result)
                result))))
 
+(defn q [query]
+  (with-open [pool (connection/->pool com.zaxxer.hikari.HikariDataSource
+                                      {:jdbcUrl (System/getenv "DATABASE_URL")
+                                       :pool-size 1})]
+    (next.jdbc/execute! pool (honey.sql/format query))))
+
 (def modified-namespaces
   (ns-tracker ["src/gpml/db"]))
 
@@ -76,7 +85,8 @@
                          (or email (format "a%s@akvo.org" (random-uuid)))
                          (format "Random User %s" (random-uuid))
                          "USER"
-                         "APPROVED"))
+                         "APPROVED"
+                         {:chat_account_id (str "dscuui_" (random-uuid))}))
 
 (comment
 
