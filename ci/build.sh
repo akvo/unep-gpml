@@ -23,11 +23,13 @@ dc () {
 	--ansi never \
 	"$@"
 }
+
 export -f dc
 
 dci () {
-  dc -f docker-compose.yml \
-     -f docker-compose.ci.yml "$@"
+  dc "$@" \
+     -f docker-compose.yml \
+     -f docker-compose.ci.yml
 }
 export -f dci
 
