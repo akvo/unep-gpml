@@ -1,6 +1,5 @@
 (ns gpml.fixtures
   (:require
-   [clojure.edn :as edn]
    [clojure.java.io :as io]
    [clojure.java.jdbc :as jdbc]
    [clojure.string :as str]

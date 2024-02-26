@@ -7,12 +7,12 @@
    [gpml.handler.responses :as r]
    [gpml.service.chat :as srv.chat]
    [gpml.util.email :as email]
+   [gpml.util.http-client :as http-client]
+   [gpml.util.json :as json]
    [gpml.util.malli :refer [check!]]
    [integrant.core :as ig]
    [malli.core :as malli]
-   [malli.util :as mu]
-   [gpml.util.http-client :as http-client]
-   [gpml.util.json :as json]))
+   [malli.util :as mu]))
 
 (defn- create-user-account [config {:keys [user] :as _req}]
   (let [result (srv.chat/create-user-account config (:id user))]
@@ -296,10 +296,7 @@
                         :content-type :json
                         :as :json-keyword-keys})
 
-
-  ;; ---
+;; ---
 
   (http-client/request (dev/logger)
-                       {:url "http://localhost:3000/api/chat/user/channel"})
-
-  )
+                       {:url "http://localhost:3000/api/chat/user/channel"}))
