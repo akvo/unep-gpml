@@ -104,6 +104,10 @@
                            [kerodon "0.9.1"]
                            [ns-tracker "0.4.0"]]
           :repl-options {:init-ns dev
+                         :init (do
+                                 (require 'dev)
+                                 (in-ns 'dev)
+                                 (integrant.repl/reset))
                          :host "0.0.0.0"
                          :port 47480}}
    :cljfmt {:plugins [[dev.weavejester/lein-cljfmt "0.12.0"]]

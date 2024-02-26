@@ -27,7 +27,7 @@ services:
     network_mode: service:mainnetwork
   backend:
     image: akvo/akvo-clojure-lein:20210124.114043.4437caf
-    command: ["lein", "repl", ":headless"]
+    command: ["lein", "with-profile", "+dev,+test,+seeder,+eftest", "repl", ":headless"]
     environment:
       - GOOGLE_APPLICATION_CREDENTIALS=/credentials/cloud-database-service-account.json
       - APP_USER_ADMIN=deden@akvo.org

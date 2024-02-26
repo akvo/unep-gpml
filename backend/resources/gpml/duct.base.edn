@@ -798,7 +798,7 @@
  :gpml.handler.country/get                                          {:db #ig/ref :duct.database/sql}
  :gpml.handler.country-group/get                                    {:db #ig/ref :duct.database/sql}
  :gpml.handler.browse/get                                           #ig/ref :gpml.config/common
- :gpml.handler.browse/query-params                                  {}
+ :gpml.handler.browse/query-params                                  #ig/ref :gpml.config/common
  :gpml.handler.submission/get                                       #ig/ref :gpml.config/common
  :gpml.handler.submission/get-params                                {}
  :gpml.handler.submission/get-detail                                #ig/ref :gpml.config/common
