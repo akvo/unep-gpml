@@ -1,5 +1,6 @@
 (ns gpml.fixtures
   (:require
+   [clojure.edn :as edn]
    [clojure.java.io :as io]
    [clojure.java.jdbc :as jdbc]
    [clojure.string :as str]
@@ -24,13 +25,8 @@
 (defn- test-system []
   (-> (duct/resource "gpml/duct.edn")
       (read-config)
-      (duct/prep-config (cond-> [:duct.profile/test]
-                          (io/resource "local.edn")
-                          (conj :duct.profile/local)
-
-                          #_ #_ ;; XXX enable
-                          (io/resource "localtest.edn")
-                          (conj :duct.profile/localtest)))))
+      (cond-> (io/resource "localtest.edn") (merge (read-config (duct/resource "localtest.edn"))))
+      (duct/prep-config [:duct.profile/test])))
 
 (defn- migrate-template-test-db []
   (locking lock
