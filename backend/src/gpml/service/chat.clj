@@ -33,6 +33,7 @@
        :reason :failed-to-update-stakeholder})))
 
 (defn create-user-account [{:keys [db chat-adapter logger] :as config} user-id]
+  ;; XXX or failure-with, success-with sth + [:username :user-id :is-moderator :access-token]
   (let [transactions [{:txn-fn
                        (fn get-stakeholder [{:keys [user-id] :as context}]
                          (let [search-opts {:filters {:ids [user-id]}}
@@ -67,8 +68,8 @@
                                                                         :email email
                                                                         :username email})]
                              (if (:success? result)
-                               (assoc context
-                                      :chat-user-account (:user result)
+                               (merge context
+                                      :chat-user-account (select-keys result [:access-token])
                                       :chat-user-id chat-user-id)
                                (assoc context
                                       :success? false
@@ -88,6 +89,8 @@
                            (update context :stakeholder select-successful-user-creation-keys)
                            (let [result (set-stakeholder-chat-account-details config
                                                                               {:chat-account-id chat-user-id
+                                                                               ;; XXX should persist access-token.
+                                                                               ;; create migration.
                                                                                :user-id user-id})]
                              (if (:success? result)
                                (assoc context :stakeholder (:stakeholder result))
