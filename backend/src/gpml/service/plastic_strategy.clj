@@ -80,7 +80,9 @@
             [{:keys [chat-channel-name] :as context}]
             (let [result (port.chat/create-public-channel (:chat-adapter config) {:name chat-channel-name})]
               (if (:success? result)
-                (assoc context :channel (:channel result))
+                (do
+                  (log logger :info :created-chat-channel (:channel result))
+                  (assoc context :channel (:channel result)))
                 (assoc context
                        :success? false
                        :reason :failed-to-create-plastic-strategy-channel

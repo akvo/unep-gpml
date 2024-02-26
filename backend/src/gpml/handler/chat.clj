@@ -17,7 +17,7 @@
 (defn- create-user-account [config {:keys [user] :as _req}]
   (let [result (srv.chat/create-user-account config (:id user))]
     (if (:success? result)
-      (r/ok (:stakeholder result))
+      (r/ok (select-keys result [:stakeholder :chat-user-account :chat-user-id]))
       (r/server-error result))))
 
 (defn- set-user-account-active-status [config {:keys [user parameters]}]
@@ -275,12 +275,6 @@
   (dev/q {:select :*
           :from :plastic_strategy})
 
-  (dev/q {:select :*
-          :from :country
-          :where [:= :id 454]})
-
-  ;; 1.
-
   (http-client/request (dev/logger)
                        {:url "http://localhost:3000/api/chat/user/account"
                         :method :post
@@ -289,15 +283,26 @@
   ;; 2.
 
   ;; create PSs so that a public chat will be created:
+  @(def channel (http-client/request (dev/logger)
+                                     {:url "http://localhost:3000/api/programmatic/plastic-strategy"
+                                      :method :post
+                                      :body (json/->json [{:country_id (-> (dev/q {:select [:country.id]
+                                                                                   :from :country
+                                                                                   :full-join [:plastic-strategy [:= :country.id :plastic-strategy.country_id]]
+                                                                                   :where [:= :plastic-strategy.country_id nil]
+                                                                                   :limit 1})
+                                                                           first
+                                                                           :country/id)
+                                                           :chat_channel_name (str "ps " (random-uuid))}])
+                                      :content-type :json
+                                      :as :json-keyword-keys}))
+
+  (-> channel :body :channels first :id)
+
   (http-client/request (dev/logger)
-                       {:url "http://localhost:3000/api/programmatic/plastic-strategy"
-                        :method :post
-                        :body (json/->json [{:country_id 454 ;; select * from country;
-                                             :chat_channel_name "ddfds"}])
-                        :content-type :json
+                       {:url "http://localhost:3000/api/chat/channel/all"
                         :as :json-keyword-keys})
 
-  ;; ---
-
   (http-client/request (dev/logger)
-                       {:url "http://localhost:3000/api/chat/user/channel"}))
+                       {:url "http://localhost:3000/api/chat/user/channel"
+                        :as :json-keyword-keys}))
