@@ -98,7 +98,7 @@
           (fn tx-set-plastic-strategy-channel-custom-fields
             [{:keys [plastic-strategy] _channel :channel :as context}]
             (let [_custom-fields {:ps-country-iso-code-a2 (get-in plastic-strategy [:country :iso-code-a2])}
-                  result {}
+                  #_ #_ result {}
                   #_;; XXX
                   (port.chat/set-public-channel-custom-fields (:chat-adapter config)
                                                               (:id channel)
