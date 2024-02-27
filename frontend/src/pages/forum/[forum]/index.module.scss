@@ -1,4 +1,4 @@
-@import '../../styles/vars.scss';
+@import '../../../styles/vars.scss';
 
 .channelSidebar {
   background-color: $primaryGrey !important;
@@ -81,6 +81,9 @@
       &.discussion {
         height: calc(100vh - 210px) !important;
       }
+    }
+    .ant-spin-blur iframe {
+      opacity: 0;
     }
     .header-discussion {
       display: flex;

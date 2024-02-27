@@ -11,6 +11,7 @@ pom.xml.asc
 /.dir-locals.el
 /profiles.clj
 /dev/resources/local.edn
+/dev/resources/localtest.edn
 /dev/src/local.clj
 .eastwood
 flycheck_.dir-locals.elc

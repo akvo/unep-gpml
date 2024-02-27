@@ -128,7 +128,7 @@ const Workspace = ({ profile, isAuthenticated, setLoginVisible }) => {
   }
 
   const goToChannel = (forum) => {
-    const { name, t, isView } = forum
+    const { roomId, isView } = forum
     if (isView) {
       setForumView({
         open: true,
@@ -140,12 +140,7 @@ const Workspace = ({ profile, isAuthenticated, setLoginVisible }) => {
     ChatStore.update((s) => {
       s.discussion = null
     })
-    router.push({
-      pathname: `/forum/${name}`,
-      query: {
-        t,
-      },
-    })
+    router.push(`/forum/${roomId}`)
   }
 
   const getPSAll = useCallback(async () => {
@@ -192,11 +187,19 @@ const Workspace = ({ profile, isAuthenticated, setLoginVisible }) => {
         })
       } catch {}
       if (!myForums.length) {
-        const { data: _allForums } = await api.get('/chat/channel/all')
+        const { data: apiData } = await api.get('/chat/channel/all')
+        const { channels: _allForums } = apiData || {}
         ChatStore.update((s) => {
+          // TODO: identify private/public forum
           s.allForums = _allForums
+            ?.map((a) => ({
+              ...a,
+              t: 'c',
+              lm: '2024-02-14T15:18:31.220Z',
+              users: [],
+              isView: true,
+            }))
             ?.sort(sortPublicFirst)
-            ?.map((a) => ({ ...a, isView: true }))
         })
       }
       setLoading(false)
@@ -264,11 +267,11 @@ const Workspace = ({ profile, isAuthenticated, setLoginVisible }) => {
                         <ForumCard.Title {...item} />
                       </ForumCard.HStack>
                       <ForumCard.HStack>
-                        {item?.isView ? (
+                        {/* {item?.isView ? (
                           <ForumMembers forum={item} />
                         ) : (
                           <ForumCard.LastMessage lm={item?.lm} />
-                        )}
+                        )} */}
                         <div>
                           {item?.isView ? (
                             <Button
