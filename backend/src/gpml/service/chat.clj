@@ -161,9 +161,15 @@
   (let [transactions
         [{:txn-fn
           (fn tx-get-channel [context]
-            (let [result (port.chat/get-all-channels chat-adapter {})]
-              (if (:success? result)
-                (assoc context :channel (first (:channels result)))
+            (let [{:keys [channels success?] :as result} (port.chat/get-all-channels chat-adapter {})
+                  [channel] (when success?
+                              (assert channels)
+                              (filterv (fn [{:keys [id]}]
+                                         {:pre [id]}
+                                         (= id channel-id))
+                                       channels))]
+              (if success?
+                (assoc context :channel channel)
                 (assoc context
                        :success? false
                        :reason :failed-to-get-channel
