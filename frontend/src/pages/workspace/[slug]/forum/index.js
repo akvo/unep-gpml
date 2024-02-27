@@ -1,7 +1,6 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { Skeleton } from 'antd'
 import { useRouter } from 'next/router'
-import dynamic from 'next/dynamic'
 import uniqBy from 'lodash/uniqBy'
 
 import { PageLayout } from '..'
@@ -10,61 +9,44 @@ import { loadCatalog } from '../../../../translations/utils'
 import api from '../../../../utils/api'
 import { isoA2 } from '../../../../modules/workspace/ps/config'
 import { ChatStore } from '../../../../store'
+import DSCIframe from '../../../../components/dsc-iframe'
 
-const PREFIX_CHANNEL_NAME = 'plastic-strategy-'
-
-const DynamicForumIframe = dynamic(
-  () => import('../../../../modules/forum/forum-iframe'),
-  {
-    ssr: false,
-  }
-)
-
-const View = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
+const View = ({ loadingProfile }) => {
+  /**
+   * TODO: PS Forum
+   */
   const router = useRouter()
-  const country = router.query.slug?.replace('plastic-strategy-', '')
-  const channelName = `${PREFIX_CHANNEL_NAME}${country}`
-  const channelType = 'c'
+  const psSlug = router.query.slug
+  const forums = ChatStore.useState((s) => s.psForums)
+  const country = psSlug?.replace('plastic-strategy-', '')
   const countryISOA2 = isoA2?.[country]
-  const discussion = ChatStore.useState((s) => s.discussion)
 
-  const handleOnDiscussCallback = (type = 'new', evt) => {
-    if (
-      type === 'room-opened' &&
-      evt.data.fname &&
-      evt.data.fname !== evt.data.name
-    ) {
-      router.push({
-        pathname: `/forum/${router.query.slug}`,
-        query: { t: 'c' },
-      })
-      ChatStore.update((s) => {
-        s.discussion = { ...evt.data, id: evt.data._id }
-      })
-    }
-  }
+  const psForum = useMemo(() => {
+    return forums.find((f) => f?.slug === psSlug)
+  }, [forums, psSlug])
 
   const fetchData = useCallback(async () => {
     try {
-      const { data: _psData } = await api.get(
-        `/plastic-strategy/${countryISOA2}`
-      )
-      ChatStore.update((s) => {
-        s.psForums = uniqBy(
-          [
-            ...s.psForums,
-            {
-              id: _psData?.chatChannelId,
-              name: router.query.slug,
-              t: channelType,
-              ps: true,
-            },
-          ],
-          'id'
+      if (!psForum?.roomId) {
+        const { data: apiData } = await api.get(
+          `/plastic-strategy/${countryISOA2}`
         )
-      })
+        ChatStore.update((s) => {
+          s.psForums = uniqBy(
+            [
+              ...s.psForums,
+              {
+                ...apiData,
+                slug: psSlug,
+                t: 'c',
+              },
+            ],
+            'roomId'
+          )
+        })
+      }
     } catch {}
-  }, [])
+  }, [psForum, countryISOA2, psSlug])
 
   useEffect(() => {
     fetchData()
@@ -73,17 +55,7 @@ const View = ({ isAuthenticated, loadingProfile, setLoginVisible }) => {
   return (
     <Skeleton loading={loadingProfile} active>
       <div className={styles.forumView}>
-        <DynamicForumIframe
-          discussionCallback={handleOnDiscussCallback}
-          {...{
-            channelName,
-            channelType,
-            isAuthenticated,
-            loadingProfile,
-            setLoginVisible,
-            discussion,
-          }}
-        />
+        {psForum?.roomId && <DSCIframe roomId={psForum.roomId} />}
       </div>
     </Skeleton>
   )
