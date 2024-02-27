@@ -17,8 +17,9 @@
 (defn- create-user-account [config {:keys [user] :as _req}]
   (let [result (srv.chat/create-user-account config (:id user))]
     (if (:success? result)
-      (r/ok (select-keys result [:stakeholder :chat-user-account :chat-user-id]))
-      (r/server-error result))))
+      (r/ok (:stakeholder result))
+      ;; XXX same select-keys elsewhere:
+      (r/server-error (select-keys result [:error-details :user-id :success?])))))
 
 (defn- set-user-account-active-status [config {:keys [user parameters]}]
   (let [chat-account-status (-> parameters :body :chat_account_status)
