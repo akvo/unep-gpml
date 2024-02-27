@@ -13,23 +13,26 @@
 (defn- select-successful-user-creation-keys
   "Exists to ensure type homogeinity across code branches"
   [m]
-  {:post [(check! [:map
+  {:post [(check! [:map {:closed true}
                    [:id any?]
                    [:chat-account-id any?]
-                   [:chat-account-status any?]]
+                   [:chat-account-status any?]
+                   [:chat-account-auth-token any?]]
                   %)]}
-  (select-keys m [:id :chat-account-id :chat-account-status]))
+  (select-keys m [:id :chat-account-id :chat-account-status :chat-account-auth-token]))
 
-(defn- set-stakeholder-chat-account-details [{:keys [db]} {:keys [chat-account-id user-id]}]
-  {:pre [chat-account-id user-id]}
+(defn- set-stakeholder-chat-account-details [{:keys [db]} {:keys [chat-account-id user-id chat-account-auth-token]}]
+  {:pre [chat-account-id user-id chat-account-auth-token]}
   (let [chat-account-status "active"
         affected (db.sth/update-stakeholder (:spec db)
                                             {:id user-id
                                              :chat_account_id chat-account-id
-                                             :chat_account_status chat-account-status})]
+                                             :chat_account_status chat-account-status
+                                             :chat_account_auth_token chat-account-auth-token})]
     (if (= affected 1)
       {:success? true
        :stakeholder (select-successful-user-creation-keys {:id user-id
+                                                           :chat-account-auth-token chat-account-auth-token
                                                            :chat-account-id chat-account-id
                                                            :chat-account-status chat-account-status})}
       {:success? false
@@ -44,7 +47,8 @@
                            (if (:success? result)
                              (assoc context
                                     :stakeholder stakeholder
-                                    :no-updates-needed (-> stakeholder :chat-account-id some?))
+                                    :no-updates-needed (and (-> stakeholder :chat-account-id some?)
+                                                            (-> stakeholder :chat-account-auth-token some?)))
                              (if (= (:reason result) :not-found)
                                (do
                                  (log logger :info :user-not-found {:user-id user-id})
@@ -60,7 +64,9 @@
                          (if (:chat-account-id stakeholder)
                            (do
                              (log logger :info :chat-account-already-exists {:chat-account-id (:chat-account-id stakeholder)})
-                             context)
+                             (assoc context
+                                    :chat-account-auth-token (:chat-account-auth-token stakeholder)
+                                    :chat-account-id (:chat-account-id stakeholder)))
                            (let [{:keys [email id]} stakeholder
                                  chat-user-id (ds-chat/make-unique-user-identifier)
                                  result (port.chat/create-user-account (:chat-adapter config)
@@ -72,28 +78,24 @@
                                                                         :username email})]
                              (if (:success? result)
                                (assoc context
-                                      :chat-user-account (select-keys result [:access-token])
-                                      :chat-user-id chat-user-id)
+                                      :chat-account-auth-token (-> result :user :access-token (doto (assert :access-token)))
+                                      :chat-account-id chat-user-id)
                                (assoc context
                                       :success? false
                                       :reason (:reason result)
                                       :error-details (:error-details result))))))
                        :rollback-fn
-                       (fn rollback-create-chat-user-account [{:keys [chat-user-account] :as context}]
-                         (port.chat/delete-user-account chat-adapter (:id chat-user-account) {})
+                       (fn rollback-create-chat-user-account [{:keys [chat-account-id] :as context}]
+                         (port.chat/delete-user-account chat-adapter chat-account-id {})
                          context)}
                       {:txn-fn
-                       (fn update-stakeholder [{:keys [user-id chat-user-id] :as context}]
-                         {:pre [user-id
-                                (if (:no-updates-needed context)
-                                  true
-                                  chat-user-id)]}
+                       (fn update-stakeholder [{:keys [user-id chat-account-id chat-account-auth-token] :as context}]
+                         {:pre [user-id]}
                          (if (:no-updates-needed context)
                            (update context :stakeholder select-successful-user-creation-keys)
                            (let [result (set-stakeholder-chat-account-details config
-                                                                              {:chat-account-id chat-user-id
-                                                                               ;; XXX should persist access-token.
-                                                                               ;; create migration.
+                                                                              {:chat-account-id chat-account-id
+                                                                               :chat-account-auth-token chat-account-auth-token
                                                                                :user-id user-id})]
                              (if (:success? result)
                                (assoc context :stakeholder (:stakeholder result))
@@ -106,7 +108,6 @@
     (tht/thread-transactions logger transactions context)))
 
 (defn set-user-account-active-status [{:keys [db chat-adapter logger]} user active?]
-  ;; XXX is it chat_account_id or chat-account-id?
   (let [transactions [{:txn-fn
                        (fn set-chat-user-account-active-stauts [{:keys [user] :as context}]
                          (let [chat-account-id (:chat_account_id user)

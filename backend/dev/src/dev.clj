@@ -83,8 +83,7 @@
                          (or email (format "a%s@akvo.org" (random-uuid)))
                          (format "Random User %s" (random-uuid))
                          "USER"
-                         "APPROVED"
-                         {:chat_account_id (str "dscuui_" (random-uuid))}))
+                         "APPROVED"))
 
 (comment
 
