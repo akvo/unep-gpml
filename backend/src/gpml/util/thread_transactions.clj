@@ -23,6 +23,12 @@
         (log logger :error :thread-transactions-exception e))
       (merge m {:success? false
                 :error-details {:reason (str (class e))
+                                :message (.getMessage e)}}))
+    (catch AssertionError e
+      (timbre/with-context+ {::context m}
+        (log logger :error :thread-transactions-exception e))
+      (merge m {:success? false
+                :error-details {:reason (str (class e))
                                 :message (.getMessage e)}}))))
 
 ;; TODO - wrap in `with-transaction`? (drawback: some "transactions" can be unrelated to DB e.g. http calls from what I've seen)
