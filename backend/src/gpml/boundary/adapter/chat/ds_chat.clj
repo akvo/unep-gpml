@@ -209,7 +209,10 @@
        :error-details {:result body}}
       {:success? true
        ;; XXX there's no way to distinguish private from public channels
-       :channels body})))
+       :channels (mapv (fn [channel]
+                         (set/rename-keys (cske/transform-keys ->kebab-case channel)
+                                          {:room-id :id}))
+                       body)})))
 
 (def Channel
   [:map
@@ -381,18 +384,20 @@
       (catch Exception _
         all))))
 
-;; XXX impl
-(defn get-channel-discussions* [{:keys [logger api-key]} _channel-id]
+(defn get-channel-discussions* [{:keys [logger api-key]} channel-id]
+  {:pre [channel-id]}
   (let [{:keys [status body]}
         (http-client/request logger
-                             {:url (build-api-endpoint-url "/rooms.getDiscussions") ;; XXX
+                             {:url (build-api-endpoint-url "/api/v2/room/" channel-id "/conversations")
                               :method :get
                               :query-params {:auth api-key}
-                              ;; :query-params {:roomId channel-id}
                               :as :json-keyword-keys})]
     (if (<= 200 status 299)
       {:success? true
-       :discussions (cske/transform-keys ->kebab-case (:discussions body))}
+       :discussions (into []
+                          (map (comp #(select-keys % [:conversationId])
+                                     #(cske/transform-keys ->kebab-case %)))
+                          body)}
       {:success? false
        :reason :failed-to-get-channel-discussions
        :error-details body})))
