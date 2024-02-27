@@ -93,6 +93,7 @@
    :eftest {:dependencies [[eftest "0.6.0"]]
             :plugins [[lein-eftest "0.6.0"]]
             :eftest {:multithread :vars
+                     :capture-output? false
                      ;; Please don't specify `:thread-count`, so that all cores will be used.
                      :fail-fast? true
                      :report clojure.test/report}}
