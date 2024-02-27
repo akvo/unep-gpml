@@ -18,7 +18,7 @@
   (try
     (malli.core/schema s)
     true
-    (catch Exception e
+    (catch Exception _
       false)))
 
 (defmacro check!
