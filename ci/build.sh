@@ -17,18 +17,15 @@ mkdir -p "${lein_path}"
 mkdir -p "${m2_path}"
 
 dc () {
-  docker-compose \
-	  "$@" \
-	  --ansi never
+  docker-compose --ansi never "$@"
 }
 
 export -f dc
 
 dci () {
-  dc "$@" \
-     -f docker-compose.yml \
-     -f docker-compose.ci.yml
+  dc -f docker-compose.yml -f docker-compose.ci.yml "$@"
 }
+
 export -f dci
 
 backend_build () {
