@@ -189,7 +189,7 @@
      {:get {:summary    "Get channel details"
             :middleware middleware
             :swagger    {:tags ["chat"] :security [{:id_token []}]}
-            :handler    (fn get-channel-details [config {{:keys [path]} :parameters :as _req}]
+            :handler    (fn get-channel-details [{{:keys [path]} :parameters}]
                           (let [result (srv.chat/get-channel-details config (:id path))]
                             (if (:success? result)
                               (r/ok result)
@@ -298,7 +298,11 @@
                                       :content-type :json
                                       :as :json-keyword-keys}))
 
-  (-> channel :body :channels first :id)
+  @(def channel-id (-> channel :body :channels first :id))
+
+  (http-client/request (dev/logger)
+                       {:url (str "http://localhost:3000/api/chat/channel/details/" channel-id)
+                        :as :json-keyword-keys})
 
   (http-client/request (dev/logger)
                        {:url "http://localhost:3000/api/chat/channel/all"
