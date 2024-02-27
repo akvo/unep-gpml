@@ -24,9 +24,9 @@
 (defn- test-system []
   (-> (duct/resource "gpml/duct.edn")
       (read-config)
-      (duct/prep-config (cond-> [:duct.profile/test]
-                          (io/resource "local.edn")
-                          (conj :duct.profile/local)))))
+      (cond-> (io/resource "localtest.edn") (merge (read-config (duct/resource "localtest.edn")))
+              (System/getenv "CI")          (merge (read-config (duct/resource "test-ci.edn"))))
+      (duct/prep-config [:duct.profile/test])))
 
 (defn- migrate-template-test-db []
   (locking lock

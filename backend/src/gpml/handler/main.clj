@@ -59,10 +59,10 @@
                                               (try
                                                 (let [response (handler e request)]
                                                   (when (>= (:status response 500) 500)
-                                                    (log logger :error-in-request-handler e))
+                                                    (log logger :error :error-in-request-handler e))
                                                   response)
                                                 (catch Exception inner-e
-                                                  (log logger :error-while-error-handling inner-e)
+                                                  (log logger :error :error-while-error-handling inner-e)
                                                   (throw inner-e))))}))
                         ;; decoding request body
                         muuntaja/format-request-middleware

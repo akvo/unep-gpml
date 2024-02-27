@@ -33,6 +33,9 @@ module.exports = {
   },
   async rewrites() {
     let domain = 'http://backend:3000'
+    if (process.env.REACT_APP_FEENV_LOCAL_DEV_NO_DOCKER) { // For local development without Docker
+      domain = 'http://localhost:3000'
+    }
     if (process.env.REACT_APP_FEENV) {
       domain = 'https://unep-gpml.akvotest.org'
     }

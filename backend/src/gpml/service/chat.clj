@@ -1,104 +1,116 @@
 (ns gpml.service.chat
   (:require
-   [gpml.boundary.port.chat :as chat]
+   [duct.logger :refer [log]]
+   [gpml.boundary.adapter.chat.ds-chat :as ds-chat]
+   [gpml.boundary.port.chat :as port.chat]
    [gpml.db.rbac-util :as db.rbac-util]
    [gpml.db.stakeholder :as db.sth]
    [gpml.service.file :as srv.file]
-   [gpml.util.crypto :as util.crypto]
    [gpml.util.email :as util.email]
-   [gpml.util.thread-transactions :as tht]
-   [medley.core :as medley]))
+   [gpml.util.malli :refer [check!]]
+   [gpml.util.thread-transactions :as tht]))
 
-(def ^:private random-password-size
-  10)
+(defn- select-successful-user-creation-keys
+  "Exists to ensure type homogeinity across code branches"
+  [m]
+  {:post [(check! [:map [:id] [:chat-account-id] [:chat-account-status]]
+                  %)]}
+  (select-keys m [:id :chat-account-id :chat-account-status]))
 
-(defn- create-user-account* [{:keys [chat-adapter]} chat-user]
-  (let [password (util.crypto/create-crypto-random-hex-string random-password-size)
-        chat-user-account (assoc chat-user
-                                 :password password
-                                 :active true
-                                 :roles ["user"]
-                                 :join-default-channels false
-                                 :require-password-change false
-                                 :send-welcome-email false
-                                 :verified true)]
-    (chat/create-user-account chat-adapter chat-user-account)))
-
-(defn- set-stakeholder-chat-account-details [{:keys [db]} user-id {chat-account-id :id active :active}]
-  (let [chat-account-status (if active "active" "inactive")
+(defn- set-stakeholder-chat-account-details [{:keys [db]} {:keys [chat-account-id user-id]}]
+  {:pre [chat-account-id user-id]}
+  (let [chat-account-status "active"
         affected (db.sth/update-stakeholder (:spec db)
                                             {:id user-id
                                              :chat_account_id chat-account-id
                                              :chat_account_status chat-account-status})]
     (if (= affected 1)
       {:success? true
-       :stakeholder {:id user-id
-                     :chat-account-id chat-account-id
-                     :chat-account-status chat-account-status}}
+       :stakeholder (select-successful-user-creation-keys {:id user-id
+                                                           :chat-account-id chat-account-id
+                                                           :chat-account-status chat-account-status})}
       {:success? false
        :reason :failed-to-update-stakeholder})))
 
 (defn create-user-account [{:keys [db chat-adapter logger] :as config} user-id]
+  ;; XXX or failure-with, success-with sth + [:username :user-id :is-moderator :access-token]
   (let [transactions [{:txn-fn
-                       (fn get-stakeholder
-                         [{:keys [user-id] :as context}]
+                       (fn get-stakeholder [{:keys [user-id] :as context}]
                          (let [search-opts {:filters {:ids [user-id]}}
-                               result (db.sth/get-stakeholder (:spec db) search-opts)]
+                               {:keys [stakeholder] :as result} (db.sth/get-stakeholder (:spec db) search-opts)]
                            (if (:success? result)
-                             (assoc context :stakeholder (:stakeholder result))
+                             (assoc context
+                                    :stakeholder stakeholder
+                                    :no-updates-needed (-> stakeholder :chat-account-id some?))
                              (if (= (:reason result) :not-found)
-                               (assoc context
-                                      :success? false
-                                      :reason :not-found)
+                               (do
+                                 (log logger :info :user-not-found {:user-id user-id})
+                                 (assoc context
+                                        :success? false
+                                        :reason :not-found))
                                (assoc context
                                       :success? false
                                       :reason (:reason result)
                                       :error-details (:error-details result))))))}
                       {:txn-fn
-                       (fn create-chat-user-account
-                         [{:keys [stakeholder] :as context}]
-                         (let [{:keys [first-name last-name email]} stakeholder
-                               user {:name (str first-name " " last-name)
-                                     :email email
-                                     :username email}
-                               result (create-user-account* config user)]
-                           (if (:success? result)
-                             (assoc context :chat-user-account (:user result))
-                             (assoc context
-                                    :success? false
-                                    :reason (:reason result)
-                                    :error-details (:error-details result)))))
+                       (fn create-chat-user-account [{:keys [stakeholder] :as context}]
+                         (if (:chat-account-id stakeholder)
+                           (do
+                             (log logger :info :chat-account-already-exists {:chat-account-id (:chat-account-id stakeholder)})
+                             context)
+                           (let [{:keys [email id]} stakeholder
+                                 chat-user-id (ds-chat/make-unique-user-identifier)
+                                 result (port.chat/create-user-account (:chat-adapter config)
+                                                                       ;; gpml.boundary.adapter.chat.ds-chat/NewUser
+                                                                       {:uniqueUserIdentifier chat-user-id
+                                                                        :externalUserId (str id)
+                                                                        :isModerator false
+                                                                        :email email
+                                                                        :username email})]
+                             (if (:success? result)
+                               (merge context
+                                      :chat-user-account (select-keys result [:access-token])
+                                      :chat-user-id chat-user-id)
+                               (assoc context
+                                      :success? false
+                                      :reason (:reason result)
+                                      :error-details (:error-details result))))))
                        :rollback-fn
-                       (fn rollback-create-chat-user-account
-                         [{:keys [chat-user-account] :as context}]
-                         (chat/delete-user-account chat-adapter (:id chat-user-account) {})
+                       (fn rollback-create-chat-user-account [{:keys [chat-user-account] :as context}]
+                         (port.chat/delete-user-account chat-adapter (:id chat-user-account) {})
                          context)}
                       {:txn-fn
-                       (fn update-stakeholder
-                         [{:keys [user-id chat-user-account] :as context}]
-                         (let [result (set-stakeholder-chat-account-details config
-                                                                            user-id
-                                                                            chat-user-account)]
-                           (if (:success? result)
-                             (assoc context :stakeholder (:stakeholder result))
-                             (assoc context
-                                    :success? false
-                                    :reason (:reason result)
-                                    :error-details (:error-details result)))))}]
+                       (fn update-stakeholder [{:keys [user-id chat-user-id] :as context}]
+                         {:pre [user-id
+                                (if (:no-updates-needed context)
+                                  true
+                                  chat-user-id)]}
+                         (if (:no-updates-needed context)
+                           (update context :stakeholder select-successful-user-creation-keys)
+                           (let [result (set-stakeholder-chat-account-details config
+                                                                              {:chat-account-id chat-user-id
+                                                                               ;; XXX should persist access-token.
+                                                                               ;; create migration.
+                                                                               :user-id user-id})]
+                             (if (:success? result)
+                               (assoc context :stakeholder (:stakeholder result))
+                               (assoc context
+                                      :success? false
+                                      :reason (:reason result)
+                                      :error-details (:error-details result))))))}]
         context {:success? true
                  :user-id user-id}]
     (tht/thread-transactions logger transactions context)))
 
-(defn set-user-account-active-status [{:keys [db chat-adapter logger]} user chat-account-status]
+(defn set-user-account-active-status [{:keys [db chat-adapter logger]} user active?]
+  ;; XXX is it chat_account_id or chat-account-id?
   (let [transactions [{:txn-fn
-                       (fn set-chat-user-account-active-stauts
-                         [{:keys [user chat-account-status] :as context}]
-                         (let [active? (= chat-account-status :active)
-                               chat-account-id (:chat_account_id user)
-                               result (chat/set-user-account-active-status chat-adapter
-                                                                           chat-account-id
-                                                                           active?
-                                                                           {})]
+                       (fn set-chat-user-account-active-stauts [{:keys [user] :as context}]
+                         (let [chat-account-id (:chat_account_id user)
+                               result (port.chat/set-user-account-active-status chat-adapter
+                                                                                chat-account-id
+                                                                                active?
+                                                                                {})]
                            (if (:success? result)
                              context
                              (assoc context
@@ -106,19 +118,17 @@
                                     :reason (:reason result)
                                     :error-details (:error-details result)))))
                        :rollback-fn
-                       (fn rollback-set-chat-user-account-active-status
-                         [{:keys [user] :as context}]
-                         (chat/set-user-account-active-status chat-adapter
-                                                              (:chat_account_id user)
-                                                              (= (keyword (:chat_account_status user)) :active)
-                                                              {})
+                       (fn rollback-set-chat-user-account-active-status [{:keys [user] :as context}]
+                         (port.chat/set-user-account-active-status chat-adapter
+                                                                   (:chat_account_id user)
+                                                                   (= (keyword (:chat_account_status user)) :active)
+                                                                   {})
                          context)}
                       {:txn-fn
-                       (fn update-stakeholder-chat-account-status
-                         [{:keys [user chat-account-status] :as context}]
+                       (fn update-stakeholder-chat-account-status [{:keys [user] :as context}]
                          (let [affected (db.sth/update-stakeholder (:spec db)
                                                                    {:id (:id user)
-                                                                    :chat_account_status (name chat-account-status)})]
+                                                                    :chat_account_status active?})] ;; XXX check sql type
                            (if (= affected 1)
                              context
                              (assoc context
@@ -127,36 +137,8 @@
                                     :error-details {:error-source :persistence
                                                     :error-cause :unexpected-number-of-affected-rows}))))}]
         context {:success? true
-                 :user user
-                 :chat-account-status chat-account-status}]
+                 :user user}]
     (tht/thread-transactions logger transactions context)))
-
-(defn update-user-account [{:keys [chat-adapter]} chat-account-id updates]
-  (chat/update-user-account chat-adapter chat-account-id updates))
-
-(defn delete-user-account [{:keys [chat-adapter]} chat-account-id opts]
-  (chat/delete-user-account chat-adapter chat-account-id opts))
-
-(defn get-user-joined-channels [{:keys [chat-adapter]} chat-account-id]
-  (chat/get-user-joined-channels chat-adapter chat-account-id))
-
-(defn get-private-channels
-  ([config]
-   (get-private-channels config {}))
-  ([{:keys [chat-adapter]} opts]
-   (chat/get-private-channels chat-adapter opts)))
-
-(defn get-public-channels
-  ([config]
-   (get-public-channels config {:remove-ps-channels? true}))
-  ([{:keys [chat-adapter]} {:keys [remove-ps-channels?] :as opts}]
-   (let [result (chat/get-public-channels chat-adapter (dissoc opts :remove-ps-channels?))]
-     (if (:success? result)
-       (if remove-ps-channels?
-         (update result :channels (fn [channels]
-                                    (remove #(get-in % [:custom-fields :ps-country-iso-code-a-2]) channels)))
-         result)
-       result))))
 
 (defn- add-users-pictures-urls [config users]
   (map
@@ -171,72 +153,11 @@
            user))))
    users))
 
-(defn get-all-channels [{:keys [db chat-adapter logger] :as config} opts]
+(defn get-channel-details [{:keys [db chat-adapter logger] :as config} channel-id]
   (let [transactions
         [{:txn-fn
-          (fn tx-get-all-channels
-            [{:keys [opts] :as context}]
-            (let [;; We always ask only for the Public `c` and Private `p`
-                  ;; channels. Because RocketChat has other channel types that are not
-                  ;; used by GPML.
-                  result (chat/get-all-channels chat-adapter (merge {:types ["c" "p"]} opts))]
-              (if (:success? result)
-                (assoc context :channels (:channels result))
-                (assoc context
-                       :success? false
-                       :reason :failed-to-get-all-channels
-                       :error-details {:result result}))))}
-         {:txn-fn
-          (fn tx-add-channels-users-details
-            [{:keys [channels] :as context}]
-            (let [channels (remove #(get-in % [:custom-fields :ps-country-iso-code-a-2]) channels)
-                  chat-accounts-ids (set (reduce
-                                          (fn [users-accounts-ids {:keys [users]}]
-                                            (apply conj users-accounts-ids (map :id users)))
-                                          []
-                                          channels))
-                  search-opts {:related-entities #{:organisation :picture-file}
-                               :filters {:chat-accounts-ids chat-accounts-ids}}
-                  result (try
-                           {:success? true
-                            :stakeholders (db.sth/get-stakeholders (:spec db)
-                                                                   search-opts)}
-                           (catch Exception t
-                             {:success? false
-                              :reason :exception
-                              :error-details {:msg (ex-message t)}}))]
-              (if-not (:success? result)
-                (assoc context
-                       :success? false
-                       :reason :failed-to-get-channels-users-details
-                       :error-details {:result result})
-                (let [gpml-users (->> (:stakeholders result)
-                                      (add-users-pictures-urls config)
-                                      (medley/index-by :chat_account_id))
-                      updated-channels
-                      (map
-                       (fn [channel]
-                         (update channel :users
-                                 (fn [users]
-                                   (map
-                                    (fn [user]
-                                      (merge user (get gpml-users (:id user))))
-                                    users))))
-                       channels)]
-                  (assoc context :channels updated-channels)))))}]
-        context {:success? true
-                 :opts opts}]
-    (tht/thread-transactions logger transactions context)))
-
-(defn get-channel-details [{:keys [db chat-adapter logger] :as config} channel-id channel-type]
-  (let [transactions
-        [{:txn-fn
-          (fn tx-get-channel
-            [{:keys [channel-id channel-type] :as context}]
-            (let [common-opts {:query {:_id {:$eq channel-id}}}
-                  result (if (= channel-type "c")
-                           (get-public-channels config (assoc common-opts :remove-ps-channels? false))
-                           (get-private-channels config common-opts))]
+          (fn tx-get-channel [context]
+            (let [result (port.chat/get-all-channels chat-adapter {})]
               (if (:success? result)
                 (assoc context :channel (first (:channels result)))
                 (assoc context
@@ -244,9 +165,8 @@
                        :reason :failed-to-get-channel
                        :error-details {:result result}))))}
          {:txn-fn
-          (fn tx-get-channel-discussions
-            [{:keys [channel] :as context}]
-            (let [result (chat/get-channel-discussions chat-adapter (:id channel))]
+          (fn tx-get-channel-discussions [{:keys [channel] :as context}]
+            (let [result (port.chat/get-channel-discussions chat-adapter (:id channel))]
               (if (:success? result)
                 (assoc-in context [:channel :discussions] (:discussions result))
                 (assoc context
@@ -254,8 +174,7 @@
                        :reason :failed-to-get-channel-discussions
                        :error-details {:result result}))))}
          {:txn-fn
-          (fn tx-get-channel-users
-            [{:keys [channel] :as context}]
+          (fn tx-get-channel-users [{:keys [channel] :as context}]
             (let [chat-accounts-ids (map :id (:users channel))
                   search-opts {:related-entities #{:organisation :picture-file}
                                :filters {:chat-accounts-ids chat-accounts-ids}}
@@ -275,49 +194,13 @@
                        :reason :failed-to-get-channel-users
                        :error-details {:result result}))))}]
         context {:success? true
-                 :channel-id channel-id
-                 :channel-type channel-type}]
+                 :channel-id channel-id}]
     (tht/thread-transactions logger transactions context)))
-
-(defn remove-user-from-channel [{:keys [chat-adapter]} chat-account-id channel-id channel-type]
-  (chat/remove-user-from-channel chat-adapter
-                                 chat-account-id
-                                 channel-id
-                                 channel-type))
-
-(defn add-user-to-private-channel [{:keys [chat-adapter]} chat-account-id channel-id]
-  (chat/add-user-to-private-channel chat-adapter
-                                    chat-account-id
-                                    channel-id))
-
-(defn add-user-to-public-channel [{:keys [chat-adapter]} chat-account-id channel-id]
-  (chat/add-user-to-public-channel chat-adapter
-                                   chat-account-id
-                                   channel-id))
-
-(defn create-private-channel [{:keys [chat-adapter]} channel]
-  (chat/create-private-channel chat-adapter channel))
-
-(defn set-private-channel-custom-fields [{:keys [chat-adapter]} channel-id custom-fields]
-  (chat/set-private-channel-custom-fields chat-adapter channel-id custom-fields))
-
-(defn create-public-channel [{:keys [chat-adapter]} channel]
-  (chat/create-public-channel chat-adapter channel))
-
-(defn set-public-channel-custom-fields [{:keys [chat-adapter]} channel-id custom-fields]
-  (chat/set-public-channel-custom-fields chat-adapter channel-id custom-fields))
-
-(defn delete-private-channel [{:keys [chat-adapter]} channel-id]
-  (chat/delete-private-channel chat-adapter channel-id))
-
-(defn delete-public-channel [{:keys [chat-adapter]} channel-id]
-  (chat/delete-public-channel chat-adapter channel-id))
 
 (defn send-private-channel-invitation-request [{:keys [db mailjet-config]} user channel-id channel-name]
   (let [super-admins (db.rbac-util/get-super-admins-details (:spec db) {})]
-    (util.email/notify-admins-new-chat-private-channel-invitation-request
-     mailjet-config
-     super-admins
-     user
-     channel-id
-     channel-name)))
+    (util.email/notify-admins-new-chat-private-channel-invitation-request mailjet-config
+                                                                          super-admins
+                                                                          user
+                                                                          channel-id
+                                                                          channel-name)))

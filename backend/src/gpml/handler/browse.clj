@@ -45,7 +45,7 @@
            (->> (set (str/split s #","))
                 (map #(Integer/parseInt %)))
            (catch Exception e
-             (timbre/with-context {:s s}
+             (timbre/with-context+ {:s s}
                (log logger :error :decoding-failed e))
              (throw e))))}
       pos-int?]]
@@ -60,7 +60,7 @@
                         (try
                           (set (map #(Integer/parseInt %) (str/split s #",")))
                           (catch Exception e
-                            (timbre/with-context {:s s}
+                            (timbre/with-context+ {:s s}
                               (log logger :error :decoding-failed e))
                             (throw e))))}
       pos-int?]]
@@ -74,7 +74,7 @@
                         (try
                           (set (str/split s #","))
                           (catch Exception e
-                            (timbre/with-context {:s s}
+                            (timbre/with-context+ {:s s}
                               (log logger :error :decoding-failed e))
                             (throw e))))}
       (apply conj [:enum] dom.types/topic-types)]]
@@ -88,7 +88,7 @@
                         (try
                           (set (str/split s #","))
                           (catch Exception e
-                            (timbre/with-context {:s s}
+                            (timbre/with-context+ {:s s}
                               (log logger :error :decoding-failed e))
                             (throw e))))}
       string?]]
@@ -132,7 +132,7 @@
                         (try
                           (set (str/split s #","))
                           (catch Exception e
-                            (timbre/with-context {:s s}
+                            (timbre/with-context+ {:s s}
                               (log logger :error :decoding-failed e))
                             (throw e))))}
       string?]]
@@ -145,7 +145,7 @@
                         (try
                           (set (map #(Integer/parseInt %) (str/split s #",")))
                           (catch Exception e
-                            (timbre/with-context {:s s}
+                            (timbre/with-context+ {:s s}
                               (log logger :error :decoding-failed e))
                             (throw e))))}
       pos-int?]]
@@ -158,7 +158,7 @@
                         (try
                           (set (str/split s #","))
                           (catch Exception e
-                            (timbre/with-context {:s s}
+                            (timbre/with-context+ {:s s}
                               (log logger :error :decoding-failed e))
                             (throw e))))}
       string?]]
@@ -171,7 +171,7 @@
                         (try
                           (set (map #(Integer/parseInt %) (str/split s #",")))
                           (catch Exception e
-                            (timbre/with-context {:s s}
+                            (timbre/with-context+ {:s s}
                               (log logger :error :decoding-failed e))
                             (throw e))))}
       pos-int?]]
@@ -188,7 +188,7 @@
                         (try
                           (set (str/split s #","))
                           (catch Exception e
-                            (timbre/with-context {:s s}
+                            (timbre/with-context+ {:s s}
                               (log logger :error :decoding-failed e))
                             (throw e))))}
       string?]]
@@ -245,7 +245,7 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
                         (try
                           (str/split s #",")
                           (catch Exception e
-                            (timbre/with-context {:s s}
+                            (timbre/with-context+ {:s s}
                               (log logger :error :decoding-failed e))
                             (throw e))))}
       [:string {:min 1}]]]
