@@ -112,5 +112,5 @@
                                                     :socket-timeout timeout
                                                     :throw-exceptions false}))]
            (timbre/with-context+ {:response response}
-             (log logger :info :request-completed logged-req))
+             (log logger :info :request-completed (merge logged-req (select-keys response [:status]))))
            response))))))
