@@ -71,7 +71,7 @@
                                                                         :email email
                                                                         :username email})]
                              (if (:success? result)
-                               (merge context
+                               (assoc context
                                       :chat-user-account (select-keys result [:access-token])
                                       :chat-user-id chat-user-id)
                                (assoc context
