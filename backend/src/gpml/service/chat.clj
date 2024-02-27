@@ -13,7 +13,10 @@
 (defn- select-successful-user-creation-keys
   "Exists to ensure type homogeinity across code branches"
   [m]
-  {:post [(check! [:map [:id] [:chat-account-id] [:chat-account-status]]
+  {:post [(check! [:map
+                   [:id any?]
+                   [:chat-account-id any?]
+                   [:chat-account-status any?]]
                   %)]}
   (select-keys m [:id :chat-account-id :chat-account-status]))
 
