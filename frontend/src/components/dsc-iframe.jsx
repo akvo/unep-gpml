@@ -1,9 +1,20 @@
-import React, { useCallback, useEffect } from 'react'
-import { ChatStore } from '../store'
+import React, { useCallback, useEffect, useMemo } from 'react'
+import classNames from 'classnames'
 
-const DSCIframe = ({ roomId, accessToken, frameId = 'chat-frame' }) => {
+import { ChatStore, UIStore } from '../store'
+import { Spin } from 'antd'
+import { LoadingOutlined } from '@ant-design/icons'
+
+const DSCIframe = ({ roomId, frameId = 'chat-frame', discussion = null }) => {
   const sdk = ChatStore.useState((s) => s.sdk)
-  const iframeURL = `${process.env.NEXT_PUBLIC_DSC_URL}/${roomId}?accessToken=${accessToken}`
+  const profile = UIStore.useState((s) => s.profile)
+  const { accessToken, chatAccountId: uniqueUserIdentifier } = profile || {}
+
+  const iframeURL = useMemo(() => {
+    return accessToken
+      ? `${process.env.NEXT_PUBLIC_DSC_URL}/${roomId}?accessToken=${accessToken}`
+      : `${process.env.NEXT_PUBLIC_DSC_URL}/${roomId}?uniqueUserIdentifier=${uniqueUserIdentifier}`
+  }, [accessToken, uniqueUserIdentifier])
 
   const getActiveChannels = useCallback(async () => {
     if (sdk) {
@@ -62,7 +73,16 @@ const DSCIframe = ({ roomId, accessToken, frameId = 'chat-frame' }) => {
     return () => unsubscribe()
   }, [sdk])
 
-  return <iframe id={frameId} src={iframeURL} width="100%" />
+  return (
+    <Spin spinning={!profile?.chatAccountId} indicator={<LoadingOutlined />}>
+      <iframe
+        id={frameId}
+        src={iframeURL}
+        width="100%"
+        className={classNames({ discussion })}
+      />
+    </Spin>
+  )
 }
 
 export default DSCIframe
