@@ -112,5 +112,14 @@
                                                     :socket-timeout timeout
                                                     :throw-exceptions false}))]
            (timbre/with-context+ {:response response}
-             (log logger :info :request-completed (merge logged-req (select-keys response [:status]))))
+             (let [success? (try
+                              (<= 200 (:status response) 299)
+                              (catch Exception _
+                                false))]
+               (log logger
+                    (if success?
+                      :info
+                      :warn)
+                    :request-completed
+                    (merge logged-req (select-keys response [:status])))))
            response))))))
