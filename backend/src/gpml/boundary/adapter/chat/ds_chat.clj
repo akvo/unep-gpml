@@ -11,11 +11,14 @@
    [gpml.util :refer [url?]]
    [gpml.util.http-client :as http-client]
    [gpml.util.json :as json]
-   [gpml.util.malli :refer [check!]]
+   [gpml.util.malli :refer [check! failure-with success-with]]
    [integrant.core :as ig]
    [malli.core :as malli]))
 
 ;; XXX use cske/transform-keys consistently. note that this ns is used by misc services - not only frontend.
+
+(def ErrorDetails
+  any?)
 
 (def DSCInternalId
   (malli/schema [:and
@@ -46,8 +49,9 @@
 (def CreatedUser
   [:map
    [:username string?]
-   [:userId string?]
-   [:isModerator string?]])
+   [:user-id string?]
+   [:is-moderator boolean?]
+   [:access-token string?]])
 
 (defn- build-api-endpoint-url [endpoint-url-path & strs]
   {:pre [(check! [:and :string [:fn (fn starts-with-slash [s]
@@ -81,7 +85,11 @@
        :error-details body})))
 
 (defn create-user-account* [{:keys [logger api-key]} user]
-  {:pre [(check! NewUser user)]}
+  {:pre [(check! NewUser user)]
+   :post [(check! [:or
+                   (success-with :user CreatedUser)
+                   (failure-with :error-details ErrorDetails)]
+                  %)]}
   (let [{:keys [status body]}
         (http-client/request logger
                              {:url (build-api-endpoint-url "/api/v1/user")
@@ -288,9 +296,17 @@
   (delay
     (slurp (io/resource "ds_chat/custom.css"))))
 
+(def CreatedChannel [:map
+                     [:id string?]
+                     [:url string?]])
+
 (defn create-channel* [{:keys [logger api-key]} channel permission-level]
   {:pre [(check! NewChannel channel
-                 [:fn #{public-permission-level private-permission-level}] permission-level)]}
+                 [:fn #{public-permission-level private-permission-level}] permission-level)]
+   :post [(check! [:or
+                   (success-with :channel CreatedChannel)
+                   (failure-with :error-details ErrorDetails)]
+                  %)]}
   (let [req-body (cond-> channel
                    (:description channel) (assoc :description (:description channel))
                    true (assoc :defaultNotificationEnabled "off"

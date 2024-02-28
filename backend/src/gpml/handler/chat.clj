@@ -9,10 +9,8 @@
    [gpml.util.email :as email]
    [gpml.util.http-client :as http-client]
    [gpml.util.json :as json]
-   [gpml.util.malli :refer [check!]]
-   [integrant.core :as ig]
-   [malli.core :as malli]
-   [malli.util :as mu]))
+   [gpml.util.malli :refer [failure-with success-with]]
+   [integrant.core :as ig]))
 
 (defn- create-user-account [config {:keys [user] :as _req}]
   (let [result (srv.chat/create-user-account config (:id user))]
@@ -103,23 +101,6 @@
           (r/server-error result)))
       (r/server-error {:success? false
                        :reason :user-not-found}))))
-
-(defn Result [success?]
-  [:map
-   [:success? {:json-schema/example success?}
-    boolean?]])
-
-(defn- result-with [success? & [[k v :as entry]]]
-  {:pre [(check! boolean? success?)]}
-  (malli/schema (if entry
-                  (mu/assoc (Result success?) k v)
-                  (Result success?))))
-
-(defn success-with [& [entry]]
-  (result-with true entry))
-
-(defn failure-with [& [entry]]
-  (result-with false entry))
 
 (defmethod ig/init-key :gpml.handler.chat/dcs-user-routes
   [_ {:keys [middleware config]}]
