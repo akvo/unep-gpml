@@ -54,10 +54,13 @@
                                                                  {:table (str "stakeholder_" resource-type)
                                                                   :resource-col resource-type
                                                                   :filters {:resource-id resource-id}})
-                  sth-associations (->sth-associations stakeholders associations)]
+                  sth-associations (->sth-associations stakeholders associations)
+                  sth-associations-count (count sth-associations)]
               (if (and (= "organisation" resource-type)
-                       (> (count sth-associations) dom.ts-auth/max-focal-points))
-                (throw (ex-info "Maximum focal points reached" {:reason :maximum-focal-points-reached}))
+                       (> sth-associations-count dom.ts-auth/max-focal-points))
+                (throw (ex-info "Maximum focal points reached" {:reason :maximum-focal-points-reached
+                                                                :sth-associations-count sth-associations-count
+                                                                :max-focal-points dom.ts-auth/max-focal-points}))
                 (srv.association/save-sth-associations {:conn tx
                                                         :logger logger}
                                                        {:sth-associations sth-associations
