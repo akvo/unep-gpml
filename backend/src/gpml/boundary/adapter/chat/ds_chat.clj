@@ -223,17 +223,18 @@
    [:enable_channels boolean?]])
 
 (def ChannelS ;; TODO https://clojurians.slack.com/archives/CLDK6MFMK/p1709154587503499
-  [:map
-   [:show-notification-for-all-channels boolean?]
-   [:name string?]
-   [:enable-like-message boolean?]
-   [:room-id string?]
-   [:enable-one-to-one-chat boolean?]
-   [:file-sharing-mode string?]
-   [:password-protected boolean?]
-   [:default-notification-enabled boolean?]
-   [:moderator-only-one-to-one-chat boolean?]
-   [:enable-channels boolean?]])
+  [:sequential
+   [:map
+    [:show-notification-for-all-channels boolean?]
+    [:name string?]
+    [:enable-like-message boolean?]
+    [:id string?]
+    [:enable-one-to-one-chat boolean?]
+    [:file-sharing-mode string?]
+    [:password-protected boolean?]
+    [:default-notification-enabled boolean?]
+    [:moderator-only-one-to-one-chat boolean?]
+    [:enable-channels boolean?]]])
 
 (defn get-all-channels* [{:keys [logger api-key]} _opts]
   {:post [(check! [:or
