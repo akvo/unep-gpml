@@ -44,6 +44,7 @@
                  [io.prometheus/simpleclient_jetty_jdk8 "0.9.0"]
                  [medley "1.4.0"]
                  [metosin/jsonista "0.3.6"]
+                 [metosin/malli "0.14.0"]
                  [metosin/reitit-malli "0.5.18" :exclusions [org.clojure/tools.reader
                                                              org.clojure/core.rrb-vector]]
                  [metosin/reitit-middleware "0.5.18" :exclusions [ring/ring-core
