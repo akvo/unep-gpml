@@ -13,7 +13,8 @@
    [gpml.util.json :as json]
    [gpml.util.malli :refer [check! failure-with success-with]]
    [integrant.core :as ig]
-   [malli.core :as malli]))
+   [malli.core :as malli]
+   [taoensso.timbre :as timbre]))
 
 ;; XXX use cske/transform-keys consistently. note that this ns is used by misc services - not only frontend.
 
@@ -99,13 +100,18 @@
                               :content-type :json
                               :as :json-keyword-keys})
         obj (cske/transform-keys ->kebab-case body)]
-    (if (<= 200 status 299)
-      {:success? true
-       :user (-> obj
-                 (select-keys [:username :user-id :is-moderator :access-token]))}
-      {:success? false
-       :reason :failed-to-create-user-account
-       :error-details body})))
+    (timbre/with-context+ {:user user}
+      (if (<= 200 status 299)
+        (do
+          (log logger :info :created-chat-user)
+          {:success? true
+           :user (-> obj
+                     (select-keys [:username :user-id :is-moderator :access-token]))})
+        (do
+          (log logger :warn :failed-to-create-chat-user)
+          {:success? false
+           :reason :failed-to-create-user-account
+           :error-details body})))))
 
 (def RoomId string?)
 
@@ -143,11 +149,17 @@
                                         json/->json)
                               :content-type :json
                               :as :json-keyword-keys})]
-    (if (<= 200 status 299)
-      {:success? true}
-      {:success? false
-       :reason :failed-to-update-user-account
-       :error-details body})))
+    (timbre/with-context+ {:dsc-internal-user-id dsc-internal-user-id
+                           :updates updates}
+      (if (<= 200 status 299)
+        (do
+          (log logger :info :updated-user-account)
+          {:success? true})
+        (do
+          (log logger :warn :failed-to-update-user-account)
+          {:success? false
+           :reason :failed-to-update-user-account
+           :error-details body})))))
 
 (defn delete-user-account* [{:keys [logger api-key]} user-id _opts]
   {:pre [(check! UniqueUserIdentifier user-id)]}
@@ -159,11 +171,16 @@
                               :body (json/->json {:uniqueUserIdentifier user-id})
                               :content-type :json
                               :as :json-keyword-keys})]
-    (if (<= 200 status 299)
-      {:success? true}
-      {:success? false
-       :reason :failed-to-delete-user-account
-       :error-details body})))
+    (timbre/with-context+ {:user-id user-id}
+      (if (<= 200 status 299)
+        (do
+          (log logger :info :deleted-user-account)
+          {:success? true})
+        (do
+          (log logger :warn :failed-to-delete-user-account)
+          {:success? false
+           :reason :failed-to-delete-user-account
+           :error-details body})))))
 
 (defn set-user-account-active-status* [{:keys [logger api-key]} user-id active? _opts]
   {:pre [(check! UniqueUserIdentifier user-id
@@ -179,12 +196,18 @@
                               :query-params {:auth api-key}
                               :body (json/->json {:uniqueUserIdentifier user-id})
                               :as :json-keyword-keys})]
-    (if (<= 200 status 299)
-      {:success? true
-       :user body}
-      {:success? false
-       :reason :failed-to-set-user-account-active-status
-       :error-details body})))
+    (timbre/with-context+ {:user-id user-id
+                           :active? active?}
+      (if (<= 200 status 299)
+        (do
+          (log logger :info :successfully-updated-active-status)
+          {:success? true
+           :user body})
+        (do
+          (log logger :warn :failed-to-update-active-status)
+          {:success? false
+           :reason :failed-to-set-user-account-active-status
+           :error-details body})))))
 
 (def Channel
   [:map
@@ -278,11 +301,17 @@
                               :query-params {:auth api-key}
                               :body (json/->json {:uniqueUserIdentifier user-id})
                               :as :json-keyword-keys})]
-    (if (<= 200 status 299)
-      {:success? true}
-      {:success? false
-       :reason :failed-to-remove-user-from-channel
-       :error-details body})))
+    (timbre/with-context+ {:user-id user-id
+                           :channel-id channel-id}
+      (if (<= 200 status 299)
+        (do
+          (log logger :info :removed-user-from-channel)
+          {:success? true})
+        (do
+          (log logger :warn :failed-to-remove-user-from-channel)
+          {:success? false
+           :reason :failed-to-remove-user-from-channel
+           :error-details body})))))
 
 (defn add-user-to-channel* [{:keys [logger api-key]} user-id channel-id]
   (let [{:keys [status body]}
@@ -294,11 +323,17 @@
                                                   ;; https://deadsimplechat.com/developer/platform-guides/new-join-modal-guide/#member-roles
                                                   :roleName "user"})
                               :as :json-keyword-keys})]
-    (if (<= 200 status 299)
-      {:success? true}
-      {:success? false
-       :reason :failed-to-add-user-to-channel
-       :error-details body})))
+    (timbre/with-context+ {:channel-id channel-id
+                           :user-id user-id}
+      (if (<= 200 status 299)
+        (do
+          (log logger :info :added-user-to-channel)
+          {:success? true})
+        (do
+          (log logger :warn :could-not-add-user-to-channel)
+          {:success? false
+           :reason :failed-to-add-user-to-channel
+           :error-details body})))))
 
 (def NewChannel
   [:map {:closed true}
@@ -353,17 +388,19 @@
                               :method :post
                               :body (json/->json req-body)
                               :as :json-keyword-keys})]
-    (try
+    (timbre/with-context+ {:channel channel
+                           :permission-level permission-level}
       (if (<= 200 status 299)
-        {:success? true
-         :channel (set/rename-keys (select-keys (cske/transform-keys ->kebab-case body) [:room-id :url])
-                                   {:room-id :id})}
-        {:success? false
-         :reason :failed-to-create-channel
-         :error-details body})
-      (catch Exception e
-        (log logger :error :f {:body body})
-        (throw e)))))
+        (do
+          (log logger :info :successfully-created-channel)
+          {:success? true
+           :channel (set/rename-keys (select-keys (cske/transform-keys ->kebab-case body) [:room-id :url])
+                                     {:room-id :id})})
+        (do
+          (log logger :warn :failed-to-create-channel)
+          {:success? false
+           :reason :failed-to-create-channel
+           :error-details body})))))
 
 (defn create-public-channel* [adapter channel]
   (create-channel* adapter channel public-permission-level))
@@ -389,12 +426,17 @@
                               :method :post
                               :body (json/->json req-body)
                               :as :json-keyword-keys})]
-    (if (<= 200 status 299)
-      {:success? true
-       :discussion (cske/transform-keys ->kebab-case (:channel body))}
-      {:success? false
-       :reason :failed-to-create-discussion
-       :error-details body})))
+    (timbre/with-context+ {:discussion discussion}
+      (if (<= 200 status 299)
+        (do
+          (log logger :info :successfully-created-discussion)
+          {:success? true
+           :discussion (cske/transform-keys ->kebab-case (:channel body))})
+        (do
+          (log logger :warn :failed-to-create-discussion)
+          {:success? false
+           :reason :failed-to-create-discussion
+           :error-details body})))))
 
 (defn delete-channel* [{:keys [logger api-key]} channel-id]
   {:pre [(check! RoomId channel-id)]}
@@ -404,11 +446,16 @@
                               :method :delete
                               :query-params {:auth api-key}
                               :as :json-keyword-keys})]
-    (if (<= 200 status 299)
-      {:success? true}
-      {:success? false
-       :reason :failed-to-delete-public-channel
-       :error-details body})))
+    (timbre/with-context+ {:channel-id channel-id}
+      (if (<= 200 status 299)
+        (do
+          (log logger :info :successfully-deleted-channel)
+          {:success? true})
+        (do
+          (log logger :warn :could-not-delete-channel)
+          {:success? false
+           :reason :failed-to-delete-public-channel
+           :error-details body})))))
 
 (def ChannelUpdates
   [:map {:closed true}
@@ -420,22 +467,25 @@
 (defn set-channel-custom-fields* [{:keys [logger api-key]} channel-id custom-fields]
   {:pre [(check! RoomId channel-id
                  ChannelUpdates custom-fields)]}
-  (let [{:keys [status body] :as all}
+  (let [{:keys [status body]}
         (http-client/request logger
                              {:url (build-api-endpoint-url "/api/v1/chatroom/" channel-id)
                               :method :put
                               :query-params {:auth api-key}
                               :body (json/->json custom-fields)
                               :as :json-keyword-keys})]
-    (try
-      (if (<= 200 status 299) ;; XXX this pattern can be improved since status can be :unknown-reason on unexpected exceptions.
-        {:success? true
-         :channel (select-keys body [:roomId :url])}
-        {:success? false
-         :reason :failed-to-set-public-channel-custom-fields
-         :error-details body})
-      (catch Exception _
-        all))))
+    (timbre/with-context+ {:channel-id channel-id
+                           :custom-fields custom-fields}
+      (if (<= 200 status 299)
+        (do
+          (log logger :info :successfully-set-channel-custom-fields)
+          {:success? true
+           :channel (select-keys body [:roomId :url])})
+        (do
+          (log logger :warn :failed-to-set-channel-custom-fields)
+          {:success? false
+           :reason :failed-to-set-public-channel-custom-fields
+           :error-details body})))))
 
 (defn get-channel-discussions* [{:keys [logger api-key]} channel-id]
   {:pre [channel-id]}
