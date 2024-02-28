@@ -1,5 +1,7 @@
 (ns gpml.handler.chat
   (:require
+   [camel-snake-kebab.core :refer [->snake_case]]
+   [camel-snake-kebab.extras :as cske]
    [gpml.boundary.adapter.chat.ds-chat :as ds-chat]
    [gpml.boundary.port.chat :as port.chat]
    [gpml.db.stakeholder :as db.stakeholder]
@@ -15,7 +17,7 @@
 (defn- create-user-account [config {:keys [user] :as _req}]
   (let [result (srv.chat/create-user-account config (:id user))]
     (if (:success? result)
-      (r/ok (:stakeholder result))
+      (r/ok (cske/transform-keys ->snake_case (:stakeholder result)))
       ;; XXX same select-keys elsewhere:
       (r/server-error (select-keys result [:error-details :user-id :success?])))))
 
@@ -29,7 +31,7 @@
 (defn- get-user-joined-channels [config {:keys [user]}]
   (let [result (port.chat/get-user-joined-channels (:chat-adapter config) (:chat_account_id user))]
     (if (:success? result)
-      (r/ok result)
+      (r/ok (cske/transform-keys ->snake_case result))
       (r/server-error result))))
 
 (defn- get-private-channels [config {:keys [user]}]
@@ -161,7 +163,7 @@
            :handler    (fn do-get-all-channels [_req]
                          (let [result (port.chat/get-all-channels (:chat-adapter config) {})]
                            (if (:success? result)
-                             (r/ok result)
+                             (r/ok (cske/transform-keys ->snake_case result))
                              (r/server-error result))))
            :responses {:200 {:body (success-with :channels [:sequential ds-chat/Channel])}
                        :500 {:body (failure-with)}}}}]
@@ -173,7 +175,7 @@
             :handler    (fn get-channel-details [{{:keys [path]} :parameters}]
                           (let [result (srv.chat/get-channel-details config (:id path))]
                             (if (:success? result)
-                              (r/ok result)
+                              (r/ok (cske/transform-keys ->snake_case result))
                               (r/server-error result))))
             :parameters {:path [:map
                                 [:id
@@ -251,11 +253,8 @@
                        :500 {:body (failure-with)}}}}]])
 
 (comment
-  (dev/make-user! "vemv@vemv.net")
-  (gpml.db.stakeholder/stakeholder-by-email (dev/conn) {:email "vemv@vemv.net"})
-
-  (dev/q {:select :*
-          :from :plastic_strategy})
+  (dev/make-user! "abc@abc.net")
+  (gpml.db.stakeholder/stakeholder-by-email (dev/conn) {:email "abc@abc.net"})
 
   (http-client/request (dev/logger)
                        {:url "http://localhost:3000/api/chat/user/account"
@@ -285,8 +284,26 @@
                        {:url (str "http://localhost:3000/api/chat/channel/details/" channel-id)
                         :as :json-keyword-keys})
 
+  ;; 8
   (http-client/request (dev/logger)
                        {:url "http://localhost:3000/api/chat/channel/all"
+                        :as :json-keyword-keys})
+
+  ;; 6
+  (port.chat/add-user-to-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                        (:chat_account_id (gpml.db.stakeholder/stakeholder-by-email (dev/conn) {:email "abc@abc.net"}))
+                                        channel-id)
+
+  ;; 9
+  (http-client/request (dev/logger)
+                       {:url "http://localhost:3000/api/chat/user/channel"
+                        :as :json-keyword-keys})
+
+  ;; 12
+  (http-client/request (dev/logger)
+                       {:url "http://localhost:3000/api/chat/channel/leave"
+                        :method :post
+                        :body (json/->json {:channel_id channel-id})
                         :as :json-keyword-keys})
 
   (http-client/request (dev/logger)
