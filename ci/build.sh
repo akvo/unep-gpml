@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #shellcheck disable=SC2039
 
-set -exuo pipefail
+set -Eeuxo pipefail
 
 [[ -n "${CI_TAG:=}" ]] && { echo "Skip build"; exit 0; }
 
@@ -16,8 +16,10 @@ image_prefix="eu.gcr.io/akvo-lumen/unep-gpml"
 mkdir -p "${lein_path}"
 mkdir -p "${m2_path}"
 
+docker compose version
+
 dc () {
-    docker-compose \
+  docker compose \
 	--ansi never \
 	"$@"
 }

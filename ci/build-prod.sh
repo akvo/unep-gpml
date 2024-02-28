@@ -17,7 +17,7 @@ mkdir -p "${lein_path}"
 mkdir -p "${m2_path}"
 
 dc () {
-    docker-compose \
+    docker compose \
 	--ansi never \
 	"$@"
 }
