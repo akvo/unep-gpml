@@ -546,9 +546,9 @@
                        :channel-name (str (random-uuid))})
 
   ;; 1
-  (let [{:keys [id email first_name last_name chat_account_id]} (dev/make-user! "vemv@vemv.net")]
+  (let [{:keys [id email first_name last_name]} (dev/make-user! (format "a%s@a%s.com" (random-uuid) (random-uuid)))]
 
-    @(def uniqueUserIdentifier (doto chat_account_id assert))
+    @(def uniqueUserIdentifier (make-unique-user-identifier))
 
     @(def a-user (port/create-user-account (dev/component :gpml.boundary.adapter.chat/ds-chat)
                                            {:uniqueUserIdentifier uniqueUserIdentifier
@@ -583,29 +583,27 @@
   ;; DS chat rooms are like RC channels
   ;; DS channels are like RC discussions
   @(def a-public-channel (port/create-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                                     {:name (str (random-uuid))
-                                                      :description nil}))
+                                                     {:name (str (random-uuid))}))
 
   ;; 3
   @(def a-private-channel (port/create-private-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                                       {:name (str (random-uuid))
-                                                        :description nil}))
+                                                       {:name (str (random-uuid))}))
 
   ;; 15
   (port/set-private-channel-custom-fields (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                          (-> a-public-channel :channel :room-id)
+                                          (-> a-public-channel :channel :id)
                                           {:description (str (random-uuid))
                                            :name (str (random-uuid))})
 
   ;; 6
   (port/add-user-to-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
                                    uniqueUserIdentifier
-                                   (-> a-public-channel :channel :room-id))
+                                   (-> a-public-channel :channel :id))
 
   ;; 7
   (port/add-user-to-private-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
                                     uniqueUserIdentifier
-                                    (-> a-private-channel :channel :room-id))
+                                    (-> a-private-channel :channel :id))
 
   ;; 8
   @(def all-chanels (port/get-all-channels (dev/component :gpml.boundary.adapter.chat/ds-chat) {}))
@@ -617,7 +615,7 @@
   ;; 12
   (port/remove-user-from-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
                                  uniqueUserIdentifier
-                                 (-> a-public-channel :channel :room-id)
+                                 (-> a-public-channel :channel :id)
                                  {})
 
   ;; Should be smaller now
@@ -633,11 +631,11 @@
 
   ;; 4
   (port/delete-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                              (-> a-public-channel :channel :room-id))
+                              (-> a-public-channel :channel :id))
 
   ;; 5
   (port/delete-private-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                               (-> a-private-channel :channel :room-id))
+                               (-> a-private-channel :channel :id))
 
   (doseq [{:keys [id]} (:channels (port/get-all-channels (dev/component :gpml.boundary.adapter.chat/ds-chat) {}))]
     (port/delete-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
