@@ -186,27 +186,38 @@
        :reason :failed-to-set-user-account-active-status
        :error-details body})))
 
-(defn get-all-channels* [{:keys [logger api-key]} _opts]
-  ;; XXX use :filter, :types opts
-  (let [#_#_query-params (cond-> {}
-                           (:name opts)
-                           (assoc :filter (:name opts))
+(def Channel
+  [:map
+   [:show_notification_for_all_channels boolean?]
+   [:name string?]
+   [:enable_like_message boolean?]
+   [:room_id string?]
+   [:enable_one_to_one_chat boolean?]
+   [:file_sharing_mode string?]
+   [:password_protected boolean?]
+   [:default_notification_enabled boolean?]
+   [:moderator_only_one_to_one_chat boolean?]
+   [:enable_channels boolean?]])
 
-                           (:types opts)
-                           (assoc :types (:types opts)))
-        ;; result:
-        #_{"passwordProtected" false,
-           "enableOneToOneChat" false,
-           "moderatorOnlyOneToOneChat" false,
-           "enableChannels" false,
-           "showNotificationForAllChannels" false,
-           "enableLikeMessage" false,
-           "defaultNotificationEnabled" false,
-           "roomId" "y5KppBwpE",
-           "name" "chatroom name",
-           "roomPassword" "password",
-           "preModeratedChatRoom" false}
-        {:keys [status body]}
+(def ChannelS ;; TODO https://clojurians.slack.com/archives/CLDK6MFMK/p1709154587503499
+  [:map
+   [:show-notification-for-all-channels boolean?]
+   [:name string?]
+   [:enable-like-message boolean?]
+   [:room-id string?]
+   [:enable-one-to-one-chat boolean?]
+   [:file-sharing-mode string?]
+   [:password-protected boolean?]
+   [:default-notification-enabled boolean?]
+   [:moderator-only-one-to-one-chat boolean?]
+   [:enable-channels boolean?]])
+
+(defn get-all-channels* [{:keys [logger api-key]} _opts]
+  {:post [(check! [:or
+                   (success-with :channels ChannelS)
+                   (failure-with :error-details ErrorDetails)]
+                  %)]}
+  (let [{:keys [status body]}
         (http-client/request logger
                              {:url (build-api-endpoint-url "/api/v1/chatrooms")
                               :method :get
@@ -223,21 +234,19 @@
                                           {:room-id :id}))
                        body)})))
 
-(def Channel
-  [:map
-   [:showNotificationForAllChannels boolean?]
-   [:name string?]
-   [:enableLikeMessage boolean?]
-   [:roomId string?]
-   [:enableOneToOneChat boolean?]
-   [:fileSharingMode string?]
-   [:passwordProtected boolean?]
-   [:defaultNotificationEnabled boolean?]
-   [:moderatorOnlyOneToOneChat boolean?]
-   [:enableChannels boolean?]])
+(def UserJoinedChanels
+  [:sequential
+   [:map {:closed true}
+    [:name string?]
+    [:id string?]
+    [:role-name string?]]])
 
 (defn get-user-joined-channels* [{:keys [logger api-key]} user-id]
-  {:pre [(check! UniqueUserIdentifier user-id)]}
+  {:pre  [(check! UniqueUserIdentifier user-id)]
+   :post [(check! [:or
+                   (success-with :channels UserJoinedChanels)
+                   (failure-with :error-details ErrorDetails)]
+                  %)]}
   (let [{:keys [status body]}
         (http-client/request logger
                              {:url (build-api-endpoint-url "/api/v2/user/" user-id "/rooms")
@@ -246,7 +255,15 @@
                               :as :json-keyword-keys})]
     (if (<= 200 status 299)
       {:success? true
-       :channels body}
+       :channels (into []
+                       (comp (map #(cske/transform-keys ->kebab-case %))
+                             (filter :chat-room) ;; DSC can include memeberships to deleted channels
+                             (map (fn [{:keys [role-name]
+                                        {:keys [name room-id]} :chat-room}]
+                                    {:name name
+                                     :id room-id
+                                     :role-name role-name})))
+                       body)}
       {:success? false
        :reason :failed-to-add-user-to-channel
        :error-details body})))
@@ -569,4 +586,8 @@
 
   ;; 5
   (port/delete-private-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                               (-> a-private-channel :channel :room-id)))
+                               (-> a-private-channel :channel :room-id))
+
+  (doseq [{:keys [id]} (:channels (port/get-all-channels (dev/component :gpml.boundary.adapter.chat/ds-chat) {}))]
+    (port/delete-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                id)))
