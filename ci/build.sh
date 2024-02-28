@@ -17,18 +17,15 @@ mkdir -p "${lein_path}"
 mkdir -p "${m2_path}"
 
 dc () {
-  docker-compose \
-	  "$@" \
-	  --ansi never
+  docker-compose --ansi never "$@"
 }
 
 export -f dc
 
 dci () {
-  dc "$@" \
-     -f docker-compose.yml \
-     -f docker-compose.ci.yml
+  dc -f docker-compose.yml -f docker-compose.ci.yml "$@"
 }
+
 export -f dci
 
 backend_build () {
@@ -110,7 +107,7 @@ frontend_build_staging
 strapi_build
 nginx_build
 
-if ! dci run --no-TTY ci ./basic.sh; then
+if ! dci run -T ci ./basic.sh; then
   echo "Build failed when running basic.sh. Logs:"
   dci logs
   exit 1

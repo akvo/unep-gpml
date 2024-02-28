@@ -4,7 +4,7 @@ set -eu
 
 [[ ! -f "./docker-compose.yml" ]] && { echo "Execute ${0##*/} from project top folder"; exit 1; }
 
-docker-compose exec --no-TTY db \
+docker-compose exec -T db \
 	       sed -i \
 	       -e "s/^#log_destination/log_destination/" \
 	       -e "s/^#log_min_error_statement = error/log_min_error_statement = info/" \

@@ -17,8 +17,9 @@
 (defn- create-user-account [config {:keys [user] :as _req}]
   (let [result (srv.chat/create-user-account config (:id user))]
     (if (:success? result)
-      (r/ok (select-keys result [:stakeholder :chat-user-account :chat-user-id]))
-      (r/server-error result))))
+      (r/ok (:stakeholder result))
+      ;; XXX same select-keys elsewhere:
+      (r/server-error (select-keys result [:error-details :user-id :success?])))))
 
 (defn- set-user-account-active-status [config {:keys [user parameters]}]
   (let [chat-account-status (-> parameters :body :chat_account_status)
@@ -188,7 +189,7 @@
      {:get {:summary    "Get channel details"
             :middleware middleware
             :swagger    {:tags ["chat"] :security [{:id_token []}]}
-            :handler    (fn get-channel-details [config {{:keys [path]} :parameters :as _req}]
+            :handler    (fn get-channel-details [{{:keys [path]} :parameters}]
                           (let [result (srv.chat/get-channel-details config (:id path))]
                             (if (:success? result)
                               (r/ok result)
@@ -297,7 +298,11 @@
                                       :content-type :json
                                       :as :json-keyword-keys}))
 
-  (-> channel :body :channels first :id)
+  @(def channel-id (-> channel :body :channels first :id))
+
+  (http-client/request (dev/logger)
+                       {:url (str "http://localhost:3000/api/chat/channel/details/" channel-id)
+                        :as :json-keyword-keys})
 
   (http-client/request (dev/logger)
                        {:url "http://localhost:3000/api/chat/channel/all"
