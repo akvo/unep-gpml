@@ -80,7 +80,7 @@
     (if (<= 200 status 299)
       {:success? true
        ;; deactivated true is included for deactivated users (otherwise it's absent, unless it has been reactivated)
-       :user     body}
+       :user     (cske/transform-keys ->kebab-case body)}
       {:success?      false
        :reason        :failed-to-get-user-info
        :error-details body})))
