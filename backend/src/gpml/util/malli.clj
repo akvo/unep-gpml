@@ -41,8 +41,7 @@
 (defn Result [success?]
   [:map
    [:success? {:json-schema/example success?
-               ;; NOTE: prefer :gen/elements over :gen/return for now https://clojurians.slack.com/archives/CLDK6MFMK/p1709145059983059?thread_ts=1709140366.399849&cid=CLDK6MFMK
-               :gen/elements [success?]}
+               :gen/return success?}
     boolean?]])
 
 (defn- result-with [success? & [[k v]]]
