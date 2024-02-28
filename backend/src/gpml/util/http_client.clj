@@ -91,7 +91,9 @@
                      max-retries default-max-retries
                      backoff-ms default-backoff-ms}}]
    (let [req (cond-> req
-               (not (:method req)) (assoc :method :get))
+               (not (:method req)) (assoc :method (if (:body req)
+                                                    :post
+                                                    :get)))
          request-id (util/uuid)
          logged-req (select-keys req [:url :method])]
      (dh/with-retry {:policy (retry-policy max-retries backoff-ms)
