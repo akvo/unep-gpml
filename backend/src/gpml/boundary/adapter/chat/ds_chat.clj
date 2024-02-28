@@ -3,6 +3,7 @@
   (:require
    [camel-snake-kebab.core :refer [->camelCaseString ->kebab-case]]
    [camel-snake-kebab.extras :as cske]
+   [clojure.java.io :as io]
    [clojure.set :as set]
    [clojure.string :as string]
    [duct.logger :refer [log]]
@@ -283,16 +284,35 @@
 
 (def private-permission-level "members")
 
+(def custom-css
+  (delay
+    (slurp (io/resource "ds_chat/custom.css"))))
+
 (defn create-channel* [{:keys [logger api-key]} channel permission-level]
   {:pre [(check! NewChannel channel
                  [:fn #{public-permission-level private-permission-level}] permission-level)]}
-  (let [req-body (cske/transform-keys ->camelCaseString (cond-> channel
-                                                          (:description channel) (assoc :description (:description channel))
-                                                          true (assoc :defaultNotificationEnabled "off"
-                                                                      :name (:name channel)
-                                                                      :fileSharingMode "fileAndImageSharing"
-                                                                      :chatRoomPermissionLevel permission-level
-                                                                      :enableChannels "on")))
+  (let [req-body (cond-> channel
+                   (:description channel) (assoc :description (:description channel))
+                   true (assoc :defaultNotificationEnabled "off"
+                               :customization {"hideSidebar" true
+                                               "fontFamily" "DM Sans",
+                                               "useCustomFont" true,
+                                               "hideHeader" true,
+                                               "hideUniqueUserIdentifierField" true,
+                                               "hideAccessTokenField" true,
+                                               "buttonColor" "#020a5b",
+                                               "buttonHoverColor" "#ffffff",
+                                               "buttonTextColor" "#020a5b",
+                                               "sendButtonIconColor" "#ffffff",
+                                               "sendButtonBackgroundColor" "#020a5b",
+                                               "textareaBackgroundColor" "#f5f7ff",
+                                               "chatMessageHoverColor" "#f5f7ff",
+                                               "modalFontColor" "#020a5b"}
+                               :customCSS @custom-css
+                               :name (:name channel)
+                               :fileSharingMode "fileAndImageSharing"
+                               :chatRoomPermissionLevel permission-level
+                               :enableChannels "on"))
         {:keys [status body]}
         (http-client/request logger
                              {:url (build-api-endpoint-url "/api/v1/chatroom/")
