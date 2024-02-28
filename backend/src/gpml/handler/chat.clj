@@ -132,7 +132,7 @@
            :swagger    {:tags ["chat"]}
            :handler    (fn do-get-user-joined-channels [req]
                          (get-user-joined-channels config req))
-           :responses {:200 {:body (success-with [:channels [:sequential ds-chat/Channel]])}
+           :responses {:200 {:body (success-with :channels [:sequential ds-chat/Channel])}
                        :500 {:body (failure-with)}}}}]])
 
 (defmethod ig/init-key :gpml.handler.chat/dcs-channel-routes
@@ -163,7 +163,7 @@
                            (if (:success? result)
                              (r/ok result)
                              (r/server-error result))))
-           :responses {:200 {:body (success-with [:channels [:sequential ds-chat/Channel]])}
+           :responses {:200 {:body (success-with :channels [:sequential ds-chat/Channel])}
                        :500 {:body (failure-with)}}}}]
    ["/details"
     ["/{id}"
@@ -190,7 +190,7 @@
              :swagger    {:tags ["chat"]}
              :handler    (fn do-get-private-channels [req]
                            (get-private-channels config req))
-             :responses {:200 {:body (success-with [:channels [:sequential ds-chat/Channel]])}
+             :responses {:200 {:body (success-with :channels [:sequential ds-chat/Channel])}
                          :500 {:body (failure-with)}}}
       :post {:summary    "Send private channel invitation request"
              :middleware middleware
@@ -247,7 +247,7 @@
            :swagger    {:tags ["chat"]}
            :handler    (fn do-get-public-channels [req]
                          (get-public-channels config req))
-           :responses {:200 {:body (success-with [:channels [:sequential ds-chat/Channel]])}
+           :responses {:200 {:body (success-with :channels [:sequential ds-chat/Channel])}
                        :500 {:body (failure-with)}}}}]])
 
 (comment
