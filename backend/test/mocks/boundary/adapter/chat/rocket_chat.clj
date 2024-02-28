@@ -1,53 +1,38 @@
 (ns mocks.boundary.adapter.chat.rocket-chat
   (:require
+   [gpml.boundary.adapter.chat.ds-chat :as ds-chat]
    [gpml.boundary.port.chat :as port]
-   [gpml.util :as util]
-   [integrant.core :as ig]))
+   [gpml.util.malli :refer [success-with]]
+   [integrant.core :as ig]
+   [malli.generator :refer [generate]]))
 
-#_{:clj-kondo/ignore [:unused-binding]}
-(defrecord MockRocketChat []
-  port/Chat
-  (create-user-account [this user]
-    {:success? true
-     :user {:id (str (util/uuid))
-            :active true}})
+(defn mock [schema]
+  (fn [& _]
+    (generate schema)))
 
-  (update-user-account [this user-id updates])
-
-  (delete-user-account [this user-id opts])
-
-  (get-public-channels [this opts])
-
-  (get-private-channels [this opts])
-
-  (get-all-channels [this opts])
-
-  (set-user-account-active-status [this user-id active? opts])
-
-  (get-user-info [this user-id opts])
-
-  (get-user-joined-channels [this user-id])
-
-  (remove-user-from-channel [this user-id channel-id channel-type])
-
-  (add-user-to-private-channel [this user-id channel-id])
-
-  (add-user-to-public-channel [this user-id channel-id])
-
-  (create-private-channel [this channel])
-
-  (set-private-channel-custom-fields [this channel-id custom-fields])
-
-  (delete-private-channel [this channel-id])
-
-  (create-public-channel [this channel])
-
-  (set-public-channel-custom-fields [this channel-id custom-fields])
-
-  (delete-public-channel [this channel-id])
-
-  (get-channel-discussions [this channel-id]))
+(defn map->DSChat []
+  (with-meta {}
+    {`port/add-user-to-private-channel       (mock (success-with)) #_ds-chat/add-user-to-channel*
+     `port/add-user-to-public-channel        (mock (success-with)) #_ds-chat/add-user-to-channel*
+     `port/create-private-channel            (mock (success-with :channel ds-chat/CreatedChannel)) #_ds-chat/create-private-channel*
+     `port/create-public-channel             (mock (success-with :channel ds-chat/CreatedChannel)) #_ds-chat/create-public-channel*
+     `port/create-user-account               (mock (success-with :user ds-chat/CreatedUser)) #_ds-chat/create-user-account*
+     ;; TODO -----------------
+     `port/delete-private-channel            (mock (success-with)) #_ds-chat/delete-channel*
+     `port/delete-public-channel             (mock (success-with)) #_ds-chat/delete-channel*
+     `port/delete-user-account               (mock (success-with)) #_ds-chat/delete-user-account*
+     `port/get-all-channels                  (mock (success-with)) #_ds-chat/get-all-channels*
+     `port/get-private-channels              (mock (success-with)) #_ds-chat/get-all-channels*
+     `port/get-public-channels               (mock (success-with)) #_ds-chat/get-all-channels*
+     `port/get-channel-discussions           (mock (success-with)) #_ds-chat/get-channel-discussions*
+     `port/get-user-info                     (mock (success-with)) #_ds-chat/get-user-info*
+     `port/get-user-joined-channels          (mock (success-with)) #_ds-chat/get-user-joined-channels*
+     `port/remove-user-from-channel          (mock (success-with)) #_ds-chat/remove-user-from-channel*
+     `port/set-private-channel-custom-fields (mock (success-with)) #_ds-chat/set-channel-custom-fields*
+     `port/set-public-channel-custom-fields  (mock (success-with)) #_ds-chat/set-channel-custom-fields*
+     `port/set-user-account-active-status    (mock (success-with)) #_ds-chat/set-user-account-active-status*
+     `port/update-user-account               (mock (success-with)) #_ds-chat/update-user-account*}))
 
 (defmethod ig/init-key :mocks.boundary.adapter.chat/rocket-chat
   [_ _]
-  (->MockRocketChat))
+  (map->DSChat))
