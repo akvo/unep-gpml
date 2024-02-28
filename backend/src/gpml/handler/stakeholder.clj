@@ -79,18 +79,20 @@
    :org               org
    :tags              tags})
 
-(defn- create-profile [{:keys [id about
-                               title first-name role
-                               last-name idp-usernames
-                               linked-in cv picture twitter email
-                               affiliation job-title
-                               country geo-coverage-type
-                               reviewed-at reviewed-by review-status
-                               organisation-role public-email
-                               tags org chat-account-id chat-account-status]}]
+(defn- profile-info [{:keys [id about
+                             title first-name role
+                             last-name idp-usernames
+                             linked-in cv picture twitter email
+                             affiliation job-title
+                             country geo-coverage-type
+                             reviewed-at reviewed-by review-status
+                             organisation-role public-email
+                             tags org chat-account-id chat-account-status chat-account-auth-token]}]
   (let [{:keys [seeking offering expertise]} (->> tags
                                                   (group-by :tag_relation_category)
-                                                  (reduce-kv (fn [m k v] (assoc m (keyword k) (map :tag v))) {}))]
+                                                  (reduce-kv (fn [m k v]
+                                                               (assoc m (keyword k) (map :tag v)))
+                                                             {}))]
     {:id id
      :title title
      :affiliation affiliation
@@ -118,12 +120,13 @@
      :cv cv
      :picture picture
      :chat_account_id chat-account-id
-     :chat_account_status chat-account-status}))
+     :chat_account_status chat-account-status
+     :chat_account_auth_token chat-account-auth-token}))
 
 (defn- get-stakeholder-profile [config stakeholder-id]
   (let [result (srv.stakeholder/get-stakeholder-profile config stakeholder-id)]
     (when (:success? result)
-      (create-profile (:stakeholder result)))))
+      (profile-info (:stakeholder result)))))
 
 (defmethod ig/init-key :gpml.handler.stakeholder/profile
   [_ config]
