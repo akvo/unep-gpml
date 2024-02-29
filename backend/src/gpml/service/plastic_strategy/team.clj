@@ -84,7 +84,7 @@
                 (log logger :error :failed-to-rollback-assign-role-to-user {:result result})))
             context)}
          {:txn-fn
-          (fn tx-create-chat-account-if-required
+          (fn tx-create-chat-account-if-required ;; XXX adapt if needed
             [{:keys [ps-team-member] :as context}]
             (if (seq (:chat-account-id ps-team-member))
               context
