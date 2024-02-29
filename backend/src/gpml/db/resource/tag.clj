@@ -13,3 +13,16 @@
          delete-resource-tags)
 
 (hugsql/def-db-fns "gpml/db/resource/tag.sql" {:quoting :ansi})
+
+(alter-meta! #'get-tags-from-resources assoc :private true)
+
+(defn safely-get-tags-from-resources
+  "Get all the tags for all the resources"
+  [db params]
+  (if-not (seq (:resource-ids params))
+    ;; Avoid SQL error, since ` in ()` isn't valid SQL.
+    ;; This could also be avoided in .sql itself with something like ---(when (or (seq (:resource-ids params)) " WHERE rt.:i:resource-col in (:v*:resource-ids)"),
+    ;; however my attempt didn't immediately succeed.
+    ;; We also could migrate the query to honeysql.
+    []
+    (get-tags-from-resources db params)))

@@ -477,10 +477,10 @@
         ;; Tags
         old-tags-relations
         (when (seq tags-table-data)
-          (->> (db.r.tag/get-tags-from-resources tx
-                                                 {:table (str (name entity-name) "_tag")
-                                                  :resource-col (name entity-name)
-                                                  :resource-ids entities-ids})
+          (->> (db.r.tag/safely-get-tags-from-resources tx
+                                                        {:table (str (name entity-name) "_tag")
+                                                         :resource-col (name entity-name)
+                                                         :resource-ids entities-ids})
                (group-by (juxt entity-name :tag))))
         {:keys [created-tags-relations created-tags]}
         (when (seq tags-table-data)
