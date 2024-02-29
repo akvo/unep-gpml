@@ -42,7 +42,7 @@
   [:map
    [:success? {:json-schema/example success?
                :gen/return success?}
-    boolean?]])
+    [:and boolean? [:enum success?]]]])
 
 (defn- result-with [success? & [[k v]]]
   {:pre [(check! boolean? success?)]}
