@@ -595,7 +595,7 @@
      `port/delete-user-account               delete-user-account* ;; 10
      `port/get-all-channels                  get-all-channels* ;; 8
      `port/get-private-channels              get-all-channels*
-     `port/get-public-channels               get-all-channels* ;; same
+     `port/get-public-channels               get-all-channels*
      `port/get-channel-discussions           get-channel-discussions*
      `port/get-user-info                     get-user-info* ;; 11
      `port/get-user-joined-channels          get-user-joined-channels* ;; 9
