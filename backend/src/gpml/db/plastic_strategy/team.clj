@@ -67,7 +67,7 @@
   (try
     {:success? true
      :ps-team-members (->> (get-ps-team-members* conn opts)
-                           (map p-ps-team-member->ps-team-member)
+                           (mapv p-ps-team-member->ps-team-member)
                            (jdbc-util/db-result-snake-kw->db-result-kebab-kw))}
     (catch Exception t
       {:success? false
