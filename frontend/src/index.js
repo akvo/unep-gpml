@@ -26,7 +26,12 @@ const { environment, dsn } = window.__ENV__.sentry;
 
 Sentry.init({
   dsn,
-  environment
+  environment,
+  integrations: [new Integrations.BrowserTracing()],
+  // Set tracesSampleRate to 1.0 to capture 100%
+  // of transactions for performance monitoring.
+  // We recommend adjusting this value in production
+  tracesSampleRate: 0.1,
 });
 
 // hack to reuse the same `issuer` value
@@ -34,15 +39,15 @@ Sentry.init({
 const domain = window.__ENV__.auth0.domain.replace(/(https:\/\/|\/)/gi, "");
 
 ReactDOM.render(
-    <Auth0Provider
-  domain={domain}
-  clientId={window.__ENV__.auth0.clientId}
-  redirectUri={window.location.origin}
-    >
+  <Auth0Provider
+    domain={domain}
+    clientId={window.__ENV__.auth0.clientId}
+    redirectUri={window.location.origin}
+  >
     <Router>
-    <Root />
+      <Root />
     </Router>
-    </Auth0Provider>,
+  </Auth0Provider>,
   document.getElementById("root")
 );
 
