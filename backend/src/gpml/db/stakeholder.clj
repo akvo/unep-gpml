@@ -41,9 +41,8 @@
 
 (defn delete-stakeholder [conn stakeholder-id]
   (try
-    (let [affected (delete-stakeholder*
-                    conn
-                    {:id stakeholder-id})]
+    (let [affected (delete-stakeholder* conn
+                                        {:id stakeholder-id})]
       (if (= 1 affected)
         {:success? true}
         {:success? false
