@@ -16,8 +16,6 @@
    [malli.core :as malli]
    [taoensso.timbre :as timbre]))
 
-;; XXX use cske/transform-keys consistently. note that this ns is used by misc services - not only frontend.
-
 (def ErrorDetails
   any?)
 
@@ -202,7 +200,7 @@
         (do
           (log logger :info :successfully-updated-active-status)
           {:success? true
-           :user body})
+           :user (cske/transform-keys ->kebab-case body)})
         (do
           (log logger :warn :failed-to-update-active-status)
           {:success? false
@@ -481,7 +479,8 @@
         (do
           (log logger :info :successfully-set-channel-custom-fields)
           {:success? true
-           :channel (select-keys body [:roomId :url])})
+           :channel {:id (:roomId body)
+                     :url (:url body)}})
         (do
           (log logger :warn :failed-to-set-channel-custom-fields)
           {:success? false
