@@ -10,14 +10,19 @@
    [duct.core.repl :as duct-repl]
    [eftest.runner :as eftest]
    [gpml.fixtures]
+   [gpml.seeder.dummy :refer [get-or-create-profile]]
    [gpml.seeder.main :as seeder]
+   [honey.sql]
    [integrant.core :as ig]
    [integrant.repl :refer [clear go halt init prep reset]]
    [integrant.repl.state :refer [config system]]
+   [next.jdbc]
+   [next.jdbc.connection :as connection]
    [ns-tracker.core :refer [ns-tracker]]
    [taoensso.timbre :as timbre]))
 
 (require 'gpml.main) ;; Load core multimethods, transitively
+(require 'malli.provider)
 
 (duct/load-hierarchy)
 
@@ -35,15 +40,22 @@
 (def profiles
   [:duct.profile/dev :duct.profile/local])
 
-(clojure.tools.namespace.repl/set-refresh-dirs "dev/src" "src" "test")
+(clojure.tools.namespace.repl/set-refresh-dirs "dev/src" "src" "test" "seeder")
 
 (when (io/resource "local.clj")
   (load "local"))
 
-(integrant.repl/set-prep! #(duct/prep-config (read-config) profiles))
-
 (defn db-conn []
   (-> system :duct.database.sql/hikaricp :spec))
+
+(defn conn []
+  (db-conn))
+
+(defn component [c]
+  (get system c))
+
+(defn logger []
+  (component :duct.logger/timbre))
 
 (defn db-q
   ([q] (db-q q false))
@@ -52,6 +64,12 @@
                (clojure.pprint/print-table result)
                result))))
 
+(defn q [query]
+  (with-open [pool (connection/->pool com.zaxxer.hikari.HikariDataSource
+                                      {:jdbcUrl (System/getenv "DATABASE_URL")
+                                       :pool-size 1})]
+    (next.jdbc/execute! pool (honey.sql/format query))))
+
 (def modified-namespaces
   (ns-tracker ["src/gpml/db"]))
 
@@ -59,6 +77,13 @@
   (doseq [ns-sym (modified-namespaces)]
     (require ns-sym :reload))
   (refresh))
+
+(defn make-user! [& [email]]
+  (get-or-create-profile (db-conn)
+                         (or email (format "a%s@akvo.org" (random-uuid)))
+                         (format "Random User %s" (random-uuid))
+                         "USER"
+                         "APPROVED"))
 
 (comment
 
@@ -111,3 +136,12 @@
   ;; Disable the default Timbre logger, given I prefer the CIDER logger
   ;; (https://docs.cider.mx/cider/debugging/logging.html )
   (timbre/set-config! (update timbre/*config* :appenders dissoc :println)))
+
+(defmethod ig/init-key :dev/bypass-auth [_ _]
+  (fn [handler]
+    (fn [request]
+      (let [user (or (gpml.db.stakeholder/stakeholder-by-email (conn) {:email "vemv@vemv.net"})
+                     (make-user! "vemv@vemv.net"))]
+        (handler (assoc request :user user))))))
+
+(integrant.repl/set-prep! #(duct/prep-config (read-config) profiles))

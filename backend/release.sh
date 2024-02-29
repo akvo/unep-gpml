@@ -17,6 +17,7 @@ fi
 # `make` isn't available in the Docker images atm - disable for now:
 # make lint test uberjar
 
+lein with-profile -dev,+test,+seeder,+clj-kondo clj-kondo
 lein with-profile -user,-dev,+test,+seeder,+eastwood eastwood
 lein with-profile -user,-dev,+test,+seeder,+eftest eftest
 lein clean

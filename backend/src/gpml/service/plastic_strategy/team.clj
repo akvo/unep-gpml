@@ -1,6 +1,7 @@
 (ns gpml.service.plastic-strategy.team
   (:require
    [duct.logger :refer [log]]
+   [gpml.boundary.port.chat :as port.chat]
    [gpml.db.plastic-strategy.team :as db.ps.team]
    [gpml.db.stakeholder :as db.stakeholder]
    [gpml.service.chat :as srv.chat]
@@ -83,7 +84,7 @@
                 (log logger :error :failed-to-rollback-assign-role-to-user {:result result})))
             context)}
          {:txn-fn
-          (fn tx-create-chat-account-if-required
+          (fn tx-create-chat-account-if-required ;; XXX adapt if needed
             [{:keys [ps-team-member] :as context}]
             (if (seq (:chat-account-id ps-team-member))
               context
@@ -102,9 +103,9 @@
             [{:keys [ps-team-member can-rollback-create-chat-account?] :as context}]
             (if-not can-rollback-create-chat-account?
               context
-              (let [result (srv.chat/delete-user-account config
-                                                         (:chat-account-id ps-team-member)
-                                                         {})]
+              (let [result (port.chat/delete-user-account (:chat-adapter config)
+                                                          (:chat-account-id ps-team-member)
+                                                          {})]
                 (if-not (:success? result)
                   (log logger :error :failed-to-rollback-create-chat-account {:result result})
                   (db.stakeholder/update-stakeholder (:spec db) {:id (:id ps-team-member)
@@ -114,9 +115,9 @@
          {:txn-fn
           (fn tx-add-team-member-to-ps-chat-channel
             [{:keys [ps-team-member plastic-strategy] :as context}]
-            (let [result (srv.chat/add-user-to-public-channel config
-                                                              (:chat-account-id ps-team-member)
-                                                              (:chat-channel-id plastic-strategy))]
+            (let [result (port.chat/add-user-to-public-channel (:chat-adapter config)
+                                                               (:chat-account-id ps-team-member)
+                                                               (:chat-channel-id plastic-strategy))]
               (if (:success? result)
                 {:success? true}
                 (assoc context
@@ -305,10 +306,10 @@
             [{:keys [plastic-strategy ps-team-member] :as context}]
             (if-not (seq (:chat-account-id ps-team-member))
               context
-              (let [result (srv.chat/remove-user-from-channel config
-                                                              (:chat-account-id ps-team-member)
-                                                              (:chat-channel-id plastic-strategy)
-                                                              "c")]
+              (let [result (port.chat/remove-user-from-channel (:chat-adapter config)
+                                                               (:chat-account-id ps-team-member)
+                                                               (:chat-channel-id plastic-strategy)
+                                                               "c")]
                 (if (:success? result)
                   context
                   (assoc context
@@ -320,9 +321,9 @@
             [{:keys [plastic-strategy ps-team-member] :as context}]
             (if-not (seq (:chat-account-id ps-team-member))
               context
-              (let [result (srv.chat/add-user-to-public-channel config
-                                                                (:chat-account-id ps-team-member)
-                                                                (:chat-channel-id plastic-strategy))]
+              (let [result (port.chat/add-user-to-public-channel (:chat-adapter config)
+                                                                 (:chat-account-id ps-team-member)
+                                                                 (:chat-channel-id plastic-strategy))]
                 (if (:success? result)
                   context
                   (do

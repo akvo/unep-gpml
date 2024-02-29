@@ -1,10 +1,17 @@
-{:duct.database.sql/hikaricp {:jdbc-url #duct/env ["DATABASE_TEST_URL" Str :or "jdbc:postgresql://db/gpml_test?user=unep&password=password"]
-                              :idle-timeout 10000
-                              :minimum-idle 0
+{:gpml.timbre-logger.json/logger        {:pretty true}
+ :duct.logger/timbre                    {:min-level        :warn
+                                         :level            :info
+                                         :set-root-config? true
+                                         ;; Emitting JSON in production results in structured logging.
+                                         ;; See https://github.com/akvo/unep-gpml/issues/1786
+                                         :appenders        {:out    #ig/ref :gpml.timbre-logger.json/logger}}
+ :duct.database.sql/hikaricp {:jdbc-url          #duct/env ["DATABASE_TEST_URL" Str :or "jdbc:postgresql://db/gpml_test?user=unep&password=password"]
+                              :idle-timeout      10000
+                              :minimum-idle      0
                               :maximum-pool-size #gpml/eval (.availableProcessors (Runtime/getRuntime))} ;; matches the eftest :thread-count
- :duct.migrator/ragtime {:database #ig/ref :gpml.test/db
-                         :strategy :raise-error}
- :gpml.test/db {:connection-uri #duct/env ["DATABASE_TEST_URL" Str :or "jdbc:postgresql://db/gpml_test?user=unep&password=password"]}
+ :duct.migrator/ragtime      {:database #ig/ref :gpml.test/db
+                              :strategy :raise-error}
+ :gpml.test/db               {:connection-uri #duct/env ["DATABASE_TEST_URL" Str :or "jdbc:postgresql://db/gpml_test?user=unep&password=password"]}
 
  :mocks.boundary.adapter.storage-client/local-file-system
  {:base-path #duct/env ["LOCAL_FS_STORAGE_BASE_PATH" Str]}
@@ -12,11 +19,11 @@
  :mocks.boundary.adapter.chat/rocket-chat
  {}
 
- :gpml/scheduler #ig/ref :gpml/noop-scheduler ;; Disabled until this thread leak is fixed https://github.com/akvo/unep-gpml/issues/1779
+ :gpml/scheduler       #ig/ref :gpml/noop-scheduler ;; Disabled until this thread leak is fixed https://github.com/akvo/unep-gpml/issues/1779
  :gpml/twarc-scheduler {:disabled true}
- :gpml/noop-scheduler {}
+ :gpml/noop-scheduler  {}
 
  [:duct/const :gpml.config/common]
- {:chat-adapter #ig/ref :mocks.boundary.adapter.chat/rocket-chat
+ {:chat-adapter           #ig/ref :mocks.boundary.adapter.chat/rocket-chat ;; XXX create a DSC mock
   :storage-client-adapter #ig/ref :mocks.boundary.adapter.storage-client/local-file-system
-  :storage-bucket-name #duct/env ["LOCAL_FS_STORAGE_BUCKET_NAME" Str]}}
+  :storage-bucket-name    #duct/env ["LOCAL_FS_STORAGE_BUCKET_NAME" Str]}}
