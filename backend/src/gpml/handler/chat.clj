@@ -14,25 +14,27 @@
    [gpml.util.malli :refer [failure-with success-with]]
    [integrant.core :as ig]))
 
+(defn- present-error [result]
+  (select-keys result [:error-details :user-id :success?]))
+
 (defn- create-user-account [config {:keys [user] :as _req}]
   (let [result (srv.chat/create-user-account config (:id user))]
     (if (:success? result)
       (r/ok (cske/transform-keys ->snake_case (:stakeholder result)))
-      ;; XXX same select-keys elsewhere:
-      (r/server-error (select-keys result [:error-details :user-id :success?])))))
+      (-> result present-error r/server-error))))
 
 (defn- set-user-account-active-status [config {:keys [user parameters]}]
   (let [chat-account-status (-> parameters :body :chat_account_status)
         result (srv.chat/set-user-account-active-status config user chat-account-status)]
     (if (:success? result)
       (r/ok {})
-      (r/server-error result))))
+      (-> result present-error r/server-error))))
 
 (defn- get-user-joined-channels [config {:keys [user]}]
   (let [result (port.chat/get-user-joined-channels (:chat-adapter config) (:chat_account_id user))]
     (if (:success? result)
       (r/ok (cske/transform-keys ->snake_case result))
-      (r/server-error result))))
+      (-> result present-error r/server-error))))
 
 (defn- get-private-channels [config {:keys [user]}]
   (if-not (h.r.permission/operation-allowed? config
@@ -44,7 +46,7 @@
     (let [result (port.chat/get-private-channels (:chat-adapter config) {})]
       (if (:success? result)
         (r/ok result)
-        (r/server-error result)))))
+        (-> result present-error r/server-error)))))
 
 (defn- get-public-channels [config {:keys [user]}]
   (if-not (h.r.permission/operation-allowed?
@@ -57,7 +59,7 @@
     (let [result (port.chat/get-public-channels (:chat-adapter config) {})]
       (if (:success? result)
         (r/ok result)
-        (r/server-error result)))))
+        (-> result present-error r/server-error)))))
 
 (defn- send-private-channel-invitation-request [config {:keys [user parameters]}]
   (if-not (h.r.permission/operation-allowed?
@@ -75,7 +77,7 @@
                                                                    channel-name)]
       (if (:success? result)
         (r/ok result)
-        (r/server-error result)))))
+        (-> result present-error r/server-error)))))
 
 (defn- remove-user-from-channel [config {:keys [user parameters]}]
   (let [{:keys [channel_id]} (:body parameters)
@@ -85,7 +87,7 @@
                                                    {})]
     (if (:success? result)
       (r/ok result)
-      (r/server-error result))))
+      (-> result present-error r/server-error))))
 
 (defn- add-user-to-private-channel [{:keys [db mailjet-config] :as config} parameters]
   (let [{:keys [channel_id channel_name user_id]} (:body parameters)
@@ -100,7 +102,7 @@
                                                                                       target-user
                                                                                       channel_name)
             (r/ok result))
-          (r/server-error result)))
+          (-> result present-error r/server-error)))
       (r/server-error {:success? false
                        :reason :user-not-found}))))
 
@@ -164,7 +166,7 @@
                          (let [result (port.chat/get-all-channels (:chat-adapter config) {})]
                            (if (:success? result)
                              (r/ok (cske/transform-keys ->snake_case result))
-                             (r/server-error result))))
+                             (-> result present-error r/server-error))))
            :responses {:200 {:body (success-with :channels [:sequential ds-chat/Channel])}
                        :500 {:body (failure-with)}}}}]
    ["/details"
@@ -176,7 +178,7 @@
                           (let [result (srv.chat/get-channel-details config (:id path))]
                             (if (:success? result)
                               (r/ok (cske/transform-keys ->snake_case result))
-                              (r/server-error result))))
+                              (-> result present-error r/server-error))))
             :parameters {:path [:map
                                 [:id
                                  {:swagger {:description "The channel ID."
