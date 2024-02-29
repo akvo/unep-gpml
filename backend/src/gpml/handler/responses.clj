@@ -2,82 +2,72 @@
   "Borrowed from https://gist.github.com/mtnygard/9e6a3c5a107eed02f7616393cbb124b7 -
    Michael Nygard")
 
-(defn- response
-  ([status body]
-   {:status  status
-    :headers {}
-    :body    body}))
+(defn- response [status body]
+  {:status  status
+   :headers {}
+   :body    body})
 
-(defmacro http-status
+(defmacro def-http-status
   {:style/indent 1}
   [code sym]
-  `(def ~sym (partial response ~code)))
+  `(def ~sym (fn [~'body]
+               (response ~code ~'body))))
 
-(defmacro http-statuses [& pairs]
-  (assert (even? (count pairs)))
-  `(do
-     ~@(for [[c s] (partition 2 pairs)]
-         `(http-status ~c ~s))))
-
-(http-statuses
- 200 ok
- 201 created
- 202 accepted
- 204 no-content
- 205 reset-content
- 206 partial-content
- 207 multi-status
- 208 already-reported
- 226 im-used
-
- 300 multiple-choices
- 301 moved-permanently
- 302 found
- 303 see-other
- 304 not-modified
- 305 use-proxy
- 306 switch-proxy
- 307 temporary-redirect
- 308 permanent-redirect
-
- 400 bad-request
- 401 unauthorized
- 402 payment-required
- 403 forbidden
- 404 not-found
- 405 method-not-allowed
- 406 not-acceptable
- 407 proxy-authentication-required
- 408 request-timeout
- 409 conflict
- 410 gone
- 411 length-required
- 412 precondition-failed
- 413 payload-too-large
- 414 uri-too-long
- 415 unsupported-media-type
- 416 range-not-satisfiable
- 417 expectation-failed
- 418 im-a-teapot
- 421 misdirected-request
- 422 unprocessable-entity
- 423 locked
- 424 failed-dependency
- 425 too-early
- 426 upgrade-required
- 428 precondition-required
- 429 too-many-requests
- 431 header-fields-too-large
- 451 unavailable-for-legal-reasons
-
- 500 server-error
- 501 not-implemented
- 502 bad-gateway
- 503 service-unavailable
- 504 gateway-timeout
- 505 http-version-not-supported
- 506 variant-also-negotiates
- 507 insufficient-storage
- 508 loop-detected
- 510 not-extended
- 511 network-authentication-required)
+(def-http-status 200 ok)
+(def-http-status 201 created)
+(def-http-status 202 accepted)
+(def-http-status 204 no-content)
+(def-http-status 205 reset-content)
+(def-http-status 206 partial-content)
+(def-http-status 207 multi-status)
+(def-http-status 208 already-reported)
+(def-http-status 226 im-used)
+(def-http-status 300 multiple-choices)
+(def-http-status 301 moved-permanently)
+(def-http-status 302 found)
+(def-http-status 303 see-other)
+(def-http-status 304 not-modified)
+(def-http-status 305 use-proxy)
+(def-http-status 306 switch-proxy)
+(def-http-status 307 temporary-redirect)
+(def-http-status 308 permanent-redirect)
+(def-http-status 400 bad-request)
+(def-http-status 401 unauthorized)
+(def-http-status 402 payment-required)
+(def-http-status 403 forbidden)
+(def-http-status 404 not-found)
+(def-http-status 405 method-not-allowed)
+(def-http-status 406 not-acceptable)
+(def-http-status 407 proxy-authentication-required)
+(def-http-status 408 request-timeout)
+(def-http-status 409 conflict)
+(def-http-status 410 gone)
+(def-http-status 411 length-required)
+(def-http-status 412 precondition-failed)
+(def-http-status 413 payload-too-large)
+(def-http-status 414 uri-too-long)
+(def-http-status 415 unsupported-media-type)
+(def-http-status 416 range-not-satisfiable)
+(def-http-status 417 expectation-failed)
+(def-http-status 418 im-a-teapot)
+(def-http-status 421 misdirected-request)
+(def-http-status 422 unprocessable-entity)
+(def-http-status 423 locked)
+(def-http-status 424 failed-dependency)
+(def-http-status 425 too-early)
+(def-http-status 426 upgrade-required)
+(def-http-status 428 precondition-required)
+(def-http-status 429 too-many-requests)
+(def-http-status 431 header-fields-too-large)
+(def-http-status 451 unavailable-for-legal-reasons)
+(def-http-status 500 server-error)
+(def-http-status 501 not-implemented)
+(def-http-status 502 bad-gateway)
+(def-http-status 503 service-unavailable)
+(def-http-status 504 gateway-timeout)
+(def-http-status 505 http-version-not-supported)
+(def-http-status 506 variant-also-negotiates)
+(def-http-status 507 insufficient-storage)
+(def-http-status 508 loop-detected)
+(def-http-status 510 not-extended)
+(def-http-status 511 network-authentication-required)
