@@ -36,6 +36,8 @@
     (catch Exception  _
       false)))
 
+(def url? [:fn {:error/message "Not a URL"} try-url-str])
+
 (defn update-if-exists
   "Updates a map `m` key `k` if it exists. Otherwise returns `m`
   unchaged."

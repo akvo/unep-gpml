@@ -29,6 +29,7 @@ services:
     image: akvo/akvo-clojure-lein:20210124.114043.4437caf
     command: ["lein", "with-profile", "+dev,+test,+seeder,+eftest", "repl", ":headless"]
     environment:
+      - LEIN_JVM_OPTS=-Dclojure.main.report=stderr
       - GOOGLE_APPLICATION_CREDENTIALS=/credentials/cloud-database-service-account.json
       - APP_USER_ADMIN=deden@akvo.org
     volumes:

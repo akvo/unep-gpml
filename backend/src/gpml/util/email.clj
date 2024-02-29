@@ -16,7 +16,7 @@
     (format "%s. %s %s" title first_name last_name)))
 
 (defn send-email [{:keys [api-key secret-key]} sender subject receivers texts htmls]
-  (let [messages (map make-message (repeat sender) receivers (repeat subject) texts htmls)]
+  (let [messages (mapv make-message (repeat sender) receivers (repeat subject) texts htmls)]
     (client/post "https://api.mailjet.com/v3.1/send"
                  {:basic-auth [api-key secret-key]
                   :content-type :json
@@ -180,11 +180,11 @@ To accept this invitation please visit %s and sign up to GPML Platform.
                      (or (:title new-item) (:name new-item) (:tag new-item)))
         subject (format "[%s] New %s needs approval" (:app-name mailjet-config) item-type)
         sender unep-sender
-        names (map get-user-full-name admins)
-        receivers (map #(assoc {} :Name %1 :Email (:email %2)) names admins)
-        texts (->> names (map #(format notify-admins-pending-approval-text
-                                       %1 item-type item-title
-                                       (:app-domain mailjet-config))))
+        names (mapv get-user-full-name admins)
+        receivers (mapv #(assoc {} :Name %1 :Email (:email %2)) names admins)
+        texts (->> names (mapv #(format notify-admins-pending-approval-text
+                                        %1 item-type item-title
+                                        (:app-domain mailjet-config))))
         htmls (repeat nil)]
     (when (> (count receivers) 0)
       (send-email mailjet-config sender subject receivers texts htmls))))
@@ -231,21 +231,20 @@ To accept this invitation please visit %s and sign up to GPML Platform.
         subject (notify-private-channel-invitation-request-subject
                  (:app-name mailjet-config)
                  channel-name)
-        receivers (map
-                   (fn [admin] {:Name (get-user-full-name admin)
-                                :Email (:email admin)})
-                   admins)
-        texts (map (fn [_receiver]
-                     (notify-private-channel-invitation-request-text
-                      (get-user-full-name user)
-                      channel-name
-                      (format "%s/profile/admin-section?user_id=%s&channel_id=%s&email=%s&channel_name=%s"
-                              (:app-domain mailjet-config)
-                              (:id user)
-                              (util/encode-url-param channel-id)
-                              (util/encode-url-param (:email user))
-                              (util/encode-url-param channel-name))))
-                   receivers)
+        receivers (mapv (fn [admin] {:Name (get-user-full-name admin)
+                                     :Email (:email admin)})
+                        admins)
+        texts (mapv (fn [_receiver]
+                      (notify-private-channel-invitation-request-text (get-user-full-name user)
+                                                                      channel-name
+                                                                      ;; Isn't there better reverse routing?
+                                                                      (format "%s/profile/admin-section?user_id=%s&channel_id=%s&email=%s&channel_name=%s"
+                                                                              (:app-domain mailjet-config)
+                                                                              (:id user)
+                                                                              (util/encode-url-param channel-id)
+                                                                              (util/encode-url-param (:email user))
+                                                                              (util/encode-url-param channel-name))))
+                    receivers)
         htmls (repeat nil)
         {:keys [status body]} (send-email mailjet-config sender subject receivers texts htmls)]
     (if (<= 200 status 299)

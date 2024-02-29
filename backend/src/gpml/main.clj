@@ -6,6 +6,7 @@
   (binding [*assert* false]
     ;; Load multimethods:
     (require 'gpml.handler.detail
+             'gpml.programmatic
              'gpml.timbre-logger
              'gpml.timbre-logger.json
              'gpml.util.postgresql)

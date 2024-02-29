@@ -10,9 +10,16 @@
     true
     (let [x (m/explain schema val)]
       (throw (ex-info "Schema validation failed"
-                      (assoc x
-                             :quoted quoted
-                             :humanized (malli.error/humanize x)))))))
+                      (cond-> x
+                        (not= quoted val) (assoc :quoted quoted)
+                        true              (assoc :humanized (malli.error/humanize x))))))))
+
+(defn schema? [s]
+  (try
+    (malli.core/schema s)
+    true
+    (catch Exception _
+      false)))
 
 (defmacro check!
   "Accepts pairs of specs and vals.
@@ -26,8 +33,28 @@
          (check-one [:fn even?] (count spec-val-pairs) 'spec-val-pairs)]}
   `(do
      ~@(mapv (fn [[spec val]]
-               (list `check-one spec val (list 'quote val)))
+               (list `let ['schema spec]
+                     (when (check-one [:fn schema?] (eval spec) spec) ;; throw a compile-time exception on invalid schemas
+                       (list `check-one 'schema val (list 'quote val)))))
              (partition 2 spec-val-pairs))))
+
+(defn Result [success?]
+  [:map
+   [:success? {:json-schema/example success?
+               :gen/return success?}
+    boolean?]])
+
+(defn- result-with [success? & [[k v]]]
+  {:pre [(check! boolean? success?)]}
+  (m/schema (if k
+              (mu/assoc (Result success?) k v)
+              (Result success?))))
+
+(defn success-with [& [k v]]
+  (result-with true [k v]))
+
+(defn failure-with [& [k v]]
+  (result-with false [k v]))
 
 (defn dissoc
   "Like `malli.util/dissoc` but accepts a sequence of keys `ks` to be
