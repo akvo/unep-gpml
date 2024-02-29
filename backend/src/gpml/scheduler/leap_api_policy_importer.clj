@@ -585,12 +585,11 @@
                                            :tag resolved-tag-id}))
                                       policy-tags)
           existing-policy-tags (when (seq processed-policy-tags)
-                                 (db.resource.tag/get-tags-from-resources
-                                  trans-conn
-                                  {:table "policy_tag"
-                                   :resource-col "policy"
-                                   :resource-ids (mapv #(get % :policy)
-                                                       processed-policy-tags)}))
+                                 (db.resource.tag/safely-get-tags-from-resources trans-conn
+                                                                                 {:table "policy_tag"
+                                                                                  :resource-col "policy"
+                                                                                  :resource-ids (mapv #(get % :policy)
+                                                                                                      processed-policy-tags)}))
           existing-policy-tags-set (->> existing-policy-tags
                                         (mapv #(vector (get % :policy)
                                                        (get % :tag)))
