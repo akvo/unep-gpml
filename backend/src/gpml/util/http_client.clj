@@ -43,15 +43,16 @@
   502)
 
 (defn- fallback [_value exception]
-  (let [status (condp instance? exception
+  (let [reason (condp instance? exception
                  ;; Socket layer related exceptions
                  java.net.UnknownHostException :unknown-host
                  java.net.ConnectException :connection-refused
-                 java.net.SocketTimeoutException gateway-timeout
+                 java.net.SocketTimeoutException :gateway-timeout
 
                  ;; Any other kind of exception
                  java.lang.Exception :unknown-reason)]
-    {:status status}))
+    {:status 500 ;; use a reasonable number (this used to be a keyword - changed to avoid errors on arithmetic)
+     :reason reason}))
 
 (defn- retry-policy [max-retries backoff-ms]
   (dh/retry-policy-from-config
@@ -61,31 +62,50 @@
 
 (defmethod client/coerce-response-body :json-keyword-keys
   [_req resp]
-  (util/update-if-not-nil resp :body json/<-json))
+  (try
+    (-> resp
+        (update :body (fn [x]
+                        (cond-> x
+                          (instance? java.io.InputStream x)
+                          slurp)))
+        (update :body (fn [x]
+                        (cond-> x
+                          (string? x) json/<-json))))
+    (catch com.fasterxml.jackson.core.JsonParseException e
+      (timbre/with-context+ {:resp resp}
+        (timbre/error e))
+      (throw e))))
 
-(defn do-request
-  "Like `clj-http.client/request` but with retries. Optionally accepts
-  a map with retry configuration. Otherwise, it sets a default
-  configuration."
+;; XXX behaves very badly on 404, it's a combination of things
+;; try not performing :json-keyword-keys if :body is absent or not a string
+(defn request
+  "Like `clj-http.client/request`, but with retries.
+
+  Optionally accepts a map with retry configuration.
+  Otherwise, it sets a default configuration."
   ([logger req]
-   (do-request logger req {}))
+   (request logger req {}))
 
   ([logger req {:keys [timeout max-retries backoff-ms]
                 :or {timeout default-timeout
                      max-retries default-max-retries
                      backoff-ms default-backoff-ms}}]
-   (let [request-id (util/uuid)
+   (let [req (cond-> req
+               (not (:method req)) (assoc :method (if (:body req)
+                                                    :post
+                                                    :get)))
+         request-id (util/uuid)
          logged-req (select-keys req [:url :method])]
      (dh/with-retry {:policy (retry-policy max-retries backoff-ms)
                      :fallback fallback
                      :on-retry (fn [_ e]
                                  (timbre/with-context+ {:request-id request-id
                                                         :request req}
-                                   (log logger :error :do-request-retry e)))
+                                   (log logger :error :request-retry e)))
                      :on-failure (fn [_ e]
                                    (timbre/with-context+ {:request-id request-id
                                                           :request req}
-                                     (log logger :error :do-request-failure e)))}
+                                     (log logger :error :request-failure e)))}
        (timbre/with-context+ {:request-id request-id
                               :request req}
          (log logger :info :requesting logged-req)
@@ -94,5 +114,14 @@
                                                     :socket-timeout timeout
                                                     :throw-exceptions false}))]
            (timbre/with-context+ {:response response}
-             (log logger :info :request-completed logged-req))
+             (let [success? (try
+                              (<= 200 (:status response) 299)
+                              (catch Exception _
+                                false))]
+               (log logger
+                    (if success?
+                      :info
+                      :warn)
+                    :request-completed
+                    (merge logged-req (select-keys response [:status])))))
            response))))))
