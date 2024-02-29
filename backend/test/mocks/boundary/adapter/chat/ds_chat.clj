@@ -1,4 +1,4 @@
-(ns mocks.boundary.adapter.chat.rocket-chat
+(ns mocks.boundary.adapter.chat.ds-chat
   (:require
    [gpml.boundary.adapter.chat.ds-chat :as ds-chat]
    [gpml.boundary.port.chat :as port]
@@ -33,6 +33,6 @@
      `port/set-user-account-active-status    (mock (success-with)) #_ds-chat/set-user-account-active-status*
      `port/update-user-account               (mock (success-with)) #_ds-chat/update-user-account*}))
 
-(defmethod ig/init-key :mocks.boundary.adapter.chat/rocket-chat
+(defmethod ig/init-key :mocks.boundary.adapter.chat/ds-chat
   [_ _]
   (map->DSChat))
