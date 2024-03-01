@@ -9,9 +9,8 @@ import { loadCatalog } from '../../../../translations/utils'
 import api from '../../../../utils/api'
 import { isoA2 } from '../../../../modules/workspace/ps/config'
 import { ChatStore } from '../../../../store'
-import DSCIframe from '../../../../components/dsc-iframe'
 
-const View = ({ loadingProfile }) => {
+const View = ({ loadingProfile, profile }) => {
   /**
    * TODO: PS Forum
    */
@@ -25,9 +24,21 @@ const View = ({ loadingProfile }) => {
     return forums.find((f) => f?.slug === psSlug)
   }, [forums, psSlug])
 
+  const { chatAccountAuthToken: accessToken, chatAccountId: uuid } =
+    profile || {}
+
+  const iframeURL = useMemo(() => {
+    if (!psForum) {
+      return null
+    }
+    return accessToken
+      ? `${process.env.NEXT_PUBLIC_DSC_URL}/${psForum.id}?accessToken=${accessToken}`
+      : `${process.env.NEXT_PUBLIC_DSC_URL}/${psForum.id}?uuid=${uuid}`
+  }, [psForum, accessToken, uuid])
+
   const fetchData = useCallback(async () => {
     try {
-      if (!psForum?.roomId) {
+      if (!psForum?.id) {
         const { data: apiData } = await api.get(
           `/plastic-strategy/${countryISOA2}`
         )
@@ -41,7 +52,7 @@ const View = ({ loadingProfile }) => {
                 t: 'c',
               },
             ],
-            'roomId'
+            'id'
           )
         })
       }
@@ -55,7 +66,13 @@ const View = ({ loadingProfile }) => {
   return (
     <Skeleton loading={loadingProfile} active>
       <div className={styles.forumView}>
-        {psForum?.roomId && <DSCIframe roomId={psForum.roomId} />}
+        {iframeURL && (
+          <iframe
+            id="chat-frame"
+            src={iframeURL}
+            width="100%"
+          />
+        )}
       </div>
     </Skeleton>
   )
