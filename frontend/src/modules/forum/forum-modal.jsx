@@ -59,7 +59,7 @@ const ForumModal = ({
     }
   }
 
-  const goToChannel = ({ roomId }) => {
+  const goToChannel = ({ id: roomId }) => {
     router.push(`/forum/${roomId}`)
   }
 

@@ -128,7 +128,7 @@ const Workspace = ({ profile, isAuthenticated, setLoginVisible }) => {
   }
 
   const goToChannel = (forum) => {
-    const { roomId, isView } = forum
+    const { id: roomId, isView } = forum
     if (isView) {
       setForumView({
         open: true,
