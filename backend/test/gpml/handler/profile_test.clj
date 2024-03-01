@@ -114,7 +114,7 @@
                 :public_email false
                 :public_database false
                 :idp_usernames ["auth0|123"]}
-               (dissoc body :picture_id :cv_id :chat_account_id :chat_account_status)))
+               (dissoc body :picture_id :cv_id :chat_account_id :chat_account_status :chat_account_auth_token)))
         (is (uuid? (:picture_id body)))
         (is (uuid? (:cv_id body)))
         (is (get (set (map :user_id user-ids)) (:id body)))))))
@@ -160,7 +160,7 @@
                 :public_email false
                 :public_database false
                 :idp_usernames ["auth0|123"]}
-               (dissoc (:body resp) :picture_id :cv_id :chat_account_id :chat_account_status)))
+               (dissoc (:body resp) :picture_id :cv_id :chat_account_id :chat_account_status :chat_account_auth_token)))
         (is (uuid? (:picture_id (:body resp))))
         (is (uuid? (:cv_id (:body resp))))))))
 
@@ -234,7 +234,7 @@
               :public_email true
               :public_database false
               :idp_usernames ["auth0|123"]}
-             (dissoc profile :picture_id :cv_id :chat_account_id :chat_account_status)))
+             (dissoc profile :picture_id :cv_id :chat_account_id :chat_account_status :chat_account_auth_token)))
       (is (uuid? (:picture_id profile)))
       (is (uuid? (:cv_id profile)))
       (is (not= old-picture-id (:picture_id profile)))
@@ -282,7 +282,7 @@
               :public_email false
               :public_database false
               :idp_usernames ["auth0|123"]}
-             (dissoc profile :picture_id :cv_id :chat_account_id :chat_account_status)))
+             (dissoc profile :picture_id :cv_id :chat_account_id :chat_account_status :chat_account_auth_token)))
       (is (uuid? (:picture_id profile)))
       (is (nil? (:cv_id profile))))))
 

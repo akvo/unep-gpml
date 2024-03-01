@@ -1,8 +1,9 @@
 (ns gpml.boundary.adapter.chat.ds-chat
   "Dead Simple Chat (deadsimplechat.com) adapter"
   (:require
-   [camel-snake-kebab.core :refer [->camelCaseString ->kebab-case]]
+   [camel-snake-kebab.core :refer [->kebab-case]]
    [camel-snake-kebab.extras :as cske]
+   [clojure.java.io :as io]
    [clojure.set :as set]
    [clojure.string :as string]
    [duct.logger :refer [log]]
@@ -10,11 +11,13 @@
    [gpml.util :refer [url?]]
    [gpml.util.http-client :as http-client]
    [gpml.util.json :as json]
-   [gpml.util.malli :refer [check!]]
+   [gpml.util.malli :refer [check! failure-with success-with]]
    [integrant.core :as ig]
-   [malli.core :as malli]))
+   [malli.core :as malli]
+   [taoensso.timbre :as timbre]))
 
-;; XXX use cske/transform-keys consistently. note that this ns is used by misc services - not only frontend.
+(def ErrorDetails
+  any?)
 
 (def DSCInternalId
   (malli/schema [:and
@@ -42,19 +45,34 @@
    [:profilePic {:optional true} [:maybe string?]]
    [:username string?]])
 
+(def UserInfo
+  [:map {:closed true}
+   [:created :string]
+   [:created-using-api :boolean]
+   [:deactivated {:optional true} :boolean]
+   [:email :string]
+   [:external-user-id :string]
+   [:id :string]
+   [:is-moderator [:maybe :boolean]]
+   [:provisioned :boolean]
+   [:unique-user-identifier :string]
+   [:updated :string]
+   [:username [:maybe :string]]])
+
 (def CreatedUser
   [:map
    [:username string?]
-   [:userId string?]
-   [:isModerator string?]])
+   [:user-id DSCInternalId]
+   [:is-moderator boolean?]
+   [:access-token string?]])
 
 (defn- build-api-endpoint-url [endpoint-url-path & strs]
-  {:pre [(check! [:and :string [:fn (fn starts-with-slash [s]
-                                      (string/starts-with? s "/"))]]
-                 endpoint-url-path
+  {:pre  [(check! [:and :string [:fn (fn starts-with-slash [s]
+                                       (string/starts-with? s "/"))]]
+                  endpoint-url-path
 
-                 [:maybe [:sequential :string]]
-                 strs)]
+                  [:maybe [:sequential :string]]
+                  strs)]
    :post [(check! url? %)]}
   (apply str "https://api.deadsimplechat.com/consumer" endpoint-url-path strs))
 
@@ -63,7 +81,11 @@
   (str "dscuui_" (random-uuid)))
 
 (defn get-user-info* [{:keys [logger api-key]} user-id _opts]
-  {:pre [(check! UniqueUserIdentifier user-id)]}
+  {:pre  [(check! UniqueUserIdentifier user-id)]
+   :post [(check! [:or
+                   (success-with :user UserInfo)
+                   (failure-with :error-details ErrorDetails)]
+                  %)]}
   (let [{:keys [status body]}
         (http-client/request logger
                              {:url          (build-api-endpoint-url "/api/v2/user/" user-id)
@@ -74,13 +96,28 @@
     (if (<= 200 status 299)
       {:success? true
        ;; deactivated true is included for deactivated users (otherwise it's absent, unless it has been reactivated)
-       :user     body}
+       :user     (select-keys (cske/transform-keys ->kebab-case body)
+                              [:created
+                               :created-using-api
+                               :deactivated
+                               :email
+                               :external-user-id
+                               :id
+                               :is-moderator
+                               :provisioned
+                               :unique-user-identifier
+                               :updated
+                               :username])}
       {:success?      false
        :reason        :failed-to-get-user-info
        :error-details body})))
 
 (defn create-user-account* [{:keys [logger api-key]} user]
-  {:pre [(check! NewUser user)]}
+  {:pre  [(check! NewUser user)]
+   :post [(check! [:or
+                   (success-with :user CreatedUser)
+                   (failure-with :error-details ErrorDetails)]
+                  %)]}
   (let [{:keys [status body]}
         (http-client/request logger
                              {:url (build-api-endpoint-url "/api/v1/user")
@@ -90,13 +127,18 @@
                               :content-type :json
                               :as :json-keyword-keys})
         obj (cske/transform-keys ->kebab-case body)]
-    (if (<= 200 status 299)
-      {:success? true
-       :user (-> obj
-                 (select-keys [:username :user-id :is-moderator :access-token]))}
-      {:success? false
-       :reason :failed-to-create-user-account
-       :error-details body})))
+    (timbre/with-context+ {:user user}
+      (if (<= 200 status 299)
+        (do
+          (log logger :info :created-chat-user)
+          {:success? true
+           :user (-> obj
+                     (select-keys [:username :user-id :is-moderator :access-token]))})
+        (do
+          (log logger :warn :failed-to-create-chat-user)
+          {:success? false
+           :reason :failed-to-create-user-account
+           :error-details body})))))
 
 (def RoomId string?)
 
@@ -122,8 +164,12 @@
     string?]])
 
 (defn update-user-account* [{:keys [logger api-key]} dsc-internal-user-id updates]
-  {:pre [(check! DSCInternalId dsc-internal-user-id
-                 UserUpdates   updates)]}
+  {:pre  [(check! DSCInternalId dsc-internal-user-id
+                  UserUpdates   updates)]
+   :post [(check! [:or
+                   (success-with)
+                   (failure-with :error-details ErrorDetails)]
+                  %)]}
   (let [{:keys [status body]}
         (http-client/request logger
                              {:url (build-api-endpoint-url "/api/v1/user")
@@ -134,14 +180,24 @@
                                         json/->json)
                               :content-type :json
                               :as :json-keyword-keys})]
-    (if (<= 200 status 299)
-      {:success? true}
-      {:success? false
-       :reason :failed-to-update-user-account
-       :error-details body})))
+    (timbre/with-context+ {:dsc-internal-user-id dsc-internal-user-id
+                           :updates updates}
+      (if (<= 200 status 299)
+        (do
+          (log logger :info :updated-user-account)
+          {:success? true})
+        (do
+          (log logger :warn :failed-to-update-user-account)
+          {:success? false
+           :reason :failed-to-update-user-account
+           :error-details body})))))
 
 (defn delete-user-account* [{:keys [logger api-key]} user-id _opts]
-  {:pre [(check! UniqueUserIdentifier user-id)]}
+  {:pre  [(check! UniqueUserIdentifier user-id)]
+   :post [(check! [:or
+                   (success-with)
+                   (failure-with :error-details ErrorDetails)]
+                  %)]}
   (let [{:keys [status body]}
         (http-client/request logger
                              {:url (build-api-endpoint-url "/api/v2/user")
@@ -150,15 +206,24 @@
                               :body (json/->json {:uniqueUserIdentifier user-id})
                               :content-type :json
                               :as :json-keyword-keys})]
-    (if (<= 200 status 299)
-      {:success? true}
-      {:success? false
-       :reason :failed-to-delete-user-account
-       :error-details body})))
+    (timbre/with-context+ {:user-id user-id}
+      (if (<= 200 status 299)
+        (do
+          (log logger :info :deleted-user-account)
+          {:success? true})
+        (do
+          (log logger :warn :failed-to-delete-user-account)
+          {:success? false
+           :reason :failed-to-delete-user-account
+           :error-details body})))))
 
 (defn set-user-account-active-status* [{:keys [logger api-key]} user-id active? _opts]
-  {:pre [(check! UniqueUserIdentifier user-id
-                 boolean? active?)]}
+  {:pre  [(check! UniqueUserIdentifier user-id
+                  boolean? active?)]
+   :post [(check! [:or
+                   (success-with :message :string)
+                   (failure-with :error-details ErrorDetails)]
+                  %)]}
   (let [{:keys [status body]}
         (http-client/request logger
                              {:url (build-api-endpoint-url (if active?
@@ -170,34 +235,50 @@
                               :query-params {:auth api-key}
                               :body (json/->json {:uniqueUserIdentifier user-id})
                               :as :json-keyword-keys})]
-    (if (<= 200 status 299)
-      {:success? true
-       :user body}
-      {:success? false
-       :reason :failed-to-set-user-account-active-status
-       :error-details body})))
+    (timbre/with-context+ {:user-id user-id
+                           :active? active?}
+      (if (<= 200 status 299)
+        (let [message (:message body)]
+          (log logger :info :successfully-updated-active-status {:message message})
+          {:success? true
+           :message message})
+        (do
+          (log logger :warn :failed-to-update-active-status)
+          {:success? false
+           :reason :failed-to-set-user-account-active-status
+           :error-details body})))))
+
+(def Channel
+  [:map
+   [:show_notification_for_all_channels boolean?]
+   [:name string?]
+   [:enable_like_message boolean?]
+   [:room_id string?]
+   [:enable_one_to_one_chat boolean?]
+   [:password_protected boolean?]
+   [:default_notification_enabled boolean?]
+   [:moderator_only_one_to_one_chat boolean?]
+   [:enable_channels boolean?]])
+
+(def ChannelS ;; TODO https://clojurians.slack.com/archives/CLDK6MFMK/p1709154587503499
+  [:sequential
+   [:map
+    [:show-notification-for-all-channels boolean?]
+    [:name string?]
+    [:enable-like-message boolean?]
+    [:id string?]
+    [:enable-one-to-one-chat boolean?]
+    [:password-protected boolean?]
+    [:default-notification-enabled boolean?]
+    [:moderator-only-one-to-one-chat boolean?]
+    [:enable-channels boolean?]]])
 
 (defn get-all-channels* [{:keys [logger api-key]} _opts]
-  ;; XXX use :filter, :types opts
-  (let [#_#_query-params (cond-> {}
-                           (:name opts)
-                           (assoc :filter (:name opts))
-
-                           (:types opts)
-                           (assoc :types (:types opts)))
-        ;; result:
-        #_{"passwordProtected" false,
-           "enableOneToOneChat" false,
-           "moderatorOnlyOneToOneChat" false,
-           "enableChannels" false,
-           "showNotificationForAllChannels" false,
-           "enableLikeMessage" false,
-           "defaultNotificationEnabled" false,
-           "roomId" "y5KppBwpE",
-           "name" "chatroom name",
-           "roomPassword" "password",
-           "preModeratedChatRoom" false}
-        {:keys [status body]}
+  {:post [(check! [:or
+                   (success-with :channels ChannelS)
+                   (failure-with :error-details ErrorDetails)]
+                  %)]}
+  (let [{:keys [status body]}
         (http-client/request logger
                              {:url (build-api-endpoint-url "/api/v1/chatrooms")
                               :method :get
@@ -214,21 +295,19 @@
                                           {:room-id :id}))
                        body)})))
 
-(def Channel
-  [:map
-   [:showNotificationForAllChannels boolean?]
-   [:name string?]
-   [:enableLikeMessage boolean?]
-   [:roomId string?]
-   [:enableOneToOneChat boolean?]
-   [:fileSharingMode string?]
-   [:passwordProtected boolean?]
-   [:defaultNotificationEnabled boolean?]
-   [:moderatorOnlyOneToOneChat boolean?]
-   [:enableChannels boolean?]])
+(def UserJoinedChanels
+  [:sequential
+   [:map {:closed true}
+    [:name string?]
+    [:id string?]
+    [:role-name string?]]])
 
 (defn get-user-joined-channels* [{:keys [logger api-key]} user-id]
-  {:pre [(check! UniqueUserIdentifier user-id)]}
+  {:pre  [(check! UniqueUserIdentifier user-id)]
+   :post [(check! [:or
+                   (success-with :channels UserJoinedChanels)
+                   (failure-with :error-details ErrorDetails)]
+                  %)]}
   (let [{:keys [status body]}
         (http-client/request logger
                              {:url (build-api-endpoint-url "/api/v2/user/" user-id "/rooms")
@@ -237,14 +316,26 @@
                               :as :json-keyword-keys})]
     (if (<= 200 status 299)
       {:success? true
-       :channels body}
+       :channels (into []
+                       (comp (map #(cske/transform-keys ->kebab-case %))
+                             (filter :chat-room) ;; DSC can include memeberships to deleted channels
+                             (map (fn [{:keys [role-name]
+                                        {:keys [name room-id]} :chat-room}]
+                                    {:name name
+                                     :id room-id
+                                     :role-name role-name})))
+                       body)}
       {:success? false
        :reason :failed-to-add-user-to-channel
        :error-details body})))
 
 (defn remove-user-from-channel* [{:keys [logger api-key]} user-id channel-id _]
-  {:pre [(check! UniqueUserIdentifier user-id
-                 RoomId channel-id)]}
+  {:pre  [(check! UniqueUserIdentifier user-id
+                  RoomId channel-id)]
+   :post [(check! [:or
+                   (success-with)
+                   (failure-with :error-details ErrorDetails)]
+                  %)]}
   (let [{:keys [status body]}
         (http-client/request logger
                              {:url (build-api-endpoint-url "/api/v2/room/" channel-id "/member")
@@ -252,13 +343,25 @@
                               :query-params {:auth api-key}
                               :body (json/->json {:uniqueUserIdentifier user-id})
                               :as :json-keyword-keys})]
-    (if (<= 200 status 299)
-      {:success? true}
-      {:success? false
-       :reason :failed-to-remove-user-from-channel
-       :error-details body})))
+    (timbre/with-context+ {:user-id user-id
+                           :channel-id channel-id}
+      (if (<= 200 status 299)
+        (do
+          (log logger :info :removed-user-from-channel)
+          {:success? true})
+        (do
+          (log logger :warn :failed-to-remove-user-from-channel)
+          {:success? false
+           :reason :failed-to-remove-user-from-channel
+           :error-details body})))))
 
 (defn add-user-to-channel* [{:keys [logger api-key]} user-id channel-id]
+  {:pre  [(check! UniqueUserIdentifier user-id
+                  RoomId               channel-id)]
+   :post [(check! [:or
+                   (success-with)
+                   (failure-with :error-details ErrorDetails)]
+                  %)]}
   (let [{:keys [status body]}
         (http-client/request logger
                              {:url (build-api-endpoint-url "/api/v2/room/" channel-id "/member")
@@ -268,11 +371,17 @@
                                                   ;; https://deadsimplechat.com/developer/platform-guides/new-join-modal-guide/#member-roles
                                                   :roleName "user"})
                               :as :json-keyword-keys})]
-    (if (<= 200 status 299)
-      {:success? true}
-      {:success? false
-       :reason :failed-to-add-user-to-channel
-       :error-details body})))
+    (timbre/with-context+ {:channel-id channel-id
+                           :user-id user-id}
+      (if (<= 200 status 299)
+        (do
+          (log logger :info :added-user-to-channel)
+          {:success? true})
+        (do
+          (log logger :warn :could-not-add-user-to-channel)
+          {:success? false
+           :reason :failed-to-add-user-to-channel
+           :error-details body})))))
 
 (def NewChannel
   [:map {:closed true}
@@ -283,16 +392,43 @@
 
 (def private-permission-level "members")
 
+(def custom-css
+  (delay
+    (slurp (io/resource "ds_chat/custom.css"))))
+
+(def CreatedChannel [:map
+                     [:id string?]
+                     [:url string?]])
+
 (defn create-channel* [{:keys [logger api-key]} channel permission-level]
-  {:pre [(check! NewChannel channel
-                 [:fn #{public-permission-level private-permission-level}] permission-level)]}
-  (let [req-body (cske/transform-keys ->camelCaseString (cond-> channel
-                                                          (:description channel) (assoc :description (:description channel))
-                                                          true (assoc :defaultNotificationEnabled "off"
-                                                                      :name (:name channel)
-                                                                      :fileSharingMode "fileAndImageSharing"
-                                                                      :chatRoomPermissionLevel permission-level
-                                                                      :enableChannels "on")))
+  {:pre  [(check! NewChannel channel
+                  [:enum public-permission-level private-permission-level] permission-level)]
+   :post [(check! [:or
+                   (success-with :channel CreatedChannel)
+                   (failure-with :error-details ErrorDetails)]
+                  %)]}
+  (let [req-body (cond-> channel
+                   (:description channel) (assoc :description (:description channel))
+                   true (assoc :defaultNotificationEnabled "off"
+                               :customization {"hideSidebar" true
+                                               "fontFamily" "DM Sans",
+                                               "useCustomFont" true,
+                                               "hideHeader" true,
+                                               "hideUniqueUserIdentifierField" true,
+                                               "hideAccessTokenField" true,
+                                               "buttonColor" "#020a5b",
+                                               "buttonHoverColor" "#ffffff",
+                                               "buttonTextColor" "#020a5b",
+                                               "sendButtonIconColor" "#ffffff",
+                                               "sendButtonBackgroundColor" "#020a5b",
+                                               "textareaBackgroundColor" "#f5f7ff",
+                                               "chatMessageHoverColor" "#f5f7ff",
+                                               "modalFontColor" "#020a5b"}
+                               :customCSS @custom-css
+                               :name (:name channel)
+                               :fileSharingMode "fileAndImageSharing"
+                               :chatRoomPermissionLevel permission-level
+                               :enableChannels "on"))
         {:keys [status body]}
         (http-client/request logger
                              {:url (build-api-endpoint-url "/api/v1/chatroom/")
@@ -300,17 +436,19 @@
                               :method :post
                               :body (json/->json req-body)
                               :as :json-keyword-keys})]
-    (try
+    (timbre/with-context+ {:channel channel
+                           :permission-level permission-level}
       (if (<= 200 status 299)
-        {:success? true
-         :channel (set/rename-keys (select-keys (cske/transform-keys ->kebab-case body) [:room-id :url])
-                                   {:room-id :id})}
-        {:success? false
-         :reason :failed-to-create-channel
-         :error-details body})
-      (catch Exception e
-        (log logger :error :f {:body body})
-        (throw e)))))
+        (do
+          (log logger :info :successfully-created-channel)
+          {:success? true
+           :channel (set/rename-keys (select-keys (cske/transform-keys ->kebab-case body) [:room-id :url])
+                                     {:room-id :id})})
+        (do
+          (log logger :warn :failed-to-create-channel)
+          {:success? false
+           :reason :failed-to-create-channel
+           :error-details body})))))
 
 (defn create-public-channel* [adapter channel]
   (create-channel* adapter channel public-permission-level))
@@ -323,12 +461,28 @@
    [:room-id RoomId]
    [:name string?]])
 
+(def Discussion
+  [:map {:closed true}
+   [:channel-id :string]
+   [:notify-all-users :boolean]
+   [:name :string]
+   [:enabled :boolean]])
+
+(defn extract-discussion [body]
+  (set/rename-keys (select-keys (cske/transform-keys ->kebab-case body)
+                                [:room-id :notify-all-users :channel-name :enabled])
+                   {:room-id :channel-id
+                    :channel-name :name}))
+
 (defn create-discussion* [{:keys [logger api-key]} discussion]
-  {:pre [(check! NewDiscussion discussion)]}
-  (let [req-body (cske/transform-keys ->camelCaseString (assoc discussion
-                                                               :enabled true
-                                                               :notifyAllUsers false
-                                                               :channelName (:name discussion)))
+  {:pre  [(check! NewDiscussion discussion)]
+   :post [(check! [:or
+                   (success-with :discussion Discussion)
+                   (failure-with :error-details ErrorDetails)]
+                  %)]}
+  (let [req-body {:enabled true
+                  :notifyAllUsers false
+                  :channelName (:name discussion)}
         {:keys [status body]}
         (http-client/request logger
                              {:url (build-api-endpoint-url "/api/v1/chatroom/" (:room-id discussion) "/channel")
@@ -336,26 +490,40 @@
                               :method :post
                               :body (json/->json req-body)
                               :as :json-keyword-keys})]
-    (if (<= 200 status 299)
-      {:success? true
-       :discussion (cske/transform-keys ->kebab-case (:channel body))}
-      {:success? false
-       :reason :failed-to-create-discussion
-       :error-details body})))
+    (timbre/with-context+ {:discussion discussion}
+      (if (<= 200 status 299)
+        (do
+          (log logger :info :successfully-created-discussion)
+          {:success? true
+           :discussion (extract-discussion body)})
+        (do
+          (log logger :warn :failed-to-create-discussion)
+          {:success? false
+           :reason :failed-to-create-discussion
+           :error-details body})))))
 
 (defn delete-channel* [{:keys [logger api-key]} channel-id]
-  {:pre [(check! RoomId channel-id)]}
+  {:pre  [(check! RoomId channel-id)]
+   :post [(check! [:or
+                   (success-with)
+                   (failure-with :error-details ErrorDetails)]
+                  %)]}
   (let [{:keys [status body]}
         (http-client/request logger
                              {:url (build-api-endpoint-url "/api/v1/chatroom/" channel-id)
                               :method :delete
                               :query-params {:auth api-key}
                               :as :json-keyword-keys})]
-    (if (<= 200 status 299)
-      {:success? true}
-      {:success? false
-       :reason :failed-to-delete-public-channel
-       :error-details body})))
+    (timbre/with-context+ {:channel-id channel-id}
+      (if (<= 200 status 299)
+        (do
+          (log logger :info :successfully-deleted-channel)
+          {:success? true})
+        (do
+          (log logger :warn :could-not-delete-channel)
+          {:success? false
+           :reason :failed-to-delete-public-channel
+           :error-details body})))))
 
 (def ChannelUpdates
   [:map {:closed true}
@@ -365,39 +533,48 @@
     string?]])
 
 (defn set-channel-custom-fields* [{:keys [logger api-key]} channel-id custom-fields]
-  {:pre [(check! RoomId channel-id
-                 ChannelUpdates custom-fields)]}
-  (let [{:keys [status body] :as all}
+  {:pre  [(check! RoomId channel-id
+                  ChannelUpdates custom-fields)]
+   :post [(check! [:or
+                   (success-with :channel CreatedChannel)
+                   (failure-with :error-details ErrorDetails)]
+                  %)]}
+  (let [{:keys [status body]}
         (http-client/request logger
                              {:url (build-api-endpoint-url "/api/v1/chatroom/" channel-id)
                               :method :put
                               :query-params {:auth api-key}
                               :body (json/->json custom-fields)
                               :as :json-keyword-keys})]
-    (try
-      (if (<= 200 status 299) ;; XXX this pattern can be improved since status can be :unknown-reason on unexpected exceptions.
-        {:success? true
-         :channel (select-keys body [:roomId :url])}
-        {:success? false
-         :reason :failed-to-set-public-channel-custom-fields
-         :error-details body})
-      (catch Exception _
-        all))))
+    (timbre/with-context+ {:channel-id channel-id
+                           :custom-fields custom-fields}
+      (if (<= 200 status 299)
+        (do
+          (log logger :info :successfully-set-channel-custom-fields)
+          {:success? true
+           :channel {:id (:roomId body)
+                     :url (:url body)}})
+        (do
+          (log logger :warn :failed-to-set-channel-custom-fields)
+          {:success? false
+           :reason :failed-to-set-public-channel-custom-fields
+           :error-details body})))))
 
 (defn get-channel-discussions* [{:keys [logger api-key]} channel-id]
-  {:pre [channel-id]}
+  {:pre  [channel-id]
+   :post [(check! [:or
+                   (success-with :discussions [:sequential Discussion])
+                   (failure-with :error-details ErrorDetails)]
+                  %)]}
   (let [{:keys [status body]}
         (http-client/request logger
-                             {:url (build-api-endpoint-url "/api/v2/room/" channel-id "/conversations")
+                             {:url (build-api-endpoint-url "/api/v1/chatroom/" channel-id "/channels")
                               :method :get
                               :query-params {:auth api-key}
                               :as :json-keyword-keys})]
     (if (<= 200 status 299)
       {:success? true
-       :discussions (into []
-                          (map (comp #(select-keys % [:conversationId])
-                                     #(cske/transform-keys ->kebab-case %)))
-                          body)}
+       :discussions (mapv extract-discussion body)}
       {:success? false
        :reason :failed-to-get-channel-discussions
        :error-details body})))
@@ -407,7 +584,6 @@
                   [:api-key string?]
                   [:logger some?]]
                  m)]}
-  ;; XXX note that arguments like `user` have a new schema - must be updated upstream
   (with-meta m
     {`port/add-user-to-private-channel       add-user-to-channel* ;; 7
      `port/add-user-to-public-channel        add-user-to-channel* ;; 6
@@ -418,8 +594,8 @@
      `port/delete-public-channel             delete-channel* ;; 4
      `port/delete-user-account               delete-user-account* ;; 10
      `port/get-all-channels                  get-all-channels* ;; 8
-     `port/get-private-channels              get-all-channels* ;; XXX temp measure - no way to distinguish today
-     `port/get-public-channels               get-all-channels* ;; same
+     `port/get-private-channels              get-all-channels*
+     `port/get-public-channels               get-all-channels*
      `port/get-channel-discussions           get-channel-discussions*
      `port/get-user-info                     get-user-info* ;; 11
      `port/get-user-joined-channels          get-user-joined-channels* ;; 9
@@ -436,15 +612,10 @@
 
 (comment
 
-  ;; not defined in the protocol - leaving `create-discussion*` just in case
-  (create-discussion* (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                      {:room-id "8BSYDSjgT"
-                       :channel-name (str (random-uuid))})
-
   ;; 1
-  (let [{:keys [id email first_name last_name chat_account_id]} (dev/make-user! "vemv@vemv.net")]
+  (let [{:keys [id email first_name last_name]} (dev/make-user! (format "a%s@a%s.com" (random-uuid) (random-uuid)))]
 
-    @(def uniqueUserIdentifier (doto chat_account_id assert))
+    @(def uniqueUserIdentifier (make-unique-user-identifier))
 
     @(def a-user (port/create-user-account (dev/component :gpml.boundary.adapter.chat/ds-chat)
                                            {:uniqueUserIdentifier uniqueUserIdentifier
@@ -476,32 +647,36 @@
                                        {})
 
   ;; 2
-  ;; DS chat rooms are like RC channels
-  ;; DS channels are like RC discussions
   @(def a-public-channel (port/create-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                                     {:name (str (random-uuid))
-                                                      :description nil}))
+                                                     {:name (str (random-uuid))}))
 
   ;; 3
   @(def a-private-channel (port/create-private-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                                       {:name (str (random-uuid))
-                                                        :description nil}))
+                                                       {:name (str (random-uuid))}))
+
+  ;; (not defined in the protocol)
+  (create-discussion* (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                      {:room-id (-> a-public-channel :channel :id)
+                       :name (str (random-uuid))})
+
+  (port/get-channel-discussions (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                (-> a-public-channel :channel :id))
 
   ;; 15
   (port/set-private-channel-custom-fields (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                          (-> a-public-channel :channel :room-id)
+                                          (-> a-public-channel :channel :id)
                                           {:description (str (random-uuid))
                                            :name (str (random-uuid))})
 
   ;; 6
   (port/add-user-to-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
                                    uniqueUserIdentifier
-                                   (-> a-public-channel :channel :room-id))
+                                   (-> a-public-channel :channel :id))
 
   ;; 7
   (port/add-user-to-private-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
                                     uniqueUserIdentifier
-                                    (-> a-private-channel :channel :room-id))
+                                    (-> a-private-channel :channel :id))
 
   ;; 8
   @(def all-chanels (port/get-all-channels (dev/component :gpml.boundary.adapter.chat/ds-chat) {}))
@@ -513,7 +688,7 @@
   ;; 12
   (port/remove-user-from-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
                                  uniqueUserIdentifier
-                                 (-> a-public-channel :channel :room-id)
+                                 (-> a-public-channel :channel :id)
                                  {})
 
   ;; Should be smaller now
@@ -529,8 +704,12 @@
 
   ;; 4
   (port/delete-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                              (-> a-public-channel :channel :room-id))
+                              (-> a-public-channel :channel :id))
 
   ;; 5
   (port/delete-private-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                               (-> a-private-channel :channel :room-id)))
+                               (-> a-private-channel :channel :id))
+
+  (doseq [{:keys [id]} (:channels (port/get-all-channels (dev/component :gpml.boundary.adapter.chat/ds-chat) {}))]
+    (port/delete-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                id)))

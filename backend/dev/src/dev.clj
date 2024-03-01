@@ -140,8 +140,8 @@
 (defmethod ig/init-key :dev/bypass-auth [_ _]
   (fn [handler]
     (fn [request]
-      (let [user (or (gpml.db.stakeholder/stakeholder-by-email (conn) {:email "vemv@vemv.net"})
-                     (make-user! "vemv@vemv.net"))]
+      (let [user (or (gpml.db.stakeholder/stakeholder-by-email (conn) {:email "abc@abc.net"})
+                     (make-user! "abc@abc.net"))]
         (handler (assoc request :user user))))))
 
 (integrant.repl/set-prep! #(duct/prep-config (read-config) profiles))

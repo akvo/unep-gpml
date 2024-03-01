@@ -968,7 +968,7 @@
  :duct.database.sql/hikaricp                  {:jdbc-url          #duct/env ["DATABASE_URL" Str]
                                                ;; We don't want log entries for sql sentences (not even ragtime ones!):
                                                ;; XXX log once, then switch to false depending on runtime-modified sys prop
-                                               :logger            #ig/ref :duct/logger
+                                               :logger            false
                                                :minimum-idle      10
                                                :maximum-pool-size 25}
  :gpml.boundary.adapter.datasource/brs        {:api-url          #duct/env ["BRS_API_URL" Str]

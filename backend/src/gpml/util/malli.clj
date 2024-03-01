@@ -38,6 +38,24 @@
                        (list `check-one 'schema val (list 'quote val)))))
              (partition 2 spec-val-pairs))))
 
+(defn Result [success?]
+  [:map
+   [:success? {:json-schema/example success?
+               :gen/return success?}
+    [:and boolean? [:enum success?]]]])
+
+(defn- result-with [success? & [[k v]]]
+  {:pre [(check! boolean? success?)]}
+  (m/schema (if k
+              (mu/assoc (Result success?) k v)
+              (Result success?))))
+
+(defn success-with [& [k v]]
+  (result-with true [k v]))
+
+(defn failure-with [& [k v]]
+  (result-with false [k v]))
+
 (defn dissoc
   "Like `malli.util/dissoc` but accepts a sequence of keys `ks` to be
   dissociated from the schema."

@@ -9,7 +9,7 @@
  :mocks.boundary.adapter.storage-client/local-file-system
  {:base-path #duct/env ["LOCAL_FS_STORAGE_BASE_PATH" Str]}
 
- :mocks.boundary.adapter.chat/rocket-chat
+ :mocks.boundary.adapter.chat/ds-chat
  {}
 
  :gpml/scheduler #ig/ref :gpml/noop-scheduler ;; Disabled until this thread leak is fixed https://github.com/akvo/unep-gpml/issues/1779
@@ -17,6 +17,6 @@
  :gpml/noop-scheduler {}
 
  [:duct/const :gpml.config/common]
- {:chat-adapter #ig/ref :mocks.boundary.adapter.chat/rocket-chat ;; XXX create a DSC mock
+ {:chat-adapter           #ig/ref :mocks.boundary.adapter.chat/ds-chat
   :storage-client-adapter #ig/ref :mocks.boundary.adapter.storage-client/local-file-system
   :storage-bucket-name #duct/env ["LOCAL_FS_STORAGE_BUCKET_NAME" Str]}}

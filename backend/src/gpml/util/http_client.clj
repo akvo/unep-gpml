@@ -91,7 +91,9 @@
                      max-retries default-max-retries
                      backoff-ms default-backoff-ms}}]
    (let [req (cond-> req
-               (not (:method req)) (assoc :method :get))
+               (not (:method req)) (assoc :method (if (:body req)
+                                                    :post
+                                                    :get)))
          request-id (util/uuid)
          logged-req (select-keys req [:url :method])]
      (dh/with-retry {:policy (retry-policy max-retries backoff-ms)
@@ -112,5 +114,14 @@
                                                     :socket-timeout timeout
                                                     :throw-exceptions false}))]
            (timbre/with-context+ {:response response}
-             (log logger :info :request-completed (merge logged-req (select-keys response [:status]))))
+             (let [success? (try
+                              (<= 200 (:status response) 299)
+                              (catch Exception _
+                                false))]
+               (log logger
+                    (if success?
+                      :info
+                      :warn)
+                    :request-completed
+                    (merge logged-req (select-keys response [:status])))))
            response))))))

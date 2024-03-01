@@ -1,5 +1,7 @@
 (ns gpml.handler.chat
   (:require
+   [camel-snake-kebab.core :refer [->snake_case]]
+   [camel-snake-kebab.extras :as cske]
    [gpml.boundary.adapter.chat.ds-chat :as ds-chat]
    [gpml.boundary.port.chat :as port.chat]
    [gpml.db.stakeholder :as db.stakeholder]
@@ -9,30 +11,30 @@
    [gpml.util.email :as email]
    [gpml.util.http-client :as http-client]
    [gpml.util.json :as json]
-   [gpml.util.malli :refer [check!]]
-   [integrant.core :as ig]
-   [malli.core :as malli]
-   [malli.util :as mu]))
+   [gpml.util.malli :refer [failure-with success-with]]
+   [integrant.core :as ig]))
+
+(defn- present-error [result]
+  (select-keys result [:error-details :user-id :success?]))
 
 (defn- create-user-account [config {:keys [user] :as _req}]
   (let [result (srv.chat/create-user-account config (:id user))]
     (if (:success? result)
-      (r/ok (:stakeholder result))
-      ;; XXX same select-keys elsewhere:
-      (r/server-error (select-keys result [:error-details :user-id :success?])))))
+      (r/ok (cske/transform-keys ->snake_case (:stakeholder result)))
+      (-> result present-error r/server-error))))
 
 (defn- set-user-account-active-status [config {:keys [user parameters]}]
   (let [chat-account-status (-> parameters :body :chat_account_status)
         result (srv.chat/set-user-account-active-status config user chat-account-status)]
     (if (:success? result)
       (r/ok {})
-      (r/server-error result))))
+      (-> result present-error r/server-error))))
 
 (defn- get-user-joined-channels [config {:keys [user]}]
   (let [result (port.chat/get-user-joined-channels (:chat-adapter config) (:chat_account_id user))]
     (if (:success? result)
-      (r/ok result)
-      (r/server-error result))))
+      (r/ok (cske/transform-keys ->snake_case result))
+      (-> result present-error r/server-error))))
 
 (defn- get-private-channels [config {:keys [user]}]
   (if-not (h.r.permission/operation-allowed? config
@@ -44,7 +46,7 @@
     (let [result (port.chat/get-private-channels (:chat-adapter config) {})]
       (if (:success? result)
         (r/ok result)
-        (r/server-error result)))))
+        (-> result present-error r/server-error)))))
 
 (defn- get-public-channels [config {:keys [user]}]
   (if-not (h.r.permission/operation-allowed?
@@ -57,7 +59,7 @@
     (let [result (port.chat/get-public-channels (:chat-adapter config) {})]
       (if (:success? result)
         (r/ok result)
-        (r/server-error result)))))
+        (-> result present-error r/server-error)))))
 
 (defn- send-private-channel-invitation-request [config {:keys [user parameters]}]
   (if-not (h.r.permission/operation-allowed?
@@ -75,7 +77,7 @@
                                                                    channel-name)]
       (if (:success? result)
         (r/ok result)
-        (r/server-error result)))))
+        (-> result present-error r/server-error)))))
 
 (defn- remove-user-from-channel [config {:keys [user parameters]}]
   (let [{:keys [channel_id]} (:body parameters)
@@ -85,7 +87,7 @@
                                                    {})]
     (if (:success? result)
       (r/ok result)
-      (r/server-error result))))
+      (-> result present-error r/server-error))))
 
 (defn- add-user-to-private-channel [{:keys [db mailjet-config] :as config} parameters]
   (let [{:keys [channel_id channel_name user_id]} (:body parameters)
@@ -100,26 +102,9 @@
                                                                                       target-user
                                                                                       channel_name)
             (r/ok result))
-          (r/server-error result)))
+          (-> result present-error r/server-error)))
       (r/server-error {:success? false
                        :reason :user-not-found}))))
-
-(defn Result [success?]
-  [:map
-   [:success? {:json-schema/example success?}
-    boolean?]])
-
-(defn- result-with [success? & [[k v :as entry]]]
-  {:pre [(check! boolean? success?)]}
-  (malli/schema (if entry
-                  (mu/assoc (Result success?) k v)
-                  (Result success?))))
-
-(defn success-with [& [entry]]
-  (result-with true entry))
-
-(defn failure-with [& [entry]]
-  (result-with false entry))
 
 (defmethod ig/init-key :gpml.handler.chat/dcs-user-routes
   [_ {:keys [middleware config]}]
@@ -151,7 +136,7 @@
            :swagger    {:tags ["chat"]}
            :handler    (fn do-get-user-joined-channels [req]
                          (get-user-joined-channels config req))
-           :responses {:200 {:body (success-with [:channels [:sequential ds-chat/Channel]])}
+           :responses {:200 {:body (success-with :channels [:sequential ds-chat/Channel])}
                        :500 {:body (failure-with)}}}}]])
 
 (defmethod ig/init-key :gpml.handler.chat/dcs-channel-routes
@@ -180,9 +165,9 @@
            :handler    (fn do-get-all-channels [_req]
                          (let [result (port.chat/get-all-channels (:chat-adapter config) {})]
                            (if (:success? result)
-                             (r/ok result)
-                             (r/server-error result))))
-           :responses {:200 {:body (success-with [:channels [:sequential ds-chat/Channel]])}
+                             (r/ok (cske/transform-keys ->snake_case result))
+                             (-> result present-error r/server-error))))
+           :responses {:200 {:body (success-with :channels [:sequential ds-chat/Channel])}
                        :500 {:body (failure-with)}}}}]
    ["/details"
     ["/{id}"
@@ -192,8 +177,8 @@
             :handler    (fn get-channel-details [{{:keys [path]} :parameters}]
                           (let [result (srv.chat/get-channel-details config (:id path))]
                             (if (:success? result)
-                              (r/ok result)
-                              (r/server-error result))))
+                              (r/ok (cske/transform-keys ->snake_case result))
+                              (-> result present-error r/server-error))))
             :parameters {:path [:map
                                 [:id
                                  {:swagger {:description "The channel ID."
@@ -209,7 +194,7 @@
              :swagger    {:tags ["chat"]}
              :handler    (fn do-get-private-channels [req]
                            (get-private-channels config req))
-             :responses {:200 {:body (success-with [:channels [:sequential ds-chat/Channel]])}
+             :responses {:200 {:body (success-with :channels [:sequential ds-chat/Channel])}
                          :500 {:body (failure-with)}}}
       :post {:summary    "Send private channel invitation request"
              :middleware middleware
@@ -266,15 +251,12 @@
            :swagger    {:tags ["chat"]}
            :handler    (fn do-get-public-channels [req]
                          (get-public-channels config req))
-           :responses {:200 {:body (success-with [:channels [:sequential ds-chat/Channel]])}
+           :responses {:200 {:body (success-with :channels [:sequential ds-chat/Channel])}
                        :500 {:body (failure-with)}}}}]])
 
 (comment
-  (dev/make-user! "vemv@vemv.net")
-  (gpml.db.stakeholder/stakeholder-by-email (dev/conn) {:email "vemv@vemv.net"})
-
-  (dev/q {:select :*
-          :from :plastic_strategy})
+  (dev/make-user! "abc@abc.net")
+  (gpml.db.stakeholder/stakeholder-by-email (dev/conn) {:email "abc@abc.net"})
 
   (http-client/request (dev/logger)
                        {:url "http://localhost:3000/api/chat/user/account"
@@ -304,8 +286,26 @@
                        {:url (str "http://localhost:3000/api/chat/channel/details/" channel-id)
                         :as :json-keyword-keys})
 
+  ;; 8
   (http-client/request (dev/logger)
                        {:url "http://localhost:3000/api/chat/channel/all"
+                        :as :json-keyword-keys})
+
+  ;; 6
+  (port.chat/add-user-to-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                        (:chat_account_id (gpml.db.stakeholder/stakeholder-by-email (dev/conn) {:email "abc@abc.net"}))
+                                        channel-id)
+
+  ;; 9
+  (http-client/request (dev/logger)
+                       {:url "http://localhost:3000/api/chat/user/channel"
+                        :as :json-keyword-keys})
+
+  ;; 12
+  (http-client/request (dev/logger)
+                       {:url "http://localhost:3000/api/chat/channel/leave"
+                        :method :post
+                        :body (json/->json {:channel_id channel-id})
                         :as :json-keyword-keys})
 
   (http-client/request (dev/logger)
