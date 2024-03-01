@@ -25,6 +25,7 @@ services:
       - APP_DOMAIN
       - AUTH0_BACKEND_CLIENT_ID
       - AUTH0_BACKEND_SECRET
+      - DEAD_SIMPLE_CHAT_API_KEY
       - MAILJET_API_KEY
       - MAILJET_SECRET_KEY
       - SCHEDULER_THREAD_COUNT
@@ -48,6 +49,9 @@ services:
       - CHAT_API_KEY
       - CHAT_API_USER_ID
   frontend:
+    build:
+      context: ./frontend/
+      dockerfile: Dockerfile
     environment:
       - PORT=3001
       - APP_DOMAIN

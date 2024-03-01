@@ -59,13 +59,8 @@ const ForumModal = ({
     }
   }
 
-  const goToChannel = ({ name, t }) => {
-    router.push({
-      pathname: `/forum/${name}`,
-      query: {
-        t,
-      },
-    })
+  const goToChannel = ({ id: roomId }) => {
+    router.push(`/forum/${roomId}`)
   }
 
   return (
