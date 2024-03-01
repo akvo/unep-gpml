@@ -21,15 +21,13 @@ const DynamicMyForum = dynamic(() => import('../../modules/forum/my-forums'), {
   ssr: false, // my forums has window object to update the joins localStorage
 })
 
-const Forum = ({ isAuthenticated, setLoginVisible }) => {
+const Forum = ({ isAuthenticated, setLoginVisible, profile }) => {
   const [viewModal, setViewModal] = useState({
     open: false,
     data: {},
   })
   const [loading, setLoading] = useState(true)
   const [preload, setPreload] = useState(true)
-
-  const profile = UIStore.useState((s) => s.profile)
   const allForums = ChatStore.useState((s) => s.allForums)
 
   const handleOnView = (data) => {
@@ -60,9 +58,6 @@ const Forum = ({ isAuthenticated, setLoginVisible }) => {
             ?.map((a) => ({
               ...a,
               t: 'c',
-              lm: '2024-02-14T15:18:31.220Z',
-              users: [],
-              membersFetched: false,
             }))
             ?.sort((a, b) => {
               if (a.type === 'c' && b.type !== 'c') {
@@ -86,7 +81,7 @@ const Forum = ({ isAuthenticated, setLoginVisible }) => {
   }, [loading, allForums])
 
   const activateChatAccount = useCallback(async () => {
-    if (preload && isAuthenticated && !profile?.chatAccountId) {
+    if (preload && isAuthenticated && profile?.id && !profile?.chatAccountId) {
       setPreload(false)
       try {
         await api.post('/chat/user/account')
@@ -98,7 +93,7 @@ const Forum = ({ isAuthenticated, setLoginVisible }) => {
         console.error('Activation failed:', error)
       }
     }
-  }, [preload, profile?.chatAccountId, isAuthenticated])
+  }, [preload, profile, isAuthenticated])
 
   useEffect(() => {
     activateChatAccount()
@@ -119,7 +114,7 @@ const Forum = ({ isAuthenticated, setLoginVisible }) => {
           <span className="h-xs title">
             <Trans>Forums</Trans>
           </span>
-          {/* <DynamicMyForum {...{ handleOnView }} /> */}
+          <DynamicMyForum {...{ handleOnView }} />
 
           <div className="header">
             <div className="jumbotron">
@@ -159,7 +154,7 @@ const Forum = ({ isAuthenticated, setLoginVisible }) => {
                       </p>
                     </div>
                     <div className="flex">
-                      {/* <ForumMembers forum={item} /> */}
+                      <ForumMembers forum={item} />
                       <div>
                         <Button
                           size="small"

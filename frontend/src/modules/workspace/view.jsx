@@ -267,11 +267,11 @@ const Workspace = ({ profile, isAuthenticated, setLoginVisible }) => {
                         <ForumCard.Title {...item} />
                       </ForumCard.HStack>
                       <ForumCard.HStack>
-                        {/* {item?.isView ? (
+                        {item?.isView ? (
                           <ForumMembers forum={item} />
                         ) : (
                           <ForumCard.LastMessage lm={item?.lm} />
-                        )} */}
+                        )}
                         <div>
                           {item?.isView ? (
                             <Button

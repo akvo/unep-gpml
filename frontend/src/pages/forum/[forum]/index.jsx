@@ -75,7 +75,7 @@ const ForumView = ({ isAuthenticated, profile }) => {
         console.error('SDK', error)
       }
     })()
-  }, [window?.DSChatSDK, activeForum, sdk])
+  }, [activeForum, sdk])
 
   return (
     <div className={styles.container}>
