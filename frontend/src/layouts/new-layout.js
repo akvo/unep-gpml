@@ -362,17 +362,6 @@ const NewLayout = ({
         )}
       </div>
       <Login visible={loginVisible} close={() => setLoginVisible(false)} />
-      {/* iframe ROCKETCHAT */}
-      <iframe
-        src={`${process.env.NEXT_PUBLIC_CHAT_API_DOMAIN_URL}/home?layout=embedded`}
-        width={'100%'}
-        height={0}
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          opacity: 0,
-        }}
-      />
     </>
   )
 }
