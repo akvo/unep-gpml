@@ -925,6 +925,8 @@ const ChatStore = new Store({
   isLoggedIn: false,
   psForums: [],
   discussion: null,
+  channels: [],
+  sdk: null,
 })
 
 export { UIStore, ChatStore }
