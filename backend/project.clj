@@ -44,6 +44,7 @@
                  [io.prometheus/simpleclient_jetty_jdk8 "0.9.0"]
                  [medley "1.4.0"]
                  [metosin/jsonista "0.3.6"]
+                 [metosin/malli "0.14.0"]
                  [metosin/reitit-malli "0.5.18" :exclusions [org.clojure/tools.reader
                                                              org.clojure/core.rrb-vector]]
                  [metosin/reitit-middleware "0.5.18" :exclusions [ring/ring-core
@@ -93,12 +94,15 @@
    :eftest {:dependencies [[eftest "0.6.0"]]
             :plugins [[lein-eftest "0.6.0"]]
             :eftest {:multithread :vars
+                     :capture-output? false
                      ;; Please don't specify `:thread-count`, so that all cores will be used.
                      :fail-fast? true
                      :report clojure.test/report}}
    :dev  {:source-paths   ["dev/src"]
           :resource-paths ["dev/resources"]
-          :dependencies   [[fipp "0.6.21"]
+          :dependencies   [[com.github.seancorfield/honeysql "2.5.1103"]
+                           [com.github.seancorfield/next.jdbc "1.3.909"]
+                           [fipp "0.6.21"]
                            [hawk "0.2.11"]
                            [integrant/repl "0.3.2"]
                            [kerodon "0.9.1"]
@@ -107,7 +111,9 @@
                          :init (do
                                  (require 'dev)
                                  (in-ns 'dev)
-                                 (integrant.repl/reset))
+                                 (if (System/getProperty "unep.gpml.skip-reset-on-startup")
+                                   (println "Not resetting on startup")
+                                   (@(requiring-resolve 'integrant.repl/reset))))
                          :host "0.0.0.0"
                          :port 47480}}
    :cljfmt {:plugins [[dev.weavejester/lein-cljfmt "0.12.0"]]

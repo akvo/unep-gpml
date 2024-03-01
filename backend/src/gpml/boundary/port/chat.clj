@@ -14,7 +14,9 @@
 
   (get-all-channels [this opts])
 
-  (set-user-account-active-status [this user-id active? opts])
+  (set-user-account-active-status [this user-id active? opts]
+    "Activates/deactivates a user account,
+   according to the `active?` parameter.")
 
   (get-user-info [this user-id opts])
 
