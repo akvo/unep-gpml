@@ -917,8 +917,6 @@
    (def all)
    deref)
 
-  (slurp (str "http://localhost:3000/api/detail/policy/" 1))
-
   (do
 
     (->> all
