@@ -1,18 +1,23 @@
 (ns gpml.util.malli
-  (:refer-clojure :exclude [dissoc keys])
+  (:refer-clojure :exclude [defprotocol dissoc keys])
   (:require
+   [clojure.walk :as walk]
    [malli.core :as m]
    [malli.error]
    [malli.util :as mu]))
 
-(defn check-one [schema val quoted]
-  (if (m/validate schema val)
-    true
-    (let [x (m/explain schema val)]
-      (throw (ex-info "Schema validation failed"
-                      (cond-> x
-                        (not= quoted val) (assoc :quoted quoted)
-                        true              (assoc :humanized (malli.error/humanize x))))))))
+(defn check-one [sch val quoted]
+  (let [schema (if (and (instance? clojure.lang.IMeta sch)
+                        (-> sch meta :schema))
+                 (-> sch meta :schema eval)
+                 sch)]
+    (if (m/validate schema val)
+      true
+      (let [x (m/explain schema val)]
+        (throw (ex-info "Schema validation failed"
+                        (cond-> x
+                          (not= quoted val) (assoc :quoted quoted)
+                          true              (assoc :humanized (malli.error/humanize x)))))))))
 
 (defn schema? [s]
   (try
@@ -24,6 +29,9 @@
 (defmacro check!
   "Accepts pairs of specs and vals.
 
+  A spec can be a Malli spec, or a var with `:schema` metadata pointing to a Malli spec,
+  as enabled by `gpml.util.malli/defprotocol`.
+
   Performs Malli validation over each pair,
   failing with an informative exception otherwise.
 
@@ -34,7 +42,13 @@
   `(do
      ~@(mapv (fn [[spec val]]
                (list `let ['schema spec]
-                     (when (check-one [:fn schema?] (eval spec) spec) ;; throw a compile-time exception on invalid schemas
+                     (when (check-one [:or
+                                       [:fn schema?]
+                                       [:fn (fn [x]
+                                              (and (var? x)
+                                                   (some-> x meta :schema eval schema?)))]]
+                                      (eval spec)
+                                      spec) ;; throw a compile-time exception on invalid schemas
                        (list `check-one 'schema val (list 'quote val)))))
              (partition 2 spec-val-pairs))))
 
@@ -75,3 +89,31 @@
   (when-let [entries (m/entries ?schema)]
     (for [[k _] entries]
       k)))
+
+(defmacro defprotocol
+  "Exactly like `clojure.core/defprotocol`,
+  but processes `:schema` metadata such that it can be safely `eval`ed.
+
+  `:schema` metadata can be used by protocol implementations as a Malli schema
+  to check their implementations against."
+  [& args]
+  (apply list
+         'clojure.core/defprotocol
+         (walk/postwalk (fn [x]
+                          (cond-> x
+                            (and (instance? clojure.lang.IMeta x)
+                                 (-> x meta :schema))
+                            (vary-meta update :schema (fn [x]
+                                                        (walk/postwalk (fn [y]
+                                                                         (if-not (symbol? y)
+                                                                           y
+                                                                           (or (and (qualified-symbol? y)
+                                                                                    y)
+
+                                                                               (some->> y (resolve &env) symbol)
+
+                                                                               (and (simple-symbol? y)
+                                                                                    (symbol (str *ns*)
+                                                                                            (str y))))))
+                                                                       x)))))
+                        args)))
