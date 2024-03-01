@@ -1,24 +1,81 @@
-import React, { useState } from 'react'
+import React, { useCallback, useEffect, useState, useMemo } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { Button, Layout, List } from 'antd'
+import { Button, Layout, List, Avatar } from 'antd'
 import { Trans } from '@lingui/macro'
 import classNames from 'classnames'
 
 import styles from './index.module.scss'
-import { ChatStore } from '../../../store'
-import DSCIframe from '../../../components/dsc-iframe'
 import { DropDownIcon } from '../../../components/icons'
+import api from '../../../utils/api'
 
 const { Sider } = Layout
 
-const ForumView = ({ profile }) => {
+const ForumView = ({ isAuthenticated, profile }) => {
   const router = useRouter()
   const [activeForum, setActiveForum] = useState(null)
+  const [sdk, setSDK] = useState(null)
+  const [discussion, setDiscussion] = useState(null)
 
-  const channels = ChatStore.useState((s) => s.channels)
-  const sdk = ChatStore.useState((s) => s.sdk)
-  const discussion = ChatStore.useState((s) => s.discussion)
+  const { chatAccountAuthToken: accessToken, chatAccountId: uuid } =
+    profile || {}
+
+  const iframeURL = useMemo(() => {
+    if (!router.query?.forum) {
+      return null
+    }
+    return accessToken
+      ? `${process.env.NEXT_PUBLIC_DSC_URL}/${router.query.forum}?accessToken=${accessToken}`
+      : `${process.env.NEXT_PUBLIC_DSC_URL}/${router.query.forum}?uuid=${uuid}`
+  }, [router.query?.forum, accessToken, uuid])
+
+  const fetchData = useCallback(async () => {
+    try {
+      if (profile?.id && router.query?.forum) {
+        const { data: apiData } = await api.get(
+          `/chat/channel/details/${router.query.forum}`
+        )
+        const { channel: _activeForum } = apiData || {}
+        setActiveForum(_activeForum)
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }, [isAuthenticated, profile, router.query?.forum])
+
+  useEffect(() => {
+    fetchData()
+  }, [fetchData])
+
+  useEffect(() => {
+    ;(async () => {
+      // DSChatSDK construction accepts two parameters:
+      // 1. Chat Room Id
+      // 2. ID of the iFrame tag
+      // 3. Dead Simple Chat Public API Key.
+      try {
+        if (window?.DSChatSDK && activeForum && !sdk) {
+          const _sdk = new window.DSChatSDK(
+            activeForum.id,
+            'chat-frame',
+            process.env.NEXT_PUBLIC_DSC_PUBLIC_KEY
+          )
+          // Call the connect method to connect the SDK to the Chat iFrame.
+          await _sdk.connect()
+          if (activeForum.enableChannels) {
+            const { channels } = await _sdk.getActiveChannels()
+            setActiveForum({
+              ...activeForum,
+              discussions: channels.map((c) => ({ ...c, name: c.channelName })),
+            })
+          }
+          setSDK(_sdk)
+        }
+      } catch (error) {
+        console.error('SDK', error)
+      }
+    })()
+  }, [window?.DSChatSDK, activeForum, sdk])
 
   return (
     <div className={styles.container}>
@@ -40,32 +97,58 @@ const ForumView = ({ profile }) => {
               <h5>{activeForum?.name}</h5>
               <p>{activeForum?.description}</p>
             </div>
-            {channels?.length > 0 && (
+            {activeForum?.discussions?.length > 0 && (
               <>
                 <h6 className="h-caps-xs w-bold">
                   <Trans>Discussions</Trans>
                 </h6>
                 <List
                   className="discussions"
-                  dataSource={channels}
-                  renderItem={(channel) => {
-                    const active = discussion?._id === channel?._id
+                  dataSource={activeForum.discussions}
+                  renderItem={(discuss, dx) => {
+                    const active = discussion?.dx === dx
                     return (
-                      <List.Item
-                        key={channel?._id}
-                        className={classNames({ active })}
-                      >
+                      <List.Item key={dx} className={classNames({ active })}>
                         <Button
-                          onClick={() => {
-                            ChatStore.update((s) => {
-                              s.discussion = channel
+                          onClick={async () => {
+                            setDiscussion({
+                              ...discuss,
+                              dx,
                             })
-                            sdk?.selectChannel(channel._id)
+                            sdk?.selectChannel(discuss?._id)
                           }}
                           type="link"
+                          disabled={!discuss?._id}
                         >
-                          {channel?.channelName}
+                          {discuss?.name}
                         </Button>
+                      </List.Item>
+                    )
+                  }}
+                />
+              </>
+            )}
+            {activeForum?.users?.length > 0 && (
+              <>
+                <h6 className="w-bold h-caps-xs">
+                  <Trans>Participants</Trans>
+                </h6>
+                <List
+                  className="members"
+                  dataSource={activeForum.users}
+                  renderItem={(user) => {
+                    const fullName = `${user?.firstName} ${
+                      user?.lastName || ''
+                    }`
+                    return (
+                      <List.Item>
+                        <List.Item.Meta
+                          avatar={
+                            <Avatar src={user?.picture}>{fullName}</Avatar>
+                          }
+                          title={fullName}
+                          description={user?.org?.name}
+                        />
                       </List.Item>
                     )
                   }}
@@ -82,9 +165,7 @@ const ForumView = ({ profile }) => {
                 icon={<DropDownIcon />}
                 className={styles.backButton}
                 onClick={() => {
-                  ChatStore.update((s) => {
-                    s.discussion = null
-                  })
+                  setDiscussion(null)
                   sdk?.selectChannel('main')
                 }}
               >
@@ -92,11 +173,16 @@ const ForumView = ({ profile }) => {
                   <Trans>Back to Channel</Trans>
                 </div>
               </Button>
-              <h3 className="h-m">{discussion?.channelName}</h3>
+              <h3 className="h-m">{discussion?.name}</h3>
             </div>
           )}
-          {router.query?.forum && (
-            <DSCIframe roomId={router.query.forum} discussion={discussion} />
+          {iframeURL && (
+            <iframe
+              id="chat-frame"
+              src={iframeURL}
+              width="100%"
+              className={classNames({ discussion })}
+            />
           )}
         </Layout>
       </Layout>

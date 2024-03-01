@@ -41,6 +41,9 @@ const Forum = ({ isAuthenticated, setLoginVisible }) => {
 
   const getAllForums = useCallback(async () => {
     try {
+      ChatStore.update((s) => {
+        s.sdk = null
+      })
       if (loading && allForums.length) {
         setLoading(false)
         // reset discussion
@@ -62,12 +65,12 @@ const Forum = ({ isAuthenticated, setLoginVisible }) => {
               membersFetched: false,
             }))
             ?.sort((a, b) => {
-              if (a.t === 'c' && b.type !== 'c') {
+              if (a.type === 'c' && b.type !== 'c') {
                 return -1
-              } else if (a.t !== 'c' && b.t === 'c') {
+              } else if (a.type !== 'c' && b.type === 'c') {
                 return 1
               } else {
-                return 0
+                return a.name.localeCompare(b.title)
               }
             })
         })
@@ -97,9 +100,9 @@ const Forum = ({ isAuthenticated, setLoginVisible }) => {
     }
   }, [preload, profile?.chatAccountId, isAuthenticated])
 
-  // useEffect(() => {
-  //   activateChatAccount()
-  // }, [activateChatAccount])
+  useEffect(() => {
+    activateChatAccount()
+  }, [activateChatAccount])
 
   useEffect(() => {
     getAllForums()
