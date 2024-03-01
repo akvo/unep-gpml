@@ -21,14 +21,13 @@ const DynamicMyForum = dynamic(() => import('../../modules/forum/my-forums'), {
   ssr: false, // my forums has window object to update the joins localStorage
 })
 
-const Forum = ({ isAuthenticated, setLoginVisible }) => {
+const Forum = ({ isAuthenticated, setLoginVisible, profile }) => {
   const [viewModal, setViewModal] = useState({
     open: false,
     data: {},
   })
   const [loading, setLoading] = useState(true)
-
-  const profile = UIStore.useState((s) => s.profile)
+  const [preload, setPreload] = useState(true)
   const allForums = ChatStore.useState((s) => s.allForums)
 
   const handleOnView = (data) => {
@@ -40,6 +39,9 @@ const Forum = ({ isAuthenticated, setLoginVisible }) => {
 
   const getAllForums = useCallback(async () => {
     try {
+      ChatStore.update((s) => {
+        s.sdk = null
+      })
       if (loading && allForums.length) {
         setLoading(false)
         // reset discussion
@@ -48,19 +50,25 @@ const Forum = ({ isAuthenticated, setLoginVisible }) => {
         })
       }
       if (!allForums.length && loading) {
-        const { data } = await api.get('/chat/channel/all')
-        const _allForums = data
-          ?.sort((a, b) => {
-            // Sort public first
-            if (a.t === 'c' && b.type !== 'c') {
-              return -1
-            } else if (a.t !== 'c' && b.t === 'c') {
-              return 1
-            } else {
-              return 0
-            }
-          })
-          ?.map((d) => ({ ...d, membersFetched: false }))
+        const { data: apiData } = await api.get('/chat/channel/all')
+        const { channels: _allForums } = apiData || {}
+        ChatStore.update((s) => {
+          // TODO: identify private/public forum
+          s.allForums = _allForums
+            ?.map((a) => ({
+              ...a,
+              t: 'c',
+            }))
+            ?.sort((a, b) => {
+              if (a.type === 'c' && b.type !== 'c') {
+                return -1
+              } else if (a.type !== 'c' && b.type === 'c') {
+                return 1
+              } else {
+                return a.name.localeCompare(b.title)
+              }
+            })
+        })
         ChatStore.update((s) => {
           s.allForums = _allForums
         })
@@ -72,25 +80,24 @@ const Forum = ({ isAuthenticated, setLoginVisible }) => {
     }
   }, [loading, allForums])
 
-  const activateRocketChat = useCallback(async () => {
-    if (profile?.id && profile?.chatAccountStatus !== 'active') {
-      UIStore.update((s) => {
-        s.profile = {
-          ...s.profile,
-          chatAccountStatus: 'active',
-        }
-      })
+  const activateChatAccount = useCallback(async () => {
+    if (preload && isAuthenticated && profile?.id && !profile?.chatAccountId) {
+      setPreload(false)
       try {
         await api.post('/chat/user/account')
+        const { data: _profile } = await api.get('/profile')
+        UIStore.update((s) => {
+          s.profile = _profile
+        })
       } catch (error) {
-        console.error('RC activation failed:', error)
+        console.error('Activation failed:', error)
       }
     }
-  }, [profile?.chatAccountStatus])
+  }, [preload, profile, isAuthenticated])
 
   useEffect(() => {
-    activateRocketChat()
-  }, [activateRocketChat])
+    activateChatAccount()
+  }, [activateChatAccount])
 
   useEffect(() => {
     getAllForums()

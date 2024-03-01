@@ -12,8 +12,9 @@ import { Trans, t } from '@lingui/macro'
 
 export const getMyForumsApi = async (successCallback, errorCallback) => {
   try {
-    const { data } = await api.get('/chat/user/channel')
-    successCallback(data)
+    const { data: apiData } = await api.get('/chat/user/channel')
+    const { channels } = apiData
+    successCallback(channels)
   } catch (error) {
     errorCallback(error)
   }
@@ -62,7 +63,6 @@ const MyForums = ({ handleOnView }) => {
       cancelButtonProps: {
         type: 'link',
         size: 'small',
-        ghost: true,
       },
       okButtonProps: {
         size: 'small',
@@ -71,13 +71,8 @@ const MyForums = ({ handleOnView }) => {
     })
   }
 
-  const goToChannel = ({ name, t }) => {
-    router.push({
-      pathname: `/forum/${name}`,
-      query: {
-        t,
-      },
-    })
+  const goToChannel = ({ id: roomId }) => {
+    router.push(`/forum/${roomId}`)
   }
 
   const getMyForums = useCallback(async () => {
@@ -127,13 +122,13 @@ const MyForums = ({ handleOnView }) => {
                 <div className="flex my-forums">
                   <div className="channel my-forums">
                     <span className={styles.forumType}>
-                      {item.channelType === 'p' ||
-                      item.customFields?.hasOwnProperty('psCountryIsoCodeA2')
+                      {item?.channelType === 'p' ||
+                      item?.customFields?.hasOwnProperty('psCountryIsoCodeA2')
                         ? t`private `
                         : t`public `}{' '}
                       <Trans>channel</Trans>
                     </span>
-                    <h5>{item.name?.replace(/[-_]/g, ' ')}</h5>
+                    <h5>{item.name}</h5>
                   </div>
                   <div className="popover-container">
                     <Popover
@@ -179,7 +174,7 @@ const MyForums = ({ handleOnView }) => {
                       <Trans>Last message</Trans>
                     </span>
                     <p className="p-m value" suppressHydrationWarning>
-                      {moment(item.lm).fromNow()}
+                      {moment(item?.lm).fromNow()}
                     </p>
                   </div>
                   <div>
