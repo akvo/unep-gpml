@@ -65,6 +65,7 @@ select
     s.picture_id,
     s.cv_id,
     s.chat_account_id,
+    s.chat_account_auth_token,
     s.chat_account_status
 from stakeholder s
 where s.id = :id;
@@ -93,6 +94,7 @@ select
     s.picture_id,
     s.cv_id,
     s.chat_account_id,
+    s.chat_account_auth_token,
     s.chat_account_status
 from stakeholder s
 where s.email = :email;
@@ -129,6 +131,8 @@ insert into stakeholder(
 --~ (when (contains? params :id) ",id")
 --~ (when (contains? params :picture_id) ", picture_id")
 --~ (when (contains? params :cv_id) ",cv_id")
+--~ (when (contains? params :chat_account_id) ",chat_account_id")
+--~ (when (contains? params :chat_account_auth_token) ",chat_account_auth_token")
 --~ (when (contains? params :chat_account_status) ",chat_account_status")
 ) values(
     :first_name,
@@ -148,6 +152,8 @@ insert into stakeholder(
 --~ (when (contains? params :id) ",:id")
 --~ (when (contains? params :picture_id) ", :picture_id")
 --~ (when (contains? params :cv_id) ",:cv_id")
+--~ (when (contains? params :chat_account_id) ",:chat_account_id")
+--~ (when (contains? params :chat_account_auth_token) ",:chat_account_auth_token")
 --~ (when (contains? params :chat_account_status) ",:chat_account_status::USER_CHAT_ACCOUNT_STATUS")
 ) RETURNING id;
 
@@ -182,6 +188,7 @@ update stakeholder set
 --~ (when (contains? params :cv_id) "cv_id= :cv_id, ")
 --~ (when (contains? params :review_status) "review_status= :review_status::review_status,")
 --~ (when (contains? params :chat_account_id) "chat_account_id= :chat_account_id,")
+--~ (when (contains? params :chat_account_auth_token) "chat_account_auth_token= :chat_account_auth_token,")
 --~ (when (contains? params :chat_account_status) "chat_account_status= :chat_account_status::USER_CHAT_ACCOUNT_STATUS,")
     modified = now()
 where id = :id;

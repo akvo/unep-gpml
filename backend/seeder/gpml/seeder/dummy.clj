@@ -32,7 +32,9 @@
 
 (defn associate-tags [db data category]
   (mapv (fn [tag]
-          (assoc data :tag (:id tag)))
+          (assoc data
+                 :tag (:id tag)
+                 :tag_relation_category (str (random-uuid))))
         (take 3 (shuffle (db.tag/tag-by-category db {:category category})))))
 
 (defn associate-geo [db data names]
@@ -70,31 +72,28 @@
    :affiliation (:id (get-org-id db))
    :picture "https://directory.growasia.org/wp-content/uploads/solution_logos/0.jpg"})
 
-(defn get-or-create-profile [db my-email my-name role review-status]
+(defn get-or-create-profile [db my-email my-name role review-status & [extra-attrs]]
   (let [profile (db.stakeholder/stakeholder-by-email db {:email my-email})]
     (if profile
       profile
       (let [me (-> my-name (str/split #" "))
-            new-profile (db.stakeholder/new-stakeholder
-                         db (conj (get-account-props db)
-                                  {:email my-email
-                                   :first_name (first me)
-                                   :last_name (last me)
-                                   :country (get-country-id db "NLD")
-                                   :geo_coverage_type "regional"
-                                   :idp_usernames ["auth0|123"]
-                                   :geo_coverage_value
-                                   (map :id
-                                        (db.country-group/country-group-by-names
-                                         db {:names ["Africa" "Europe"]}))}))]
+            new-profile (db.stakeholder/new-stakeholder db (merge (get-account-props db)
+                                                                  {:email my-email
+                                                                   :first_name (first me)
+                                                                   :last_name (last me)
+                                                                   :country (get-country-id db "NLD")
+                                                                   :geo_coverage_type "regional"
+                                                                   :idp_usernames ["auth0|123"]
+                                                                   :geo_coverage_value (mapv :id
+                                                                                             (db.country-group/country-group-by-names
+                                                                                              db {:names ["Africa" "Europe"]}))}
+                                                                  extra-attrs))]
         (db.stakeholder/update-stakeholder-role
          db (assoc new-profile :role role :review_status review-status))
         (doseq [tag ["general" "seeking" "offering"]]
-          (jdbc/insert-multi!
-           db :stakeholder_tag (associate-tags db {:stakeholder (:id new-profile)} tag)))
-        (jdbc/insert-multi!
-         db :stakeholder_geo_coverage
-         (associate-geo db {:stakeholder (:id new-profile)} ["Africa" "Europe"]))
+          (jdbc/insert-multi! db :stakeholder_tag (associate-tags db {:stakeholder (:id new-profile)} tag)))
+        (jdbc/insert-multi! db :stakeholder_geo_coverage
+                            (associate-geo db {:stakeholder (:id new-profile)} ["Africa" "Europe"]))
         (db.stakeholder/stakeholder-by-id db new-profile)))))
 
 (defn submit-dummy-event [db my-email my-name]

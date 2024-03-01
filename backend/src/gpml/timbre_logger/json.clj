@@ -6,8 +6,9 @@
 (def key-banlist
   #{:password "password"})
 
-(defmethod ig/init-key ::logger [_ _]
+(defmethod ig/init-key ::logger [_ {:keys [pretty]}]
   (timbre-json-appender/json-appender {:inline-args? true
+                                       :pretty pretty
                                        :level-key           :level
                                        :msg-key             :msg
                                        :should-log-field-fn (fn [field-name _data]
