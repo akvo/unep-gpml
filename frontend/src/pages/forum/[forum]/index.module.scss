@@ -1,0 +1,211 @@
+@import '../../../styles/vars.scss';
+
+.channelSidebar {
+  background-color: $primaryGrey !important;
+  z-index: 2;
+  :global {
+    h3 {
+      margin: 12px 0 12px 0;
+      font-weight: 600;
+    }
+    .ant-menu {
+      background-color: $primaryGrey;
+      .ant-menu-item {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0;
+        padding: 21px 23px 19px;
+        font-family: var(--font-archia), sans-serif;
+        font-size: $fzS;
+        font-weight: 600;
+        line-height: $lhS;
+        color: $primaryDarkBlue;
+        background-color: $primaryPurple2;
+        text-transform: capitalize;
+        height: auto;
+        span {
+          width: 300px;
+          white-space: break-spaces;
+        }
+        svg {
+          transform: rotate(270deg);
+          path {
+            stroke: $primaryDarkBlue;
+          }
+        }
+        &.ant-menu-item-selected,
+        &:hover {
+          color: $primaryWhite;
+          background-color: $primaryPurple;
+          svg path {
+            stroke: $primaryWhite;
+          }
+        }
+        &:not(:last-child) {
+          margin-bottom: 0;
+        }
+      }
+    }
+    h6 {
+      margin-top: 28px;
+    }
+    .discussions {
+      margin-top: 8px;
+      li {
+        padding: 7px 0;
+      }
+      .ant-btn-link {
+        white-space: normal;
+        text-align: left;
+      }
+    }
+    .button-container {
+      padding: 22px 16px;
+      .ant-btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+    .ant-skeleton {
+      padding: 8px 23px;
+    }
+  }
+}
+
+.channelContent {
+  :global {
+    iframe {
+      height: calc(100vh - 90px) !important;
+      &.discussion {
+        height: calc(100vh - 210px) !important;
+      }
+    }
+    .ant-spin-blur iframe {
+      opacity: 0;
+    }
+    .header-discussion {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 21px 40px 28px;
+      background: $primaryWhite;
+      box-shadow: 0px 4px 25px 0px rgba(0, 0, 0, 0.2);
+      position: relative;
+      z-index: 1;
+      h3 {
+        font-weight: 600;
+      }
+    }
+  }
+}
+
+.backButton {
+  color: $primaryPurple !important;
+  font-family: var(--font-archia) !important;
+  font-weight: 700 !important;
+  font-size: 12px !important;
+  letter-spacing: 0.24px;
+  text-transform: uppercase;
+  text-decoration: none !important;
+  margin-left: -6px !important;
+  :global {
+    svg {
+      padding-left: 0 !important;
+      transform: rotate(90deg);
+      path {
+        stroke: $primaryPurple !important;
+      }
+    }
+    span {
+      padding-left: 4px;
+    }
+  }
+  &:global(:hover) {
+    svg {
+      path {
+        /**
+        * Disable hover icon
+        */
+        transform: none !important;
+      }
+    }
+  }
+}
+
+.detailSidebar {
+  height: calc(100vh - 90px);
+  overflow: scroll;
+  :global {
+    .description {
+      padding: 21px 18px 18px 21px;
+      h5 {
+        margin-top: 18px;
+        margin-left: 0;
+      }
+      p {
+        color: $primaryDarkBlue;
+      }
+    }
+    strong {
+      color: $primaryDarkBlue;
+      font-family: var(--font-archia);
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.24px;
+      margin-bottom: 19px;
+      padding-left: 21px;
+    }
+
+    .discussions {
+      margin-bottom: 36px;
+      .ant-list-item {
+        padding: 11px 21px;
+        border-bottom: none;
+        &.active {
+          background-color: $primaryViolet2;
+        }
+      }
+    }
+    h6 {
+      padding-left: 21px;
+    }
+    .members {
+      margin-left: 21px;
+      margin-top: 21px;
+      .ant-list-item {
+        padding: 0 0 13px;
+        border-bottom: none;
+        .ant-list-item-meta-avatar {
+          margin-right: 13px;
+          .ant-avatar {
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            .ant-avatar-string {
+              font-family: var(--font-archia);
+              font-size: $fzXXS;
+              font-weight: 600;
+              text-transform: uppercase;
+            }
+            background-color: $primaryGreen;
+          }
+        }
+        .ant-list-item-meta-content {
+          .ant-list-item-meta-title,
+          .ant-list-item-meta-description {
+            color: #000;
+            font-family: var(--font-archia);
+            font-size: $fzXXS;
+            line-height: $lhXXS;
+          }
+          .ant-list-item-meta-title {
+            font-weight: 600;
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+  }
+}
