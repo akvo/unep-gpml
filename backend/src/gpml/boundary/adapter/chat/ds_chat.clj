@@ -7,7 +7,6 @@
    [clojure.set :as set]
    [clojure.string :as string]
    [duct.logger :refer [log]]
-   [gpml.boundary.port.chat :as port]
    [gpml.boundary.port.chat :as port.chat]
    [gpml.util :refer [url?]]
    [gpml.util.http-client :as http-client]
@@ -262,7 +261,7 @@
    [:enable_channels boolean?]])
 
 (defn get-all-channels* [{:keys [logger api-key]} _opts]
-  {:post [(check! #'port/get-all-channels %)]}
+  {:post [(check! #'port.chat/get-all-channels %)]}
   (let [{:keys [status body]}
         (http-client/request logger
                              {:url (build-api-endpoint-url "/api/v1/chatrooms")
@@ -282,7 +281,7 @@
 
 (defn get-channel* [{:keys [logger api-key]} channel-id]
   {:pre  [(check! RoomId channel-id)]
-   :post [(check! #'port/get-channel %)]}
+   :post [(check! #'port.chat/get-channel %)]}
   (let [{:keys [status]
          channel :body}
         (http-client/request logger
@@ -614,26 +613,26 @@
                   [:logger some?]]
                  m)]}
   (with-meta m
-    {`port/add-user-to-private-channel       add-user-to-channel*
-     `port/add-user-to-public-channel        add-user-to-channel*
-     `port/create-private-channel            create-private-channel*
-     `port/create-public-channel             create-public-channel*
-     `port/create-user-account               create-user-account*
-     `port/delete-private-channel            delete-channel*
-     `port/delete-public-channel             delete-channel*
-     `port/delete-user-account               delete-user-account*
-     `port/get-channel                       get-channel*
-     `port/get-all-channels                  get-all-channels*
-     `port/get-private-channels              get-all-channels*
-     `port/get-public-channels               get-all-channels*
-     `port/get-channel-discussions           get-channel-discussions*
-     `port/get-user-info                     get-user-info*
-     `port/get-user-joined-channels          get-user-joined-channels*
-     `port/remove-user-from-channel          remove-user-from-channel*
-     `port/set-private-channel-custom-fields set-channel-custom-fields*
-     `port/set-public-channel-custom-fields  set-channel-custom-fields*
-     `port/set-user-account-active-status    set-user-account-active-status*
-     `port/update-user-account               update-user-account*}))
+    {`port.chat/add-user-to-private-channel       add-user-to-channel*
+     `port.chat/add-user-to-public-channel        add-user-to-channel*
+     `port.chat/create-private-channel            create-private-channel*
+     `port.chat/create-public-channel             create-public-channel*
+     `port.chat/create-user-account               create-user-account*
+     `port.chat/delete-private-channel            delete-channel*
+     `port.chat/delete-public-channel             delete-channel*
+     `port.chat/delete-user-account               delete-user-account*
+     `port.chat/get-channel                       get-channel*
+     `port.chat/get-all-channels                  get-all-channels*
+     `port.chat/get-private-channels              get-all-channels*
+     `port.chat/get-public-channels               get-all-channels*
+     `port.chat/get-channel-discussions           get-channel-discussions*
+     `port.chat/get-user-info                     get-user-info*
+     `port.chat/get-user-joined-channels          get-user-joined-channels*
+     `port.chat/remove-user-from-channel          remove-user-from-channel*
+     `port.chat/set-private-channel-custom-fields set-channel-custom-fields*
+     `port.chat/set-public-channel-custom-fields  set-channel-custom-fields*
+     `port.chat/set-user-account-active-status    set-user-account-active-status*
+     `port.chat/update-user-account               update-user-account*}))
 
 (defmethod ig/init-key :gpml.boundary.adapter.chat/ds-chat
   [_ config]
@@ -644,87 +643,87 @@
 
     @(def uniqueUserIdentifier (make-unique-user-identifier))
 
-    @(def a-user (port/create-user-account (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                           {:uniqueUserIdentifier uniqueUserIdentifier
-                                            :externalUserId (str id)
-                                            :isModerator false
-                                            :email email
-                                            :username (str first_name " " last_name)})))
+    @(def a-user (port.chat/create-user-account (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                                {:uniqueUserIdentifier uniqueUserIdentifier
+                                                 :externalUserId (str id)
+                                                 :isModerator false
+                                                 :email email
+                                                 :username (str first_name " " last_name)})))
 
-  (port/update-user-account (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                            (-> a-user :user :user-id)
-                            {:email (format "a%s@a%s.com" (random-uuid) (random-uuid))})
+  (port.chat/update-user-account (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                 (-> a-user :user :user-id)
+                                 {:email (format "a%s@a%s.com" (random-uuid) (random-uuid))})
 
-  (port/get-user-info (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                      uniqueUserIdentifier
-                      {})
+  (port.chat/get-user-info (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                           uniqueUserIdentifier
+                           {})
 
-  (port/set-user-account-active-status (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                       uniqueUserIdentifier
-                                       false
-                                       {})
+  (port.chat/set-user-account-active-status (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                            uniqueUserIdentifier
+                                            false
+                                            {})
 
-  (port/set-user-account-active-status (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                       uniqueUserIdentifier
-                                       true
-                                       {})
+  (port.chat/set-user-account-active-status (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                            uniqueUserIdentifier
+                                            true
+                                            {})
 
-  @(def a-public-channel (port/create-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                                     {:name (str (random-uuid))}))
+  @(def a-public-channel (port.chat/create-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                                          {:name (str (random-uuid))}))
 
-  @(def a-private-channel (port/create-private-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                                       {:name (str (random-uuid))}))
+  @(def a-private-channel (port.chat/create-private-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                                            {:name (str (random-uuid))}))
 
-;; (not defined in the protocol)
+  ;; (not defined in the protocol)
   (create-discussion* (dev/component :gpml.boundary.adapter.chat/ds-chat)
                       {:room-id (-> a-public-channel :channel :id)
                        :name (str (random-uuid))})
 
-  (port/get-channel-discussions (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                (-> a-public-channel :channel :id))
+  (port.chat/get-channel-discussions (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                     (-> a-public-channel :channel :id))
 
-  (port/set-private-channel-custom-fields (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                          (-> a-public-channel :channel :id)
-                                          {:description (str (random-uuid))
-                                           :name (str (random-uuid))})
+  (port.chat/set-private-channel-custom-fields (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                               (-> a-public-channel :channel :id)
+                                               {:description (str (random-uuid))
+                                                :name (str (random-uuid))})
 
-  (port/add-user-to-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                   uniqueUserIdentifier
-                                   (-> a-public-channel :channel :id))
+  (port.chat/add-user-to-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                        uniqueUserIdentifier
+                                        (-> a-public-channel :channel :id))
 
-  (port/get-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                    (-> a-public-channel :channel :id))
+  (port.chat/get-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                         (-> a-public-channel :channel :id))
 
-  (port/add-user-to-private-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                    uniqueUserIdentifier
-                                    (-> a-private-channel :channel :id))
+  (port.chat/add-user-to-private-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                         uniqueUserIdentifier
+                                         (-> a-private-channel :channel :id))
 
-  @(def all-chanels (port/get-all-channels (dev/component :gpml.boundary.adapter.chat/ds-chat) {}))
+  @(def all-chanels (port.chat/get-all-channels (dev/component :gpml.boundary.adapter.chat/ds-chat) {}))
 
-  (port/get-user-joined-channels (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                 uniqueUserIdentifier)
+  (port.chat/get-user-joined-channels (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                      uniqueUserIdentifier)
 
-  (port/remove-user-from-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                 uniqueUserIdentifier
-                                 (-> a-public-channel :channel :id)
-                                 {})
+  (port.chat/remove-user-from-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                      uniqueUserIdentifier
+                                      (-> a-public-channel :channel :id)
+                                      {})
 
   ;; Should be smaller now
-  (-> (port/get-user-joined-channels (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                     uniqueUserIdentifier)
+  (-> (port.chat/get-user-joined-channels (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                          uniqueUserIdentifier)
       :channels
       count)
 
-  (port/delete-user-account (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                            uniqueUserIdentifier
-                            {})
+  (port.chat/delete-user-account (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                 uniqueUserIdentifier
+                                 {})
 
-  (port/delete-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                              (-> a-public-channel :channel :id))
+  (port.chat/delete-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                   (-> a-public-channel :channel :id))
 
-  (port/delete-private-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                               (-> a-private-channel :channel :id))
+  (port.chat/delete-private-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                    (-> a-private-channel :channel :id))
 
-  (doseq [{:keys [id]} (:channels (port/get-all-channels (dev/component :gpml.boundary.adapter.chat/ds-chat) {}))]
-    (port/delete-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                id)))
+  (doseq [{:keys [id]} (:channels (port.chat/get-all-channels (dev/component :gpml.boundary.adapter.chat/ds-chat) {}))]
+    (port.chat/delete-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                     id)))

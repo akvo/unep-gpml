@@ -1,6 +1,5 @@
 (ns gpml.boundary.port.chat
   (:require
-   [clojure.walk :as walk]
    [gpml.util.malli :as util.malli :refer [failure-with success-with]]
    [malli.util :as mu]))
 
