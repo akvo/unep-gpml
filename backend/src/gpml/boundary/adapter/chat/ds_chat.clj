@@ -45,20 +45,6 @@
    [:profilePic {:optional true} [:maybe string?]]
    [:username string?]])
 
-(def UserInfo
-  [:map {:closed true}
-   [:created :string]
-   [:created-using-api :boolean]
-   [:deactivated {:optional true} :boolean]
-   [:email :string]
-   [:external-user-id :string]
-   [:id :string]
-   [:is-moderator [:maybe :boolean]]
-   [:provisioned :boolean]
-   [:unique-user-identifier :string]
-   [:updated :string]
-   [:username [:maybe :string]]])
-
 (def CreatedUser
   [:map
    [:username string?]
@@ -80,10 +66,23 @@
   {:post [(check! UniqueUserIdentifier %)]}
   (str "dscuui_" (random-uuid)))
 
+(def user-info-keys
+  [:created
+   :created-using-api
+   :deactivated
+   :email
+   :external-user-id
+   :id
+   :is-moderator
+   :provisioned
+   :unique-user-identifier
+   :updated
+   :username])
+
 (defn get-user-info* [{:keys [logger api-key]} user-id _opts]
   {:pre  [(check! UniqueUserIdentifier user-id)]
    :post [(check! [:or
-                   (success-with :user UserInfo)
+                   (success-with :user port.chat/UserInfo)
                    (failure-with :error-details ErrorDetails)]
                   %)]}
   (let [{:keys [status body]}
@@ -97,17 +96,7 @@
       {:success? true
        ;; deactivated true is included for deactivated users (otherwise it's absent, unless it has been reactivated)
        :user     (select-keys (cske/transform-keys ->kebab-case body)
-                              [:created
-                               :created-using-api
-                               :deactivated
-                               :email
-                               :external-user-id
-                               :id
-                               :is-moderator
-                               :provisioned
-                               :unique-user-identifier
-                               :updated
-                               :username])}
+                              user-info-keys)}
       {:success?      false
        :reason        :failed-to-get-user-info
        :error-details body})))
@@ -320,7 +309,13 @@
               {:success? true
                :channel (-> (cske/transform-keys ->kebab-case channel)
                             (set/rename-keys {:room-id :id})
-                            (assoc :members  (cske/transform-keys ->kebab-case members))
+                            (assoc :members (update (cske/transform-keys ->kebab-case members)
+                                                    :data
+                                                    (fn [d]
+                                                      (into []
+                                                            (comp (map :user)
+                                                                  (map #(select-keys % user-info-keys)))
+                                                            d))))
                             (assoc :messages (cske/transform-keys ->kebab-case messages)))})))))))
 
 (def UserJoinedChanels
@@ -639,9 +634,11 @@
   (map->DSChat config))
 
 (comment
-  (let [{:keys [id email first_name last_name]} (dev/make-user! (format "a%s@a%s.com" (random-uuid) (random-uuid)))]
+  (let [{:keys [id email first_name last_name] :as sth} (dev/make-user! (format "a%s@a%s.com" (random-uuid) (random-uuid)))]
 
     @(def uniqueUserIdentifier (make-unique-user-identifier))
+
+    @(def stakeholder sth)
 
     @(def a-user (port.chat/create-user-account (dev/component :gpml.boundary.adapter.chat/ds-chat)
                                                 {:uniqueUserIdentifier uniqueUserIdentifier
@@ -658,6 +655,7 @@
                            uniqueUserIdentifier
                            {})
 
+  ;; XXX prefer service.chat/set-user-account-active-status so that the DB is updated
   (port.chat/set-user-account-active-status (dev/component :gpml.boundary.adapter.chat/ds-chat)
                                             uniqueUserIdentifier
                                             false
@@ -697,6 +695,10 @@
   (port.chat/add-user-to-private-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
                                          uniqueUserIdentifier
                                          (-> a-private-channel :channel :id))
+
+  ;; ->
+  (gpml.service.chat/get-channel-details (dev/config-component)
+                                         (-> a-public-channel :channel :id))
 
   @(def all-chanels (port.chat/get-all-channels (dev/component :gpml.boundary.adapter.chat/ds-chat) {}))
 

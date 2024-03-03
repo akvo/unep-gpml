@@ -15,35 +15,26 @@
    [:moderator-only-one-to-one-chat boolean?]
    [:enable-channels boolean?]])
 
-;; XXX consolidate with UserInfo
-(def Member
-  [:map
-   [:role-name :string]
-   #_[:id :string]
+(def UserInfo
+  [:map {:closed true}
    [:created :string]
-   #_[:customer :string]
-   #_[:v :int]
-   [:user
-    [:map
-     [:email :string]
-     #_[:parent-customer-account :string]
-     #_[:v :int]
-     [:updated :string]
-     [:provisioned :boolean]
-     [:username :string]
-     [:created :string]
-     [:created-using-api :boolean]
-     [:external-user-id :string]
-     [:id :string]
-     [:is-moderator :boolean]
-     [:unique-user-identifier :string]]]])
+   [:created-using-api :boolean]
+   [:deactivated {:optional true} :boolean]
+   [:email :string]
+   [:external-user-id :string]
+   [:id :string]
+   [:is-moderator [:maybe :boolean]]
+   [:provisioned :boolean]
+   [:unique-user-identifier :string]
+   [:updated :string]
+   [:username [:maybe :string]]])
 
 (def Members
   [:map
    [:limit :int]
    [:total :int]
    [:skip :int]
-   [:data [:vector Member]]])
+   [:data [:vector UserInfo]]])
 
 (def Messages
   [:map
