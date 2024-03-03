@@ -161,22 +161,16 @@
   (let [transactions
         [{:txn-fn
           (fn tx-get-channel [context]
-            (let [{:keys [channels success?] :as result} (port.chat/get-all-channels chat-adapter {})
-                  [channel] (when success?
-                              (assert channels)
-                              (filterv (fn [{:keys [id]}]
-                                         {:pre [id]}
-                                         (= id channel-id))
-                                       channels))]
-              (if success?
-                (assoc context :channel channel)
+            (let [result (port.chat/get-channel chat-adapter channel-id)]
+              (if (:success? result)
+                (assoc context :channel (:channel result))
                 (assoc context
                        :success? false
                        :reason :failed-to-get-channel
                        :error-details {:result result}))))}
          {:txn-fn
-          (fn tx-get-channel-discussions [{:keys [channel] :as context}]
-            (let [result (port.chat/get-channel-discussions chat-adapter (:id channel))]
+          (fn tx-get-channel-discussions [context]
+            (let [result (port.chat/get-channel-discussions chat-adapter channel-id)]
               (if (:success? result)
                 (assoc-in context [:channel :discussions] (:discussions result))
                 (assoc context
@@ -185,14 +179,25 @@
                        :error-details {:result result}))))}
          {:txn-fn
           (fn tx-get-channel-users [{:keys [channel] :as context}]
-            (let [chat-accounts-ids (map :id (:users channel))
+            (let [chat-accounts-ids (->> channel
+                                         :members
+                                         :data
+                                         (mapv :unique-user-identifier))
                   search-opts {:related-entities #{:organisation :picture-file}
                                :filters {:chat-accounts-ids chat-accounts-ids}}
                   result (try
-                           {:success? true
-                            :stakeholders (db.sth/get-stakeholders (:spec db)
-                                                                   search-opts)}
+                           (if (seq chat-accounts-ids)
+                             {:success? true
+                              :stakeholders (db.sth/get-stakeholders (:spec db)
+                                                                     ;; how do these work?
+                                                                     ;; XXX should trigger --~(when (seq (get-in params [:filters :chat-accounts-ids])) " AND s.chat_account_id IN (:v*:filters.chat-accounts-ids)")
+                                                                     search-opts)}
+                             (do
+                               (log logger :warn :empty-chat-accounts-ids)
+                               {:success? true
+                                :stakeholders []}))
                            (catch Exception t
+                             (log logger :error :could-not-get-stakeholders t)
                              {:success? false
                               :reason :exception
                               :error-details {:msg (ex-message t)}}))]

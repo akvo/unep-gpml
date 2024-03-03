@@ -54,6 +54,9 @@
 (defn component [c]
   (get system c))
 
+(defn config-component []
+  (get system [:duct/const :gpml.config/common]))
+
 (defn logger []
   (component :duct.logger/timbre))
 

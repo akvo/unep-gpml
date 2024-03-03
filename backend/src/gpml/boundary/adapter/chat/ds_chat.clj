@@ -7,7 +7,7 @@
    [clojure.set :as set]
    [clojure.string :as string]
    [duct.logger :refer [log]]
-   [gpml.boundary.port.chat :as port]
+   [gpml.boundary.port.chat :as port.chat]
    [gpml.util :refer [url?]]
    [gpml.util.http-client :as http-client]
    [gpml.util.json :as json]
@@ -45,20 +45,6 @@
    [:profilePic {:optional true} [:maybe string?]]
    [:username string?]])
 
-(def UserInfo
-  [:map {:closed true}
-   [:created :string]
-   [:created-using-api :boolean]
-   [:deactivated {:optional true} :boolean]
-   [:email :string]
-   [:external-user-id :string]
-   [:id :string]
-   [:is-moderator [:maybe :boolean]]
-   [:provisioned :boolean]
-   [:unique-user-identifier :string]
-   [:updated :string]
-   [:username [:maybe :string]]])
-
 (def CreatedUser
   [:map
    [:username string?]
@@ -80,10 +66,23 @@
   {:post [(check! UniqueUserIdentifier %)]}
   (str "dscuui_" (random-uuid)))
 
+(def user-info-keys
+  [:created
+   :created-using-api
+   :deactivated
+   :email
+   :external-user-id
+   :id
+   :is-moderator
+   :provisioned
+   :unique-user-identifier
+   :updated
+   :username])
+
 (defn get-user-info* [{:keys [logger api-key]} user-id _opts]
   {:pre  [(check! UniqueUserIdentifier user-id)]
    :post [(check! [:or
-                   (success-with :user UserInfo)
+                   (success-with :user port.chat/UserInfo)
                    (failure-with :error-details ErrorDetails)]
                   %)]}
   (let [{:keys [status body]}
@@ -97,17 +96,7 @@
       {:success? true
        ;; deactivated true is included for deactivated users (otherwise it's absent, unless it has been reactivated)
        :user     (select-keys (cske/transform-keys ->kebab-case body)
-                              [:created
-                               :created-using-api
-                               :deactivated
-                               :email
-                               :external-user-id
-                               :id
-                               :is-moderator
-                               :provisioned
-                               :unique-user-identifier
-                               :updated
-                               :username])}
+                              user-info-keys)}
       {:success?      false
        :reason        :failed-to-get-user-info
        :error-details body})))
@@ -260,24 +249,8 @@
    [:moderator_only_one_to_one_chat boolean?]
    [:enable_channels boolean?]])
 
-(def ChannelS ;; TODO https://clojurians.slack.com/archives/CLDK6MFMK/p1709154587503499
-  [:sequential
-   [:map
-    [:show-notification-for-all-channels boolean?]
-    [:name string?]
-    [:enable-like-message boolean?]
-    [:id string?]
-    [:enable-one-to-one-chat boolean?]
-    [:password-protected boolean?]
-    [:default-notification-enabled boolean?]
-    [:moderator-only-one-to-one-chat boolean?]
-    [:enable-channels boolean?]]])
-
 (defn get-all-channels* [{:keys [logger api-key]} _opts]
-  {:post [(check! [:or
-                   (success-with :channels ChannelS)
-                   (failure-with :error-details ErrorDetails)]
-                  %)]}
+  {:post [(check! #'port.chat/get-all-channels %)]}
   (let [{:keys [status body]}
         (http-client/request logger
                              {:url (build-api-endpoint-url "/api/v1/chatrooms")
@@ -294,6 +267,56 @@
                          (set/rename-keys (cske/transform-keys ->kebab-case channel)
                                           {:room-id :id}))
                        body)})))
+
+(defn get-channel* [{:keys [logger api-key]} channel-id]
+  {:pre  [(check! RoomId channel-id)]
+   :post [(check! #'port.chat/get-channel %)]}
+  (let [{:keys [status]
+         channel :body}
+        (http-client/request logger
+                             {:url (build-api-endpoint-url "/api/v1/chatroom/" channel-id)
+                              :method :get
+                              :query-params {:auth api-key}
+                              :as :json-keyword-keys})]
+    (if-not (<= 200 status 299)
+      {:success? false
+       :reason :failed-to-get-channels
+       :error-details {:result channel}}
+      (let [{:keys [status]
+             members :body}
+            (http-client/request logger
+                                 {:url (build-api-endpoint-url "/api/v2/room/" channel-id "/members")
+                                  :method :get
+                                  :query-params {:auth api-key
+                                                 :limit "200"}
+                                  :as :json-keyword-keys})]
+        (if-not (<= 200 status 299)
+          {:success? false
+           :reason :failed-to-get-members
+           :error-details {:result members}}
+          (let [{:keys [status]
+                 messages :body}
+                (http-client/request logger
+                                     {:url (build-api-endpoint-url "/api/v1/chatRoom/" channel-id "/messages")
+                                      :method :get
+                                      :query-params {:auth api-key
+                                                     :limit "1"}
+                                      :as :json-keyword-keys})]
+            (if-not (<= 200 status 299)
+              {:success? false
+               :reason :failed-to-get-messages
+               :error-details {:result messages}}
+              {:success? true
+               :channel (-> (cske/transform-keys ->kebab-case channel)
+                            (set/rename-keys {:room-id :id})
+                            (assoc :members (update (cske/transform-keys ->kebab-case members)
+                                                    :data
+                                                    (fn [d]
+                                                      (into []
+                                                            (comp (map :user)
+                                                                  (map #(select-keys % user-info-keys)))
+                                                            d))))
+                            (assoc :messages (cske/transform-keys ->kebab-case messages)))})))))))
 
 (def UserJoinedChanels
   [:sequential
@@ -585,131 +608,124 @@
                   [:logger some?]]
                  m)]}
   (with-meta m
-    {`port/add-user-to-private-channel       add-user-to-channel* ;; 7
-     `port/add-user-to-public-channel        add-user-to-channel* ;; 6
-     `port/create-private-channel            create-private-channel* ;; 3
-     `port/create-public-channel             create-public-channel* ;; 2
-     `port/create-user-account               create-user-account* ;; 1
-     `port/delete-private-channel            delete-channel* ;; 5
-     `port/delete-public-channel             delete-channel* ;; 4
-     `port/delete-user-account               delete-user-account* ;; 10
-     `port/get-all-channels                  get-all-channels* ;; 8
-     `port/get-private-channels              get-all-channels*
-     `port/get-public-channels               get-all-channels*
-     `port/get-channel-discussions           get-channel-discussions*
-     `port/get-user-info                     get-user-info* ;; 11
-     `port/get-user-joined-channels          get-user-joined-channels* ;; 9
-     `port/remove-user-from-channel          remove-user-from-channel* ;; 12
-     `port/set-private-channel-custom-fields set-channel-custom-fields* ;; 15
-     `port/set-public-channel-custom-fields  set-channel-custom-fields*
-     `port/set-user-account-active-status    set-user-account-active-status* ;; 13
-     `port/update-user-account               update-user-account* ;; 14
-     }))
+    {`port.chat/add-user-to-private-channel       add-user-to-channel*
+     `port.chat/add-user-to-public-channel        add-user-to-channel*
+     `port.chat/create-private-channel            create-private-channel*
+     `port.chat/create-public-channel             create-public-channel*
+     `port.chat/create-user-account               create-user-account*
+     `port.chat/delete-private-channel            delete-channel*
+     `port.chat/delete-public-channel             delete-channel*
+     `port.chat/delete-user-account               delete-user-account*
+     `port.chat/get-channel                       get-channel*
+     `port.chat/get-all-channels                  get-all-channels*
+     `port.chat/get-private-channels              get-all-channels*
+     `port.chat/get-public-channels               get-all-channels*
+     `port.chat/get-channel-discussions           get-channel-discussions*
+     `port.chat/get-user-info                     get-user-info*
+     `port.chat/get-user-joined-channels          get-user-joined-channels*
+     `port.chat/remove-user-from-channel          remove-user-from-channel*
+     `port.chat/set-private-channel-custom-fields set-channel-custom-fields*
+     `port.chat/set-public-channel-custom-fields  set-channel-custom-fields*
+     `port.chat/set-user-account-active-status    set-user-account-active-status*
+     `port.chat/update-user-account               update-user-account*}))
 
 (defmethod ig/init-key :gpml.boundary.adapter.chat/ds-chat
   [_ config]
   (map->DSChat config))
 
 (comment
-
-  ;; 1
-  (let [{:keys [id email first_name last_name]} (dev/make-user! (format "a%s@a%s.com" (random-uuid) (random-uuid)))]
+  (let [{:keys [id email first_name last_name] :as sth} (dev/make-user! (format "a%s@a%s.com" (random-uuid) (random-uuid)))]
 
     @(def uniqueUserIdentifier (make-unique-user-identifier))
 
-    @(def a-user (port/create-user-account (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                           {:uniqueUserIdentifier uniqueUserIdentifier
-                                            :externalUserId (str id)
-                                            :isModerator false
-                                            :email email
-                                            :username (str first_name " " last_name)})))
+    @(def stakeholder sth)
 
-  ;; 14
-  (port/update-user-account (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                            (-> a-user :user :user-id)
-                            {:email (format "a%s@a%s.com" (random-uuid) (random-uuid))})
+    @(def a-user (port.chat/create-user-account (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                                {:uniqueUserIdentifier uniqueUserIdentifier
+                                                 :externalUserId (str id)
+                                                 :isModerator false
+                                                 :email email
+                                                 :username (str first_name " " last_name)})))
 
-  ;; 11
-  (port/get-user-info (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                      uniqueUserIdentifier
-                      {})
+  (port.chat/update-user-account (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                 (-> a-user :user :user-id)
+                                 {:email (format "a%s@a%s.com" (random-uuid) (random-uuid))})
 
-  ;; 13
-  (port/set-user-account-active-status (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                       uniqueUserIdentifier
-                                       false
-                                       {})
+  (port.chat/get-user-info (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                           uniqueUserIdentifier
+                           {})
 
-  ;; 13
-  (port/set-user-account-active-status (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                       uniqueUserIdentifier
-                                       true
-                                       {})
+  ;; XXX prefer service.chat/set-user-account-active-status so that the DB is updated
+  (port.chat/set-user-account-active-status (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                            uniqueUserIdentifier
+                                            false
+                                            {})
 
-  ;; 2
-  @(def a-public-channel (port/create-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                                     {:name (str (random-uuid))}))
+  (port.chat/set-user-account-active-status (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                            uniqueUserIdentifier
+                                            true
+                                            {})
 
-  ;; 3
-  @(def a-private-channel (port/create-private-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                                       {:name (str (random-uuid))}))
+  @(def a-public-channel (port.chat/create-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                                          {:name (str (random-uuid))}))
+
+  @(def a-private-channel (port.chat/create-private-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                                            {:name (str (random-uuid))}))
 
   ;; (not defined in the protocol)
   (create-discussion* (dev/component :gpml.boundary.adapter.chat/ds-chat)
                       {:room-id (-> a-public-channel :channel :id)
                        :name (str (random-uuid))})
 
-  (port/get-channel-discussions (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                (-> a-public-channel :channel :id))
+  (port.chat/get-channel-discussions (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                     (-> a-public-channel :channel :id))
 
-  ;; 15
-  (port/set-private-channel-custom-fields (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                          (-> a-public-channel :channel :id)
-                                          {:description (str (random-uuid))
-                                           :name (str (random-uuid))})
+  (port.chat/set-private-channel-custom-fields (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                               (-> a-public-channel :channel :id)
+                                               {:description (str (random-uuid))
+                                                :name (str (random-uuid))})
 
-  ;; 6
-  (port/add-user-to-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                   uniqueUserIdentifier
-                                   (-> a-public-channel :channel :id))
+  (port.chat/add-user-to-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                        uniqueUserIdentifier
+                                        (-> a-public-channel :channel :id))
 
-  ;; 7
-  (port/add-user-to-private-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                    uniqueUserIdentifier
-                                    (-> a-private-channel :channel :id))
+  (port.chat/get-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                         (-> a-public-channel :channel :id))
 
-  ;; 8
-  @(def all-chanels (port/get-all-channels (dev/component :gpml.boundary.adapter.chat/ds-chat) {}))
+  (port.chat/add-user-to-private-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                         uniqueUserIdentifier
+                                         (-> a-private-channel :channel :id))
 
-  ;; 9
-  (port/get-user-joined-channels (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                 uniqueUserIdentifier)
+  ;; ->
+  (gpml.service.chat/get-channel-details (dev/config-component)
+                                         (-> a-public-channel :channel :id))
 
-  ;; 12
-  (port/remove-user-from-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                 uniqueUserIdentifier
-                                 (-> a-public-channel :channel :id)
-                                 {})
+  @(def all-chanels (port.chat/get-all-channels (dev/component :gpml.boundary.adapter.chat/ds-chat) {}))
+
+  (port.chat/get-user-joined-channels (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                      uniqueUserIdentifier)
+
+  (port.chat/remove-user-from-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                      uniqueUserIdentifier
+                                      (-> a-public-channel :channel :id)
+                                      {})
 
   ;; Should be smaller now
-  (-> (port/get-user-joined-channels (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                     uniqueUserIdentifier)
+  (-> (port.chat/get-user-joined-channels (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                          uniqueUserIdentifier)
       :channels
       count)
 
-  ;; 10
-  (port/delete-user-account (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                            uniqueUserIdentifier
-                            {})
+  (port.chat/delete-user-account (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                 uniqueUserIdentifier
+                                 {})
 
-  ;; 4
-  (port/delete-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                              (-> a-public-channel :channel :id))
+  (port.chat/delete-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                   (-> a-public-channel :channel :id))
 
-  ;; 5
-  (port/delete-private-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                               (-> a-private-channel :channel :id))
+  (port.chat/delete-private-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                    (-> a-private-channel :channel :id))
 
-  (doseq [{:keys [id]} (:channels (port/get-all-channels (dev/component :gpml.boundary.adapter.chat/ds-chat) {}))]
-    (port/delete-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                id)))
+  (doseq [{:keys [id]} (:channels (port.chat/get-all-channels (dev/component :gpml.boundary.adapter.chat/ds-chat) {}))]
+    (port.chat/delete-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                     id)))
