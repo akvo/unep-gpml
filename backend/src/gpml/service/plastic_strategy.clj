@@ -130,17 +130,21 @@
                  :chat-channel-name (:chat-channel-name ps-payload)}]
     (tht/thread-transactions logger transactions context)))
 
-(defn create-plastic-strategies [config pses-payload]
+(defn create-plastic-strategies [{:keys [logger] :as config} pses-payload]
   (let [results (mapv (partial create-plastic-strategy config) pses-payload)]
     (if (every? :success? results)
-      {:success? true
-       :channels (mapv :channel results)}
-      {:success? false
-       :reason :failed-to-create-all-plastic-strategies
-       :error-details {:msg "Partial failure"
-                       :failed-results (into []
-                                             (remove :success?)
-                                             results)}})))
+      (do
+        (log logger :info :successfully-created-plastic-strategies)
+        {:success? true
+         :channels (mapv :channel results)})
+      (do
+        (log logger :wrn :could-not-create-plastic-strategies)
+        {:success? false
+         :reason :failed-to-create-all-plastic-strategies
+         :error-details {:msg "Partial failure"
+                         :failed-results (into []
+                                               (remove :success?)
+                                               results)}}))))
 
 (defn setup-invited-plastic-strategy-user [{:keys [db logger] :as config} user-id]
   (let [transactions

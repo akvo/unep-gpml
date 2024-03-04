@@ -264,8 +264,6 @@
                         :method :post
                         :as :json-keyword-keys})
 
-  ;; 2.
-
   ;; create PSs so that a public chat will be created:
   @(def channel (http-client/request (dev/logger)
                                      {:url "http://localhost:3000/api/programmatic/plastic-strategy"
@@ -283,26 +281,22 @@
 
   @(def channel-id (-> channel :body :channels first :id))
 
-  (http-client/request (dev/logger)
-                       {:url (str "http://localhost:3000/api/chat/channel/details/" channel-id)
-                        :as :json-keyword-keys})
-
-  ;; 8
-  (http-client/request (dev/logger)
-                       {:url "http://localhost:3000/api/chat/channel/all"
-                        :as :json-keyword-keys})
-
-  ;; 6
   (port.chat/add-user-to-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
                                         (:chat_account_id (gpml.db.stakeholder/stakeholder-by-email (dev/conn) {:email "abc@abc.net"}))
                                         channel-id)
 
-  ;; 9
+  (http-client/request (dev/logger)
+                       {:url (str "http://localhost:3000/api/chat/channel/details/" channel-id)
+                        :as :json-keyword-keys})
+
+  (http-client/request (dev/logger)
+                       {:url "http://localhost:3000/api/chat/channel/all"
+                        :as :json-keyword-keys})
+
   (http-client/request (dev/logger)
                        {:url "http://localhost:3000/api/chat/user/channel"
                         :as :json-keyword-keys})
 
-  ;; 12
   (http-client/request (dev/logger)
                        {:url "http://localhost:3000/api/chat/channel/leave"
                         :method :post
