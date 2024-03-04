@@ -107,7 +107,9 @@
   "Adds, over the original `#'sentry/sentry-appender`,
   the ability to skip messages that don't contain exceptions.
 
-  It also preserves `:file` and `:line` info."
+  It also preserves `:file` and `:line` info.
+
+  Finally, it also propagates the `:context`."
   [dsn & [opts]]
   (let [{:keys [event-fn] :or {event-fn identity}} opts
         base-event
@@ -138,7 +140,11 @@
                        :line    ?line
                        :level   (get @#'sentry/timbre->sentry-levels level)}
                       (when extra
-                        {:extra extra}))
+                        {:extra extra})
+                      (when-let [c (-> context
+                                       (dissoc :ex-data)
+                                       not-empty)]
+                        {:context c}))
 
                (if ?err
                  (interfaces/stacktrace event ?err)
