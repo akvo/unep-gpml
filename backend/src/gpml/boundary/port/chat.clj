@@ -36,11 +36,18 @@
    [:skip :int]
    [:data [:vector UserInfo]]])
 
+(def Message
+  [:map {:closed true}
+   [:message :string]
+   [:created :string]
+   [:chat-account-id :string]
+   [:username :string]])
+
 (def Messages
   [:map
    [:limit :int]
    [:total-records :int]
-   [:messages [:vector :any]]
+   [:messages [:vector Message]]
    [:count :int]
    [:skip :int]])
 

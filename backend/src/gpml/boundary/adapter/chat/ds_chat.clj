@@ -316,7 +316,15 @@
                                                             (comp (map :user)
                                                                   (map #(select-keys % user-info-keys)))
                                                             d))))
-                            (assoc :messages (cske/transform-keys ->kebab-case messages)))})))))))
+                            (assoc :messages (update (cske/transform-keys ->kebab-case messages)
+                                                     :messages
+                                                     (fn [messages]
+                                                       (mapv (fn [{:keys [message created user]}]
+                                                               {:message message
+                                                                :created created
+                                                                :chat-account-id (:unique-user-identifier user)
+                                                                :username (:username user)})
+                                                             messages)))))})))))))
 
 (def UserJoinedChanels
   [:sequential
@@ -634,28 +642,23 @@
   (map->DSChat config))
 
 (comment
-  (let [{:keys [id email first_name last_name] :as sth} (dev/make-user! (format "a%s@a%s.com" (random-uuid) (random-uuid)))]
+  (let [{:keys [id]} (dev/make-user! (format "a%s@a%s.com" (random-uuid) (random-uuid)))]
 
-    @(def uniqueUserIdentifier (make-unique-user-identifier))
+    @(def a-user
+       ;; exercises port.chat/create-user-account while also persisting the result to the DB:
+       (gpml.service.chat/create-user-account (dev/config-component)
+                                              id))
 
-    @(def stakeholder sth)
-
-    @(def a-user (port.chat/create-user-account (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                                {:uniqueUserIdentifier uniqueUserIdentifier
-                                                 :externalUserId (str id)
-                                                 :isModerator false
-                                                 :email email
-                                                 :username (str first_name " " last_name)})))
+    @(def uniqueUserIdentifier (-> a-user :stakeholder :chat-account-id)))
 
   (port.chat/update-user-account (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                 (-> a-user :user :user-id)
+                                 (-> a-user :stakeholder :id)
                                  {:email (format "a%s@a%s.com" (random-uuid) (random-uuid))})
 
   (port.chat/get-user-info (dev/component :gpml.boundary.adapter.chat/ds-chat)
                            uniqueUserIdentifier
                            {})
 
-  ;; XXX prefer service.chat/set-user-account-active-status so that the DB is updated
   (port.chat/set-user-account-active-status (dev/component :gpml.boundary.adapter.chat/ds-chat)
                                             uniqueUserIdentifier
                                             false
@@ -666,6 +669,7 @@
                                             true
                                             {})
 
+  ;;
   @(def a-public-channel (port.chat/create-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
                                                           {:name (str (random-uuid))}))
 
@@ -685,9 +689,13 @@
                                                {:description (str (random-uuid))
                                                 :name (str (random-uuid))})
 
+  ;;
   (port.chat/add-user-to-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
                                         uniqueUserIdentifier
                                         (-> a-public-channel :channel :id))
+
+  ;;
+  (println (format "https://deadsimplechat.com/%s?uniqueUserIdentifier=%s" (-> a-public-channel :channel :id) uniqueUserIdentifier))
 
   (port.chat/get-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
                          (-> a-public-channel :channel :id))
@@ -696,7 +704,7 @@
                                          uniqueUserIdentifier
                                          (-> a-private-channel :channel :id))
 
-  ;; ->
+  ;;
   (gpml.service.chat/get-channel-details (dev/config-component)
                                          (-> a-public-channel :channel :id))
 
