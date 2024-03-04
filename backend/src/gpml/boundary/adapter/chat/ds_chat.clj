@@ -25,7 +25,6 @@
                  [:fn (fn [s]
                         (not (string/starts-with? s "dscuui_")))]]))
 
-;; XXX validate as uuid?
 (def ExternalUserId
   (malli/schema [:string {:doc "Our id - used for easily correlating our User objects to theirs"}]))
 

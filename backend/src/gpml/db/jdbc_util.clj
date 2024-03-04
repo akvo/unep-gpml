@@ -3,7 +3,8 @@
    [camel-snake-kebab.core :refer [->kebab-case ->snake_case]]
    [camel-snake-kebab.extras :as cske]
    [clojure.string :as str]
-   [medley.core :as medley])
+   [medley.core :as medley]
+   [taoensso.timbre :as timbre])
   (:import
    (java.sql SQLException)))
 
@@ -29,6 +30,7 @@
   (try
     (body-fn)
     (catch SQLException e
+      (timbre/error e)
       (if-let [reason (:error-reason (medley/find-first
                                       (partial is-constraint-violation? e)
                                       constraints))]
@@ -38,10 +40,11 @@
         {:success? false
          :reason :unknown-sql-error
          :error-details {:msg (ex-message e)}}))
-    (catch Exception t
+    (catch Exception e
+      (timbre/error e)
       {:success? false
        :reason :exception
-       :error-details {:msg (ex-message t)}})))
+       :error-details {:msg (ex-message e)}})))
 
 (defmacro with-constraint-violation-check
   {:style/indent 1}

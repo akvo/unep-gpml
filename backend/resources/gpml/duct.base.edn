@@ -713,6 +713,7 @@
                                                                      :secret    #duct/env ["AUTH0_BACKEND_SECRET" Str]}
  [:duct/const :gpml.config/common]
  {:db                                  #ig/ref :duct.database/sql
+  :hikari                              #ig/ref :duct.database.sql/hikaricp
   :logger                              #ig/ref :duct/logger
   :scheduler                           #ig/ref :gpml/scheduler
   :storage-client-adapter              #ig/ref :gpml.boundary.adapter.storage-client.gcs/client
