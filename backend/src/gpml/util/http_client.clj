@@ -111,6 +111,7 @@
          (log logger :info :requesting logged-req)
          (let [response (client/request (merge req {:content-type :json
                                                     :connection-timeout timeout
+                                                    :connection-request-timeout timeout
                                                     :socket-timeout timeout
                                                     :throw-exceptions false}))]
            (timbre/with-context+ {:response response}
