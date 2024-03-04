@@ -4,6 +4,7 @@
    [camel-snake-kebab.extras :as cske]
    [gpml.boundary.adapter.chat.ds-chat :as ds-chat]
    [gpml.boundary.port.chat :as port.chat]
+   [gpml.db :as db]
    [gpml.db.stakeholder :as db.stakeholder]
    [gpml.handler.resource.permission :as h.r.permission]
    [gpml.handler.responses :as r]
@@ -139,13 +140,92 @@
            :responses {:200 {:body (success-with :channels [:sequential ds-chat/Channel])}
                        :500 {:body (failure-with)}}}}]])
 
+(def ChannelIdPath {:path [:map
+                           [:id
+                            {:swagger {:description "The channel ID."
+                                       :type "string"
+                                       :allowEmptyValue false}}
+                            [:string {:min 1}]]]})
+
 (defmethod ig/init-key :gpml.handler.chat/dcs-channel-routes
   [_ {:keys [middleware]
-      {:keys [logger] :as config} :config}]
+      {:keys [logger hikari] :as config} :config}]
   {:pre [(vector? middleware)
          (seq config)
+         hikari
          logger]}
   ["/channel"
+   ["/input-box/{id}"
+    {:get {:summary    "Gets the input box status for a given channel. Returns false by default (including for non-existing channels)."
+           :middleware middleware
+           :swagger    {:tags ["chat"]}
+           :handler    (fn [{{:keys [id]} :user
+                             {{channel-id :id} :path} :parameters}]
+                         {:pre [id channel-id]}
+                         (let [{:keys [enabled]} (db/execute-one! hikari {:select :enabled
+                                                                          :from :chat_channel_input_box
+                                                                          :where [:and
+                                                                                  [:= :stakeholder_id id]
+                                                                                  [:= :chat_channel_id channel-id]]})]
+                           (r/ok {:enabled (boolean enabled)
+                                  :success? true})))
+           :parameters ChannelIdPath
+           :responses {:200 {:body (success-with :enable :boolean)}
+                       :500 {:body (failure-with)}}}}]
+   ["/input-box/{id}/enable"
+    {:post {:summary    "Marks the current user as having enabled the input box for a given channel.
+Does not imply joining a channel - please treat that concern independently."
+            :middleware middleware
+            :swagger    {:tags ["chat"]}
+            :handler    (fn [{{:keys [id]} :user
+                              {{channel-id :id} :path} :parameters}]
+                          {:pre [id channel-id]}
+                          (let [where [:and
+                                       [:= :stakeholder_id id]
+                                       [:= :chat_channel_id channel-id]]
+                                {:keys [enabled] :as enable} (db/execute-one! hikari {:select :enabled
+                                                                                      :from :chat_channel_input_box
+                                                                                      :where where})]
+                            (when (nil? enable)
+                              (db/execute-one! hikari {:insert-into :chat_channel_input_box
+                                                       :values [{:stakeholder_id id
+                                                                 :chat_channel_id channel-id
+                                                                 :enabled true}]}))
+                            (when (false? enabled)
+                              (db/execute-one! hikari {:update :chat_channel_input_box
+                                                       :set {:enabled true}
+                                                       :where where}))
+                            (r/ok {:success? true})))
+            :parameters ChannelIdPath
+            :responses {:200 {:body (success-with)}
+                        :500 {:body (failure-with)}}}}]
+   ["/input-box/{id}/disable"
+    {:post {:summary    "Marks the current user as having disabled the input box for a given channel.
+Does not imply leaving a channel - please treat that concern independently."
+            :middleware middleware
+            :swagger    {:tags ["chat"]}
+            :handler    (fn [{{:keys [id]} :user
+                              {{channel-id :id} :path} :parameters}]
+                          {:pre [id channel-id]}
+                          (let [where [:and
+                                       [:= :stakeholder_id id]
+                                       [:= :chat_channel_id channel-id]]
+                                {:keys [enabled] :as enable} (db/execute-one! hikari {:select :enabled
+                                                                                      :from :chat_channel_input_box
+                                                                                      :where where})]
+                            (when (nil? enable)
+                              (db/execute-one! hikari {:insert-into :chat_channel_input_box
+                                                       :values [{:stakeholder_id id
+                                                                 :chat_channel_id channel-id
+                                                                 :enabled true}]}))
+                            (when (true? enabled)
+                              (db/execute-one! hikari {:update :chat_channel_input_box
+                                                       :set {:enabled false}
+                                                       :where where}))
+                            (r/ok {:success? true})))
+            :parameters ChannelIdPath
+            :responses {:200 {:body (success-with)}
+                        :500 {:body (failure-with)}}}}]
    ["/leave"
     {:post {:summary    "Remove the callee user from the channel"
             :middleware middleware
@@ -180,12 +260,7 @@
                             (if (:success? result)
                               (r/ok (cske/transform-keys ->snake_case result))
                               (-> result present-error r/server-error))))
-            :parameters {:path [:map
-                                [:id
-                                 {:swagger {:description "The channel ID."
-                                            :type "string"
-                                            :allowEmptyValue false}}
-                                 [:string {:min 1}]]]}
+            :parameters ChannelIdPath
             :responses {:200 {:body (success-with #_[:channel ds-chat/Channel])} ;; n.b. returns channels + users.
                         :500 {:body (failure-with)}}}}]]
    ["/private"

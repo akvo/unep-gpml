@@ -1,28 +1,31 @@
+#!/usr/bin/env bash
+set -Eeuxo pipefail
+
 MIGRATION_PATH="./resources/migrations/"
 
 pushd $(dirname $0)
 
 if [ -z "$1" ]
-  then
-    echo "No argument supplied"
-    exit 0
+then
+  echo "No argument supplied"
+  exit 0
 fi
 LAST_MGR=$(ls -l $MIGRATION_PATH |\
-    tail -1 |\
-    awk '{ s=""; for (i=9;i<=NF;i++) { s = s""$i }; print s}' |\
-    cut -d '-' -f 1
-)
+             tail -1 |\
+             awk '{ s=""; for (i=9;i<=NF;i++) { s = s""$i }; print s}' |\
+             cut -d '-' -f 1
+        )
 
 NEW_MGR=$(expr ${LAST_MGR} + 1)
 if [ ${NEW_MGR} -le "100" ]; then
-    NEW_MGR=$(echo "0${NEW_MGR}")
+  NEW_MGR=$(echo "0${NEW_MGR}")
 elif [ ${NEW_MGR} -le "10"]; then
-    NEW_MGR=$(echo "00${NEW_MGR}")
+  NEW_MGR=$(echo "00${NEW_MGR}")
 fi
 NEW_MGR=$(echo "${NEW_MGR} $@" | sed 's/\ /\-/g')
 
-for ud in "up" "down"
+for ud in "up"
 do
-    touch "${MIGRATION_PATH}${NEW_MGR}.${ud}.sql"
-    echo "CREATED ${NEW_MGR}.${ud}.sql"
+  touch "${MIGRATION_PATH}${NEW_MGR}.${ud}.sql"
+  echo "CREATED ${NEW_MGR}.${ud}.sql"
 done
