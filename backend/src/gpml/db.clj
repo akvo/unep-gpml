@@ -1,7 +1,10 @@
 (ns gpml.db
   (:require
    [clojure.java.jdbc :as jdbc]
-   [integrant.core :as ig])
+   [honey.sql]
+   [integrant.core :as ig]
+   [next.jdbc]
+   [next.jdbc.result-set])
   (:import
    (org.postgresql.jdbc PgArray)))
 
@@ -12,3 +15,14 @@
   PgArray
   (result-set-read-column [pgobj _metadata _i]
     (vec (.getArray pgobj))))
+
+;; XXX SQL logging
+(defn execute! [hikari honey-data]
+  (next.jdbc/execute! (-> hikari :spec :datasource)
+                      (honey.sql/format honey-data)
+                      {:builder-fn next.jdbc.result-set/as-unqualified-kebab-maps}))
+
+(defn execute-one! [hikari honey-data]
+  (next.jdbc/execute-one! (-> hikari :spec :datasource)
+                          (honey.sql/format honey-data)
+                          {:builder-fn next.jdbc.result-set/as-unqualified-kebab-maps}))

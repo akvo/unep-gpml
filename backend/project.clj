@@ -23,6 +23,8 @@
                  [com.fasterxml.jackson.dataformat/jackson-dataformat-cbor ~jackson-version]
                  [com.fasterxml.jackson.datatype/jackson-datatype-jsr310 ~jackson-version]
                  [com.fasterxml.jackson.dataformat/jackson-dataformat-smile ~jackson-version]
+                 [com.github.seancorfield/honeysql "2.5.1103"]
+                 [com.github.seancorfield/next.jdbc "1.3.909"]
                  [com.google.cloud.sql/postgres-socket-factory "1.16.0"]
                  [com.google.cloud/google-cloud-storage "2.34.0" :exclusions [com.google.guava/failureaccess
                                                                               org.checkerframework/checker-qual]]
@@ -100,9 +102,7 @@
                      :report clojure.test/report}}
    :dev  {:source-paths   ["dev/src"]
           :resource-paths ["dev/resources"]
-          :dependencies   [[com.github.seancorfield/honeysql "2.5.1103"]
-                           [com.github.seancorfield/next.jdbc "1.3.909"]
-                           [fipp "0.6.21"]
+          :dependencies   [[fipp "0.6.21"]
                            [hawk "0.2.11"]
                            [integrant/repl "0.3.2"]
                            [kerodon "0.9.1"]

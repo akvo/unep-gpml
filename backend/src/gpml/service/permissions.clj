@@ -1,6 +1,7 @@
 (ns gpml.service.permissions
   (:require
    [dev.gethop.rbac :as rbac]
+   [duct.logger :refer [log]]
    [gpml.db.rbac-util :as db.rbac-util]))
 
 (def root-app-resource-id 0)
@@ -11,13 +12,16 @@
 (def organisation-context-type :organisation)
 
 (defn- create-resource-context* [{:keys [conn logger]} {:keys [context-type resource-id parent-context-type parent-resource-id]}]
-  (let [{success? :success? parent-context :context} (rbac/get-context conn
-                                                                       logger
-                                                                       (or parent-context-type
-                                                                           root-app-context-type)
-                                                                       (or parent-resource-id
-                                                                           root-app-resource-id))]
-    (when (and success? parent-context)
+  (let [{success? :success?
+         parent-context :context
+         :as result} (rbac/get-context conn
+                                       logger
+                                       (or parent-context-type
+                                           root-app-context-type)
+                                       (or parent-resource-id
+                                           root-app-resource-id))]
+    (if-not (and success? parent-context)
+      (log logger :warn :will-not-create-context result)
       (let [new-context {:context-type-name context-type
                          :resource-id resource-id}]
         (rbac/create-context! conn logger new-context parent-context)))))
