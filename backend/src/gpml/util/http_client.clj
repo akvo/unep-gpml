@@ -100,11 +100,13 @@
                      :fallback fallback
                      :on-retry (fn [_ e]
                                  (timbre/with-context+ {:request-id request-id
-                                                        :request req}
+                                                        :request req
+                                                        :timeout timeout}
                                    (log logger :error :request-retry e)))
                      :on-failure (fn [_ e]
                                    (timbre/with-context+ {:request-id request-id
-                                                          :request req}
+                                                          :request req
+                                                          :timeout timeout}
                                      (log logger :error :request-failure e)))}
        (timbre/with-context+ {:request-id request-id
                               :request req}
