@@ -1,5 +1,6 @@
 {:duct.database.sql/hikaricp {:idle-timeout 10000
                               :minimum-idle 0
+                              :logger #ig/ref :duct/logger
                               :maximum-pool-size 1}
 
  :mocks.boundary.adapter.storage-client/local-file-system

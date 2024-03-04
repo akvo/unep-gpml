@@ -145,38 +145,41 @@
     (tht/thread-transactions logger transactions context)))
 
 (defn- add-users-pictures-urls [config users]
-  (map
-   (fn [user]
-     (if-not (seq (:picture_file user))
-       user
-       (let [{object-key :object_key visibility :visibility} (:picture_file user)
-             result (srv.file/get-file-url config {:object-key object-key
-                                                   :visibility (keyword visibility)})]
-         (if (:success? result)
-           (assoc user :picture (:url result))
-           user))))
-   users))
+  (mapv (fn [user]
+          (if-not (seq (:picture_file user))
+            user
+            (let [{object-key :object_key visibility :visibility} (:picture_file user)
+                  result (srv.file/get-file-url config {:object-key object-key
+                                                        :visibility (keyword visibility)})]
+              (if (:success? result)
+                (assoc user :picture (:url result))
+                user))))
+        users))
+
+(defn find-users-by-chat-account-id [db chat-account-ids]
+  (db.sth/get-stakeholders (:spec db)
+                           {:related-entities #{:organisation :picture-file}
+                            :filters {:chat-accounts-ids chat-account-ids}}))
+
+(defn present-user [user]
+  ;; Avoids returning sensitive data
+  (-> user
+      (select-keys [:role :tags :picture_file :first_name :picture_id :org :id :picture :organisation_role :last_name :country])))
 
 (defn get-channel-details [{:keys [db chat-adapter logger] :as config} channel-id]
   (let [transactions
         [{:txn-fn
           (fn tx-get-channel [context]
-            (let [{:keys [channels success?] :as result} (port.chat/get-all-channels chat-adapter {})
-                  [channel] (when success?
-                              (assert channels)
-                              (filterv (fn [{:keys [id]}]
-                                         {:pre [id]}
-                                         (= id channel-id))
-                                       channels))]
-              (if success?
-                (assoc context :channel channel)
+            (let [result (port.chat/get-channel chat-adapter channel-id)]
+              (if (:success? result)
+                (assoc context :channel (:channel result))
                 (assoc context
                        :success? false
                        :reason :failed-to-get-channel
                        :error-details {:result result}))))}
          {:txn-fn
-          (fn tx-get-channel-discussions [{:keys [channel] :as context}]
-            (let [result (port.chat/get-channel-discussions chat-adapter (:id channel))]
+          (fn tx-get-channel-discussions [context]
+            (let [result (port.chat/get-channel-discussions chat-adapter channel-id)]
               (if (:success? result)
                 (assoc-in context [:channel :discussions] (:discussions result))
                 (assoc context
@@ -185,24 +188,49 @@
                        :error-details {:result result}))))}
          {:txn-fn
           (fn tx-get-channel-users [{:keys [channel] :as context}]
-            (let [chat-accounts-ids (map :id (:users channel))
-                  search-opts {:related-entities #{:organisation :picture-file}
-                               :filters {:chat-accounts-ids chat-accounts-ids}}
+            (let [chat-account-ids (->> channel
+                                        :members
+                                        :data
+                                        (mapv :unique-user-identifier))
                   result (try
-                           {:success? true
-                            :stakeholders (db.sth/get-stakeholders (:spec db)
-                                                                   search-opts)}
+                           (if (seq chat-account-ids)
+                             {:success? true
+                              :stakeholders (find-users-by-chat-account-id db chat-account-ids)}
+                             (do
+                               (log logger :warn :empty-chat-account-ids)
+                               {:success? true
+                                :stakeholders []}))
                            (catch Exception t
+                             (log logger :error :could-not-get-stakeholders t)
                              {:success? false
                               :reason :exception
                               :error-details {:msg (ex-message t)}}))]
-              (if (:success? result)
-                (assoc-in context [:channel :users] (->> (:stakeholders result)
-                                                         (add-users-pictures-urls config)))
-                (assoc context
-                       :success? false
-                       :reason :failed-to-get-channel-users
-                       :error-details {:result result}))))}]
+              (-> (if (:success? result)
+                    (assoc-in context [:channel :users] (->> (:stakeholders result)
+                                                             (add-users-pictures-urls config)
+                                                             (mapv present-user)))
+                    (assoc context
+                           :success? false
+                           :reason :failed-to-get-channel-users
+                           :error-details {:result result}))
+                  ;; No longer needed / can be confusing to include it:
+                  (update :channel dissoc :members))))}
+         {:txn-fn
+          (fn enrich-messages-users [context]
+            (try
+              (update-in context [:channel :messages :messages] (fn [messages]
+                                                                  (mapv (fn [{:keys [chat-account-id] :as message}]
+                                                                          {:pre [chat-account-id]}
+                                                                          (let [[user] (find-users-by-chat-account-id db [chat-account-id])]
+                                                                            (-> message
+                                                                                (dissoc :chat-account-id)
+                                                                                (assoc :user (present-user user)))))
+                                                                        messages)))
+              (catch Exception t
+                (log logger :error :could-not-get-stakeholders t)
+                {:success? false
+                 :reason :exception
+                 :error-details {:msg (ex-message t)}})))}]
         context {:success? true
                  :channel-id channel-id}]
     (tht/thread-transactions logger transactions context)))

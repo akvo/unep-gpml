@@ -171,10 +171,11 @@
                        :500 {:body (failure-with)}}}}]
    ["/details"
     ["/{id}"
-     {:get {:summary    "Get channel details"
+     {:get {:summary    "Get extended channel info, including members and the last few messages."
             :middleware middleware
             :swagger    {:tags ["chat"] :security [{:id_token []}]}
             :handler    (fn get-channel-details [{{:keys [path]} :parameters}]
+                          ;; XXX authorization?
                           (let [result (srv.chat/get-channel-details config (:id path))]
                             (if (:success? result)
                               (r/ok (cske/transform-keys ->snake_case result))
