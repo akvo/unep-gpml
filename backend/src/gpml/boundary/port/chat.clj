@@ -1,5 +1,6 @@
 (ns gpml.boundary.port.chat
   (:require
+   [camel-snake-kebab.core :refer [->snake_case]]
    [gpml.util.malli :as util.malli :refer [failure-with success-with]]
    [malli.util :as mu]))
 
@@ -59,11 +60,33 @@
 (def Channels
   [:sequential Channel])
 
+(def NewDiscussion
+  [:map
+   {:closed true}
+   [:name :string]])
+
+(def Discussion
+  [:map {:closed true}
+   [:channel-id :string]
+   [:notify-all-users :boolean]
+   [:name :string]
+   [:enabled :boolean]])
+
+(def DiscussionSnakeCase
+  (into [:map] (mapv (fn [[k v]]
+                       [(->snake_case k) v])
+                     (subvec Discussion 2))))
+
 (util.malli/defprotocol Chat
   :extend-via-metadata true
   (add-user-to-private-channel [this user-id channel-id])
 
   (add-user-to-public-channel [this user-id channel-id])
+
+  (^{:schema [:or
+              (success-with :discussion Discussion)
+              (failure-with :error-details any?)]}
+    create-channel-discussion [this channel-id discussion-attrs])
 
   (create-private-channel [this channel])
 
@@ -87,7 +110,10 @@
               (failure-with :error-details any?)]}
     get-channel [this channel-id])
 
-  (get-channel-discussions [this channel-id])
+  (^{:schema [:or
+              (success-with :discussions [:sequential Discussion])
+              (failure-with :error-details any?)]}
+    get-channel-discussions [this channel-id])
 
   (get-private-channels [this opts])
 
