@@ -158,9 +158,9 @@
 (defmethod ig/init-key ::sentry-logger [_ {:keys [dsn version host env]}]
   (assert dsn)
   (timbre/handle-uncaught-jvm-exceptions!)
-  (-> (sentry/sentry-appender dsn
-                              {:environment env
-                               :release version
-                               :event-fn (fn [event]
-                                           (assoc event :server_name host))})
+  (-> (sentry-appender dsn
+                       {:environment env
+                        :release version
+                        :event-fn (fn [event]
+                                    (assoc event :server_name host))})
       (assoc :min-level :error)))
