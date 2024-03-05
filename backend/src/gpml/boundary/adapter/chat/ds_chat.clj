@@ -486,36 +486,22 @@
 (defn create-private-channel* [adapter channel]
   (create-channel* adapter channel private-permission-level))
 
-(def NewDiscussion
-  [:map {:closed true}
-   [:room-id RoomId]
-   [:name string?]])
-
-(def Discussion
-  [:map {:closed true}
-   [:channel-id :string]
-   [:notify-all-users :boolean]
-   [:name :string]
-   [:enabled :boolean]])
-
 (defn extract-discussion [body]
   (set/rename-keys (select-keys (cske/transform-keys ->kebab-case body)
                                 [:room-id :notify-all-users :channel-name :enabled])
                    {:room-id :channel-id
                     :channel-name :name}))
 
-(defn create-discussion* [{:keys [logger api-key]} discussion]
-  {:pre  [(check! NewDiscussion discussion)]
-   :post [(check! [:or
-                   (success-with :discussion Discussion)
-                   (failure-with :error-details ErrorDetails)]
-                  %)]}
+(defn create-channel-discussion* [{:keys [logger api-key]} room-id discussion]
+  {:pre  [(check! string? room-id
+                  port.chat/NewDiscussion discussion)]
+   :post [(check! #'port.chat/create-channel-discussion %)]}
   (let [req-body {:enabled true
                   :notifyAllUsers false
                   :channelName (:name discussion)}
         {:keys [status body]}
         (http-client/request logger
-                             {:url (build-api-endpoint-url "/api/v1/chatroom/" (:room-id discussion) "/channel")
+                             {:url (build-api-endpoint-url "/api/v1/chatroom/" room-id "/channel")
                               :query-params {:auth api-key}
                               :method :post
                               :body (json/->json req-body)
@@ -592,10 +578,7 @@
 
 (defn get-channel-discussions* [{:keys [logger api-key]} channel-id]
   {:pre  [channel-id]
-   :post [(check! [:or
-                   (success-with :discussions [:sequential Discussion])
-                   (failure-with :error-details ErrorDetails)]
-                  %)]}
+   :post [(check! #'port.chat/get-channel-discussions %)]}
   (let [{:keys [status body]}
         (http-client/request logger
                              {:url (build-api-endpoint-url "/api/v1/chatroom/" channel-id "/channels")
@@ -617,6 +600,7 @@
   (with-meta m
     {`port.chat/add-user-to-private-channel       add-user-to-channel*
      `port.chat/add-user-to-public-channel        add-user-to-channel*
+     `port.chat/create-channel-discussion         create-channel-discussion*
      `port.chat/create-private-channel            create-private-channel*
      `port.chat/create-public-channel             create-public-channel*
      `port.chat/create-user-account               create-user-account*
@@ -668,17 +652,15 @@
                                             true
                                             {})
 
-  ;;
   @(def a-public-channel (port.chat/create-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
                                                           {:name (str (random-uuid))}))
 
   @(def a-private-channel (port.chat/create-private-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
                                                             {:name (str (random-uuid))}))
 
-  ;; (not defined in the protocol)
-  (create-discussion* (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                      {:room-id (-> a-public-channel :channel :id)
-                       :name (str (random-uuid))})
+  @(def discussion (port.chat/create-channel-discussion (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                                        (-> a-public-channel :channel :id)
+                                                        {:name (str (random-uuid))}))
 
   (port.chat/get-channel-discussions (dev/component :gpml.boundary.adapter.chat/ds-chat)
                                      (-> a-public-channel :channel :id))
@@ -688,12 +670,10 @@
                                                {:description (str (random-uuid))
                                                 :name (str (random-uuid))})
 
-  ;;
   (port.chat/add-user-to-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
                                         uniqueUserIdentifier
                                         (-> a-public-channel :channel :id))
 
-  ;;
   (println (format "https://deadsimplechat.com/%s?uniqueUserIdentifier=%s" (-> a-public-channel :channel :id) uniqueUserIdentifier))
 
   (port.chat/get-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
@@ -703,7 +683,6 @@
                                          uniqueUserIdentifier
                                          (-> a-private-channel :channel :id))
 
-  ;;
   (gpml.service.chat/get-channel-details (dev/config-component)
                                          (-> a-public-channel :channel :id))
 
