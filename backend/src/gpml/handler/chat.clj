@@ -149,12 +149,31 @@
 
 (defmethod ig/init-key :gpml.handler.chat/dcs-channel-routes
   [_ {:keys [middleware]
-      {:keys [logger hikari] :as config} :config}]
+      {:keys [logger hikari chat-adapter] :as config} :config}]
   {:pre [(vector? middleware)
          (seq config)
          hikari
          logger]}
   ["/channel"
+   ["/create-discussion/{id}"
+    {:post {:summary    "Creates a discussion within this channel. Requires admin permissions."
+            :middleware middleware
+            :swagger    {:tags ["chat"]}
+            :handler    (fn [{{:keys [id]} :user
+                              {{discussion-name :name} :body
+                               {channel-id      :id}   :path} :parameters}]
+                          {:pre [id channel-id]}
+                          (if (h.r.permission/super-admin? config id)
+                            (let [result (port.chat/create-channel-discussion chat-adapter channel-id {:name discussion-name})]
+                              (if (:success? result)
+                                (r/ok (update result :discussion #(cske/transform-keys ->snake_case %)))
+                                (-> result present-error r/server-error)))
+                            (r/forbidden {:message "Unauthorized"})))
+            :parameters (assoc ChannelIdPath
+                               :body [:map
+                                      [:name :string]])
+            :responses {:200 {:body (success-with :discussion port.chat/DiscussionSnakeCase)}
+                        :500 {:body (failure-with)}}}}]
    ["/input-box/{id}"
     {:get {:summary    "Gets the input box status for a given channel. Returns false by default (including for non-existing channels)."
            :middleware middleware
@@ -355,6 +374,13 @@ Does not imply leaving a channel - please treat that concern independently."
                                       :as :json-keyword-keys}))
 
   @(def channel-id (-> channel :body :channels first :id))
+
+  (http-client/request (dev/logger)
+                       {:url (str "http://localhost:3000/api/chat/channel/create-discussion/" channel-id)
+                        :method :post
+                        :body (json/->json {:name (str (random-uuid))})
+                        :content-type :json
+                        :as :json-keyword-keys})
 
   (port.chat/add-user-to-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
                                         (:chat_account_id (gpml.db.stakeholder/stakeholder-by-email (dev/conn) {:email "abc@abc.net"}))
