@@ -54,6 +54,9 @@
 (defn component [c]
   (get system c))
 
+(defn hikari []
+  (component :duct.database.sql/hikaricp))
+
 (defn config-component []
   (get system [:duct/const :gpml.config/common]))
 

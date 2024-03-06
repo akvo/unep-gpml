@@ -199,6 +199,19 @@
                                       [:name :string]])
             :responses {:200 {:body (success-with :discussion port.chat/DiscussionSnakeCase)}
                         :500 {:body (failure-with)}}}}]
+   #_ (http-client/request (dev/logger)
+                           {:url "http://localhost:3000/api/chat/channel/input-box/1"
+                            ;; :method :post
+                            ;; :body (json/->json {:channel_id channel-id})
+                            :as :json-keyword-keys})
+   #_ (http-client/request (dev/logger)
+                           {:url "http://localhost:3000/api/chat/channel/input-box/1/enable"
+                            :method :post
+                            :as :json-keyword-keys})
+   #_ (http-client/request (dev/logger)
+                           {:url "http://localhost:3000/api/chat/channel/input-box/1/disable"
+                            :method :post
+                            :as :json-keyword-keys})
    ["/input-box/{id}"
     {:get {:summary    "Gets the input box status for a given channel. Returns false by default (including for non-existing channels)."
            :middleware middleware
@@ -206,11 +219,11 @@
            :handler    (fn [{{:keys [id]} :user
                              {{channel-id :id} :path} :parameters}]
                          {:pre [id channel-id]}
-                         (let [{:keys [enabled]} (db/execute-one! hikari {:select :enabled
-                                                                          :from :chat_channel_input_box
-                                                                          :where [:and
-                                                                                  [:= :stakeholder_id id]
-                                                                                  [:= :chat_channel_id channel-id]]})]
+                         (let [{enabled :exists} (db/execute-one! hikari {:select [[[:exists {:select :*
+                                                                                              :from :chat_channel_membership
+                                                                                              :where [:and
+                                                                                                      [:= :stakeholder_id id]
+                                                                                                      [:= :chat_channel_id channel-id]]}]]]})]
                            (r/ok {:enabled (boolean enabled)
                                   :success? true})))
            :parameters ChannelIdPath
@@ -227,18 +240,13 @@ Does not imply joining a channel - please treat that concern independently."
                           (let [where [:and
                                        [:= :stakeholder_id id]
                                        [:= :chat_channel_id channel-id]]
-                                {:keys [enabled] :as enable} (db/execute-one! hikari {:select :enabled
-                                                                                      :from :chat_channel_input_box
-                                                                                      :where where})]
-                            (when (nil? enable)
-                              (db/execute-one! hikari {:insert-into :chat_channel_input_box
+                                {enabled :exists} (db/execute-one! hikari {:select [[[:exists {:select :*
+                                                                                               :from :chat_channel_membership
+                                                                                               :where where}]]]})]
+                            (when-not enabled
+                              (db/execute-one! hikari {:insert-into :chat_channel_membership
                                                        :values [{:stakeholder_id id
-                                                                 :chat_channel_id channel-id
-                                                                 :enabled true}]}))
-                            (when (false? enabled)
-                              (db/execute-one! hikari {:update :chat_channel_input_box
-                                                       :set {:enabled true}
-                                                       :where where}))
+                                                                 :chat_channel_id channel-id}]}))
                             (r/ok {:success? true})))
             :parameters ChannelIdPath
             :responses {:200 {:body (success-with)}
@@ -254,17 +262,11 @@ Does not imply leaving a channel - please treat that concern independently."
                           (let [where [:and
                                        [:= :stakeholder_id id]
                                        [:= :chat_channel_id channel-id]]
-                                {:keys [enabled] :as enable} (db/execute-one! hikari {:select :enabled
-                                                                                      :from :chat_channel_input_box
-                                                                                      :where where})]
-                            (when (nil? enable)
-                              (db/execute-one! hikari {:insert-into :chat_channel_input_box
-                                                       :values [{:stakeholder_id id
-                                                                 :chat_channel_id channel-id
-                                                                 :enabled true}]}))
-                            (when (true? enabled)
-                              (db/execute-one! hikari {:update :chat_channel_input_box
-                                                       :set {:enabled false}
+                                {enabled :exists} (db/execute-one! hikari {:select [[[:exists {:select :*
+                                                                                               :from :chat_channel_membership
+                                                                                               :where where}]]]})]
+                            (when enabled
+                              (db/execute-one! hikari {:delete-from :chat_channel_membership
                                                        :where where}))
                             (r/ok {:success? true})))
             :parameters ChannelIdPath
