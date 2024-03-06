@@ -488,7 +488,7 @@
 
 (defn extract-discussion [body]
   (set/rename-keys (select-keys (cske/transform-keys ->kebab-case body)
-                                [:room-id :notify-all-users :channel-name :enabled])
+                                [:id :room-id :notify-all-users :channel-name :enabled])
                    {:room-id :channel-id
                     :channel-name :name}))
 
@@ -516,6 +516,29 @@
           (log logger :warn :failed-to-create-discussion)
           {:success? false
            :reason :failed-to-create-discussion
+           :error-details body})))))
+
+(defn delete-channel-discussion* [{:keys [logger api-key]} room-id discussion-id]
+  {:pre  [(check! :string room-id
+                  :string discussion-id)]
+   :post [(check! #'port.chat/delete-channel-discussion %)]}
+  (timbre/with-context+ {:room-id room-id
+                         :discussion-id discussion-id}
+    (let [{:keys [status body]}
+          (http-client/request logger
+                               {:url (build-api-endpoint-url "/api/v1/chatroom/" room-id "/channel/" discussion-id)
+                                :query-params {:auth api-key}
+                                :method :delete
+                                :as :json-keyword-keys})]
+      (if (<= 200 status 299)
+        (do
+          (log logger :info :successfully-deleted-discussion)
+          {:success? true
+           :discussion (extract-discussion body)})
+        (do
+          (log logger :warn :failed-to-deleted-discussion)
+          {:success? false
+           :reason :failed-to-deleted-discussion
            :error-details body})))))
 
 (defn delete-channel* [{:keys [logger api-key]} channel-id]
@@ -604,6 +627,7 @@
      `port.chat/create-private-channel            create-private-channel*
      `port.chat/create-public-channel             create-public-channel*
      `port.chat/create-user-account               create-user-account*
+     `port.chat/delete-channel-discussion         delete-channel-discussion*
      `port.chat/delete-private-channel            delete-channel*
      `port.chat/delete-public-channel             delete-channel*
      `port.chat/delete-user-account               delete-user-account*
@@ -652,15 +676,19 @@
                                             true
                                             {})
 
-  @(def a-public-channel (port.chat/create-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                                          {:name (str (random-uuid))}))
-
   @(def a-private-channel (port.chat/create-private-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
                                                             {:name (str (random-uuid))}))
+
+  @(def a-public-channel (port.chat/create-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                                          {:name (str (random-uuid))}))
 
   @(def discussion (port.chat/create-channel-discussion (dev/component :gpml.boundary.adapter.chat/ds-chat)
                                                         (-> a-public-channel :channel :id)
                                                         {:name (str (random-uuid))}))
+
+  (port.chat/delete-channel-discussion (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                       (-> a-public-channel :channel :id)
+                                       (-> discussion :discussion :id))
 
   (port.chat/get-channel-discussions (dev/component :gpml.boundary.adapter.chat/ds-chat)
                                      (-> a-public-channel :channel :id))

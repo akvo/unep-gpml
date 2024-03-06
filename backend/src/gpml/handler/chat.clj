@@ -13,7 +13,8 @@
    [gpml.util.http-client :as http-client]
    [gpml.util.json :as json]
    [gpml.util.malli :refer [failure-with success-with]]
-   [integrant.core :as ig]))
+   [integrant.core :as ig]
+   [malli.util :as mu]))
 
 (defn- present-error [result]
   (select-keys result [:error-details :user-id :success?]))
@@ -147,6 +148,13 @@
                                        :allowEmptyValue false}}
                             [:string {:min 1}]]]})
 
+(def DiscussionIdPath {:path [:map
+                              [:discussion_id
+                               {:swagger {:description "The discussion ID."
+                                          :type "string"
+                                          :allowEmptyValue false}}
+                               [:string {:min 1}]]]})
+
 (defmethod ig/init-key :gpml.handler.chat/dcs-channel-routes
   [_ {:keys [middleware]
       {:keys [logger hikari chat-adapter] :as config} :config}]
@@ -155,6 +163,23 @@
          hikari
          logger]}
   ["/channel"
+   ["/delete-discussion/{id}/discussion/{discussion_id}"
+    {:delete {:summary    "Deletes the given discussion. Requires admin permissions."
+              :middleware middleware
+              :swagger    {:tags ["chat"]}
+              :handler    (fn [{{:keys [id]} :user
+                                {{channel-id    :id
+                                  discussion-id :discussion_id} :path} :parameters}]
+                            {:pre [id channel-id discussion-id]}
+                            (if (h.r.permission/super-admin? config id)
+                              (let [result (port.chat/delete-channel-discussion chat-adapter channel-id discussion-id)]
+                                (if (:success? result)
+                                  (r/ok {})
+                                  (-> result present-error r/server-error)))
+                              (r/forbidden {:message "Unauthorized"})))
+              :parameters {:path (mu/merge (:path DiscussionIdPath) (:path ChannelIdPath))}
+              :responses {:200 {:body (success-with)}
+                          :500 {:body (failure-with)}}}}]
    ["/create-discussion/{id}"
     {:post {:summary    "Creates a discussion within this channel. Requires admin permissions."
             :middleware middleware
@@ -375,10 +400,18 @@ Does not imply leaving a channel - please treat that concern independently."
 
   @(def channel-id (-> channel :body :channels first :id))
 
+  @(def discussion (http-client/request (dev/logger)
+                                        {:url (str "http://localhost:3000/api/chat/channel/create-discussion/" channel-id)
+                                         :method :post
+                                         :body (json/->json {:name (str (random-uuid))})
+                                         :content-type :json
+                                         :as :json-keyword-keys}))
+
+  @(def discussion-id (-> discussion :body :discussion :id))
+
   (http-client/request (dev/logger)
-                       {:url (str "http://localhost:3000/api/chat/channel/create-discussion/" channel-id)
-                        :method :post
-                        :body (json/->json {:name (str (random-uuid))})
+                       {:url (str "http://localhost:3000/api/chat/channel/delete-discussion/" channel-id "/discussion/" discussion-id)
+                        :method :delete
                         :content-type :json
                         :as :json-keyword-keys})
 

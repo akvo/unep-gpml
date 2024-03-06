@@ -67,6 +67,7 @@
 
 (def Discussion
   [:map {:closed true}
+   [:id :string]
    [:channel-id :string]
    [:notify-all-users :boolean]
    [:name :string]
@@ -87,6 +88,11 @@
               (success-with :discussion Discussion)
               (failure-with :error-details any?)]}
     create-channel-discussion [this channel-id discussion-attrs])
+
+  (^{:schema [:or
+              (success-with)
+              (failure-with :error-details any?)]}
+    delete-channel-discussion [this channel-id discussion-id])
 
   (create-private-channel [this channel])
 
