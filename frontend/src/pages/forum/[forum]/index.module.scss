@@ -77,10 +77,21 @@
 .channelContent {
   :global {
     iframe {
-      height: calc(100vh - 90px) !important;
+      border: none;
+      height: calc(100vh - 180px) !important;
       &.discussion {
-        height: calc(100vh - 210px) !important;
+        height: calc(100vh - 300px) !important;
       }
+      &.joined {
+        height: calc(100vh - 90px) !important;
+        &.discussion {
+          height: calc(100vh - 210px) !important;
+        }
+      }
+    }
+    .join-container {
+      padding: 20px;
+      // background-color: #fff;
     }
     .ant-spin-blur iframe {
       opacity: 0;

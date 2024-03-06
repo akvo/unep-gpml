@@ -16,6 +16,7 @@ const ForumView = ({ isAuthenticated, profile }) => {
   const [activeForum, setActiveForum] = useState(null)
   const [sdk, setSDK] = useState(null)
   const [discussion, setDiscussion] = useState(null)
+  const [userJoined, setUserJoined] = useState(false)
 
   const { chatAccountAuthToken: accessToken, chatAccountId: uuid } =
     profile || {}
@@ -62,6 +63,7 @@ const ForumView = ({ isAuthenticated, profile }) => {
           )
           // Call the connect method to connect the SDK to the Chat iFrame.
           await _sdk.connect()
+
           if (activeForum.enableChannels) {
             const { channels } = await _sdk.getActiveChannels()
             setActiveForum({
@@ -76,6 +78,16 @@ const ForumView = ({ isAuthenticated, profile }) => {
       }
     })()
   }, [activeForum, sdk])
+  useEffect(() => {
+    console.log('aloooo', userJoined)
+    if (sdk != null) {
+      sdk.loadCustomization({
+        hideSidebar: true,
+        hideHeader: true,
+        hideChatInputTextArea: !userJoined,
+      })
+    }
+  }, [sdk, userJoined])
 
   return (
     <div className={styles.container}>
@@ -181,8 +193,18 @@ const ForumView = ({ isAuthenticated, profile }) => {
               id="chat-frame"
               src={iframeURL}
               width="100%"
-              className={classNames({ discussion })}
+              className={classNames({
+                discussion,
+                joined: userJoined && activeForum != null,
+              })}
             />
+          )}
+          {!userJoined && activeForum !== null && (
+            <div className="join-container">
+              <Button type="primary" className="noicon">
+                Join Channel
+              </Button>
+            </div>
           )}
         </Layout>
       </Layout>
