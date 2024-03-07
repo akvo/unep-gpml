@@ -1,13 +1,20 @@
 (ns gpml.util.thread-transactions
+  "Implements the Saga pattern
+  (but locally - not in the distributed systems sense).
+
+  This can be a good idea for mixing DB persistence with side-effectful IO."
   (:require
    [duct.logger :refer [log]]
    [gpml.util.malli :refer [check!]]
    [taoensso.timbre :as timbre]))
 
 (def ^:private transaction-schema
-  [:map
-   [:txn-fn fn?]
-   [:rollback-fn {:optional true} fn?]])
+  [:maybe ;; individual tx fns can be nil, allowing conditionally executed fns
+   [:or
+    [:fn fn?]
+    [:map {:closed true}
+     [:txn-fn fn?]
+     [:rollback-fn {:optional true} fn?]]]])
 
 (def ^:private transactions-schema
   [:sequential {:min 0} transaction-schema])
@@ -31,7 +38,6 @@
                 :error-details {:reason (str (class e))
                                 :message (.getMessage e)}}))))
 
-;; TODO - wrap in `with-transaction`? (drawback: some "transactions" can be unrelated to DB e.g. http calls from what I've seen)
 (defn thread-transactions [logger txns args-map]
   {:pre [(check! transactions-schema txns
                  args-map-schema     args-map)]}
@@ -42,7 +48,12 @@
     ;; simply return `args-map` as the final value of the whole
     ;; transactions application.
     args-map
-    (let [{:keys [txn-fn rollback-fn]} (first txns)
+    (let [txns (into [] (remove nil?) txns) ;; individual tx fns can be nil, allowing conditionally executed fns
+          head (first txns)
+          {:keys [txn-fn rollback-fn]} (if (map? head)
+                                         head
+                                         ;; Support shorthand syntax:
+                                         {:txn-fn head})
           result (safe-run logger txn-fn args-map)]
       (if-not (:success? result)
         result
