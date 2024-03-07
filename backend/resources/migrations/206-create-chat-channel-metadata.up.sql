@@ -1,4 +1,3 @@
--- NOTE: this table is discarded in the subsequent migration.
 CREATE TABLE chat_channel_input_box (
   stakeholder_id INTEGER REFERENCES stakeholder(id) ON DELETE CASCADE,
   chat_channel_id TEXT NOT NULL,
