@@ -103,9 +103,9 @@
             (let [_custom-fields {:ps-country-iso-code-a2 (get-in plastic-strategy [:country :iso-code-a2])}
                   #_#_result {}
                   #_;; XXX
-                  (port.chat/set-public-channel-custom-fields (:chat-adapter config)
-                                                              (:id channel)
-                                                              custom-fields)]
+                    (port.chat/set-public-channel-custom-fields (:chat-adapter config)
+                                                                (:id channel)
+                                                                custom-fields)]
               #_(if 1  ;; (:success? result)
                   )
               context
@@ -224,7 +224,19 @@
                        :success? false
                        :reason :failed-to-add-user-to-ps-channel
                        :error-details {:result result}))))
-          #_:rollback-fn}]
+          :rollback-fn
+          (fn remove-user-from-ps-channel [{:keys [plastic-strategy ps-team-member] :as context}]
+            {:pre [ps-team-member]}
+            (let [result (svc.chat/leave-channel config
+                                                 (:chat-channel-id plastic-strategy)
+                                                 ps-team-member
+                                                 false)]
+              (if (:success? result)
+                context
+                (assoc context
+                       :success? false
+                       :reason :failed-to-remove-user-from-ps-channel
+                       :error-details {:result result}))))}]
         context {:success? true
                  :user-id user-id}]
     (tht/thread-transactions logger transactions context)))

@@ -82,12 +82,12 @@
 
 (defn- remove-user-from-channel [config {:keys [user parameters]}]
   (let [{:keys [channel_id]} (:body parameters)
-        result (port.chat/remove-user-from-channel (:chat-adapter config)
-                                                   (:chat_account_id user)
-                                                   channel_id
-                                                   {})]
+        result (svc.chat/leave-channel config
+                                       channel_id
+                                       user
+                                       false)]
     (if (:success? result)
-      (r/ok result)
+      (r/ok {})
       (-> result present-error r/server-error))))
 
 (defn- add-user-to-private-channel [{:keys [db mailjet-config] :as config} parameters]

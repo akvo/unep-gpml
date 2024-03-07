@@ -297,3 +297,43 @@
                                                           [:= :chat_channel_id channel-id]]}))}]
         context (create-user-account config user-id)]
     (tht/thread-transactions logger transactions context)))
+
+(defn leave-channel [{:keys [db hikari chat-adapter logger] :as config}
+                     channel-id
+                     {user-id :id
+                      unique-user-identifier :chat-channel-id
+                      :as _user}
+                     private?]
+  {:pre [db hikari chat-adapter logger user-id
+         (check! :boolean private?)]}
+  (let [transactions
+        [(fn check-membership [_context]
+           (if (:exists (:result (db/execute-one! hikari {:select [[[:exists {:select :*
+                                                                              :from :chat_channel_membership
+                                                                              :where [:and
+                                                                                      [:= :stakeholder_id user-id]
+                                                                                      [:= :chat_channel_id channel-id]]}]]]})))
+             {:success? true}
+             {:success? false
+              :reason   :user-does-not-belong-to-channel}))
+
+         {:txn-fn (fn remove-from-tables [_context]
+                    (db/execute-one! hikari {:delete-from :chat_channel_membership
+                                             :where [:and
+                                                     [:= :stakeholder_id user-id]
+                                                     [:= :chat_channel_id channel-id]]}))
+          :rollback-fn (fn add-to-tables [_context]
+                         (db/execute-one! hikari {:insert-into :chat_channel_membership
+                                                  :values [{:stakeholder_id user-id
+                                                            :chat_channel_id channel-id}]}))}
+         (when private?
+           {:txn-fn (fn remove-from-dsc [_context]
+                      (if unique-user-identifier
+                        (port.chat/remove-user-from-channel chat-adapter unique-user-identifier channel-id :_)
+                        {:success? false}))
+            :rollback-fn (fn add-to-dsc [_context]
+                           (if unique-user-identifier
+                             (port.chat/add-user-to-private-channel chat-adapter unique-user-identifier channel-id)
+                             {:success? false}))})]
+        context (create-user-account config user-id)]
+    (tht/thread-transactions logger transactions context)))
