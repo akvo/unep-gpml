@@ -171,11 +171,16 @@
 
     .discussions {
       margin-bottom: 36px;
-      .ant-list-item {
+      li {
         padding: 11px 21px;
         border-bottom: none;
+        display: flex;
+        justify-content: space-between;
         &.active {
           background-color: $primaryViolet2;
+          .ant-btn-link {
+            text-decoration: none;
+          }
         }
       }
     }
