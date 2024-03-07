@@ -113,7 +113,7 @@
                                                                  :chat_account_status nil}))
                 context)))}
          {:txn-fn
-          (fn tx-add-team-member-to-ps-chat-channel
+          (fn add-team-member-to-ps-chat-channel
             [{:keys [ps-team-member plastic-strategy] :as context}]
             (let [result (svc.chat/join-channel config
                                                 (:chat-channel-id plastic-strategy)
@@ -124,7 +124,20 @@
                 (assoc context
                        :success? false
                        :reason :failed-to-add-team-member-to-ps-chat-channel
-                       :result {:result result}))))}
+                       :result {:result result}))))
+          :rollback-fn
+          (fn remove-team-member-from-ps-chat-channel
+            [{:keys [ps-team-member plastic-strategy] :as context}]
+            (let [result (svc.chat/leave-channel config
+                                                 (:chat-channel-id plastic-strategy)
+                                                 ps-team-member
+                                                 false)]
+              (if (:success? result)
+                {:success? true}
+                (assoc context
+                       :success? false
+                       :reason :failed-to-remove-team-member-from-ps-chat-channel
+                       :error-details {:result result}))))}
          {:txn-fn
           (fn tx-notify-user
             [{:keys [ps-team-member plastic-strategy] :as context}]
@@ -307,10 +320,10 @@
             [{:keys [plastic-strategy ps-team-member] :as context}]
             (if-not (seq (:chat-account-id ps-team-member))
               context
-              (let [result (port.chat/remove-user-from-channel (:chat-adapter config)
-                                                               (:chat-account-id ps-team-member)
-                                                               (:chat-channel-id plastic-strategy)
-                                                               "c")]
+              (let [result (svc.chat/leave-channel config
+                                                   (:chat-channel-id plastic-strategy)
+                                                   ps-team-member
+                                                   false)]
                 (if (:success? result)
                   context
                   (assoc context
