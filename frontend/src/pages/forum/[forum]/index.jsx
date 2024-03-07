@@ -101,37 +101,38 @@ const ForumView = ({ isAuthenticated, profile }) => {
   }, [sdk, userJoined])
 
   return (
-    <div className={styles.container}>
+    <>
       <Head>
         <script src="https://cdn.deadsimplechat.com/sdk/1.2.1/dschatsdk.min.js"></script>
       </Head>
-      <Layout>
-        <Sider className={styles.channelSidebar} width={335}>
-          <div className={styles.detailSidebar}>
-            <div className="description">
-              <Button
-                type="link"
-                onClick={() => router.push('/forum')}
-                icon={<DropDownIcon />}
-                className={styles.backButton}
-              >
-                <Trans>Back to all Forums</Trans>
-              </Button>
-              <h5>{activeForum?.name}</h5>
-              <p>{activeForum?.description}</p>
-            </div>
-            {activeForum != null && (
-              <Discussions
-                discussions={activeForum.discussions}
-                channelId={router.query.forum}
-                {...{ discussion, setDiscussion, sdk, profile, setActiveForum }}
-              />
-            )}
-            {activeForum?.users?.length > 0 && (
-              <>
-                <h6 className="w-bold h-caps-xs">
-                  <Trans>Participants</Trans>
-                </h6>
+      <div className={styles.container}>
+        {/* <div className={styles.channelSidebar}> */}
+        <div className={styles.sidebar}>
+          <div className="description">
+            <Button
+              type="link"
+              onClick={() => router.push('/forum')}
+              icon={<DropDownIcon />}
+              className={styles.backButton}
+            >
+              <Trans>Back to all Forums</Trans>
+            </Button>
+            <h5>{activeForum?.name}</h5>
+            <p>{activeForum?.description}</p>
+          </div>
+          {activeForum != null && (
+            <Discussions
+              discussions={activeForum.discussions}
+              channelId={router.query.forum}
+              {...{ discussion, setDiscussion, sdk, profile, setActiveForum }}
+            />
+          )}
+          {activeForum?.users?.length > 0 && (
+            <>
+              <h6 className="w-bold h-caps-xs">
+                <Trans>Participants</Trans>
+              </h6>
+              <div className="mobile-scroller-horiz">
                 <List
                   className="members"
                   dataSource={activeForum.users}
@@ -152,11 +153,12 @@ const ForumView = ({ isAuthenticated, profile }) => {
                     )
                   }}
                 />
-              </>
-            )}
-          </div>
-        </Sider>
-        <Layout className={styles.channelContent}>
+              </div>
+            </>
+          )}
+        </div>
+        {/* </div> */}
+        <Layout className={styles.content}>
           {discussion && (
             <div className="header-discussion">
               <Button
@@ -194,8 +196,9 @@ const ForumView = ({ isAuthenticated, profile }) => {
             </div>
           )}
         </Layout>
-      </Layout>
-    </div>
+        {/* </div> */}
+      </div>
+    </>
   )
 }
 
@@ -258,35 +261,37 @@ const Discussions = ({
       <h6 className="h-caps-xs w-bold">
         <Trans>Discussions</Trans>
       </h6>
-      <ul className="discussions">
-        {discussions.map((discuss, dx) => (
-          <DiscussionItem
-            {...{
-              discuss,
-              dx,
-              sdk,
-              isAdmin,
-              handleDeleteDiscussion,
-              setDiscussion,
-              discussion,
-            }}
-          />
-        ))}
-        {isAdmin && (
-          <li>
-            <Button
-              type="link"
-              className="caps-btn"
-              size="small"
-              onClick={() => {
-                setShowAddDiscussionModal(true)
+      <div className="mobile-scroller-horiz">
+        <ul className="discussions">
+          {discussions.map((discuss, dx) => (
+            <DiscussionItem
+              {...{
+                discuss,
+                dx,
+                sdk,
+                isAdmin,
+                handleDeleteDiscussion,
+                setDiscussion,
+                discussion,
               }}
-            >
-              + Add New Discussion Topic
-            </Button>
-          </li>
-        )}
-      </ul>
+            />
+          ))}
+          {isAdmin && (
+            <li className="add-new-topic">
+              <Button
+                type="link"
+                className="caps-btn"
+                size="small"
+                onClick={() => {
+                  setShowAddDiscussionModal(true)
+                }}
+              >
+                + Add New Discussion Topic
+              </Button>
+            </li>
+          )}
+        </ul>
+      </div>
       <Modal
         visible={showAddDiscussionModal}
         onCancel={() => {
