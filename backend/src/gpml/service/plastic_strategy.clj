@@ -2,7 +2,6 @@
   (:require
    [duct.logger :refer [log]]
    [gpml.boundary.port.chat :as port.chat]
-   [gpml.db :as db]
    [gpml.db.plastic-strategy :as db.ps]
    [gpml.db.plastic-strategy.team :as db.ps.team]
    [gpml.service.chat :as svc.chat]
@@ -104,9 +103,9 @@
             (let [_custom-fields {:ps-country-iso-code-a2 (get-in plastic-strategy [:country :iso-code-a2])}
                   #_#_result {}
                   #_;; XXX
-                    (port.chat/set-public-channel-custom-fields (:chat-adapter config)
-                                                                (:id channel)
-                                                                custom-fields)]
+                  (port.chat/set-public-channel-custom-fields (:chat-adapter config)
+                                                              (:id channel)
+                                                              custom-fields)]
               #_(if 1  ;; (:success? result)
                   )
               context
@@ -213,7 +212,7 @@
                   (log logger :error :rollback-assign-plastic-strategy-rbac-role {:reason result})))
               context))}
          {:txn-fn
-          (fn add-user-to-ps-channel [{:keys [plastic-strategy ps-team-member chat-account-id] :as context}]
+          (fn add-user-to-ps-channel [{:keys [plastic-strategy ps-team-member] :as context}]
             {:pre [ps-team-member]}
             (let [result (svc.chat/join-channel config
                                                 (:chat-channel-id plastic-strategy)

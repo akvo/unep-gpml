@@ -193,13 +193,14 @@
                                                  :members
                                                  :data
                                                  (mapv :unique-user-identifier))
-                 chat-account-ids-from-db (db/execute-one! hikari {:select :stakeholder.chat_account_id
-                                                                   :from :stakeholder
-                                                                   :join [:chat_channel_membership
-                                                                          [:=
-                                                                           :stakeholder.id
-                                                                           :chat_channel_membership.stakeholder_id]]
-                                                                   :where [:= :chat_channel_id channel-id]})
+                 chat-account-ids-from-db (mapv :chat-account-id
+                                                (:result (db/execute! hikari {:select :stakeholder.chat_account_id
+                                                                              :from :stakeholder
+                                                                              :join [:chat_channel_membership
+                                                                                     [:=
+                                                                                      :stakeholder.id
+                                                                                      :chat_channel_membership.stakeholder_id]]
+                                                                              :where [:= :chat_channel_id channel-id]})))
                  chat-account-ids chat-account-ids-from-db
                  result (try
                           (if (seq chat-account-ids)
@@ -211,7 +212,8 @@
                               {:success? true
                                :stakeholders []}))
                           (catch Exception t
-                            (log logger :error :could-not-get-stakeholders t)
+                            (timbre/with-context+ {:chat-account-ids chat-account-ids}
+                              (log logger :error :could-not-get-stakeholders t))
                             {:success? false
                              :reason :exception
                              :error-details {:msg (ex-message t)}}))]
