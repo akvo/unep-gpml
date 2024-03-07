@@ -33,7 +33,7 @@
    [gpml.handler.responses :as r]
    [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
    [gpml.service.association :as srv.association]
-   [gpml.service.chat :as srv.chat]
+   [gpml.service.chat :as svc.chat]
    [gpml.service.file :as srv.file]
    [gpml.service.permissions :as srv.permissions]
    [gpml.util :as util]
@@ -468,7 +468,7 @@
             (if-not (and (= resource-type "stakeholder")
                          (seq (:chat_account_id resource)))
               context
-              (let [result (srv.chat/create-user-account config (:id resource))]
+              (let [result (svc.chat/create-user-account config (:id resource))]
                 (if (:success? result)
                   context
                   (do

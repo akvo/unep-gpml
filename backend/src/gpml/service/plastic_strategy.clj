@@ -2,9 +2,10 @@
   (:require
    [duct.logger :refer [log]]
    [gpml.boundary.port.chat :as port.chat]
+   [gpml.db :as db]
    [gpml.db.plastic-strategy :as db.ps]
    [gpml.db.plastic-strategy.team :as db.ps.team]
-   [gpml.service.chat :as srv.chat]
+   [gpml.service.chat :as svc.chat]
    [gpml.service.permissions :as srv.permissions]
    [gpml.util.thread-transactions :as tht]
    [taoensso.timbre :as timbre]))
@@ -19,7 +20,8 @@
   (db.ps/update-plastic-strategy (:spec db) {:id id
                                              :updates {:steps steps}}))
 
-(defn create-plastic-strategy [{:keys [db logger] :as config} ps-payload]
+(defn create-plastic-strategy [{:keys [db hikari logger] :as config} ps-payload]
+  {:pre [db hikari logger]}
   (let [transactions
         [{:txn-fn
           (fn tx-create-plastic-strategy
@@ -211,34 +213,19 @@
                   (log logger :error :rollback-assign-plastic-strategy-rbac-role {:reason result})))
               context))}
          {:txn-fn
-          (fn create-chat-account
-            [{:keys [ps-team-member] :as context}]
-            (let [result (srv.chat/create-user-account config (:id ps-team-member))]
-              (if (:success? result)
-                (assoc context :chat-account-id (get-in result [:chat-user-account :id]))
-                (assoc context
-                       :reason :failed-to-create-chat-account
-                       :error-details {:result result}))))
-          :rollback-fn
-          (fn rollback-create-chat-account
-            [{:keys [chat-account-id] :as context}]
-            (let [result (port.chat/delete-user-account (:chat-adapter config) chat-account-id {})]
-              (when-not (:success? result)
-                (timbre/with-context+ {::context context}
-                  (log logger :error :failed-to-rollback-create-chat-account {:result result}))))
-            context)}
-         {:txn-fn
-          (fn add-user-to-ps-channel
-            [{:keys [plastic-strategy chat-account-id] :as context}]
-            (let [result (port.chat/add-user-to-public-channel (:chat-adapter config)
-                                                               chat-account-id
-                                                               (:chat-channel-id plastic-strategy))]
+          (fn add-user-to-ps-channel [{:keys [plastic-strategy ps-team-member chat-account-id] :as context}]
+            {:pre [ps-team-member]}
+            (let [result (svc.chat/join-channel config
+                                                (:chat-channel-id plastic-strategy)
+                                                ps-team-member
+                                                false)]
               (if (:success? result)
                 context
                 (assoc context
                        :success? false
                        :reason :failed-to-add-user-to-ps-channel
-                       :error-details {:result result}))))}]
+                       :error-details {:result result}))))
+          #_:rollback-fn}]
         context {:success? true
                  :user-id user-id}]
     (tht/thread-transactions logger transactions context)))

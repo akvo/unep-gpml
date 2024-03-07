@@ -7,7 +7,7 @@
    [gpml.db.stakeholder :as db.stakeholder]
    [gpml.handler.resource.permission :as h.r.permission]
    [gpml.handler.responses :as r]
-   [gpml.service.chat :as srv.chat]
+   [gpml.service.chat :as svc.chat]
    [gpml.util.email :as email]
    [gpml.util.http-client :as http-client]
    [gpml.util.json :as json]
@@ -19,14 +19,14 @@
   (select-keys result [:error-details :user-id :success? :reason]))
 
 (defn- create-user-account [config {:keys [user] :as _req}]
-  (let [result (srv.chat/create-user-account config (:id user))]
+  (let [result (svc.chat/create-user-account config (:id user))]
     (if (:success? result)
       (r/ok (cske/transform-keys ->snake_case (:stakeholder result)))
       (-> result present-error r/server-error))))
 
 (defn- set-user-account-active-status [config {:keys [user parameters]}]
   (let [chat-account-status (-> parameters :body :chat_account_status)
-        result (srv.chat/set-user-account-active-status config user chat-account-status)]
+        result (svc.chat/set-user-account-active-status config user chat-account-status)]
     (if (:success? result)
       (r/ok {})
       (-> result present-error r/server-error))))
@@ -72,7 +72,7 @@
     (r/forbidden {:message "Unauthorized"})
     (let [channel-name (get-in parameters [:body :channel_name])
           channel-id (get-in parameters [:body :channel_id])
-          result (srv.chat/send-private-channel-invitation-request config
+          result (svc.chat/send-private-channel-invitation-request config
                                                                    user
                                                                    channel-id
                                                                    channel-name)]
@@ -228,7 +228,7 @@
             :swagger    {:tags ["chat"] :security [{:id_token []}]}
             :handler    (fn get-channel-details [{{:keys [path]} :parameters}]
                           ;; XXX authorization?
-                          (let [result (srv.chat/get-channel-details config (:id path))]
+                          (let [result (svc.chat/get-channel-details config (:id path))]
                             (if (:success? result)
                               (r/ok (cske/transform-keys ->snake_case result))
                               (-> result present-error r/server-error))))
@@ -306,9 +306,9 @@ so you don't need to call the POST /api/chat/user/account endpoint beforehand."
             :middleware middleware
             :swagger    {:tags ["chat"]}
             :handler    (fn [{{{channel-id :channel_id} :body} :parameters
-                              {user-id :id} :user}]
-                          {:pre [user-id channel-id]}
-                          (let [result (srv.chat/join-channel config channel-id user-id false)]
+                              :keys [user]}]
+                          {:pre [user channel-id]}
+                          (let [result (svc.chat/join-channel config channel-id user false)]
                             (if (:success? result)
                               (r/ok {})
                               (-> result present-error r/server-error))))
@@ -370,10 +370,11 @@ so you don't need to call the POST /api/chat/user/account endpoint beforehand."
                         :content-type :json
                         :as :json-keyword-keys})
 
-  (port.chat/add-user-to-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
+  (port.chat/add-user-to-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat) ;; XXX should add user to the table
                                         (:chat_account_id (gpml.db.stakeholder/stakeholder-by-email (dev/conn) {:email "abc@abc.net"}))
                                         channel-id)
 
+  ;; should include the user that joined with the earlier http://localhost:3000/api/chat/channel/public call
   (http-client/request (dev/logger)
                        {:url (str "http://localhost:3000/api/chat/channel/details/" channel-id)
                         :as :json-keyword-keys})

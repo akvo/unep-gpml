@@ -4,7 +4,7 @@
    [gpml.boundary.port.chat :as port.chat]
    [gpml.db.plastic-strategy.team :as db.ps.team]
    [gpml.db.stakeholder :as db.stakeholder]
-   [gpml.service.chat :as srv.chat]
+   [gpml.service.chat :as svc.chat]
    [gpml.service.invitation :as srv.invitation]
    [gpml.service.permissions :as srv.permissions]
    [gpml.service.plastic-strategy :as srv.ps]
@@ -89,7 +89,7 @@
             (if (seq (:chat-account-id ps-team-member))
               context
               (let [{:keys [success? chat-user-account] :as result}
-                    (srv.chat/create-user-account config (:id ps-team-member))]
+                    (svc.chat/create-user-account config (:id ps-team-member))]
                 (if success?
                   (-> context
                       (assoc-in [:ps-team-member :chat-account-id] (:id chat-user-account))
@@ -115,9 +115,10 @@
          {:txn-fn
           (fn tx-add-team-member-to-ps-chat-channel
             [{:keys [ps-team-member plastic-strategy] :as context}]
-            (let [result (port.chat/add-user-to-public-channel (:chat-adapter config)
-                                                               (:chat-account-id ps-team-member)
-                                                               (:chat-channel-id plastic-strategy))]
+            (let [result (svc.chat/join-channel config
+                                                (:chat-channel-id plastic-strategy)
+                                                ps-team-member
+                                                false)]
               (if (:success? result)
                 {:success? true}
                 (assoc context
@@ -321,9 +322,10 @@
             [{:keys [plastic-strategy ps-team-member] :as context}]
             (if-not (seq (:chat-account-id ps-team-member))
               context
-              (let [result (port.chat/add-user-to-public-channel (:chat-adapter config)
-                                                                 (:chat-account-id ps-team-member)
-                                                                 (:chat-channel-id plastic-strategy))]
+              (let [result (svc.chat/join-channel config
+                                                  (:chat-channel-id plastic-strategy)
+                                                  ps-team-member
+                                                  false)]
                 (if (:success? result)
                   context
                   (do
