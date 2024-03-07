@@ -3,6 +3,7 @@
    [duct.logger :refer [log]]
    [gpml.boundary.adapter.chat.ds-chat :as ds-chat]
    [gpml.boundary.port.chat :as port.chat]
+   [gpml.db :as db]
    [gpml.db.rbac-util :as db.rbac-util]
    [gpml.db.stakeholder :as db.sth]
    [gpml.service.file :as srv.file]
@@ -242,3 +243,38 @@
                                                                           user
                                                                           channel-id
                                                                           channel-name)))
+
+(defn join-channel [{:keys [db hikari chat-adapter logger] :as config} channel-id user-id private?]
+  {:pre [db hikari chat-adapter logger channel-id user-id
+         (check! :boolean private?)]}
+  (let [transactions
+        [(fn get-channel [_context]
+           (port.chat/get-channel chat-adapter channel-id))
+
+         (fn check-membership [_context]
+           (if (:exists (:result (db/execute-one! hikari {:select [[[:exists {:select :*
+                                                                              :from :chat_channel_membership
+                                                                              :where [:and
+                                                                                      [:= :stakeholder_id user-id]
+                                                                                      [:= :chat_channel_id channel-id]]}]]]})))
+             {:success? false
+              :reason   :user-already-belongs-to-channel}
+             {:success? true}))
+
+         (when private?
+           {:txn-fn (fn add-to-dsc [_context]
+                      (port.chat/add-user-to-private-channel chat-adapter user-id channel-id))
+            :rollback-fn (fn remove-from-dsc [_context]
+                           (port.chat/remove-user-from-channel chat-adapter user-id channel-id :_))})
+
+         {:txn-fn (fn add-to-tables [_context]
+                    (db/execute-one! hikari {:insert-into :chat_channel_membership
+                                             :values [{:stakeholder_id user-id
+                                                       :chat_channel_id channel-id}]}))
+          :rollback-fn (fn remove-from-tables [_context]
+                         (db/execute-one! hikari {:delete-from :chat_channel_membership
+                                                  :where [:and
+                                                          [:= :stakeholder_id user-id]
+                                                          [:= :chat_channel_id channel-id]]}))}]
+        context (create-user-account config user-id)]
+    (tht/thread-transactions logger transactions context)))
