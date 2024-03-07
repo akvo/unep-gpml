@@ -1,13 +1,25 @@
 import React, { useCallback, useEffect, useState, useMemo } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { Button, Layout, List, Avatar } from 'antd'
+import {
+  Button,
+  Layout,
+  List,
+  Avatar,
+  Popover,
+  Modal,
+  Form,
+  Input,
+  notification,
+} from 'antd'
 import { Trans } from '@lingui/macro'
 import classNames from 'classnames'
+// import { deepClone } from 'lodash'
 
 import styles from './index.module.scss'
 import { DropDownIcon } from '../../../components/icons'
 import api from '../../../utils/api'
+import { MoreOutlined } from '@ant-design/icons'
 
 const { Sider } = Layout
 
@@ -16,6 +28,7 @@ const ForumView = ({ isAuthenticated, profile }) => {
   const [activeForum, setActiveForum] = useState(null)
   const [sdk, setSDK] = useState(null)
   const [discussion, setDiscussion] = useState(null)
+  const [userJoined, setUserJoined] = useState(false)
 
   const { chatAccountAuthToken: accessToken, chatAccountId: uuid } =
     profile || {}
@@ -62,13 +75,14 @@ const ForumView = ({ isAuthenticated, profile }) => {
           )
           // Call the connect method to connect the SDK to the Chat iFrame.
           await _sdk.connect()
-          if (activeForum.enableChannels) {
-            const { channels } = await _sdk.getActiveChannels()
-            setActiveForum({
-              ...activeForum,
-              discussions: channels.map((c) => ({ ...c, name: c.channelName })),
-            })
-          }
+
+          // if (activeForum.enableChannels) {
+          //   const { channels } = await _sdk.getActiveChannels()
+          //   setActiveForum({
+          //     ...activeForum,
+          //     discussions: channels.map((c) => ({ ...c, name: c.channelName })),
+          //   })
+          // }
           setSDK(_sdk)
         }
       } catch (error) {
@@ -76,63 +90,49 @@ const ForumView = ({ isAuthenticated, profile }) => {
       }
     })()
   }, [activeForum, sdk])
+  useEffect(() => {
+    if (sdk != null) {
+      sdk.loadCustomization({
+        hideSidebar: true,
+        hideHeader: true,
+        hideChatInputTextArea: !userJoined,
+      })
+    }
+  }, [sdk, userJoined])
 
   return (
-    <div className={styles.container}>
+    <>
       <Head>
         <script src="https://cdn.deadsimplechat.com/sdk/1.2.1/dschatsdk.min.js"></script>
       </Head>
-      <Layout>
-        <Sider className={styles.channelSidebar} width={335}>
-          <div className={styles.detailSidebar}>
-            <div className="description">
-              <Button
-                type="link"
-                onClick={() => router.push('/forum')}
-                icon={<DropDownIcon />}
-                className={styles.backButton}
-              >
-                <Trans>Back to all Forums</Trans>
-              </Button>
-              <h5>{activeForum?.name}</h5>
-              <p>{activeForum?.description}</p>
-            </div>
-            {activeForum?.discussions?.length > 0 && (
-              <>
-                <h6 className="h-caps-xs w-bold">
-                  <Trans>Discussions</Trans>
-                </h6>
-                <List
-                  className="discussions"
-                  dataSource={activeForum.discussions}
-                  renderItem={(discuss, dx) => {
-                    const active = discussion?.dx === dx
-                    return (
-                      <List.Item key={dx} className={classNames({ active })}>
-                        <Button
-                          onClick={async () => {
-                            setDiscussion({
-                              ...discuss,
-                              dx,
-                            })
-                            sdk?.selectChannel(discuss?._id)
-                          }}
-                          type="link"
-                          disabled={!discuss?._id}
-                        >
-                          {discuss?.name}
-                        </Button>
-                      </List.Item>
-                    )
-                  }}
-                />
-              </>
-            )}
-            {activeForum?.users?.length > 0 && (
-              <>
-                <h6 className="w-bold h-caps-xs">
-                  <Trans>Participants</Trans>
-                </h6>
+      <div className={styles.container}>
+        {/* <div className={styles.channelSidebar}> */}
+        <div className={styles.sidebar}>
+          <div className="description">
+            <Button
+              type="link"
+              onClick={() => router.push('/forum')}
+              icon={<DropDownIcon />}
+              className={styles.backButton}
+            >
+              <Trans>Back to all Forums</Trans>
+            </Button>
+            <h5>{activeForum?.name}</h5>
+            <p>{activeForum?.description}</p>
+          </div>
+          {activeForum != null && (
+            <Discussions
+              discussions={activeForum.discussions}
+              channelId={router.query.forum}
+              {...{ discussion, setDiscussion, sdk, profile, setActiveForum }}
+            />
+          )}
+          {activeForum?.users?.length > 0 && (
+            <>
+              <h6 className="w-bold h-caps-xs">
+                <Trans>Participants</Trans>
+              </h6>
+              <div className="mobile-scroller-horiz">
                 <List
                   className="members"
                   dataSource={activeForum.users}
@@ -153,11 +153,12 @@ const ForumView = ({ isAuthenticated, profile }) => {
                     )
                   }}
                 />
-              </>
-            )}
-          </div>
-        </Sider>
-        <Layout className={styles.channelContent}>
+              </div>
+            </>
+          )}
+        </div>
+        {/* </div> */}
+        <Layout className={styles.content}>
           {discussion && (
             <div className="header-discussion">
               <Button
@@ -181,12 +182,212 @@ const ForumView = ({ isAuthenticated, profile }) => {
               id="chat-frame"
               src={iframeURL}
               width="100%"
-              className={classNames({ discussion })}
+              className={classNames({
+                discussion,
+                joined: userJoined && activeForum != null,
+              })}
             />
           )}
+          {!userJoined && activeForum !== null && (
+            <div className="join-container">
+              <Button type="primary" className="noicon">
+                Join Channel
+              </Button>
+            </div>
+          )}
         </Layout>
-      </Layout>
-    </div>
+        {/* </div> */}
+      </div>
+    </>
+  )
+}
+
+const Discussions = ({
+  discussions,
+  discussion,
+  setDiscussion,
+  sdk,
+  channelId,
+  profile,
+  setActiveForum,
+}) => {
+  const [showAddDiscussionModal, setShowAddDiscussionModal] = useState(false)
+  const [newDiscussionName, setNewDiscussionName] = useState('')
+  const [creating, setCreating] = useState(false)
+  const isAdmin = profile?.role === 'ADMIN'
+  const handleCreateDiscussion = () => {
+    setCreating(true)
+    api
+      .post(`/chat/channel/create-discussion/${channelId}`, {
+        name: newDiscussionName,
+      })
+      .then((d) => {
+        console.log(d)
+        setCreating(false)
+        setShowAddDiscussionModal(false)
+        setNewDiscussionName('')
+        setActiveForum((activeForum) => {
+          return {
+            ...activeForum,
+            discussions: [...discussions, d.data.discussion],
+          }
+        })
+      })
+      .catch((d) => {
+        console.log(d)
+        notification.warning('Error occured')
+        setCreating(false)
+      })
+  }
+  const handleDeleteDiscussion = (discuss) => () => {
+    api
+      .delete(
+        `/chat/channel/delete-discussion/${channelId}/discussion/${discuss.id}`
+      )
+      .then(() => {
+        setActiveForum((activeForum) => {
+          return {
+            ...activeForum,
+            discussions: activeForum.discussions.filter(
+              (it) => it.id !== discuss.id
+            ),
+          }
+        })
+      })
+  }
+  if (discussions.length === 0 && !isAdmin) return
+  return (
+    <>
+      <h6 className="h-caps-xs w-bold">
+        <Trans>Discussions</Trans>
+      </h6>
+      <div className="mobile-scroller-horiz">
+        <ul className="discussions">
+          {discussions.map((discuss, dx) => (
+            <DiscussionItem
+              {...{
+                discuss,
+                dx,
+                sdk,
+                isAdmin,
+                handleDeleteDiscussion,
+                setDiscussion,
+                discussion,
+              }}
+            />
+          ))}
+          {isAdmin && (
+            <li className="add-new-topic">
+              <Button
+                type="link"
+                className="caps-btn"
+                size="small"
+                onClick={() => {
+                  setShowAddDiscussionModal(true)
+                }}
+              >
+                + Add New Discussion Topic
+              </Button>
+            </li>
+          )}
+        </ul>
+      </div>
+      <Modal
+        visible={showAddDiscussionModal}
+        onCancel={() => {
+          setShowAddDiscussionModal(false)
+        }}
+        footer={null}
+        title="Add New Discussion Topic"
+      >
+        <div>
+          <Form layout="vertical">
+            <Form.Item>
+              <Input
+                placeholder="Name your discussion"
+                value={newDiscussionName}
+                onChange={(e) => {
+                  setNewDiscussionName(e.target.value)
+                }}
+                disabled={creating}
+              />
+            </Form.Item>
+            <div>
+              <Button
+                type="primary"
+                className="noicon"
+                onClick={handleCreateDiscussion}
+                loading={creating}
+              >
+                Create Disussion
+              </Button>
+              <Button
+                type="ghost"
+                className="noborder"
+                onClick={() => {
+                  setShowAddDiscussionModal(false)
+                }}
+              >
+                Cancel
+              </Button>
+            </div>
+          </Form>
+        </div>
+      </Modal>
+    </>
+  )
+}
+
+const DiscussionItem = ({
+  discussion,
+  dx,
+  sdk,
+  discuss,
+  isAdmin,
+  handleDeleteDiscussion,
+  setDiscussion,
+}) => {
+  const active = discussion?.dx === dx
+  return (
+    <li className={classNames({ active })} key={dx}>
+      <Button
+        onClick={async () => {
+          setDiscussion({
+            ...discuss,
+            dx,
+          })
+          sdk?.selectChannel(discuss?.id)
+        }}
+        type="link"
+        // disabled={!discuss?.id}
+      >
+        {discuss?.name}
+      </Button>
+      {isAdmin && (
+        <div className="popover-container">
+          <Popover
+            placement="bottomLeft"
+            overlayClassName={styles.forumOptions}
+            content={
+              <ul>
+                <li>
+                  <Button
+                    size="small"
+                    type="link"
+                    onClick={handleDeleteDiscussion(discuss)}
+                  >
+                    <Trans>Delete</Trans>
+                  </Button>
+                </li>
+              </ul>
+            }
+            trigger="click"
+          >
+            <MoreOutlined rotate={90} />
+          </Popover>
+        </div>
+      )}
+    </li>
   )
 }
 
