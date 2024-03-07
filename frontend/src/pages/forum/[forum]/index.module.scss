@@ -1,12 +1,110 @@
 @import '../../../styles/vars.scss';
 
-.channelSidebar {
+.sidebar {
+  height: calc(100vh - 90px);
+  overflow: scroll;
   background-color: $primaryGrey !important;
   z-index: 2;
+  @media screen and (min-width: $bpMobile) {
+    min-width: 300px;
+  }
   :global {
     h3 {
       margin: 12px 0 12px 0;
       font-weight: 600;
+    }
+    .description {
+      padding: 21px 18px 18px 21px;
+      h5 {
+        margin-top: 18px;
+        margin-left: 0;
+      }
+      p {
+        color: $primaryDarkBlue;
+      }
+    }
+    strong {
+      color: $primaryDarkBlue;
+      font-family: var(--font-archia);
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.24px;
+      margin-bottom: 19px;
+      padding-left: 21px;
+    }
+
+    h6 {
+      margin-top: 28px;
+      padding-left: 21px;
+    }
+    .button-container {
+      padding: 22px 16px;
+      .ant-btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+    .ant-skeleton {
+      padding: 8px 23px;
+    }
+
+    .discussions {
+      margin-top: 8px;
+      margin-bottom: 36px;
+      li {
+        // padding: 7px 0;
+        padding: 11px 21px;
+        border-bottom: none;
+        display: flex;
+        justify-content: space-between;
+        &.active {
+          background-color: $primaryViolet2;
+          .ant-btn-link {
+            text-decoration: none;
+          }
+        }
+      }
+
+      .ant-btn-link {
+        white-space: normal;
+        text-align: left;
+      }
+    }
+    .members {
+      margin-left: 21px;
+      margin-top: 21px;
+      .ant-list-item {
+        padding: 0 0 13px;
+        border-bottom: none;
+        .ant-list-item-meta-avatar {
+          margin-right: 13px;
+          .ant-avatar {
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            .ant-avatar-string {
+              font-family: var(--font-archia);
+              font-size: $fzXXS;
+              font-weight: 600;
+              text-transform: uppercase;
+            }
+            background-color: $primaryGreen;
+          }
+        }
+        .ant-list-item-meta-content {
+          .ant-list-item-meta-title,
+          .ant-list-item-meta-description {
+            color: #000;
+            font-family: var(--font-archia);
+            font-size: $fzXXS;
+            line-height: $lhXXS;
+          }
+          .ant-list-item-meta-title {
+            font-weight: 600;
+            margin-bottom: 0;
+          }
+        }
+      }
     }
     .ant-menu {
       background-color: $primaryGrey;
@@ -48,39 +146,75 @@
         }
       }
     }
-    h6 {
-      margin-top: 28px;
-    }
-    .discussions {
-      margin-top: 8px;
-      li {
-        padding: 7px 0;
+    @media screen and (max-width: $bpMobile) {
+      height: auto;
+      .description {
+        padding: 10px 17px;
       }
-      .ant-btn-link {
-        white-space: normal;
-        text-align: left;
+      h5 {
+        margin-top: 5px !important;
       }
-    }
-    .button-container {
-      padding: 22px 16px;
-      .ant-btn {
-        width: 100%;
-        justify-content: center;
+      h6 {
+        margin-top: 10px;
       }
-    }
-    .ant-skeleton {
-      padding: 8px 23px;
+      .mobile-scroller-horiz {
+        overflow-x: scroll;
+        .discussions {
+          flex-direction: row;
+          display: flex;
+          margin-bottom: 10px;
+          padding-left: 15px;
+          li {
+            padding: 5px 5px;
+            margin-right: 20px;
+          }
+          .ant-btn {
+            white-space: nowrap;
+          }
+          .popover-container {
+            display: none;
+          }
+          .add-new-topic {
+            display: none;
+          }
+        }
+        .members {
+          margin-top: 10px;
+          display: flex;
+          flex-direction: row;
+          .ant-list-items {
+            display: flex;
+            .ant-list-item-meta-avatar {
+              margin-right: 6px;
+            }
+          }
+          .ant-list-item-meta-content {
+            display: none;
+          }
+        }
+      }
     }
   }
 }
 
-.channelContent {
+.content {
   :global {
     iframe {
-      height: calc(100vh - 90px) !important;
+      border: none;
+      height: calc(100vh - 180px) !important;
       &.discussion {
-        height: calc(100vh - 210px) !important;
+        height: calc(100vh - 300px) !important;
       }
+      &.joined {
+        height: calc(100vh - 90px) !important;
+        &.discussion {
+          height: calc(100vh - 210px) !important;
+        }
+      }
+    }
+    .join-container {
+      padding: 20px;
+      // background-color: #fff;
     }
     .ant-spin-blur iframe {
       opacity: 0;
@@ -96,6 +230,14 @@
       z-index: 1;
       h3 {
         font-weight: 600;
+      }
+    }
+    @media screen and (max-width: $bpMobile) {
+      .join-container {
+        display: flex;
+        .ant-btn {
+          flex: 1;
+        }
       }
     }
   }
@@ -134,78 +276,9 @@
   }
 }
 
-.detailSidebar {
-  height: calc(100vh - 90px);
-  overflow: scroll;
-  :global {
-    .description {
-      padding: 21px 18px 18px 21px;
-      h5 {
-        margin-top: 18px;
-        margin-left: 0;
-      }
-      p {
-        color: $primaryDarkBlue;
-      }
-    }
-    strong {
-      color: $primaryDarkBlue;
-      font-family: var(--font-archia);
-      font-weight: 700;
-      font-size: 12px;
-      letter-spacing: 0.24px;
-      margin-bottom: 19px;
-      padding-left: 21px;
-    }
-
-    .discussions {
-      margin-bottom: 36px;
-      .ant-list-item {
-        padding: 11px 21px;
-        border-bottom: none;
-        &.active {
-          background-color: $primaryViolet2;
-        }
-      }
-    }
-    h6 {
-      padding-left: 21px;
-    }
-    .members {
-      margin-left: 21px;
-      margin-top: 21px;
-      .ant-list-item {
-        padding: 0 0 13px;
-        border-bottom: none;
-        .ant-list-item-meta-avatar {
-          margin-right: 13px;
-          .ant-avatar {
-            width: 40px;
-            height: 40px;
-            line-height: 40px;
-            .ant-avatar-string {
-              font-family: var(--font-archia);
-              font-size: $fzXXS;
-              font-weight: 600;
-              text-transform: uppercase;
-            }
-            background-color: $primaryGreen;
-          }
-        }
-        .ant-list-item-meta-content {
-          .ant-list-item-meta-title,
-          .ant-list-item-meta-description {
-            color: #000;
-            font-family: var(--font-archia);
-            font-size: $fzXXS;
-            line-height: $lhXXS;
-          }
-          .ant-list-item-meta-title {
-            font-weight: 600;
-            margin-bottom: 0;
-          }
-        }
-      }
-    }
+.container {
+  display: flex;
+  @media screen and (max-width: $bpMobile) {
+    flex-direction: column;
   }
 }
