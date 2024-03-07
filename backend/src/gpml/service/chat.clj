@@ -3,12 +3,14 @@
    [duct.logger :refer [log]]
    [gpml.boundary.adapter.chat.ds-chat :as ds-chat]
    [gpml.boundary.port.chat :as port.chat]
+   [gpml.db :as db]
    [gpml.db.rbac-util :as db.rbac-util]
    [gpml.db.stakeholder :as db.sth]
    [gpml.service.file :as srv.file]
    [gpml.util.email :as util.email]
    [gpml.util.malli :refer [check!]]
-   [gpml.util.thread-transactions :as tht]))
+   [gpml.util.thread-transactions :as tht]
+   [taoensso.timbre :as timbre]))
 
 (defn- select-successful-user-creation-keys
   "Exists to ensure type homogeinity across code branches"
@@ -166,71 +168,80 @@
   (-> user
       (select-keys [:role :tags :picture_file :first_name :picture_id :org :id :picture :organisation_role :last_name :country])))
 
-(defn get-channel-details [{:keys [db chat-adapter logger] :as config} channel-id]
+(defn get-channel-details [{:keys [db hikari chat-adapter logger] :as config} channel-id]
+  {:pre [db hikari chat-adapter logger channel-id]}
   (let [transactions
-        [{:txn-fn
-          (fn tx-get-channel [context]
-            (let [result (port.chat/get-channel chat-adapter channel-id)]
-              (if (:success? result)
-                (assoc context :channel (:channel result))
-                (assoc context
-                       :success? false
-                       :reason :failed-to-get-channel
-                       :error-details {:result result}))))}
-         {:txn-fn
-          (fn tx-get-channel-discussions [context]
-            (let [result (port.chat/get-channel-discussions chat-adapter channel-id)]
-              (if (:success? result)
-                (assoc-in context [:channel :discussions] (:discussions result))
-                (assoc context
-                       :success? false
-                       :reason :failed-to-get-channel-discussions
-                       :error-details {:result result}))))}
-         {:txn-fn
-          (fn tx-get-channel-users [{:keys [channel] :as context}]
-            (let [chat-account-ids (->> channel
-                                        :members
-                                        :data
-                                        (mapv :unique-user-identifier))
-                  result (try
-                           (if (seq chat-account-ids)
-                             {:success? true
-                              :stakeholders (find-users-by-chat-account-id db chat-account-ids)}
-                             (do
-                               (log logger :warn :empty-chat-account-ids)
-                               {:success? true
-                                :stakeholders []}))
-                           (catch Exception t
-                             (log logger :error :could-not-get-stakeholders t)
-                             {:success? false
-                              :reason :exception
-                              :error-details {:msg (ex-message t)}}))]
-              (-> (if (:success? result)
-                    (assoc-in context [:channel :users] (->> (:stakeholders result)
-                                                             (add-users-pictures-urls config)
-                                                             (mapv present-user)))
-                    (assoc context
-                           :success? false
-                           :reason :failed-to-get-channel-users
-                           :error-details {:result result}))
-                  ;; No longer needed / can be confusing to include it:
-                  (update :channel dissoc :members))))}
-         {:txn-fn
-          (fn enrich-messages-users [context]
-            (try
-              (update-in context [:channel :messages :messages] (fn [messages]
-                                                                  (mapv (fn [{:keys [chat-account-id] :as message}]
-                                                                          {:pre [chat-account-id]}
-                                                                          (let [[user] (find-users-by-chat-account-id db [chat-account-id])]
-                                                                            (-> message
-                                                                                (dissoc :chat-account-id)
-                                                                                (assoc :user (present-user user)))))
-                                                                        messages)))
-              (catch Exception t
-                (log logger :error :could-not-get-stakeholders t)
-                {:success? false
-                 :reason :exception
-                 :error-details {:msg (ex-message t)}})))}]
+        [(fn tx-get-channel [context]
+           (let [result (port.chat/get-channel chat-adapter channel-id)]
+             (if (:success? result)
+               (assoc context :channel (:channel result))
+               (assoc context
+                      :success? false
+                      :reason :failed-to-get-channel
+                      :error-details {:result result}))))
+         (fn tx-get-channel-discussions [context]
+           (let [result (port.chat/get-channel-discussions chat-adapter channel-id)]
+             (if (:success? result)
+               (assoc-in context [:channel :discussions] (:discussions result))
+               (assoc context
+                      :success? false
+                      :reason :failed-to-get-channel-discussions
+                      :error-details {:result result}))))
+         (fn tx-get-channel-users [{:keys [channel] :as context}]
+           (let [;; Unused for now. Maybe we can use it to insert missing users due to plausible sync issues:
+                 _chat-account-ids-from-dsc (->> channel
+                                                 :members
+                                                 :data
+                                                 (mapv :unique-user-identifier))
+                 chat-account-ids-from-db (mapv :chat-account-id
+                                                (:result (db/execute! hikari {:select :stakeholder.chat_account_id
+                                                                              :from :stakeholder
+                                                                              :join [:chat_channel_membership
+                                                                                     [:=
+                                                                                      :stakeholder.id
+                                                                                      :chat_channel_membership.stakeholder_id]]
+                                                                              :where [:= :chat_channel_id channel-id]})))
+                 chat-account-ids chat-account-ids-from-db
+                 result (try
+                          (if (seq chat-account-ids)
+                            {:success? true
+                             :stakeholders (find-users-by-chat-account-id db chat-account-ids)}
+                            (do
+                              (timbre/with-context+ {:channel channel}
+                                (log logger :warn :empty-chat-account-ids))
+                              {:success? true
+                               :stakeholders []}))
+                          (catch Exception t
+                            (timbre/with-context+ {:chat-account-ids chat-account-ids}
+                              (log logger :error :could-not-get-stakeholders t))
+                            {:success? false
+                             :reason :exception
+                             :error-details {:msg (ex-message t)}}))]
+             (-> (if (:success? result)
+                   (assoc-in context [:channel :users] (->> (:stakeholders result)
+                                                            (add-users-pictures-urls config)
+                                                            (mapv present-user)))
+                   (assoc context
+                          :success? false
+                          :reason :failed-to-get-channel-users
+                          :error-details {:result result}))
+                 ;; No longer needed / can be confusing to include it:
+                 (update :channel dissoc :members))))
+         (fn enrich-messages-users [context]
+           (try
+             (update-in context [:channel :messages :messages] (fn [messages]
+                                                                 (mapv (fn [{:keys [chat-account-id] :as message}]
+                                                                         {:pre [chat-account-id]}
+                                                                         (let [[user] (find-users-by-chat-account-id db [chat-account-id])]
+                                                                           (-> message
+                                                                               (dissoc :chat-account-id)
+                                                                               (assoc :user (present-user user)))))
+                                                                       messages)))
+             (catch Exception t
+               (log logger :error :could-not-get-stakeholders t)
+               {:success? false
+                :reason :exception
+                :error-details {:msg (ex-message t)}})))]
         context {:success? true
                  :channel-id channel-id}]
     (tht/thread-transactions logger transactions context)))
@@ -242,3 +253,47 @@
                                                                           user
                                                                           channel-id
                                                                           channel-name)))
+
+(defn join-channel [{:keys [db hikari chat-adapter logger] :as config}
+                    channel-id
+                    {user-id :id
+                     unique-user-identifier :chat-channel-id
+                     :as _user}
+                    private?]
+  {:pre [db hikari chat-adapter logger user-id
+         (check! :boolean private?)]}
+  (let [transactions
+        [(fn get-channel [_context]
+           (port.chat/get-channel chat-adapter channel-id))
+
+         (fn check-membership [_context]
+           (if (:exists (:result (db/execute-one! hikari {:select [[[:exists {:select :*
+                                                                              :from :chat_channel_membership
+                                                                              :where [:and
+                                                                                      [:= :stakeholder_id user-id]
+                                                                                      [:= :chat_channel_id channel-id]]}]]]})))
+             {:success? false
+              :reason   :user-already-belongs-to-channel}
+             {:success? true}))
+
+         (when private?
+           {:txn-fn (fn add-to-dsc [_context]
+                      (if unique-user-identifier
+                        (port.chat/add-user-to-private-channel chat-adapter unique-user-identifier channel-id)
+                        {:success? false}))
+            :rollback-fn (fn remove-from-dsc [_context]
+                           (if unique-user-identifier
+                             (port.chat/remove-user-from-channel chat-adapter unique-user-identifier channel-id :_)
+                             {:success? false}))})
+
+         {:txn-fn (fn add-to-tables [_context]
+                    (db/execute-one! hikari {:insert-into :chat_channel_membership
+                                             :values [{:stakeholder_id user-id
+                                                       :chat_channel_id channel-id}]}))
+          :rollback-fn (fn remove-from-tables [_context]
+                         (db/execute-one! hikari {:delete-from :chat_channel_membership
+                                                  :where [:and
+                                                          [:= :stakeholder_id user-id]
+                                                          [:= :chat_channel_id channel-id]]}))}]
+        context (create-user-account config user-id)]
+    (tht/thread-transactions logger transactions context)))
