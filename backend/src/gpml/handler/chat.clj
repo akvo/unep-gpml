@@ -4,11 +4,10 @@
    [camel-snake-kebab.extras :as cske]
    [gpml.boundary.adapter.chat.ds-chat :as ds-chat]
    [gpml.boundary.port.chat :as port.chat]
-   [gpml.db :as db]
    [gpml.db.stakeholder :as db.stakeholder]
    [gpml.handler.resource.permission :as h.r.permission]
    [gpml.handler.responses :as r]
-   [gpml.service.chat :as srv.chat]
+   [gpml.service.chat :as svc.chat]
    [gpml.util.email :as email]
    [gpml.util.http-client :as http-client]
    [gpml.util.json :as json]
@@ -17,17 +16,17 @@
    [malli.util :as mu]))
 
 (defn- present-error [result]
-  (select-keys result [:error-details :user-id :success?]))
+  (select-keys result [:error-details :user-id :success? :reason]))
 
 (defn- create-user-account [config {:keys [user] :as _req}]
-  (let [result (srv.chat/create-user-account config (:id user))]
+  (let [result (svc.chat/create-user-account config (:id user))]
     (if (:success? result)
       (r/ok (cske/transform-keys ->snake_case (:stakeholder result)))
       (-> result present-error r/server-error))))
 
 (defn- set-user-account-active-status [config {:keys [user parameters]}]
   (let [chat-account-status (-> parameters :body :chat_account_status)
-        result (srv.chat/set-user-account-active-status config user chat-account-status)]
+        result (svc.chat/set-user-account-active-status config user chat-account-status)]
     (if (:success? result)
       (r/ok {})
       (-> result present-error r/server-error))))
@@ -73,7 +72,7 @@
     (r/forbidden {:message "Unauthorized"})
     (let [channel-name (get-in parameters [:body :channel_name])
           channel-id (get-in parameters [:body :channel_id])
-          result (srv.chat/send-private-channel-invitation-request config
+          result (svc.chat/send-private-channel-invitation-request config
                                                                    user
                                                                    channel-id
                                                                    channel-name)]
@@ -199,77 +198,6 @@
                                       [:name :string]])
             :responses {:200 {:body (success-with :discussion port.chat/DiscussionSnakeCase)}
                         :500 {:body (failure-with)}}}}]
-   ["/input-box/{id}"
-    {:get {:summary    "Gets the input box status for a given channel. Returns false by default (including for non-existing channels)."
-           :middleware middleware
-           :swagger    {:tags ["chat"]}
-           :handler    (fn [{{:keys [id]} :user
-                             {{channel-id :id} :path} :parameters}]
-                         {:pre [id channel-id]}
-                         (let [{:keys [enabled]} (db/execute-one! hikari {:select :enabled
-                                                                          :from :chat_channel_input_box
-                                                                          :where [:and
-                                                                                  [:= :stakeholder_id id]
-                                                                                  [:= :chat_channel_id channel-id]]})]
-                           (r/ok {:enabled (boolean enabled)
-                                  :success? true})))
-           :parameters ChannelIdPath
-           :responses {:200 {:body (success-with :enable :boolean)}
-                       :500 {:body (failure-with)}}}}]
-   ["/input-box/{id}/enable"
-    {:post {:summary    "Marks the current user as having enabled the input box for a given channel.
-Does not imply joining a channel - please treat that concern independently."
-            :middleware middleware
-            :swagger    {:tags ["chat"]}
-            :handler    (fn [{{:keys [id]} :user
-                              {{channel-id :id} :path} :parameters}]
-                          {:pre [id channel-id]}
-                          (let [where [:and
-                                       [:= :stakeholder_id id]
-                                       [:= :chat_channel_id channel-id]]
-                                {:keys [enabled] :as enable} (db/execute-one! hikari {:select :enabled
-                                                                                      :from :chat_channel_input_box
-                                                                                      :where where})]
-                            (when (nil? enable)
-                              (db/execute-one! hikari {:insert-into :chat_channel_input_box
-                                                       :values [{:stakeholder_id id
-                                                                 :chat_channel_id channel-id
-                                                                 :enabled true}]}))
-                            (when (false? enabled)
-                              (db/execute-one! hikari {:update :chat_channel_input_box
-                                                       :set {:enabled true}
-                                                       :where where}))
-                            (r/ok {:success? true})))
-            :parameters ChannelIdPath
-            :responses {:200 {:body (success-with)}
-                        :500 {:body (failure-with)}}}}]
-   ["/input-box/{id}/disable"
-    {:post {:summary    "Marks the current user as having disabled the input box for a given channel.
-Does not imply leaving a channel - please treat that concern independently."
-            :middleware middleware
-            :swagger    {:tags ["chat"]}
-            :handler    (fn [{{:keys [id]} :user
-                              {{channel-id :id} :path} :parameters}]
-                          {:pre [id channel-id]}
-                          (let [where [:and
-                                       [:= :stakeholder_id id]
-                                       [:= :chat_channel_id channel-id]]
-                                {:keys [enabled] :as enable} (db/execute-one! hikari {:select :enabled
-                                                                                      :from :chat_channel_input_box
-                                                                                      :where where})]
-                            (when (nil? enable)
-                              (db/execute-one! hikari {:insert-into :chat_channel_input_box
-                                                       :values [{:stakeholder_id id
-                                                                 :chat_channel_id channel-id
-                                                                 :enabled true}]}))
-                            (when (true? enabled)
-                              (db/execute-one! hikari {:update :chat_channel_input_box
-                                                       :set {:enabled false}
-                                                       :where where}))
-                            (r/ok {:success? true})))
-            :parameters ChannelIdPath
-            :responses {:200 {:body (success-with)}
-                        :500 {:body (failure-with)}}}}]
    ["/leave"
     {:post {:summary    "Remove the callee user from the channel"
             :middleware middleware
@@ -300,7 +228,7 @@ Does not imply leaving a channel - please treat that concern independently."
             :swagger    {:tags ["chat"] :security [{:id_token []}]}
             :handler    (fn get-channel-details [{{:keys [path]} :parameters}]
                           ;; XXX authorization?
-                          (let [result (srv.chat/get-channel-details config (:id path))]
+                          (let [result (svc.chat/get-channel-details config (:id path))]
                             (if (:success? result)
                               (r/ok (cske/transform-keys ->snake_case result))
                               (-> result present-error r/server-error))))
@@ -372,7 +300,27 @@ Does not imply leaving a channel - please treat that concern independently."
            :handler    (fn do-get-public-channels [req]
                          (get-public-channels config req))
            :responses {:200 {:body (success-with :channels [:sequential ds-chat/Channel])}
-                       :500 {:body (failure-with)}}}}]])
+                       :500 {:body (failure-with)}}}
+     :post {:summary    "Joins this public channel. Implicitly creates a chat account for the user,
+so you don't need to call the POST /api/chat/user/account endpoint beforehand."
+            :middleware middleware
+            :swagger    {:tags ["chat"]}
+            :handler    (fn [{{{channel-id :channel_id} :body} :parameters
+                              :keys [user]}]
+                          {:pre [user channel-id]}
+                          (let [result (svc.chat/join-channel config channel-id user false)]
+                            (if (:success? result)
+                              (r/ok {})
+                              (-> result present-error r/server-error))))
+            :parameters {:body [:map
+                                [:channel_id
+                                 {:optional false
+                                  :swagger {:description "The channel id"
+                                            :type "string"
+                                            :allowEmptyValue false}}
+                                 [:string {:min 1}]]]}
+            :responses {:200 {:body (success-with)}
+                        :500 {:body (failure-with)}}}}]])
 
 (comment
   (dev/make-user! "abc@abc.net")
@@ -400,6 +348,13 @@ Does not imply leaving a channel - please treat that concern independently."
 
   @(def channel-id (-> channel :body :channels first :id))
 
+  (http-client/request (dev/logger)
+                       {:url (str "http://localhost:3000/api/chat/channel/public")
+                        :method :post
+                        :body (json/->json {:channel_id channel-id})
+                        :content-type :json
+                        :as :json-keyword-keys})
+
   @(def discussion (http-client/request (dev/logger)
                                         {:url (str "http://localhost:3000/api/chat/channel/create-discussion/" channel-id)
                                          :method :post
@@ -415,10 +370,7 @@ Does not imply leaving a channel - please treat that concern independently."
                         :content-type :json
                         :as :json-keyword-keys})
 
-  (port.chat/add-user-to-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                        (:chat_account_id (gpml.db.stakeholder/stakeholder-by-email (dev/conn) {:email "abc@abc.net"}))
-                                        channel-id)
-
+  ;; should include the user that joined with the earlier http://localhost:3000/api/chat/channel/public call
   (http-client/request (dev/logger)
                        {:url (str "http://localhost:3000/api/chat/channel/details/" channel-id)
                         :as :json-keyword-keys})

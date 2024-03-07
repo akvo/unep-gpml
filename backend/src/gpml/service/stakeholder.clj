@@ -8,7 +8,7 @@
    [gpml.domain.file :as dom.file]
    [gpml.handler.organisation :as handler.org]
    [gpml.handler.stakeholder.tag :as handler.stakeholder.tag]
-   [gpml.service.chat :as srv.chat]
+   [gpml.service.chat :as svc.chat]
    [gpml.service.file :as srv.file]
    [gpml.service.permissions :as srv.permissions]
    [gpml.service.plastic-strategy :as srv.ps]
@@ -209,7 +209,7 @@
           (fn create-chat-account
             [{:keys [stakeholder] :as context}]
             (let [{success? :success? updated-user :stakeholder :as result}
-                  (srv.chat/create-user-account config (:id stakeholder))]
+                  (svc.chat/create-user-account config (:id stakeholder))]
               (if success?
                 (-> context
                     (assoc-in [:stakeholder :chat_account_id] (:chat-account-id updated-user))
