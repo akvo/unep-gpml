@@ -49,6 +49,9 @@ const ForumView = ({ isAuthenticated, profile }) => {
           `/chat/channel/details/${router.query.forum}`
         )
         const { channel: _activeForum } = apiData || {}
+        setUserJoined(
+          _activeForum.users.findIndex((it) => it.id === profile.id) !== -1
+        )
         setActiveForum(_activeForum)
       }
     } catch (error) {
@@ -99,7 +102,14 @@ const ForumView = ({ isAuthenticated, profile }) => {
       })
     }
   }, [sdk, userJoined])
-
+  const handleClickJoin = () => {
+    api.post('/chat/channel/public', { channelId: activeForum.id })
+    setUserJoined(true)
+  }
+  const handleClickLeave = () => {
+    api.post('/chat/channel/leave', { channelId: activeForum.id })
+    setUserJoined(false)
+  }
   return (
     <>
       <Head>
@@ -117,7 +127,33 @@ const ForumView = ({ isAuthenticated, profile }) => {
             >
               <Trans>Back to all Forums</Trans>
             </Button>
-            <h5>{activeForum?.name}</h5>
+            <div className="title-container">
+              <h5>{activeForum?.name}</h5>
+              {userJoined && (
+                <div className="popover-container">
+                  <Popover
+                    placement="bottomLeft"
+                    overlayClassName={styles.forumOptions}
+                    content={
+                      <ul>
+                        <li>
+                          <Button
+                            size="small"
+                            type="link"
+                            onClick={handleClickLeave}
+                          >
+                            <Trans>Leave Channel</Trans>
+                          </Button>
+                        </li>
+                      </ul>
+                    }
+                    trigger="click"
+                  >
+                    <MoreOutlined rotate={90} />
+                  </Popover>
+                </div>
+              )}
+            </div>
             <p>{activeForum?.description}</p>
           </div>
           {activeForum != null && (
@@ -190,7 +226,11 @@ const ForumView = ({ isAuthenticated, profile }) => {
           )}
           {!userJoined && activeForum !== null && (
             <div className="join-container">
-              <Button type="primary" className="noicon">
+              <Button
+                type="primary"
+                className="noicon"
+                onClick={handleClickJoin}
+              >
                 Join Channel
               </Button>
             </div>
