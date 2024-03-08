@@ -13,14 +13,21 @@
       margin: 12px 0 12px 0;
       font-weight: 600;
     }
+    .title-container {
+      margin-top: 15px;
+      display: flex;
+      .popover-container {
+        margin-left: auto;
+        font-size: 18px;
+      }
+    }
     .description {
-      padding: 21px 18px 18px 21px;
+      padding: 20px 20px 10px;
       h5 {
-        margin-top: 18px;
         margin-left: 0;
       }
       p {
-        color: $primaryDarkBlue;
+        margin: 10px 0 0;
       }
     }
     strong {
