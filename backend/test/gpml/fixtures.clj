@@ -22,10 +22,23 @@
   (duct/read-config x {'gpml/eval eval}))
 
 (defn- test-system []
+  (when (System/getenv "CI")
+    ;; We have test-ci.edn for some CI-specific tweaks.
+    ;; Since Duct doesn't easily allow creating custom profiles,
+    ;; we'll use the :duct.profile/local profile.
+    (io/copy (io/reader (io/resource "gpml/test-ci.edn"))
+             (io/file "test-resources" "local.edn")))
+
   (-> (duct/resource "gpml/duct.edn")
       (read-config)
+
+      ;; support an ad-hoc profile for simple tweaks.
+      ;; Note that duct doesn't make it easy to create custom profiles
       (cond-> (io/resource "localtest.edn") (merge (read-config (duct/resource "localtest.edn"))))
-      (duct/prep-config [:duct.profile/test])))
+
+      (duct/prep-config (cond-> [:duct.profile/test]
+                          (System/getenv "CI")
+                          (conj :duct.profile/local)))))
 
 (defn- migrate-template-test-db []
   (locking lock

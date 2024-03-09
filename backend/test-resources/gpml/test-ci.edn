@@ -1,0 +1,9 @@
+;; This file is used in CI to enable timbre-logger.json/logger as the sole logger.
+;; It's useful there since that logger shows all the contexts (per `timbre/with-context+`).
+{:gpml.timbre-logger.json/logger {}
+ :duct.logger/timbre             {:min-level        :debug
+                                  :level            :debug
+                                  :appenders        {:out #ig/ref :gpml.timbre-logger.json/logger}
+                                  :set-root-config? true}
+ :duct.logger.timbre/println     {:enabled? false}
+ :duct.logger.timbre/brief       {:enabled? false}}
