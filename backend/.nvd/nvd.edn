@@ -1,0 +1,2 @@
+{:suppression-file "nvd_suppressions.xml"
+ :nvd-api {:key "9b0e6e4e-43c1-4674-9e7c-615e14e832ef"}}
