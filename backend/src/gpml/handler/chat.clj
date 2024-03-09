@@ -31,8 +31,9 @@
       (r/ok {})
       (-> result present-error r/server-error))))
 
-(defn- get-user-joined-channels [config {:keys [user]}]
-  (let [result (port.chat/get-user-joined-channels (:chat-adapter config) (:chat_account_id user))]
+(defn- get-user-joined-channels [config {{:keys [chat_account_id]} :user}]
+  {:pre [chat_account_id]}
+  (let [result (svc.chat/get-channels config chat_account_id)]
     (if (:success? result)
       (r/ok (cske/transform-keys ->snake_case result))
       (-> result present-error r/server-error))))
@@ -44,7 +45,7 @@
                                               :custom-permission :list-chat-private-channels
                                               :root-context? true})
     (r/forbidden {:message "Unauthorized"})
-    (let [result (port.chat/get-private-channels (:chat-adapter config) {})]
+    (let [result (svc.chat/get-channels config :private)]
       (if (:success? result)
         (r/ok result)
         (-> result present-error r/server-error)))))
@@ -57,7 +58,7 @@
             :custom-permission :list-chat-public-channels
             :root-context? true})
     (r/forbidden {:message "Unauthorized"})
-    (let [result (port.chat/get-public-channels (:chat-adapter config) {})]
+    (let [result (svc.chat/get-channels config :public)]
       (if (:success? result)
         (r/ok result)
         (-> result present-error r/server-error)))))
@@ -214,11 +215,17 @@
    ["/all"
     {:get {:summary    "Get all channels in the server"
            :swagger    {:tags ["chat"]}
-           :handler    (fn do-get-all-channels [_req]
-                         (let [result (port.chat/get-all-channels (:chat-adapter config) {})]
-                           (if (:success? result)
-                             (r/ok (cske/transform-keys ->snake_case result))
-                             (-> result present-error r/server-error))))
+           :handler    (fn do-get-all-channels [{:keys [user]}]
+                         (if-not (h.r.permission/operation-allowed? config
+                                                                    {:user-id (:id user)
+                                                                     :entity-type :application
+                                                                     :custom-permission :list-chat-private-channels
+                                                                     :root-context? true})
+                           (r/forbidden {:message "Unauthorized"})
+                           (let [result (svc.chat/get-channels config :all)]
+                             (if (:success? result)
+                               (r/ok (cske/transform-keys ->snake_case result))
+                               (-> result present-error r/server-error)))))
            :responses {:200 {:body (success-with :channels [:sequential ds-chat/Channel])}
                        :500 {:body (failure-with)}}}}]
    ["/details"
@@ -377,6 +384,14 @@ so you don't need to call the POST /api/chat/user/account endpoint beforehand."
 
   (http-client/request (dev/logger)
                        {:url "http://localhost:3000/api/chat/channel/all"
+                        :as :json-keyword-keys})
+
+  (http-client/request (dev/logger)
+                       {:url "http://localhost:3000/api/chat/channel/public"
+                        :as :json-keyword-keys})
+
+  (http-client/request (dev/logger)
+                       {:url "http://localhost:3000/api/chat/channel/private"
                         :as :json-keyword-keys})
 
   (http-client/request (dev/logger)
