@@ -71,7 +71,7 @@
                  [ring-cors "0.1.13"]
                  [ring/ring-jetty-adapter "1.8.2"]
                  [twarc "0.1.15"]
-                 [viesti/timbre-json-appender "0.2.11" :exclusions [metosin/jsonista]]]
+                 [viesti/timbre-json-appender "0.2.12" :exclusions [metosin/jsonista]]]
   :resource-paths ["resources"]
   :prep-tasks     ["javac" "compile"]
   :jvm-opts ["-Djava.awt.headless=true"]
