@@ -168,6 +168,52 @@
   (-> user
       (select-keys [:role :tags :picture_file :first_name :picture_id :org :id :picture :organisation_role :last_name :country])))
 
+(defn- tx-get-channel-users [{:keys [db hikari chat-adapter logger] :as config}
+                             {:keys [channel] :as context}]
+  {:pre [db hikari chat-adapter logger channel
+         (check! [:map
+                  [:id some?]]
+                 channel)]}
+  (let [;; Unused for now. Maybe we can use it to insert missing users due to plausible sync issues:
+        _chat-account-ids-from-dsc (->> channel
+                                        :members
+                                        :data
+                                        (mapv :unique-user-identifier))
+        chat-account-ids-from-db (mapv :chat-account-id
+                                       (:result (db/execute! hikari {:select :stakeholder.chat_account_id
+                                                                     :from :stakeholder
+                                                                     :join [:chat_channel_membership
+                                                                            [:=
+                                                                             :stakeholder.id
+                                                                             :chat_channel_membership.stakeholder_id]]
+                                                                     :where [:= :chat_channel_id (:id channel)]})))
+        chat-account-ids chat-account-ids-from-db
+        result (try
+                 (if (seq chat-account-ids)
+                   {:success? true
+                    :stakeholders (find-users-by-chat-account-id db chat-account-ids)}
+                   (do
+                     (timbre/with-context+ {:channel channel}
+                       (log logger :warn :empty-chat-account-ids))
+                     {:success? true
+                      :stakeholders []}))
+                 (catch Exception t
+                   (timbre/with-context+ {:chat-account-ids chat-account-ids}
+                     (log logger :error :could-not-get-stakeholders t))
+                   {:success? false
+                    :reason :exception
+                    :error-details {:msg (ex-message t)}}))]
+    (-> (if (:success? result)
+          (assoc-in context [:channel :users] (->> (:stakeholders result)
+                                                   (add-users-pictures-urls config)
+                                                   (mapv present-user)))
+          (assoc context
+                 :success? false
+                 :reason :failed-to-get-channel-users
+                 :error-details {:result result}))
+        ;; No longer needed / can be confusing to include it:
+        (update :channel dissoc :members))))
+
 (defn get-channel-details [{:keys [db hikari chat-adapter logger] :as config} channel-id]
   {:pre [db hikari chat-adapter logger channel-id]}
   (let [transactions
@@ -187,46 +233,7 @@
                       :success? false
                       :reason :failed-to-get-channel-discussions
                       :error-details {:result result}))))
-         (fn tx-get-channel-users [{:keys [channel] :as context}]
-           (let [;; Unused for now. Maybe we can use it to insert missing users due to plausible sync issues:
-                 _chat-account-ids-from-dsc (->> channel
-                                                 :members
-                                                 :data
-                                                 (mapv :unique-user-identifier))
-                 chat-account-ids-from-db (mapv :chat-account-id
-                                                (:result (db/execute! hikari {:select :stakeholder.chat_account_id
-                                                                              :from :stakeholder
-                                                                              :join [:chat_channel_membership
-                                                                                     [:=
-                                                                                      :stakeholder.id
-                                                                                      :chat_channel_membership.stakeholder_id]]
-                                                                              :where [:= :chat_channel_id channel-id]})))
-                 chat-account-ids chat-account-ids-from-db
-                 result (try
-                          (if (seq chat-account-ids)
-                            {:success? true
-                             :stakeholders (find-users-by-chat-account-id db chat-account-ids)}
-                            (do
-                              (timbre/with-context+ {:channel channel}
-                                (log logger :warn :empty-chat-account-ids))
-                              {:success? true
-                               :stakeholders []}))
-                          (catch Exception t
-                            (timbre/with-context+ {:chat-account-ids chat-account-ids}
-                              (log logger :error :could-not-get-stakeholders t))
-                            {:success? false
-                             :reason :exception
-                             :error-details {:msg (ex-message t)}}))]
-             (-> (if (:success? result)
-                   (assoc-in context [:channel :users] (->> (:stakeholders result)
-                                                            (add-users-pictures-urls config)
-                                                            (mapv present-user)))
-                   (assoc context
-                          :success? false
-                          :reason :failed-to-get-channel-users
-                          :error-details {:result result}))
-                 ;; No longer needed / can be confusing to include it:
-                 (update :channel dissoc :members))))
+         (partial tx-get-channel-users config)
          (fn enrich-messages-users [context]
            (try
              (update-in context [:channel :messages :messages] (fn [messages]
@@ -245,6 +252,45 @@
         context {:success? true
                  :channel-id channel-id}]
     (tht/thread-transactions logger transactions context)))
+
+(defn get-channels [{:keys [db hikari chat-adapter logger] :as config} channel-type]
+  {:pre [db hikari chat-adapter logger
+         (check! [:or
+                  [:enum :public :private :all]
+                  :string] ;; a :chat_account_id
+                 channel-type)]}
+  (let [transactions
+        [(fn get-channels [context]
+           (let [result (if (string? channel-type)
+                          (port.chat/get-user-joined-channels chat-adapter channel-type)
+                          (case channel-type
+                            :all (port.chat/get-all-channels chat-adapter :_)
+                            :public (port.chat/get-public-channels chat-adapter :_)
+                            :private (port.chat/get-private-channels chat-adapter :_)))]
+             (if (:success? result)
+               (assoc context :channels (:channels result))
+               (assoc context
+                      :success? false
+                      :reason :failed-to-get-channels
+                      :error-details {:result result}))))
+         (fn add-users [context]
+           (try
+             (update context :channels (fn [channels]
+                                         (mapv (fn [{:keys [id] :as channel}]
+                                                 {:pre [id]}
+                                                 (let [{:keys [success? channel]} (tx-get-channel-users config {:channel channel})]
+                                                   (if (false? success?)
+                                                     (throw (ex-info "Abort" {}))
+                                                     channel)))
+                                               channels)))
+             (catch Exception e
+               (log logger :error :could-not-add-users e)
+               {:success? false})))]
+        context {:success? true}]
+    (tht/thread-transactions logger transactions context)))
+
+(comment
+  (get-channels (dev/config-component) :all))
 
 (defn send-private-channel-invitation-request [{:keys [db mailjet-config]} user channel-id channel-name]
   (let [super-admins (db.rbac-util/get-super-admins-details (:spec db) {})]
