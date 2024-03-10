@@ -300,17 +300,24 @@
                                                                           channel-id
                                                                           channel-name)))
 
+(defn- assoc-private
+  "Checks that the channel exists, and assocs `:private?` to the `context` if so."
+  [{:keys [chat-adapter]}
+   channel-id
+   context]
+  (let [{:keys [success?] :as result} (port.chat/get-channel chat-adapter channel-id)]
+    (if-not success?
+      result
+      (assoc context :private? (-> result :channel (= port.chat/private))))))
+
 (defn join-channel [{:keys [db hikari chat-adapter logger] :as config}
                     channel-id
                     {user-id :id
                      unique-user-identifier :chat-channel-id
-                     :as _user}
-                    private?]
-  {:pre [db hikari chat-adapter logger user-id
-         (check! :boolean private?)]}
+                     :as _user}]
+  {:pre [db hikari chat-adapter logger user-id]}
   (let [transactions
-        [(fn get-channel [_context]
-           (port.chat/get-channel chat-adapter channel-id))
+        [(partial assoc-private config channel-id)
 
          (fn check-membership [_context]
            (if (:exists (:result (db/execute-one! hikari {:select [[[:exists {:select :*
@@ -322,15 +329,18 @@
               :reason   :user-already-belongs-to-channel}
              {:success? true}))
 
-         (when private?
-           {:txn-fn (fn add-to-dsc [_context]
+         {:txn-fn (fn add-to-dsc [context]
+                    (if-not (-> context (find :private?) (doto (assert "`:private?` should be in the context")) val)
+                      context
                       (if unique-user-identifier
                         (port.chat/add-user-to-private-channel chat-adapter unique-user-identifier channel-id)
-                        {:success? false}))
-            :rollback-fn (fn remove-from-dsc [_context]
+                        {:success? false})))
+          :rollback-fn (fn remove-from-dsc [context]
+                         (if-not (-> context (find :private?) (doto (assert "`:private?` should be in the context")) val)
+                           context
                            (if unique-user-identifier
                              (port.chat/remove-user-from-channel chat-adapter unique-user-identifier channel-id :_)
-                             {:success? false}))})
+                             {:success? false})))}
 
          {:txn-fn (fn add-to-tables [_context]
                     (db/execute-one! hikari {:insert-into :chat_channel_membership
@@ -348,10 +358,8 @@
                      channel-id
                      {user-id :id
                       unique-user-identifier :chat-channel-id
-                      :as _user}
-                     private?]
-  {:pre [db hikari chat-adapter logger user-id
-         (check! :boolean private?)]}
+                      :as _user}]
+  {:pre [db hikari chat-adapter logger user-id]}
   (let [transactions
         [(fn check-membership [_context]
            (if (:exists (:result (db/execute-one! hikari {:select [[[:exists {:select :*
@@ -372,14 +380,20 @@
                          (db/execute-one! hikari {:insert-into :chat_channel_membership
                                                   :values [{:stakeholder_id user-id
                                                             :chat_channel_id channel-id}]}))}
-         (when private?
-           {:txn-fn (fn remove-from-dsc [_context]
+
+         (partial assoc-private config channel-id)
+
+         {:txn-fn (fn remove-from-dsc [context]
+                    (if-not (-> context (find :private?) (doto (assert "`:private?` should be in the context")) val)
+                      context
                       (if unique-user-identifier
                         (port.chat/remove-user-from-channel chat-adapter unique-user-identifier channel-id :_)
-                        {:success? false}))
-            :rollback-fn (fn add-to-dsc [_context]
+                        {:success? false})))
+          :rollback-fn (fn add-to-dsc [context]
+                         (if-not (-> context (find :private?) (doto (assert "`:private?` should be in the context")) val)
+                           context
                            (if unique-user-identifier
                              (port.chat/add-user-to-private-channel chat-adapter unique-user-identifier channel-id)
-                             {:success? false}))})]
+                             {:success? false})))}]
         context (create-user-account config user-id)]
     (tht/thread-transactions logger transactions context)))
