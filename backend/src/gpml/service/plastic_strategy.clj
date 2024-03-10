@@ -99,20 +99,20 @@
             context)}
          {:txn-fn
           (fn tx-set-plastic-strategy-channel-custom-fields
-            [{:keys [plastic-strategy] _channel :channel :as context}]
-            (let [_custom-fields {:ps-country-iso-code-a2 (get-in plastic-strategy [:country :iso-code-a2])}
-                  #_#_result {}
-                  #_;; XXX
-                    (port.chat/set-public-channel-custom-fields (:chat-adapter config)
-                                                                (:id channel)
-                                                                custom-fields)]
-              #_(if 1  ;; (:success? result)
-                  )
-              context
-              #_(assoc context
+            [{:keys [plastic-strategy]
+              channel :channel
+              :as context}]
+            (let [custom-fields {:ps-country-iso-code-a2 (get-in plastic-strategy [:country :iso-code-a2])}
+                  result
+                  (port.chat/set-public-channel-custom-fields (:chat-adapter config)
+                                                              (:id channel)
+                                                              {:metadata custom-fields})]
+              (if (:success? result)
+                context
+                (assoc context
                        :success? false
                        :reason :failed-to-set-plastic-strategy-channel-custom-fields
-                       :error-details {:result result})))}
+                       :error-details {:result result}))))}
          {:txn-fn
           (fn update-plastic-strategy-with-channel-id
             [{:keys [plastic-strategy channel] :as context}]
@@ -216,8 +216,7 @@
             {:pre [ps-team-member]}
             (let [result (svc.chat/join-channel config
                                                 (:chat-channel-id plastic-strategy)
-                                                ps-team-member
-                                                false)]
+                                                ps-team-member)]
               (if (:success? result)
                 context
                 (assoc context
@@ -229,8 +228,7 @@
             {:pre [ps-team-member]}
             (let [result (svc.chat/leave-channel config
                                                  (:chat-channel-id plastic-strategy)
-                                                 ps-team-member
-                                                 false)]
+                                                 ps-team-member)]
               (if (:success? result)
                 context
                 (assoc context

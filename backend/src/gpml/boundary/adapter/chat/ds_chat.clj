@@ -267,6 +267,17 @@
                                           {:room-id :id}))
                        body)})))
 
+(defn present-channel [channel]
+  {:post [(check! port.chat/Channel %)]}
+  (let [has-metadata? (and (-> channel :metadata string?)
+                           (not (-> channel :metadata string/blank?)))]
+    (-> channel
+        (set/rename-keys {:room-id :id
+                          :chat-room-permission-level :privacy})
+        (update :privacy {"provisioned_users" "public"
+                          "members" "private"})
+        (cond-> has-metadata? (update :metadata json/<-json)))))
+
 (defn get-channel* [{:keys [logger api-key]} channel-id]
   {:pre  [(check! RoomId channel-id)]
    :post [(check! #'port.chat/get-channel %)]}
@@ -307,7 +318,7 @@
                :error-details {:result messages}}
               {:success? true
                :channel (-> (cske/transform-keys ->kebab-case channel)
-                            (set/rename-keys {:room-id :id})
+                            (present-channel)
                             (assoc :members (update (cske/transform-keys ->kebab-case members)
                                                     :data
                                                     (fn [d]
@@ -569,6 +580,8 @@
    [:description {:optional true}
     string?]
    [:name {:optional true}
+    string?]
+   [:metadata {:optional true}
     string?]])
 
 (defn set-channel-custom-fields* [{:keys [logger api-key]} channel-id custom-fields]
@@ -696,7 +709,8 @@
   (port.chat/set-private-channel-custom-fields (dev/component :gpml.boundary.adapter.chat/ds-chat)
                                                (-> a-public-channel :channel :id)
                                                {:description (str (random-uuid))
-                                                :name (str (random-uuid))})
+                                                :name (str (random-uuid))
+                                                :metadata (json/->json {:a 1})})
 
   (port.chat/add-user-to-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
                                         uniqueUserIdentifier
