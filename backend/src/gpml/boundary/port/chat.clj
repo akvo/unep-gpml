@@ -30,8 +30,8 @@
   {:pre [(-> m first (= :map))
          (map? (second m))]}
   (into [:map (second m)]
-        (mapv (fn [[k v]]
-                [(->snake_case k) v])
+        (mapv (fn [[k & args]]
+                (apply vector (->snake_case k) args))
               (subvec m 2))))
 
 (def UserInfo
@@ -99,11 +99,9 @@
                         [:skip :int]])
 
 (def ExtendedChannelSnakeCase
-  #_(->)
-  ChannelSnakeCase
-  ;; IDK why these fail:
-  #_(mu/assoc :members MembersSnakeCase)
-  #_(mu/assoc :messages MessagesSnakeCase))
+  (-> ChannelSnakeCase
+      (mu/assoc :members MembersSnakeCase)
+      (mu/assoc :messages MessagesSnakeCase)))
 
 (def Channels
   [:sequential Channel])
