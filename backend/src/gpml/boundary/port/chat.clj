@@ -4,8 +4,18 @@
    [gpml.util.malli :as util.malli :refer [failure-with success-with]]
    [malli.util :as mu]))
 
+(def private "private")
+
+(def public "public")
+
+(def ChannelPrivacy
+  [:enum public private])
+
 (def Channel ;; TODO https://clojurians.slack.com/archives/CLDK6MFMK/p1709154587503499
   [:map
+   {}
+   [:privacy {:optional true} ChannelPrivacy] ;; XXX not really optional - we're awaiting DSC feedback.
+   [:metadata {:optional true} map?]
    [:show-notification-for-all-channels boolean?]
    [:name string?]
    [:enable-like-message boolean?]
@@ -15,6 +25,14 @@
    [:default-notification-enabled boolean?]
    [:moderator-only-one-to-one-chat boolean?]
    [:enable-channels boolean?]])
+
+(defn map->snake [m]
+  {:pre [(-> m first (= :map))
+         (map? (second m))]}
+  (into [:map (second m)]
+        (mapv (fn [[k v]]
+                [(->snake_case k) v])
+              (subvec m 2))))
 
 (def UserInfo
   [:map {:closed true}
@@ -32,10 +50,20 @@
 
 (def Members
   [:map
+   {}
    [:limit :int]
    [:total :int]
    [:skip :int]
    [:data [:vector UserInfo]]])
+
+(def UserInfoSnakeCase (map->snake UserInfo))
+
+(def MembersSnakeCase
+  [:map
+   [:limit :int]
+   [:total :int]
+   [:skip :int]
+   [:data [:vector UserInfoSnakeCase]]])
 
 (def Message
   [:map {:closed true}
@@ -46,6 +74,7 @@
 
 (def Messages
   [:map
+   {}
    [:limit :int]
    [:total-records :int]
    [:messages [:vector Message]]
@@ -56,6 +85,25 @@
   (-> Channel
       (mu/assoc :members Members)
       (mu/assoc :messages Messages)))
+
+(def ChannelSnakeCase (map->snake Channel))
+
+(def MessageSnakeCase (map->snake Message))
+
+(def MessagesSnakeCase [:map
+                        {}
+                        [:limit :int]
+                        [:total_records :int]
+                        [:messages [:vector MessageSnakeCase]]
+                        [:count :int]
+                        [:skip :int]])
+
+(def ExtendedChannelSnakeCase
+  #_(->)
+  ChannelSnakeCase
+  ;; IDK why these fail:
+  #_(mu/assoc :members MembersSnakeCase)
+  #_(mu/assoc :messages MessagesSnakeCase))
 
 (def Channels
   [:sequential Channel])
@@ -74,9 +122,7 @@
    [:enabled :boolean]])
 
 (def DiscussionSnakeCase
-  (into [:map] (mapv (fn [[k v]]
-                       [(->snake_case k) v])
-                     (subvec Discussion 2))))
+  (map->snake Discussion))
 
 (util.malli/defprotocol Chat
   :extend-via-metadata true
