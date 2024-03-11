@@ -118,9 +118,9 @@
    [:username {:optional true}
     string?]])
 
-(defn update-user-account* [{:keys [logger api-key]} dsc-internal-user-id updates]
-  {:pre  [(check! port.chat/DSCInternalId dsc-internal-user-id
-                  UserUpdates             updates)]
+(defn update-user-account* [{:keys [logger api-key]} unique-user-identifier updates]
+  {:pre  [(check! port.chat/UniqueUserIdentifier unique-user-identifier
+                  UserUpdates                    updates)]
    :post [(check! #'port.chat/update-user-account %)]}
   (let [{:keys [status body]}
         (http-client/request logger
@@ -128,11 +128,11 @@
                               :method :put
                               :query-params {:auth api-key}
                               :body (-> updates
-                                        (assoc :userId dsc-internal-user-id)
+                                        (assoc :uniqueUserIdentifier unique-user-identifier)
                                         json/->json)
                               :content-type :json
                               :as :json-keyword-keys})]
-    (timbre/with-context+ {:dsc-internal-user-id dsc-internal-user-id
+    (timbre/with-context+ {:unique-user-identifier unique-user-identifier
                            :updates updates}
       (if (<= 200 status 299)
         (do
@@ -281,7 +281,7 @@
                                                                 :username (:username user)})
                                                              messages)))))})))))))
 
-(defn get-user-joined-channels* [{:keys [logger api-key]} user-id]
+(defn get-user-joined-channels* [{:keys [logger api-key] :as chat-adapter} user-id extra-channel-ids]
   {:pre  [(check! port.chat/UniqueUserIdentifier user-id)]
    :post [(check! #'port.chat/get-user-joined-channels %)]}
   (let [{:keys [status body]}
@@ -291,16 +291,30 @@
                               :query-params {:auth api-key}
                               :as :json-keyword-keys})]
     (if (<= 200 status 299)
-      {:success? true
-       :channels (into []
-                       (comp (map #(cske/transform-keys ->kebab-case %))
-                             (filter :chat-room) ;; DSC can include memeberships to deleted channels
-                             (map (fn [{:keys [role-name]
-                                        {:keys [name room-id]} :chat-room}]
-                                    {:name name
-                                     :id room-id
-                                     :role-name role-name})))
-                       body)}
+      (let [ch (into []
+                     (comp (map #(cske/transform-keys ->kebab-case %))
+                           (filter :chat-room) ;; DSC can include memeberships to deleted channels
+                           (map (fn [{:keys [role-name]
+                                      {:keys [name room-id]} :chat-room}]
+                                  {:name name
+                                   :id room-id
+                                   :role-name role-name})))
+                     body)
+            valid-ids (into (into #{} (map :id) ch)
+                            extra-channel-ids)
+            all (when (seq valid-ids)
+                  (get-all-channels* chat-adapter :_))]
+        (cond
+          (empty? valid-ids)
+          {:success? true
+           :channels []}
+
+          (not (:success? all))
+          all
+
+          :else
+          {:success? true
+           :channels (->> all :channels (filterv (comp valid-ids :id)))}))
       {:success? false
        :reason :failed-to-add-user-to-channel
        :error-details body})))
@@ -589,9 +603,11 @@
 
     @(def uniqueUserIdentifier (-> a-user :stakeholder :chat-account-id)))
 
+  @(def new-email (format "a%s@a%s.com" (random-uuid) (random-uuid)))
+
   (port.chat/update-user-account (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                 (-> a-user :stakeholder :id str)
-                                 {:email (format "a%s@a%s.com" (random-uuid) (random-uuid))})
+                                 uniqueUserIdentifier
+                                 {:email new-email})
 
   (port.chat/get-user-info (dev/component :gpml.boundary.adapter.chat/ds-chat)
                            uniqueUserIdentifier
@@ -649,7 +665,8 @@
   @(def all-chanels (port.chat/get-all-channels (dev/component :gpml.boundary.adapter.chat/ds-chat) {}))
 
   (port.chat/get-user-joined-channels (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                      uniqueUserIdentifier)
+                                      uniqueUserIdentifier
+                                      [])
 
   (port.chat/remove-user-from-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
                                       uniqueUserIdentifier
@@ -658,7 +675,8 @@
 
   ;; Should be smaller now
   (-> (port.chat/get-user-joined-channels (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                          uniqueUserIdentifier)
+                                          uniqueUserIdentifier
+                                          [])
       :channels
       count)
 

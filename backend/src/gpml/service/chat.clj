@@ -260,19 +260,41 @@
                   :string] ;; a :chat_account_id
                  channel-type)]}
   (let [transactions
-        [(fn get-channels [context]
-           (let [result (if (string? channel-type)
-                          (port.chat/get-user-joined-channels chat-adapter channel-type)
-                          (case channel-type
-                            :all (port.chat/get-all-channels chat-adapter :_)
-                            :public (port.chat/get-public-channels chat-adapter :_)
-                            :private (port.chat/get-private-channels chat-adapter :_)))]
-             (if (:success? result)
-               (assoc context :channels (:channels result))
-               (assoc context
-                      :success? false
-                      :reason :failed-to-get-channels
-                      :error-details {:result result}))))
+        [(if (string? channel-type)
+           (fn get-channels-for-user [context]
+             (let [{sql-res :result sql-success? :success?}
+                   (db/execute! hikari {:select :chat_channel_membership.chat_channel_id
+                                        :from :chat_channel_membership
+                                        :join [:stakeholder
+                                               [:=
+                                                :stakeholder.id
+                                                :chat_channel_membership.stakeholder_id]]
+                                        :where [:= :stakeholder.chat_account_id channel-type]})
+
+                   extra-channel-ids (mapv :chat-channel-id sql-res)
+                   result (when sql-success?
+                            (port.chat/get-user-joined-channels chat-adapter channel-type extra-channel-ids))]
+               (if (:success? result)
+                 (assoc context :channels (:channels result))
+                 (assoc context
+                        :success? false
+                        :reason :failed-to-get-channels
+                        :error-details {:result (if sql-success?
+                                                  result
+                                                  sql-res)}))))
+
+           (fn get-channels-generic [context]
+             (let [result
+                   (case channel-type
+                     :all (port.chat/get-all-channels chat-adapter :_)
+                     :public (port.chat/get-public-channels chat-adapter :_)
+                     :private (port.chat/get-private-channels chat-adapter :_))]
+               (if (:success? result)
+                 (assoc context :channels (:channels result))
+                 (assoc context
+                        :success? false
+                        :reason :failed-to-get-channels
+                        :error-details {:result result})))))
          (fn add-users [context]
            (try
              (update context :channels (fn [channels]

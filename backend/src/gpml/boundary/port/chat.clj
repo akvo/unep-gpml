@@ -150,13 +150,6 @@
    [:is-moderator boolean?]
    [:access-token string?]])
 
-(def UserJoinedChanels
-  [:sequential
-   [:map {:closed true}
-    [:name string?]
-    [:id string?]
-    [:role-name string?]]])
-
 (def CreatedChannel [:map
                      [:id string?]
                      [:url string?]])
@@ -244,9 +237,9 @@
     get-user-info [this user-id opts])
 
   (^{:schema [:or
-              (success-with :channels UserJoinedChanels)
+              (success-with :channels Channels)
               (failure-with :error-details any?)]}
-    get-user-joined-channels [this user-id])
+    get-user-joined-channels [this user-id extra-channel-ids])
 
   (^{:schema [:or
               (success-with)
