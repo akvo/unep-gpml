@@ -1,6 +1,5 @@
 (ns mocks.boundary.adapter.chat.ds-chat
   (:require
-   [gpml.boundary.adapter.chat.ds-chat :as ds-chat]
    [gpml.boundary.port.chat :as port]
    [gpml.util.malli :refer [success-with]]
    [integrant.core :as ig]
@@ -14,9 +13,9 @@
   (with-meta {}
     {`port/add-user-to-private-channel       (mock (success-with)) #_ds-chat/add-user-to-channel*
      `port/add-user-to-public-channel        (mock (success-with)) #_ds-chat/add-user-to-channel*
-     `port/create-private-channel            (mock (success-with :channel ds-chat/CreatedChannel)) #_ds-chat/create-private-channel*
-     `port/create-public-channel             (mock (success-with :channel ds-chat/CreatedChannel)) #_ds-chat/create-public-channel*
-     `port/create-user-account               (mock (success-with :user ds-chat/CreatedUser)) #_ds-chat/create-user-account*
+     `port/create-private-channel            (mock (success-with :channel port/CreatedChannel)) #_ds-chat/create-private-channel*
+     `port/create-public-channel             (mock (success-with :channel port/CreatedChannel)) #_ds-chat/create-public-channel*
+     `port/create-user-account               (mock (success-with :user port/CreatedUser)) #_ds-chat/create-user-account*
      ;; TODO -----------------
      `port/delete-private-channel            (mock (success-with)) #_ds-chat/delete-channel*
      `port/delete-public-channel             (mock (success-with)) #_ds-chat/delete-channel*

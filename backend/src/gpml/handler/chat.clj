@@ -2,7 +2,6 @@
   (:require
    [camel-snake-kebab.core :refer [->snake_case]]
    [camel-snake-kebab.extras :as cske]
-   [gpml.boundary.adapter.chat.ds-chat :as ds-chat]
    [gpml.boundary.port.chat :as port.chat]
    [gpml.db.stakeholder :as db.stakeholder]
    [gpml.handler.resource.permission :as h.r.permission]
@@ -11,7 +10,7 @@
    [gpml.util.email :as email]
    [gpml.util.http-client :as http-client]
    [gpml.util.json :as json]
-   [gpml.util.malli :refer [failure-with success-with]]
+   [gpml.util.malli :refer [check! failure-with success-with]]
    [integrant.core :as ig]
    [malli.util :as mu]))
 
@@ -81,12 +80,9 @@
         (r/ok result)
         (-> result present-error r/server-error)))))
 
-(defn- remove-user-from-channel [config {:keys [user parameters]}]
+(defn- leave-channel [config {:keys [user parameters]}]
   (let [{:keys [channel_id]} (:body parameters)
-        result (svc.chat/leave-channel config
-                                       channel_id
-                                       user
-                                       false)]
+        result (svc.chat/leave-channel config channel_id user)]
     (if (:success? result)
       (r/ok {})
       (-> result present-error r/server-error))))
@@ -138,7 +134,7 @@
            :swagger    {:tags ["chat"]}
            :handler    (fn do-get-user-joined-channels [req]
                          (get-user-joined-channels config req))
-           :responses {:200 {:body (success-with :channels [:sequential ds-chat/Channel])}
+           :responses {:200 {:body (success-with :channels [:sequential port.chat/ChannelWithUsersSnakeCase])}
                        :500 {:body (failure-with)}}}}]])
 
 (def ChannelIdPath {:path [:map
@@ -203,8 +199,8 @@
     {:post {:summary    "Remove the callee user from the channel"
             :middleware middleware
             :swagger    {:tags ["chat"]}
-            :handler    (fn do-remove-user-from-channel [req]
-                          (remove-user-from-channel config req))
+            :handler    (fn do-leave-channel [req]
+                          (leave-channel config req))
             :parameters {:body [:map
                                 [:channel_id
                                  {:swagger {:type "string"
@@ -226,21 +222,31 @@
                              (if (:success? result)
                                (r/ok (cske/transform-keys ->snake_case result))
                                (-> result present-error r/server-error)))))
-           :responses {:200 {:body (success-with :channels [:sequential ds-chat/Channel])}
+           :responses {:200 {:body (success-with :channels [:sequential port.chat/ChannelWithUsersSnakeCase])}
                        :500 {:body (failure-with)}}}}]
    ["/details"
     ["/{id}"
      {:get {:summary    "Get extended channel info, including members and the last few messages."
             :middleware middleware
             :swagger    {:tags ["chat"] :security [{:id_token []}]}
-            :handler    (fn get-channel-details [{{:keys [path]} :parameters}]
-                          ;; XXX authorization?
+            :handler    (fn get-channel-details [{{:keys [path]} :parameters
+                                                  {user-id :id} :user}]
                           (let [result (svc.chat/get-channel-details config (:id path))]
                             (if (:success? result)
-                              (r/ok (cske/transform-keys ->snake_case result))
+                              (let [allowed? (or (-> result :channel (find :privacy) (doto (assert "Should contain `:privacy` field")) val (= port.chat/public))
+                                                 (some (fn [{:keys [external-user-id] :as user-info}]
+                                                         {:pre [(check! port.chat/UserInfo user-info)
+                                                                external-user-id]}
+                                                         (= external-user-id
+                                                            (str user-id)))
+                                                       (-> result :channel (find :members) val (find :data) val))
+                                                 (h.r.permission/super-admin? config user-id))]
+                                (if-not allowed?
+                                  (r/forbidden {:message "Unauthorized"})
+                                  (r/ok (cske/transform-keys ->snake_case result))))
                               (-> result present-error r/server-error))))
             :parameters ChannelIdPath
-            :responses {:200 {:body (success-with #_[:channel ds-chat/Channel])} ;; n.b. returns channels + users.
+            :responses {:200 {:body (success-with :channel port.chat/ExtendedChannelSnakeCase)}
                         :500 {:body (failure-with)}}}}]]
    ["/private"
     [""
@@ -249,7 +255,7 @@
              :swagger    {:tags ["chat"]}
              :handler    (fn do-get-private-channels [req]
                            (get-private-channels config req))
-             :responses {:200 {:body (success-with :channels [:sequential ds-chat/Channel])}
+             :responses {:200 {:body (success-with :channels [:sequential port.chat/ChannelWithUsersSnakeCase])}
                          :500 {:body (failure-with)}}}
       :post {:summary    "Send private channel invitation request"
              :middleware middleware
@@ -306,7 +312,7 @@
            :swagger    {:tags ["chat"]}
            :handler    (fn do-get-public-channels [req]
                          (get-public-channels config req))
-           :responses {:200 {:body (success-with :channels [:sequential ds-chat/Channel])}
+           :responses {:200 {:body (success-with :channels [:sequential port.chat/ChannelWithUsersSnakeCase])}
                        :500 {:body (failure-with)}}}
      :post {:summary    "Joins this public channel. Implicitly creates a chat account for the user,
 so you don't need to call the POST /api/chat/user/account endpoint beforehand."
@@ -315,7 +321,7 @@ so you don't need to call the POST /api/chat/user/account endpoint beforehand."
             :handler    (fn [{{{channel-id :channel_id} :body} :parameters
                               :keys [user]}]
                           {:pre [user channel-id]}
-                          (let [result (svc.chat/join-channel config channel-id user false)]
+                          (let [result (svc.chat/join-channel config channel-id user)]
                             (if (:success? result)
                               (r/ok {})
                               (-> result present-error r/server-error))))

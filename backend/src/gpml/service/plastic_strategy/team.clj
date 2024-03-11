@@ -117,8 +117,7 @@
             [{:keys [ps-team-member plastic-strategy] :as context}]
             (let [result (svc.chat/join-channel config
                                                 (:chat-channel-id plastic-strategy)
-                                                ps-team-member
-                                                false)]
+                                                ps-team-member)]
               (if (:success? result)
                 {:success? true}
                 (assoc context
@@ -130,8 +129,7 @@
             [{:keys [ps-team-member plastic-strategy] :as context}]
             (let [result (svc.chat/leave-channel config
                                                  (:chat-channel-id plastic-strategy)
-                                                 ps-team-member
-                                                 false)]
+                                                 ps-team-member)]
               (if (:success? result)
                 {:success? true}
                 (assoc context
@@ -322,8 +320,7 @@
               context
               (let [result (svc.chat/leave-channel config
                                                    (:chat-channel-id plastic-strategy)
-                                                   ps-team-member
-                                                   false)]
+                                                   ps-team-member)]
                 (if (:success? result)
                   context
                   (assoc context
@@ -337,8 +334,7 @@
               context
               (let [result (svc.chat/join-channel config
                                                   (:chat-channel-id plastic-strategy)
-                                                  ps-team-member
-                                                  false)]
+                                                  ps-team-member)]
                 (if (:success? result)
                   context
                   (do
