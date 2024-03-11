@@ -2,7 +2,6 @@
   (:require
    [camel-snake-kebab.core :refer [->snake_case]]
    [camel-snake-kebab.extras :as cske]
-   [gpml.boundary.adapter.chat.ds-chat :as ds-chat]
    [gpml.boundary.port.chat :as port.chat]
    [gpml.db.stakeholder :as db.stakeholder]
    [gpml.handler.resource.permission :as h.r.permission]
@@ -135,7 +134,7 @@
            :swagger    {:tags ["chat"]}
            :handler    (fn do-get-user-joined-channels [req]
                          (get-user-joined-channels config req))
-           :responses {:200 {:body (success-with :channels [:sequential ds-chat/Channel])}
+           :responses {:200 {:body (success-with :channels [:sequential port.chat/ChannelWithUsersSnakeCase])}
                        :500 {:body (failure-with)}}}}]])
 
 (def ChannelIdPath {:path [:map
@@ -223,7 +222,7 @@
                              (if (:success? result)
                                (r/ok (cske/transform-keys ->snake_case result))
                                (-> result present-error r/server-error)))))
-           :responses {:200 {:body (success-with :channels [:sequential ds-chat/Channel])}
+           :responses {:200 {:body (success-with :channels [:sequential port.chat/ChannelWithUsersSnakeCase])}
                        :500 {:body (failure-with)}}}}]
    ["/details"
     ["/{id}"
@@ -256,7 +255,7 @@
              :swagger    {:tags ["chat"]}
              :handler    (fn do-get-private-channels [req]
                            (get-private-channels config req))
-             :responses {:200 {:body (success-with :channels [:sequential ds-chat/Channel])}
+             :responses {:200 {:body (success-with :channels [:sequential port.chat/ChannelWithUsersSnakeCase])}
                          :500 {:body (failure-with)}}}
       :post {:summary    "Send private channel invitation request"
              :middleware middleware
@@ -313,7 +312,7 @@
            :swagger    {:tags ["chat"]}
            :handler    (fn do-get-public-channels [req]
                          (get-public-channels config req))
-           :responses {:200 {:body (success-with :channels [:sequential ds-chat/Channel])}
+           :responses {:200 {:body (success-with :channels [:sequential port.chat/ChannelWithUsersSnakeCase])}
                        :500 {:body (failure-with)}}}
      :post {:summary    "Joins this public channel. Implicitly creates a chat account for the user,
 so you don't need to call the POST /api/chat/user/account endpoint beforehand."
