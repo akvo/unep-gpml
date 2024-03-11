@@ -39,5 +39,6 @@
                          permission)))
 
 (defn super-admin? [{:keys [db logger]} user-id]
+  {:pre [db logger]}
   (let [{:keys [success? super-admin?]} (rbac/super-admin? (:spec db) logger user-id)]
     (and success? super-admin?)))

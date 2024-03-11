@@ -367,11 +367,6 @@
            :reason :failed-to-add-user-to-channel
            :error-details body})))))
 
-(def NewChannel
-  [:map {:closed true}
-   [:name string?]
-   [:description {:optional true} [:maybe string?]]])
-
 (def public-permission-level "provisioned_users")
 
 (def private-permission-level "members")
@@ -381,9 +376,9 @@
     (slurp (io/resource "ds_chat/custom.css"))))
 
 (defn create-channel* [{:keys [logger api-key]} channel permission-level]
-  {:pre  [(check! NewChannel channel
+  {:pre  [(check! port.chat/NewChannel channel
                   [:enum public-permission-level private-permission-level] permission-level)]}
-  (let [req-body (cond-> channel
+  (let [req-body (cond-> (dissoc channel :privacy)
                    (:description channel) (assoc :description (:description channel))
                    true (assoc :defaultNotificationEnabled "off"
                                :customization {"hideSidebar" true

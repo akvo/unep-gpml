@@ -1,6 +1,7 @@
 (ns gpml.auth
   (:require
    [gpml.db.stakeholder :as db.stakeholder]
+   [gpml.handler.resource.permission :as h.r.permission]
    [integrant.core :as ig]
    [malli.core :as malli])
   (:import
@@ -136,6 +137,14 @@
         (handler request)
         {:status (:status request)
          :body {:message (:auth-error-message request)}}))))
+
+(defmethod ig/init-key :gpml.auth/admin-auth-required [_ config]
+  (fn [handler]
+    (fn [{{user-id :id} :user :as request}]
+      (if (h.r.permission/super-admin? config user-id)
+        (handler request)
+        {:status (:status request)
+         :body {:message "Unauthorized"}}))))
 
 (def owners-schema
   [:owners {:optional true}
