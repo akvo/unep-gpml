@@ -599,7 +599,8 @@
                                        :parameters #ig/ref :gpml.handler.chat-curated-channel/delete-params}}]]
 
                            #ig/ref :gpml.handler.chat/dcs-user-routes
-                           #ig/ref :gpml.handler.chat/dcs-channel-routes]
+                           #ig/ref :gpml.handler.chat/dcs-channel-routes
+                           #ig/ref :gpml.handler.chat/channel-admin-routes]
                           ["/plastic-strategy"
                            [""
                             {:get {:summary    "Get all plastic strategies"
@@ -911,6 +912,10 @@
  :gpml.handler.chat/dcs-channel-routes                              {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                                                   #ig/ref :gpml.auth/auth-required]
                                                                      :config     #ig/ref :gpml.config/common}
+ :gpml.handler.chat/channel-admin-routes                            {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                                                  #ig/ref :gpml.auth/auth-required
+                                                                                  #ig/ref :gpml.auth/admin-auth-required]
+                                                                     :config     #ig/ref :gpml.config/common}
  :gpml.handler.plastic-strategy/get-all                             #ig/ref :gpml.config/common
  :gpml.handler.plastic-strategy/get-all-params                      {}
  :gpml.handler.plastic-strategy/get                                 #ig/ref :gpml.config/common
@@ -961,6 +966,7 @@
                                                :audience #duct/env ["OIDC_AUDIENCE_AUTH0_ACTIONS" Str]
                                                :db       #ig/ref :duct.database/sql}
  :gpml.auth/auth-required                     {}
+ :gpml.auth/admin-auth-required               #ig/ref :gpml.config/common
  :gpml.handler.monitoring/collector           {}
  :gpml.handler.main/cors-allowed-origins      {:allowed-origins #duct/env ["CORS_ALLOWED_ORIGINS"]}
  :gpml.handler.monitoring/jetty-configurator  {:collector #ig/ref :gpml.handler.monitoring/collector}

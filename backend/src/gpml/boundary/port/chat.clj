@@ -127,6 +127,12 @@
 (def Channels
   [:sequential Channel])
 
+(def NewChannel
+  [:map {:closed true}
+   [:name string?]
+   [:description {:optional true} [:maybe string?]]
+   [:privacy ChannelPrivacy]])
+
 (def NewDiscussion
   [:map
    {:closed true}
@@ -151,8 +157,11 @@
    [:access-token string?]])
 
 (def CreatedChannel [:map
+                     {}
                      [:id string?]
                      [:url string?]])
+
+(def CreatedChannelSnakeCase (map->snake CreatedChannel))
 
 (util.malli/defprotocol Chat
   :extend-via-metadata true
