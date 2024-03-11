@@ -308,7 +308,11 @@
   (let [{:keys [success?] :as result} (port.chat/get-channel chat-adapter channel-id)]
     (if-not success?
       result
-      (assoc context :private? (-> result :channel (= port.chat/private))))))
+      (assoc context :private? (-> result :channel
+                                   (find :privacy)
+                                   (doto (assert "`:privacy` should be in the `:channel object`"))
+                                   val
+                                   (= port.chat/private))))))
 
 (defn join-channel [{:keys [db hikari chat-adapter logger] :as config}
                     channel-id
@@ -319,7 +323,7 @@
   (let [transactions
         [(partial assoc-private config channel-id)
 
-         (fn check-membership [_context]
+         (fn check-membership [context]
            (if (:exists (:result (db/execute-one! hikari {:select [[[:exists {:select :*
                                                                               :from :chat_channel_membership
                                                                               :where [:and
@@ -327,10 +331,13 @@
                                                                                       [:= :chat_channel_id channel-id]]}]]]})))
              {:success? false
               :reason   :user-already-belongs-to-channel}
-             {:success? true}))
+             context))
 
          {:txn-fn (fn add-to-dsc [context]
-                    (if-not (-> context (find :private?) (doto (assert "`:private?` should be in the context")) val)
+                    (if-not (-> context
+                                (find :private?)
+                                (doto (assert "`:private?` should be in the context"))
+                                val)
                       context
                       (if unique-user-identifier
                         (port.chat/add-user-to-private-channel chat-adapter unique-user-identifier channel-id)

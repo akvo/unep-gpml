@@ -467,8 +467,7 @@
       (if (<= 200 status 299)
         (do
           (log logger :info :successfully-deleted-discussion)
-          {:success? true
-           :discussion (extract-discussion body)})
+          {:success? true})
         (do
           (log logger :warn :failed-to-deleted-discussion)
           {:success? false
@@ -502,7 +501,7 @@
    [:name {:optional true}
     string?]
    [:metadata {:optional true}
-    string?]])
+    map?]])
 
 (defn set-channel-custom-fields* [{:keys [logger api-key]} channel-id custom-fields]
   {:pre  [(check! RoomId channel-id
@@ -513,7 +512,9 @@
                              {:url (build-api-endpoint-url "/api/v1/chatroom/" channel-id)
                               :method :put
                               :query-params {:auth api-key}
-                              :body (json/->json custom-fields)
+                              :body (cond-> custom-fields
+                                      (:metadata custom-fields) (update :metadata json/->json)
+                                      true json/->json)
                               :as :json-keyword-keys})]
     (timbre/with-context+ {:channel-id channel-id
                            :custom-fields custom-fields}
@@ -589,7 +590,7 @@
     @(def uniqueUserIdentifier (-> a-user :stakeholder :chat-account-id)))
 
   (port.chat/update-user-account (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                 (-> a-user :stakeholder :id)
+                                 (-> a-user :stakeholder :id str)
                                  {:email (format "a%s@a%s.com" (random-uuid) (random-uuid))})
 
   (port.chat/get-user-info (dev/component :gpml.boundary.adapter.chat/ds-chat)
