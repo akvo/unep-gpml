@@ -59,7 +59,10 @@
     [:and boolean? [:enum success?]]]])
 
 (defn- result-with [success? & [[k v]]]
-  {:pre [(check! boolean? success?)]}
+  {:pre [(check! boolean? success?)]
+   :post [(do
+            (malli.core/schema %) ;; possibly throw an exception
+            true)]}
   (m/schema (if k
               (mu/assoc (Result success?) k v)
               (Result success?))))

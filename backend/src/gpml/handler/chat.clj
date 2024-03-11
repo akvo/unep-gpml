@@ -11,7 +11,7 @@
    [gpml.util.email :as email]
    [gpml.util.http-client :as http-client]
    [gpml.util.json :as json]
-   [gpml.util.malli :refer [failure-with success-with]]
+   [gpml.util.malli :refer [check! failure-with success-with]]
    [integrant.core :as ig]
    [malli.util :as mu]))
 
@@ -81,12 +81,9 @@
         (r/ok result)
         (-> result present-error r/server-error)))))
 
-(defn- remove-user-from-channel [config {:keys [user parameters]}]
+(defn- leave-channel [config {:keys [user parameters]}]
   (let [{:keys [channel_id]} (:body parameters)
-        result (svc.chat/leave-channel config
-                                       channel_id
-                                       user
-                                       false)]
+        result (svc.chat/leave-channel config channel_id user)]
     (if (:success? result)
       (r/ok {})
       (-> result present-error r/server-error))))
@@ -203,8 +200,8 @@
     {:post {:summary    "Remove the callee user from the channel"
             :middleware middleware
             :swagger    {:tags ["chat"]}
-            :handler    (fn do-remove-user-from-channel [req]
-                          (remove-user-from-channel config req))
+            :handler    (fn do-leave-channel [req]
+                          (leave-channel config req))
             :parameters {:body [:map
                                 [:channel_id
                                  {:swagger {:type "string"
@@ -233,14 +230,24 @@
      {:get {:summary    "Get extended channel info, including members and the last few messages."
             :middleware middleware
             :swagger    {:tags ["chat"] :security [{:id_token []}]}
-            :handler    (fn get-channel-details [{{:keys [path]} :parameters}]
-                          ;; XXX authorization?
+            :handler    (fn get-channel-details [{{:keys [path]} :parameters
+                                                  {user-id :id} :user}]
                           (let [result (svc.chat/get-channel-details config (:id path))]
                             (if (:success? result)
-                              (r/ok (cske/transform-keys ->snake_case result))
+                              (let [allowed? (or (-> result :channel (find :privacy) (doto (assert "Should contain `:privacy` field")) val (= port.chat/public))
+                                                 (some (fn [{:keys [external-user-id] :as user-info}]
+                                                         {:pre [(check! port.chat/UserInfo user-info)
+                                                                external-user-id]}
+                                                         (= external-user-id
+                                                            (str user-id)))
+                                                       (-> result :channel (find :members) val (find :data) val))
+                                                 (h.r.permission/super-admin? config user-id))]
+                                (if-not allowed?
+                                  (r/forbidden {:message "Unauthorized"})
+                                  (r/ok (cske/transform-keys ->snake_case result))))
                               (-> result present-error r/server-error))))
             :parameters ChannelIdPath
-            :responses {:200 {:body (success-with #_[:channel ds-chat/Channel])} ;; n.b. returns channels + users.
+            :responses {:200 {:body (success-with :channel port.chat/ExtendedChannelSnakeCase)}
                         :500 {:body (failure-with)}}}}]]
    ["/private"
     [""
@@ -315,7 +322,7 @@ so you don't need to call the POST /api/chat/user/account endpoint beforehand."
             :handler    (fn [{{{channel-id :channel_id} :body} :parameters
                               :keys [user]}]
                           {:pre [user channel-id]}
-                          (let [result (svc.chat/join-channel config channel-id user false)]
+                          (let [result (svc.chat/join-channel config channel-id user)]
                             (if (:success? result)
                               (r/ok {})
                               (-> result present-error r/server-error))))
