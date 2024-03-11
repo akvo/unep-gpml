@@ -335,6 +335,30 @@ so you don't need to call the POST /api/chat/user/account endpoint beforehand."
             :responses {:200 {:body (success-with)}
                         :500 {:body (failure-with)}}}}]])
 
+(defmethod ig/init-key :gpml.handler.chat/channel-admin-routes
+  [_ {:keys [middleware]
+      {:keys [logger hikari chat-adapter] :as config} :config}]
+  {:pre [(vector? middleware)
+         (seq config)
+         hikari
+         logger]}
+  ["/admin"
+   ["/channel"
+    {:post {:summary    "Creates a channel. Requires admin permissions."
+            :middleware middleware
+            :swagger    {:tags ["chat"]}
+            :handler    (fn [{{{:keys [privacy] :as channel} :body} :parameters}]
+                          {:pre [channel privacy]}
+                          (let [result (condp = privacy
+                                         port.chat/public  (port.chat/create-public-channel chat-adapter channel)
+                                         port.chat/private (port.chat/create-private-channel chat-adapter channel))]
+                            (if (:success? result)
+                              (r/ok (update result :channel #(cske/transform-keys ->snake_case %)))
+                              (-> result present-error r/server-error))))
+            :parameters {:body port.chat/NewChannel}
+            :responses {:200 {:body (success-with :channel port.chat/CreatedChannelSnakeCase)}
+                        :500 {:body (failure-with)}}}}]])
+
 (comment
   (dev/make-user! "abc@abc.net")
   (gpml.db.stakeholder/stakeholder-by-email (dev/conn) {:email "abc@abc.net"})
@@ -412,4 +436,14 @@ so you don't need to call the POST /api/chat/user/account endpoint beforehand."
 
   (http-client/request (dev/logger)
                        {:url "http://localhost:3000/api/chat/user/channel"
-                        :as :json-keyword-keys}))
+                        :as :json-keyword-keys})
+
+  (doseq [p ["public" "private"]]
+    (http-client/request (dev/logger)
+                         {:url (str "http://localhost:3000/api/chat/admin/channel")
+                          :method :post
+                          :body (json/->json {:name
+                                              :description
+                                              :privacy p})
+                          :content-type :json
+                          :as :json-keyword-keys})))
