@@ -2,25 +2,25 @@
   (:require
    [camel-snake-kebab.core :refer [->snake_case]]
    [clojure.string :as string]
-   [gpml.util.malli :as util.malli :refer [failure-with success-with]]
-   [malli.core :as malli]
+   [gpml.util.malli :as util.malli :refer [check! failure-with success-with]]
    [malli.util :as mu]))
 
 (def DSCInternalId
-  (malli/schema [:and
-                 [:string {:doc "DSC Internal Id"}]
-                 [:fn (fn [s]
-                        (not (string/starts-with? s "dscuui_")))]]))
+  [:and
+   [:string {:doc "DSC Internal Id"}]
+   [:fn (fn [s]
+          (not (string/starts-with? s "dscuui_")))]])
 
 (def ExternalUserId
-  (malli/schema [:string {:doc "Our id - used for easily correlating our User objects to theirs"}]))
+  [:string {:doc "Our id - used for easily correlating our User objects to theirs"}])
 
 (def UniqueUserIdentifier
-  (malli/schema [:and
-                 string?
-                 #"^dscuui_.*"]
-                {:doc (str "Must be opaque and complex enough to serve as authentication.\n"
-                           "Starts with a fixed 'dscuui_' prefix, making it easily identifiable and Malli-able.")}))
+  [:and
+   {:doc (str "Must be opaque and complex enough to serve as authentication.\n"
+              "Starts with a fixed 'dscuui_' prefix, making it easily identifiable and Malli-able.")}
+   string?
+   #"^dscuui_.*"])
+
 (def private "private")
 
 (def public "public")
@@ -43,12 +43,20 @@
    [:moderator-only-one-to-one-chat boolean?]
    [:enable-channels boolean?]])
 
-(defn map->snake [m]
-  {:pre [(-> m first (= :map))
-         (map? (second m))]}
-  (into [:map (second m)]
-        (mapv (fn [[k & args]]
-                (apply vector (->snake_case k) args))
+(defn map->snake [[id :as m]]
+  {:pre [(check! [:enum :map :vector] id
+                 [:fn map?] (second m))]}
+  (into [id (second m)]
+        (mapv (fn [[k x y & args]]
+                (into []
+                      (remove nil?)
+                      (apply vector
+                             (->snake_case k)
+                             (cond-> x
+                               (and (vector? x) (-> x first #{:vector :map})) map->snake)
+                             (cond-> y
+                               (and (vector? y) (-> y first #{:vector :map})) map->snake)
+                             args)))
               (subvec m 2))))
 
 (def UserInfo
@@ -59,11 +67,11 @@
    [:email :string]
    [:external-user-id :string]
    [:id :string]
-   [:is-moderator [:maybe :boolean]]
+   [:is-moderator [:maybe {} :boolean]]
    [:provisioned :boolean]
    [:unique-user-identifier :string]
    [:updated :string]
-   [:username [:maybe :string]]])
+   [:username [:maybe {} :string]]])
 
 (def Members
   [:map
@@ -71,16 +79,11 @@
    [:limit :int]
    [:total :int]
    [:skip :int]
-   [:data [:vector UserInfo]]])
+   [:data [:vector {} UserInfo]]])
 
 (def UserInfoSnakeCase (map->snake UserInfo))
 
-(def MembersSnakeCase
-  [:map
-   [:limit :int]
-   [:total :int]
-   [:skip :int]
-   [:data [:vector UserInfoSnakeCase]]])
+(def MembersSnakeCase (map->snake Members))
 
 (def Message
   [:map {:closed true}
@@ -94,7 +97,7 @@
    {}
    [:limit :int]
    [:total-records :int]
-   [:messages [:vector Message]]
+   [:messages [:vector {} Message]]
    [:count :int]
    [:skip :int]])
 
@@ -107,21 +110,32 @@
 
 (def MessageSnakeCase (map->snake Message))
 
-(def MessagesSnakeCase [:map
-                        {}
-                        [:limit :int]
-                        [:total_records :int]
-                        [:messages [:vector MessageSnakeCase]]
-                        [:count :int]
-                        [:skip :int]])
+(def MessagesSnakeCase (map->snake Messages))
+
+(def Org
+  [:map {:closed true}
+   [:name :string]])
+
+(def PresentedUser
+  [:map
+   {:closed true}
+   [:picture_file any?]
+   [:first_name any?]
+   [:picture_id any?]
+   [:org Org]
+   [:id any?]
+   [:picture any?]
+   [:last_name any?]])
+
+(def PresentedUserSnakeCase (map->snake PresentedUser))
 
 (def ChannelWithUsersSnakeCase
   (-> ChannelSnakeCase
-      (mu/assoc :users MembersSnakeCase)))
+      (mu/assoc :users [:vector {} PresentedUserSnakeCase])))
 
 (def ExtendedChannelSnakeCase
   (-> ChannelSnakeCase
-      (mu/assoc :members MembersSnakeCase)
+      (mu/assoc :users [:vector {} PresentedUserSnakeCase])
       (mu/assoc :messages MessagesSnakeCase)))
 
 (def Channels
