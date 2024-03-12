@@ -376,8 +376,8 @@
     (slurp (io/resource "ds_chat/custom.css"))))
 
 (defn create-channel* [{:keys [logger api-key]} channel permission-level]
-  {:pre  [(check! port.chat/NewChannel channel
-                  [:enum public-permission-level private-permission-level] permission-level)]}
+  {:pre [(check! port.chat/NewChannel channel
+                 [:enum public-permission-level private-permission-level] permission-level)]}
   (let [req-body (cond-> (dissoc channel :privacy)
                    (:description channel) (assoc :description (:description channel))
                    true (assoc :defaultNotificationEnabled "off"
@@ -423,11 +423,11 @@
 
 (defn create-public-channel* [adapter channel]
   {:post [(check! #'port.chat/create-public-channel %)]}
-  (create-channel* adapter channel public-permission-level))
+  (create-channel* adapter (assoc channel :privacy port.chat/public) public-permission-level))
 
 (defn create-private-channel* [adapter channel]
   {:post [(check! #'port.chat/create-private-channel %)]}
-  (create-channel* adapter channel private-permission-level))
+  (create-channel* adapter (assoc channel :privacy port.chat/private) private-permission-level))
 
 (defn extract-discussion [body]
   (set/rename-keys (select-keys (cske/transform-keys ->kebab-case body)

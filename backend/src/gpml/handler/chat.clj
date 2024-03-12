@@ -10,7 +10,7 @@
    [gpml.util.email :as email]
    [gpml.util.http-client :as http-client]
    [gpml.util.json :as json]
-   [gpml.util.malli :refer [check! failure-with success-with]]
+   [gpml.util.malli :refer [failure-with success-with]]
    [integrant.core :as ig]
    [malli.util :as mu]))
 
@@ -234,12 +234,11 @@
                           (let [result (svc.chat/get-channel-details config (:id path))]
                             (if (:success? result)
                               (let [allowed? (or (-> result :channel (find :privacy) (doto (assert "Should contain `:privacy` field")) val (= port.chat/public))
-                                                 (some (fn [{:keys [external-user-id] :as user-info}]
-                                                         {:pre [(check! port.chat/UserInfo user-info)
-                                                                external-user-id]}
-                                                         (= external-user-id
-                                                            (str user-id)))
-                                                       (-> result :channel (find :members) val (find :data) val))
+                                                 (some (fn [{other-id :id :as other-user}]
+                                                         {:pre [(contains? other-user :id)]}
+                                                         (= other-id
+                                                            user-id))
+                                                       (-> result :channel (find :users) (doto (assert ":users entry not found")) val))
                                                  (h.r.permission/super-admin? config user-id))]
                                 (if-not allowed?
                                   (r/forbidden {:message "Unauthorized"})
