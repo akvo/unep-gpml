@@ -37,30 +37,19 @@
       (r/ok (cske/transform-keys ->snake_case result))
       (-> result present-error r/server-error))))
 
-(defn- get-private-channels [config {:keys [user]}]
-  (if-not (h.r.permission/operation-allowed? config
-                                             {:user-id (:id user)
-                                              :entity-type :application
-                                              :custom-permission :list-chat-private-channels
-                                              :root-context? true})
-    (r/forbidden {:message "Unauthorized"})
-    (let [result (svc.chat/get-channels config :private)]
-      (if (:success? result)
-        (r/ok result)
-        (-> result present-error r/server-error)))))
+(defn- get-private-channels [config _req]
+  ;; NOTE: no particular authorization required (business requirement)
+  (let [result (svc.chat/get-channels config :private)]
+    (if (:success? result)
+      (r/ok result)
+      (-> result present-error r/server-error))))
 
-(defn- get-public-channels [config {:keys [user]}]
-  (if-not (h.r.permission/operation-allowed?
-           config
-           {:user-id (:id user)
-            :entity-type :application
-            :custom-permission :list-chat-public-channels
-            :root-context? true})
-    (r/forbidden {:message "Unauthorized"})
-    (let [result (svc.chat/get-channels config :public)]
-      (if (:success? result)
-        (r/ok result)
-        (-> result present-error r/server-error)))))
+(defn- get-public-channels [config _req]
+  ;; NOTE: no particular authorization required (business requirement)
+  (let [result (svc.chat/get-channels config :public)]
+    (if (:success? result)
+      (r/ok result)
+      (-> result present-error r/server-error))))
 
 (defn- send-private-channel-invitation-request [config {:keys [user parameters]}]
   (if-not (h.r.permission/operation-allowed?
@@ -211,17 +200,12 @@
    ["/all"
     {:get {:summary    "Get all channels in the server"
            :swagger    {:tags ["chat"]}
-           :handler    (fn do-get-all-channels [{:keys [user]}]
-                         (if-not (h.r.permission/operation-allowed? config
-                                                                    {:user-id (:id user)
-                                                                     :entity-type :application
-                                                                     :custom-permission :list-chat-private-channels
-                                                                     :root-context? true})
-                           (r/forbidden {:message "Unauthorized"})
-                           (let [result (svc.chat/get-channels config :all)]
-                             (if (:success? result)
-                               (r/ok (cske/transform-keys ->snake_case result))
-                               (-> result present-error r/server-error)))))
+           :handler    (fn do-get-all-channels [_req]
+                         ;; NOTE: no particular authorization required (business requirement)
+                         (let [result (svc.chat/get-channels config :all)]
+                           (if (:success? result)
+                             (r/ok (cske/transform-keys ->snake_case result))
+                             (-> result present-error r/server-error))))
            :responses {:200 {:body (success-with :channels [:sequential port.chat/ChannelWithUsersSnakeCase])}
                        :500 {:body (failure-with)}}}}]
    ["/details"
