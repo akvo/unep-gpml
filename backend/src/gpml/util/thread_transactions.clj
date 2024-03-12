@@ -64,3 +64,9 @@
             (if-not rollback-fn
               next-result
               (safe-run logger rollback-fn next-result))))))))
+
+(defmacro saga
+  {:style/indent 2}
+  [logger args-map & txns]
+  {:pre [(seq txns)]}
+  (list `thread-transactions logger (vec txns) args-map))

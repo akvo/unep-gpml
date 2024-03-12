@@ -127,24 +127,19 @@
              ?ex-data (ex-data ?err)
              extra
              (cond-> context
-               (and ?ex-data (not (contains? context :ex-data)))
-               (assoc :ex-data
-                      (enc/get-substr-by-idx (str ?ex-data) 0 4096)))
+               ?ex-data
+               (assoc ::ex-data (enc/get-substr-by-idx (str ?ex-data) 0 4096))
+               true (assoc ::file ?file
+                           ::line ?line))
 
              event
              (as-> base-event event
+               ;; Doc: https://develop.sentry.dev/sdk/event-payloads/
                (merge event
                       {:message (force msg_)
                        :logger  ?ns-str
-                       :file    ?file
-                       :line    ?line
-                       :level   (get @#'sentry/timbre->sentry-levels level)}
-                      (when extra
-                        {:extra extra})
-                      (when-let [c (-> context
-                                       (dissoc :ex-data)
-                                       not-empty)]
-                        {:context c}))
+                       :level   (get @#'sentry/timbre->sentry-levels level)
+                       :extra extra})
 
                (if ?err
                  (interfaces/stacktrace event ?err)
