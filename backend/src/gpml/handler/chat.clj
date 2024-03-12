@@ -27,28 +27,28 @@
   (let [chat-account-status (-> parameters :body :chat_account_status)
         result (svc.chat/set-user-account-active-status config user chat-account-status)]
     (if (:success? result)
-      (r/ok {})
+      (r/ok (select-keys result [:success?]))
       (-> result present-error r/server-error))))
 
 (defn- get-user-joined-channels [config {{:keys [chat_account_id]} :user}]
   {:pre [chat_account_id]}
   (let [result (svc.chat/get-channels config chat_account_id)]
     (if (:success? result)
-      (r/ok (cske/transform-keys ->snake_case result))
+      (r/ok (cske/transform-keys ->snake_case (select-keys result [:success? :channels])))
       (-> result present-error r/server-error))))
 
 (defn- get-private-channels [config _req]
   ;; NOTE: no particular authorization required (business requirement)
   (let [result (svc.chat/get-channels config :private)]
     (if (:success? result)
-      (r/ok result)
+      (r/ok (cske/transform-keys ->snake_case (select-keys result [:success? :channels])))
       (-> result present-error r/server-error))))
 
 (defn- get-public-channels [config _req]
   ;; NOTE: no particular authorization required (business requirement)
   (let [result (svc.chat/get-channels config :public)]
     (if (:success? result)
-      (r/ok result)
+      (r/ok (cske/transform-keys ->snake_case (select-keys result [:success? :channels])))
       (-> result present-error r/server-error))))
 
 (defn- send-private-channel-invitation-request [config {:keys [user parameters]}]
@@ -66,14 +66,14 @@
                                                                    channel-id
                                                                    channel-name)]
       (if (:success? result)
-        (r/ok result)
+        (r/ok (select-keys result [:success?]))
         (-> result present-error r/server-error)))))
 
 (defn- leave-channel [config {:keys [user parameters]}]
   (let [{:keys [channel_id]} (:body parameters)
         result (svc.chat/leave-channel config channel_id user)]
     (if (:success? result)
-      (r/ok {})
+      (r/ok (select-keys result [:success?]))
       (-> result present-error r/server-error))))
 
 (defn- add-user-to-private-channel [{:keys [db mailjet-config] :as config} parameters]
@@ -88,7 +88,7 @@
             (email/notify-user-about-chat-private-channel-invitation-request-accepted mailjet-config
                                                                                       target-user
                                                                                       channel_name)
-            (r/ok result))
+            (r/ok (select-keys result [:success?])))
           (-> result present-error r/server-error)))
       (r/server-error {:success? false
                        :reason :user-not-found}))))
@@ -159,7 +159,7 @@
                             (if (h.r.permission/super-admin? config id)
                               (let [result (port.chat/delete-channel-discussion chat-adapter channel-id discussion-id)]
                                 (if (:success? result)
-                                  (r/ok {})
+                                  (r/ok (select-keys result [:success?]))
                                   (-> result present-error r/server-error)))
                               (r/forbidden {:message "Unauthorized"})))
               :parameters {:path (mu/merge (:path DiscussionIdPath) (:path ChannelIdPath))}
@@ -204,7 +204,7 @@
                          ;; NOTE: no particular authorization required (business requirement)
                          (let [result (svc.chat/get-channels config :all)]
                            (if (:success? result)
-                             (r/ok (cske/transform-keys ->snake_case result))
+                             (r/ok (cske/transform-keys ->snake_case (select-keys result [:success? :channels])))
                              (-> result present-error r/server-error))))
            :responses {200 {:body (success-with :channels [:sequential port.chat/ChannelWithUsersSnakeCase])}
                        500 {:body (failure-with)}}}}]
@@ -306,7 +306,7 @@ so you don't need to call the POST /api/chat/user/account endpoint beforehand."
                           {:pre [user channel-id]}
                           (let [result (svc.chat/join-channel config channel-id user)]
                             (if (:success? result)
-                              (r/ok {})
+                              (r/ok (select-keys result [:success?]))
                               (-> result present-error r/server-error))))
             :parameters {:body [:map
                                 [:channel_id
@@ -316,7 +316,7 @@ so you don't need to call the POST /api/chat/user/account endpoint beforehand."
                                             :allowEmptyValue false}}
                                  [:string {:min 1}]]]}
             :responses {200 {:body (success-with)}
-                        500 {:body (failure-with)}}}}]])
+                        500 {:body (failure-with :reason any?)}}}}]])
 
 (defmethod ig/init-key :gpml.handler.chat/channel-admin-routes
   [_ {:keys [middleware]
@@ -369,8 +369,8 @@ so you don't need to call the POST /api/chat/user/account endpoint beforehand."
   @(def channel-id (-> channel :body :channels first :id))
 
   (http-client/request (dev/logger)
-                       {:url (str "http://localhost:3000/api/chat/channel/public")
-                        :method :post
+                       {:method :post
+                        :url (str "http://localhost:3000/api/chat/channel/public")
                         :body (json/->json {:channel_id channel-id})
                         :content-type :json
                         :as :json-keyword-keys})
@@ -421,7 +421,7 @@ so you don't need to call the POST /api/chat/user/account endpoint beforehand."
                        {:url "http://localhost:3000/api/chat/user/channel"
                         :as :json-keyword-keys})
 
-  (doseq [p ["public" "private"]]
+  (for [p ["public" "private"]]
     (http-client/request (dev/logger)
                          {:url (str "http://localhost:3000/api/chat/admin/channel")
                           :method :post

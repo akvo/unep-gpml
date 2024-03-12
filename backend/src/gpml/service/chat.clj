@@ -163,10 +163,12 @@
                            {:related-entities #{:organisation :picture-file}
                             :filters {:chat-accounts-ids chat-account-ids}}))
 
+;; Avoids returning sensitive data
 (defn present-user [user]
-  ;; Avoids returning sensitive data
+  {:post [(check! port.chat/PresentedUser %)]}
   (-> user
-      (select-keys [:role :tags :picture_file :first_name :picture_id :org :id :picture :organisation_role :last_name :country])))
+      (select-keys [:picture_file :first_name :picture_id :org :id :picture :last_name])
+      (update :org select-keys [:name])))
 
 (defn- tx-get-channel-users [{:keys [db hikari chat-adapter logger] :as config}
                              {:keys [channel] :as context}]
@@ -212,7 +214,7 @@
                  :reason :failed-to-get-channel-users
                  :error-details {:result result}))
         ;; No longer needed / can be confusing to include it:
-        (update :channel dissoc :members))))
+        (update :channel dissoc :members :stakeholders))))
 
 (defn get-channel-details [{:keys [db hikari chat-adapter logger] :as config} channel-id]
   {:pre [db hikari chat-adapter logger channel-id]}
