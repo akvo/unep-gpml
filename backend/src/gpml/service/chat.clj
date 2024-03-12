@@ -8,7 +8,7 @@
    [gpml.db.stakeholder :as db.sth]
    [gpml.service.file :as srv.file]
    [gpml.util.email :as util.email]
-   [gpml.util.malli :refer [check! success-with failure-with]]
+   [gpml.util.malli :refer [check! failure-with success-with]]
    [gpml.util.thread-transactions :refer [saga]]
    [taoensso.timbre :as timbre]))
 
