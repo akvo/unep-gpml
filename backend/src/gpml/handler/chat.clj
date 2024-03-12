@@ -340,7 +340,20 @@ so you don't need to call the POST /api/chat/user/account endpoint beforehand."
                               (-> result present-error r/server-error))))
             :parameters {:body port.chat/NewChannel}
             :responses {200 {:body (success-with :channel port.chat/CreatedChannelSnakeCase)}
-                        500 {:body (failure-with)}}}}]])
+                        500 {:body (failure-with)}}}}]
+   ["/channel/{id}"
+    {:delete {:summary    "Deletes a channel. Requires admin permissions."
+              :middleware middleware
+              :swagger    {:tags ["chat"]}
+              :handler    (fn [{{{channel-id :id} :path} :parameters}]
+                            {:pre [channel-id]}
+                            (let [result (svc.chat/delete-channel config channel-id)]
+                              (if (:success? result)
+                                (r/ok (select-keys result [:success?]))
+                                (-> result present-error r/server-error))))
+              :parameters ChannelIdPath
+              :responses {200 {:body (success-with)}
+                          500 {:body (failure-with :reason any?)}}}}]])
 
 (comment
   (dev/make-user! "abc@abc.net")
@@ -421,12 +434,19 @@ so you don't need to call the POST /api/chat/user/account endpoint beforehand."
                        {:url "http://localhost:3000/api/chat/user/channel"
                         :as :json-keyword-keys})
 
-  (for [p ["public" "private"]]
+  @(def admin-channels (for [p ["public" "private"]]
+                         (http-client/request (dev/logger)
+                                              {:url (str "http://localhost:3000/api/chat/admin/channel")
+                                               :method :post
+                                               :body (json/->json {:name (random-uuid)
+                                                                   :description (random-uuid)
+                                                                   :privacy p})
+                                               :content-type :json
+                                               :as :json-keyword-keys})))
+
+  (for [{{{id :id} :channel} :body} admin-channels]
     (http-client/request (dev/logger)
-                         {:url (str "http://localhost:3000/api/chat/admin/channel")
-                          :method :post
-                          :body (json/->json {:name
-                                              :description
-                                              :privacy p})
+                         {:method :delete
+                          :url (str "http://localhost:3000/api/chat/admin/channel/" id)
                           :content-type :json
                           :as :json-keyword-keys})))
