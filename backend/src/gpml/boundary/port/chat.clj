@@ -144,8 +144,13 @@
 (def NewChannel
   [:map {:closed true}
    [:name string?]
-   [:description {:optional true} [:maybe string?]]
+   [:description {:optional true} string?]
    [:privacy ChannelPrivacy]])
+
+(def ChannelEdit
+  [:map {:closed true}
+   [:name  {:optional true} string?]
+   [:description {:optional true} string?]])
 
 (def NewDiscussion
   [:map
