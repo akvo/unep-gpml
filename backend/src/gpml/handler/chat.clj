@@ -104,8 +104,8 @@
             :swagger    {:tags ["chat"]}
             :handler    (fn do-create-user-account [req]
                           (create-user-account config req))
-            :responses  {:200 {:body any?}
-                         :500 {:body (failure-with)}}}
+            :responses  {200 {:body any?}
+                         500 {:body (failure-with)}}}
      :put  {:summary    "Update chat user account status"
             :middleware middleware
             :swagger    {:tags ["chat"]}
@@ -115,16 +115,16 @@
                                 [:active
                                  {:optional false}
                                  boolean?]]}
-            :responses {:200 {:body any?}
-                        :500 {:body any?}}}}]
+            :responses {200 {:body any?}
+                        500 {:body any?}}}}]
    ["/channel"
     {:get {:summary    "Get all user joined channels"
            :middleware middleware
            :swagger    {:tags ["chat"]}
            :handler    (fn do-get-user-joined-channels [req]
                          (get-user-joined-channels config req))
-           :responses {:200 {:body (success-with :channels [:sequential port.chat/ChannelWithUsersSnakeCase])}
-                       :500 {:body (failure-with)}}}}]])
+           :responses {200 {:body (success-with :channels [:sequential port.chat/ChannelWithUsersSnakeCase])}
+                       500 {:body (failure-with)}}}}]])
 
 (def ChannelIdPath {:path [:map
                            [:id
@@ -163,8 +163,8 @@
                                   (-> result present-error r/server-error)))
                               (r/forbidden {:message "Unauthorized"})))
               :parameters {:path (mu/merge (:path DiscussionIdPath) (:path ChannelIdPath))}
-              :responses {:200 {:body (success-with)}
-                          :500 {:body (failure-with)}}}}]
+              :responses {200 {:body (success-with)}
+                          500 {:body (failure-with)}}}}]
    ["/create-discussion/{id}"
     {:post {:summary    "Creates a discussion within this channel. Requires admin permissions."
             :middleware middleware
@@ -182,8 +182,8 @@
             :parameters (assoc ChannelIdPath
                                :body [:map
                                       [:name :string]])
-            :responses {:200 {:body (success-with :discussion port.chat/DiscussionSnakeCase)}
-                        :500 {:body (failure-with)}}}}]
+            :responses {200 {:body (success-with :discussion port.chat/DiscussionSnakeCase)}
+                        500 {:body (failure-with)}}}}]
    ["/leave"
     {:post {:summary    "Remove the callee user from the channel"
             :middleware middleware
@@ -195,8 +195,8 @@
                                  {:swagger {:type "string"
                                             :allowEmptyValue false}}
                                  [:string {:min 1}]]]}
-            :responses {:200 {:body (success-with)}
-                        :500 {:body (failure-with)}}}}]
+            :responses {200 {:body (success-with)}
+                        500 {:body (failure-with)}}}}]
    ["/all"
     {:get {:summary    "Get all channels in the server"
            :swagger    {:tags ["chat"]}
@@ -206,8 +206,8 @@
                            (if (:success? result)
                              (r/ok (cske/transform-keys ->snake_case result))
                              (-> result present-error r/server-error))))
-           :responses {:200 {:body (success-with :channels [:sequential port.chat/ChannelWithUsersSnakeCase])}
-                       :500 {:body (failure-with)}}}}]
+           :responses {200 {:body (success-with :channels [:sequential port.chat/ChannelWithUsersSnakeCase])}
+                       500 {:body (failure-with)}}}}]
    ["/details"
     ["/{id}"
      {:get {:summary    "Get extended channel info, including members and the last few messages."
@@ -229,8 +229,8 @@
                                   (r/ok (cske/transform-keys ->snake_case result))))
                               (-> result present-error r/server-error))))
             :parameters ChannelIdPath
-            :responses {:200 {:body (success-with :channel port.chat/ExtendedChannelSnakeCase)}
-                        :500 {:body (failure-with)}}}}]]
+            :responses {200 {:body (success-with :channel port.chat/ExtendedChannelSnakeCase)}
+                        500 {:body (failure-with)}}}}]]
    ["/private"
     [""
      {:get  {:summary    "Get all private channels in the server"
@@ -238,8 +238,8 @@
              :swagger    {:tags ["chat"]}
              :handler    (fn do-get-private-channels [req]
                            (get-private-channels config req))
-             :responses {:200 {:body (success-with :channels [:sequential port.chat/ChannelWithUsersSnakeCase])}
-                         :500 {:body (failure-with)}}}
+             :responses {200 {:body (success-with :channels [:sequential port.chat/ChannelWithUsersSnakeCase])}
+                         500 {:body (failure-with)}}}
       :post {:summary    "Send private channel invitation request"
              :middleware middleware
              :swagger    {:tags ["chat"]}
@@ -258,8 +258,8 @@
                                              :type "string"
                                              :allowEmptyValue false}}
                                   [:string {:min 1}]]]}
-             :responses {:200 {:body (success-with)}
-                         :500 {:body (failure-with)}}}}]
+             :responses {200 {:body (success-with)}
+                         500 {:body (failure-with)}}}}]
     ["/add-user"
      {:post {:summary    "Allows admins to add another user to a private channel."
              :middleware middleware
@@ -287,16 +287,16 @@
                                   [:fn
                                    {:error/message "Not a valid user identifier. It should be a positive integer."}
                                    pos-int?]]]}
-             :responses {:200 {:body (success-with)}
-                         :500 {:body (failure-with)}}}}]]
+             :responses {200 {:body (success-with)}
+                         500 {:body (failure-with)}}}}]]
    ["/public"
     {:get {:summary    "Get all public channels in the server"
            :middleware middleware
            :swagger    {:tags ["chat"]}
            :handler    (fn do-get-public-channels [req]
                          (get-public-channels config req))
-           :responses {:200 {:body (success-with :channels [:sequential port.chat/ChannelWithUsersSnakeCase])}
-                       :500 {:body (failure-with)}}}
+           :responses {200 {:body (success-with :channels [:sequential port.chat/ChannelWithUsersSnakeCase])}
+                       500 {:body (failure-with)}}}
      :post {:summary    "Joins this public channel. Implicitly creates a chat account for the user,
 so you don't need to call the POST /api/chat/user/account endpoint beforehand."
             :middleware middleware
@@ -315,8 +315,8 @@ so you don't need to call the POST /api/chat/user/account endpoint beforehand."
                                             :type "string"
                                             :allowEmptyValue false}}
                                  [:string {:min 1}]]]}
-            :responses {:200 {:body (success-with)}
-                        :500 {:body (failure-with)}}}}]])
+            :responses {200 {:body (success-with)}
+                        500 {:body (failure-with)}}}}]])
 
 (defmethod ig/init-key :gpml.handler.chat/channel-admin-routes
   [_ {:keys [middleware]
@@ -339,8 +339,8 @@ so you don't need to call the POST /api/chat/user/account endpoint beforehand."
                               (r/ok (update result :channel #(cske/transform-keys ->snake_case %)))
                               (-> result present-error r/server-error))))
             :parameters {:body port.chat/NewChannel}
-            :responses {:200 {:body (success-with :channel port.chat/CreatedChannelSnakeCase)}
-                        :500 {:body (failure-with)}}}}]])
+            :responses {200 {:body (success-with :channel port.chat/CreatedChannelSnakeCase)}
+                        500 {:body (failure-with)}}}}]])
 
 (comment
   (dev/make-user! "abc@abc.net")
