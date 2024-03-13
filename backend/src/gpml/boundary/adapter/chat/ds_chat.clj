@@ -197,31 +197,35 @@
 (defn present-channel [channel]
   {:post [(check! port.chat/Channel %)]}
   (let [has-metadata? (and (-> channel :metadata string?)
-                           (not (-> channel :metadata string/blank?)))]
-    (-> channel
-        (set/rename-keys {:room-id                    :id
-                          :chat-room-permission-level :privacy})
-
-        (cond-> (:chat-room-permission-level channel) (update :privacy {"provisioned_users" "public"
-                                                                        "members"           "private"}))
-        (cond-> has-metadata? (update :metadata json/<-json)))))
+                           (not (-> channel :metadata string/blank?)))
+        v (-> channel
+              (set/rename-keys {:room-id :id
+                                :chat-room-permission-level :privacy})
+              (select-keys port.chat/channel-keys) ;; Ensure the :closed Channel schema is satisfied
+              (update :privacy {"provisioned_users" "public"
+                                "members"           "private"})
+              (cond-> has-metadata? (update :metadata json/<-json)))]
+    (cond-> v
+      ;; :description is both optional and nilable for DSC. Our schema is stronger (optional, non-nilable), satisfy that:
+      (not (:description v)) (dissoc :description))))
 
 (defn get-all-channels* [{:keys [logger api-key]} _opts]
   {:post [(check! #'port.chat/get-all-channels %)]}
   (let [{:keys [status body]}
         (http-client/request logger
-                             {:url (build-api-endpoint-url "/api/v1/chatrooms")
+                             {:url (build-api-endpoint-url "/api/v2/chatrooms")
                               :method :get
-                              :query-params {:auth api-key}
+                              :query-params {:auth api-key
+                                             :limit "200"}
                               :as :json-keyword-keys})]
     (if-not (<= 200 status 299)
       {:success? false
        :reason :failed-to-get-channels
        :error-details {:result body}}
       {:success? true
-       :channels (mapv  (fn [channel]
-                          (present-channel (cske/transform-keys ->kebab-case channel)))
-                        body)})))
+       :channels (mapv (fn [channel]
+                         (present-channel (cske/transform-keys ->kebab-case channel)))
+                       (:data body))})))
 
 (defn get-channel* [{:keys [logger api-key]} channel-id]
   {:pre  [(check! RoomId channel-id)]
