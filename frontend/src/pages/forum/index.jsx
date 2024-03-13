@@ -1,5 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Card, List } from 'antd'
+import {
+  Card,
+  Form,
+  Input,
+  List,
+  Modal,
+  Popover,
+  Radio,
+  notification,
+} from 'antd'
 import dynamic from 'next/dynamic'
 import styles from './index.module.scss'
 import Button from '../../components/button'
@@ -9,6 +18,8 @@ import ForumMembers from '../../modules/forum/forum-members'
 import { Trans, t } from '@lingui/macro'
 import { loadCatalog } from '../../translations/utils'
 import Head from 'next/head'
+import TextArea from 'antd/lib/input/TextArea'
+import { MoreOutlined } from '@ant-design/icons'
 
 const DynamicForumModal = dynamic(
   () => import('../../modules/forum/forum-modal'),
@@ -28,6 +39,8 @@ const Forum = ({ isAuthenticated, setLoginVisible, profile }) => {
   })
   const [loading, setLoading] = useState(true)
   const [preload, setPreload] = useState(true)
+  const [addModalVisible, setAddModalVisible] = useState(false)
+  const [editItem, setEditItem] = useState(null)
   const allForums = ChatStore.useState((s) => s.allForums)
 
   const handleOnView = (data) => {
@@ -103,6 +116,11 @@ const Forum = ({ isAuthenticated, setLoginVisible, profile }) => {
     getAllForums()
   }, [getAllForums])
 
+  const handleEditItem = (item) => {
+    setEditItem(item)
+    setAddModalVisible(true)
+  }
+
   return (
     <>
       <Head>
@@ -134,6 +152,16 @@ const Forum = ({ isAuthenticated, setLoginVisible, profile }) => {
                 </Trans>
               </p>
             </div>
+            {profile?.role === 'ADMIN' && (
+              <Button
+                type="ghost"
+                onClick={() => {
+                  setAddModalVisible(true)
+                }}
+              >
+                Add New Forum
+              </Button>
+            )}
           </div>
           <section>
             <List
@@ -141,31 +169,16 @@ const Forum = ({ isAuthenticated, setLoginVisible, profile }) => {
               dataSource={allForums}
               loading={loading}
               renderItem={(item) => (
-                <List.Item>
-                  <Card>
-                    <div className="channel">
-                      <span className={styles.forumType}>
-                        {item.t === 'p' ? t`private` : t`public`} {t`channel`}
-                      </span>
-                      <h5>{item.name?.replace(/[-_]/g, ' ')}</h5>
-                      <p className={styles.forumDesc}>
-                        {item?.description?.substring(0, 120)}
-                        {item?.description?.length > 120 && '...'}
-                      </p>
-                    </div>
-                    <div className="flex">
-                      <ForumMembers forum={item} />
-                      <div>
-                        <Button
-                          size="small"
-                          onClick={() => handleOnView(item)}
-                          ghost
-                        >
-                          <Trans>View</Trans>
-                        </Button>
-                      </div>
-                    </div>
-                  </Card>
+                <List.Item key={item.id}>
+                  <ChannelCard
+                    {...{
+                      item,
+                      handleOnView,
+                      profile,
+                      ChatStore,
+                      handleEditItem,
+                    }}
+                  />
                 </List.Item>
               )}
             />
@@ -177,11 +190,160 @@ const Forum = ({ isAuthenticated, setLoginVisible, profile }) => {
               allForums,
               setLoginVisible,
               isAuthenticated,
+              profile,
             }}
+          />
+          <AddModal
+            visible={addModalVisible}
+            onCancel={() => setAddModalVisible(false)}
+            editItem={editItem}
           />
         </div>
       </div>
     </>
+  )
+}
+
+const ChannelCard = ({ item, handleOnView, profile, handleEditItem }) => {
+  const isAdmin = profile?.role === 'ADMIN'
+  const [showPopover, setShowPopover] = useState(false)
+
+  const handleEdit = () => {
+    setShowPopover(false)
+    handleEditItem(item)
+  }
+  // console.log(item)
+  const handleDelete = () => {
+    if (confirm('are you sure?')) {
+      api.delete(`/chat/admin/channel/${item.id}`).then(() => {
+        ChatStore.update((s) => {
+          s.allForums = s.allForums.filter((it) => it.id !== item.id)
+        })
+      })
+    }
+  }
+  return (
+    <Card>
+      <div className="channel">
+        <span className={styles.forumType}>
+          {item.t === 'p' ? t`private` : t`public`} {t`channel`}
+        </span>
+        <h5>{item.name?.replace(/[-_]/g, ' ')}</h5>
+        {isAdmin && (
+          <div className="popover-container">
+            <Popover
+              placement="bottomLeft"
+              visible={showPopover}
+              overlayClassName={styles.popover}
+              onVisibleChange={(isOpen) => {
+                // const popValue = isOpen ? index : null
+                setShowPopover(isOpen)
+              }}
+              content={
+                <ul>
+                  {/* <li>
+                    <Button type="link" onClick={handleEdit}>
+                      <Trans>Edit</Trans>
+                    </Button>
+                  </li> */}
+                  <li>
+                    <Button type="link" onClick={handleDelete}>
+                      <Trans>Delete</Trans>
+                    </Button>
+                  </li>
+                </ul>
+              }
+              trigger="click"
+            >
+              <MoreOutlined rotate={90} />
+            </Popover>
+          </div>
+        )}
+        <p className={styles.forumDesc}>
+          {item?.description?.substring(0, 120)}
+          {item?.description?.length > 120 && '...'}
+        </p>
+      </div>
+      <div className="flex">
+        <ForumMembers forum={item} />
+        <div>
+          <Button size="small" onClick={() => handleOnView(item)} ghost>
+            <Trans>View</Trans>
+          </Button>
+        </div>
+      </div>
+    </Card>
+  )
+}
+
+const AddModal = ({ visible, onCancel, editItem }) => {
+  const initialState = {
+    name: '',
+    description: '',
+    privacy: 'public',
+  }
+  const [form, setForm] = useState({ ...initialState })
+  const [loading, setLoading] = useState(false)
+  const handleOnChange = (field) => (e) => {
+    setForm({ ...form, [field]: e.target.value })
+  }
+  const handleSubmit = () => {
+    api
+      .post('/chat/admin/channel', form)
+      .then(() => {
+        notification.success({ message: 'New channel created.' })
+        setForm({ ...initialState })
+        onCancel()
+      })
+      .catch((e, d) => {
+        notification.error({ message: "Coundn't add channel." })
+        // console.log('handle error', e, d)
+      })
+  }
+  useEffect(() => {
+    if (visible) {
+      console.log(editItem)
+    }
+  }, [visible])
+  return (
+    <Modal
+      visible={visible}
+      onCancel={onCancel}
+      title="Add New Forum"
+      footer={null}
+    >
+      <Form layout="vertical">
+        <Form.Item label="Title">
+          <Input
+            title="Title"
+            value={form.name}
+            onChange={handleOnChange('name')}
+          />
+        </Form.Item>
+        <Form.Item label="Description">
+          <TextArea
+            title="Description"
+            value={form.description}
+            onChange={handleOnChange('description')}
+          />
+        </Form.Item>
+        <Form.Item label="Privacy">
+          <Radio.Group
+            value={form.privacy}
+            onChange={handleOnChange('privacy')}
+          >
+            <Radio value="public">Public</Radio>
+            <Radio value="private">Private</Radio>
+          </Radio.Group>
+        </Form.Item>
+        <div style={{ display: 'flex' }}>
+          <Button onClick={handleSubmit}>Save</Button>
+          <Button type="ghost" onClick={onCancel}>
+            Cancel
+          </Button>
+        </div>
+      </Form>
+    </Modal>
   )
 }
 

@@ -44,7 +44,8 @@ const ForumMembers = ({ forum }) => {
           const fullName = `${u?.firstName} ${u?.lastName || ''}`
           return (
             <Avatar src={u?.picture} key={index} aria-label={fullName}>
-              {fullName}
+              {u?.firstName[0]}
+              {u?.lastName[0]}
             </Avatar>
           )
         })}

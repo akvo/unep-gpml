@@ -14,6 +14,7 @@ const ForumModal = ({
   allForums,
   setLoginVisible,
   isAuthenticated,
+  profile,
 }) => {
   const [requesting, setRequesting] = useState(false)
   const colorList = ['purple', 'green', 'blue', 'dark-blue']
@@ -31,6 +32,7 @@ const ForumModal = ({
 
   const router = useRouter()
   const avatarUrl = `${process.env.NEXT_PUBLIC_CHAT_API_DOMAIN_URL}/avatar/`
+  console.log(profile)
 
   const handleOnClose = () => {
     setViewModal({
@@ -140,11 +142,11 @@ const ForumModal = ({
                 <List.Item.Meta
                   avatar={
                     <Avatar src={userImage} className={sample(colorList)}>
-                      {`${fistName[0]}${lastName?.[0] || ''}`}
+                      {`${user.firstName[0]}${user.lastName?.[0] || ''}`}
                     </Avatar>
                   }
-                  title={user.name}
-                  description={user.nickname}
+                  title={`${user.firstName} ${user.lastName}`}
+                  description={user?.org?.name}
                 />
               </List.Item>
             )
