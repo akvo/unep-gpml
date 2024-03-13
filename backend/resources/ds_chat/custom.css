@@ -96,3 +96,45 @@ a:hover {
 .profilePicContainer {
   padding-right: .25rem !important;
 }
+
+.input-area .innerContainer {
+  background: #F8F8F8;
+  border-radius: 4px;
+}
+
+.input-area .textarea-div {
+  background: #F8F8F8 !important;
+}
+
+.input-area .innerContainer textarea {
+  background: #F8F8F8 !important;
+}
+
+.button.is-success[disabled] {
+  background: #00C199 !important;
+}
+
+.button.is-success {
+  background: #00C199 !important;
+}
+
+.button.is-success:hover {
+  border-color: #00C199 !important;
+}
+
+.emojiButton {
+  background: transparent !important;
+}
+
+.file-cta {
+  background: transparent !important;
+}
+
+.chat-message:hover {
+  background: transparent !important;
+}
+
+.repliedToMessage {
+  background-color: #E7F3FF !important;
+  padding: 10px;
+}
