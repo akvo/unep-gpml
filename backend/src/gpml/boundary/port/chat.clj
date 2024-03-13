@@ -110,7 +110,27 @@
 
 (def MessageSnakeCase (map->snake Message))
 
-(def MessagesSnakeCase (map->snake Messages))
+(def MessagesSnakeCase
+  (let [updated? (volatile! false)
+        result (mapv (fn [x]
+                       (cond->> x
+                         (and (vector? x) (-> x first (= :messages)))
+                         (mapv (fn [y]
+                                 (cond->> y
+                                   (and (vector? y) (-> y first (= :vector)))
+                                   (mapv (fn [z]
+                                           (if-not (and (vector? z) (-> z first (= :map)))
+                                             z
+                                             (into []
+                                                   (remove (fn [chat-account-id]
+                                                             (when (and (vector? chat-account-id)
+                                                                        (= (first chat-account-id) :chat-account-id))
+                                                               (vreset! updated? true)
+                                                               true)))
+                                                   z)))))))))
+                     (map->snake Messages))]
+    (assert @updated?)
+    result))
 
 (def Org
   [:map {:closed true}
