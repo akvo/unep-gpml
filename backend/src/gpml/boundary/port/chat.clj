@@ -30,11 +30,12 @@
 
 (def Channel ;; TODO https://clojurians.slack.com/archives/CLDK6MFMK/p1709154587503499
   [:map
-   {}
-   [:privacy {:optional true} ChannelPrivacy] ;; XXX not really optional - we're awaiting DSC feedback.
+   {:closed true}
+   [:privacy ChannelPrivacy]
    [:metadata {:optional true} map?]
    [:show-notification-for-all-channels boolean?]
    [:name string?]
+   [:description {:optional true} string?]
    [:enable-like-message boolean?]
    [:id string?]
    [:enable-one-to-one-chat boolean?]
@@ -42,6 +43,12 @@
    [:default-notification-enabled boolean?]
    [:moderator-only-one-to-one-chat boolean?]
    [:enable-channels boolean?]])
+
+(def channel-keys
+  (into []
+        (comp (filter vector?)
+              (map first))
+        Channel))
 
 (defn map->snake [[id :as m]]
   {:pre [(check! [:enum :map :vector] id
