@@ -346,14 +346,15 @@
                                    val
                                    (= port.chat/private))))))
 
+(def HasChatAccountId [:map [:chat_account_id some?]])
+
 (defn join-channel [{:keys [db hikari chat-adapter logger] :as config}
                     channel-id
                     {user-id :id
                      unique-user-identifier :chat_account_id
                      :as user}]
   {:pre [db hikari chat-adapter logger channel-id user-id
-         (check! [:map [:chat_account_id some?]]
-                 user)
+         (check! HasChatAccountId user)
          unique-user-identifier]}
   (saga logger (create-user-account config user-id)
     (partial assoc-private config channel-id)
@@ -397,9 +398,11 @@
 (defn leave-channel [{:keys [db hikari chat-adapter logger] :as config}
                      channel-id
                      {user-id :id
-                      unique-user-identifier :chat-channel-id
-                      :as _user}]
-  {:pre [db hikari chat-adapter logger channel-id user-id unique-user-identifier]}
+                      unique-user-identifier :chat_account_id
+                      :as user}]
+  {:pre [db hikari chat-adapter logger channel-id user-id
+         (check! HasChatAccountId user)
+         unique-user-identifier]}
   (saga logger {}
     (fn check-membership [_context]
       (if (:exists (:result (db/execute-one! hikari {:select [[[:exists {:select :*
