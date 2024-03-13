@@ -277,6 +277,8 @@
                                                        (mapv (fn [{:keys [message created user]}]
                                                                {:message message
                                                                 :created created
+                                                                ;; We pass :chat-account-id for the service to retrieve users from the DB later.
+                                                                ;; Note that this is a sensitive field that is removed from HTTP responses.
                                                                 :chat-account-id (:unique-user-identifier user)
                                                                 :username (:username user)})
                                                              messages)))))})))))))
