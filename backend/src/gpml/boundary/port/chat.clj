@@ -134,7 +134,7 @@
 
 (def Org
   [:map {:closed true}
-   [:name :string]])
+   [:name {:optional true} :string]])
 
 (def PresentedUser
   [:map
