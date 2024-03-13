@@ -196,7 +196,7 @@
                                             :allowEmptyValue false}}
                                  [:string {:min 1}]]]}
             :responses {200 {:body (success-with)}
-                        500 {:body (failure-with)}}}}]
+                        500 {:body (failure-with :reason any?)}}}}]
    ["/all"
     {:get {:summary    "Get all channels in the server"
            :swagger    {:tags ["chat"]}

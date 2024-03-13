@@ -84,15 +84,17 @@
                 (log logger :error :failed-to-rollback-assign-role-to-user {:result result})))
             context)}
          {:txn-fn
-          (fn tx-create-chat-account-if-required ;; XXX adapt if needed
+          (fn tx-create-chat-account-if-required
             [{:keys [ps-team-member] :as context}]
             (if (seq (:chat-account-id ps-team-member))
               context
-              (let [{:keys [success? chat-user-account] :as result}
+              (let [{:keys [success?]
+                     chat-user-account :stakeholder
+                     :as result}
                     (svc.chat/create-user-account config (:id ps-team-member))]
                 (if success?
                   (-> context
-                      (assoc-in [:ps-team-member :chat-account-id] (:id chat-user-account))
+                      (assoc-in [:ps-team-member :chat-account-id] (:chat-account-id chat-user-account))
                       (assoc :can-rollback-create-chat-account? true))
                   (assoc context
                          :success? false
