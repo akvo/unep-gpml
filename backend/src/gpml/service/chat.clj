@@ -111,8 +111,15 @@
 (defn set-user-account-active-status [{:keys [db chat-adapter logger]} user active?]
   (saga logger {:success? true
                 :user user}
+    (fn check_chat_account_id [context]
+      (if (:chat_account_id user)
+        context
+        (assoc context
+               :success? false
+               :reason "User doesn't have a `:chat_account_id`.")))
+
     {:txn-fn
-     (fn set-chat-user-account-active-stauts [{:keys [user] :as context}]
+     (fn set-chat-user-account-active-status [{:keys [user] :as context}]
        (let [chat-account-id (:chat_account_id user)
              result (port.chat/set-user-account-active-status chat-adapter
                                                               chat-account-id
@@ -131,11 +138,14 @@
                                                  (= (keyword (:chat_account_status user)) :active)
                                                  {})
        context)}
+
     {:txn-fn
      (fn update-stakeholder-chat-account-status [{:keys [user] :as context}]
        (let [affected (db.sth/update-stakeholder (:spec db)
                                                  {:id (:id user)
-                                                  :chat_account_status active?})] ;; XXX check sql type
+                                                  :chat_account_status (if active?
+                                                                         "active"
+                                                                         "inactive")})]
          (if (= affected 1)
            context
            (assoc context

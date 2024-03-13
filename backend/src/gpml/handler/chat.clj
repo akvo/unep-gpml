@@ -24,7 +24,7 @@
       (-> result present-error r/server-error))))
 
 (defn- set-user-account-active-status [config {:keys [user parameters]}]
-  (let [chat-account-status (-> parameters :body :chat_account_status)
+  (let [chat-account-status (-> parameters :body :active)
         result (svc.chat/set-user-account-active-status config user chat-account-status)]
     (if (:success? result)
       (r/ok (select-keys result [:success?]))
@@ -115,8 +115,8 @@
                                 [:active
                                  {:optional false}
                                  boolean?]]}
-            :responses {200 {:body any?}
-                        500 {:body any?}}}}]
+            :responses {200 {:body (success-with)}
+                        500 {:body (failure-with :reason any?)}}}}]
    ["/channel"
     {:get {:summary    "Get all user joined channels"
            :middleware middleware
@@ -377,6 +377,13 @@ so you don't need to call the POST /api/chat/user/account endpoint beforehand."
                        {:url "http://localhost:3000/api/chat/user/account"
                         :method :post
                         :as :json-keyword-keys})
+
+  (for [active [false true]]
+    (http-client/request (dev/logger)
+                         {:method :put
+                          :url "http://localhost:3000/api/chat/user/account"
+                          :body (json/->json {:active active})
+                          :as :json-keyword-keys}))
 
   ;; create PSs so that a public chat will be created:
   @(def channel (http-client/request (dev/logger)
