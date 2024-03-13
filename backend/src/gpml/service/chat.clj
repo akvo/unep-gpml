@@ -327,7 +327,7 @@
       result
       (assoc context :private? (-> result :channel
                                    (find :privacy)
-                                   (doto (assert "`:privacy` should be in the `:channel object`"))
+                                   (doto (assert "`:privacy` should be in the `:channel` object"))
                                    val
                                    (= port.chat/private))))))
 
