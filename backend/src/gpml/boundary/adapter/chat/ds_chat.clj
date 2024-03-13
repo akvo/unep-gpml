@@ -227,6 +227,22 @@
                          (present-channel (cske/transform-keys ->kebab-case channel)))
                        (:data body))})))
 
+(defn get-all-channels-fn [privacy]
+  {:pre [(check! port.chat/ChannelPrivacy privacy)]}
+  (fn get-all-channels-fn-impl [config _]
+    {:post [(check! #'port.chat/get-all-channels %)]}
+    (let [{:keys [success?]
+           :as result} (get-all-channels* config :_)]
+      (if-not success?
+        result
+        (update result :channels (fn [channels]
+                                   (filterv (fn [channel]
+                                              {:pre [(check! [:map [:privacy port.chat/ChannelPrivacy]]
+                                                             channel)]}
+                                              (= (:privacy channel)
+                                                 privacy))
+                                            channels)))))))
+
 (defn get-channel* [{:keys [logger api-key]} channel-id]
   {:pre  [(check! RoomId channel-id)]
    :post [(check! #'port.chat/get-channel %)]}
@@ -579,8 +595,8 @@
      `port.chat/delete-user-account               delete-user-account*
      `port.chat/get-channel                       get-channel*
      `port.chat/get-all-channels                  get-all-channels*
-     `port.chat/get-private-channels              get-all-channels*
-     `port.chat/get-public-channels               get-all-channels*
+     `port.chat/get-private-channels              (get-all-channels-fn "private")
+     `port.chat/get-public-channels               (get-all-channels-fn "public")
      `port.chat/get-channel-discussions           get-channel-discussions*
      `port.chat/get-user-info                     get-user-info*
      `port.chat/get-user-joined-channels          get-user-joined-channels*
@@ -623,6 +639,10 @@
                                             uniqueUserIdentifier
                                             true
                                             {})
+
+  (count (:channels (port.chat/get-public-channels (dev/component :gpml.boundary.adapter.chat/ds-chat) :_)))
+
+  (count (:channels (port.chat/get-private-channels (dev/component :gpml.boundary.adapter.chat/ds-chat) :_)))
 
   @(def a-private-channel (port.chat/create-private-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
                                                             {:name (str (random-uuid))}))
