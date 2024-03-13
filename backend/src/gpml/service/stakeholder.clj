@@ -208,7 +208,9 @@
          {:txn-fn
           (fn create-chat-account
             [{:keys [stakeholder] :as context}]
-            (let [{success? :success? updated-user :stakeholder :as result}
+            (let [{success? :success?
+                   updated-user :stakeholder
+                   :as result}
                   (svc.chat/create-user-account config (:id stakeholder))]
               (if success?
                 (-> context
