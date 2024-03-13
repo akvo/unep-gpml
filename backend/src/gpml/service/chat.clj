@@ -286,13 +286,15 @@
               (case channel-type
                 :all (port.chat/get-all-channels chat-adapter :_)
                 :public (port.chat/get-public-channels chat-adapter :_)
-                :private (port.chat/get-private-channels chat-adapter :_))]
+                :private (port.chat/get-private-channels chat-adapter :_)
+                (throw (ex-info "get-channels-generic missing clause" {:channel-type channel-type})))]
           (if (:success? result)
             (assoc context :channels (:channels result))
             (assoc context
                    :success? false
                    :reason :failed-to-get-channels
                    :error-details {:result result})))))
+
     (fn add-users [context]
       (try
         (update context :channels (fn [channels]
