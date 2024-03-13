@@ -16,7 +16,8 @@
    [reitit.swagger :as swagger]
    [reitit.swagger-ui :as swagger-ui]
    [ring.middleware.cors :as cors]
-   [ring.util.response :as resp]))
+   [ring.util.response :as resp]
+   [taoensso.timbre :as timbre]))
 
 (defn- root [_]
   (resp/response {:status "OK"}))
@@ -54,12 +55,14 @@
                         (exception/create-exception-middleware
                          (merge
                           exception/default-handlers
-                          {;; print stack-traces for all exceptions
+                          {;; log stacktraces for all exceptions
                            ::exception/wrap (fn [handler e request]
                                               (try
                                                 (let [response (handler e request)]
                                                   (when (>= (:status response 500) 500)
-                                                    (log logger :error :error-in-request-handler e))
+                                                    (timbre/with-context+ {::request-url (get request :url)
+                                                                           ::request-method (get request :method)}
+                                                      (log logger :error :error-in-request-handler e)))
                                                   response)
                                                 (catch Exception inner-e
                                                   (log logger :error :error-while-error-handling inner-e)
@@ -72,6 +75,12 @@
                         coercion/coerce-request-middleware
                         ;; multipart
                         multipart/multipart-middleware
+
+                        (fn [handler]
+                          (fn [req] ;; add basic request info, especially for Sentry
+                            (timbre/with-context+ {::request-url (get req :url)
+                                                   ::request-method (get req :method)}
+                              (handler req))))
 
                         (fn [handler]
                           (if collector
