@@ -400,7 +400,7 @@
                       unique-user-identifier :chat-channel-id
                       :as _user}]
   {:pre [db hikari chat-adapter logger channel-id user-id unique-user-identifier]}
-  (saga logger (create-user-account config user-id)
+  (saga logger {}
     (fn check-membership [_context]
       (if (:exists (:result (db/execute-one! hikari {:select [[[:exists {:select :*
                                                                          :from :chat_channel_membership
