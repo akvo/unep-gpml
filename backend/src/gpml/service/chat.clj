@@ -12,15 +12,17 @@
    [gpml.util.thread-transactions :refer [saga]]
    [taoensso.timbre :as timbre]))
 
+(def CreatedUser
+  [:map {:closed true}
+   [:id any?]
+   [:chat-account-id any?]
+   [:chat-account-status any?]
+   [:chat-account-auth-token any?]])
+
 (defn- select-successful-user-creation-keys
   "Exists to ensure type homogeinity across code branches"
   [m]
-  {:post [(check! [:map {:closed true}
-                   [:id any?]
-                   [:chat-account-id any?]
-                   [:chat-account-status any?]
-                   [:chat-account-auth-token any?]]
-                  %)]}
+  {:post [(check! CreatedUser %)]}
   (select-keys m [:id :chat-account-id :chat-account-status :chat-account-auth-token]))
 
 (defn- set-stakeholder-chat-account-details [{:keys [db]} {:keys [chat-account-id user-id chat-account-auth-token]}]
@@ -41,7 +43,10 @@
        :reason :failed-to-update-stakeholder})))
 
 (defn create-user-account [{:keys [db chat-adapter logger] :as config} user-id]
-  ;; XXX or failure-with, success-with sth + [:username :user-id :is-moderator :access-token]
+  {:post [(check! [:or
+                   (success-with :stakeholder CreatedUser)
+                   (failure-with :reason any?)]
+                  %)]}
   (saga logger {:success? true
                 :user-id user-id}
     {:txn-fn
