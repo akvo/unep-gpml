@@ -206,7 +206,8 @@
                                 "members"           "private"})
               (cond-> has-metadata? (update :metadata json/<-json)))]
     (cond-> v
-      ;; :description is both optional and nilable for DSC. Our schema is stronger (optional, non-nilable), satisfy that:
+      ;; :description/:metadata are both optional and nilable for DSC. Our schema is stronger (optional, non-nilable), satisfy that:
+      (not (:metadata v)) (dissoc :metadata)
       (not (:description v)) (dissoc :description))))
 
 (defn get-all-channels* [{:keys [logger api-key]} _opts]
