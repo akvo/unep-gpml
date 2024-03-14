@@ -45,9 +45,6 @@ function EmailJoin({ setSignUp, children }) {
     if (!values.lastName?.trim()) {
       errors.lastName = 'Please enter last name'
     }
-    if (!values.country) {
-      errors.country = 'Please select country'
-    }
     if (!values.password) {
       const uppercaseRegExp = /(?=.*?[A-Z])/
       const lowercaseRegExp = /(?=.*?[a-z])/
@@ -131,8 +128,8 @@ function EmailJoin({ setSignUp, children }) {
         password: data.password,
         user_metadata: {
           ...data,
-          publicEmail: data.publicEmail.toString(),
-          country: data.country.toString(),
+          publicEmail: false.toString(),
+          country: '',
         },
       },
       function (err) {
@@ -210,17 +207,6 @@ function EmailJoin({ setSignUp, children }) {
                               {meta.error}
                             </p>
                           )}
-                          <div className="public-email-switch">
-                            <Switch
-                              key="publicEmail"
-                              name="publicEmail"
-                              onChange={(checked) =>
-                                formRef.current?.change('publicEmail', checked)
-                              }
-                            />
-                            &nbsp;&nbsp;&nbsp;
-                            {'Show my email address on public listing'}
-                          </div>
                         </FormLabel>
                       )
                     }}
@@ -408,57 +394,6 @@ function EmailJoin({ setSignUp, children }) {
                       )
                     }}
                   </Field>
-                  <Field name="country">
-                    {({ options, input, meta, control, ...props }) => {
-                      const hasError = meta.touched && !meta.valid
-                      const validVal =
-                        input?.value && meta.valid ? 'success' : null
-                      const validateStatus = hasError ? 'error' : validVal
-                      return (
-                        <FormLabel
-                          htmlFor="country"
-                          label="Country"
-                          meta={meta}
-                          validateStatus={validateStatus}
-                        >
-                          <Select
-                            size="small"
-                            onChange={(value) => input.onChange(value)}
-                            placeholder="Search Country"
-                            allowClear
-                            showSearch
-                            virtual={false}
-                            showArrow
-                            suffixIcon={<SearchIcon />}
-                            filterOption={(input, option) =>
-                              option.children
-                                .toLowerCase()
-                                .includes(input.toLowerCase())
-                            }
-                          >
-                            {countries?.map((it) => (
-                              <Select.Option value={it.id} key={it.id}>
-                                {it.name}
-                              </Select.Option>
-                            ))}
-                          </Select>
-                          {meta.touched && meta.error && (
-                            <p
-                              color="error"
-                              className="error transitionDiv"
-                              style={
-                                meta.touched && meta.error
-                                  ? mountedStyle
-                                  : unmountedStyle
-                              }
-                            >
-                              {meta.error}
-                            </p>
-                          )}
-                        </FormLabel>
-                      )
-                    }}
-                  </Field>
                   <Button
                     ghost
                     disabled={submitting}
@@ -468,7 +403,7 @@ function EmailJoin({ setSignUp, children }) {
                     onClick={() => handleSubmit()}
                     withArrow
                   >
-                    Next
+                    Sign Up
                   </Button>
                 </Form>
               )
