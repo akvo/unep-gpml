@@ -21,7 +21,7 @@ const ForumModal = ({
   const [joins, setJoins] = useLocalStorage('joins', [])
   const myForums = ChatStore.useState((s) => s.myForums)
   const findMyFm = myForums?.find((f) => f?.id === viewModal?.data?.id)
-  const isNotAMember = viewModal?.data?.t === 'p' && !findMyFm
+  const isNotAMember = viewModal?.data?.privacy === 'private' && !findMyFm
   const joinDisabled = requesting || joins?.includes(viewModal?.data?.id)
   const participants = useMemo(() => {
     const { users } = viewModal?.data || {}
@@ -32,7 +32,6 @@ const ForumModal = ({
 
   const router = useRouter()
   const avatarUrl = `${process.env.NEXT_PUBLIC_CHAT_API_DOMAIN_URL}/avatar/`
-  console.log(profile)
 
   const handleOnClose = () => {
     setViewModal({

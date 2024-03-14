@@ -226,7 +226,7 @@ const ChannelCard = ({ item, handleOnView, profile, handleEditItem }) => {
     <Card>
       <div className="channel">
         <span className={styles.forumType}>
-          {item.t === 'p' ? t`private` : t`public`} {t`channel`}
+          {item.privacy === 'private' ? t`private` : t`public`} {t`channel`}
         </span>
         <h5>{item.name?.replace(/[-_]/g, ' ')}</h5>
         {isAdmin && (
@@ -311,6 +311,7 @@ const AddModal = ({ visible, onCancel, editItem, setEditItem }) => {
   }
   useEffect(() => {
     if (visible && editItem != null) {
+      console.log(editItem)
       const { name, description, privacy } = editItem
       setForm({ name, description, privacy })
     }
@@ -341,6 +342,7 @@ const AddModal = ({ visible, onCancel, editItem, setEditItem }) => {
           <Radio.Group
             value={form.privacy}
             onChange={handleOnChange('privacy')}
+            disabled={editItem != null}
           >
             <Radio value="public">Public</Radio>
             <Radio value="private">Private</Radio>
