@@ -196,7 +196,7 @@ const Forum = ({ isAuthenticated, setLoginVisible, profile }) => {
           <AddModal
             visible={addModalVisible}
             onCancel={() => setAddModalVisible(false)}
-            editItem={editItem}
+            {...{ editItem, setEditItem }}
           />
         </div>
       </div>
@@ -241,11 +241,11 @@ const ChannelCard = ({ item, handleOnView, profile, handleEditItem }) => {
               }}
               content={
                 <ul>
-                  {/* <li>
+                  <li>
                     <Button type="link" onClick={handleEdit}>
                       <Trans>Edit</Trans>
                     </Button>
-                  </li> */}
+                  </li>
                   <li>
                     <Button type="link" onClick={handleDelete}>
                       <Trans>Delete</Trans>
@@ -276,7 +276,7 @@ const ChannelCard = ({ item, handleOnView, profile, handleEditItem }) => {
   )
 }
 
-const AddModal = ({ visible, onCancel, editItem }) => {
+const AddModal = ({ visible, onCancel, editItem, setEditItem }) => {
   const initialState = {
     name: '',
     description: '',
@@ -288,28 +288,38 @@ const AddModal = ({ visible, onCancel, editItem }) => {
     setForm({ ...form, [field]: e.target.value })
   }
   const handleSubmit = () => {
-    api
-      .post('/chat/admin/channel', form)
-      .then(() => {
-        notification.success({ message: 'New channel created.' })
+    if (editItem != null) {
+      api.put(`/chat/admin/channel/${editItem.id}`, form).then(() => {
+        notification.success({ message: 'Channel edited.' })
         setForm({ ...initialState })
+        setEditItem(null)
         onCancel()
       })
-      .catch((e, d) => {
-        notification.error({ message: "Coundn't add channel." })
-        // console.log('handle error', e, d)
-      })
+    } else {
+      api
+        .post('/chat/admin/channel', form)
+        .then(() => {
+          notification.success({ message: 'New channel created.' })
+          setForm({ ...initialState })
+          onCancel()
+        })
+        .catch((e, d) => {
+          notification.error({ message: "Coundn't add channel." })
+          // console.log('handle error', e, d)
+        })
+    }
   }
   useEffect(() => {
-    if (visible) {
-      console.log(editItem)
+    if (visible && editItem != null) {
+      const { name, description, privacy } = editItem
+      setForm({ name, description, privacy })
     }
   }, [visible])
   return (
     <Modal
       visible={visible}
       onCancel={onCancel}
-      title="Add New Forum"
+      title={editItem == null ? 'Add New Forum' : 'Edit Forum'}
       footer={null}
     >
       <Form layout="vertical">
