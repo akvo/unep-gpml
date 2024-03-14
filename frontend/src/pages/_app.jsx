@@ -201,12 +201,7 @@ function MyApp({ Component, pageProps }) {
       setSession({ ...authResult, expiresIn: (storedExpiresAt - now) / 1000 })
 
       if (isTokenNearlyExpired(storedExpiresAt)) {
-        renewToken((err, renewedAuthResult) => {
-          if (err) {
-            console.log('Error renewing token:', err)
-          } else {
-          }
-        })
+        renewToken()
       }
     } else if (storedIdToken) {
       localStorage.removeItem('idToken')
@@ -344,6 +339,7 @@ function MyApp({ Component, pageProps }) {
         redirectUri={
           typeof window !== 'undefined' ? window.location.origin : ''
         }
+        cacheLocation="localstorage"
       >
         <I18nProvider i18n={i18n}>
           {loadScript && (
