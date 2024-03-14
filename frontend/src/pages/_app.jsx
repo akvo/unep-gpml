@@ -204,13 +204,19 @@ function MyApp({ Component, pageProps }) {
         renewToken()
       }
     } else if (storedIdToken) {
-      localStorage.removeItem('idToken')
-      localStorage.removeItem('expiresAt')
-      setState((prevState) => ({
-        ...prevState,
-        loadingProfile: false,
-        isAuthenticated: false,
-      }))
+      renewToken((err, renewedAuthResult) => {
+        if (err) {
+          localStorage.removeItem('idToken')
+          localStorage.removeItem('expiresAt')
+          setState((prevState) => ({
+            ...prevState,
+            loadingProfile: false,
+            isAuthenticated: false,
+          }))
+        } else {
+          api.setToken(renewedAuthResult.idToken)
+        }
+      })
     } else {
       setState((prevState) => ({
         ...prevState,
