@@ -14,13 +14,14 @@ const ForumModal = ({
   allForums,
   setLoginVisible,
   isAuthenticated,
+  profile,
 }) => {
   const [requesting, setRequesting] = useState(false)
   const colorList = ['purple', 'green', 'blue', 'dark-blue']
   const [joins, setJoins] = useLocalStorage('joins', [])
   const myForums = ChatStore.useState((s) => s.myForums)
   const findMyFm = myForums?.find((f) => f?.id === viewModal?.data?.id)
-  const isNotAMember = viewModal?.data?.t === 'p' && !findMyFm
+  const isNotAMember = viewModal?.data?.privacy === 'private' && !findMyFm
   const joinDisabled = requesting || joins?.includes(viewModal?.data?.id)
   const participants = useMemo(() => {
     const { users } = viewModal?.data || {}
@@ -140,11 +141,11 @@ const ForumModal = ({
                 <List.Item.Meta
                   avatar={
                     <Avatar src={userImage} className={sample(colorList)}>
-                      {`${fistName[0]}${lastName?.[0] || ''}`}
+                      {`${user.firstName[0]}${user.lastName?.[0] || ''}`}
                     </Avatar>
                   }
-                  title={user.name}
-                  description={user.nickname}
+                  title={`${user.firstName} ${user.lastName}`}
+                  description={user?.org?.name}
                 />
               </List.Item>
             )
