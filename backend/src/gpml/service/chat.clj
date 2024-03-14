@@ -273,6 +273,13 @@
                   :string] ;; a :chat_account_id
                  channel-type)]}
   (saga logger {:success? true}
+
+    (fn validate-channel-type [context]
+      (cond-> context
+        (not channel-type)
+        (assoc :success? false
+               :reason :user-has-no-chat-account)))
+
     (if (string? channel-type)
       (fn get-channels-for-user [context]
         (let [{sql-res :result sql-success? :success?}
@@ -322,7 +329,8 @@
                                           channels)))
         (catch Exception e
           (log logger :error :could-not-add-users e)
-          {:success? false})))))
+          {:success? false
+           :reason :could-not-add-users})))))
 
 (defn send-private-channel-invitation-request [{:keys [db mailjet-config]} user channel-id channel-name]
   (let [super-admins (db.rbac-util/get-super-admins-details (:spec db) {})]
