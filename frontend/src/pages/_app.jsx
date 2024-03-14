@@ -148,37 +148,9 @@ function MyApp({ Component, pageProps }) {
           ? JSON.parse(localStorage.getItem('redirect_on_login'))
           : null
         if (redirectLocation) {
-          router.push({
-            pathname: redirectLocation,
-          })
+          router.push(redirectLocation)
         } else {
           router.push('/')
-        }
-        setSession(authResult)
-        api.setToken(authResult.idToken)
-        if (
-          authResult?.idTokenPayload?.hasOwnProperty(
-            'https://digital.gpmarinelitter.org/is_new'
-          )
-        ) {
-          if (
-            authResult?.idTokenPayload?.[
-              'https://digital.gpmarinelitter.org/is_new'
-            ]
-          ) {
-            UIStore.update((e) => {
-              e.profile = {
-                emailVerified: authResult?.idTokenPayload?.email_verified,
-              }
-            })
-            router.push(
-              {
-                pathname: '/onboarding',
-                query: { data: JSON.stringify(authResult?.idTokenPayload) },
-              },
-              '/onboarding'
-            )
-          }
         }
       }
     })
@@ -218,11 +190,13 @@ function MyApp({ Component, pageProps }) {
         }
       })
     } else {
-      setState((prevState) => ({
-        ...prevState,
-        loadingProfile: false,
-        isAuthenticated: false,
-      }))
+      renewToken((err, renewedAuthResult) => {
+        if (err) {
+          console.log(`Error: ${err.error} - ${err.error_description}.`)
+        } else {
+          api.setToken(renewedAuthResult.idToken)
+        }
+      })
     }
   }, [setSession, renewToken])
 
