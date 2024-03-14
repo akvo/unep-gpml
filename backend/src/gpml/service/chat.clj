@@ -444,13 +444,15 @@
                  context
                  (if unique-user-identifier
                    (port.chat/remove-user-from-channel chat-adapter unique-user-identifier channel-id :_)
-                   {:success? false})))
+                   {:success? false
+                    :reason :could-not-remove-user-from-dsc})))
      :rollback-fn (fn add-to-dsc [context]
                     (if-not (-> context (find :private?) (doto (assert "`:private?` should be in the context")) val)
                       context
                       (if unique-user-identifier
                         (port.chat/add-user-to-private-channel chat-adapter unique-user-identifier channel-id)
-                        {:success? false})))}))
+                        {:success? false
+                         :reason :could-not-add-user-back-to-dsc})))}))
 
 (defn delete-channel [{:keys [hikari chat-adapter logger]}
                       channel-id]
