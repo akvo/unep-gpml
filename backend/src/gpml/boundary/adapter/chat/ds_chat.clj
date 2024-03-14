@@ -712,6 +712,10 @@
   (port.chat/delete-private-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
                                     (-> a-private-channel :channel :id))
 
-  (doseq [{:keys [id]} (:channels (port.chat/get-all-channels (dev/component :gpml.boundary.adapter.chat/ds-chat) {}))]
+  (doseq [{:keys [id]} (->> (port.chat/get-all-channels (dev/component :gpml.boundary.adapter.chat/ds-chat) {})
+                            :channels
+                            (filter (fn [{:keys [name]}]
+                                      (or (parse-uuid name)
+                                          (parse-uuid (subs name 3))))))]
     (port.chat/delete-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
                                      id)))

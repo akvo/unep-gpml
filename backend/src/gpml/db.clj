@@ -57,5 +57,5 @@
     (catch Exception e
       (timbre/error e)
       {:success? false
-       :reason :exception
+       :reason :sql-exception
        :error-details {:ex-class (-> e class str)}})))
