@@ -122,7 +122,7 @@ const MyForums = ({ handleOnView }) => {
                 <div className="flex my-forums">
                   <div className="channel my-forums">
                     <span className={styles.forumType}>
-                      {item?.channelType === 'p' ||
+                      {item?.privacy === 'private' ||
                       item?.customFields?.hasOwnProperty('psCountryIsoCodeA2')
                         ? t`private `
                         : t`public `}{' '}

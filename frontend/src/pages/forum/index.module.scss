@@ -10,7 +10,6 @@
       font-weight: 700;
       text-transform: uppercase;
     }
-    .header,
     .header .jumbotron {
       display: flex;
       flex-direction: column;
@@ -18,6 +17,12 @@
     .header {
       gap: 12px;
       margin-bottom: 62px;
+      position: relative;
+      .ant-btn {
+        position: absolute;
+        right: 0;
+        top: 0;
+      }
       &.my-forums {
         margin-bottom: 49px;
       }
@@ -42,6 +47,11 @@
           padding: 8px 19px 8px;
           border-radius: 10px;
           box-shadow: 0px 24px 40px 0px rgba(0, 0, 0, 0.07);
+          .popover-container {
+            position: absolute;
+            right: 15px;
+            top: 10px;
+          }
           .ant-card-body {
             padding: 0;
             display: flex;
@@ -119,6 +129,16 @@
               }
             }
           }
+          .ant-popover-inner {
+            .ant-popover-inner-content {
+              padding: 15px 19px;
+              ul {
+                display: flex;
+                flex-direction: column;
+                gap: 17px;
+              }
+            }
+          }
         }
       }
     }
@@ -132,4 +152,25 @@
   letter-spacing: 0.24px;
   text-transform: uppercase;
   color: $primaryPurple;
+}
+
+.popover {
+  // padding-top: 0 !important;
+  // border-radius: 3px;
+  // border: 1px solid $primaryDarkBlue2;
+  :global {
+    .ant-popover-arrow {
+      display: none;
+    }
+    .ant-popover-inner {
+      .ant-popover-inner-content {
+        padding: 15px 19px;
+        ul {
+          display: flex;
+          flex-direction: column;
+          gap: 17px;
+        }
+      }
+    }
+  }
 }

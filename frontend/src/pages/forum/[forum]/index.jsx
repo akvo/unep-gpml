@@ -288,14 +288,14 @@ const Discussions = ({
         setActiveForum((activeForum) => {
           return {
             ...activeForum,
-            discussions: activeForum.discussions.filter(
+            discussions: activeForum.discussions?.filter(
               (it) => it.id !== discuss.id
             ),
           }
         })
       })
   }
-  if (discussions.length === 0 && !isAdmin) return
+  if (discussions?.length === 0 && !isAdmin) return
   return (
     <>
       <h6 className="h-caps-xs w-bold">
@@ -303,7 +303,7 @@ const Discussions = ({
       </h6>
       <div className="mobile-scroller-horiz">
         <ul className="discussions">
-          {discussions.map((discuss, dx) => (
+          {discussions?.map((discuss, dx) => (
             <DiscussionItem
               {...{
                 discuss,
