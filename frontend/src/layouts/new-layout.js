@@ -160,6 +160,8 @@ const NewLayout = ({
 
   const handleOnLogout = () => {
     handleOnLogoutRC()
+    localStorage.removeItem('idToken')
+    localStorage.removeItem('expiresAt')
     auth0Client.logout({
       returnTo: window.location.origin,
     })
@@ -320,11 +322,9 @@ const NewLayout = ({
                   </Dropdown>
                 </>
               )}
-              {width <= 768 && (
-                <div className="toggle-button">
-                  <MenuToggle toggle={() => toggleOpen()} isOpen={isOpen} />
-                </div>
-              )}
+              <div className="toggle-button">
+                <MenuToggle toggle={() => toggleOpen()} isOpen={isOpen} />
+              </div>
             </nav>
           </div>
         </div>

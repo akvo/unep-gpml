@@ -32,21 +32,23 @@ function MyApp({ Component, pageProps }) {
     loadingProfile: true,
     loginVisible: false,
   })
+
+  const { authResult } = state
+
   const [loadScript, setLoadScript] = useState(false)
 
-  const {
-    _expiresAt,
-    idToken,
-    authResult,
-    loadingProfile,
-    loginVisible,
-  } = state
+  const { _expiresAt, loadingProfile, loginVisible } = state
 
   const isMounted = useRef(true)
 
   const isAuthenticated = new Date().getTime() < _expiresAt
 
   const setSession = useCallback((authResult) => {
+    const expiresAt = authResult.expiresIn * 1000 + new Date().getTime()
+
+    localStorage.setItem('idToken', authResult.idToken)
+    localStorage.setItem('expiresAt', expiresAt.toString())
+
     setState((prevState) => ({
       ...prevState,
       _expiresAt: authResult.expiresIn * 1000 + new Date().getTime(),
@@ -182,27 +184,50 @@ function MyApp({ Component, pageProps }) {
     })
   }, [])
 
+  const isTokenNearlyExpired = (expiresAt, threshold = 300000) => {
+    const now = new Date().getTime()
+    return expiresAt - now < threshold
+  }
+
   useEffect(() => {
-    auth0Client.checkSession({}, async (err, authResult) => {
-      if (err) {
-        setState((prevState) => ({
-          ...prevState,
-          loadingProfile: false,
-        }))
+    // Check for token and expiration in localStorage
+    const storedIdToken = localStorage.getItem('idToken')
+    const storedExpiresAt = parseInt(localStorage.getItem('expiresAt'), 10)
+    const now = new Date().getTime()
+
+    if (storedIdToken && now < storedExpiresAt) {
+      const authResult = { idToken: storedIdToken }
+      api.setToken(storedIdToken)
+      setSession({ ...authResult, expiresIn: (storedExpiresAt - now) / 1000 })
+
+      if (isTokenNearlyExpired(storedExpiresAt)) {
+        renewToken((err, renewedAuthResult) => {
+          if (err) {
+            console.log('Error renewing token:', err)
+          } else {
+          }
+        })
       }
-      if (authResult) {
-        setSession(authResult)
-      }
-    })
-  }, [])
+    } else if (storedIdToken) {
+      localStorage.removeItem('idToken')
+      localStorage.removeItem('expiresAt')
+      setState((prevState) => ({
+        ...prevState,
+        loadingProfile: false,
+        isAuthenticated: false,
+      }))
+    } else {
+      setState((prevState) => ({
+        ...prevState,
+        loadingProfile: false,
+        isAuthenticated: false,
+      }))
+    }
+  }, [setSession, renewToken])
 
   useEffect(() => {
     ;(async function fetchData() {
-      if (isAuthenticated && idToken) {
-        api.setToken(idToken)
-      } else {
-        api.setToken(null)
-      }
+      const idToken = localStorage.getItem('idToken')
       if (isAuthenticated && idToken && authResult) {
         setState((prevState) => ({ ...prevState, loadingProfile: true }))
         let resp = await api.get('/profile')
@@ -260,7 +285,7 @@ function MyApp({ Component, pageProps }) {
         updateStatusProfile(resp.data)
       }
     })()
-  }, [idToken, authResult])
+  }, [authResult])
 
   useEffect(() => {
     const host = window?.location?.hostname
