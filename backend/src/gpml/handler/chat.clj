@@ -79,19 +79,17 @@
 (defn- add-user-to-private-channel [{:keys [db mailjet-config] :as config} parameters]
   (let [{:keys [channel_id channel_name user_id]} (:body parameters)
         target-user (db.stakeholder/get-stakeholder-by-id (:spec db) {:id user_id})]
-    (if (seq target-user)
-      (let [result (port.chat/add-user-to-private-channel (:chat-adapter config)
-                                                          (:chat_account_id target-user)
-                                                          channel_id)]
+    (if-not (seq target-user)
+      (r/server-error {:success? false
+                       :reason :user-not-found})
+      (let [result (svc.chat/join-channel config channel_id target-user)]
         (if (:success? result)
           (do
             (email/notify-user-about-chat-private-channel-invitation-request-accepted mailjet-config
                                                                                       target-user
                                                                                       channel_name)
             (r/ok (select-keys result [:success?])))
-          (-> result present-error r/server-error)))
-      (r/server-error {:success? false
-                       :reason :user-not-found}))))
+          (-> result present-error r/server-error))))))
 
 (defmethod ig/init-key :gpml.handler.chat/dcs-user-routes
   [_ {:keys [middleware config]}]
@@ -265,9 +263,9 @@
              :middleware middleware
              :swagger    {:tags ["chat"]}
              :handler    (fn do-add-user-to-private-channel [{parameters :parameters user :user}]
-                           (if (h.r.permission/super-admin? config (:id user))
-                             (add-user-to-private-channel config parameters)
-                             (r/forbidden {:message "Unauthorized"})))
+                           (if-not (h.r.permission/super-admin? config (:id user))
+                             (r/forbidden {:message "Unauthorized"})
+                             (add-user-to-private-channel config parameters)))
              :parameters {:body [:map
                                  [:channel_id
                                   {:optional false
@@ -288,7 +286,7 @@
                                    {:error/message "Not a valid user identifier. It should be a positive integer."}
                                    pos-int?]]]}
              :responses {200 {:body (success-with)}
-                         500 {:body (failure-with)}}}}]]
+                         500 {:body (failure-with :reason any?)}}}}]]
    ["/public"
     {:get {:summary    "Get all public channels in the server"
            :middleware middleware
@@ -371,6 +369,9 @@ so you don't need to call the POST /api/chat/user/account endpoint beforehand."
 
 (comment
   (dev/make-user! "abc@abc.net")
+
+  @(def random-user (dev/make-user! (format "a%s@abc.net" (random-uuid))))
+
   (gpml.db.stakeholder/stakeholder-by-email (dev/conn) {:email "abc@abc.net"})
 
   (http-client/request (dev/logger)
@@ -401,6 +402,14 @@ so you don't need to call the POST /api/chat/user/account endpoint beforehand."
                                       :as :json-keyword-keys}))
 
   @(def channel-id (-> channel :body :channels first :id))
+
+  (http-client/request (dev/logger)
+                       {:url "http://localhost:3000/api/chat/channel/private/add-user"
+                        :method :post
+                        :body (json/->json {:channel_name (random-uuid)
+                                            :channel_id channel-id
+                                            :user_id (:id random-user)})
+                        :as :json-keyword-keys})
 
   (http-client/request (dev/logger)
                        {:method :post

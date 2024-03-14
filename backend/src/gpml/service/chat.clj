@@ -359,11 +359,8 @@
 (defn join-channel [{:keys [db hikari chat-adapter logger] :as config}
                     channel-id
                     {user-id :id
-                     unique-user-identifier :chat_account_id
-                     :as user}]
-  {:pre [db hikari chat-adapter logger channel-id user-id
-         (check! HasChatAccountId user)
-         unique-user-identifier]}
+                     :as _user}]
+  {:pre [db hikari chat-adapter logger channel-id user-id]}
   (saga logger (create-user-account config user-id)
     (partial assoc-private config channel-id)
 
@@ -377,7 +374,11 @@
          :reason   :user-already-belongs-to-channel}
         context))
 
-    {:txn-fn (fn add-to-dsc [context]
+    ;; NOTE: we grab the unique-user-identifier from :stakeholder, not from the `user` arg,
+    ;; since the it's the `create-user-account` call that may have created the `:chat-account-id`
+    {:txn-fn (fn add-to-dsc [{{unique-user-identifier :chat-account-id} :stakeholder
+                              :as context}]
+               {:pre [unique-user-identifier]}
                (if-not (-> context
                            (find :private?)
                            (doto (assert "`:private?` should be in the context"))
@@ -385,13 +386,17 @@
                  context
                  (if unique-user-identifier
                    (port.chat/add-user-to-private-channel chat-adapter unique-user-identifier channel-id)
-                   {:success? false})))
-     :rollback-fn (fn remove-from-dsc [context]
+                   {:success? false
+                    :reason :user-does-not-have-chat-account-id})))
+     :rollback-fn (fn remove-from-dsc [{{unique-user-identifier :chat-account-id} :stakeholder
+                                        :as context}]
+                    {:pre [unique-user-identifier]}
                     (if-not (-> context (find :private?) (doto (assert "`:private?` should be in the context")) val)
                       context
                       (if unique-user-identifier
                         (port.chat/remove-user-from-channel chat-adapter unique-user-identifier channel-id :_)
-                        {:success? false})))}
+                        {:success? false
+                         :reason :user-does-not-have-chat-account-id})))}
 
     {:txn-fn (fn add-to-tables [_context]
                (db/execute-one! hikari {:insert-into :chat_channel_membership
