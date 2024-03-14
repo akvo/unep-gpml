@@ -124,7 +124,7 @@
            :handler    (fn do-get-user-joined-channels [req]
                          (get-user-joined-channels config req))
            :responses {200 {:body (success-with :channels [:sequential port.chat/ChannelWithUsersSnakeCase])}
-                       500 {:body (failure-with)}}}}]])
+                       500 {:body (failure-with :reason any?)}}}}]])
 
 (def ChannelIdPath {:path [:map
                            [:id
