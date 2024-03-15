@@ -3,6 +3,7 @@
   (:require
    [clojure.java.io :as io]
    [clojure.java.jdbc :as jdbc]
+   [clojure.java.shell :refer [sh]]
    [clojure.pprint]
    [clojure.repl :refer :all]
    [clojure.tools.namespace.repl :refer [refresh]]
@@ -12,6 +13,7 @@
    [gpml.fixtures]
    [gpml.seeder.dummy :refer [get-or-create-profile]]
    [gpml.seeder.main :as seeder]
+   [gpml.util.json :as json]
    [honey.sql]
    [integrant.core :as ig]
    [integrant.repl :refer [clear go halt init prep reset]]
@@ -151,3 +153,15 @@
         (handler (assoc request :user user))))))
 
 (integrant.repl/set-prep! #(duct/prep-config (read-config) profiles))
+
+(comment
+  ;; Grabs the test/prod gcloud logs between two timestamps.
+  ;; This data is good to feed into your favorite interactive tool (rebl, cider inspector, etc).
+  (def gcloud-logs
+    (mapv :jsonPayload
+          (-> "glog.sh"
+              io/file
+              .getAbsolutePath
+              (sh "test" "2024-03-14T13:00:00Z" "2024-03-14T13:06:00Z")
+              :out
+              json/<-json))))
