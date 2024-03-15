@@ -255,7 +255,7 @@ const NestedLayout = ({ children }) => {
         <div className="sticky" ref={domRef}>
           <div className="head">
             <div className="caps-heading-s">
-              <Trans>plastic strategy</Trans>
+              <Trans>National Source Inventory</Trans>
             </div>
             <h5 className="h-m m-semi">{psCountryName || t`Loading...`}</h5>
             <div className="progress-bar">

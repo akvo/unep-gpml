@@ -662,7 +662,7 @@ const ActNow = () => {
     {
       bgColor: 'green',
       content: t`Reduce your country’s footprint. Create and advance your plastic startegy.`,
-      title: t`Plastic Strategies`,
+      title: t`National Source Inventories`,
       links: [
         {
           label: t`Discover`,

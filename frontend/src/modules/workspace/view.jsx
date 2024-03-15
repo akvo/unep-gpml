@@ -310,12 +310,12 @@ const Workspace = ({ profile, isAuthenticated, setLoginVisible }) => {
               {psAll.length > 0 && (
                 <div className="heading-container">
                   <h2 className="h-xxl w-bold">
-                    <Trans>Plastic Strategies</Trans>
+                    <Trans>National Source Inventories</Trans>
                   </h2>
                   {psAll?.length > 3 && (
                     <Link href="/workspace/plastic-strategies">
                       <Button withArrow="link" ghost>
-                        <Trans>View All Plastic Strategies</Trans>
+                        <Trans>View All</Trans>
                       </Button>
                     </Link>
                   )}
@@ -471,7 +471,7 @@ export const PSCard = ({ item, key }) => {
     <li key={key}>
       <Link href={`/workspace/${PREFIX_SLUG}-${countryName}`}>
         <div className="caps-heading-s">
-          <Trans>plastic strategy</Trans>
+          <Trans>National Source Inventory</Trans>
         </div>
         <h4 className="w-semi">
           {countryName === 'jamaica' ? 'Country A' : item?.country?.name}
