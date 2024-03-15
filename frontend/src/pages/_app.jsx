@@ -253,8 +253,6 @@ function MyApp({ Component, pageProps }) {
         UIStore.update((e) => {
           e.profile = {
             ...resp.data,
-            email: authResult?.idTokenPayload?.email,
-            emailVerified: authResult?.idTokenPayload?.email_verified,
           }
         })
         updateStatusProfile(resp.data)
