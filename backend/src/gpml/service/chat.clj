@@ -291,11 +291,20 @@
                                            :chat_channel_membership.stakeholder_id]]
                                    :where [:= :stakeholder.chat_account_id channel-type]})
 
-              extra-channel-ids (mapv :chat-channel-id sql-res)
+              extra-channel-ids (into #{} (map :chat-channel-id) sql-res)
               result (when sql-success?
                        (port.chat/get-user-joined-channels chat-adapter channel-type extra-channel-ids))]
           (if (:success? result)
-            (assoc context :channels (:channels result))
+            (assoc context :channels (into []
+                                           ;; DSC can return more channels than those registered in our DB,
+                                           ;; especially for public channels (DSC has no API concepts of joining a public channel,
+                                           ;; and yet their API can return specific users has members of those).
+                                           ;; Remove those:
+                                           (filter (fn [{:keys [id] :as channel}]
+                                                     {:pre [(check! port.chat/Channel channel
+                                                                    some? id)]}
+                                                     (contains? extra-channel-ids id)))
+                                           (:channels result)))
             (assoc context
                    :success? false
                    :reason :failed-to-get-channels
