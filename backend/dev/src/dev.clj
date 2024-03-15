@@ -89,7 +89,7 @@
 (defn make-user! [& [email]]
   (get-or-create-profile (db-conn)
                          (or email (format "a%s@akvo.org" (random-uuid)))
-                         (format "Random User %s" (random-uuid))
+                         (format "Random%s User%s" (random-uuid) (random-uuid))
                          "USER"
                          "APPROVED"))
 

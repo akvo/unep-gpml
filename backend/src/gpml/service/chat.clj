@@ -19,6 +19,9 @@
    [:chat-account-status any?]
    [:chat-account-auth-token any?]])
 
+(def CreatedUserSnakeCase
+  (port.chat/map->snake CreatedUser))
+
 (defn- select-successful-user-creation-keys
   "Exists to ensure type homogeinity across code branches"
   [m]
@@ -49,25 +52,25 @@
                   %)]}
   (saga logger {:success? true
                 :user-id user-id}
-    {:txn-fn
-     (fn get-stakeholder [{:keys [user-id] :as context}]
-       (let [search-opts {:filters {:ids [user-id]}}
-             {:keys [stakeholder] :as result} (db.sth/get-stakeholder (:spec db) search-opts)]
-         (if (:success? result)
-           (assoc context
-                  :stakeholder stakeholder
-                  :no-updates-needed (and (-> stakeholder :chat-account-id some?)
-                                          (-> stakeholder :chat-account-auth-token some?)))
-           (if (= (:reason result) :not-found)
-             (do
-               (log logger :info :user-not-found {:user-id user-id})
-               (assoc context
-                      :success? false
-                      :reason :not-found))
-             (assoc context
-                    :success? false
-                    :reason (:reason result)
-                    :error-details (:error-details result))))))}
+    (fn get-stakeholder [{:keys [user-id] :as context}]
+      (let [search-opts {:filters {:ids [user-id]}}
+            {:keys [stakeholder] :as result} (db.sth/get-stakeholder (:spec db) search-opts)]
+        (if (:success? result)
+          (assoc context
+                 :stakeholder stakeholder
+                 :no-updates-needed (and (-> stakeholder :chat-account-id some?)
+                                         (-> stakeholder :chat-account-auth-token some?)))
+          (if (= (:reason result) :not-found)
+            (do
+              (log logger :info :user-not-found {:user-id user-id})
+              (assoc context
+                     :success? false
+                     :reason :not-found))
+            (assoc context
+                   :success? false
+                   :reason (:reason result)
+                   :error-details (:error-details result))))))
+
     {:txn-fn
      (fn create-chat-user-account [{:keys [stakeholder] :as context}]
        (if (:chat-account-id stakeholder)
@@ -76,15 +79,17 @@
            (assoc context
                   :chat-account-auth-token (:chat-account-auth-token stakeholder)
                   :chat-account-id (:chat-account-id stakeholder)))
-         (let [{:keys [email id]} stakeholder
+         (let [{:keys [first-name last-name email id]} stakeholder
                chat-user-id (ds-chat/make-unique-user-identifier)
+               username (or (some-> first-name not-empty (cond-> (seq last-name) (str " " last-name)))
+                            email)
                result (port.chat/create-user-account (:chat-adapter config)
                                                      ;; gpml.boundary.adapter.chat.ds-chat/NewUser
                                                      {:uniqueUserIdentifier chat-user-id
                                                       :externalUserId (str id)
                                                       :isModerator false
                                                       :email email
-                                                      :username email})]
+                                                      :username username})]
            (if (:success? result)
              (assoc context
                     :chat-account-auth-token (-> result :user :access-token (doto (assert :access-token)))
@@ -94,24 +99,23 @@
                     :reason (:reason result)
                     :error-details (:error-details result))))))
      :rollback-fn
-     (fn rollback-create-chat-user-account [{:keys [chat-account-id] :as context}]
-       (port.chat/delete-user-account chat-adapter chat-account-id {})
-       context)}
-    {:txn-fn
-     (fn update-stakeholder [{:keys [user-id chat-account-id chat-account-auth-token] :as context}]
-       {:pre [user-id]}
-       (if (:no-updates-needed context)
-         (update context :stakeholder select-successful-user-creation-keys)
-         (let [result (set-stakeholder-chat-account-details config
-                                                            {:chat-account-id chat-account-id
-                                                             :chat-account-auth-token chat-account-auth-token
-                                                             :user-id user-id})]
-           (if (:success? result)
-             (assoc context :stakeholder (:stakeholder result))
-             (assoc context
-                    :success? false
-                    :reason (:reason result)
-                    :error-details (:error-details result))))))}))
+     (fn rollback-create-chat-user-account [{:keys [chat-account-id]}]
+       (port.chat/delete-user-account chat-adapter chat-account-id {}))}
+
+    (fn update-stakeholder [{:keys [user-id chat-account-id chat-account-auth-token] :as context}]
+      {:pre [user-id]}
+      (if (:no-updates-needed context)
+        (update context :stakeholder select-successful-user-creation-keys)
+        (let [result (set-stakeholder-chat-account-details config
+                                                           {:chat-account-id chat-account-id
+                                                            :chat-account-auth-token chat-account-auth-token
+                                                            :user-id user-id})]
+          (if (:success? result)
+            (assoc context :stakeholder (:stakeholder result))
+            (assoc context
+                   :success? false
+                   :reason (:reason result)
+                   :error-details (:error-details result))))))))
 
 (defn set-user-account-active-status [{:keys [db chat-adapter logger]} user active?]
   (saga logger {:success? true
