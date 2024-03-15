@@ -60,8 +60,8 @@
                                               (try
                                                 (let [response (handler e request)]
                                                   (when (>= (:status response 500) 500)
-                                                    (timbre/with-context+ {::request-url (get request :url)
-                                                                           ::request-method (get request :method)}
+                                                    (timbre/with-context+ {::request-url (get request :uri)
+                                                                           ::request-method (get request :request-method)}
                                                       (log logger :error :error-in-request-handler e)))
                                                   response)
                                                 (catch Exception inner-e
@@ -78,8 +78,8 @@
 
                         (fn [handler]
                           (fn [req] ;; add basic request info, especially for Sentry
-                            (timbre/with-context+ {::request-url (get req :url)
-                                                   ::request-method (get req :method)}
+                            (timbre/with-context+ {::request-url (get req :uri)
+                                                   ::request-method (get req :request-method)}
                               (handler req))))
 
                         (fn [handler]
