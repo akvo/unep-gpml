@@ -49,6 +49,9 @@ frontend_build () {
   echo 'REACT_APP_AUTH0_DOMAIN="unep-gpml-test.eu.auth0.com"' >> frontend/.env
   echo 'NEXT_PUBLIC_CHAT_API_DOMAIN_URL="https://rocket-chat.akvotest.org"' >> frontend/.env
   echo 'NEXT_PUBLIC_ENV=test' >> frontend/.env
+  echo 'NEXT_PUBLIC_DSC_URL="https://deadsimplechat.com"' >> frontend/.env
+  echo 'NEXT_PUBLIC_DSC_API_URL="https://api.deadsimplechat.com"' >> frontend/.env
+  echo 'NEXT_PUBLIC_DSC_PUBLIC_KEY="pub_42747a344c7475336e2d4f46624c3333494d68745a784c316d4150626c4c32714a5146494c6b4d44764a4556456f5847"' >> frontend/.env
 
   dc run \
      --rm \
