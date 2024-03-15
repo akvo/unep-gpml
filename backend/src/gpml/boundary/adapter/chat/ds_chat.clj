@@ -337,7 +337,17 @@
 
           :else
           {:success? true
-           :channels (->> all :channels (filterv (comp valid-ids :id)))}))
+           :channels (into []
+                           (comp (filter (comp valid-ids :id))
+                                 (remove (fn [{:keys [privacy] :as channel}]
+                                           {:pre [(check! port.chat/Channel channel
+                                                          port.chat/ChannelPrivacy privacy)]}
+                                           ;; DSC likes to return public channels in the "/api/v2/user/$user-id/rooms" endpoint
+                                           ;; for a given user
+                                           ;; even though it has no API concept of joining a public channel.
+                                           ;; Remove those:
+                                           (= privacy port.chat/public))))
+                           (:channels all))}))
       {:success? false
        :reason :failed-to-add-user-to-channel
        :error-details body})))
