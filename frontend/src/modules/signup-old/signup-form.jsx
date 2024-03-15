@@ -18,6 +18,8 @@ import { storage } from '../../utils/storage'
 import { useRef } from 'react'
 import { Trans, t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
+import CatTagSelect from '../../components/cat-tag-select/cat-tag-select'
+import FormItem from 'antd/lib/form/FormItem'
 
 const { sectorOptions } = UIStore.currentState
 
@@ -441,9 +443,102 @@ const SignupForm = ({
                   <h2>
                     <Trans>Expertise and activities</Trans>
                   </h2>
-                  <FieldsFromSchema
-                    schema={formSchema?.['expertiesActivities']}
-                  />
+                  <Form.Item label={t`Offering`}>
+                    <Field name="offering" style={{ width: '100%' }}>
+                      {({ input, meta }) => {
+                        const handleChange = (selectedValue) => {
+                          const isSelected = input.value.includes(
+                            selectedValue.toLowerCase()
+                          )
+                          let newValue
+                          if (isSelected) {
+                            newValue = input.value.filter(
+                              (value) => value !== selectedValue.toLowerCase()
+                            )
+                          } else {
+                            newValue = [
+                              ...input.value,
+                              selectedValue.toLowerCase(),
+                            ]
+                          }
+
+                          input.onChange(newValue)
+                        }
+
+                        const handleRemove = (selectedValue) => {
+                          const newValue = input.value.filter(
+                            (value) => value !== selectedValue
+                          )
+                          input.onChange(newValue)
+                        }
+
+                        const hasError = !meta.valid
+                        const validVal =
+                          input?.value && meta.valid ? 'success' : null
+                        const validateStatus = hasError ? 'error' : validVal
+                        return (
+                          <FormItem
+                            for="offering"
+                            validateStatus={validateStatus}
+                          >
+                            <CatTagSelect
+                              handleChange={handleChange}
+                              meta={meta}
+                              value={input.value ? input.value : undefined}
+                              handleRemove={handleRemove}
+                            />
+                          </FormItem>
+                        )
+                      }}
+                    </Field>
+                  </Form.Item>
+                  <Form.Item label={t`Seeking`}>
+                    <Field name="seeking" style={{ width: '100%' }}>
+                      {({ input, meta }) => {
+                        const handleChange = (selectedValue) => {
+                          const isSelected = input.value.includes(selectedValue)
+                          let newValue
+                          if (isSelected) {
+                            newValue = input.value.filter(
+                              (value) => value !== selectedValue.toLowerCase()
+                            )
+                          } else {
+                            newValue = [
+                              ...input.value,
+                              selectedValue.toLowerCase(),
+                            ]
+                          }
+
+                          input.onChange(newValue)
+                        }
+
+                        const handleRemove = (selectedValue) => {
+                          const newValue = input.value.filter(
+                            (value) => value !== selectedValue
+                          )
+                          input.onChange(newValue)
+                        }
+
+                        const hasError = !meta.valid
+                        const validVal =
+                          input?.value && meta.valid ? 'success' : null
+                        const validateStatus = hasError ? 'error' : validVal
+                        return (
+                          <FormItem
+                            for="seeking"
+                            validateStatus={validateStatus}
+                          >
+                            <CatTagSelect
+                              handleChange={handleChange}
+                              meta={meta}
+                              value={input.value ? input.value : undefined}
+                              handleRemove={handleRemove}
+                            />
+                          </FormItem>
+                        )
+                      }}
+                    </Field>
+                  </Form.Item>
                 </div>
               </div>
             </>
