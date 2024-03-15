@@ -20,7 +20,7 @@
 (defn- create-user-account [config {:keys [user] :as _req}]
   (let [result (svc.chat/create-user-account config (:id user))]
     (if (:success? result)
-      (r/ok (cske/transform-keys ->snake_case (:stakeholder result)))
+      (r/ok (cske/transform-keys ->snake_case (select-keys result [:success? :stakeholder])))
       (-> result present-error r/server-error))))
 
 (defn- set-user-account-active-status [config {:keys [user parameters]}]
@@ -102,7 +102,7 @@
             :swagger    {:tags ["chat"]}
             :handler    (fn do-create-user-account [req]
                           (create-user-account config req))
-            :responses  {200 {:body any?}
+            :responses  {200 {:body (success-with :stakeholder svc.chat/CreatedUserSnakeCase)}
                          500 {:body (failure-with)}}}
      :put  {:summary    "Update chat user account status"
             :middleware middleware
