@@ -34,7 +34,7 @@ const View = () => {
       <div className="container">
         <div className="ps-heading">
           <h2 className="h-xxl w-bold">
-            <Trans>Plastic Strategies</Trans>
+            <Trans>National Source Inventories</Trans>
           </h2>
         </div>
         <SkeletonItems loading={loading} />
