@@ -1,8 +1,7 @@
 (ns gpml.boundary.port.chat
   (:require
-   [camel-snake-kebab.core :refer [->snake_case]]
    [clojure.string :as string]
-   [gpml.util.malli :as util.malli :refer [check! failure-with success-with]]
+   [gpml.util.malli :as util.malli :refer [failure-with map->snake success-with]]
    [malli.util :as mu]))
 
 (def DSCInternalId
@@ -49,22 +48,6 @@
         (comp (filter vector?)
               (map first))
         Channel))
-
-(defn map->snake [[id :as m]]
-  {:pre [(check! [:enum :map :vector] id
-                 [:fn map?] (second m))]}
-  (into [id (second m)]
-        (mapv (fn [[k x y & args]]
-                (into []
-                      (remove nil?)
-                      (apply vector
-                             (->snake_case k)
-                             (cond-> x
-                               (and (vector? x) (-> x first #{:vector :map})) map->snake)
-                             (cond-> y
-                               (and (vector? y) (-> y first #{:vector :map})) map->snake)
-                             args)))
-              (subvec m 2))))
 
 (def UserInfo
   [:map {:closed true}

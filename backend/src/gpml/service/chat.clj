@@ -1,5 +1,6 @@
 (ns gpml.service.chat
   (:require
+   [clojure.set :as set]
    [duct.logger :refer [log]]
    [gpml.boundary.adapter.chat.ds-chat :as ds-chat]
    [gpml.boundary.port.chat :as port.chat]
@@ -8,7 +9,7 @@
    [gpml.db.stakeholder :as db.sth]
    [gpml.service.file :as srv.file]
    [gpml.util.email :as util.email]
-   [gpml.util.malli :refer [check! failure-with success-with]]
+   [gpml.util.malli :refer [PresentString check! failure-with map->snake success-with]]
    [gpml.util.thread-transactions :refer [saga]]
    [taoensso.timbre :as timbre]))
 
@@ -20,7 +21,7 @@
    [:chat-account-auth-token any?]])
 
 (def CreatedUserSnakeCase
-  (port.chat/map->snake CreatedUser))
+  (map->snake CreatedUser))
 
 (defn- select-successful-user-creation-keys
   "Exists to ensure type homogeinity across code branches"
@@ -485,3 +486,108 @@
       (port.chat/delete-public-channel chat-adapter channel-id))
 
     (constantly {:success? true})))
+
+(def PinnedLinkType
+  [:enum "video" "pdf" "calendar" "doc" "form" "other"])
+
+(def NewPinnedLink
+  [:map
+   {:closed true}
+   [:title PresentString]
+   [:url PresentString]
+   [:type PinnedLinkType]])
+
+(def PinnedLink
+  (into NewPinnedLink
+        [[:id :int]
+         [:created-by-stakeholder-id :int]
+         [:updated-by-stakeholder-id [:maybe :int]]
+         [:chat-channel-id PresentString]]))
+
+(defn get-pinned-links [{:keys [hikari chat-adapter logger]}
+                        channel-id
+                        user-id]
+  {:pre [hikari chat-adapter logger channel-id
+         (check! [:or
+                  :int
+                  [:enum :admin]]
+                 user-id)]
+   :post [(check! [:or
+                   (success-with :pinned-links [:sequential PinnedLink])
+                   (failure-with :reason any?)]
+                  %)]}
+  (saga logger {:success? true
+                :as-admin? (= :admin user-id)}
+    (fn get-pinned-link-with-authorization [{:keys [as-admin?] :as context}]
+      {:pre [(check! :boolean as-admin?)]}
+      (let [{:keys [success?]
+             pinned-links :result
+             :as result} (db/execute! hikari (cond-> {:select :chat_channel_pinned_link.*
+                                                      :from :chat_channel_pinned_link
+                                                      :where (cond-> [:and
+                                                                      [:= :chat_channel_pinned_link.chat_channel_id channel-id]]
+                                                               (not as-admin?)
+                                                               (conj [:= :chat_channel_membership.stakeholder_id user-id]))}
+                                               (not as-admin?)
+                                               (assoc :join [:chat_channel_membership
+                                                             [:=
+                                                              :chat_channel_membership.chat_channel_id
+                                                              :chat_channel_pinned_link.chat_channel_id]])))]
+        (if-not success?
+          result
+          (assoc context :pinned-links pinned-links))))))
+
+(defn create-pinned-link [{:keys [hikari chat-adapter logger] :as config}
+                          channel-id
+                          creator-id
+                          new-pinned-link]
+  {:pre [hikari chat-adapter logger channel-id creator-id
+         (check! NewPinnedLink new-pinned-link)]
+   :post [(check! [:or
+                   (success-with :pinned-link PinnedLink)
+                   (failure-with :reason any?)]
+                  %)]}
+  (saga logger {:success? true}
+    (partial assoc-private config channel-id) ;; check that the channel exists
+
+    (fn create-chat-channel-pinned-link [_context]
+      (db/execute-one! hikari {:insert-into :chat_channel_pinned_link
+                               :values [(merge {:created_by_stakeholder_id creator-id
+                                                :chat_channel_id channel-id}
+                                               new-pinned-link)]
+                               :returning [:*]}))
+
+    (fn present-pinned-link [context]
+      (set/rename-keys context {:result :pinned-link}))))
+
+(defn update-pinned-link [{:keys [hikari chat-adapter logger]}
+                          channel-id
+                          pinned-link-id
+                          updater-id
+                          pinned-link-updates]
+  {:pre [hikari chat-adapter logger channel-id updater-id
+         (check! NewPinnedLink pinned-link-updates)]
+   :post [(check! [:or
+                   (success-with :pinned-link PinnedLink)
+                   (failure-with :reason any?)]
+                  %)]}
+  (saga logger {:success? true}
+    (fn check-record-exists [context]
+      (if (:exists (:result (db/execute-one! hikari {:select [[[:exists {:select :*
+                                                                         :from :chat_channel_pinned_link
+                                                                         :where [:and
+                                                                                 [:= :id pinned-link-id]
+                                                                                 [:= :chat_channel_id channel-id]]}]]]})))
+        context
+        {:success? false
+         :reason   :pinned-link-not-found}))
+
+    (fn update-chat-channel-pinned-link [_context]
+      (db/execute-one! hikari {:update :chat_channel_pinned_link
+                               :set (merge {:updated_by_stakeholder_id updater-id}
+                                           pinned-link-updates)
+                               :where [:= :chat_channel_id channel-id]
+                               :returning [:*]}))
+
+    (fn present-pinned-link [context]
+      (set/rename-keys context {:result :pinned-link}))))

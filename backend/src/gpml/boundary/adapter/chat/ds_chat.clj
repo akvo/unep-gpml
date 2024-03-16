@@ -256,7 +256,7 @@
                               :as :json-keyword-keys})]
     (if-not (<= 200 status 299)
       {:success? false
-       :reason :failed-to-get-channels
+       :reason :failed-to-get-channel
        :error-details {:result channel}}
       (let [{:keys [status]
              members :body}
