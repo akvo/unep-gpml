@@ -131,6 +131,12 @@
                                        :allowEmptyValue false}}
                             [:string {:min 1}]]]})
 
+(def UserIdPath {:path [:map
+                        [:user-id
+                         {:swagger {:description "The user ID."
+                                    :type "integer"}}
+                         [:int]]]})
+
 (def DiscussionIdPath {:path [:map
                               [:discussion_id
                                {:swagger {:description "The discussion ID."
@@ -318,10 +324,11 @@ so you don't need to call the POST /api/chat/user/account endpoint beforehand."
 
 (defmethod ig/init-key :gpml.handler.chat/channel-admin-routes
   [_ {:keys [middleware]
-      {:keys [logger hikari chat-adapter] :as config} :config}]
+      {:keys [logger hikari chat-adapter db] :as config} :config}]
   {:pre [(vector? middleware)
          (seq config)
          hikari
+         db
          logger]}
   ["/admin"
    ["/channel"
@@ -339,6 +346,24 @@ so you don't need to call the POST /api/chat/user/account endpoint beforehand."
             :parameters {:body port.chat/NewChannel}
             :responses {200 {:body (success-with :channel port.chat/CreatedChannelSnakeCase)}
                         500 {:body (failure-with)}}}}]
+   ["/channel/{id}/add-user/{user-id}"
+    {:post {:summary    "Adds a user to a channel, ensuring idempotently that the user has a chat account. Requires admin permissions."
+            :middleware middleware
+            :swagger    {:tags ["chat"]}
+            :handler    (fn [{{{channel-id :id
+                                user-id :user-id} :path} :parameters}]
+                          {:pre [channel-id user-id]}
+                          (let [target-user (db.stakeholder/get-stakeholder-by-id (:spec db) {:id user-id})]
+                            (if-not (seq target-user)
+                              (r/server-error {:success? false
+                                               :reason :user-not-found})
+                              (let [result (svc.chat/join-channel config channel-id target-user)]
+                                (if (:success? result)
+                                  (r/ok (select-keys result [:success?]))
+                                  (-> result present-error r/server-error))))))
+            :parameters {:path (mu/merge (:path ChannelIdPath) (:path UserIdPath))}
+            :responses {200 {:body (success-with)}
+                        500 {:body (failure-with :reason any?)}}}}]
    ["/channel/{id}"
     {:put {:summary    "Performs an update over a channel. Requires admin permissions."
            :middleware middleware
@@ -477,8 +502,14 @@ so you don't need to call the POST /api/chat/user/account endpoint beforehand."
                                                :content-type :json
                                                :as :json-keyword-keys})))
 
-  (for [{{{id :id} :channel} :body} admin-channels]
+  (for [{{{id :id} :channel} :body} admin-channels
+        :let [{random-user-id :id} (dev/make-user! (format "a%s@abc.net" (random-uuid)))]]
     [(http-client/request (dev/logger)
+                          {:method :post
+                           :url (str "http://localhost:3000/api/chat/admin/channel/" id "/add-user/" random-user-id)
+                           :content-type :json
+                           :as :json-keyword-keys})
+     (http-client/request (dev/logger)
                           {:method :put
                            :url (str "http://localhost:3000/api/chat/admin/channel/" id)
                            :body (json/->json {:name (random-uuid)

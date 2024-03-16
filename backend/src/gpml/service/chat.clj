@@ -45,7 +45,9 @@
       {:success? false
        :reason :failed-to-update-stakeholder})))
 
-(defn create-user-account [{:keys [db chat-adapter logger] :as config} user-id]
+(defn create-user-account
+  "Idempotent - also returns success if the stakeholder and/or chat account already existed."
+  [{:keys [db chat-adapter logger] :as config} user-id]
   {:post [(check! [:or
                    (success-with :stakeholder CreatedUser)
                    (failure-with :reason any?)]
