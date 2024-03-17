@@ -10,7 +10,7 @@
    [gpml.util.email :as email]
    [gpml.util.http-client :as http-client]
    [gpml.util.json :as json]
-   [gpml.util.malli :refer [failure-with success-with]]
+   [gpml.util.malli :refer [failure-with map->snake success-with]]
    [integrant.core :as ig]
    [malli.util :as mu]))
 
@@ -131,11 +131,24 @@
                                        :allowEmptyValue false}}
                             [:string {:min 1}]]]})
 
+(def ChannelIdPathAlt {:path [:map
+                              [:channel_id
+                               {:swagger {:description "The channel ID."
+                                          :type "string"
+                                          :allowEmptyValue false}}
+                               [:string {:min 1}]]]})
+
 (def UserIdPath {:path [:map
                         [:user-id
                          {:swagger {:description "The user ID."
                                     :type "integer"}}
                          [:int]]]})
+
+(def PinnedLinkIdPath {:path [:map
+                              [:pinned-link-id
+                               {:swagger {:description "The Pinned Link ID."
+                                          :type "integer"}}
+                               [:int]]]})
 
 (def DiscussionIdPath {:path [:map
                               [:discussion_id
@@ -169,6 +182,7 @@
               :parameters {:path (mu/merge (:path DiscussionIdPath) (:path ChannelIdPath))}
               :responses {200 {:body (success-with)}
                           500 {:body (failure-with)}}}}]
+
    ["/create-discussion/{id}"
     {:post {:summary    "Creates a discussion within this channel. Requires admin permissions."
             :middleware middleware
@@ -212,6 +226,24 @@
                              (-> result present-error r/server-error))))
            :responses {200 {:body (success-with :channels [:sequential port.chat/ChannelWithUsersSnakeCase])}
                        500 {:body (failure-with)}}}}]
+   ["/pinned-link/{channel_id}"
+    {:get {:summary    "Get a channel's pinned links. The user must be able to view the channel in order to access this endpoint."
+           :middleware middleware
+           :swagger    {:tags ["chat"] :security [{:id_token []}]}
+           :handler    (fn [{{{channel-id :channel_id}   :path} :parameters
+                             {user-id :id} :user}]
+                         {:pre [channel-id user-id]}
+                         (let [enhanced-user-id (if (h.r.permission/super-admin? config user-id)
+                                                  :admin
+                                                  user-id)
+                               result (svc.chat/get-pinned-links config channel-id enhanced-user-id)]
+                           (if (:success? result)
+                             (r/ok (select-keys (cske/transform-keys ->snake_case result)
+                                                [:success? :pinned_links]))
+                             (-> result present-error r/server-error))))
+           :parameters ChannelIdPathAlt
+           :responses {200 {:body (success-with :pinned_links [:sequential (map->snake svc.chat/PinnedLink)])}
+                       500 {:body (failure-with :reason any?)}}}}]
    ["/details"
     ["/{id}"
      {:get {:summary    "Get extended channel info, including members and the last few messages."
@@ -364,6 +396,43 @@ so you don't need to call the POST /api/chat/user/account endpoint beforehand."
             :parameters {:path (mu/merge (:path ChannelIdPath) (:path UserIdPath))}
             :responses {200 {:body (success-with)}
                         500 {:body (failure-with :reason any?)}}}}]
+   ["/channel/{id}/pinned-link"
+    {:post {:summary    "Creates a pinned link within this channel. Requires admin permissions."
+            :middleware middleware
+            :swagger    {:tags ["chat"]}
+            :handler    (fn [{{:keys [id]} :user
+                              {new-pinned-link :body
+                               {channel-id      :id}   :path} :parameters
+                              {admin-id :id} :user}]
+                          {:pre [id channel-id admin-id]}
+                          (let [result (svc.chat/create-pinned-link config channel-id admin-id new-pinned-link)]
+                            (if (:success? result)
+                              (r/ok (select-keys (cske/transform-keys ->snake_case result)
+                                                 [:success? :pinned_link]))
+                              (-> result present-error r/server-error))))
+            :parameters (assoc ChannelIdPath
+                               :body (map->snake svc.chat/NewPinnedLink))
+            :responses {200 {:body (success-with :pinned_link (map->snake svc.chat/PinnedLink))}
+                        500 {:body (failure-with :reason any?)}}}}]
+   ["/channel/{id}/pinned-link/{pinned-link-id}"
+    {:put {:summary    "Updates a pinned link within this channel. Requires admin permissions."
+           :middleware middleware
+           :swagger    {:tags ["chat"]}
+           :handler    (fn [{{:keys [id]} :user
+                             {pinned-link-updates :body
+                              {pinned-link-id :pinned-link-id
+                               channel-id      :id}   :path} :parameters
+                             {admin-id :id} :user}]
+                         {:pre [id channel-id pinned-link-id admin-id]}
+                         (let [result (svc.chat/update-pinned-link config channel-id pinned-link-id admin-id pinned-link-updates)]
+                           (if (:success? result)
+                             (r/ok (select-keys (cske/transform-keys ->snake_case result)
+                                                [:success? :pinned_link]))
+                             (-> result present-error r/server-error))))
+           :parameters {:path (mu/merge (:path PinnedLinkIdPath) (:path ChannelIdPath))
+                        :body (map->snake svc.chat/NewPinnedLink)}
+           :responses {200 {:body (success-with :pinned_link (map->snake svc.chat/PinnedLink))}
+                       500 {:body (failure-with :reason any?)}}}}]
    ["/channel/{id}"
     {:put {:summary    "Performs an update over a channel. Requires admin permissions."
            :middleware middleware
@@ -502,9 +571,36 @@ so you don't need to call the POST /api/chat/user/account endpoint beforehand."
                                                :content-type :json
                                                :as :json-keyword-keys})))
 
-  (for [{{{id :id} :channel} :body} admin-channels
-        :let [{random-user-id :id} (dev/make-user! (format "a%s@abc.net" (random-uuid)))]]
-    [(http-client/request (dev/logger)
+  (for [{{{id :id} :channel} :body} [(first admin-channels)]
+        :let [_ (http-client/request (dev/logger)
+                                     {:method :post
+                                      :url (str "http://localhost:3000/api/chat/channel/public")
+                                      :body (json/->json {:channel_id id})
+                                      :content-type :json
+                                      :as :json-keyword-keys})
+              {random-user-id :id} (dev/make-user! (format "a%s@abc.net" (random-uuid)))
+              {{{pinned-link-id :id} :pinned_link
+                :as plr} :body} (http-client/request (dev/logger)
+                                                     {:method :post
+                                                      :url  (str "http://localhost:3000/api/chat/admin/channel/" id "/pinned-link")
+                                                      :body (json/->json (malli.generator/generate svc.chat/NewPinnedLink))
+                                                      :content-type :json
+                                                      :as :json-keyword-keys})]]
+    [plr
+     (when pinned-link-id
+       (http-client/request (dev/logger)
+                            {:method :put
+                             :url (str "http://localhost:3000/api/chat/admin/channel/" id "/pinned-link/" pinned-link-id)
+                             :body (json/->json (malli.generator/generate svc.chat/NewPinnedLink))
+                             :content-type :json
+                             :as :json-keyword-keys}))
+     (when pinned-link-id
+       (http-client/request (dev/logger)
+                            {:method :get
+                             :url (str "http://localhost:3000/api/chat/channel/pinned-link/" id)
+                             :content-type :json
+                             :as :json-keyword-keys}))
+     (http-client/request (dev/logger)
                           {:method :post
                            :url (str "http://localhost:3000/api/chat/admin/channel/" id "/add-user/" random-user-id)
                            :content-type :json

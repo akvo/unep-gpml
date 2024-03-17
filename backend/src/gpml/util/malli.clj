@@ -1,10 +1,16 @@
 (ns gpml.util.malli
   (:refer-clojure :exclude [defprotocol dissoc keys])
   (:require
+   [camel-snake-kebab.core :refer [->snake_case]]
+   [clojure.string :as string]
    [clojure.walk :as walk]
    [malli.core :as m]
    [malli.error]
    [malli.util :as mu]))
+
+(def PresentString
+  [:and :string [:fn (fn present-string [s]
+                       (not (string/blank? s)))]])
 
 (defn check-one [sch val quoted]
   (let [schema (if (and (instance? clojure.lang.IMeta sch)
@@ -68,9 +74,15 @@
               (Result success?))))
 
 (defn success-with [& [k v]]
+  [(if k
+     v
+     true)]
   (result-with true [k v]))
 
 (defn failure-with [& [k v]]
+  {:pre [(if k
+           v
+           true)]}
   (result-with false [k v]))
 
 (defn dissoc
@@ -120,3 +132,19 @@
                                                                                             (str y))))))
                                                                        x)))))
                         args)))
+
+(defn map->snake [[id :as m]]
+  {:pre [(check! [:enum :map :vector] id
+                 [:fn map?] (second m))]}
+  (into [id (second m)]
+        (mapv (fn [[k x y & args]]
+                (into []
+                      (remove nil?)
+                      (apply vector
+                             (->snake_case k)
+                             (cond-> x
+                               (and (vector? x) (-> x first #{:vector :map})) map->snake)
+                             (cond-> y
+                               (and (vector? y) (-> y first #{:vector :map})) map->snake)
+                             args)))
+              (subvec m 2))))
