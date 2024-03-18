@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
 
+body {
+  background: white !important;
+}
+
 .button[aria-label='send message'] {
   border: 2px solid transparent;
 }
@@ -137,4 +141,9 @@ a:hover {
 .repliedToMessage {
   background-color: #E7F3FF !important;
   padding: 10px;
+}
+
+.profile-avatar {
+  font-size: 15px !important;
+  font-weight: 600 !important;
 }
