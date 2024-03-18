@@ -11,10 +11,12 @@ import {
   Form,
   Input,
   notification,
+  AutoComplete,
 } from 'antd'
 import { Trans } from '@lingui/macro'
 import classNames from 'classnames'
 // import { deepClone } from 'lodash'
+import debounce from 'lodash/debounce'
 
 import styles from './index.module.scss'
 import { DropDownIcon } from '../../../components/icons'
@@ -110,6 +112,7 @@ const ForumView = ({ isAuthenticated, profile }) => {
     api.post('/chat/channel/leave', { channelId: activeForum.id })
     setUserJoined(false)
   }
+  const isAdmin = profile?.role === 'ADMIN'
   return (
     <>
       <Head>
@@ -164,35 +167,12 @@ const ForumView = ({ isAuthenticated, profile }) => {
             />
           )}
           {activeForum?.users?.length > 0 && (
-            <>
-              <h6 className="w-bold h-caps-xs">
-                <Trans>Participants</Trans>
-              </h6>
-              <div className="mobile-scroller-horiz">
-                <List
-                  className="members"
-                  dataSource={activeForum.users}
-                  renderItem={(user) => {
-                    const fullName = `${user?.firstName} ${
-                      user?.lastName || ''
-                    }`
-                    return (
-                      <List.Item>
-                        <List.Item.Meta
-                          avatar={
-                            <Avatar src={user?.picture}>{fullName}</Avatar>
-                          }
-                          title={fullName}
-                          description={user?.org?.name}
-                        />
-                      </List.Item>
-                    )
-                  }}
-                />
-              </div>
-            </>
+            <Participants
+              {...{ isAdmin, activeForum, channelId: activeForum.id }}
+            />
           )}
         </div>
+
         {/* </div> */}
         <Layout className={styles.content}>
           {discussion && (
@@ -238,6 +218,125 @@ const ForumView = ({ isAuthenticated, profile }) => {
         </Layout>
         {/* </div> */}
       </div>
+    </>
+  )
+}
+
+const Participants = ({ isAdmin, activeForum, channelId }) => {
+  const [showAddUserModal, setShowAddUserModal] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [options, setOptions] = useState([])
+  const [selectedUser, setSelectedUser] = useState(null)
+  const [selectedUserLabel, setSelectedUserLabel] = useState('')
+
+  const handleSubmit = async () => {
+    setLoading(true)
+    try {
+      await api.post(
+        `/chat/admin/channel/${channelId}/add-user/${selectedUser}`
+      )
+
+      notification.success({ message: 'User added to channel' })
+    } catch (error) {
+      notification.error({
+        message: error.response.data
+          ? error.response.data.reason
+          : 'An error occured',
+      })
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleSearch = debounce((value) => {
+    if (value && value.length >= 3) {
+      api
+        .get(`/community?q=${value}&networkType=stakeholder`)
+        .then((newOptions) => {
+          setOptions(newOptions.data.results)
+        })
+    } else {
+      setOptions([])
+    }
+  }, 300)
+
+  const handleSelect = (value, option) => {
+    setSelectedUser(value)
+    setSelectedUserLabel(option.label)
+  }
+
+  return (
+    <>
+      <h6 className="w-bold h-caps-xs">
+        <Trans>Participants</Trans>
+      </h6>
+      <div className="mobile-scroller-horiz">
+        <List
+          className="members"
+          dataSource={activeForum.users}
+          renderItem={(user) => {
+            const fullName = `${user?.firstName} ${user?.lastName || ''}`
+            return (
+              <List.Item>
+                <List.Item.Meta
+                  avatar={
+                    <Avatar src={user?.picture}>
+                      {fullName
+                        .split(' ')
+                        .map((it) => it[0])
+                        .join('')}
+                    </Avatar>
+                  }
+                  title={fullName}
+                  description={user?.org?.name}
+                />
+              </List.Item>
+            )
+          }}
+          z
+        />
+        {isAdmin && (
+          <div className="add-user">
+            <Button
+              type="link"
+              className="caps-btn"
+              size="small"
+              onClick={() => {
+                setShowAddUserModal(true)
+              }}
+            >
+              + Add User to Channel
+            </Button>
+          </div>
+        )}
+      </div>
+      <Modal
+        visible={showAddUserModal}
+        onCancel={() => setShowAddUserModal(false)}
+        footer={null}
+        title="Add User to Channel"
+        className="add-user-modal"
+      >
+        <Form layout="vertical">
+          <Form.Item>
+            <AutoComplete
+              placeholder="Find in GPML users..."
+              onSearch={handleSearch}
+              options={options.map((user) => ({
+                value: user.id,
+                id: user.id,
+                label: user.name,
+              }))}
+              onSelect={handleSelect}
+              value={selectedUserLabel}
+              onChange={setSelectedUserLabel}
+            />
+          </Form.Item>
+          <Button onClick={handleSubmit} disabled={loading} loading={loading}>
+            Add User
+          </Button>
+        </Form>
+      </Modal>
     </>
   )
 }
