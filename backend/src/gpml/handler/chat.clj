@@ -571,7 +571,7 @@ so you don't need to call the POST /api/chat/user/account endpoint beforehand."
                                                :content-type :json
                                                :as :json-keyword-keys})))
 
-  (for [{{{id :id} :channel} :body} [(first admin-channels)]
+  (for [{{{id :id} :channel} :body} admin-channels
         :let [_ (http-client/request (dev/logger)
                                      {:method :post
                                       :url (str "http://localhost:3000/api/chat/channel/public")
@@ -595,11 +595,11 @@ so you don't need to call the POST /api/chat/user/account endpoint beforehand."
                              :content-type :json
                              :as :json-keyword-keys}))
      (when pinned-link-id
-       (http-client/request (dev/logger)
-                            {:method :get
-                             :url (str "http://localhost:3000/api/chat/channel/pinned-link/" id)
-                             :content-type :json
-                             :as :json-keyword-keys}))
+       {:pinned-links (http-client/request (dev/logger)
+                                           {:method :get
+                                            :url (str "http://localhost:3000/api/chat/channel/pinned-link/" id)
+                                            :content-type :json
+                                            :as :json-keyword-keys})})
      (http-client/request (dev/logger)
                           {:method :post
                            :url (str "http://localhost:3000/api/chat/admin/channel/" id "/add-user/" random-user-id)
