@@ -279,7 +279,14 @@ const Participants = ({ isAdmin, activeForum, channelId }) => {
             return (
               <List.Item>
                 <List.Item.Meta
-                  avatar={<Avatar src={user?.picture}>{fullName}</Avatar>}
+                  avatar={
+                    <Avatar src={user?.picture}>
+                      {fullName
+                        .split(' ')
+                        .map((it) => it[0])
+                        .join('')}
+                    </Avatar>
+                  }
                   title={fullName}
                   description={user?.org?.name}
                 />
