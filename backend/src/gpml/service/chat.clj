@@ -504,7 +504,7 @@
          [:updated-by-stakeholder-id [:maybe :int]]
          [:chat-channel-id PresentString]]))
 
-(defn get-pinned-links [{:keys [hikari chat-adapter logger]}
+(defn get-pinned-links [{:keys [hikari chat-adapter logger] :as config}
                         channel-id
                         user-id]
   {:pre [hikari chat-adapter logger channel-id
@@ -518,17 +518,25 @@
                   %)]}
   (saga logger {:success? true
                 :as-admin? (= :admin user-id)}
-    (fn get-pinned-link-with-authorization [{:keys [as-admin?] :as context}]
-      {:pre [(check! :boolean as-admin?)]}
-      (let [{:keys [success?]
+
+    (partial assoc-private config channel-id)
+
+    (fn get-pinned-link-with-authorization [{:keys [as-admin?
+                                                    private?]
+                                             :as context}]
+      {:pre [(check! :boolean as-admin?
+                     :boolean private?)]}
+      (let [bypass-authorization? (or as-admin?
+                                      (false? private?))
+            {:keys [success?]
              pinned-links :result
              :as result} (db/execute! hikari (cond-> {:select :chat_channel_pinned_link.*
                                                       :from :chat_channel_pinned_link
                                                       :where (cond-> [:and
                                                                       [:= :chat_channel_pinned_link.chat_channel_id channel-id]]
-                                                               (not as-admin?)
+                                                               (not bypass-authorization?)
                                                                (conj [:= :chat_channel_membership.stakeholder_id user-id]))}
-                                               (not as-admin?)
+                                               (not bypass-authorization?)
                                                (assoc :join [:chat_channel_membership
                                                              [:=
                                                               :chat_channel_membership.chat_channel_id
