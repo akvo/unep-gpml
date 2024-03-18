@@ -11,10 +11,12 @@ import {
   Form,
   Input,
   notification,
+  AutoComplete,
 } from 'antd'
 import { Trans } from '@lingui/macro'
 import classNames from 'classnames'
 // import { deepClone } from 'lodash'
+import debounce from 'lodash/debounce'
 
 import styles from './index.module.scss'
 import { DropDownIcon } from '../../../components/icons'
@@ -222,9 +224,47 @@ const ForumView = ({ isAuthenticated, profile }) => {
 
 const Participants = ({ isAdmin, activeForum, channelId }) => {
   const [showAddUserModal, setShowAddUserModal] = useState(false)
-  const handleSubmit = () => {
-    api.post(`/chat/admin/channel/${channelId}/add-user/10039`)
+  const [loading, setLoading] = useState(false)
+  const [options, setOptions] = useState([])
+  const [selectedUser, setSelectedUser] = useState(null)
+  const [selectedUserLabel, setSelectedUserLabel] = useState('')
+
+  const handleSubmit = async () => {
+    setLoading(true)
+    try {
+      await api.post(
+        `/chat/admin/channel/${channelId}/add-user/${selectedUser}`
+      )
+
+      notification.success({ message: 'User added to channel' })
+    } catch (error) {
+      notification.error({
+        message: error.response.data
+          ? error.response.data.reason
+          : 'An error occured',
+      })
+    } finally {
+      setLoading(false)
+    }
   }
+
+  const handleSearch = debounce((value) => {
+    if (value && value.length >= 3) {
+      api
+        .get(`/community?q=${value}&networkType=stakeholder`)
+        .then((newOptions) => {
+          setOptions(newOptions.data.results)
+        })
+    } else {
+      setOptions([])
+    }
+  }, 300)
+
+  const handleSelect = (value, option) => {
+    setSelectedUser(value)
+    setSelectedUserLabel(option.label)
+  }
+
   return (
     <>
       <h6 className="w-bold h-caps-xs">
@@ -246,6 +286,7 @@ const Participants = ({ isAdmin, activeForum, channelId }) => {
               </List.Item>
             )
           }}
+          z
         />
         {isAdmin && (
           <div className="add-user">
@@ -267,12 +308,26 @@ const Participants = ({ isAdmin, activeForum, channelId }) => {
         onCancel={() => setShowAddUserModal(false)}
         footer={null}
         title="Add User to Channel"
+        className="add-user-modal"
       >
         <Form layout="vertical">
           <Form.Item>
-            <Input placeholder="Find in GPML users..." />
+            <AutoComplete
+              placeholder="Find in GPML users..."
+              onSearch={handleSearch}
+              options={options.map((user) => ({
+                value: user.id,
+                id: user.id,
+                label: user.name,
+              }))}
+              onSelect={handleSelect}
+              value={selectedUserLabel}
+              onChange={setSelectedUserLabel}
+            />
           </Form.Item>
-          <Button onClick={handleSubmit}>Add User</Button>
+          <Button onClick={handleSubmit} disabled={loading} loading={loading}>
+            Add User
+          </Button>
         </Form>
       </Modal>
     </>

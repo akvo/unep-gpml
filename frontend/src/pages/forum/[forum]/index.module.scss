@@ -253,6 +253,12 @@
   }
 }
 
+.add-user-modal {
+  .ant-select-selection-placeholder {
+    color: $primaryDarkBlue;
+  }
+}
+
 .backButton {
   color: $primaryPurple !important;
   font-family: var(--font-archia) !important;
