@@ -144,6 +144,8 @@ a:hover {
 }
 
 .profile-avatar {
-  font-size: 15px !important;
+  font-size: 14px !important;
   font-weight: 600 !important;
+  background-color: #00f1bf !important;
+  color: white !important;
 }
