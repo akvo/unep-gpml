@@ -110,6 +110,7 @@ const ForumView = ({ isAuthenticated, profile }) => {
     api.post('/chat/channel/leave', { channelId: activeForum.id })
     setUserJoined(false)
   }
+  const isAdmin = profile?.role === 'ADMIN'
   return (
     <>
       <Head>
@@ -164,35 +165,12 @@ const ForumView = ({ isAuthenticated, profile }) => {
             />
           )}
           {activeForum?.users?.length > 0 && (
-            <>
-              <h6 className="w-bold h-caps-xs">
-                <Trans>Participants</Trans>
-              </h6>
-              <div className="mobile-scroller-horiz">
-                <List
-                  className="members"
-                  dataSource={activeForum.users}
-                  renderItem={(user) => {
-                    const fullName = `${user?.firstName} ${
-                      user?.lastName || ''
-                    }`
-                    return (
-                      <List.Item>
-                        <List.Item.Meta
-                          avatar={
-                            <Avatar src={user?.picture}>{fullName}</Avatar>
-                          }
-                          title={fullName}
-                          description={user?.org?.name}
-                        />
-                      </List.Item>
-                    )
-                  }}
-                />
-              </div>
-            </>
+            <Participants
+              {...{ isAdmin, activeForum, channelId: activeForum.id }}
+            />
           )}
         </div>
+
         {/* </div> */}
         <Layout className={styles.content}>
           {discussion && (
@@ -238,6 +216,65 @@ const ForumView = ({ isAuthenticated, profile }) => {
         </Layout>
         {/* </div> */}
       </div>
+    </>
+  )
+}
+
+const Participants = ({ isAdmin, activeForum, channelId }) => {
+  const [showAddUserModal, setShowAddUserModal] = useState(false)
+  const handleSubmit = () => {
+    api.post(`/chat/admin/channel/${channelId}/add-user/10039`)
+  }
+  return (
+    <>
+      <h6 className="w-bold h-caps-xs">
+        <Trans>Participants</Trans>
+      </h6>
+      <div className="mobile-scroller-horiz">
+        <List
+          className="members"
+          dataSource={activeForum.users}
+          renderItem={(user) => {
+            const fullName = `${user?.firstName} ${user?.lastName || ''}`
+            return (
+              <List.Item>
+                <List.Item.Meta
+                  avatar={<Avatar src={user?.picture}>{fullName}</Avatar>}
+                  title={fullName}
+                  description={user?.org?.name}
+                />
+              </List.Item>
+            )
+          }}
+        />
+        {isAdmin && (
+          <div className="add-user">
+            <Button
+              type="link"
+              className="caps-btn"
+              size="small"
+              onClick={() => {
+                setShowAddUserModal(true)
+              }}
+            >
+              + Add User to Channel
+            </Button>
+          </div>
+        )}
+      </div>
+      <Modal
+        visible={showAddUserModal}
+        onCancel={() => setShowAddUserModal(false)}
+        footer={null}
+        title="Add User to Channel"
+      >
+        <Form layout="vertical">
+          <Form.Item>
+            <Input placeholder="Find in GPML users..." />
+          </Form.Item>
+          <Button onClick={handleSubmit}>Add User</Button>
+        </Form>
+      </Modal>
     </>
   )
 }
