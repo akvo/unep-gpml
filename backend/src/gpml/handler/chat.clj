@@ -433,7 +433,22 @@ so you don't need to call the POST /api/chat/user/account endpoint beforehand."
             :responses {200 {:body (success-with :pinned_link (map->snake svc.chat/PinnedLink))}
                         500 {:body (failure-with :reason any?)}}}}]
    ["/channel/{id}/pinned-link/{pinned-link-id}"
-    {:put {:summary    "Updates a pinned link within this channel. Requires admin permissions."
+    {:delete {:summary    "Deletes a pinned link within this channel. Requires admin permissions."
+              :middleware middleware
+              :swagger    {:tags ["chat"]}
+              :handler    (fn [{{:keys [id]} :user
+                                {{pinned-link-id :pinned-link-id
+                                  channel-id      :id}   :path} :parameters
+                                {admin-id :id} :user}]
+                            {:pre [id channel-id pinned-link-id admin-id]}
+                            (let [result (svc.chat/delete-pinned-link config channel-id pinned-link-id admin-id)]
+                              (if (:success? result)
+                                (r/ok (select-keys result [:success?]))
+                                (-> result present-error r/server-error))))
+              :parameters {:path (mu/merge (:path PinnedLinkIdPath) (:path ChannelIdPath))}
+              :responses {200 {:body (success-with )}
+                          500 {:body (failure-with :reason any?)}}}
+     :put {:summary    "Updates a pinned link within this channel. Requires admin permissions."
            :middleware middleware
            :swagger    {:tags ["chat"]}
            :handler    (fn [{{:keys [id]} :user
@@ -622,6 +637,19 @@ so you don't need to call the POST /api/chat/user/account endpoint beforehand."
                                             :url (str "http://localhost:3000/api/chat/channel/pinned-link/" id)
                                             :content-type :json
                                             :as :json-keyword-keys})})
+     (when pinned-link-id
+       {:delete-pinned-link (http-client/request (dev/logger)
+                                                 {:method :delete
+                                                  :url (str "http://localhost:3000/api/chat/admin/channel/" id "/pinned-link/" pinned-link-id)
+                                                  :content-type :json
+                                                  :as :json-keyword-keys})})
+     (when pinned-link-id
+       ;; should now say :pinned-link-not-found
+       {:delete-pinned-link-again (http-client/request (dev/logger)
+                                                       {:method :delete
+                                                        :url (str "http://localhost:3000/api/chat/admin/channel/" id "/pinned-link/" pinned-link-id)
+                                                        :content-type :json
+                                                        :as :json-keyword-keys})})
      (http-client/request (dev/logger)
                           {:method :post
                            :url (str "http://localhost:3000/api/chat/admin/channel/" id "/add-user/" random-user-id)
