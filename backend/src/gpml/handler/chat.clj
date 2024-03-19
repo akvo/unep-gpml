@@ -226,6 +226,24 @@
                              (-> result present-error r/server-error))))
            :responses {200 {:body (success-with :channels [:sequential port.chat/ChannelWithUsersSnakeCase])}
                        500 {:body (failure-with)}}}}]
+   ["/discussions/{channel_id}"
+    {:get {:summary    "Get a channel's discussions. The user must be able to view the channel in order to access this endpoint."
+           :middleware middleware
+           :swagger    {:tags ["chat"] :security [{:id_token []}]}
+           :handler    (fn [{{{channel-id :channel_id}   :path} :parameters
+                             {user-id :id} :user}]
+                         {:pre [channel-id user-id]}
+                         (let [enhanced-user-id (if (h.r.permission/super-admin? config user-id)
+                                                  :admin
+                                                  user-id)
+                               result (svc.chat/get-discussions config channel-id enhanced-user-id)]
+                           (if (:success? result)
+                             (r/ok (select-keys (cske/transform-keys ->snake_case result)
+                                                [:success? :discussions]))
+                             (-> result present-error r/server-error))))
+           :parameters ChannelIdPathAlt
+           :responses {200 {:body (success-with :discussions [:sequential port.chat/DiscussionSnakeCase])}
+                       500 {:body (failure-with :reason any?)}}}}]
    ["/pinned-link/{channel_id}"
     {:get {:summary    "Get a channel's pinned links. The user must be able to view the channel in order to access this endpoint."
            :middleware middleware
@@ -520,6 +538,10 @@ so you don't need to call the POST /api/chat/user/account endpoint beforehand."
                                          :as :json-keyword-keys}))
 
   @(def discussion-id (-> discussion :body :discussion :id))
+
+  (http-client/request (dev/logger)
+                       {:url (str "http://localhost:3000/api/chat/channel/discussions/" channel-id)
+                        :as :json-keyword-keys})
 
   (http-client/request (dev/logger)
                        {:url (str "http://localhost:3000/api/chat/channel/delete-discussion/" channel-id "/discussion/" discussion-id)
