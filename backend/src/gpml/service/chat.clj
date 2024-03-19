@@ -644,3 +644,32 @@
 
     (fn present-pinned-link [context]
       (set/rename-keys context {:result :pinned-link}))))
+
+(defn delete-pinned-link [{:keys [hikari chat-adapter logger]}
+                          channel-id
+                          pinned-link-id
+                          admin-id]
+  {:pre [hikari chat-adapter logger channel-id admin-id]
+   :post [(check! [:or
+                   (success-with)
+                   (failure-with :reason any?)]
+                  %)]}
+  (log logger :info :deleting-pinned-link {:channel-id channel-id
+                                           :pinned-link-id pinned-link-id
+                                           :admin-id admin-id})
+  (let [{:keys [success?]
+         {affected :next.jdbc/update-count} :result
+         :as result} (db/execute-one! hikari {:delete-from :chat_channel_pinned_link
+                                              :where [:and
+                                                      [:= :id pinned-link-id]
+                                                      [:= :chat_channel_id channel-id]]})]
+    (cond
+      (not success?)
+      result
+
+      (zero? affected)
+      {:success? false
+       :reason :pinned-link-not-found}
+
+      :else
+      result)))
