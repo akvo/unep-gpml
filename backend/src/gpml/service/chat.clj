@@ -372,6 +372,13 @@
 
 (def HasChatAccountId [:map [:chat_account_id some?]])
 
+(defn user-belongs-to-channel? [hikari user-id channel-id]
+  (:exists (:result (db/execute-one! hikari {:select [[[:exists {:select :*
+                                                                 :from :chat_channel_membership
+                                                                 :where [:and
+                                                                         [:= :stakeholder_id user-id]
+                                                                         [:= :chat_channel_id channel-id]]}]]]}))))
+
 (defn join-channel [{:keys [db hikari chat-adapter logger] :as config}
                     channel-id
                     {user-id :id
@@ -381,11 +388,7 @@
     (partial assoc-private config channel-id)
 
     (fn check-membership [context]
-      (if (:exists (:result (db/execute-one! hikari {:select [[[:exists {:select :*
-                                                                         :from :chat_channel_membership
-                                                                         :where [:and
-                                                                                 [:= :stakeholder_id user-id]
-                                                                                 [:= :chat_channel_id channel-id]]}]]]})))
+      (if (user-belongs-to-channel? hikari user-id channel-id)
         {:success? false
          :reason   :user-already-belongs-to-channel}
         context))
@@ -504,14 +507,22 @@
          [:updated-by-stakeholder-id [:maybe :int]]
          [:chat-channel-id PresentString]]))
 
+(def EnhancedUserId
+  [:or
+   :int
+   [:enum :admin]])
+
+(defn can-bypass-authorization? [as-admin? private?]
+  {:pre [(check! :boolean as-admin?
+                 :boolean private?)]}
+  (or as-admin?
+      (false? private?)))
+
 (defn get-pinned-links [{:keys [hikari chat-adapter logger] :as config}
                         channel-id
                         user-id]
   {:pre [hikari chat-adapter logger channel-id
-         (check! [:or
-                  :int
-                  [:enum :admin]]
-                 user-id)]
+         (check! EnhancedUserId user-id)]
    :post [(check! [:or
                    (success-with :pinned-links [:sequential PinnedLink])
                    (failure-with :reason any?)]
@@ -524,10 +535,8 @@
     (fn get-pinned-link-with-authorization [{:keys [as-admin?
                                                     private?]
                                              :as context}]
-      {:pre [(check! :boolean as-admin?
-                     :boolean private?)]}
-      (let [bypass-authorization? (or as-admin?
-                                      (false? private?))
+
+      (let [bypass-authorization? (can-bypass-authorization? as-admin? private?)
             {:keys [success?]
              pinned-links :result
              :as result} (db/execute! hikari (cond-> {:select :chat_channel_pinned_link.*
@@ -544,6 +553,42 @@
         (if-not success?
           result
           (assoc context :pinned-links pinned-links))))))
+
+(defn get-discussions [{:keys [hikari chat-adapter logger] :as config}
+                       channel-id
+                       user-id]
+  {:pre [hikari chat-adapter logger channel-id
+         (check! EnhancedUserId user-id)]
+   :post [(check! [:or
+                   (success-with :discussions [:sequential port.chat/Discussion])
+                   (failure-with :reason any?)]
+                  %)]}
+  (saga logger {:success? true
+                :as-admin? (= :admin user-id)}
+
+    (partial assoc-private config channel-id)
+
+    (fn maybe-authorize [{:keys [as-admin?
+                                 private?]
+                          :as context}]
+      (cond
+        (can-bypass-authorization? as-admin? private?)
+        context
+
+        (user-belongs-to-channel? hikari user-id channel-id)
+        context
+
+        :else
+        (assoc context
+               :success? false
+               :reason :user-does-not-belong-to-channel)))
+
+    (fn add-discussions [context]
+      (let [{:keys [success? discussions]
+             :as result} (port.chat/get-channel-discussions chat-adapter channel-id)]
+        (if-not success?
+          result
+          (assoc context :discussions discussions))))))
 
 (defn create-pinned-link [{:keys [hikari chat-adapter logger] :as config}
                           channel-id
