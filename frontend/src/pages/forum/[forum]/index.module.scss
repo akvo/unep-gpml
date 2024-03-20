@@ -113,6 +113,34 @@
         }
       }
     }
+    .pinned-links {
+      margin-top: 8px;
+      li {
+        display: flex;
+        padding: 3px 20px;
+        width: 100%;
+        a {
+          line-height: 20px;
+          .icon {
+            margin-right: 7px;
+          }
+          font-size: 16px;
+          display: flex;
+          color: $primaryDarkBlue;
+          font-weight: 500;
+          text-decoration: underline;
+          &:hover {
+            color: $primaryPurple;
+          }
+        }
+        .popover-container {
+          margin-left: auto;
+        }
+      }
+      .add-new-topic {
+        margin-top: 5px;
+      }
+    }
     .add-user {
       margin: 10px 20px;
     }
@@ -296,5 +324,34 @@
   display: flex;
   @media screen and (max-width: $bpMobile) {
     flex-direction: column;
+  }
+}
+
+.addPinnedModal {
+  :global {
+    hr {
+      background-color: rgba(0, 0, 0, 0.1);
+      height: 1px;
+      border: none;
+      margin: 20px 0;
+    }
+    .ant-radio-group {
+      display: flex;
+      .ant-radio-button-wrapper {
+        padding: 0 10px;
+
+        & > span {
+          display: flex;
+        }
+        .icon {
+          display: flex;
+          margin-right: 6px;
+          align-items: center;
+        }
+        svg {
+          // transform: translateY(2px);
+        }
+      }
+    }
   }
 }

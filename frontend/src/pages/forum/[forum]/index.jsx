@@ -12,6 +12,7 @@ import {
   Input,
   notification,
   AutoComplete,
+  Radio,
 } from 'antd'
 import { Trans } from '@lingui/macro'
 import classNames from 'classnames'
@@ -19,7 +20,13 @@ import classNames from 'classnames'
 import debounce from 'lodash/debounce'
 
 import styles from './index.module.scss'
-import { DropDownIcon } from '../../../components/icons'
+import {
+  DropDownIcon,
+  PinDoc,
+  PinForm,
+  PinPdf,
+  PinVideo,
+} from '../../../components/icons'
 import api from '../../../utils/api'
 import { MoreOutlined } from '@ant-design/icons'
 
@@ -81,13 +88,6 @@ const ForumView = ({ isAuthenticated, profile }) => {
           // Call the connect method to connect the SDK to the Chat iFrame.
           await _sdk.connect()
 
-          // if (activeForum.enableChannels) {
-          //   const { channels } = await _sdk.getActiveChannels()
-          //   setActiveForum({
-          //     ...activeForum,
-          //     discussions: channels.map((c) => ({ ...c, name: c.channelName })),
-          //   })
-          // }
           setSDK(_sdk)
         }
       } catch (error) {
@@ -113,6 +113,7 @@ const ForumView = ({ isAuthenticated, profile }) => {
     setUserJoined(false)
   }
   const isAdmin = profile?.role === 'ADMIN'
+  const channelId = activeForum?.id
   return (
     <>
       <Head>
@@ -159,6 +160,7 @@ const ForumView = ({ isAuthenticated, profile }) => {
             </div>
             <p>{activeForum?.description}</p>
           </div>
+          <PinnedLinks {...{ isAdmin, channelId }} />
           {activeForum != null && (
             <Discussions
               discussions={activeForum.discussions}
@@ -167,9 +169,7 @@ const ForumView = ({ isAuthenticated, profile }) => {
             />
           )}
           {activeForum?.users?.length > 0 && (
-            <Participants
-              {...{ isAdmin, activeForum, channelId: activeForum.id }}
-            />
+            <Participants {...{ isAdmin, activeForum, channelId }} />
           )}
         </div>
 
@@ -218,6 +218,183 @@ const ForumView = ({ isAuthenticated, profile }) => {
         </Layout>
         {/* </div> */}
       </div>
+    </>
+  )
+}
+
+const PinnedLinks = ({ isAdmin, channelId }) => {
+  const initialState = {
+    title: '',
+    url: '',
+    type: null,
+  }
+  const [items, setItems] = useState([])
+  const [form, setForm] = useState({ ...initialState })
+  const [showModal, setShowModal] = useState(false)
+  const [sending, setSending] = useState(false)
+  const handleOnChange = (field) => (e) => {
+    setForm({ ...form, [field]: e.target.value })
+  }
+  const handleSubmit = () => {
+    setSending(true)
+    api.post(`/chat/admin/channel/${channelId}/pinned-link`, form).then((d) => {
+      setItems((_items) => {
+        return [..._items, d.data.pinnedLink]
+      })
+      setSending(false)
+      setShowModal(false)
+      setForm(initialState)
+    })
+  }
+  const handleDelete = (item) => () => {
+    api.delete(`/chat/admin/channel/${channelId}/pinned-link/${item.id}`)
+    setItems((_items) => {
+      return _items.filter((it) => it.id !== item.id)
+    })
+  }
+  useEffect(() => {
+    if (channelId != null)
+      api.get(`/chat/channel/pinned-link/${channelId}`).then((d) => {
+        setItems(d.data.pinnedLinks)
+      })
+  }, [channelId])
+  const type2iconMap = {
+    video: PinVideo,
+    pdf: PinPdf,
+    form: PinForm,
+    doc: PinDoc,
+  }
+  return (
+    <>
+      <h6 className="w-bold h-caps-xs">
+        <Trans>Pinned Documents</Trans>
+      </h6>
+      <ul className="pinned-links">
+        {items.map((item) => {
+          const Icon = type2iconMap[item.type]
+          return (
+            <li key={item.id}>
+              <a href={item.url} target="_blank">
+                <div className="icon">
+                  <Icon />
+                </div>
+                <span>{item.title}</span>
+              </a>
+              {isAdmin && (
+                <div className="popover-container">
+                  <Popover
+                    placement="bottomLeft"
+                    overlayClassName={styles.forumOptions}
+                    content={
+                      <ul>
+                        <li>
+                          <Button
+                            size="small"
+                            type="link"
+                            onClick={handleDelete(item)}
+                          >
+                            <Trans>Delete</Trans>
+                          </Button>
+                        </li>
+                      </ul>
+                    }
+                    trigger="click"
+                  >
+                    <MoreOutlined rotate={90} />
+                  </Popover>
+                </div>
+              )}
+            </li>
+          )
+        })}
+
+        {isAdmin && (
+          <li className="add-new-topic">
+            <Button
+              type="link"
+              className="caps-btn"
+              size="small"
+              onClick={() => {
+                setShowModal(true)
+              }}
+            >
+              + Add New Document Link
+            </Button>
+          </li>
+        )}
+      </ul>
+      <Modal
+        visible={showModal}
+        onCancel={() => {
+          setShowModal(false)
+        }}
+        footer={null}
+        title="Add New Pinned Document"
+        className={styles.addPinnedModal}
+      >
+        <div>
+          <Form layout="vertical">
+            <Form.Item label="Title">
+              <Input value={form.title} onChange={handleOnChange('title')} />
+            </Form.Item>
+            <Form.Item label="URL">
+              <Input value={form.url} onChange={handleOnChange('url')} />
+            </Form.Item>
+            <Form.Item label="Type">
+              <Radio.Group
+                buttonStyle="solid"
+                value={form.type}
+                onChange={handleOnChange('type')}
+              >
+                <Radio.Button value="video">
+                  <div className="icon">
+                    <PinVideo />
+                  </div>
+                  Video
+                </Radio.Button>
+                <Radio.Button value="pdf">
+                  <div className="icon">
+                    <PinPdf />
+                  </div>
+                  PDF
+                </Radio.Button>
+                <Radio.Button value="doc">
+                  <div className="icon">
+                    <PinDoc />
+                  </div>
+                  Doc
+                </Radio.Button>
+                <Radio.Button value="form">
+                  <div className="icon">
+                    <PinForm />
+                  </div>
+                  Form
+                </Radio.Button>
+              </Radio.Group>
+            </Form.Item>
+            <hr />
+            <div>
+              <Button
+                type="primary"
+                className="noicon"
+                onClick={handleSubmit}
+                loading={sending}
+              >
+                Add New Pinned Document
+              </Button>
+              <Button
+                type="ghost"
+                className="noborder"
+                onClick={() => {
+                  setShowModal(false)
+                }}
+              >
+                Cancel
+              </Button>
+            </div>
+          </Form>
+        </div>
+      </Modal>
     </>
   )
 }
@@ -342,7 +519,6 @@ const Participants = ({ isAdmin, activeForum, channelId }) => {
 }
 
 const Discussions = ({
-  discussions,
   discussion,
   setDiscussion,
   sdk,
@@ -353,6 +529,7 @@ const Discussions = ({
   const [showAddDiscussionModal, setShowAddDiscussionModal] = useState(false)
   const [newDiscussionName, setNewDiscussionName] = useState('')
   const [creating, setCreating] = useState(false)
+  const [discussions, setDiscussions] = useState([])
   const isAdmin = profile?.role === 'ADMIN'
   const handleCreateDiscussion = () => {
     setCreating(true)
@@ -361,16 +538,10 @@ const Discussions = ({
         name: newDiscussionName,
       })
       .then((d) => {
-        console.log(d)
         setCreating(false)
         setShowAddDiscussionModal(false)
         setNewDiscussionName('')
-        setActiveForum((activeForum) => {
-          return {
-            ...activeForum,
-            discussions: [...discussions, d.data.discussion],
-          }
-        })
+        setDiscussions([...discussions, d.data.discussion])
       })
       .catch((d) => {
         console.log(d)
@@ -384,16 +555,24 @@ const Discussions = ({
         `/chat/channel/delete-discussion/${channelId}/discussion/${discuss.id}`
       )
       .then(() => {
-        setActiveForum((activeForum) => {
-          return {
-            ...activeForum,
-            discussions: activeForum.discussions?.filter(
-              (it) => it.id !== discuss.id
-            ),
-          }
+        setDiscussions((_discussions) => {
+          return _discussions.filter((it) => it.id !== discuss.id)
         })
       })
   }
+  useEffect(() => {
+    api.get(`/chat/channel/discussions/${channelId}`).then((d) => {
+      setDiscussions(d.data.discussions)
+    })
+    // if (sdk) {
+    // const { channels } = await _sdk.getActiveChannels()
+    // console.log(channels)
+    // setActiveForum({
+    //   ...activeForum,
+    //   discussions: channels.map((c) => ({ ...c, name: c.channelName })),
+    // })
+    // }
+  }, [])
   if (discussions?.length === 0 && !isAdmin) return
   return (
     <>
@@ -412,6 +591,7 @@ const Discussions = ({
                 handleDeleteDiscussion,
                 setDiscussion,
                 discussion,
+                setDiscussions,
               }}
             />
           ))}
