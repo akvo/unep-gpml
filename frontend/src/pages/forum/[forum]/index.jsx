@@ -30,8 +30,6 @@ import {
 import api from '../../../utils/api'
 import { MoreOutlined } from '@ant-design/icons'
 
-const { Sider } = Layout
-
 const ForumView = ({ isAuthenticated, profile }) => {
   const router = useRouter()
   const [activeForum, setActiveForum] = useState(null)
@@ -39,17 +37,14 @@ const ForumView = ({ isAuthenticated, profile }) => {
   const [discussion, setDiscussion] = useState(null)
   const [userJoined, setUserJoined] = useState(false)
 
-  const { chatAccountAuthToken: accessToken, chatAccountId: uuid } =
-    profile || {}
+  const { chatAccountAuthToken: accessToken } = profile || {}
 
   const iframeURL = useMemo(() => {
     if (!router.query?.forum) {
       return null
     }
-    return accessToken
-      ? `${process.env.NEXT_PUBLIC_DSC_URL}/${router.query.forum}?accessToken=${accessToken}`
-      : `${process.env.NEXT_PUBLIC_DSC_URL}/${router.query.forum}?uuid=${uuid}`
-  }, [router.query?.forum, accessToken, uuid])
+    return `${process.env.NEXT_PUBLIC_DSC_URL}/${router.query.forum}?accessToken=${accessToken}`
+  }, [router.query?.forum, accessToken])
 
   const fetchData = useCallback(async () => {
     try {
@@ -269,60 +264,62 @@ const PinnedLinks = ({ isAdmin, channelId }) => {
       <h6 className="w-bold h-caps-xs">
         <Trans>Pinned Documents</Trans>
       </h6>
-      <ul className="pinned-links">
-        {items.map((item) => {
-          const Icon = type2iconMap[item.type]
-          return (
-            <li key={item.id}>
-              <a href={item.url} target="_blank">
-                <div className="icon">
-                  <Icon />
-                </div>
-                <span>{item.title}</span>
-              </a>
-              {isAdmin && (
-                <div className="popover-container">
-                  <Popover
-                    placement="bottomLeft"
-                    overlayClassName={styles.forumOptions}
-                    content={
-                      <ul>
-                        <li>
-                          <Button
-                            size="small"
-                            type="link"
-                            onClick={handleDelete(item)}
-                          >
-                            <Trans>Delete</Trans>
-                          </Button>
-                        </li>
-                      </ul>
-                    }
-                    trigger="click"
-                  >
-                    <MoreOutlined rotate={90} />
-                  </Popover>
-                </div>
-              )}
-            </li>
-          )
-        })}
+      <div className="mobile-scroller-horiz">
+        <ul className="pinned-links">
+          {items.map((item) => {
+            const Icon = type2iconMap[item.type]
+            return (
+              <li key={item.id}>
+                <a href={item.url} target="_blank">
+                  <div className="icon">
+                    <Icon />
+                  </div>
+                  <span>{item.title}</span>
+                </a>
+                {isAdmin && (
+                  <div className="popover-container">
+                    <Popover
+                      placement="bottomLeft"
+                      overlayClassName={styles.forumOptions}
+                      content={
+                        <ul>
+                          <li>
+                            <Button
+                              size="small"
+                              type="link"
+                              onClick={handleDelete(item)}
+                            >
+                              <Trans>Delete</Trans>
+                            </Button>
+                          </li>
+                        </ul>
+                      }
+                      trigger="click"
+                    >
+                      <MoreOutlined rotate={90} />
+                    </Popover>
+                  </div>
+                )}
+              </li>
+            )
+          })}
 
-        {isAdmin && (
-          <li className="add-new-topic">
-            <Button
-              type="link"
-              className="caps-btn"
-              size="small"
-              onClick={() => {
-                setShowModal(true)
-              }}
-            >
-              + Add New Document Link
-            </Button>
-          </li>
-        )}
-      </ul>
+          {isAdmin && (
+            <li className="add-new-topic hide-mobile">
+              <Button
+                type="link"
+                className="caps-btn"
+                size="small"
+                onClick={() => {
+                  setShowModal(true)
+                }}
+              >
+                + Add New Document Link
+              </Button>
+            </li>
+          )}
+        </ul>
+      </div>
       <Modal
         visible={showModal}
         onCancel={() => {
@@ -473,7 +470,7 @@ const Participants = ({ isAdmin, activeForum, channelId }) => {
           z
         />
         {isAdmin && (
-          <div className="add-user">
+          <div className="add-user hide-mobile">
             <Button
               type="link"
               className="caps-btn"
@@ -596,7 +593,7 @@ const Discussions = ({
             />
           ))}
           {isAdmin && (
-            <li className="add-new-topic">
+            <li className="add-new-topic hide-mobile">
               <Button
                 type="link"
                 className="caps-btn"
