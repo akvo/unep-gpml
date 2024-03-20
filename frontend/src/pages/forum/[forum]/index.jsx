@@ -264,60 +264,62 @@ const PinnedLinks = ({ isAdmin, channelId }) => {
       <h6 className="w-bold h-caps-xs">
         <Trans>Pinned Documents</Trans>
       </h6>
-      <ul className="pinned-links">
-        {items.map((item) => {
-          const Icon = type2iconMap[item.type]
-          return (
-            <li key={item.id}>
-              <a href={item.url} target="_blank">
-                <div className="icon">
-                  <Icon />
-                </div>
-                <span>{item.title}</span>
-              </a>
-              {isAdmin && (
-                <div className="popover-container">
-                  <Popover
-                    placement="bottomLeft"
-                    overlayClassName={styles.forumOptions}
-                    content={
-                      <ul>
-                        <li>
-                          <Button
-                            size="small"
-                            type="link"
-                            onClick={handleDelete(item)}
-                          >
-                            <Trans>Delete</Trans>
-                          </Button>
-                        </li>
-                      </ul>
-                    }
-                    trigger="click"
-                  >
-                    <MoreOutlined rotate={90} />
-                  </Popover>
-                </div>
-              )}
-            </li>
-          )
-        })}
+      <div className="mobile-scroller-horiz">
+        <ul className="pinned-links">
+          {items.map((item) => {
+            const Icon = type2iconMap[item.type]
+            return (
+              <li key={item.id}>
+                <a href={item.url} target="_blank">
+                  <div className="icon">
+                    <Icon />
+                  </div>
+                  <span>{item.title}</span>
+                </a>
+                {isAdmin && (
+                  <div className="popover-container">
+                    <Popover
+                      placement="bottomLeft"
+                      overlayClassName={styles.forumOptions}
+                      content={
+                        <ul>
+                          <li>
+                            <Button
+                              size="small"
+                              type="link"
+                              onClick={handleDelete(item)}
+                            >
+                              <Trans>Delete</Trans>
+                            </Button>
+                          </li>
+                        </ul>
+                      }
+                      trigger="click"
+                    >
+                      <MoreOutlined rotate={90} />
+                    </Popover>
+                  </div>
+                )}
+              </li>
+            )
+          })}
 
-        {isAdmin && (
-          <li className="add-new-topic">
-            <Button
-              type="link"
-              className="caps-btn"
-              size="small"
-              onClick={() => {
-                setShowModal(true)
-              }}
-            >
-              + Add New Document Link
-            </Button>
-          </li>
-        )}
-      </ul>
+          {isAdmin && (
+            <li className="add-new-topic hide-mobile">
+              <Button
+                type="link"
+                className="caps-btn"
+                size="small"
+                onClick={() => {
+                  setShowModal(true)
+                }}
+              >
+                + Add New Document Link
+              </Button>
+            </li>
+          )}
+        </ul>
+      </div>
       <Modal
         visible={showModal}
         onCancel={() => {
@@ -468,7 +470,7 @@ const Participants = ({ isAdmin, activeForum, channelId }) => {
           z
         />
         {isAdmin && (
-          <div className="add-user">
+          <div className="add-user hide-mobile">
             <Button
               type="link"
               className="caps-btn"
@@ -591,7 +593,7 @@ const Discussions = ({
             />
           ))}
           {isAdmin && (
-            <li className="add-new-topic">
+            <li className="add-new-topic hide-mobile">
               <Button
                 type="link"
                 className="caps-btn"

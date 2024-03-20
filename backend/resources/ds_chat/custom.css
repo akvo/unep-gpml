@@ -113,6 +113,11 @@ a:hover {
 .input-area .innerContainer textarea {
   background: #F8F8F8 !important;
 }
+@media screen and (max-width: 768px){
+  .input-area{
+    padding-right:10px!important;
+  }
+}
 
 .button.is-success[disabled] {
   background: #00C199 !important;

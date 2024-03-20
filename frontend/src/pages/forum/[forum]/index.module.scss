@@ -140,6 +140,16 @@
       .add-new-topic {
         margin-top: 5px;
       }
+      @media screen and (max-width: 768px) {
+        display: flex;
+        li {
+          width: auto;
+          white-space: nowrap;
+          .popover-container {
+            display: none;
+          }
+        }
+      }
     }
     .add-user {
       margin: 10px 20px;
@@ -213,7 +223,7 @@
             display: none;
           }
           .add-new-topic {
-            display: none;
+            // display: none;
           }
         }
         .members {
