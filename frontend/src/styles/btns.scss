@@ -239,3 +239,24 @@
     text-decoration: none;
   }
 }
+
+.ant-radio-group {
+  .ant-radio-button-wrapper {
+    border: none;
+    border-width: 0;
+    background-color: #f5f7ff;
+    font-family: $ff1;
+    font-weight: 600;
+    border-radius: 5px;
+    &:before {
+      display: none;
+    }
+    &:not(:first-child) {
+      margin-left: 5px;
+    }
+    &.ant-radio-button-wrapper-checked {
+      background-color: $primaryPurple !important;
+      color: #fff;
+    }
+  }
+}
