@@ -88,13 +88,6 @@ const ForumView = ({ isAuthenticated, profile }) => {
           // Call the connect method to connect the SDK to the Chat iFrame.
           await _sdk.connect()
 
-          // if (activeForum.enableChannels) {
-          //   const { channels } = await _sdk.getActiveChannels()
-          //   setActiveForum({
-          //     ...activeForum,
-          //     discussions: channels.map((c) => ({ ...c, name: c.channelName })),
-          //   })
-          // }
           setSDK(_sdk)
         }
       } catch (error) {
@@ -526,7 +519,6 @@ const Participants = ({ isAdmin, activeForum, channelId }) => {
 }
 
 const Discussions = ({
-  discussions = [],
   discussion,
   setDiscussion,
   sdk,
@@ -537,6 +529,7 @@ const Discussions = ({
   const [showAddDiscussionModal, setShowAddDiscussionModal] = useState(false)
   const [newDiscussionName, setNewDiscussionName] = useState('')
   const [creating, setCreating] = useState(false)
+  const [discussions, setDiscussions] = useState([])
   const isAdmin = profile?.role === 'ADMIN'
   const handleCreateDiscussion = () => {
     setCreating(true)
@@ -545,16 +538,10 @@ const Discussions = ({
         name: newDiscussionName,
       })
       .then((d) => {
-        console.log(d)
         setCreating(false)
         setShowAddDiscussionModal(false)
         setNewDiscussionName('')
-        setActiveForum((activeForum) => {
-          return {
-            ...activeForum,
-            discussions: [...discussions, d.data.discussion],
-          }
-        })
+        setDiscussions([...discussions, d.data.discussion])
       })
       .catch((d) => {
         console.log(d)
@@ -568,16 +555,24 @@ const Discussions = ({
         `/chat/channel/delete-discussion/${channelId}/discussion/${discuss.id}`
       )
       .then(() => {
-        setActiveForum((activeForum) => {
-          return {
-            ...activeForum,
-            discussions: activeForum.discussions?.filter(
-              (it) => it.id !== discuss.id
-            ),
-          }
+        setDiscussions((_discussions) => {
+          return _discussions.filter((it) => it.id !== discuss.id)
         })
       })
   }
+  useEffect(() => {
+    api.get(`/chat/channel/discussions/${channelId}`).then((d) => {
+      setDiscussions(d.data.discussions)
+    })
+    // if (sdk) {
+    // const { channels } = await _sdk.getActiveChannels()
+    // console.log(channels)
+    // setActiveForum({
+    //   ...activeForum,
+    //   discussions: channels.map((c) => ({ ...c, name: c.channelName })),
+    // })
+    // }
+  }, [])
   if (discussions?.length === 0 && !isAdmin) return
   return (
     <>
@@ -596,6 +591,7 @@ const Discussions = ({
                 handleDeleteDiscussion,
                 setDiscussion,
                 discussion,
+                setDiscussions,
               }}
             />
           ))}
