@@ -10,7 +10,7 @@ import api from '../../../../utils/api'
 import { isoA2 } from '../../../../modules/workspace/ps/config'
 import { ChatStore } from '../../../../store'
 
-const View = ({ loadingProfile, profile }) => {
+const View = ({ loadingProfile, profile, psItem }) => {
   /**
    * TODO: PS Forum
    */
@@ -24,17 +24,14 @@ const View = ({ loadingProfile, profile }) => {
     return forums.find((f) => f?.slug === psSlug)
   }, [forums, psSlug])
 
-  const { chatAccountAuthToken: accessToken, chatAccountId: uuid } =
-    profile || {}
+  const { chatAccountAuthToken: accessToken } = profile || {}
 
   const iframeURL = useMemo(() => {
-    if (!psForum) {
+    if (!psItem) {
       return null
     }
-    return accessToken
-      ? `${process.env.NEXT_PUBLIC_DSC_URL}/${psForum.id}?accessToken=${accessToken}`
-      : `${process.env.NEXT_PUBLIC_DSC_URL}/${psForum.id}?uuid=${uuid}`
-  }, [psForum, accessToken, uuid])
+    return `${process.env.NEXT_PUBLIC_DSC_URL}/${psItem.chatChannelId}?accessToken=${accessToken}`
+  }, [psItem?.chatChannelId, accessToken])
 
   const fetchData = useCallback(async () => {
     try {
@@ -66,13 +63,7 @@ const View = ({ loadingProfile, profile }) => {
   return (
     <Skeleton loading={loadingProfile} active>
       <div className={styles.forumView}>
-        {iframeURL && (
-          <iframe
-            id="chat-frame"
-            src={iframeURL}
-            width="100%"
-          />
-        )}
+        {iframeURL && <iframe id="chat-frame" src={iframeURL} width="100%" />}
       </div>
     </Skeleton>
   )
