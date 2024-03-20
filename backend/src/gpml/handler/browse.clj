@@ -12,7 +12,7 @@
    [gpml.handler.responses :as r]
    [gpml.handler.util :as handler.util]
    [gpml.service.file :as srv.file]
-   [gpml.service.plastic-strategy :as srv.ps]
+   [gpml.service.plastic-strategy :as svc.ps]
    [gpml.util.postgresql :as pg-util]
    [gpml.util.regular-expressions :as util.regex]
    [integrant.core :as ig]
@@ -418,7 +418,7 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
     api-search-opts
     (let [search-opts {:filters {:countries-iso-codes-a2 [ps-country-iso-code-a2]}}
           {:keys [success? plastic-strategy]}
-          (srv.ps/get-plastic-strategy config search-opts)]
+          (svc.ps/get-plastic-strategy config search-opts)]
       (if success?
         (assoc api-search-opts :plastic-strategy-id (:id plastic-strategy))
         api-search-opts))))

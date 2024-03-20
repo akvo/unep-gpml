@@ -11,7 +11,7 @@
    [gpml.service.chat :as svc.chat]
    [gpml.service.file :as srv.file]
    [gpml.service.permissions :as srv.permissions]
-   [gpml.service.plastic-strategy :as srv.ps]
+   [gpml.service.plastic-strategy :as svc.ps]
    [gpml.util :as util]
    [gpml.util.image :as util.image]
    [gpml.util.thread-transactions :as tht]
@@ -478,7 +478,7 @@
             (if-not (and invited?
                          (= (:type invitation) :plastic-strategy))
               context
-              (let [result (srv.ps/setup-invited-plastic-strategy-user config (:id old-stakeholder))]
+              (let [result (svc.ps/setup-invited-plastic-strategy-user config (:id old-stakeholder))]
                 (if (:success? result)
                   context
                   (assoc context

@@ -15,7 +15,7 @@
    [gpml.handler.responses :as r]
    [gpml.service.file :as srv.file]
    [gpml.service.permissions :as srv.permissions]
-   [gpml.service.plastic-strategy :as srv.ps]
+   [gpml.service.plastic-strategy :as svc.ps]
    [gpml.util :as util]
    [gpml.util.email :as email]
    [gpml.util.geo :as geo]
@@ -300,7 +300,7 @@
     api-search-opts
     (let [search-opts {:filters {:countries-iso-codes-a2 [ps-country-iso-code-a2]}}
           {:keys [success? plastic-strategy]}
-          (srv.ps/get-plastic-strategy config search-opts)]
+          (svc.ps/get-plastic-strategy config search-opts)]
       (if success?
         (assoc api-search-opts :plastic-strategy-id (:id plastic-strategy))
         api-search-opts))))

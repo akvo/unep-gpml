@@ -3,7 +3,7 @@
    [camel-snake-kebab.core :refer [->kebab-case]]
    [camel-snake-kebab.extras :as cske]
    [gpml.handler.responses :as r]
-   [gpml.service.plastic-strategy :as srv.ps]
+   [gpml.service.plastic-strategy :as svc.ps]
    [integrant.core :as ig]))
 
 (def ^:private create-plastic-strategies-params-schema
@@ -27,7 +27,7 @@
 
 (defn- create-plastic-strategies [config req]
   (let [pses-payload (cske/transform-keys ->kebab-case (get-in req [:parameters :body]))
-        result (srv.ps/create-plastic-strategies config pses-payload)]
+        result (svc.ps/create-plastic-strategies config pses-payload)]
     (if (:success? result)
       (r/ok (select-keys result [:success? :channels]))
       (r/server-error (dissoc result :success?)))))
