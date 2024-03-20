@@ -5,8 +5,8 @@
    [clojure.string :as str]
    [gpml.handler.resource.permission :as h.r.permission]
    [gpml.handler.responses :as r]
-   [gpml.service.plastic-strategy :as srv.ps]
-   [gpml.service.plastic-strategy.file :as srv.ps.file]
+   [gpml.service.plastic-strategy :as svc.ps]
+   [gpml.service.plastic-strategy.file :as svc.ps.file]
    [gpml.util :as util]
    [integrant.core :as ig]
    [malli.util :as mu]))
@@ -49,7 +49,7 @@
   (let [country-iso-code-a2 (:iso_code_a2 path)
         search-opts {:filters {:countries-iso-codes-a2 [country-iso-code-a2]}}
         {:keys [success? plastic-strategy reason] :as get-ps-result}
-        (srv.ps/get-plastic-strategy config search-opts)]
+        (svc.ps/get-plastic-strategy config search-opts)]
     (if-not success?
       (if (= reason :not-found)
         (r/not-found {})
@@ -63,7 +63,7 @@
         (r/forbidden {:message "Unauthorized"})
         (let [body-params (-> (cske/transform-keys ->kebab-case body)
                               (assoc :plastic-strategy-id (:id plastic-strategy)))
-              result (srv.ps.file/create-ps-file config
+              result (svc.ps.file/create-ps-file config
                                                  body-params)]
           (if (:success? result)
             (r/ok {})
@@ -73,7 +73,7 @@
   (let [country-iso-code-a2 (:iso_code_a2 path)
         search-opts {:filters {:countries-iso-codes-a2 [country-iso-code-a2]}}
         {:keys [success? plastic-strategy reason] :as get-ps-result}
-        (srv.ps/get-plastic-strategy config search-opts)]
+        (svc.ps/get-plastic-strategy config search-opts)]
     (if-not success?
       (if (= reason :not-found)
         (r/not-found {})
@@ -87,7 +87,7 @@
         (r/forbidden {:message "Unauthorized"})
         (let [body-params (-> (cske/transform-keys ->kebab-case body)
                               (assoc :plastic-strategy-id (:id plastic-strategy)))
-              result (srv.ps.file/delete-ps-file config
+              result (svc.ps.file/delete-ps-file config
                                                  body-params)]
           (if (:success? result)
             (r/ok {})
@@ -97,7 +97,7 @@
   (let [country-iso-code-a2 (:iso_code_a2 path)
         search-opts {:filters {:countries-iso-codes-a2 [country-iso-code-a2]}}
         {:keys [success? plastic-strategy reason] :as get-ps-result}
-        (srv.ps/get-plastic-strategy config search-opts)]
+        (svc.ps/get-plastic-strategy config search-opts)]
     (if-not success?
       (if (= reason :not-found)
         (r/not-found {})
@@ -112,7 +112,7 @@
         (let [search-opts {:filters (cond-> {:plastic-strategies-ids [(:id plastic-strategy)]}
                                       (:section_key query)
                                       (assoc :sections-keys [(:section_key query)]))}
-              result (srv.ps.file/get-ps-files config
+              result (svc.ps.file/get-ps-files config
                                                search-opts)]
           (if (:success? result)
             (r/ok (cske/transform-keys ->snake_case (:ps-files result)))

@@ -1,23 +1,84 @@
 (ns gpml.service.plastic-strategy
   (:require
+   [clojure.string :as string]
    [duct.logger :refer [log]]
    [gpml.boundary.port.chat :as port.chat]
    [gpml.db.plastic-strategy :as db.ps]
    [gpml.db.plastic-strategy.team :as db.ps.team]
    [gpml.service.chat :as svc.chat]
    [gpml.service.permissions :as srv.permissions]
-   [gpml.util.thread-transactions :as tht]
+   [gpml.util.malli :refer [check! failure-with success-with]]
+   [gpml.util.thread-transactions :as tht :refer [saga]]
    [taoensso.timbre :as timbre]))
 
-(defn get-plastic-strategies [{:keys [db]} search-opts]
+(defn get-plastic-strategies
+  "Returned in kebab-case."
+  [{:keys [db]} search-opts]
   (db.ps/get-plastic-strategies (:spec db) search-opts))
 
-(defn get-plastic-strategy [{:keys [db]} search-opts]
+(defn get-plastic-strategy
+  "Returned in kebab-case."
+  [{:keys [db]} search-opts]
   (db.ps/get-plastic-strategy (:spec db) search-opts))
 
 (defn update-plastic-strategy [{:keys [db]} {:keys [id steps]}]
   (db.ps/update-plastic-strategy (:spec db) {:id id
                                              :updates {:steps steps}}))
+
+(defn chat-channel-creation-tx [config logger]
+  {:txn-fn
+   (fn tx-create-plastic-strategy-chat-channel
+     [{:keys [chat-channel-name] :as context}]
+     {:pre [chat-channel-name]}
+     (let [result (port.chat/create-public-channel (:chat-adapter config) {:name chat-channel-name})]
+       (if (:success? result)
+         (do
+           (log logger :info :created-chat-channel (:channel result))
+           (assoc context :channel (:channel result)))
+         (assoc context
+                :success? false
+                :reason :failed-to-create-plastic-strategy-channel
+                :error-details {:result result}))))
+   :rollback-fn
+   (fn rollback-create-plastic-strategy-chat-channel
+     [{:keys [channel] :as context}]
+     (let [result (port.chat/delete-public-channel (:chat-adapter config)
+                                                   (:id channel))]
+       (when-not (:success? result)
+         (timbre/with-context+ {::context context}
+           (log logger :error :failed-to-rollback-create-plastic-strategy-chat-channel {:result result}))))
+     context)})
+
+(defn tx-set-plastic-strategy-channel-custom-fields [config
+                                                     {:keys [plastic-strategy]
+                                                      channel :channel
+                                                      :as context}]
+  {:pre [plastic-strategy channel]}
+  (let [custom-fields {:ps-country-iso-code-a2 (get-in plastic-strategy [:country :iso-code-a2])}
+        result
+        (port.chat/set-public-channel-custom-fields (:chat-adapter config)
+                                                    (:id channel)
+                                                    {:metadata custom-fields})]
+    (if (:success? result)
+      context
+      (assoc context
+             :success? false
+             :reason :failed-to-set-plastic-strategy-channel-custom-fields
+             :error-details {:result result}))))
+
+(defn update-plastic-strategy-with-channel-id [db
+                                               {:keys [plastic-strategy channel] :as context}]
+  {:pre [plastic-strategy channel]}
+  (let [result (db.ps/update-plastic-strategy (:spec db)
+                                              {:id (:id plastic-strategy)
+                                               :updates {:chat-channel-id (:id channel)}})]
+    (if (:success? result)
+      {:success? true
+       :channel channel}
+      (assoc context
+             :success? false
+             :reason :failed-to-update-plastic-strategy-with-channel-id
+             :error-details {:result result}))))
 
 (defn create-plastic-strategy [{:keys [db hikari logger] :as config} ps-payload]
   {:pre [db hikari logger]}
@@ -76,56 +137,12 @@
                 (timbre/with-context+ {::context context}
                   (log logger :error :failed-to-delete-plastic-strategy-rbac-context {:result result}))))
             context)}
-         {:txn-fn
-          (fn tx-create-plastic-strategy-chat-channel
-            [{:keys [chat-channel-name] :as context}]
-            (let [result (port.chat/create-public-channel (:chat-adapter config) {:name chat-channel-name})]
-              (if (:success? result)
-                (do
-                  (log logger :info :created-chat-channel (:channel result))
-                  (assoc context :channel (:channel result)))
-                (assoc context
-                       :success? false
-                       :reason :failed-to-create-plastic-strategy-channel
-                       :error-details {:result result}))))
-          :rollback-fn
-          (fn rollback-create-plastic-strategy-chat-channel
-            [{:keys [channel] :as context}]
-            (let [result (port.chat/delete-public-channel (:chat-adapter config)
-                                                          (:id channel))]
-              (when-not (:success? result)
-                (timbre/with-context+ {::context context}
-                  (log logger :error :failed-to-rollback-create-plastic-strategy-chat-channel {:result result}))))
-            context)}
-         {:txn-fn
-          (fn tx-set-plastic-strategy-channel-custom-fields
-            [{:keys [plastic-strategy]
-              channel :channel
-              :as context}]
-            (let [custom-fields {:ps-country-iso-code-a2 (get-in plastic-strategy [:country :iso-code-a2])}
-                  result
-                  (port.chat/set-public-channel-custom-fields (:chat-adapter config)
-                                                              (:id channel)
-                                                              {:metadata custom-fields})]
-              (if (:success? result)
-                context
-                (assoc context
-                       :success? false
-                       :reason :failed-to-set-plastic-strategy-channel-custom-fields
-                       :error-details {:result result}))))}
-         {:txn-fn
-          (fn update-plastic-strategy-with-channel-id
-            [{:keys [plastic-strategy channel] :as context}]
-            (let [result (db.ps/update-plastic-strategy (:spec db)
-                                                        {:id (:id plastic-strategy)
-                                                         :updates {:chat-channel-id (:id channel)}})]
-              (if (:success? result)
-                {:success? true
-                 :channel channel}
-                (assoc context
-                       :success? false
-                       :reason :failed-to-update-plastic-strategy-with-channel-id
-                       :error-details {:result result}))))}]
+
+         (chat-channel-creation-tx config logger)
+
+         (partial tx-set-plastic-strategy-channel-custom-fields config)
+
+         (partial update-plastic-strategy-with-channel-id db)]
         context {:success? true
                  :plastic-strategy (dissoc ps-payload :chat-channel-name)
                  :chat-channel-name (:chat-channel-name ps-payload)}]
@@ -238,3 +255,25 @@
         context {:success? true
                  :user-id user-id}]
     (tht/thread-transactions logger transactions context)))
+
+(defn ensure-chat-channel-id [{:keys [db logger chat-adapter] :as config}
+                              {:keys [chat-channel-id] :as plastic-strategy}]
+  {:post [(check! [:or
+                   (success-with :channel-id :string)
+                   (failure-with :reason any?)]
+                  %)]}
+  (let [{:keys [success?]} (and chat-channel-id
+                                (not (string/blank? chat-channel-id))
+                                (port.chat/get-channel chat-adapter chat-channel-id))]
+    (if success?
+      {:success? true
+       :channel-id chat-channel-id}
+      (saga logger {:success? true
+                    :plastic-strategy plastic-strategy
+                    :chat-channel-name "Forum"}
+        (chat-channel-creation-tx config logger)
+        (partial tx-set-plastic-strategy-channel-custom-fields config)
+        (partial update-plastic-strategy-with-channel-id db)
+        (fn [{{:keys [id]} :channel :as context}]
+          {:pre [id]}
+          (assoc context :channel-id id))))))

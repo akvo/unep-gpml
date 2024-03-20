@@ -5,7 +5,8 @@
    [clojure.string :as str]
    [gpml.handler.resource.permission :as h.r.permission]
    [gpml.handler.responses :as r]
-   [gpml.service.plastic-strategy :as srv.ps]
+   [gpml.service.plastic-strategy :as svc.ps]
+   [gpml.util.malli :refer [failure-with success-with]]
    [integrant.core :as ig]))
 
 (def ^:private common-plastic-strategy-path-params-schema
@@ -45,7 +46,7 @@
      [:map]]]])
 
 (defn- get-plastic-strategies* [config search-opts]
-  (let [result (srv.ps/get-plastic-strategies config search-opts)]
+  (let [result (svc.ps/get-plastic-strategies config search-opts)]
     (if (:success? result)
       (r/ok (:plastic-strategies result))
       (r/server-error (dissoc result :success?)))))
@@ -62,7 +63,7 @@
   (let [country-iso-code-a2 (get-in req [:parameters :path :iso_code_a2])
         search-opts {:filters {:countries-iso-codes-a2 [country-iso-code-a2]}}
         {:keys [success? plastic-strategy reason] :as result}
-        (srv.ps/get-plastic-strategy config search-opts)]
+        (svc.ps/get-plastic-strategy config search-opts)]
     (if success?
       (if (h.r.permission/operation-allowed? config
                                              {:user-id (:id user)
@@ -80,7 +81,7 @@
   (let [country-iso-code-a2 (get-in req [:parameters :path :iso_code_a2])
         search-opts {:filters {:countries-iso-codes-a2 [country-iso-code-a2]}}
         {:keys [success? plastic-strategy reason] :as get-ps-result}
-        (srv.ps/get-plastic-strategy config search-opts)]
+        (svc.ps/get-plastic-strategy config search-opts)]
     (if-not success?
       (if (= reason :not-found)
         (r/not-found {})
@@ -94,7 +95,7 @@
         (r/forbidden {:message "Unauthorized"})
         (let [plastic-strategy (-> (get-in req [:parameters :body])
                                    (assoc :id (:id plastic-strategy)))
-              result (srv.ps/update-plastic-strategy config
+              result (svc.ps/update-plastic-strategy config
                                                      plastic-strategy)]
           (if (:success? result)
             (r/ok {})
@@ -113,6 +114,34 @@
   [_ config]
   (fn [req]
     (get-plastic-strategy config req)))
+
+(defmethod ig/init-key :gpml.handler.plastic-strategy/admin-ensure-chat
+  [_ config]
+  (fn [req]
+    (let [country-iso-code-a2 (get-in req [:parameters :path :iso_code_a2])
+          search-opts {:filters {:countries-iso-codes-a2 [country-iso-code-a2]}}
+          {:keys [success? plastic-strategy reason]
+           :as result} (when country-iso-code-a2
+                         (svc.ps/get-plastic-strategy config search-opts))]
+      (if success?
+        (let [{:keys [success?] :as result} (svc.ps/ensure-chat-channel-id config plastic-strategy)]
+          (if success?
+            (-> result
+                (select-keys [:success? :channel-id])
+                r/ok)
+            (r/server-error (select-keys result [:success? :reason]))))
+        (if (= reason :not-found)
+          (r/not-found {})
+          (r/server-error (select-keys result [:success? :reason])))))))
+
+(defmethod ig/init-key :gpml.handler.plastic-strategy/admin-ensure-chat-params
+  [_ _]
+  {:path common-plastic-strategy-path-params-schema})
+
+(defmethod ig/init-key :gpml.handler.plastic-strategy/admin-ensure-chat-responses
+  [_ _]
+  {200 {:body (success-with :channel-id :string)}
+   500 {:body (failure-with :reason any?)}})
 
 (defmethod ig/init-key :gpml.handler.plastic-strategy/get-params
   [_ _]
