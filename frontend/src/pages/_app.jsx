@@ -32,21 +32,23 @@ function MyApp({ Component, pageProps }) {
     loadingProfile: true,
     loginVisible: false,
   })
+
+  const { authResult } = state
+
   const [loadScript, setLoadScript] = useState(false)
 
-  const {
-    _expiresAt,
-    idToken,
-    authResult,
-    loadingProfile,
-    loginVisible,
-  } = state
+  const { _expiresAt, loadingProfile, loginVisible } = state
 
   const isMounted = useRef(true)
 
   const isAuthenticated = new Date().getTime() < _expiresAt
 
   const setSession = useCallback((authResult) => {
+    const expiresAt = authResult.expiresIn * 1000 + new Date().getTime()
+
+    localStorage.setItem('idToken', authResult.idToken)
+    localStorage.setItem('expiresAt', expiresAt.toString())
+
     setState((prevState) => ({
       ...prevState,
       _expiresAt: authResult.expiresIn * 1000 + new Date().getTime(),
@@ -146,89 +148,117 @@ function MyApp({ Component, pageProps }) {
           ? JSON.parse(localStorage.getItem('redirect_on_login'))
           : null
         if (redirectLocation) {
-          router.push({
-            pathname: redirectLocation,
-          })
+          router.push(redirectLocation)
         } else {
           router.push('/')
         }
-        setSession(authResult)
-        api.setToken(authResult.idToken)
-        if (
-          authResult?.idTokenPayload?.hasOwnProperty(
-            'https://digital.gpmarinelitter.org/is_new'
-          )
-        ) {
-          if (
-            authResult?.idTokenPayload?.[
-              'https://digital.gpmarinelitter.org/is_new'
-            ]
-          ) {
-            UIStore.update((e) => {
-              e.profile = {
-                emailVerified: authResult?.idTokenPayload?.email_verified,
-              }
-            })
-            router.push(
-              {
-                pathname: '/onboarding',
-                query: { data: JSON.stringify(authResult?.idTokenPayload) },
-              },
-              '/onboarding'
-            )
-          }
-        }
       }
     })
   }, [])
 
+  const isTokenNearlyExpired = (expiresAt, threshold = 300000) => {
+    const now = new Date().getTime()
+    return expiresAt - now < threshold
+  }
+
   useEffect(() => {
-    auth0Client.checkSession({}, async (err, authResult) => {
-      if (err) {
-        setState((prevState) => ({
-          ...prevState,
-          loadingProfile: false,
-        }))
+    // Check for token and expiration in localStorage
+    const storedIdToken = localStorage.getItem('idToken')
+    const storedExpiresAt = parseInt(localStorage.getItem('expiresAt'), 10)
+    const now = new Date().getTime()
+
+    if (storedIdToken && now < storedExpiresAt) {
+      const authResult = { idToken: storedIdToken }
+      api.setToken(storedIdToken)
+      setSession({ ...authResult, expiresIn: (storedExpiresAt - now) / 1000 })
+
+      if (isTokenNearlyExpired(storedExpiresAt)) {
+        renewToken()
       }
-      if (authResult) {
-        setSession(authResult)
-      }
-    })
-  }, [])
+    } else if (storedIdToken) {
+      renewToken((err, renewedAuthResult) => {
+        if (err) {
+          localStorage.removeItem('idToken')
+          localStorage.removeItem('expiresAt')
+          setState((prevState) => ({
+            ...prevState,
+            loadingProfile: false,
+            isAuthenticated: false,
+          }))
+        } else {
+          api.setToken(renewedAuthResult.idToken)
+        }
+      })
+    } else {
+      renewToken((err, renewedAuthResult) => {
+        if (err) {
+          console.log(`Error: ${err.error} - ${err.error_description}.`)
+        } else {
+          api.setToken(renewedAuthResult.idToken)
+        }
+      })
+    }
+  }, [setSession, renewToken])
 
   useEffect(() => {
     ;(async function fetchData() {
-      if (isAuthenticated && idToken) {
-        api.setToken(idToken)
-      } else {
-        api.setToken(null)
-      }
+      const idToken = localStorage.getItem('idToken')
       if (isAuthenticated && idToken && authResult) {
         setState((prevState) => ({ ...prevState, loadingProfile: true }))
         let resp = await api.get('/profile')
         setState((prevState) => ({ ...prevState, loadingProfile: false }))
         if (resp.data && Object.keys(resp.data).length === 0) {
-          router.push(
-            {
-              pathname: '/onboarding',
-              query: { data: JSON.stringify(authResult?.idTokenPayload) },
-            },
-            '/onboarding'
-          )
+          const formData = {
+            firstName: authResult.idTokenPayload[
+              'https://digital.gpmarinelitter.org/user_metadata'
+            ]
+              ? authResult.idTokenPayload[
+                  'https://digital.gpmarinelitter.org/user_metadata'
+                ].firstName
+              : authResult.idTokenPayload['given_name']
+              ? authResult.idTokenPayload['given_name']
+              : '',
+            lastName: authResult.idTokenPayload[
+              'https://digital.gpmarinelitter.org/user_metadata'
+            ]
+              ? authResult.idTokenPayload[
+                  'https://digital.gpmarinelitter.org/user_metadata'
+                ].lastName
+              : authResult.idTokenPayload['family_name']
+              ? authResult.idTokenPayload['family_name']
+              : '',
+            title: authResult.idTokenPayload[
+              'https://digital.gpmarinelitter.org/user_metadata'
+            ]
+              ? authResult.idTokenPayload[
+                  'https://digital.gpmarinelitter.org/user_metadata'
+                ].title
+              : '',
+            publicEmail: false,
+            publicDatabase: true,
+          }
+          api.post('/profile', formData).then((res) => {
+            UIStore.update((e) => {
+              e.profile = {
+                ...res.data,
+                email: authResult?.idTokenPayload?.email,
+                emailVerified: authResult?.idTokenPayload?.email_verified,
+              }
+            })
+            router.push('/workspace')
+          })
         } else {
           localStorage.removeItem('redirect_on_login')
         }
         UIStore.update((e) => {
           e.profile = {
             ...resp.data,
-            email: authResult?.idTokenPayload?.email,
-            emailVerified: authResult?.idTokenPayload?.email_verified,
           }
         })
         updateStatusProfile(resp.data)
       }
     })()
-  }, [idToken, authResult])
+  }, [authResult])
 
   useEffect(() => {
     const host = window?.location?.hostname
@@ -287,6 +317,7 @@ function MyApp({ Component, pageProps }) {
         redirectUri={
           typeof window !== 'undefined' ? window.location.origin : ''
         }
+        cacheLocation="localstorage"
       >
         <I18nProvider i18n={i18n}>
           {loadScript && (
