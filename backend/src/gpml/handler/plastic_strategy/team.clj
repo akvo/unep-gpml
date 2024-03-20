@@ -6,8 +6,8 @@
    [gpml.domain.types :as dom.types]
    [gpml.handler.resource.permission :as h.r.permission]
    [gpml.handler.responses :as r]
-   [gpml.service.plastic-strategy :as srv.ps]
-   [gpml.service.plastic-strategy.team :as srv.ps.team]
+   [gpml.service.plastic-strategy :as svc.ps]
+   [gpml.service.plastic-strategy.team :as svc.ps.team]
    [gpml.util :as util]
    [gpml.util.malli :as util.malli]
    [integrant.core :as ig]
@@ -65,7 +65,7 @@
   (let [country-iso-code-a2 (:iso_code_a2 path)
         search-opts {:filters {:countries-iso-codes-a2 [country-iso-code-a2]}}
         {:keys [success? plastic-strategy reason] :as get-ps-result}
-        (srv.ps/get-plastic-strategy config search-opts)]
+        (svc.ps/get-plastic-strategy config search-opts)]
     (if-not success?
       (if (= reason :not-found)
         (r/not-found {})
@@ -79,7 +79,7 @@
         (r/forbidden {:message "Unauthorized"})
         (let [body-params (-> (cske/transform-keys ->kebab-case body)
                               (assoc :plastic-strategy-id (:id plastic-strategy)))
-              result (srv.ps.team/add-ps-team-member config
+              result (svc.ps.team/add-ps-team-member config
                                                      plastic-strategy
                                                      body-params)]
           (if (:success? result)
@@ -92,7 +92,7 @@
   (let [country-iso-code-a2 (:iso_code_a2 path)
         search-opts {:filters {:countries-iso-codes-a2 [country-iso-code-a2]}}
         {:keys [success? plastic-strategy reason] :as get-ps-result}
-        (srv.ps/get-plastic-strategy config search-opts)]
+        (svc.ps/get-plastic-strategy config search-opts)]
     (if-not success?
       (if (= reason :not-found)
         (r/not-found {})
@@ -106,7 +106,7 @@
         (r/forbidden {:message "Unauthorized"})
         (let [body-params (-> (cske/transform-keys ->kebab-case body)
                               (assoc :plastic-strategy-id (:id plastic-strategy)))
-              result (srv.ps.team/update-ps-team-member config
+              result (svc.ps.team/update-ps-team-member config
                                                         body-params)]
           (if (:success? result)
             (r/ok {})
@@ -114,7 +114,7 @@
 
 (defn- get-ps-team-members [config req]
   (let [country-iso-code-a2 (get-in req [:parameters :path :iso_code_a2])
-        result (srv.ps.team/get-ps-team-members config
+        result (svc.ps.team/get-ps-team-members config
                                                 country-iso-code-a2)]
     (if (:success? result)
       (r/ok (cske/transform-keys ->snake_case (:ps-team-members result)))
@@ -126,14 +126,14 @@
   (let [country-iso-code-a2 (:iso_code_a2 path)
         search-opts {:filters {:countries-iso-codes-a2 [country-iso-code-a2]}}
         {:keys [success? plastic-strategy reason] :as get-ps-result}
-        (srv.ps/get-plastic-strategy config search-opts)]
+        (svc.ps/get-plastic-strategy config search-opts)]
     (if-not success?
       (if (= reason :not-found)
         (r/not-found {})
         (r/server-error (dissoc get-ps-result :success?)))
       (let [body-params (-> (cske/transform-keys ->kebab-case body)
                             (assoc :plastic-strategy plastic-strategy))
-            result (srv.ps.team/invite-user-to-ps-team config body-params)]
+            result (svc.ps.team/invite-user-to-ps-team config body-params)]
         (if (:success? result)
           (r/ok {:invitation_id (get-in result [:invitation :id])})
           (if (= (:reason result) :already-exists)
@@ -144,7 +144,7 @@
   (let [country-iso-code-a2 (:iso_code_a2 path)
         search-opts {:filters {:countries-iso-codes-a2 [country-iso-code-a2]}}
         {:keys [success? plastic-strategy reason] :as get-ps-result}
-        (srv.ps/get-plastic-strategy config search-opts)]
+        (svc.ps/get-plastic-strategy config search-opts)]
     (if-not success?
       (if (= reason :not-found)
         (r/not-found {})
@@ -157,7 +157,7 @@
                                                   :root-context? false})
         (r/forbidden {:message "Unauthorized"})
         (let [user-id (:user_id body)
-              result (srv.ps.team/delete-ps-team-member config
+              result (svc.ps.team/delete-ps-team-member config
                                                         plastic-strategy
                                                         user-id)]
           (if (:success? result)

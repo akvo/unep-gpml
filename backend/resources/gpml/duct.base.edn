@@ -610,6 +610,15 @@
                                    :handler    #ig/ref :gpml.handler.plastic-strategy/get-all
                                    :parameters #ig/ref :gpml.handler.plastic-strategy/get-all-params}}]
                            ["/{iso_code_a2}"
+                            ["/ensure-chat"
+                             {:post {:summary    "Ensures that this plastic strategy has an existing, valid associated chat channel. Idempotent. Admin only."
+                                     :middleware  [#ig/ref :gpml.auth/auth-middleware
+                                                   #ig/ref :gpml.auth/auth-required
+                                                   #ig/ref :gpml.auth/admin-auth-required]
+                                     :swagger    {:tags ["plastic-strategy" "admin"]}
+                                     :handler    #ig/ref :gpml.handler.plastic-strategy/admin-ensure-chat
+                                     :parameters #ig/ref :gpml.handler.plastic-strategy/admin-ensure-chat-params
+                                     :responses  #ig/ref :gpml.handler.plastic-strategy/admin-ensure-chat-responses}}]
                             [""
                              {:get {:summary    "Get a plastic strategy"
                                     :middleware [#ig/ref :gpml.auth/auth-middleware
@@ -920,6 +929,9 @@
  :gpml.handler.plastic-strategy/get-all-params                      {}
  :gpml.handler.plastic-strategy/get                                 #ig/ref :gpml.config/common
  :gpml.handler.plastic-strategy/get-params                          {}
+ :gpml.handler.plastic-strategy/admin-ensure-chat                   #ig/ref :gpml.config/common
+ :gpml.handler.plastic-strategy/admin-ensure-chat-params            {}
+ :gpml.handler.plastic-strategy/admin-ensure-chat-responses         {}
  :gpml.handler.plastic-strategy/update-steps                        #ig/ref :gpml.config/common
  :gpml.handler.plastic-strategy/update-steps-params                 {}
  :gpml.handler.plastic-strategy.team/get-members                    #ig/ref :gpml.config/common

@@ -12,7 +12,9 @@
 
 (hugsql/def-db-fns "gpml/db/plastic_strategy.sql")
 
-(defn get-plastic-strategies [conn opts]
+(defn get-plastic-strategies
+  "Returned in kebab-case."
+  [conn opts]
   (try
     {:success? true
      :plastic-strategies (jdbc-util/db-result-snake-kw->db-result-kebab-kw
@@ -23,7 +25,9 @@
        :reason :exception
        :error-details {:msg (ex-message t)}})))
 
-(defn get-plastic-strategy [conn opts]
+(defn get-plastic-strategy
+  "Returned in kebab-case."
+  [conn opts]
   (try
     (let [{:keys [success? plastic-strategies] :as result}
           (get-plastic-strategies conn opts)]

@@ -7,7 +7,7 @@
    [gpml.service.chat :as svc.chat]
    [gpml.service.invitation :as srv.invitation]
    [gpml.service.permissions :as srv.permissions]
-   [gpml.service.plastic-strategy :as srv.ps]
+   [gpml.service.plastic-strategy :as svc.ps]
    [gpml.util.email :as util.email]
    [gpml.util.thread-transactions :as tht]))
 
@@ -244,7 +244,7 @@
 (defn get-ps-team-members [{:keys [db] :as config} country-iso-code-a2]
   (let [search-opts {:filters {:countries-iso-codes-a2 [country-iso-code-a2]}}
         {:keys [success? plastic-strategy] :as result}
-        (srv.ps/get-plastic-strategy config search-opts)]
+        (svc.ps/get-plastic-strategy config search-opts)]
     (if success?
       (db.ps.team/get-ps-team-members (:spec db)
                                       {:filters {:plastic-strategies-ids [(:id plastic-strategy)]}})

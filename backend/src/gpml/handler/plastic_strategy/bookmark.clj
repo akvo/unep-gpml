@@ -6,8 +6,8 @@
    [gpml.domain.types :as dom.types]
    [gpml.handler.resource.permission :as h.r.permission]
    [gpml.handler.responses :as r]
-   [gpml.service.plastic-strategy :as srv.ps]
-   [gpml.service.plastic-strategy.bookmark :as srv.ps.bookmark]
+   [gpml.service.plastic-strategy :as svc.ps]
+   [gpml.service.plastic-strategy.bookmark :as svc.ps.bookmark]
    [integrant.core :as ig]))
 
 (def ^:private common-ps-bookmark-path-params-schema
@@ -43,7 +43,7 @@
   (let [country-iso-code-a2 (get-in parameters [:path :iso_code_a2])
         search-opts {:filters {:countries-iso-codes-a2 [country-iso-code-a2]}}
         {:keys [success? plastic-strategy reason] :as get-ps-result}
-        (srv.ps/get-plastic-strategy config search-opts)]
+        (svc.ps/get-plastic-strategy config search-opts)]
     (if-not success?
       (if (= reason :not-found)
         (r/not-found {})
@@ -57,7 +57,7 @@
         (r/forbidden {:message "Unauthorized"})
         (let [body-params (-> (cske/transform-keys ->kebab-case (:body parameters))
                               (assoc :plastic-strategy-id (:id plastic-strategy)))
-              result (srv.ps.bookmark/handle-ps-bookmark config body-params)]
+              result (svc.ps.bookmark/handle-ps-bookmark config body-params)]
           (if (:success? result)
             (r/ok {})
             (if (= (:reason result) :already-exists)

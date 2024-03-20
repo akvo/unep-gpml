@@ -380,119 +380,120 @@ so you don't need to call the POST /api/chat/user/account endpoint beforehand."
          hikari
          db
          logger]}
-  ["/admin"
-   ["/channel"
-    {:post {:summary    "Creates a channel. Requires admin permissions."
-            :middleware middleware
-            :swagger    {:tags ["chat"]}
-            :handler    (fn [{{{:keys [privacy] :as channel} :body} :parameters}]
-                          {:pre [channel privacy]}
-                          (let [result (condp = privacy
-                                         port.chat/public  (port.chat/create-public-channel chat-adapter channel)
-                                         port.chat/private (port.chat/create-private-channel chat-adapter channel))]
-                            (if (:success? result)
-                              (r/ok (update result :channel #(cske/transform-keys ->snake_case %)))
-                              (-> result present-error r/server-error))))
-            :parameters {:body port.chat/NewChannel}
-            :responses {200 {:body (success-with :channel port.chat/CreatedChannelSnakeCase)}
-                        500 {:body (failure-with)}}}}]
-   ["/channel/{id}/add-user/{user-id}"
-    {:post {:summary    "Adds a user to a channel, ensuring idempotently that the user has a chat account. Requires admin permissions."
-            :middleware middleware
-            :swagger    {:tags ["chat"]}
-            :handler    (fn [{{{channel-id :id
-                                user-id :user-id} :path} :parameters}]
-                          {:pre [channel-id user-id]}
-                          (let [target-user (db.stakeholder/get-stakeholder-by-id (:spec db) {:id user-id})]
-                            (if-not (seq target-user)
-                              (r/server-error {:success? false
-                                               :reason :user-not-found})
-                              (let [result (svc.chat/join-channel config channel-id target-user)]
+  (let [tags ["chat" "admin"]]
+    ["/admin"
+     ["/channel"
+      {:post {:summary    "Creates a channel. Requires admin permissions."
+              :middleware middleware
+              :swagger    {:tags tags}
+              :handler    (fn [{{{:keys [privacy] :as channel} :body} :parameters}]
+                            {:pre [channel privacy]}
+                            (let [result (condp = privacy
+                                           port.chat/public  (port.chat/create-public-channel chat-adapter channel)
+                                           port.chat/private (port.chat/create-private-channel chat-adapter channel))]
+                              (if (:success? result)
+                                (r/ok (update result :channel #(cske/transform-keys ->snake_case %)))
+                                (-> result present-error r/server-error))))
+              :parameters {:body port.chat/NewChannel}
+              :responses {200 {:body (success-with :channel port.chat/CreatedChannelSnakeCase)}
+                          500 {:body (failure-with)}}}}]
+     ["/channel/{id}/add-user/{user-id}"
+      {:post {:summary    "Adds a user to a channel, ensuring idempotently that the user has a chat account. Requires admin permissions."
+              :middleware middleware
+              :swagger    {:tags tags}
+              :handler    (fn [{{{channel-id :id
+                                  user-id :user-id} :path} :parameters}]
+                            {:pre [channel-id user-id]}
+                            (let [target-user (db.stakeholder/get-stakeholder-by-id (:spec db) {:id user-id})]
+                              (if-not (seq target-user)
+                                (r/server-error {:success? false
+                                                 :reason :user-not-found})
+                                (let [result (svc.chat/join-channel config channel-id target-user)]
+                                  (if (:success? result)
+                                    (r/ok (select-keys result [:success?]))
+                                    (-> result present-error r/server-error))))))
+              :parameters {:path (mu/merge (:path ChannelIdPath) (:path UserIdPath))}
+              :responses {200 {:body (success-with)}
+                          500 {:body (failure-with :reason any?)}}}}]
+     ["/channel/{id}/pinned-link"
+      {:post {:summary    "Creates a pinned link within this channel. Requires admin permissions."
+              :middleware middleware
+              :swagger    {:tags tags}
+              :handler    (fn [{{:keys [id]} :user
+                                {new-pinned-link :body
+                                 {channel-id      :id}   :path} :parameters
+                                {admin-id :id} :user}]
+                            {:pre [id channel-id admin-id]}
+                            (let [result (svc.chat/create-pinned-link config channel-id admin-id new-pinned-link)]
+                              (if (:success? result)
+                                (r/ok (select-keys (cske/transform-keys ->snake_case result)
+                                                   [:success? :pinned_link]))
+                                (-> result present-error r/server-error))))
+              :parameters (assoc ChannelIdPath
+                                 :body (map->snake svc.chat/NewPinnedLink))
+              :responses {200 {:body (success-with :pinned_link (map->snake svc.chat/PinnedLink))}
+                          500 {:body (failure-with :reason any?)}}}}]
+     ["/channel/{id}/pinned-link/{pinned-link-id}"
+      {:delete {:summary    "Deletes a pinned link within this channel. Requires admin permissions."
+                :middleware middleware
+                :swagger    {:tags tags}
+                :handler    (fn [{{:keys [id]} :user
+                                  {{pinned-link-id :pinned-link-id
+                                    channel-id      :id}   :path} :parameters
+                                  {admin-id :id} :user}]
+                              {:pre [id channel-id pinned-link-id admin-id]}
+                              (let [result (svc.chat/delete-pinned-link config channel-id pinned-link-id admin-id)]
                                 (if (:success? result)
                                   (r/ok (select-keys result [:success?]))
-                                  (-> result present-error r/server-error))))))
-            :parameters {:path (mu/merge (:path ChannelIdPath) (:path UserIdPath))}
-            :responses {200 {:body (success-with)}
-                        500 {:body (failure-with :reason any?)}}}}]
-   ["/channel/{id}/pinned-link"
-    {:post {:summary    "Creates a pinned link within this channel. Requires admin permissions."
-            :middleware middleware
-            :swagger    {:tags ["chat"]}
-            :handler    (fn [{{:keys [id]} :user
-                              {new-pinned-link :body
-                               {channel-id      :id}   :path} :parameters
-                              {admin-id :id} :user}]
-                          {:pre [id channel-id admin-id]}
-                          (let [result (svc.chat/create-pinned-link config channel-id admin-id new-pinned-link)]
-                            (if (:success? result)
-                              (r/ok (select-keys (cske/transform-keys ->snake_case result)
-                                                 [:success? :pinned_link]))
-                              (-> result present-error r/server-error))))
-            :parameters (assoc ChannelIdPath
-                               :body (map->snake svc.chat/NewPinnedLink))
-            :responses {200 {:body (success-with :pinned_link (map->snake svc.chat/PinnedLink))}
-                        500 {:body (failure-with :reason any?)}}}}]
-   ["/channel/{id}/pinned-link/{pinned-link-id}"
-    {:delete {:summary    "Deletes a pinned link within this channel. Requires admin permissions."
-              :middleware middleware
-              :swagger    {:tags ["chat"]}
-              :handler    (fn [{{:keys [id]} :user
-                                {{pinned-link-id :pinned-link-id
-                                  channel-id      :id}   :path} :parameters
-                                {admin-id :id} :user}]
-                            {:pre [id channel-id pinned-link-id admin-id]}
-                            (let [result (svc.chat/delete-pinned-link config channel-id pinned-link-id admin-id)]
-                              (if (:success? result)
-                                (r/ok (select-keys result [:success?]))
-                                (-> result present-error r/server-error))))
-              :parameters {:path (mu/merge (:path PinnedLinkIdPath) (:path ChannelIdPath))}
-              :responses {200 {:body (success-with)}
-                          500 {:body (failure-with :reason any?)}}}
-     :put {:summary    "Updates a pinned link within this channel. Requires admin permissions."
-           :middleware middleware
-           :swagger    {:tags ["chat"]}
-           :handler    (fn [{{:keys [id]} :user
-                             {pinned-link-updates :body
-                              {pinned-link-id :pinned-link-id
-                               channel-id      :id}   :path} :parameters
-                             {admin-id :id} :user}]
-                         {:pre [id channel-id pinned-link-id admin-id]}
-                         (let [result (svc.chat/update-pinned-link config channel-id pinned-link-id admin-id pinned-link-updates)]
-                           (if (:success? result)
-                             (r/ok (select-keys (cske/transform-keys ->snake_case result)
-                                                [:success? :pinned_link]))
-                             (-> result present-error r/server-error))))
-           :parameters {:path (mu/merge (:path PinnedLinkIdPath) (:path ChannelIdPath))
-                        :body (map->snake svc.chat/NewPinnedLink)}
-           :responses {200 {:body (success-with :pinned_link (map->snake svc.chat/PinnedLink))}
-                       500 {:body (failure-with :reason any?)}}}}]
-   ["/channel/{id}"
-    {:put {:summary    "Performs an update over a channel. Requires admin permissions."
-           :middleware middleware
-           :swagger    {:tags ["chat"]}
-           :handler    (fn [{{{channel-id :id} :path
-                              edits :body} :parameters}]
-                         {:pre [channel-id]}
-                         (let [result (port.chat/set-public-channel-custom-fields chat-adapter channel-id edits)]
-                           (if (:success? result)
-                             (r/ok (select-keys result [:success?]))
-                             (-> result present-error r/server-error))))
-           :parameters (assoc ChannelIdPath
-                              :body port.chat/ChannelEdit)
-           :responses {200 {:body (success-with)}
-                       500 {:body (failure-with)}}}
-     :delete {:summary    "Deletes a channel. Requires admin permissions."
-              :middleware middleware
-              :swagger    {:tags ["chat"]}
-              :handler    (fn [{{{channel-id :id} :path} :parameters}]
-                            {:pre [channel-id]}
-                            (let [result (svc.chat/delete-channel config channel-id)]
-                              (if (:success? result)
-                                (r/ok (select-keys result [:success?]))
-                                (-> result present-error r/server-error))))
-              :parameters ChannelIdPath
-              :responses {200 {:body (success-with)}
-                          500 {:body (failure-with :reason any?)}}}}]])
+                                  (-> result present-error r/server-error))))
+                :parameters {:path (mu/merge (:path PinnedLinkIdPath) (:path ChannelIdPath))}
+                :responses {200 {:body (success-with)}
+                            500 {:body (failure-with :reason any?)}}}
+       :put {:summary    "Updates a pinned link within this channel. Requires admin permissions."
+             :middleware middleware
+             :swagger    {:tags tags}
+             :handler    (fn [{{:keys [id]} :user
+                               {pinned-link-updates :body
+                                {pinned-link-id :pinned-link-id
+                                 channel-id      :id}   :path} :parameters
+                               {admin-id :id} :user}]
+                           {:pre [id channel-id pinned-link-id admin-id]}
+                           (let [result (svc.chat/update-pinned-link config channel-id pinned-link-id admin-id pinned-link-updates)]
+                             (if (:success? result)
+                               (r/ok (select-keys (cske/transform-keys ->snake_case result)
+                                                  [:success? :pinned_link]))
+                               (-> result present-error r/server-error))))
+             :parameters {:path (mu/merge (:path PinnedLinkIdPath) (:path ChannelIdPath))
+                          :body (map->snake svc.chat/NewPinnedLink)}
+             :responses {200 {:body (success-with :pinned_link (map->snake svc.chat/PinnedLink))}
+                         500 {:body (failure-with :reason any?)}}}}]
+     ["/channel/{id}"
+      {:put {:summary    "Performs an update over a channel. Requires admin permissions."
+             :middleware middleware
+             :swagger    {:tags tags}
+             :handler    (fn [{{{channel-id :id} :path
+                                edits :body} :parameters}]
+                           {:pre [channel-id]}
+                           (let [result (port.chat/set-public-channel-custom-fields chat-adapter channel-id edits)]
+                             (if (:success? result)
+                               (r/ok (select-keys result [:success?]))
+                               (-> result present-error r/server-error))))
+             :parameters (assoc ChannelIdPath
+                                :body port.chat/ChannelEdit)
+             :responses {200 {:body (success-with)}
+                         500 {:body (failure-with)}}}
+       :delete {:summary    "Deletes a channel. Requires admin permissions."
+                :middleware middleware
+                :swagger    {:tags tags}
+                :handler    (fn [{{{channel-id :id} :path} :parameters}]
+                              {:pre [channel-id]}
+                              (let [result (svc.chat/delete-channel config channel-id)]
+                                (if (:success? result)
+                                  (r/ok (select-keys result [:success?]))
+                                  (-> result present-error r/server-error))))
+                :parameters ChannelIdPath
+                :responses {200 {:body (success-with)}
+                            500 {:body (failure-with :reason any?)}}}}]]))
 
 (comment
   (dev/make-user! "abc@abc.net")
@@ -513,22 +514,45 @@ so you don't need to call the POST /api/chat/user/account endpoint beforehand."
                           :body (json/->json {:active active})
                           :as :json-keyword-keys}))
 
+  @(def country-id (-> (dev/q {:select [:country.id]
+                               :from :country
+                               :full-join [:plastic-strategy [:= :country.id :plastic-strategy.country_id]]
+                               :where [:and
+                                       [:= :plastic-strategy.country_id nil]
+                                       [:not= :country.iso_code_a2 nil]]
+                               :limit 1})
+                       first
+                       :country/id))
+
+  @(def country-a2 (-> (dev/q {:select :*
+                               :from :country
+                               :where [:= :id country-id]
+                               :limit 1})
+                       first
+                       :country/iso_code_a2))
+
   ;; create PSs so that a public chat will be created:
   @(def channel (http-client/request (dev/logger)
                                      {:url "http://localhost:3000/api/programmatic/plastic-strategy"
                                       :method :post
-                                      :body (json/->json [{:country_id (-> (dev/q {:select [:country.id]
-                                                                                   :from :country
-                                                                                   :full-join [:plastic-strategy [:= :country.id :plastic-strategy.country_id]]
-                                                                                   :where [:= :plastic-strategy.country_id nil]
-                                                                                   :limit 1})
-                                                                           first
-                                                                           :country/id)
+                                      :body (json/->json [{:country_id country-id
                                                            :chat_channel_name (str "ps " (random-uuid))}])
                                       :content-type :json
                                       :as :json-keyword-keys}))
 
   @(def channel-id (-> channel :body :channels first :id))
+
+  (let [f (fn []
+            (http-client/request (dev/logger)
+                                 {:url (str "http://localhost:3000/api/plastic-strategy/" country-a2 "/ensure-chat")
+                                  :method :post
+                                  :content-type :json
+                                  :as :json-keyword-keys}))]
+    [f
+     (dev/q {:update :plastic_strategy
+             :set {:chat_channel_id nil}
+             :where [:= :country_id country-id]})
+     f])
 
   (http-client/request (dev/logger)
                        {:url "http://localhost:3000/api/chat/channel/private/add-user"
