@@ -30,8 +30,6 @@ import {
 import api from '../../../utils/api'
 import { MoreOutlined } from '@ant-design/icons'
 
-const { Sider } = Layout
-
 const ForumView = ({ isAuthenticated, profile }) => {
   const router = useRouter()
   const [activeForum, setActiveForum] = useState(null)
@@ -39,17 +37,14 @@ const ForumView = ({ isAuthenticated, profile }) => {
   const [discussion, setDiscussion] = useState(null)
   const [userJoined, setUserJoined] = useState(false)
 
-  const { chatAccountAuthToken: accessToken, chatAccountId: uuid } =
-    profile || {}
+  const { chatAccountAuthToken: accessToken } = profile || {}
 
   const iframeURL = useMemo(() => {
     if (!router.query?.forum) {
       return null
     }
-    return accessToken
-      ? `${process.env.NEXT_PUBLIC_DSC_URL}/${router.query.forum}?accessToken=${accessToken}`
-      : `${process.env.NEXT_PUBLIC_DSC_URL}/${router.query.forum}?uuid=${uuid}`
-  }, [router.query?.forum, accessToken, uuid])
+    return `${process.env.NEXT_PUBLIC_DSC_URL}/${router.query.forum}?accessToken=${accessToken}`
+  }, [router.query?.forum, accessToken])
 
   const fetchData = useCallback(async () => {
     try {
