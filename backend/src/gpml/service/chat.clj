@@ -56,8 +56,8 @@
   (saga logger {:success? true
                 :user-id user-id}
     (fn get-stakeholder [{:keys [user-id] :as context}]
-      (let [search-opts {:filters {:ids [user-id]}}
-            {:keys [stakeholder] :as result} (db.sth/get-stakeholder (:spec db) search-opts)]
+      (let [{:keys [stakeholder] :as result} (db.sth/get-stakeholder (:spec db) {:filters {:ids [user-id]}
+                                                                                 :related-entities #{:picture-file}})]
         (if (:success? result)
           (assoc context
                  :stakeholder stakeholder
@@ -82,17 +82,20 @@
            (assoc context
                   :chat-account-auth-token (:chat-account-auth-token stakeholder)
                   :chat-account-id (:chat-account-id stakeholder)))
-         (let [{:keys [first-name last-name email id]} stakeholder
+         (let [{:keys [first-name last-name email picture-file id]} stakeholder
                chat-user-id (ds-chat/make-unique-user-identifier)
                username (or (some-> first-name not-empty (cond-> (seq last-name) (str " " last-name)))
                             email)
+               {picture-url :url} (when picture-file
+                                    (srv.file/get-file-url config picture-file))
                result (port.chat/create-user-account (:chat-adapter config)
                                                      ;; gpml.boundary.adapter.chat.ds-chat/NewUser
-                                                     {:uniqueUserIdentifier chat-user-id
-                                                      :externalUserId (str id)
-                                                      :isModerator false
-                                                      :email email
-                                                      :username username})]
+                                                     (some-> {:uniqueUserIdentifier chat-user-id
+                                                              :externalUserId (str id)
+                                                              :isModerator false
+                                                              :email email
+                                                              :username username}
+                                                             picture-url (assoc :profilePic picture-url)))]
            (if (:success? result)
              (assoc context
                     :chat-account-auth-token (-> result :user :access-token (doto (assert :access-token)))
