@@ -446,7 +446,7 @@ so you don't need to call the POST /api/chat/user/account endpoint beforehand."
                                 (r/ok (select-keys result [:success?]))
                                 (-> result present-error r/server-error))))
               :parameters {:path (mu/merge (:path PinnedLinkIdPath) (:path ChannelIdPath))}
-              :responses {200 {:body (success-with )}
+              :responses {200 {:body (success-with)}
                           500 {:body (failure-with :reason any?)}}}
      :put {:summary    "Updates a pinned link within this channel. Requires admin permissions."
            :middleware middleware

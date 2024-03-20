@@ -53,9 +53,7 @@
 
 (defn get-stakeholder [conn opts]
   (try
-    (let [stakeholders (get-stakeholders
-                        conn
-                        opts)]
+    (let [stakeholders (get-stakeholders conn opts)]
       (if (= (count stakeholders) 1)
         {:success? true
          :stakeholder (jdbc-util/db-result-snake-kw->db-result-kebab-kw (first stakeholders))}
