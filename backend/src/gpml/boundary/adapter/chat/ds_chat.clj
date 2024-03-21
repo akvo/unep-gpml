@@ -11,7 +11,7 @@
    [gpml.util :refer [url?]]
    [gpml.util.http-client :as http-client]
    [gpml.util.json :as json]
-   [gpml.util.malli :refer [check!]]
+   [gpml.util.malli :refer [check! PresentString]]
    [gpml.util.result :refer [failure]]
    [integrant.core :as ig]
    [taoensso.timbre :as timbre]))
@@ -95,7 +95,7 @@
           (failure {:reason :failed-to-create-user-account
                     :error-details body}))))))
 
-(def RoomId string?)
+(def RoomId PresentString)
 
 (def UserUpdates
   [:map {:closed true}
@@ -108,15 +108,15 @@
    [:externalUserId {:optional true}
     port.chat/ExternalUserId]
    [:isModerator {:optional true}
-    boolean?]
+    :boolean]
    [:email {:optional true}
-    string?]
+    :string]
    [:profilePic {:optional true}
-    string?]
+    :string]
    [:meta {:optional true}
-    string?]
+    :string]
    [:username {:optional true}
-    string?]])
+    :string]])
 
 (defn update-user-account* [{:keys [logger api-key]} unique-user-identifier updates]
   {:pre  [(check! port.chat/UniqueUserIdentifier unique-user-identifier
