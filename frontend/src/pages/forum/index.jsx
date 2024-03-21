@@ -41,6 +41,7 @@ const Forum = ({ isAuthenticated, setLoginVisible, profile }) => {
   const [preload, setPreload] = useState(true)
   const [addModalVisible, setAddModalVisible] = useState(false)
   const [editItem, setEditItem] = useState(null)
+  const [requestModal, setRequestModal] = useState(false)
   const allForums = ChatStore.useState((s) => s.allForums)
 
   const handleOnView = (data) => {
@@ -183,6 +184,19 @@ const Forum = ({ isAuthenticated, setLoginVisible, profile }) => {
               )}
             />
           </section>
+          <h5 style={{ marginTop: 50, marginBottom: 20 }}>
+            Can't find what you're looking for?
+          </h5>
+          <Button
+            type="ghost"
+            onClick={() => {
+              setRequestModal(true)
+              setAddModalVisible(true)
+            }}
+          >
+            Request a new forum
+          </Button>
+          <div style={{ margin: 50 }} />
           <DynamicForumModal
             {...{
               viewModal,
@@ -196,7 +210,7 @@ const Forum = ({ isAuthenticated, setLoginVisible, profile }) => {
           <AddModal
             visible={addModalVisible}
             onCancel={() => setAddModalVisible(false)}
-            {...{ editItem, setEditItem }}
+            {...{ editItem, setEditItem, requestModal, setRequestModal }}
           />
         </div>
       </div>
@@ -276,7 +290,14 @@ const ChannelCard = ({ item, handleOnView, profile, handleEditItem }) => {
   )
 }
 
-const AddModal = ({ visible, onCancel, editItem, setEditItem }) => {
+const AddModal = ({
+  visible,
+  onCancel,
+  editItem,
+  setEditItem,
+  requestModal,
+  setRequestModal,
+}) => {
   const initialState = {
     name: '',
     description: '',
@@ -291,8 +312,6 @@ const AddModal = ({ visible, onCancel, editItem, setEditItem }) => {
     if (editItem != null) {
       api.put(`/chat/admin/channel/${editItem.id}`, form).then(() => {
         notification.success({ message: 'Channel edited.' })
-        setForm({ ...initialState })
-        setEditItem(null)
         onCancel()
       })
     } else {
@@ -300,7 +319,6 @@ const AddModal = ({ visible, onCancel, editItem, setEditItem }) => {
         .post('/chat/admin/channel', form)
         .then(() => {
           notification.success({ message: 'New channel created.' })
-          setForm({ ...initialState })
           onCancel()
         })
         .catch((e, d) => {
@@ -309,11 +327,23 @@ const AddModal = ({ visible, onCancel, editItem, setEditItem }) => {
         })
     }
   }
+  const handleRequest = () => {
+    api.post('/chat/channel/request-new', form).then(() => {
+      notification.success({
+        message: 'We will review your request shortly.',
+      })
+      onCancel()
+    })
+  }
   useEffect(() => {
     if (visible && editItem != null) {
-      console.log(editItem)
       const { name, description, privacy } = editItem
       setForm({ name, description, privacy })
+    }
+    if (!visible) {
+      setEditItem(null)
+      setRequestModal(false)
+      setForm({ ...initialState })
     }
   }, [visible])
   return (
@@ -349,8 +379,12 @@ const AddModal = ({ visible, onCancel, editItem, setEditItem }) => {
           </Radio.Group>
         </Form.Item>
         <div style={{ display: 'flex' }}>
-          <Button onClick={handleSubmit}>Save</Button>
-          <Button type="ghost" onClick={onCancel}>
+          {requestModal ? (
+            <Button onClick={handleRequest}>Request Channel</Button>
+          ) : (
+            <Button onClick={handleSubmit}>Save</Button>
+          )}
+          <Button type="ghost" onClick={onCancel} style={{ marginLeft: 15 }}>
             Cancel
           </Button>
         </div>
