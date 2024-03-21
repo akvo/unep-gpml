@@ -8,6 +8,7 @@
    [gpml.service.chat :as svc.chat]
    [gpml.service.permissions :as srv.permissions]
    [gpml.util.malli :refer [check! failure-with success-with]]
+   [gpml.util.result :refer [failure]]
    [gpml.util.thread-transactions :as tht :refer [saga]]
    [taoensso.timbre :as timbre]))
 
@@ -35,10 +36,9 @@
          (do
            (log logger :info :created-chat-channel (:channel result))
            (assoc context :channel (:channel result)))
-         (assoc context
-                :success? false
-                :reason :failed-to-create-plastic-strategy-channel
-                :error-details {:result result}))))
+         (failure context
+                  :reason :failed-to-create-plastic-strategy-channel
+                  :error-details {:result result}))))
    :rollback-fn
    (fn rollback-create-plastic-strategy-chat-channel
      [{:keys [channel] :as context}]
@@ -61,10 +61,9 @@
                                                     {:metadata custom-fields})]
     (if (:success? result)
       context
-      (assoc context
-             :success? false
-             :reason :failed-to-set-plastic-strategy-channel-custom-fields
-             :error-details {:result result}))))
+      (failure context
+               :reason :failed-to-set-plastic-strategy-channel-custom-fields
+               :error-details {:result result}))))
 
 (defn update-plastic-strategy-with-channel-id [db
                                                {:keys [plastic-strategy channel] :as context}]
@@ -75,10 +74,9 @@
     (if (:success? result)
       {:success? true
        :channel channel}
-      (assoc context
-             :success? false
-             :reason :failed-to-update-plastic-strategy-with-channel-id
-             :error-details {:result result}))))
+      (failure context
+               :reason :failed-to-update-plastic-strategy-with-channel-id
+               :error-details {:result result}))))
 
 (defn create-plastic-strategy [{:keys [db hikari logger] :as config} ps-payload]
   {:pre [db hikari logger]}
@@ -90,10 +88,9 @@
                                                         plastic-strategy)]
               (if (:success? result)
                 (assoc-in context [:plastic-strategy :id] (:id result))
-                (assoc context
-                       :success? false
-                       :reason :failed-to-create-plastic-strategy
-                       :error-details {:result result}))))
+                (failure context
+                         :reason :failed-to-create-plastic-strategy
+                         :error-details {:result result}))))
           :rollback-fn
           (fn rollback-create-plastic-strategy
             [{:keys [plastic-strategy] :as context}]
@@ -109,10 +106,9 @@
                   result (db.ps/get-plastic-strategy (:spec db) search-opts)]
               (if (:success? result)
                 (assoc context :plastic-strategy (:plastic-strategy result))
-                (assoc context
-                       :success? false
-                       :reason :failed-to-get-plastic-strategy
-                       :error-details {:result result}))))}
+                (failure context
+                         :reason :failed-to-get-plastic-strategy
+                         :error-details {:result result}))))}
          {:txn-fn
           (fn tx-create-plastic-strategy-rbac-context
             [{:keys [plastic-strategy] :as context}]
@@ -122,10 +118,9 @@
                                                                    :resource-id (:id plastic-strategy)})]
               (if (:success? result)
                 context
-                (assoc context
-                       :success? false
-                       :reason :failed-to-create-plastic-strategy-rbac-context
-                       :error-details result))))
+                (failure context
+                         :reason :failed-to-create-plastic-strategy-rbac-context
+                         :error-details result))))
           :rollback-fn
           (fn rollback-create-plastic-strategy-rbac-context
             [{:keys [plastic-strategy] :as context}]
@@ -157,31 +152,29 @@
          :channels (mapv :channel results)})
       (do
         (log logger :wrn :could-not-create-plastic-strategies)
-        {:success? false
-         :reason :failed-to-create-all-plastic-strategies
-         :error-details {:msg "Partial failure"
-                         :failed-results (into []
-                                               (remove :success?)
-                                               results)}}))))
+        (failure {:reason :failed-to-create-all-plastic-strategies
+                  :error-details {:msg "Partial failure"
+                                  :failed-results (into []
+                                                        (remove :success?)
+                                                        results)}})))))
 
 (defn setup-invited-plastic-strategy-user [{:keys [db logger] :as config} user-id]
   (let [transactions
         [{:txn-fn
           (fn get-plastic-strategy-team-member
             [{:keys [user-id] :as context}]
-            (let [result (db.ps.team/get-ps-team-member (:spec db)
+            (let [result (db.ps.team/get-ps-team-member logger
+                                                        (:spec db)
                                                         {:filters {:users-ids [user-id]}})]
               (if (:success? result)
                 (assoc context :ps-team-member (:ps-team-member result))
                 (if (= (:reason result) :not-found)
-                  (assoc context
-                         :success? false
-                         :reason :ps-team-member-not-found
-                         :error-details {:msg "The queried user does not exist in any plastic strategy team."})
-                  (assoc context
-                         :success? false
-                         :reason (:reason result)
-                         :error-details (:error-details result))))))}
+                  (failure context
+                           :reason :ps-team-member-not-found
+                           :error-details {:msg "The queried user does not exist in any plastic strategy team."})
+                  (failure context
+                           :reason (:reason result)
+                           :error-details (:error-details result))))))}
          {:txn-fn
           (fn get-plastic-strategy
             [{:keys [ps-team-member] :as context}]
@@ -190,10 +183,9 @@
                                                      search-opts)]
               (if (:success? result)
                 (assoc context :plastic-strategy (:plastic-strategy result))
-                (assoc context
-                       :success? false
-                       :reason :failed-to-get-plastic-strategy
-                       :error-details {:result result}))))}
+                (failure context
+                         :reason :failed-to-get-plastic-strategy
+                         :error-details {:result result}))))}
          {:txn-fn
           (fn assign-plastic-strategy-rbac-role
             [{:keys [ps-team-member] :as context}]
@@ -208,10 +200,9 @@
                                  role-assignments))]
               (if (:success? result)
                 context
-                (assoc context
-                       :success? false
-                       :reason :failed-to-add-plastic-strategy-user-role
-                       :error-details {:result result}))))
+                (failure context
+                         :reason :failed-to-add-plastic-strategy-user-role
+                         :error-details {:result result}))))
           :rollback-fn
           (fn rollback-assing-plastic-strategy-rbac-role
             [{:keys [ps-team-member] :as context}]
@@ -236,10 +227,9 @@
                                                 ps-team-member)]
               (if (:success? result)
                 context
-                (assoc context
-                       :success? false
-                       :reason :failed-to-add-user-to-ps-channel
-                       :error-details {:result result}))))
+                (failure context
+                         :reason :failed-to-add-user-to-ps-channel
+                         :error-details {:result result}))))
           :rollback-fn
           (fn remove-user-from-ps-channel [{:keys [plastic-strategy ps-team-member] :as context}]
             {:pre [ps-team-member]}
@@ -248,10 +238,9 @@
                                                  ps-team-member)]
               (if (:success? result)
                 context
-                (assoc context
-                       :success? false
-                       :reason :failed-to-remove-user-from-ps-channel
-                       :error-details {:result result}))))}]
+                (failure context
+                         :reason :failed-to-remove-user-from-ps-channel
+                         :error-details {:result result}))))}]
         context {:success? true
                  :user-id user-id}]
     (tht/thread-transactions logger transactions context)))
