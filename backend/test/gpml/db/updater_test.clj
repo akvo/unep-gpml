@@ -11,7 +11,8 @@
    [gpml.seeder.db :as db.seeder]
    [gpml.seeder.dummy :as dummy]
    [gpml.seeder.main :as seeder]
-   [gpml.test-util :as test-util]))
+   [gpml.test-util :as test-util]
+   [clojure.java.jdbc :as jdbc]))
 
 (use-fixtures :each fixtures/with-test-system)
 
@@ -37,17 +38,24 @@
                      ;; No "proper" 3 letter ISO codes
                      (str/starts-with? iso-code-old "x")
                      (str/starts-with? iso-code-new "x")
+                     (= (:id country-new) 9999)
+                     (= (:id country-old) 9999)
                      ;; Chagos Archipelago
-                     (and (= (:id country-new) 1080) (= (:id country-old) 109))
+                     (and (= (:id country-new) 1080)
+                          (= (:id country-old) 109))
                      ;; Sint Eustatius
-                     (and (= (:id country-new) 1069) (= (:id country-old) 8))
+                     (and (= (:id country-new) 1069)
+                          (= (:id country-old) 8))
                      ;; Saba
-                     (and (= (:id country-new) 1068) (= (:id country-old) 7)))
+                     (and (= (:id country-new) 1068)
+                          (= (:id country-old) 7)))
             (is (= iso-code-new iso-code-old))))))
 
     ;; Ensure mapping for all countries, except those deleted, or with
     ;; empty names in the old map.
-    (doseq [country-old countries-old]
+    (doseq [country-old countries-old
+            :when (not (= "Country A"
+                          (:name country-old)))]
       (testing (str (:name country-old) " is available in new map")
         (let [;; countries not available on the new map
               new-map-deleted ["Ascencion (UK)" "Gough (UK)" "Tristan da Cunha (UK)"]]
@@ -157,6 +165,7 @@
 
 (deftest revert-update-country-test
   (let [db (test-util/db-test-conn)
+        _ (jdbc/execute! db ["TRUNCATE TABLE country CASCADE"])
         countries-new (seeder/get-data "new_countries")
         countries-old (filter #(-> % :name str/trim not-empty) (seeder/get-data "countries"))
         ;; seed countries with old id
