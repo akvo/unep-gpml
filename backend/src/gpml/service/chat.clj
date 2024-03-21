@@ -90,12 +90,12 @@
                                     (srv.file/get-file-url config picture-file))
                result (port.chat/create-user-account (:chat-adapter config)
                                                      ;; gpml.boundary.adapter.chat.ds-chat/NewUser
-                                                     (some-> {:uniqueUserIdentifier chat-user-id
+                                                     (cond-> {:uniqueUserIdentifier chat-user-id
                                                               :externalUserId (str id)
                                                               :isModerator false
                                                               :email email
                                                               :username username}
-                                                             picture-url (assoc :profilePic picture-url)))]
+                                                       picture-url (assoc :profilePic picture-url)))]
            (if (:success? result)
              (assoc context
                     :chat-account-auth-token (-> result :user :access-token (doto (assert :access-token)))

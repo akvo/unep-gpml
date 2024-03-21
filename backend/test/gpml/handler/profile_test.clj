@@ -177,7 +177,8 @@
           resp (handler (-> (mock/request :post "/")
                             (assoc :jwt-claims {:email "john@org"})
                             (assoc :parameters {:body  (dissoc body-params :twitter :linkedin :picture)})))]
-      (is (= 201 (:status resp)))
+      (is (= 201 (:status resp))
+          (pr-str resp))
       (is (= "John" (-> (:body resp) :first_name)))
       (is (= "Doe" (-> (:body resp) :last_name)))
       (is (= "SUBMITTED" (-> (:body resp) :review_status)))

@@ -29,7 +29,7 @@ fi
 
 lein with-profile -dev,+test,+seeder,+clj-kondo clj-kondo
 lein with-profile -user,-dev,+test,+seeder,+eastwood eastwood
-lein with-profile -user,-dev,+test,+seeder,+eftest eftest
+CI=true lein with-profile -user,-dev,+test,+seeder,+eftest eftest
 lein clean
 lein with-profile uberjar uberjar
 
