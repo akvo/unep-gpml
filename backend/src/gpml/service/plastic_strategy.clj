@@ -14,17 +14,17 @@
 
 (defn get-plastic-strategies
   "Returned in kebab-case."
-  [{:keys [db]} search-opts]
-  (db.ps/get-plastic-strategies (:spec db) search-opts))
+  [{:keys [db logger]} search-opts]
+  (db.ps/get-plastic-strategies logger (:spec db) search-opts))
 
 (defn get-plastic-strategy
   "Returned in kebab-case."
-  [{:keys [db]} search-opts]
-  (db.ps/get-plastic-strategy (:spec db) search-opts))
+  [{:keys [db logger]} search-opts]
+  (db.ps/get-plastic-strategy logger (:spec db) search-opts))
 
-(defn update-plastic-strategy [{:keys [db]} {:keys [id steps]}]
-  (db.ps/update-plastic-strategy (:spec db) {:id id
-                                             :updates {:steps steps}}))
+(defn update-plastic-strategy [{:keys [db logger]} {:keys [id steps]}]
+  (db.ps/update-plastic-strategy logger (:spec db) {:id id
+                                                    :updates {:steps steps}}))
 
 (defn chat-channel-creation-tx [config logger]
   {:txn-fn
@@ -65,10 +65,12 @@
                :reason :failed-to-set-plastic-strategy-channel-custom-fields
                :error-details {:result result}))))
 
-(defn update-plastic-strategy-with-channel-id [db
+(defn update-plastic-strategy-with-channel-id [logger
+                                               db
                                                {:keys [plastic-strategy channel] :as context}]
-  {:pre [plastic-strategy channel]}
-  (let [result (db.ps/update-plastic-strategy (:spec db)
+  {:pre [plastic-strategy channel logger]}
+  (let [result (db.ps/update-plastic-strategy logger
+                                              (:spec db)
                                               {:id (:id plastic-strategy)
                                                :updates {:chat-channel-id (:id channel)}})]
     (if (:success? result)
@@ -94,7 +96,7 @@
           :rollback-fn
           (fn rollback-create-plastic-strategy
             [{:keys [plastic-strategy] :as context}]
-            (let [result (db.ps/delete-plastic-strategy (:spec db) (:id plastic-strategy))]
+            (let [result (db.ps/delete-plastic-strategy logger (:spec db) (:id plastic-strategy))]
               (when-not (:success? result)
                 (timbre/with-context+ {::context context}
                   (log logger :error :failed-to-delete-plastic-strategy {:result result}))))
@@ -103,7 +105,7 @@
           (fn tx-get-plastic-strategy
             [{{:keys [country-id]} :plastic-strategy :as context}]
             (let [search-opts {:filters {:countries-ids [country-id]}}
-                  result (db.ps/get-plastic-strategy (:spec db) search-opts)]
+                  result (db.ps/get-plastic-strategy logger (:spec db) search-opts)]
               (if (:success? result)
                 (assoc context :plastic-strategy (:plastic-strategy result))
                 (failure context
@@ -137,7 +139,7 @@
 
          (partial tx-set-plastic-strategy-channel-custom-fields config)
 
-         (partial update-plastic-strategy-with-channel-id db)]
+         (partial update-plastic-strategy-with-channel-id logger db)]
         context {:success? true
                  :plastic-strategy (dissoc ps-payload :chat-channel-name)
                  :chat-channel-name (:chat-channel-name ps-payload)}]
@@ -179,7 +181,8 @@
           (fn get-plastic-strategy
             [{:keys [ps-team-member] :as context}]
             (let [search-opts {:filters {:ids [(:plastic-strategy-id ps-team-member)]}}
-                  result (db.ps/get-plastic-strategy (:spec db)
+                  result (db.ps/get-plastic-strategy logger
+                                                     (:spec db)
                                                      search-opts)]
               (if (:success? result)
                 (assoc context :plastic-strategy (:plastic-strategy result))
@@ -262,7 +265,7 @@
                     :chat-channel-name "Forum"}
         (chat-channel-creation-tx config logger)
         (partial tx-set-plastic-strategy-channel-custom-fields config)
-        (partial update-plastic-strategy-with-channel-id db)
+        (partial update-plastic-strategy-with-channel-id logger db)
         (fn [{{:keys [id]} :channel :as context}]
           {:pre [id]}
           (assoc context :channel-id id))))))
