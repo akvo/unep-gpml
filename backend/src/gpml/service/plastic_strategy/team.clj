@@ -1,7 +1,6 @@
 (ns gpml.service.plastic-strategy.team
   (:require
    [duct.logger :refer [log]]
-   [gpml.boundary.port.chat :as port.chat]
    [gpml.db.plastic-strategy.team :as db.ps.team]
    [gpml.db.stakeholder :as db.stakeholder]
    [gpml.service.chat :as svc.chat]
