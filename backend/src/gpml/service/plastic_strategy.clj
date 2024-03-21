@@ -153,7 +153,7 @@
         {:success? true
          :channels (mapv :channel results)})
       (do
-        (log logger :wrn :could-not-create-plastic-strategies)
+        (log logger :warn :could-not-create-plastic-strategies)
         (failure {:reason :failed-to-create-all-plastic-strategies
                   :error-details {:msg "Partial failure"
                                   :failed-results (into []

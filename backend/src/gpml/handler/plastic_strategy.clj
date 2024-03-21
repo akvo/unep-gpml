@@ -6,6 +6,7 @@
    [gpml.handler.resource.permission :as h.r.permission]
    [gpml.handler.responses :as r]
    [gpml.service.plastic-strategy :as svc.ps]
+   [gpml.util.json :as json]
    [gpml.util.malli :refer [failure-with success-with]]
    [integrant.core :as ig]))
 
@@ -25,7 +26,8 @@
                :type "string"
                :allowEmptyValue false}}
     [:sequential
-     {:decode/string (fn [s] (str/split (str/upper-case s) #","))}
+     {:decode/string (fn [s]
+                       (str/split (str/upper-case s) #","))}
      [:string {:max 2}]]]
    [:countries_names
     {:optional true
@@ -33,17 +35,19 @@
                :type "string"
                :allowEmptyValue false}}
     [:sequential
-     {:decode/string (fn [s] (str/split (str/lower-case s) #","))}
+     {:decode/string (fn [s]
+                       (str/split (str/lower-case s) #","))}
      [:string {:min 1}]]]])
 
 (def ^:private update-plastic-strategy-steps-params
   [:map
+   {:closed false}
    [:steps
     {:swagger
      {:description "The plastic strategy step state."
       :type "array"}}
     [:sequential
-     [:map]]]])
+     [:map {:closed false}]]]])
 
 (defn- get-plastic-strategies* [config search-opts]
   (let [result (svc.ps/get-plastic-strategies config search-opts)]
@@ -156,3 +160,108 @@
   [_ _]
   {:path common-plastic-strategy-path-params-schema
    :body update-plastic-strategy-steps-params})
+
+(comment
+  (gpml.util.http-client/request (dev/logger)
+                                 {:url "http://localhost:3000/api/plastic-strategy/0A"
+                                  :method :put
+                                  :body (json/->json {:steps
+                                                      [{:slug "", :label "Instructions", :checked true}
+                                                       {:slug "1-project-team",
+                                                        :label "National Steering Committee & Project Team",
+                                                        :checked false,
+                                                        :substeps
+                                                        [{:slug "", :label "Intro", :checked true}
+                                                         {:slug "setup-team", :label "Setup your team", :checked false}]}
+                                                       {:slug "2-stakeholder-consultation",
+                                                        :label "Stakeholder Consultation Process",
+                                                        :substeps
+                                                        [{:slug "", :label "Intro", :checked false}
+                                                         {:slug "stakeholder-map",
+                                                          :label "Stakeholder Map",
+                                                          :checked false,
+                                                          :api_params
+                                                          {:ps_bookmarked true,
+                                                           :ps_bookmark_sections_keys "stakeholder-map",
+                                                           :tag "stakeholder-{country}",
+                                                           :base_path "organisations"}}
+                                                         {:slug "case-studies",
+                                                          :label "Case Studies",
+                                                          :checked false,
+                                                          :api_params
+                                                          {:ps_bookmark_sections_keys "stakeholder-case-studies",
+                                                           :tag "stakeholder consultation process"}}
+                                                         {:slug "initiatives",
+                                                          :label "Initiatives",
+                                                          :checked false,
+                                                          :api_params
+                                                          {:ps_bookmark_sections_keys "stakeholder-initiatives",
+                                                           :topic "initiative",
+                                                           :country "{countryID}"}}
+                                                         {:slug "summary", :label "Summary & Report", :checked false}]}
+                                                       {:slug "3-legislation-policy",
+                                                        :label "Legislation & Policy Review Report",
+                                                        :substeps
+                                                        [{:slug "", :label "Intro", :checked false}
+                                                         {:slug "country-policy",
+                                                          :label "Country Policy Framework",
+                                                          :checked false,
+                                                          :api_params
+                                                          {:ps_bookmark_sections_keys "country-policy",
+                                                           :topic "policy",
+                                                           :country "{countryID}"}}
+                                                         {:slug "legislative-development",
+                                                          :label "Legislative Development Guide",
+                                                          :checked false}
+                                                         {:slug "case-studies",
+                                                          :label "Case Studies",
+                                                          :checked false,
+                                                          :api_params
+                                                          {:ps_bookmark_sections_keys "stakeholder-case-studies",
+                                                           :tag "legislative & policy review case study"}}
+                                                         {:slug "summary", :label "Summary & Report", :checked false}]}
+                                                       {:slug "4-data-analysis",
+                                                        :label "Data Analysis",
+                                                        :substeps
+                                                        [{:slug "", :label "Intro", :checked false}
+                                                         {:slug "available-tools",
+                                                          :label "Available Tools",
+                                                          :checked false,
+                                                          :api_params
+                                                          {:ps_bookmark_sections_keys "data-available-tools",
+                                                           :tag "data analysis - available tools"}}
+                                                         {:slug "available-data",
+                                                          :label "Available Data & Statistics",
+                                                          :checked false}
+                                                         {:slug "data-collection",
+                                                          :label "Data Collection",
+                                                          :checked false,
+                                                          :api_params
+                                                          {:ps_bookmark_sections_keys "data-collection",
+                                                           :tag "data analysis - data collection"}}
+                                                         {:slug "calculation",
+                                                          :label "Calculation of Indicators",
+                                                          :checked false}
+                                                         {:slug "available-information",
+                                                          :label "Available Information",
+                                                          :checked false,
+                                                          :api_params
+                                                          {:ps_bookmark_sections_keys "data-collection",
+                                                           :topic
+                                                           "technology,event,financing_resource,technical_resource",
+                                                           :capacity_building true,
+                                                           :country "{countryID}"}}
+                                                         {:slug "summary", :label "Summary & Report", :checked false}]}
+                                                       {:slug "5-national-source",
+                                                        :label "National Source Inventory Report",
+                                                        :substeps
+                                                        [{:slug "", :label "Intro", :checked false}
+                                                         {:slug "summary", :label "Summary & Report", :checked false}]}
+                                                       {:slug "6-national-plastic-strategy",
+                                                        :label "National Plastic Strategy",
+                                                        :substeps
+                                                        [{:slug "", :label "Intro", :checked false}
+                                                         {:slug "summary", :label "Upload", :checked false}]}
+                                                       {:slug "7-final-review", :label "Final Review", :checked false}]})
+                                  :content-type :json
+                                  :as :json-keyword-keys}))
