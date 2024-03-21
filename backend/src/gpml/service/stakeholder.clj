@@ -14,8 +14,10 @@
    [gpml.service.plastic-strategy :as svc.ps]
    [gpml.util :as util]
    [gpml.util.image :as util.image]
+   [gpml.util.result :refer [failure]]
    [gpml.util.thread-transactions :as tht]
-   [medley.core :as medley]))
+   [medley.core :as medley]
+   [taoensso.timbre :as timbre]))
 
 (defn create-stakeholder [{:keys [db logger mailjet-config] :as config} stakeholder]
   (let [conn (:spec db)
@@ -35,10 +37,9 @@
                     result (srv.file/create-file config conn picture-file)]
                 (if (:success? result)
                   (assoc context :picture-file (dissoc picture-file :content))
-                  (assoc context
-                         :success? false
-                         :reason (:reason result)
-                         :error-details (:error-details result))))))
+                  (failure context
+                           :reason (:reason result)
+                           :error-details (:error-details result))))))
           :rollback-fn
           (fn rollback-create-picture-file
             [{:keys [picture-file] :as context}]
@@ -54,10 +55,9 @@
                     result (srv.file/create-file config conn cv-file)]
                 (if (:success? result)
                   (assoc context :cv-file (dissoc cv-file :content))
-                  (assoc context
-                         :success? false
-                         :reason (:reason result)
-                         :error-details (:error-details result))))))
+                  (failure context
+                           :reason (:reason result)
+                           :error-details (:error-details result))))))
           :rollback-fn
           (fn rollback-create-cv-file
             [{:keys [cv-file] :as context}]
@@ -78,9 +78,8 @@
                                                            (assoc :cv_id cv-id)))]
               (if (:id result)
                 (assoc-in context [:stakeholder :id] (:id result))
-                (assoc context
-                       :success? false
-                       :reason :failed-to-create-stakeholder))))
+                (failure context
+                         :reason :failed-to-create-stakeholder))))
           :rollback-fn
           (fn rollback-create-stakeholder
             [{:keys [stakeholder] :as context}]
@@ -100,10 +99,9 @@
                              :handle-errors? true})]
                 (if (:success? result)
                   context
-                  (assoc context
-                         :success? false
-                         :reason :failed-to-save-tags
-                         :error-details {:result result})))))
+                  (failure context
+                           :reason :failed-to-save-tags
+                           :error-details {:result result})))))
           :rollback-fn
           (fn rollback-save-stakeholder-tags
             [{:keys [stakeholder] :as context}]
@@ -138,10 +136,9 @@
                                  :individual-connections [{:role "owner"
                                                            :stakeholder sth-id}]})]
                     (if-not (-> result first :success?)
-                      (assoc context
-                             :success? false
-                             :reason :failed-to-assign-sth-owner-role-to-organisation
-                             :error-details {:result result})
+                      (failure context
+                               :reason :failed-to-assign-sth-owner-role-to-organisation
+                               :error-details {:result result})
                       (let [{:keys [success?]} (handler.org/update-org
                                                 config
                                                 conn
@@ -149,10 +146,9 @@
                                                  :created_by sth-id})]
                         (if success?
                           context
-                          (assoc context
-                                 :success? false
-                                 :reason :failed-to-update-sth-organisation
-                                 :error-details {:result result})))))))))}
+                          (failure context
+                                   :reason :failed-to-update-sth-organisation
+                                   :error-details {:result result})))))))))}
          {:txn-fn
           (fn create-stakeholder-rbac-context
             [{:keys [stakeholder] :as context}]
@@ -163,10 +159,9 @@
                            :resource-id (:id stakeholder)})]
               (if (:success? result)
                 (assoc context :stakeholder-rbac-context (:context result))
-                (assoc context
-                       :success? false
-                       :reason :failed-to-create-stakeholder-rbac-context
-                       :error-details (:error-details result)))))
+                (failure context
+                         :reason :failed-to-create-stakeholder-rbac-context
+                         :error-details (:error-details result)))))
           :rollback-fn
           (fn rollback-create-stakeholder-rbac-context
             [{:keys [stakeholder] :as context}]
@@ -187,10 +182,9 @@
                                  role-assignments))]
               (if (:success? result)
                 context
-                (assoc context
-                       :success? false
-                       :reason :failed-to-assign-role-to-stakeholder
-                       :error-details (:error-details result)))))
+                (failure context
+                         :reason :failed-to-assign-role-to-stakeholder
+                         :error-details (:error-details result)))))
           :rollback-fn
           (fn rollback-assign-role
             [{:keys [stakeholder] :as context}]
@@ -216,10 +210,9 @@
                 (-> context
                     (assoc-in [:stakeholder :chat_account_id] (:chat-account-id updated-user))
                     (assoc-in [:stakeholder :chat_account_status] (:chat-account-status updated-user)))
-                (assoc context
-                       :success? false
-                       :reason :failed-to-create-chat-user-account
-                       :error-details {:result result}))))}]]
+                (failure context
+                         :reason :failed-to-create-chat-user-account
+                         :error-details {:result result}))))}]]
     (tht/thread-transactions logger transactions context)))
 
 (defn update-stakeholder [{:keys [db logger mailjet-config] :as config} stakeholder partial-tags-override-rel-cats]
@@ -234,10 +227,9 @@
                                                          {:filters {:ids [(:id stakeholder)]}})]
               (if (:success? result)
                 (assoc context :old-stakeholder (:stakeholder result))
-                (assoc context
-                       :success? false
-                       :reason :failed-to-get-old-stakeholder
-                       :error-details {:result result}))))}
+                (failure context
+                         :reason :failed-to-get-old-stakeholder
+                         :error-details {:result result}))))}
          {:txn-fn
           (fn update-picture-file
             [{{:keys [picture]} :stakeholder old-stakeholder :old-stakeholder :as context}]
@@ -248,10 +240,9 @@
                              (srv.file/delete-file config conn {:id old-picture-id})
                              {:success? true})]
                 (if-not (:success? result)
-                  (assoc context
-                         :success? false
-                         :reason :failed-to-delete-old-picture
-                         :error-details {:result result})
+                  (failure context
+                           :reason :failed-to-delete-old-picture
+                           :error-details {:result result})
                   (let [{:keys [payload user-agent]} picture
                         new-picture (if (util/try-url-str payload)
                                       (util.image/download-image logger payload {:headers {:user-agent user-agent}})
@@ -260,10 +251,9 @@
                         result (srv.file/create-file config conn new-picture-file)]
                     (if (:success? result)
                       (assoc context :picture-file (dissoc new-picture-file :content))
-                      (assoc context
-                             :success? false
-                             :reason (:reason result)
-                             :error-details (:error-details result))))))))
+                      (failure context
+                               :reason (:reason result)
+                               :error-details (:error-details result))))))))
           :rollback-fn
           (fn rollback-update-picture-file
             [{:keys [picture-file] :as context}]
@@ -280,18 +270,16 @@
                              (srv.file/delete-file config conn {:id old-cv-id})
                              {:success? true})]
                 (if-not (:success? result)
-                  (assoc context
-                         :success? false
-                         :reason :failed-to-delete-old-cv
-                         :error-details {:result result})
+                  (failure context
+                           :reason :failed-to-delete-old-cv
+                           :error-details {:result result})
                   (let [cv-file (dom.file/base64->file cv :stakeholder :cvs :private)
                         result (srv.file/create-file config conn cv-file)]
                     (if (:success? result)
                       (assoc context :cv-file (dissoc cv-file :content))
-                      (assoc context
-                             :success? false
-                             :reason :failed-to-create-new-cv-file
-                             :error-details {:result result})))))))
+                      (failure context
+                               :reason :failed-to-create-new-cv-file
+                               :error-details {:result result})))))))
           :rollback-fn
           (fn rollback-update-cv-file
             [{:keys [cv-file] :as context}]
@@ -308,14 +296,15 @@
                                                                            :resource-id (:id stakeholder)
                                                                            :review_status "APPROVED"})}
                            (catch Exception t
-                             {:success? false
-                              :error-details {:exception-message (ex-message t)}}))]
+                             (timbre/with-context+ {::context context}
+                               (log logger :error :could-not-get-old-stakeholder-tags t))
+                             (failure {:error-details {:exception-message (ex-message t)
+                                                       :exception-class (class t)}})))]
               (if (:success? result)
                 (assoc context :old-tags (:tags result))
-                (assoc context
-                       :success? false
-                       :reason :failed-to-get-tags
-                       :error-details {:result result}))))}
+                (failure context
+                         :reason :failed-to-get-tags
+                         :error-details {:result result}))))}
          {:txn-fn
           (fn save-stakeholder-tags
             [{:keys [stakeholder] :as context}]
@@ -332,10 +321,9 @@
                              :partial-tags-override-rel-cats partial-tags-override-rel-cats})]
                 (if (:success? result)
                   context
-                  (assoc context
-                         :success? false
-                         :reason :failed-to-save-tags
-                         :error-details {:result result})))))
+                  (failure  context
+                            :reason :failed-to-save-tags
+                            :error-details {:result result})))))
           :rollback-fn
           (fn rollback-save-stakeholder-tags
             [{:keys [old-tags stakeholder] :as context}]
@@ -360,14 +348,12 @@
                          :invitation (:invitation result)
                          :invited? true)
                   (if (= (:reason result) :not-found)
-                    (assoc context
-                           :success? false
-                           :reason :invitation-not-found
-                           :error-details {:msg "User is on an INVITED state but no invitation record was found."})
-                    (assoc context
-                           :success? false
-                           :reason (:reason result)
-                           :error-details (:error-details result)))))))}
+                    (failure context
+                             :reason :invitation-not-found
+                             :error-details {:msg "User is on an INVITED state but no invitation record was found."})
+                    (failure context
+                             :reason (:reason result)
+                             :error-details (:error-details result)))))))}
          {:txn-fn
           (fn unassign-unapproved-user-role
             [{:keys [old-stakeholder invited?] :as context}]
@@ -383,10 +369,9 @@
                                    role-unassignments))]
                 (if (:success? result)
                   context
-                  (assoc context
-                         :success? false
-                         :reason :failed-to-remove-unapproved-user-role
-                         :error-details {:result result})))))
+                  (failure context
+                           :reason :failed-to-remove-unapproved-user-role
+                           :error-details {:result result})))))
           :rollback-fn
           (fn rollback-unassign-unapproved-user-role
             [{:keys [old-stakeholder invited?] :as context}]
@@ -417,10 +402,9 @@
                                    role-assignments))]
                 (if (:success? result)
                   context
-                  (assoc context
-                         :success? false
-                         :reason :failed-to-add-approved-user-role
-                         :error-details {:result result})))))
+                  (failure context
+                           :reason :failed-to-add-approved-user-role
+                           :error-details {:result result})))))
           :rollback-fn
           (fn rollback-assign-approved-user-role
             [{:keys [old-stakeholder invited?] :as context}]
@@ -462,9 +446,8 @@
                                                                 (assoc :review_status "APPROVED")))]
               (if (= 1 affected)
                 context
-                (assoc context
-                       :success? false
-                       :reason :failed-to-create-stakeholder))))
+                (failure context
+                         :reason :failed-to-create-stakeholder))))
           :rollback-fn
           (fn rollback-update-stakeholder
             [{:keys [old-stakeholder] :as context}]
@@ -481,10 +464,9 @@
               (let [result (svc.ps/setup-invited-plastic-strategy-user config (:id old-stakeholder))]
                 (if (:success? result)
                   context
-                  (assoc context
-                         :success? false
-                         :reason :failed-to-setup-invited-plastic-strategy-user
-                         :error-details {:result result})))))}]]
+                  (failure context
+                           :reason :failed-to-setup-invited-plastic-strategy-user
+                           :error-details {:result result})))))}]]
     (tht/thread-transactions logger transactions context)))
 
 (defn get-stakeholder-profile [{:keys [db logger] :as config} stakeholder-id]
@@ -500,13 +482,11 @@
               (if (:success? result)
                 (assoc context :stakeholder (:stakeholder result))
                 (if (= (:reason result) :not-found)
-                  (assoc context
-                         :success? false
-                         :reason :not-found)
-                  (assoc context
-                         :success? false
-                         :reason :failed-to-get-stakeholder
-                         :error-details {:result result})))))}
+                  (failure context
+                           :reason :not-found)
+                  (failure context
+                           :reason :failed-to-get-stakeholder
+                           :error-details {:result result})))))}
          {:txn-fn
           (fn get-files
             [{:keys [stakeholder] :as context}]
@@ -517,10 +497,9 @@
                 context
                 (let [result (srv.file/get-files config conn {:filters {:ids files-ids}})]
                   (if-not (:success? result)
-                    (assoc context
-                           :success? false
-                           :reason :failed-to-get-stakeholder-files
-                           :error-details {:result result})
+                    (failure context
+                             :reason :failed-to-get-stakeholder-files
+                             :error-details {:result result})
                     (let [files (medley/index-by :id (:files result))]
                       (-> context
                           (assoc-in [:stakeholder :picture] (get-in files [picture-id :url]))
@@ -536,14 +515,15 @@
                                                                       :resource-id (:id stakeholder)
                                                                       :review_status "APPROVED"})}
                            (catch Exception t
-                             {:success? true
-                              :error-details {:exception-message (ex-message t)}}))]
+                             (timbre/with-context+ {::context context}
+                               (log logger :error :could-not-get-stakeholder-tags t))
+                             (failure {:error-details {:exception-class (class t)
+                                                       :exception-message (ex-message t)}})))]
               (if (:success? result)
                 (assoc-in context [:stakeholder :tags] (:tags result))
-                (assoc context
-                       :success? false
-                       :reason :failed-to-get-stakeholder-tags
-                       :error-details {:result result}))))}
+                (failure context
+                         :reason :failed-to-get-stakeholder-tags
+                         :error-details {:result result}))))}
          {:txn-fn
           (fn get-stakeholder-org
             [{:keys [stakeholder] :as context}]
@@ -553,12 +533,13 @@
                              {:success? true
                               :org (db.organisation/organisation-by-id conn {:id (:affiliation stakeholder)})}
                              (catch Exception t
-                               {:success? true
-                                :error-details {:exception-message (ex-message t)}}))]
+                               (timbre/with-context+ {::context context}
+                                 (log logger :error :could-not-get-stakehloder-org t))
+                               (failure {:error-details {:exception-message (ex-message t)
+                                                         :exception-class (class t)}})))]
                 (if (:success? result)
                   (assoc-in context [:stakeholder :org] (:org result))
-                  (assoc context
-                         :success? false
-                         :reason :failed-to-get-stakeholder-org
-                         :error-details {:result result})))))}]]
+                  (failure context
+                           :reason :failed-to-get-stakeholder-org
+                           :error-details {:result result})))))}]]
     (tht/thread-transactions logger transactions context)))
