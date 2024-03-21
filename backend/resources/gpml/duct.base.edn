@@ -716,6 +716,7 @@
    :brs-entity-name  :project}]
  [:duct/const :gpml.config/mailjet]                                 {:api-key    #duct/env ["MAILJET_API_KEY" Str]
                                                                      :secret-key #duct/env ["MAILJET_SECRET_KEY" Str]
+                                                                     :logger     #ig/ref :duct/logger
                                                                      :app-name   #duct/env ["APP_NAME" Str]
                                                                      :app-domain #duct/env ["APP_DOMAIN" Str]}
  [:duct/const :gpml.config/auth0]                                   {:domain    #duct/env ["OIDC_ISSUER" Str]

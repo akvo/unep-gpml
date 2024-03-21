@@ -165,6 +165,20 @@
          hikari
          logger]}
   ["/channel"
+   ["/request-new"
+    {:post {:summary    "Creates a request for a channel to be created by admins."
+            :middleware middleware
+            :swagger    {:tags ["chat"]}
+            :handler    (fn [{:keys [user]
+                              {new-channel :body} :parameters}]
+                          {:pre [user new-channel]}
+                          (let [result (svc.chat/request-channel-creation config user new-channel)]
+                            (if (:success? result)
+                              (r/ok (select-keys result [:success?]))
+                              (-> result present-error r/server-error))))
+            :parameters {:body (map->snake port.chat/NewChannel)}
+            :responses {200 {:body (success-with)}
+                        500 {:body (failure-with :reason any?)}}}}]
    ["/delete-discussion/{id}/discussion/{discussion_id}"
     {:delete {:summary    "Deletes the given discussion. Requires admin permissions."
               :middleware middleware
@@ -690,4 +704,17 @@ so you don't need to call the POST /api/chat/user/account endpoint beforehand."
                           {:method :delete
                            :url (str "http://localhost:3000/api/chat/admin/channel/" id)
                            :content-type :json
-                           :as :json-keyword-keys})]))
+                           :as :json-keyword-keys})])
+
+  (http-client/request (dev/logger)
+                       {:method :post
+                        :url "http://localhost:3000/api/chat/channel/private"
+                        :as :json-keyword-keys
+                        :body (json/->json {:channel_id "123"
+                                            :channel_name "123"})})
+
+  (http-client/request (dev/logger)
+                       {:method :post
+                        :url "http://localhost:3000/api/chat/channel/request-new"
+                        :body (json/->json (malli.generator/generate port.chat/NewChannel))
+                        :as :json-keyword-keys}))

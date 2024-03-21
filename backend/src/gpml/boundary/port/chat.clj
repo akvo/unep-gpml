@@ -17,7 +17,7 @@
   [:and
    {:doc (str "Must be opaque and complex enough to serve as authentication.\n"
               "Starts with a fixed 'dscuui_' prefix, making it easily identifiable and Malli-able.")}
-   string?
+   :string
    #"^dscuui_.*"])
 
 (def private "private")
@@ -33,10 +33,10 @@
    [:privacy ChannelPrivacy]
    [:metadata {:optional true} map?]
    [:show-notification-for-all-channels boolean?]
-   [:name string?]
-   [:description {:optional true} string?]
+   [:name :string]
+   [:description {:optional true} :string]
    [:enable-like-message boolean?]
-   [:id string?]
+   [:id :string]
    [:enable-one-to-one-chat boolean?]
    [:password-protected boolean?]
    [:default-notification-enabled boolean?]
@@ -153,14 +153,14 @@
 
 (def NewChannel
   [:map {:closed true}
-   [:name string?]
-   [:description {:optional true} string?]
+   [:name :string]
+   [:description {:optional true} :string]
    [:privacy ChannelPrivacy]])
 
 (def ChannelEdit
   [:map {:closed true}
-   [:name  {:optional true} string?]
-   [:description {:optional true} string?]])
+   [:name  {:optional true} :string]
+   [:description {:optional true} :string]])
 
 (def NewDiscussion
   [:map
@@ -180,15 +180,15 @@
 
 (def CreatedUser
   [:map
-   [:username string?]
+   [:username :string]
    [:user-id DSCInternalId]
    [:is-moderator boolean?]
-   [:access-token string?]])
+   [:access-token :string]])
 
 (def CreatedChannel [:map
                      {}
-                     [:id string?]
-                     [:url string?]])
+                     [:id :string]
+                     [:url :string]])
 
 (def CreatedChannelSnakeCase (map->snake CreatedChannel))
 
