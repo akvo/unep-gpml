@@ -5,6 +5,7 @@
    [duct.logger :refer [log]]
    [gpml.util :as util]
    [gpml.util.json :as json]
+   [gpml.util.malli :refer [check!]]
    [taoensso.timbre :as timbre]))
 
 (def default-timeout
@@ -89,7 +90,13 @@
   ([logger req {:keys [timeout max-retries backoff-ms]
                 :or {timeout default-timeout
                      max-retries default-max-retries
-                     backoff-ms default-backoff-ms}}]
+                     backoff-ms default-backoff-ms}
+                :as retry-config}]
+   {:pre [(check! [:map {:closed? true}
+                   [:timeout {:optional true} any?]
+                   [:max-retries {:optional true} any?]
+                   [:backoff-ms {:optional true} any?]]
+                  retry-config)]}
    (let [req (cond-> req
                (not (:method req)) (assoc :method (if (:body req)
                                                     :post

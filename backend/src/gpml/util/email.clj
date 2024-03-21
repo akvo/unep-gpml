@@ -1,11 +1,14 @@
 (ns gpml.util.email
   (:require
-   [clj-http.client :as client]
    [clojure.string :as str]
+   [gpml.boundary.port.chat :as port.chat]
    [gpml.db.stakeholder :as db.stakeholder]
    [gpml.handler.util :as h.util]
    [gpml.util :as util]
-   [jsonista.core :as j]))
+   [gpml.util.http-client :as http-client]
+   [gpml.util.json :as json]
+   [gpml.util.malli :refer [check!]]
+   [taoensso.timbre :as timbre]))
 
 (defn make-message [sender receiver subject text html]
   {:From sender :To [receiver] :Subject subject :TextPart text :HTMLPart html})
@@ -15,13 +18,17 @@
     (format "%s %s" first_name last_name)
     (format "%s. %s %s" title first_name last_name)))
 
-(defn send-email [{:keys [api-key secret-key]} sender subject receivers texts htmls]
+(defn send-email [{:keys [api-key secret-key logger]} sender subject receivers texts htmls]
+  {:pre [logger]}
   (let [messages (mapv make-message (repeat sender) receivers (repeat subject) texts htmls)]
-    (client/post "https://api.mailjet.com/v3.1/send"
-                 {:basic-auth [api-key secret-key]
-                  :content-type :json
-                  :throw-exceptions false
-                  :body (j/write-value-as-string {:Messages messages})})))
+    (timbre/with-context+ {::messages messages}
+      (http-client/request logger
+                           {:method :post
+                            :url "https://api.mailjet.com/v3.1/send"
+                            :basic-auth [api-key secret-key]
+                            :content-type :json
+                            :body (json/->json {:Messages messages})}
+                           {:max-retries 1}))))
 
 ;; FIXME: this shouldn't be hardcoded here. We'll be moving to
 ;; mailchimp soon so we'll refactor everything here.
@@ -231,8 +238,9 @@ To accept this invitation please visit %s and sign up to GPML Platform.
         subject (notify-private-channel-invitation-request-subject
                  (:app-name mailjet-config)
                  channel-name)
-        receivers (mapv (fn [admin] {:Name (get-user-full-name admin)
-                                     :Email (:email admin)})
+        receivers (mapv (fn [admin]
+                          {:Name (get-user-full-name admin)
+                           :Email (:email admin)})
                         admins)
         texts (mapv (fn [_receiver]
                       (notify-private-channel-invitation-request-text (get-user-full-name user)
@@ -247,7 +255,40 @@ To accept this invitation please visit %s and sign up to GPML Platform.
                     receivers)
         htmls (repeat nil)
         {:keys [status body]} (send-email mailjet-config sender subject receivers texts htmls)]
-    (if (<= 200 status 299)
+    (if (and status (<= 200 status 299))
+      {:success? true}
+      {:success? false
+       :reason :failed-to-send-email
+       :error-details body})))
+
+(defn notify-admins-new-channel-request [mailjet-config admins user new-channel]
+  {:pre [(check! port.chat/NewChannel new-channel)]}
+  (let [sender unep-sender
+        subject (format "[%s] Request from %s to create a Chat Channel"
+                        (:app-name mailjet-config)
+                        (get-user-full-name user))
+        receivers (mapv (fn [admin]
+                          {:Name (get-user-full-name admin)
+                           :Email (:email admin)})
+                        admins)
+        texts (mapv (fn [_receiver]
+                      (format "%s (User ID %s - %s) has requested to create a chat channel with the following details:
+
+Name - %s
+Description - %s
+Privacy - %s
+
+Feel free to create such a channel."
+                              (get-user-full-name user)
+                              (:id user)
+                              (:email user)
+                              (:name new-channel)
+                              (or (:description new-channel) "")
+                              (:privacy new-channel)))
+                    receivers)
+        htmls (repeat nil)
+        {:keys [status body]} (send-email mailjet-config sender subject receivers texts htmls)]
+    (if (and status (<= 200 status 299))
       {:success? true}
       {:success? false
        :reason :failed-to-send-email
@@ -265,7 +306,7 @@ To accept this invitation please visit %s and sign up to GPML Platform.
                 (:app-domain mailjet-config))]
         htmls (repeat nil)
         {:keys [status body]} (send-email mailjet-config sender subject receivers texts htmls)]
-    (if (<= 200 status 299)
+    (if (and status (<= 200 status 299))
       {:success? true}
       {:success? false
        :reason :failed-to-send-email
@@ -283,7 +324,7 @@ To accept this invitation please visit %s and sign up to GPML Platform.
                 (get-in plastic-strategy [:country :name]))]
         htmls (repeat nil)
         {:keys [status body]} (send-email mailjet-config sender subject receivers texts htmls)]
-    (if (<= 200 status 299)
+    (if (and status (<= 200 status 299))
       {:success? true}
       {:success? false
        :reason :failed-to-send-email
@@ -315,7 +356,7 @@ It is now accessible through your workspace below
         htmls (repeat nil)
         {:keys [status body]}
         (send-email mailjet-config sender subject receivers texts htmls)]
-    (if (<= 200 status 299)
+    (if (and status (<= 200 status 299))
       {:success? true}
       {:success? false
        :reason :failed-to-send-email
