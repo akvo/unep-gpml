@@ -626,7 +626,7 @@
                                     :swagger    {:tags ["plastic-strategy"]}
                                     :handler    #ig/ref :gpml.handler.plastic-strategy/get
                                     :parameters #ig/ref :gpml.handler.plastic-strategy/get-params}
-                              :put {:summary    "Update a plastic strategy steps"
+                              :put {:summary    "Update a plastic strategy's steps"
                                     :middleware [#ig/ref :gpml.auth/auth-middleware
                                                  #ig/ref :gpml.auth/auth-required]
                                     :swagger    {:tags ["plastic-strategy"]}

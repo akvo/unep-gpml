@@ -1,8 +1,11 @@
 (ns gpml.db.plastic-strategy
   #:ns-tracker{:resource-deps ["plastic_strategy.sql"]}
   (:require
+   [duct.logger :refer [log]]
    [gpml.db.jdbc-util :as jdbc-util]
-   [hugsql.core :as hugsql]))
+   [gpml.util.result :refer [failure]]
+   [hugsql.core :as hugsql]
+   [taoensso.timbre :as timbre]))
 
 (declare get-plastic-strategies*
          update-plastic-strategy*
@@ -14,62 +17,62 @@
 
 (defn get-plastic-strategies
   "Returned in kebab-case."
-  [conn opts]
+  [logger conn opts]
   (try
     {:success? true
-     :plastic-strategies (jdbc-util/db-result-snake-kw->db-result-kebab-kw
-                          (get-plastic-strategies* conn opts)
-                          \_)}
+     :plastic-strategies (jdbc-util/db-result-snake-kw->db-result-kebab-kw (get-plastic-strategies* conn opts)
+                                                                           \_)}
     (catch Exception t
-      {:success? false
-       :reason :exception
-       :error-details {:msg (ex-message t)}})))
+      (timbre/with-context+ {::opts opts}
+        (log logger :error :could-not-get-plastic-strategies t))
+      (failure {:reason :exception
+                :error-details {:msg (ex-message t)}}))))
 
 (defn get-plastic-strategy
   "Returned in kebab-case."
-  [conn opts]
+  [logger conn opts]
   (try
     (let [{:keys [success? plastic-strategies] :as result}
-          (get-plastic-strategies conn opts)]
+          (get-plastic-strategies logger conn opts)]
       (if-not success?
         result
         (if (= (count plastic-strategies) 1)
           {:success? true
            :plastic-strategy (first plastic-strategies)}
-          {:success? false
-           :reason :not-found})))
+          (failure {:reason :not-found}))))
     (catch Exception t
-      {:success? false
-       :reason :exception
-       :error-details {:msg (ex-message t)}})))
+      (timbre/with-context+ {::opts opts}
+        (log logger :error :could-not-get-plastic-strategy t))
+      (failure {:reason :exception
+                :error-details {:msg (ex-message t)}}))))
 
-(defn update-plastic-strategy [conn update-opts]
+(defn update-plastic-strategy [logger conn update-opts]
   (try
     (let [affected (update-plastic-strategy* conn update-opts)]
       (if (= affected 1)
         {:success? true}
-        {:success? false
-         :reason :unexpected-number-of-affected-rows
-         :error-details {:expected-affected-rows 1
-                         :actual-affected-rows affected}}))
+        (failure {:reason :unexpected-number-of-affected-rows
+                  :error-details {:expected-affected-rows 1
+                                  :actual-affected-rows affected}})))
     (catch Exception t
-      {:success? false
-       :reason :exception
-       :error-details {:msg (ex-message t)}})))
+      (timbre/with-context+ {::update-opts update-opts}
+        (log logger :error :could-not-update-plastic-strategy t))
+      (failure {:reason :exception
+                :error-details {:msg (ex-message t)}}))))
 
-(defn create-plastic-strategies [conn plastic-strategies]
+(defn create-plastic-strategies [logger conn plastic-strategies]
   (try
     (let [affected (create-plastic-strategies* conn {:plastic-strategy plastic-strategies})]
       (if (= affected (count plastic-strategies))
         {:success? true}
-        {:success? false
-         :reason :unexpected-number-of-affected-rows
-         :error-details {:expected-affected-rows (count plastic-strategies)
-                         :actual-affected-rows affected}}))
+        (failure {:reason :unexpected-number-of-affected-rows
+                  :error-details {:expected-affected-rows (count plastic-strategies)
+                                  :actual-affected-rows affected}})))
     (catch Exception t
-      {:success? false
-       :reason :exception
-       :error-details {:msg (ex-message t)}})))
+      (timbre/with-context+ {::plastic-strategies plastic-strategies}
+        (log logger :error :could-not-create-plastic-strategies t))
+      (failure {:reason :exception
+                :error-details {:msg (ex-message t)}}))))
 
 (defn create-plastic-strategy [conn plastic-strategy]
   (jdbc-util/with-constraint-violation-check [{:type :unique
@@ -78,16 +81,16 @@
     {:success? true
      :id (:id (create-plastic-strategy* conn plastic-strategy))}))
 
-(defn delete-plastic-strategy [conn plastic-strategy-id]
+(defn delete-plastic-strategy [logger conn plastic-strategy-id]
   (try
     (let [affected (delete-plastic-strategy* conn {:id plastic-strategy-id})]
       (if (= affected 1)
         {:success? true}
-        {:success? false
-         :reason :unexpected-number-of-affected-rows
-         :error-details {:expected-affected-rows 1
-                         :actual-affected-rows affected}}))
+        (failure {:reason :unexpected-number-of-affected-rows
+                  :error-details {:expected-affected-rows 1
+                                  :actual-affected-rows affected}})))
     (catch Exception t
-      {:success? false
-       :reason :exception
-       :error-details {:msg (ex-message t)}})))
+      (timbre/with-context+ {::plastic-strategy-id plastic-strategy-id}
+        (log logger :error :could-not-delete-plastic-strategy t))
+      (failure {:reason :exception
+                :error-details {:msg (ex-message t)}}))))
