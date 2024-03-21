@@ -92,7 +92,7 @@
                      max-retries default-max-retries
                      backoff-ms default-backoff-ms}
                 :as retry-config}]
-   {:pre [(check! [:map {:closed? true}
+   {:pre [(check! [:map {:closed true}
                    [:timeout {:optional true} any?]
                    [:max-retries {:optional true} any?]
                    [:backoff-ms {:optional true} any?]]

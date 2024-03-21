@@ -41,9 +41,8 @@
                   :error-details {:msg (ex-message e)}})))
     (catch Exception e
       (timbre/error e)
-      (failure
-       {:reason :exception
-        :error-details {:msg (ex-message e)}}))))
+      (failure {:reason :exception
+                :error-details {:msg (ex-message e)}}))))
 
 (defmacro with-constraint-violation-check
   {:style/indent 1}
