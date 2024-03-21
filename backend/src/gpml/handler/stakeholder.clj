@@ -404,12 +404,9 @@
                                      :result result})))
                   (if-not (seq (:chat_account_id target-user))
                     (r/ok {:status "success"})
-                    (let [roles (if (= role "ADMIN")
-                                  ["user" "moderator"]
-                                  ["user"])
-                          result (port.chat/update-user-account (:chat-adapter config)
+                    (let [result (port.chat/update-user-account (:chat-adapter config)
                                                                 (:chat_account_id target-user)
-                                                                {:roles roles})]
+                                                                {:isModerator (= role "ADMIN")})]
                       (if (:success? result)
                         (r/ok {:status "success"})
                         (do
