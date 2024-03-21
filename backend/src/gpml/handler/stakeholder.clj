@@ -387,18 +387,21 @@
             (if (or (= prev-user-role role)
                     (not (contains? #{prev-user-role role} "ADMIN")))
               (r/ok {:status (if (= count 1) "success" "failed")})
-              (let [{:keys [success?]} (if (= "ADMIN" prev-user-role)
-                                         (srv.permissions/remove-user-from-super-admins
-                                          {:conn tx
-                                           :logger logger}
-                                          id)
-                                         (srv.permissions/make-user-super-admin
-                                          {:conn tx
-                                           :logger logger}
-                                          id))]
+              (let [{:keys [success?] :as result} (if (= "ADMIN" prev-user-role)
+                                                    (srv.permissions/remove-user-from-super-admins
+                                                     {:conn tx
+                                                      :logger logger}
+                                                     id)
+                                                    (srv.permissions/make-user-super-admin
+                                                     {:conn tx
+                                                      :logger logger}
+                                                     id))]
                 (if-not success?
-                  (throw (ex-info "Error making the user super-admin in RBAC"
-                                  {:reason :error-updating-rbac-super-admins}))
+                  (do
+                    (log logger :error :error-updating-rbac-super-admins result)
+                    (throw (ex-info "Error making the user super-admin in RBAC"
+                                    {:reason :error-updating-rbac-super-admins
+                                     :result result})))
                   (if-not (seq (:chat_account_id target-user))
                     (r/ok {:status "success"})
                     (let [roles (if (= role "ADMIN")
@@ -409,8 +412,11 @@
                                                                 {:roles roles})]
                       (if (:success? result)
                         (r/ok {:status "success"})
-                        (throw (ex-info "Error updating user chat account role"
-                                        {:reason :error-updating-user-chat-account-role}))))))))))
+                        (do
+                          (log logger :error :error-updating-user-chat-account-role result)
+                          (throw (ex-info "Error updating user chat account role"
+                                          {:reason :error-updating-user-chat-account-role
+                                           :result result})))))))))))
         (catch Exception e
           (log logger :error :failed-to-update-stakeholder-role e)
           (let [response {:success? false
