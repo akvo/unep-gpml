@@ -101,7 +101,8 @@
 
 (defn seed-countries [db {:keys [old?]}]
   (let [file (if old? "countries" "new_countries")
-        data (map #(set/rename-keys % {:iso_code :iso_code_a3}) (get-data file))]
+        data (map #(set/rename-keys % {:iso_code :iso_code_a3})
+                  (get-data file))]
     (jdbc/insert-multi! db :country data)))
 
 (defn seed-country-groups [db]
@@ -443,7 +444,7 @@
                        (revert-mapping mapping-file))
         json-file (get-data (if old-data? "new_countries" "countries"))]
     (db.util/country-id-updater db cache-id mapping-file)
-    (jdbc/execute! db ["TRUNCATE TABLE country"])
+    (jdbc/execute! db ["TRUNCATE TABLE country CASCADE"])
     (seed-countries db {:old? (not old-data?)})
     (db.util/update-initiative-country db mapping-file json-file)
     (db.util/revert-constraint db cache-id)))

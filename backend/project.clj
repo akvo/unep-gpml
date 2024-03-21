@@ -105,7 +105,7 @@
             :eftest {:multithread :vars
                      :capture-output? false
                      ;; Please don't specify `:thread-count`, so that all cores will be used.
-                     :fail-fast? true
+                     :fail-fast? ~(not (System/getenv "CI"))
                      :report clojure.test/report}}
    :dev  {:source-paths   ["dev/src"]
           :resource-paths ["dev/resources"]

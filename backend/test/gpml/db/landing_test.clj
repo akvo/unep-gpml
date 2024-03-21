@@ -70,17 +70,31 @@
           conn (-> system db-key :spec)
           _ (add-resource-data conn)
           {:keys [country_counts]} (db.landing/get-resource-map-counts conn {:entity-group :topic})
-          valid? (fn [country-id] (->> country_counts
-                                       (filter #(= country-id (:country_id %)))
-                                       first
-                                       :counts
-                                       :financing_resource))]
-      (are [expected country-id] (= expected (valid? country-id))
-        1 (-> (db.country/get-countries conn {:filters {:descriptions ["Member State"] :iso-codes-a3 ["ESP"]}}) first :id)
-        1 (-> (db.country/get-countries conn {:filters {:descriptions ["Member State"] :iso-codes-a3 ["IND"]}}) first :id)
-        2 (-> (db.country/get-countries conn {:filters {:descriptions ["Member State"] :iso-codes-a3 ["IDN"]}}) first :id)
-        1 (-> (db.country/get-countries conn {:filters {:descriptions ["Member State"] :iso-codes-a3 ["KEN"]}}) first :id)
-        0 (-> (db.country/get-countries conn {:filters {:descriptions ["Member State"] :iso-codes-a3 ["NLD"]}}) first :id)))))
+          financing-resource (fn [country-id]
+                               (let [c (->> country_counts
+                                            (filter #(= country-id (:country_id %))))]
+                                 (assert (= 1 (count c))
+                                         c)
+                                 (->> c
+                                      first
+                                      :counts
+                                      :financing_resource)))]
+      (are [a3 expected] (let [c (db.country/get-countries conn
+                                                           {:filters {:descriptions ["Member State"]
+                                                                      :iso-codes-a3 [a3]}})]
+                           (assert (= 1 (count c))
+                                   c)
+                           (testing a3
+                             (is (= expected (-> c
+                                                 first
+                                                 :id
+                                                 financing-resource))))
+                           true)
+        "ESP" 1
+        "IND" 1
+        "IDN" 2
+        "KEN" 1
+        "NLD" 0))))
 
 (deftest test-summary
   (testing "Test summary data for landing page"
