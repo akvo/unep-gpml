@@ -21,6 +21,7 @@ export const isoA2 = {
   togo: 'TG',
   'papua-new-guinea': 'PG',
   fiji: 'FJ',
+  'country-a': '0A',
 }
 
 export const iso2id = {
