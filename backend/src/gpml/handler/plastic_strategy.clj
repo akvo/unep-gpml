@@ -80,8 +80,8 @@
 (defn- update-plastic-strategy [config {:keys [user] :as req}]
   (let [country-iso-code-a2 (get-in req [:parameters :path :iso_code_a2])
         search-opts {:filters {:countries-iso-codes-a2 [country-iso-code-a2]}}
-        {:keys [success? plastic-strategy reason] :as get-ps-result}
-        (svc.ps/get-plastic-strategy config search-opts)]
+        {:keys [success? plastic-strategy reason]
+         :as get-ps-result} (svc.ps/get-plastic-strategy config search-opts)]
     (if-not success?
       (if (= reason :not-found)
         (r/not-found {})

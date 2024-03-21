@@ -3,6 +3,7 @@
    [camel-snake-kebab.core :refer [->kebab-case ->snake_case]]
    [camel-snake-kebab.extras :as cske]
    [clojure.string :as str]
+   [gpml.util.result :refer [failure]]
    [medley.core :as medley]
    [taoensso.timbre :as timbre])
   (:import
@@ -34,17 +35,15 @@
       (if-let [reason (:error-reason (medley/find-first
                                       (partial is-constraint-violation? e)
                                       constraints))]
-        {:success? false
-         :reason reason
-         :error-details {:msg (ex-message e)}}
-        {:success? false
-         :reason :unknown-sql-error
-         :error-details {:msg (ex-message e)}}))
+        (failure {:reason reason
+                  :error-details {:msg (ex-message e)}})
+        (failure {:reason :unknown-sql-error
+                  :error-details {:msg (ex-message e)}})))
     (catch Exception e
       (timbre/error e)
-      {:success? false
-       :reason :exception
-       :error-details {:msg (ex-message e)}})))
+      (failure
+       {:reason :exception
+        :error-details {:msg (ex-message e)}}))))
 
 (defmacro with-constraint-violation-check
   {:style/indent 1}
