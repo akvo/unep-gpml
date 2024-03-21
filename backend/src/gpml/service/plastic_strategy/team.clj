@@ -84,37 +84,6 @@
                 (log logger :error :failed-to-rollback-assign-role-to-user {:result result})))
             context)}
          {:txn-fn
-          (fn tx-create-chat-account-if-required
-            [{:keys [ps-team-member] :as context}]
-            (if (seq (:chat-account-id ps-team-member))
-              context
-              (let [{:keys [success?]
-                     chat-user-account :stakeholder
-                     :as result}
-                    (svc.chat/create-user-account config (:id ps-team-member))]
-                (if success?
-                  (-> context
-                      (assoc-in [:ps-team-member :chat-account-id] (:chat-account-id chat-user-account))
-                      (assoc :can-rollback-create-chat-account? true))
-                  (assoc context
-                         :success? false
-                         :reason :failed-to-create-ps-team-member-chat-account
-                         :error-details {:result result})))))
-          :rollback-fn
-          (fn rollback-create-chat-account-if-required
-            [{:keys [ps-team-member can-rollback-create-chat-account?] :as context}]
-            (if-not can-rollback-create-chat-account?
-              context
-              (let [result (port.chat/delete-user-account (:chat-adapter config)
-                                                          (:chat-account-id ps-team-member)
-                                                          {})]
-                (if-not (:success? result)
-                  (log logger :error :failed-to-rollback-create-chat-account {:result result})
-                  (db.stakeholder/update-stakeholder (:spec db) {:id (:id ps-team-member)
-                                                                 :chat_account_id nil
-                                                                 :chat_account_status nil}))
-                context)))}
-         {:txn-fn
           (fn add-team-member-to-ps-chat-channel
             [{:keys [ps-team-member plastic-strategy] :as context}]
             (let [result (svc.chat/join-channel config
@@ -298,23 +267,22 @@
 
 (defn delete-ps-team-member [{:keys [db logger] :as config} plastic-strategy user-id]
   (let [transactions
-        [{:txn-fn
-          (fn tx-get-ps-team-member
-            [{:keys [plastic-strategy user-id] :as context}]
-            (let [result (db.ps.team/get-ps-team-member (:spec db)
-                                                        {:filters {:plastic-strategies-ids [(:id plastic-strategy)]
-                                                                   :users-ids [user-id]}})]
-              (if (:success? result)
-                (assoc context :ps-team-member (:ps-team-member result))
-                (if (= (:reason result) :not-found)
-                  (assoc context
-                         :success? false
-                         :reason :ps-team-member-not-found
-                         :error-details {:result result})
-                  (assoc context
-                         :success? false
-                         :reason :failed-to-get-ps-team-member
-                         :error-details {:result result})))))}
+        [(fn tx-get-ps-team-member
+           [{:keys [plastic-strategy user-id] :as context}]
+           (let [result (db.ps.team/get-ps-team-member (:spec db)
+                                                       {:filters {:plastic-strategies-ids [(:id plastic-strategy)]
+                                                                  :users-ids [user-id]}})]
+             (if (:success? result)
+               (assoc context :ps-team-member (:ps-team-member result))
+               (if (= (:reason result) :not-found)
+                 (assoc context
+                        :success? false
+                        :reason :ps-team-member-not-found
+                        :error-details {:result result})
+                 (assoc context
+                        :success? false
+                        :reason :failed-to-get-ps-team-member
+                        :error-details {:result result})))))
          {:txn-fn
           (fn tx-remove-user-from-ps-channel
             [{:keys [plastic-strategy ps-team-member] :as context}]
