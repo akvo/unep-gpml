@@ -676,3 +676,14 @@
 
       :else
       result)))
+
+(defn request-channel-creation [{:keys [db mailjet-config]} user new-channel]
+  {:post [(check! [:or
+                   (success-with)
+                   (failure-with :reason any?)]
+                  %)]}
+  (let [super-admins (db.rbac-util/get-super-admins-details (:spec db) {})]
+    (util.email/notify-admins-new-channel-request mailjet-config
+                                                  super-admins
+                                                  user
+                                                  new-channel)))
