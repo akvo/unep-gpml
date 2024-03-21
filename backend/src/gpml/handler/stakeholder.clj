@@ -136,8 +136,7 @@
       (r/ok {}))))
 
 (defn- create-stakeholder [config stakeholder]
-  (let [result (srv.stakeholder/create-stakeholder config
-                                                   stakeholder)]
+  (let [result (srv.stakeholder/create-stakeholder config stakeholder)]
     (if (:success? result)
       (get-in result [:stakeholder :id])
       (throw (ex-info "Failed to create stakeholder" result)))))
@@ -186,15 +185,15 @@
                      (assoc :org (db.organisation/organisation-by-id
                                   conn
                                   {:id (:affiliation new-sth)})))))
-    (catch Exception t
-      (let [{:keys [reason]} (ex-data t)]
-        (log logger :error :failed-to-create-or-update-stakeholder t)
+    (catch Exception e
+      (let [{:keys [reason]} (ex-data e)]
+        (log logger :error :failed-to-create-or-update-stakeholder e)
         (if (= reason :organisation-name-already-exists)
           (r/conflict {:success? false
                        :reason reason})
           (r/server-error {:success? false
                            :reason :failed-to-create-or-update-profile
-                           :error-details {:error (ex-message t)}}))))))
+                           :error-details {:error (ex-message e)}}))))))
 
 (defmethod ig/init-key :gpml.handler.stakeholder/post
   [_ config]
