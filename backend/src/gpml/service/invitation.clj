@@ -34,7 +34,7 @@
           :rollback-fn
           (fn rollback-create-stakeholder
             [{{:keys [user]} :invitation-payload :as context}]
-            (let [result (db.stakeholder/delete-stakeholder (:spec db) (:id user))]
+            (let [result (db.stakeholder/delete-stakeholder logger (:spec db) (:id user))]
               (when-not (:success? result)
                 (log logger :error :failed-to-rollback-create-stakeholder {:result result})))
             context)}

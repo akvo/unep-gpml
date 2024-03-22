@@ -77,7 +77,12 @@
 
 (deftest insert-data
   (let [db (test-util/db-test-conn)
-        admin (dummy/get-or-create-profile db "test@akvo.org" "John Doe" "ADMIN" "APPROVED")]
+        admin (dummy/get-or-create-profile (-> fixtures/*system* (get-in [[:duct/const :gpml.config/common] :logger]) (doto (assert)))
+                                           db
+                                           "test@akvo.org"
+                                           "John Doe"
+                                           "ADMIN"
+                                           "APPROVED")]
     (testing "Insert complete data"
       (let [data (db.initiative/new-initiative
                   db (assoc initiative-data :created_by (:id admin) :version 1))

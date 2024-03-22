@@ -56,8 +56,10 @@
   (saga logger {:success? true
                 :user-id user-id}
     (fn get-stakeholder [{:keys [user-id] :as context}]
-      (let [{:keys [stakeholder] :as result} (db.sth/get-stakeholder (:spec db) {:filters {:ids [user-id]}
-                                                                                 :related-entities #{:picture-file}})]
+      (let [{:keys [stakeholder] :as result} (db.sth/get-stakeholder logger
+                                                                     (:spec db)
+                                                                     {:filters {:ids [user-id]}
+                                                                      :related-entities #{:picture-file}})]
         (if (:success? result)
           (assoc context
                  :stakeholder stakeholder

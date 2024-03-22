@@ -83,7 +83,7 @@
           :rollback-fn
           (fn rollback-create-stakeholder
             [{:keys [stakeholder] :as context}]
-            (db.stakeholder/delete-stakeholder conn (:id stakeholder))
+            (db.stakeholder/delete-stakeholder logger conn (:id stakeholder))
             context)}
          {:txn-fn
           (fn save-stakeholder-tags
@@ -223,7 +223,8 @@
         [{:txn-fn
           (fn get-old-stakeholder
             [{:keys [stakeholder] :as context}]
-            (let [result (db.stakeholder/get-stakeholder conn
+            (let [result (db.stakeholder/get-stakeholder logger
+                                                         conn
                                                          {:filters {:ids [(:id stakeholder)]}})]
               (if (:success? result)
                 (assoc context :old-stakeholder (:stakeholder result))
@@ -477,7 +478,8 @@
         [{:txn-fn
           (fn get-stakeholder
             [{:keys [stakeholder-id] :as context}]
-            (let [result (db.stakeholder/get-stakeholder conn
+            (let [result (db.stakeholder/get-stakeholder logger
+                                                         conn
                                                          {:filters {:ids [stakeholder-id]}})]
               (if (:success? result)
                 (assoc context :stakeholder (:stakeholder result))
