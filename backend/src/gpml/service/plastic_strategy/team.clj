@@ -342,7 +342,7 @@
           (fn tx-delete-ps-team-member
             [{:keys [ps-team-member plastic-strategy user-id] :as context}]
             (if (= (:review-status ps-team-member) "INVITED")
-              (let [result (db.stakeholder/delete-stakeholder (:spec db) user-id)]
+              (let [result (db.stakeholder/delete-stakeholder logger (:spec db) user-id)]
                 (if (:success? result)
                   context
                   (failure context

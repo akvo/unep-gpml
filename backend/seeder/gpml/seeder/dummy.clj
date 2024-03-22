@@ -72,7 +72,7 @@
    :affiliation (:id (get-org-id db))
    :picture "https://directory.growasia.org/wp-content/uploads/solution_logos/0.jpg"})
 
-(defn get-or-create-profile [db my-email my-name role review-status & [extra-attrs]]
+(defn get-or-create-profile [logger db my-email my-name role review-status & [extra-attrs]]
   (let [profile (db.stakeholder/stakeholder-by-email db {:email my-email})
         {:keys [id]} (if profile
                        profile
@@ -95,11 +95,13 @@
                          (jdbc/insert-multi! db :stakeholder_geo_coverage
                                              (associate-geo db {:stakeholder (:id new-profile)} ["Africa" "Europe"]))
                          (db.stakeholder/stakeholder-by-id db new-profile)))]
-    (:stakeholder (db.stakeholder/get-stakeholder db {:filters {:ids [id]}
-                                                      :related-entities #{:picture-file}}))))
+    (:stakeholder (db.stakeholder/get-stakeholder logger
+                                                  db
+                                                  {:filters {:ids [id]}
+                                                   :related-entities #{:picture-file}}))))
 
-(defn submit-dummy-event [db my-email my-name]
-  (let [profile (get-or-create-profile db my-email my-name "ADMIN" "APPROVED")
+(defn submit-dummy-event [logger db my-email my-name]
+  (let [profile (get-or-create-profile logger db my-email my-name "ADMIN" "APPROVED")
         dummies (map-indexed (fn [idx data]
                                (-> data
                                    (assoc :title (str "Dummy Event - " idx)
@@ -125,8 +127,8 @@
           (jdbc/insert-multi! db :event_language_url (associate-url db event))))
       (print "You have already seed dummy event"))))
 
-(defn submit-dummy-initiative [db my-email my-name]
-  (let [admin (get-or-create-profile db my-email my-name "ADMIN" "APPROVED")
+(defn submit-dummy-initiative [logger db my-email my-name]
+  (let [admin (get-or-create-profile logger db my-email my-name "ADMIN" "APPROVED")
         submission (seeder/parse-data
                     (slurp (io/resource "examples/submission-initiative.json"))
                     {:keywords? true
@@ -146,14 +148,14 @@
               :spec))
 
   ;; Create New Account as Admin
-  (get-or-create-profile db "test@akvo.org" "Testing Profile" "ADMIN" "APPROVED")
+  (get-or-create-profile (dev/logger) db "test@akvo.org" "Testing Profile" "ADMIN" "APPROVED")
   ;; Create New Account as Unapproved user
-  (get-or-create-profile db "anothertest@akvo.org" "Another Testing" "USER" "SUBMITTED")
+  (get-or-create-profile (dev/logger) db "anothertest@akvo.org" "Another Testing" "USER" "SUBMITTED")
 
   ;; Create New Account or Get Account
   ;; Then create unapproved dummy events with the account
-  (submit-dummy-event db "test@akvo.org" "Testing Profile")
+  (submit-dummy-event (dev/logger) db "test@akvo.org" "Testing Profile")
 
   ;; Create New Account or Get Account
   ;; Then create unapproved dummy initiative with the account
-  (submit-dummy-initiative db "test@akvo.org" "Testing Profile"))
+  (submit-dummy-initiative (dev/logger) db "test@akvo.org" "Testing Profile"))

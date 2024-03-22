@@ -10,6 +10,7 @@
    [duct.core :as duct]
    [duct.core.repl :as duct-repl]
    [eftest.runner :as eftest]
+   [gpml.db.stakeholder]
    [gpml.fixtures]
    [gpml.seeder.dummy :refer [get-or-create-profile]]
    [gpml.seeder.main :as seeder]
@@ -87,7 +88,8 @@
   (refresh))
 
 (defn make-user! [& [email]]
-  (get-or-create-profile (db-conn)
+  (get-or-create-profile (logger)
+                         (db-conn)
                          (or email (format "a%s@akvo.org" (random-uuid)))
                          (format "Random%s User%s" (random-uuid) (random-uuid))
                          "USER"
