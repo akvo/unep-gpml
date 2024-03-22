@@ -10,6 +10,7 @@
    [gpml.service.file :as srv.file]
    [gpml.util.email :as util.email]
    [gpml.util.malli :refer [PresentString check! failure-with map->snake success-with]]
+   [gpml.util.result :refer [failure]]
    [gpml.util.thread-transactions :refer [saga]]
    [taoensso.timbre :as timbre]))
 
@@ -43,8 +44,7 @@
                                                            :chat-account-auth-token chat-account-auth-token
                                                            :chat-account-id chat-account-id
                                                            :chat-account-status chat-account-status})}
-      {:success? false
-       :reason :failed-to-update-stakeholder})))
+      (failure {:reason :failed-to-update-stakeholder}))))
 
 (defn create-user-account
   "Idempotent - also returns success if the stakeholder and/or chat account already existed."
@@ -66,13 +66,11 @@
           (if (= (:reason result) :not-found)
             (do
               (log logger :info :user-not-found {:user-id user-id})
-              (assoc context
-                     :success? false
-                     :reason :not-found))
-            (assoc context
-                   :success? false
-                   :reason (:reason result)
-                   :error-details (:error-details result))))))
+              (failure context
+                       :reason :not-found))
+            (failure context
+                     :reason (:reason result)
+                     :error-details (:error-details result))))))
 
     {:txn-fn
      (fn create-chat-user-account [{:keys [stakeholder] :as context}]
@@ -100,10 +98,9 @@
              (assoc context
                     :chat-account-auth-token (-> result :user :access-token (doto (assert :access-token)))
                     :chat-account-id chat-user-id)
-             (assoc context
-                    :success? false
-                    :reason (:reason result)
-                    :error-details (:error-details result))))))
+             (failure context
+                      :reason (:reason result)
+                      :error-details (:error-details result))))))
      :rollback-fn
      (fn rollback-create-chat-user-account [{:keys [chat-account-id]}]
        (port.chat/delete-user-account chat-adapter chat-account-id {}))}
@@ -118,10 +115,9 @@
                                                             :user-id user-id})]
           (if (:success? result)
             (assoc context :stakeholder (:stakeholder result))
-            (assoc context
-                   :success? false
-                   :reason (:reason result)
-                   :error-details (:error-details result))))))))
+            (failure context
+                     :reason (:reason result)
+                     :error-details (:error-details result))))))))
 
 (defn set-user-account-active-status [{:keys [db chat-adapter logger]} user active?]
   (saga logger {:success? true
@@ -129,9 +125,8 @@
     (fn check_chat_account_id [context]
       (if (:chat_account_id user)
         context
-        (assoc context
-               :success? false
-               :reason "User doesn't have a `:chat_account_id`.")))
+        (failure context
+                 :reason "User doesn't have a `:chat_account_id`.")))
 
     {:txn-fn
      (fn set-chat-user-account-active-status [{:keys [user] :as context}]
@@ -142,10 +137,9 @@
                                                               {})]
          (if (:success? result)
            context
-           (assoc context
-                  :success? false
-                  :reason (:reason result)
-                  :error-details (:error-details result)))))
+           (failure context
+                    :reason (:reason result)
+                    :error-details (:error-details result)))))
      :rollback-fn
      (fn rollback-set-chat-user-account-active-status [{:keys [user] :as context}]
        (port.chat/set-user-account-active-status chat-adapter
@@ -163,11 +157,10 @@
                                                                          "inactive")})]
          (if (= affected 1)
            context
-           (assoc context
-                  :success? false
-                  :reason :failed-to-update-stakeholder-chat-account-status
-                  :error-details {:error-source :persistence
-                                  :error-cause :unexpected-number-of-affected-rows}))))}))
+           (failure context
+                    :reason :failed-to-update-stakeholder-chat-account-status
+                    :error-details {:error-source :persistence
+                                    :error-cause :unexpected-number-of-affected-rows}))))}))
 
 (defn- add-users-pictures-urls [config users]
   (mapv (fn [user]
@@ -225,17 +218,15 @@
                  (catch Exception t
                    (timbre/with-context+ {:chat-account-ids chat-account-ids}
                      (log logger :error :could-not-get-stakeholders t))
-                   {:success? false
-                    :reason :exception
-                    :error-details {:msg (ex-message t)}}))]
+                   (failure {:reason :exception
+                             :error-details {:msg (ex-message t)}})))]
     (-> (if (:success? result)
           (assoc-in context [:channel :users] (->> (:stakeholders result)
                                                    (add-users-pictures-urls config)
                                                    (mapv present-user)))
-          (assoc context
-                 :success? false
-                 :reason :failed-to-get-channel-users
-                 :error-details {:result result}))
+          (failure context
+                   :reason :failed-to-get-channel-users
+                   :error-details {:result result}))
         ;; No longer needed / can be confusing to include it:
         (update :channel dissoc :members :stakeholders))))
 
@@ -247,18 +238,16 @@
       (let [result (port.chat/get-channel chat-adapter channel-id)]
         (if (:success? result)
           (assoc context :channel (:channel result))
-          (assoc context
-                 :success? false
-                 :reason :failed-to-get-channel
-                 :error-details {:result result}))))
+          (failure context
+                   :reason :failed-to-get-channel
+                   :error-details {:result result}))))
     (fn tx-get-channel-discussions [context]
       (let [result (port.chat/get-channel-discussions chat-adapter channel-id)]
         (if (:success? result)
           (assoc-in context [:channel :discussions] (:discussions result))
-          (assoc context
-                 :success? false
-                 :reason :failed-to-get-channel-discussions
-                 :error-details {:result result}))))
+          (failure context
+                   :reason :failed-to-get-channel-discussions
+                   :error-details {:result result}))))
     (partial tx-get-channel-users config)
     (fn enrich-messages-users [context]
       (try
@@ -272,9 +261,8 @@
                                                                   messages)))
         (catch Exception t
           (log logger :error :could-not-get-stakeholders t)
-          {:success? false
-           :reason :exception
-           :error-details {:msg (ex-message t)}})))))
+          (failure {:reason :exception
+                    :error-details {:msg (ex-message t)}}))))))
 
 (defn get-channels [{:keys [db hikari chat-adapter logger] :as config} channel-type]
   {:pre [db hikari chat-adapter logger
@@ -285,10 +273,9 @@
   (saga logger {:success? true}
 
     (fn validate-channel-type [context]
-      (cond-> context
-        (not channel-type)
-        (assoc :success? false
-               :reason :user-has-no-chat-account)))
+      (if channel-type
+        context
+        (failure context :reason :user-has-no-chat-account)))
 
     (if (string? channel-type)
       (fn get-channels-for-user [context]
@@ -315,12 +302,11 @@
                                                                     some? id)]}
                                                      (contains? extra-channel-ids id)))
                                            (:channels result)))
-            (assoc context
-                   :success? false
-                   :reason :failed-to-get-channels
-                   :error-details {:result (if sql-success?
-                                             result
-                                             sql-res)}))))
+            (failure context
+                     :reason :failed-to-get-channels
+                     :error-details {:result (if sql-success?
+                                               result
+                                               sql-res)}))))
 
       (fn get-channels-generic [context]
         (let [result
@@ -331,10 +317,9 @@
                 (throw (ex-info "get-channels-generic missing clause" {:channel-type channel-type})))]
           (if (:success? result)
             (assoc context :channels (:channels result))
-            (assoc context
-                   :success? false
-                   :reason :failed-to-get-channels
-                   :error-details {:result result})))))
+            (failure context
+                     :reason :failed-to-get-channels
+                     :error-details {:result result})))))
 
     (fn add-users [context]
       (try
@@ -348,8 +333,7 @@
                                           channels)))
         (catch Exception e
           (log logger :error :could-not-add-users e)
-          {:success? false
-           :reason :could-not-add-users})))))
+          (failure {:reason :could-not-add-users}))))))
 
 (defn send-private-channel-invitation-request [{:keys [db mailjet-config]} user channel-id channel-name]
   (let [super-admins (db.rbac-util/get-super-admins-details (:spec db) {})]
@@ -391,10 +375,12 @@
     (partial assoc-private config channel-id)
 
     (fn check-membership [context]
-      (if (user-belongs-to-channel? hikari user-id channel-id)
-        {:success? false
-         :reason   :user-already-belongs-to-channel}
-        context))
+      (if-not (user-belongs-to-channel? hikari user-id channel-id)
+        context
+        (do
+          (log logger :info :user-already-belongs-to-channel {:user-id user-id
+                                                              :channel-id channel-id})
+          (failure {:reason :user-already-belongs-to-channel}))))
 
     ;; NOTE: we grab the unique-user-identifier from :stakeholder, not from the `user` arg,
     ;; since the it's the `create-user-account` call that may have created the `:chat-account-id`
@@ -408,8 +394,7 @@
                  context
                  (if unique-user-identifier
                    (port.chat/add-user-to-private-channel chat-adapter unique-user-identifier channel-id)
-                   {:success? false
-                    :reason :user-does-not-have-chat-account-id})))
+                   (failure {:reason :user-does-not-have-chat-account-id}))))
      :rollback-fn (fn remove-from-dsc [{{unique-user-identifier :chat-account-id} :stakeholder
                                         :as context}]
                     {:pre [unique-user-identifier]}
@@ -417,8 +402,7 @@
                       context
                       (if unique-user-identifier
                         (port.chat/remove-user-from-channel chat-adapter unique-user-identifier channel-id :_)
-                        {:success? false
-                         :reason :user-does-not-have-chat-account-id})))}
+                        (failure {:reason :user-does-not-have-chat-account-id}))))}
 
     {:txn-fn (fn add-to-tables [_context]
                (db/execute-one! hikari {:insert-into :chat_channel_membership
@@ -446,8 +430,7 @@
                                                                                  [:= :stakeholder_id user-id]
                                                                                  [:= :chat_channel_id channel-id]]}]]]})))
         {:success? true}
-        {:success? false
-         :reason   :user-does-not-belong-to-channel}))
+        (failure {:reason :user-does-not-belong-to-channel})))
 
     {:txn-fn (fn remove-from-tables [_context]
                (db/execute-one! hikari {:delete-from :chat_channel_membership
@@ -466,15 +449,13 @@
                  context
                  (if unique-user-identifier
                    (port.chat/remove-user-from-channel chat-adapter unique-user-identifier channel-id :_)
-                   {:success? false
-                    :reason :could-not-remove-user-from-dsc})))
+                   (failure {:reason :could-not-remove-user-from-dsc}))))
      :rollback-fn (fn add-to-dsc [context]
                     (if-not (-> context (find :private?) (doto (assert "`:private?` should be in the context")) val)
                       context
                       (if unique-user-identifier
                         (port.chat/add-user-to-private-channel chat-adapter unique-user-identifier channel-id)
-                        {:success? false
-                         :reason :could-not-add-user-back-to-dsc})))}))
+                        (failure {:reason :could-not-add-user-back-to-dsc}))))}))
 
 (defn delete-channel [{:keys [hikari chat-adapter logger]}
                       channel-id]
@@ -582,9 +563,8 @@
         context
 
         :else
-        (assoc context
-               :success? false
-               :reason :user-does-not-belong-to-channel)))
+        (failure context
+                 :reason :user-does-not-belong-to-channel)))
 
     (fn add-discussions [context]
       (let [{:keys [success? discussions]
@@ -635,8 +615,7 @@
                                                                                  [:= :id pinned-link-id]
                                                                                  [:= :chat_channel_id channel-id]]}]]]})))
         context
-        {:success? false
-         :reason   :pinned-link-not-found}))
+        (failure {:reason :pinned-link-not-found})))
 
     (fn update-chat-channel-pinned-link [_context]
       (db/execute-one! hikari {:update :chat_channel_pinned_link
@@ -671,8 +650,7 @@
       result
 
       (zero? affected)
-      {:success? false
-       :reason :pinned-link-not-found}
+      (failure {:reason :pinned-link-not-found})
 
       :else
       result)))

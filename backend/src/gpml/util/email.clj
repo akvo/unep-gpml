@@ -8,10 +8,15 @@
    [gpml.util.http-client :as http-client]
    [gpml.util.json :as json]
    [gpml.util.malli :refer [check!]]
+   [gpml.util.result :refer [failure]]
    [taoensso.timbre :as timbre]))
 
 (defn make-message [sender receiver subject text html]
-  {:From sender :To [receiver] :Subject subject :TextPart text :HTMLPart html})
+  {:From sender
+   :To [receiver]
+   :Subject subject
+   :TextPart text
+   :HTMLPart html})
 
 (defn get-user-full-name [{:keys [title first_name last_name]}]
   (if (nil? title)
@@ -257,9 +262,8 @@ To accept this invitation please visit %s and sign up to GPML Platform.
         {:keys [status body]} (send-email mailjet-config sender subject receivers texts htmls)]
     (if (and status (<= 200 status 299))
       {:success? true}
-      {:success? false
-       :reason :failed-to-send-email
-       :error-details body})))
+      (failure {:reason :failed-to-send-email
+                :error-details body}))))
 
 (defn notify-admins-new-channel-request [mailjet-config admins user new-channel]
   {:pre [(check! port.chat/NewChannel new-channel)]}
@@ -290,9 +294,8 @@ Feel free to create such a channel."
         {:keys [status body]} (send-email mailjet-config sender subject receivers texts htmls)]
     (if (and status (<= 200 status 299))
       {:success? true}
-      {:success? false
-       :reason :failed-to-send-email
-       :error-details body})))
+      (failure {:reason :failed-to-send-email
+                :error-details body}))))
 
 (defn notify-user-about-chat-private-channel-invitation-request-accepted [mailjet-config user channel-name]
   (let [sender unep-sender
@@ -308,9 +311,8 @@ Feel free to create such a channel."
         {:keys [status body]} (send-email mailjet-config sender subject receivers texts htmls)]
     (if (and status (<= 200 status 299))
       {:success? true}
-      {:success? false
-       :reason :failed-to-send-email
-       :error-details body})))
+      (failure {:reason :failed-to-send-email
+                :error-details body}))))
 
 (defn notify-user-about-plastic-strategy-invitation [mailjet-config user plastic-strategy]
   (let [sender unep-sender
@@ -326,9 +328,8 @@ Feel free to create such a channel."
         {:keys [status body]} (send-email mailjet-config sender subject receivers texts htmls)]
     (if (and status (<= 200 status 299))
       {:success? true}
-      {:success? false
-       :reason :failed-to-send-email
-       :error-details body})))
+      (failure {:reason :failed-to-send-email
+                :error-details body}))))
 
 (defn notify-user-added-to-plastic-strategy-team-subject [country-name]
   (format "You've been added to Plastic Strategy %s" country-name))
@@ -358,9 +359,8 @@ It is now accessible through your workspace below
         (send-email mailjet-config sender subject receivers texts htmls)]
     (if (and status (<= 200 status 299))
       {:success? true}
-      {:success? false
-       :reason :failed-to-send-email
-       :error-details body})))
+      (failure {:reason :failed-to-send-email
+                :error-details body}))))
 
 (comment
   (require 'dev)
