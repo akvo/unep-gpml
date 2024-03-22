@@ -2,7 +2,20 @@
   (:require
    [dev.gethop.rbac :as rbac]
    [duct.logger :refer [log]]
-   [gpml.db.rbac-util :as db.rbac-util]))
+   [gpml.db.rbac-util :as db.rbac-util])
+  (:import clojure.lang.ExceptionInfo))
+
+(defn get-role-by-name! [db-spec logger name]
+  (let [{:keys [success?] :as result} (rbac/get-role-by-name db-spec logger name)]
+    (if success?
+      result
+      (throw (ex-info "get-role-by-name! failed" {:result result})))))
+
+(defn get-context! [db-spec logger context-type-name resource-id]
+  (let [{:keys [success?] :as result} (rbac/get-context db-spec logger context-type-name resource-id)]
+    (if success?
+      result
+      (throw (ex-info "get-context! failed" {:result result})))))
 
 (def root-app-resource-id 0)
 (def root-app-context-type :application)
@@ -27,20 +40,34 @@
         (rbac/create-context! conn logger new-context parent-context)))))
 
 (defn assign-roles-to-users [{:keys [conn logger]} role-assignments]
-  (let [parsed-role-assignments (mapv (fn [{:keys [role-name context-type resource-id user-id]}]
-                                        {:role (:role (rbac/get-role-by-name conn logger role-name))
-                                         :context (:context (rbac/get-context conn logger context-type resource-id))
-                                         :user {:id user-id}})
-                                      role-assignments)]
-    (rbac/assign-roles! conn logger parsed-role-assignments)))
+  (let [parsed-role-assignments (try
+                                  (mapv (fn [{:keys [role-name context-type resource-id user-id]}]
+                                          {:role (:role (get-role-by-name! conn logger role-name))
+                                           :context (:context (get-context! conn logger context-type resource-id))
+                                           :user {:id user-id}})
+                                        role-assignments)
+                                  (catch ExceptionInfo e
+                                    (or (-> e ex-data :result not-empty)
+                                        (throw e))))]
+    (if (vector? parsed-role-assignments)
+      (rbac/assign-roles! conn logger parsed-role-assignments)
+      ;; it's a failure object
+      parsed-role-assignments)))
 
 (defn unassign-roles-from-users [{:keys [conn logger]} role-unassignments]
-  (let [parsed-role-unassignments (mapv (fn [{:keys [role-name context-type resource-id user-id]}]
-                                          {:role (:role (rbac/get-role-by-name conn logger role-name))
-                                           :context (:context (rbac/get-context conn logger context-type resource-id))
-                                           :user {:id user-id}})
-                                        role-unassignments)]
-    (rbac/unassign-roles! conn logger parsed-role-unassignments)))
+  (let [parsed-role-unassignments (try
+                                    (mapv (fn [{:keys [role-name context-type resource-id user-id]}]
+                                            {:role (:role (get-role-by-name! conn logger role-name))
+                                             :context (:context (get-context! conn logger context-type resource-id))
+                                             :user {:id user-id}})
+                                          role-unassignments)
+                                    (catch ExceptionInfo e
+                                      (or (-> e ex-data :result not-empty)
+                                          (throw e))))]
+    (if (vector? parsed-role-unassignments)
+      (rbac/unassign-roles! conn logger parsed-role-unassignments)
+      ;; it's a failure object
+      parsed-role-unassignments)))
 
 (defn unassign-all-roles [{:keys [conn]} user-id]
   (db.rbac-util/unassign-all-roles conn {:user-id user-id}))
