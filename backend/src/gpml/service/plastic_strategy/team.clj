@@ -1,5 +1,6 @@
 (ns gpml.service.plastic-strategy.team
   (:require
+   [clojure.string :as string]
    [duct.logger :refer [log]]
    [gpml.db.plastic-strategy.team :as db.ps.team]
    [gpml.db.stakeholder :as db.stakeholder]
@@ -105,10 +106,12 @@
          {:txn-fn
           (fn tx-notify-user
             [{:keys [ps-team-member plastic-strategy] :as context}]
-            (let [result (util.email/notify-user-added-to-plastic-strategy-team
-                          mailjet-config
-                          ps-team-member
-                          plastic-strategy)]
+            (let [result (if (-> ps-team-member :email string/blank?)
+                           (failure {:reason :invalid-user-email
+                                     :user-id (:id ps-team-member)})
+                           (util.email/notify-user-added-to-plastic-strategy-team mailjet-config
+                                                                                  ps-team-member
+                                                                                  plastic-strategy))]
               (when-not (:success? result)
                 (log logger :error :failed-to-notify-user-added-to-ps-team {:result result})))
             context)}]
