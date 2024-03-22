@@ -473,9 +473,7 @@ export const PSCard = ({ item, key }) => {
         <div className="caps-heading-s">
           <Trans>National Source Inventory</Trans>
         </div>
-        <h4 className="w-semi">
-          {countryName === 'jamaica' ? 'Country A' : item?.country?.name}
-        </h4>
+        <h4 className="w-semi">{item?.country?.name}</h4>
         {/* <div className="compl">{`${progressValue}%`}</div> */}
         <div className="progress-bar">
           <div className="fill" style={{ width: `${progressValue}%` }}></div>

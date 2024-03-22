@@ -246,8 +246,7 @@ const NestedLayout = ({ children }) => {
     })
   }, [])
 
-  let psCountryName = psItem?.country?.name
-  if (psCountryName === 'Jamaica') psCountryName = 'Country A'
+  const psCountryName = psItem?.country?.name
 
   return (
     <div className={styles.plasticStrategyView}>
