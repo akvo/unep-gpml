@@ -1,15 +1,18 @@
 (ns dev.gethop.sql-utils
-  (:require [cheshire.core :as json]
-            [clojure.java.jdbc :as jdbc]
-            [clojure.java.jdbc.spec]
-            [clojure.spec.alpha :as s]
-            [clojure.string :as str]
-            [duct.logger :refer [log]]
-            [java-time :as jt]
-            [java-time.pre-java8 :as jt-pre-j8])
-  (:import [java.sql PreparedStatement SQLException]
-           org.postgresql.jdbc.PgArray
-           org.postgresql.util.PGobject))
+  (:require
+   [cheshire.core :as json]
+   [clojure.java.jdbc :as jdbc]
+   [clojure.java.jdbc.spec]
+   [clojure.spec.alpha :as s]
+   [clojure.string :as str]
+   [duct.logger :refer [log]]
+   [java-time :as jt]
+   [java-time.pre-java8 :as jt-pre-j8]
+   [taoensso.timbre :as timbre])
+  (:import
+   (java.sql PreparedStatement SQLException)
+   (org.postgresql.jdbc PgArray)
+   (org.postgresql.util PGobject)))
 
 (defn- convert-identifiers-option-fn
   [x]
@@ -170,7 +173,7 @@
   {:pre [(s/valid? ::pg-json pg-json)]}
   (json/decode (.getValue pg-json) #(keyword (convert-identifiers-option-fn %))))
 
-(s/def ::instant #(jt/instant? %))
+(s/def ::instant jt/instant?)
 (s/def ::sql-timestamp #(instance? java.sql.Timestamp %))
 (s/def ::instant->sql-timestamp-args (s/cat :v ::instant))
 (s/def ::instant->sql-timestamp-ret ::sql-timestamp)
@@ -247,9 +250,9 @@
         {:success? true :return-values result})
       (catch Exception e
         (let [msec (elapsed start)]
-          (log logger :error ::sql-query-error {:msec msec
-                                                :ex-message (.getMessage e)
-                                                :sql-statement sql-statement})
+          (timbre/with-context+ {::msec msec
+                                 ::sql-statement sql-statement}
+            (log logger :error :sql-query-error e))
           (explain-sql-error e))))))
 
 (s/def ::table :clojure.java.jdbc.spec/identifier)
@@ -286,10 +289,10 @@
         {:success? true :inserted-values count})
       (catch Exception e
         (let [msec (elapsed start)]
-          (log logger :error ::sql-insert!-error {:msec msec
-                                                  :ex-message (.getMessage e)
-                                                  :cols cols
-                                                  :values values})
+          (timbre/with-context+ {::msec msec
+                                 ::cols cols
+                                 ::values values}
+            (log logger :error :sql-insert!-error e))
           (explain-sql-error e))))))
 
 (s/def ::sql-insert-multiple!-args (s/cat :db-spec ::db-spec
@@ -322,10 +325,10 @@
         {:success? true :inserted-values count})
       (catch Exception e
         (let [msec (elapsed start)]
-          (log logger :error ::sql-insert-multi!-error {:msec msec
-                                                        :ex-message (.getMessage e)
-                                                        :cols cols
-                                                        :values values})
+          (timbre/with-context+ {::msec msec
+                                 ::cols cols
+                                 ::values values}
+            (log logger :error :sql-insert-multi!-error e))
           (explain-sql-error e))))))
 
 (s/def ::set-map (s/map-of :clojure.java.jdbc.spec/identifier
@@ -363,10 +366,10 @@
         {:success? true :processed-values count})
       (catch Exception e
         (let [msec (elapsed start)]
-          (log logger :error ::sql-update!-error {:msec msec
-                                                  :ex-message (.getMessage e)
-                                                  :set-map set-map
-                                                  :where-clause where-clause})
+          (timbre/with-context+ {::msec msec
+                                 ::set-map set-map
+                                 ::where-clause where-clause}
+            (log logger :error :sql-update!-error e))
           (explain-sql-error e))))))
 
 (s/def ::sql-update-or-insert!-args (s/cat :db-spec ::db-spec
@@ -423,10 +426,10 @@
             (throw (Exception. "sql-update-or-insert! tried to update more than one row!")))))
       (catch Exception e
         (let [msec (elapsed start)]
-          (log logger :error ::sql-update-or-insert!-error {:msec msec
-                                                            :ex-message (.getMessage e)
-                                                            :set-map set-map
-                                                            :where-clause where-clause})
+          (timbre/with-context+ {::msec msec
+                                 ::set-map set-map
+                                 ::where-clause where-clause}
+            (log logger :error :sql-update-or-insert!-error e))
           (explain-sql-error e))))))
 
 (s/def ::sql-delete!-args (s/cat :db-spec ::db-spec
@@ -458,9 +461,9 @@
         {:success? true :deleted-values count})
       (catch Exception e
         (let [msec (elapsed start)]
-          (log logger :error ::sql-delete-error {:msec msec
-                                                 :ex-message (.getMessage e)
-                                                 :where-clause where-clause})
+          (timbre/with-context+ {::msec msec
+                                 ::where-clause where-clause}
+            (log logger :error :sql-delete-error e))
           (explain-sql-error e))))))
 
 (s/def ::sql-execute!-args (s/cat :db-spec ::db-spec
@@ -489,7 +492,7 @@
         {:success? true :processed-values count})
       (catch Exception e
         (let [msec (elapsed start)]
-          (log logger :error ::sql-execute!-error {:msec msec
-                                                   :ex-message (.getMessage e)
-                                                   :sql-statement sql-statement})
+          (timbre/with-context+ {::msec msec
+                                 ::sql-statement sql-statement}
+            (log logger :error :sql-execute!-error e))
           (explain-sql-error e))))))
