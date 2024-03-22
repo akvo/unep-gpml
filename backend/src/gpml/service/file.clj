@@ -5,6 +5,7 @@
    [gpml.boundary.port.storage-client :as storage-client-ext]
    [gpml.db.file :as db.file]
    [gpml.util :as util]
+   [gpml.util.result :refer [failure]]
    [gpml.util.thread-transactions :as tht])
   (:import
    (com.google.cloud WriteChannel)
@@ -44,8 +45,7 @@
 (defn- get-public-file-url [{:keys [storage-api-host-name public-storage-bucket-name]} file]
   (let [object-key (:object-key file)]
     (if-not (and storage-api-host-name public-storage-bucket-name object-key)
-      {:success? false
-       :reason :insufficient-file-url-data}
+      (failure {:reason :insufficient-file-url-data})
       {:success? true
        :url (format "https://%s/%s/%s"
                     storage-api-host-name
@@ -75,8 +75,8 @@
          file)))
    files))
 
-(defn get-file [config conn search-opts]
-  (let [get-file-result (db.file/get-file conn search-opts)]
+(defn get-file [{:keys [logger] :as config} conn search-opts]
+  (let [get-file-result (db.file/get-file logger conn search-opts)]
     (if-not (:success? get-file-result)
       get-file-result
       (let [file (:file get-file-result)
@@ -86,14 +86,14 @@
            :file (assoc file :url (:url get-file-url-result))}
           get-file-url-result)))))
 
-(defn get-files [config conn search-opts]
-  (let [result (db.file/get-files conn search-opts)]
+(defn get-files [{:keys [logger] :as config} conn search-opts]
+  (let [result (db.file/get-files logger conn search-opts)]
     (if-not (:success? result)
       result
       {:success? true
        :files (add-files-urls config (:files result))})))
 
-(defn- upload-file [{:keys [storage-client-adapter] :as config}
+(defn- upload-file [{:keys [logger storage-client-adapter] :as config}
                     {:keys [object-key content type visibility]}]
   (try
     (let [{:keys [byte-buffer _size]} (file-content->byte-buffer content)]
@@ -106,9 +106,9 @@
         (.write ^WriteChannel writer byte-buffer))
       {:success? true})
     (catch Exception t
-      {:success? false
-       :reason :exception
-       :error-details {:msg (ex-message t)}})))
+      (log logger :error :could-not-upload-file t)
+      (failure {:reason :exception
+                :error-details {:msg (ex-message t)}}))))
 
 (defn create-file [{:keys [logger] :as config} conn file]
   (let [context {:success? true
@@ -125,7 +125,7 @@
                   (merge context (assoc result :reason :could-not-persist-file))))))
           :rollback-fn
           (fn rollback-create-file-persistence [{:keys [file] :as context}]
-            (let [{:keys [success?]} (db.file/delete-file conn (:id file))]
+            (let [{:keys [success?]} (db.file/delete-file logger conn (:id file))]
               (when-not success?
                 (log logger :error :rollback-create-file-persistence {:file (dissoc file :content)}))
               context))}
@@ -146,9 +146,9 @@
         transactions
         [{:txn-fn
           (fn get-file [{:keys [search-filters] :as context}]
-            (let [{:keys [success? file] :as result} (db.file/get-file
-                                                      conn
-                                                      {:filters search-filters})]
+            (let [{:keys [success? file] :as result} (db.file/get-file logger
+                                                                       conn
+                                                                       {:filters search-filters})]
               (if success?
                 (assoc context :file file)
                 (do
@@ -157,7 +157,7 @@
                   (merge context result)))))}
          {:txn-fn
           (fn delete-persisted-file [{:keys [file] :as context}]
-            (let [result (db.file/delete-file conn (:id file))]
+            (let [result (db.file/delete-file logger conn (:id file))]
               (if-not (:success? result)
                 (do
                   (log logger :error :delete-persisted-file-error {:object-key (:object-key file)

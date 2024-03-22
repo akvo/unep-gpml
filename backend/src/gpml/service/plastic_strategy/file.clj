@@ -4,6 +4,7 @@
    [gpml.db.plastic-strategy.file :as db.ps.file]
    [gpml.domain.file :as dom.file]
    [gpml.service.file :as srv.file]
+   [gpml.util.result :refer [failure]]
    [gpml.util.thread-transactions :as tht]))
 
 (defn create-ps-file [{:keys [db logger] :as config} ps-file]
@@ -15,10 +16,9 @@
                   result (srv.file/create-file config (:spec db) file)]
               (if (:success? result)
                 (assoc-in context [:ps-file :file-id] (:id file))
-                (assoc context
-                       :success? false
-                       :reason :failed-to-upload-ps-file
-                       :error-details {:result result}))))
+                (failure context
+                         :reason :failed-to-upload-ps-file
+                         :error-details {:result result}))))
           :rollback-fn
           (fn rollback-upload-ps-file
             [{{:keys [id]} :ps-file :as context}]
@@ -34,10 +34,9 @@
                                                     (dissoc ps-file :content))]
               (if (:success? result)
                 context
-                (assoc context
-                       :success? false
-                       :reason :failed-to-create-ps-file
-                       :error-details {:result result}))))}]
+                (failure context
+                         :reason :failed-to-create-ps-file
+                         :error-details {:result result}))))}]
         context {:success? true
                  :ps-file ps-file}]
     (tht/thread-transactions logger transactions context)))
@@ -50,10 +49,9 @@
             (let [result (db.ps.file/delete-ps-file (:spec db) ps-file)]
               (if (:success? result)
                 context
-                (assoc context
-                       :success? false
-                       :reason :failed-to-delete-ps-file
-                       :error-details {:result result}))))
+                (failure context
+                         :reason :failed-to-delete-ps-file
+                         :error-details {:result result}))))
           :rollback-fn
           (fn rollback-delete-ps-file
             [{:keys [ps-file] :as context}]
@@ -70,10 +68,9 @@
                                                {:id (:file-id ps-file)})]
               (if (:success? result)
                 context
-                (assoc context
-                       :success? false
-                       :reason :failed-to-delete-ps-file-from-obj-storage
-                       :error-details {:result result}))))}]
+                (failure context
+                         :reason :failed-to-delete-ps-file-from-obj-storage
+                         :error-details {:result result}))))}]
         context {:success? true
                  :ps-file ps-file}]
     (tht/thread-transactions logger transactions context)))

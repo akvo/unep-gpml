@@ -17,10 +17,10 @@
                          (let [db-badge (db.badge/badge->db-badge badge)
                                insert-cols (sql-util/get-insert-columns-from-entity-col [db-badge])
                                insert-values (sql-util/entity-col->persistence-entity-col [db-badge])
-                               {:keys [success? id] :as result} (db.badge/create-badge
-                                                                 (:spec db)
-                                                                 {:insert-cols insert-cols
-                                                                  :insert-values insert-values})]
+                               {:keys [success? id] :as result} (db.badge/create-badge logger
+                                                                                       (:spec db)
+                                                                                       {:insert-cols insert-cols
+                                                                                        :insert-values insert-values})]
                            (if success?
                              (assoc-in context [:badge :id] id)
                              (assoc context
@@ -30,7 +30,7 @@
                        :rollback-fn
                        (fn rollback-create-badge
                          [{:keys [badge] :as context}]
-                         (db.badge/delete-badge (:spec db) (:id badge))
+                         (db.badge/delete-badge logger (:spec db) (:id badge))
                          (dissoc context :badge))}
                       {:txn-fn
                        (fn create-badge-rbac-context

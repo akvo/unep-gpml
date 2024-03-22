@@ -1,8 +1,10 @@
 (ns gpml.db.badge
   #:ns-tracker{:resource-deps ["badge.sql"]}
   (:require
+   [duct.logger :refer [log]]
    [gpml.db.jdbc-util :as jdbc-util]
    [gpml.util :as util]
+   [gpml.util.result :refer [failure]]
    [gpml.util.sql :as sql-util]
    [hugsql.core :as hugsql]))
 
@@ -42,35 +44,33 @@
       (add-badge-assignment* conn (badge-assignment->p-badge-assignment badge-assignment))
       {:success? true})))
 
-(defn remove-badge-assignment [conn badge-assignment]
+(defn remove-badge-assignment [logger conn badge-assignment]
   (try
     (let [p-badge-assignment (badge-assignment->p-badge-assignment badge-assignment)
           affected (remove-badge-assignment* conn p-badge-assignment)]
       (if (= affected 1)
         {:success? true}
-        {:success? false
-         :reason :unexpected-number-of-affected-rows
-         :error-details {:expected-affected-rows 1
-                         :actual-affected-rows affected}}))
+        (failure {:reason :unexpected-number-of-affected-rows
+                  :error-details {:expected-affected-rows 1
+                                  :actual-affected-rows affected}})))
     (catch Exception t
-      {:success? false
-       :reason :exception
-       :error-details {:msg (ex-message t)}})))
+      (log logger :error :could-not-remove-badge-assignment t)
+      (failure {:reason :exception
+                :error-details {:msg (ex-message t)}}))))
 
-(defn delete-badge [conn badge-id]
+(defn delete-badge [logger conn badge-id]
   (try
     (let [affected (delete-badge*
                     conn
                     {:id badge-id})]
       (if (= 1 affected)
         {:success? true}
-        {:success? false
-         :reason :not-found}))
+        (failure {:reason :not-found})))
     (catch Exception t
-      {:success? false
-       :error-details {:ex-message (ex-message t)}})))
+      (log logger :error :could-not-delete-badge t)
+      (failure {:error-details {:ex-message (ex-message t)}}))))
 
-(defn create-badge [conn badge]
+(defn create-badge [logger conn badge]
   (try
     (jdbc-util/with-constraint-violation-check [{:type :unique
                                                  :name "badge_name_key"
@@ -78,21 +78,18 @@
       {:success? true
        :id (:id (create-badge* conn badge))})
     (catch Exception t
-      {:success? false
-       :reason :exception
-       :error-details {:msg (ex-message t)}})))
+      (log logger :error :could-not-create-badge t)
+      (failure {:reason :exception
+                :error-details {:msg (ex-message t)}}))))
 
-(defn get-badge-by-id-or-name [conn opts]
+(defn get-badge-by-id-or-name [logger conn opts]
   (try
-    (let [badge (get-badge-by-id-or-name*
-                 conn
-                 opts)]
+    (let [badge (get-badge-by-id-or-name* conn opts)]
       (if (seq badge)
         {:success? true
          :badge (jdbc-util/db-result-snake-kw->db-result-kebab-kw badge)}
-        {:success? false
-         :reason :not-found}))
+        (failure {:reason :not-found})))
     (catch Exception t
-      {:success? false
-       :reason :exception
-       :error-details (ex-message t)})))
+      (log logger :error :could-not-get-badge-by-id-or-name t)
+      (failure {:reason :exception
+                :error-details (ex-message t)}))))
