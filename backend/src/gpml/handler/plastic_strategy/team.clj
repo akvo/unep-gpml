@@ -64,8 +64,9 @@
 (defn- add-ps-team-member [config {:keys [user] {:keys [path body]} :parameters}]
   (let [country-iso-code-a2 (:iso_code_a2 path)
         search-opts {:filters {:countries-iso-codes-a2 [country-iso-code-a2]}}
-        {:keys [success? plastic-strategy reason] :as get-ps-result}
-        (svc.ps/get-plastic-strategy config search-opts)]
+
+        {:keys [success? plastic-strategy reason]
+         :as get-ps-result} (svc.ps/get-plastic-strategy config search-opts)]
     (if-not success?
       (if (= reason :not-found)
         (r/not-found {})
@@ -77,11 +78,11 @@
                                                   :custom-permission :add-team-member
                                                   :root-context? false})
         (r/forbidden {:message "Unauthorized"})
-        (let [body-params (-> (cske/transform-keys ->kebab-case body)
-                              (assoc :plastic-strategy-id (:id plastic-strategy)))
+        (let [ps-team-member (-> (cske/transform-keys ->kebab-case body)
+                                 (assoc :plastic-strategy-id (:id plastic-strategy)))
               result (svc.ps.team/add-ps-team-member config
                                                      plastic-strategy
-                                                     body-params)]
+                                                     ps-team-member)]
           (if (:success? result)
             (r/ok {})
             (if (= (:reason result) :ps-team-member-already-exists)
