@@ -95,8 +95,12 @@
                             first :id)]
         (is (= old-json-id (old-id :id)))))
 
-    (let [me (dummy/get-or-create-profile
-              db "test@akvo.org" "Testing Profile" "ADMIN" "APPROVED")
+    (let [me (dummy/get-or-create-profile (-> fixtures/*system* (get-in [[:duct/const :gpml.config/common] :logger]) (doto (assert)))
+                                          db
+                                          "test@akvo.org"
+                                          "Testing Profile"
+                                          "ADMIN"
+                                          "APPROVED")
           country (first (db.country/get-countries db {:filters {:iso-codes-a3 ["CYP"]
                                                                  :descriptions ["Member State"]}}))
           _ (db.stakeholder/update-stakeholder db {:country (:id country)
@@ -170,8 +174,12 @@
         countries-old (filter #(-> % :name str/trim not-empty) (seeder/get-data "countries"))
         ;; seed countries with old id
         _ (seeder/seed-countries db {:old? true})
-        me (dummy/get-or-create-profile
-            db "test@akvo.org" "Testing Profile" "ADMIN" "APPROVED")
+        me (dummy/get-or-create-profile (-> fixtures/*system* (get-in [[:duct/const :gpml.config/common] :logger]) (doto (assert)))
+                                        db
+                                        "test@akvo.org"
+                                        "Testing Profile"
+                                        "ADMIN"
+                                        "APPROVED")
         country (first (db.country/get-countries db {:filters {:iso-codes-a3 ["IDN"]
                                                                :descriptions ["Member State"]}}))
         _ (db.stakeholder/update-stakeholder db {:country (:id country)
