@@ -25,6 +25,7 @@
    [gpml.util :as util]
    [gpml.util.image :as util.image]
    [gpml.util.malli :as util.malli]
+   [gpml.util.result :refer [failure]]
    [gpml.util.sql :as sql-util]
    [integrant.core :as ig]
    [java-time.api :as jt]
@@ -521,9 +522,8 @@
     (catch Exception e
       (let [reason (keyword (str "failed-to-save-" entity-name))]
         (log logger :error reason e)
-        {:success? false
-         :reason reason
-         :error-details e}))))
+        (failure {:reason reason
+                  :error-details e})))))
 
 (defn- add-gpml-image-url [config conn logger entity-name data-coll]
   (reduce
@@ -563,9 +563,8 @@
     (catch Exception e
       (let [reason (keyword (str "failed-to-save-" entity-name))]
         (log logger :error reason e)
-        {:success? false
-         :reason reason
-         :error-details reason}))))
+        (failure {:reason reason
+                  :error-details reason})))))
 
 (defmethod save-as-gpml-entity* :event
   [{:keys [logger db] :as config} entity-name data-coll opts]
@@ -577,9 +576,8 @@
     (catch Exception e
       (let [reason (keyword (str "failed-to-save-" entity-name))]
         (log logger :error reason e)
-        {:success? false
-         :reason reason
-         :error-details e}))))
+        (failure {:reason reason
+                  :error-details e})))))
 
 (defmethod save-as-gpml-entity* :initiative
   [{:keys [db logger] :as config} entity-name data-coll opts]
@@ -592,9 +590,8 @@
     (catch Exception e
       (let [reason (keyword (str "failed-to-save-" entity-name))]
         (log logger :error reason e)
-        {:success? false
-         :reason reason
-         :error-details e}))))
+        (failure {:reason reason
+                  :error-details e})))))
 
 (defn- save-as-gpml-entity [{:keys [logger] :as config} entity-name data-coll opts]
   (let [started-at (System/currentTimeMillis)

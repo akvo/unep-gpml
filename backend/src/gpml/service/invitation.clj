@@ -6,6 +6,7 @@
    [gpml.db.stakeholder :as db.stakeholder]
    [gpml.service.permissions :as srv.permissions]
    [gpml.util :as util]
+   [gpml.util.result :refer [failure]]
    [gpml.util.thread-transactions :as tht]))
 
 (defn invite-user [{:keys [db logger]} invitation-payload]
@@ -24,14 +25,12 @@
                     (assoc :user-id (-> result :stakeholder :id))
                     (update-in [:invitation-payload :user] merge stakeholder))
                 (if (= (:reason result) :already-exists)
-                  (assoc context
-                         :success? false
-                         :reason :already-exists
-                         :error-details {:result result})
-                  (assoc context
-                         :success? false
-                         :reason :failed-to-create-invited-user
-                         :error-details {:result result})))))
+                  (failure context
+                           :reason :already-exists
+                           :error-details {:result result})
+                  (failure context
+                           :reason :failed-to-create-invited-user
+                           :error-details {:result result})))))
           :rollback-fn
           (fn rollback-create-stakeholder
             [{{:keys [user]} :invitation-payload :as context}]
@@ -48,10 +47,9 @@
                                                                    :resource-id user-id})]
               (if (:success? result)
                 context
-                (assoc context
-                       :success? false
-                       :reason :failed-to-create-rbac-context
-                       :error-details {:result result}))))
+                (failure context
+                         :reason :failed-to-create-rbac-context
+                         :error-details {:result result}))))
           :rollback-fn
           (fn rollback-create-rbac-context
             [{:keys [user-id] :as context}]
@@ -75,10 +73,9 @@
                                  role-assignments))]
               (if (:success? result)
                 context
-                (assoc context
-                       :success? false
-                       :reason :failed-to-assing-unapproved-rbac-role-to-user
-                       :error-details {:result result}))))
+                (failure context
+                         :reason :failed-to-assing-unapproved-rbac-role-to-user
+                         :error-details {:result result}))))
           :rollback-fn
           (fn rollback-assign-unapproved-rbac-role
             [{{:keys [user]} :invitation-payload :as context}]
@@ -105,10 +102,9 @@
                                                           invitation)]
               (if (:success? result)
                 (assoc context :invitation (:invitation result))
-                (assoc context
-                       :success? false
-                       :reason :failed-to-create-invitation
-                       :error-details {:result result}))))
+                (failure context
+                         :reason :failed-to-create-invitation
+                         :error-details {:result result}))))
           :rollback-fn
           (fn rollback-create-invitation
             [{{:keys [id]} :invitation :as context}]
