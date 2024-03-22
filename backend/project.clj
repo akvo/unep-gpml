@@ -8,6 +8,7 @@
   :license {:name "AGPL-3.0"
             :url "https://www.gnu.org/licenses/agpl-3.0.en.html"}
   :min-lein-version "2.0.0"
+  :exclusions [dev.gethop/sql-utils] ;; favor our own copy of this artifact's single ns
   :dependencies [[camel-snake-kebab "0.4.3"]
                  [clj-commons/iapetos "0.1.13" :exclusions [io.prometheus/simpleclient]]
                  [clj-http "3.12.3"]
