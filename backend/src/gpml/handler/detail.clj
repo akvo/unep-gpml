@@ -622,7 +622,8 @@
 (def put-params
   ;; FIXME: Add validation
   ;; -- Cannot be empty, for one.
-  [:map])
+  [:map
+   {:closed false}])
 
 (defn update-resource-tags
   "Updates the resource tags and creating new ones if provided. Note
