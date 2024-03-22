@@ -6,7 +6,7 @@
    [clojure.spec.alpha :as s]
    [clojure.string :as str]
    [duct.logger :refer [log]]
-   [java-time :as jt]
+   [java-time.api :as jt]
    [java-time.pre-java8 :as jt-pre-j8]
    [taoensso.timbre :as timbre])
   (:import

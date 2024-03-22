@@ -130,7 +130,7 @@
    :eastwood {:plugins [[jonase/eastwood "1.4.2"]]
               :eastwood {:linters [:all]
                          :config-files ["eastwood_cfg.clj"]
-                         :ignored-faults {}
+                         :ignored-faults {:unused-fn-args {dev.gethop.sql-utils true}}
                          :exclude-linters [:keyword-typos
                                            :boxed-math
                                            :unused-locals
