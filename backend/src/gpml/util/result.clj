@@ -8,6 +8,7 @@
   so that it can be easily diagnosed in logs/Sentry."
   {:style/indent :form}
   [m & kvs]
+  {:pre [(-> kvs count even?)]}
   (list `merge
         m
         (into {:success? false}
