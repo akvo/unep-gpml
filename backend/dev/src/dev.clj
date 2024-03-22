@@ -165,11 +165,14 @@
                io/file
                .getAbsolutePath
                (sh "test"
-                   "2024-03-15T12:00:00Z"
-                   "2024-03-15T13:13:00Z")
+                   "2024-03-22T04:00:00Z"
+                   "2024-03-22T12:11:00Z")
                :out
                json/<-json)))
 
   (filterv (comp #{"/api/chat/user/channel"}
-                 :gpml.handler.main/request-url)
+                 :gpml.handler.main/request-url))
+
+  (filterv (comp #{"post"}
+                 :gpml.handler.main/request-method)
            gcloud-logs))
