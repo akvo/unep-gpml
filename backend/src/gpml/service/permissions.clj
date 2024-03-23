@@ -34,7 +34,11 @@
                                        (or parent-resource-id
                                            root-app-resource-id))]
     (if-not (and success? parent-context)
-      (log logger :warn :will-not-create-context result)
+      (log logger :warn :will-not-create-context {:result result
+                                                  :context-type context-type
+                                                  :resource-id resource-id
+                                                  :parent-context-type parent-context-type
+                                                  :parent-resource-id parent-resource-id})
       (let [new-context {:context-type-name context-type
                          :resource-id resource-id}]
         (rbac/create-context! conn logger new-context parent-context)))))

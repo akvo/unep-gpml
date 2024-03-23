@@ -32,7 +32,9 @@
 
 (defn- dev-system []
   (-> (duct/resource "gpml/duct.edn")
-      (duct/read-config {'gpml/eval eval})
+      (duct/read-config {'gpml/profile (fn [_]
+                                         :dev)
+                         'gpml/eval eval})
       (duct/prep-config [:duct.profile/dev])))
 
 (defn parse-date [x]
