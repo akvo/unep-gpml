@@ -965,7 +965,8 @@
  :gpml.boundary.adapter.storage-client.gcs/client                   {}
 
  :gpml.boundary.adapter.chat/ds-chat          {:api-key #duct/env ["DEAD_SIMPLE_CHAT_API_KEY" Str]
-                                               :logger  #ig/ref :duct/logger}
+                                               :logger  #ig/ref :duct/logger
+                                               :profile #gpml/profile []}
  :duct.migrator/ragtime                       {:migrations #ig/ref :duct.migrator.ragtime/resources
                                                :logger     #ig/ref :duct/logger
                                                :strategy   :raise-error}

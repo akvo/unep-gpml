@@ -13,6 +13,7 @@
    [gpml.util.json :as json]
    [gpml.util.malli :refer [check! PresentString]]
    [gpml.util.result :refer [failure]]
+   [gpml.util.thread-transactions :refer [saga]]
    [integrant.core :as ig]
    [taoensso.timbre :as timbre]))
 
@@ -207,8 +208,9 @@
       (not (:metadata v)) (dissoc :metadata)
       (not (:description v)) (dissoc :description))))
 
-(defn get-all-channels* [{:keys [logger api-key]} _opts]
-  {:post [(check! #'port.chat/get-all-channels %)]}
+(defn get-all-channels* [{:keys [logger api-key profile]} _opts]
+  {:pre [(check! keyword? profile)]
+   :post [(check! #'port.chat/get-all-channels %)]}
   (let [{:keys [status body]}
         (http-client/request logger
                              {:url (build-api-endpoint-url "/api/v2/chatrooms")
@@ -220,8 +222,12 @@
       (failure {:reason :failed-to-get-channels
                 :error-details {:result body}})
       {:success? true
-       :channels (mapv (fn [channel]
-                         (present-channel (cske/transform-keys ->kebab-case channel)))
+       :channels (into []
+                       (comp (map (fn [channel]
+                                    (present-channel (cske/transform-keys ->kebab-case channel))))
+                             (filter (fn [channel]
+                                       (= (name profile)
+                                          (some-> channel :metadata :environment)))))
                        (:data body))})))
 
 (defn get-all-channels-fn [privacy]
@@ -390,12 +396,14 @@
   (delay
     (slurp (io/resource "ds_chat/custom.css"))))
 
-(defn create-channel* [{:keys [logger api-key]} channel permission-level]
-  {:pre [(check! port.chat/NewChannel channel
+(defn create-channel* [{:keys [logger api-key profile]} channel permission-level]
+  {:pre [(check! :keyword profile
+                 port.chat/NewChannel channel
                  [:enum public-permission-level private-permission-level] permission-level)]}
   (let [req-body (cond-> (dissoc channel :privacy)
                    (:description channel) (assoc :description (:description channel))
                    true (assoc :defaultNotificationEnabled "off"
+                               :metadata (json/->json {:environment (name profile)})
                                :customization {"hideSidebar" true
                                                "fontFamily" "DM Sans",
                                                "useCustomFont" true,
@@ -523,31 +531,45 @@
    [:metadata {:optional true}
     map?]])
 
-(defn set-channel-custom-fields* [{:keys [logger api-key]} channel-id custom-fields]
+(defn set-channel-custom-fields* [{:keys [logger api-key] :as config} channel-id custom-fields]
   {:pre  [(check! RoomId channel-id
                   ChannelUpdates custom-fields)]
    :post [(check! #'port.chat/set-public-channel-custom-fields %)]}
-  (let [{:keys [status body]}
-        (http-client/request logger
-                             {:url (build-api-endpoint-url "/api/v1/chatroom/" channel-id)
-                              :method :put
-                              :query-params {:auth api-key}
-                              :body (cond-> custom-fields
-                                      (:metadata custom-fields) (update :metadata json/->json)
-                                      true json/->json)
-                              :as :json-keyword-keys})]
-    (timbre/with-context+ {:channel-id channel-id
-                           :custom-fields custom-fields}
-      (if (<= 200 status 299)
-        (do
-          (log logger :info :successfully-set-channel-custom-fields)
-          {:success? true
-           :channel {:id (:roomId body)
-                     :url (:url body)}})
-        (do
-          (log logger :warn :failed-to-set-channel-custom-fields)
-          (failure {:reason :failed-to-set-public-channel-custom-fields
-                    :error-details body}))))))
+  (saga logger {:success? true}
+
+    (fn get-channel [_context]
+      ;; Get the channel so that we can preserve its metadata
+      ;; (most critically, its :environment)
+      (get-channel* config channel-id))
+
+    (fn do-set-custom-fields [context]
+      (let [existing-metadata (-> context :channel :metadata)
+            {:keys [status body]}
+            (http-client/request logger
+                                 {:url (build-api-endpoint-url "/api/v1/chatroom/" channel-id)
+                                  :method :put
+                                  :query-params {:auth api-key}
+                                  :body (cond-> custom-fields
+                                          (and (:metadata custom-fields)
+                                               existing-metadata)   (update :metadata (fn [v]
+                                                                                        (merge existing-metadata
+                                                                                               ;; the new one takes priority.
+                                                                                               v)))
+                                          (:metadata custom-fields) (update :metadata json/->json)
+                                          true json/->json)
+                                  :as :json-keyword-keys})]
+        (timbre/with-context+ {:channel-id channel-id
+                               :custom-fields custom-fields}
+          (if (<= 200 status 299)
+            (do
+              (log logger :info :successfully-set-channel-custom-fields)
+              {:success? true
+               :channel {:id (:roomId body)
+                         :url (:url body)}})
+            (do
+              (log logger :warn :failed-to-set-channel-custom-fields)
+              (failure {:reason :failed-to-set-public-channel-custom-fields
+                        :error-details body}))))))))
 
 (defn get-channel-discussions* [{:keys [logger api-key]} channel-id]
   {:pre  [channel-id]
@@ -652,7 +674,7 @@
                                                (-> a-public-channel :channel :id)
                                                {:description (str (random-uuid))
                                                 :name (str (random-uuid))
-                                                :metadata (json/->json {:a 1})})
+                                                :metadata {:a 1}})
 
   (port.chat/add-user-to-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
                                         uniqueUserIdentifier
