@@ -21,7 +21,9 @@
 
 (defn dev-system []
   (-> (duct/resource "gpml/duct.edn")
-      (duct/read-config {'gpml/eval eval})
+      (duct/read-config {'gpml/profile (fn [_]
+                                         :dev)
+                         'gpml/eval eval})
       (duct/prep-config [:duct.profile/dev])))
 
 (def lorem "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas luctus eros at consequat accumsan. Integer massa ligula, blandit at commodo vitae, vestibulum et erat.")

@@ -18,8 +18,10 @@
 (defmethod ig/init-key :gpml.test/db [_ spec]
   (sql/->Boundary spec))
 
-(defn read-config [x]
-  (duct/read-config x {'gpml/eval eval}))
+(defn read-config [x main-profile]
+  (duct/read-config x {'gpml/eval eval
+                       'gpml/profile (fn [_]
+                                       main-profile)}))
 
 (defn- test-system []
   (when (System/getenv "CI")
@@ -30,11 +32,12 @@
              (io/file "test-resources" "local.edn")))
 
   (-> (duct/resource "gpml/duct.edn")
-      (read-config)
+      (read-config :test)
 
       ;; support an ad-hoc profile for simple tweaks.
       ;; Note that duct doesn't make it easy to create custom profiles
-      (cond-> (io/resource "localtest.edn") (merge (read-config (duct/resource "localtest.edn"))))
+      (cond-> (io/resource "localtest.edn") (merge (read-config (duct/resource "localtest.edn")
+                                                                :test)))
 
       (duct/prep-config (cond-> [:duct.profile/test]
                           (System/getenv "CI")

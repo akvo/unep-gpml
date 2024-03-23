@@ -30,7 +30,7 @@
 (duct/load-hierarchy)
 
 (defn read-config []
-  (-> "gpml/duct.edn" io/resource gpml.fixtures/read-config))
+  (-> "gpml/duct.edn" io/resource (gpml.fixtures/read-config :dev)))
 
 (defn test
   ([v]
