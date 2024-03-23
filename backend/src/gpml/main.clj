@@ -19,5 +19,13 @@
           keys     (or (parse-keys args) [:duct/daemon])
           profiles [:duct.profile/prod]]
       (-> (resource "gpml/duct.edn")
-          (read-config)
+          (read-config {'gpml/profile (fn [_]
+                                        ;; In GCP we have the 'production' and 'test' environments.
+                                        ;; To avoid conflating GCP 'test' with local 'test',
+                                        ;; all GCP environments are prefixed with prod-.
+                                        ;; So we intend to have prod-production and prod-test.
+                                        (let [e (System/getenv "ENV_NAME")]
+                                          (when (empty? e)
+                                            (throw (ex-info "ENV_NAME is unset" {})))
+                                          (keyword (str "prod-" e))))})
           (exec-config profiles keys)))))
