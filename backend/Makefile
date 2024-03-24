@@ -68,4 +68,4 @@ psql_test:
 		psql -h localhost -p 5432 -d gpml_test -U unep
 
 uberjar: clean
-		lein with-profile uberjar uberjar
+		UBERJAR_IN_COURSE=true lein with-profile uberjar uberjar

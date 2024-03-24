@@ -31,7 +31,7 @@ lein with-profile -dev,+test,+seeder,+clj-kondo clj-kondo
 lein with-profile -user,-dev,+test,+seeder,+eastwood eastwood
 CI=true lein with-profile -user,-dev,+test,+seeder,+eftest eftest
 lein clean
-lein with-profile uberjar uberjar
+UBERJAR_IN_COURSE=true lein with-profile uberjar uberjar
 
 jar tf target/uberjar/app.jar | grep --silent duct_hierarchy.edn || exit 1
 jar tf target/uberjar/app.jar | grep --silent migrations/203-add-missing-on-delete-cascade-constraints.up.sql || exit 1
