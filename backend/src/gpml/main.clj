@@ -25,7 +25,8 @@
                                         ;; all GCP environments are prefixed with prod-.
                                         ;; So we intend to have prod-production and prod-test.
                                         (let [e (System/getenv "ENV_NAME")]
-                                          (when (empty? e)
+                                          (when (and (empty? e)
+                                                     (not (System/getenv "UBERJAR_IN_COURSE")))
                                             (throw (ex-info "ENV_NAME is unset" {})))
                                           (keyword (str "prod-" e))))})
           (exec-config profiles keys)))))
