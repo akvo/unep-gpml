@@ -323,6 +323,29 @@
                      :reason :failed-to-get-channels
                      :error-details {:result result})))))
 
+    (fn add-plastic-strategies-ids [context]
+      (let [{:keys [success?]
+             ids :result
+             :as result} (db/execute! hikari {:select :chat_channel_id
+                                              :from :plastic_strategy
+                                              :where [:not= :chat_channel_id nil]})]
+        (if success?
+          (assoc context :plastic-strategies-ids (into #{}
+                                                       (map :chat-channel-id)
+                                                       ids))
+          result)))
+
+    (fn remove-channels-associated-to-plastic-strategies [{:keys [plastic-strategies-ids]
+                                                           :as context}]
+      {:pre [(check! set? plastic-strategies-ids)]}
+      (update context :channels (fn [channels]
+                                  (into []
+                                        (remove (fn [{:keys [id] :as channel}]
+                                                  {:pre [(check! some? id
+                                                                 port.chat/Channel channel)]}
+                                                  (contains? plastic-strategies-ids id)))
+                                        channels))))
+
     (fn add-users [context]
       (try
         (update context :channels (fn [channels]

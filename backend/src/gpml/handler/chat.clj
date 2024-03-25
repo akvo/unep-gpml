@@ -610,6 +610,7 @@ so you don't need to call the POST /api/chat/user/account endpoint beforehand."
                        {:url (str "http://localhost:3000/api/chat/channel/details/" channel-id)
                         :as :json-keyword-keys})
 
+  ;; NOTE: channels associated to Plastic Strategies are filtered out
   (http-client/request (dev/logger)
                        {:url "http://localhost:3000/api/chat/channel/all"
                         :as :json-keyword-keys})
