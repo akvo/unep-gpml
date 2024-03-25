@@ -15,7 +15,7 @@
               (mapv vec (partition 2 kvs)))
         (some-> &form
                 meta
-                (select-keys [:file :line :column])
-                (set/rename-keys {:file   ::file
-                                  :line   ::line
-                                  :column ::column}))))
+                (select-keys [:line :column])
+                (set/rename-keys {:line   ::line
+                                  :column ::column})
+                (assoc ::file (str *file*)))))
