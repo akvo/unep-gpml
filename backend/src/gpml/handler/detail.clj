@@ -453,9 +453,13 @@
             (if-not (and (= resource-type "stakeholder")
                          (seq (:chat_account_id resource)))
               context
-              (let [result (port.chat/delete-user-account (:chat-adapter config)
-                                                          (:chat_account_id resource)
-                                                          {})]
+              (let [result (if-not (:user (port.chat/get-user-info (:chat-adapter config)
+                                                                   (:chat_account_id resource)
+                                                                   {}))
+                             {:success? true}
+                             (port.chat/delete-user-account (:chat-adapter config)
+                                                            (:chat_account_id resource)
+                                                            {}))]
                 (if (:success? result)
                   context
                   (assoc context
@@ -468,7 +472,11 @@
             (if-not (and (= resource-type "stakeholder")
                          (seq (:chat_account_id resource)))
               context
-              (let [result (svc.chat/create-user-account config (:id resource))]
+              (let [result (if (:user (port.chat/get-user-info (:chat-adapter config)
+                                                               (:chat_account_id resource)
+                                                               {}))
+                             {:success? true}
+                             (svc.chat/create-user-account config (:id resource)))]
                 (if (:success? result)
                   context
                   (do
