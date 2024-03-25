@@ -94,7 +94,8 @@
         (do
           (log logger :warn :failed-to-create-chat-user)
           (failure {:reason :failed-to-create-user-account
-                    :error-details body}))))))
+                    :error-details body
+                    :status status}))))))
 
 (def RoomId PresentString)
 
@@ -142,7 +143,8 @@
         (do
           (log logger :warn :failed-to-update-user-account)
           (failure {:reason :failed-to-update-user-account
-                    :error-details body}))))))
+                    :error-details body
+                    :status status}))))))
 
 (defn delete-user-account* [{:keys [logger api-key]} user-id _opts]
   {:pre  [(check! port.chat/UniqueUserIdentifier user-id)]
@@ -163,7 +165,8 @@
         (do
           (log logger :warn :failed-to-delete-user-account)
           (failure {:reason :failed-to-delete-user-account
-                    :error-details body}))))))
+                    :error-details body
+                    :status status}))))))
 
 (defn set-user-account-active-status* [{:keys [logger api-key]} user-id active? _opts]
   {:pre  [(check! port.chat/UniqueUserIdentifier user-id
@@ -190,7 +193,8 @@
         (do
           (log logger :warn :failed-to-update-active-status)
           (failure {:reason :failed-to-set-user-account-active-status
-                    :error-details body}))))))
+                    :error-details body
+                    :status status}))))))
 
 (defn present-channel [channel]
   {:post [(check! port.chat/Channel %)]}
@@ -220,7 +224,8 @@
                               :as :json-keyword-keys})]
     (if-not (<= 200 status 299)
       (failure {:reason :failed-to-get-channels
-                :error-details {:result body}})
+                :error-details {:result body}
+                :status status})
       {:success? true
        :channels (into []
                        (comp (map (fn [channel]
@@ -258,7 +263,8 @@
                               :as :json-keyword-keys})]
     (if-not (<= 200 status 299)
       (failure {:reason :failed-to-get-channel
-                :error-details {:result channel}})
+                :error-details {:result channel}
+                :status status})
       (let [{:keys [status]
              members :body}
             (http-client/request logger
@@ -269,7 +275,8 @@
                                   :as :json-keyword-keys})]
         (if-not (<= 200 status 299)
           (failure {:reason :failed-to-get-members
-                    :error-details {:result members}})
+                    :error-details {:result members}
+                    :status status})
           (let [{:keys [status]
                  messages :body}
                 (http-client/request logger
@@ -280,7 +287,8 @@
                                       :as :json-keyword-keys})]
             (if-not (<= 200 status 299)
               (failure {:reason :failed-to-get-messages
-                        :error-details {:result messages}})
+                        :error-details {:result messages}
+                        :status status})
               {:success? true
                :channel (-> (cske/transform-keys ->kebab-case channel)
                             (present-channel)
@@ -340,7 +348,8 @@
                            (filter (comp valid-ids :id))
                            (:channels all))}))
       (failure {:reason :failed-to-add-user-to-channel
-                :error-details body}))))
+                :error-details body
+                :status status}))))
 
 (defn remove-user-from-channel* [{:keys [logger api-key]} user-id channel-id _]
   {:pre  [(check! port.chat/UniqueUserIdentifier user-id
@@ -362,7 +371,8 @@
         (do
           (log logger :warn :failed-to-remove-user-from-channel)
           (failure {:reason :failed-to-remove-user-from-channel
-                    :error-details body}))))))
+                    :error-details body
+                    :status status}))))))
 
 (defn add-user-to-channel* [{:keys [logger api-key]} user-id channel-id]
   {:pre  [(check! port.chat/UniqueUserIdentifier user-id
@@ -386,7 +396,8 @@
         (do
           (log logger :warn :could-not-add-user-to-channel)
           (failure {:reason :failed-to-add-user-to-channel
-                    :error-details body}))))))
+                    :error-details body
+                    :status status}))))))
 
 (def public-permission-level "provisioned_users")
 
@@ -441,7 +452,8 @@
         (do
           (log logger :warn :failed-to-create-channel)
           (failure {:reason :failed-to-create-channel
-                    :error-details body}))))))
+                    :error-details body
+                    :status status}))))))
 
 (defn create-public-channel* [adapter channel]
   {:post [(check! #'port.chat/create-public-channel %)]}
@@ -480,7 +492,8 @@
         (do
           (log logger :warn :failed-to-create-discussion)
           (failure {:reason :failed-to-create-discussion
-                    :error-details body}))))))
+                    :error-details body
+                    :status status}))))))
 
 (defn delete-channel-discussion* [{:keys [logger api-key]} room-id discussion-id]
   {:pre  [(check! :string room-id
@@ -501,7 +514,8 @@
         (do
           (log logger :warn :failed-to-deleted-discussion)
           (failure {:reason :failed-to-deleted-discussion
-                    :error-details body}))))))
+                    :error-details body
+                    :status status}))))))
 
 (defn delete-channel* [{:keys [logger api-key]} channel-id]
   {:pre  [(check! RoomId channel-id)]
@@ -520,7 +534,8 @@
         (do
           (log logger :warn :could-not-delete-channel)
           (failure {:reason :failed-to-delete-public-channel
-                    :error-details body}))))))
+                    :error-details body
+                    :status status}))))))
 
 (def ChannelUpdates
   [:map {:closed true}
@@ -569,7 +584,8 @@
             (do
               (log logger :warn :failed-to-set-channel-custom-fields)
               (failure {:reason :failed-to-set-public-channel-custom-fields
-                        :error-details body}))))))))
+                        :error-details body
+                        :status status}))))))))
 
 (defn get-channel-discussions* [{:keys [logger api-key]} channel-id]
   {:pre  [channel-id]
@@ -584,7 +600,8 @@
       {:success? true
        :discussions (mapv extract-discussion body)}
       (failure {:reason :failed-to-get-channel-discussions
-                :error-details body}))))
+                :error-details body
+                :status status}))))
 
 (defn map->DSChat [m]
   {:pre [(check! [:map
