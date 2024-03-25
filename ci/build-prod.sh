@@ -33,7 +33,6 @@ frontend_build () {
 
   dc run \
      --rm \
-     --no-deps \
      frontend \
      bash release.sh
 
