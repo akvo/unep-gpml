@@ -160,13 +160,14 @@
   ;; Grabs the test/prod gcloud logs between two timestamps.
   ;; This data is good to feed into your favorite interactive tool (rebl, cider inspector, etc).
   @(def gcloud-logs
-     (mapv :jsonPayload
+     (into []
+           (keep (some-fn :jsonPayload :textPayload))
            (-> "glog.sh"
                io/file
                .getAbsolutePath
-               (sh "test"
-                   "2024-03-22T04:00:00Z"
-                   "2024-03-22T12:11:00Z")
+               (sh "production" ;; "production" | "test"
+                   "2024-03-25T04:00:00Z"
+                   "2024-03-25T14:00:00Z")
                :out
                json/<-json)))
 

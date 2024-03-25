@@ -27,6 +27,11 @@
 (def ChannelPrivacy
   [:enum public private])
 
+(def ChannelDescription
+  [:string {:max
+            ;; DSC max is 100 at the moment:
+            100}])
+
 (def Channel ;; TODO https://clojurians.slack.com/archives/CLDK6MFMK/p1709154587503499
   [:map
    {:closed true}
@@ -34,7 +39,7 @@
    [:metadata {:optional true} map?]
    [:show-notification-for-all-channels boolean?]
    [:name :string]
-   [:description {:optional true} :string]
+   [:description {:optional true} ChannelDescription]
    [:enable-like-message boolean?]
    [:id :string]
    [:enable-one-to-one-chat boolean?]
@@ -160,7 +165,7 @@
 (def ChannelEdit
   [:map {:closed true}
    [:name  {:optional true} :string]
-   [:description {:optional true} :string]])
+   [:description {:optional true} ChannelDescription]])
 
 (def NewDiscussion
   [:map
