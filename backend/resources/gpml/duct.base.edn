@@ -1001,7 +1001,8 @@
                                                                   :meeting     #duct/env ["BRS_API_MEETINGS_ENDPOINT" Str]
                                                                   :project     #duct/env ["BRS_API_PROJECTS_ENDPOINT" Str]}}
  :gpml/scheduler                              #ig/ref :gpml/twarc-scheduler
- :gpml/twarc-scheduler                        {:thread-count #duct/env ["SCHEDULER_THREAD_COUNT" Int :or 50]}
+ :gpml/twarc-scheduler                        {:logger           #ig/ref :duct/logger
+                                               :thread-count #duct/env ["SCHEDULER_THREAD_COUNT" Int :or 50]}
  :gpml.scheduler/leap-api-policy-importer     {:config           #ig/ref :gpml.config/common
                                                :scheduler-config {:time-zone #duct/env ["SCHEDULER_TIME_ZONE" Str :or "Europe/Madrid"]
                                                                   :identity  "leap-api-policy-importer"
