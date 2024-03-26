@@ -7,6 +7,7 @@
  :config-in-comment {:linters {:unresolved-var       {:level :off}
                                :unresolved-namespace {:level :off}}}
  :lint-as           {gpml.handler.responses/def-http-status clj-kondo.lint-as/def-catch-all
+                     twarc.core/defjob                      clj-kondo.lint-as/def-catch-all
                      gpml.util.malli/defprotocol            clojure.core/defprotocol}
  :linters           {:discouraged-var                       {clojure.core/read-string     {:message "Please prefer clojure.edn/read-string"}
                                                              taoensso.timbre/with-context {:message "Please prefer taoensso.timbre/with-context+"}}

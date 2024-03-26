@@ -1011,4 +1011,10 @@
                                                :scheduler-config {:time-zone #duct/env ["SCHEDULER_TIME_ZONE" Str :or "Europe/Madrid"]
                                                                   :identity  "brs-api-importer"
                                                                   :cron      #duct/env ["SCHEDULER_BRS_API_IMPORTER_CRON" Str
-                                                                                        :or "0 0 3 1/7 * ? *"]}}}
+                                                                                        :or "0 0 3 1/7 * ? *"]}}
+ :gpml.scheduler/chat-message-summarizer      {:config           #ig/ref :gpml.config/common
+                                               :scheduler-config {:time-zone #duct/env ["SCHEDULER_TIME_ZONE" Str :or "Europe/Madrid"]
+                                                                  :identity  "chat-message-summarizer"
+                                                                  :cron      #duct/env ["SCHEDULER_CHAT_MESSAGE_SUMMARIZER_CRON" Str
+                                                                                        ;; Every five minutes
+                                                                                        :or "0 0/5 * * * ?"]}}}
