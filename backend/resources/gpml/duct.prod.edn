@@ -1,4 +1,4 @@
-{:gpml.timbre-logger.json/logger        {}
+{:gpml.timbre-logger.json/logger        {:logger #ig/ref :duct/logger}
  :gpml.handler.main/handler             {:collector #ig/ref :gpml.handler.monitoring/collector}
  :duct.server.http/jetty                {:configurator #ig/ref :gpml.handler.monitoring/jetty-configurator}
  :duct.logger/timbre                    {:min-level        :warn
