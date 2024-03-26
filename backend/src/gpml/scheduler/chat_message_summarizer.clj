@@ -12,7 +12,7 @@
 
 (defn- schedule-job [{:keys [scheduler logger] :as config} scheduler-config]
   (let [time-zone (java.util.TimeZone/getTimeZone ^String (:time-zone scheduler-config))]
-    (log logger :info :chat-message-summarization scheduler-config)
+    (log logger :report :chat-message-summarization scheduler-config)
     (chat-message-summarization scheduler
                                 [config]
                                 :trigger {:cron {:expression (:cron scheduler-config)

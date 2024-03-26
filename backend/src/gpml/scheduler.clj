@@ -1,5 +1,6 @@
 (ns gpml.scheduler
   (:require
+   [duct.logger :refer [log]]
    [integrant.core :as ig]
    [twarc.core :as twarc]
    [twarc.impl.core]))
@@ -10,7 +11,8 @@
 (defmethod ig/halt-key! :gpml/scheduler [_ _]
   nil)
 
-(defmethod ig/init-key :gpml/twarc-scheduler [_ {:keys [thread-count disabled]}]
+(defmethod ig/init-key :gpml/twarc-scheduler [_ {:keys [thread-count disabled logger]}]
+  (log logger :report :starting-twarc-scheduler {})
   (when-not disabled
     (-> (twarc/make-scheduler {:threadPool.threadCount thread-count
                                :plugin.triggHistory.class "org.quartz.plugins.history.LoggingTriggerHistoryPlugin"

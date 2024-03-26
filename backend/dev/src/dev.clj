@@ -165,9 +165,9 @@
            (-> "glog.sh"
                io/file
                .getAbsolutePath
-               (sh "production" ;; "production" | "test"
-                   "2024-03-25T04:00:00Z"
-                   "2024-03-25T14:00:00Z")
+               (sh "test" ;; "production" | "test"
+                   "2024-03-26T04:00:00Z"
+                   "2024-03-26T18:00:00Z")
                :out
                json/<-json)))
 
