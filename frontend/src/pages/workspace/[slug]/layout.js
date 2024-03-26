@@ -226,6 +226,7 @@ const NestedLayout = ({ children }) => {
           `/plastic-strategy/${countryISOA2}`
         )
         setPSItem(psData)
+        api.post(`/plastic-strategy/${countryISOA2}/ensure-chat`)
       }
     } catch (error) {
       console.error('Unable to fetch all PS:', error)
