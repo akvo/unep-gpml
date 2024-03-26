@@ -190,16 +190,7 @@ const Workspace = ({ profile, isAuthenticated, setLoginVisible }) => {
         const { data: apiData } = await api.get('/chat/channel/all')
         const { channels: _allForums } = apiData || {}
         ChatStore.update((s) => {
-          // TODO: identify private/public forum
-          s.allForums = _allForums
-            ?.map((a) => ({
-              ...a,
-              t: 'c',
-              lm: '2024-02-14T15:18:31.220Z',
-              users: [],
-              isView: true,
-            }))
-            ?.sort(sortPublicFirst)
+          s.allForums = _allForums?.sort(sortPublicFirst)
         })
       }
       setLoading(false)
