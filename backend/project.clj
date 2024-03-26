@@ -73,6 +73,7 @@
                  [org.jsoup/jsoup "1.15.3"]
                  [org.postgresql/postgresql "42.7.2"]
                  [org.slf4j/slf4j-nop "2.0.12"]
+                 [pogonos "0.2.1"]
                  [ovotech/clj-gcp "0.6.15" :exclusions [com.google.auth/google-auth-library-oauth2-http
                                                         cheshire
                                                         clj-time]]
