@@ -131,16 +131,11 @@ const ForumModal = ({
           }}
           dataSource={participants}
           renderItem={(user) => {
-            const userImage = user?.avatarETag
-              ? `${avatarUrl}${user?.username}?etag=${user.avatarETag}`
-              : null
-            const userName = user?.name || user?.username || ''
-            const [fistName, lastName] = userName.split(/[ ,]+/)
             return (
               <List.Item key={user.id}>
                 <List.Item.Meta
                   avatar={
-                    <Avatar src={userImage} className={sample(colorList)}>
+                    <Avatar src={user?.picture} className={sample(colorList)}>
                       {`${user.firstName[0]}${user.lastName?.[0] || ''}`}
                     </Avatar>
                   }
