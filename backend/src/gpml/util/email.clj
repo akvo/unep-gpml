@@ -1,6 +1,6 @@
 (ns gpml.util.email
   (:require
-   [clojure.string :as str]
+   [clojure.string :as string]
    [gpml.boundary.port.chat :as port.chat]
    [gpml.db.stakeholder :as db.stakeholder]
    [gpml.handler.util :as h.util]
@@ -9,7 +9,28 @@
    [gpml.util.json :as json]
    [gpml.util.malli :refer [check!]]
    [gpml.util.result :refer [failure]]
+   [pogonos.core :as pogonos]
    [taoensso.timbre :as timbre]))
+
+(def notify-admins-new-channel-request--html-template
+  (delay
+    (pogonos/parse-resource "gpml/email_templates/notify_admins_new_channel_request.mustache")))
+
+(def base--html-template
+  (delay
+    (pogonos/parse-resource "gpml/email_templates/base.mustache")))
+
+(def Lines [:sequential {:min 1} :string])
+
+(defn basic-html-email [{:keys [lines]}]
+  {:pre [(check! Lines lines)]}
+  (pogonos/render @base--html-template {:lines lines}))
+
+(defn text->lines [s]
+  {:post [(check! Lines %)]}
+  (into []
+        (remove string/blank?) ;; handle double \n\n and the like
+        (string/split-lines s)))
 
 (defn make-message [sender receiver subject text html]
   {:From sender
@@ -117,14 +138,14 @@ again, please visit this URL: %s/edit-%s/%s
           (h.util/get-title topic-type topic-item)
           (:app-domain mailjet-config)
           (-> (h.util/get-api-topic-type topic-type topic-item)
-              (str/replace "_" "-"))
+              (string/replace "_" "-"))
           (:id topic-item)))
 
 (defn notify-user-review-subject [mailjet-config review-status topic-type topic-item]
   (format "[%s] %s %s"
           (:app-name mailjet-config)
           (h.util/get-display-topic-type topic-type topic-item)
-          (str/lower-case review-status)))
+          (string/lower-case review-status)))
 
 (defn notify-private-channel-invitation-request-subject [app-name channel-name]
   (format "[%s] Request to Join %s" app-name channel-name))
@@ -194,32 +215,27 @@ To accept this invitation please visit %s and sign up to GPML Platform.
         sender unep-sender
         names (mapv get-user-full-name admins)
         receivers (mapv #(assoc {} :Name %1 :Email (:email %2)) names admins)
-        texts (->> names (mapv #(format notify-admins-pending-approval-text
-                                        %1 item-type item-title
-                                        (:app-domain mailjet-config))))
-        htmls (repeat nil)]
-    (when (> (count receivers) 0)
+        texts (mapv #(format notify-admins-pending-approval-text
+                             %1 item-type item-title
+                             (:app-domain mailjet-config))
+                    names)
+        htmls (mapv text->lines texts)]
+    (when (-> receivers count pos?)
       (send-email mailjet-config sender subject receivers texts htmls))))
 
 (defn notify-secretariat-about-new-subscription-req
-  "Send email about a new subscription request
-   The plural format for texts and receivers is because the sending shared email function expects a list of messages
-   to be sent. That is why we provide an infinite sequence for non-used `htmls` option. Besides, we make `sender` and
-   `texts` a collection of a single element, since in this case we are sending a single message."
+  "Send email about a new subscription request."
   [mailjet-config dest-email req-email]
   (let [subject (format "[%s] New subscription request" (:app-name mailjet-config))
         sender unep-sender
         receivers [{:Name "GPML Secretariat"
                     :Email dest-email}]
         texts [(format notify-secretariat-new-subscription-text req-email)]
-        htmls (repeat nil)]
+        htmls (mapv text->lines texts)]
     (send-email mailjet-config sender subject receivers texts htmls)))
 
 (defn notify-about-new-contact
-  "Send email about a new contact request
-   The plural format for texts and receivers is because the sending shared email function expects a list of messages
-   to be sent. That is why we provide an infinite sequence for non-used `htmls` option. Besides, we make `sender` and
-   `texts` a collection of a single element, since in this case we are sending a single message."
+  "Send email about a new contact request."
   [mailjet-config {dest-email :dest-email
                    req-email :email
                    name :name
@@ -235,7 +251,7 @@ To accept this invitation please visit %s and sign up to GPML Platform.
         receivers [{:Name "Contact Management"
                     :Email dest-email}]
         texts [msg-body]
-        htmls (repeat nil)]
+        htmls (mapv text->lines texts)]
     (send-email mailjet-config sender subject receivers texts htmls)))
 
 (defn notify-admins-new-chat-private-channel-invitation-request [mailjet-config admins user channel-id channel-name]
@@ -258,12 +274,15 @@ To accept this invitation please visit %s and sign up to GPML Platform.
                                                                               (util/encode-url-param (:email user))
                                                                               (util/encode-url-param channel-name))))
                     receivers)
-        htmls (repeat nil)
-        {:keys [status body]} (send-email mailjet-config sender subject receivers texts htmls)]
-    (if (and status (<= 200 status 299))
-      {:success? true}
-      (failure {:reason :failed-to-send-email
-                :error-details body}))))
+        htmls (mapv text->lines texts)]
+    (if-not (-> receivers count pos?)
+      (failure {:reason :no-admins})
+      (let [{:keys [status body]} (send-email mailjet-config sender subject receivers texts htmls)]
+        (if (and status (<= 200 status 299))
+          {:success? true}
+          (failure {:reason :failed-to-send-email
+                    :error-details body
+                    :status status}))))))
 
 (defn notify-admins-new-channel-request [mailjet-config admins user new-channel]
   {:pre [(check! port.chat/NewChannel new-channel)]}
@@ -290,12 +309,23 @@ Feel free to create such a channel."
                               (or (:description new-channel) "")
                               (:privacy new-channel)))
                     receivers)
-        htmls (repeat nil)
-        {:keys [status body]} (send-email mailjet-config sender subject receivers texts htmls)]
-    (if (and status (<= 200 status 299))
-      {:success? true}
-      (failure {:reason :failed-to-send-email
-                :error-details body}))))
+        htmls (mapv text->lines texts) #_(mapv (fn [_receiver]
+                                                 (pogonos/render @notify-admins-new-channel-request--html-template {:messageCount
+                                                                                                                    :channelURL
+                                                                                                                    :channelName
+                                                                                                                    :userName
+                                                                                                                    :time
+                                                                                                                    :message
+                                                                                                                    #_:channelURL}))
+                                               receivers)]
+    (if-not (-> receivers count pos?)
+      (failure {:reason :no-admins})
+      (let [{:keys [status body]} (send-email mailjet-config sender subject receivers texts htmls)]
+        (if (and status (<= 200 status 299))
+          {:success? true}
+          (failure {:reason :failed-to-send-email
+                    :error-details body
+                    :status status}))))))
 
 (defn notify-user-about-chat-private-channel-invitation-request-accepted [mailjet-config user channel-name]
   (let [sender unep-sender
@@ -307,12 +337,13 @@ Feel free to create such a channel."
         texts [(notify-user-about-chat-private-channel-invitation-request-accepted-text
                 channel-name
                 (:app-domain mailjet-config))]
-        htmls (repeat nil)
+        htmls (mapv text->lines texts)
         {:keys [status body]} (send-email mailjet-config sender subject receivers texts htmls)]
     (if (and status (<= 200 status 299))
       {:success? true}
       (failure {:reason :failed-to-send-email
-                :error-details body}))))
+                :error-details body
+                :status status}))))
 
 (defn notify-user-about-plastic-strategy-invitation [mailjet-config user plastic-strategy]
   (let [sender unep-sender
@@ -324,12 +355,13 @@ Feel free to create such a channel."
                 (:app-domain mailjet-config)
                 user-full-name
                 (get-in plastic-strategy [:country :name]))]
-        htmls (repeat nil)
+        htmls (mapv text->lines texts)
         {:keys [status body]} (send-email mailjet-config sender subject receivers texts htmls)]
     (if (and status (<= 200 status 299))
       {:success? true}
       (failure {:reason :failed-to-send-email
-                :error-details body}))))
+                :error-details body
+                :status status}))))
 
 (defn notify-user-added-to-plastic-strategy-team-subject [country-name]
   (format "You've been added to Plastic Strategy %s" country-name))
@@ -354,13 +386,14 @@ It is now accessible through your workspace below
                 user-full-name
                 (get-in plastic-strategy [:country :name])
                 (:app-domain mailjet-config))]
-        htmls (repeat nil)
+        htmls (mapv text->lines texts)
         {:keys [status body]}
         (send-email mailjet-config sender subject receivers texts htmls)]
     (if (and status (<= 200 status 299))
       {:success? true}
       (failure {:reason :failed-to-send-email
-                :error-details body}))))
+                :error-details body
+                :status status}))))
 
 (comment
   (require 'dev)
