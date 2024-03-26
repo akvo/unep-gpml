@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "subcategories",
+  "info": {
+    "singularName": "subcategory",
+    "pluralName": "subcategories",
+    "displayName": "Subcategory"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "subcategoryId": {
+      "type": "text"
+    },
+    "categoryId": {
+      "type": "string"
+    },
+    "subcategoryName": {
+      "type": "text"
+    },
+    "subcategoryDescription": {
+      "type": "text"
+    }
+  }
+}

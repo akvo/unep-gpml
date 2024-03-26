@@ -1,0 +1,76 @@
+{
+  "kind": "collectionType",
+  "collectionName": "layers",
+  "info": {
+    "singularName": "layer",
+    "pluralName": "layers",
+    "displayName": "Layer"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "dataSource": {
+      "type": "text"
+    },
+    "url": {
+      "type": "string"
+    },
+    "arcgislayerId": {
+      "type": "string"
+    },
+    "subcategoryId": {
+      "type": "string"
+    },
+    "shortDescription": {
+      "type": "text"
+    },
+    "categoryId": {
+      "type": "string"
+    },
+    "layerDataIcon": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "metadata": {
+      "type": "text"
+    },
+    "featureId": {
+      "type": "string"
+    },
+    "arcgisMapId": {
+      "type": "text"
+    },
+    "layerMappingId": {
+      "type": "string"
+    },
+    "units": {
+      "type": "string"
+    },
+    "metadataURL": {
+      "type": "text"
+    },
+    "outFields": {
+      "type": "text"
+    },
+    "timePeriod": {
+      "type": "string"
+    },
+    "comments": {
+      "type": "text"
+    }
+  }
+}
