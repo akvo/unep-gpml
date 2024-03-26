@@ -20,6 +20,6 @@
                                                  :time-zone time-zone}}
                                 :job {:identity (:identity scheduler-config)})))
 
-(defmethod ig/init-key ::chat-message-summarizer
+(defmethod ig/init-key :gpml.scheduler/chat-message-summarizer
   [_ {:keys [config scheduler-config]}]
   (schedule-job config scheduler-config))
