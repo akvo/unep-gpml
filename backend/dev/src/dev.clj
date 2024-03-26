@@ -166,8 +166,9 @@
                io/file
                .getAbsolutePath
                (sh "test" ;; "production" | "test"
-                   "2024-03-26T04:00:00Z"
-                   "2024-03-26T18:00:00Z")
+                   ;; times are UTC
+                   "2024-03-26T14:00:00Z"
+                   "2024-03-26T16:00:00Z")
                :out
                json/<-json)))
 

@@ -4,7 +4,8 @@
    [integrant.core :as ig]
    [twarc.core :refer [defjob]]))
 
-(defn summarize-chat-messages [_config])
+(defn summarize-chat-messages [{:keys [scheduler logger] :as config}]
+  (log logger :report :summarize-chat-messages {}))
 
 (defjob chat-message-summarization
   [_scheduler config]
