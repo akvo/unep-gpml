@@ -55,7 +55,9 @@
                                          ;; Support shorthand syntax:
                                          {:txn-fn head})
           result (safe-run logger txn-fn args-map)]
-      (assert (contains? result :success?))
+      (assert (check! [:map
+                       [:success? any?]]
+                      result))
       (if-not (:success? result)
         result
         (let [next-result (thread-transactions logger (rest txns) result)]

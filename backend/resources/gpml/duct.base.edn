@@ -1018,4 +1018,10 @@
                                                                   :identity  "chat-message-summarizer"
                                                                   :cron      #duct/env ["SCHEDULER_CHAT_MESSAGE_SUMMARIZER_CRON" Str
                                                                                         ;; Every five minutes
-                                                                                        :or "0 0/5 * * * ?"]}}}
+                                                                                        :or "0 0/5 * * * ?"]}}
+ :gpml.scheduler/chat-active-status-observer {:config           #ig/ref :gpml.config/common
+                                              :scheduler-config {:time-zone #duct/env ["SCHEDULER_TIME_ZONE" Str :or "Europe/Madrid"]
+                                                                 :identity  "chat-active-status-observer"
+                                                                 :cron      #duct/env ["SCHEDULER_CHAT_ACTIVE_STATUS_OBSERVER_CRON" Str
+                                                                                       ;; Every 2 minutes
+                                                                                       :or "0 0/2 * * * ?"]}}}

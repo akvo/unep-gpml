@@ -11,7 +11,7 @@
    [gpml.util :refer [url?]]
    [gpml.util.http-client :as http-client]
    [gpml.util.json :as json]
-   [gpml.util.malli :refer [check! PresentString]]
+   [gpml.util.malli :refer [PresentString check!]]
    [gpml.util.result :refer [failure]]
    [gpml.util.thread-transactions :refer [saga]]
    [integrant.core :as ig]
@@ -603,6 +603,22 @@
                 :error-details body
                 :status status}))))
 
+(defn get-channel-present-users* [{:keys [logger api-key]} channel-id]
+  {:pre  [channel-id]
+   :post [(check! #'port.chat/get-channel-present-users %)]}
+  (let [{:keys [status body]}
+        (http-client/request logger
+                             {:url (build-api-endpoint-url "/api/v1/chatroom/" channel-id "/presence")
+                              :method :get
+                              :query-params {:auth api-key}
+                              :as :json-keyword-keys})]
+    (if (<= 200 status 299)
+      {:success? true
+       :user-ids (->> body :data (mapv :_id))}
+      (failure {:reason :failed-to-get-channel-present-users
+                :error-details body
+                :status status}))))
+
 (defn map->DSChat [m]
   {:pre [(check! [:map
                   [:api-key string?]
@@ -624,6 +640,7 @@
      `port.chat/get-private-channels              (get-all-channels-fn "private")
      `port.chat/get-public-channels               (get-all-channels-fn "public")
      `port.chat/get-channel-discussions           get-channel-discussions*
+     `port.chat/get-channel-present-users         get-channel-present-users*
      `port.chat/get-user-info                     get-user-info*
      `port.chat/get-user-joined-channels          get-user-joined-channels*
      `port.chat/remove-user-from-channel          remove-user-from-channel*
@@ -637,6 +654,7 @@
   (map->DSChat config))
 
 (comment
+  ;;
   (let [{:keys [id]} (dev/make-user! (format "a%s@a%s.com" (random-uuid) (random-uuid)))]
 
     @(def a-user
@@ -673,6 +691,7 @@
   @(def a-private-channel (port.chat/create-private-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
                                                             {:name (str (random-uuid))}))
 
+  ;;
   @(def a-public-channel (port.chat/create-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
                                                           {:name (str (random-uuid))}))
 
@@ -696,11 +715,21 @@
   (port.chat/add-user-to-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
                                         uniqueUserIdentifier
                                         (-> a-public-channel :channel :id))
+  ;; OR
+  ;; 
+  (gpml.service.chat/join-channel (dev/config-component)
+                                  (-> a-public-channel :channel :id)
+                                  (:stakeholder a-user))
 
+;;
   (println (format "https://deadsimplechat.com/%s?uniqueUserIdentifier=%s" (-> a-public-channel :channel :id) uniqueUserIdentifier))
 
   (port.chat/get-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
                          (-> a-public-channel :channel :id))
+
+  ;;
+  (port.chat/get-channel-present-users (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                       (-> a-public-channel :channel :id))
 
   (port.chat/add-user-to-private-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
                                          uniqueUserIdentifier
