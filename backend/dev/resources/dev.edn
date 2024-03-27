@@ -3,8 +3,11 @@
                               :logger #ig/ref :duct/logger
                               :maximum-pool-size 1}
 
- :mocks.boundary.adapter.storage-client/local-file-system
- {:base-path #duct/env ["LOCAL_FS_STORAGE_BASE_PATH" Str]}
+ :mocks.boundary.adapter.storage-client/local-file-system {:base-path #duct/env ["LOCAL_FS_STORAGE_BASE_PATH" Str]}
+
+ :gpml/scheduler #ig/ref :gpml/noop-scheduler ;; Remove the scheduler as it's fairly annoying to have misc tasks being regularly run (which disrupts the logs, etc)
+ :gpml/twarc-scheduler {:disabled true}
+ :gpml/noop-scheduler {:logger #ig/ref :duct/logger}
 
  ;; NOTE: uncomment this if you're working on the BE and doing things
  ;; with images.
