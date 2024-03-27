@@ -265,6 +265,12 @@
     get-channel-discussions [this channel-id])
 
   (^{:schema [:or
+              (success-with :user-ids [:sequential any? #_UniqueUserIdentifier]) ;; XXX I'm assuming it returns such ids. Can be requested.
+              (failure-with :error-details any?)]}
+    get-channel-present-users [this channel-id]
+    "Returns the User IDs of the users currently active in the given channel.")
+
+  (^{:schema [:or
               (success-with :channels Channels)
               (failure-with :error-details any?)]}
     get-private-channels [this opts])
