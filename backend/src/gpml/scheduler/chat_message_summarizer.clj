@@ -5,7 +5,8 @@
    [twarc.core :refer [defjob]]))
 
 (defn summarize-chat-messages [{:keys [logger]}]
-  (log logger :report :summarize-chat-messages {}))
+  {:pre [logger]}
+  nil)
 
 (defjob chat-message-summarization
   [_scheduler config]
