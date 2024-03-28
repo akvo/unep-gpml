@@ -11,6 +11,7 @@
    [integrant.core :as ig]
    [twarc.core :refer [defjob]]))
 
+;; TODO update to Honey syntax https://github.com/seancorfield/honeysql/issues/527
 (defn update-chat-channel-membership-prepared-statement [updates]
   {:pre [(check! [:sequential {:min 1}
                   [:map {:closed true}
@@ -46,7 +47,6 @@ WHERE chat_channel_membership.stakeholder_id = new_values.stakeholder_id
 (defn observe-chat-channels [{:keys [logger hikari]
                               chat :chat-adapter}]
   {:pre [hikari logger chat]}
-  (log logger :report :observe-chat-channels {})
   (saga logger {:success? true}
     (fn [_context]
       (port.chat/get-all-channels chat {}))

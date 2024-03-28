@@ -308,7 +308,8 @@
                                                                 ;; We pass :chat-account-id for the service to retrieve users from the DB later.
                                                                 ;; Note that this is a sensitive field that is removed from HTTP responses.
                                                                 :chat-account-id (:unique-user-identifier user)
-                                                                :username (:username user)})
+                                                                :username (:username user)
+                                                                :unique-user-identifier (:unique-user-identifier user)})
                                                              messages)))))})))))))
 
 (defn get-user-joined-channels* [{:keys [logger api-key] :as chat-adapter} user-id extra-channel-ids]
@@ -716,12 +717,12 @@
                                         uniqueUserIdentifier
                                         (-> a-public-channel :channel :id))
   ;; OR
-  ;; 
+  ;;
   (gpml.service.chat/join-channel (dev/config-component)
                                   (-> a-public-channel :channel :id)
                                   (:stakeholder a-user))
 
-;;
+  ;;
   (println (format "https://deadsimplechat.com/%s?uniqueUserIdentifier=%s" (-> a-public-channel :channel :id) uniqueUserIdentifier))
 
   (port.chat/get-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
