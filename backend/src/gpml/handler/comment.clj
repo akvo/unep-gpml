@@ -157,16 +157,17 @@
                                                                  {:id (:stakeholder stakeholder-resource-association)})
             comment-author-full-name (email/get-user-full-name comment-author)
             resource-owner-full-name (email/get-user-full-name resource-owner)
-            resource-title-or-name (or (:title resource) (:name resource))]
+            resource-title-or-name (or (:title resource) (:name resource))
+            texts [(email/new-resource-comment-text resource-owner-full-name
+                                                    comment-author-full-name
+                                                    resource-title-or-name
+                                                    (:app-domain mailjet-config))]]
         (email/send-email mailjet-config
                           email/unep-sender
                           (email/new-resource-comment-subject comment-author-full-name)
                           [{:Name resource-owner-full-name :Email (:email resource-owner)}]
-                          [(email/new-resource-comment-text resource-owner-full-name
-                                                            comment-author-full-name
-                                                            resource-title-or-name
-                                                            (:app-domain mailjet-config))]
-                          [])))))
+                          texts
+                          (mapv email/text->lines texts))))))
 
 (defn- create-comment [{:keys [db logger] :as config} req]
   (let [user (:user req)]

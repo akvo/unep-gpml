@@ -168,14 +168,15 @@
              first-name :first_name
              last-name :last_name
              email :email :as invitation} invitations
-            :let [msg (email/notify-expert-invitation-text first-name last-name invitation-id app-domain)]]
+            :let [msg (email/notify-expert-invitation-text first-name last-name invitation-id app-domain)
+                  texts [msg]]]
       (let [{:keys [status body]} (email/send-email mailjet-config
                                                     email/unep-sender
                                                     "Join the UNEP GPML Platform"
                                                     [{:Name (str first-name " " last-name)
                                                       :Email email}]
-                                                    [msg]
-                                                    [nil])]
+                                                    texts
+                                                    (mapv email/text->lines texts))]
         (when-not (<= 200 status 299)
           (timbre/with-context+ invitation
             (log logger :error :send-invitation-email-failed {:email-msg msg
@@ -291,7 +292,7 @@ User %s is suggesting an expert with the following information:
           subject "New expert suggestion"
           receivers (map #(assoc {} :Name %1 :Email (:email %2)) admin-names admins)
           texts (map (partial generate-admins-expert-suggestion-text expert user-full-name) admin-names)
-          htmls (repeat nil)
+          htmls (mapv email/text->lines texts)
           {:keys [status body]} (email/send-email mailjet-config email/unep-sender subject receivers texts htmls)]
       (if (<= 200 status 299)
         (resp/response {:success? true})
