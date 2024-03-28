@@ -103,7 +103,7 @@
             :handler    (fn do-create-user-account [req]
                           (create-user-account config req))
             :responses  {200 {:body (success-with :stakeholder svc.chat/CreatedUserSnakeCase)}
-                         500 {:body (failure-with)}}}
+                         500 {:body (failure-with :reason any?)}}}
      :put  {:summary    "Update chat user account status"
             :middleware middleware
             :swagger    {:tags ["chat"]}
@@ -195,7 +195,7 @@
                               (r/forbidden {:message "Unauthorized"})))
               :parameters {:path (mu/merge (:path DiscussionIdPath) (:path ChannelIdPath))}
               :responses {200 {:body (success-with)}
-                          500 {:body (failure-with)}}}}]
+                          500 {:body (failure-with :reason any?)}}}}]
 
    ["/create-discussion/{id}"
     {:post {:summary    "Creates a discussion within this channel. Requires admin permissions."
@@ -215,7 +215,7 @@
                                :body [:map
                                       [:name :string]])
             :responses {200 {:body (success-with :discussion port.chat/DiscussionSnakeCase)}
-                        500 {:body (failure-with)}}}}]
+                        500 {:body (failure-with :reason any?)}}}}]
    ["/leave"
     {:post {:summary    "Remove the callee user from the channel"
             :middleware middleware
@@ -239,7 +239,7 @@
                              (r/ok (cske/transform-keys ->snake_case (select-keys result [:success? :channels])))
                              (-> result present-error r/server-error))))
            :responses {200 {:body (success-with :channels [:sequential port.chat/ChannelWithUsersSnakeCase])}
-                       500 {:body (failure-with)}}}}]
+                       500 {:body (failure-with :reason any?)}}}}]
    ["/discussions/{channel_id}"
     {:get {:summary    "Get a channel's discussions. The user must be able to view the channel in order to access this endpoint."
            :middleware middleware
@@ -298,7 +298,7 @@
                               (-> result present-error r/server-error))))
             :parameters ChannelIdPath
             :responses {200 {:body (success-with :channel port.chat/ExtendedChannelSnakeCase)}
-                        500 {:body (failure-with)}}}}]]
+                        500 any?}}}]]
    ["/private"
     [""
      {:get  {:summary    "Get all private channels in the server"
@@ -307,7 +307,7 @@
              :handler    (fn do-get-private-channels [req]
                            (get-private-channels config req))
              :responses {200 {:body (success-with :channels [:sequential port.chat/ChannelWithUsersSnakeCase])}
-                         500 {:body (failure-with)}}}
+                         500 {:body (failure-with :reason any?)}}}
       :post {:summary    "Send private channel invitation request"
              :middleware middleware
              :swagger    {:tags ["chat"]}
@@ -327,7 +327,7 @@
                                              :allowEmptyValue false}}
                                   [:string {:min 1}]]]}
              :responses {200 {:body (success-with)}
-                         500 {:body (failure-with)}}}}]
+                         500 {:body (failure-with :reason any?)}}}}]
     ["/add-user"
      {:post {:summary    "Allows admins to add another user to a private channel."
              :middleware middleware
@@ -364,7 +364,7 @@
            :handler    (fn do-get-public-channels [req]
                          (get-public-channels config req))
            :responses {200 {:body (success-with :channels [:sequential port.chat/ChannelWithUsersSnakeCase])}
-                       500 {:body (failure-with)}}}
+                       500 {:body (failure-with :reason any?)}}}
      :post {:summary    "Joins this public channel. Implicitly creates a chat account for the user,
 so you don't need to call the POST /api/chat/user/account endpoint beforehand."
             :middleware middleware
@@ -410,7 +410,7 @@ so you don't need to call the POST /api/chat/user/account endpoint beforehand."
                                 (-> result present-error r/server-error))))
               :parameters {:body port.chat/NewChannel}
               :responses {200 {:body (success-with :channel port.chat/CreatedChannelSnakeCase)}
-                          500 {:body (failure-with)}}}}]
+                          500 {:body (failure-with :reason any?)}}}}]
      ["/channel/{id}/add-user/{user-id}"
       {:post {:summary    "Adds a user to a channel, ensuring idempotently that the user has a chat account. Requires admin permissions."
               :middleware middleware
@@ -495,7 +495,7 @@ so you don't need to call the POST /api/chat/user/account endpoint beforehand."
              :parameters (assoc ChannelIdPath
                                 :body port.chat/ChannelEdit)
              :responses {200 {:body (success-with)}
-                         500 {:body (failure-with)}}}
+                         500 {:body (failure-with :reason any?)}}}
        :delete {:summary    "Deletes a channel. Requires admin permissions."
                 :middleware middleware
                 :swagger    {:tags tags}
