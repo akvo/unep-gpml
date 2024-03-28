@@ -80,17 +80,17 @@
         role-assignments [{:role-name :resource-reviewer
                            :context-type (h.r.permission/entity-type->context-type topic-type)
                            :resource-id topic-id
-                           :user-id reviewer-id}]]
-    (srv.permissions/assign-roles-to-users
-     {:conn conn
-      :logger logger}
-     role-assignments)
+                           :user-id reviewer-id}]
+        texts [(email/notify-reviewer-pending-review-text reviewer-name (:app-domain mailjet-config) topic-type (:title review))]]
+    (srv.permissions/assign-roles-to-users {:conn conn
+                                            :logger logger}
+                                           role-assignments)
     (email/send-email mailjet-config
                       email/unep-sender
                       (format "[%s] Review requested on new %s" (:app-name mailjet-config) topic-type)
                       (list {:Name reviewer-name :Email (:email reviewer)})
-                      (list (email/notify-reviewer-pending-review-text reviewer-name (:app-domain mailjet-config) topic-type (:title review)))
-                      (list nil))
+                      texts
+                      (mapv email/text->lines texts))
     (conj c review)))
 
 (defn- new-multiple-review [logger db mailjet-config topic-type topic-id reviewers assigned-by]
@@ -152,14 +152,19 @@
                            {:id (:id review)
                             :review-status review-status
                             :review-comment review-comment})
-                admin (db.stakeholder/stakeholder-by-id conn {:id (:assigned_by review)})]
+                admin (db.stakeholder/stakeholder-by-id conn {:id (:assigned_by review)})
+                texts [(email/notify-review-submitted-text (email/get-user-full-name admin)
+                                                           (:app-domain mailjet-config)
+                                                           topic-type
+                                                           (:title review)
+                                                           review-status
+                                                           review-comment)]]
             (email/send-email mailjet-config
                               email/unep-sender
                               (format "[%s] Review submitted on %s: %s" (:app-name mailjet-config) topic-type (:title review))
                               (list {:Name (email/get-user-full-name admin) :Email (:email admin)})
-                              (list (email/notify-review-submitted-text
-                                     (email/get-user-full-name admin) (:app-domain mailjet-config) topic-type (:title review) review-status review-comment))
-                              (list nil))
+                              texts
+                              (mapv email/text->lines texts))
             (resp/response review-id))
           (r/not-found))
         (r/not-found)))))
