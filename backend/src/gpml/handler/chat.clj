@@ -298,7 +298,7 @@
                               (-> result present-error r/server-error))))
             :parameters ChannelIdPath
             :responses {200 {:body (success-with :channel port.chat/ExtendedChannelSnakeCase)}
-                        500 any?}}}]]
+                        500 {:body (failure-with :reason any?)}}}}]]
    ["/private"
     [""
      {:get  {:summary    "Get all private channels in the server"
