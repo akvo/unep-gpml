@@ -7,7 +7,7 @@
    [gpml.util :as util]
    [gpml.util.http-client :as http-client]
    [gpml.util.json :as json]
-   [gpml.util.malli :refer [check!]]
+   [gpml.util.malli :refer [check! PresentString]]
    [gpml.util.result :refer [failure]]
    [pogonos.core :as pogonos]
    [taoensso.timbre :as timbre]))
@@ -45,7 +45,12 @@
     (format "%s. %s %s" title first_name last_name)))
 
 (defn send-email [{:keys [api-key secret-key logger]} sender subject receivers texts htmls]
-  {:pre [logger]}
+  {:pre [logger
+         (check! [:sequential {:min 1} PresentString]
+                 texts
+
+                 [:sequential {:min 1} PresentString]
+                 htmls)]}
   (let [messages (mapv make-message (repeat sender) receivers (repeat subject) texts htmls)]
     (timbre/with-context+ {::messages messages}
       (http-client/request logger
