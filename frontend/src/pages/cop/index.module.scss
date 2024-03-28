@@ -1,0 +1,99 @@
+@import '../../styles/vars.scss';
+
+.page {
+  :global {
+    .hero {
+      margin: 30px 0;
+      background: url(/act-now.jpg);
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      border-radius: 40px;
+      padding-bottom: 150px;
+      position: relative;
+      color: white;
+      padding: 100px 70px;
+      h1 {
+        color: white;
+        font-size: $fzXXL;
+        font-weight: bold;
+      }
+      p {
+        font-size: 22px;
+        max-width: 640px;
+      }
+    }
+    .cop-item {
+      box-shadow: 0px 4px 94px 0px rgba(0, 0, 0, 0.05);
+      background: white;
+      padding: 40px;
+      display: flex;
+      margin-bottom: 30px;
+      h3 {
+        font-size: 32px;
+        line-height: 36px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        padding-right: 20px;
+      }
+      p {
+        margin-bottom: 30px;
+        padding-right: 20px;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 28px;
+      }
+      .col {
+        flex: 1;
+      }
+      .label {
+        font-family: $ff1;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 16px; /* 100% */
+        letter-spacing: 0.24px;
+        text-transform: uppercase;
+      }
+      .link-item {
+        svg {
+          display: inline-block;
+          margin-right: 8px;
+          transform: translateY(3px);
+        }
+        margin-top: 12px;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 22px; /* 137.5% */
+        text-decoration-line: underline;
+      }
+      .col:last-child {
+        padding-left: 20px;
+        .label {
+          margin-top: 12px;
+          margin-bottom: 12px;
+          &:not(:first-child) {
+            margin-top: 36px;
+          }
+        }
+        .ant-btn {
+          margin-top: 40px;
+        }
+      }
+      .tag-link {
+        font-family: $ff1;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 22px;
+        padding: 6px 9px;
+        border-radius: 6px;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        margin-right: 5px;
+        margin-bottom: 5px;
+      }
+    }
+  }
+}
