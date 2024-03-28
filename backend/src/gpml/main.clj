@@ -7,6 +7,7 @@
     ;; Load multimethods:
     (require 'gpml.handler.detail
              'gpml.programmatic
+             'gpml.scheduler.chat-active-status-observer
              'gpml.scheduler.chat-message-summarizer
              'gpml.timbre-logger
              'gpml.timbre-logger.json

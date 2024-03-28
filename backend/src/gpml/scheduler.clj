@@ -12,8 +12,8 @@
   nil)
 
 (defmethod ig/init-key :gpml/twarc-scheduler [_ {:keys [thread-count disabled logger]}]
-  (log logger :report :starting-twarc-scheduler {})
   (when-not disabled
+    (log logger :report :starting-twarc-scheduler {})
     (-> (twarc/make-scheduler {:threadPool.threadCount thread-count
                                :plugin.triggHistory.class "org.quartz.plugins.history.LoggingTriggerHistoryPlugin"
                                :plugin.jobHistory.class "org.quartz.plugins.history.LoggingJobHistoryPlugin"})
@@ -131,7 +131,9 @@
     (shutdown [this])
     (standby [this])))
 
-(defmethod ig/init-key :gpml/noop-scheduler [_ _]
+(defmethod ig/init-key :gpml/noop-scheduler [_ {:keys [logger]}]
+  (assert logger)
+  (log logger :report :starting-noop-scheduler {})
   (twarc.impl.core/map->Scheduler {:twarc/quartz (new-mock-scheduler)
                                    :twarc/name (str `noop)
                                    :twarc/listeners (atom {})}))
