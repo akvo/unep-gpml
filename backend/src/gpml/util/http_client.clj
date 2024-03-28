@@ -61,6 +61,24 @@
     :backoff-ms backoff-ms
     :retry-on [java.net.SocketTimeoutException]}))
 
+(defn- present-response [response]
+  (select-keys response
+               ;; Don't include :http-client (https://github.com/viesti/timbre-json-appender/issues/38)
+               ;; Don't include :cookies
+               [:cached
+                :request-time
+                :repeatable?
+                :protocol-version
+                :streaming?
+                :chunked?
+                :reason-phrase
+                :headers
+                :orig-content-encoding
+                :status
+                :length
+                :body
+                :trace-redirects]))
+
 (defmethod client/coerce-response-body :json-keyword-keys
   [_req resp]
   (try
@@ -73,7 +91,7 @@
                         (cond-> x
                           (string? x) json/<-json))))
     (catch com.fasterxml.jackson.core.JsonParseException e
-      (timbre/with-context+ {:resp resp}
+      (timbre/with-context+ {:resp (present-response resp)}
         (timbre/error e))
       (throw e))))
 
@@ -123,7 +141,7 @@
                                                     :connection-request-timeout timeout
                                                     :socket-timeout timeout
                                                     :throw-exceptions false}))]
-           (timbre/with-context+ {:response response}
+           (timbre/with-context+ {:response (present-response response)}
              (let [success? (try
                               (<= 200 (:status response) 299)
                               (catch Exception _
