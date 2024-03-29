@@ -4,12 +4,24 @@ import { PinDoc } from '../../components/icons'
 import { Tag } from 'antd'
 import Button from '../../components/button'
 import { getStrapiUrl } from '../../utils/misc'
-import { useEffect, useState } from 'react'
-import { UIStore } from '../../store'
+import { useCallback, useEffect, useState } from 'react'
+import { ChatStore, UIStore } from '../../store'
+import { loadCatalog } from '../../translations/utils'
+import dynamic from 'next/dynamic'
+import api from '../../utils/api'
 
-const Page = () => {
+const DynamicForumModal = dynamic(
+  () => import('../../modules/forum/forum-modal'),
+  {
+    ssr: false, // modal has window object that should be run in client side
+  }
+)
+
+const Page = ({ isAuthenticated, setLoginVisible }) => {
   const strapiUrl = getStrapiUrl()
   const [cops, setCops] = useState(null)
+  const [viewModal, setViewModal] = useState({ open: false })
+  const [loading, setLoading] = useState(true)
   useEffect(() => {
     fetch(`${strapiUrl}/api/cops?locale=en&populate=attachments`)
       .then((d) => d.json())
@@ -17,6 +29,31 @@ const Page = () => {
         setCops(d.data.map((it) => ({ ...it.attributes, id: it.id })))
       })
   }, [])
+  const handleOpenModal = (forumId) => () => {
+    const data = allForums.find((it) => it.id === forumId)
+    setViewModal({ open: true, data })
+  }
+
+  const allForums = ChatStore.useState((s) => s.allForums)
+  const getAllForums = useCallback(async () => {
+    try {
+      if (!allForums.length && loading) {
+        const { data: apiData } = await api.get('/chat/channel/all')
+        const { channels: _allForums } = apiData || {}
+        ChatStore.update((s) => {
+          s.allForums = _allForums
+        })
+        setLoading(false)
+      }
+    } catch (error) {
+      console.error('err', error)
+      setLoading(false)
+    }
+  }, [loading, allForums])
+  useEffect(() => {
+    getAllForums()
+  }, [getAllForums])
+
   return (
     <>
       <Head>
@@ -62,12 +99,24 @@ const Page = () => {
                       <LinkTag id={member} />
                     ))}
                   </div>
-                  <Button withArrow>Become a Forum Member</Button>
+                  {allForums?.length > 0 && cop.forumId && (
+                    <Button withArrow onClick={handleOpenModal(cop.forumId)}>
+                      Become a Forum Member
+                    </Button>
+                  )}
                 </div>
               </div>
             ))}
         </div>
       </div>
+      <DynamicForumModal
+        {...{
+          viewModal,
+          setViewModal,
+          setLoginVisible,
+          isAuthenticated,
+        }}
+      />
     </>
   )
 }
@@ -83,6 +132,14 @@ const LinkTag = ({ id }) => {
       {org?.name}
     </a>
   )
+}
+
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
 }
 
 export default Page
