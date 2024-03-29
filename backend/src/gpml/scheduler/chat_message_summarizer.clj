@@ -7,7 +7,18 @@
    [gpml.util.malli :refer [check!]]
    [gpml.util.thread-transactions :refer [saga]]
    [integrant.core :as ig]
+   [java-time.api :as jt]
    [twarc.core :refer [defjob]]))
+
+(def genesis (.toInstant (jt/local-date-time 1000 1 1 0 0)
+                         (jt/zone-offset)))
+
+(def apocalypse (.toInstant (jt/local-date-time 3000 1 1 0 0)
+                            (jt/zone-offset)))
+
+(defn time-difference-in-hours [a b]
+  (.toHours (jt/duration (jt/instant a)
+                         (jt/instant b))))
 
 ;; for each channel
 ;; get latest messages (DSC) for that channel
@@ -42,7 +53,9 @@
                     (reduced channel-result)
 
                     (-> channel-result :channel :messages :messages empty?)
-                    acc ;; avoid later SQL queries
+                    (do
+                      (log logger :warn :empty-messages)
+                      acc) ;; avoid later SQL queries
 
                     :else
                     (assoc-in acc [:extended-channels id] (dissoc channel-result :success?)))))
@@ -52,14 +65,17 @@
     (fn assoc-memberships [context]
       (let [channel-ids (-> context :extended-channels keys vec)]
         (if (empty? channel-ids)
-          {:success? true}
+          (do
+            (log logger :warn :no-channel-ids)
+            context)
           (let [{:keys [success?]
                  sql-result :result
                  :as result} (db/execute! hikari
                                           {:select [:chat_channel_membership.*
                                                     :stakeholder.email
                                                     :stakeholder.first_name
-                                                    :stakeholder.last_name]
+                                                    :stakeholder.last_name
+                                                    :stakeholder.chat_account_id]
                                            :from :chat_channel_membership
                                            :join [:stakeholder [:=
                                                                 :chat_channel_membership.stakeholder_id
@@ -69,13 +85,17 @@
                                                    channel-ids]})]
             (if-not success?
               result
-              (reduce (fn [new-context {:keys [chat-channel-id] :as membership}]
-                        (update-in new-context
-                                   [:extended-channels chat-channel-id :memberships]
-                                   (fn [v]
-                                     (conj (or v []) membership))))
-                      context
-                      sql-result))))))
+              (let [draft (reduce (fn [new-context {:keys [chat-channel-id] :as membership}]
+                                    (update-in new-context
+                                               [:extended-channels chat-channel-id :memberships]
+                                               (fn [v]
+                                                 (conj (or v []) membership))))
+                                  context
+                                  sql-result)]
+                ;; Only keep the channels for which there was a DB hit.
+                ;; Normally all channels are backed by the DB,
+                ;; but this may not happens when one wipes the dev DB, or similar sync-related conditions.
+                (update draft :extended-channels select-keys (mapv :chat-channel-id sql-result))))))))
 
     (fn persist-changes [context]
       (let [updates (reduce (fn [acc [chat-channel-id {{{recent-messages :messages} :messages} :channel
@@ -84,31 +104,44 @@
                                              some? recent-messages
                                              some? memberships)]}
                               (into acc
-                                    (reduce (fn [acc membership]
-                                              {:pre [(check! [:map
-                                                              [:stakeholder-id some?]
-                                                              [:chat-channel-id some?]
-                                                              [:last-active-at any?]
-                                                              [:last-digest-sent-at any?]
-                                                              [:email any?]
-                                                              [:first-name any?]
-                                                              [:last-name any?]]
-                                                             membership)]}
-                                              (if true
-                                                acc
-                                                (with-meta {:the :update}
-                                                  {:membership membership}))
-                                              ;; XXX <<<<<<<<<<<<<<<<<<<<<<<
-                                              ;; compare the timestamps from membership
-                                              ;; with the user/time of recent-messages.
-                                              ;; if the rules apply, conj an 'update' object to `acc`.
-                                              acc)
-                                            []
-                                            memberships)))
+                                    (keep (fn [membership]
+                                            {:pre [(check! [:map
+                                                            [:stakeholder-id some?]
+                                                            [:chat-channel-id some?]
+                                                            [:last-active-at any?]
+                                                            [:last-digest-sent-at any?]
+                                                            [:email any?]
+                                                            [:chat-account-id any?]
+                                                            [:first-name any?]
+                                                            [:last-name any?]]
+                                                           membership)]}
+                                            (let [chat-account-id (:chat-account-id membership)
+                                                  should-notify-about-recent-messages?
+                                                  (and chat-account-id
+                                                       (first recent-messages)
+                                                       (not= (-> recent-messages
+                                                                 first
+                                                                 :unique-user-identifier
+                                                                 (doto (assert ":unique-user-identifier")))
+                                                             chat-account-id)
+                                                       (< (time-difference-in-hours (:last-digest-sent-at membership apocalypse)
+                                                                                    (jt/instant))
+                                                          frequency-in-hours)
+                                                       ;; XXX :last-active-at logic...
+                                                       )]
+                                              (when should-notify-about-recent-messages?
+                                                (with-meta [:%now,
+                                                            (:stakeholder-id membership),
+                                                            chat-channel-id]
+                                                  {:membership membership
+                                                   :recent-messages recent-messages})))))
+                                    memberships))
                             []
                             (:extended-channels context))]
         (if-not (seq updates)
-          {:success? true}
+          (do
+            (log logger :warn :no-updates)
+            context)
           (let [{:keys [success?]
                  :as result} (db/execute-one! hikari
                                               {:update :chat_channel_membership
@@ -125,31 +158,65 @@
               result
               (assoc context :updates updates))))))
 
-    (fn effect-changes [{:keys [updates]}]
+    (fn effect-changes [{:keys [updates] :as context}]
       (if-not (seq updates)
         (do
           (log logger :info :no-updates)
-          {:success? true})
+          context)
         (do
-          (doseq [update updates
-                  :let [{:keys [email first-name last-name]} (meta update)
-                        texts "New chat messages"]]
+          (doseq [[_last-digest-sent-at
+                   _stakeholder-id
+                   chat-channel-id :as db-update] updates
+                  :let [membership (-> db-update meta :membership (doto (assert ":membership")))
+                        recent-messages (-> db-update meta :recent-messages (doto (assert ":recent-messages")))
+                        {:keys [email first-name last-name]} membership
+                        ;; _extended-channel :- gpml.boundary.port.chat/ExtendedChannel
+                        {channel-name :name :as _extended-channel} (get-in context [:extended-channels chat-channel-id :channel])
+                        texts [(pr-str recent-messages)]]]
             (assert (check! [:map
                              [:email any?]
                              [:first-name any?]
                              [:last-name any?]]
-                            update))
+                            membership))
+            (assert chat-channel-id "chat-channel-id")
+            (assert channel-name "channel-name")
             (email/send-email mailjet-config
                               email/unep-sender
-                              "Subject"
+                              (format "New messages in chat channel: %s" channel-name)
                               [{:Name (str first-name " " last-name)
                                 :Email email}]
                               texts
-                              (mapv email/text->lines texts)))
-          (log logger :info :success)
-          {:success? true})))))
+                              (mapv email/text->basic-html-email texts)))
+          (log logger :info :success {:affected (count updates)})
+          context)))))
 
+;; --- Demo ---
 (comment
+
+  ;; XXX delete old channels (DSC) + memberships (DB)
+
+  ;; create a channel:
+  @(def a-public-channel (port.chat/create-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                                          {:name (str (random-uuid))}))
+  ;; create a user:
+  (let [{:keys [id]} (dev/make-user! (format "a%s@a%s.com" (random-uuid) (random-uuid)))]
+
+    @(def a-user
+       ;; exercises port.chat/create-user-account while also persisting the result to the DB:
+       (gpml.service.chat/create-user-account (dev/config-component)
+                                              id))
+
+    @(def uniqueUserIdentifier (-> a-user :stakeholder :chat-account-id)))
+
+  ;; use service for that user to join that channel:
+  (gpml.service.chat/join-channel (dev/config-component)
+                                  (-> a-public-channel :channel :id)
+                                  (:stakeholder a-user))
+
+  ;; write a message as a user in that channel (manual step open the link in your browser):
+  (println (format "https://deadsimplechat.com/%s?uniqueUserIdentifier=%s" (-> a-public-channel :channel :id) uniqueUserIdentifier))
+
+  ;; exercise the feature:
   (-> (summarize-chat-messages (dev/config-component)
                                1)))
 
