@@ -6,6 +6,7 @@ import Button from '../../components/button'
 import { getStrapiUrl } from '../../utils/misc'
 import { useEffect, useState } from 'react'
 import { UIStore } from '../../store'
+import { loadCatalog } from '../../translations/utils'
 
 const Page = () => {
   const strapiUrl = getStrapiUrl()
@@ -83,6 +84,14 @@ const LinkTag = ({ id }) => {
       {org?.name}
     </a>
   )
+}
+
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
 }
 
 export default Page
