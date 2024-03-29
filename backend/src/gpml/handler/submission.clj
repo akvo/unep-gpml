@@ -160,7 +160,7 @@
                       (email/notify-user-review-subject mailjet-config review-status resource-type resource-details)
                       (list {:Name (email/get-user-full-name creator) :Email (:email creator)})
                       texts
-                      (mapv email/text->lines texts))))
+                      (mapv email/text->basic-html-email texts))))
 
 (defmethod ig/init-key :gpml.handler.submission/put
   [_ {:keys [db logger] :as config}]

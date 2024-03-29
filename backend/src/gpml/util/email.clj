@@ -7,7 +7,7 @@
    [gpml.util :as util]
    [gpml.util.http-client :as http-client]
    [gpml.util.json :as json]
-   [gpml.util.malli :refer [check! PresentString]]
+   [gpml.util.malli :refer [PresentString check!]]
    [gpml.util.result :refer [failure]]
    [pogonos.core :as pogonos]
    [taoensso.timbre :as timbre]))
@@ -31,6 +31,9 @@
   (into []
         (remove string/blank?) ;; handle double \n\n and the like
         (string/split-lines s)))
+
+(defn text->basic-html-email [s]
+  (-> s text->lines basic-html-email))
 
 (defn make-message [sender receiver subject text html]
   {:From sender
@@ -224,7 +227,7 @@ To accept this invitation please visit %s and sign up to GPML Platform.
                              %1 item-type item-title
                              (:app-domain mailjet-config))
                     names)
-        htmls (mapv text->lines texts)]
+        htmls (mapv text->basic-html-email texts)]
     (when (-> receivers count pos?)
       (send-email mailjet-config sender subject receivers texts htmls))))
 
@@ -236,7 +239,7 @@ To accept this invitation please visit %s and sign up to GPML Platform.
         receivers [{:Name "GPML Secretariat"
                     :Email dest-email}]
         texts [(format notify-secretariat-new-subscription-text req-email)]
-        htmls (mapv text->lines texts)]
+        htmls (mapv text->basic-html-email texts)]
     (send-email mailjet-config sender subject receivers texts htmls)))
 
 (defn notify-about-new-contact
@@ -256,7 +259,7 @@ To accept this invitation please visit %s and sign up to GPML Platform.
         receivers [{:Name "Contact Management"
                     :Email dest-email}]
         texts [msg-body]
-        htmls (mapv text->lines texts)]
+        htmls (mapv text->basic-html-email texts)]
     (send-email mailjet-config sender subject receivers texts htmls)))
 
 (defn notify-admins-new-chat-private-channel-invitation-request [mailjet-config admins user channel-id channel-name]
@@ -279,7 +282,7 @@ To accept this invitation please visit %s and sign up to GPML Platform.
                                                                               (util/encode-url-param (:email user))
                                                                               (util/encode-url-param channel-name))))
                     receivers)
-        htmls (mapv text->lines texts)]
+        htmls (mapv text->basic-html-email texts)]
     (if-not (-> receivers count pos?)
       (failure {:reason :no-admins})
       (let [{:keys [status body]} (send-email mailjet-config sender subject receivers texts htmls)]
@@ -314,15 +317,15 @@ Feel free to create such a channel."
                               (or (:description new-channel) "")
                               (:privacy new-channel)))
                     receivers)
-        htmls (mapv text->lines texts) #_(mapv (fn [_receiver]
-                                                 (pogonos/render @notify-admins-new-channel-request--html-template {:messageCount
-                                                                                                                    :channelURL
-                                                                                                                    :channelName
-                                                                                                                    :userName
-                                                                                                                    :time
-                                                                                                                    :message
-                                                                                                                    #_:channelURL}))
-                                               receivers)]
+        htmls (mapv text->basic-html-email texts) #_(mapv (fn [_receiver]
+                                                            (pogonos/render @notify-admins-new-channel-request--html-template {:messageCount
+                                                                                                                               :channelURL
+                                                                                                                               :channelName
+                                                                                                                               :userName
+                                                                                                                               :time
+                                                                                                                               :message
+                                                                                                                               #_:channelURL}))
+                                                          receivers)]
     (if-not (-> receivers count pos?)
       (failure {:reason :no-admins})
       (let [{:keys [status body]} (send-email mailjet-config sender subject receivers texts htmls)]
@@ -342,7 +345,7 @@ Feel free to create such a channel."
         texts [(notify-user-about-chat-private-channel-invitation-request-accepted-text
                 channel-name
                 (:app-domain mailjet-config))]
-        htmls (mapv text->lines texts)
+        htmls (mapv text->basic-html-email texts)
         {:keys [status body]} (send-email mailjet-config sender subject receivers texts htmls)]
     (if (and status (<= 200 status 299))
       {:success? true}
@@ -360,7 +363,7 @@ Feel free to create such a channel."
                 (:app-domain mailjet-config)
                 user-full-name
                 (get-in plastic-strategy [:country :name]))]
-        htmls (mapv text->lines texts)
+        htmls (mapv text->basic-html-email texts)
         {:keys [status body]} (send-email mailjet-config sender subject receivers texts htmls)]
     (if (and status (<= 200 status 299))
       {:success? true}
@@ -391,7 +394,7 @@ It is now accessible through your workspace below
                 user-full-name
                 (get-in plastic-strategy [:country :name])
                 (:app-domain mailjet-config))]
-        htmls (mapv text->lines texts)
+        htmls (mapv text->basic-html-email texts)
         {:keys [status body]}
         (send-email mailjet-config sender subject receivers texts htmls)]
     (if (and status (<= 200 status 299))

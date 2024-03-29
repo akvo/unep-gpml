@@ -176,7 +176,7 @@
                                                     [{:Name (str first-name " " last-name)
                                                       :Email email}]
                                                     texts
-                                                    (mapv email/text->lines texts))]
+                                                    (mapv email/text->basic-html-email texts))]
         (when-not (<= 200 status 299)
           (timbre/with-context+ invitation
             (log logger :error :send-invitation-email-failed {:email-msg msg
@@ -292,7 +292,7 @@ User %s is suggesting an expert with the following information:
           subject "New expert suggestion"
           receivers (map #(assoc {} :Name %1 :Email (:email %2)) admin-names admins)
           texts (map (partial generate-admins-expert-suggestion-text expert user-full-name) admin-names)
-          htmls (mapv email/text->lines texts)
+          htmls (mapv email/text->basic-html-email texts)
           {:keys [status body]} (email/send-email mailjet-config email/unep-sender subject receivers texts htmls)]
       (if (<= 200 status 299)
         (resp/response {:success? true})

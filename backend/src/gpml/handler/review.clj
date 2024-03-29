@@ -90,7 +90,7 @@
                       (format "[%s] Review requested on new %s" (:app-name mailjet-config) topic-type)
                       (list {:Name reviewer-name :Email (:email reviewer)})
                       texts
-                      (mapv email/text->lines texts))
+                      (mapv email/text->basic-html-email texts))
     (conj c review)))
 
 (defn- new-multiple-review [logger db mailjet-config topic-type topic-id reviewers assigned-by]
@@ -164,7 +164,7 @@
                               (format "[%s] Review submitted on %s: %s" (:app-name mailjet-config) topic-type (:title review))
                               (list {:Name (email/get-user-full-name admin) :Email (:email admin)})
                               texts
-                              (mapv email/text->lines texts))
+                              (mapv email/text->basic-html-email texts))
             (resp/response review-id))
           (r/not-found))
         (r/not-found)))))

@@ -167,7 +167,7 @@
                           (email/new-resource-comment-subject comment-author-full-name)
                           [{:Name resource-owner-full-name :Email (:email resource-owner)}]
                           texts
-                          (mapv email/text->lines texts))))))
+                          (mapv email/text->basic-html-email texts))))))
 
 (defn- create-comment [{:keys [db logger] :as config} req]
   (let [user (:user req)]
