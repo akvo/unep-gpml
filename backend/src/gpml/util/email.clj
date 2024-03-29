@@ -33,7 +33,7 @@
         (string/split-lines s)))
 
 (defn text->basic-html-email [s]
-  (-> s text->lines basic-html-email))
+  (basic-html-email {:lines (text->lines s)}))
 
 (defn make-message [sender receiver subject text html]
   {:From sender
