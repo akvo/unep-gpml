@@ -4,7 +4,8 @@
   "info": {
     "singularName": "cop",
     "pluralName": "cops",
-    "displayName": "CoP"
+    "displayName": "CoP",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -32,14 +33,15 @@
       "type": "richtext"
     },
     "attachments": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
       ],
-      "type": "media",
-      "multiple": true,
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -55,6 +57,14 @@
       "type": "string"
     },
     "members": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "string"
+    },
+    "forumId": {
       "pluginOptions": {
         "i18n": {
           "localized": false
