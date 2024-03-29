@@ -10,9 +10,8 @@ const Page = () => {
   }))
   const filterOption = (input, option) =>
     (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-  const handleChange = (e, v) => {
-    console.log(e, v)
-    setValues(e)
+  const handleChange = (vals) => {
+    setValues(vals)
   }
   return (
     <>
@@ -35,8 +34,6 @@ const Page = () => {
                   }}
                   placeholder="Please select"
                   filterOption={filterOption}
-                  // defaultValue={['a10', 'c12']}
-                  // optionLabelProp="name"
                   value={values}
                   onChange={handleChange}
                   options={organisations.map((it) => ({

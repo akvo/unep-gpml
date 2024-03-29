@@ -14,13 +14,9 @@ const Page = () => {
     fetch(`${strapiUrl}/api/cops?locale=en&populate=attachments`)
       .then((d) => d.json())
       .then((d) => {
-        console.log(d)
         setCops(d.data.map((it) => ({ ...it.attributes, id: it.id })))
-        // setItems(transformStrapiResponse(d.data))
-        // setLoading(false)
       })
   }, [])
-  console.log(cops)
   return (
     <>
       <Head>
@@ -43,12 +39,6 @@ const Page = () => {
                 <div className="col">
                   <h3>{cop.name}</h3>
                   <p dangerouslySetInnerHTML={{ __html: cop.description }} />
-                  {/* <p>
-                    CoP on Data Harmonization provides scientific advisory on
-                    harmonization of datasets on marine litter and
-                    plastic pollution enabling their incorporation into
-                    and visualization on the GPML Digital Platform. ​
-                  </p> */}
                   {cop.attachments.data !== null && (
                     <>
                       <div className="label">Key outcome resources</div>
@@ -86,9 +76,7 @@ const LinkTag = ({ id }) => {
   const { organisations } = UIStore.useState((s) => ({
     organisations: s.organisations,
   }))
-  // console.log(organisations)
   const org = organisations.find((it) => it.id === Number(id))
-  console.log(org)
   if (!org) return
   return (
     <a href={`/organisation/${org?.id}`} className="tag-link">
