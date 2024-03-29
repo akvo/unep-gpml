@@ -3,8 +3,24 @@ import styles from './index.module.scss'
 import { PinDoc } from '../../components/icons'
 import { Tag } from 'antd'
 import Button from '../../components/button'
+import { getStrapiUrl } from '../../utils/misc'
+import { useEffect, useState } from 'react'
+import { UIStore } from '../../store'
 
 const Page = () => {
+  const strapiUrl = getStrapiUrl()
+  const [cops, setCops] = useState(null)
+  useEffect(() => {
+    fetch(`${strapiUrl}/api/cops?locale=en&populate=attachments`)
+      .then((d) => d.json())
+      .then((d) => {
+        console.log(d)
+        setCops(d.data.map((it) => ({ ...it.attributes, id: it.id })))
+        // setItems(transformStrapiResponse(d.data))
+        // setLoading(false)
+      })
+  }, [])
+  console.log(cops)
   return (
     <>
       <Head>
@@ -21,43 +37,63 @@ const Page = () => {
               potential synergies avoiding duplication. ​
             </p>
           </div>
-
-          <div className="cop-item">
-            <div className="col">
-              <h3>Community of Practice on Data Harmonization</h3>
-              <p>
-                CoP on Data Harmonization provides scientific advisory on
-                harmonization of datasets on marine litter and plastic pollution
-                enabling their incorporation into and visualization on the GPML
-                Digital Platform. ​
-              </p>
-              <div className="label">Key outcome resources</div>
-              <div className="link-item">
-                <PinDoc />
-                Download Report
+          {cops != null &&
+            cops.map((cop) => (
+              <div className="cop-item" key={cop.id}>
+                <div className="col">
+                  <h3>{cop.name}</h3>
+                  <p dangerouslySetInnerHTML={{ __html: cop.description }} />
+                  {/* <p>
+                    CoP on Data Harmonization provides scientific advisory on
+                    harmonization of datasets on marine litter and
+                    plastic pollution enabling their incorporation into
+                    and visualization on the GPML Digital Platform. ​
+                  </p> */}
+                  {cop.attachments.data !== null && (
+                    <>
+                      <div className="label">Key outcome resources</div>
+                      {cop.attachments.data.map((it) => (
+                        <div className="link-item">
+                          <a href={it.attributes.url}>
+                            <PinDoc />
+                            Download Report
+                          </a>
+                        </div>
+                      ))}
+                    </>
+                  )}
+                </div>
+                <div className="col">
+                  <div className="label">Lead</div>
+                  <LinkTag id={cop.lead} />
+                  <div className="label">Members</div>
+                  <div className="members">
+                    {cop.members?.split(',').map((member) => (
+                      <LinkTag id={member} />
+                    ))}
+                  </div>
+                  <Button withArrow>Become a Forum Member</Button>
+                </div>
               </div>
-            </div>
-            <div className="col">
-              <div className="label">Lead</div>
-              <a href="#" className="tag-link">
-                UNEP-DHI
-              </a>
-              <div className="label">Members</div>
-              <a href="#" className="tag-link">
-                University of georgia
-              </a>
-              <a href="#" className="tag-link">
-                NOAA
-              </a>
-              <a href="#" className="tag-link">
-                Blue Planet
-              </a>
-              <Button withArrow>Become a Forum Member</Button>
-            </div>
-          </div>
+            ))}
         </div>
       </div>
     </>
+  )
+}
+
+const LinkTag = ({ id }) => {
+  const { organisations } = UIStore.useState((s) => ({
+    organisations: s.organisations,
+  }))
+  // console.log(organisations)
+  const org = organisations.find((it) => it.id === Number(id))
+  console.log(org)
+  if (!org) return
+  return (
+    <a href={`/organisation/${org?.id}`} className="tag-link">
+      {org?.name}
+    </a>
   )
 }
 
