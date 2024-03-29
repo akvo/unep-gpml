@@ -606,8 +606,9 @@ so you don't need to call the POST /api/chat/user/account endpoint beforehand."
     (println (format "https://deadsimplechat.com/%s?uniqueUserIdentifier=%s" channel-id cid)))
 
   ;; should include the user that joined with the earlier http://localhost:3000/api/chat/channel/public call
+  ;;
   (http-client/request (dev/logger)
-                       {:url (str "http://localhost:3000/api/chat/channel/details/" channel-id)
+                       {:url (str "http://localhost:3000/api/chat/channel/details/" "ADX5eMPzY")
                         :as :json-keyword-keys})
 
   ;; NOTE: channels associated to Plastic Strategies are filtered out
