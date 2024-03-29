@@ -66,23 +66,7 @@ const Forum = ({ isAuthenticated, setLoginVisible, profile }) => {
       if (!allForums.length && loading) {
         const { data: apiData } = await api.get('/chat/channel/all')
         const { channels: _allForums } = apiData || {}
-        ChatStore.update((s) => {
-          // TODO: identify private/public forum
-          s.allForums = _allForums
-            ?.map((a) => ({
-              ...a,
-              t: 'c',
-            }))
-            ?.sort((a, b) => {
-              if (a.type === 'c' && b.type !== 'c') {
-                return -1
-              } else if (a.type !== 'c' && b.type === 'c') {
-                return 1
-              } else {
-                return a.name.localeCompare(b.title)
-              }
-            })
-        })
+
         ChatStore.update((s) => {
           s.allForums = _allForums
         })
@@ -201,10 +185,8 @@ const Forum = ({ isAuthenticated, setLoginVisible, profile }) => {
             {...{
               viewModal,
               setViewModal,
-              allForums,
               setLoginVisible,
               isAuthenticated,
-              profile,
             }}
           />
           <AddModal

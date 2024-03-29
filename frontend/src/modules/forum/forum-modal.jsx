@@ -11,10 +11,8 @@ import { ChatStore } from '../../store'
 const ForumModal = ({
   viewModal,
   setViewModal,
-  allForums,
   setLoginVisible,
   isAuthenticated,
-  profile,
 }) => {
   const [requesting, setRequesting] = useState(false)
   const colorList = ['purple', 'green', 'blue', 'dark-blue']
@@ -23,12 +21,7 @@ const ForumModal = ({
   const findMyFm = myForums?.find((f) => f?.id === viewModal?.data?.id)
   const isNotAMember = viewModal?.data?.privacy === 'private' && !findMyFm
   const joinDisabled = requesting || joins?.includes(viewModal?.data?.id)
-  const participants = useMemo(() => {
-    const { users } = viewModal?.data || {}
-    const { users: findUsers } =
-      allForums?.find((a) => a?.id === viewModal?.data?.id) || {}
-    return users || findUsers
-  }, [viewModal, allForums])
+  const participants = viewModal?.data?.users
 
   const router = useRouter()
   const avatarUrl = `${process.env.NEXT_PUBLIC_CHAT_API_DOMAIN_URL}/avatar/`
@@ -70,7 +63,8 @@ const ForumModal = ({
       title={
         <>
           <span className={styles.forumType}>
-            {viewModal?.data?.t === 'p' ? 'private ' : 'public '}channel
+            {viewModal?.data?.privacy === 'private' ? 'private ' : 'public '}
+            channel
           </span>
           <h5>{viewModal?.data?.name?.replace(/[-_]/g, ' ')}</h5>
         </>
