@@ -2,6 +2,7 @@ import { Form, Input, Select } from 'antd'
 import { UIStore } from '../../store'
 import Head from 'next/head'
 import { useState } from 'react'
+import { loadCatalog } from '../../translations/utils'
 
 const Page = () => {
   const [values, setValues] = useState([])
@@ -48,6 +49,14 @@ const Page = () => {
       </div>
     </>
   )
+}
+
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
 }
 
 export default Page
