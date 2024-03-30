@@ -206,7 +206,7 @@
                                                                                                   1)
                                                                                              "Messages"
                                                                                              "Message"))
-                                                                     :channelURL (format "https://%s/forum/%s" app-domain chat-channel-id)
+                                                                     :channelURL (format "%s/forum/%s" app-domain chat-channel-id)
                                                                      :channelName channel-name
                                                                      :messages (mapv (fn [recent-message]
                                                                                        {:pre [(check! port.chat/Message recent-message)]}
