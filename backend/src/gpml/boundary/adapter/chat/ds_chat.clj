@@ -308,7 +308,8 @@
                                                                 ;; We pass :chat-account-id for the service to retrieve users from the DB later.
                                                                 ;; Note that this is a sensitive field that is removed from HTTP responses.
                                                                 :chat-account-id (:unique-user-identifier user)
-                                                                :username (:username user)})
+                                                                :username (:username user)
+                                                                :unique-user-identifier (:unique-user-identifier user)})
                                                              messages)))))})))))))
 
 (defn get-user-joined-channels* [{:keys [logger api-key] :as chat-adapter} user-id extra-channel-ids]
