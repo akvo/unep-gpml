@@ -2,6 +2,7 @@
   (:require
    [clojure.string :as string]
    [gpml.util.malli :as util.malli :refer [failure-with map->snake success-with]]
+   [java-time.api :as jt]
    [malli.util :as mu]))
 
 (def DSCInternalId
@@ -83,9 +84,16 @@
 (def Message
   [:map {:closed true}
    [:message :string]
-   [:created :string]
+   [:created [:and :string [:fn {:message "Must express a parseable date"}
+                            (fn try-parse-instant [s]
+                              (try
+                                (jt/instant s)
+                                true
+                                (catch Exception _
+                                  false)))]]]
    [:chat-account-id :string]
-   [:username :string]])
+   [:username :string]
+   [:unique-user-identifier UniqueUserIdentifier]])
 
 (def Messages
   [:map
@@ -105,8 +113,9 @@
 
 (def MessageSnakeCase (map->snake Message))
 
-(def MessagesSnakeCase
+(def MessagesSnakeCase ;; removes sensitive fields that shouldn't be returned over HTTP.
   (let [updated? (volatile! false)
+        updated2? (volatile! false)
         result (mapv (fn [x]
                        (cond->> x
                          (and (vector? x) (-> x first (= :messages)))
@@ -118,13 +127,18 @@
                                              z
                                              (into []
                                                    (remove (fn [chat-account-id]
-                                                             (when (and (vector? chat-account-id)
-                                                                        (= (first chat-account-id) :chat-account-id))
-                                                               (vreset! updated? true)
-                                                               true)))
+                                                             (or (when (and (vector? chat-account-id)
+                                                                            (= (first chat-account-id) :chat-account-id))
+                                                                   (vreset! updated? true)
+                                                                   true)
+                                                                 (when (and (vector? chat-account-id)
+                                                                            (= (first chat-account-id) :unique-user-identifier))
+                                                                   (vreset! updated2? true)
+                                                                   true))))
                                                    z)))))))))
                      (map->snake Messages))]
     (assert @updated?)
+    (assert @updated2?)
     result))
 
 (def Org
