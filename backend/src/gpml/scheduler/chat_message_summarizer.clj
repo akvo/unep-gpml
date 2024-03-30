@@ -133,10 +133,10 @@
                                                        (jt/> (-> recent-messages first :created jt/instant)
                                                              (or (some-> membership ^java.sql.Timestamp (:last-digest-sent-at) .toInstant)
                                                                  genesis))
-                                                       (< (time-difference-in-minutes (or (some-> membership ^java.sql.Timestamp (:last-digest-sent-at) .toInstant)
-                                                                                          apocalypse)
-                                                                                      (jt/instant))
-                                                          frequency-in-minutes)
+                                                       (>= (time-difference-in-minutes (or (some-> membership ^java.sql.Timestamp (:last-digest-sent-at) .toInstant)
+                                                                                           genesis)
+                                                                                       (jt/instant))
+                                                           frequency-in-minutes)
                                                        ;; XXX :last-active-at logic...
                                                        )]
                                               (when should-notify-about-recent-messages?
