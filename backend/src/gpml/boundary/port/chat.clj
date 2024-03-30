@@ -17,7 +17,8 @@
 (def UniqueUserIdentifier
   [:and
    {:doc (str "Must be opaque and complex enough to serve as authentication.\n"
-              "Starts with a fixed 'dscuui_' prefix, making it easily identifiable and Malli-able.")}
+              "Starts with a fixed 'dscuui_' prefix, making it easily identifiable and Malli-able.")
+    :gen/return (str "dscuui_" (random-uuid))}
    :string
    #"^dscuui_.*"])
 
@@ -84,13 +85,16 @@
 (def Message
   [:map {:closed true}
    [:message :string]
-   [:created [:and :string [:fn {:message "Must express a parseable date"}
-                            (fn try-parse-instant [s]
-                              (try
-                                (jt/instant s)
-                                true
-                                (catch Exception _
-                                  false)))]]]
+   [:created {:gen/return (str (jt/instant))}
+    [:and {:gen/return (str (jt/instant))}
+     [:string {:gen/return (str (jt/instant))}]
+     [:fn {:message "Must express a parseable date"}
+      (fn try-parse-instant [s]
+        (try
+          (jt/instant s)
+          true
+          (catch Exception _
+            false)))]]]
    [:chat-account-id :string]
    [:username :string]
    [:unique-user-identifier UniqueUserIdentifier]])

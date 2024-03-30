@@ -39,7 +39,7 @@
 ;;       (reversible)
 ;;    send email with latest *unread* messages (first few N such messages)
 
-(defn summarize-chat-messages [{:keys [logger hikari mailjet-config]
+(defn summarize-chat-messages [{:keys [logger hikari mailjet-config app-domain]
                                 chat :chat-adapter}
                                frequency-in-minutes]
   {:pre [logger
@@ -186,7 +186,7 @@
                         {:keys [email first-name last-name]} membership
                         ;; _extended-channel :- gpml.boundary.port.chat/ExtendedChannel
                         {channel-name :name :as _extended-channel} (get-in context [:extended-channels chat-channel-id :channel])
-                        texts [(pr-str recent-messages)]]]
+                        texts [(pr-str (mapv #(select-keys % [:messages]) recent-messages))]]] ;; TODO proper text email
             (assert (check! [:map
                              [:email any?]
                              [:first-name any?]
@@ -200,7 +200,21 @@
                               [{:Name (str first-name " " last-name)
                                 :Email email}]
                               texts
-                              (mapv email/text->basic-html-email texts)))
+                              (pogonos/render @email-html-template {:messageCount (format "%s New %s"
+                                                                                          (count recent-messages)
+                                                                                          (if (> (count recent-messages)
+                                                                                                 1)
+                                                                                            "Messages"
+                                                                                            "Message"))
+                                                                    :channelURL (format "https://%s/forum/%s" app-domain chat-channel-id)
+                                                                    :channelName channel-name
+                                                                    :messages (mapv (fn [recent-message]
+                                                                                      {:pre [(check! port.chat/Message recent-message)]}
+                                                                                      {:userName (:username recent-message)
+                                                                                       :message (:message recent-message)
+                                                                                       ;; XXX format as "ago" - the simplest thing we can do to avoid timezones
+                                                                                       :time (->> recent-message :created)})
+                                                                                    recent-messages)})))
           (log logger :info :success {:affected (count updates)})
           context)))))
 
