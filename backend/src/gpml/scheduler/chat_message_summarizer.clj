@@ -8,6 +8,7 @@
    [gpml.util.thread-transactions :refer [saga]]
    [integrant.core :as ig]
    [java-time.api :as jt]
+   [pogonos.core :as pogonos]
    [twarc.core :refer [defjob]]))
 
 (def genesis (.toInstant (jt/local-date-time 1000 1 1 0 0)
@@ -19,6 +20,10 @@
 (defn time-difference-in-minutes [a b]
   (.toMinutes (jt/duration (jt/instant a)
                            (jt/instant b))))
+
+(def email-html-template
+  (delay
+    (pogonos/parse-resource "gpml/email_templates/chat_message_summarizer.html")))
 
 ;; for each channel
 ;; get latest messages (DSC) for that channel
