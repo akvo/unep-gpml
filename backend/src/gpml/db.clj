@@ -23,11 +23,19 @@
    (success-with :result any?)
    (failure-with :error-details [:map [:ex-class :string]])])
 
+(defn sql-statement? [x]
+  (and (vector? x)
+       (-> x first string?)))
+
 ;; XXX logger arg
-(defn execute! [hikari honey-data]
+(defn execute!
+  "`input` is either a next.jdbc prepared statement (vector, first member string, rest are parameters),
+  or a honysql data structure (hashmap)."
+  [hikari input]
   {:post [(check! Result %)]}
   (try
-    (let [formatted (honey.sql/format honey-data)
+    (let [formatted (cond-> input
+                      (not (sql-statement? input)) honey.sql/format)
           v (next.jdbc/execute! (-> hikari :spec :datasource)
                                 formatted
                                 {:builder-fn next.jdbc.result-set/as-unqualified-kebab-maps})]
@@ -42,10 +50,14 @@
        :reason :exception
        :error-details {:ex-class (-> e class str)}})))
 
-(defn execute-one! [hikari honey-data]
+(defn execute-one!
+  "`input` is either a next.jdbc prepared statement (vector, first member string, rest are parameters),
+  or a honysql data structure (hashmap)."
+  [hikari input]
   {:post [(check! Result %)]}
   (try
-    (let [formatted (honey.sql/format honey-data)
+    (let [formatted (cond-> input
+                      (not (sql-statement? input)) honey.sql/format)
           v (next.jdbc/execute-one! (-> hikari :spec :datasource)
                                     formatted
                                     {:builder-fn next.jdbc.result-set/as-unqualified-kebab-maps})]

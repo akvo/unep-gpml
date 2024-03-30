@@ -17,7 +17,7 @@
 (def CreatedUser
   [:map {:closed true}
    [:id any?]
-   [:chat-account-id any?]
+   [:chat-account-id port.chat/UniqueUserIdentifier]
    [:chat-account-status any?]
    [:chat-account-auth-token any?]])
 
