@@ -200,21 +200,21 @@
                               [{:Name (str first-name " " last-name)
                                 :Email email}]
                               texts
-                              (pogonos/render @email-html-template {:messageCount (format "%s New %s"
-                                                                                          (count recent-messages)
-                                                                                          (if (> (count recent-messages)
-                                                                                                 1)
-                                                                                            "Messages"
-                                                                                            "Message"))
-                                                                    :channelURL (format "https://%s/forum/%s" app-domain chat-channel-id)
-                                                                    :channelName channel-name
-                                                                    :messages (mapv (fn [recent-message]
-                                                                                      {:pre [(check! port.chat/Message recent-message)]}
-                                                                                      {:userName (:username recent-message)
-                                                                                       :message (:message recent-message)
-                                                                                       ;; XXX format as "ago" - the simplest thing we can do to avoid timezones
-                                                                                       :time (->> recent-message :created)})
-                                                                                    recent-messages)})))
+                              [(pogonos/render @email-html-template {:messageCount (format "%s New %s"
+                                                                                           (count recent-messages)
+                                                                                           (if (> (count recent-messages)
+                                                                                                  1)
+                                                                                             "Messages"
+                                                                                             "Message"))
+                                                                     :channelURL (format "https://%s/forum/%s" app-domain chat-channel-id)
+                                                                     :channelName channel-name
+                                                                     :messages (mapv (fn [recent-message]
+                                                                                       {:pre [(check! port.chat/Message recent-message)]}
+                                                                                       {:userName (:username recent-message)
+                                                                                        :message (:message recent-message)
+                                                                                        ;; XXX format as "ago" - the simplest thing we can do to avoid timezones
+                                                                                        :time (->> recent-message :created)})
+                                                                                     recent-messages)})]))
           (log logger :info :success {:affected (count updates)})
           context)))))
 
