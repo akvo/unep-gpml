@@ -85,7 +85,8 @@
    [:message :string]
    [:created :string]
    [:chat-account-id :string]
-   [:username :string]])
+   [:username :string]
+   [:unique-user-identifier UniqueUserIdentifier]])
 
 (def Messages
   [:map
@@ -105,8 +106,9 @@
 
 (def MessageSnakeCase (map->snake Message))
 
-(def MessagesSnakeCase
+(def MessagesSnakeCase ;; removes sensitive fields that shouldn't be returned over HTTP.
   (let [updated? (volatile! false)
+        updated2? (volatile! false)
         result (mapv (fn [x]
                        (cond->> x
                          (and (vector? x) (-> x first (= :messages)))
@@ -118,13 +120,18 @@
                                              z
                                              (into []
                                                    (remove (fn [chat-account-id]
-                                                             (when (and (vector? chat-account-id)
-                                                                        (= (first chat-account-id) :chat-account-id))
-                                                               (vreset! updated? true)
-                                                               true)))
+                                                             (or (when (and (vector? chat-account-id)
+                                                                            (= (first chat-account-id) :chat-account-id))
+                                                                   (vreset! updated? true)
+                                                                   true)
+                                                                 (when (and (vector? chat-account-id)
+                                                                            (= (first chat-account-id) :unique-user-identifier))
+                                                                   (vreset! updated2? true)
+                                                                   true))))
                                                    z)))))))))
                      (map->snake Messages))]
     (assert @updated?)
+    (assert @updated2?)
     result))
 
 (def Org
@@ -263,6 +270,12 @@
               (success-with :discussions [:sequential Discussion])
               (failure-with :error-details any?)]}
     get-channel-discussions [this channel-id])
+
+  (^{:schema [:or
+              (success-with :user-ids [:sequential any? #_UniqueUserIdentifier]) ;; XXX I'm assuming it returns such ids. Can be requested.
+              (failure-with :error-details any?)]}
+    get-channel-present-users [this channel-id]
+    "Returns the User IDs of the users currently active in the given channel.")
 
   (^{:schema [:or
               (success-with :channels Channels)
