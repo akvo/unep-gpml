@@ -126,9 +126,9 @@
                                                              chat-account-id)
                                                        ;; recent-messages :- gpml.boundary.port.chat/Message
                                                        (jt/> (-> recent-messages first :created jt/instant)
-                                                             (or (-> membership ^java.sql.Timestamp (:last-digest-sent-at) .toInstant)
+                                                             (or (some-> membership ^java.sql.Timestamp (:last-digest-sent-at) .toInstant)
                                                                  genesis))
-                                                       (< (time-difference-in-minutes (or (-> membership ^java.sql.Timestamp (:last-digest-sent-at) .toInstant)
+                                                       (< (time-difference-in-minutes (or (some-> membership ^java.sql.Timestamp (:last-digest-sent-at) .toInstant)
                                                                                           apocalypse)
                                                                                       (jt/instant))
                                                           frequency-in-minutes)
@@ -141,7 +141,7 @@
                                                   {:membership membership
                                                    :recent-messages (filterv (fn [recent-message]
                                                                                (jt/> (-> recent-message :created jt/instant)
-                                                                                     (or (-> membership ^java.sql.Timestamp (:last-digest-sent-at) .toInstant)
+                                                                                     (or (some-> membership ^java.sql.Timestamp (:last-digest-sent-at) .toInstant)
                                                                                          genesis)))
                                                                              recent-messages)})))))
                                     memberships))
