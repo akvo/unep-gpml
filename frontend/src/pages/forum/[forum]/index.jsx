@@ -29,6 +29,7 @@ import {
 } from '../../../components/icons'
 import api from '../../../utils/api'
 import { MoreOutlined } from '@ant-design/icons'
+import { loadCatalog } from '../../../translations/utils'
 
 const ForumView = ({ isAuthenticated, profile }) => {
   const router = useRouter()
@@ -706,5 +707,15 @@ const DiscussionItem = ({
     </li>
   )
 }
+
+
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
+}
+
 
 export default ForumView
