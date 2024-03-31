@@ -1,5 +1,6 @@
 ((clojure-mode
   (eval . (put-clojure-indent 'saga 2))
+  (eval . (put-clojure-indent 'logging-if-false 2))
   (eval . (put-clojure-indent 'with-constraint-violation-check 1))
   (eval . (put-clojure-indent 'metrics 2)))
  (nil . ((cider-ns-refresh-before-fn . "integrant.repl/suspend")

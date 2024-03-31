@@ -242,7 +242,7 @@ You can read them here: %s"
                                                                                         :message (:message recent-message)
                                                                                         ;; XXX format as "ago" - the simplest thing we can do to avoid timezones
                                                                                         :time (:created recent-message)})
-                                                                                     (take 5 recent-messages))})]))
+                                                                                     (reverse (take 5 recent-messages)))})]))
           (log logger :info :success {:affected (count updates)})
           context)))))
 
