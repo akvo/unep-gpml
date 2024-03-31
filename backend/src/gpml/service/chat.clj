@@ -253,14 +253,20 @@
     (partial tx-get-channel-users config)
     (fn enrich-messages-users [context]
       (try
-        (update-in context [:channel :messages :messages] (fn [messages]
-                                                            (mapv (fn [{:keys [chat-account-id] :as message}]
-                                                                    {:pre [chat-account-id]}
-                                                                    (let [[user] (find-users-by-chat-account-id db [chat-account-id])]
-                                                                      (-> message
-                                                                          (dissoc :chat-account-id)
-                                                                          (assoc :user (present-user user)))))
-                                                                  messages)))
+        (-> context
+            (update-in [:channel :messages :messages] (fn [messages]
+                                                        ;; We used to request a limit of "1",
+                                                        ;; but other features made it request "20",
+                                                        ;; so now we only take what's needed.
+                                                        (vec (take 1 messages))))
+            (update-in [:channel :messages :messages] (fn [messages]
+                                                        (mapv (fn [{:keys [chat-account-id] :as message}]
+                                                                {:pre [chat-account-id]}
+                                                                (let [[user] (find-users-by-chat-account-id db [chat-account-id])]
+                                                                  (-> message
+                                                                      (dissoc :chat-account-id)
+                                                                      (assoc :user (present-user user)))))
+                                                              messages))))
         (catch Exception t
           (log logger :error :could-not-get-stakeholders t)
           (failure {:reason :exception

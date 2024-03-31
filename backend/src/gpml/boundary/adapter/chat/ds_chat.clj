@@ -283,7 +283,9 @@
                                      {:url (build-api-endpoint-url "/api/v1/chatRoom/" channel-id "/messages")
                                       :method :get
                                       :query-params {:auth api-key
-                                                     :limit "1"}
+                                                     ;; NOTE: this used to be "1", but gpml.scheduler.chat-message-summarizer
+                                                     ;; needs something more generous.
+                                                     :limit "20"}
                                       :as :json-keyword-keys})]
             (if-not (<= 200 status 299)
               (failure {:reason :failed-to-get-messages
@@ -717,12 +719,12 @@
                                         uniqueUserIdentifier
                                         (-> a-public-channel :channel :id))
   ;; OR
-  ;; 
+  ;;
   (gpml.service.chat/join-channel (dev/config-component)
                                   (-> a-public-channel :channel :id)
                                   (:stakeholder a-user))
 
-;;
+  ;;
   (println (format "https://deadsimplechat.com/%s?uniqueUserIdentifier=%s" (-> a-public-channel :channel :id) uniqueUserIdentifier))
 
   (port.chat/get-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
