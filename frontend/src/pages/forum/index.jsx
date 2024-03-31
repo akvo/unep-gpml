@@ -150,7 +150,7 @@ const Forum = ({ isAuthenticated, setLoginVisible, profile }) => {
           </div>
           <section>
             <List
-              grid={{ column: 3, gutter: 20 }}
+              grid={{ lg: 3, column: 3, gutter: 20, md: 2, sm: 1 }}
               dataSource={allForums}
               loading={loading}
               renderItem={(item) => (

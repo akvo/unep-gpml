@@ -29,6 +29,7 @@ import {
 } from '../../../components/icons'
 import api from '../../../utils/api'
 import { MoreOutlined } from '@ant-design/icons'
+import { loadCatalog } from '../../../translations/utils'
 
 const ForumView = ({ isAuthenticated, profile }) => {
   const router = useRouter()
@@ -259,6 +260,7 @@ const PinnedLinks = ({ isAdmin, channelId }) => {
     form: PinForm,
     doc: PinDoc,
   }
+  if(items.length === 0 && !isAdmin) return
   return (
     <>
       <h6 className="w-bold h-caps-xs">
@@ -706,5 +708,15 @@ const DiscussionItem = ({
     </li>
   )
 }
+
+
+// export const getStaticProps = async (ctx) => {
+//   return {
+//     props: {
+//       i18n: await loadCatalog(ctx.locale),
+//     },
+//   }
+// }
+
 
 export default ForumView
