@@ -233,636 +233,669 @@ function Partnership({}) {
   return (
     <div className={styles.partnership}>
       <div className="hero">
-        <Row align="middle" gutter={[24, 16]}>
-          <Col xs={24} sm={24} lg={18} xl={18}>
-            <div class="header">
-              <h1>
-                <span>Join the multi-stakeholder partnership</span> which brings
-                together all the actors working on plastic pollution and marine
-                litter prevention and reduction.
-              </h1>
-            </div>
-          </Col>
-          <Col xs={24} sm={24} lg={6} xl={6}>
-            <Image src="/partnership.png" alt="hero" preview={false} />
-          </Col>
-        </Row>
-        <div className="steps-container">
-          <h2 className="steps-header">
-            3 STEPS FOR AN ENTITY TO BECOME A MEMBER
-          </h2>
-          <div class="steps">
-            <div class="step">
-              <h2>1</h2>
-              <p>
-                <strong>Fill in the form.</strong>
-                <br />
-                Tell us about your organisation's work in preventing and
-                reducing plastic pollution and marine litter.
-              </p>
-            </div>
-            <div class="step">
-              <h2>2</h2>
-              <p>
-                <strong>Be approved</strong> and certified by the GPML as a
-                member of the partnership.
-              </p>
-            </div>
-            <div class="step">
-              <h2>3</h2>
-              <p>
-                <strong>Receive</strong> an entity profile and focal point
-                profile on the GPML Digital Platform.
-              </p>
+        <div className="container">
+          <Row align="middle" gutter={[24, 16]}>
+            <Col xs={24} sm={24} lg={15} xl={15}>
+              <div class="header">
+                <h1>
+                  <span>Join the multi-stakeholder partnership</span> which
+                  brings together all the actors working on plastic pollution
+                  and marine litter prevention and reduction.
+                </h1>
+              </div>
+            </Col>
+            <Col xs={24} sm={24} md={9} lg={9} xl={9} className="hide-mobile">
+              <Image src="/partnership.png" alt="hero" preview={false} />
+            </Col>
+          </Row>
+          <div className="steps-container">
+            <h2 className="steps-header">
+              3 STEPS FOR AN ENTITY TO BECOME A MEMBER
+            </h2>
+            <div class="steps">
+              <div class="step">
+                <h2>1</h2>
+                <p>
+                  <strong>Fill in the form.</strong>
+                  <br />
+                  Tell us about your organisation's work in preventing and
+                  reducing plastic pollution and marine litter.
+                </p>
+              </div>
+              <div class="step">
+                <h2>2</h2>
+                <p>
+                  <strong>Be approved</strong> and certified by the GPML as a
+                  member of the partnership.
+                </p>
+              </div>
+              <div class="step">
+                <h2>3</h2>
+                <p>
+                  <strong>Receive</strong> an entity profile and focal point
+                  profile on the GPML Digital Platform.
+                </p>
+              </div>
             </div>
           </div>
         </div>
       </div>
       <div className="activity-box">
-        <h2>Why become a certified GPML member?</h2>
-        <div className="activity-box-wrapper">
-          <ul>
-            <li>
-              <div className="icon">
-                <img src="/activity-policy.svg" />
-              </div>
-              <h3 className="h-m">
-                <Trans>Access</Trans>
-              </h3>
-              <p>
-                Access to a unique global audience for sharing knowledge and
-                experiences in preventing and reducing plastic pollution and
-                marine litter.
-              </p>
-            </li>
-            <li>
-              <div className="icon">
-                <img src="/activity-bookmark.svg" />
-              </div>
-              <h3 className="h-m">
-                <Trans>Collaborate</Trans>
-              </h3>
-              <p>
-                Opportunities to collaborate with other stakeholders to create
-                and advance solutions.
-              </p>
-            </li>
-            <li>
-              <div className="icon">
-                <img src="/activity-money.svg" />
-              </div>
-              <h3 className="h-m">
-                <Trans>Share</Trans>
-              </h3>
-              <p>
-                Exclusive invites to online and in-person events and the
-                opportunity to showcase your work.
-              </p>
-            </li>
-            <li>
-              <div className="icon">
-                <img src="/activity-plans.svg" />
-              </div>
-              <h3 className="h-m">
-                <Trans>Learn</Trans>
-              </h3>
-              <p>
-                Opportunities to access a variety of resources, data and
-                trainings to enhance capacity development.
-              </p>
-            </li>
-            <li>
-              <div className="icon">
-                <img src="/activity-access.svg" />
-              </div>
-              <h3 className="h-m">
-                <Trans>Certified</Trans>
-              </h3>
-              <p>
-                Your organisation will receive a certificate, which officially
-                acknowledges its GPML membership.
-              </p>
-            </li>
-          </ul>
+        <div className="container">
+          <h2>Why become a certified GPML member?</h2>
+        </div>
+        <div className="container">
+          <div className="activity-box-wrapper">
+            <ul>
+              <li>
+                <div className="icon">
+                  <img src="/activity-policy.svg" />
+                </div>
+                <h3 className="h-m">
+                  <Trans>Access</Trans>
+                </h3>
+                <p>
+                  Access to a unique global audience for sharing knowledge and
+                  experiences in preventing and reducing plastic pollution and
+                  marine litter.
+                </p>
+              </li>
+              <li>
+                <div className="icon">
+                  <img src="/activity-bookmark.svg" />
+                </div>
+                <h3 className="h-m">
+                  <Trans>Collaborate</Trans>
+                </h3>
+                <p>
+                  Opportunities to collaborate with other stakeholders to create
+                  and advance solutions.
+                </p>
+              </li>
+              <li>
+                <div className="icon">
+                  <img src="/activity-money.svg" />
+                </div>
+                <h3 className="h-m">
+                  <Trans>Share</Trans>
+                </h3>
+                <p>
+                  Exclusive invites to online and in-person events and the
+                  opportunity to showcase your work.
+                </p>
+              </li>
+              <li>
+                <div className="icon">
+                  <img src="/activity-plans.svg" />
+                </div>
+                <h3 className="h-m">
+                  <Trans>Learn</Trans>
+                </h3>
+                <p>
+                  Opportunities to access a variety of resources, data and
+                  trainings to enhance capacity development.
+                </p>
+              </li>
+              <li>
+                <div className="icon">
+                  <img src="/activity-access.svg" />
+                </div>
+                <h3 className="h-m">
+                  <Trans>Certified</Trans>
+                </h3>
+                <p>
+                  Your organisation will receive a certificate, which officially
+                  acknowledges its GPML membership.
+                </p>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
-      {submited ? (
-        <Row>
-          <Col span={24}>
-            <Card
-              style={{
-                padding: '30px',
-              }}
-            >
-              <div>
-                <h3>Thank you for signing up!</h3>
-                <p>we'll let you know once an admin has approved it</p>
-              </div>
-            </Card>
-          </Col>
-        </Row>
-      ) : (
-        <div className="form-container">
-          <FinalForm
-            onSubmit={onSubmit}
-            initialValues={initialValues}
-            render={({
-              handleSubmit,
-              form,
-              submitting,
-              pristine,
-              values,
-              errors,
-            }) => {
-              return (
-                <form onSubmit={handleSubmit} layout="vertical">
-                  <Row>
-                    <Col xs={24} sm={24} lg={16} xl={16}>
-                      <Field name="orgName" validate={required}>
-                        {({ input, meta }) => {
-                          const hasError = meta.error && !meta.valid
-                          const validVal =
-                            input?.value && meta.valid ? 'success' : null
-                          const validateStatus =
-                            hasError && meta.touched ? 'error' : validVal
-
-                          return (
-                            <FormLabel
-                              label="Name of Organisation"
-                              htmlFor="orgName"
-                              validateStatus={validateStatus}
-                            >
-                              <Input
-                                size="small"
-                                onChange={(e) => input.onChange(e.target.value)}
-                                placeholder={t`Name of Organisation`}
-                                value={input.value}
-                                className={`${
-                                  meta.touched && meta.error && !meta.valid
-                                    ? 'ant-input-status-error'
-                                    : ''
-                                }`}
-                              />{' '}
-                              {meta.touched && meta.error && (
-                                <p
-                                  color="error"
-                                  className="error transitionDiv"
-                                  style={
-                                    meta.touched && meta.error
-                                      ? mountedStyle
-                                      : unmountedStyle
-                                  }
-                                >
-                                  {meta.error}
-                                </p>
-                              )}
-                            </FormLabel>
-                          )
-                        }}
-                      </Field>
-                      <Field name="program" validate={required}>
-                        {({ input, meta }) => {
-                          const hasError = meta.error && !meta.valid
-                          const validVal =
-                            input?.value && meta.valid ? 'success' : null
-                          const validateStatus =
-                            hasError && meta.touched ? 'error' : validVal
-
-                          return (
-                            <FormLabel
-                              label="Organisation's efforts in addressing plastic pollution"
-                              htmlFor="program"
-                              validateStatus={validateStatus}
-                            >
-                              <Input.TextArea
-                                size="small"
-                                onChange={(e) => input.onChange(e.target.value)}
-                                placeholder={t`Organisation's efforts in addressing plastic pollution`}
-                                value={input.value}
-                                className={`${
-                                  meta.touched && meta.error && !meta.valid
-                                    ? 'ant-input-status-error'
-                                    : ''
-                                }`}
-                              />{' '}
-                              {meta.touched && meta.error && (
-                                <p
-                                  color="error"
-                                  className="error transitionDiv"
-                                  style={
-                                    meta.touched && meta.error
-                                      ? mountedStyle
-                                      : unmountedStyle
-                                  }
-                                >
-                                  {meta.error}
-                                </p>
-                              )}
-                            </FormLabel>
-                          )
-                        }}
-                      </Field>
-                      <Field name="type" validate={required}>
-                        {({ input, meta }) => {
-                          const hasError = meta.error && !meta.valid
-                          const validVal =
-                            input?.value && meta.valid ? 'success' : null
-                          const validateStatus =
-                            hasError && meta.touched ? 'error' : validVal
-
-                          return (
-                            <FormLabel
-                              label="Which representative group fits your Entity?"
-                              htmlFor="type"
-                              validateStatus={validateStatus}
-                            >
-                              <Radio.Group {...input} value={input.value}>
-                                <Space direction="vertical">
-                                  {representativeGroup.map((g) => (
-                                    <Radio key={g.code} value={g.code}>
-                                      {g.name}
-                                    </Radio>
-                                  ))}
-                                </Space>
-                              </Radio.Group>{' '}
-                              {meta.touched && meta.error && (
-                                <p
-                                  color="error"
-                                  className="error transitionDiv"
-                                  style={
-                                    meta.touched && meta.error
-                                      ? mountedStyle
-                                      : unmountedStyle
-                                  }
-                                >
-                                  {meta.error}
-                                </p>
-                              )}
-                            </FormLabel>
-                          )
-                        }}
-                      </Field>
-                      <Field name="url" validate={required}>
-                        {({ input, meta }) => {
-                          const hasError = meta.error && !meta.valid
-                          const validVal =
-                            input?.value && meta.valid ? 'success' : null
-                          const validateStatus =
-                            hasError && meta.touched ? 'error' : validVal
-
-                          return (
-                            <FormLabel
-                              label="Organisation’s Website"
-                              htmlFor="url"
-                              validateStatus={validateStatus}
-                            >
-                              <Input
-                                size="small"
-                                onChange={(e) => input.onChange(e.target.value)}
-                                placeholder={t`Organisation’s Website`}
-                                value={input.value}
-                                className={`${
-                                  meta.touched && meta.error && !meta.valid
-                                    ? 'ant-input-status-error'
-                                    : ''
-                                }`}
-                              />{' '}
-                              {meta.touched && meta.error && (
-                                <p
-                                  color="error"
-                                  className="error transitionDiv"
-                                  style={
-                                    meta.touched && meta.error
-                                      ? mountedStyle
-                                      : unmountedStyle
-                                  }
-                                >
-                                  {meta.error}
-                                </p>
-                              )}
-                            </FormLabel>
-                          )
-                        }}
-                      </Field>
-                      <Field name="picture">
-                        {({ input: { value, onChange, ...input } }) => (
-                          <FormLabel label="Organisation’s Logo" htmlFor="url">
-                            <Dragger
-                              {...input}
-                              beforeUpload={() => false}
-                              onChange={({ file, fileList }) => {
-                                if (file.status !== 'uploading') {
-                                  const base64 = getBase64(file)
-                                  base64
-                                    .then((res) => {
-                                      onChange(res)
-                                    })
-                                    .catch((err) => {
-                                      onChange(err || null)
-                                    })
-                                }
-                              }}
-                              onDrop={(e) => {
-                                const files = e.dataTransfer.files
-                                if (files && files.length > 0) {
-                                  const file = files[0]
-                                  getBase64(file)
-                                    .then((res) => {
-                                      onChange(res)
-                                    })
-                                    .catch((err) => {
-                                      console.error(
-                                        'Error converting file to base64:',
-                                        err
-                                      )
-                                      onChange(null)
-                                    })
-                                }
-                              }}
-                              multiple={false}
-                              accept=".jpg,.png"
-                            >
-                              <p className="ant-upload-drag-icon">
-                                <UploadFileIcon />
-                              </p>
-                              <p className="ant-upload-text">
-                                Accepts .jpg and .png
-                              </p>
-                              <p className="add-btn">Add a File</p>
-                            </Dragger>
-                          </FormLabel>
-                        )}
-                      </Field>
-                      <Field
-                        name="tags"
-                        style={{ width: '100%' }}
-                        validate={required}
-                      >
-                        {({ input, meta }) => {
-                          const handleChange = (selectedValue) => {
-                            const isSelected = input.value.includes(
-                              selectedValue.toLowerCase()
-                            )
-                            let newValue
-                            if (isSelected) {
-                              newValue = input.value.filter(
-                                (value) => value !== selectedValue.toLowerCase()
-                              )
-                            } else {
-                              newValue = [
-                                ...input.value,
-                                selectedValue.toLowerCase(),
-                              ]
-                            }
-
-                            input.onChange(newValue)
-                          }
-
-                          const handleRemove = (selectedValue) => {
-                            const newValue = input.value.filter(
-                              (value) => value !== selectedValue
-                            )
-                            input.onChange(newValue)
-                          }
-
-                          const hasError = meta.error && !meta.valid
-                          const validVal =
-                            input?.value && meta.valid ? 'success' : null
-                          const validateStatus =
-                            hasError && meta.touched ? 'error' : validVal
-
-                          return (
-                            <FormLabel
-                              label="Areas of expertise"
-                              htmlFor="tags"
-                              validateStatus={validateStatus}
-                            >
-                              <CatTagSelect
-                                handleChange={handleChange}
-                                meta={meta}
-                                error={meta.touched && hasError}
-                                value={input.value ? input.value : undefined}
-                                handleRemove={handleRemove}
-                              />{' '}
-                              {meta.touched && meta.error && (
-                                <p
-                                  color="error"
-                                  className="error transitionDiv"
-                                  style={
-                                    meta.touched && meta.error
-                                      ? mountedStyle
-                                      : unmountedStyle
-                                  }
-                                >
-                                  {meta.error}
-                                </p>
-                              )}
-                            </FormLabel>
-                          )
-                        }}
-                      </Field>
-
-                      <div className="geo">
-                        <h2>Geo-coverage</h2>
-                        <Row gutter={[16, 16]}>
-                          <Col span={12}>
-                            <Field name="geoCoverageType" validate={required}>
-                              {({ input, meta }) => {
-                                const hasError = meta.error && !meta.valid
-                                const validVal =
-                                  input?.value && meta.valid ? 'success' : null
-                                const validateStatus =
-                                  hasError && meta.touched ? 'error' : validVal
-
-                                return (
-                                  <FormLabel
-                                    label="Geo-coverage type"
-                                    htmlFor="geoCoverageType"
-                                    validateStatus={validateStatus}
-                                  >
-                                    <Select
-                                      {...input}
-                                      size="small"
-                                      onChange={(value) =>
-                                        input.onChange(value)
-                                      }
-                                      onBlur={() => input.onBlur()}
-                                      value={input.value}
-                                      placeholder="Geo-coverage type"
-                                      allowClear
-                                      className={`dont-show ${
-                                        meta.touched && !meta.valid
-                                          ? 'ant-input-status-error'
-                                          : ''
-                                      }`}
-                                    >
-                                      <Option value="global">Global</Option>
-                                      <Option value="transnational">
-                                        Transnational
-                                      </Option>
-                                      <Option value="national">National</Option>
-                                    </Select>{' '}
-                                    {meta.touched && meta.error && (
-                                      <p
-                                        color="error"
-                                        className="error transitionDiv"
-                                        style={
-                                          meta.touched && meta.error
-                                            ? mountedStyle
-                                            : unmountedStyle
-                                        }
-                                      >
-                                        {meta.error}
-                                      </p>
-                                    )}
-                                  </FormLabel>
-                                )
-                              }}
-                            </Field>
-                          </Col>
-                          <Col span={12}>
-                            <Field name="orgHeadquarter" validate={required}>
-                              {({ input, meta }) => {
-                                const hasError = meta.error && !meta.valid
-                                const validVal =
-                                  input?.value && meta.valid ? 'success' : null
-                                const validateStatus =
-                                  hasError && meta.touched ? 'error' : validVal
-
-                                return (
-                                  <FormLabel
-                                    label="Countries"
-                                    htmlFor="orgHeadquarter"
-                                    validateStatus={validateStatus}
-                                  >
-                                    <Select
-                                      {...input}
-                                      size="small"
-                                      onChange={(value) =>
-                                        input.onChange(value)
-                                      }
-                                      onBlur={() => input.onBlur()}
-                                      value={input.value}
-                                      placeholder="Countries"
-                                      allowClear
-                                      className={`dont-show ${
-                                        meta.touched && !meta.valid
-                                          ? 'ant-input-status-error'
-                                          : ''
-                                      }`}
-                                    >
-                                      {countries
-                                        .filter(
-                                          (country) =>
-                                            country.description.toLowerCase() ===
-                                            'member state'
-                                        )
-                                        .map((it) => (
-                                          <Option key={it.id} value={it.id}>
-                                            {it.name}
-                                          </Option>
-                                        ))}
-                                    </Select>{' '}
-                                    {meta.touched && meta.error && (
-                                      <p
-                                        color="error"
-                                        className="error transitionDiv"
-                                        style={
-                                          meta.touched && meta.error
-                                            ? mountedStyle
-                                            : unmountedStyle
-                                        }
-                                      >
-                                        {meta.error}
-                                      </p>
-                                    )}
-                                  </FormLabel>
-                                )
-                              }}
-                            </Field>
-                          </Col>
-                        </Row>
-                      </div>
-
-                      <Field
-                        name="acceptTerms"
-                        type="checkbox"
-                        validate={required}
-                      >
-                        {({ input, meta }) => (
-                          <FormLabel
-                            validateStatus={
-                              meta.error && meta.touched ? 'error' : ''
-                            }
-                          >
-                            <Checkbox {...input}>
-                              By submitting this form, I will be included in the
-                              public database of GPML Digital Platform members
-                              and acknowledge that the provided information will
-                              be made public and used to find and connect via
-                              smart-matchmaking functionalities with other
-                              stakeholders and resources.
-                            </Checkbox>
-                          </FormLabel>
-                        )}
-                      </Field>
-
-                      {profile && Object.keys(profile).length > 0 ? (
-                        <Field name="email">
+      <div className="container">
+        {submited ? (
+          <Row>
+            <Col span={24}>
+              <Card
+                style={{
+                  padding: '30px',
+                }}
+              >
+                <div>
+                  <h3>Thank you for signing up!</h3>
+                  <p>we'll let you know once an admin has approved it</p>
+                </div>
+              </Card>
+            </Col>
+          </Row>
+        ) : (
+          <div className="form-container">
+            <div class="caps-heading-1 page-sub-heading">Step 1</div>
+            <h2>Fill in the form</h2>
+            <FinalForm
+              onSubmit={onSubmit}
+              initialValues={initialValues}
+              render={({
+                handleSubmit,
+                form,
+                submitting,
+                pristine,
+                values,
+                errors,
+              }) => {
+                return (
+                  <form onSubmit={handleSubmit} layout="vertical">
+                    <Row>
+                      <Col xs={24} sm={24} lg={16} xl={16}>
+                        <Field name="orgName" validate={required}>
                           {({ input, meta }) => {
+                            const hasError = meta.error && !meta.valid
+                            const validVal =
+                              input?.value && meta.valid ? 'success' : null
+                            const validateStatus =
+                              hasError && meta.touched ? 'error' : validVal
+
                             return (
-                              <FormLabel label="Email" htmlFor="email">
+                              <FormLabel
+                                label="Name of Organisation"
+                                htmlFor="orgName"
+                                validateStatus={validateStatus}
+                              >
                                 <Input
                                   size="small"
-                                  placeholder={t`Email`}
-                                  value={profile.email}
-                                  disabled
-                                />
+                                  onChange={(e) =>
+                                    input.onChange(e.target.value)
+                                  }
+                                  placeholder={t`Name of Organisation`}
+                                  value={input.value}
+                                  className={`${
+                                    meta.touched && meta.error && !meta.valid
+                                      ? 'ant-input-status-error'
+                                      : ''
+                                  }`}
+                                />{' '}
+                                {meta.touched && meta.error && (
+                                  <p
+                                    color="error"
+                                    className="error transitionDiv"
+                                    style={
+                                      meta.touched && meta.error
+                                        ? mountedStyle
+                                        : unmountedStyle
+                                    }
+                                  >
+                                    {meta.error}
+                                  </p>
+                                )}
                               </FormLabel>
                             )
                           }}
                         </Field>
-                      ) : (
-                        <div className="auth-container">
-                          <div className="header">
-                            <h2>Focal Point Account in GPML</h2>
-                            <div className="login-btn">
-                              {!login && <span>Already have an account?</span>}
-                              <Button
-                                type="link"
-                                onClick={() => setLogin(!login)}
-                              >
-                                {login ? 'Sign Up' : 'Login'}
-                              </Button>
-                            </div>
-                          </div>
-                          {login ? (
-                            <Login required={required} />
-                          ) : (
-                            <SignUp required={required} />
-                          )}
-                        </div>
-                      )}
-                    </Col>
-                  </Row>
+                        <Field name="program" validate={required}>
+                          {({ input, meta }) => {
+                            const hasError = meta.error && !meta.valid
+                            const validVal =
+                              input?.value && meta.valid ? 'success' : null
+                            const validateStatus =
+                              hasError && meta.touched ? 'error' : validVal
 
-                  <div className="buttons">
-                    <Button
-                      type="primary"
-                      size="large"
-                      withArrow
-                      disabled={submitting}
-                      htmlType="submit"
-                    >
-                      <Trans>Submit Application</Trans>
-                    </Button>
-                  </div>
-                </form>
-              )
-            }}
-          />
-        </div>
-      )}
+                            return (
+                              <FormLabel
+                                label="Organisation's efforts in addressing plastic pollution"
+                                htmlFor="program"
+                                validateStatus={validateStatus}
+                              >
+                                <Input.TextArea
+                                  // size="small"
+                                  onChange={(e) =>
+                                    input.onChange(e.target.value)
+                                  }
+                                  placeholder={t`Organisation's efforts in addressing plastic pollution`}
+                                  value={input.value}
+                                  className={`${
+                                    meta.touched && meta.error && !meta.valid
+                                      ? 'ant-input-status-error'
+                                      : ''
+                                  }`}
+                                />{' '}
+                                {meta.touched && meta.error && (
+                                  <p
+                                    color="error"
+                                    className="error transitionDiv"
+                                    style={
+                                      meta.touched && meta.error
+                                        ? mountedStyle
+                                        : unmountedStyle
+                                    }
+                                  >
+                                    {meta.error}
+                                  </p>
+                                )}
+                              </FormLabel>
+                            )
+                          }}
+                        </Field>
+                        <Field name="type" validate={required}>
+                          {({ input, meta }) => {
+                            const hasError = meta.error && !meta.valid
+                            const validVal =
+                              input?.value && meta.valid ? 'success' : null
+                            const validateStatus =
+                              hasError && meta.touched ? 'error' : validVal
+
+                            return (
+                              <FormLabel
+                                label="Which representative group fits your Entity?"
+                                htmlFor="type"
+                                validateStatus={validateStatus}
+                              >
+                                <Radio.Group {...input} value={input.value}>
+                                  <Space direction="vertical">
+                                    {representativeGroup.map((g) => (
+                                      <Radio key={g.code} value={g.code}>
+                                        {g.name}
+                                      </Radio>
+                                    ))}
+                                  </Space>
+                                </Radio.Group>{' '}
+                                {meta.touched && meta.error && (
+                                  <p
+                                    color="error"
+                                    className="error transitionDiv"
+                                    style={
+                                      meta.touched && meta.error
+                                        ? mountedStyle
+                                        : unmountedStyle
+                                    }
+                                  >
+                                    {meta.error}
+                                  </p>
+                                )}
+                              </FormLabel>
+                            )
+                          }}
+                        </Field>
+                        <Field name="url" validate={required}>
+                          {({ input, meta }) => {
+                            const hasError = meta.error && !meta.valid
+                            const validVal =
+                              input?.value && meta.valid ? 'success' : null
+                            const validateStatus =
+                              hasError && meta.touched ? 'error' : validVal
+
+                            return (
+                              <FormLabel
+                                label="Organisation’s Website"
+                                htmlFor="url"
+                                validateStatus={validateStatus}
+                              >
+                                <Input
+                                  size="small"
+                                  onChange={(e) =>
+                                    input.onChange(e.target.value)
+                                  }
+                                  placeholder={t`Organisation’s Website`}
+                                  value={input.value}
+                                  className={`${
+                                    meta.touched && meta.error && !meta.valid
+                                      ? 'ant-input-status-error'
+                                      : ''
+                                  }`}
+                                />{' '}
+                                {meta.touched && meta.error && (
+                                  <p
+                                    color="error"
+                                    className="error transitionDiv"
+                                    style={
+                                      meta.touched && meta.error
+                                        ? mountedStyle
+                                        : unmountedStyle
+                                    }
+                                  >
+                                    {meta.error}
+                                  </p>
+                                )}
+                              </FormLabel>
+                            )
+                          }}
+                        </Field>
+                        <Field name="picture">
+                          {({ input: { value, onChange, ...input } }) => (
+                            <FormLabel
+                              label="Organisation’s Logo"
+                              htmlFor="url"
+                            >
+                              <Dragger
+                                {...input}
+                                beforeUpload={() => false}
+                                onChange={({ file, fileList }) => {
+                                  if (file.status !== 'uploading') {
+                                    const base64 = getBase64(file)
+                                    base64
+                                      .then((res) => {
+                                        onChange(res)
+                                      })
+                                      .catch((err) => {
+                                        onChange(err || null)
+                                      })
+                                  }
+                                }}
+                                onDrop={(e) => {
+                                  const files = e.dataTransfer.files
+                                  if (files && files.length > 0) {
+                                    const file = files[0]
+                                    getBase64(file)
+                                      .then((res) => {
+                                        onChange(res)
+                                      })
+                                      .catch((err) => {
+                                        console.error(
+                                          'Error converting file to base64:',
+                                          err
+                                        )
+                                        onChange(null)
+                                      })
+                                  }
+                                }}
+                                multiple={false}
+                                accept=".jpg,.png"
+                              >
+                                <p className="ant-upload-drag-icon">
+                                  <UploadFileIcon />
+                                </p>
+                                <p className="ant-upload-text">
+                                  Accepts .jpg and .png
+                                </p>
+                                <p className="add-btn">Add a File</p>
+                              </Dragger>
+                            </FormLabel>
+                          )}
+                        </Field>
+                        <Field
+                          name="tags"
+                          style={{ width: '100%' }}
+                          validate={required}
+                        >
+                          {({ input, meta }) => {
+                            const handleChange = (selectedValue) => {
+                              const isSelected = input.value.includes(
+                                selectedValue.toLowerCase()
+                              )
+                              let newValue
+                              if (isSelected) {
+                                newValue = input.value.filter(
+                                  (value) =>
+                                    value !== selectedValue.toLowerCase()
+                                )
+                              } else {
+                                newValue = [
+                                  ...input.value,
+                                  selectedValue.toLowerCase(),
+                                ]
+                              }
+
+                              input.onChange(newValue)
+                            }
+
+                            const handleRemove = (selectedValue) => {
+                              const newValue = input.value.filter(
+                                (value) => value !== selectedValue
+                              )
+                              input.onChange(newValue)
+                            }
+
+                            const hasError = meta.error && !meta.valid
+                            const validVal =
+                              input?.value && meta.valid ? 'success' : null
+                            const validateStatus =
+                              hasError && meta.touched ? 'error' : validVal
+
+                            return (
+                              <FormLabel
+                                label="Areas of expertise"
+                                htmlFor="tags"
+                                validateStatus={validateStatus}
+                              >
+                                <CatTagSelect
+                                  handleChange={handleChange}
+                                  meta={meta}
+                                  error={meta.touched && hasError}
+                                  value={input.value ? input.value : undefined}
+                                  handleRemove={handleRemove}
+                                />{' '}
+                                {meta.touched && meta.error && (
+                                  <p
+                                    color="error"
+                                    className="error transitionDiv"
+                                    style={
+                                      meta.touched && meta.error
+                                        ? mountedStyle
+                                        : unmountedStyle
+                                    }
+                                  >
+                                    {meta.error}
+                                  </p>
+                                )}
+                              </FormLabel>
+                            )
+                          }}
+                        </Field>
+
+                        <div className="geo">
+                          <h2>Geo-coverage</h2>
+                          <Row gutter={[16, 16]}>
+                            <Col span={12} xs={24}>
+                              <Field name="geoCoverageType" validate={required}>
+                                {({ input, meta }) => {
+                                  const hasError = meta.error && !meta.valid
+                                  const validVal =
+                                    input?.value && meta.valid
+                                      ? 'success'
+                                      : null
+                                  const validateStatus =
+                                    hasError && meta.touched
+                                      ? 'error'
+                                      : validVal
+
+                                  return (
+                                    <FormLabel
+                                      label="Geo-coverage type"
+                                      htmlFor="geoCoverageType"
+                                      validateStatus={validateStatus}
+                                    >
+                                      <Select
+                                        {...input}
+                                        size="small"
+                                        onChange={(value) =>
+                                          input.onChange(value)
+                                        }
+                                        onBlur={() => input.onBlur()}
+                                        value={input.value}
+                                        placeholder="Geo-coverage type"
+                                        allowClear
+                                        className={`dont-show ${
+                                          meta.touched && !meta.valid
+                                            ? 'ant-input-status-error'
+                                            : ''
+                                        }`}
+                                      >
+                                        <Option value="global">Global</Option>
+                                        <Option value="transnational">
+                                          Transnational
+                                        </Option>
+                                        <Option value="national">
+                                          National
+                                        </Option>
+                                      </Select>{' '}
+                                      {meta.touched && meta.error && (
+                                        <p
+                                          color="error"
+                                          className="error transitionDiv"
+                                          style={
+                                            meta.touched && meta.error
+                                              ? mountedStyle
+                                              : unmountedStyle
+                                          }
+                                        >
+                                          {meta.error}
+                                        </p>
+                                      )}
+                                    </FormLabel>
+                                  )
+                                }}
+                              </Field>
+                            </Col>
+                            <Col span={12} xs={24}>
+                              <Field name="orgHeadquarter" validate={required}>
+                                {({ input, meta }) => {
+                                  const hasError = meta.error && !meta.valid
+                                  const validVal =
+                                    input?.value && meta.valid
+                                      ? 'success'
+                                      : null
+                                  const validateStatus =
+                                    hasError && meta.touched
+                                      ? 'error'
+                                      : validVal
+
+                                  return (
+                                    <FormLabel
+                                      label="Countries"
+                                      htmlFor="orgHeadquarter"
+                                      validateStatus={validateStatus}
+                                    >
+                                      <Select
+                                        {...input}
+                                        size="small"
+                                        onChange={(value) =>
+                                          input.onChange(value)
+                                        }
+                                        onBlur={() => input.onBlur()}
+                                        value={input.value}
+                                        placeholder="Countries"
+                                        allowClear
+                                        className={`dont-show ${
+                                          meta.touched && !meta.valid
+                                            ? 'ant-input-status-error'
+                                            : ''
+                                        }`}
+                                      >
+                                        {countries
+                                          .filter(
+                                            (country) =>
+                                              country.description.toLowerCase() ===
+                                              'member state'
+                                          )
+                                          .map((it) => (
+                                            <Option key={it.id} value={it.id}>
+                                              {it.name}
+                                            </Option>
+                                          ))}
+                                      </Select>{' '}
+                                      {meta.touched && meta.error && (
+                                        <p
+                                          color="error"
+                                          className="error transitionDiv"
+                                          style={
+                                            meta.touched && meta.error
+                                              ? mountedStyle
+                                              : unmountedStyle
+                                          }
+                                        >
+                                          {meta.error}
+                                        </p>
+                                      )}
+                                    </FormLabel>
+                                  )
+                                }}
+                              </Field>
+                            </Col>
+                          </Row>
+                        </div>
+
+                        <Field
+                          name="acceptTerms"
+                          type="checkbox"
+                          validate={required}
+                        >
+                          {({ input, meta }) => (
+                            <FormLabel
+                              validateStatus={
+                                meta.error && meta.touched ? 'error' : ''
+                              }
+                            >
+                              <Checkbox {...input}>
+                                By submitting this form, I will be included in
+                                the public database of GPML Digital Platform
+                                members and acknowledge that the provided
+                                information will be made public and used to find
+                                and connect via smart-matchmaking
+                                functionalities with other stakeholders and
+                                resources.
+                              </Checkbox>
+                            </FormLabel>
+                          )}
+                        </Field>
+
+                        {profile && Object.keys(profile).length > 0 ? (
+                          <Field name="email">
+                            {({ input, meta }) => {
+                              return (
+                                <FormLabel label="Email" htmlFor="email">
+                                  <Input
+                                    size="small"
+                                    placeholder={t`Email`}
+                                    value={profile.email}
+                                    disabled
+                                  />
+                                </FormLabel>
+                              )
+                            }}
+                          </Field>
+                        ) : (
+                          <div className="auth-container">
+                            <div className="header">
+                              <h2>Focal Point Account in GPML</h2>
+                              <div className="login-btn">
+                                {!login && (
+                                  <span>Already have an account?</span>
+                                )}
+                                <Button
+                                  type="link"
+                                  onClick={() => setLogin(!login)}
+                                >
+                                  {login ? 'Sign Up' : 'Login'}
+                                </Button>
+                              </div>
+                            </div>
+                            {login ? (
+                              <Login required={required} />
+                            ) : (
+                              <SignUp required={required} />
+                            )}
+                          </div>
+                        )}
+                      </Col>
+                    </Row>
+
+                    <div className="buttons">
+                      <Button
+                        type="primary"
+                        size="large"
+                        withArrow
+                        disabled={submitting}
+                        htmlType="submit"
+                      >
+                        <Trans>Submit Application</Trans>
+                      </Button>
+                    </div>
+                  </form>
+                )
+              }}
+            />
+          </div>
+        )}
+      </div>
     </div>
   )
 }
@@ -909,7 +942,7 @@ const SignUp = ({ required }) => {
           }}
         </Field>
         <Row gutter={[16, 16]}>
-          <Col span={12}>
+          <Col span={12} xs={24}>
             <Field
               name="password"
               validate={(value, allValues) =>
@@ -956,7 +989,7 @@ const SignUp = ({ required }) => {
               }}
             </Field>
           </Col>
-          <Col span={12}>
+          <Col span={12} xs={24}>
             <Field
               name="rpassword"
               validate={(value, allValues) =>
@@ -1005,7 +1038,7 @@ const SignUp = ({ required }) => {
           </Col>
         </Row>
         <Row gutter={[16, 16]}>
-          <Col span={12}>
+          <Col span={12} xs={24}>
             <Field name="fname" validate={required}>
               {({ input, meta }) => {
                 const hasError = meta.error && !meta.valid
@@ -1047,7 +1080,7 @@ const SignUp = ({ required }) => {
               }}
             </Field>
           </Col>
-          <Col span={12}>
+          <Col span={12} xs={24}>
             <Field name="lname" validate={required}>
               {({ input, meta }) => {
                 const hasError = meta.error && !meta.valid

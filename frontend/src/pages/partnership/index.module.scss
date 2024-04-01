@@ -3,16 +3,17 @@
 .partnership {
   :global {
     .hero {
-      padding: 40px 60px;
+      padding: 40px 0px 60px;
       background-color: $primaryPurple7;
       @media screen and (max-width: $bpMobile) {
-        padding: 40px 20px;
+        padding: 40px 0px;
       }
       h1 {
         color: white;
         font-size: 48px;
         line-height: 56px;
         font-weight: 400;
+        margin-bottom: 20px;
         span {
           font-weight: 700;
         }
@@ -31,6 +32,7 @@
         color: white;
         font-weight: 700;
         margin-bottom: 40px;
+        // margin-top: 40px;
         font-family: var(--font-archia), sans-serif;
         @media screen and (max-width: $bpMobile) {
           margin-top: 20px;
@@ -54,6 +56,8 @@
             align-items: center;
             justify-content: center;
             border-radius: 50%;
+            font-weight: bold;
+            font-size: 40px;
           }
           p {
             color: white;
@@ -65,20 +69,23 @@
       }
     }
     .activity-box {
-      padding: 40px 60px;
+      padding: 80px 0px;
       background-color: $primaryGrey;
       @media screen and (max-width: $bpMobile) {
-        padding: 40px 20px;
+        padding: 40px 0px;
+        .container:not(:first-child) {
+          padding: 0;
+          margin: 0;
+        }
+        h2 {
+          font-size: 32px;
+          line-height: 36px;
+          margin-bottom: 40px !important;
+        }
       }
       h2 {
-        font-family: var(--font-archia), sans-serif;
-        font-size: 48px;
         font-weight: 700;
-        margin-bottom: 40px;
-        @media screen and (max-width: $bpMobile) {
-          font-size: 32px;
-          line-height: 40px;
-        }
+        margin-bottom: 70px;
       }
       .activity-box-wrapper {
         ul {
@@ -86,19 +93,18 @@
           display: flex;
           justify-content: space-between;
           list-style-type: none;
-          column-gap: 40px;
+          column-gap: 90px;
           row-gap: 20px;
           @media screen and (max-width: $bpMobile) {
             flex-direction: row;
             overflow-x: scroll;
+            column-gap: 40px;
+            padding-left: 30px;
+            padding-right: 30px;
           }
           li {
             text-align: center;
             align-content: flex-start;
-            @media screen and (max-width: $bpMobile) {
-              width: calc(50vw - 40px);
-              margin-bottom: 10px;
-            }
             &:nth-child(1) {
               .icon {
                 background-color: $primaryBlue;
@@ -136,13 +142,16 @@
               display: block;
             }
             @media screen and (max-width: $bpMobile) {
+              // width: calc(50vw - 40px);
+              width: 190px;
+              margin-bottom: 10px;
               .h-m {
                 font-size: 18px;
                 line-height: 24px;
               }
               .icon {
-                width: calc(50vw - 40px);
-                height: calc(50vw - 40px);
+                // width: calc(50vw - 40px);
+                // height: calc(50vw - 40px);
               }
             }
           }
@@ -150,9 +159,25 @@
       }
     }
     .form-container {
-      padding: 40px 60px;
+      textarea {
+        min-height: 120px;
+      }
+      .ant-row {
+        @media screen and (max-width: $bpMobile) {
+          margin-bottom: 6px;
+        }
+      }
+      h2 {
+        font-weight: 700;
+        margin-bottom: 40px;
+      }
+      .caps-heading-1 {
+        color: $primaryPurple;
+        margin-bottom: 5px;
+      }
+      padding: 80px 0px;
       @media screen and (max-width: $bpMobile) {
-        padding: 40px 20px;
+        padding: 40px 0px;
       }
       .ant-form-item {
         flex-direction: column;
@@ -195,6 +220,9 @@
           line-height: 24px;
           color: $primaryDarkBlue;
           margin: 20px 0px;
+          @media screen and (max-width: $bpMobile) {
+            margin: 40px 0 20px;
+          }
         }
       }
       .ant-input-status-error {
@@ -221,10 +249,15 @@
         @media screen and (max-width: $bpMobile) {
           flex-direction: column;
           margin-bottom: 10px;
+          h2 {
+            margin-bottom: 20px;
+            margin-top: 30px;
+          }
         }
         h2 {
           font-size: 24px;
           font-weight: 600;
+          line-height: 30px;
         }
       }
       .login-btn {
@@ -233,6 +266,12 @@
         .ant-btn {
           align-items: flex-start;
         }
+      }
+    }
+    .ant-btn-primary {
+      @media screen and (max-width: $bpMobile) {
+        width: 100%;
+        margin-top: 30px;
       }
     }
   }
