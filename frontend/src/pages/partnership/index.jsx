@@ -29,7 +29,13 @@ import { auth0Client } from '../../utils/misc'
 
 function Partnership({}) {
   const router = useRouter()
-  const { representativeGroup, countries, profile, tags } = UIStore.currentState
+  const {
+    representativeGroup,
+    countries,
+    profile,
+    tags,
+    transnationalOptions,
+  } = UIStore.currentState
   const [login, setLogin] = useState(false)
   const [submited, setSubmited] = useState(false)
   const [initialValues, setInitialValues] = useState(null)
@@ -68,9 +74,14 @@ function Partnership({}) {
       geo_coverage_type: values.geoCoverageType,
       tags: matchedTags,
       program: values.program,
-      // geo_coverage_countries: [1],
-      // geo_coverage_country_groups: [1],
+      ...(values.geo_coverage_countries && {
+        geo_coverage_countries: values.geo_coverage_countries,
+      }),
+      ...(values.geo_coverage_country_groups && {
+        geo_coverage_country_groups: [values.geo_coverage_country_groups],
+      }),
     }
+
     if (profile && Object.keys(profile).length > 0) {
       try {
         let sendData = { ...data }
@@ -90,7 +101,10 @@ function Partnership({}) {
       if (login) {
         const username = values.email
         const password = values.password
-        localStorage.setItem('redirect_on_login', JSON.stringify(router.asPath))
+        localStorage.setItem(
+          'redirect_on_login',
+          JSON.stringify(`${router.asPath}?submission=true`)
+        )
         auth0Client.login(
           {
             realm: 'Username-Password-Authentication',
@@ -107,7 +121,10 @@ function Partnership({}) {
           }
         )
       } else {
-        localStorage.setItem('redirect_on_login', JSON.stringify(router.asPath))
+        localStorage.setItem(
+          'redirect_on_login',
+          JSON.stringify(`${router.asPath}?submission=true`)
+        )
         auth0Client.redirect.signupAndLogin(
           {
             connection: 'Username-Password-Authentication',
@@ -190,6 +207,12 @@ function Partnership({}) {
           tags: values.tags,
           program: values.program,
           type: values.type,
+          ...(values.geo_coverage_countries && {
+            geo_coverage_countries: values.geo_coverage_countries,
+          }),
+          ...(values.geo_coverage_country_groups && {
+            geo_coverage_country_groups: values.geo_coverage_country_groups,
+          }),
         }
         setInitialValues({
           orgName: data.name,
@@ -201,6 +224,12 @@ function Partnership({}) {
           program: data.program,
           acceptTerms: true,
           type: values.type,
+          ...(values.geo_coverage_countries && {
+            geo_coverage_countries: values.geo_coverage_countries,
+          }),
+          ...(values.geo_coverage_country_groups && {
+            geo_coverage_country_groups: [values.geo_coverage_country_groups],
+          }),
         })
         try {
           let sendData = { ...data }
@@ -221,6 +250,37 @@ function Partnership({}) {
   const required = (value, allValues, fieldName) => {
     if (!value) {
       return 'Required'
+    }
+
+    if (fieldName === 'password') {
+      const uppercaseRegExp = /(?=.*?[A-Z])/
+      const lowercaseRegExp = /(?=.*?[a-z])/
+      const digitsRegExp = /(?=.*?[0-9])/
+      const specialCharRegExp = /(?=.*?[#?!@$%^&*-])/
+      const minLengthRegExp = /.{8,}/
+      const passwordLength = value?.length
+      const uppercasePassword = uppercaseRegExp.test(value)
+      const lowercasePassword = lowercaseRegExp.test(value)
+      const digitsPassword = digitsRegExp.test(value)
+      const specialCharPassword = specialCharRegExp.test(value)
+      const minLengthPassword = minLengthRegExp.test(value)
+      let errMsg = ''
+      if (passwordLength === 0) {
+        errMsg = 'Password is empty'
+      } else if (!uppercasePassword) {
+        errMsg = 'At least one Uppercase'
+      } else if (!lowercasePassword) {
+        errMsg = 'At least one Lowercase'
+      } else if (!digitsPassword) {
+        errMsg = 'At least one digit'
+      } else if (!specialCharPassword) {
+        errMsg = 'At least one Special Characters'
+      } else if (!minLengthPassword) {
+        errMsg = 'At least minumum 8 characters'
+      } else {
+        errMsg = ''
+      }
+      return errMsg
     }
 
     if (fieldName === 'rpassword' && value !== allValues.password) {
@@ -406,7 +466,6 @@ function Partnership({}) {
                                   onChange={(e) =>
                                     input.onChange(e.target.value)
                                   }
-                                  placeholder={t`Name of Organisation`}
                                   value={input.value}
                                   className={`${
                                     meta.touched && meta.error && !meta.valid
@@ -450,7 +509,6 @@ function Partnership({}) {
                                   onChange={(e) =>
                                     input.onChange(e.target.value)
                                   }
-                                  placeholder={t`Organisation's efforts in addressing plastic pollution`}
                                   value={input.value}
                                   className={`${
                                     meta.touched && meta.error && !meta.valid
@@ -534,7 +592,6 @@ function Partnership({}) {
                                   onChange={(e) =>
                                     input.onChange(e.target.value)
                                   }
-                                  placeholder={t`Organisation’s Website`}
                                   value={input.value}
                                   className={`${
                                     meta.touched && meta.error && !meta.valid
@@ -744,6 +801,138 @@ function Partnership({}) {
                                   )
                                 }}
                               </Field>
+                              {values.geoCoverageType === 'transnational' && (
+                                <Field
+                                  name="geo_coverage_country_groups"
+                                  validate={required}
+                                >
+                                  {({ input, meta }) => {
+                                    const hasError = meta.error && !meta.valid
+                                    const validVal =
+                                      input?.value && meta.valid
+                                        ? 'success'
+                                        : null
+                                    const validateStatus =
+                                      hasError && meta.touched
+                                        ? 'error'
+                                        : validVal
+
+                                    return (
+                                      <FormLabel
+                                        label="Geo Coverage (Transnational)"
+                                        htmlFor="geo_coverage_country_groups"
+                                        validateStatus={validateStatus}
+                                      >
+                                        <Select
+                                          {...input}
+                                          size="small"
+                                          onChange={(value) =>
+                                            input.onChange(value)
+                                          }
+                                          onBlur={() => input.onBlur()}
+                                          value={input.value}
+                                          placeholder="Geo-coverage type"
+                                          allowClear
+                                          className={`dont-show ${
+                                            meta.touched && !meta.valid
+                                              ? 'ant-input-status-error'
+                                              : ''
+                                          }`}
+                                        >
+                                          {transnationalOptions.map((it) => (
+                                            <Option key={it.id} value={it.id}>
+                                              {it.name}
+                                            </Option>
+                                          ))}
+                                        </Select>{' '}
+                                        {meta.touched && meta.error && (
+                                          <p
+                                            color="error"
+                                            className="error transitionDiv"
+                                            style={
+                                              meta.touched && meta.error
+                                                ? mountedStyle
+                                                : unmountedStyle
+                                            }
+                                          >
+                                            {meta.error}
+                                          </p>
+                                        )}
+                                      </FormLabel>
+                                    )
+                                  }}
+                                </Field>
+                              )}
+                              {(values.geoCoverageType === 'transnational' ||
+                                values.geoCoverageType === 'national') && (
+                                <Field
+                                  name="geo_coverage_countries"
+                                  validate={required}
+                                >
+                                  {({ input, meta }) => {
+                                    const hasError = meta.error && !meta.valid
+                                    const validVal =
+                                      input?.value && meta.valid
+                                        ? 'success'
+                                        : null
+                                    const validateStatus =
+                                      hasError && meta.touched
+                                        ? 'error'
+                                        : validVal
+
+                                    return (
+                                      <FormLabel
+                                        label="Geo Coverage (countries)"
+                                        htmlFor="geo_coverage_countries"
+                                        validateStatus={validateStatus}
+                                      >
+                                        <Select
+                                          {...input}
+                                          size="small"
+                                          onChange={(value) =>
+                                            input.onChange(value)
+                                          }
+                                          onBlur={() => input.onBlur()}
+                                          value={input.value}
+                                          placeholder="Geo-coverage type"
+                                          allowClear
+                                          className={`dont-show ${
+                                            meta.touched && !meta.valid
+                                              ? 'ant-input-status-error'
+                                              : ''
+                                          }`}
+                                          mode="multiple"
+                                        >
+                                          {countries
+                                            .filter(
+                                              (country) =>
+                                                country.description.toLowerCase() ===
+                                                'member state'
+                                            )
+                                            .map((it) => (
+                                              <Option key={it.id} value={it.id}>
+                                                {it.name}
+                                              </Option>
+                                            ))}
+                                        </Select>{' '}
+                                        {meta.touched && meta.error && (
+                                          <p
+                                            color="error"
+                                            className="error transitionDiv"
+                                            style={
+                                              meta.touched && meta.error
+                                                ? mountedStyle
+                                                : unmountedStyle
+                                            }
+                                          >
+                                            {meta.error}
+                                          </p>
+                                        )}
+                                      </FormLabel>
+                                    )
+                                  }}
+                                </Field>
+                              )}
                             </Col>
                             <Col span={12} xs={24}>
                               <Field name="orgHeadquarter" validate={required}>
