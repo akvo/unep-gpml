@@ -911,7 +911,7 @@ function Partnership({}) {
                                             input.onChange(value)
                                           }
                                           onBlur={() => input.onBlur()}
-                                          value={input.value}
+                                          value={input.value ? input.value : []}
                                           placeholder="Geo-coverage type"
                                           allowClear
                                           className={`dont-show ${
