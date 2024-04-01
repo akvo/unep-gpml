@@ -218,7 +218,17 @@ function Partnership({}) {
     submitData()
   }, [])
 
-  const required = (value) => (value ? undefined : 'Required')
+  const required = (value, allValues, fieldName) => {
+    if (!value) {
+      return 'Required'
+    }
+
+    if (fieldName === 'rpassword' && value !== allValues.password) {
+      return 'Passwords do not match'
+    }
+
+    return undefined
+  }
 
   return (
     <div className={styles.partnership}>
@@ -392,7 +402,20 @@ function Partnership({}) {
                                     ? 'ant-input-status-error'
                                     : ''
                                 }`}
-                              />
+                              />{' '}
+                              {meta.touched && meta.error && (
+                                <p
+                                  color="error"
+                                  className="error transitionDiv"
+                                  style={
+                                    meta.touched && meta.error
+                                      ? mountedStyle
+                                      : unmountedStyle
+                                  }
+                                >
+                                  {meta.error}
+                                </p>
+                              )}
                             </FormLabel>
                           )
                         }}
@@ -421,7 +444,20 @@ function Partnership({}) {
                                     ? 'ant-input-status-error'
                                     : ''
                                 }`}
-                              />
+                              />{' '}
+                              {meta.touched && meta.error && (
+                                <p
+                                  color="error"
+                                  className="error transitionDiv"
+                                  style={
+                                    meta.touched && meta.error
+                                      ? mountedStyle
+                                      : unmountedStyle
+                                  }
+                                >
+                                  {meta.error}
+                                </p>
+                              )}
                             </FormLabel>
                           )
                         }}
@@ -448,7 +484,20 @@ function Partnership({}) {
                                     </Radio>
                                   ))}
                                 </Space>
-                              </Radio.Group>
+                              </Radio.Group>{' '}
+                              {meta.touched && meta.error && (
+                                <p
+                                  color="error"
+                                  className="error transitionDiv"
+                                  style={
+                                    meta.touched && meta.error
+                                      ? mountedStyle
+                                      : unmountedStyle
+                                  }
+                                >
+                                  {meta.error}
+                                </p>
+                              )}
                             </FormLabel>
                           )
                         }}
@@ -477,7 +526,20 @@ function Partnership({}) {
                                     ? 'ant-input-status-error'
                                     : ''
                                 }`}
-                              />
+                              />{' '}
+                              {meta.touched && meta.error && (
+                                <p
+                                  color="error"
+                                  className="error transitionDiv"
+                                  style={
+                                    meta.touched && meta.error
+                                      ? mountedStyle
+                                      : unmountedStyle
+                                  }
+                                >
+                                  {meta.error}
+                                </p>
+                              )}
                             </FormLabel>
                           )
                         }}
@@ -581,7 +643,20 @@ function Partnership({}) {
                                 error={meta.touched && hasError}
                                 value={input.value ? input.value : undefined}
                                 handleRemove={handleRemove}
-                              />
+                              />{' '}
+                              {meta.touched && meta.error && (
+                                <p
+                                  color="error"
+                                  className="error transitionDiv"
+                                  style={
+                                    meta.touched && meta.error
+                                      ? mountedStyle
+                                      : unmountedStyle
+                                  }
+                                >
+                                  {meta.error}
+                                </p>
+                              )}
                             </FormLabel>
                           )
                         }}
@@ -626,7 +701,20 @@ function Partnership({}) {
                                         Transnational
                                       </Option>
                                       <Option value="national">National</Option>
-                                    </Select>
+                                    </Select>{' '}
+                                    {meta.touched && meta.error && (
+                                      <p
+                                        color="error"
+                                        className="error transitionDiv"
+                                        style={
+                                          meta.touched && meta.error
+                                            ? mountedStyle
+                                            : unmountedStyle
+                                        }
+                                      >
+                                        {meta.error}
+                                      </p>
+                                    )}
                                   </FormLabel>
                                 )
                               }}
@@ -674,7 +762,20 @@ function Partnership({}) {
                                             {it.name}
                                           </Option>
                                         ))}
-                                    </Select>
+                                    </Select>{' '}
+                                    {meta.touched && meta.error && (
+                                      <p
+                                        color="error"
+                                        className="error transitionDiv"
+                                        style={
+                                          meta.touched && meta.error
+                                            ? mountedStyle
+                                            : unmountedStyle
+                                        }
+                                      >
+                                        {meta.error}
+                                      </p>
+                                    )}
                                   </FormLabel>
                                 )
                               }}
@@ -791,14 +892,30 @@ const SignUp = ({ required }) => {
                       ? 'ant-input-status-error'
                       : ''
                   }`}
-                />
+                />{' '}
+                {meta.touched && meta.error && (
+                  <p
+                    color="error"
+                    className="error transitionDiv"
+                    style={
+                      meta.touched && meta.error ? mountedStyle : unmountedStyle
+                    }
+                  >
+                    {meta.error}
+                  </p>
+                )}
               </FormLabel>
             )
           }}
         </Field>
         <Row gutter={[16, 16]}>
           <Col span={12}>
-            <Field name="password" validate={required}>
+            <Field
+              name="password"
+              validate={(value, allValues) =>
+                required(value, allValues, 'password')
+              }
+            >
               {({ input, meta }) => {
                 const hasError = meta.error && !meta.valid
                 const validVal = input?.value && meta.valid ? 'success' : null
@@ -820,14 +937,32 @@ const SignUp = ({ required }) => {
                           ? 'ant-input-status-error'
                           : ''
                       }`}
-                    />
+                    />{' '}
+                    {meta.touched && meta.error && (
+                      <p
+                        color="error"
+                        className="error transitionDiv"
+                        style={
+                          meta.touched && meta.error
+                            ? mountedStyle
+                            : unmountedStyle
+                        }
+                      >
+                        {meta.error}
+                      </p>
+                    )}
                   </FormLabel>
                 )
               }}
             </Field>
           </Col>
           <Col span={12}>
-            <Field name="rpassword" validate={required}>
+            <Field
+              name="rpassword"
+              validate={(value, allValues) =>
+                required(value, allValues, 'rpassword')
+              }
+            >
               {({ input, meta }) => {
                 const hasError = meta.error && !meta.valid
                 const validVal = input?.value && meta.valid ? 'success' : null
@@ -849,7 +984,20 @@ const SignUp = ({ required }) => {
                           ? 'ant-input-status-error'
                           : ''
                       }`}
-                    />
+                    />{' '}
+                    {meta.touched && meta.error && (
+                      <p
+                        color="error"
+                        className="error transitionDiv"
+                        style={
+                          meta.touched && meta.error
+                            ? mountedStyle
+                            : unmountedStyle
+                        }
+                      >
+                        {meta.error}
+                      </p>
+                    )}
                   </FormLabel>
                 )
               }}
@@ -880,7 +1028,20 @@ const SignUp = ({ required }) => {
                           ? 'ant-input-status-error'
                           : ''
                       }`}
-                    />
+                    />{' '}
+                    {meta.touched && meta.error && (
+                      <p
+                        color="error"
+                        className="error transitionDiv"
+                        style={
+                          meta.touched && meta.error
+                            ? mountedStyle
+                            : unmountedStyle
+                        }
+                      >
+                        {meta.error}
+                      </p>
+                    )}
                   </FormLabel>
                 )
               }}
@@ -909,7 +1070,20 @@ const SignUp = ({ required }) => {
                           ? 'ant-input-status-error'
                           : ''
                       }`}
-                    />
+                    />{' '}
+                    {meta.touched && meta.error && (
+                      <p
+                        color="error"
+                        className="error transitionDiv"
+                        style={
+                          meta.touched && meta.error
+                            ? mountedStyle
+                            : unmountedStyle
+                        }
+                      >
+                        {meta.error}
+                      </p>
+                    )}
                   </FormLabel>
                 )
               }}
@@ -1011,6 +1185,14 @@ const getBase64 = (file) => {
       reject('discard')
     }
   })
+}
+
+const mountedStyle = {
+  animation: 'inAnimation 250ms ease-in',
+}
+const unmountedStyle = {
+  animation: 'outAnimation 270ms ease-out',
+  animationFillMode: 'forwards',
 }
 
 export default Partnership

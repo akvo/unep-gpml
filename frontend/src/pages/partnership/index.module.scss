@@ -217,6 +217,11 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+
+        @media screen and (max-width: $bpMobile) {
+          flex-direction: column;
+          margin-bottom: 10px;
+        }
         h2 {
           font-size: 24px;
           font-weight: 600;
