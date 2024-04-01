@@ -38,7 +38,6 @@ function Partnership({}) {
     transnationalOptions,
   } = UIStore.currentState
   const [login, setLogin] = useState(false)
-  const [submited, setSubmited] = useState(false)
   const [loading, setLoading] = useState(false)
   const [initialValues, setInitialValues] = useState(null)
   const containerRef = useRef(null)
@@ -187,7 +186,6 @@ function Partnership({}) {
           handleSubmissionError(err)
         }
       }, 1000)
-      router.push('/partnership?submitted=true')
       setLoading(false)
       localStorage.removeItem('partnerValue')
     } catch (err) {
