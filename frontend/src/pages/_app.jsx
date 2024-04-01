@@ -237,19 +237,18 @@ function MyApp({ Component, pageProps }) {
                 emailVerified: authResult?.idTokenPayload?.email_verified,
               }
             })
-            router.push('/workspace')
+            // router.push('/workspace')
           })
-        } else {
-          const redirectLocation = localStorage.getItem('redirect_on_login')
-            ? JSON.parse(localStorage.getItem('redirect_on_login'))
-            : null
-          if (redirectLocation) {
-            router.push(redirectLocation)
-          } else {
-            // router.push('/')
-          }
-          localStorage.removeItem('redirect_on_login')
         }
+        const redirectLocation = localStorage.getItem('redirect_on_login')
+          ? JSON.parse(localStorage.getItem('redirect_on_login'))
+          : null
+        if (redirectLocation) {
+          router.push(redirectLocation)
+        } else {
+          // router.push('/')
+        }
+        localStorage.removeItem('redirect_on_login')
         UIStore.update((e) => {
           e.profile = {
             ...resp.data,
