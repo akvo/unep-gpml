@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styles from './index.module.scss'
 import {
   Col,
@@ -12,6 +12,7 @@ import {
   Checkbox,
   notification,
   Card,
+  Spin,
 } from 'antd'
 import { Trans, t } from '@lingui/macro'
 import { Form as FinalForm, Field } from 'react-final-form'
@@ -38,7 +39,9 @@ function Partnership({}) {
   } = UIStore.currentState
   const [login, setLogin] = useState(false)
   const [submited, setSubmited] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [initialValues, setInitialValues] = useState(null)
+  const containerRef = useRef(null)
 
   const onSubmit = async (values) => {
     const tagsArray = values.tags.map((tag) => tag.toLowerCase())
@@ -156,6 +159,7 @@ function Partnership({}) {
   }
 
   const updateProfile = async (data, type) => {
+    setLoading(true)
     delete data.isMember
     try {
       const profileRes = await api.put('/profile', {
@@ -184,11 +188,13 @@ function Partnership({}) {
         }
       }, 1000)
       setSubmited(true)
+      setLoading(false)
       localStorage.removeItem('partnerValue')
     } catch (err) {
       handleSubmissionError(err)
       localStorage.removeItem('partnerValue')
       setSubmited(false)
+      setLoading(false)
     }
   }
 
@@ -197,6 +203,13 @@ function Partnership({}) {
       const shouldSubmit = localStorage.getItem('partnerValue')
       if (shouldSubmit) {
         const values = JSON.parse(shouldSubmit)
+        if (containerRef.current) {
+          window.scrollTo({
+            top: containerRef.current.offsetTop,
+            left: 0,
+            behavior: 'smooth',
+          })
+        }
 
         const data = {
           name: values.name,
@@ -220,7 +233,7 @@ function Partnership({}) {
           is_member: false,
           orgHeadquarter: data.country,
           geoCoverageType: data.geo_coverage_type,
-          tags: data.tags,
+          tags: data.tags.map((t) => t.tag.toLowerCase()),
           program: data.program,
           acceptTerms: true,
           type: values.type,
@@ -412,7 +425,12 @@ function Partnership({}) {
           </div>
         </div>
       </div>
-      <div className="container">
+      <div className="container" ref={containerRef}>
+        {loading && (
+          <div className="loader">
+            <Spin size="large" />
+          </div>
+        )}
         {submited ? (
           <Row>
             <Col span={24}>
@@ -428,7 +446,7 @@ function Partnership({}) {
               </Card>
             </Col>
           </Row>
-        ) : (
+        ) : loading ? null : (
           <div className="form-container">
             <div class="caps-heading-1 page-sub-heading">Step 1</div>
             <h2>Fill in the form</h2>

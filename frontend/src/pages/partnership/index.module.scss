@@ -158,6 +158,12 @@
         }
       }
     }
+    .loader {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+    }
     .form-container {
       textarea {
         min-height: 120px;
