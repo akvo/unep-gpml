@@ -500,7 +500,23 @@ function Partnership({}) {
                                     })
                                 }
                               }}
-                              onDrop={(e) => {}}
+                              onDrop={(e) => {
+                                const files = e.dataTransfer.files
+                                if (files && files.length > 0) {
+                                  const file = files[0]
+                                  getBase64(file)
+                                    .then((res) => {
+                                      onChange(res)
+                                    })
+                                    .catch((err) => {
+                                      console.error(
+                                        'Error converting file to base64:',
+                                        err
+                                      )
+                                      onChange(null)
+                                    })
+                                }
+                              }}
                               multiple={false}
                               accept=".jpg,.png"
                             >
@@ -510,7 +526,7 @@ function Partnership({}) {
                               <p className="ant-upload-text">
                                 Accepts .jpg and .png
                               </p>
-                              <p className="add-btn">Add Files</p>
+                              <p className="add-btn">Add a File</p>
                             </Dragger>
                           </FormLabel>
                         )}

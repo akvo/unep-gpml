@@ -207,6 +207,9 @@
       .ant-select-selection-item {
         background-color: inherit;
       }
+      .error {
+        color: $systemError;
+      }
     }
     .auth-container {
       width: 100%;
