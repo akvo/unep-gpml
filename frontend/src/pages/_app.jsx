@@ -246,7 +246,7 @@ function MyApp({ Component, pageProps }) {
           if (redirectLocation) {
             router.push(redirectLocation)
           } else {
-            router.push('/')
+            // router.push('/')
           }
           localStorage.removeItem('redirect_on_login')
         }
