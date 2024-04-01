@@ -237,7 +237,6 @@ function MyApp({ Component, pageProps }) {
                 emailVerified: authResult?.idTokenPayload?.email_verified,
               }
             })
-            // router.push('/workspace')
           })
         }
         const redirectLocation = localStorage.getItem('redirect_on_login')
@@ -245,8 +244,6 @@ function MyApp({ Component, pageProps }) {
           : null
         if (redirectLocation) {
           router.push(redirectLocation)
-        } else {
-          // router.push('/')
         }
         localStorage.removeItem('redirect_on_login')
         UIStore.update((e) => {
