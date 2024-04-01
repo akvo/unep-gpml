@@ -106,6 +106,30 @@ function Partnership({}) {
             }
           }
         )
+      } else {
+        localStorage.setItem('redirect_on_login', JSON.stringify(router.asPath))
+        auth0Client.redirect.signupAndLogin(
+          {
+            connection: 'Username-Password-Authentication',
+            email: values.email,
+            password: values.password,
+            user_metadata: {
+              publicEmail: false.toString(),
+              country: '',
+              lastName: values.fname,
+              firstName: values.lname,
+            },
+          },
+          function (err) {
+            if (err) {
+              notification.error({
+                message: err.description,
+              })
+              return err
+            } else {
+            }
+          }
+        )
       }
     }
   }
@@ -116,7 +140,6 @@ function Partnership({}) {
 
   const updateProfile = async (data, type) => {
     delete data.isMember
-    console.log(data)
     try {
       const profileRes = await api.put('/profile', {
         org: {
@@ -341,7 +364,6 @@ function Partnership({}) {
               values,
               errors,
             }) => {
-              console.log(errors)
               return (
                 <form onSubmit={handleSubmit} layout="vertical">
                   <Row>
@@ -468,7 +490,6 @@ function Partnership({}) {
                               beforeUpload={() => false}
                               onChange={({ file, fileList }) => {
                                 if (file.status !== 'uploading') {
-                                  console.log(file, fileList)
                                   const base64 = getBase64(file)
                                   base64
                                     .then((res) => {
@@ -479,12 +500,7 @@ function Partnership({}) {
                                     })
                                 }
                               }}
-                              onDrop={(e) => {
-                                console.log(
-                                  'Dropped files',
-                                  e.dataTransfer.files
-                                )
-                              }}
+                              onDrop={(e) => {}}
                               multiple={false}
                               accept=".jpg,.png"
                             >
@@ -957,7 +973,6 @@ const ensureHttps = (url) => {
 }
 
 const handleSubmissionError = (err) => {
-  console.error(err)
   const defaultMessage =
     'An error occurred during form submission. Please try again later.'
   const message = err?.response?.data?.reason
