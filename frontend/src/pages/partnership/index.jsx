@@ -967,7 +967,7 @@ function Partnership({}) {
 
                                   return (
                                     <FormLabel
-                                      label="Countries"
+                                      label="In which country are you headquarters?"
                                       htmlFor="orgHeadquarter"
                                       validateStatus={validateStatus}
                                     >
