@@ -144,14 +144,6 @@ function MyApp({ Component, pageProps }) {
         return console.log(err)
       }
       if (authResult) {
-        const redirectLocation = localStorage.getItem('redirect_on_login')
-          ? JSON.parse(localStorage.getItem('redirect_on_login'))
-          : null
-        if (redirectLocation) {
-          router.push(redirectLocation)
-        } else {
-          router.push('/')
-        }
       }
     })
   }, [])
@@ -248,6 +240,14 @@ function MyApp({ Component, pageProps }) {
             router.push('/workspace')
           })
         } else {
+          const redirectLocation = localStorage.getItem('redirect_on_login')
+            ? JSON.parse(localStorage.getItem('redirect_on_login'))
+            : null
+          if (redirectLocation) {
+            router.push(redirectLocation)
+          } else {
+            // router.push('/')
+          }
           localStorage.removeItem('redirect_on_login')
         }
         UIStore.update((e) => {
