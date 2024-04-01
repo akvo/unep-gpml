@@ -942,7 +942,7 @@ const SignUp = ({ required }) => {
           }}
         </Field>
         <Row gutter={[16, 16]}>
-          <Col span={12} xs={24}>
+          <Col span={12} lg={12} xs={24}>
             <Field
               name="password"
               validate={(value, allValues) =>
@@ -989,7 +989,7 @@ const SignUp = ({ required }) => {
               }}
             </Field>
           </Col>
-          <Col span={12} xs={24}>
+          <Col span={12} lg={12} xs={24}>
             <Field
               name="rpassword"
               validate={(value, allValues) =>
@@ -1038,7 +1038,7 @@ const SignUp = ({ required }) => {
           </Col>
         </Row>
         <Row gutter={[16, 16]}>
-          <Col span={12} xs={24}>
+          <Col span={12} lg={12} xs={24}>
             <Field name="fname" validate={required}>
               {({ input, meta }) => {
                 const hasError = meta.error && !meta.valid
@@ -1080,7 +1080,7 @@ const SignUp = ({ required }) => {
               }}
             </Field>
           </Col>
-          <Col span={12} xs={24}>
+          <Col span={12} lg={12} xs={24}>
             <Field name="lname" validate={required}>
               {({ input, meta }) => {
                 const hasError = meta.error && !meta.valid
