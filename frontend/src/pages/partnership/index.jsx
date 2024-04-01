@@ -106,7 +106,7 @@ function Partnership({}) {
         const password = values.password
         localStorage.setItem(
           'redirect_on_login',
-          JSON.stringify(`${router.asPath}?submission=true`)
+          JSON.stringify(`${router.asPath}?submitted=true`)
         )
         auth0Client.login(
           {
@@ -126,7 +126,7 @@ function Partnership({}) {
       } else {
         localStorage.setItem(
           'redirect_on_login',
-          JSON.stringify(`${router.asPath}?submission=true`)
+          JSON.stringify(`${router.asPath}?submitted=true`)
         )
         auth0Client.redirect.signupAndLogin(
           {
@@ -187,13 +187,12 @@ function Partnership({}) {
           handleSubmissionError(err)
         }
       }, 1000)
-      setSubmited(true)
+      router.push('/partnership?submitted=true')
       setLoading(false)
       localStorage.removeItem('partnerValue')
     } catch (err) {
       handleSubmissionError(err)
       localStorage.removeItem('partnerValue')
-      setSubmited(false)
       setLoading(false)
     }
   }
@@ -353,95 +352,99 @@ function Partnership({}) {
           </div>
         </div>
       </div>
-      <div className="activity-box">
-        <div className="container">
-          <h2>Why become a certified GPML member?</h2>
-        </div>
-        <div className="container">
-          <div className="activity-box-wrapper">
-            <ul>
-              <li>
-                <div className="icon">
-                  <img src="/activity-policy.svg" />
-                </div>
-                <h3 className="h-m">
-                  <Trans>Access</Trans>
-                </h3>
-                <p>
-                  Access to a unique global audience for sharing knowledge and
-                  experiences in preventing and reducing plastic pollution and
-                  marine litter.
-                </p>
-              </li>
-              <li>
-                <div className="icon">
-                  <img src="/activity-bookmark.svg" />
-                </div>
-                <h3 className="h-m">
-                  <Trans>Collaborate</Trans>
-                </h3>
-                <p>
-                  Opportunities to collaborate with other stakeholders to create
-                  and advance solutions.
-                </p>
-              </li>
-              <li>
-                <div className="icon">
-                  <img src="/activity-money.svg" />
-                </div>
-                <h3 className="h-m">
-                  <Trans>Share</Trans>
-                </h3>
-                <p>
-                  Exclusive invites to online and in-person events and the
-                  opportunity to showcase your work.
-                </p>
-              </li>
-              <li>
-                <div className="icon">
-                  <img src="/activity-plans.svg" />
-                </div>
-                <h3 className="h-m">
-                  <Trans>Learn</Trans>
-                </h3>
-                <p>
-                  Opportunities to access a variety of resources, data and
-                  trainings to enhance capacity development.
-                </p>
-              </li>
-              <li>
-                <div className="icon">
-                  <img src="/activity-access.svg" />
-                </div>
-                <h3 className="h-m">
-                  <Trans>Certified</Trans>
-                </h3>
-                <p>
-                  Your organisation will receive a certificate, which officially
-                  acknowledges its GPML membership.
-                </p>
-              </li>
-            </ul>
+      {router.query.submitted !== 'true' && (
+        <div className="activity-box">
+          <div className="container">
+            <h2>Why become a certified GPML member?</h2>
+          </div>
+          <div className="container">
+            <div className="activity-box-wrapper">
+              <ul>
+                <li>
+                  <div className="icon">
+                    <img src="/activity-policy.svg" />
+                  </div>
+                  <h3 className="h-m">
+                    <Trans>Access</Trans>
+                  </h3>
+                  <p>
+                    Access to a unique global audience for sharing knowledge and
+                    experiences in preventing and reducing plastic pollution and
+                    marine litter.
+                  </p>
+                </li>
+                <li>
+                  <div className="icon">
+                    <img src="/activity-bookmark.svg" />
+                  </div>
+                  <h3 className="h-m">
+                    <Trans>Collaborate</Trans>
+                  </h3>
+                  <p>
+                    Opportunities to collaborate with other stakeholders to
+                    create and advance solutions.
+                  </p>
+                </li>
+                <li>
+                  <div className="icon">
+                    <img src="/activity-money.svg" />
+                  </div>
+                  <h3 className="h-m">
+                    <Trans>Share</Trans>
+                  </h3>
+                  <p>
+                    Exclusive invites to online and in-person events and the
+                    opportunity to showcase your work.
+                  </p>
+                </li>
+                <li>
+                  <div className="icon">
+                    <img src="/activity-plans.svg" />
+                  </div>
+                  <h3 className="h-m">
+                    <Trans>Learn</Trans>
+                  </h3>
+                  <p>
+                    Opportunities to access a variety of resources, data and
+                    trainings to enhance capacity development.
+                  </p>
+                </li>
+                <li>
+                  <div className="icon">
+                    <img src="/activity-access.svg" />
+                  </div>
+                  <h3 className="h-m">
+                    <Trans>Certified</Trans>
+                  </h3>
+                  <p>
+                    Your organisation will receive a certificate, which
+                    officially acknowledges its GPML membership.
+                  </p>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
-      </div>
+      )}
       <div className="container" ref={containerRef}>
         {loading && (
           <div className="loader">
             <Spin size="large" />
           </div>
         )}
-        {submited ? (
+        {router.query.submitted === 'true' ? (
           <Row>
             <Col span={24}>
               <Card
                 style={{
-                  padding: '30px',
+                  padding: '100px',
                 }}
               >
                 <div>
-                  <h3>Thank you for signing up!</h3>
-                  <p>we'll let you know once an admin has approved it</p>
+                  <h3>Your application is received.</h3>
+                  <h6 style={{ marginTop: 15 }}>
+                    We will be reviewing it shortly.
+                  </h6>
                 </div>
               </Card>
             </Col>
@@ -952,6 +955,7 @@ function Partnership({}) {
                                 </Field>
                               )}
                             </Col>
+
                             <Col span={12} xs={24}>
                               <Field name="orgHeadquarter" validate={required}>
                                 {({ input, meta }) => {
@@ -967,7 +971,7 @@ function Partnership({}) {
 
                                   return (
                                     <FormLabel
-                                      label="In which country are you headquarters?"
+                                      label="Headquarters"
                                       htmlFor="orgHeadquarter"
                                       validateStatus={validateStatus}
                                     >
@@ -981,6 +985,7 @@ function Partnership({}) {
                                         value={input.value}
                                         placeholder="Countries"
                                         allowClear
+                                        showSearch
                                         className={`dont-show ${
                                           meta.touched && !meta.valid
                                             ? 'ant-input-status-error'
@@ -1051,7 +1056,6 @@ function Partnership({}) {
                                 <FormLabel label="Email" htmlFor="email">
                                   <Input
                                     size="small"
-                                    placeholder={t`Email`}
                                     value={profile.email}
                                     disabled
                                   />
@@ -1164,14 +1168,13 @@ const SignUp = ({ required }) => {
 
                 return (
                   <FormLabel
-                    label="Password"
+                    label={t`Password`}
                     htmlFor="password"
                     validateStatus={validateStatus}
                   >
                     <Input.Password
                       size="small"
                       onChange={(e) => input.onChange(e.target.value)}
-                      placeholder={t`Password`}
                       className={`${
                         meta.touched && meta.error && !meta.valid
                           ? 'ant-input-status-error'
@@ -1218,7 +1221,6 @@ const SignUp = ({ required }) => {
                     <Input.Password
                       size="small"
                       onChange={(e) => input.onChange(e.target.value)}
-                      placeholder={t`Password`}
                       className={`${
                         meta.touched && meta.error && !meta.valid
                           ? 'ant-input-status-error'
@@ -1255,14 +1257,13 @@ const SignUp = ({ required }) => {
 
                 return (
                   <FormLabel
-                    label="First Name"
+                    label={t`First Name`}
                     htmlFor="fname"
                     validateStatus={validateStatus}
                   >
                     <Input
                       size="small"
                       onChange={(e) => input.onChange(e.target.value)}
-                      placeholder={t`First Name`}
                       className={`${
                         meta.touched && meta.error && !meta.valid
                           ? 'ant-input-status-error'
@@ -1297,14 +1298,13 @@ const SignUp = ({ required }) => {
 
                 return (
                   <FormLabel
-                    label="Last Name"
+                    label={t`Last Name`}
                     htmlFor="lname"
                     validateStatus={validateStatus}
                   >
                     <Input
                       size="small"
                       onChange={(e) => input.onChange(e.target.value)}
-                      placeholder={t`First Name`}
                       className={`${
                         meta.touched && meta.error && !meta.valid
                           ? 'ant-input-status-error'
@@ -1353,7 +1353,6 @@ const Login = ({ required }) => {
                 <Input
                   size="small"
                   onChange={(e) => input.onChange(e.target.value)}
-                  placeholder={t`Email`}
                   className={`${
                     meta.touched && meta.error && !meta.valid
                       ? 'ant-input-status-error'
@@ -1379,7 +1378,6 @@ const Login = ({ required }) => {
                 <Input.Password
                   size="small"
                   onChange={(e) => input.onChange(e.target.value)}
-                  placeholder={t`Password`}
                   className={`${
                     meta.touched && meta.error && !meta.valid
                       ? 'ant-input-status-error'
