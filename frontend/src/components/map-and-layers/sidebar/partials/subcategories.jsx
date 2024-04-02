@@ -180,8 +180,9 @@ const Subcategories = ({ subcategories }) => {
                   style={{ backgroundColor: 'white' }}
                   title={
                     <LayerInfo
-                      layer={layerInfo.layers?.results?.find(
-                        (layerInfoItem) => layerInfoItem.id === layer.id
+                      layer={layerInfo.layers?.data?.find(
+                        (layerInfoItem) =>
+                          layerInfoItem.arcgislayerId === layer.arcgislayerId
                       )}
                     ></LayerInfo>
                   }

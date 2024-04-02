@@ -22,7 +22,7 @@ const useLoadMap = () => {
             id: layer.attributes.arcgisMapId
           }
         });
-        console.log('layer.arcgisMapId', webMap?.layers)
+
 
         await webMap.load();
         return webMap?.layers?.getItemAt(layer.attributes.layerMappingId)?.renderer;

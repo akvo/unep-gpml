@@ -60,13 +60,13 @@ const LayerInfo = ({ layer }) => {
 
       <Card>
         <AntParagraph>
-          <strong>Time Period:</strong> {layer.attributes.timePeriod}
+          <strong>Time Period:</strong> {layer?.attributes.timePeriod}
         </AntParagraph>
         <AntParagraph>
-          <strong>Data Source:</strong> {layer.attributes.dataSource}
+          <strong>Data Source:</strong> {layer?.attributes.dataSource}
         </AntParagraph>
         <AntParagraph>
-          <strong>URL:</strong> {layer.attributes.url}
+          <strong>URL:</strong> {layer?.attributes.url}
         </AntParagraph>
       </Card>
     </div>
