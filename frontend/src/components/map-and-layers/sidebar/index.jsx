@@ -34,7 +34,7 @@ const Sidebar = () => {
   if (
     !categories ||
     categories.length === 0 ||
-    !Array.isArray(categories.results)
+    !Array.isArray(categories)
   ) {
     return <div>No categories available.</div>
   }
@@ -53,7 +53,7 @@ const Sidebar = () => {
   return (
     <div className={styles.container}>
       <Categories
-        categories={categories.results}
+        categories={categories}
         onCategoryClick={handleCategoryClick}
       />
 

@@ -27,7 +27,7 @@ const Categories = ({ categories, onCategoryClick }) => {
     })
 
     router.push({
-      pathname: `/data/maps/${category.categoryId}`,
+      pathname: `/data/maps/${category.attributes.categoryId}`,
       query: queryParametersString,
     })
   }
@@ -75,28 +75,28 @@ const Categories = ({ categories, onCategoryClick }) => {
 
       <Menu defaultSelectedKeys={['1']}>
         {categories.map((category) => (
-          <div key={category.categoryId}>
+          <div key={category.attributes.categoryId}>
             <Menu.Item
-              key={category.categoryId}
+              key={category.attributes.categoryId}
               onClick={() => handleCategoryClick(category)}
               className={isCategorySelected(category) ? 'selected' : ''}
             >
               <img
                 className="ant-menu-item-icon"
                 src={
-                  category.categoryIcon
-                    ? `https://unep-gpml.akvotest.org${category.categoryIcon[0].url}`
+                  category.attributes.categoryIcon
+                    ? `https://unep-gpml.akvotest.org${category.attributes.categoryIcon[0].url}`
                     : ''
                 }
                 style={{ marginRight: '10px' }}
               />
               <span style={{ font: 'inter', fontSize: '14px' }}>
-                {category.name}
+                {category.attributes.name}
               </span>
             </Menu.Item>
             {queryParameters.layers &&
               queryParameters.layers
-                .filter((layer) => layer.categoryId === category.categoryId)
+                .filter((layer) => layer.categoryId === category.attributes.categoryId)
                 .map((layer) => (
                   <Tag
                     style={{
