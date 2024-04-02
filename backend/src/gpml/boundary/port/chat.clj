@@ -30,9 +30,7 @@
   [:enum public private])
 
 (def ChannelDescription
-  [:string {:max
-            ;; DSC max is 100 at the moment:
-            100}])
+  :string)
 
 (def Channel ;; TODO https://clojurians.slack.com/archives/CLDK6MFMK/p1709154587503499
   [:map
