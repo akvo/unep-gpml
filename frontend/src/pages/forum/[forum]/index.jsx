@@ -32,7 +32,13 @@ import { MoreOutlined } from '@ant-design/icons'
 import { loadCatalog } from '../../../translations/utils'
 import Script from 'next/script'
 
-const ForumView = ({ isAuthenticated, setLoginVisible, profile }) => {
+const ForumView = ({
+  isAuthenticated,
+  setLoginVisible,
+  profile,
+  setShouldLoginClose,
+  loadingProfile,
+}) => {
   const router = useRouter()
   const [activeForum, setActiveForum] = useState(null)
   const [sdk, setSDK] = useState(null)
@@ -59,8 +65,6 @@ const ForumView = ({ isAuthenticated, setLoginVisible, profile }) => {
           _activeForum.users.findIndex((it) => it.id === profile.id) !== -1
         )
         setActiveForum(_activeForum)
-      } else {
-        setLoginVisible(true)
       }
     } catch (error) {
       console.error(error)
@@ -70,6 +74,13 @@ const ForumView = ({ isAuthenticated, setLoginVisible, profile }) => {
   useEffect(() => {
     fetchData()
   }, [fetchData])
+
+  useEffect(() => {
+    if (!loadingProfile && !isAuthenticated) {
+      setShouldLoginClose(true)
+      setLoginVisible(true)
+    }
+  }, [isAuthenticated, loadingProfile])
 
   const handleSDKLoaded = async () => {
     if (window?.DSChatSDK && !sdk) {

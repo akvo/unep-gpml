@@ -31,13 +31,14 @@ function MyApp({ Component, pageProps }) {
     authResult: null,
     loadingProfile: true,
     loginVisible: false,
+    shouldLoginClose: false,
   })
 
   const { authResult } = state
 
   const [loadScript, setLoadScript] = useState(false)
 
-  const { _expiresAt, loadingProfile, loginVisible } = state
+  const { _expiresAt, loadingProfile, loginVisible, shouldLoginClose } = state
 
   const isMounted = useRef(true)
 
@@ -121,6 +122,11 @@ function MyApp({ Component, pageProps }) {
     auth0Client.checkSession({}, (err, result) => {
       if (err) {
         console.log(`Error: ${err.error} - ${err.error_description}.`)
+        setState((prevState) => ({
+          ...prevState,
+          loadingProfile: false,
+          isAuthenticated: false,
+        }))
       } else {
         setSession(result)
       }
@@ -279,10 +285,16 @@ function MyApp({ Component, pageProps }) {
       auth0Client,
       profile,
       loginVisible,
+      shouldLoginClose,
       setLoginVisible: (value) =>
         setState((prevState) => ({
           ...prevState,
           loginVisible: value,
+        })),
+      setShouldLoginClose: (value) =>
+        setState((prevState) => ({
+          ...prevState,
+          shouldLoginClose: value,
         })),
       loadingProfile,
     }),
