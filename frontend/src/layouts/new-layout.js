@@ -17,10 +17,7 @@ import { isRegistered } from '../utils/profile'
 import { i18n } from '@lingui/core'
 import { MenuToggle, NavMobile, NavDesktop } from '../components/nav'
 import GpmlCircle from '../components/gpml-circle'
-import axios from 'axios'
-import { deepTranslate, getStrapiUrl } from '../utils/misc'
 import { changeLanguage } from '../translations/utils'
-import { storage } from '../utils/storage'
 
 const archia = localFont({
   src: [
@@ -74,76 +71,6 @@ const NewLayout = ({
   const [width] = useDeviceSize()
   const [isOpen, toggleOpen] = useCycle(false, true)
 
-  useEffect(() => {
-    const strapiUrl = getStrapiUrl()
-    const fetchData = async () => {
-      try {
-        const MENU_MAPPING = [
-          {
-            key: msg`About Us`,
-            id: 'About Us',
-            subKeys: [
-              {
-                key: msg`The platform`,
-                id: 'The platform',
-                apiEndpoint: `${strapiUrl}/api/pages?locale=all&filters[section][$eq]=about-platform&fields=title&fields=subtitle&fields=slug`,
-              },
-              {
-                key: msg`Our Network`,
-                id: 'Our Network',
-                apiEndpoint: `${strapiUrl}/api/pages?locale=all&filters[section][$eq]=about-network&fields=title&fields=subtitle&fields=slug`,
-              },
-            ],
-          },
-        ]
-
-        const fetchData = async () => {
-          const apiEndpoints = MENU_MAPPING.flatMap((section) =>
-            section.subKeys.map((sub) => sub.apiEndpoint)
-          )
-
-          try {
-            const responses = await Promise.all(
-              apiEndpoints.map((endpoint) => axios.get(endpoint))
-            )
-            return responses
-          } catch (error) {
-            console.error('Error fetching data:', error)
-            return []
-          }
-        }
-
-        fetchData().then((responses) => {
-          UIStore.update((s) => {
-            const menu = deepTranslate([...s.menuList])
-            let updatedMenu = menu
-
-            MENU_MAPPING.forEach((section, sectionIdx) => {
-              section.subKeys.forEach((sub, subIdx) => {
-                const responseData =
-                  responses[sectionIdx * section.subKeys.length + subIdx]?.data
-                    ?.data
-                if (responseData) {
-                  updatedMenu = updateMenuSection(
-                    updatedMenu,
-                    section.id,
-                    sub.id,
-                    responseData
-                  )
-                }
-              })
-            })
-            s.menuList = updatedMenu
-          })
-        })
-      } catch (err) {
-        console.log(err)
-      }
-    }
-
-    fetchData()
-  }, [])
-
   const handleOnLogoutRC = () => {
     try {
       const iFrame = document.querySelector('iframe')
@@ -167,6 +94,14 @@ const NewLayout = ({
     })
   }
 
+  const handleClick = (item) => {
+    if (item.to) {
+      router.push(item.to)
+    } else if (item.href) {
+      router.push(item.href)
+    }
+  }
+
   return (
     <>
       <style jsx global>{`
@@ -183,7 +118,7 @@ const NewLayout = ({
             position: openedItemKey ? 'sticky' : 'relative',
           }}
         >
-          <div className={`${isIndexPage ? 'container' : 'container-fluid'}`}>
+          <div className="container-fluid">
             <Link href="/">
               <div className="logo-container">
                 <div className="circle">
@@ -199,28 +134,28 @@ const NewLayout = ({
               </div>
             </Link>
             {width >= 768 && (
-              <ul className="ant-menu">
+              <Menu mode="horizontal" className="ant-menu">
                 {menuList.map((item) => (
-                  <li
+                  <Menu.SubMenu
                     key={item.id}
-                    onClick={() => {
-                      if (item.id === openedItemKey) {
-                        setOpenedItemKey(null)
-                        setShowMenu(false)
-                      } else {
-                        setOpenedItemKey(item.id)
-                        setShowMenu(true)
-                      }
-                    }}
-                    className={`${openedItemKey === item.id ? 'selected' : ''}`}
+                    title={
+                      <span>
+                        {i18n._(item.key)} <DownArrow />
+                      </span>
+                    }
                   >
-                    <a>
-                      <span>{i18n._(item.key)}</span>
-                      <DownArrow />
-                    </a>
-                  </li>
+                    {item.children.map((child) => (
+                      <Menu.Item
+                        onClick={() => handleClick(child)}
+                        className="nav-menu-item"
+                        key={child.id}
+                      >
+                        {i18n._(child.key)}
+                      </Menu.Item>
+                    ))}
+                  </Menu.SubMenu>
                 ))}
-              </ul>
+              </Menu>
             )}
             <nav>
               <Dropdown
