@@ -85,6 +85,7 @@ function Partnership({}) {
     }
 
     if (profile && Object.keys(profile).length > 0) {
+      router.push('/partnership?submitted=true')
       try {
         let sendData = { ...data }
         delete sendData.program
@@ -266,7 +267,7 @@ function Partnership({}) {
       const uppercaseRegExp = /(?=.*?[A-Z])/
       const lowercaseRegExp = /(?=.*?[a-z])/
       const digitsRegExp = /(?=.*?[0-9])/
-      const specialCharRegExp = /(?=.*?[#?!@$%^&*-])/
+      const specialCharRegExp = /(?=.*?[#?!@$%^&*-{}])/
       const minLengthRegExp = /.{8,}/
       const passwordLength = value?.length
       const uppercasePassword = uppercaseRegExp.test(value)
@@ -430,7 +431,7 @@ function Partnership({}) {
             <Spin size="large" />
           </div>
         )}
-        {router.query.submitted === 'true' ? (
+        {!loading && router.query.submitted === 'true' ? (
           <Row>
             <Col span={24}>
               <Card
