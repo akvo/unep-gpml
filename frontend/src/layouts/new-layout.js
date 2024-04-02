@@ -64,6 +64,7 @@ const NewLayout = ({
   profile,
   loginVisible,
   setLoginVisible,
+  shouldLoginClose,
 }) => {
   const router = useRouter()
   const { menuList } = UIStore.useState((s) => ({
@@ -359,7 +360,11 @@ const NewLayout = ({
           />
         )}
       </div>
-      <Login visible={loginVisible} close={() => setLoginVisible(false)} />
+      <Login
+        visible={loginVisible}
+        shouldLoginClose={shouldLoginClose}
+        close={() => setLoginVisible(false)}
+      />
     </>
   )
 }
@@ -381,6 +386,8 @@ export const withNewLayout = (Component) => {
       profile,
       loginVisible,
       setLoginVisible,
+      shouldLoginClose,
+      setShouldLoginClose,
     } = props
 
     return (
@@ -392,6 +399,8 @@ export const withNewLayout = (Component) => {
           auth0Client,
           profile,
           loginVisible,
+          shouldLoginClose,
+          setShouldLoginClose,
         }}
       >
         <Component {...props} />
