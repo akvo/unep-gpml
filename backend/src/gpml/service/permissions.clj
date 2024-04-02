@@ -73,7 +73,14 @@
                                       (or (-> e ex-data :result not-empty)
                                           (throw e))))]
     (if (vector? parsed-role-unassignments)
-      (rbac/unassign-roles! conn logger parsed-role-unassignments)
+      (mapv (fn [x]
+              ;; the object returned by dev.gethop.rbac/unassign-role! when there was nothing to delete,
+              ;; which can happen for misc reasons (most notably, for supporting idempotent deletes)
+              (if (= {:success? false}
+                     x)
+                {:success? true}
+                x))
+            (rbac/unassign-roles! conn logger parsed-role-unassignments))
       ;; it's a failure object
       [parsed-role-unassignments])))
 
