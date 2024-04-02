@@ -31,7 +31,7 @@ import api from '../../../utils/api'
 import { MoreOutlined } from '@ant-design/icons'
 import { loadCatalog } from '../../../translations/utils'
 
-const ForumView = ({ isAuthenticated, profile }) => {
+const ForumView = ({ isAuthenticated, setLoginVisible, profile }) => {
   const router = useRouter()
   const [activeForum, setActiveForum] = useState(null)
   const [sdk, setSDK] = useState(null)
@@ -49,7 +49,7 @@ const ForumView = ({ isAuthenticated, profile }) => {
 
   const fetchData = useCallback(async () => {
     try {
-      if (profile?.id && router.query?.forum) {
+      if (profile?.id && isAuthenticated && router.query?.forum) {
         const { data: apiData } = await api.get(
           `/chat/channel/details/${router.query.forum}`
         )
@@ -58,6 +58,8 @@ const ForumView = ({ isAuthenticated, profile }) => {
           _activeForum.users.findIndex((it) => it.id === profile.id) !== -1
         )
         setActiveForum(_activeForum)
+      } else {
+        setLoginVisible(true)
       }
     } catch (error) {
       console.error(error)
