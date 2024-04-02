@@ -12,6 +12,17 @@
    [taoensso.timbre :as timbre]
    [twarc.core :refer [defjob]]))
 
+(defn format-date-time [input logger]
+  (try
+    (let [parsed-date-time (jt/zoned-date-time input)
+          cet-zone-id (jt/zone-id "CET")
+          cet-date-time (jt/with-zone-same-instant parsed-date-time cet-zone-id)]
+      (jt/format "hh:mm a z" cet-date-time))
+    (catch Exception e
+      (timbre/with-context+ {:input input}
+        (log logger :error :could-not-format-date-time e))
+      input)))
+
 (defmacro logging-if-false
   {:style/indent 2}
   [logger event expr]
@@ -241,7 +252,7 @@ You can read them here: %s"
                                                                                        {:userName (:username recent-message)
                                                                                         :message (:message recent-message)
                                                                                         ;; XXX format as "ago" - the simplest thing we can do to avoid timezones
-                                                                                        :time (:created recent-message)})
+                                                                                        :time (some-> recent-message :created (format-date-time logger))})
                                                                                      (reverse (take 5 recent-messages)))})]))
           (log logger :info :success {:affected (count updates)})
           context)))))
