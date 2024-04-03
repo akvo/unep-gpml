@@ -207,12 +207,12 @@ const NewLayout = ({
               </Dropdown>
               {!isAuthenticated && (
                 <Button
-                  type="primary"
+                  type="ghost"
                   size="small"
-                  className="noicon hide-mobile"
+                  className="noicon hide-mobile login-btn"
                   onClick={() => setLoginVisible(true)}
                 >
-                  <Trans>Join Now</Trans>
+                  <Trans>Login</Trans>
                 </Button>
               )}
               {isAuthenticated && (
