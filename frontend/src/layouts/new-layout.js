@@ -138,6 +138,7 @@ const NewLayout = ({
                 {menuList.map((item) => (
                   <Menu.SubMenu
                     key={item.id}
+                    popupClassName="nav-dropdown-menu"
                     title={
                       <span>
                         {i18n._(item.key)} <DownArrow />
@@ -150,7 +151,11 @@ const NewLayout = ({
                         className="nav-menu-item"
                         key={child.id}
                       >
-                        {i18n._(child.key)}
+                        {child.to ? (
+                          <Link href={child.to}>{i18n._(child.key)}</Link>
+                        ) : (
+                          <a href={child.href}>{i18n._(child.key)}</a>
+                        )}
                       </Menu.Item>
                     ))}
                   </Menu.SubMenu>

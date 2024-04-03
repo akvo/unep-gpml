@@ -154,12 +154,20 @@ h6 {
   }
 }
 
+.nav-dropdown-menu {
+  ul {
+    padding: 5px 0 !important;
+  }
+}
 .nav-menu-item {
+  margin: 0 !important;
+  padding: 0;
   .ant-menu-title-content {
     font-family: var(--font-archia), sans-serif;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 500;
     color: #000;
+    line-height: 16px;
   }
   &:hover {
     background-color: $primaryBlue2;
@@ -348,13 +356,14 @@ h6 {
             color: white !important;
           }
         }
+        border: none !important;
         &::after {
-          border-color: $primaryGreen5 !important;
+          border: none !important;
         }
       }
 
       .ant-menu-title-content {
-        font-size: 18px;
+        font-size: 16px;
         font-style: normal;
         font-weight: 600;
         svg {
