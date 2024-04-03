@@ -22,7 +22,7 @@ const geoCoverageTypeOptions = ['Global', 'Transnational', 'National']
 const menuList = [
   {
     key: msg`Knowledge Hub`,
-    id: 'Tools',
+    id: 'Knowledge Hub',
     children: [
       {
         to: '/knowledge/library',

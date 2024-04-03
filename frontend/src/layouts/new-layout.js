@@ -269,16 +269,16 @@ const NewLayout = ({
           </div>
         </div>
         <div className="navigation">
-          <NavMobile {...{ isOpen, toggleOpen }} />
+          <NavMobile {...{ isOpen, toggleOpen, handleClick }} />
 
-          <NavDesktop
+          {/* <NavDesktop
             isOpen={showMenu}
             contentKey={openedItemKey}
             toggle={() => {
               setShowMenu(false)
               setOpenedItemKey(null)
             }}
-          />
+          /> */}
         </div>
         {children}
         {!router.pathname.includes('/workspace/[slug]') && (
