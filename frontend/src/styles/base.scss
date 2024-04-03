@@ -176,7 +176,7 @@ h6 {
   .ant-dropdown-menu-item {
     padding: 10px 24px;
     &:hover {
-      background-color: $primaryGreen1;
+      background-color: #ccd0db;
     }
   }
   .ant-dropdown-menu-title-content {
@@ -186,13 +186,11 @@ h6 {
     color: $primaryDarkBlueText;
     line-height: 16px;
   }
-  &:hover {
-    background-color: #ccd0db;
-  }
   &.ant-menu-item-selected {
     background-color: #ccd0db !important;
   }
   .ant-dropdown-menu {
+    margin-top: 5px;
     @media screen and (max-width: $bpMobile) {
       padding: 15px;
       .ant-dropdown-menu-item {
