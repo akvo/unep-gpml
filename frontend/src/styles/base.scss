@@ -263,6 +263,9 @@ h6 {
     border: 1.7px solid white;
     border-radius: 25px;
     padding: 5px 8px;
+    @media screen and (max-width: $bpMobile) {
+      display: none;
+    }
     & > span {
       margin-left: -5px;
       text-transform: uppercase;
@@ -632,6 +635,37 @@ h6 {
     display: flex;
     flex-direction: column;
     position: relative;
+
+    .lang-btn {
+      display: flex;
+      align-items: center;
+      margin-right: 15px;
+      cursor: pointer;
+      border: 1.7px solid white;
+      border-radius: 25px;
+      padding: 5px 8px;
+      width: fit-content;
+      margin: 20px auto;
+      color: white;
+      & > span {
+        margin-left: -5px;
+        text-transform: uppercase;
+        margin-right: 5px;
+        font-weight: 500;
+      }
+      & > *:first-child {
+        margin-right: 10px;
+      }
+    }
+
+    .login-btn {
+      color: white;
+      border: 1.7px solid white;
+      font-size: 16px;
+      width: fit-content;
+      margin: 20px auto;
+    }
+
     .sub-menu-item {
       min-height: auto;
       margin-bottom: 0px;

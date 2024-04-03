@@ -263,7 +263,9 @@ const NewLayout = ({
           </div>
         </div>
         <div className="navigation">
-          <NavMobile {...{ isOpen, toggleOpen }} />
+          <NavMobile
+            {...{ isOpen, toggleOpen, isAuthenticated, setLoginVisible }}
+          />
 
           {/* <NavDesktop
             isOpen={showMenu}
