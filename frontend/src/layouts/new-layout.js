@@ -94,14 +94,6 @@ const NewLayout = ({
     })
   }
 
-  const handleClick = (item) => {
-    if (item.to) {
-      router.push(item.to)
-    } else if (item.href) {
-      router.push(item.href)
-    }
-  }
-
   return (
     <>
       <style jsx global>{`
@@ -134,33 +126,36 @@ const NewLayout = ({
               </div>
             </Link>
             {width >= 768 && (
-              <Menu mode="horizontal" className="ant-menu">
+              <ul className="ant-menu">
                 {menuList.map((item) => (
-                  <Menu.SubMenu
-                    key={item.id}
-                    popupClassName="nav-dropdown-menu"
-                    title={
-                      <span>
-                        {i18n._(item.key)} <DownArrow />
-                      </span>
+                  <Dropdown
+                    placement="bottom"
+                    overlayClassName="nav-menu-item"
+                    overlay={
+                      <Menu>
+                        {item.children.map((child) => (
+                          <Menu.Item key={child.id}>
+                            {child.to ? (
+                              <Link href={child.to} legacyBehavior>
+                                <a>{i18n._(child.key)}</a>
+                              </Link>
+                            ) : (
+                              <a href={child.href}>{i18n._(child.key)}</a>
+                            )}
+                          </Menu.Item>
+                        ))}
+                      </Menu>
                     }
                   >
-                    {item.children.map((child) => (
-                      <Menu.Item
-                        onClick={() => handleClick(child)}
-                        className="nav-menu-item"
-                        key={child.id}
-                      >
-                        {child.to ? (
-                          <Link href={child.to}>{i18n._(child.key)}</Link>
-                        ) : (
-                          <a href={child.href}>{i18n._(child.key)}</a>
-                        )}
-                      </Menu.Item>
-                    ))}
-                  </Menu.SubMenu>
+                    <a
+                      className="ant-dropdown-link"
+                      onClick={(e) => e.preventDefault()}
+                    >
+                      {i18n._(item.key)} <DownArrow />
+                    </a>
+                  </Dropdown>
                 ))}
-              </Menu>
+              </ul>
             )}
             <nav>
               <Dropdown
@@ -269,7 +264,7 @@ const NewLayout = ({
           </div>
         </div>
         <div className="navigation">
-          <NavMobile {...{ isOpen, toggleOpen, handleClick }} />
+          <NavMobile {...{ isOpen, toggleOpen }} />
 
           {/* <NavDesktop
             isOpen={showMenu}

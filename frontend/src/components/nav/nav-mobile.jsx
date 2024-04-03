@@ -5,8 +5,9 @@ import { CirclePointer, DownArrow, LinkedinIcon, YoutubeIcon } from '../icons'
 import { UIStore } from '../../store'
 import { deepTranslate } from '../../utils/misc'
 import Button from '../button'
-import { Menu } from 'antd'
+import { Dropdown, Menu } from 'antd'
 import { i18n } from '@lingui/core'
+import Link from 'next/link'
 
 const SOCIAL_LINKS = [
   {
@@ -133,29 +134,36 @@ const NavMobile = ({ isOpen, toggleOpen, handleClick }) => {
 
   function MainMenuItems() {
     return (
-      <Menu mode="inline" className="ant-menu">
+      <ul className="ant-menu">
         {menu.map((item) => (
-          <Menu.SubMenu
-            key={item.id}
-            title={
-              <span>
-                {i18n._(item.key)} <DownArrow />
-              </span>
+          <Dropdown
+            overlayClassName="nav-menu-item"
+            placement="bottom"
+            overlay={
+              <Menu>
+                {item.children.map((child) => (
+                  <Menu.Item key={child.id}>
+                    {child.to ? (
+                      <Link href={child.to} legacyBehavior>
+                        <a>{i18n._(child.key)}</a>
+                      </Link>
+                    ) : (
+                      <a href={child.href}>{i18n._(child.key)}</a>
+                    )}
+                  </Menu.Item>
+                ))}
+              </Menu>
             }
-            popupOffset={100}
           >
-            {item.children.map((child) => (
-              <Menu.Item
-                onClick={() => handleClick(child)}
-                className="nav-menu-item"
-                key={child.id}
-              >
-                {i18n._(child.id)}
-              </Menu.Item>
-            ))}
-          </Menu.SubMenu>
+            <a
+              className="ant-dropdown-link"
+              onClick={(e) => e.preventDefault()}
+            >
+              {i18n._(item.key)} <DownArrow />
+            </a>
+          </Dropdown>
         ))}
-      </Menu>
+      </ul>
     )
   }
 
