@@ -1,5 +1,21 @@
 .container {
   display: flex;
   flex-direction: row;
-  width: 30%;
+  // width: 30%;
+  :global {
+    .ant-layout-sider {
+      background-color: #fff;
+      padding-top: 10px;
+    }
+    .layer-item {
+      display: flex;
+      padding: 5px 0;
+      .ant-switch {
+        margin-right: 7px;
+      }
+      .anticon-info-circle {
+        margin-left: auto;
+      }
+    }
+  }
 }

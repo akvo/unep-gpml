@@ -1,34 +1,42 @@
-import React from 'react';
-import { Layout, Typography, Menu, Tag } from 'antd';
-import { CloseCircleFilled } from '@ant-design/icons';
-import useQueryParameters from '../../../../hooks/useQueryParameters';
-import useSubcategories from '../../../../hooks/useSubcategories';
-import Subcategories from './../partials/subcategories';
+import React from 'react'
+import { Layout, Typography, Menu, Tag } from 'antd'
+import { CloseCircleFilled } from '@ant-design/icons'
+import useQueryParameters from '../../../../hooks/useQueryParameters'
+import useSubcategories from '../../../../hooks/useSubcategories'
+import Subcategories from './../partials/subcategories'
 
-const { Sider } = Layout;
+const { Sider } = Layout
 
-const Categories = ({ categories, onCategoryClick }) => {
-  const { queryParameters, setQueryParameters } = useQueryParameters();
-
+const CategoriesNested = ({ categories, onCategoryClick }) => {
+  const { queryParameters, setQueryParameters } = useQueryParameters()
+  console.log(queryParameters)
   const handleCategoryClick = (category) => {
-    onCategoryClick(category);
-    setQueryParameters({ categoryId: category.attributes.categoryId });
-  };
+    onCategoryClick(category)
+    setQueryParameters({ categoryId: category.attributes.categoryId })
+  }
   const subcategories = useSubcategories(queryParameters.categoryId)
   const handleCloseLayer = (layerId) => {
     const updatedLayers = queryParameters.layers.filter(
       (layer) => layer.id !== layerId
-    );
-    setQueryParameters({ layers: updatedLayers });
-  };
+    )
+    setQueryParameters({ layers: updatedLayers })
+  }
 
   const isCategorySelected = (category) => {
-    return queryParameters.categoryId === category.attributes.categoryId;
-  };
+    return queryParameters.categoryId === category.attributes.categoryId
+  }
 
   return (
-    <Sider breakpoint="lg" collapsedWidth="0">
-      <Typography.Title level={5} style={{ color: '#717D96', marginLeft: '10px', fontSize: '12px', variant: 'typography/body2' }}>
+    <Sider breakpoint="lg" collapsedWidth="0" width={360}>
+      <Typography.Title
+        level={5}
+        style={{
+          color: '#717D96',
+          marginLeft: '10px',
+          fontSize: '12px',
+          variant: 'typography/body2',
+        }}
+      >
         TOPICS
       </Typography.Title>
       <Menu defaultSelectedKeys={['1']}>
@@ -111,7 +119,7 @@ const Categories = ({ categories, onCategoryClick }) => {
         ))}
       </Menu>
     </Sider>
-  );
-};
+  )
+}
 
-export default Categories;
+export default CategoriesNested

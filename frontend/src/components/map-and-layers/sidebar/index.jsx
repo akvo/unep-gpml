@@ -6,8 +6,9 @@ import useSubcategories from '../../../hooks/useSubcategories'
 import { useRouter } from 'next/router'
 import Subcategories from './partials/subcategories'
 import styles from './index.module.scss'
+import CategoriesNested from './partials/categoriesNested'
 
-const Sidebar = () => {
+const Sidebar = ({ alt }) => {
   const router = useRouter()
 
   const {
@@ -44,12 +45,22 @@ const Sidebar = () => {
 
   return (
     <div className={styles.container}>
-      <Categories
-        categories={categories}
-        onCategoryClick={handleCategoryClick}
-      />
-
-      {showLayerSidebar && <Subcategories subcategories={subcategories} />}
+      {alt ? (
+        <>
+          <CategoriesNested
+            categories={categories}
+            onCategoryClick={handleCategoryClick}
+          />
+        </>
+      ) : (
+        <>
+          <Categories
+            categories={categories}
+            onCategoryClick={handleCategoryClick}
+          />
+          {showLayerSidebar && <Subcategories subcategories={subcategories} />}
+        </>
+      )}
     </div>
   )
 }

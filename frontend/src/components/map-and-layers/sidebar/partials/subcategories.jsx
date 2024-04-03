@@ -95,7 +95,7 @@ const Subcategories = ({ subcategories }) => {
 
   return (
     <div>
-      <Collapse accordion ghost expandIconPosition="right">
+      <Collapse accordion ghost expandIconPosition="right" destroyInactivePanel>
         {subcategories.subcategories.data.map((subcategory, index) => (
           <Panel
             key={subcategory.attributes.subcategoryId}
@@ -121,6 +121,7 @@ const Subcategories = ({ subcategories }) => {
           >
             {sortedLayers.map((layer, layerIndex) => (
               <div
+                className="layer-item"
                 key={`${subcategory.attributes.subcategoryId}-${layerIndex}`}
                 onMouseEnter={() => handleMouseEnter(layer.id)}
                 onMouseLeave={handleMouseLeave}
@@ -129,20 +130,6 @@ const Subcategories = ({ subcategories }) => {
                   size="small"
                   onChange={() => handleLayerClick(layer)}
                   checked={queryParameters.layers[0]?.id === layer.id}
-                  style={{
-                    transform: 'scale(0.8)',
-                    backgroundColor:
-                      queryParameters.layers[0]?.arcgislayerId ===
-                        layer.attributes.arcgislayerId &&
-                      (queryParameters.layers[0]?.layerMappingId
-                        ? queryParameters.layers[0]?.layerMappingId ===
-                          layer.attributes.layerMappingId
-                        : true)
-                        ? '#2D3648'
-                        : '#d9d9d9',
-                  }}
-                  trackHeight="1px"
-                  trackMinWidth="1px"
                 />
 
                 <Typography
