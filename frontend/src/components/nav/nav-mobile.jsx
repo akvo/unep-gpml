@@ -1,13 +1,24 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MenuToggle } from './menu-toggle'
-import { CirclePointer, DownArrow, LinkedinIcon, YoutubeIcon } from '../icons'
+import {
+  Check,
+  CirclePointer,
+  DownArrow,
+  LinkedinIcon,
+  World,
+  YoutubeIcon,
+  flags,
+} from '../icons'
 import { UIStore } from '../../store'
 import { deepTranslate } from '../../utils/misc'
 import Button from '../button'
 import { Dropdown, Menu } from 'antd'
 import { i18n } from '@lingui/core'
 import Link from 'next/link'
+import { Trans } from '@lingui/macro'
+import classNames from 'classnames'
+import { useRouter } from 'next/router'
 
 const SOCIAL_LINKS = [
   {
@@ -62,7 +73,13 @@ const sidebar = {
   },
 }
 
-const NavMobile = ({ isOpen, toggleOpen, handleClick }) => {
+const NavMobile = ({
+  isOpen,
+  toggleOpen,
+  isAuthenticated,
+  setLoginVisible,
+}) => {
+  const router = useRouter()
   const [selectedMenuItem, setSelectedMenuItem] = useState(null)
   const { menuList } = UIStore.useState((s) => ({ menuList: s.menuList }))
 
@@ -92,6 +109,59 @@ const NavMobile = ({ isOpen, toggleOpen, handleClick }) => {
         <MenuHeader />
         <div className="navigation-container" style={{ height: '100%' }}>
           <MainMenuItems />
+
+          {!isAuthenticated && (
+            <Button
+              type="ghost"
+              size="small"
+              className="noicon login-btn"
+              onClick={() => setLoginVisible(true)}
+            >
+              <Trans>Login</Trans>
+            </Button>
+          )}
+          <Dropdown
+            overlayClassName="lang-dropdown-wrapper"
+            overlay={
+              <Menu className="lang-dropdown">
+                {[
+                  { key: 'EN', label: 'English' },
+                  { key: 'FR', label: 'French' },
+                  { key: 'ES', label: 'Spanish' },
+                ].map((lang) => (
+                  <Menu.Item
+                    className={classNames({
+                      active: lang.key.toLowerCase() === router.locale,
+                    })}
+                    key={lang.key}
+                    onClick={() => {
+                      console.log(
+                        lang.key.toLowerCase(),
+                        'lang.key.toLowerCase()'
+                      )
+                      changeLanguage(lang.key.toLowerCase(), router)
+                    }}
+                  >
+                    {flags[lang.key]}
+                    {lang.label}
+                    {lang.key.toLowerCase() === router.locale && (
+                      <div className="check">
+                        <Check />
+                      </div>
+                    )}
+                  </Menu.Item>
+                ))}
+              </Menu>
+            }
+            trigger={['click']}
+            placement="bottomRight"
+          >
+            <div className="lang-btn">
+              <World />
+              <span>{router.locale}</span>
+              <DownArrow />
+            </div>
+          </Dropdown>
           <motion.div
             className="social-links-container"
             variants={socialLinksVariants}
