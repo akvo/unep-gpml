@@ -30,8 +30,15 @@ import {
 import api from '../../../utils/api'
 import { MoreOutlined } from '@ant-design/icons'
 import { loadCatalog } from '../../../translations/utils'
+import Script from 'next/script'
 
-const ForumView = ({ isAuthenticated, profile }) => {
+const ForumView = ({
+  isAuthenticated,
+  setLoginVisible,
+  profile,
+  setShouldLoginClose,
+  loadingProfile,
+}) => {
   const router = useRouter()
   const [activeForum, setActiveForum] = useState(null)
   const [sdk, setSDK] = useState(null)
@@ -49,7 +56,7 @@ const ForumView = ({ isAuthenticated, profile }) => {
 
   const fetchData = useCallback(async () => {
     try {
-      if (profile?.id && router.query?.forum) {
+      if (profile?.id && isAuthenticated && router.query?.forum) {
         const { data: apiData } = await api.get(
           `/chat/channel/details/${router.query.forum}`
         )
@@ -69,37 +76,39 @@ const ForumView = ({ isAuthenticated, profile }) => {
   }, [fetchData])
 
   useEffect(() => {
-    ;(async () => {
-      // DSChatSDK construction accepts two parameters:
-      // 1. Chat Room Id
-      // 2. ID of the iFrame tag
-      // 3. Dead Simple Chat Public API Key.
-      try {
-        if (window?.DSChatSDK && activeForum && !sdk) {
-          const _sdk = new window.DSChatSDK(
-            activeForum.id,
-            'chat-frame',
-            process.env.NEXT_PUBLIC_DSC_PUBLIC_KEY
-          )
-          // Call the connect method to connect the SDK to the Chat iFrame.
-          await _sdk.connect()
+    if (!loadingProfile && !isAuthenticated) {
+      setShouldLoginClose(true)
+      setLoginVisible(true)
+    }
+  }, [isAuthenticated, loadingProfile])
 
-          setSDK(_sdk)
-        }
-      } catch (error) {
-        console.error('SDK', error)
-      }
-    })()
+  const handleSDKLoaded = async () => {
+    if (window?.DSChatSDK && !sdk) {
+      const _sdk = new window.DSChatSDK(
+        router.query.forum,
+        'chat-frame',
+        process.env.NEXT_PUBLIC_DSC_PUBLIC_KEY
+      )
+      // Call the connect method to connect the SDK to the Chat iFrame.
+      await _sdk.connect()
+
+      setSDK(_sdk)
+    }
+  }
+  useEffect(() => {
+    handleSDKLoaded()
   }, [activeForum, sdk])
+
   useEffect(() => {
     if (sdk != null) {
       sdk.loadCustomization({
         hideSidebar: true,
         hideHeader: true,
-        hideChatInputTextArea: !userJoined,
+        hideChatInputTextArea: !userJoined || !isAuthenticated,
       })
     }
-  }, [sdk, userJoined])
+  }, [sdk, userJoined, isAuthenticated])
+
   const handleClickJoin = () => {
     api.post('/chat/channel/public', { channelId: activeForum.id })
     setUserJoined(true)
@@ -110,11 +119,13 @@ const ForumView = ({ isAuthenticated, profile }) => {
   }
   const isAdmin = profile?.role === 'ADMIN'
   const channelId = activeForum?.id
+
   return (
     <>
-      <Head>
-        <script src="https://cdn.deadsimplechat.com/sdk/1.2.1/dschatsdk.min.js"></script>
-      </Head>
+      <Script
+        src="https://cdn.deadsimplechat.com/sdk/1.2.1/dschatsdk.min.js"
+        onReady={handleSDKLoaded}
+      />
       <div className={styles.container}>
         {/* <div className={styles.channelSidebar}> */}
         <div className={styles.sidebar}>

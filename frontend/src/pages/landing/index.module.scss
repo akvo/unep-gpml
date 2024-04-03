@@ -278,7 +278,9 @@
       padding: 20px 40px;
       box-sizing: border-box;
       overflow: hidden;
-
+      .ant-select {
+        background-color: white;
+      }
       .bar {
         display: flex;
         padding-bottom: 18px;

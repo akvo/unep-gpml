@@ -25,7 +25,7 @@ import Button from '../../components/button'
 import FormLabel from '../../components/form-label'
 import { Trans, t } from '@lingui/macro'
 
-function Login({ visible, close }) {
+function Login({ visible, close, shouldLoginClose }) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [signin, setSignIn] = useState(false)
@@ -37,7 +37,7 @@ function Login({ visible, close }) {
   const formRef = useRef()
 
   useEffect(() => {
-    if (Object.keys(router?.query).length) {
+    if (Object.keys(router?.query).length && !router?.query['forum']) {
       setSignIn(true)
     }
   }, [router])
@@ -129,7 +129,7 @@ function Login({ visible, close }) {
                 ? t`JOIN WITH EMAIL`
                 : t`CONTINUE WITH EMAIL`}
             </p>
-            {!signin ? (
+            {!signin && !shouldLoginClose ? (
               <Button type="link" onClick={close}>
                 <Trans>CANCEL</Trans>
                 <CloseCircleOutlined />
@@ -153,7 +153,7 @@ function Login({ visible, close }) {
               >
                 {'<'} <Trans>Back to connect options</Trans>
               </Button>
-            ) : (
+            ) : signin ? (
               <Button
                 type="link"
                 className={styles.connectBackButton}
@@ -161,7 +161,7 @@ function Login({ visible, close }) {
               >
                 {'<'} <Trans>Back to connect options</Trans>
               </Button>
-            )}
+            ) : null}
           </div>
         </>
       }
@@ -170,7 +170,7 @@ function Login({ visible, close }) {
       footer={false}
       className={styles.login}
       closable={false}
-      onCancel={close}
+      onCancel={!shouldLoginClose ? close : null}
     >
       <div>
         <Row>
