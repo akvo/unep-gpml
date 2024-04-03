@@ -175,6 +175,9 @@ h6 {
   margin: 0 !important;
   .ant-dropdown-menu-item {
     padding: 10px 24px;
+    &:hover {
+      background-color: $primaryGreen1;
+    }
   }
   .ant-dropdown-menu-title-content {
     font-family: $ff2;
