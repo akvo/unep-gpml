@@ -1,0 +1,70 @@
+.container {
+  position: relative;
+  background-color: #d3dee726;
+  flex: 1;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  :global {
+    .esri-attribution {
+      display: none;
+    }
+
+    .esri-view-root {
+      z-index: 1000;
+    }
+    .esri-view {
+      position: relative;
+    }
+
+    .esri-popup {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 8px;
+      overflow: auto;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .esri-popup__main-container {
+      background-color: white !important;
+      padding: 16px;
+      border-radius: 8px;
+    }
+
+    .esri-popup__header {
+      background-color: #f0f0f0;
+      border-bottom: 1px solid #dcdcdc;
+    }
+
+    .esri-popup__content {
+      max-height: 300px;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+    .legend-card {
+      border: none;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+      .ant-card {
+        .ant-card-body {
+          padding: 5px;
+        }
+      }
+    }
+    .show-hide-btn {
+      background-color: transparent;
+      padding: 0;
+      margin: 0;
+      text-transform: uppercase;
+      border: none;
+      display: flex;
+      font-size: 14px;
+      color: #1d90f5;
+      svg {
+        position: static;
+        transform: translateY(3px);
+      }
+    }
+  }
+}
