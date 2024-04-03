@@ -172,7 +172,6 @@ h6 {
   }
 }
 .nav-menu-item {
-  margin: 0 !important;
   .ant-dropdown-menu-item {
     padding: 10px 24px;
     &:hover {
@@ -190,7 +189,8 @@ h6 {
     background-color: #ccd0db !important;
   }
   .ant-dropdown-menu {
-    margin-top: 5px;
+    margin-top: 7px;
+    padding: 7px 0;
     @media screen and (max-width: $bpMobile) {
       padding: 15px;
       .ant-dropdown-menu-item {
