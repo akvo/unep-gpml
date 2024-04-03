@@ -9,6 +9,7 @@ import { InfoCircleFilled } from '@ant-design/icons'
 import LayerInfo from './layerInfo'
 import useLayerInfo from '../../../../hooks/useLayerInfo'
 import { useRouter } from 'next/router'
+import classNames from 'classnames'
 // const LayersContainer = styled.div`
 //   padding-left: 0;
 //   background-color: white;
@@ -101,21 +102,7 @@ const Subcategories = ({ subcategories }) => {
             key={subcategory.attributes.subcategoryId}
             header={
               <div onClick={() => handleSubcategoryClick(subcategory)}>
-                <Typography
-                  style={{
-                    fontSize: '14px',
-                    font: 'inter',
-                    color: '#2D3648',
-                    variant: 'typography/body2',
-                    fontWeight:
-                      expandedSubcategory ===
-                      subcategory.attributes.subcategoryId
-                        ? 'bold'
-                        : 'normal',
-                  }}
-                >
-                  {subcategory.attributes.subcategoryName}
-                </Typography>
+                {subcategory.attributes.subcategoryName}
               </div>
             }
           >

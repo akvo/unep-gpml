@@ -28,17 +28,7 @@ const CategoriesNested = ({ categories, onCategoryClick }) => {
 
   return (
     <Sider breakpoint="lg" collapsedWidth="0" width={360}>
-      <Typography.Title
-        level={5}
-        style={{
-          color: '#717D96',
-          marginLeft: '10px',
-          fontSize: '12px',
-          variant: 'typography/body2',
-        }}
-      >
-        TOPICS
-      </Typography.Title>
+      <div className="caps-heading-s">Topics</div>
       <Menu defaultSelectedKeys={['1']}>
         {categories.map((category) => (
           <div key={category.attributes.categoryId}>
