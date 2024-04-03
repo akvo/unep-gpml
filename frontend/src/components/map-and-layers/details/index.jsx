@@ -34,28 +34,26 @@ const Details = ({ title, layerId }) => {
         <Card
           size="small"
           title={title}
-          extra={
-            <Button
-              type="text"
-              onClick={toggleShowLegend}
-              icon={showLegend ? <UpOutlined /> : <DownOutlined />}
-            >
-              {' '}
-              {showLegend ? 'Hide legend' : 'Show legend'}
-            </Button>
-          }
           style={{
-            width: 350,
+            width: 300,
             cursor: 'move',
           }}
           headStyle={{
             cursor: 'move',
           }}
           bodyStyle={{
-            display: showLegend ? 'block' : 'none',
             pointerEvents: 'auto',
           }}
+          className="legend-card"
         >
+          <Button
+            className="show-hide-btn"
+            type="text"
+            onClick={toggleShowLegend}
+            icon={showLegend ? <UpOutlined /> : <DownOutlined />}
+          >
+            {showLegend ? 'Hide legend' : 'Show legend'}
+          </Button>
           {showLegend && <Legends layerId={layerId} />}
         </Card>
       </div>

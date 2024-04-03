@@ -43,5 +43,28 @@
       overflow-y: auto;
       overflow-x: hidden;
     }
+    .legend-card {
+      border: none;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+      .ant-card {
+        .ant-card-body {
+          padding: 5px;
+        }
+      }
+    }
+    .show-hide-btn {
+      background-color: transparent;
+      padding: 0;
+      margin: 0;
+      text-transform: uppercase;
+      border: none;
+      display: flex;
+      font-size: 14px;
+      color: #1d90f5;
+      svg {
+        position: static;
+        transform: translateY(3px);
+      }
+    }
   }
 }
