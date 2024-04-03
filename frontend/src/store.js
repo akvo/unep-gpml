@@ -58,13 +58,13 @@ const menuList = [
       {
         key: msg`Maps`,
         id: 'Maps',
-        link: '/data/maps',
+        to: '/data/maps',
       },
-      {
-        key: msg`Dashboard`,
-        id: 'Dashboard',
-        href: 'https://datahub.gpmarinelitter.org/',
-      },
+      // {
+      //   key: msg`Dashboard`,
+      //   id: 'Dashboard',
+      //   href: 'https://datahub.gpmarinelitter.org/',
+      // },
       {
         key: msg`Data Catalogue`,
         id: 'Data Catalogue',
