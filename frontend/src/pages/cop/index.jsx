@@ -20,9 +20,13 @@ const DynamicForumModal = dynamic(
 const Page = ({ isAuthenticated, setLoginVisible }) => {
   const strapiUrl = getStrapiUrl()
   const [cops, setCops] = useState(null)
+  const [orgs, setOrgs] = useState(null)
   const [viewModal, setViewModal] = useState({ open: false })
   const [loading, setLoading] = useState(true)
   useEffect(() => {
+    api.get('/non-member-organisation').then((d) => {
+      setOrgs(d.data)
+    })
     fetch(`${strapiUrl}/api/cops?locale=en&populate=attachments`)
       .then((d) => d.json())
       .then((d) => {
@@ -92,11 +96,11 @@ const Page = ({ isAuthenticated, setLoginVisible }) => {
                 </div>
                 <div className="col">
                   <div className="label">Lead</div>
-                  <LinkTag id={cop.lead} />
+                  <LinkTag id={cop.lead} orgs={orgs} />
                   <div className="label">Members</div>
                   <div className="members">
                     {cop.members?.split(',').map((member) => (
-                      <LinkTag id={member} />
+                      <LinkTag id={member} orgs={orgs} />
                     ))}
                   </div>
                   {allForums?.length > 0 && cop.forumId && (
@@ -121,11 +125,8 @@ const Page = ({ isAuthenticated, setLoginVisible }) => {
   )
 }
 
-const LinkTag = ({ id }) => {
-  const { organisations } = UIStore.useState((s) => ({
-    organisations: s.organisations,
-  }))
-  const org = organisations.find((it) => it.id === Number(id))
+const LinkTag = ({ id, orgs }) => {
+  const org = orgs?.find((it) => it.id === Number(id))
   if (!org) return
   return (
     <a href={`/organisation/${org?.id}`} className="tag-link">
