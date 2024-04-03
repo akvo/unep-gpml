@@ -336,6 +336,27 @@ h6 {
       }
     }
   }
+
+  .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item:hover,
+  .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu:hover,
+  .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item-active,
+  .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu-active,
+  .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item-open,
+  .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu-open,
+  .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item-selected,
+  .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu-selected {
+    color: #fff;
+  }
+  .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item:hover::after,
+  .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu:hover::after,
+  .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item-active::after,
+  .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu-active::after,
+  .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item-open::after,
+  .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu-open::after,
+  .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item-selected::after,
+  .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu-selected::after {
+    border-bottom: none;
+  }
   .ant-menu {
     background: transparent;
     border: none;
@@ -350,29 +371,21 @@ h6 {
     box-shadow: none;
     margin-right: 40px;
 
-    .ant-menu-submenu-selected {
-      color: $primaryGreen5;
+    .ant-menu-submenu {
       &::after {
-        border-color: $primaryGreen5 !important;
+        content: none;
+      }
+    }
+
+    .ant-menu-submenu-title {
+      &:hover {
+        color: #fff;
       }
     }
 
     li {
       line-height: normal;
       height: fit-content;
-
-      &.ant-menu-submenu-active {
-        color: white !important;
-        .ant-menu-submenu-title {
-          &:hover {
-            color: white !important;
-          }
-        }
-        border: none !important;
-        &::after {
-          border: none !important;
-        }
-      }
 
       .ant-menu-title-content {
         font-size: 16px;
