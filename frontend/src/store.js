@@ -52,8 +52,8 @@ const menuList = [
     ],
   },
   {
-    key: msg`Data hub`,
-    id: 'Data hub',
+    key: msg`Data Hub`,
+    id: 'Data Hub',
     children: [
       {
         key: msg`Maps`,
