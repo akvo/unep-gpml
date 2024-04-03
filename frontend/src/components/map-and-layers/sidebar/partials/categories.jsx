@@ -1,36 +1,62 @@
-import React from 'react';
-import { Layout, Typography, Menu, Tag } from 'antd';
-import { CloseCircleFilled } from '@ant-design/icons';
-import useQueryParameters from '../../../../hooks/useQueryParameters';
-import useSubcategories from '../../../../hooks/useSubcategories';
-import Subcategories from './../partials/subcategories';
+import React from 'react'
+import { Layout, Typography, Menu, Tag } from 'antd'
+import { useRouter } from 'next/router'
+import useQueryParameters from '../../../../hooks/useQueryParameters'
+import { CloseCircleFilled } from '@ant-design/icons'
 
-const { Sider } = Layout;
+const { Sider } = Layout
 
 const Categories = ({ categories, onCategoryClick }) => {
-  const { queryParameters, setQueryParameters } = useQueryParameters();
+  const router = useRouter()
+
+  const {
+    queryParameters,
+    setQueryParameters,
+    createQueryParametersString,
+  } = useQueryParameters()
 
   const handleCategoryClick = (category) => {
-    onCategoryClick(category);
-    setQueryParameters({ categoryId: category.attributes.categoryId });
-  };
-  const subcategories = useSubcategories(queryParameters.categoryId)
+    const updatedLayers = [...queryParameters.layers]
+    onCategoryClick(category)
+
+    setQueryParameters({ categoryId: category.attributes.categoryId })
+  }
+
   const handleCloseLayer = (layerId) => {
     const updatedLayers = queryParameters.layers.filter(
       (layer) => layer.id !== layerId
-    );
-    setQueryParameters({ layers: updatedLayers });
-  };
+    )
+
+    setQueryParameters({ layers: updatedLayers })
+  }
 
   const isCategorySelected = (category) => {
-    return queryParameters.categoryId === category.attributes.categoryId;
-  };
+    return queryParameters.categoryId === category.id
+  }
 
   return (
-    <Sider breakpoint="lg" collapsedWidth="0">
-      <Typography.Title level={5} style={{ color: '#717D96', marginLeft: '10px', fontSize: '12px', variant: 'typography/body2' }}>
+    <Sider
+      breakpoint="lg"
+      collapsedWidth="0"
+      onBreakpoint={(broken) => {
+        console.log(broken)
+      }}
+      onCollapse={(collapsed, type) => {
+        console.log(collapsed, type)
+      }}
+    >
+      <Typography.Title
+        level={5}
+        style={{
+          color: '#717D96',
+          marginLeft: '10px',
+          fontSize: '12px',
+          variant: 'typography/body2',
+        }}
+      >
         TOPICS
       </Typography.Title>
+
       <Menu defaultSelectedKeys={['1']}>
         {categories.map((category) => (
           <div key={category.attributes.categoryId}>
@@ -52,9 +78,6 @@ const Categories = ({ categories, onCategoryClick }) => {
                 {category.attributes.name}
               </span>
             </Menu.Item>
-            {isCategorySelected(category) && (
-              <Subcategories subcategories={subcategories} />
-            )}
             {queryParameters.layers &&
               queryParameters.layers
                 .filter(
@@ -86,9 +109,11 @@ const Categories = ({ categories, onCategoryClick }) => {
                       <Typography.Text
                         style={{
                           color: 'white',
+
                           fontSize: '12px',
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
+
                           paddingLeft: '20px',
                           variant: 'typography/body2',
                         }}
@@ -111,7 +136,33 @@ const Categories = ({ categories, onCategoryClick }) => {
         ))}
       </Menu>
     </Sider>
-  );
-};
+  )
+}
 
-export default Categories;
+export default Categories
+// const StyledSider = styled(Sider)`
+//   background: #ffffff;
+//   border-right: 2px solid #717d96;
+//   min-width: 50% !important;
+//   width: 50% !important;
+//   padding-top: 35px;
+//   height: 100%;
+// `
+
+// const CustomMenu = styled(Menu)`
+//   .ant-menu-item-selected {
+//     background-color: white !important;
+//     margin-left: 10px;
+//   }
+// `
+
+// const CustomMenuItem = styled(Menu.Item)`
+//   && {
+//     padding-left: 10px;
+//     padding-bottom: 6px;
+//     border: none;
+//     font-size: 14px;
+//     color: #2d3648;
+//     outline: none;
+//   }
+// `
