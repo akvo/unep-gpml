@@ -5,7 +5,7 @@ import Draggable from 'react-draggable'
 import Legends from '../legends'
 
 const Details = ({ title, layerId }) => {
-  const [position, setPosition] = useState({ x: 0, y: 0 })
+  const [position, setPosition] = useState({ x: 700, y: 0 })
   const [showLegend, setShowLegend] = useState(true)
 
   const handleOnDrag = (e, { x, y }) => {
