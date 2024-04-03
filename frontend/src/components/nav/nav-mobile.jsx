@@ -1,11 +1,24 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { MenuItem } from './menu-item'
 import { MenuToggle } from './menu-toggle'
-import { CirclePointer, LinkedinIcon, YoutubeIcon } from '../icons'
+import {
+  Check,
+  CirclePointer,
+  DownArrow,
+  LinkedinIcon,
+  World,
+  YoutubeIcon,
+  flags,
+} from '../icons'
 import { UIStore } from '../../store'
 import { deepTranslate } from '../../utils/misc'
 import Button from '../button'
+import { Dropdown, Menu } from 'antd'
+import { i18n } from '@lingui/core'
+import Link from 'next/link'
+import { Trans } from '@lingui/macro'
+import classNames from 'classnames'
+import { useRouter } from 'next/router'
 
 const SOCIAL_LINKS = [
   {
@@ -17,38 +30,6 @@ const SOCIAL_LINKS = [
     url: 'https://www.youtube.com/channel/UCoWXFwDeoD4c9GoXzFdm9Bg',
   },
 ]
-
-const menuVariants = {
-  open: {
-    transition: { staggerChildren: 0.07, delayChildren: 0.2 },
-  },
-  closed: {
-    transition: { staggerChildren: 0.05, staggerDirection: -1 },
-  },
-}
-
-const contentVariants = {
-  enter: {
-    x: '100%',
-    opacity: 0,
-  },
-  center: {
-    x: 0,
-    opacity: 1,
-    transition: {
-      x: { type: 'tween', duration: 0.3 },
-      opacity: { duration: 0.3 },
-    },
-  },
-  exit: {
-    x: '100%',
-    opacity: 1,
-    transition: {
-      x: { type: 'tween', duration: 0.3 },
-      opacity: { duration: 0.3 },
-    },
-  },
-}
 
 const socialLinksVariants = {
   open: {
@@ -92,13 +73,17 @@ const sidebar = {
   },
 }
 
-const NavMobile = ({ isOpen, toggleOpen }) => {
+const NavMobile = ({
+  isOpen,
+  toggleOpen,
+  isAuthenticated,
+  setLoginVisible,
+}) => {
+  const router = useRouter()
   const [selectedMenuItem, setSelectedMenuItem] = useState(null)
   const { menuList } = UIStore.useState((s) => ({ menuList: s.menuList }))
 
   const menu = deepTranslate(menuList)
-
-  const handleMenuItemClick = (item) => setSelectedMenuItem(item)
 
   return (
     <AnimatePresence>
@@ -111,35 +96,12 @@ const NavMobile = ({ isOpen, toggleOpen }) => {
         >
           <motion.div className="mobile-menu-background" variants={sidebar} />
           <AnimatePresence mode="wait">
-            {selectedMenuItem ? (
-              <SubMenuContent key="sub-menu" />
-            ) : (
-              isOpen && <MainMenuContent key="main-menu" />
-            )}
+            {isOpen && <MainMenuContent key="main-menu" />}
           </AnimatePresence>
         </motion.div>
       )}
     </AnimatePresence>
   )
-
-  function SubMenuContent() {
-    return (
-      <motion.div
-        key="screenKey"
-        variants={contentVariants}
-        initial="enter"
-        animate="center"
-        exit="exit"
-        className="slide-menu"
-      >
-        <MenuHeader />
-        <div className="navigation-container">
-          <h2>{selectedMenuItem}</h2>
-          <SubMenuItems />
-        </div>
-      </motion.div>
-    )
-  }
 
   function MainMenuContent() {
     return (
@@ -147,6 +109,59 @@ const NavMobile = ({ isOpen, toggleOpen }) => {
         <MenuHeader />
         <div className="navigation-container" style={{ height: '100%' }}>
           <MainMenuItems />
+
+          {!isAuthenticated && (
+            <Button
+              type="ghost"
+              size="small"
+              className="noicon login-btn"
+              onClick={() => setLoginVisible(true)}
+            >
+              <Trans>Login</Trans>
+            </Button>
+          )}
+          <Dropdown
+            overlayClassName="lang-dropdown-wrapper"
+            overlay={
+              <Menu className="lang-dropdown">
+                {[
+                  { key: 'EN', label: 'English' },
+                  { key: 'FR', label: 'French' },
+                  { key: 'ES', label: 'Spanish' },
+                ].map((lang) => (
+                  <Menu.Item
+                    className={classNames({
+                      active: lang.key.toLowerCase() === router.locale,
+                    })}
+                    key={lang.key}
+                    onClick={() => {
+                      console.log(
+                        lang.key.toLowerCase(),
+                        'lang.key.toLowerCase()'
+                      )
+                      changeLanguage(lang.key.toLowerCase(), router)
+                    }}
+                  >
+                    {flags[lang.key]}
+                    {lang.label}
+                    {lang.key.toLowerCase() === router.locale && (
+                      <div className="check">
+                        <Check />
+                      </div>
+                    )}
+                  </Menu.Item>
+                ))}
+              </Menu>
+            }
+            trigger={['click']}
+            placement="bottomRight"
+          >
+            <div className="lang-btn">
+              <World />
+              <span>{router.locale}</span>
+              <DownArrow />
+            </div>
+          </Dropdown>
           <motion.div
             className="social-links-container"
             variants={socialLinksVariants}
@@ -189,42 +204,36 @@ const NavMobile = ({ isOpen, toggleOpen }) => {
 
   function MainMenuItems() {
     return (
-      <motion.ul
-        key="menuList"
-        variants={menuVariants}
-        initial="closed"
-        animate="open"
-        exit="closed"
-      >
-        {menu.map((i) => (
-          <MenuItem key={i.id} i={i.id} onClick={handleMenuItemClick} />
+      <ul className="ant-menu">
+        {menu.map((item) => (
+          <Dropdown
+            overlayClassName="nav-menu-item"
+            placement="bottom"
+            overlay={
+              <Menu>
+                {item.children.map((child) => (
+                  <Menu.Item key={child.id}>
+                    {child.to ? (
+                      <Link href={child.to} legacyBehavior>
+                        <a>{i18n._(child.key)}</a>
+                      </Link>
+                    ) : (
+                      <a href={child.href}>{i18n._(child.key)}</a>
+                    )}
+                  </Menu.Item>
+                ))}
+              </Menu>
+            }
+          >
+            <a
+              className="ant-dropdown-link"
+              onClick={(e) => e.preventDefault()}
+            >
+              {i18n._(item.key)} <DownArrow />
+            </a>
+          </Dropdown>
         ))}
-      </motion.ul>
-    )
-  }
-
-  function SubMenuItems() {
-    const items =
-      menu.find((item) => selectedMenuItem === item.id)?.children || []
-    return (
-      <motion.ul
-        key="menuList"
-        variants={menuVariants}
-        initial="closed"
-        animate="open"
-        exit="closed"
-      >
-        {items.map((i) => (
-          <MenuItem
-            key={i.id}
-            i={i.id}
-            item={i}
-            collapseMenu
-            isSubItem={true}
-            onClick={handleToggle}
-          />
-        ))}
-      </motion.ul>
+      </ul>
     )
   }
 
