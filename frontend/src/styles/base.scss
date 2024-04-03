@@ -153,6 +153,54 @@ h6 {
     margin: 0 25px;
   }
 }
+
+.nav-dropdown-menu {
+  ul {
+    margin-top: 5px;
+    padding: 5px 0 !important;
+    // font-family: $ff1 !important;
+    li {
+      &:hover {
+        a {
+          &:hover {
+            color: $primaryDarkBlue;
+          }
+        }
+        // background-color: #e7f3ff6b !important;
+      }
+    }
+  }
+}
+.nav-menu-item {
+  margin: 0 !important;
+  .ant-dropdown-menu-item {
+    padding: 10px 24px;
+    &:hover {
+      background-color: $primaryGreen1;
+    }
+  }
+  .ant-dropdown-menu-title-content {
+    font-family: $ff2;
+    font-size: 16px;
+    font-weight: 500;
+    color: $primaryDarkBlueText;
+    line-height: 16px;
+  }
+  &:hover {
+    background-color: #ccd0db;
+  }
+  &.ant-menu-item-selected {
+    background-color: #ccd0db !important;
+  }
+  .ant-dropdown-menu {
+    @media screen and (max-width: $bpMobile) {
+      padding: 15px;
+      .ant-dropdown-menu-item {
+        padding: 12px 20px;
+      }
+    }
+  }
+}
 .top-bar {
   height: 90px;
   padding: 23px 0;
@@ -214,6 +262,9 @@ h6 {
     align-items: center;
     margin-right: 15px;
     cursor: pointer;
+    border: 1.7px solid white;
+    border-radius: 25px;
+    padding: 5px 8px;
     & > span {
       margin-left: -5px;
       text-transform: uppercase;
@@ -223,6 +274,11 @@ h6 {
     & > *:first-child {
       margin-right: 10px;
     }
+  }
+  .login-btn {
+    color: white;
+    border: 1.7px solid white;
+    font-size: 16px;
   }
   .ant-avatar {
     margin-left: 7px;
@@ -301,6 +357,7 @@ h6 {
       }
     }
   }
+
   .ant-menu {
     background: transparent;
     border: none;
@@ -311,8 +368,33 @@ h6 {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 53px;
+    gap: 40px;
     box-shadow: none;
+    margin-right: 20px;
+
+    .ant-menu-submenu {
+      &::after {
+        content: none;
+      }
+    }
+
+    .ant-menu-submenu-title {
+      &:hover {
+        color: #fff;
+      }
+    }
+
+    .ant-dropdown-trigger {
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 600;
+      svg {
+        margin-left: 6px;
+        margin-top: 7px;
+        transition: all 0.3s ease-out;
+      }
+    }
+
     li {
       line-height: normal;
       height: fit-content;
@@ -347,11 +429,6 @@ h6 {
             transform: translateY(3px);
             transition: width 0.3s;
           }
-        }
-        svg {
-          margin-left: 12px;
-          margin-top: 7px;
-          transition: all 0.3s ease-out;
         }
       }
     }
@@ -486,6 +563,44 @@ h6 {
   width: 100%;
   z-index: 9;
   overflow: hidden;
+
+  .ant-menu-submenu-open {
+    .ant-menu-sub {
+      background-color: #fff;
+    }
+    li {
+      padding-right: 0ox;
+    }
+    .ant-menu-item-only-child {
+      text-align: left;
+      padding-right: 0px;
+      .ant-menu-title-content {
+        color: #000 !important;
+      }
+    }
+  }
+  .ant-menu-inline {
+    background: transparent;
+    border-right: none;
+    li {
+      text-align: center;
+      .ant-menu-submenu-title {
+        padding-right: 16px;
+      }
+      .ant-menu-title-content {
+        font-family: var(--font-archia), sans-serif;
+        font-size: 18px;
+        font-weight: 500;
+        color: #fff;
+        svg {
+          margin-left: 6px;
+        }
+      }
+      .ant-menu-submenu-arrow {
+        display: none;
+      }
+    }
+  }
   .slide-menu {
     overflow-y: scroll;
     height: 100%;
@@ -523,6 +638,25 @@ h6 {
       min-height: auto;
       margin-bottom: 0px;
     }
+    .ant-menu {
+      flex-direction: column;
+      display: flex;
+      background-color: transparent;
+      box-shadow: none;
+      gap: 40px;
+      align-items: center;
+      .ant-dropdown-trigger {
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 600;
+        color: #fff;
+        svg {
+          margin-left: 6px;
+          margin-top: 7px;
+          transition: all 0.3s ease-out;
+        }
+      }
+    }
     h2 {
       color: white;
       font-size: 20px;
@@ -535,7 +669,8 @@ h6 {
       border-bottom: 1px solid $primaryGreen5;
     }
     .social-links-container {
-      margin-bottom: 30px;
+      margin-bottom: 80px;
+      margin-top: auto;
       h6 {
         font-family: var(--font-dm-sans), sans-serif;
         color: white;
@@ -554,15 +689,12 @@ h6 {
     }
   }
   ul {
-    padding: 0px;
-    width: 100%;
-    flex: 1;
     li {
-      list-style: none;
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      cursor: pointer;
+      // list-style: none;
+      // margin-bottom: 20px;
+      // display: flex;
+      // align-items: center;
+      // cursor: pointer;
       .sub-menu {
         width: 100%;
         border-radius: 25.916px;
