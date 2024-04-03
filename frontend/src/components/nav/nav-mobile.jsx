@@ -19,6 +19,7 @@ import Link from 'next/link'
 import { Trans } from '@lingui/macro'
 import classNames from 'classnames'
 import { useRouter } from 'next/router'
+import { changeLanguage } from '../../translations/utils'
 
 const SOCIAL_LINKS = [
   {
@@ -135,10 +136,6 @@ const NavMobile = ({
                     })}
                     key={lang.key}
                     onClick={() => {
-                      console.log(
-                        lang.key.toLowerCase(),
-                        'lang.key.toLowerCase()'
-                      )
                       changeLanguage(lang.key.toLowerCase(), router)
                     }}
                   >
