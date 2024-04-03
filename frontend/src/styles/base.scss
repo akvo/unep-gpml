@@ -153,6 +153,29 @@ h6 {
     margin: 0 25px;
   }
 }
+
+.nav-dropdown-menu {
+  ul {
+    padding: 5px 0 !important;
+  }
+}
+.nav-menu-item {
+  margin: 0 !important;
+  padding: 0;
+  .ant-menu-title-content {
+    font-family: var(--font-archia), sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: #000;
+    line-height: 16px;
+  }
+  &:hover {
+    background-color: $primaryBlue2;
+  }
+  &.ant-menu-item-selected {
+    background-color: $primaryBlue2 !important;
+  }
+}
 .top-bar {
   height: 90px;
   padding: 23px 0;
@@ -311,11 +334,44 @@ h6 {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 53px;
+    gap: 10px;
     box-shadow: none;
+    margin-right: 40px;
+
+    .ant-menu-submenu-selected {
+      color: $primaryGreen5;
+      &::after {
+        border-color: $primaryGreen5 !important;
+      }
+    }
+
     li {
       line-height: normal;
       height: fit-content;
+
+      &.ant-menu-submenu-active {
+        color: white !important;
+        .ant-menu-submenu-title {
+          &:hover {
+            color: white !important;
+          }
+        }
+        border: none !important;
+        &::after {
+          border: none !important;
+        }
+      }
+
+      .ant-menu-title-content {
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        svg {
+          margin-left: 6px;
+          margin-top: 7px;
+          transition: all 0.3s ease-out;
+        }
+      }
 
       &.selected {
         a {
@@ -347,11 +403,6 @@ h6 {
             transform: translateY(3px);
             transition: width 0.3s;
           }
-        }
-        svg {
-          margin-left: 12px;
-          margin-top: 7px;
-          transition: all 0.3s ease-out;
         }
       }
     }
@@ -486,6 +537,44 @@ h6 {
   width: 100%;
   z-index: 9;
   overflow: hidden;
+
+  .ant-menu-submenu-open {
+    .ant-menu-sub {
+      background-color: #fff;
+    }
+    li {
+      padding-right: 0ox;
+    }
+    .ant-menu-item-only-child {
+      text-align: left;
+      padding-right: 0px;
+      .ant-menu-title-content {
+        color: #000 !important;
+      }
+    }
+  }
+  .ant-menu-inline {
+    background: transparent;
+    border-right: none;
+    li {
+      text-align: center;
+      .ant-menu-submenu-title {
+        padding-right: 16px;
+      }
+      .ant-menu-title-content {
+        font-family: var(--font-archia), sans-serif;
+        font-size: 18px;
+        font-weight: 500;
+        color: #fff;
+        svg {
+          margin-left: 6px;
+        }
+      }
+      .ant-menu-submenu-arrow {
+        display: none;
+      }
+    }
+  }
   .slide-menu {
     overflow-y: scroll;
     height: 100%;
@@ -558,11 +647,11 @@ h6 {
     width: 100%;
     flex: 1;
     li {
-      list-style: none;
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      cursor: pointer;
+      // list-style: none;
+      // margin-bottom: 20px;
+      // display: flex;
+      // align-items: center;
+      // cursor: pointer;
       .sub-menu {
         width: 100%;
         border-radius: 25.916px;
