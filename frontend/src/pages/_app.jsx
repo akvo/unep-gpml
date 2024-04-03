@@ -150,14 +150,6 @@ function MyApp({ Component, pageProps }) {
         return console.log(err)
       }
       if (authResult) {
-        const redirectLocation = localStorage.getItem('redirect_on_login')
-          ? JSON.parse(localStorage.getItem('redirect_on_login'))
-          : null
-        if (redirectLocation) {
-          router.push(redirectLocation)
-        } else {
-          router.push('/')
-        }
       }
     })
   }, [])
@@ -251,11 +243,15 @@ function MyApp({ Component, pageProps }) {
                 emailVerified: authResult?.idTokenPayload?.email_verified,
               }
             })
-            router.push('/workspace')
           })
-        } else {
-          localStorage.removeItem('redirect_on_login')
         }
+        const redirectLocation = localStorage.getItem('redirect_on_login')
+          ? JSON.parse(localStorage.getItem('redirect_on_login'))
+          : null
+        if (redirectLocation) {
+          router.push(redirectLocation)
+        }
+        localStorage.removeItem('redirect_on_login')
         UIStore.update((e) => {
           e.profile = {
             ...resp.data,
