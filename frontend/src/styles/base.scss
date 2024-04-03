@@ -528,6 +528,44 @@ h6 {
   width: 100%;
   z-index: 9;
   overflow: hidden;
+
+  .ant-menu-submenu-open {
+    .ant-menu-sub {
+      background-color: #fff;
+    }
+    li {
+      padding-right: 0ox;
+    }
+    .ant-menu-item-only-child {
+      text-align: left;
+      padding-right: 0px;
+      .ant-menu-title-content {
+        color: #000 !important;
+      }
+    }
+  }
+  .ant-menu-inline {
+    background: transparent;
+    border-right: none;
+    li {
+      text-align: center;
+      .ant-menu-submenu-title {
+        padding-right: 16px;
+      }
+      .ant-menu-title-content {
+        font-family: var(--font-archia), sans-serif;
+        font-size: 18px;
+        font-weight: 500;
+        color: #fff;
+        svg {
+          margin-left: 6px;
+        }
+      }
+      .ant-menu-submenu-arrow {
+        display: none;
+      }
+    }
+  }
   .slide-menu {
     overflow-y: scroll;
     height: 100%;
@@ -600,11 +638,11 @@ h6 {
     width: 100%;
     flex: 1;
     li {
-      list-style: none;
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      cursor: pointer;
+      // list-style: none;
+      // margin-bottom: 20px;
+      // display: flex;
+      // align-items: center;
+      // cursor: pointer;
       .sub-menu {
         width: 100%;
         border-radius: 25.916px;
