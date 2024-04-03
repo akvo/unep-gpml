@@ -1,5 +1,4 @@
 import React from 'react'
-// import styled from 'styled-components'
 import { Layout, Typography, Menu, Tag } from 'antd'
 import { useRouter } from 'next/router'
 import useQueryParameters from '../../../../hooks/useQueryParameters'
@@ -9,7 +8,6 @@ const { Sider } = Layout
 
 const Categories = ({ categories, onCategoryClick }) => {
   const router = useRouter()
-  const { categoryId } = router.query
 
   const {
     queryParameters,
@@ -21,18 +19,7 @@ const Categories = ({ categories, onCategoryClick }) => {
     const updatedLayers = [...queryParameters.layers]
     onCategoryClick(category)
 
-    const queryParametersString = createQueryParametersString({
-      sidebar: 'show',
-      layers: updatedLayers,
-    })
-
-    router.push({
-      pathname: `/data/maps/${category.attributes.categoryId}`,
-      query: queryParametersString,
-    })
-  }
-  const isCategorySelected = (category) => {
-    return categoryId === category.id
+    setQueryParameters({ categoryId: category.attributes.categoryId })
   }
 
   const handleCloseLayer = (layerId) => {
@@ -40,14 +27,11 @@ const Categories = ({ categories, onCategoryClick }) => {
       (layer) => layer.id !== layerId
     )
 
-    const queryParametersString = createQueryParametersString({
-      sidebar: 'show',
-      layers: updatedLayers,
-    })
+    setQueryParameters({ layers: updatedLayers })
+  }
 
-    setQueryParameters({ layers: [] })
-
-    // navigate({ search: queryParametersString })
+  const isCategorySelected = (category) => {
+    return queryParameters.categoryId === category.id
   }
 
   return (
@@ -96,7 +80,9 @@ const Categories = ({ categories, onCategoryClick }) => {
             </Menu.Item>
             {queryParameters.layers &&
               queryParameters.layers
-                .filter((layer) => layer.categoryId === category.attributes.categoryId)
+                .filter(
+                  (layer) => layer.categoryId === category.attributes.categoryId
+                )
                 .map((layer) => (
                   <Tag
                     style={{
@@ -154,7 +140,6 @@ const Categories = ({ categories, onCategoryClick }) => {
 }
 
 export default Categories
-
 // const StyledSider = styled(Sider)`
 //   background: #ffffff;
 //   border-right: 2px solid #717d96;

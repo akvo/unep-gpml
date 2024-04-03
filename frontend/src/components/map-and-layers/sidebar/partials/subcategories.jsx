@@ -1,12 +1,13 @@
 import { Typography, Collapse, Switch } from 'antd'
+// import styled from "styled-components";
 import React, { useState, useEffect } from 'react'
-import useIndicators from '../../../../../../hooks/useIndicators'
-import useQueryParameters from '../../../../../../hooks/useQueryParameters'
-import Tooltip from 'antd/es/tooltip'
-import { InfoCircleFilled } from '@ant-design/icons'
+import useIndicators from '../../../../hooks/useIndicators'
+import useQueryParameters from '../../../../hooks/useQueryParameters'
+import { Tooltip } from 'antd'
 
-import useLayerInfo from '../../../../../../hooks/useLayerInfo'
-import LayerInfo from './LayerInfo'
+import { InfoCircleFilled } from '@ant-design/icons'
+import LayerInfo from './layerInfo'
+import useLayerInfo from '../../../../hooks/useLayerInfo'
 import { useRouter } from 'next/router'
 // const LayersContainer = styled.div`
 //   padding-left: 0;
@@ -29,11 +30,6 @@ const { Panel } = Collapse
 // `;
 
 const Subcategories = ({ subcategories }) => {
-  const router = useRouter()
-  const { query } = router
-  const { categoryId, subcategoryId } = router.query
-  const layers = useIndicators(subcategoryId)
-
   const {
     queryParameters,
     setQueryParameters,
@@ -54,37 +50,28 @@ const Subcategories = ({ subcategories }) => {
   const layerInfo = useLayerInfo()
 
   useEffect(() => {
-    const layersParam = query.layers
+    const layersParam = queryParameters.layers
     if (layersParam) {
       const selectedLayers = Array.isArray(layersParam)
         ? layersParam
         : layersParam.split(',')
       setQueryParameters({ layers: selectedLayers })
     }
-  }, [query.layers, setQueryParameters])
+  }, [queryParameters.layers])
 
   const handleSubcategoryClick = (subcategory) => {
     const newSubcategoryId =
       expandedSubcategory === subcategory.attributes.subcategoryId
         ? null
         : subcategory.attributes.subcategoryId
-    setExpandedSubcategory(subcategory.attributes.subcategoryId)
-
-    if (newSubcategoryId) {
-      const queryParametersString = createQueryParametersString({
-        sidebar: 'show',
-        layers: queryParameters.layers,
-      })
-
-      // navigate({
-      //   pathname: `/maps-and-layers/${categoryId}/${subcategory.attributes.subcategoryId}`,
-      //   search: queryParametersString,
-      // })
-    }
+    setExpandedSubcategory(newSubcategoryId)
+    setQueryParameters({ subcategoryId: subcategory.attributes.subcategoryId })
   }
 
+  const layers = useIndicators(expandedSubcategory)
+
   const handleLayerClick = (layer) => {
-    let updatedLayers
+    let updatedLayers = []
 
     if (
       queryParameters.layers[0]?.arcgislayerId ===
@@ -93,23 +80,13 @@ const Subcategories = ({ subcategories }) => {
       queryParameters.layers[0]?.id === layer.id
     ) {
       updatedLayers = []
-      setQueryParameters({
-        layers: [],
-      })
+      setQueryParameters({ layers: [] })
     } else {
       updatedLayers = [layer]
-
-      setQueryParameters({
-        layers: [layer],
-      })
+      setQueryParameters({ layers: [layer] })
     }
 
-    const queryParametersString = createQueryParametersString({
-      sidebar: 'show',
-      layers: updatedLayers,
-    })
     setQueryParameters({ layers: updatedLayers })
-    // navigate({ search: queryParametersString })
   }
 
   const sortedLayers = layers.layers
@@ -123,22 +100,24 @@ const Subcategories = ({ subcategories }) => {
           <Panel
             key={subcategory.attributes.subcategoryId}
             header={
-              <Typography
-                style={{
-                  fontSize: '14px',
-                  font: 'inter',
-                  color: '#2D3648',
-                  variant: 'typography/body2',
-                  fontWeight:
-                    expandedSubcategory === subcategory.attributes.subcategoryId
-                      ? 'bold'
-                      : 'normal',
-                }}
-              >
-                {subcategory.attributes.subcategoryName}
-              </Typography>
+              <div onClick={() => handleSubcategoryClick(subcategory)}>
+                <Typography
+                  style={{
+                    fontSize: '14px',
+                    font: 'inter',
+                    color: '#2D3648',
+                    variant: 'typography/body2',
+                    fontWeight:
+                      expandedSubcategory ===
+                      subcategory.attributes.subcategoryId
+                        ? 'bold'
+                        : 'normal',
+                  }}
+                >
+                  {subcategory.attributes.subcategoryName}
+                </Typography>
+              </div>
             }
-            onClick={() => handleSubcategoryClick(subcategory)}
           >
             {sortedLayers.map((layer, layerIndex) => (
               <div

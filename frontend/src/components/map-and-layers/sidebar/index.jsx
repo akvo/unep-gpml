@@ -12,11 +12,12 @@ const Sidebar = () => {
 
   const {
     setQueryParameters,
+    queryParameters,
     createQueryParametersString,
   } = useQueryParameters()
   const [showLayerSidebar, setShowLayerSidebar] = useState(false)
 
-  const { categoryId } = router.query
+  const categoryId = queryParameters.categoryId
 
   const { categories, loading } = useCategories()
 
@@ -26,16 +27,7 @@ const Sidebar = () => {
     return <div>Loading...</div>
   }
 
-  const queryParameters = createQueryParametersString({
-    sidebar: 'show',
-    layers: [],
-  })
-
-  if (
-    !categories ||
-    categories.length === 0 ||
-    !Array.isArray(categories)
-  ) {
+  if (!categories || categories.length === 0 || !Array.isArray(categories)) {
     return <div>No categories available.</div>
   }
 

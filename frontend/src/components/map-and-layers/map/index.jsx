@@ -73,13 +73,17 @@ const Map = ({ initialViewProperties }) => {
     const webMap = viewRef.current?.map
     if (!webMap || layerstoset.length === 0) return
 
-    if (currentLayerRef.current) {
-      webMap.remove(currentLayerRef.current)
-    }
-
     const newLayer = layerstoset[0]
-    webMap.add(newLayer)
-    currentLayerRef.current = newLayer
+    const existingLayer = webMap.findLayerById(newLayer.id)
+
+    if (existingLayer) {
+    } else {
+      if (currentLayerRef.current) {
+        webMap.remove(currentLayerRef.current)
+      }
+      webMap.add(newLayer)
+      currentLayerRef.current = newLayer
+    }
   }, [layerstoset])
 
   return (

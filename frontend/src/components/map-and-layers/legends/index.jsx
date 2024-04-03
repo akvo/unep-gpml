@@ -159,11 +159,11 @@ const Legends = () => {
   return queryParameters?.layers?.map((layer, index) => (
     <LegendCard
       key={index}
-      layerId={layer.arcgislayerId}
-      title={layer?.title.toString()}
-      arcgismapId={layer.arcgisMapId}
-      layerShortDescription={layer.shortDescription}
-      unit={layer.units}
+      layerId={layer?.attributes.arcgislayerId}
+      title={layer?.attributes.title.toString()}
+      arcgismapId={layer.attributes.arcgisMapId}
+      layerShortDescription={layer.attributes.shortDescription}
+      unit={layer.attributes.units}
     />
   ))
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Card, Typography } from "antd";
-import styled from "styled-components";
+
 
 const { Title: AntTitle, Paragraph: AntParagraph } = Typography;
 
