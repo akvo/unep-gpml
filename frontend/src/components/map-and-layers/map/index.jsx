@@ -24,7 +24,7 @@ const Map = ({ initialViewProperties }) => {
   const layerstoset = useLayers(renderer.renderers)
 
   useEffect(() => {
-    if (!mapDiv.current) return
+    if (!mapDiv.current || viewRef.current) return
 
     const customBasemapLayer = new TileLayer({
       url:
@@ -67,7 +67,7 @@ const Map = ({ initialViewProperties }) => {
         viewRef.current = null
       }
     }
-  }, [])
+  }, [initialViewProperties])
 
   useEffect(() => {
     const webMap = viewRef.current?.map

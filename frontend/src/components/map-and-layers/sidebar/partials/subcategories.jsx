@@ -57,7 +57,7 @@ const Subcategories = ({ subcategories }) => {
         : layersParam.split(',')
       setQueryParameters({ layers: selectedLayers })
     }
-  }, [queryParameters.layers])
+  }, [])
 
   const handleSubcategoryClick = (subcategory) => {
     const newSubcategoryId =
