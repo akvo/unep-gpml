@@ -262,6 +262,9 @@ h6 {
     align-items: center;
     margin-right: 15px;
     cursor: pointer;
+    border: 1.7px solid white;
+    border-radius: 25px;
+    padding: 5px 8px;
     & > span {
       margin-left: -5px;
       text-transform: uppercase;
