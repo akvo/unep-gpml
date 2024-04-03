@@ -84,12 +84,12 @@ const menuList = [
       {
         key: msg`Join the Partnership`,
         id: 'Join the Partnership',
-        to: '/community',
+        to: '/partnership',
       },
       {
         key: msg`Communities of Practice`,
         id: 'Communities of Practice',
-        to: '/community',
+        to: '/cop',
       },
       {
         key: msg`Forums`,
@@ -105,12 +105,12 @@ const menuList = [
       {
         key: msg`Who we are`,
         id: 'Who we are',
-        link: '/page/who-we-are',
+        to: '/page/who-we-are',
       },
       {
         key: msg`Regional Notes`,
         id: 'Regional Notes',
-        link: '/page/regional-nodes',
+        to: '/page/regional-nodes',
       },
     ],
   },
