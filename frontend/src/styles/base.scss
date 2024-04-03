@@ -156,24 +156,36 @@ h6 {
 
 .nav-dropdown-menu {
   ul {
+    margin-top: 5px;
     padding: 5px 0 !important;
+    // font-family: $ff1 !important;
+    li {
+      &:hover {
+        a {
+          &:hover {
+            color: $primaryDarkBlue;
+          }
+        }
+        // background-color: #e7f3ff6b !important;
+      }
+    }
   }
 }
 .nav-menu-item {
   margin: 0 !important;
   padding: 0;
   .ant-menu-title-content {
-    font-family: var(--font-archia), sans-serif;
+    font-family: $ff2;
     font-size: 16px;
     font-weight: 500;
-    color: #000;
+    color: $primaryDarkBlueText;
     line-height: 16px;
   }
   &:hover {
-    background-color: $primaryBlue2;
+    background-color: #ccd0db;
   }
   &.ant-menu-item-selected {
-    background-color: $primaryBlue2 !important;
+    background-color: #ccd0db !important;
   }
 }
 .top-bar {
