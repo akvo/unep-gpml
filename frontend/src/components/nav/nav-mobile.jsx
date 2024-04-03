@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { MenuItem } from './menu-item'
 import { MenuToggle } from './menu-toggle'
-import { CirclePointer, LinkedinIcon, YoutubeIcon } from '../icons'
+import { CirclePointer, DownArrow, LinkedinIcon, YoutubeIcon } from '../icons'
 import { UIStore } from '../../store'
 import { deepTranslate } from '../../utils/misc'
 import Button from '../button'
+import { Menu } from 'antd'
+import { i18n } from '@lingui/core'
 
 const SOCIAL_LINKS = [
   {
@@ -17,38 +18,6 @@ const SOCIAL_LINKS = [
     url: 'https://www.youtube.com/channel/UCoWXFwDeoD4c9GoXzFdm9Bg',
   },
 ]
-
-const menuVariants = {
-  open: {
-    transition: { staggerChildren: 0.07, delayChildren: 0.2 },
-  },
-  closed: {
-    transition: { staggerChildren: 0.05, staggerDirection: -1 },
-  },
-}
-
-const contentVariants = {
-  enter: {
-    x: '100%',
-    opacity: 0,
-  },
-  center: {
-    x: 0,
-    opacity: 1,
-    transition: {
-      x: { type: 'tween', duration: 0.3 },
-      opacity: { duration: 0.3 },
-    },
-  },
-  exit: {
-    x: '100%',
-    opacity: 1,
-    transition: {
-      x: { type: 'tween', duration: 0.3 },
-      opacity: { duration: 0.3 },
-    },
-  },
-}
 
 const socialLinksVariants = {
   open: {
@@ -92,13 +61,11 @@ const sidebar = {
   },
 }
 
-const NavMobile = ({ isOpen, toggleOpen }) => {
+const NavMobile = ({ isOpen, toggleOpen, handleClick }) => {
   const [selectedMenuItem, setSelectedMenuItem] = useState(null)
   const { menuList } = UIStore.useState((s) => ({ menuList: s.menuList }))
 
   const menu = deepTranslate(menuList)
-
-  const handleMenuItemClick = (item) => setSelectedMenuItem(item)
 
   return (
     <AnimatePresence>
@@ -111,35 +78,12 @@ const NavMobile = ({ isOpen, toggleOpen }) => {
         >
           <motion.div className="mobile-menu-background" variants={sidebar} />
           <AnimatePresence mode="wait">
-            {selectedMenuItem ? (
-              <SubMenuContent key="sub-menu" />
-            ) : (
-              isOpen && <MainMenuContent key="main-menu" />
-            )}
+            {isOpen && <MainMenuContent key="main-menu" />}
           </AnimatePresence>
         </motion.div>
       )}
     </AnimatePresence>
   )
-
-  function SubMenuContent() {
-    return (
-      <motion.div
-        key="screenKey"
-        variants={contentVariants}
-        initial="enter"
-        animate="center"
-        exit="exit"
-        className="slide-menu"
-      >
-        <MenuHeader />
-        <div className="navigation-container">
-          <h2>{selectedMenuItem}</h2>
-          <SubMenuItems />
-        </div>
-      </motion.div>
-    )
-  }
 
   function MainMenuContent() {
     return (
@@ -189,42 +133,29 @@ const NavMobile = ({ isOpen, toggleOpen }) => {
 
   function MainMenuItems() {
     return (
-      <motion.ul
-        key="menuList"
-        variants={menuVariants}
-        initial="closed"
-        animate="open"
-        exit="closed"
-      >
-        {menu.map((i) => (
-          <MenuItem key={i.id} i={i.id} onClick={handleMenuItemClick} />
+      <Menu mode="inline" className="ant-menu">
+        {menu.map((item) => (
+          <Menu.SubMenu
+            key={item.id}
+            title={
+              <span>
+                {i18n._(item.key)} <DownArrow />
+              </span>
+            }
+            popupOffset={100}
+          >
+            {item.children.map((child) => (
+              <Menu.Item
+                onClick={() => handleClick(child)}
+                className="nav-menu-item"
+                key={child.id}
+              >
+                {i18n._(child.id)}
+              </Menu.Item>
+            ))}
+          </Menu.SubMenu>
         ))}
-      </motion.ul>
-    )
-  }
-
-  function SubMenuItems() {
-    const items =
-      menu.find((item) => selectedMenuItem === item.id)?.children || []
-    return (
-      <motion.ul
-        key="menuList"
-        variants={menuVariants}
-        initial="closed"
-        animate="open"
-        exit="closed"
-      >
-        {items.map((i) => (
-          <MenuItem
-            key={i.id}
-            i={i.id}
-            item={i}
-            collapseMenu
-            isSubItem={true}
-            onClick={handleToggle}
-          />
-        ))}
-      </motion.ul>
+      </Menu>
     )
   }
 
