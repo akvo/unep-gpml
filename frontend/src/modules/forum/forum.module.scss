@@ -85,3 +85,20 @@
     }
   }
 }
+.popover {
+  :global {
+    .ant-popover-arrow {
+      display: none;
+    }
+    .ant-popover-inner {
+      .ant-popover-inner-content {
+        padding: 15px 19px;
+        ul {
+          display: flex;
+          flex-direction: column;
+          gap: 17px;
+        }
+      }
+    }
+  }
+}
