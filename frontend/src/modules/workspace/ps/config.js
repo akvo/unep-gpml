@@ -134,32 +134,18 @@ export const stepsState = [
     slug: '4-data-analysis',
     substeps: [
       { label: 'Intro', slug: '', checked: false },
-      {
-        label: 'Available Tools',
-        slug: 'available-tools',
-        checked: false,
-        apiParams: {
-          tag: 'data analysis - available tools',
-          ps_bookmark_sections_keys: 'data-available-tools',
-        },
-      },
+      // {
+      //   label: 'Available Tools',
+      //   slug: 'available-tools',
+      //   checked: false,
+      //   apiParams: {
+      //     tag: 'data analysis - available tools',
+      //     ps_bookmark_sections_keys: 'data-available-tools',
+      //   },
+      // },
       {
         label: 'Available Data & Statistics',
         slug: 'available-data',
-        checked: false,
-      },
-      {
-        label: 'Data Collection',
-        slug: 'data-collection',
-        checked: false,
-        apiParams: {
-          tag: 'data analysis - data collection',
-          ps_bookmark_sections_keys: 'data-collection',
-        },
-      },
-      {
-        label: 'Calculation of Indicators',
-        slug: 'calculation',
         checked: false,
       },
       {
@@ -173,6 +159,21 @@ export const stepsState = [
           ps_bookmark_sections_keys: 'data-collection',
         },
       },
+      {
+        label: 'Data Collection Tools',
+        slug: 'data-collection',
+        checked: false,
+        apiParams: {
+          tag: 'data analysis - data collection',
+          ps_bookmark_sections_keys: 'data-collection',
+        },
+      },
+      // {
+      //   label: 'Calculation of Indicators',
+      //   slug: 'calculation',
+      //   checked: false,
+      // },
+
       { label: 'Summary & Report', slug: 'summary', checked: false },
     ],
   },
