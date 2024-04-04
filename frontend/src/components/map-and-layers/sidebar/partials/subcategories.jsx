@@ -40,6 +40,14 @@ const Subcategories = ({ subcategories }) => {
   const [expandedSubcategory, setExpandedSubcategory] = useState(null)
   const [hoveredLayerId, setHoveredLayerId] = useState(null)
 
+  const router = useRouter()
+
+  useEffect(() => {
+    if (router.query.subcategoryId !== expandedSubcategory) {
+      setExpandedSubcategory(router.query.subcategoryId || null)
+    }
+  }, [router.query.subcategoryId])
+
   const handleMouseEnter = (layerId) => {
     setHoveredLayerId(layerId)
   }
@@ -66,9 +74,18 @@ const Subcategories = ({ subcategories }) => {
         ? null
         : subcategory.attributes.subcategoryId
     setExpandedSubcategory(newSubcategoryId)
-    setQueryParameters({ subcategoryId: subcategory.attributes.subcategoryId })
-  }
 
+    router.push(
+      {
+        pathname: router.pathname,
+        query: { ...queryParameters, subcategoryId: newSubcategoryId },
+      },
+      undefined,
+      { shallow: true }
+    )
+
+    setQueryParameters({ subcategoryId: newSubcategoryId })
+  }
   const layers = useIndicators(expandedSubcategory)
 
   const handleLayerClick = (layer) => {
