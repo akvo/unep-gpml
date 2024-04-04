@@ -87,7 +87,7 @@ const Page = ({ isAuthenticated, setLoginVisible }) => {
                         <div className="link-item">
                           <a href={it.attributes.url}>
                             <PinDoc />
-                            Download Report
+                            {it.attributes.name}
                           </a>
                         </div>
                       ))}
