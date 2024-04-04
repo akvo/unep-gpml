@@ -114,7 +114,7 @@ const Subcategories = ({ subcategories }) => {
   return (
     <div>
       <Collapse accordion ghost expandIconPosition="right" destroyInactivePanel>
-        {subcategories.subcategories.data.map((subcategory, index) => (
+        {subcategories?.subcategories?.data.map((subcategory, index) => (
           <Panel
             key={subcategory.attributes.subcategoryId}
             header={
