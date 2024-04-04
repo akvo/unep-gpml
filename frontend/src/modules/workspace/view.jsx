@@ -291,8 +291,7 @@ const Workspace = ({ profile, isAuthenticated, setLoginVisible }) => {
                 viewModal={forumView}
                 setViewModal={setForumView}
                 allForums={forums}
-                setLoginVisible={setLoginVisible}
-                isAuthenticated={isAuthenticated}
+                {...{ isAuthenticated, setLoginVisible, profile }}
               />
             </div>
           </div>

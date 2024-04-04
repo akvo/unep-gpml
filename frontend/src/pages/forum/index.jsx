@@ -145,7 +145,7 @@ const Forum = ({ isAuthenticated, setLoginVisible, profile }) => {
                 }}
               >
                 <span className="hide-mobile">Add New Forum</span>
-                <span className="show-mobile">+</span>
+                <span className="hide-desktop">+</span>
               </Button>
             )}
           </div>
@@ -188,6 +188,7 @@ const Forum = ({ isAuthenticated, setLoginVisible, profile }) => {
               setViewModal,
               setLoginVisible,
               isAuthenticated,
+              profile,
             }}
           />
           <AddModal

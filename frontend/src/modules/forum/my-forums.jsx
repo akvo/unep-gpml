@@ -134,7 +134,7 @@ const MyForums = ({ handleOnView }) => {
                     <Popover
                       placement="bottomLeft"
                       visible={openPopover === index}
-                      overlayClassName={styles.forumOptions}
+                      overlayClassName={styles.popover}
                       onVisibleChange={(isOpen) => {
                         const popValue = isOpen ? index : null
                         setOpenPopover(popValue)

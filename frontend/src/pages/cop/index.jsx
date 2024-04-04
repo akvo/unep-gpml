@@ -17,7 +17,7 @@ const DynamicForumModal = dynamic(
   }
 )
 
-const Page = ({ isAuthenticated, setLoginVisible }) => {
+const Page = ({ isAuthenticated, setLoginVisible, profile }) => {
   const strapiUrl = getStrapiUrl()
   const [cops, setCops] = useState(null)
   const [orgs, setOrgs] = useState(null)
@@ -87,7 +87,7 @@ const Page = ({ isAuthenticated, setLoginVisible }) => {
                         <div className="link-item">
                           <a href={it.attributes.url}>
                             <PinDoc />
-                            Download Report
+                            {it.attributes.name}
                           </a>
                         </div>
                       ))}
@@ -119,6 +119,7 @@ const Page = ({ isAuthenticated, setLoginVisible }) => {
           setViewModal,
           setLoginVisible,
           isAuthenticated,
+          profile,
         }}
       />
     </>
