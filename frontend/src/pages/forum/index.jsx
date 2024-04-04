@@ -188,6 +188,7 @@ const Forum = ({ isAuthenticated, setLoginVisible, profile }) => {
               setViewModal,
               setLoginVisible,
               isAuthenticated,
+              profile,
             }}
           />
           <AddModal

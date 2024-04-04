@@ -13,18 +13,18 @@ const ForumModal = ({
   setViewModal,
   setLoginVisible,
   isAuthenticated,
+  profile,
 }) => {
   const [requesting, setRequesting] = useState(false)
   const colorList = ['purple', 'green', 'blue', 'dark-blue']
   const [joins, setJoins] = useLocalStorage('joins', [])
-  const myForums = ChatStore.useState((s) => s.myForums)
-  const findMyFm = myForums?.find((f) => f?.id === viewModal?.data?.id)
-  const isNotAMember = viewModal?.data?.privacy === 'private' && !findMyFm
+  const isNotAMember =
+    viewModal?.data?.privacy === 'private' &&
+    viewModal?.data?.users.findIndex((it) => it.id === profile.id) === -1
   const joinDisabled = requesting || joins?.includes(viewModal?.data?.id)
   const participants = viewModal?.data?.users
 
   const router = useRouter()
-  const avatarUrl = `${process.env.NEXT_PUBLIC_CHAT_API_DOMAIN_URL}/avatar/`
 
   const handleOnClose = () => {
     setViewModal({

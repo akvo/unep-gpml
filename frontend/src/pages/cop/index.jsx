@@ -17,7 +17,7 @@ const DynamicForumModal = dynamic(
   }
 )
 
-const Page = ({ isAuthenticated, setLoginVisible }) => {
+const Page = ({ isAuthenticated, setLoginVisible, profile }) => {
   const strapiUrl = getStrapiUrl()
   const [cops, setCops] = useState(null)
   const [orgs, setOrgs] = useState(null)
@@ -119,6 +119,7 @@ const Page = ({ isAuthenticated, setLoginVisible }) => {
           setViewModal,
           setLoginVisible,
           isAuthenticated,
+          profile,
         }}
       />
     </>
