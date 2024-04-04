@@ -27,8 +27,9 @@ const { Dragger } = Upload
 const { Option } = Select
 import { useRouter } from 'next/router'
 import { auth0Client } from '../../utils/misc'
+import { loadCatalog } from '../../translations/utils'
 
-function Partnership({}) {
+function Partnership({ isAuthenticated }) {
   const router = useRouter()
   const {
     representativeGroup,
@@ -71,7 +72,7 @@ function Partnership({}) {
     const data = {
       name: values.orgName,
       url: ensureHttps(values.url),
-      is_member: false,
+      is_member: true,
       country: values.orgHeadquarter,
       geo_coverage_type: values.geoCoverageType,
       tags: matchedTags,
@@ -104,15 +105,15 @@ function Partnership({}) {
       if (login) {
         const username = values.email
         const password = values.password
-        localStorage.setItem(
-          'redirect_on_login',
-          JSON.stringify(`${router.asPath}?submitted=true`)
-        )
         auth0Client.login(
           {
             realm: 'Username-Password-Authentication',
             username,
             password,
+            redirectUri: 'http://localhost:3001/partnership',
+            state: JSON.stringify({
+              redirectTo: 'http://localhost:3001/partnership',
+            }),
           },
           (err, authResult) => {
             if (err) {
@@ -124,10 +125,6 @@ function Partnership({}) {
           }
         )
       } else {
-        localStorage.setItem(
-          'redirect_on_login',
-          JSON.stringify(`${router.asPath}?submitted=true`)
-        )
         auth0Client.redirect.signupAndLogin(
           {
             connection: 'Username-Password-Authentication',
@@ -139,6 +136,10 @@ function Partnership({}) {
               lastName: values.fname,
               firstName: values.lname,
             },
+            redirectUri: 'http://localhost:3001/partnership',
+            state: JSON.stringify({
+              redirectTo: 'http://localhost:3001/partnership',
+            }),
           },
           function (err) {
             if (err) {
@@ -166,11 +167,6 @@ function Partnership({}) {
         org: {
           id: data.id,
         },
-      })
-      await api.put(`/organisation/${data.id}/request-membership`, {
-        ...data,
-        type: representativeGroup.find((item) => item.code === type)?.name,
-        authorize_submission: true,
       })
 
       updateStatusProfile(profileRes.data)
@@ -201,18 +197,10 @@ function Partnership({}) {
       const shouldSubmit = localStorage.getItem('partnerValue')
       if (shouldSubmit) {
         const values = JSON.parse(shouldSubmit)
-        if (containerRef.current) {
-          window.scrollTo({
-            top: containerRef.current.offsetTop,
-            left: 0,
-            behavior: 'smooth',
-          })
-        }
-
         const data = {
           name: values.name,
           url: values.url,
-          is_member: false,
+          is_member: true,
           country: values.country,
           geo_coverage_type: values.geo_coverage_type,
           tags: values.tags,
@@ -228,7 +216,7 @@ function Partnership({}) {
         setInitialValues({
           orgName: data.name,
           url: data.url,
-          is_member: false,
+          is_member: true,
           orgHeadquarter: data.country,
           geoCoverageType: data.geo_coverage_type,
           tags: data.tags.map((t) => t.tag.toLowerCase()),
@@ -242,21 +230,24 @@ function Partnership({}) {
             geo_coverage_country_groups: [values.geo_coverage_country_groups],
           }),
         })
-        try {
-          let sendData = { ...data }
-          delete sendData.program
-          const res = await createOrg(sendData)
-          if ([200, 201].includes(res.status)) {
-            await updateProfile(res.data.org, values.type)
+        if (isAuthenticated && profile && Object.keys(profile).length > 0) {
+          try {
+            let sendData = { ...data }
+            delete sendData.program
+            const res = await createOrg(sendData)
+            if ([200, 201].includes(res.status)) {
+              await updateProfile(res.data.org, values.type)
+              router.push('/partnership?submitted=true')
+            }
+          } catch (err) {
+            handleSubmissionError(err)
           }
-        } catch (err) {
-          handleSubmissionError(err)
         }
       }
     }
 
     submitData()
-  }, [])
+  }, [isAuthenticated, profile])
 
   const required = (value, allValues, fieldName) => {
     if (!value) {
@@ -300,6 +291,16 @@ function Partnership({}) {
 
     return undefined
   }
+
+  useEffect(() => {
+    if (containerRef.current && router.query.submitted === 'true') {
+      window.scrollTo({
+        top: containerRef.current.offsetTop,
+        left: 0,
+        behavior: 'smooth',
+      })
+    }
+  }, [router])
 
   return (
     <div className={styles.partnership}>
@@ -1430,6 +1431,14 @@ const mountedStyle = {
 const unmountedStyle = {
   animation: 'outAnimation 270ms ease-out',
   animationFillMode: 'forwards',
+}
+
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
 }
 
 export default Partnership
