@@ -13,7 +13,7 @@ const useLayerInfo = () => {
                     `https://unep-gpml.akvotest.org/strapi/api/layers`
                 );
 
-                setLayers(response.data || []);
+                setLayers(response.data.data || []);
                 setLoading(false);
             } catch (error) {
                 console.error("Error fetching Layers:", error);
