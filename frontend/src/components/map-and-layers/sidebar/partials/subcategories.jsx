@@ -1,5 +1,4 @@
 import { Typography, Collapse, Switch } from 'antd'
-// import styled from "styled-components";
 import React, { useState, useEffect } from 'react'
 import useIndicators from '../../../../hooks/useIndicators'
 import useQueryParameters from '../../../../hooks/useQueryParameters'
@@ -7,28 +6,10 @@ import { Tooltip } from 'antd'
 
 import { InfoCircleFilled } from '@ant-design/icons'
 import LayerInfo from './layerInfo'
-import useLayerInfo from '../../../../hooks/useLayerInfo'
+
 import { useRouter } from 'next/router'
-import classNames from 'classnames'
-// const LayersContainer = styled.div`
-//   padding-left: 0;
-//   background-color: white;
-//   width: 80%;
-//   height: 100%;
-//   border-right: 2px solid #717d96;
-//   padding-top: 35px;
-//   overflow: auto;
-// `;
 
 const { Panel } = Collapse
-
-// const LayerItem = styled.div`
-//   display: grid;
-//   grid-template-columns: auto 1fr auto;
-//   align-items: center;
-//   gap: 8px;
-//   padding-bottom: 8px;
-// `;
 
 const Subcategories = ({ subcategories }) => {
   const {
@@ -56,8 +37,6 @@ const Subcategories = ({ subcategories }) => {
     setHoveredLayerId(null)
   }
 
-  const layerInfo = useLayerInfo()
-
   useEffect(() => {
     const layersParam = queryParameters.layers
     if (layersParam) {
@@ -84,8 +63,9 @@ const Subcategories = ({ subcategories }) => {
       { shallow: true }
     )
 
-    setQueryParameters({ subcategoryId: newSubcategoryId })
+    setQueryParameters({ subcategoryId: subcategory.attributes.subcategoryId })
   }
+
   const layers = useIndicators(expandedSubcategory)
 
   const handleLayerClick = (layer) => {
@@ -114,7 +94,7 @@ const Subcategories = ({ subcategories }) => {
   return (
     <div>
       <Collapse accordion ghost expandIconPosition="right" destroyInactivePanel>
-        {subcategories?.subcategories?.data.map((subcategory, index) => (
+        {subcategories?.subcategories?.data?.map((subcategory, index) => (
           <Panel
             key={subcategory.attributes.subcategoryId}
             header={
@@ -150,9 +130,10 @@ const Subcategories = ({ subcategories }) => {
                   style={{ backgroundColor: 'white' }}
                   title={
                     <LayerInfo
-                      layer={layerInfo.layers?.data?.find(
+                      layer={layers.layers?.find(
                         (layerInfoItem) =>
-                          layerInfoItem.arcgislayerId === layer.arcgislayerId
+                          layerInfoItem.arcgislayerId === layer.arcgislayerId &&
+                          layerInfoItem.id === layer.id
                       )}
                     ></LayerInfo>
                   }

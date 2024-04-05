@@ -19,7 +19,7 @@ const LegendCard = ({
   const [tooltipPlacement, setTooltipPlacement] = useState('right')
   const legends = useLegends(layerId)
   const mapp = useLoadMap()
-  const layerInfo = useLayerInfo()
+  const layers = useLayerInfo()
 
   const rendererObj = mapp.renderers.find((r) =>
     r.key.trim() === 'Threat to Reefs'
@@ -135,8 +135,9 @@ const LegendCard = ({
           placement={tooltipPlacement}
           title={
             <LayerInfo
-              layer={layerInfo?.layers?.results?.find(
-                (layerInfoItem) => layerInfoItem.arcgislayerId === layerId
+              layer={layers?.layers?.find(
+                (layerInfoItem) =>
+                  layerInfoItem.attributes.arcgislayerId === layerId
               )}
             ></LayerInfo>
           }
