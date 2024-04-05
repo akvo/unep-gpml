@@ -43,7 +43,7 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
         <Trans>Data Analysis</Trans>
       </h4>
       <h2 className="h-xxl w-bold">
-        <Trans>Data Collection</Trans>
+        <Trans>Data Collection Tools</Trans>
       </h2>
       <p>
         <Trans>Description - Section 4 - Data Collection</Trans>
