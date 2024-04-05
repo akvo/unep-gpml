@@ -12,14 +12,9 @@ import { useRouter } from 'next/router'
 const { Panel } = Collapse
 
 const Subcategories = ({ subcategories }) => {
-  const {
-    queryParameters,
-    setQueryParameters,
-    createQueryParametersString,
-  } = useQueryParameters()
+  const { queryParameters, setQueryParameters } = useQueryParameters()
 
   const [expandedSubcategory, setExpandedSubcategory] = useState(null)
-  const [hoveredLayerId, setHoveredLayerId] = useState(null)
 
   const router = useRouter()
 
@@ -28,14 +23,6 @@ const Subcategories = ({ subcategories }) => {
       setExpandedSubcategory(router.query.subcategoryId || null)
     }
   }, [router.query.subcategoryId])
-
-  const handleMouseEnter = (layerId) => {
-    setHoveredLayerId(layerId)
-  }
-
-  const handleMouseLeave = () => {
-    setHoveredLayerId(null)
-  }
 
   useEffect(() => {
     const layersParam = queryParameters.layers
@@ -52,7 +39,7 @@ const Subcategories = ({ subcategories }) => {
       expandedSubcategory === subcategory.attributes.subcategoryId
         ? null
         : subcategory.attributes.subcategoryId
-    setExpandedSubcategory(newSubcategoryId)
+    setExpandedSubcategory(subcategory.attributes.subcategoryId)
 
     router.push(
       {
@@ -107,8 +94,6 @@ const Subcategories = ({ subcategories }) => {
               <div
                 className="layer-item"
                 key={`${subcategory.attributes.subcategoryId}-${layerIndex}`}
-                onMouseEnter={() => handleMouseEnter(layer.id)}
-                onMouseLeave={handleMouseLeave}
               >
                 <Switch
                   size="small"
