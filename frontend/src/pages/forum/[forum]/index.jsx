@@ -22,6 +22,7 @@ import debounce from 'lodash/debounce'
 import styles from './index.module.scss'
 import {
   DropDownIcon,
+  PinCalendar,
   PinDoc,
   PinForm,
   PinPdf,
@@ -379,6 +380,12 @@ const PinnedLinks = ({ isAdmin, channelId }) => {
                     <PinForm />
                   </div>
                   Form
+                </Radio.Button>
+                <Radio.Button value="event">
+                  <div className="icon">
+                    <PinCalendar />
+                  </div>
+                  Invite
                 </Radio.Button>
               </Radio.Group>
             </Form.Item>

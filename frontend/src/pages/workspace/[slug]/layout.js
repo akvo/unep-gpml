@@ -41,6 +41,7 @@ export const useStepsDict = () => {
     'Legislative Development Guide': i18n._(t`Legislative Development Guide`),
     'Data Analysis': i18n._(t`Data Analysis`),
     'Available Tools': i18n._(t`Available Tools`),
+    'Data Collection Tools': i18n._(t`Data Collection Tools`),
     'Available Data & Statistics': i18n._(t`Available Data & Statistics`),
     'Data Collection': i18n._(t`Data Collection`),
     'Calculation of Indicators': i18n._(t`Calculation of Indicators`),

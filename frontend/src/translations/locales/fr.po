@@ -30,7 +30,7 @@ msgstr "(FACULTATIF)"
 msgid "{incompleteAmount} items are not completed"
 msgstr "{incompleteAmount} éléments ne sont pas terminés"
 
-#: src/pages/workspace/[slug]/layout.js:265
+#: src/pages/workspace/[slug]/layout.js:266
 msgid "{progress}% complete"
 msgstr "{progress} % terminé"
 
@@ -192,7 +192,7 @@ msgstr "Ajouter une nouvelle entité"
 msgid "Add translation"
 msgstr "Ajouter une traduction"
 
-#: src/modules/workspace/ps/config.js:206
+#: src/modules/workspace/ps/config.js:207
 msgid "Admin"
 msgstr "Administrateur"
 
@@ -200,7 +200,7 @@ msgstr "Administrateur"
 msgid "Admin Section"
 msgstr "Section Administrateur"
 
-#: src/modules/workspace/ps/config.js:207
+#: src/modules/workspace/ps/config.js:208
 msgid "Admins can edit all content and manage the team"
 msgstr "Les administrateurs peuvent modifier tout le contenu et gérer l'équipe"
 
@@ -389,12 +389,12 @@ msgstr "Automobile"
 msgid "Available Data"
 msgstr "Données disponibles"
 
-#: src/pages/workspace/[slug]/layout.js:44
+#: src/pages/workspace/[slug]/layout.js:45
 msgid "Available Data & Statistics"
 msgstr "Données et statistiques disponibles"
 
 #: src/pages/workspace/[slug]/4-data-analysis/available-information.js:46
-#: src/pages/workspace/[slug]/layout.js:47
+#: src/pages/workspace/[slug]/layout.js:48
 msgid "Available Information"
 msgstr "Informations disponibles"
 
@@ -436,7 +436,7 @@ msgstr "La sensibilisation est un processus qui vise à informer et à éduquer 
 msgid "Back"
 msgstr "Retour"
 
-#: src/pages/forum/[forum]/index.jsx:139
+#: src/pages/forum/[forum]/index.jsx:140
 msgid "Back to all Forums"
 msgstr "Retour à tous les forums"
 
@@ -444,7 +444,7 @@ msgstr "Retour à tous les forums"
 msgid "Back to categories"
 msgstr "Retour aux catégories"
 
-#: src/pages/forum/[forum]/index.jsx:197
+#: src/pages/forum/[forum]/index.jsx:198
 msgid "Back to Channel"
 msgstr "Retour à la chaîne"
 
@@ -548,7 +548,7 @@ msgstr "Bâtiment, construction, démolition, machines industrielles"
 msgid "By leveraging AI and innovation, the platform will enable proactive strategies and solutions that efficiently combat plastic pollution and marine litter"
 msgstr "En tirant parti de l'IA et de l'innovation, la plateforme permettra des stratégies et des solutions proactives qui combattent efficacement la pollution plastique et les déchets marins."
 
-#: src/modules/workspace/view.jsx:340
+#: src/modules/workspace/view.jsx:339
 msgid "By proceeding to join the Global Partnership on Plastic Pollution & Marine Litter, you are confirming that you have the authorisation to submit this application on behalf of your organisation."
 msgstr ""
 
@@ -566,7 +566,7 @@ msgid "By submitting this form, I will be included in the public database of GPM
 msgstr "En soumettant ce formulaire, je serai inclus dans la base de données publique des membres de la plateforme numérique GPML et je reconnais que les informations fournies seront rendues publiques et utilisées pour trouver et me connecter via des fonctionnalités de mise en relation intelligente avec d'autres parties prenantes et ressources."
 
 #: src/pages/workspace/[slug]/4-data-analysis/calculation.js:45
-#: src/pages/workspace/[slug]/layout.js:46
+#: src/pages/workspace/[slug]/layout.js:47
 msgid "Calculation of Indicators"
 msgstr "Calcul des indicateurs"
 
@@ -659,7 +659,7 @@ msgstr "Modification des taxes/subventions"
 
 #: src/components/forum-card/forum-card.jsx:66
 #: src/modules/forum/my-forums.jsx:129
-#: src/pages/forum/index.jsx:226
+#: src/pages/forum/index.jsx:227
 msgid "channel"
 msgstr "canal"
 
@@ -830,7 +830,7 @@ msgstr "Engagement communautaire"
 #~ msgid "Compilation of actions around the world"
 #~ msgstr "Compilation d'actions à travers le monde"
 
-#: src/pages/workspace/[slug]/layout.js:371
+#: src/pages/workspace/[slug]/layout.js:372
 msgid "Completed"
 msgstr "Complété"
 
@@ -1027,10 +1027,14 @@ msgstr "Analyse de données"
 msgid "Data Catalogue"
 msgstr "Catalogue de données"
 
-#: src/pages/workspace/[slug]/4-data-analysis/data-collection.js:46
-#: src/pages/workspace/[slug]/layout.js:45
+#: src/pages/workspace/[slug]/layout.js:46
 msgid "Data Collection"
 msgstr "Collecte de données"
+
+#: src/pages/workspace/[slug]/4-data-analysis/data-collection.js:46
+#: src/pages/workspace/[slug]/layout.js:44
+msgid "Data Collection Tools"
+msgstr ""
 
 #: src/store.js:113
 #~ msgid "Data hub"
@@ -1091,9 +1095,9 @@ msgstr "Décisions conçues pour créer un impact favorable sur les facteurs cl�
 #: src/modules/stakeholder-detail/view.jsx:164
 #: src/modules/stakeholder-detail/view.jsx:190
 #: src/modules/workspace/ps/setup-team-table.jsx:206
-#: src/pages/forum/[forum]/index.jsx:305
-#: src/pages/forum/[forum]/index.jsx:708
-#: src/pages/forum/index.jsx:248
+#: src/pages/forum/[forum]/index.jsx:306
+#: src/pages/forum/[forum]/index.jsx:715
+#: src/pages/forum/index.jsx:249
 msgid "Delete"
 msgstr "Supprimer"
 
@@ -1153,8 +1157,8 @@ msgstr ""
 "Plusieurs outils et ressources précieux ont été développés pour aider les gouvernements et les organisations à évaluer et surveiller de manière globale les différents aspects de la pollution plastique et son impact sur l'environnement. Ces outils servent de guides et de cadres essentiels pour collecter des données, mettre en œuvre des programmes de surveillance et mesurer les progrès liés au plastique.\n"
 ""
 
-#: src/modules/workspace/ps/config.js:224
-#: src/modules/workspace/ps/config.js:229
+#: src/modules/workspace/ps/config.js:225
+#: src/modules/workspace/ps/config.js:230
 msgid "Description text for what this is"
 msgstr "Texte de description de ce que c'est"
 
@@ -1244,7 +1248,7 @@ msgstr "Découvrez des personnes et des organisations partageant les mêmes idé
 msgid "Discussion"
 msgstr "Discussion"
 
-#: src/pages/forum/[forum]/index.jsx:590
+#: src/pages/forum/[forum]/index.jsx:597
 msgid "Discussions"
 msgstr "Discussions"
 
@@ -1315,15 +1319,15 @@ msgstr "Service d'écosystème"
 
 #: src/modules/details-page/comment.jsx:80
 #: src/modules/details-page/header.jsx:219
-#: src/pages/forum/index.jsx:243
+#: src/pages/forum/index.jsx:244
 msgid "Edit"
 msgstr "Modifier"
 
-#: src/modules/workspace/ps/config.js:211
+#: src/modules/workspace/ps/config.js:212
 msgid "Editor"
 msgstr "Éditeur"
 
-#: src/modules/workspace/ps/config.js:212
+#: src/modules/workspace/ps/config.js:213
 msgid "Editors can edit all content, but cannot manage the team"
 msgstr "Les éditeurs peuvent modifier tout le contenu, mais ne peuvent pas gérer l'équipe"
 
@@ -1576,7 +1580,7 @@ msgid "Filters"
 msgstr "Filtres"
 
 #: src/pages/workspace/[slug]/7-final-review/index.js:20
-#: src/pages/workspace/[slug]/layout.js:53
+#: src/pages/workspace/[slug]/layout.js:54
 msgid "Final Review"
 msgstr "Révue finale"
 
@@ -1662,7 +1666,7 @@ msgstr "MOT DE PASSE OUBLIÉ"
 msgid "Forgot password?"
 msgstr "Mot de passe oublié?"
 
-#: src/pages/workspace/[slug]/layout.js:278
+#: src/pages/workspace/[slug]/layout.js:279
 msgid "Forum"
 msgstr "Forum"
 
@@ -1859,7 +1863,7 @@ msgstr "Membres GPML"
 msgid "GPML Non-Members"
 msgstr "Non-membres GPML"
 
-#: src/modules/workspace/view.jsx:330
+#: src/modules/workspace/view.jsx:329
 msgid "GPML Partnership"
 msgstr ""
 
@@ -1990,7 +1994,7 @@ msgstr "Santé et bien-être humains"
 msgid "I am a private citizen"
 msgstr "Je suis un citoyen privé"
 
-#: src/modules/workspace/view.jsx:369
+#: src/modules/workspace/view.jsx:368
 msgid "I AM NOT THE FOCAL POINT"
 msgstr "JE NE SUIS PAS LE POINT FOCAL"
 
@@ -2260,7 +2264,7 @@ msgstr "Rejoindre la newsletter"
 #~ msgid "Join now"
 #~ msgstr "Adhérer maintenant"
 
-#: src/modules/workspace/view.jsx:362
+#: src/modules/workspace/view.jsx:361
 #: src/pages/landing/index.jsx:349
 #: src/pages/landing/index.jsx:1116
 msgid "Join Now"
@@ -2374,7 +2378,7 @@ msgstr "Centre d'apprentissage"
 msgid "Leave"
 msgstr "Partir"
 
-#: src/pages/forum/[forum]/index.jsx:156
+#: src/pages/forum/[forum]/index.jsx:157
 msgid "Leave Channel"
 msgstr ""
 
@@ -2472,7 +2476,7 @@ msgstr "Chargement"
 #: src/modules/details-page/view.jsx:366
 #: src/modules/entity-detail/view.jsx:349
 #: src/modules/stakeholder-detail/view.jsx:376
-#: src/pages/workspace/[slug]/layout.js:260
+#: src/pages/workspace/[slug]/layout.js:261
 msgid "Loading..."
 msgstr "Chargement..."
 
@@ -2563,7 +2567,7 @@ msgstr "Graphiques vitaux des déchets marins"
 msgid "Marine organisms"
 msgstr "les organismes marins"
 
-#: src/pages/workspace/[slug]/layout.js:371
+#: src/pages/workspace/[slug]/layout.js:372
 msgid "Mark as Completed"
 msgstr "Marquer comme terminé"
 
@@ -2741,23 +2745,23 @@ msgid "National or organisational values"
 msgstr "Valeurs nationales ou organisationnelles"
 
 #: src/pages/workspace/[slug]/6-national-plastic-strategy/index.js:24
-#: src/pages/workspace/[slug]/layout.js:51
+#: src/pages/workspace/[slug]/layout.js:52
 msgid "National Plastic Strategy"
 msgstr "Stratégie nationale sur le plastique"
 
-#: src/modules/workspace/view.jsx:304
+#: src/modules/workspace/view.jsx:303
 #: src/pages/landing/index.jsx:665
 #: src/pages/workspace/plastic-strategies/index.js:37
 msgid "National Source Inventories"
 msgstr "l'Inventaires Nationaux de Sources"
 
-#: src/modules/workspace/view.jsx:465
-#: src/pages/workspace/[slug]/layout.js:258
+#: src/modules/workspace/view.jsx:464
+#: src/pages/workspace/[slug]/layout.js:259
 msgid "National Source Inventory"
 msgstr "l'Inventaire National de Sources"
 
 #: src/pages/workspace/[slug]/5-national-source/index.js:24
-#: src/pages/workspace/[slug]/layout.js:49
+#: src/pages/workspace/[slug]/layout.js:50
 msgid "National Source Inventory Report"
 msgstr "Rapport national d'inventaire des sources"
 
@@ -2804,7 +2808,7 @@ msgstr "Nouveaux développements/innovations techniques, par exemple recherche e
 #: src/modules/flexible-forms/view.jsx:1651
 #: src/modules/onboarding/view.jsx:288
 #: src/modules/onboarding/view.jsx:351
-#: src/pages/workspace/[slug]/layout.js:375
+#: src/pages/workspace/[slug]/layout.js:376
 msgid "Next"
 msgstr "Suivant"
 
@@ -3069,7 +3073,7 @@ msgstr "Emballage"
 msgid "PAME, Regional Action Plan on Marine Litter in the Arctic (May 2021)"
 msgstr "PAME, Plan d'action régional sur les déchets marins dans l'Arctique (mai 2021)"
 
-#: src/pages/forum/[forum]/index.jsx:458
+#: src/pages/forum/[forum]/index.jsx:465
 msgid "Participants"
 msgstr "Participants"
 
@@ -3143,7 +3147,7 @@ msgstr "Choisissez le type de sous-contenu"
 msgid "Pilot"
 msgstr "Pilote"
 
-#: src/pages/forum/[forum]/index.jsx:278
+#: src/pages/forum/[forum]/index.jsx:279
 msgid "Pinned Documents"
 msgstr ""
 
@@ -3250,7 +3254,7 @@ msgstr "Politique de confidentialité et conditions d'utilisation"
 
 #: src/components/forum-card/forum-card.jsx:64
 #: src/modules/forum/my-forums.jsx:127
-#: src/pages/forum/index.jsx:226
+#: src/pages/forum/index.jsx:227
 msgid "private"
 msgstr "privé"
 
@@ -3308,7 +3312,7 @@ msgstr "Règlements prohibitifs, interdictions et restrictions"
 msgid "Project development"
 msgstr "Le développement de projets"
 
-#: src/modules/workspace/ps/config.js:227
+#: src/modules/workspace/ps/config.js:228
 msgid "Project Team"
 msgstr "Projet de groupe"
 
@@ -3330,7 +3334,7 @@ msgstr "Prototype"
 
 #: src/components/forum-card/forum-card.jsx:65
 #: src/modules/forum/my-forums.jsx:128
-#: src/pages/forum/index.jsx:226
+#: src/pages/forum/index.jsx:227
 msgid "public"
 msgstr "publique"
 
@@ -3845,7 +3849,7 @@ msgstr "Statut de l'examen :"
 msgid "Stay tuned with the GPML latest news and events!"
 msgstr "Restez à l'écoute des dernières nouvelles et événements du GPML !"
 
-#: src/modules/workspace/ps/config.js:222
+#: src/modules/workspace/ps/config.js:223
 msgid "Steering Committee"
 msgstr "Comité de pilotage"
 
@@ -3891,7 +3895,7 @@ msgstr "Sous-thèmes"
 msgid "Submit"
 msgstr "Soumettre"
 
-#: src/modules/workspace/view.jsx:333
+#: src/modules/workspace/view.jsx:332
 msgid "Submit an application for your organisation - <0>{0}</0> - to become part of the GPML."
 msgstr ""
 
@@ -4405,7 +4409,7 @@ msgstr "Formations, activités et événements de développement des capacités 
 msgid "Update"
 msgstr "Mise à jour"
 
-#: src/pages/workspace/[slug]/layout.js:52
+#: src/pages/workspace/[slug]/layout.js:53
 msgid "Upload"
 msgstr "Télécharger"
 
@@ -4501,12 +4505,12 @@ msgid "view"
 msgstr "voir"
 
 #: src/modules/workspace/view.jsx:273
-#: src/pages/forum/index.jsx:268
+#: src/pages/forum/index.jsx:269
 msgid "View"
 msgstr "Voir"
 
 #: src/components/resource-cards/resource-cards.jsx:58
-#: src/modules/workspace/view.jsx:309
+#: src/modules/workspace/view.jsx:308
 msgid "View All"
 msgstr "Voir tout"
 
@@ -4535,11 +4539,11 @@ msgstr "Voir les détails"
 msgid "View Source"
 msgstr "Voir la source"
 
-#: src/modules/workspace/ps/config.js:216
+#: src/modules/workspace/ps/config.js:217
 msgid "Viewer"
 msgstr "Observateur"
 
-#: src/modules/workspace/ps/config.js:217
+#: src/modules/workspace/ps/config.js:218
 msgid "Viewers cannot edit all content"
 msgstr "Les téléspectateurs ne peuvent pas modifier tout le contenu"
 
@@ -4581,7 +4585,7 @@ msgstr "La gestion des déchets"
 msgid "Wastewater/Sewage management"
 msgstr "Gestion des eaux usées/eaux usées"
 
-#: src/modules/workspace/view.jsx:427
+#: src/modules/workspace/view.jsx:426
 msgid "Watch this video to get started"
 msgstr "Regardez cette vidéo pour commencer"
 
@@ -4641,7 +4645,7 @@ msgstr "QUEL EST L'OBJECTIF DE GPML ?"
 msgid "What is the MAIN focus of the initiative? (Please tick ALL that apply)."
 msgstr "Quel est l’objectif PRINCIPAL de l’initiative ? (Veuillez cocher TOUTES les réponses applicables)."
 
-#: src/modules/workspace/view.jsx:382
+#: src/modules/workspace/view.jsx:381
 msgid "What to do next?"
 msgstr "Que faire ensuite?"
 
