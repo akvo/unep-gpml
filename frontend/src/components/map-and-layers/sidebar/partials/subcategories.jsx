@@ -1,5 +1,4 @@
 import { Typography, Collapse, Switch } from 'antd'
-// import styled from "styled-components";
 import React, { useState, useEffect } from 'react'
 import useIndicators from '../../../../hooks/useIndicators'
 import useQueryParameters from '../../../../hooks/useQueryParameters'
@@ -7,48 +6,23 @@ import { Tooltip } from 'antd'
 
 import { InfoCircleFilled } from '@ant-design/icons'
 import LayerInfo from './layerInfo'
-import useLayerInfo from '../../../../hooks/useLayerInfo'
+
 import { useRouter } from 'next/router'
-import classNames from 'classnames'
-// const LayersContainer = styled.div`
-//   padding-left: 0;
-//   background-color: white;
-//   width: 80%;
-//   height: 100%;
-//   border-right: 2px solid #717d96;
-//   padding-top: 35px;
-//   overflow: auto;
-// `;
 
 const { Panel } = Collapse
 
-// const LayerItem = styled.div`
-//   display: grid;
-//   grid-template-columns: auto 1fr auto;
-//   align-items: center;
-//   gap: 8px;
-//   padding-bottom: 8px;
-// `;
-
 const Subcategories = ({ subcategories }) => {
-  const {
-    queryParameters,
-    setQueryParameters,
-    createQueryParametersString,
-  } = useQueryParameters()
+  const { queryParameters, setQueryParameters } = useQueryParameters()
 
   const [expandedSubcategory, setExpandedSubcategory] = useState(null)
-  const [hoveredLayerId, setHoveredLayerId] = useState(null)
 
-  const handleMouseEnter = (layerId) => {
-    setHoveredLayerId(layerId)
-  }
+  const router = useRouter()
 
-  const handleMouseLeave = () => {
-    setHoveredLayerId(null)
-  }
-
-  const layerInfo = useLayerInfo()
+  useEffect(() => {
+    if (router.query.subcategoryId !== expandedSubcategory) {
+      setExpandedSubcategory(router.query.subcategoryId || null)
+    }
+  }, [router.query.subcategoryId])
 
   useEffect(() => {
     const layersParam = queryParameters.layers
@@ -65,7 +39,17 @@ const Subcategories = ({ subcategories }) => {
       expandedSubcategory === subcategory.attributes.subcategoryId
         ? null
         : subcategory.attributes.subcategoryId
-    setExpandedSubcategory(newSubcategoryId)
+    setExpandedSubcategory(subcategory.attributes.subcategoryId)
+
+    router.push(
+      {
+        pathname: router.pathname,
+        query: { ...queryParameters, subcategoryId: newSubcategoryId },
+      },
+      undefined,
+      { shallow: true }
+    )
+
     setQueryParameters({ subcategoryId: subcategory.attributes.subcategoryId })
   }
 
@@ -97,7 +81,7 @@ const Subcategories = ({ subcategories }) => {
   return (
     <div>
       <Collapse accordion ghost expandIconPosition="right" destroyInactivePanel>
-        {subcategories.subcategories.data.map((subcategory, index) => (
+        {subcategories?.subcategories?.data?.map((subcategory, index) => (
           <Panel
             key={subcategory.attributes.subcategoryId}
             header={
@@ -110,8 +94,6 @@ const Subcategories = ({ subcategories }) => {
               <div
                 className="layer-item"
                 key={`${subcategory.attributes.subcategoryId}-${layerIndex}`}
-                onMouseEnter={() => handleMouseEnter(layer.id)}
-                onMouseLeave={handleMouseLeave}
               >
                 <Switch
                   size="small"
@@ -133,9 +115,10 @@ const Subcategories = ({ subcategories }) => {
                   style={{ backgroundColor: 'white' }}
                   title={
                     <LayerInfo
-                      layer={layerInfo.layers?.data?.find(
+                      layer={layers.layers?.find(
                         (layerInfoItem) =>
-                          layerInfoItem.arcgislayerId === layer.arcgislayerId
+                          layerInfoItem.arcgislayerId === layer.arcgislayerId &&
+                          layerInfoItem.id === layer.id
                       )}
                     ></LayerInfo>
                   }

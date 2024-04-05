@@ -45,6 +45,10 @@
         .ant-collapse-header {
           font-size: 14px;
           font-weight: 500;
+          display: block; 
+          width: 100%;
+          cursor: pointer;
+          
         }
         .ant-collapse-item-active {
           background-color: #fafbff;

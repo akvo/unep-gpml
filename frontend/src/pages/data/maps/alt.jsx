@@ -34,7 +34,7 @@ const MapAndLayerPage = () => {
 
   return (
     <div className={styles.container}>
-      <Sidebar alt />
+      <Sidebar />
 
       <DynamicMap
         initialViewProperties={{
