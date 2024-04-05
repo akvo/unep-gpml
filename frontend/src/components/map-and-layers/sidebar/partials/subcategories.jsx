@@ -112,7 +112,7 @@ const Subcategories = ({ subcategories }) => {
                 </Typography>
 
                 <Tooltip
-                  overlayStyle={{ maxWidth: '500px', width: 'auto' }}
+                  overlayStyle={{ maxWidth: '600px', width: 'auto' }}
                   overlay={
                     <LayerInfo
                       layer={layers.layers?.find(
