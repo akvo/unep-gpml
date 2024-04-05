@@ -9,10 +9,10 @@ const LayerInfo = ({ layer }) => {
   }
 
   return (
-    <div>
+    <div style={{ border: 'none' }}>
       <Card>
         <AntTitle level={3}>{layer?.attributes.title}</AntTitle>
-        <AntParagraph>{layer.attributes.shortDescription}</AntParagraph>
+        <AntParagraph>{layer?.attributes.shortDescription}</AntParagraph>
         <Button
           type="link"
           onClick={handleReadMoreClick}
