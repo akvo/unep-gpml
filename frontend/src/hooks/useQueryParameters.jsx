@@ -65,9 +65,6 @@ const useQueryParameters = () => {
     return {
       sidebar: 'hide',
       layers: [],
-      latitude: 4.941597145954475,
-      longitude: 52.79204410016732,
-      zoom: 5,
     }
   }
 
