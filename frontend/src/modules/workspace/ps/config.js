@@ -98,38 +98,6 @@ export const stepsState = [
     ],
   },
   {
-    label: 'Legislation & Policy Review Report',
-    slug: '3-legislation-policy',
-    substeps: [
-      { label: 'Intro', slug: '', checked: false },
-      {
-        label: 'Country Policy Framework',
-        slug: 'country-policy',
-        checked: false,
-        apiParams: {
-          topic: 'policy',
-          country: '{countryID}',
-          ps_bookmark_sections_keys: 'country-policy',
-        },
-      },
-      {
-        label: 'Legislative Development Guide',
-        slug: 'legislative-development',
-        checked: false,
-      },
-      {
-        label: 'Case Studies',
-        slug: 'case-studies',
-        checked: false,
-        apiParams: {
-          tag: 'legislative & policy review case study',
-          ps_bookmark_sections_keys: 'stakeholder-case-studies',
-        },
-      },
-      { label: 'Summary & Report', slug: 'summary', checked: false },
-    ],
-  },
-  {
     label: 'Data Analysis',
     slug: '4-data-analysis',
     substeps: [
@@ -174,6 +142,38 @@ export const stepsState = [
       //   checked: false,
       // },
 
+      { label: 'Summary & Report', slug: 'summary', checked: false },
+    ],
+  },
+  {
+    label: 'Legislation & Policy Review Report',
+    slug: '3-legislation-policy',
+    substeps: [
+      { label: 'Intro', slug: '', checked: false },
+      {
+        label: 'Country Policy Framework',
+        slug: 'country-policy',
+        checked: false,
+        apiParams: {
+          topic: 'policy',
+          country: '{countryID}',
+          ps_bookmark_sections_keys: 'country-policy',
+        },
+      },
+      {
+        label: 'Legislative Development Guide',
+        slug: 'legislative-development',
+        checked: false,
+      },
+      {
+        label: 'Case Studies',
+        slug: 'case-studies',
+        checked: false,
+        apiParams: {
+          tag: 'legislative & policy review case study',
+          ps_bookmark_sections_keys: 'stakeholder-case-studies',
+        },
+      },
       { label: 'Summary & Report', slug: 'summary', checked: false },
     ],
   },
