@@ -3,6 +3,7 @@ import Sidebar from '../../../components/map-and-layers/sidebar'
 import useQueryParameters from '../../../hooks/useQueryParameters'
 import styles from './index.module.scss'
 import dynamic from 'next/dynamic'
+import { loadCatalog } from '../../../translations/utils'
 
 const MapAndLayerPage = () => {
   const DynamicMap = dynamic(
@@ -44,6 +45,14 @@ const MapAndLayerPage = () => {
       />
     </div>
   )
+}
+
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
 }
 
 export default MapAndLayerPage
