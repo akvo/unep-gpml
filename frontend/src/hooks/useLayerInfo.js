@@ -24,7 +24,7 @@ const useLayerInfo = () => {
 
         fetchLayers();
     }, []);
-    console.log("xxxxx', categ")
+
     return { layers, loading };
 };
 

@@ -112,8 +112,8 @@ const Subcategories = ({ subcategories }) => {
                 </Typography>
 
                 <Tooltip
-                  style={{ backgroundColor: 'white' }}
-                  title={
+                  overlayStyle={{ maxWidth: '600px', width: 'auto' }}
+                  overlay={
                     <LayerInfo
                       layer={layers.layers?.find(
                         (layerInfoItem) =>
@@ -122,6 +122,7 @@ const Subcategories = ({ subcategories }) => {
                       )}
                     ></LayerInfo>
                   }
+                  overlayInnerStyle={{ backgroundColor: 'white', width: 'auto', height: 'auto' }}
                 >
                   <InfoCircleFilled
                     style={{

@@ -24,7 +24,7 @@ const useCategories = () => {
 
     fetchCategories();
   }, []);
-  console.log("xxxxx', categ",)
+
   return { categories, loading };
 };
 
