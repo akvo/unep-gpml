@@ -2,21 +2,25 @@ import React from 'react'
 import { Layout, Typography, Menu, Tag } from 'antd'
 import { CloseCircleFilled } from '@ant-design/icons'
 import useQueryParameters from '../../../../hooks/useQueryParameters'
-import useSubcategories from '../../../../hooks/useSubcategories'
+import useIndicators from '../../../../hooks/useIndicators'
 import Subcategories from './../partials/subcategories'
 
 const { Sider } = Layout
 
-const CategoriesNested = ({ categories, onCategoryClick }) => {
+const CategoriesNested = ({ categories, subcategories }) => {
   const { queryParameters, setQueryParameters } = useQueryParameters()
-  console.log(queryParameters)
+
   const handleCategoryClick = (category) => {
-    onCategoryClick(category)
     setQueryParameters({ categoryId: category.attributes.categoryId })
   }
-  const subcategories = useSubcategories(queryParameters.categoryId)
+
+  const subcategoriesByCategory = subcategories?.subcategories?.data?.filter(
+    (subcategory) =>
+      subcategory.attributes.categoryId === queryParameters.categoryId
+  )
+  const { layers, loading } = useIndicators()
   const handleCloseLayer = (layerId) => {
-    const updatedLayers = queryParameters.layers.filter(
+    const updatedLayers = queryParameters.layers?.filter(
       (layer) => layer.id !== layerId
     )
     setQueryParameters({ layers: updatedLayers })
@@ -51,11 +55,15 @@ const CategoriesNested = ({ categories, onCategoryClick }) => {
               </span>
             </Menu.Item>
             {isCategorySelected(category) && (
-              <Subcategories subcategories={subcategories} />
+              <Subcategories
+                subcategories={subcategoriesByCategory}
+                layers={layers}
+                loading={loading}
+              />
             )}
             {queryParameters.layers &&
               queryParameters.layers
-                .filter(
+                ?.filter(
                   (layer) => layer.categoryId === category.attributes.categoryId
                 )
                 .map((layer) => (

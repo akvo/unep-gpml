@@ -1,30 +1,30 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
-const useLayers = (subcategoryId) => {
+const useLayers = () => {
     const [layers, setLayers] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+
         const fetchLayers = async () => {
             try {
-
                 const response = await axios.get(
-                    `https://unep-gpml.akvotest.org/strapi/api/layers?filters[subcategoryId][$eq]=${subcategoryId}&pagination[page]=1&pagination[pageSize]=1000`
+                    `https://unep-gpml.akvotest.org/strapi/api/layers?pagination[pageSize]=100`
                 );
 
                 setLayers(response.data.data || []);
                 setLoading(false);
             } catch (error) {
-                console.error("Error fetching categories:", error);
+                console.error("Error fetching layers:", error);
                 setLoading(false);
             }
         };
 
+
         fetchLayers();
-    }, [subcategoryId]);
+    }, []);
 
     return { layers, loading };
 };
-
 export default useLayers;
