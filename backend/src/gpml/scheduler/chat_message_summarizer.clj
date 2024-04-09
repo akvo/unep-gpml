@@ -58,7 +58,7 @@
 (defn notifiable-message? [logger chat-account-id message membership frequency-in-minutes]
   {:pre [(check! some? logger
                  [:maybe port.chat/UniqueUserIdentifier] chat-account-id
-                 map? message
+                 port.chat/Message message
                  Membership membership
                  :int frequency-in-minutes)]}
   (and (logging-if-false logger :chat-account-id
