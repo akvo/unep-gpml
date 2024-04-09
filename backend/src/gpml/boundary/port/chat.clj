@@ -61,6 +61,7 @@
    [:created :string]
    [:created-using-api :boolean]
    [:deactivated {:optional true} :boolean]
+   [:profile-pic {:optional true} [:maybe {} :string]]
    [:email :string]
    [:external-user-id :string]
    [:id :string]

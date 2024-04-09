@@ -1,4 +1,5 @@
 {:gpml.scheduler/leap-api-policy-importer    [:duct/daemon]
  :gpml.scheduler/brs-api-importer            [:duct/daemon]
  :gpml.scheduler/chat-active-status-observer [:duct/daemon]
+ :gpml.scheduler/picture-file-reconciler     [:duct/daemon]
  :gpml.scheduler/chat-message-summarizer     [:duct/daemon]}
