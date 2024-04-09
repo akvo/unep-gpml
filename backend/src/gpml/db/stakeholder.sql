@@ -338,6 +338,7 @@ WHERE 1=1
 --~(when (seq (get-in params [:filters :roles])) " AND s.role = ANY(ARRAY[:v*:filters.roles]::stakeholder_role[])")
 --~(when (seq (get-in params [:filters :search-text])) " AND (LOWER(s.first_name) ILIKE '%' || :filters.search-text || '%' OR LOWER(s.last_name) ILIKE '%' || :filters.search-text || '%' OR LOWER(s.email) ILIKE '%' || :filters.search-text || '%')")
 --~(when (seq (get-in params [:filters :chat-accounts-ids])) " AND s.chat_account_id IN (:v*:filters.chat-accounts-ids)")
+--~(when (get-in params [:filters :chat-account-id-not-null]) " AND s.chat_account_id IS NOT NULL")
 GROUP BY s.id
 --~(when (get (:related-entities params) :organisation) ", o.id")
 --~(when (get (:related-entities params) :picture-file) ", f.id")
