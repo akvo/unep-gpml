@@ -47,10 +47,7 @@ const Sidebar = ({ alt }) => {
     <div className={styles.container}>
       {alt ? (
         <>
-          <CategoriesNested
-            categories={categories}
-            onCategoryClick={handleCategoryClick}
-          />
+          <CategoriesNested categories={categories} />
         </>
       ) : (
         <>

@@ -3,18 +3,19 @@ import { Layout, Typography, Menu, Tag } from 'antd'
 import { CloseCircleFilled } from '@ant-design/icons'
 import useQueryParameters from '../../../../hooks/useQueryParameters'
 import useSubcategories from '../../../../hooks/useSubcategories'
+import useIndicators from '../../../../hooks/useIndicators'
 import Subcategories from './../partials/subcategories'
 
 const { Sider } = Layout
 
-const CategoriesNested = ({ categories, onCategoryClick }) => {
+const CategoriesNested = ({ categories }) => {
   const { queryParameters, setQueryParameters } = useQueryParameters()
-  console.log(queryParameters)
+
   const handleCategoryClick = (category) => {
-    onCategoryClick(category)
     setQueryParameters({ categoryId: category.attributes.categoryId })
   }
   const subcategories = useSubcategories(queryParameters.categoryId)
+  const { layers, loading } = useIndicators()
   const handleCloseLayer = (layerId) => {
     const updatedLayers = queryParameters.layers.filter(
       (layer) => layer.id !== layerId
@@ -51,7 +52,11 @@ const CategoriesNested = ({ categories, onCategoryClick }) => {
               </span>
             </Menu.Item>
             {isCategorySelected(category) && (
-              <Subcategories subcategories={subcategories} />
+              <Subcategories
+                subcategories={subcategories}
+                layers={layers}
+                loading={loading}
+              />
             )}
             {queryParameters.layers &&
               queryParameters.layers

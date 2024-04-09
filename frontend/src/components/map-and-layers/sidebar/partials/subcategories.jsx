@@ -1,6 +1,5 @@
 import { Typography, Collapse, Switch } from 'antd'
 import React, { useState, useEffect } from 'react'
-import useIndicators from '../../../../hooks/useIndicators'
 import useQueryParameters from '../../../../hooks/useQueryParameters'
 import { Tooltip } from 'antd'
 
@@ -10,19 +9,10 @@ import LayerInfo from './layerInfo'
 import { useRouter } from 'next/router'
 
 const { Panel } = Collapse
-
-const Subcategories = ({ subcategories }) => {
+const Subcategories = ({ subcategories, layers, loading }) => {
   const { queryParameters, setQueryParameters } = useQueryParameters()
-
   const [expandedSubcategory, setExpandedSubcategory] = useState(null)
-
   const router = useRouter()
-
-  useEffect(() => {
-    if (router.query.subcategoryId !== expandedSubcategory) {
-      setExpandedSubcategory(router.query.subcategoryId || null)
-    }
-  }, [router.query.subcategoryId])
 
   useEffect(() => {
     const layersParam = queryParameters.layers
@@ -34,26 +24,20 @@ const Subcategories = ({ subcategories }) => {
     }
   }, [])
 
-  const handleSubcategoryClick = (subcategory) => {
-    const newSubcategoryId =
-      expandedSubcategory === subcategory.attributes.subcategoryId
-        ? null
-        : subcategory.attributes.subcategoryId
-    setExpandedSubcategory(subcategory.attributes.subcategoryId)
+  const handleSubcategoryChange = (key) => {
+    setExpandedSubcategory(key)
 
     router.push(
       {
         pathname: router.pathname,
-        query: { ...queryParameters, subcategoryId: newSubcategoryId },
+        query: { ...queryParameters, subcategoryId: key },
       },
       undefined,
       { shallow: true }
     )
 
-    setQueryParameters({ subcategoryId: subcategory.attributes.subcategoryId })
+    setQueryParameters({ subcategoryId: key })
   }
-
-  const layers = useIndicators(expandedSubcategory)
 
   const handleLayerClick = (layer) => {
     let updatedLayers = []
@@ -74,21 +58,32 @@ const Subcategories = ({ subcategories }) => {
     setQueryParameters({ layers: updatedLayers })
   }
 
-  const sortedLayers = layers.layers
+  if (loading) {
+    return <div>Loading...</div>
+  }
+
+  let filteredLayers = layers.filter(
+    (layer) => layer.attributes.subcategoryId === expandedSubcategory
+  )
+
+  const sortedLayers = filteredLayers
     .slice()
     .sort((a, b) => a.attributes.title.localeCompare(b.attributes.title))
 
   return (
     <div>
-      <Collapse accordion ghost expandIconPosition="right" destroyInactivePanel>
+      <Collapse
+        accordion
+        ghost
+        expandIconPosition="right"
+        destroyInactivePanel
+        onChange={handleSubcategoryChange}
+        activeKey={expandedSubcategory}
+      >
         {subcategories?.subcategories?.data?.map((subcategory, index) => (
           <Panel
             key={subcategory.attributes.subcategoryId}
-            header={
-              <div onClick={() => handleSubcategoryClick(subcategory)}>
-                {subcategory.attributes.subcategoryName}
-              </div>
-            }
+            header={subcategory.attributes.subcategoryName}
           >
             {sortedLayers.map((layer, layerIndex) => (
               <div
@@ -122,7 +117,11 @@ const Subcategories = ({ subcategories }) => {
                       )}
                     ></LayerInfo>
                   }
-                  overlayInnerStyle={{ backgroundColor: 'white', width: 'auto', height: 'auto' }}
+                  overlayInnerStyle={{
+                    backgroundColor: 'white',
+                    width: 'auto',
+                    height: 'auto',
+                  }}
                 >
                   <InfoCircleFilled
                     style={{
