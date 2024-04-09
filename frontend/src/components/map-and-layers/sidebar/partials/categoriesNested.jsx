@@ -14,13 +14,13 @@ const CategoriesNested = ({ categories, subcategories }) => {
     setQueryParameters({ categoryId: category.attributes.categoryId })
   }
 
-  const subcategoriesByCategory = subcategories?.subcategories.data.filter(
+  const subcategoriesByCategory = subcategories?.subcategories?.data?.filter(
     (subcategory) =>
       subcategory.attributes.categoryId === queryParameters.categoryId
   )
   const { layers, loading } = useIndicators()
   const handleCloseLayer = (layerId) => {
-    const updatedLayers = queryParameters.layers.filter(
+    const updatedLayers = queryParameters.layers?.filter(
       (layer) => layer.id !== layerId
     )
     setQueryParameters({ layers: updatedLayers })
@@ -63,7 +63,7 @@ const CategoriesNested = ({ categories, subcategories }) => {
             )}
             {queryParameters.layers &&
               queryParameters.layers
-                .filter(
+                ?.filter(
                   (layer) => layer.categoryId === category.attributes.categoryId
                 )
                 .map((layer) => (

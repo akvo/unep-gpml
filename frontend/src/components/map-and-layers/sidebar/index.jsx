@@ -1,15 +1,12 @@
 import React, { useState } from 'react'
-import useQueryParameters from '../../../hooks/useQueryParameters'
 import Categories from './partials/categories'
 import useCategories from '../../../hooks/useCategories'
 import useSubcategories from '../../../hooks/useSubcategories'
-import { useRouter } from 'next/router'
 import Subcategories from './partials/subcategories'
 import styles from './index.module.scss'
 import CategoriesNested from './partials/categoriesNested'
 
 const Sidebar = ({ alt }) => {
-  const { setQueryParameters, queryParameters } = useQueryParameters()
   const [showLayerSidebar, setShowLayerSidebar] = useState(false)
 
   const { categories, loading } = useCategories()
@@ -26,13 +23,6 @@ const Sidebar = ({ alt }) => {
 
   const handleCategoryClick = () => {
     setShowLayerSidebar(true)
-  }
-
-  const handleCollapseToggle = () => {
-    const newSidebarState = queryParameters.sidebar === 'show' ? 'hide' : 'show'
-
-    setShowLayerSidebar(!showLayerSidebar)
-    setQueryParameters({ ...queryParameters, sidebar: newSidebarState })
   }
 
   return (
