@@ -80,7 +80,7 @@ const Subcategories = ({ subcategories, layers, loading }) => {
         onChange={handleSubcategoryChange}
         activeKey={expandedSubcategory}
       >
-        {subcategories?.subcategories?.data?.map((subcategory, index) => (
+        {subcategories?.map((subcategory, index) => (
           <Panel
             key={subcategory.attributes.subcategoryId}
             header={subcategory.attributes.subcategoryName}

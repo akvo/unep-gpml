@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-const useSubcategories = (categoryId) => {
+const useSubcategories = () => {
   const [subcategories, setSubategories] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -9,7 +9,7 @@ const useSubcategories = (categoryId) => {
     const fetchSubategories = async () => {
       try {
         const response = await axios.get(
-          `https://unep-gpml.akvotest.org/strapi/api/subcategories?filters[categoryId][$eq]=${categoryId}`
+          `https://unep-gpml.akvotest.org/strapi/api/subcategories?pagination[pageSize]=100`
         );
 
         setSubategories(response.data || []);
@@ -21,7 +21,7 @@ const useSubcategories = (categoryId) => {
     };
 
     fetchSubategories();
-  }, [categoryId]);
+  }, []);
 
   return { subcategories, loading };
 };

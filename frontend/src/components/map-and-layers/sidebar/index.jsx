@@ -9,20 +9,12 @@ import styles from './index.module.scss'
 import CategoriesNested from './partials/categoriesNested'
 
 const Sidebar = ({ alt }) => {
-  const router = useRouter()
-
-  const {
-    setQueryParameters,
-    queryParameters,
-    createQueryParametersString,
-  } = useQueryParameters()
+  const { setQueryParameters, queryParameters } = useQueryParameters()
   const [showLayerSidebar, setShowLayerSidebar] = useState(false)
-
-  const categoryId = queryParameters.categoryId
 
   const { categories, loading } = useCategories()
 
-  const subcategories = useSubcategories(categoryId)
+  const subcategories = useSubcategories()
 
   if (loading) {
     return <div>Loading...</div>
@@ -47,7 +39,10 @@ const Sidebar = ({ alt }) => {
     <div className={styles.container}>
       {alt ? (
         <>
-          <CategoriesNested categories={categories} />
+          <CategoriesNested
+            categories={categories}
+            subcategories={subcategories}
+          />
         </>
       ) : (
         <>
