@@ -21,8 +21,7 @@
    [integrant.repl.state :refer [config system]]
    [next.jdbc]
    [next.jdbc.connection :as connection]
-   [ns-tracker.core :refer [ns-tracker]]
-   [taoensso.timbre :as timbre]))
+   [ns-tracker.core :refer [ns-tracker]]))
 
 (require 'gpml.main) ;; Load core multimethods, transitively
 (require 'malli.provider)
@@ -141,11 +140,6 @@
                 :resource? true
                 :technology? true
                 :project? true}))
-
-(when (= "vemv" (System/getenv "USER"))
-  ;; Disable the default Timbre logger, given I prefer the CIDER logger
-  ;; (https://docs.cider.mx/cider/debugging/logging.html )
-  (timbre/set-config! (update timbre/*config* :appenders dissoc :println)))
 
 (defmethod ig/init-key :dev/bypass-auth [_ _]
   (fn [handler]
