@@ -133,7 +133,8 @@ const LegendCard = ({
       {layerId && (
         <Tooltip
           placement={tooltipPlacement}
-          title={
+          overlayStyle={{ maxWidth: '500px', width: 'auto' }}
+          overlay={
             <LayerInfo
               layer={layers?.layers?.find(
                 (layerInfoItem) =>
@@ -141,6 +142,11 @@ const LegendCard = ({
               )}
             ></LayerInfo>
           }
+          overlayInnerStyle={{
+            backgroundColor: 'white',
+            width: 'auto',
+            height: 'auto',
+          }}
         >
           <InfoCircleFilled
             style={{

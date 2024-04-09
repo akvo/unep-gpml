@@ -5,14 +5,14 @@ const { Title: AntTitle, Paragraph: AntParagraph } = Typography
 
 const LayerInfo = ({ layer }) => {
   const handleReadMoreClick = () => {
-    window.open(layer.attributes.url, '_blank', 'noopener,noreferrer')
+    window.open(layer?.attributes.url, '_blank', 'noopener,noreferrer')
   }
 
   return (
-    <div>
+    <div style={{ border: 'none' }}>
       <Card>
         <AntTitle level={3}>{layer?.attributes.title}</AntTitle>
-        <AntParagraph>{layer.attributes.shortDescription}</AntParagraph>
+        <AntParagraph>{layer?.attributes.shortDescription}</AntParagraph>
         <Button
           type="link"
           onClick={handleReadMoreClick}

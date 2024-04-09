@@ -38,7 +38,7 @@ const MapAndLayerPage = () => {
 
       <DynamicMap
         initialViewProperties={{
-          center: [87.5162, 14.5501],
+          center: [0, 0],
           zoom: 1,
         }}
       />

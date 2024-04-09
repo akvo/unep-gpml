@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import Sidebar from '../../../components/map-and-layers/sidebar'
-import useQueryParameters from '../../../hooks/useQueryParameters'
 import styles from './index.module.scss'
 import dynamic from 'next/dynamic'
 import { loadCatalog } from '../../../translations/utils'
@@ -12,26 +11,6 @@ const MapAndLayerPage = () => {
       ssr: false,
     }
   )
-  const {
-    queryParameters: { sidebar },
-    setQueryParameters,
-    createQueryParametersString,
-  } = useQueryParameters()
-
-  const queryParameters = createQueryParametersString({
-    sidebar: 'hide',
-    categoryId: '',
-    layers: [],
-  })
-
-  useEffect(() => {
-    if (sidebar === undefined || sidebar === null) {
-      setQueryParameters({
-        ...queryParameters,
-        sidebar: 'show',
-      })
-    }
-  }, [])
 
   return (
     <div className={styles.container}>
@@ -39,7 +18,7 @@ const MapAndLayerPage = () => {
 
       <DynamicMap
         initialViewProperties={{
-          center: [87.5162, 14.5501],
+          center: [0, 0],
           zoom: 1,
         }}
       />
