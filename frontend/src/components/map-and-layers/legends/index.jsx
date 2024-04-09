@@ -142,7 +142,11 @@ const LegendCard = ({
               )}
             ></LayerInfo>
           }
-          overlayInnerStyle={{ backgroundColor: 'white', width: 'auto', height: 'auto' }}
+          overlayInnerStyle={{
+            backgroundColor: 'white',
+            width: 'auto',
+            height: 'auto',
+          }}
         >
           <InfoCircleFilled
             style={{

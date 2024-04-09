@@ -110,7 +110,7 @@ const Subcategories = ({ subcategories, layers, loading }) => {
                   overlayStyle={{ maxWidth: '600px', width: 'auto' }}
                   overlay={
                     <LayerInfo
-                      layer={layers.layers?.find(
+                      layer={filteredLayers?.find(
                         (layerInfoItem) =>
                           layerInfoItem.arcgislayerId === layer.arcgislayerId &&
                           layerInfoItem.id === layer.id
