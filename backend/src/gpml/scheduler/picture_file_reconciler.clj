@@ -24,6 +24,7 @@
                                    chat :chat-adapter
                                    :as config}]
   {:pre [db hikari logger chat]}
+  (log logger :info :starting)
   (saga logger {:success? true}
     (fn get-users-with-a-profile-picture-and-dsc-account [context]
       (let [v (into {}
