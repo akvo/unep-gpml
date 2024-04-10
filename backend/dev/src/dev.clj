@@ -153,22 +153,23 @@
 (comment
   ;; Grabs the test/prod gcloud logs between two timestamps.
   ;; This data is good to feed into your favorite interactive tool (rebl, cider inspector, etc).
-  @(def gcloud-logs
-     (into []
-           (keep (some-fn :jsonPayload :textPayload))
-           (-> "glog.sh"
-               io/file
-               .getAbsolutePath
-               (sh "test" ;; "production" | "test"
-                   ;; times are UTC
-                   "2024-04-10T11:55:00Z"
-                   "2024-04-10T12:55:00Z")
-               :out
-               json/<-json)))
+  (def gcloud-logs
+    (into []
+          (keep (some-fn :jsonPayload :textPayload))
+          (-> "glog.sh"
+              io/file
+              .getAbsolutePath
+              (sh "test" ;; "production" | "test"
+                  ;; times are UTC
+                  "2024-04-10T12:55:00Z"
+                  "2024-04-10T13:55:00Z")
+              :out
+              json/<-json)))
 
-  (remove (comp #{"gpml.scheduler.chat-message-summarizer"}
-                :ns)
-          gcloud-logs)
+  (into []
+        (remove (comp #{"gpml.scheduler.chat-message-summarizer"}
+                      :ns))
+        gcloud-logs)
 
   (filterv (comp #{"gpml.scheduler.picture-file-reconciler"}
                  :ns)

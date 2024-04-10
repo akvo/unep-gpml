@@ -81,6 +81,9 @@
                              (let [{picture-url :url} (srv.file/get-file-url config picture-file)
                                    match (get-in context [:dsc-users chat-account-id])]
                                (when-not match
+                                 ;; NOTE: :no-match can happen in the test environment, given that
+                                 ;; the prod DB was recently copied into the test DB.
+                                 ;; So there's nothing too bad about these, in principle.
                                  (log logger :warn :no-match {:stakeholder-chat-account-id chat-account-id
                                                               :dsc-chat-account-ids (-> context :dsc-users keys)}))
                                (and picture-url
