@@ -57,7 +57,9 @@ const LegendCard = ({
       },
     }
 
-    const allLegendItems = [noDataLegendItem, ...classBreakInfos]
+    const allLegendItems = classBreakInfos
+      ? [noDataLegendItem, ...classBreakInfos]
+      : [noDataLegendItem]
     return allLegendItems?.map(({ label, symbol }) => {
       let colorStyle
       if (Array.isArray(symbol.color) && !symbol?.data?.symbol) {
