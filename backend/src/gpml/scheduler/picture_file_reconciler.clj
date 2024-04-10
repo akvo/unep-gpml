@@ -81,7 +81,8 @@
                              (let [{picture-url :url} (srv.file/get-file-url config picture-file)
                                    match (get-in context [:dsc-users chat-account-id])]
                                (when-not match
-                                 (log logger :warn :no-match {:chat-account-id chat-account-id}))
+                                 (log logger :warn :no-match {:stakeholder-chat-account-id chat-account-id
+                                                              :dsc-chat-account-ids (-> context :dsc-users keys)}))
                                (and picture-url
                                     match
                                     (not= picture-url (get match :profile-pic))))))
@@ -102,8 +103,11 @@
                                      :error-details {:result result})))))
                     (assoc context :affected 0)
                     (:stakeholders-with-newer-profile-picture context))]
-        (log logger :info :done {:affected affected})
+        (log logger :info :done {:context final})
         final))))
+
+(comment
+  (reconcile-profile-pictures (dev/config-component)))
 
 (defjob profile-picture-reconcilation
   [_scheduler config]
