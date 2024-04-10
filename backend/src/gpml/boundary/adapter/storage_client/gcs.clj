@@ -2,7 +2,8 @@
   (:require
    [clj-gcp.storage.core]
    [gpml.boundary.port.storage-client :as port]
-   [integrant.core :as ig])
+   [integrant.core :as ig]
+   [taoensso.timbre :as timbre])
   (:import
    (com.google.cloud.storage BlobId BlobInfo Storage Storage$SignUrlOption)
    (java.util.concurrent TimeUnit)))
@@ -24,6 +25,7 @@
       {:success? true
        :url url})
     (catch Exception t
+      (timbre/error t)
       {:success? false
        :reason :exception
        :error-details {:msg (ex-message t)}})))
