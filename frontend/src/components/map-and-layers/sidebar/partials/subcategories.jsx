@@ -6,13 +6,10 @@ import { Tooltip } from 'antd'
 import { InfoCircleFilled } from '@ant-design/icons'
 import LayerInfo from './layerInfo'
 
-import { useRouter } from 'next/router'
-
 const { Panel } = Collapse
 const Subcategories = ({ subcategories, layers, loading }) => {
   const { queryParameters, setQueryParameters } = useQueryParameters()
   const [expandedSubcategory, setExpandedSubcategory] = useState(null)
-  const router = useRouter()
 
   useEffect(() => {
     const layersParam = queryParameters.layers
@@ -26,15 +23,6 @@ const Subcategories = ({ subcategories, layers, loading }) => {
 
   const handleSubcategoryChange = (key) => {
     setExpandedSubcategory(key)
-
-    router.push(
-      {
-        pathname: router.pathname,
-        query: { ...queryParameters, subcategoryId: key },
-      },
-      undefined,
-      { shallow: true }
-    )
 
     setQueryParameters({ subcategoryId: key })
   }
