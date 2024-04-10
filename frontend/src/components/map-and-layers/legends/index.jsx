@@ -136,7 +136,12 @@ const LegendCard = ({
       </Typography>
 
       {arcgismapId
-        ? rendererObj && renderLegendItems(rendererObj.classBreakInfos)
+        ? rendererObj &&
+          renderLegendItems(
+            rendererObj.classBreakInfos
+              ? rendererObj.classBreakInfos
+              : rendererObj?.uniqueValueGroups[0].classes
+          )
         : legends?.legends?.drawingInfo?.renderer?.classBreakInfos &&
           renderLegendItems(
             legends.legends.drawingInfo.renderer.classBreakInfos
