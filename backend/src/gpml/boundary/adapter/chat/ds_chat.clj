@@ -50,6 +50,7 @@
    :is-moderator
    :provisioned
    :unique-user-identifier
+   :profile-pic
    :updated
    :username])
 
@@ -638,8 +639,8 @@
      `port.chat/delete-private-channel            delete-channel*
      `port.chat/delete-public-channel             delete-channel*
      `port.chat/delete-user-account               delete-user-account*
-     `port.chat/get-channel                       get-channel*
      `port.chat/get-all-channels                  get-all-channels*
+     `port.chat/get-channel                       get-channel*
      `port.chat/get-private-channels              (get-all-channels-fn "private")
      `port.chat/get-public-channels               (get-all-channels-fn "public")
      `port.chat/get-channel-discussions           get-channel-discussions*
