@@ -1031,5 +1031,5 @@
                                               :scheduler-config {:time-zone #duct/env ["SCHEDULER_TIME_ZONE" Str :or "Europe/Madrid"]
                                                                  :identity  "picture-file-reconciler"
                                                                  :cron      #duct/env ["SCHEDULER_PICTURE_FILE_RECONCILER_CRON" Str
-                                                                                       ;; Every hour
-                                                                                       :or "0 0 * * * ?"]}}}
+                                                                                       ;; Every hour when the clock hits 59 minutes
+                                                                                       :or "0 59 * * * ?"]}}}
