@@ -10,7 +10,7 @@ const useLayerInfo = () => {
         const fetchLayers = async () => {
             try {
                 const response = await axios.get(
-                    `https://unep-gpml.akvotest.org/strapi/api/layers`
+                    `https://unep-gpml.akvotest.org/strapi/api/layers?pagination[pageSize]=100`
                 );
 
                 setLayers(response.data.data || []);

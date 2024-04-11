@@ -29,51 +29,57 @@ const useLayers = (renderers) => {
     });
 
     try {
-      const featureLayer = new FeatureLayer({
-        url: url,
-        outFields: arrayFields ? arrayFields : ["*"],
-        ...(layer.attributes.arcgisMapId !== null ? { renderer: renderer } : {}),
-        labelingInfo: [new LabelClass({
-          labelExpressionInfo: layer.attributes.labelExpression ? { expression: "$feature.NAME" } : "",
-          symbol: {
-            type: "text",
-            color: "#000000",
-            haloColor: "white",
-            haloSize: "2px",
-            font: {
-              family: "Arial",
-              size: 8,
-              weight: "bold"
-            }
-          },
-        })],
-        popupTemplate: {
-          title: "{origin} {destination}",
-          content: async function (feature) {
-            const attributes = feature.graphic.attributes;
-            const domainPromises = Object.entries(attributes).map(async ([key, value]) => {
-              try {
-                const domain = await featureLayer.getFieldDomain(key);
-                const displayValue = domain ? domain.codedValues.find(cv => cv.code === value)?.name : value;
-                return `<div class="popup-field">
+
+      const featureLayer = (layer.attributes.arcgisMapId !== null && layer.attributes.layerMappingId === null) ? new FeatureLayer({
+        portalItem: {
+          id: layer.attributes.arcgisMapId
+        }
+      }) :
+        new FeatureLayer({
+          url: url,
+          outFields: arrayFields ? arrayFields : ["*"],
+          ...(layer.attributes.arcgisMapId !== null ? { renderer: renderer } : {}),
+          labelingInfo: [new LabelClass({
+            labelExpressionInfo: layer.attributes.labelExpression ? { expression: "$feature.NAME" } : "",
+            symbol: {
+              type: "text",
+              color: "#000000",
+              haloColor: "white",
+              haloSize: "2px",
+              font: {
+                family: "Arial",
+                size: 8,
+                weight: "bold"
+              }
+            },
+          })],
+          popupTemplate: {
+            title: "{origin} {destination}",
+            content: async function (feature) {
+              const attributes = feature.graphic.attributes;
+              const domainPromises = Object.entries(attributes).map(async ([key, value]) => {
+                try {
+                  const domain = await featureLayer.getFieldDomain(key);
+                  const displayValue = domain ? domain.codedValues.find(cv => cv.code === value)?.name : value;
+                  return `<div class="popup-field">
                           <strong class="popup-field-name">${key}:</strong>
                           <span class="popup-field-value">${displayValue}</span>
                         </div>`;
-              } catch (error) {
-                console.error("Error getting field domain:", error);
-                return `<div class="popup-field">
+                } catch (error) {
+                  console.error("Error getting field domain:", error);
+                  return `<div class="popup-field">
                           <strong class="popup-field-name">${key}:</strong>
                           <span class="popup-field-value">${value}</span>
                         </div>`;
-              }
-            });
+                }
+              });
 
-            const contentElements = await Promise.all(domainPromises);
-            return `<div class="popup-content">${contentElements.join('')}</div>`;
+              const contentElements = await Promise.all(domainPromises);
+              return `<div class="popup-content">${contentElements.join('')}</div>`;
+            }
           }
-        }
 
-      })
+        })
 
       featureLayer.load().then(() => {
         if (featureLayer.popupTemplate) {
