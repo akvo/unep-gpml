@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import WebMap from "@arcgis/core/WebMap.js";
 import useQueryParameters from "./useQueryParameters";
 import { isEqual } from "lodash";
+import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 
 const useLoadMap = () => {
   const { queryParameters } = useQueryParameters();
@@ -13,19 +14,29 @@ const useLoadMap = () => {
 
   useEffect(() => {
     let isCancelled = false;
-
+    let webMap = null;
     const loadWebMapLayer = async (layer) => {
       if (layer.attributes.arcgisMapId) {
 
-        const webMap = new WebMap({
-          portalItem: {
-            id: layer.attributes.arcgisMapId
-          }
-        });
+        if (layer.attributes.layerMappingId === null) {
+
+          webMap = new FeatureLayer({
+            portalItem: {
+              id: layer.attributes.arcgisMapId
+            }
+          })
+
+        } else {
+          webMap = new WebMap({
+            portalItem: {
+              id: layer.attributes.arcgisMapId
+            }
+          });
+        }
 
 
         await webMap.load();
-        return webMap?.layers?.getItemAt(layer.attributes.layerMappingId)?.renderer;
+        return layer.attributes.layerMappingId !== null ? webMap?.layers?.getItemAt(layer.attributes.layerMappingId)?.renderer : webMap;
       }
       return null;
     };

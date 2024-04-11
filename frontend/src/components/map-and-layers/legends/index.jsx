@@ -13,12 +13,13 @@ const LegendCard = ({
   layerId,
   title,
   arcgismapId,
+  layerMappingId,
   uniqueId,
   layerShortDescription,
   unit,
 }) => {
   const [tooltipPlacement, setTooltipPlacement] = useState('right')
-  const legends = useLegends(layerId)
+  const legends = useLegends(layerId, arcgismapId, layerMappingId)
   const mapp = useLoadMap()
   const layers = useLayerInfo()
 
@@ -136,16 +137,17 @@ const LegendCard = ({
         {layerShortDescription}
       </Typography>
 
-      {arcgismapId
+      {arcgismapId && layerMappingId !== null
         ? rendererObj &&
           renderLegendItems(
             rendererObj.classBreakInfos
               ? rendererObj.classBreakInfos
               : rendererObj?.uniqueValueGroups[0].classes
           )
-        : legends?.legends?.drawingInfo?.renderer?.classBreakInfos &&
-          renderLegendItems(
-            legends.legends.drawingInfo.renderer.classBreakInfos
+        : renderLegendItems(
+            legends?.legends?.drawingInfo?.renderer
+              ? legends?.legends?.drawingInfo?.renderer.classBreakInfos
+              : mapp?.renderers[0]?.renderer?.renderer.classBreakInfos
           )}
 
       {layerId && (
@@ -189,6 +191,7 @@ const Legends = () => {
       uniqueId={layer?.id}
       title={layer?.attributes.title.toString()}
       arcgismapId={layer.attributes.arcgisMapId}
+      layerMappingId={layer.attributes.layerMappingId}
       layerShortDescription={layer.attributes.shortDescription}
       unit={layer.attributes.units}
     />
