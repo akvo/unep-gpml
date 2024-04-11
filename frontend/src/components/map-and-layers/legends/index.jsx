@@ -13,6 +13,7 @@ const LegendCard = ({
   layerId,
   title,
   arcgismapId,
+  uniqueId,
   layerShortDescription,
   unit,
 }) => {
@@ -155,7 +156,8 @@ const LegendCard = ({
             <LayerInfo
               layer={layers?.layers?.find(
                 (layerInfoItem) =>
-                  layerInfoItem.attributes.arcgislayerId === layerId
+                  layerInfoItem.attributes.arcgislayerId === layerId &&
+                  uniqueId === layerInfoItem.id
               )}
             ></LayerInfo>
           }
@@ -184,6 +186,7 @@ const Legends = () => {
     <LegendCard
       key={index}
       layerId={layer?.attributes.arcgislayerId}
+      uniqueId={layer?.id}
       title={layer?.attributes.title.toString()}
       arcgismapId={layer.attributes.arcgisMapId}
       layerShortDescription={layer.attributes.shortDescription}
