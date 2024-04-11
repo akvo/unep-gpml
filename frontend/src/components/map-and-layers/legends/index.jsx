@@ -49,7 +49,18 @@ const LegendCard = ({
   }, [])
 
   const renderLegendItems = (classBreakInfos) => {
-    return classBreakInfos?.map(({ label, symbol }) => {
+    const noDataLegendItem = {
+      label: 'No Data',
+      symbol: {
+        color: [255, 255, 255, 1],
+        border: '1px solid black',
+      },
+    }
+
+    const allLegendItems = classBreakInfos
+      ? [noDataLegendItem, ...classBreakInfos]
+      : [noDataLegendItem]
+    return allLegendItems?.map(({ label, symbol }) => {
       let colorStyle
       if (Array.isArray(symbol.color) && !symbol?.data?.symbol) {
         colorStyle = `rgba(${symbol.color.join(', ')})`
@@ -75,6 +86,7 @@ const LegendCard = ({
               width: '10px',
               height: '10px',
               backgroundColor: colorStyle,
+              border: '1px solid gray',
               marginRight: '6px',
               borderRadius: '2px',
             }}
@@ -124,7 +136,12 @@ const LegendCard = ({
       </Typography>
 
       {arcgismapId
-        ? rendererObj && renderLegendItems(rendererObj.classBreakInfos)
+        ? rendererObj &&
+          renderLegendItems(
+            rendererObj.classBreakInfos
+              ? rendererObj.classBreakInfos
+              : rendererObj?.uniqueValueGroups[0].classes
+          )
         : legends?.legends?.drawingInfo?.renderer?.classBreakInfos &&
           renderLegendItems(
             legends.legends.drawingInfo.renderer.classBreakInfos
