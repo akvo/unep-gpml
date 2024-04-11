@@ -3,8 +3,6 @@ import MapView from '@arcgis/core/views/MapView.js'
 import ArcGISMap from '@arcgis/core/Map.js'
 import styles from './index.module.scss'
 
-// import styled from 'styled-components'
-
 import useQueryParameters from '../../../hooks/useQueryParameters'
 import useLayers from '../../../hooks/useLayers'
 
@@ -108,51 +106,3 @@ const Map = ({ initialViewProperties }) => {
 }
 
 export default Map
-
-// const Container = styled.div`
-//   position: relative;
-
-//   background-color: #d3dee726;
-//   flex: 1;
-//   display: flex;
-//   width: 100%;
-//   height: 100%;
-
-//   .esri-attribution {
-//     display: none;
-//   }
-
-//   .esri-view-root {
-//     z-index: 1000;
-//   }
-//   .esri-view {
-//     position: relative;
-//   }
-
-//   .esri-popup {
-//     position: absolute;
-//     top: 50%;
-//     left: 50%;
-//     transform: translate(-50%, -50%);
-//     border-radius: 8px;
-//     overflow: auto;
-//     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-//   }
-
-//   .esri-popup__main-container {
-//     background-color: white !important;
-//     padding: 16px;
-//     border-radius: 8px;
-//   }
-
-//   .esri-popup__header {
-//     background-color: #f0f0f0;
-//     border-bottom: 1px solid #dcdcdc;
-//   }
-
-//   .esri-popup__content {
-//     max-height: 300px;
-//     overflow-y: auto;
-//     overflow-x: hidden;
-//   }
-// `
