@@ -108,8 +108,8 @@ const menuList = [
         to: '/page/who-we-are',
       },
       {
-        key: msg`Regional Notes`,
-        id: 'Regional Notes',
+        key: msg`Digital Platform`,
+        id: 'Digital Platform',
         to: '/page/regional-nodes',
       },
     ],
