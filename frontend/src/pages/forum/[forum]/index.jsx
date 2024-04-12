@@ -655,7 +655,7 @@ const Discussions = ({
                 onClick={handleCreateDiscussion}
                 loading={creating}
               >
-                Create Disussion
+                Create Discussion
               </Button>
               <Button
                 type="ghost"

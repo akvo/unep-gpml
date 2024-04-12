@@ -1138,7 +1138,7 @@ const Partnership = ({ isAuthenticated, setLoginVisible }) => {
                 </li>
                 <li>
                   <CirclePointer />
-                  <Link href="/page/membership">
+                  <Link href="/partnership">
                     <Trans>Join the GPML</Trans>
                   </Link>
                 </li>
