@@ -981,6 +981,11 @@ function Partnership({ isAuthenticated }) {
                                         onChange={(value) =>
                                           input.onChange(value)
                                         }
+                                        filterOption={(input, option) =>
+                                          option.children
+                                            .toLowerCase()
+                                            .indexOf(input.toLowerCase()) >= 0
+                                        }
                                         onBlur={() => input.onBlur()}
                                         value={input.value}
                                         placeholder="Countries"
@@ -1003,7 +1008,7 @@ function Partnership({ isAuthenticated }) {
                                               {it.name}
                                             </Option>
                                           ))}
-                                      </Select>{' '}
+                                      </Select>
                                       {meta.touched && meta.error && (
                                         <p
                                           color="error"
