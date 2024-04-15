@@ -121,7 +121,7 @@ msgstr ""
 msgid "About yourself"
 msgstr ""
 
-#: src/pages/partnership/index.jsx:367
+#: src/pages/partnership/index.jsx:368
 msgid "Access"
 msgstr ""
 
@@ -596,7 +596,7 @@ msgstr ""
 msgid "Certification, Licensing and Registration"
 msgstr ""
 
-#: src/pages/partnership/index.jsx:416
+#: src/pages/partnership/index.jsx:417
 msgid "Certified"
 msgstr ""
 
@@ -744,7 +744,7 @@ msgstr ""
 msgid "COBSEA Regional Action Plan on Marine Litter 2019"
 msgstr ""
 
-#: src/pages/partnership/index.jsx:380
+#: src/pages/partnership/index.jsx:381
 msgid "Collaborate"
 msgstr ""
 
@@ -1294,7 +1294,7 @@ msgstr ""
 #: src/modules/login/view.jsx:260
 #: src/modules/signup-old/signup-form.jsx:44
 #: src/modules/workspace/ps/setup-team-form.jsx:226
-#: src/pages/partnership/index.jsx:1132
+#: src/pages/partnership/index.jsx:1133
 msgid "Email"
 msgstr ""
 
@@ -1522,7 +1522,7 @@ msgid "First name"
 msgstr ""
 
 #: src/modules/onboarding/form-four.jsx:46
-#: src/pages/partnership/index.jsx:1259
+#: src/pages/partnership/index.jsx:1260
 msgid "First Name"
 msgstr ""
 
@@ -2202,7 +2202,7 @@ msgid "Last name"
 msgstr ""
 
 #: src/modules/onboarding/form-four.jsx:68
-#: src/pages/partnership/index.jsx:1300
+#: src/pages/partnership/index.jsx:1301
 msgid "Last Name"
 msgstr ""
 
@@ -2214,7 +2214,7 @@ msgstr ""
 msgid "Leadership by specific individuals in the member state or organisation (who personallydrove change)"
 msgstr ""
 
-#: src/pages/partnership/index.jsx:404
+#: src/pages/partnership/index.jsx:405
 msgid "Learn"
 msgstr ""
 
@@ -2929,7 +2929,7 @@ msgid "Partnerships for the Goals"
 msgstr ""
 
 #: src/modules/login/view.jsx:293
-#: src/pages/partnership/index.jsx:1170
+#: src/pages/partnership/index.jsx:1171
 msgid "Password"
 msgstr ""
 
@@ -3481,7 +3481,7 @@ msgid "Setup your team"
 msgstr ""
 
 #: src/modules/details-page/header.jsx:207
-#: src/pages/partnership/index.jsx:392
+#: src/pages/partnership/index.jsx:393
 msgid "Share"
 msgstr ""
 
@@ -3679,7 +3679,7 @@ msgstr ""
 #~ msgid "Submit an application for your organisation - Akvo Spain - to become part of the GPML."
 #~ msgstr ""
 
-#: src/pages/partnership/index.jsx:1099
+#: src/pages/partnership/index.jsx:1100
 msgid "Submit Application"
 msgstr ""
 
