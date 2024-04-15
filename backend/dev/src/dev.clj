@@ -161,19 +161,22 @@
               .getAbsolutePath
               (sh "test" ;; "production" | "test"
                   ;; times are UTC
-                  "2024-04-10T12:55:00Z"
-                  "2024-04-10T13:55:00Z")
+                  "2024-04-07T05:20:00Z"
+                  "2024-04-15T05:20:00Z")
               :out
               json/<-json)))
 
   (into []
-        (remove (comp #{"gpml.scheduler.chat-message-summarizer"}
+        (remove (comp #{"gpml.scheduler.chat-message-summarizer"
+                        "gpml.scheduler.picture-file-reconciler"}
                       :ns))
         gcloud-logs)
 
-  (filterv (comp #{"gpml.scheduler.picture-file-reconciler"}
-                 :ns)
-           gcloud-logs)
+  (into []
+        (comp (filter (comp #{"gpml.scheduler.picture-file-reconciler"}
+                            :ns))
+              (remove :no-match))
+        gcloud-logs)
 
   (filterv (comp #{"/api/chat/user/channel"}
                  :gpml.handler.main/request-url)
