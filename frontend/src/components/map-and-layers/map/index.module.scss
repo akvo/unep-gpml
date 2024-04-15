@@ -21,22 +21,55 @@
       position: absolute;
       top: 50%;
       left: 50%;
+      .ant-typography {
+        font-family: var(--font-archia), sans-serif;
+      }
+    
+      font-size: 13px;
       transform: translate(-50%, -50%);
+      text-align: left;
       border-radius: 8px;
       overflow: auto;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+   
+    .esri-popup .popup-table {
+      width: 100%;
+      border-collapse: collapse; 
+    }
+    
+    .esri-popup .popup-table td {
+      border-bottom: 1px solid #ccc; 
+      padding: 4px; 
+      text-align: left; 
+    }
+    
+    .esri-popup .popup-table tr:last-child td {
+      border-bottom: none; 
     }
 
     .esri-popup__main-container {
       background-color: white !important;
       padding: 16px;
-      border-radius: 8px;
+      border-radius: 3px;
     }
 
     .esri-popup__header {
-      background-color: #f0f0f0;
+      background-color: #f0f0f0; font-size: 8px; 
       border-bottom: 1px solid #dcdcdc;
     }
+    .esri-popup__header-title {
+      font-family: 'Arial', sans-serif; 
+      font-size: 10px; 
+      color: #003366; 
+      background-color: #f8f8f8;
+      padding: 8px;
+      border-bottom: 2px solid #ddd; 
+      text-align: center; 
+      
+    }
+
+    .esri-widget__heading.esri-features__heading { font-size: 20px; }
 
     .esri-popup__content {
       max-height: 300px;
