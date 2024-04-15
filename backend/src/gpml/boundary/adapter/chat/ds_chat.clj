@@ -121,31 +121,55 @@
    [:username {:optional true}
     :string]])
 
-(defn update-user-account* [{:keys [logger api-key]} unique-user-identifier updates]
+(defn update-user-account* [{:keys [logger api-key] :as this} unique-user-identifier updates]
   {:pre  [(check! port.chat/UniqueUserIdentifier unique-user-identifier
                   UserUpdates                    updates)]
    :post [(check! #'port.chat/update-user-account %)]}
-  (let [{:keys [status body]}
-        (http-client/request logger
-                             {:url (build-api-endpoint-url "/api/v1/user")
-                              :method :put
-                              :query-params {:auth api-key}
-                              :body (-> updates
-                                        (assoc :uniqueUserIdentifier unique-user-identifier)
-                                        json/->json)
-                              :content-type :json
-                              :as :json-keyword-keys})]
-    (timbre/with-context+ {:unique-user-identifier unique-user-identifier
-                           :updates updates}
-      (if (<= 200 status 299)
-        (do
-          (log logger :info :updated-user-account)
-          {:success? true})
-        (do
-          (log logger :warn :failed-to-update-user-account)
-          (failure {:reason :failed-to-update-user-account
-                    :error-details body
-                    :status status}))))))
+  (saga logger {:success? true}
+    ;; Retrieve values to use as defaults because as of today, this API needs all attributes to be present - else they'll be nulled out
+    (fn get-user [context]
+      (let [result (get-user-info* this unique-user-identifier :_)]
+        (if (:success? result)
+          (assoc context :user (:user result))
+          result)))
+
+    (fn effect-changes [context]
+      (let [{:keys [external-user-id
+                    is-moderator
+                    email
+                    profile-pic
+                    meta
+                    username]}
+            (-> context :user (select-keys user-info-keys))
+
+            {:keys [status body]}
+            (http-client/request logger
+                                 {:url (build-api-endpoint-url "/api/v1/user")
+                                  :method :put
+                                  :query-params {:auth api-key}
+                                  :body (json/->json (merge (when meta
+                                                              {:meta meta})
+                                                            (when profile-pic
+                                                              {:profilePic profile-pic})
+                                                            {:uniqueUserIdentifier unique-user-identifier
+                                                             :externalUserId external-user-id
+                                                             :isModerator is-moderator
+                                                             :email email
+                                                             :username username}
+                                                            updates))
+                                  :content-type :json
+                                  :as :json-keyword-keys})]
+        (timbre/with-context+ {:unique-user-identifier unique-user-identifier
+                               :updates updates}
+          (if (<= 200 status 299)
+            (do
+              (log logger :info :updated-user-account)
+              {:success? true})
+            (do
+              (log logger :warn :failed-to-update-user-account)
+              (failure {:reason :failed-to-update-user-account
+                        :error-details body
+                        :status status}))))))))
 
 (defn delete-user-account* [{:keys [logger api-key]} user-id _opts]
   {:pre  [(check! port.chat/UniqueUserIdentifier user-id)]
@@ -672,7 +696,8 @@
 
   (port.chat/update-user-account (dev/component :gpml.boundary.adapter.chat/ds-chat)
                                  uniqueUserIdentifier
-                                 {:email new-email})
+                                 {:email new-email
+                                  :profilePic "https://avatars.githubusercontent.com/u/1162994?v=4"})
 
   (port.chat/get-user-info (dev/component :gpml.boundary.adapter.chat/ds-chat)
                            uniqueUserIdentifier
