@@ -15,7 +15,7 @@ const View = () => {
         <Trans>description-available-data-4-data-analysis</Trans>
       </p>
       <iframe
-        src="https://unepazgpmlblobstorage.z20.web.core.windows.net/GPML_HubHomePage_react/index.html"
+        src="/data/maps?iframed=true"
         frameborder="0"
         width="100%"
         height="542"

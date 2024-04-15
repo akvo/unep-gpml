@@ -95,6 +95,8 @@ const NewLayout = ({
     })
   }
 
+  console.log(router.query.iframed)
+
   return (
     <>
       <style jsx global>{`
@@ -104,165 +106,167 @@ const NewLayout = ({
         }
       `}</style>
       <div>
-        <div
-          className={classNames('top-bar', { opened: openedItemKey != null })}
-          style={{
-            zIndex: isOpen ? 9 : 99,
-            position: openedItemKey ? 'sticky' : 'relative',
-          }}
-        >
-          <div className="container-fluid">
-            <Link href="/">
-              <div className="logo-container">
-                <div className="circle">
-                  <GpmlCircle />
+        {!router.query.iframed && (
+          <div
+            className={classNames('top-bar', { opened: openedItemKey != null })}
+            style={{
+              zIndex: isOpen ? 9 : 99,
+              position: openedItemKey ? 'sticky' : 'relative',
+            }}
+          >
+            <div className="container-fluid">
+              <Link href="/">
+                <div className="logo-container">
+                  <div className="circle">
+                    <GpmlCircle />
+                  </div>
+                  <h5>
+                    Global Partnership
+                    <br />
+                    on Plastic Pollution
+                    <br />
+                    and Marine Litter
+                  </h5>
                 </div>
-                <h5>
-                  Global Partnership
-                  <br />
-                  on Plastic Pollution
-                  <br />
-                  and Marine Litter
-                </h5>
-              </div>
-            </Link>
-            {width >= 768 && (
-              <ul className="ant-menu">
-                {menuList.map((item) => (
-                  <Dropdown
-                    placement="bottom"
-                    overlayClassName="nav-menu-item"
-                    overlay={
-                      <Menu>
-                        {item.children.map((child) => (
-                          <Menu.Item key={child.id}>
-                            {child.to ? (
-                              <Link href={child.to} legacyBehavior>
-                                <a>{i18n._(child.key)}</a>
-                              </Link>
-                            ) : (
-                              <a href={child.href}>{i18n._(child.key)}</a>
-                            )}
-                          </Menu.Item>
-                        ))}
-                      </Menu>
-                    }
-                  >
-                    <a
-                      className="ant-dropdown-link"
-                      onClick={(e) => e.preventDefault()}
+              </Link>
+              {width >= 768 && (
+                <ul className="ant-menu">
+                  {menuList.map((item) => (
+                    <Dropdown
+                      placement="bottom"
+                      overlayClassName="nav-menu-item"
+                      overlay={
+                        <Menu>
+                          {item.children.map((child) => (
+                            <Menu.Item key={child.id}>
+                              {child.to ? (
+                                <Link href={child.to} legacyBehavior>
+                                  <a>{i18n._(child.key)}</a>
+                                </Link>
+                              ) : (
+                                <a href={child.href}>{i18n._(child.key)}</a>
+                              )}
+                            </Menu.Item>
+                          ))}
+                        </Menu>
+                      }
                     >
-                      {i18n._(item.key)} <DownArrow />
-                    </a>
-                  </Dropdown>
-                ))}
-              </ul>
-            )}
-            <nav>
-              <Dropdown
-                overlayClassName="lang-dropdown-wrapper"
-                overlay={
-                  <Menu className="lang-dropdown">
-                    {[
-                      { key: 'EN', label: 'English' },
-                      { key: 'FR', label: 'French' },
-                      { key: 'ES', label: 'Spanish' },
-                    ].map((lang) => (
-                      <Menu.Item
-                        className={classNames({
-                          active: lang.key.toLowerCase() === router.locale,
-                        })}
-                        key={lang.key}
-                        onClick={() => {
-                          console.log(
-                            lang.key.toLowerCase(),
-                            'lang.key.toLowerCase()'
-                          )
-                          changeLanguage(lang.key.toLowerCase(), router)
-                        }}
+                      <a
+                        className="ant-dropdown-link"
+                        onClick={(e) => e.preventDefault()}
                       >
-                        {flags[lang.key]}
-                        {lang.label}
-                        {lang.key.toLowerCase() === router.locale && (
-                          <div className="check">
-                            <Check />
-                          </div>
-                        )}
-                      </Menu.Item>
-                    ))}
-                  </Menu>
-                }
-                trigger={['click']}
-                placement="bottomRight"
-              >
-                <div className="lang-btn">
-                  <World />
-                  <span>{router.locale}</span>
-                </div>
-              </Dropdown>
-              {!isAuthenticated && (
-                <Button
-                  type="ghost"
-                  size="small"
-                  className="noicon hide-mobile login-btn"
-                  onClick={() => setLoginVisible(true)}
-                >
-                  <Trans>Login</Trans>
-                </Button>
+                        {i18n._(item.key)} <DownArrow />
+                      </a>
+                    </Dropdown>
+                  ))}
+                </ul>
               )}
-              {isAuthenticated && (
-                <>
-                  <Link href="/workspace">
-                    <Button
-                      type="primary"
-                      size="small"
-                      className="noicon hide-mobile"
-                    >
-                      <Trans>Workspace</Trans>
-                    </Button>
-                  </Link>
-                  <Dropdown
-                    overlayClassName="user-btn-dropdown-wrapper"
-                    overlay={
-                      <Menu className="user-btn-dropdown">
-                        <Menu.Item key="add-content">
-                          <Link href="/flexible-forms">
-                            <span>
-                              <Trans>Add Content</Trans>
-                            </span>
-                          </Link>
-                        </Menu.Item>
+              <nav>
+                <Dropdown
+                  overlayClassName="lang-dropdown-wrapper"
+                  overlay={
+                    <Menu className="lang-dropdown">
+                      {[
+                        { key: 'EN', label: 'English' },
+                        { key: 'FR', label: 'French' },
+                        { key: 'ES', label: 'Spanish' },
+                      ].map((lang) => (
                         <Menu.Item
-                          key="profile"
+                          className={classNames({
+                            active: lang.key.toLowerCase() === router.locale,
+                          })}
+                          key={lang.key}
                           onClick={() => {
-                            router.push({
-                              pathname: `/${'profile'}`,
-                            })
+                            console.log(
+                              lang.key.toLowerCase(),
+                              'lang.key.toLowerCase()'
+                            )
+                            changeLanguage(lang.key.toLowerCase(), router)
                           }}
                         >
-                          <Trans>Profile</Trans>
+                          {flags[lang.key]}
+                          {lang.label}
+                          {lang.key.toLowerCase() === router.locale && (
+                            <div className="check">
+                              <Check />
+                            </div>
+                          )}
                         </Menu.Item>
-                        <Menu.Item key="logout" onClick={handleOnLogout}>
-                          <Trans>Logout</Trans>
-                        </Menu.Item>
-                      </Menu>
-                    }
-                    trigger={['click']}
-                    placement="bottomRight"
+                      ))}
+                    </Menu>
+                  }
+                  trigger={['click']}
+                  placement="bottomRight"
+                >
+                  <div className="lang-btn">
+                    <World />
+                    <span>{router.locale}</span>
+                  </div>
+                </Dropdown>
+                {!isAuthenticated && (
+                  <Button
+                    type="ghost"
+                    size="small"
+                    className="noicon hide-mobile login-btn"
+                    onClick={() => setLoginVisible(true)}
                   >
-                    <Avatar size="large">
-                      {profile?.firstName?.charAt(0)}
-                      {profile?.lastName?.charAt(0)}
-                    </Avatar>
-                  </Dropdown>
-                </>
-              )}
-              <div className="toggle-button">
-                <MenuToggle toggle={() => toggleOpen()} isOpen={isOpen} />
-              </div>
-            </nav>
+                    <Trans>Login</Trans>
+                  </Button>
+                )}
+                {isAuthenticated && (
+                  <>
+                    <Link href="/workspace">
+                      <Button
+                        type="primary"
+                        size="small"
+                        className="noicon hide-mobile"
+                      >
+                        <Trans>Workspace</Trans>
+                      </Button>
+                    </Link>
+                    <Dropdown
+                      overlayClassName="user-btn-dropdown-wrapper"
+                      overlay={
+                        <Menu className="user-btn-dropdown">
+                          <Menu.Item key="add-content">
+                            <Link href="/flexible-forms">
+                              <span>
+                                <Trans>Add Content</Trans>
+                              </span>
+                            </Link>
+                          </Menu.Item>
+                          <Menu.Item
+                            key="profile"
+                            onClick={() => {
+                              router.push({
+                                pathname: `/${'profile'}`,
+                              })
+                            }}
+                          >
+                            <Trans>Profile</Trans>
+                          </Menu.Item>
+                          <Menu.Item key="logout" onClick={handleOnLogout}>
+                            <Trans>Logout</Trans>
+                          </Menu.Item>
+                        </Menu>
+                      }
+                      trigger={['click']}
+                      placement="bottomRight"
+                    >
+                      <Avatar size="large">
+                        {profile?.firstName?.charAt(0)}
+                        {profile?.lastName?.charAt(0)}
+                      </Avatar>
+                    </Dropdown>
+                  </>
+                )}
+                <div className="toggle-button">
+                  <MenuToggle toggle={() => toggleOpen()} isOpen={isOpen} />
+                </div>
+              </nav>
+            </div>
           </div>
-        </div>
+        )}
         <div className="navigation">
           <NavMobile
             {...{ isOpen, toggleOpen, isAuthenticated, setLoginVisible }}
