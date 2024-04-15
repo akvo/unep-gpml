@@ -5,7 +5,7 @@ const { Title: AntTitle, Paragraph: AntParagraph } = Typography
 
 const LayerInfo = ({ layer }) => {
   const handleReadMoreClick = () => {
-    window.open(layer?.attributes.metadata, '_blank', 'noopener,noreferrer')
+    window.open(layer?.attributes.metadataURL, '_blank', 'noopener,noreferrer')
   }
 
   return (
