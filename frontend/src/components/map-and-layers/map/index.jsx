@@ -26,7 +26,7 @@ const Map = ({ initialViewProperties }) => {
 
     const customBasemapLayer = new TileLayer({
       url:
-        'https://geoservices.un.org/arcgis/rest/services/ClearMap_WebTopo/MapServer',
+        'https://geoservices.un.org/arcgis/rest/services/ClearMap_WebPlain/MapServer',
     })
 
     const customBasemap = new Basemap({

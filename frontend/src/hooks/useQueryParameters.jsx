@@ -33,30 +33,22 @@ const useQueryParameters = () => {
   const setQueryParameters = (newParams) => {
     const currentParams = deserializeQueryParams(query)
 
-    Object.keys(currentParams).forEach((key) => {
-      if (newParams[key] === undefined) {
-        delete currentParams[key]
-      }
-    })
+    const updatedParams = { ...currentParams, ...newParams }
 
-    const updatedParams = {
-      ...currentParams,
-      ...newParams,
-      ...serializeQueryParams(newParams),
-    }
+    const serializedParams = serializeQueryParams(updatedParams)
 
     router
-      .replace({ pathname, query: updatedParams }, undefined, { shallow: true })
-      .then(() =>
-        console.log('Complete.')
+      .replace({ pathname, query: serializedParams }, undefined, {
+        shallow: true,
+      })
+      .then(() => console.log('Query parameters updated.'))
+      .catch((error) =>
+        console.error('Failed to update query parameters:', error)
       )
-      .catch((error) => console.error('Failed:', error))
   }
 
-  const queryParameters = deserializeQueryParams(query)
-
   return {
-    queryParameters,
+    queryParameters: deserializeQueryParams(query),
     setQueryParameters,
   }
 }
