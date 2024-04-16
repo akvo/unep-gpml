@@ -121,110 +121,113 @@ const ForumView = ({
   const isAdmin = profile?.role === 'ADMIN'
   const channelId = activeForum?.id
 
+  const { psview } = router.query
   return (
     <>
       <Script
         src="https://cdn.deadsimplechat.com/sdk/1.2.1/dschatsdk.min.js"
         onReady={handleSDKLoaded}
       />
-      <div className={styles.container}>
-        {/* <div className={styles.channelSidebar}> */}
-        <div className={styles.sidebar}>
-          <div className="description">
-            <Button
-              type="link"
-              onClick={() => router.push('/forum')}
-              icon={<DropDownIcon />}
-              className={styles.backButton}
-            >
-              <Trans>Back to all Forums</Trans>
-            </Button>
-            <div className="title-container">
-              <h5>{activeForum?.name}</h5>
-              {userJoined && (
-                <div className="popover-container">
-                  <Popover
-                    placement="bottomLeft"
-                    overlayClassName={styles.forumOptions}
-                    content={
-                      <ul>
-                        <li>
-                          <Button
-                            size="small"
-                            type="link"
-                            onClick={handleClickLeave}
-                          >
-                            <Trans>Leave Channel</Trans>
-                          </Button>
-                        </li>
-                      </ul>
-                    }
-                    trigger="click"
-                  >
-                    <MoreOutlined rotate={90} />
-                  </Popover>
+      <div className={styles.view}>
+        <div className={styles.container}>
+          <div className={classNames('sidebar', { psview })}>
+            {!psview && (
+              <div className="description">
+                <Button
+                  type="link"
+                  onClick={() => router.push('/forum')}
+                  icon={<DropDownIcon />}
+                  className={styles.backButton}
+                >
+                  <Trans>Back to all Forums</Trans>
+                </Button>
+                <div className="title-container">
+                  <h5>{activeForum?.name}</h5>
+                  {userJoined && (
+                    <div className="popover-container">
+                      <Popover
+                        placement="bottomLeft"
+                        overlayClassName={styles.forumOptions}
+                        content={
+                          <ul>
+                            <li>
+                              <Button
+                                size="small"
+                                type="link"
+                                onClick={handleClickLeave}
+                              >
+                                <Trans>Leave Channel</Trans>
+                              </Button>
+                            </li>
+                          </ul>
+                        }
+                        trigger="click"
+                      >
+                        <MoreOutlined rotate={90} />
+                      </Popover>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-            <p>{activeForum?.description}</p>
+                <p>{activeForum?.description}</p>
+              </div>
+            )}
+            <PinnedLinks {...{ isAdmin, channelId }} />
+            {activeForum != null && (
+              <Discussions
+                discussions={activeForum.discussions}
+                channelId={router.query.forum}
+                {...{ discussion, setDiscussion, sdk, profile, setActiveForum }}
+              />
+            )}
+            {activeForum?.users?.length > 0 && (
+              <Participants {...{ isAdmin, activeForum, channelId }} />
+            )}
           </div>
-          <PinnedLinks {...{ isAdmin, channelId }} />
-          {activeForum != null && (
-            <Discussions
-              discussions={activeForum.discussions}
-              channelId={router.query.forum}
-              {...{ discussion, setDiscussion, sdk, profile, setActiveForum }}
-            />
-          )}
-          {activeForum?.users?.length > 0 && (
-            <Participants {...{ isAdmin, activeForum, channelId }} />
-          )}
-        </div>
 
-        {/* </div> */}
-        <Layout className={styles.content}>
-          {discussion && (
-            <div className="header-discussion">
-              <Button
-                type="link"
-                icon={<DropDownIcon />}
-                className={styles.backButton}
-                onClick={() => {
-                  setDiscussion(null)
-                  sdk?.selectChannel('main')
-                }}
-              >
-                <div className="h-caps-xs h-bold">
-                  <Trans>Back to Channel</Trans>
-                </div>
-              </Button>
-              <h3 className="h-m">{discussion?.name}</h3>
-            </div>
-          )}
-          {iframeURL && (
-            <iframe
-              id="chat-frame"
-              src={iframeURL}
-              width="100%"
-              className={classNames({
-                discussion,
-                joined: userJoined && activeForum != null,
-              })}
-            />
-          )}
-          {!userJoined && activeForum !== null && (
-            <div className="join-container">
-              <Button
-                type="primary"
-                className="noicon"
-                onClick={handleClickJoin}
-              >
-                Join Channel
-              </Button>
-            </div>
-          )}
-        </Layout>
-        {/* </div> */}
+          <Layout className={classNames('content', { psview })}>
+            {discussion && (
+              <div className="header-discussion">
+                <Button
+                  type="link"
+                  icon={<DropDownIcon />}
+                  className={styles.backButton}
+                  onClick={() => {
+                    setDiscussion(null)
+                    sdk?.selectChannel('main')
+                  }}
+                >
+                  <div className="h-caps-xs h-bold">
+                    <Trans>Back to Channel</Trans>
+                  </div>
+                </Button>
+                <h3 className="h-m">{discussion?.name}</h3>
+              </div>
+            )}
+            {iframeURL && (
+              <iframe
+                id="chat-frame"
+                src={iframeURL}
+                width="100%"
+                className={classNames({
+                  discussion,
+                  joined: userJoined && activeForum != null,
+                })}
+              />
+            )}
+            {!userJoined && activeForum !== null && (
+              <div className="join-container">
+                <Button
+                  type="primary"
+                  className="noicon"
+                  onClick={handleClickJoin}
+                >
+                  Join Channel
+                </Button>
+              </div>
+            )}
+          </Layout>
+          {/* </div> */}
+        </div>
       </div>
     </>
   )

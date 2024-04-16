@@ -1,291 +1,306 @@
 @import '../../../styles/vars.scss';
 
-.sidebar {
-  height: calc(100vh - 90px);
-  overflow: scroll;
-  background-color: $primaryGrey !important;
-  z-index: 2;
-  @media screen and (min-width: $bpMobile) {
-    min-width: 300px;
-  }
+.view {
   :global {
-    h3 {
-      margin: 12px 0 12px 0;
-      font-weight: 600;
-    }
-    .title-container {
-      margin-top: 15px;
-      display: flex;
-      .popover-container {
-        margin-left: auto;
-        font-size: 18px;
+    .sidebar {
+      height: calc(100vh - 90px);
+      overflow: scroll;
+      background-color: $primaryGrey !important;
+      z-index: 2;
+      &.psview {
+        height: 100vh;
       }
-    }
-    .description {
-      padding: 20px 20px 10px;
-      h5 {
-        margin-left: 0;
+      @media screen and (min-width: $bpMobile) {
+        min-width: 300px;
       }
-      p {
-        margin: 10px 0 0;
+      h3 {
+        margin: 12px 0 12px 0;
+        font-weight: 600;
       }
-    }
-    strong {
-      color: $primaryDarkBlue;
-      font-family: var(--font-archia);
-      font-weight: 700;
-      font-size: 12px;
-      letter-spacing: 0.24px;
-      margin-bottom: 19px;
-      padding-left: 21px;
-    }
-
-    h6 {
-      margin-top: 28px;
-      padding-left: 21px;
-    }
-    .button-container {
-      padding: 22px 16px;
-      .ant-btn {
-        width: 100%;
-        justify-content: center;
-      }
-    }
-    .ant-skeleton {
-      padding: 8px 23px;
-    }
-
-    .discussions {
-      margin-top: 8px;
-      margin-bottom: 36px;
-      li {
-        // padding: 7px 0;
-        padding: 11px 21px;
-        border-bottom: none;
+      .title-container {
+        margin-top: 15px;
         display: flex;
-        justify-content: space-between;
-        &.active {
-          background-color: $primaryViolet2;
-          .ant-btn-link {
-            text-decoration: none;
-          }
+        .popover-container {
+          margin-left: auto;
+          font-size: 18px;
         }
       }
-
-      .ant-btn-link {
-        white-space: normal;
-        text-align: left;
+      .description {
+        padding: 20px 20px 10px;
+        h5 {
+          margin-left: 0;
+        }
+        p {
+          margin: 10px 0 0;
+        }
       }
-    }
-    .members {
-      margin-left: 21px;
-      margin-top: 21px;
-      .ant-list-item {
-        padding: 0 0 13px;
-        border-bottom: none;
-        .ant-list-item-meta-avatar {
-          margin-right: 13px;
-          .ant-avatar {
-            width: 40px;
-            height: 40px;
-            line-height: 40px;
-            .ant-avatar-string {
+      strong {
+        color: $primaryDarkBlue;
+        font-family: var(--font-archia);
+        font-weight: 700;
+        font-size: 12px;
+        letter-spacing: 0.24px;
+        margin-bottom: 19px;
+        padding-left: 21px;
+      }
+
+      h6 {
+        margin-top: 28px;
+        padding-left: 21px;
+      }
+      .button-container {
+        padding: 22px 16px;
+        .ant-btn {
+          width: 100%;
+          justify-content: center;
+        }
+      }
+      .ant-skeleton {
+        padding: 8px 23px;
+      }
+
+      .discussions {
+        margin-top: 8px;
+        margin-bottom: 36px;
+        li {
+          // padding: 7px 0;
+          padding: 11px 21px;
+          border-bottom: none;
+          display: flex;
+          justify-content: space-between;
+          &.active {
+            background-color: $primaryViolet2;
+            .ant-btn-link {
+              text-decoration: none;
+            }
+          }
+        }
+
+        .ant-btn-link {
+          white-space: normal;
+          text-align: left;
+        }
+      }
+      .members {
+        margin-left: 21px;
+        margin-top: 21px;
+        .ant-list-item {
+          padding: 0 0 13px;
+          border-bottom: none;
+          .ant-list-item-meta-avatar {
+            margin-right: 13px;
+            .ant-avatar {
+              width: 40px;
+              height: 40px;
+              line-height: 40px;
+              .ant-avatar-string {
+                font-family: var(--font-archia);
+                font-size: $fzXXS;
+                font-weight: 600;
+                text-transform: uppercase;
+              }
+              background-color: $primaryGreen;
+            }
+          }
+          .ant-list-item-meta-content {
+            .ant-list-item-meta-title,
+            .ant-list-item-meta-description {
+              color: #000;
               font-family: var(--font-archia);
               font-size: $fzXXS;
-              font-weight: 600;
-              text-transform: uppercase;
+              line-height: $lhXXS;
             }
-            background-color: $primaryGreen;
+            .ant-list-item-meta-title {
+              font-weight: 600;
+              margin-bottom: 0;
+            }
           }
         }
-        .ant-list-item-meta-content {
-          .ant-list-item-meta-title,
-          .ant-list-item-meta-description {
-            color: #000;
-            font-family: var(--font-archia);
-            font-size: $fzXXS;
-            line-height: $lhXXS;
+      }
+      .pinned-links {
+        margin-top: 8px;
+        li {
+          display: flex;
+          padding: 3px 20px;
+          width: 100%;
+          a {
+            line-height: 20px;
+            .icon {
+              margin-right: 7px;
+            }
+            font-size: 16px;
+            display: flex;
+            color: $primaryDarkBlue;
+            font-weight: 500;
+            text-decoration: underline;
+            &:hover {
+              color: $primaryPurple;
+            }
           }
-          .ant-list-item-meta-title {
-            font-weight: 600;
+          .popover-container {
+            margin-left: auto;
+          }
+        }
+        .add-new-topic {
+          margin-top: 5px;
+        }
+        @media screen and (max-width: 768px) {
+          display: flex;
+          li {
+            width: auto;
+            white-space: nowrap;
+            .popover-container {
+              display: none;
+            }
+          }
+        }
+      }
+      .add-user {
+        margin: 10px 20px;
+      }
+      .ant-menu {
+        background-color: $primaryGrey;
+        .ant-menu-item {
+          display: flex;
+          flex-direction: row-reverse;
+          justify-content: space-between;
+          align-items: center;
+          margin: 0;
+          padding: 21px 23px 19px;
+          font-family: var(--font-archia), sans-serif;
+          font-size: $fzS;
+          font-weight: 600;
+          line-height: $lhS;
+          color: $primaryDarkBlue;
+          background-color: $primaryPurple2;
+          text-transform: capitalize;
+          height: auto;
+          span {
+            width: 300px;
+            white-space: break-spaces;
+          }
+          svg {
+            transform: rotate(270deg);
+            path {
+              stroke: $primaryDarkBlue;
+            }
+          }
+          &.ant-menu-item-selected,
+          &:hover {
+            color: $primaryWhite;
+            background-color: $primaryPurple;
+            svg path {
+              stroke: $primaryWhite;
+            }
+          }
+          &:not(:last-child) {
             margin-bottom: 0;
           }
         }
       }
-    }
-    .pinned-links {
-      margin-top: 8px;
-      li {
-        display: flex;
-        padding: 3px 20px;
-        width: 100%;
-        a {
-          line-height: 20px;
-          .icon {
-            margin-right: 7px;
-          }
-          font-size: 16px;
-          display: flex;
-          color: $primaryDarkBlue;
-          font-weight: 500;
-          text-decoration: underline;
-          &:hover {
-            color: $primaryPurple;
-          }
-        }
-        .popover-container {
-          margin-left: auto;
-        }
-      }
-      .add-new-topic {
-        margin-top: 5px;
-      }
-      @media screen and (max-width: 768px) {
-        display: flex;
-        li {
-          width: auto;
-          white-space: nowrap;
-          .popover-container {
-            display: none;
-          }
-        }
-      }
-    }
-    .add-user {
-      margin: 10px 20px;
-    }
-    .ant-menu {
-      background-color: $primaryGrey;
-      .ant-menu-item {
-        display: flex;
-        flex-direction: row-reverse;
-        justify-content: space-between;
-        align-items: center;
-        margin: 0;
-        padding: 21px 23px 19px;
-        font-family: var(--font-archia), sans-serif;
-        font-size: $fzS;
-        font-weight: 600;
-        line-height: $lhS;
-        color: $primaryDarkBlue;
-        background-color: $primaryPurple2;
-        text-transform: capitalize;
+      @media screen and (max-width: $bpMobile) {
         height: auto;
-        span {
-          width: 300px;
-          white-space: break-spaces;
+        .description {
+          padding: 10px 17px;
         }
-        svg {
-          transform: rotate(270deg);
-          path {
-            stroke: $primaryDarkBlue;
-          }
+        h5 {
+          margin-top: 5px !important;
         }
-        &.ant-menu-item-selected,
-        &:hover {
-          color: $primaryWhite;
-          background-color: $primaryPurple;
-          svg path {
-            stroke: $primaryWhite;
-          }
-        }
-        &:not(:last-child) {
-          margin-bottom: 0;
-        }
-      }
-    }
-    @media screen and (max-width: $bpMobile) {
-      height: auto;
-      .description {
-        padding: 10px 17px;
-      }
-      h5 {
-        margin-top: 5px !important;
-      }
-      h6 {
-        margin-top: 10px;
-      }
-      .mobile-scroller-horiz {
-        overflow-x: scroll;
-        .discussions {
-          flex-direction: row;
-          display: flex;
-          margin-bottom: 10px;
-          padding-left: 15px;
-          li {
-            padding: 5px 5px;
-            margin-right: 20px;
-          }
-          .ant-btn {
-            white-space: nowrap;
-          }
-          .popover-container {
-            display: none;
-          }
-          .add-new-topic {
-            // display: none;
-          }
-        }
-        .members {
+        h6 {
           margin-top: 10px;
-          display: flex;
-          flex-direction: row;
-          .ant-list-items {
+        }
+        .mobile-scroller-horiz {
+          overflow-x: scroll;
+          .discussions {
+            flex-direction: row;
             display: flex;
-            .ant-list-item-meta-avatar {
-              margin-right: 6px;
+            margin-bottom: 10px;
+            padding-left: 15px;
+            li {
+              padding: 5px 5px;
+              margin-right: 20px;
+            }
+            .ant-btn {
+              white-space: nowrap;
+            }
+            .popover-container {
+              display: none;
+            }
+            .add-new-topic {
+              // display: none;
             }
           }
-          .ant-list-item-meta-content {
-            display: none;
+          .members {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: row;
+            .ant-list-items {
+              display: flex;
+              .ant-list-item-meta-avatar {
+                margin-right: 6px;
+              }
+            }
+            .ant-list-item-meta-content {
+              display: none;
+            }
           }
         }
       }
     }
-  }
-}
-
-.content {
-  :global {
-    iframe {
-      border: none;
-      height: calc(100vh - 180px) !important;
-      &.discussion {
-        height: calc(100vh - 300px) !important;
-      }
-      &.joined {
-        height: calc(100vh - 90px) !important;
+    .content {
+      iframe {
+        border: none;
+        height: calc(100vh - 180px) !important;
         &.discussion {
-          height: calc(100vh - 210px) !important;
+          height: calc(100vh - 300px) !important;
+        }
+        &.joined {
+          height: calc(100vh - 90px) !important;
+          &.discussion {
+            height: calc(100vh - 210px) !important;
+          }
         }
       }
-    }
-    .join-container {
-      padding: 20px;
-      // background-color: #fff;
-    }
-    .ant-spin-blur iframe {
-      opacity: 0;
-    }
-    .header-discussion {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      padding: 21px 40px 28px;
-      background: $primaryWhite;
-      box-shadow: 0px 4px 25px 0px rgba(0, 0, 0, 0.2);
-      position: relative;
-      z-index: 1;
-      h3 {
-        font-weight: 600;
+      &.psview {
+        iframe {
+          height: 100vh !important;
+          &.discussion {
+            height: calc(100vh - 113px) !important;
+          }
+        }
+        .join-container {
+          display: none;
+        }
       }
-    }
-    @media screen and (max-width: $bpMobile) {
       .join-container {
+        padding: 20px;
+        // background-color: #fff;
+      }
+      .ant-spin-blur iframe {
+        opacity: 0;
+      }
+      .header-discussion {
         display: flex;
-        .ant-btn {
-          flex: 1;
+        flex-direction: column;
+        gap: 12px;
+        padding: 21px 40px 28px;
+        background: $primaryWhite;
+        box-shadow: 0px 4px 25px 0px rgba(0, 0, 0, 0.2);
+        position: relative;
+        z-index: 1;
+        h3 {
+          font-weight: 600;
         }
+      }
+      @media screen and (max-width: $bpMobile) {
+        .join-container {
+          display: flex;
+          .ant-btn {
+            flex: 1;
+          }
+        }
+      }
+      :global {
       }
     }
   }
