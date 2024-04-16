@@ -112,11 +112,6 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: src/layouts/new-layout.js:83
-#: src/store.js:151
-#~ msgid "About Us"
-#~ msgstr ""
-
 #: src/modules/signup-old/signup-form.jsx:93
 msgid "About yourself"
 msgstr ""
@@ -167,7 +162,7 @@ msgstr ""
 msgid "Add An Event"
 msgstr ""
 
-#: src/layouts/new-layout.js:231
+#: src/layouts/new-layout.js:234
 #: src/modules/workspace/view.jsx:63
 msgid "Add Content"
 msgstr ""
@@ -271,10 +266,6 @@ msgstr ""
 msgid "An online or face-to-face meeting of people to discuss and/or perform practical work in a subject or activity"
 msgstr ""
 
-#: src/store.js:118
-#~ msgid "Analytics & statistics"
-#~ msgstr ""
-
 #: src/modules/flexible-forms/view.jsx:1286
 msgid "Annex C of the Concept Document."
 msgstr ""
@@ -291,10 +282,6 @@ msgstr ""
 #: src/store.js:749
 msgid "Any resource – including print and non-print materials and online/open-access resources – which supports and enhances, directly or indirectly, learning, teaching and awareness raising."
 msgstr ""
-
-#: src/store.js:142
-#~ msgid "API explore"
-#~ msgstr ""
 
 #: src/modules/stakeholder-overview/filter-drawer.jsx:140
 msgid "Apply"
@@ -424,7 +411,7 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
-#: src/pages/forum/[forum]/index.jsx:140
+#: src/pages/forum/[forum]/index.jsx:142
 msgid "Back to all Forums"
 msgstr ""
 
@@ -432,7 +419,7 @@ msgstr ""
 msgid "Back to categories"
 msgstr ""
 
-#: src/pages/forum/[forum]/index.jsx:198
+#: src/pages/forum/[forum]/index.jsx:200
 msgid "Back to Channel"
 msgstr ""
 
@@ -785,10 +772,6 @@ msgstr ""
 msgid "Community engagement"
 msgstr ""
 
-#: src/store.js:55
-#~ msgid "Compilation of actions around the world"
-#~ msgstr ""
-
 #: src/pages/workspace/[slug]/layout.js:372
 msgid "Completed"
 msgstr ""
@@ -846,11 +829,6 @@ msgstr ""
 #: src/modules/flexible-forms/form-schema.js:1174
 msgid "Contact Info"
 msgstr ""
-
-#: src/store.js:170
-#: src/store.js:174
-#~ msgid "Contact us"
-#~ msgstr ""
 
 #: src/components/footer/Footer.jsx:56
 msgid "Contact Us"
@@ -991,10 +969,6 @@ msgstr ""
 msgid "Data Collection Tools"
 msgstr ""
 
-#: src/store.js:113
-#~ msgid "Data hub"
-#~ msgstr ""
-
 #: src/store.js:55
 msgid "Data Hub"
 msgstr ""
@@ -1015,10 +989,6 @@ msgstr ""
 #: src/pages/landing/index.jsx:682
 msgid "Data visualisations to track countries progress. Quickly connect with others working in the country to end plastic."
 msgstr ""
-
-#: src/store.js:125
-#~ msgid "Datasets on plastic pollution and marine litter"
-#~ msgstr ""
 
 #: src/store.js:477
 msgid "Debt securities issued by private or public entities to finance activities or projects linked to sustainable development, green goals, or ocean goals."
@@ -1041,8 +1011,8 @@ msgstr ""
 #: src/modules/stakeholder-detail/view.jsx:164
 #: src/modules/stakeholder-detail/view.jsx:190
 #: src/modules/workspace/ps/setup-team-table.jsx:206
-#: src/pages/forum/[forum]/index.jsx:306
-#: src/pages/forum/[forum]/index.jsx:715
+#: src/pages/forum/[forum]/index.jsx:309
+#: src/pages/forum/[forum]/index.jsx:718
 #: src/pages/forum/index.jsx:249
 msgid "Delete"
 msgstr ""
@@ -1162,13 +1132,9 @@ msgstr ""
 msgid "Different environmental management of land-based environments"
 msgstr ""
 
-#: src/store.js:87
-#~ msgid "Directory of GPML network entities and individuals"
-#~ msgstr ""
-
-#: src/store.js:107
-#~ msgid "Directory of partners of the GPML Digital Platform"
-#~ msgstr ""
+#: src/store.js:111
+msgid "Digital Platform"
+msgstr ""
 
 #: src/pages/landing/index.jsx:657
 #: src/pages/landing/index.jsx:668
@@ -1184,7 +1150,7 @@ msgstr ""
 msgid "Discussion"
 msgstr ""
 
-#: src/pages/forum/[forum]/index.jsx:597
+#: src/pages/forum/[forum]/index.jsx:600
 msgid "Discussions"
 msgstr ""
 
@@ -1294,7 +1260,7 @@ msgstr ""
 #: src/modules/login/view.jsx:260
 #: src/modules/signup-old/signup-form.jsx:44
 #: src/modules/workspace/ps/setup-team-form.jsx:226
-#: src/pages/partnership/index.jsx:1133
+#: src/pages/partnership/index.jsx:1138
 msgid "Email"
 msgstr ""
 
@@ -1522,7 +1488,7 @@ msgid "First name"
 msgstr ""
 
 #: src/modules/onboarding/form-four.jsx:46
-#: src/pages/partnership/index.jsx:1260
+#: src/pages/partnership/index.jsx:1265
 msgid "First Name"
 msgstr ""
 
@@ -1685,10 +1651,6 @@ msgstr ""
 msgid "Global Action Plan"
 msgstr ""
 
-#: src/store.js:100
-#~ msgid "Global events calendar"
-#~ msgstr ""
-
 #: src/store.js:417
 msgid "Global Partnership on Marine Litter"
 msgstr ""
@@ -1712,14 +1674,6 @@ msgstr ""
 #: src/pages/landing/index.jsx:391
 msgid "Globally"
 msgstr ""
-
-#: src/store.js:130
-#~ msgid "Glossary"
-#~ msgstr ""
-
-#: src/store.js:167
-#~ msgid "Go to GPML"
-#~ msgstr ""
 
 #: src/modules/about/about-us.jsx:245
 msgid "Go to the partnership"
@@ -1824,11 +1778,6 @@ msgstr ""
 
 #: src/store.js:399
 msgid "Help and advice provided on a set of ideas or plans that is used as a basis for making decisions, especially in politics, economics, or business."
-msgstr ""
-
-#: src/store.js:46
-#: src/store.js:47
-msgid "Help Center"
 msgstr ""
 
 #: src/modules/flexible-forms/view.jsx:1274
@@ -2020,10 +1969,6 @@ msgstr ""
 msgid "Info And Docs"
 msgstr ""
 
-#: src/store.js:42
-#~ msgid "Information"
-#~ msgstr ""
-
 #: src/modules/flexible-forms/form-schema.js:459
 msgid "Information campaign"
 msgstr ""
@@ -2068,10 +2013,6 @@ msgstr ""
 #: src/pages/workspace/[slug]/layout.js:24
 msgid "Instructions"
 msgstr ""
-
-#: src/store.js:80
-#~ msgid "Interactive forum for collaboration"
-#~ msgstr ""
 
 #: src/modules/signup/view.jsx:48
 #: src/store.js:170
@@ -2172,10 +2113,6 @@ msgstr ""
 msgid "Knowledge Hub"
 msgstr ""
 
-#: src/store.js:47
-#~ msgid "Knowledge library"
-#~ msgstr ""
-
 #: src/modules/workspace/view.jsx:59
 msgid "Knowledge Library"
 msgstr ""
@@ -2202,7 +2139,7 @@ msgid "Last name"
 msgstr ""
 
 #: src/modules/onboarding/form-four.jsx:68
-#: src/pages/partnership/index.jsx:1301
+#: src/pages/partnership/index.jsx:1306
 msgid "Last Name"
 msgstr ""
 
@@ -2242,7 +2179,7 @@ msgstr ""
 msgid "Leave"
 msgstr ""
 
-#: src/pages/forum/[forum]/index.jsx:157
+#: src/pages/forum/[forum]/index.jsx:159
 msgid "Leave Channel"
 msgstr ""
 
@@ -2366,7 +2303,7 @@ msgid "Location and Geo-coverage"
 msgstr ""
 
 #: src/components/nav/nav-mobile.jsx:121
-#: src/layouts/new-layout.js:210
+#: src/layouts/new-layout.js:213
 msgid "Login"
 msgstr ""
 
@@ -2379,7 +2316,7 @@ msgstr ""
 msgid "LOGIN WITH EMAIL"
 msgstr ""
 
-#: src/layouts/new-layout.js:246
+#: src/layouts/new-layout.js:249
 msgid "Logout"
 msgstr ""
 
@@ -2468,17 +2405,9 @@ msgstr ""
 msgid "Meetings, often lasting a few days, organized on a particular subject or to bring together people who have a common interest to exchange ideas and discuss issues, especially important public issues."
 msgstr ""
 
-#: src/store.js:85
-#~ msgid "Members"
-#~ msgstr ""
-
 #: src/modules/flexible-forms/form-schema.js:864
 msgid "Members of the public have actively complained / asked for change"
 msgstr ""
-
-#: src/store.js:119
-#~ msgid "Metrics to measure progress"
-#~ msgstr ""
 
 #: src/modules/signup/view.jsx:47
 #: src/store.js:169
@@ -2863,11 +2792,6 @@ msgstr ""
 msgid "Our community"
 msgstr ""
 
-#: src/layouts/new-layout.js:92
-#: src/store.js:159
-#~ msgid "Our Network"
-#~ msgstr ""
-
 #: src/pages/landing/index.jsx:1267
 msgid "Our partners"
 msgstr ""
@@ -2912,24 +2836,16 @@ msgstr ""
 msgid "PAME, Regional Action Plan on Marine Litter in the Arctic (May 2021)"
 msgstr ""
 
-#: src/pages/forum/[forum]/index.jsx:465
+#: src/pages/forum/[forum]/index.jsx:468
 msgid "Participants"
 msgstr ""
-
-#: src/store.js:105
-#~ msgid "Partners"
-#~ msgstr ""
-
-#: src/store.js:163
-#~ msgid "Partnership"
-#~ msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:80
 msgid "Partnerships for the Goals"
 msgstr ""
 
 #: src/modules/login/view.jsx:293
-#: src/pages/partnership/index.jsx:1171
+#: src/pages/partnership/index.jsx:1176
 msgid "Password"
 msgstr ""
 
@@ -2977,7 +2893,7 @@ msgstr ""
 msgid "Pilot"
 msgstr ""
 
-#: src/pages/forum/[forum]/index.jsx:279
+#: src/pages/forum/[forum]/index.jsx:282
 msgid "Pinned Documents"
 msgstr ""
 
@@ -2988,17 +2904,6 @@ msgstr ""
 #: src/store.js:487
 msgid "Plastic Pollution Calculator"
 msgstr ""
-
-#: src/modules/workspace/view.jsx:302
-#: src/pages/landing/index.jsx:665
-#: src/pages/workspace/plastic-strategies/index.js:37
-#~ msgid "Plastic Strategies"
-#~ msgstr ""
-
-#: src/modules/workspace/view.jsx:462
-#: src/pages/workspace/[slug]/layout.js:253
-#~ msgid "plastic strategy"
-#~ msgstr ""
 
 #: src/store.js:246
 msgid "Plastic Waste Management"
@@ -3104,7 +3009,7 @@ msgstr ""
 msgid "Professional skills training"
 msgstr ""
 
-#: src/layouts/new-layout.js:243
+#: src/layouts/new-layout.js:246
 msgid "Profile"
 msgstr ""
 
@@ -3212,10 +3117,6 @@ msgstr ""
 
 #: src/store.js:580
 msgid "Reef Futures Symposium"
-msgstr ""
-
-#: src/store.js:111
-msgid "Regional Notes"
 msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:700
@@ -3633,14 +3534,6 @@ msgstr ""
 msgid "Steering Committee"
 msgstr ""
 
-#: src/store.js:136
-#~ msgid "Story Maps"
-#~ msgstr ""
-
-#: src/store.js:137
-#~ msgid "Storytelling with custom maps"
-#~ msgstr ""
-
 #: src/store.js:378
 msgid "Strategies & Action Plans"
 msgstr ""
@@ -3675,11 +3568,7 @@ msgstr ""
 msgid "Submit an application for your organisation - <0>{0}</0> - to become part of the GPML."
 msgstr ""
 
-#: src/modules/workspace/view.jsx:331
-#~ msgid "Submit an application for your organisation - Akvo Spain - to become part of the GPML."
-#~ msgstr ""
-
-#: src/pages/partnership/index.jsx:1100
+#: src/pages/partnership/index.jsx:1105
 msgid "Submit Application"
 msgstr ""
 
@@ -3730,10 +3619,6 @@ msgstr ""
 
 #: src/pages/workspace/[slug]/[step]/summary.js:225
 msgid "summary-description-6-national-plastic-strategy"
-msgstr ""
-
-#: src/store.js:49
-msgid "Support on GPML Digital Platform"
 msgstr ""
 
 #: src/pages/landing/index.jsx:1004
@@ -3816,10 +3701,6 @@ msgstr ""
 msgid "Technology and Processes. You have chosen technology and processes as the type of initiative. What did the initiative specifically involve? (Please tick ALL that apply):"
 msgstr ""
 
-#: src/store.js:131
-#~ msgid "Terminology and definitions"
-#~ msgstr ""
-
 #: src/modules/login/login-view.jsx:307
 #: src/modules/login/view.jsx:363
 msgid "terms and services"
@@ -3828,10 +3709,6 @@ msgstr ""
 #: src/modules/flexible-forms/form-schema.js:471
 msgid "Tertiary higher education"
 msgstr ""
-
-#: src/modules/workspace/ps/setup-team-form.jsx:239
-#~ msgid "Text"
-#~ msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:1050
 msgid "Textiles"
@@ -3918,11 +3795,6 @@ msgstr ""
 msgid "The National Environmental Act - Order No. 2034/33"
 msgstr ""
 
-#: src/layouts/new-layout.js:87
-#: src/store.js:155
-#~ msgid "The platform"
-#~ msgstr ""
-
 #: src/pages/landing/index.jsx:885
 msgid "The platform offers a wide range of tools to support your decision-making and help a global network of actors to work together to create shared solutions to end plastic pollution."
 msgstr ""
@@ -4004,14 +3876,6 @@ msgstr ""
 #: src/pages/landing/index.jsx:318
 msgid "to address plastic pollution"
 msgstr ""
-
-#: src/store.js:94
-#~ msgid "Tool to find an expert and experts' groups"
-#~ msgstr ""
-
-#: src/store.js:38
-#~ msgid "Tools"
-#~ msgstr ""
 
 #: src/store.js:531
 #: src/store.js:737
@@ -4267,14 +4131,6 @@ msgstr ""
 msgid "View All Forums"
 msgstr ""
 
-#: src/modules/workspace/view.jsx:307
-#~ msgid "View All Plastic Strategies"
-#~ msgstr ""
-
-#: src/modules/workspace/view.jsx:318
-#~ msgid "View All Source Inventories"
-#~ msgstr ""
-
 #: src/components/forum-card/forum-card.jsx:25
 #: src/modules/forum/my-forums.jsx:152
 msgid "View Details"
@@ -4337,10 +4193,6 @@ msgstr ""
 #: src/modules/workspace/view.jsx:226
 msgid "We sent you a confirmation email, Please take a moment and validate your address to confirm your account."
 msgstr ""
-
-#: src/store.js:143
-#~ msgid "Web services and APIs"
-#~ msgstr ""
 
 #: src/store.js:594
 msgid "Webinars & Seminars"
@@ -4457,7 +4309,7 @@ msgstr ""
 msgid "workspace"
 msgstr ""
 
-#: src/layouts/new-layout.js:221
+#: src/layouts/new-layout.js:224
 #: src/pages/landing/index.jsx:354
 #: src/pages/landing/index.jsx:853
 #: src/pages/landing/index.jsx:1121
