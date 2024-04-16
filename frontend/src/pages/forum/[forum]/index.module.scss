@@ -133,6 +133,9 @@
             color: $primaryDarkBlue;
             font-weight: 500;
             text-decoration: underline;
+            span {
+              max-width: 340px;
+            }
             &:hover {
               color: $primaryPurple;
             }
@@ -149,6 +152,11 @@
           li {
             width: auto;
             white-space: nowrap;
+            span {
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            }
             .popover-container {
               display: none;
             }
