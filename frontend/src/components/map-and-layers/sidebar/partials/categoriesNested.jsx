@@ -16,8 +16,6 @@ const CategoriesNested = ({ categories }) => {
 
   const categoryId = router.isReady ? router.query.categoryId : undefined
 
-  console.log(queryParameters)
-
   const handleCategoryClick = (category) => {
     const newParams = {
       categoryId: category.attributes.categoryId,
