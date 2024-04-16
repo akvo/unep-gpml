@@ -80,13 +80,14 @@ const Map = ({ initialViewProperties }) => {
     const newLayer = layerstoset ? layerstoset[0] : ''
     const existingLayer = webMap.findLayerById(newLayer.id)
 
-    if (existingLayer) {
-    } else {
+    if (!existingLayer) {
       if (currentLayerRef.current) {
         webMap.remove(currentLayerRef.current)
       }
-      webMap.add(newLayer)
-      currentLayerRef.current = newLayer
+      if (viewRef.current) {
+        webMap.add(newLayer)
+        currentLayerRef.current = newLayer
+      }
     }
   }, [layerstoset])
 
