@@ -61,8 +61,14 @@ const Map = ({ initialViewProperties }) => {
     viewRef.current = view
     return () => {
       if (viewRef.current) {
-        viewRef.current.destroy()
-        viewRef.current = null
+        viewRef.current
+          .when(() => {
+            viewRef.current.destroy()
+            viewRef.current = null
+          })
+          .catch((error) => {
+            console.error('Error when closing the view:', error)
+          })
       }
     }
   }, [initialViewProperties])
