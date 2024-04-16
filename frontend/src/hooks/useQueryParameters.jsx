@@ -4,90 +4,51 @@ const useQueryParameters = () => {
   const router = useRouter()
   const { pathname, query } = router
 
-  const convertParamsToStrings = (params) => {
-    const paramsAsStrings = {}
-    for (const [key, value] of Object.entries(params)) {
-      if (key === 'layers') {
-        paramsAsStrings[key] = JSON.stringify(value)
-      } else if (Array.isArray(value)) {
-        paramsAsStrings[key] = value.join(',')
-      } else if (value instanceof Date) {
-        paramsAsStrings[key] = value.toISOString()
+  const serializeQueryParams = (params) => {
+    const serialized = {}
+    Object.keys(params).forEach((key) => {
+      const value = params[key]
+
+      if (typeof value === 'object') {
+        serialized[key] = encodeURIComponent(JSON.stringify(value))
       } else {
-        paramsAsStrings[key] = value.toString()
+        serialized[key] = encodeURIComponent(value)
       }
-    }
-    return paramsAsStrings
+    })
+    return serialized
   }
 
-  const encodeQueryParams = (params) => {
-    const jsonString = JSON.stringify(params)
-    const uriEncoded = encodeURIComponent(jsonString)
-    return btoa(uriEncoded)
-  }
-
-  const decodeQueryParams = (base64String) => {
-    const decoded = atob(base64String)
-    const uriDecoded = decodeURIComponent(decoded)
-    return JSON.parse(uriDecoded)
+  const deserializeQueryParams = (query) => {
+    const deserialized = {}
+    Object.keys(query).forEach((key) => {
+      try {
+        deserialized[key] = JSON.parse(decodeURIComponent(query[key]))
+      } catch (e) {
+        deserialized[key] = decodeURIComponent(query[key])
+      }
+    })
+    return deserialized
   }
 
   const setQueryParameters = (newParams) => {
-    const currentParams = extractQueryParameters()
+    const currentParams = deserializeQueryParams(query)
+
     const updatedParams = { ...currentParams, ...newParams }
 
-    const encodedParams = encodeQueryParams(updatedParams)
+    const serializedParams = serializeQueryParams(updatedParams)
 
-    router.push({
-      pathname: pathname,
-      query: { options: encodedParams },
-    })
+    router
+      .replace({ pathname, query: serializedParams }, undefined, {
+        shallow: true,
+      })
+      .then(() => console.log('Query parameters updated.'))
+      .catch((error) =>
+        console.error('Failed to update query parameters:', error)
+      )
   }
-
-  const extractQueryParameters = () => {
-    const encodedParams = query.options
-
-    if (encodedParams) {
-      const decodedParams = decodeQueryParams(encodedParams)
-
-      try {
-        if (decodedParams.layers && typeof decodedParams.layers === 'string') {
-          decodedParams.layers = JSON.parse(decodedParams.layers)
-        }
-      } catch (error) {
-        console.error('Error parsing layers from query parameters:', error)
-        decodedParams.layers = []
-      }
-
-      return decodedParams
-    }
-
-    return {
-      sidebar: 'hide',
-      layers: [],
-    }
-  }
-
-  const createQueryParametersString = (overrides = {}) => {
-    const queryParamsWithOverrides = {
-      ...currentQueryParams,
-      ...overrides,
-    }
-
-    const encodedParams = btoa(JSON.stringify(queryParamsWithOverrides))
-
-    return `?options=${encodedParams}`
-  }
-
-  const currentQueryParams = extractQueryParameters()
-
-  const queryParametersStrings =
-    currentQueryParams && convertParamsToStrings(currentQueryParams)
 
   return {
-    queryParameters: currentQueryParams,
-    queryParametersStrings,
-    createQueryParametersString,
+    queryParameters: deserializeQueryParams(query),
     setQueryParameters,
   }
 }

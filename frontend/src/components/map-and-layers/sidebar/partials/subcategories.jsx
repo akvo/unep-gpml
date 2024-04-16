@@ -5,12 +5,12 @@ import { Tooltip } from 'antd'
 
 import { InfoCircleFilled } from '@ant-design/icons'
 import LayerInfo from './layerInfo'
-
+import { useRouter } from 'next/router'
 const { Panel } = Collapse
 const Subcategories = ({ subcategories, layers, loading }) => {
   const { queryParameters, setQueryParameters } = useQueryParameters()
   const [expandedSubcategory, setExpandedSubcategory] = useState(null)
-
+  const router = useRouter()
   useEffect(() => {
     const layersParam = queryParameters.layers
     if (layersParam) {
@@ -21,29 +21,37 @@ const Subcategories = ({ subcategories, layers, loading }) => {
     }
   }, [])
 
+  useEffect(() => {
+    if (router.query.subcategoryId !== expandedSubcategory) {
+      setExpandedSubcategory(router.query.subcategoryId || null)
+    }
+  }, [])
+
   const handleSubcategoryChange = (key) => {
     setExpandedSubcategory(key)
 
-    setQueryParameters({ subcategoryId: key })
+    setQueryParameters({
+      categoryId: router.query.categoryId,
+      subcategoryId: key,
+    })
   }
-
   const handleLayerClick = (layer) => {
-    let updatedLayers = []
+    const isLayerSelected =
+      queryParameters.layers && queryParameters.layers.id === layer.id
 
-    if (
-      queryParameters.layers[0]?.arcgislayerId ===
-        layer.attributes.arcgislayerId &&
-      layer.attributes.arcgislayerId !== null &&
-      queryParameters.layers[0]?.id === layer.id
-    ) {
-      updatedLayers = []
-      setQueryParameters({ layers: [] })
+    if (isLayerSelected) {
+      setQueryParameters({
+        categoryId: router.query.categoryId,
+        subcategoryId: router.query.subcategoryId,
+        layers: undefined,
+      })
     } else {
-      updatedLayers = [layer]
-      setQueryParameters({ layers: [layer] })
+      setQueryParameters({
+        categoryId: router.query.categoryId,
+        subcategoryId: router.query.subcategoryId,
+        layers: [layer],
+      })
     }
-
-    setQueryParameters({ layers: updatedLayers })
   }
 
   if (loading) {
@@ -82,7 +90,10 @@ const Subcategories = ({ subcategories, layers, loading }) => {
                   <Switch
                     size="small"
                     onChange={() => handleLayerClick(layer)}
-                    checked={queryParameters.layers[0]?.id === layer.id}
+                    checked={
+                      queryParameters.layers &&
+                      queryParameters.layers[0]?.id === layer.id
+                    }
                   />
 
                   <Typography
