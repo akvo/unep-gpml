@@ -133,6 +133,9 @@
             color: $primaryDarkBlue;
             font-weight: 500;
             text-decoration: underline;
+            span {
+              max-width: 340px;
+            }
             &:hover {
               color: $primaryPurple;
             }
@@ -149,6 +152,11 @@
           li {
             width: auto;
             white-space: nowrap;
+            span {
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            }
             .popover-container {
               display: none;
             }
@@ -257,7 +265,7 @@
         &.joined {
           height: calc(100vh - 90px) !important;
           &.discussion {
-            height: calc(100vh - 210px) !important;
+            height: calc(100vh - 187px) !important;
           }
         }
       }
@@ -282,8 +290,8 @@
       .header-discussion {
         display: flex;
         flex-direction: column;
-        gap: 12px;
-        padding: 21px 40px 28px;
+        gap: 5px;
+        padding: 20px;
         background: $primaryWhite;
         box-shadow: 0px 4px 25px 0px rgba(0, 0, 0, 0.2);
         position: relative;
