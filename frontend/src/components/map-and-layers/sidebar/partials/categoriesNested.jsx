@@ -1,18 +1,32 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Layout, Typography, Menu, Tag } from 'antd'
 import { CloseCircleFilled } from '@ant-design/icons'
 import useQueryParameters from '../../../../hooks/useQueryParameters'
 import useIndicators from '../../../../hooks/useIndicators'
 import Subcategories from './../partials/subcategories'
+import useSubcategories from '../../../../hooks/useSubcategories'
+import { useRouter } from 'next/router'
 
 const { Sider } = Layout
 
-const CategoriesNested = ({ categories, subcategories }) => {
+const CategoriesNested = ({ categories }) => {
   const { queryParameters, setQueryParameters } = useQueryParameters()
+  const [selectedCategory, setSelectedCategory] = useState(null)
+  const router = useRouter()
+
+  const categoryId = router.isReady ? router.query.categoryId : undefined
+
+  console.log(queryParameters)
 
   const handleCategoryClick = (category) => {
-    setQueryParameters({ categoryId: category.attributes.categoryId })
+    const newParams = {
+      categoryId: category.attributes.categoryId,
+    }
+
+    setQueryParameters(newParams)
+    setSelectedCategory(category.attributes.categoryId)
   }
+  const subcategories = useSubcategories(categoryId)
 
   const subcategoriesByCategory = subcategories?.subcategories?.data?.filter(
     (subcategory) =>
@@ -25,7 +39,6 @@ const CategoriesNested = ({ categories, subcategories }) => {
     )
     setQueryParameters({ layers: updatedLayers })
   }
-
   const isCategorySelected = (category) => {
     return queryParameters.categoryId === category.attributes.categoryId
   }

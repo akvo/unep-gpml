@@ -69,9 +69,9 @@ const Map = ({ initialViewProperties }) => {
 
   useEffect(() => {
     const webMap = viewRef.current?.map
-    if (!webMap || layerstoset.length === 0) return
+    if (!webMap || layerstoset?.length === 0) return
 
-    const newLayer = layerstoset[0]
+    const newLayer = layerstoset ? layerstoset[0] : ''
     const existingLayer = webMap.findLayerById(newLayer.id)
 
     if (existingLayer) {
