@@ -282,23 +282,24 @@ const NewLayout = ({
           /> */}
         </div>
         {children}
-        {!router.pathname.includes('/workspace/[slug]') && (
-          <Footer
-            showTools={() => {
-              if (width >= 768) {
-                if (openedItemKey === 'Tools') {
-                  setOpenedItemKey(null)
-                  setShowMenu(false)
+        {!router.pathname.includes('/workspace/[slug]') &&
+          !router.query.iframed && (
+            <Footer
+              showTools={() => {
+                if (width >= 768) {
+                  if (openedItemKey === 'Tools') {
+                    setOpenedItemKey(null)
+                    setShowMenu(false)
+                  } else {
+                    setOpenedItemKey('Tools')
+                    setShowMenu(true)
+                  }
                 } else {
-                  setOpenedItemKey('Tools')
-                  setShowMenu(true)
+                  toggleOpen()
                 }
-              } else {
-                toggleOpen()
-              }
-            }}
-          />
-        )}
+              }}
+            />
+          )}
       </div>
       <Login
         visible={loginVisible}
