@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import Sidebar from '../../../components/map-and-layers/sidebar'
 import useQueryParameters from '../../../hooks/useQueryParameters'
 import styles from './index.module.scss'
@@ -13,24 +13,7 @@ const MapAndLayerPage = () => {
   )
   const {
     queryParameters: { sidebar },
-    setQueryParameters,
-    createQueryParametersString,
   } = useQueryParameters()
-
-  const queryParameters = createQueryParametersString({
-    sidebar: 'hide',
-    categoryId: '',
-    layers: [],
-  })
-
-  useEffect(() => {
-    if (sidebar === undefined || sidebar === null) {
-      setQueryParameters({
-        ...queryParameters,
-        sidebar: 'show',
-      })
-    }
-  }, [])
 
   return (
     <div className={styles.container}>

@@ -9,11 +9,7 @@ const { Sider } = Layout
 const Categories = ({ categories, onCategoryClick }) => {
   const router = useRouter()
 
-  const {
-    queryParameters,
-    setQueryParameters,
-    createQueryParametersString,
-  } = useQueryParameters()
+  const { queryParameters, setQueryParameters } = useQueryParameters()
 
   const handleCategoryClick = (category) => {
     const updatedLayers = [...queryParameters.layers]
