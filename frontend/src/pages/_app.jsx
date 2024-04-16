@@ -160,42 +160,49 @@ function MyApp({ Component, pageProps }) {
   }
 
   useEffect(() => {
-    // Check for token and expiration in localStorage
-    const storedIdToken = localStorage.getItem('idToken')
-    const storedExpiresAt = parseInt(localStorage.getItem('expiresAt'), 10)
-    const now = new Date().getTime()
+    const checkToken = () => {
+      const storedIdToken = localStorage.getItem('idToken')
+      const storedExpiresAt = parseInt(localStorage.getItem('expiresAt'), 10)
+      const now = new Date().getTime()
 
-    if (storedIdToken && now < storedExpiresAt) {
-      const authResult = { idToken: storedIdToken }
-      api.setToken(storedIdToken)
-      setSession({ ...authResult, expiresIn: (storedExpiresAt - now) / 1000 })
+      if (storedIdToken && now < storedExpiresAt) {
+        const authResult = { idToken: storedIdToken }
+        api.setToken(storedIdToken)
+        setSession({ ...authResult, expiresIn: (storedExpiresAt - now) / 1000 })
 
-      if (isTokenNearlyExpired(storedExpiresAt)) {
-        renewToken()
+        if (isTokenNearlyExpired(storedExpiresAt)) {
+          renewToken()
+        }
+      } else if (storedIdToken) {
+        renewToken((err, renewedAuthResult) => {
+          console.log(renewedAuthResult, 'renewedAuthResult')
+          if (err) {
+            localStorage.removeItem('idToken')
+            localStorage.removeItem('expiresAt')
+            setState((prevState) => ({
+              ...prevState,
+              loadingProfile: false,
+              isAuthenticated: false,
+            }))
+          } else {
+            api.setToken(renewedAuthResult.idToken)
+          }
+        })
+      } else {
+        renewToken((err, renewedAuthResult) => {
+          if (err) {
+            console.log(`Error: ${err.error} - ${err.error_description}.`)
+          } else {
+            api.setToken(renewedAuthResult.idToken)
+          }
+        })
       }
-    } else if (storedIdToken) {
-      renewToken((err, renewedAuthResult) => {
-        if (err) {
-          localStorage.removeItem('idToken')
-          localStorage.removeItem('expiresAt')
-          setState((prevState) => ({
-            ...prevState,
-            loadingProfile: false,
-            isAuthenticated: false,
-          }))
-        } else {
-          api.setToken(renewedAuthResult.idToken)
-        }
-      })
-    } else {
-      renewToken((err, renewedAuthResult) => {
-        if (err) {
-          console.log(`Error: ${err.error} - ${err.error_description}.`)
-        } else {
-          api.setToken(renewedAuthResult.idToken)
-        }
-      })
     }
+
+    checkToken()
+    const intervalId = setInterval(checkToken, 5 * 60 * 1000)
+
+    return () => clearInterval(intervalId)
   }, [setSession, renewToken])
 
   useEffect(() => {
@@ -264,7 +271,6 @@ function MyApp({ Component, pageProps }) {
 
   useEffect(() => {
     const host = window?.location?.hostname
-    console.log(host)
     if (host === 'digital.gpmarinelitter.org') {
       setLoadScript(true)
     }
