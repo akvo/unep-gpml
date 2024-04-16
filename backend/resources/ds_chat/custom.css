@@ -154,3 +154,7 @@ a:hover {
   background-color: #00f1bf !important;
   color: white !important;
 }
+
+.wrapper {
+  padding-bottom: 0 !important;
+}
