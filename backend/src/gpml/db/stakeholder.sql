@@ -107,6 +107,7 @@ select * from stakeholder where email = :email and review_status = 'APPROVED';
 -- :doc Approve stakeholder
 update stakeholder
 set reviewed_at = now(),
+   	modified = now(),
     review_status = :v:review_status::review_status
 --~ (when (contains? params :reviewed_by) ",reviewed_by = :reviewed_by::integer")
 where id = :id;

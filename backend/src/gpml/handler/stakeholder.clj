@@ -16,7 +16,6 @@
    [gpml.handler.util :as handler.util]
    [gpml.service.permissions :as srv.permissions]
    [gpml.service.stakeholder :as srv.stakeholder]
-   [gpml.util.email :as email]
    [gpml.util.geo :as geo]
    [integrant.core :as ig]
    [ring.util.response :as resp])
@@ -149,7 +148,7 @@
       (get-in result [:stakeholder :id])
       (throw (ex-info "Failed to update stakeholder" {:result result})))))
 
-(defn- save-stakeholder [{:keys [db logger mailjet-config] :as config}
+(defn- save-stakeholder [{:keys [db logger] :as config}
                          {{:keys [body]} :parameters
                           :keys [jwt-claims headers] :as _req}]
   (try
@@ -172,10 +171,12 @@
                    (update-stakeholder config (assoc new-sth :id (:id old-sth)) partial-tags-override-rel-cats)
                    (create-stakeholder config new-sth))
           new-sth (db.stakeholder/stakeholder-by-id conn {:id sth-id})]
-      (when-not old-sth
-        (email/notify-admins-pending-approval conn
-                                              mailjet-config
-                                              (merge new-sth {:type "stakeholder"})))
+
+      ;; New requirement - anyone is automatically approved now.
+      ;; So the `gpml.util.email/notify-admins-pending-approval` email is no longer needed.
+      (db.stakeholder/update-stakeholder-status conn
+                                                (assoc new-sth :review_status "APPROVED"))
+
       ;; FIXME: we are not adding the `:success?` key here because
       ;; it would break the FE, as it expects a JSON with the
       ;; stakeholder fields. We would need to sync with FE to change
