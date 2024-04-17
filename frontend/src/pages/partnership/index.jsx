@@ -110,9 +110,9 @@ function Partnership({ isAuthenticated }) {
             realm: 'Username-Password-Authentication',
             username,
             password,
-            redirectUri: 'http://localhost:3001/partnership',
+            redirectUri: `${window.location.origin}/partnership`,
             state: JSON.stringify({
-              redirectTo: 'http://localhost:3001/partnership',
+              redirectTo: `${window.location.origin}/partnership`,
             }),
           },
           (err, authResult) => {
@@ -136,9 +136,9 @@ function Partnership({ isAuthenticated }) {
               lastName: values.fname,
               firstName: values.lname,
             },
-            redirectUri: 'http://localhost:3001/partnership',
+            redirectUri: `${window.location.origin}/partnership`,
             state: JSON.stringify({
-              redirectTo: 'http://localhost:3001/partnership',
+              redirectTo: `${window.location.origin}/partnership`,
             }),
           },
           function (err) {
@@ -168,6 +168,14 @@ function Partnership({ isAuthenticated }) {
           id: data.id,
         },
       })
+
+      setTimeout(async () => {
+        await api.put(`/organisation/${data.id}/request-membership`, {
+          ...data,
+          type: representativeGroup.find((item) => item.code === type)?.name,
+          authorize_submission: true,
+        })
+      }, 300)
 
       updateStatusProfile(profileRes.data)
 
