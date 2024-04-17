@@ -46,9 +46,12 @@ function MyApp({ Component, pageProps }) {
 
   const setSession = useCallback((authResult) => {
     const expiresAt = authResult.expiresIn * 1000 + new Date().getTime()
-
     localStorage.setItem('idToken', authResult.idToken)
     localStorage.setItem('expiresAt', expiresAt.toString())
+    localStorage.setItem(
+      'idTokenPayload',
+      JSON.stringify(authResult.idTokenPayload)
+    )
 
     setState((prevState) => ({
       ...prevState,
@@ -162,11 +165,15 @@ function MyApp({ Component, pageProps }) {
   useEffect(() => {
     const checkToken = () => {
       const storedIdToken = localStorage.getItem('idToken')
+      const storedIdTokenPayload = localStorage.getItem('idTokenPayload')
       const storedExpiresAt = parseInt(localStorage.getItem('expiresAt'), 10)
       const now = new Date().getTime()
 
       if (storedIdToken && now < storedExpiresAt) {
-        const authResult = { idToken: storedIdToken }
+        const authResult = {
+          idToken: storedIdToken,
+          idTokenPayload: JSON.parse(storedIdTokenPayload),
+        }
         api.setToken(storedIdToken)
         setSession({ ...authResult, expiresIn: (storedExpiresAt - now) / 1000 })
 
@@ -175,7 +182,6 @@ function MyApp({ Component, pageProps }) {
         }
       } else if (storedIdToken) {
         renewToken((err, renewedAuthResult) => {
-          console.log(renewedAuthResult, 'renewedAuthResult')
           if (err) {
             localStorage.removeItem('idToken')
             localStorage.removeItem('expiresAt')
@@ -262,6 +268,8 @@ function MyApp({ Component, pageProps }) {
         UIStore.update((e) => {
           e.profile = {
             ...resp.data,
+            email: authResult?.idTokenPayload?.email,
+            emailVerified: authResult?.idTokenPayload?.email_verified,
           }
         })
         updateStatusProfile(resp.data)
