@@ -6,17 +6,16 @@ import { loadCatalog } from '../../translations/utils'
 import { getStrapiUrl } from '../../utils/misc'
 
 const StrapiPage = ({ pageData }) => {
-  console.log(pageData)
   return (
-    <div className={styles.forum}>
+    <div className={styles.page}>
       <Head>
         <title>{pageData.attributes.title}</title>
       </Head>
       <div className="container">
-        <h1 className="h-l">{pageData.attributes.title}</h1>
-        <p className="date">
+        {/* <p className="date caps-heading-m">
           {moment(pageData.attributes.publishedAt).format('MMMM DD, YYYY')}
-        </p>
+        </p> */}
+        <h1 className="h-l">{pageData.attributes.title}</h1>
         <div
           className="content"
           dangerouslySetInnerHTML={{ __html: pageData.attributes.content }}

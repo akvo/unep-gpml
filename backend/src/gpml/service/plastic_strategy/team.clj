@@ -98,7 +98,9 @@
             (let [result (svc.chat/leave-channel config
                                                  (:chat-channel-id plastic-strategy)
                                                  ps-team-member)]
-              (if (:success? result)
+              (if (or (:success? result)
+                      ;; For idempotency / retries:
+                      (-> result :reason (= :user-does-not-belong-to-channel)))
                 {:success? true}
                 (failure context
                          :reason :failed-to-remove-team-member-from-ps-chat-channel
@@ -285,7 +287,9 @@
               (let [result (svc.chat/leave-channel config
                                                    (:chat-channel-id plastic-strategy)
                                                    ps-team-member)]
-                (if (:success? result)
+                (if (or (:success? result)
+                        ;; For idempotency / retries:
+                        (-> result :reason (= :user-does-not-belong-to-channel)))
                   context
                   (failure context
                            :reason :failed-to-remove-user-from-ps-channel

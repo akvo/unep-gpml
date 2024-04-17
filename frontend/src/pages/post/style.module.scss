@@ -31,5 +31,22 @@
       min-height: 300px;
       line-height: 1.7;
     }
+    h3 {
+      font-size: $fzL;
+    }
+    h4 {
+      font-size: $fzM;
+    }
+    h3,
+    h4 {
+      font-weight: bold;
+    }
+    ul {
+      list-style: disc;
+      padding-left: 20px;
+      li {
+        margin: 10px 0;
+      }
+    }
   }
 }

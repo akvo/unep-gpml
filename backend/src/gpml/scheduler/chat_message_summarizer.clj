@@ -12,6 +12,17 @@
    [taoensso.timbre :as timbre]
    [twarc.core :refer [defjob]]))
 
+(defn format-date-time [input logger]
+  (try
+    (let [parsed-date-time (jt/zoned-date-time input)
+          cet-zone-id (jt/zone-id "CET")
+          cet-date-time (jt/with-zone-same-instant parsed-date-time cet-zone-id)]
+      (jt/format "hh:mm a z" cet-date-time))
+    (catch Exception e
+      (timbre/with-context+ {:input input}
+        (log logger :error :could-not-format-date-time e))
+      input)))
+
 (defmacro logging-if-false
   {:style/indent 2}
   [logger event expr]
@@ -34,19 +45,43 @@
   (delay
     (pogonos/parse-resource "gpml/email_templates/chat_message_summarizer.html")))
 
-;; for each channel
-;; get latest messages (DSC) for that channel
-;; query memberships (DB) for that channel
-;; determine the latest read message by comparing it against latest(last_digest_sent_at, last_active_at)
-;; if there are no unread messages
-;;   do nothing
-;; if there are unread messages but it's been less than DSC_EMAIL_DIGEST_FREQUENCY_MINUTES minutes since the last last_digest_sent_at:
-;;   do nothing
-;; else:
-;;   saga
-;;     update last_digest_sent_at
-;;       (reversible)
-;;    send email with latest *unread* messages (first few N such messages)
+(def Membership [:map
+                 [:stakeholder-id some?]
+                 [:chat-channel-id some?]
+                 [:last-active-at any?]
+                 [:last-digest-sent-at any?]
+                 [:email any?]
+                 [:chat-account-id any?]
+                 [:first-name any?]
+                 [:last-name any?]])
+
+(defn notifiable-message? [logger chat-account-id message membership frequency-in-minutes]
+  {:pre [(check! some? logger
+                 [:maybe port.chat/UniqueUserIdentifier] chat-account-id
+                 port.chat/Message message
+                 Membership membership
+                 :int frequency-in-minutes)]}
+  (and (logging-if-false logger :chat-account-id
+         chat-account-id)
+       (logging-if-false logger :no-recent-messages
+         message)
+       (logging-if-false logger :latest-message-author-equals-membership-member
+         (not= (-> message
+                   :unique-user-identifier
+                   (doto (assert ":unique-user-identifier")))
+               chat-account-id))
+       ;; recent-messages :- gpml.boundary.port.chat/Message
+       (logging-if-false logger :message-was-already-notified
+         (jt/> (-> message :created jt/instant)
+               (or (some-> membership ^java.sql.Timestamp (:last-digest-sent-at) .toInstant)
+                   genesis)))
+       (logging-if-false logger :message-was-notified-too-recently
+         (>= (time-difference-in-minutes (or (some-> membership ^java.sql.Timestamp (:last-digest-sent-at) .toInstant)
+                                             genesis)
+                                         (jt/instant))
+             frequency-in-minutes))
+       ;; XXX :last-active-at logic...
+       ))
 
 (defn summarize-chat-messages [{:keys [logger hikari mailjet-config app-domain]
                                 chat :chat-adapter}
@@ -81,7 +116,7 @@
         (if (empty? channel-ids)
           (do
             (log logger :warn :no-channel-ids)
-            context)
+            (assoc context :no-channel-ids true))
           (let [{:keys [success?]
                  sql-result :result
                  :as result} (db/execute! hikari
@@ -119,52 +154,29 @@
                                                        some? recent-messages
                                                        some? memberships)]}
                                         (keep (fn [membership]
-                                                {:pre [(check! [:map
-                                                                [:stakeholder-id some?]
-                                                                [:chat-channel-id some?]
-                                                                [:last-active-at any?]
-                                                                [:last-digest-sent-at any?]
-                                                                [:email any?]
-                                                                [:chat-account-id any?]
-                                                                [:first-name any?]
-                                                                [:last-name any?]]
-                                                               membership)]}
-                                                (let [chat-account-id (:chat-account-id membership)
-                                                      should-notify-about-recent-messages?
-                                                      (timbre/with-context+ {:membership membership
-                                                                             :recent-messages recent-messages}
-                                                        (and (logging-if-false logger :chat-account-id
-                                                               chat-account-id)
-                                                             (logging-if-false logger :no-recent-messages
-                                                               (first recent-messages))
-                                                             (logging-if-false logger :latest-message-author-equals-membership-member
-                                                               (not= (-> recent-messages
-                                                                         first
-                                                                         :unique-user-identifier
-                                                                         (doto (assert ":unique-user-identifier")))
-                                                                     chat-account-id))
-                                                             ;; recent-messages :- gpml.boundary.port.chat/Message
-                                                             (logging-if-false logger :message-was-already-notified
-                                                               (jt/> (-> recent-messages first :created jt/instant)
-                                                                     (or (some-> membership ^java.sql.Timestamp (:last-digest-sent-at) .toInstant)
-                                                                         genesis)))
-                                                             (logging-if-false logger :message-was-notified-too-recently
-                                                               (>= (time-difference-in-minutes (or (some-> membership ^java.sql.Timestamp (:last-digest-sent-at) .toInstant)
-                                                                                                   genesis)
-                                                                                               (jt/instant))
-                                                                   frequency-in-minutes))
-                                                             ;; XXX :last-active-at logic...
-                                                             ))]
-                                                  (when should-notify-about-recent-messages?
-                                                    (with-meta [:%now,
-                                                                (:stakeholder-id membership),
-                                                                chat-channel-id]
-                                                      {:membership membership
-                                                       :recent-messages (filterv (fn [recent-message]
-                                                                                   (jt/> (-> recent-message :created jt/instant)
-                                                                                         (or (some-> membership ^java.sql.Timestamp (:last-digest-sent-at) .toInstant)
-                                                                                             genesis)))
-                                                                                 recent-messages)}))))
+                                                {:pre [(check! Membership membership)]}
+                                                (timbre/with-context+ {:membership membership
+                                                                       :recent-messages recent-messages
+                                                                       :frequency-in-minutes frequency-in-minutes}
+                                                  (let [chat-account-id (:chat-account-id membership)
+                                                        should-notify-about-recent-messages?
+                                                        (notifiable-message? logger
+                                                                             chat-account-id
+                                                                             (first recent-messages)
+                                                                             membership
+                                                                             frequency-in-minutes)]
+                                                    (when should-notify-about-recent-messages?
+                                                      (with-meta [:%now,
+                                                                  (:stakeholder-id membership),
+                                                                  chat-channel-id]
+                                                        {:membership membership
+                                                         :recent-messages (filterv (fn [recent-message]
+                                                                                     (notifiable-message? logger
+                                                                                                          chat-account-id
+                                                                                                          recent-message
+                                                                                                          membership
+                                                                                                          frequency-in-minutes))
+                                                                                   recent-messages)})))))
                                               memberships)))
                                 cat)
                           (:extended-channels context))]
@@ -172,7 +184,7 @@
           (do
             (timbre/with-context+ {:extended-channels (:extended-channels context)}
               (log logger :warn :no-db-updates-emitted))
-            context)
+            (assoc context :no-db-updates-emitted true))
           (let [{:keys [success?]
                  :as result} (db/execute-one! hikari
                                               {:update :chat_channel_membership
@@ -241,10 +253,11 @@ You can read them here: %s"
                                                                                        {:userName (:username recent-message)
                                                                                         :message (:message recent-message)
                                                                                         ;; XXX format as "ago" - the simplest thing we can do to avoid timezones
-                                                                                        :time (:created recent-message)})
+                                                                                        :time (some-> recent-message :created (format-date-time logger))})
                                                                                      (reverse (take 5 recent-messages)))})]))
-          (log logger :info :success {:affected (count updates)})
-          context)))))
+          (let [affected (count updates)]
+            (log logger :info :success {:affected affected})
+            (assoc context :affected affected)))))))
 
 ;; --- Demo ---
 (comment

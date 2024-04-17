@@ -144,13 +144,14 @@ const Forum = ({ isAuthenticated, setLoginVisible, profile }) => {
                   setAddModalVisible(true)
                 }}
               >
-                Add New Forum
+                <span className="hide-mobile">Add New Forum</span>
+                <span className="hide-desktop">+</span>
               </Button>
             )}
           </div>
           <section>
             <List
-              grid={{ lg: 3, column: 3, gutter: 20, md: 2, sm: 1 }}
+              grid={{ lg: 3, column: 3, gutter: 20, md: 2, sm: 1, xs: 1 }}
               dataSource={allForums}
               loading={loading}
               renderItem={(item) => (
@@ -187,6 +188,7 @@ const Forum = ({ isAuthenticated, setLoginVisible, profile }) => {
               setViewModal,
               setLoginVisible,
               isAuthenticated,
+              profile,
             }}
           />
           <AddModal

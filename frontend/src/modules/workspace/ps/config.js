@@ -98,6 +98,54 @@ export const stepsState = [
     ],
   },
   {
+    label: 'Data Analysis',
+    slug: '4-data-analysis',
+    substeps: [
+      { label: 'Intro', slug: '', checked: false },
+      // {
+      //   label: 'Available Tools',
+      //   slug: 'available-tools',
+      //   checked: false,
+      //   apiParams: {
+      //     tag: 'data analysis - available tools',
+      //     ps_bookmark_sections_keys: 'data-available-tools',
+      //   },
+      // },
+      {
+        label: 'Available Data & Statistics',
+        slug: 'available-data',
+        checked: false,
+      },
+      {
+        label: 'Available Information',
+        slug: 'available-information',
+        checked: false,
+        apiParams: {
+          country: '{countryID}',
+          topic: 'technology,event,financing_resource,technical_resource',
+          capacity_building: true,
+          ps_bookmark_sections_keys: 'data-collection',
+        },
+      },
+      {
+        label: 'Data Collection Tools',
+        slug: 'data-collection',
+        checked: false,
+        apiParams: {
+          tag: 'data analysis - data collection',
+          ps_bookmark_sections_keys: 'data-collection',
+        },
+      },
+      // {
+      //   label: 'Calculation of Indicators',
+      //   slug: 'calculation',
+      //   checked: false,
+      // },
+
+      { label: 'Summary & Report', slug: 'summary', checked: false },
+    ],
+  },
+  {
     label: 'Legislation & Policy Review Report',
     slug: '3-legislation-policy',
     substeps: [
@@ -124,53 +172,6 @@ export const stepsState = [
         apiParams: {
           tag: 'legislative & policy review case study',
           ps_bookmark_sections_keys: 'stakeholder-case-studies',
-        },
-      },
-      { label: 'Summary & Report', slug: 'summary', checked: false },
-    ],
-  },
-  {
-    label: 'Data Analysis',
-    slug: '4-data-analysis',
-    substeps: [
-      { label: 'Intro', slug: '', checked: false },
-      {
-        label: 'Available Tools',
-        slug: 'available-tools',
-        checked: false,
-        apiParams: {
-          tag: 'data analysis - available tools',
-          ps_bookmark_sections_keys: 'data-available-tools',
-        },
-      },
-      {
-        label: 'Available Data & Statistics',
-        slug: 'available-data',
-        checked: false,
-      },
-      {
-        label: 'Data Collection',
-        slug: 'data-collection',
-        checked: false,
-        apiParams: {
-          tag: 'data analysis - data collection',
-          ps_bookmark_sections_keys: 'data-collection',
-        },
-      },
-      {
-        label: 'Calculation of Indicators',
-        slug: 'calculation',
-        checked: false,
-      },
-      {
-        label: 'Available Information',
-        slug: 'available-information',
-        checked: false,
-        apiParams: {
-          country: '{countryID}',
-          topic: 'technology,event,financing_resource,technical_resource',
-          capacity_building: true,
-          ps_bookmark_sections_keys: 'data-collection',
         },
       },
       { label: 'Summary & Report', slug: 'summary', checked: false },

@@ -30,7 +30,8 @@ const View = ({ loadingProfile, profile, psItem }) => {
     if (!psItem) {
       return null
     }
-    return `${process.env.NEXT_PUBLIC_DSC_URL}/${psItem.chatChannelId}?accessToken=${accessToken}`
+    return `/forum/${psItem.chatChannelId}?iframed=true&psview=true`
+    // return `${process.env.NEXT_PUBLIC_DSC_URL}/${psItem.chatChannelId}?accessToken=${accessToken}`
   }, [psItem?.chatChannelId, accessToken])
 
   const fetchData = useCallback(async () => {

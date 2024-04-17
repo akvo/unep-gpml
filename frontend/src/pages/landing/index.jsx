@@ -66,10 +66,10 @@ const Landing = (props) => {
       <ActNow />
       <LatestNews />
       <Features />
-      <Trusted />
+      {/* <Trusted /> */}
       <Activities />
       {/* <OurVoices /> */}
-      <Partnership {...props} />
+      {/* <Partnership {...props} /> */}
       <Partners />
       <HelpCentre />
     </div>
@@ -855,16 +855,16 @@ const Features = () => {
       content: `${t`Elevate your mission to address plastic pollution and marine litter through our integrated workspace feature. This feature enables you to coordinate with partners, centralize resources, strategize actions, and drive collective solutions`}.`,
     },
     {
+      label: t`Coming soon`,
       title: t`Match-making`,
       key: 'match-making',
       content: t`Discover like-minded individuals and organizations passionate about combating plastic pollution and marine litter through our innovative matchmaking feature. Connect with fellow advocates, researchers, and activists to amplify your impact and collaborate on meaningful projects for a cleaner and healthier ocean ecosystem.`,
     },
-    {
-      label: t`Coming soon`,
-      title: t`AI Innovations`,
-      key: 'ai-innovations',
-      content: t`By leveraging AI and innovation, the platform will enable proactive strategies and solutions that efficiently combat plastic pollution and marine litter`,
-    },
+    // {
+    //   title: t`AI Innovations`,
+    //   key: 'ai-innovations',
+    //   content: t`By leveraging AI and innovation, the platform will enable proactive strategies and solutions that efficiently combat plastic pollution and marine litter`,
+    // },
   ]
 
   return (
@@ -1138,7 +1138,7 @@ const Partnership = ({ isAuthenticated, setLoginVisible }) => {
                 </li>
                 <li>
                   <CirclePointer />
-                  <Link href="/page/membership">
+                  <Link href="/partnership">
                     <Trans>Join the GPML</Trans>
                   </Link>
                 </li>
@@ -1307,11 +1307,11 @@ const HelpCentre = () => {
         </h6>
       </div>
       <div className="help-centre-button">
-        <Link href="/help-center">
+        <a href="mailto:unep-gpmarinelitter@un.org">
           <Button withArrow={<LongArrowRight />}>
-            <Trans>Visit the Help Centre</Trans>
+            <Trans>Contact Us</Trans>
           </Button>
-        </Link>
+        </a>
       </div>
     </div>
   )

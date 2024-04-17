@@ -29,14 +29,26 @@ const View = () => {
       <p>
         <Trans>description-intro-4-data-analysis</Trans>
       </p>
-      <a
-        href={`https://docs.google.com/presentation/d/${match[1]}/export/pptx`}
-        target="_blank"
-      >
-        <Button size="small" type="link">
-          Download
-        </Button>
-      </a>
+      <ul>
+        <li>
+          <a href="/State-of-Knowledge-Report-Template.docx" target="_blank">
+            <Button size="small" type="link">
+              Download State of Knowledge Report Template
+            </Button>
+          </a>
+        </li>
+        <li style={{ margin: '10px 0' }}>
+          <a
+            href={`https://docs.google.com/presentation/d/${match[1]}/export/pptx`}
+            target="_blank"
+          >
+            <Button size="small" type="link">
+              Download Slides
+            </Button>
+          </a>
+        </li>
+      </ul>
+
       <iframe
         src={slideURL}
         frameborder="0"

@@ -17,10 +17,7 @@ import { isRegistered } from '../utils/profile'
 import { i18n } from '@lingui/core'
 import { MenuToggle, NavMobile, NavDesktop } from '../components/nav'
 import GpmlCircle from '../components/gpml-circle'
-import axios from 'axios'
-import { deepTranslate, getStrapiUrl } from '../utils/misc'
 import { changeLanguage } from '../translations/utils'
-import { storage } from '../utils/storage'
 
 const archia = localFont({
   src: [
@@ -64,6 +61,7 @@ const NewLayout = ({
   profile,
   loginVisible,
   setLoginVisible,
+  shouldLoginClose,
 }) => {
   const router = useRouter()
   const { menuList } = UIStore.useState((s) => ({
@@ -73,76 +71,6 @@ const NewLayout = ({
   const [showMenu, setShowMenu] = useState(false)
   const [width] = useDeviceSize()
   const [isOpen, toggleOpen] = useCycle(false, true)
-
-  useEffect(() => {
-    const strapiUrl = getStrapiUrl()
-    const fetchData = async () => {
-      try {
-        const MENU_MAPPING = [
-          {
-            key: msg`About Us`,
-            id: 'About Us',
-            subKeys: [
-              {
-                key: msg`The platform`,
-                id: 'The platform',
-                apiEndpoint: `${strapiUrl}/api/pages?locale=all&filters[section][$eq]=about-platform&fields=title&fields=subtitle&fields=slug`,
-              },
-              {
-                key: msg`Our Network`,
-                id: 'Our Network',
-                apiEndpoint: `${strapiUrl}/api/pages?locale=all&filters[section][$eq]=about-network&fields=title&fields=subtitle&fields=slug`,
-              },
-            ],
-          },
-        ]
-
-        const fetchData = async () => {
-          const apiEndpoints = MENU_MAPPING.flatMap((section) =>
-            section.subKeys.map((sub) => sub.apiEndpoint)
-          )
-
-          try {
-            const responses = await Promise.all(
-              apiEndpoints.map((endpoint) => axios.get(endpoint))
-            )
-            return responses
-          } catch (error) {
-            console.error('Error fetching data:', error)
-            return []
-          }
-        }
-
-        fetchData().then((responses) => {
-          UIStore.update((s) => {
-            const menu = deepTranslate([...s.menuList])
-            let updatedMenu = menu
-
-            MENU_MAPPING.forEach((section, sectionIdx) => {
-              section.subKeys.forEach((sub, subIdx) => {
-                const responseData =
-                  responses[sectionIdx * section.subKeys.length + subIdx]?.data
-                    ?.data
-                if (responseData) {
-                  updatedMenu = updateMenuSection(
-                    updatedMenu,
-                    section.id,
-                    sub.id,
-                    responseData
-                  )
-                }
-              })
-            })
-            s.menuList = updatedMenu
-          })
-        })
-      } catch (err) {
-        console.log(err)
-      }
-    }
-
-    fetchData()
-  }, [])
 
   const handleOnLogoutRC = () => {
     try {
@@ -167,6 +95,8 @@ const NewLayout = ({
     })
   }
 
+  console.log(router.query.iframed)
+
   return (
     <>
       <style jsx global>{`
@@ -176,190 +106,206 @@ const NewLayout = ({
         }
       `}</style>
       <div>
-        <div
-          className={classNames('top-bar', { opened: openedItemKey != null })}
-          style={{
-            zIndex: isOpen ? 9 : 99,
-            position: openedItemKey ? 'sticky' : 'relative',
-          }}
-        >
-          <div className={`${isIndexPage ? 'container' : 'container-fluid'}`}>
-            <Link href="/">
-              <div className="logo-container">
-                <div className="circle">
-                  <GpmlCircle />
+        {!router.query.iframed && (
+          <div
+            className={classNames('top-bar', { opened: openedItemKey != null })}
+            style={{
+              zIndex: isOpen ? 9 : 99,
+              position: openedItemKey ? 'sticky' : 'relative',
+            }}
+          >
+            <div className="container-fluid">
+              <Link href="/">
+                <div className="logo-container">
+                  <div className="circle">
+                    <GpmlCircle />
+                  </div>
+                  <h5>
+                    Global Partnership
+                    <br />
+                    on Plastic Pollution
+                    <br />
+                    and Marine Litter
+                  </h5>
                 </div>
-                <h5>
-                  Global Partnership
-                  <br />
-                  on Plastic Pollution
-                  <br />
-                  and Marine Litter
-                </h5>
-              </div>
-            </Link>
-            {width >= 768 && (
-              <ul className="ant-menu">
-                {menuList.map((item) => (
-                  <li
-                    key={item.id}
-                    onClick={() => {
-                      if (item.id === openedItemKey) {
-                        setOpenedItemKey(null)
-                        setShowMenu(false)
-                      } else {
-                        setOpenedItemKey(item.id)
-                        setShowMenu(true)
+              </Link>
+              {width >= 768 && (
+                <ul className="ant-menu">
+                  {menuList.map((item) => (
+                    <Dropdown
+                      placement="bottom"
+                      overlayClassName="nav-menu-item"
+                      overlay={
+                        <Menu>
+                          {item.children.map((child) => (
+                            <Menu.Item key={child.id}>
+                              {child.to ? (
+                                <Link href={child.to} legacyBehavior>
+                                  <a>{i18n._(child.key)}</a>
+                                </Link>
+                              ) : (
+                                <a href={child.href}>{i18n._(child.key)}</a>
+                              )}
+                            </Menu.Item>
+                          ))}
+                        </Menu>
                       }
-                    }}
-                    className={`${openedItemKey === item.id ? 'selected' : ''}`}
-                  >
-                    <a>
-                      <span>{i18n._(item.key)}</span>
-                      <DownArrow />
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            )}
-            <nav>
-              <Dropdown
-                overlayClassName="lang-dropdown-wrapper"
-                overlay={
-                  <Menu className="lang-dropdown">
-                    {[
-                      { key: 'EN', label: 'English' },
-                      { key: 'FR', label: 'French' },
-                      { key: 'ES', label: 'Spanish' },
-                    ].map((lang) => (
-                      <Menu.Item
-                        className={classNames({
-                          active: lang.key.toLowerCase() === router.locale,
-                        })}
-                        key={lang.key}
-                        onClick={() => {
-                          console.log(
-                            lang.key.toLowerCase(),
-                            'lang.key.toLowerCase()'
-                          )
-                          changeLanguage(lang.key.toLowerCase(), router)
-                        }}
-                      >
-                        {flags[lang.key]}
-                        {lang.label}
-                        {lang.key.toLowerCase() === router.locale && (
-                          <div className="check">
-                            <Check />
-                          </div>
-                        )}
-                      </Menu.Item>
-                    ))}
-                  </Menu>
-                }
-                trigger={['click']}
-                placement="bottomRight"
-              >
-                <div className="lang-btn">
-                  <World />
-                  <span>{router.locale}</span>
-                  <DownArrow />
-                </div>
-              </Dropdown>
-              {!isAuthenticated && (
-                <Button
-                  type="primary"
-                  size="small"
-                  className="noicon hide-mobile"
-                  onClick={() => setLoginVisible(true)}
-                >
-                  <Trans>Join Now</Trans>
-                </Button>
-              )}
-              {isAuthenticated && (
-                <>
-                  <Link href="/workspace">
-                    <Button
-                      type="primary"
-                      size="small"
-                      className="noicon hide-mobile"
                     >
-                      <Trans>Workspace</Trans>
-                    </Button>
-                  </Link>
-                  <Dropdown
-                    overlayClassName="user-btn-dropdown-wrapper"
-                    overlay={
-                      <Menu className="user-btn-dropdown">
-                        <Menu.Item key="add-content">
-                          <Link href="/flexible-forms">
-                            <span>
-                              <Trans>Add Content</Trans>
-                            </span>
-                          </Link>
-                        </Menu.Item>
+                      <a
+                        className="ant-dropdown-link"
+                        onClick={(e) => e.preventDefault()}
+                      >
+                        {i18n._(item.key)} <DownArrow />
+                      </a>
+                    </Dropdown>
+                  ))}
+                </ul>
+              )}
+              <nav>
+                <Dropdown
+                  overlayClassName="lang-dropdown-wrapper"
+                  overlay={
+                    <Menu className="lang-dropdown">
+                      {[
+                        { key: 'EN', label: 'English' },
+                        { key: 'FR', label: 'French' },
+                        { key: 'ES', label: 'Spanish' },
+                      ].map((lang) => (
                         <Menu.Item
-                          key="profile"
+                          className={classNames({
+                            active: lang.key.toLowerCase() === router.locale,
+                          })}
+                          key={lang.key}
                           onClick={() => {
-                            router.push({
-                              pathname: `/${'profile'}`,
-                            })
+                            console.log(
+                              lang.key.toLowerCase(),
+                              'lang.key.toLowerCase()'
+                            )
+                            changeLanguage(lang.key.toLowerCase(), router)
                           }}
                         >
-                          <Trans>Profile</Trans>
+                          {flags[lang.key]}
+                          {lang.label}
+                          {lang.key.toLowerCase() === router.locale && (
+                            <div className="check">
+                              <Check />
+                            </div>
+                          )}
                         </Menu.Item>
-                        <Menu.Item key="logout" onClick={handleOnLogout}>
-                          <Trans>Logout</Trans>
-                        </Menu.Item>
-                      </Menu>
-                    }
-                    trigger={['click']}
-                    placement="bottomRight"
+                      ))}
+                    </Menu>
+                  }
+                  trigger={['click']}
+                  placement="bottomRight"
+                >
+                  <div className="lang-btn">
+                    <World />
+                    <span>{router.locale}</span>
+                  </div>
+                </Dropdown>
+                {!isAuthenticated && (
+                  <Button
+                    type="ghost"
+                    size="small"
+                    className="noicon hide-mobile login-btn"
+                    onClick={() => setLoginVisible(true)}
                   >
-                    <Avatar size="large">
-                      {profile?.firstName?.charAt(0)}
-                      {profile?.lastName?.charAt(0)}
-                    </Avatar>
-                  </Dropdown>
-                </>
-              )}
-              <div className="toggle-button">
-                <MenuToggle toggle={() => toggleOpen()} isOpen={isOpen} />
-              </div>
-            </nav>
+                    <Trans>Login</Trans>
+                  </Button>
+                )}
+                {isAuthenticated && (
+                  <>
+                    <Link href="/workspace">
+                      <Button
+                        type="primary"
+                        size="small"
+                        className="noicon hide-mobile"
+                      >
+                        <Trans>Workspace</Trans>
+                      </Button>
+                    </Link>
+                    <Dropdown
+                      overlayClassName="user-btn-dropdown-wrapper"
+                      overlay={
+                        <Menu className="user-btn-dropdown">
+                          <Menu.Item key="add-content">
+                            <Link href="/flexible-forms">
+                              <span>
+                                <Trans>Add Content</Trans>
+                              </span>
+                            </Link>
+                          </Menu.Item>
+                          <Menu.Item
+                            key="profile"
+                            onClick={() => {
+                              router.push({
+                                pathname: `/${'profile'}`,
+                              })
+                            }}
+                          >
+                            <Trans>Profile</Trans>
+                          </Menu.Item>
+                          <Menu.Item key="logout" onClick={handleOnLogout}>
+                            <Trans>Logout</Trans>
+                          </Menu.Item>
+                        </Menu>
+                      }
+                      trigger={['click']}
+                      placement="bottomRight"
+                    >
+                      <Avatar size="large">
+                        {profile?.firstName?.charAt(0)}
+                        {profile?.lastName?.charAt(0)}
+                      </Avatar>
+                    </Dropdown>
+                  </>
+                )}
+                <div className="toggle-button">
+                  <MenuToggle toggle={() => toggleOpen()} isOpen={isOpen} />
+                </div>
+              </nav>
+            </div>
           </div>
-        </div>
+        )}
         <div className="navigation">
-          <NavMobile {...{ isOpen, toggleOpen }} />
+          <NavMobile
+            {...{ isOpen, toggleOpen, isAuthenticated, setLoginVisible }}
+          />
 
-          <NavDesktop
+          {/* <NavDesktop
             isOpen={showMenu}
             contentKey={openedItemKey}
             toggle={() => {
               setShowMenu(false)
               setOpenedItemKey(null)
             }}
-          />
+          /> */}
         </div>
         {children}
-        {!router.pathname.includes('/workspace/[slug]') && (
-          <Footer
-            showTools={() => {
-              if (width >= 768) {
-                if (openedItemKey === 'Tools') {
-                  setOpenedItemKey(null)
-                  setShowMenu(false)
+        {!router.pathname.includes('/workspace/[slug]') &&
+          !router.query.iframed && (
+            <Footer
+              showTools={() => {
+                if (width >= 768) {
+                  if (openedItemKey === 'Tools') {
+                    setOpenedItemKey(null)
+                    setShowMenu(false)
+                  } else {
+                    setOpenedItemKey('Tools')
+                    setShowMenu(true)
+                  }
                 } else {
-                  setOpenedItemKey('Tools')
-                  setShowMenu(true)
+                  toggleOpen()
                 }
-              } else {
-                toggleOpen()
-              }
-            }}
-          />
-        )}
+              }}
+            />
+          )}
       </div>
-      <Login visible={loginVisible} close={() => setLoginVisible(false)} />
+      <Login
+        visible={loginVisible}
+        shouldLoginClose={shouldLoginClose}
+        close={() => setLoginVisible(false)}
+      />
     </>
   )
 }
@@ -381,6 +327,8 @@ export const withNewLayout = (Component) => {
       profile,
       loginVisible,
       setLoginVisible,
+      shouldLoginClose,
+      setShouldLoginClose,
     } = props
 
     return (
@@ -392,6 +340,8 @@ export const withNewLayout = (Component) => {
           auth0Client,
           profile,
           loginVisible,
+          shouldLoginClose,
+          setShouldLoginClose,
         }}
       >
         <Component {...props} />

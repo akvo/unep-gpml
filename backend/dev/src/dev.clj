@@ -21,8 +21,7 @@
    [integrant.repl.state :refer [config system]]
    [next.jdbc]
    [next.jdbc.connection :as connection]
-   [ns-tracker.core :refer [ns-tracker]]
-   [taoensso.timbre :as timbre]))
+   [ns-tracker.core :refer [ns-tracker]]))
 
 (require 'gpml.main) ;; Load core multimethods, transitively
 (require 'malli.provider)
@@ -142,11 +141,6 @@
                 :technology? true
                 :project? true}))
 
-(when (= "vemv" (System/getenv "USER"))
-  ;; Disable the default Timbre logger, given I prefer the CIDER logger
-  ;; (https://docs.cider.mx/cider/debugging/logging.html )
-  (timbre/set-config! (update timbre/*config* :appenders dissoc :println)))
-
 (defmethod ig/init-key :dev/bypass-auth [_ _]
   (fn [handler]
     (fn [request]
@@ -159,21 +153,34 @@
 (comment
   ;; Grabs the test/prod gcloud logs between two timestamps.
   ;; This data is good to feed into your favorite interactive tool (rebl, cider inspector, etc).
-  @(def gcloud-logs
-     (into []
-           (keep (some-fn :jsonPayload :textPayload))
-           (-> "glog.sh"
-               io/file
-               .getAbsolutePath
-               (sh "test" ;; "production" | "test"
-                   ;; times are UTC
-                   "2024-03-31T12:00:00Z"
-                   "2024-03-31T12:10:00Z")
-               :out
-               json/<-json)))
+  (def gcloud-logs
+    (into []
+          (keep (some-fn :jsonPayload :textPayload))
+          (-> "glog.sh"
+              io/file
+              .getAbsolutePath
+              (sh "test" ;; "production" | "test"
+                  ;; times are UTC
+                  "2024-04-07T05:20:00Z"
+                  "2024-04-15T05:20:00Z")
+              :out
+              json/<-json)))
+
+  (into []
+        (remove (comp #{"gpml.scheduler.chat-message-summarizer"
+                        "gpml.scheduler.picture-file-reconciler"}
+                      :ns))
+        gcloud-logs)
+
+  (into []
+        (comp (filter (comp #{"gpml.scheduler.picture-file-reconciler"}
+                            :ns))
+              (remove :no-match))
+        gcloud-logs)
 
   (filterv (comp #{"/api/chat/user/channel"}
-                 :gpml.handler.main/request-url))
+                 :gpml.handler.main/request-url)
+           gcloud-logs)
 
   (filterv (comp #{"post"}
                  :gpml.handler.main/request-method)

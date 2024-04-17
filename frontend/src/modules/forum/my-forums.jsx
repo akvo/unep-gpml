@@ -114,7 +114,7 @@ const MyForums = ({ handleOnView }) => {
       <section className="my-forums">
         <List
           loading={loading}
-          grid={{ column: 3, gutter: 20, sm: 1, md: 2 }}
+          grid={{ column: 3, gutter: 20, sm: 1, md: 2, xs: 1 }}
           dataSource={myForums}
           renderItem={(item, index) => (
             <List.Item>
@@ -134,7 +134,7 @@ const MyForums = ({ handleOnView }) => {
                     <Popover
                       placement="bottomLeft"
                       visible={openPopover === index}
-                      overlayClassName={styles.forumOptions}
+                      overlayClassName={styles.popover}
                       onVisibleChange={(isOpen) => {
                         const popValue = isOpen ? index : null
                         setOpenPopover(popValue)

@@ -22,6 +22,7 @@ import debounce from 'lodash/debounce'
 import styles from './index.module.scss'
 import {
   DropDownIcon,
+  PinCalendar,
   PinDoc,
   PinForm,
   PinPdf,
@@ -30,8 +31,15 @@ import {
 import api from '../../../utils/api'
 import { MoreOutlined } from '@ant-design/icons'
 import { loadCatalog } from '../../../translations/utils'
+import Script from 'next/script'
 
-const ForumView = ({ isAuthenticated, profile }) => {
+const ForumView = ({
+  isAuthenticated,
+  setLoginVisible,
+  profile,
+  setShouldLoginClose,
+  loadingProfile,
+}) => {
   const router = useRouter()
   const [activeForum, setActiveForum] = useState(null)
   const [sdk, setSDK] = useState(null)
@@ -49,7 +57,7 @@ const ForumView = ({ isAuthenticated, profile }) => {
 
   const fetchData = useCallback(async () => {
     try {
-      if (profile?.id && router.query?.forum) {
+      if (profile?.id && isAuthenticated && router.query?.forum) {
         const { data: apiData } = await api.get(
           `/chat/channel/details/${router.query.forum}`
         )
@@ -69,37 +77,39 @@ const ForumView = ({ isAuthenticated, profile }) => {
   }, [fetchData])
 
   useEffect(() => {
-    ;(async () => {
-      // DSChatSDK construction accepts two parameters:
-      // 1. Chat Room Id
-      // 2. ID of the iFrame tag
-      // 3. Dead Simple Chat Public API Key.
-      try {
-        if (window?.DSChatSDK && activeForum && !sdk) {
-          const _sdk = new window.DSChatSDK(
-            activeForum.id,
-            'chat-frame',
-            process.env.NEXT_PUBLIC_DSC_PUBLIC_KEY
-          )
-          // Call the connect method to connect the SDK to the Chat iFrame.
-          await _sdk.connect()
+    if (!loadingProfile && !isAuthenticated) {
+      setShouldLoginClose(true)
+      setLoginVisible(true)
+    }
+  }, [isAuthenticated, loadingProfile])
 
-          setSDK(_sdk)
-        }
-      } catch (error) {
-        console.error('SDK', error)
-      }
-    })()
+  const handleSDKLoaded = async () => {
+    if (window?.DSChatSDK && !sdk) {
+      const _sdk = new window.DSChatSDK(
+        router.query.forum,
+        'chat-frame',
+        process.env.NEXT_PUBLIC_DSC_PUBLIC_KEY
+      )
+      // Call the connect method to connect the SDK to the Chat iFrame.
+      await _sdk.connect()
+
+      setSDK(_sdk)
+    }
+  }
+  useEffect(() => {
+    handleSDKLoaded()
   }, [activeForum, sdk])
+
   useEffect(() => {
     if (sdk != null) {
       sdk.loadCustomization({
         hideSidebar: true,
         hideHeader: true,
-        hideChatInputTextArea: !userJoined,
+        hideChatInputTextArea: !userJoined || !isAuthenticated,
       })
     }
-  }, [sdk, userJoined])
+  }, [sdk, userJoined, isAuthenticated])
+
   const handleClickJoin = () => {
     api.post('/chat/channel/public', { channelId: activeForum.id })
     setUserJoined(true)
@@ -110,109 +120,114 @@ const ForumView = ({ isAuthenticated, profile }) => {
   }
   const isAdmin = profile?.role === 'ADMIN'
   const channelId = activeForum?.id
+
+  const { psview } = router.query
   return (
     <>
-      <Head>
-        <script src="https://cdn.deadsimplechat.com/sdk/1.2.1/dschatsdk.min.js"></script>
-      </Head>
-      <div className={styles.container}>
-        {/* <div className={styles.channelSidebar}> */}
-        <div className={styles.sidebar}>
-          <div className="description">
-            <Button
-              type="link"
-              onClick={() => router.push('/forum')}
-              icon={<DropDownIcon />}
-              className={styles.backButton}
-            >
-              <Trans>Back to all Forums</Trans>
-            </Button>
-            <div className="title-container">
-              <h5>{activeForum?.name}</h5>
-              {userJoined && (
-                <div className="popover-container">
-                  <Popover
-                    placement="bottomLeft"
-                    overlayClassName={styles.forumOptions}
-                    content={
-                      <ul>
-                        <li>
-                          <Button
-                            size="small"
-                            type="link"
-                            onClick={handleClickLeave}
-                          >
-                            <Trans>Leave Channel</Trans>
-                          </Button>
-                        </li>
-                      </ul>
-                    }
-                    trigger="click"
-                  >
-                    <MoreOutlined rotate={90} />
-                  </Popover>
+      <Script
+        src="https://cdn.deadsimplechat.com/sdk/1.2.1/dschatsdk.min.js"
+        onReady={handleSDKLoaded}
+      />
+      <div className={styles.view}>
+        <div className={styles.container}>
+          <div className={classNames('sidebar', { psview })}>
+            {!psview && (
+              <div className="description">
+                <Button
+                  type="link"
+                  onClick={() => router.push('/forum')}
+                  icon={<DropDownIcon />}
+                  className={styles.backButton}
+                >
+                  <Trans>Back to all Forums</Trans>
+                </Button>
+                <div className="title-container">
+                  <h5>{activeForum?.name}</h5>
+                  {userJoined && (
+                    <div className="popover-container">
+                      <Popover
+                        placement="bottomLeft"
+                        overlayClassName={styles.forumOptions}
+                        content={
+                          <ul>
+                            <li>
+                              <Button
+                                size="small"
+                                type="link"
+                                onClick={handleClickLeave}
+                              >
+                                <Trans>Leave Channel</Trans>
+                              </Button>
+                            </li>
+                          </ul>
+                        }
+                        trigger="click"
+                      >
+                        <MoreOutlined rotate={90} />
+                      </Popover>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-            <p>{activeForum?.description}</p>
+                <p>{activeForum?.description}</p>
+              </div>
+            )}
+            <PinnedLinks {...{ isAdmin, channelId }} />
+            {activeForum != null && (
+              <Discussions
+                discussions={activeForum.discussions}
+                channelId={router.query.forum}
+                {...{ discussion, setDiscussion, sdk, profile, setActiveForum }}
+              />
+            )}
+            {activeForum?.users?.length > 0 && (
+              <Participants {...{ isAdmin, activeForum, channelId }} />
+            )}
           </div>
-          <PinnedLinks {...{ isAdmin, channelId }} />
-          {activeForum != null && (
-            <Discussions
-              discussions={activeForum.discussions}
-              channelId={router.query.forum}
-              {...{ discussion, setDiscussion, sdk, profile, setActiveForum }}
-            />
-          )}
-          {activeForum?.users?.length > 0 && (
-            <Participants {...{ isAdmin, activeForum, channelId }} />
-          )}
-        </div>
 
-        {/* </div> */}
-        <Layout className={styles.content}>
-          {discussion && (
-            <div className="header-discussion">
-              <Button
-                type="link"
-                icon={<DropDownIcon />}
-                className={styles.backButton}
-                onClick={() => {
-                  setDiscussion(null)
-                  sdk?.selectChannel('main')
-                }}
-              >
-                <div className="h-caps-xs h-bold">
-                  <Trans>Back to Channel</Trans>
-                </div>
-              </Button>
-              <h3 className="h-m">{discussion?.name}</h3>
-            </div>
-          )}
-          {iframeURL && (
-            <iframe
-              id="chat-frame"
-              src={iframeURL}
-              width="100%"
-              className={classNames({
-                discussion,
-                joined: userJoined && activeForum != null,
-              })}
-            />
-          )}
-          {!userJoined && activeForum !== null && (
-            <div className="join-container">
-              <Button
-                type="primary"
-                className="noicon"
-                onClick={handleClickJoin}
-              >
-                Join Channel
-              </Button>
-            </div>
-          )}
-        </Layout>
-        {/* </div> */}
+          <Layout className={classNames('content', { psview })}>
+            {discussion && (
+              <div className="header-discussion">
+                <Button
+                  type="link"
+                  icon={<DropDownIcon />}
+                  className={styles.backButton}
+                  onClick={() => {
+                    setDiscussion(null)
+                    sdk?.selectChannel('main')
+                  }}
+                >
+                  <div className="h-caps-xs h-bold">
+                    <Trans>Back to Channel</Trans>
+                  </div>
+                </Button>
+                <h3 className="h-m">{discussion?.name}</h3>
+              </div>
+            )}
+            {iframeURL && (
+              <iframe
+                id="chat-frame"
+                src={iframeURL}
+                width="100%"
+                className={classNames({
+                  discussion,
+                  joined: userJoined && activeForum != null,
+                })}
+              />
+            )}
+            {!userJoined && activeForum !== null && (
+              <div className="join-container">
+                <Button
+                  type="primary"
+                  className="noicon"
+                  onClick={handleClickJoin}
+                >
+                  Join Channel
+                </Button>
+              </div>
+            )}
+          </Layout>
+          {/* </div> */}
+        </div>
       </div>
     </>
   )
@@ -260,7 +275,7 @@ const PinnedLinks = ({ isAdmin, channelId }) => {
     form: PinForm,
     doc: PinDoc,
   }
-  if(items.length === 0 && !isAdmin) return
+  if (items.length === 0 && !isAdmin) return
   return (
     <>
       <h6 className="w-bold h-caps-xs">
@@ -368,6 +383,12 @@ const PinnedLinks = ({ isAdmin, channelId }) => {
                     <PinForm />
                   </div>
                   Form
+                </Radio.Button>
+                <Radio.Button value="event">
+                  <div className="icon">
+                    <PinCalendar />
+                  </div>
+                  Invite
                 </Radio.Button>
               </Radio.Group>
             </Form.Item>
@@ -637,7 +658,7 @@ const Discussions = ({
                 onClick={handleCreateDiscussion}
                 loading={creating}
               >
-                Create Disussion
+                Create Discussion
               </Button>
               <Button
                 type="ghost"
@@ -709,14 +730,19 @@ const DiscussionItem = ({
   )
 }
 
+export const getStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  }
+}
 
-// export const getStaticProps = async (ctx) => {
-//   return {
-//     props: {
-//       i18n: await loadCatalog(ctx.locale),
-//     },
-//   }
-// }
-
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
+}
 
 export default ForumView

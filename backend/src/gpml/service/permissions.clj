@@ -2,8 +2,10 @@
   (:require
    [dev.gethop.rbac :as rbac]
    [duct.logger :refer [log]]
-   [gpml.db.rbac-util :as db.rbac-util])
-  (:import clojure.lang.ExceptionInfo))
+   [gpml.db.rbac-util :as db.rbac-util]
+   [gpml.util.malli :refer [check! failure-with success-with]])
+  (:import
+   (clojure.lang ExceptionInfo)))
 
 (defn get-role-by-name! [db-spec logger name]
   (let [{:keys [success?] :as result} (rbac/get-role-by-name db-spec logger name)]
@@ -44,6 +46,7 @@
         (rbac/create-context! conn logger new-context parent-context)))))
 
 (defn assign-roles-to-users [{:keys [conn logger]} role-assignments]
+  {:post [(check! [:sequential [:or (success-with) (failure-with)]] %)]}
   (let [parsed-role-assignments (try
                                   (mapv (fn [{:keys [role-name context-type resource-id user-id]}]
                                           {:role (:role (get-role-by-name! conn logger role-name))
@@ -56,9 +59,10 @@
     (if (vector? parsed-role-assignments)
       (rbac/assign-roles! conn logger parsed-role-assignments)
       ;; it's a failure object
-      parsed-role-assignments)))
+      [parsed-role-assignments])))
 
 (defn unassign-roles-from-users [{:keys [conn logger]} role-unassignments]
+  {:post [(check! [:sequential [:or (success-with) (failure-with)]] %)]}
   (let [parsed-role-unassignments (try
                                     (mapv (fn [{:keys [role-name context-type resource-id user-id]}]
                                             {:role (:role (get-role-by-name! conn logger role-name))
@@ -68,10 +72,19 @@
                                     (catch ExceptionInfo e
                                       (or (-> e ex-data :result not-empty)
                                           (throw e))))]
-    (if (vector? parsed-role-unassignments)
-      (rbac/unassign-roles! conn logger parsed-role-unassignments)
-      ;; it's a failure object
-      parsed-role-unassignments)))
+    (if-not (vector? parsed-role-unassignments) ;; it's a failure object
+      [parsed-role-unassignments]
+      (mapv (fn [parsed-role-unassignment]
+              (let [[x] (rbac/unassign-roles! conn logger [parsed-role-unassignment])]
+                ;; the object returned by dev.gethop.rbac/unassign-role! when there was nothing to delete,
+                ;; which can happen for misc reasons (most notably, for supporting idempotent deletes)
+                (if (= x
+                       {:success? false})
+                  (do
+                    (log logger :warn :did-not-unassign-role-from-user {:parsed-role-unassignment parsed-role-unassignment})
+                    {:success? true})
+                  x)))
+            parsed-role-unassignments))))
 
 (defn unassign-all-roles [{:keys [conn]} user-id]
   (db.rbac-util/unassign-all-roles conn {:user-id user-id}))
