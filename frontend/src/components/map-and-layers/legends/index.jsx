@@ -146,8 +146,8 @@ const LegendCard = ({
           )
         : renderLegendItems(
             legends?.legends?.drawingInfo?.renderer
-              ? legends?.legends?.drawingInfo?.renderer.classBreakInfos
-              : mapp?.renderers[0]?.renderer?.renderer.classBreakInfos
+              ? legends?.legends?.drawingInfo?.renderer?.classBreakInfos
+              : mapp?.renderers[0]?.renderer?.renderer?.classBreakInfos
           )}
 
       {layerId && (

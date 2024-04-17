@@ -71,7 +71,7 @@ const Map = ({ initialViewProperties }) => {
           })
       }
     }
-  }, [initialViewProperties])
+  }, [])
 
   useEffect(() => {
     const webMap = viewRef.current?.map
