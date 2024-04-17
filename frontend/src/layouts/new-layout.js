@@ -253,7 +253,7 @@ const NewLayout = ({
                       trigger={['click']}
                       placement="bottomRight"
                     >
-                      <Avatar size="large">
+                      <Avatar size="large" src={profile.picture}>
                         {profile?.firstName?.charAt(0)}
                         {profile?.lastName?.charAt(0)}
                       </Avatar>
