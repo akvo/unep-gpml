@@ -110,9 +110,9 @@ function Partnership({ isAuthenticated }) {
             realm: 'Username-Password-Authentication',
             username,
             password,
-            redirectUri: 'http://localhost:3001/partnership',
+            redirectUri: `${window.location.origin}/partnership`,
             state: JSON.stringify({
-              redirectTo: 'http://localhost:3001/partnership',
+              redirectTo: `${window.location.origin}/partnership`,
             }),
           },
           (err, authResult) => {
@@ -136,9 +136,9 @@ function Partnership({ isAuthenticated }) {
               lastName: values.fname,
               firstName: values.lname,
             },
-            redirectUri: 'http://localhost:3001/partnership',
+            redirectUri: `${window.location.origin}/partnership`,
             state: JSON.stringify({
-              redirectTo: 'http://localhost:3001/partnership',
+              redirectTo: `${window.location.origin}/partnership`,
             }),
           },
           function (err) {
@@ -168,6 +168,14 @@ function Partnership({ isAuthenticated }) {
           id: data.id,
         },
       })
+
+      setTimeout(async () => {
+        await api.put(`/organisation/${data.id}/request-membership`, {
+          ...data,
+          type: representativeGroup.find((item) => item.code === type)?.name,
+          authorize_submission: true,
+        })
+      }, 300)
 
       updateStatusProfile(profileRes.data)
 
@@ -310,9 +318,11 @@ function Partnership({ isAuthenticated }) {
             <Col xs={24} sm={24} lg={15} xl={15}>
               <div class="header">
                 <h1>
-                  <span>Join the multi-stakeholder partnership</span> which
-                  brings together all the actors working on plastic pollution
-                  and marine litter prevention and reduction.
+                  <Trans>
+                    <span>Join the multi-stakeholder partnership</span> which
+                    brings together all the actors working on plastic pollution
+                    and marine litter prevention and reduction.
+                  </Trans>
                 </h1>
               </div>
             </Col>
@@ -322,30 +332,43 @@ function Partnership({ isAuthenticated }) {
           </Row>
           <div className="steps-container">
             <h2 className="steps-header">
-              3 STEPS FOR AN ENTITY TO BECOME A MEMBER
+              <Trans>3 STEPS FOR AN ENTITY TO BECOME A MEMBER</Trans>
             </h2>
             <div class="steps">
               <div class="step">
                 <h2>1</h2>
                 <p>
-                  <strong>Fill in the form.</strong>
+                  <strong>
+                    <Trans>Fill in the form.</Trans>
+                  </strong>
                   <br />
-                  Tell us about your organisation's work in preventing and
-                  reducing plastic pollution and marine litter.
+                  <Trans>
+                    Tell us about your organisation's work in preventing and
+                    reducing plastic pollution and marine litter.
+                  </Trans>
                 </p>
               </div>
               <div class="step">
                 <h2>2</h2>
                 <p>
-                  <strong>Be approved</strong> and certified by the GPML as a
-                  member of the partnership.
+                  <strong>
+                    <Trans>Be approved</Trans>
+                  </strong>
+                  <Trans>
+                    and certified by the GPML as a member of the partnership.
+                  </Trans>
                 </p>
               </div>
               <div class="step">
                 <h2>3</h2>
                 <p>
-                  <strong>Receive</strong> an entity profile and focal point
-                  profile on the GPML Digital Platform.
+                  <Trans>
+                    <strong>
+                      <Trans>Receive</Trans>
+                    </strong>{' '}
+                    an entity profile and focal point profile on the GPML
+                    Digital Platform.
+                  </Trans>
                 </p>
               </div>
             </div>
@@ -355,7 +378,9 @@ function Partnership({ isAuthenticated }) {
       {router.query.submitted !== 'true' && (
         <div className="activity-box">
           <div className="container">
-            <h2>Why become a certified GPML member?</h2>
+            <h2>
+              <Trans>Why become a certified GPML member?</Trans>
+            </h2>
           </div>
           <div className="container">
             <div className="activity-box-wrapper">
@@ -368,9 +393,11 @@ function Partnership({ isAuthenticated }) {
                     <Trans>Access</Trans>
                   </h3>
                   <p>
-                    Access to a unique global audience for sharing knowledge and
-                    experiences in preventing and reducing plastic pollution and
-                    marine litter.
+                    <Trans>
+                      Access to a unique global audience for sharing knowledge
+                      and experiences in preventing and reducing plastic
+                      pollution and marine litter.
+                    </Trans>
                   </p>
                 </li>
                 <li>
@@ -381,8 +408,10 @@ function Partnership({ isAuthenticated }) {
                     <Trans>Collaborate</Trans>
                   </h3>
                   <p>
-                    Opportunities to collaborate with other stakeholders to
-                    create and advance solutions.
+                    <Trans>
+                      Opportunities to collaborate with other stakeholders to
+                      create and advance solutions.
+                    </Trans>
                   </p>
                 </li>
                 <li>
@@ -393,8 +422,10 @@ function Partnership({ isAuthenticated }) {
                     <Trans>Share</Trans>
                   </h3>
                   <p>
-                    Exclusive invites to online and in-person events and the
-                    opportunity to showcase your work.
+                    <Trans>
+                      Exclusive invites to online and in-person events and the
+                      opportunity to showcase your work.
+                    </Trans>
                   </p>
                 </li>
                 <li>
@@ -405,8 +436,10 @@ function Partnership({ isAuthenticated }) {
                     <Trans>Learn</Trans>
                   </h3>
                   <p>
-                    Opportunities to access a variety of resources, data and
-                    trainings to enhance capacity development.
+                    <Trans>
+                      Opportunities to access a variety of resources, data and
+                      trainings to enhance capacity development.
+                    </Trans>
                   </p>
                 </li>
                 <li>
@@ -417,8 +450,10 @@ function Partnership({ isAuthenticated }) {
                     <Trans>Certified</Trans>
                   </h3>
                   <p>
-                    Your organisation will receive a certificate, which
-                    officially acknowledges its GPML membership.
+                    <Trans>
+                      Your organisation will receive a certificate, which
+                      officially acknowledges its GPML membership.
+                    </Trans>
                   </p>
                 </li>
               </ul>
@@ -441,9 +476,11 @@ function Partnership({ isAuthenticated }) {
                 }}
               >
                 <div>
-                  <h3>Your application is received.</h3>
+                  <h3>
+                    <Trans>Your application is received.</Trans>
+                  </h3>
                   <h6 style={{ marginTop: 15 }}>
-                    We will be reviewing it shortly.
+                    <Trans>We will be reviewing it shortly.</Trans>
                   </h6>
                 </div>
               </Card>
@@ -451,8 +488,12 @@ function Partnership({ isAuthenticated }) {
           </Row>
         ) : loading ? null : (
           <div className="form-container">
-            <div class="caps-heading-1 page-sub-heading">Step 1</div>
-            <h2>Fill in the form</h2>
+            <div class="caps-heading-1 page-sub-heading">
+              <Trans>Step 1</Trans>
+            </div>
+            <h2>
+              <Trans>Fill in the form</Trans>
+            </h2>
             <FinalForm
               onSubmit={onSubmit}
               initialValues={initialValues}
@@ -478,7 +519,7 @@ function Partnership({ isAuthenticated }) {
 
                             return (
                               <FormLabel
-                                label="Name of Organisation"
+                                label={t`Name of Organisation`}
                                 htmlFor="orgName"
                                 validateStatus={validateStatus}
                               >
@@ -521,7 +562,7 @@ function Partnership({ isAuthenticated }) {
 
                             return (
                               <FormLabel
-                                label="Organisation's efforts in addressing plastic pollution"
+                                label={t`Organisation's efforts in addressing plastic pollution`}
                                 htmlFor="program"
                                 validateStatus={validateStatus}
                               >
@@ -564,7 +605,7 @@ function Partnership({ isAuthenticated }) {
 
                             return (
                               <FormLabel
-                                label="Which representative group fits your Entity?"
+                                label={t`Which representative group fits your Entity?`}
                                 htmlFor="type"
                                 validateStatus={validateStatus}
                               >
@@ -604,7 +645,7 @@ function Partnership({ isAuthenticated }) {
 
                             return (
                               <FormLabel
-                                label="Organisation’s Website"
+                                label={t`Organisation’s Website`}
                                 htmlFor="url"
                                 validateStatus={validateStatus}
                               >
@@ -640,7 +681,7 @@ function Partnership({ isAuthenticated }) {
                         <Field name="picture">
                           {({ input: { value, onChange, ...input } }) => (
                             <FormLabel
-                              label="Organisation’s Logo"
+                              label={t`Organisation’s Logo`}
                               htmlFor="url"
                             >
                               <Dragger
@@ -682,9 +723,11 @@ function Partnership({ isAuthenticated }) {
                                   <UploadFileIcon />
                                 </p>
                                 <p className="ant-upload-text">
-                                  Accepts .jpg and .png
+                                  <Trans>Accepts .jpg and .png</Trans>
                                 </p>
-                                <p className="add-btn">Add a File</p>
+                                <p className="add-btn">
+                                  <Trans>Add a File</Trans>
+                                </p>
                               </Dragger>
                             </FormLabel>
                           )}
@@ -730,7 +773,7 @@ function Partnership({ isAuthenticated }) {
 
                             return (
                               <FormLabel
-                                label="Areas of expertise"
+                                label={t`Areas of expertise`}
                                 htmlFor="tags"
                                 validateStatus={validateStatus}
                               >
@@ -760,7 +803,9 @@ function Partnership({ isAuthenticated }) {
                         </Field>
 
                         <div className="geo">
-                          <h2>Geo-coverage</h2>
+                          <h2>
+                            <Trans>Geo-coverage</Trans>
+                          </h2>
                           <Row gutter={[16, 16]}>
                             <Col span={12} xs={24}>
                               <Field name="geoCoverageType" validate={required}>
@@ -777,7 +822,7 @@ function Partnership({ isAuthenticated }) {
 
                                   return (
                                     <FormLabel
-                                      label="Geo-coverage type"
+                                      label={t`Geo-coverage type`}
                                       htmlFor="geoCoverageType"
                                       validateStatus={validateStatus}
                                     >
@@ -789,7 +834,6 @@ function Partnership({ isAuthenticated }) {
                                         }
                                         onBlur={() => input.onBlur()}
                                         value={input.value}
-                                        placeholder="Geo-coverage type"
                                         allowClear
                                         className={`dont-show ${
                                           meta.touched && !meta.valid
@@ -797,12 +841,14 @@ function Partnership({ isAuthenticated }) {
                                             : ''
                                         }`}
                                       >
-                                        <Option value="global">Global</Option>
+                                        <Option value="global">
+                                          <Trans>Global</Trans>
+                                        </Option>
                                         <Option value="transnational">
-                                          Transnational
+                                          <Trans>Transnational</Trans>
                                         </Option>
                                         <Option value="national">
-                                          National
+                                          <Trans>National</Trans>
                                         </Option>
                                       </Select>{' '}
                                       {meta.touched && meta.error && (
@@ -840,7 +886,7 @@ function Partnership({ isAuthenticated }) {
 
                                     return (
                                       <FormLabel
-                                        label="Geo Coverage (Transnational)"
+                                        label={t`Geo Coverage (Transnational)`}
                                         htmlFor="geo_coverage_country_groups"
                                         validateStatus={validateStatus}
                                       >
@@ -903,7 +949,7 @@ function Partnership({ isAuthenticated }) {
 
                                     return (
                                       <FormLabel
-                                        label="Geo Coverage (countries)"
+                                        label={t`Geo Coverage (countries)`}
                                         htmlFor="geo_coverage_countries"
                                         validateStatus={validateStatus}
                                       >
@@ -971,7 +1017,7 @@ function Partnership({ isAuthenticated }) {
 
                                   return (
                                     <FormLabel
-                                      label="Headquarters"
+                                      label={t`Headquarters`}
                                       htmlFor="orgHeadquarter"
                                       validateStatus={validateStatus}
                                     >
@@ -1042,13 +1088,15 @@ function Partnership({ isAuthenticated }) {
                               }
                             >
                               <Checkbox {...input}>
-                                By submitting this form, I will be included in
-                                the public database of GPML Digital Platform
-                                members and acknowledge that the provided
-                                information will be made public and used to find
-                                and connect via smart-matchmaking
-                                functionalities with other stakeholders and
-                                resources.
+                                <Trans>
+                                  By submitting this form, I will be included in
+                                  the public database of GPML Digital Platform
+                                  members and acknowledge that the provided
+                                  information will be made public and used to
+                                  find and connect via smart-matchmaking
+                                  functionalities with other stakeholders and
+                                  resources.
+                                </Trans>
                               </Checkbox>
                             </FormLabel>
                           )}
@@ -1071,10 +1119,14 @@ function Partnership({ isAuthenticated }) {
                         ) : (
                           <div className="auth-container">
                             <div className="header">
-                              <h2>Focal Point Account in GPML</h2>
+                              <h2>
+                                <Trans>Focal Point Account in GPML</Trans>
+                              </h2>
                               <div className="login-btn">
                                 {!login && (
-                                  <span>Already have an account?</span>
+                                  <span>
+                                    <Trans>Already have an account?</Trans>
+                                  </span>
                                 )}
                                 <Button
                                   type="link"
@@ -1351,7 +1403,7 @@ const Login = ({ required }) => {
 
             return (
               <FormLabel
-                label="Email"
+                label={t`Email`}
                 htmlFor="email"
                 validateStatus={validateStatus}
               >
