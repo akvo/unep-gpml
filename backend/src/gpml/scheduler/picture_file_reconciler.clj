@@ -24,7 +24,7 @@
                                    chat :chat-adapter
                                    :as config}]
   {:pre [db hikari logger chat]}
-  (log logger :info :starting)
+  (log logger :warn :starting)
   (let [result (saga logger {:success? true}
                  (fn get-users-with-a-profile-picture-and-dsc-account [context]
                    (let [v (into {}
@@ -103,7 +103,7 @@
                                             :error-details {:result result})))))
                            (assoc context :affected 0)
                            (:stakeholders-with-newer-profile-picture context))))]
-    (log logger :info :done {:result result})
+    (log logger :warn :done {:result result})
     result))
 
 (comment
