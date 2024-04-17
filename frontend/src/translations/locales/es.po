@@ -40,11 +40,11 @@ msgstr "{value} iniciativas"
 
 #: src/pages/partnership/index.jsx:352
 msgid "<0>Be approved</0>and certified by the GPML as a member of the partnership."
-msgstr ""
+msgstr "<0>Estar aprobado</0>y certificado por la GPML como miembro de la asociación."
 
 #: src/pages/partnership/index.jsx:341
 msgid "<0>Fill in the form.</0><1/>Tell us about your organisation's work in preventing and reducing plastic pollution and marine litter."
-msgstr ""
+msgstr "<0>Rellena el formulario.</0><1/>Cuéntanos sobre el trabajo de tu organización para prevenir y reducir la contaminación plástica y la basura marina."
 
 #: src/pages/landing/index.jsx:955
 msgid "<0>GPML’s</0> Action Tracks"
@@ -56,11 +56,11 @@ msgstr "<0>Introducción</0><1>Esta herramienta de flujo de trabajo ha sido crea
 
 #: src/pages/partnership/index.jsx:321
 msgid "<0>Join the multi-stakeholder partnership</0> which brings together all the actors working on plastic pollution and marine litter prevention and reduction."
-msgstr ""
+msgstr "<0>Únase a la asociación de múltiples partes interesadas</0> que reúne a todos los actores que trabajan en la prevención y reducción de la contaminación plástica y la basura marina."
 
 #: src/pages/partnership/index.jsx:361
 msgid "<0>Receive</0> an entity profile and focal point profile on the GPML Digital Platform."
-msgstr ""
+msgstr "<0>Reciba</0> un perfil de entidad y un perfil de punto focal en la Plataforma Digital GPML."
 
 #: src/pages/landing/index.jsx:1193
 msgid "<0>Spread the word</0><1>Follow us on social media to be part of the movement. </1>"
@@ -76,7 +76,7 @@ msgstr "1 de 1"
 
 #: src/pages/partnership/index.jsx:335
 msgid "3 STEPS FOR AN ENTITY TO BECOME A MEMBER"
-msgstr ""
+msgstr "3 PASOS PARA QUE UNA ENTIDAD SE HAGA MIEMBRO"
 
 #: src/modules/flexible-forms/form-schema.js:863
 msgid "A change in public opinion"
@@ -138,11 +138,11 @@ msgstr "Acerca de ti mismo"
 
 #: src/pages/partnership/index.jsx:719
 msgid "Accepts .jpg and .png"
-msgstr ""
+msgstr "Acepta .jpg y .png"
 
 #: src/pages/partnership/index.jsx:386
 msgid "Access"
-msgstr ""
+msgstr "Acceso"
 
 #: src/pages/landing/index.jsx:850
 msgid "Access a suite of powerful data tools tailored for tackling plastic pollution and marine litter. Utilize comprehensive data sets, layers and statistics to  gain valuable insights that empower informed decision-making and drive effective action."
@@ -150,7 +150,7 @@ msgstr "Acceda a un conjunto avanzado de herramientas de datos diseñadas para c
 
 #: src/pages/partnership/index.jsx:389
 msgid "Access to a unique global audience for sharing knowledge and experiences in preventing and reducing plastic pollution and marine litter."
-msgstr ""
+msgstr "Acceso a una audiencia global única para compartir conocimientos y experiencias en la prevención y reducción de la contaminación plástica y la basura marina."
 
 #: src/pages/landing/index.jsx:1020
 msgid "Access to all"
@@ -184,7 +184,7 @@ msgstr "Agregar"
 
 #: src/pages/partnership/index.jsx:722
 msgid "Add a File"
-msgstr ""
+msgstr "Agregar un archivo"
 
 #: src/pages/workspace/[slug]/1-project-team/setup-team.js:44
 msgid "Add a New Member"
@@ -272,7 +272,7 @@ msgstr "Todos los recursos"
 
 #: src/pages/partnership/index.jsx:1121
 msgid "Already have an account?"
-msgstr ""
+msgstr "¿Ya tienes una cuenta?"
 
 #: src/pages/landing/index.jsx:487
 msgid "Already on the platform"
@@ -366,7 +366,7 @@ msgstr "Área de experiencia"
 
 #: src/pages/partnership/index.jsx:769
 msgid "Areas of expertise"
-msgstr ""
+msgstr "Áreas de especialización"
 
 #: src/store.js:307
 msgid "ASEAN Regional Action Plan for Combating Marine Debris in the ASEAN Member States (2021 – 2025)"
@@ -618,7 +618,7 @@ msgstr "Certificación, Licenciamiento y Registro"
 
 #: src/pages/partnership/index.jsx:443
 msgid "Certified"
-msgstr ""
+msgstr "Certificado"
 
 #: src/modules/case-studies/CaseStudy.jsx:48
 msgid "Challenge & Solution"
@@ -766,7 +766,7 @@ msgstr "Plan de Acción Regional COBSEA sobre Basura Marina 2019"
 
 #: src/pages/partnership/index.jsx:401
 msgid "Collaborate"
-msgstr ""
+msgstr "Colaborar"
 
 #: src/store.js:285
 msgid "Collecting evidence around plastic discharge to the ocean/waterways, e.g., monitoring, analysis"
