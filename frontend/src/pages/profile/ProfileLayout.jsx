@@ -278,8 +278,8 @@ function ProfileLayout({ children }) {
       vals.org.geoCoverageValue = null
     }
 
-    vals.seeking = vals.seeking.map((item) => item.toString())
-    vals.offering = vals.offering.map((item) => item.toString())
+    vals.seeking = vals.seeking?.map((item) => item.toString())
+    vals.offering = vals.offering?.map((item) => item.toString())
 
     const changes = getChangedFields(profile, vals)
     if (changes && Object.keys(changes).length > 0)
