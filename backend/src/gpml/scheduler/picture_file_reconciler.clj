@@ -91,8 +91,11 @@
 
                  (fn effect-changes [context]
                    (reduce (fn [acc [chat-account-id {:keys [picture-file] :as _stakeholder}]]
-                             (let [{picture-url :url} (srv.file/get-file-url config picture-file)]
+                             (let [{picture-url :url
+                                    :as get-file-url-result} (srv.file/get-file-url config picture-file)]
                                (assert picture-url)
+                               (log logger :warn :effecting {:picture-file picture-file
+                                                             :get-file-url-result get-file-url-result})
                                (let [result (port.chat/update-user-account chat
                                                                            chat-account-id
                                                                            {:profilePic picture-url})]
