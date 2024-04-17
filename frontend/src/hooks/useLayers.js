@@ -7,13 +7,11 @@ const useLayers = (renderers) => {
   const { queryParameters } = useQueryParameters();
   const { layers: layersFromQuery } = queryParameters;
 
-  const featureLayers = layersFromQuery.reverse().map(layer => {
+  const featureLayers = layersFromQuery?.reverse().map(layer => {
     const baseUrl = `https://services3.arcgis.com/pI4ewELlDKS2OpCN/arcgis/rest/services/${layer.attributes.arcgislayerId}/FeatureServer`;
 
     const url = layer.attributes.featureId ? `${baseUrl}/${layer.attributes.featureId}` : baseUrl;
-
     const layerRendererObject = renderers.find(renderer => renderer.key === layer.attributes.name)
-
     const renderer = layerRendererObject ? layerRendererObject.renderer : null
 
     const parts = layer?.attributes.outFields?.split(',');
@@ -29,57 +27,45 @@ const useLayers = (renderers) => {
     });
 
     try {
-
-      const featureLayer = (layer.attributes.arcgisMapId !== null && layer.attributes.layerMappingId === null) ? new FeatureLayer({
-        portalItem: {
-          id: layer.attributes.arcgisMapId
-        }
-      }) :
-        new FeatureLayer({
-          url: url,
-          outFields: arrayFields ? arrayFields : ["*"],
-          ...(layer.attributes.arcgisMapId !== null ? { renderer: renderer } : {}),
-          labelingInfo: [new LabelClass({
-            labelExpressionInfo: layer.attributes.labelExpression ? { expression: "$feature.NAME" } : "",
-            symbol: {
-              type: "text",
-              color: "#000000",
-              haloColor: "white",
-              haloSize: "2px",
-              font: {
-                family: "Arial",
-                size: 8,
-                weight: "bold"
-              }
-            },
-          })],
-          popupTemplate: {
-            title: "{origin} {destination}",
-            content: async function (feature) {
-              const attributes = feature.graphic.attributes;
-              const domainPromises = Object.entries(attributes).map(async ([key, value]) => {
-                try {
-                  const domain = await featureLayer.getFieldDomain(key);
-                  const displayValue = domain ? domain.codedValues.find(cv => cv.code === value)?.name : value;
-                  return `<div class="popup-field">
-                          <strong class="popup-field-name">${key}:</strong>
-                          <span class="popup-field-value">${displayValue}</span>
-                        </div>`;
-                } catch (error) {
-                  console.error("Error getting field domain:", error);
-                  return `<div class="popup-field">
-                          <strong class="popup-field-name">${key}:</strong>
-                          <span class="popup-field-value">${value}</span>
-                        </div>`;
+      const featureLayer =
+        (layer.attributes.arcgisMapId !== null && layer.attributes.layerMappingId === null) ? new FeatureLayer({
+          portalItem: {
+            id: layer.attributes.arcgisMapId,
+          },
+        }) :
+          new FeatureLayer({
+            url: url,
+            outFields: arrayFields,
+            ...(layer.attributes.arcgisMapId !== null ? { renderer: renderer } : {}),
+            labelingInfo: [new LabelClass({
+              labelExpressionInfo: { expression: `$feature.${layer.attributes.labelField || "NAME"}` },
+              symbol: {
+                type: "text",
+                color: "#000000",
+                haloColor: "white",
+                haloSize: "2px",
+                font: {
+                  family: "Arial",
+                  size: 8,
+                  weight: "bold"
                 }
-              });
-
-              const contentElements = await Promise.all(domainPromises);
-              return `<div class="popup-content">${contentElements.join('')}</div>`;
+              }
+            })],
+            popupTemplate: {
+              title: `{ROMNAM}`,
+              content: ({ graphic }) => {
+                const attributes = graphic.attributes;
+                return arrayFields.map(field => {
+                  const displayKey = keyToDisplayName[field] || field;
+                  const displayValue = attributes[field];
+                  return `<div class="popup-field">
+                <strong class="popup-field-name">${displayKey}:</strong>
+                <span class="popup-field-value">${displayValue}</span>
+              </div>`;
+                }).join('');
+              }
             }
-          }
-
-        })
+          });
 
       featureLayer.load().then(() => {
         if (featureLayer.popupTemplate) {
@@ -98,12 +84,23 @@ const useLayers = (renderers) => {
     }
   }).filter(layer => layer !== null);
 
-
-
-  console.log('Feature layers created:', featureLayers);
-
   return featureLayers;
 };
 
 export default useLayers;
 
+const keyToDisplayName = {
+  "pw_generated_kg_cap_yr": "Observed value",
+  "year": "Year",
+  "pw_collected_pct": "Observed value",
+  "Time_Period": "Year",
+  "OBS_Value": "Observed value",
+  "obsTime": "Year",
+  "obsValue": "Observed value",
+  "TIME_DETAIL": "Year",
+  "plastic": "Plastic",
+  "area_km2_1": "Area",
+  "Aggregated_OBS_Value": "Observed value",
+  "pw_generated_tons_yr": "Observed value",
+  "romnam": "Country"
+};

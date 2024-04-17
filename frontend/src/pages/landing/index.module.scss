@@ -823,7 +823,7 @@
     }
   }
   .activities {
-    padding-top: 80px;
+    padding-top: 0px;
     @media screen and (max-width: $bpMobile) {
       padding-top: 32px;
     }
@@ -1466,6 +1466,7 @@
   align-items: center;
   gap: 41px;
   padding: 80px 0;
+  margin-top: 80px;
   @media only screen and (max-width: 640px) {
     gap: 32px;
     padding: 32px 0;

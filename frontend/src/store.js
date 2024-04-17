@@ -41,14 +41,14 @@ const menuList = [
         icon: <CapacityBuildingSvg />,
         iconClass: 'learning',
       },
-      {
-        to: '/help-center',
-        title: msg`Help Center`,
-        key: msg`Help Center`,
-        id: 'Help Center',
-        subtitle: msg`Support on GPML Digital Platform`,
-        icon: <HelpCenterSvg />,
-      },
+      // {
+      //   to: '/help-center',
+      //   title: msg`Help Center`,
+      //   key: msg`Help Center`,
+      //   id: 'Help Center',
+      //   subtitle: msg`Support on GPML Digital Platform`,
+      //   icon: <HelpCenterSvg />,
+      // },
     ],
   },
   {

@@ -26,7 +26,7 @@ const Map = ({ initialViewProperties }) => {
 
     const customBasemapLayer = new TileLayer({
       url:
-        'https://geoservices.un.org/arcgis/rest/services/ClearMap_WebTopo/MapServer',
+        'https://geoservices.un.org/arcgis/rest/services/ClearMap_WebPlain/MapServer',
     })
 
     const customBasemap = new Basemap({
@@ -61,26 +61,33 @@ const Map = ({ initialViewProperties }) => {
     viewRef.current = view
     return () => {
       if (viewRef.current) {
-        viewRef.current.destroy()
-        viewRef.current = null
+        viewRef.current
+          .when(() => {
+            viewRef.current.destroy()
+            viewRef.current = null
+          })
+          .catch((error) => {
+            console.error('Error when closing the view:', error)
+          })
       }
     }
   }, [initialViewProperties])
 
   useEffect(() => {
     const webMap = viewRef.current?.map
-    if (!webMap || layerstoset.length === 0) return
+    if (!webMap || layerstoset?.length === 0) return
 
-    const newLayer = layerstoset[0]
+    const newLayer = layerstoset ? layerstoset[0] : ''
     const existingLayer = webMap.findLayerById(newLayer.id)
 
-    if (existingLayer) {
-    } else {
+    if (!existingLayer) {
       if (currentLayerRef.current) {
         webMap.remove(currentLayerRef.current)
       }
-      webMap.add(newLayer)
-      currentLayerRef.current = newLayer
+      if (viewRef.current) {
+        webMap.add(newLayer)
+        currentLayerRef.current = newLayer
+      }
     }
   }, [layerstoset])
 
