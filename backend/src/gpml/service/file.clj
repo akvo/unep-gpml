@@ -28,7 +28,7 @@
     {:byte-buffer content}))
 
 (defn- get-bucket-name [{:keys [private-storage-bucket-name public-storage-bucket-name]} visibility]
-  (if (= :private visibility)
+  (if (#{:private "private"} visibility)
     private-storage-bucket-name
     public-storage-bucket-name))
 
