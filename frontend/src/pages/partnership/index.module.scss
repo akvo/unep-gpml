@@ -47,6 +47,9 @@
         .step {
           display: flex;
           gap: 20px;
+          strong {
+            padding-right: 5px;
+          }
           h2 {
             width: 68px;
             height: 68px;

@@ -49,7 +49,7 @@ export const useDefaultFormSchema = () => {
       socialLocation: {
         linkedIn: { label: i18n._(t`LinkedIn`), prefix: <LinkedinOutlined /> },
         twitter: { label: i18n._(t`Twitter`), prefix: <TwitterOutlined /> },
-        photo: {
+        picture: {
           label: i18n._(t`Photo`),
           control: 'file',
           maxFileSize: 1,

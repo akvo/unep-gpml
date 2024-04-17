@@ -72,7 +72,7 @@ function Partnership({ isAuthenticated }) {
     const data = {
       name: values.orgName,
       url: ensureHttps(values.url),
-      is_member: true,
+      is_member: false,
       country: values.orgHeadquarter,
       geo_coverage_type: values.geoCoverageType,
       tags: matchedTags,
@@ -208,7 +208,7 @@ function Partnership({ isAuthenticated }) {
         const data = {
           name: values.name,
           url: values.url,
-          is_member: true,
+          is_member: false,
           country: values.country,
           geo_coverage_type: values.geo_coverage_type,
           tags: values.tags,
@@ -224,7 +224,7 @@ function Partnership({ isAuthenticated }) {
         setInitialValues({
           orgName: data.name,
           url: data.url,
-          is_member: true,
+          is_member: false,
           orgHeadquarter: data.country,
           geoCoverageType: data.geo_coverage_type,
           tags: data.tags.map((t) => t.tag.toLowerCase()),
@@ -338,11 +338,9 @@ function Partnership({ isAuthenticated }) {
               <div class="step">
                 <h2>1</h2>
                 <p>
-                  <strong>
-                    <Trans>Fill in the form.</Trans>
-                  </strong>
-                  <br />
                   <Trans>
+                    <strong>Fill in the form.</strong>
+                    <br />
                     Tell us about your organisation's work in preventing and
                     reducing plastic pollution and marine litter.
                   </Trans>
@@ -351,10 +349,8 @@ function Partnership({ isAuthenticated }) {
               <div class="step">
                 <h2>2</h2>
                 <p>
-                  <strong>
-                    <Trans>Be approved</Trans>
-                  </strong>
                   <Trans>
+                    <strong>Be approved</strong>
                     and certified by the GPML as a member of the partnership.
                   </Trans>
                 </p>
@@ -363,11 +359,8 @@ function Partnership({ isAuthenticated }) {
                 <h2>3</h2>
                 <p>
                   <Trans>
-                    <strong>
-                      <Trans>Receive</Trans>
-                    </strong>{' '}
-                    an entity profile and focal point profile on the GPML
-                    Digital Platform.
+                    <strong>Receive</strong> an entity profile and focal point
+                    profile on the GPML Digital Platform.
                   </Trans>
                 </p>
               </div>
