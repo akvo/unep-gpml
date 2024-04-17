@@ -399,12 +399,12 @@ function ProfileLayout({ children }) {
     })
   }
 
-  const profilePic = profile?.photo?.includes('googleusercontent.com')
-    ? profile?.photo.replace(
+  const profilePic = profile?.picture?.includes('googleusercontent.com')
+    ? profile?.picture.replace(
         /(s\d+\-c)/g,
         window.screen.width > 640 ? `s${window.screen.height}-c` : `s640-c`
       )
-    : profile?.photo
+    : profile?.picture
 
   const additionalProps = {
     profile: profile,
