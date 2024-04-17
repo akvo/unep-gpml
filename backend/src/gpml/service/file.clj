@@ -61,7 +61,7 @@
                                           private-storage-signed-url-lifespan))
 
 (defn get-file-url [config file]
-  (if (= (:visibility file) :private)
+  (if (#{:private "private"} (:visibility file))
     (get-private-file-url config file)
     (get-public-file-url config file)))
 
