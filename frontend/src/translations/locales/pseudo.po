@@ -38,6 +38,14 @@ msgstr ""
 msgid "{value} Initiatives"
 msgstr ""
 
+#: src/pages/partnership/index.jsx:352
+msgid "<0>Be approved</0>and certified by the GPML as a member of the partnership."
+msgstr ""
+
+#: src/pages/partnership/index.jsx:341
+msgid "<0>Fill in the form.</0><1/>Tell us about your organisation's work in preventing and reducing plastic pollution and marine litter."
+msgstr ""
+
 #: src/pages/landing/index.jsx:955
 msgid "<0>GPML’s</0> Action Tracks"
 msgstr ""
@@ -50,7 +58,7 @@ msgstr ""
 msgid "<0>Join the multi-stakeholder partnership</0> which brings together all the actors working on plastic pollution and marine litter prevention and reduction."
 msgstr ""
 
-#: src/pages/partnership/index.jsx:365
+#: src/pages/partnership/index.jsx:361
 msgid "<0>Receive</0> an entity profile and focal point profile on the GPML Digital Platform."
 msgstr ""
 
@@ -128,11 +136,11 @@ msgstr ""
 msgid "About yourself"
 msgstr ""
 
-#: src/pages/partnership/index.jsx:726
+#: src/pages/partnership/index.jsx:719
 msgid "Accepts .jpg and .png"
 msgstr ""
 
-#: src/pages/partnership/index.jsx:393
+#: src/pages/partnership/index.jsx:386
 msgid "Access"
 msgstr ""
 
@@ -140,7 +148,7 @@ msgstr ""
 msgid "Access a suite of powerful data tools tailored for tackling plastic pollution and marine litter. Utilize comprehensive data sets, layers and statistics to  gain valuable insights that empower informed decision-making and drive effective action."
 msgstr ""
 
-#: src/pages/partnership/index.jsx:396
+#: src/pages/partnership/index.jsx:389
 msgid "Access to a unique global audience for sharing knowledge and experiences in preventing and reducing plastic pollution and marine litter."
 msgstr ""
 
@@ -174,7 +182,7 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
-#: src/pages/partnership/index.jsx:729
+#: src/pages/partnership/index.jsx:722
 msgid "Add a File"
 msgstr ""
 
@@ -262,7 +270,7 @@ msgstr ""
 msgid "All Resources"
 msgstr ""
 
-#: src/pages/partnership/index.jsx:1128
+#: src/pages/partnership/index.jsx:1121
 msgid "Already have an account?"
 msgstr ""
 
@@ -288,10 +296,6 @@ msgstr ""
 
 #: src/store.js:597
 msgid "An online or face-to-face meeting of people to discuss and/or perform practical work in a subject or activity"
-msgstr ""
-
-#: src/pages/partnership/index.jsx:357
-msgid "and certified by the GPML as a member of the partnership."
 msgstr ""
 
 #: src/modules/flexible-forms/view.jsx:1286
@@ -360,7 +364,7 @@ msgstr ""
 msgid "Area of expertise"
 msgstr ""
 
-#: src/pages/partnership/index.jsx:776
+#: src/pages/partnership/index.jsx:769
 msgid "Areas of expertise"
 msgstr ""
 
@@ -478,10 +482,6 @@ msgstr ""
 msgid "Basic info"
 msgstr ""
 
-#: src/pages/partnership/index.jsx:355
-msgid "Be approved"
-msgstr ""
-
 #: src/modules/details-page/comment.jsx:338
 msgid "Be the first to comment..."
 msgstr ""
@@ -552,7 +552,7 @@ msgid "By signing up you are agreeing to our"
 msgstr ""
 
 #: src/modules/onboarding/form-four.jsx:216
-#: src/pages/partnership/index.jsx:1091
+#: src/pages/partnership/index.jsx:1084
 msgid "By submitting this form, I will be included in the public database of GPML Digital Platform members and acknowledge that the provided information will be made public and used to find and connect via smart-matchmaking functionalities with other stakeholders and resources."
 msgstr ""
 
@@ -616,7 +616,7 @@ msgstr ""
 msgid "Certification, Licensing and Registration"
 msgstr ""
 
-#: src/pages/partnership/index.jsx:450
+#: src/pages/partnership/index.jsx:443
 msgid "Certified"
 msgstr ""
 
@@ -764,7 +764,7 @@ msgstr ""
 msgid "COBSEA Regional Action Plan on Marine Litter 2019"
 msgstr ""
 
-#: src/pages/partnership/index.jsx:408
+#: src/pages/partnership/index.jsx:401
 msgid "Collaborate"
 msgstr ""
 
@@ -1294,8 +1294,8 @@ msgstr ""
 #: src/modules/login/view.jsx:260
 #: src/modules/signup-old/signup-form.jsx:44
 #: src/modules/workspace/ps/setup-team-form.jsx:226
-#: src/pages/partnership/index.jsx:1190
-#: src/pages/partnership/index.jsx:1406
+#: src/pages/partnership/index.jsx:1183
+#: src/pages/partnership/index.jsx:1399
 msgid "Email"
 msgstr ""
 
@@ -1441,7 +1441,7 @@ msgstr ""
 msgid "Events"
 msgstr ""
 
-#: src/pages/partnership/index.jsx:425
+#: src/pages/partnership/index.jsx:418
 msgid "Exclusive invites to online and in-person events and the opportunity to showcase your work."
 msgstr ""
 
@@ -1487,12 +1487,8 @@ msgstr ""
 msgid "Field to submit"
 msgstr ""
 
-#: src/pages/partnership/index.jsx:495
+#: src/pages/partnership/index.jsx:488
 msgid "Fill in the form"
-msgstr ""
-
-#: src/pages/partnership/index.jsx:342
-msgid "Fill in the form."
 msgstr ""
 
 #: src/modules/profile/admin.jsx:176
@@ -1535,7 +1531,7 @@ msgid "First name"
 msgstr ""
 
 #: src/modules/onboarding/form-four.jsx:46
-#: src/pages/partnership/index.jsx:1317
+#: src/pages/partnership/index.jsx:1310
 msgid "First Name"
 msgstr ""
 
@@ -1555,7 +1551,7 @@ msgstr ""
 msgid "Focal Point"
 msgstr ""
 
-#: src/pages/partnership/index.jsx:1123
+#: src/pages/partnership/index.jsx:1116
 msgid "Focal Point Account in GPML"
 msgstr ""
 
@@ -1646,7 +1642,7 @@ msgstr ""
 msgid "Geo coverage"
 msgstr ""
 
-#: src/pages/partnership/index.jsx:952
+#: src/pages/partnership/index.jsx:945
 msgid "Geo Coverage (countries)"
 msgstr ""
 
@@ -1658,7 +1654,7 @@ msgstr ""
 msgid "GEO COVERAGE (Countries)"
 msgstr ""
 
-#: src/pages/partnership/index.jsx:889
+#: src/pages/partnership/index.jsx:882
 msgid "Geo Coverage (Transnational)"
 msgstr ""
 
@@ -1680,13 +1676,13 @@ msgid "Geo coverage type"
 msgstr ""
 
 #: src/modules/stakeholder-overview/filter-drawer.jsx:335
-#: src/pages/partnership/index.jsx:807
+#: src/pages/partnership/index.jsx:800
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:108
 #: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:237
 msgid "Geo-coverage"
 msgstr ""
 
-#: src/pages/partnership/index.jsx:825
+#: src/pages/partnership/index.jsx:818
 msgid "Geo-coverage type"
 msgstr ""
 
@@ -1708,7 +1704,7 @@ msgstr ""
 #: src/modules/flexible-forms/form-schema.js:1815
 #: src/modules/flexible-forms/form-schema.js:2080
 #: src/modules/flexible-forms/form-schema.js:2319
-#: src/pages/partnership/index.jsx:845
+#: src/pages/partnership/index.jsx:838
 msgid "Global"
 msgstr ""
 
@@ -1837,7 +1833,7 @@ msgstr ""
 msgid "Harmonization of Microplastics Monitoring Methodologies in the Ocean"
 msgstr ""
 
-#: src/pages/partnership/index.jsx:1020
+#: src/pages/partnership/index.jsx:1013
 msgid "Headquarters"
 msgstr ""
 
@@ -2208,7 +2204,7 @@ msgid "Last name"
 msgstr ""
 
 #: src/modules/onboarding/form-four.jsx:68
-#: src/pages/partnership/index.jsx:1358
+#: src/pages/partnership/index.jsx:1351
 msgid "Last Name"
 msgstr ""
 
@@ -2220,7 +2216,7 @@ msgstr ""
 msgid "Leadership by specific individuals in the member state or organisation (who personallydrove change)"
 msgstr ""
 
-#: src/pages/partnership/index.jsx:436
+#: src/pages/partnership/index.jsx:429
 msgid "Learn"
 msgstr ""
 
@@ -2580,7 +2576,7 @@ msgstr ""
 msgid "Name is required"
 msgstr ""
 
-#: src/pages/partnership/index.jsx:522
+#: src/pages/partnership/index.jsx:515
 msgid "Name of Organisation"
 msgstr ""
 
@@ -2591,7 +2587,7 @@ msgstr ""
 #: src/modules/flexible-forms/form-schema.js:2082
 #: src/modules/flexible-forms/form-schema.js:2321
 #: src/modules/map/map-chart.jsx:714
-#: src/pages/partnership/index.jsx:851
+#: src/pages/partnership/index.jsx:844
 msgid "National"
 msgstr ""
 
@@ -2817,11 +2813,11 @@ msgstr ""
 msgid "Open The Guide"
 msgstr ""
 
-#: src/pages/partnership/index.jsx:439
+#: src/pages/partnership/index.jsx:432
 msgid "Opportunities to access a variety of resources, data and trainings to enhance capacity development."
 msgstr ""
 
-#: src/pages/partnership/index.jsx:411
+#: src/pages/partnership/index.jsx:404
 msgid "Opportunities to collaborate with other stakeholders to create and advance solutions."
 msgstr ""
 
@@ -2834,15 +2830,15 @@ msgstr ""
 msgid "Organisation"
 msgstr ""
 
-#: src/pages/partnership/index.jsx:565
+#: src/pages/partnership/index.jsx:558
 msgid "Organisation's efforts in addressing plastic pollution"
 msgstr ""
 
-#: src/pages/partnership/index.jsx:684
+#: src/pages/partnership/index.jsx:677
 msgid "Organisation’s Logo"
 msgstr ""
 
-#: src/pages/partnership/index.jsx:648
+#: src/pages/partnership/index.jsx:641
 msgid "Organisation’s Website"
 msgstr ""
 
@@ -2939,7 +2935,7 @@ msgid "Partnerships for the Goals"
 msgstr ""
 
 #: src/modules/login/view.jsx:293
-#: src/pages/partnership/index.jsx:1228
+#: src/pages/partnership/index.jsx:1221
 msgid "Password"
 msgstr ""
 
@@ -3476,7 +3472,7 @@ msgid "Setup your team"
 msgstr ""
 
 #: src/modules/details-page/header.jsx:207
-#: src/pages/partnership/index.jsx:422
+#: src/pages/partnership/index.jsx:415
 msgid "Share"
 msgstr ""
 
@@ -3628,7 +3624,7 @@ msgstr ""
 msgid "Steering Committee"
 msgstr ""
 
-#: src/pages/partnership/index.jsx:492
+#: src/pages/partnership/index.jsx:485
 msgid "Step 1"
 msgstr ""
 
@@ -3666,7 +3662,7 @@ msgstr ""
 msgid "Submit an application for your organisation - <0>{0}</0> - to become part of the GPML."
 msgstr ""
 
-#: src/pages/partnership/index.jsx:1157
+#: src/pages/partnership/index.jsx:1150
 msgid "Submit Application"
 msgstr ""
 
@@ -3797,10 +3793,6 @@ msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:487
 msgid "Technology and Processes. You have chosen technology and processes as the type of initiative. What did the initiative specifically involve? (Please tick ALL that apply):"
-msgstr ""
-
-#: src/pages/partnership/index.jsx:345
-msgid "Tell us about your organisation's work in preventing and reducing plastic pollution and marine litter."
 msgstr ""
 
 #: src/modules/login/login-view.jsx:307
@@ -4044,7 +4036,7 @@ msgstr ""
 #: src/modules/flexible-forms/form-schema.js:2081
 #: src/modules/flexible-forms/form-schema.js:2320
 #: src/modules/map/map-chart.jsx:717
-#: src/pages/partnership/index.jsx:848
+#: src/pages/partnership/index.jsx:841
 msgid "Transnational"
 msgstr ""
 
@@ -4293,7 +4285,7 @@ msgstr ""
 msgid "We sent you a confirmation email, Please take a moment and validate your address to confirm your account."
 msgstr ""
 
-#: src/pages/partnership/index.jsx:483
+#: src/pages/partnership/index.jsx:476
 msgid "We will be reviewing it shortly."
 msgstr ""
 
@@ -4361,7 +4353,7 @@ msgstr ""
 msgid "Which Multilateral Environmental Agreements (MEAs) does your initiative apply to? (Please tick ALL that apply):"
 msgstr ""
 
-#: src/pages/partnership/index.jsx:608
+#: src/pages/partnership/index.jsx:601
 msgid "Which representative group fits your Entity?"
 msgstr ""
 
@@ -4379,7 +4371,7 @@ msgstr ""
 msgid "Who we are"
 msgstr ""
 
-#: src/pages/partnership/index.jsx:382
+#: src/pages/partnership/index.jsx:375
 msgid "Why become a certified GPML member?"
 msgstr ""
 
@@ -4464,11 +4456,11 @@ msgstr ""
 msgid "Your account is pending reviewal. You can still explore the platform."
 msgstr ""
 
-#: src/pages/partnership/index.jsx:480
+#: src/pages/partnership/index.jsx:473
 msgid "Your application is received."
 msgstr ""
 
-#: src/pages/partnership/index.jsx:453
+#: src/pages/partnership/index.jsx:446
 msgid "Your organisation will receive a certificate, which officially acknowledges its GPML membership."
 msgstr ""
 
