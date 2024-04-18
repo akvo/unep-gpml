@@ -84,6 +84,9 @@ const Map = ({ initialViewProperties }) => {
       if (currentLayerRef.current) {
         webMap.remove(currentLayerRef.current)
       }
+      if (viewRef.current.popup.visible) {
+        viewRef.current.popup.close()
+      }
       if (viewRef.current) {
         webMap.add(newLayer)
         currentLayerRef.current = newLayer
