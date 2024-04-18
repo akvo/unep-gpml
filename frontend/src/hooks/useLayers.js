@@ -68,11 +68,7 @@ const useLayers = (renderers) => {
           });
 
       featureLayer.load().then(() => {
-        if (featureLayer.popupTemplate) {
-          console.log("PopupTemplate fields:", featureLayer);
-        } else {
-          console.log("No predefined popupTemplate found. Consider defining one manually.");
-        }
+
       }).catch((error) => {
         console.error("Error loading the feature layer:", error);
       });
