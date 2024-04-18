@@ -4,7 +4,7 @@ export const getLegends = async (layerId, arcgisMapId, layerMappingId) => {
   try {
 
     let response = null;
-    if (arcgisMapId !== null && layerMappingId !== null && layer.attributes.arcgisMapId !== 'ba06282496e548a1adbdff5df17e770e') {
+    if (arcgisMapId !== null && layerMappingId !== null) {
       response = await axios.get(
         `https://services3.arcgis.com/pI4ewELlDKS2OpCN/arcgis/rest/services/${layerId}/FeatureServer/0?f=json`
       )
