@@ -13,6 +13,15 @@ const slides = {
     'https://docs.google.com/presentation/d/1_OuvGj8JU5zQOxJIAV-Pg-peMTZaHEErTaP_FN5ye0s/embed?start=false&loop=false&delayms=60000',
 }
 
+const template = {
+  en:
+    'https://docs.google.com/document/d/1Cxf-40x4DGRNSySyGVvduXBeqb004PJDFRyie9QGMbQ/edit',
+  es:
+    'https://docs.google.com/document/d/1G6evaxe38dpqARty5j4Q96qD5gQD50tJPl7Dj1_cG8k/edit',
+  fr:
+    'https://docs.google.com/document/d/1Mk_8pO70EDtgUX6ADyR0j8xAUcad2AriPEMJ4yuciEI/edit',
+}
+
 const View = () => {
   const router = useRouter()
   const slideURL = slides[router.locale]
@@ -31,7 +40,7 @@ const View = () => {
       </p>
       <ul>
         <li>
-          <a href="/State-of-Knowledge-Report-Template.docx" target="_blank">
+          <a href={template?.[router.locale]} target="_blank">
             <Button size="small" type="link">
               Download State of Knowledge Report Template
             </Button>
