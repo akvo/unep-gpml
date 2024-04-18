@@ -12,14 +12,14 @@ import useLegends from '../../../hooks/useLegends'
 const LegendCard = ({
   layerId,
   title,
-  arcgismapId,
+  arcgisMapId,
   layerMappingId,
   uniqueId,
   layerShortDescription,
   unit,
 }) => {
   const [tooltipPlacement, setTooltipPlacement] = useState('right')
-  const legends = useLegends(layerId, arcgismapId, layerMappingId)
+  const legends = useLegends(layerId, arcgisMapId, layerMappingId)
   const mapp = useLoadMap()
   const layers = useLayerInfo()
 
@@ -58,10 +58,20 @@ const LegendCard = ({
         border: '1px solid black',
       },
     }
+    const hideNoData = [
+      '33f138dc9da943fbb0d9905267d5ce8e',
+      'c480f87fa33a4264b5aac7739dd93af6',
+      'ba06282496e548a1adbdff5df17e770e',
+      '5432cebd4d8f416487b6f90ddf532068',
+    ]
 
     const allLegendItems = classBreakInfos
-      ? [noDataLegendItem, ...classBreakInfos]
-      : [noDataLegendItem]
+      ? !hideNoData.find((l) => l === arcgisMapId)
+        ? [noDataLegendItem, ...classBreakInfos]
+        : [...classBreakInfos]
+      : !hideNoData.find((l) => l === arcgisMapId)
+      ? [noDataLegendItem]
+      : []
     return allLegendItems?.map(({ label, symbol }) => {
       let colorStyle
       if (Array.isArray(symbol.color) && !symbol?.data?.symbol) {
@@ -137,12 +147,14 @@ const LegendCard = ({
         {layerShortDescription}
       </Typography>
 
-      {arcgismapId && layerMappingId !== null
+      {arcgisMapId && layerMappingId !== null
         ? rendererObj &&
           renderLegendItems(
-            rendererObj.classBreakInfos
-              ? rendererObj.classBreakInfos
-              : rendererObj?.uniqueValueGroups[0].classes
+            rendererObj?.classBreakInfos
+              ? rendererObj?.classBreakInfos
+              : rendererObj?.uniqueValueGroups
+              ? rendererObj?.uniqueValueGroups[0]?.classes
+              : []
           )
         : renderLegendItems(
             legends?.legends?.drawingInfo?.renderer
@@ -190,7 +202,7 @@ const Legends = () => {
       layerId={layer?.attributes.arcgislayerId}
       uniqueId={layer?.id}
       title={layer?.attributes.title.toString()}
-      arcgismapId={layer.attributes.arcgisMapId}
+      arcgisMapId={layer.attributes.arcgisMapId}
       layerMappingId={layer.attributes.layerMappingId}
       layerShortDescription={layer.attributes.shortDescription}
       unit={layer.attributes.units}

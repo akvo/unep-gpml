@@ -57,7 +57,8 @@ const useLayers = (renderers) => {
                 const attributes = graphic.attributes;
                 return arrayFields.map(field => {
                   const displayKey = keyToDisplayName[field] || field;
-                  const displayValue = attributes[field];
+                  const displayValue = `{${field}}`;
+
                   return `<div class="popup-field">
                 <strong class="popup-field-name">${displayKey}:</strong>
                 <span class="popup-field-value">${displayValue}</span>
@@ -68,11 +69,7 @@ const useLayers = (renderers) => {
           });
 
       featureLayer.load().then(() => {
-        if (featureLayer.popupTemplate) {
-          console.log("PopupTemplate fields:", featureLayer);
-        } else {
-          console.log("No predefined popupTemplate found. Consider defining one manually.");
-        }
+
       }).catch((error) => {
         console.error("Error loading the feature layer:", error);
       });
@@ -90,17 +87,22 @@ const useLayers = (renderers) => {
 export default useLayers;
 
 const keyToDisplayName = {
-  "pw_generated_kg_cap_yr": "Observed value",
+  "pw_generated_kg_cap_yr": "Observation value",
   "year": "Year",
-  "pw_collected_pct": "Observed value",
+  "pw_collected_pct": "Observation value",
   "Time_Period": "Year",
-  "OBS_Value": "Observed value",
+  "OBS_Value": "Observation value",
   "obsTime": "Year",
-  "obsValue": "Observed value",
+  "obsValue": "Observation value",
   "TIME_DETAIL": "Year",
   "plastic": "Plastic",
   "area_km2_1": "Area",
-  "Aggregated_OBS_Value": "Observed value",
-  "pw_generated_tons_yr": "Observed value",
-  "romnam": "Country"
+  "Aggregated_OBS_Value": "Observation value",
+  "pw_generated_tons_yr": "Observation value",
+  "Export_from_tot_tons_to_ocean": "Observation value",
+  "Export_from_tot_tons": "Observation value",
+  "Waste_tot_tons_to_Country": "Observation value",
+  "Export_from_tot_tons_to_beach": "Observation value",
+  "romnam": "Country",
+  "ROMNAM": "Country",
 };
