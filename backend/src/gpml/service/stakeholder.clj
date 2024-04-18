@@ -33,7 +33,7 @@
                     picture (if (util/try-url-str payload)
                               (util.image/download-image logger payload {:headers {:user-agent user-agent}})
                               payload)
-                    picture-file (dom.file/base64->file picture :stakeholder :images :private)
+                    picture-file (dom.file/base64->file picture :stakeholder :images :public)
                     result (srv.file/create-file config conn picture-file)]
                 (if (:success? result)
                   (assoc context :picture-file (dissoc picture-file :content))
@@ -248,7 +248,7 @@
                         new-picture (if (util/try-url-str payload)
                                       (util.image/download-image logger payload {:headers {:user-agent user-agent}})
                                       payload)
-                        new-picture-file (dom.file/base64->file new-picture :stakeholder :images :private)
+                        new-picture-file (dom.file/base64->file new-picture :stakeholder :images :public)
                         result (srv.file/create-file config conn new-picture-file)]
                     (if (:success? result)
                       (assoc context :picture-file (dissoc new-picture-file :content))
