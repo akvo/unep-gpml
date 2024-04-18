@@ -153,7 +153,7 @@
                                                               {:profilePic profile-pic})
                                                             {:uniqueUserIdentifier unique-user-identifier
                                                              :externalUserId external-user-id
-                                                             :isModerator is-moderator
+                                                             :isModerator (boolean is-moderator)
                                                              :email email
                                                              :username username}
                                                             updates))

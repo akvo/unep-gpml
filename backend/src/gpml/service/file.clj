@@ -28,7 +28,7 @@
     {:byte-buffer content}))
 
 (defn- get-bucket-name [{:keys [private-storage-bucket-name public-storage-bucket-name]} visibility]
-  (if (= :private visibility)
+  (if (#{:private "private"} visibility)
     private-storage-bucket-name
     public-storage-bucket-name))
 
@@ -61,7 +61,7 @@
                                           private-storage-signed-url-lifespan))
 
 (defn get-file-url [config file]
-  (if (= (:visibility file) :private)
+  (if (#{:private "private"} (:visibility file))
     (get-private-file-url config file)
     (get-public-file-url config file)))
 
