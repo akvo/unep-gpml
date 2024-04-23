@@ -985,7 +985,7 @@ msgstr ""
 #: src/pages/workspace/[slug]/4-data-analysis/available-tools.js:43
 #: src/pages/workspace/[slug]/4-data-analysis/calculation.js:42
 #: src/pages/workspace/[slug]/4-data-analysis/data-collection.js:43
-#: src/pages/workspace/[slug]/4-data-analysis/index.js:24
+#: src/pages/workspace/[slug]/4-data-analysis/index.js:33
 #: src/pages/workspace/[slug]/layout.js:42
 msgid "Data Analysis"
 msgstr ""
@@ -1122,7 +1122,7 @@ msgstr ""
 msgid "description-intro-3-legislation-policy"
 msgstr ""
 
-#: src/pages/workspace/[slug]/4-data-analysis/index.js:30
+#: src/pages/workspace/[slug]/4-data-analysis/index.js:39
 msgid "description-intro-4-data-analysis"
 msgstr ""
 
@@ -1211,6 +1211,14 @@ msgstr ""
 
 #: src/modules/about/about-us.jsx:286
 msgid "Download Full Concept Document"
+msgstr ""
+
+#: src/pages/workspace/[slug]/4-data-analysis/index.js:55
+msgid "Download Slides"
+msgstr ""
+
+#: src/pages/workspace/[slug]/4-data-analysis/index.js:45
+msgid "Download State of Knowledge Report Template"
 msgstr ""
 
 #: src/modules/about/about-us.jsx:276
@@ -2091,7 +2099,7 @@ msgstr ""
 #: src/pages/workspace/[slug]/1-project-team/index.js:28
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/index.js:27
 #: src/pages/workspace/[slug]/3-legislation-policy/index.js:27
-#: src/pages/workspace/[slug]/4-data-analysis/index.js:27
+#: src/pages/workspace/[slug]/4-data-analysis/index.js:36
 #: src/pages/workspace/[slug]/5-national-source/index.js:27
 #: src/pages/workspace/[slug]/6-national-plastic-strategy/index.js:27
 msgid "Introduction"
