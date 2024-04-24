@@ -129,9 +129,11 @@
                                            :join [:stakeholder [:=
                                                                 :chat_channel_membership.stakeholder_id
                                                                 :stakeholder.id]]
-                                           :where [:in
-                                                   :chat_channel_membership.chat_channel_id
-                                                   channel-ids]})]
+                                           :where [:and
+                                                   [:in
+                                                    :chat_channel_membership.chat_channel_id
+                                                    channel-ids]
+                                                   [:= true :stakeholder.chat_email_notifications]]})]
             (if-not success?
               result
               (let [draft (reduce (fn [new-context {:keys [chat-channel-id] :as membership}]

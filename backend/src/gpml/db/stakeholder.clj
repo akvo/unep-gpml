@@ -14,6 +14,7 @@
          all-stakeholder
          all-public-stakeholders
          all-public-users
+         update-chat-email-notifications
          list-stakeholder-paginated
          count-stakeholder
          get-stakeholder-by-id

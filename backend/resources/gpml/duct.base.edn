@@ -207,6 +207,12 @@
                                       :swagger    {:tags ["stakeholder"]}
                                       :parameters #ig/ref :gpml.handler.stakeholder/patch-params
                                       :handler    #ig/ref :gpml.handler.stakeholder/patch}}]
+                            ["/chat-unsubcribe"
+                             {:post {:middleware [#ig/ref :gpml.auth/auth-required]
+                                     :summary    "Unsubcribe from chat notifications"
+                                     :swagger    {:tags ["stakeholder"]}
+                                     :parameters {}
+                                     :handler    #ig/ref :gpml.handler.stakeholder/chat-unsubcribe}}]
                             ["/associated-topics"
                              {:get {:middleware [#ig/ref :gpml.auth/auth-required]
                                     :summary    "Get stakeholder associated topics"
@@ -782,6 +788,7 @@
  :gpml.handler.stakeholder/get-params                               {}
  :gpml.handler.stakeholder/patch                                    #ig/ref :gpml.config/common
  :gpml.handler.stakeholder/patch-params                             {}
+ :gpml.handler.stakeholder/chat-unsubcribe                          #ig/ref :gpml.config/common
  :gpml.handler.stakeholder/profile                                  #ig/ref :gpml.config/common
  :gpml.handler.stakeholder/get                                      #ig/ref :gpml.config/common
  :gpml.handler.stakeholder/get-by-id                                #ig/ref :gpml.config/common
