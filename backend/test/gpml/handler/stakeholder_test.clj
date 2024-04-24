@@ -109,7 +109,7 @@
         (is (= #{"USER", "REVIEWER", "ADMIN"} (->> stakeholders (map :role) set)))))))
 
 (deftest stakeholder-patch-test
-  (let [system (ig/init fixtures/*system* [::stakeholder/patch])
+  (let [system (ig/init fixtures/*system* [::stakeholder/patch :gpml.handler.stakeholder/chat-unsubcribe])
         config (get system [:duct/const :gpml.config/common])
         conn (get-in config [:db :spec])
         handler (::stakeholder/patch system)
@@ -135,10 +135,23 @@
         (is (= 200 (:status resp)))
         (is (= "success" (:status body)))
         (is (= "REVIEWER" (:role user)))))
+
     (testing "Change USER to REVIEWER fails because user doesn't have enough permissions"
-      (let [resp (handler (-> (mock/request :patch "/")
+      (let [resp (handler (-> (mock/request :post "/")
                               (assoc
-                               :user {:id user-id}
+                               :user {:id admin-id}
                                :parameters {:path {:id user-id}
-                                            :body {:role "REVIEWER"}})))]
-        (is (= 403 (:status resp)))))))
+                                            :body {:role "REVIEWER"}})))
+            body (:body resp)
+            user (db.stakeholder/stakeholder-by-id conn {:id user-id})]
+        (is (= 200 (:status resp)))
+        (is (= "success" (:status body)))
+        (is (= "REVIEWER" (:role user)))))
+
+    (testing "Unsubcribes from chat email notifications"
+      (let [handler (:gpml.handler.stakeholder/chat-unsubcribe system)
+            resp (handler (-> (mock/request :post (format "/api/stakeholder/%s" user-id))
+                              (assoc :user {:id user-id}
+                                     :parameters {:path {:id user-id}})))]
+        (is (= 204 (:status resp))
+            (pr-str resp))))))

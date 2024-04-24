@@ -465,6 +465,25 @@
               (assoc-in response [:body :error-details :error] (.getMessage e))))))
       (r/forbidden {:message "Unauthorized"}))))
 
+(defmethod ig/init-key :gpml.handler.stakeholder/chat-unsubcribe
+  [_ {:keys [db logger]}]
+  (fn [{{:keys [path]} :parameters
+        user :user}]
+    (if (not= (:id path) (:id user))
+      (r/forbidden {:message "Unauthorized"})
+      (try
+        (log logger :info :unsubcribing-from-chat-notifications {:user-id (:id user)})
+        (db.stakeholder/update-chat-email-notifications (:spec db) (assoc user :chat-email-notifications true))
+        (resp/status {:success? true} 204)
+        (catch Exception e
+          (log logger :error :failed-to-update-stakeholder e)
+          (let [response {:status 500
+                          :body {:success? false
+                                 :reason :could-not-update-stakeholder}}]
+            (if (instance? SQLException e)
+              response
+              (assoc-in response [:body :error-details :error] (.getMessage e)))))))))
+
 (defmethod ig/init-key :gpml.handler.stakeholder/put-restricted-params [_ _]
   {:path [:map [:id int?]]
    :body [:map
@@ -472,6 +491,7 @@
           [:title {:optional true} string?]
           [:first_name {:optional true} string?]
           [:last_name {:optional true} string?]
+          [:chat_email_notifications {:optional true} :boolean]
           [:job_title {:optional true} string?]
           [:linked_in {:optional true} string?]
           [:twitter {:optional true} string?]
