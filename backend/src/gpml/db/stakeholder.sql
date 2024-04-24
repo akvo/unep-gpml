@@ -168,6 +168,13 @@ update stakeholder
 --~ (when (contains? params :review_status) ",review_status = :v:review_status::review_status")
 where id = :id;
 
+-- :name update-chat-email-notifications :! :1
+-- :doc Update chat_email_notifications attribute
+update stakeholder
+    set chat_email_notifications = :v:chat-email-notifications::boolean,
+    modified = now()
+where id = :id;
+
 -- :name update-stakeholder :execute :affected
 -- :doc Update stakeholder column
 update stakeholder set
@@ -183,6 +190,7 @@ update stakeholder set
 --~ (when (contains? params :about) "about= :about,")
 --~ (when (contains? params :public_email) "public_email= :public_email::boolean,")
 --~ (when (contains? params :public_database) "public_database= :public_database::boolean,")
+--~ (when (contains? params :chat_email_notifications) "chat_email_notifications= :chat_email_notifications::boolean,")
 --~ (when (contains? params :job_title) "job_title= :job_title,")
 --~ (when (contains? params :idp_usernames) "idp_usernames= :idp_usernames::jsonb,")
 --~ (when (contains? params :picture_id) "picture_id= :picture_id,")
