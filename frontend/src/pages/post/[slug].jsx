@@ -21,7 +21,7 @@ const StrapiPage = ({ pageData }) => {
           />
         </div>
         <p className="date caps-heading-m">
-          {moment(pageData.publishedAt).format('MMMM DD, YYYY')}
+          {moment(pageData.updatedAt).format('MMMM DD, YYYY')}
         </p>
         <h1 className="h-l">{pageData.title}</h1>
         <div
