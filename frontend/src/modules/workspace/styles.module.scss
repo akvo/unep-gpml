@@ -344,8 +344,10 @@ $bg-green-primary: #10f9b7;
               color: $primaryDarkBlueText;
               h4 {
                 max-width: 280px;
-                margin-top: 5px;
+                margin-top: 8px;
+                margin-bottom: 4px;
                 font-size: 28px;
+                line-height: 32px;
                 overflow: hidden;
                 text-overflow: ellipsis;
               }

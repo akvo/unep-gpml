@@ -98,7 +98,7 @@ export const stepsState = [
     ],
   },
   {
-    label: 'Data Analysis',
+    label: 'State of Knowledge on Plastic Data',
     slug: '4-data-analysis',
     substeps: [
       { label: 'Intro', slug: '', checked: false },

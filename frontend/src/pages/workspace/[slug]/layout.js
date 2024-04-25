@@ -40,6 +40,9 @@ export const useStepsDict = () => {
     'Country Policy Framework': i18n._(t`Country Policy Framework`),
     'Legislative Development Guide': i18n._(t`Legislative Development Guide`),
     'Data Analysis': i18n._(t`Data Analysis`),
+    'State of Knowledge on Plastic Data': i18n._(
+      t`State of Knowledge on Plastic Data`
+    ),
     'Available Tools': i18n._(t`Available Tools`),
     'Data Collection Tools': i18n._(t`Data Collection Tools`),
     'Available Data & Statistics': i18n._(t`Available Data & Statistics`),

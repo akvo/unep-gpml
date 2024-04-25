@@ -30,7 +30,7 @@ msgstr ""
 msgid "{incompleteAmount} items are not completed"
 msgstr ""
 
-#: src/pages/workspace/[slug]/layout.js:266
+#: src/pages/workspace/[slug]/layout.js:269
 msgid "{progress}% complete"
 msgstr ""
 
@@ -400,17 +400,17 @@ msgstr ""
 msgid "Available Data"
 msgstr ""
 
-#: src/pages/workspace/[slug]/layout.js:45
+#: src/pages/workspace/[slug]/layout.js:48
 msgid "Available Data & Statistics"
 msgstr ""
 
 #: src/pages/workspace/[slug]/4-data-analysis/available-information.js:46
-#: src/pages/workspace/[slug]/layout.js:48
+#: src/pages/workspace/[slug]/layout.js:51
 msgid "Available Information"
 msgstr ""
 
 #: src/pages/workspace/[slug]/4-data-analysis/available-tools.js:46
-#: src/pages/workspace/[slug]/layout.js:43
+#: src/pages/workspace/[slug]/layout.js:46
 msgid "Available Tools"
 msgstr ""
 
@@ -557,7 +557,7 @@ msgid "By submitting this form, I will be included in the public database of GPM
 msgstr ""
 
 #: src/pages/workspace/[slug]/4-data-analysis/calculation.js:45
-#: src/pages/workspace/[slug]/layout.js:47
+#: src/pages/workspace/[slug]/layout.js:50
 msgid "Calculation of Indicators"
 msgstr ""
 
@@ -805,7 +805,7 @@ msgstr ""
 msgid "Community engagement"
 msgstr ""
 
-#: src/pages/workspace/[slug]/layout.js:372
+#: src/pages/workspace/[slug]/layout.js:375
 msgid "Completed"
 msgstr ""
 
@@ -994,12 +994,12 @@ msgstr ""
 msgid "Data Catalogue"
 msgstr ""
 
-#: src/pages/workspace/[slug]/layout.js:46
+#: src/pages/workspace/[slug]/layout.js:49
 msgid "Data Collection"
 msgstr ""
 
 #: src/pages/workspace/[slug]/4-data-analysis/data-collection.js:46
-#: src/pages/workspace/[slug]/layout.js:44
+#: src/pages/workspace/[slug]/layout.js:47
 msgid "Data Collection Tools"
 msgstr ""
 
@@ -1214,12 +1214,12 @@ msgid "Download Full Concept Document"
 msgstr ""
 
 #: src/pages/workspace/[slug]/4-data-analysis/index.js:55
-msgid "Download Slides"
-msgstr ""
+#~ msgid "Download Slides"
+#~ msgstr ""
 
 #: src/pages/workspace/[slug]/4-data-analysis/index.js:45
-msgid "Download State of Knowledge Report Template"
-msgstr ""
+#~ msgid "Download State of Knowledge Report Template"
+#~ msgstr ""
 
 #: src/modules/about/about-us.jsx:276
 msgid "Download Summary (1 Page)"
@@ -1512,7 +1512,7 @@ msgid "Filters"
 msgstr ""
 
 #: src/pages/workspace/[slug]/7-final-review/index.js:20
-#: src/pages/workspace/[slug]/layout.js:54
+#: src/pages/workspace/[slug]/layout.js:57
 msgid "Final Review"
 msgstr ""
 
@@ -1602,7 +1602,7 @@ msgstr ""
 msgid "Forgot password?"
 msgstr ""
 
-#: src/pages/workspace/[slug]/layout.js:279
+#: src/pages/workspace/[slug]/layout.js:282
 msgid "Forum"
 msgstr ""
 
@@ -2350,7 +2350,7 @@ msgstr ""
 #: src/modules/details-page/view.jsx:366
 #: src/modules/entity-detail/view.jsx:349
 #: src/modules/stakeholder-detail/view.jsx:376
-#: src/pages/workspace/[slug]/layout.js:261
+#: src/pages/workspace/[slug]/layout.js:264
 msgid "Loading..."
 msgstr ""
 
@@ -2441,7 +2441,7 @@ msgstr ""
 msgid "Marine organisms"
 msgstr ""
 
-#: src/pages/workspace/[slug]/layout.js:372
+#: src/pages/workspace/[slug]/layout.js:375
 msgid "Mark as Completed"
 msgstr ""
 
@@ -2612,7 +2612,7 @@ msgid "National or organisational values"
 msgstr ""
 
 #: src/pages/workspace/[slug]/6-national-plastic-strategy/index.js:24
-#: src/pages/workspace/[slug]/layout.js:52
+#: src/pages/workspace/[slug]/layout.js:55
 msgid "National Plastic Strategy"
 msgstr ""
 
@@ -2623,12 +2623,12 @@ msgid "National Source Inventories"
 msgstr ""
 
 #: src/modules/workspace/view.jsx:464
-#: src/pages/workspace/[slug]/layout.js:259
+#: src/pages/workspace/[slug]/layout.js:262
 msgid "National Source Inventory"
 msgstr ""
 
 #: src/pages/workspace/[slug]/5-national-source/index.js:24
-#: src/pages/workspace/[slug]/layout.js:50
+#: src/pages/workspace/[slug]/layout.js:53
 msgid "National Source Inventory Report"
 msgstr ""
 
@@ -2671,7 +2671,7 @@ msgstr ""
 #: src/modules/flexible-forms/view.jsx:1651
 #: src/modules/onboarding/view.jsx:288
 #: src/modules/onboarding/view.jsx:351
-#: src/pages/workspace/[slug]/layout.js:376
+#: src/pages/workspace/[slug]/layout.js:379
 msgid "Next"
 msgstr ""
 
@@ -3615,6 +3615,10 @@ msgstr ""
 msgid "State"
 msgstr ""
 
+#: src/pages/workspace/[slug]/layout.js:44
+msgid "State of Knowledge on Plastic Data"
+msgstr ""
+
 #: src/modules/flexible-forms/form-schema.js:1734
 #: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:222
 msgid "Status"
@@ -4125,7 +4129,7 @@ msgstr ""
 msgid "Update"
 msgstr ""
 
-#: src/pages/workspace/[slug]/layout.js:53
+#: src/pages/workspace/[slug]/layout.js:56
 msgid "Upload"
 msgstr ""
 
