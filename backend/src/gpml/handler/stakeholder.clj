@@ -86,6 +86,7 @@
                              country geo-coverage-type
                              reviewed-at reviewed-by review-status
                              organisation-role public-email
+                             chat-email-notifications
                              tags org chat-account-id chat-account-status chat-account-auth-token]}]
   (let [{:keys [seeking offering expertise]} (->> tags
                                                   (group-by :tag_relation_category)
@@ -94,6 +95,7 @@
                                                              {}))]
     {:id id
      :title title
+     :chat_email_notifications chat-email-notifications
      :affiliation affiliation
      :job_title job-title
      :first_name first-name
