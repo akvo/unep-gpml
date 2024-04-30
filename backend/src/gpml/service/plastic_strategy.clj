@@ -271,3 +271,35 @@
         (fn [{{:keys [id]} :channel :as context}]
           {:pre [id]}
           (assoc context :channel-id id))))))
+
+(defn delete-plastic-strategy [{:keys [db hikari chat-adapter logger] :as config} plastic-strategy-id]
+  {:pre [db hikari logger plastic-strategy-id chat-adapter]}
+  (saga logger {:success? true}
+    (fn assoc-ps [context]
+      (let [result (get-plastic-strategy config {:filters {:ids [plastic-strategy-id]}})]
+        (if (:success? result)
+          (assoc context :plastic-strategy (:plastic-strategy result))
+          result)))
+
+    (fn do-delete-ps [context]
+      (let [result (db.ps/delete-plastic-strategy logger (:spec db) plastic-strategy-id)]
+        (if (:success? result)
+          context
+          result)))
+
+    (fn do-delete-rbac [context]
+      (let [result (srv.permissions/delete-resource-context {:conn (:spec db)
+                                                             :logger logger}
+                                                            {:context-type-name :plastic-strategy
+                                                             :resource-id plastic-strategy-id})]
+        (when-not (:success? result)
+          (log logger :warn :could-not-delete-rbac-object result))
+        context))
+
+    (fn delete-dsc-channel [{{:keys [chat-channel-id]} :plastic-strategy
+                             :as context}]
+      (if (seq chat-channel-id)
+        (port.chat/delete-public-channel chat-adapter chat-channel-id)
+        (timbre/with-context+ {::context context}
+          (log logger :warn :no-chat-channel-id)
+          {:success? true})))))
