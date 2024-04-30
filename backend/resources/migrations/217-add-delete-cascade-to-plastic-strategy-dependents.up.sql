@@ -1,0 +1,71 @@
+ALTER TABLE public.plastic_strategy_file
+DROP CONSTRAINT plastic_strategy_file_plastic_strategy_id_fkey;
+
+ALTER TABLE public.plastic_strategy_case_study_bookmark
+DROP CONSTRAINT plastic_strategy_case_study_bookmark_plastic_strategy_id_fkey;
+
+ALTER TABLE public.plastic_strategy_event_bookmark
+DROP CONSTRAINT plastic_strategy_event_bookmark_plastic_strategy_id_fkey;
+
+ALTER TABLE public.plastic_strategy_initiative_bookmark
+DROP CONSTRAINT plastic_strategy_initiative_bookmark_plastic_strategy_id_fkey;
+
+ALTER TABLE public.plastic_strategy_organisation_bookmark
+DROP CONSTRAINT plastic_strategy_organisation_bookmark_plastic_strategy_id_fkey;
+
+ALTER TABLE public.plastic_strategy_policy_bookmark
+DROP CONSTRAINT plastic_strategy_policy_bookmark_plastic_strategy_id_fkey;
+
+ALTER TABLE public.plastic_strategy_resource_bookmark
+DROP CONSTRAINT plastic_strategy_resource_bookmark_plastic_strategy_id_fkey;
+
+ALTER TABLE public.plastic_strategy_technology_bookmark
+DROP CONSTRAINT plastic_strategy_technology_bookmark_plastic_strategy_id_fkey;
+
+ALTER TABLE public.plastic_strategy_file
+ADD CONSTRAINT plastic_strategy_file_plastic_strategy_id_fkey
+FOREIGN KEY (plastic_strategy_id)
+REFERENCES public.plastic_strategy(id)
+ON DELETE CASCADE;
+
+ALTER TABLE public.plastic_strategy_case_study_bookmark
+ADD CONSTRAINT plastic_strategy_case_study_bookmark_plastic_strategy_id_fkey
+FOREIGN KEY (plastic_strategy_id)
+REFERENCES public.plastic_strategy(id)
+ON DELETE CASCADE;
+
+ALTER TABLE public.plastic_strategy_event_bookmark
+ADD CONSTRAINT plastic_strategy_event_bookmark_plastic_strategy_id_fkey
+FOREIGN KEY (plastic_strategy_id)
+REFERENCES public.plastic_strategy(id)
+ON DELETE CASCADE;
+
+ALTER TABLE public.plastic_strategy_initiative_bookmark
+ADD CONSTRAINT plastic_strategy_initiative_bookmark_plastic_strategy_id_fkey
+FOREIGN KEY (plastic_strategy_id)
+REFERENCES public.plastic_strategy(id)
+ON DELETE CASCADE;
+
+ALTER TABLE public.plastic_strategy_organisation_bookmark
+ADD CONSTRAINT plastic_strategy_organisation_bookmark_plastic_strategy_id_fkey
+FOREIGN KEY (plastic_strategy_id)
+REFERENCES public.plastic_strategy(id)
+ON DELETE CASCADE;
+
+ALTER TABLE public.plastic_strategy_policy_bookmark
+ADD CONSTRAINT plastic_strategy_policy_bookmark_plastic_strategy_id_fkey
+FOREIGN KEY (plastic_strategy_id)
+REFERENCES public.plastic_strategy(id)
+ON DELETE CASCADE;
+
+ALTER TABLE public.plastic_strategy_resource_bookmark
+ADD CONSTRAINT plastic_strategy_resource_bookmark_plastic_strategy_id_fkey
+FOREIGN KEY (plastic_strategy_id)
+REFERENCES public.plastic_strategy(id)
+ON DELETE CASCADE;
+
+ALTER TABLE public.plastic_strategy_technology_bookmark
+ADD CONSTRAINT plastic_strategy_technology_bookmark_plastic_strategy_id_fkey
+FOREIGN KEY (plastic_strategy_id)
+REFERENCES public.plastic_strategy(id)
+ON DELETE CASCADE;
