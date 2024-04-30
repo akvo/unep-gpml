@@ -8,11 +8,16 @@ import {
   Modal,
   notification,
   List,
+  Popover,
 } from 'antd'
 const { Title } = Typography
 import kebabCase from 'lodash/kebabCase'
 import styles from './styles.module.scss'
-import { FilePdfOutlined, DeleteOutlined } from '@ant-design/icons'
+import {
+  FilePdfOutlined,
+  DeleteOutlined,
+  MoreOutlined,
+} from '@ant-design/icons'
 import api from '../../utils/api'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -33,7 +38,7 @@ const DynamicForumModal = dynamic(
   }
 )
 
-const Workspace = ({ profile, isAuthenticated, setLoginVisible }) => {
+const Workspace = ({ profile, isAuthenticated, setLoginVisible, setShouldJoin }) => {
   const router = useRouter()
   const [isFocal, setIsFocal] = useState(false)
   const [projects, setProjects] = useState([])
@@ -45,6 +50,7 @@ const Workspace = ({ profile, isAuthenticated, setLoginVisible }) => {
     open: false,
     data: {},
   })
+  const isAdmin = profile?.role === 'ADMIN'
 
   const suggestions = [
     {
@@ -291,7 +297,7 @@ const Workspace = ({ profile, isAuthenticated, setLoginVisible }) => {
                 viewModal={forumView}
                 setViewModal={setForumView}
                 allForums={forums}
-                {...{ isAuthenticated, setLoginVisible, profile }}
+                {...{ isAuthenticated, setLoginVisible, profile, setShouldJoin }}
               />
             </div>
           </div>
@@ -314,7 +320,7 @@ const Workspace = ({ profile, isAuthenticated, setLoginVisible }) => {
               <SkeletonItems loading={psLoading} />
               <ul className="plastic-strategies-items">
                 {psAll.slice(0, 3).map((item, index) => (
-                  <PSCard item={item} key={index} />
+                  <PSCard key={index} {...{ isAdmin, item }} />
                 ))}
               </ul>
             </div>
@@ -442,7 +448,7 @@ const Workspace = ({ profile, isAuthenticated, setLoginVisible }) => {
   )
 }
 
-export const PSCard = ({ item, key }) => {
+export const PSCard = ({ item, key, isAdmin }) => {
   const psSteps = item?.steps || stepsState
   const allSteps = psSteps.flatMap((p) => {
     if (p?.substeps?.length) {
@@ -453,10 +459,12 @@ export const PSCard = ({ item, key }) => {
     }
     return [p]
   })
+  const [showPopover, setShowPopover] = useState(false)
   const progressValue = Math.floor(
     (allSteps.filter((a) => a.checked).length / allSteps.length) * 100
   )
   const countryName = kebabCase(item?.country?.name)
+  const handleDelete = () => {}
   return (
     <li key={key}>
       <Link href={`/workspace/${PREFIX_SLUG}-${countryName}`}>
@@ -481,6 +489,30 @@ export const PSCard = ({ item, key }) => {
           ))}
         </ul>
       </Link>
+      {isAdmin && (
+        <div className="popover-container">
+          <Popover
+            placement="bottomLeft"
+            visible={showPopover}
+            overlayClassName={styles.popover}
+            onVisibleChange={(isOpen) => {
+              setShowPopover(isOpen)
+            }}
+            content={
+              <ul>
+                <li>
+                  <Button type="link" onClick={handleDelete}>
+                    <Trans>Delete</Trans>
+                  </Button>
+                </li>
+              </ul>
+            }
+            trigger="click"
+          >
+            <MoreOutlined rotate={90} />
+          </Popover>
+        </div>
+      )}
     </li>
   )
 }
