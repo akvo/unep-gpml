@@ -131,7 +131,6 @@ function MyApp({ Component, pageProps }) {
   const renewToken = useCallback((cb) => {
     auth0Client.checkSession({}, (err, result) => {
       if (err) {
-        console.log(`Error: ${err.error} - ${err.error_description}.`)
         setState((prevState) => ({
           ...prevState,
           loadingProfile: false,
@@ -160,6 +159,8 @@ function MyApp({ Component, pageProps }) {
         return console.log(err)
       }
       if (authResult) {
+        api.setToken(authResult.idToken)
+        setSession(authResult)
       }
     })
   }, [])
@@ -203,11 +204,9 @@ function MyApp({ Component, pageProps }) {
         })
       } else {
         renewToken((err, renewedAuthResult) => {
-          if (err) {
-            console.log(`Error: ${err.error} - ${err.error_description}.`)
-          } else {
-            api.setToken(renewedAuthResult.idToken)
-          }
+            if(renewedAuthResult){
+              api.setToken(renewedAuthResult.idToken)
+            }
         })
       }
     }
