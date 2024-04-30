@@ -38,7 +38,7 @@ const DynamicForumModal = dynamic(
   }
 )
 
-const Workspace = ({ profile, isAuthenticated, setLoginVisible }) => {
+const Workspace = ({ profile, isAuthenticated, setLoginVisible, setShouldJoin }) => {
   const router = useRouter()
   const [isFocal, setIsFocal] = useState(false)
   const [projects, setProjects] = useState([])
@@ -297,7 +297,7 @@ const Workspace = ({ profile, isAuthenticated, setLoginVisible }) => {
                 viewModal={forumView}
                 setViewModal={setForumView}
                 allForums={forums}
-                {...{ isAuthenticated, setLoginVisible, profile }}
+                {...{ isAuthenticated, setLoginVisible, profile, setShouldJoin }}
               />
             </div>
           </div>
