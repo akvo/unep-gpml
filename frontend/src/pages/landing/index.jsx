@@ -747,11 +747,12 @@ const ActNowCard = ({ item }) => (
 )
 
 const LatestNews = () => {
+  const router = useRouter()
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
   const strapiUrl = getStrapiUrl()
   useEffect(() => {
-    fetch(`${strapiUrl}/api/posts?locale=en&populate=cover`)
+    fetch(`${strapiUrl}/api/posts?locale=${router.locale}&populate=cover`)
       .then((d) => d.json())
       .then((d) => {
         setItems(transformStrapiResponse(d.data))
