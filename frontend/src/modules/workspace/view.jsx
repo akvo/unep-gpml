@@ -38,7 +38,12 @@ const DynamicForumModal = dynamic(
   }
 )
 
-const Workspace = ({ profile, isAuthenticated, setLoginVisible, setShouldJoin }) => {
+const Workspace = ({
+  profile,
+  isAuthenticated,
+  setLoginVisible,
+  setShouldJoin,
+}) => {
   const router = useRouter()
   const [isFocal, setIsFocal] = useState(false)
   const [projects, setProjects] = useState([])
@@ -297,7 +302,12 @@ const Workspace = ({ profile, isAuthenticated, setLoginVisible, setShouldJoin })
                 viewModal={forumView}
                 setViewModal={setForumView}
                 allForums={forums}
-                {...{ isAuthenticated, setLoginVisible, profile, setShouldJoin }}
+                {...{
+                  isAuthenticated,
+                  setLoginVisible,
+                  profile,
+                  setShouldJoin,
+                }}
               />
             </div>
           </div>
@@ -464,7 +474,10 @@ export const PSCard = ({ item, key, isAdmin }) => {
     (allSteps.filter((a) => a.checked).length / allSteps.length) * 100
   )
   const countryName = kebabCase(item?.country?.name)
-  const handleDelete = () => {}
+  const handleDelete = () => {
+    api.delete(`/plastic-strategy/${item.country.isoCodeA2}`)
+    notification.info('Deleted Plastic Strategy')
+  }
   return (
     <li key={key}>
       <Link href={`/workspace/${PREFIX_SLUG}-${countryName}`}>

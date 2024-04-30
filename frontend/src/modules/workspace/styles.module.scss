@@ -332,6 +332,13 @@ $bg-green-primary: #10f9b7;
             }
           }
           li {
+            position: relative;
+            .popover-container {
+              position: absolute;
+              right: 20px;
+              top: 10px;
+              font-size: 20px;
+            }
             a {
               width: 100%;
               display: flex;
