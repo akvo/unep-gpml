@@ -32,13 +32,20 @@ function MyApp({ Component, pageProps }) {
     loadingProfile: true,
     loginVisible: false,
     shouldLoginClose: false,
+    shouldJoin: false,
   })
 
   const { authResult } = state
 
   const [loadScript, setLoadScript] = useState(false)
 
-  const { _expiresAt, loadingProfile, loginVisible, shouldLoginClose } = state
+  const {
+    _expiresAt,
+    loadingProfile,
+    loginVisible,
+    shouldLoginClose,
+    shouldJoin,
+  } = state
 
   const isMounted = useRef(true)
 
@@ -296,6 +303,7 @@ function MyApp({ Component, pageProps }) {
       profile,
       loginVisible,
       shouldLoginClose,
+      shouldJoin,
       setLoginVisible: (value) =>
         setState((prevState) => ({
           ...prevState,
@@ -305,6 +313,11 @@ function MyApp({ Component, pageProps }) {
         setState((prevState) => ({
           ...prevState,
           shouldLoginClose: value,
+        })),
+      setShouldJoin: (value) =>
+        setState((prevState) => ({
+          ...prevState,
+          shouldJoin: value,
         })),
       loadingProfile,
     }),

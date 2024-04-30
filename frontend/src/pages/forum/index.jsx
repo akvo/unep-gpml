@@ -32,7 +32,12 @@ const DynamicMyForum = dynamic(() => import('../../modules/forum/my-forums'), {
   ssr: false, // my forums has window object to update the joins localStorage
 })
 
-const Forum = ({ isAuthenticated, setLoginVisible, profile }) => {
+const Forum = ({
+  isAuthenticated,
+  setLoginVisible,
+  profile,
+  setShouldJoin,
+}) => {
   const [viewModal, setViewModal] = useState({
     open: false,
     data: {},
@@ -189,6 +194,7 @@ const Forum = ({ isAuthenticated, setLoginVisible, profile }) => {
               setLoginVisible,
               isAuthenticated,
               profile,
+              setShouldJoin,
             }}
           />
           <AddModal

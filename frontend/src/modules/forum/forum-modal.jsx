@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Avatar, List, Modal, message } from 'antd'
 import { useRouter } from 'next/router'
 import sample from 'lodash/sample'
@@ -14,6 +14,7 @@ const ForumModal = ({
   setLoginVisible,
   isAuthenticated,
   profile,
+  setShouldJoin,
 }) => {
   const [requesting, setRequesting] = useState(false)
   const colorList = ['purple', 'green', 'blue', 'dark-blue']
@@ -27,6 +28,8 @@ const ForumModal = ({
   const router = useRouter()
 
   const handleOnClose = () => {
+    setShouldJoin(false)
+    localStorage.removeItem('channelInfo')
     setViewModal({
       open: false,
       data: {},
@@ -52,6 +55,28 @@ const ForumModal = ({
       setRequesting(false)
     }
   }
+
+  useEffect(() => {
+    async function joinChannel() {
+      const retrievedData = localStorage.getItem('channelInfo')
+      const channelInfo = JSON.parse(retrievedData)
+
+      if (channelInfo) {
+        const channel_id = channelInfo.channel_id
+        const channel_name = channelInfo.channel_name
+
+        try {
+          handleOnRequestJoin({ id: channel_id, name: channel_name })
+          setShouldJoin(false)
+          localStorage.removeItem('channelInfo')
+        } catch (error) {
+          console.error('Error joining channel:', error)
+        }
+      }
+    }
+
+    joinChannel()
+  }, [])
 
   const goToChannel = ({ id: roomId }) => {
     router.push(`/forum/${roomId}`)
@@ -83,7 +108,14 @@ const ForumModal = ({
                 if (isAuthenticated) {
                   handleOnRequestJoin(viewModal?.data)
                 } else {
+                  const channelData = {
+                    channel_id: viewModal?.data.id,
+                    channel_name: viewModal?.data.name,
+                  }
+                  const serializedData = JSON.stringify(channelData)
+                  localStorage.setItem('channelInfo', serializedData)
                   setLoginVisible(true)
+                  setShouldJoin(true)
                 }
               }}
               loading={requesting}
