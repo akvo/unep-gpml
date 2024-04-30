@@ -145,6 +145,36 @@
 (defmethod ig/init-key :gpml.handler.plastic-strategy/admin-ensure-chat-responses
   [_ _]
   {200 {:body (success-with :channel-id :string)}
+   404 {:body any?}
+   500 {:body (failure-with :reason any?)}})
+
+(defmethod ig/init-key :gpml.handler.plastic-strategy/delete
+  [_ config]
+  (fn [req]
+    (let [country-iso-code-a2 (get-in req [:parameters :path :iso_code_a2])
+          search-opts {:filters {:countries-iso-codes-a2 [country-iso-code-a2]}}
+          {:keys [success? plastic-strategy reason]
+           :as result} (when country-iso-code-a2
+                         (svc.ps/get-plastic-strategy config search-opts))]
+      (if success?
+        (let [{:keys [id]} plastic-strategy
+              {:keys [success?] :as result} (svc.ps/delete-plastic-strategy config
+                                                                            (doto id assert))]
+          (if success?
+            (r/ok {:success? true})
+            (r/server-error (select-keys result [:success? :reason]))))
+        (if (= reason :not-found)
+          (r/not-found {})
+          (r/server-error (select-keys result [:success? :reason])))))))
+
+(defmethod ig/init-key :gpml.handler.plastic-strategy/delete-params
+  [_ _]
+  {:path common-plastic-strategy-path-params-schema})
+
+(defmethod ig/init-key :gpml.handler.plastic-strategy/delete-responses
+  [_ _]
+  {200 {:body (success-with)}
+   404 {:body any?}
    500 {:body (failure-with :reason any?)}})
 
 (defmethod ig/init-key :gpml.handler.plastic-strategy/get-params

@@ -569,6 +569,12 @@ so you don't need to call the POST /api/chat/user/account endpoint beforehand."
      f])
 
   (http-client/request (dev/logger)
+                       {:url (str "http://localhost:3000/api/plastic-strategy/" country-a2)
+                        :method :delete
+                        :content-type :json
+                        :as :json-keyword-keys})
+
+  (http-client/request (dev/logger)
                        {:url "http://localhost:3000/api/chat/channel/private/add-user"
                         :method :post
                         :body (json/->json {:channel_name (random-uuid)

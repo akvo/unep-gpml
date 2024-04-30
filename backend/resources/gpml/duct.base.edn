@@ -632,6 +632,14 @@
                                     :swagger    {:tags ["plastic-strategy"]}
                                     :handler    #ig/ref :gpml.handler.plastic-strategy/get
                                     :parameters #ig/ref :gpml.handler.plastic-strategy/get-params}
+                              :delete  {:summary    "Delete a plastic strategy. Admin only."
+                                        :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                     #ig/ref :gpml.auth/auth-required
+                                                     #ig/ref :gpml.auth/admin-auth-required]
+                                        :swagger    {:tags ["plastic-strategy"]}
+                                        :handler    #ig/ref :gpml.handler.plastic-strategy/delete
+                                        :parameters #ig/ref :gpml.handler.plastic-strategy/delete-params
+                                        :responses  #ig/ref :gpml.handler.plastic-strategy/delete-responses}
                               :put {:summary    "Update a plastic strategy's steps"
                                     :middleware [#ig/ref :gpml.auth/auth-middleware
                                                  #ig/ref :gpml.auth/auth-required]
@@ -941,6 +949,9 @@
  :gpml.handler.plastic-strategy/admin-ensure-chat                   #ig/ref :gpml.config/common
  :gpml.handler.plastic-strategy/admin-ensure-chat-params            {}
  :gpml.handler.plastic-strategy/admin-ensure-chat-responses         {}
+ :gpml.handler.plastic-strategy/delete                              #ig/ref :gpml.config/common
+ :gpml.handler.plastic-strategy/delete-params                       {}
+ :gpml.handler.plastic-strategy/delete-responses                    {}
  :gpml.handler.plastic-strategy/update-steps                        #ig/ref :gpml.config/common
  :gpml.handler.plastic-strategy/update-steps-params                 {}
  :gpml.handler.plastic-strategy.team/get-members                    #ig/ref :gpml.config/common
