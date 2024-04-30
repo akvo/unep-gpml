@@ -476,7 +476,7 @@ export const PSCard = ({ item, key, isAdmin }) => {
   const countryName = kebabCase(item?.country?.name)
   const handleDelete = () => {
     api.delete(`/plastic-strategy/${item.country.isoCodeA2}`)
-    notification.info('Deleted Plastic Strategy')
+    notification.info({ message: 'Deleted Plastic Strategy' })
   }
   return (
     <li key={key}>
