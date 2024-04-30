@@ -25,7 +25,13 @@ import Button from '../../components/button'
 import FormLabel from '../../components/form-label'
 import { Trans, t } from '@lingui/macro'
 
-function Login({ visible, close, shouldLoginClose }) {
+function Login({
+  visible,
+  close,
+  shouldLoginClose,
+  shouldJoin,
+  setShouldJoin,
+}) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [signin, setSignIn] = useState(false)
@@ -130,7 +136,16 @@ function Login({ visible, close, shouldLoginClose }) {
                 : t`CONTINUE WITH EMAIL`}
             </p>
             {!signin && !shouldLoginClose ? (
-              <Button type="link" onClick={close}>
+              <Button
+                type="link"
+                onClick={() => {
+                  if (shouldJoin) {
+                    setShouldJoin(false)
+                    localStorage.removeItem('channelInfo')
+                  }
+                  close()
+                }}
+              >
                 <Trans>CANCEL</Trans>
                 <CloseCircleOutlined />
               </Button>

@@ -62,6 +62,8 @@ const NewLayout = ({
   loginVisible,
   setLoginVisible,
   shouldLoginClose,
+  shouldJoin,
+  setShouldJoin,
 }) => {
   const router = useRouter()
   const { menuList } = UIStore.useState((s) => ({
@@ -94,8 +96,6 @@ const NewLayout = ({
       returnTo: window.location.origin,
     })
   }
-
-  console.log(router.query.iframed)
 
   return (
     <>
@@ -304,6 +304,8 @@ const NewLayout = ({
       <Login
         visible={loginVisible}
         shouldLoginClose={shouldLoginClose}
+        shouldJoin={shouldJoin}
+        setShouldJoin={setShouldJoin}
         close={() => setLoginVisible(false)}
       />
     </>
@@ -329,6 +331,8 @@ export const withNewLayout = (Component) => {
       setLoginVisible,
       shouldLoginClose,
       setShouldLoginClose,
+      shouldJoin,
+      setShouldJoin,
     } = props
 
     return (
@@ -342,6 +346,8 @@ export const withNewLayout = (Component) => {
           loginVisible,
           shouldLoginClose,
           setShouldLoginClose,
+          shouldJoin,
+          setShouldJoin,
         }}
       >
         <Component {...props} />
