@@ -11,6 +11,7 @@ const View = () => {
   const [psAll, setPSAll] = useState([])
   const [loading, setLoading] = useState(true)
   const profile = UIStore.useState((s) => s.profile)
+  const isAdmin = profile?.role === 'ADMIN'
 
   const getPSAll = useCallback(async () => {
     try {
@@ -40,7 +41,7 @@ const View = () => {
         <SkeletonItems loading={loading} />
         <ul className="plastic-strategies-items">
           {psAll.map((item, index) => (
-            <PSCard item={item} key={index} />
+            <PSCard key={index} {...{ item, isAdmin }} />
           ))}
         </ul>
       </div>
