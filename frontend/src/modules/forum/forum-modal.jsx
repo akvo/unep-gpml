@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { Avatar, List, Modal, message } from 'antd'
+import { Avatar, List, Modal, message, notification } from 'antd'
 import { useRouter } from 'next/router'
 import sample from 'lodash/sample'
 import Button from '../../components/button'
@@ -67,6 +67,9 @@ const ForumModal = ({
 
         try {
           handleOnRequestJoin({ id: channel_id, name: channel_name })
+          notification.success({
+            message: `Your request to join the channel has been sent!`,
+          })
           setShouldJoin(false)
           localStorage.removeItem('channelInfo')
         } catch (error) {
