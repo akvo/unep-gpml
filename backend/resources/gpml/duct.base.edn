@@ -614,7 +614,14 @@
                                                 #ig/ref :gpml.auth/auth-required]
                                    :swagger    {:tags ["plastic-strategy"]}
                                    :handler    #ig/ref :gpml.handler.plastic-strategy/get-all
-                                   :parameters #ig/ref :gpml.handler.plastic-strategy/get-all-params}}]
+                                   :parameters #ig/ref :gpml.handler.plastic-strategy/get-all-params}
+                             :post {:summary    "Create plastic strategies. Admin only."
+                                    :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                 #ig/ref :gpml.auth/auth-required
+                                                 #ig/ref :gpml.auth/admin-auth-required]
+                                    :swagger    {:tags ["plastic-strategy"]}
+                                    :handler    #ig/ref :gpml.handler.programmatic.plastic-strategy/post
+                                    :parameters #ig/ref :gpml.handler.programmatic.plastic-strategy/post-params}}]
                            ["/{iso_code_a2}"
                             ["/ensure-chat"
                              {:post {:summary    "Ensures that this plastic strategy has an existing, valid associated chat channel. Idempotent. Admin only."
