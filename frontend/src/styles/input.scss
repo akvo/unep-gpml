@@ -111,12 +111,14 @@
   border-radius: 8px;
   line-height: 20px;
   font-weight: 400;
-  .ant-select-selector {
-    padding: 4px;
-    .ant-select-selection-item {
-      background-color: $primaryPurple2;
-      border-color: $primaryPurple4;
-      // color: white;
+  &:not(.ant-select-single) {
+    .ant-select-selector {
+      padding: 4px;
+      .ant-select-selection-item {
+        background-color: $primaryPurple2;
+        border-color: $primaryPurple4;
+        // color: white;
+      }
     }
   }
   &:not(.ant-select-customize-input) {

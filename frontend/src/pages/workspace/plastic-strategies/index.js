@@ -40,9 +40,11 @@ const View = () => {
           <h2 className="h-xxl w-bold">
             <Trans>National Source Inventories</Trans>
           </h2>
-          <Button type="ghost" onClick={() => setShowAddModal(true)}>
-            + Add New
-          </Button>
+          {isAdmin && (
+            <Button type="ghost" onClick={() => setShowAddModal(true)}>
+              + Add New
+            </Button>
+          )}
         </div>
         <SkeletonItems loading={loading} />
         <ul className="plastic-strategies-items">
@@ -59,12 +61,28 @@ const View = () => {
 const AddModal = ({ showAddModal, setShowAddModal }) => {
   const { countries } = UIStore.currentState
   const [value, setValue] = useState(null)
+  const handleSubmit = () => {
+    const country = countries.find((it) => it.id === value)
+    api
+      .post('/plastic-strategy', [
+        {
+          countryId: value,
+          chatChannelName: `ps-channel-${country.isoCodeA2}`,
+        },
+      ])
+      .then(() => {
+        setValue(null)
+        setShowAddModal(false)
+        window.location.reload()
+      })
+  }
   return (
     <Modal
       visible={showAddModal}
       title="Add A National Source Inventory"
       onCancel={() => setShowAddModal(false)}
       className={styles.psModal}
+      footer={null}
     >
       <Select
         value={value}
@@ -87,6 +105,9 @@ const AddModal = ({ showAddModal, setShowAddModal }) => {
             </Option>
           ))}
       </Select>
+      <Button style={{ marginTop: 30 }} onClick={handleSubmit}>
+        Submit
+      </Button>
     </Modal>
   )
 }
