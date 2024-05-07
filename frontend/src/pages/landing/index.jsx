@@ -61,7 +61,7 @@ const Landing = (props) => {
   return (
     <div id="landing" className={styles.landing}>
       <Hero {...props} />
-      <ShowcasingAndStats />
+      <ShowcasingAndStats {...props} />
       <WhoAreWe />
       <ActNow />
       <LatestNews />
@@ -456,23 +456,37 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
   )
 }
 
-const ShowcasingAndStats = () => {
+const ShowcasingAndStats = (props) => {
+  const { stakeholders, organisations, community } = UIStore.useState((s) => ({
+    stakeholders: s.stakeholders,
+    organisations: s.organisations,
+    community: s.community,
+  }))
+
+  const totalCount = props?.data?.reduce((sum, item) => {
+    if (item.topic !== '[]') {
+      return sum + item.count
+    }
+    return sum
+  }, 0)
+
   const { i18n } = useLingui()
   const items = [
     {
-      value: '2370',
+      value: totalCount,
       label: i18n._(t`NUMBER OF RESOURCES`),
     },
     {
-      value: '300',
+      value: props?.layers,
       label: t`DATA LAYERS`,
     },
     {
-      value: '70',
+      value:
+        props?.data?.find((item) => item.topic === 'action_plan').count || 0,
       label: t`ACTION PLANS`,
     },
     {
-      value: '5',
+      value: props?.cop,
       label: t`COMMUNITIES OF PRACTICE`,
     },
   ]
@@ -521,17 +535,23 @@ const ShowcasingAndStats = () => {
         <div className="summaries">
           <span className="purple">
             <h5>
-              195 <Trans>Government agencies</Trans>
+              {community?.counts?.find(
+                (item) => item.networkType === 'organisation'
+              ).count || 0}{' '}
+              <Trans>Government agencies</Trans>
             </h5>
           </span>
           <span className="green">
             <h5>
-              1358 <Trans>Organizations</Trans>
+              {organisations?.length} <Trans>Organizations</Trans>
             </h5>
           </span>
           <span className="blue">
             <h5>
-              1251 <Trans>Individuals</Trans>
+              {stakeholders?.stakeholders?.length
+                ? stakeholders?.stakeholders?.length
+                : 0}{' '}
+              <Trans>Individuals</Trans>
             </h5>
           </span>
         </div>
