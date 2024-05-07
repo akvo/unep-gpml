@@ -6,6 +6,14 @@
     h2 {
       margin-bottom: 30px;
     }
+    .ps-heading {
+      position: relative;
+      .ant-btn {
+        position: absolute;
+        right: 0;
+        top: 0;
+      }
+    }
     ul {
       &.plastic-strategies-items {
         display: grid;
@@ -93,6 +101,14 @@
           }
         }
       }
+    }
+  }
+}
+
+.psModal {
+  :global {
+    .ant-select {
+      width: 100%;
     }
   }
 }
