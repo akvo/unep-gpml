@@ -533,17 +533,9 @@ const ShowcasingAndStats = (props) => {
           </ul>
         </div>
         <div className="summaries">
-          <span className="purple">
-            <h5>
-              {community?.counts?.find(
-                (item) => item.networkType === 'organisation'
-              ).count || 0}{' '}
-              <Trans>Government agencies</Trans>
-            </h5>
-          </span>
           <span className="green">
             <h5>
-              {organisations?.length} <Trans>Organizations</Trans>
+              {organisations?.length} <Trans>Member Organizations</Trans>
             </h5>
           </span>
           <span className="blue">
