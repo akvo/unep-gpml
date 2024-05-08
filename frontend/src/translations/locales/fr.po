@@ -46,7 +46,7 @@ msgstr "<0>Être agréé</0>et certifié par la GPML en tant que membre du parte
 msgid "<0>Fill in the form.</0><1/>Tell us about your organisation's work in preventing and reducing plastic pollution and marine litter."
 msgstr "<0>Remplissez le formulaire.</0><1/>Parlez-nous du travail de votre organisation pour prévenir et réduire la pollution plastique et les déchets marins."
 
-#: src/pages/landing/index.jsx:955
+#: src/pages/landing/index.jsx:968
 msgid "<0>GPML’s</0> Action Tracks"
 msgstr "Pistes d'action <0>GPML</0>"
 
@@ -62,7 +62,7 @@ msgstr "<0>Rejoignez le partenariat multipartite</0> qui rassemble tous les acte
 msgid "<0>Receive</0> an entity profile and focal point profile on the GPML Digital Platform."
 msgstr "<0>Recevez</0> un profil d'entité et un profil de point focal sur la plateforme numérique GPML."
 
-#: src/pages/landing/index.jsx:1193
+#: src/pages/landing/index.jsx:1206
 msgid "<0>Spread the word</0><1>Follow us on social media to be part of the movement. </1>"
 msgstr "<0>Faites passer le message</0><1>Suivez-nous sur les réseaux sociaux pour faire partie du mouvement. </1>"
 
@@ -144,7 +144,7 @@ msgstr "Accepte les formats .jpg et .png"
 msgid "Access"
 msgstr "Accéder"
 
-#: src/pages/landing/index.jsx:850
+#: src/pages/landing/index.jsx:863
 msgid "Access a suite of powerful data tools tailored for tackling plastic pollution and marine litter. Utilize comprehensive data sets, layers and statistics to  gain valuable insights that empower informed decision-making and drive effective action."
 msgstr "Accédez à une suite d’outils de données puissants conçus pour lutter contre la pollution plastique et les déchets marins. Utilisez des ensembles de données, des couches et des statistiques complets pour obtenir des informations précieuses qui permettent une prise de décision éclairée et conduisent à des actions efficaces."
 
@@ -152,11 +152,11 @@ msgstr "Accédez à une suite d’outils de données puissants conçus pour lutt
 msgid "Access to a unique global audience for sharing knowledge and experiences in preventing and reducing plastic pollution and marine litter."
 msgstr "Accès à un public mondial unique pour partager des connaissances et des expériences en matière de prévention et de réduction de la pollution plastique et des déchets marins."
 
-#: src/pages/landing/index.jsx:1020
+#: src/pages/landing/index.jsx:1033
 msgid "Access to all"
 msgstr "Accès à tous"
 
-#: src/pages/landing/index.jsx:699
+#: src/pages/landing/index.jsx:711
 msgid "Act Now: <0/> <1>Co-solution with the plastic network</1>"
 msgstr "Agissez maintenant : <0/> <1>Co-solutioner avec le réseau du plastique</1>"
 
@@ -173,12 +173,12 @@ msgstr "Plan d'action"
 msgid "Action Plans"
 msgstr "Plans d'action"
 
-#: src/pages/landing/index.jsx:472
+#: src/pages/landing/index.jsx:486
 msgid "ACTION PLANS"
 msgstr "PLANS D'ACTIONS"
 
 #: src/modules/flexible-forms/view.jsx:1180
-#: src/pages/landing/index.jsx:671
+#: src/pages/landing/index.jsx:683
 msgid "Add"
 msgstr "Ajouter"
 
@@ -195,7 +195,7 @@ msgid "Add An Event"
 msgstr "Ajouter un événement"
 
 #: src/layouts/new-layout.js:234
-#: src/modules/workspace/view.jsx:63
+#: src/modules/workspace/view.jsx:74
 msgid "Add Content"
 msgstr "Ajouter du contenu"
 
@@ -243,10 +243,6 @@ msgstr "Agriculture"
 msgid "AI for Earth Grant"
 msgstr "Subvention IA pour la Terre"
 
-#: src/pages/landing/index.jsx:864
-#~ msgid "AI Innovations"
-#~ msgstr "Innovations en IA"
-
 #: src/modules/signup/view.jsx:45
 #: src/store.js:167
 msgid "ALDFG"
@@ -261,7 +257,7 @@ msgstr "Tout (par défaut)"
 msgid "All done!"
 msgstr "Terminé!"
 
-#: src/pages/forum/index.jsx:125
+#: src/pages/forum/index.jsx:130
 msgid "All Forums"
 msgstr "Tous les forums"
 
@@ -278,7 +274,7 @@ msgstr "Toutes les ressources"
 msgid "Already have an account?"
 msgstr "Vous avez déjà un compte?"
 
-#: src/pages/landing/index.jsx:487
+#: src/pages/landing/index.jsx:501
 msgid "Already on the platform"
 msgstr "Déjà sur la plateforme"
 
@@ -310,7 +306,7 @@ msgstr "Annexe C du document conceptuel."
 msgid "Anticipating a future policy change"
 msgstr "Anticiper un futur changement de politique"
 
-#: src/pages/landing/index.jsx:1303
+#: src/pages/landing/index.jsx:1316
 msgid "Any Questions?"
 msgstr "Des questions?"
 
@@ -418,7 +414,7 @@ msgstr "Informations disponibles"
 msgid "Available Tools"
 msgstr "Outils disponibles"
 
-#: src/pages/landing/index.jsx:704
+#: src/pages/landing/index.jsx:716
 msgid "Avoid duplication of efforts. By using the platform, you can collaborate with other organisations and governments to create shared solutions to end plastic pollution."
 msgstr "Évitez la duplication des efforts. En utilisant la plateforme, vous pouvez collaborer avec d'autres organisations et gouvernements pour créer des solutions partagées pour mettre fin à la pollution plastique."
 
@@ -466,9 +462,9 @@ msgstr "Retour à la chaîne"
 #: src/modules/login/login-view.jsx:124
 #: src/modules/login/login-view.jsx:139
 #: src/modules/login/login-view.jsx:208
-#: src/modules/login/view.jsx:146
-#: src/modules/login/view.jsx:154
-#: src/modules/login/view.jsx:162
+#: src/modules/login/view.jsx:161
+#: src/modules/login/view.jsx:169
+#: src/modules/login/view.jsx:177
 msgid "Back to connect options"
 msgstr "Retour aux options de connexion"
 
@@ -490,15 +486,15 @@ msgstr "Informations de base"
 msgid "Be the first to comment..."
 msgstr "Soyez le premier à commenter..."
 
-#: src/pages/landing/index.jsx:1148
+#: src/pages/landing/index.jsx:1161
 msgid "Become a partner"
 msgstr "Devenir un partenaire"
 
-#: src/pages/landing/index.jsx:1104
+#: src/pages/landing/index.jsx:1117
 msgid "Become part of GPML to collaborate with thousands of organisations and individuals from around the world"
 msgstr "Devenez membre de GPML pour collaborer avec des milliers d'organisations et individus du monde entier"
 
-#: src/pages/landing/index.jsx:1132
+#: src/pages/landing/index.jsx:1145
 msgid "Become part of the network"
 msgstr "Devenez membre du réseau"
 
@@ -506,7 +502,7 @@ msgstr "Devenez membre du réseau"
 msgid "Behaviour change campaign/programme"
 msgstr "Campagne/programme de changement de comportement"
 
-#: src/pages/landing/index.jsx:569
+#: src/pages/landing/index.jsx:581
 msgid "Benefits of joining:<0><1>Access to a global network of members​</1><2>Opportunities to showcase your work in our newsletter, online and at events</2><3>A Data Hub to guide efforts towards SDGs and more​</3><4>Thousands of resources at your fingertips</4><5>Networking with other stakeholders​</5><6>Access to financing opportunities, and more!</6></0>"
 msgstr "Avantages de l'adhésion :<0><1>Accès à un réseau mondial de membres​</1><2>Possibilités de présenter votre travail dans notre newsletter, en ligne et lors d'événements</2><3>Un hub de données pour vous guider efforts vers les ODD et plus encore​</3><4>Des milliers de ressources à portée de main</4><5>Réseautage avec d'autres parties prenantes​</5><6>Accès à des opportunités de financement, et plus encore !</6> </0>"
 
@@ -546,16 +542,12 @@ msgstr "Parcourir"
 msgid "Building, construction, demolition,industrial machinery"
 msgstr "Bâtiment, construction, démolition, machines industrielles"
 
-#: src/pages/landing/index.jsx:866
-#~ msgid "By leveraging AI and innovation, the platform will enable proactive strategies and solutions that efficiently combat plastic pollution and marine litter"
-#~ msgstr "En tirant parti de l'IA et de l'innovation, la plateforme permettra des stratégies et des solutions proactives qui combattent efficacement la pollution plastique et les déchets marins."
-
-#: src/modules/workspace/view.jsx:339
+#: src/modules/workspace/view.jsx:355
 msgid "By proceeding to join the Global Partnership on Plastic Pollution & Marine Litter, you are confirming that you have the authorisation to submit this application on behalf of your organisation."
 msgstr "En rejoignant le Partenariat mondial sur la pollution plastique et les déchets marins, vous confirmez que vous avez l'autorisation de soumettre cette candidature au nom de votre organisation."
 
 #: src/modules/login/login-view.jsx:300
-#: src/modules/login/view.jsx:356
+#: src/modules/login/view.jsx:371
 msgid "By signing up you are agreeing to our"
 msgstr "En vous inscrivant, vous acceptez nos"
 
@@ -592,7 +584,7 @@ msgstr "Vous ne voyez pas ce que vous recherchez ?"
 msgid "Cancel"
 msgstr "Annuler"
 
-#: src/modules/login/view.jsx:134
+#: src/modules/login/view.jsx:149
 msgid "CANCEL"
 msgstr "ANNULER"
 
@@ -612,7 +604,7 @@ msgstr "Études de cas"
 msgid "Case Studies"
 msgstr "Études de cas"
 
-#: src/pages/landing/index.jsx:648
+#: src/pages/landing/index.jsx:660
 msgid "Case<0/>Studies"
 msgstr "Études de cas<0/>"
 
@@ -654,12 +646,12 @@ msgstr "Modification des taxes/subventions"
 
 #: src/components/forum-card/forum-card.jsx:66
 #: src/modules/forum/my-forums.jsx:129
-#: src/pages/forum/index.jsx:227
+#: src/pages/forum/index.jsx:233
 msgid "channel"
 msgstr "canal"
 
 #: src/modules/forum/my-forums.jsx:186
-#: src/modules/workspace/view.jsx:281
+#: src/modules/workspace/view.jsx:292
 msgid "Chat"
 msgstr "Chat"
 
@@ -764,7 +756,7 @@ msgstr "Climat et atmosphère"
 msgid "Close"
 msgstr "Fermer"
 
-#: src/pages/landing/index.jsx:1157
+#: src/pages/landing/index.jsx:1170
 msgid "Co-solution with our network"
 msgstr "Co-solutioner avec notre réseau"
 
@@ -784,8 +776,8 @@ msgstr "Collecte de preuves sur les rejets de plastique dans l'océan/les voies 
 msgid "Collection / sorting of plastics after use"
 msgstr "Collecte/tri des plastiques après utilisation"
 
-#: src/pages/landing/index.jsx:683
-#: src/pages/landing/index.jsx:858
+#: src/pages/landing/index.jsx:695
+#: src/pages/landing/index.jsx:871
 msgid "Coming soon"
 msgstr "À venir"
 
@@ -797,11 +789,11 @@ msgstr "Commentaire supprimé avec succès"
 msgid "Communities of Practice"
 msgstr "Communautés de pratique"
 
-#: src/pages/landing/index.jsx:476
+#: src/pages/landing/index.jsx:490
 msgid "COMMUNITIES OF PRACTICE"
 msgstr "COMMUNAUTÉS DE PRATIQUE"
 
-#: src/pages/landing/index.jsx:677
+#: src/pages/landing/index.jsx:689
 msgid "Communities of practise"
 msgstr "Communautés de pratique"
 
@@ -842,7 +834,7 @@ msgstr "Objectifs contradictoires/autres priorités plus urgentes"
 msgid "Conflicting regulation"
 msgstr "Une réglementation contradictoire"
 
-#: src/modules/workspace/view.jsx:70
+#: src/modules/workspace/view.jsx:81
 msgid "Connect"
 msgstr "Connecter"
 
@@ -872,7 +864,7 @@ msgid "Contact Info"
 msgstr "Informations de contact"
 
 #: src/components/footer/Footer.jsx:56
-#: src/pages/landing/index.jsx:1312
+#: src/pages/landing/index.jsx:1325
 msgid "Contact Us"
 msgstr "Contactez-nous"
 
@@ -890,22 +882,22 @@ msgstr "Type de contenu"
 
 #: src/modules/login/login-view.jsx:187
 #: src/modules/login/login-view.jsx:201
-#: src/modules/login/view.jsx:130
-#: src/modules/login/view.jsx:224
+#: src/modules/login/view.jsx:136
+#: src/modules/login/view.jsx:239
 msgid "CONTINUE WITH EMAIL"
 msgstr "CONTINUER AVEC UN EMAIL"
 
 #: src/modules/login/login-view.jsx:173
-#: src/modules/login/view.jsx:210
+#: src/modules/login/view.jsx:225
 msgid "CONTINUE WITH GOOGLE"
 msgstr "CONTINUER AVEC GOOGLE"
 
 #: src/modules/login/login-view.jsx:162
-#: src/modules/login/view.jsx:199
+#: src/modules/login/view.jsx:214
 msgid "CONTINUE WITH LINKEDIN"
 msgstr "CONTINUER AVEC LINKEDIN"
 
-#: src/modules/workspace/view.jsx:53
+#: src/modules/workspace/view.jsx:64
 msgid "Contribute to the DataHub Maps & Dashboard"
 msgstr "Contribuer aux cartes et au tableau de bord DataHub"
 
@@ -936,7 +928,7 @@ msgstr "Pays"
 msgid "Country Policy Framework"
 msgstr "Cadre politique du pays"
 
-#: src/pages/landing/index.jsx:684
+#: src/pages/landing/index.jsx:696
 msgid "Country Progress"
 msgstr "Progrès du pays"
 
@@ -1015,7 +1007,7 @@ msgstr "Outils de collecte de données"
 msgid "Data Hub"
 msgstr "Centre de données"
 
-#: src/pages/landing/index.jsx:468
+#: src/pages/landing/index.jsx:481
 msgid "DATA LAYERS"
 msgstr "COUCHES DE DONNÉES"
 
@@ -1023,12 +1015,12 @@ msgstr "COUCHES DE DONNÉES"
 msgid "Data Source"
 msgstr "Source de l'information"
 
-#: src/modules/workspace/view.jsx:51
-#: src/pages/landing/index.jsx:848
+#: src/modules/workspace/view.jsx:62
+#: src/pages/landing/index.jsx:861
 msgid "Data tools"
 msgstr "Outils de données"
 
-#: src/pages/landing/index.jsx:682
+#: src/pages/landing/index.jsx:694
 msgid "Data visualisations to track countries progress. Quickly connect with others working in the country to end plastic."
 msgstr "Visualisations de données pour suivre les progrès des pays. Connectez-vous rapidement avec d’autres personnes travaillant dans le pays pour mettre fin au plastique."
 
@@ -1053,9 +1045,10 @@ msgstr "Décisions conçues pour créer un impact favorable sur les facteurs cl�
 #: src/modules/stakeholder-detail/view.jsx:164
 #: src/modules/stakeholder-detail/view.jsx:190
 #: src/modules/workspace/ps/setup-team-table.jsx:206
+#: src/modules/workspace/view.jsx:518
 #: src/pages/forum/[forum]/index.jsx:309
 #: src/pages/forum/[forum]/index.jsx:718
-#: src/pages/forum/index.jsx:249
+#: src/pages/forum/index.jsx:255
 msgid "Delete"
 msgstr "Supprimer"
 
@@ -1188,13 +1181,13 @@ msgstr "Une gestion environnementale différente des milieux terrestres"
 msgid "Digital Platform"
 msgstr "Plateforme numérique"
 
-#: src/pages/landing/index.jsx:657
-#: src/pages/landing/index.jsx:668
-#: src/pages/landing/index.jsx:935
+#: src/pages/landing/index.jsx:669
+#: src/pages/landing/index.jsx:680
+#: src/pages/landing/index.jsx:948
 msgid "Discover"
 msgstr "Découvrir"
 
-#: src/pages/landing/index.jsx:861
+#: src/pages/landing/index.jsx:874
 msgid "Discover like-minded individuals and organizations passionate about combating plastic pollution and marine litter through our innovative matchmaking feature. Connect with fellow advocates, researchers, and activists to amplify your impact and collaborate on meaningful projects for a cleaner and healthier ocean ecosystem."
 msgstr "Découvrez des personnes et des organisations partageant les mêmes idées et passionnées par la lutte contre la pollution plastique et les déchets marins grâce à notre fonction de mise en relation innovante. Connectez-vous avec d'autres défenseurs, chercheurs et activistes pour amplifier votre impact et collaborer sur des projets significatifs pour un écosystème océanique plus propre et plus sain."
 
@@ -1223,21 +1216,13 @@ msgid "Documents and info"
 msgstr "Documents et informations"
 
 #: src/modules/login/login-view.jsx:281
-#: src/modules/login/view.jsx:337
+#: src/modules/login/view.jsx:352
 msgid "Don’t have an account yet?"
 msgstr "Vous n'avez pas encore de compte?"
 
 #: src/modules/about/about-us.jsx:286
 msgid "Download Full Concept Document"
 msgstr "Télécharger le document conceptuel complet"
-
-#: src/pages/workspace/[slug]/4-data-analysis/index.js:55
-#~ msgid "Download Slides"
-#~ msgstr "Télécharger les diapositives"
-
-#: src/pages/workspace/[slug]/4-data-analysis/index.js:45
-#~ msgid "Download State of Knowledge Report Template"
-#~ msgstr "Télécharger le modèle de rapport sur l'état des connaissances"
 
 #: src/modules/about/about-us.jsx:276
 msgid "Download Summary (1 Page)"
@@ -1277,7 +1262,7 @@ msgstr "Service d'écosystème"
 
 #: src/modules/details-page/comment.jsx:80
 #: src/modules/details-page/header.jsx:219
-#: src/pages/forum/index.jsx:244
+#: src/pages/forum/index.jsx:250
 msgid "Edit"
 msgstr "Modifier"
 
@@ -1307,7 +1292,7 @@ msgstr "Ressources éducatives et de sensibilisation"
 msgid "Electrical and electronics"
 msgstr "Électrique et électronique"
 
-#: src/pages/landing/index.jsx:855
+#: src/pages/landing/index.jsx:868
 msgid "Elevate your mission to address plastic pollution and marine litter through our integrated workspace feature. This feature enables you to coordinate with partners, centralize resources, strategize actions, and drive collective solutions"
 msgstr "Élevez votre mission de lutte contre la pollution plastique et les déchets marins grâce à notre fonctionnalité d’espace de travail intégrée. Cette fonctionnalité vous permet de vous coordonner avec vos partenaires, de centraliser les ressources, d'élaborer des stratégies d'actions et de trouver des solutions collectives."
 
@@ -1317,7 +1302,7 @@ msgstr "Ellipsis : apprentissage automatique et imagerie aérienne pour identif
 
 #: src/modules/flexible-forms/form-schema.js:1179
 #: src/modules/login/forgot-password.js:69
-#: src/modules/login/view.jsx:260
+#: src/modules/login/view.jsx:275
 #: src/modules/signup-old/signup-form.jsx:44
 #: src/modules/workspace/ps/setup-team-form.jsx:226
 #: src/pages/partnership/index.jsx:1183
@@ -1356,7 +1341,7 @@ msgstr "Entrez le nom de votre entité"
 #: src/components/footer/Footer.jsx:116
 #: src/modules/login/forgot-password.js:76
 #: src/modules/login/login-view.jsx:227
-#: src/modules/login/view.jsx:267
+#: src/modules/login/view.jsx:282
 msgid "Enter your email"
 msgstr "Saisissez votre email"
 
@@ -1365,7 +1350,7 @@ msgid "Enter your entity and job title"
 msgstr "Entrez votre entité et votre titre de poste"
 
 #: src/modules/login/login-view.jsx:245
-#: src/modules/login/view.jsx:300
+#: src/modules/login/view.jsx:315
 msgid "Enter your password"
 msgstr "Tapez votre mot de passe"
 
@@ -1504,7 +1489,7 @@ msgstr "Facebook"
 msgid "Featured"
 msgstr "En vedette"
 
-#: src/pages/landing/index.jsx:880
+#: src/pages/landing/index.jsx:893
 msgid "Features & Benefits <0>of using the platform</0>"
 msgstr "Fonctionnalités et avantages <0>de l'utilisation de la plateforme</0>"
 
@@ -1615,12 +1600,12 @@ msgid "For monitoring, which programme/protocol did you use?"
 msgstr "Pour le suivi, quel programme/protocole avez-vous utilisé ?"
 
 #: src/modules/login/login-view.jsx:113
-#: src/modules/login/view.jsx:127
+#: src/modules/login/view.jsx:133
 msgid "FORGOT PASSWORD"
 msgstr "MOT DE PASSE OUBLIÉ"
 
 #: src/modules/login/login-view.jsx:272
-#: src/modules/login/view.jsx:328
+#: src/modules/login/view.jsx:343
 msgid "Forgot password?"
 msgstr "Mot de passe oublié?"
 
@@ -1628,8 +1613,8 @@ msgstr "Mot de passe oublié?"
 msgid "Forum"
 msgstr "Forum"
 
-#: src/modules/workspace/view.jsx:242
-#: src/pages/forum/index.jsx:118
+#: src/modules/workspace/view.jsx:253
+#: src/pages/forum/index.jsx:123
 #: src/store.js:95
 msgid "Forums"
 msgstr "Forums"
@@ -1774,10 +1759,6 @@ msgstr "Accédez au partenariat"
 msgid "Good Health and Well-being"
 msgstr "Bonne santé et bien-être"
 
-#: src/pages/landing/index.jsx:524
-msgid "Government agencies"
-msgstr "Organismes gouvernementaux"
-
 #: src/components/resource-card/resource-card.jsx:54
 msgid "Government Verified"
 msgstr "Vérifié par le gouvernement"
@@ -1805,7 +1786,7 @@ msgstr "Membres GPML"
 msgid "GPML Non-Members"
 msgstr "Non-membres GPML"
 
-#: src/modules/workspace/view.jsx:329
+#: src/modules/workspace/view.jsx:345
 msgid "GPML Partnership"
 msgstr "Partenariat GPML"
 
@@ -1843,7 +1824,7 @@ msgstr "Conseils sur la façon de s'inscrire sur la plateforme numérique GPML"
 msgid "Guidelines For The Monitoring And Assessment Of Plastic Litter In The Ocean"
 msgstr "Lignes directrices pour la surveillance et l'évaluation des déchets plastiques dans l'océan"
 
-#: src/pages/landing/index.jsx:996
+#: src/pages/landing/index.jsx:1009
 msgid "Guidelines standards & harmonization"
 msgstr "Normes et harmonisation des lignes directrices"
 
@@ -1875,11 +1856,6 @@ msgstr "HELCOM Plan d'action régional sur les déchets marins"
 msgid "Help and advice provided on a set of ideas or plans that is used as a basis for making decisions, especially in politics, economics, or business."
 msgstr "Aide et conseils fournis sur un ensemble d'idées ou de plans qui servent de base à la prise de décisions, notamment en politique, en économie ou en affaires."
 
-#: src/store.js:46
-#: src/store.js:47
-#~ msgid "Help Center"
-#~ msgstr "Centre d'aide"
-
 #: src/modules/flexible-forms/view.jsx:1274
 msgid "here"
 msgstr "ici"
@@ -1892,7 +1868,7 @@ msgstr "MASQUER LES EXEMPLES"
 msgid "High-level strategy"
 msgstr "Stratégie de haut niveau"
 
-#: src/pages/landing/index.jsx:766
+#: src/pages/landing/index.jsx:779
 msgid "HIGHLIGHTS"
 msgstr "POINTS FORTS"
 
@@ -1900,11 +1876,11 @@ msgstr "POINTS FORTS"
 msgid "How can the data and information from your monitoring programme be accessed?"
 msgstr "Comment accéder aux données et informations de votre programme de suivi ?"
 
-#: src/pages/landing/index.jsx:877
+#: src/pages/landing/index.jsx:890
 msgid "How does it work?"
 msgstr "Comment ça marche?"
 
-#: src/pages/landing/index.jsx:773
+#: src/pages/landing/index.jsx:786
 msgid "How is the network co-solutioning?"
 msgstr "Comment se déroule la co-solution réseau ?"
 
@@ -1932,7 +1908,7 @@ msgstr "Santé et bien-être humains"
 msgid "I am a private citizen"
 msgstr "Je suis un citoyen privé"
 
-#: src/modules/workspace/view.jsx:368
+#: src/modules/workspace/view.jsx:384
 msgid "I AM NOT THE FOCAL POINT"
 msgstr "JE NE SUIS PAS LE POINT FOCAL"
 
@@ -2039,7 +2015,7 @@ msgstr "Connexion individuelle"
 
 #: src/modules/map/map-chart.jsx:592
 #: src/modules/map/map-chart.jsx:640
-#: src/pages/landing/index.jsx:534
+#: src/pages/landing/index.jsx:546
 msgid "Individuals"
 msgstr "Personnes"
 
@@ -2161,7 +2137,7 @@ msgstr "Votre initiative est-elle une activité ponctuelle ou continue ?"
 msgid "Job Tilte"
 msgstr "Inclinaison de l'emploi"
 
-#: src/pages/landing/index.jsx:678
+#: src/pages/landing/index.jsx:690
 msgid "Join and collaborate"
 msgstr "Rejoignez et collaborez"
 
@@ -2169,13 +2145,13 @@ msgstr "Rejoignez et collaborez"
 msgid "Join Newsletter"
 msgstr "Rejoindre la newsletter"
 
-#: src/modules/workspace/view.jsx:361
+#: src/modules/workspace/view.jsx:377
 #: src/pages/landing/index.jsx:349
-#: src/pages/landing/index.jsx:1116
+#: src/pages/landing/index.jsx:1129
 msgid "Join Now"
 msgstr "Adhérer maintenant"
 
-#: src/pages/landing/index.jsx:676
+#: src/pages/landing/index.jsx:688
 msgid "Join others in coordinating efforts towards shared plastic solutions. From data to capacity development communities"
 msgstr "Rejoignez les autres pour coordonner les efforts vers des solutions plastiques partagées. Des données aux communautés de développement des capacités."
 
@@ -2183,11 +2159,11 @@ msgstr "Rejoignez les autres pour coordonner les efforts vers des solutions plas
 msgid "Join the discussion..."
 msgstr "Rejoignez la discussion..."
 
-#: src/pages/landing/index.jsx:1099
+#: src/pages/landing/index.jsx:1112
 msgid "Join the Global Partnership on Plastic Pollution and Marine Litter"
 msgstr "Rejoignez le Partenariat mondial sur la pollution plastique et les déchets marins"
 
-#: src/pages/landing/index.jsx:1142
+#: src/pages/landing/index.jsx:1155
 msgid "Join the GPML"
 msgstr "Rejoignez le GPML"
 
@@ -2196,8 +2172,8 @@ msgid "Join the Partnership"
 msgstr "Rejoignez le partenariat"
 
 #: src/modules/login/login-view.jsx:288
-#: src/modules/login/view.jsx:129
-#: src/modules/login/view.jsx:344
+#: src/modules/login/view.jsx:135
+#: src/modules/login/view.jsx:359
 msgid "JOIN WITH EMAIL"
 msgstr "REJOIGNEZ PAR EMAIL"
 
@@ -2213,7 +2189,7 @@ msgstr "Bibliothèque d'échange de connaissances."
 msgid "Knowledge Hub"
 msgstr "Centre de connaissances"
 
-#: src/modules/workspace/view.jsx:59
+#: src/modules/workspace/view.jsx:70
 msgid "Knowledge Library"
 msgstr "Bibliothèque de connaissances"
 
@@ -2243,7 +2219,7 @@ msgstr "Nom de famille"
 msgid "Last Name"
 msgstr "Nom de famille"
 
-#: src/pages/landing/index.jsx:770
+#: src/pages/landing/index.jsx:783
 msgid "Latest news:"
 msgstr "Dernières nouvelles:"
 
@@ -2255,7 +2231,7 @@ msgstr "Leadership par des individus spécifiques dans l’État membre ou l’o
 msgid "Learn"
 msgstr "Apprendre"
 
-#: src/pages/landing/index.jsx:778
+#: src/pages/landing/index.jsx:791
 msgid "Learn about inspiring co-soluting efforts from the GPML network and all the other actors contributing to the plastic action platform."
 msgstr "Découvrez les efforts de co-solution inspirants du réseau GPML et de tous les autres acteurs contribuant à la plateforme d’action plastique."
 
@@ -2412,7 +2388,7 @@ msgid "Login to comment"
 msgstr "Connectez-vous pour commenter"
 
 #: src/modules/login/login-view.jsx:263
-#: src/modules/login/view.jsx:319
+#: src/modules/login/view.jsx:334
 msgid "LOGIN WITH EMAIL"
 msgstr "CONNEXION PAR EMAIL"
 
@@ -2476,12 +2452,12 @@ msgstr "Marquer comme terminé"
 msgid "Massive Open Online Course (MOOC) on Marine Litter"
 msgstr "Cours en ligne ouvert et massif (MOOC) sur les déchets marins"
 
-#: src/modules/workspace/view.jsx:69
+#: src/modules/workspace/view.jsx:80
 msgid "Match with opportunities"
 msgstr "Correspondre aux opportunités"
 
-#: src/modules/workspace/view.jsx:66
-#: src/pages/landing/index.jsx:859
+#: src/modules/workspace/view.jsx:77
+#: src/pages/landing/index.jsx:872
 msgid "Match-making"
 msgstr "Mise en relation"
 
@@ -2504,6 +2480,10 @@ msgstr "Médical"
 #: src/store.js:609
 msgid "Meetings, often lasting a few days, organized on a particular subject or to bring together people who have a common interest to exchange ideas and discuss issues, especially important public issues."
 msgstr "Réunions, d'une durée souvent de quelques jours, organisées sur un sujet particulier ou réunissant des personnes partageant un intérêt commun pour échanger des idées et discuter de questions, notamment de questions publiques importantes."
+
+#: src/pages/landing/index.jsx:538
+msgid "Member Organizations"
+msgstr "Organisations membres"
 
 #: src/modules/flexible-forms/form-schema.js:864
 msgid "Members of the public have actively complained / asked for change"
@@ -2630,7 +2610,7 @@ msgstr "National"
 msgid "National Action Plan"
 msgstr "Plan d'action national"
 
-#: src/pages/landing/index.jsx:1012
+#: src/pages/landing/index.jsx:1025
 msgid "National action plans"
 msgstr "Plans d'action nationaux"
 
@@ -2643,13 +2623,13 @@ msgstr "Valeurs nationales ou organisationnelles"
 msgid "National Plastic Strategy"
 msgstr "Stratégie nationale sur le plastique"
 
-#: src/modules/workspace/view.jsx:303
-#: src/pages/landing/index.jsx:665
-#: src/pages/workspace/plastic-strategies/index.js:37
+#: src/modules/workspace/view.jsx:319
+#: src/pages/landing/index.jsx:677
+#: src/pages/workspace/plastic-strategies/index.js:41
 msgid "National Source Inventories"
 msgstr "Inventaires nationaux des sources"
 
-#: src/modules/workspace/view.jsx:464
+#: src/modules/workspace/view.jsx:485
 #: src/pages/workspace/[slug]/layout.js:262
 msgid "National Source Inventory"
 msgstr "Inventaire national des sources"
@@ -2673,7 +2653,7 @@ msgstr "Objectifs nationaux de développement durable (ODD)"
 msgid "Network type"
 msgstr "Type de réseau"
 
-#: src/pages/landing/index.jsx:1163
+#: src/pages/landing/index.jsx:1176
 msgid "Network with others"
 msgstr "Réseauter"
 
@@ -2788,7 +2768,7 @@ msgstr "Pas assez de soutien de la part de l’État membre/de l’organisation"
 msgid "Not yet in force"
 msgstr "Pas encore en vigueur"
 
-#: src/pages/landing/index.jsx:464
+#: src/pages/landing/index.jsx:477
 msgid "NUMBER OF RESOURCES"
 msgstr "NOMBRE DE RESSOURCES"
 
@@ -2814,7 +2794,7 @@ msgstr "sur"
 msgid "Once submitted resources go through a review process which is being fine-tuned via consultations to assess content accuracy and quality. The current validation mechanism draft can be found under"
 msgstr "Une fois soumises, les ressources passent par un processus d'examen qui est affiné via des consultations pour évaluer l'exactitude et la qualité du contenu. Le projet actuel du mécanisme de validation peut être consulté sous"
 
-#: src/modules/login/view.jsx:228
+#: src/modules/login/view.jsx:243
 msgid "Once you have an account you can register your organisation and apply for Global Partnership on Plastic Pollution and Marine Litter membership"
 msgstr "Une fois que vous avez un compte, vous pouvez enregistrer votre organisation et demander à devenir membre du Partenariat mondial sur la pollution plastique et les déchets marins."
 
@@ -2877,10 +2857,6 @@ msgstr "Logo de l'organisation"
 msgid "Organisation’s Website"
 msgstr "Site Web de l'organisation"
 
-#: src/pages/landing/index.jsx:529
-msgid "Organizations"
-msgstr "Organisations"
-
 #: src/store.js:480
 #: src/store.js:764
 msgid "Organizations or programmes providing financial support to entities tackling marine plastic litter. Such support includes grants, investment, and loans, among others."
@@ -2917,7 +2893,7 @@ msgstr "Notre côte est en train de mourir"
 msgid "Our community"
 msgstr "Notre communauté"
 
-#: src/pages/landing/index.jsx:1267
+#: src/pages/landing/index.jsx:1280
 msgid "Our partners"
 msgstr "Nos partenaires"
 
@@ -2969,7 +2945,7 @@ msgstr "Participants"
 msgid "Partnerships for the Goals"
 msgstr "Partenariats pour les objectifs"
 
-#: src/modules/login/view.jsx:293
+#: src/modules/login/view.jsx:308
 #: src/pages/partnership/index.jsx:1221
 msgid "Password"
 msgstr "Mot de passe"
@@ -3091,7 +3067,7 @@ msgstr "Documents de politique définis ici comme des traductions officielles (e
 msgid "Policy Guidance and Information"
 msgstr "Orientations et informations politiques"
 
-#: src/pages/landing/index.jsx:492
+#: src/pages/landing/index.jsx:506
 msgid "POWERED BY:"
 msgstr "ALIMENTÉ PAR:"
 
@@ -3109,7 +3085,7 @@ msgstr "Politique de confidentialité et conditions d'utilisation"
 
 #: src/components/forum-card/forum-card.jsx:64
 #: src/modules/forum/my-forums.jsx:127
-#: src/pages/forum/index.jsx:227
+#: src/pages/forum/index.jsx:233
 msgid "private"
 msgstr "privé"
 
@@ -3177,7 +3153,7 @@ msgstr "Prototype"
 
 #: src/components/forum-card/forum-card.jsx:65
 #: src/modules/forum/my-forums.jsx:128
-#: src/pages/forum/index.jsx:227
+#: src/pages/forum/index.jsx:233
 msgid "public"
 msgstr "publique"
 
@@ -3207,7 +3183,7 @@ msgstr "Matières premières"
 msgid "Read more"
 msgstr "En savoir plus"
 
-#: src/pages/landing/index.jsx:831
+#: src/pages/landing/index.jsx:844
 msgid "Read More"
 msgstr "En savoir plus"
 
@@ -3228,7 +3204,7 @@ msgstr "Enregistrements"
 msgid "Recycling"
 msgstr "Recyclage"
 
-#: src/pages/landing/index.jsx:664
+#: src/pages/landing/index.jsx:676
 msgid "Reduce your country’s footprint. Create and advance your plastic startegy."
 msgstr "Réduisez l’empreinte de votre pays. Créez et faites progresser votre stratégie plastique."
 
@@ -3243,10 +3219,6 @@ msgstr "Réduire l’impact environnemental"
 #: src/store.js:580
 msgid "Reef Futures Symposium"
 msgstr "Symposium sur l'avenir des récifs"
-
-#: src/store.js:111
-#~ msgid "Regional Notes"
-#~ msgstr "Notes régionales"
 
 #: src/modules/flexible-forms/form-schema.js:700
 msgid "Regional Sustainable Development Goals (SDGs)"
@@ -3403,7 +3375,7 @@ msgstr "SB 270 : interdiction des sacs à l'échelle de l'État"
 msgid "Scale up"
 msgstr "Augmenter"
 
-#: src/pages/landing/index.jsx:984
+#: src/pages/landing/index.jsx:997
 msgid "Science<0/>policy"
 msgstr "Politique<0/>scientifique"
 
@@ -3454,7 +3426,7 @@ msgstr "Secteur. Votre initiative cible-t-elle un secteur spécifique ? (Veuille
 msgid "See all"
 msgstr "Voir tout"
 
-#: src/pages/landing/index.jsx:1283
+#: src/pages/landing/index.jsx:1296
 msgid "See all partners"
 msgstr "Voir tous les partenaires"
 
@@ -3515,15 +3487,15 @@ msgstr "Configurez votre équipe"
 msgid "Share"
 msgstr "Partager"
 
-#: src/pages/landing/index.jsx:1185
+#: src/pages/landing/index.jsx:1198
 msgid "Share your data"
 msgstr "Partagez vos données"
 
-#: src/pages/landing/index.jsx:1173
+#: src/pages/landing/index.jsx:1186
 msgid "Share your knowledge"
 msgstr "Partagez vos connaissances"
 
-#: src/modules/workspace/view.jsx:61
+#: src/modules/workspace/view.jsx:72
 msgid "Share Your Knowledge"
 msgstr "Partagez vos connaissances"
 
@@ -3539,7 +3511,7 @@ msgstr "Afficher tous les outils"
 msgid "SHOW EXAMPLES"
 msgstr "AFFICHER DES EXEMPLES"
 
-#: src/pages/landing/index.jsx:484
+#: src/pages/landing/index.jsx:498
 msgid "SHOWCASING"
 msgstr "PRÉSENTATION"
 
@@ -3552,11 +3524,11 @@ msgid "Sign In"
 msgstr "Se connecter"
 
 #: src/modules/login/login-view.jsx:149
-#: src/modules/login/view.jsx:125
+#: src/modules/login/view.jsx:131
 msgid "SIGN IN"
 msgstr "SE CONNECTER"
 
-#: src/pages/landing/index.jsx:1137
+#: src/pages/landing/index.jsx:1150
 msgid "Sign Up"
 msgstr "S'inscrire"
 
@@ -3634,7 +3606,7 @@ msgstr "Date de début"
 msgid "Start typing..."
 msgstr "Commencer à écrire..."
 
-#: src/pages/landing/index.jsx:644
+#: src/pages/landing/index.jsx:656
 msgid "Start your own initiative. Get inspired by others who are making progress to end plastic pollution."
 msgstr "Lancez votre propre initiative. Inspirez-vous de ceux qui progressent pour mettre fin à la pollution plastique."
 
@@ -3701,7 +3673,7 @@ msgstr "Sous-thèmes"
 msgid "Submit"
 msgstr "Soumettre"
 
-#: src/modules/workspace/view.jsx:332
+#: src/modules/workspace/view.jsx:348
 msgid "Submit an application for your organisation - <0>{0}</0> - to become part of the GPML."
 msgstr "Soumettez une candidature pour votre organisation - <0>{0}</0> - pour faire partie du GPML."
 
@@ -3761,11 +3733,7 @@ msgstr "Téléchargez le résumé du contenu mis en signet dans cette section et
 msgid "summary-description-6-national-plastic-strategy"
 msgstr "Téléchargez la stratégie plastique officiellement approuvée."
 
-#: src/store.js:49
-#~ msgid "Support on GPML Digital Platform"
-#~ msgstr "Support sur la plateforme numérique GPML"
-
-#: src/pages/landing/index.jsx:1004
+#: src/pages/landing/index.jsx:1017
 msgid "Sustainable & innovative financing"
 msgstr "Financements durables et innovants"
 
@@ -3846,7 +3814,7 @@ msgid "Technology and Processes. You have chosen technology and processes as the
 msgstr "Technologie et processus. Vous avez choisi la technologie et les processus comme type d'initiative. En quoi consistait spécifiquement cette initiative ? (Veuillez cocher TOUTES les réponses applicables) :"
 
 #: src/modules/login/login-view.jsx:307
-#: src/modules/login/view.jsx:363
+#: src/modules/login/view.jsx:378
 msgid "terms and services"
 msgstr "conditions et services"
 
@@ -3866,7 +3834,7 @@ msgstr "L’Initiative 3R : un système de marché basé sur le crédit pour en
 msgid "The Act to Prevent Pollution from Ships"
 msgstr "La Loi visant à prévenir la pollution par les navires"
 
-#: src/pages/landing/index.jsx:960
+#: src/pages/landing/index.jsx:973
 msgid "The current core work of the GPML is organized through the following five Action Tracks, with the aim of advancing priority issues by connecting key stakeholders and facilitating collaboration and coordination. The platform offers a wide range of tools to facilitate this work."
 msgstr "Le travail de base actuel du GPML est organisé à travers les cinq pistes d'action suivantes, dans le but de faire progresser les questions prioritaires en connectant les principales parties prenantes et en facilitant la collaboration et la coordination. La plateforme propose une large gamme d'outils pour faciliter ce travail."
 
@@ -3878,11 +3846,11 @@ msgstr "La définition du développement des capacités est large. Il s'agit d'u
 msgid "The Digital Platform"
 msgstr "La plateforme numérique"
 
-#: src/pages/landing/index.jsx:557
+#: src/pages/landing/index.jsx:569
 msgid "The Global Partnership on Plastic Pollution and Marine Litter (GPML) Digital Platform brings decision making power to multiple stakeholders by integrating data, crowd sourced knowledge, and fostering collaborations to co-create and advance solutions to end plastic pollution including in the marine environment."
 msgstr "La plateforme numérique du Partenariat mondial sur la pollution plastique et les déchets marins (GPML) donne le pouvoir de décision à de multiples parties prenantes en intégrant des données, des connaissances issues du crowdsourcing et en favorisant les collaborations pour co-créer et faire progresser des solutions visant à mettre fin à la pollution plastique, y compris dans l'environnement marin."
 
-#: src/pages/landing/index.jsx:552
+#: src/pages/landing/index.jsx:564
 msgid "The Global Partnership on Plastic Pollution and Marine Litter (GPML) Digital Platform is a multi-stakeholder, knowledge sharing and networking tool which aims to facilitate action on plastic pollution and marine litter reduction and prevention."
 msgstr "La plateforme numérique du Partenariat mondial sur la pollution plastique et les déchets marins (GPML) est un outil multipartite de partage de connaissances et de réseautage qui vise à faciliter l'action contre la pollution plastique et la réduction et la prévention des déchets marins."
 
@@ -3906,7 +3874,7 @@ msgstr "La plateforme numérique GPML permet à tous les pays de créer et de me
 msgid "The GPML digital platform fosters public-private partnerships, offers clarity on circular economy practices, and provides guidance on Extended Producer Responsibilities (EPRs) and sustainable business models."
 msgstr "La plateforme numérique GPML favorise les partenariats public-privé, offre des éclaircissements sur les pratiques d'économie circulaire et fournit des conseils sur les responsabilités élargies des producteurs (REP) et les modèles commerciaux durables."
 
-#: src/pages/landing/index.jsx:562
+#: src/pages/landing/index.jsx:574
 msgid "The GPML Digital Platform functions as the digital arm of the GPML, a multi-stakeholder partnership that brings together all actors working to prevent plastic pollution and marine litter."
 msgstr "La plateforme numérique GPML fonctionne comme la branche numérique du GPML, un partenariat multipartite qui rassemble tous les acteurs œuvrant pour prévenir la pollution plastique et les déchets marins."
 
@@ -3939,7 +3907,7 @@ msgstr "Le problème : les déchets marins et la pollution plastique"
 msgid "The National Environmental Act - Order No. 2034/33"
 msgstr "La loi nationale sur l'environnement - Arrêté n° 2034/33"
 
-#: src/pages/landing/index.jsx:885
+#: src/pages/landing/index.jsx:898
 msgid "The platform offers a wide range of tools to support your decision-making and help a global network of actors to work together to create shared solutions to end plastic pollution."
 msgstr "La plateforme propose une large gamme d'outils pour vous aider à prendre des décisions et aider un réseau mondial d'acteurs à travailler ensemble pour créer des solutions partagées pour mettre fin à la pollution plastique."
 
@@ -4102,7 +4070,7 @@ msgstr "Accords transnationaux ou mondiaux et dynamique vers le changement (par 
 msgid "Transportation"
 msgstr "Transport"
 
-#: src/pages/landing/index.jsx:926
+#: src/pages/landing/index.jsx:939
 msgid "Trusted data, Information badge system and Validation process."
 msgstr "Données fiables, système de badge d'information et processus de validation."
 
@@ -4171,7 +4139,7 @@ msgstr "Mise à jour"
 msgid "Upload"
 msgstr "Télécharger"
 
-#: src/modules/workspace/view.jsx:54
+#: src/modules/workspace/view.jsx:65
 msgid "Upload your data"
 msgstr "Téléchargez vos données"
 
@@ -4262,17 +4230,17 @@ msgstr "Tutoriels vidéos"
 msgid "view"
 msgstr "voir"
 
-#: src/modules/workspace/view.jsx:273
-#: src/pages/forum/index.jsx:269
+#: src/modules/workspace/view.jsx:284
+#: src/pages/forum/index.jsx:275
 msgid "View"
 msgstr "Voir"
 
 #: src/components/resource-cards/resource-cards.jsx:58
-#: src/modules/workspace/view.jsx:308
+#: src/modules/workspace/view.jsx:324
 msgid "View All"
 msgstr "Voir tout"
 
-#: src/modules/workspace/view.jsx:246
+#: src/modules/workspace/view.jsx:257
 msgid "View All Forums"
 msgstr "Voir tous les forums"
 
@@ -4293,15 +4261,11 @@ msgstr "Observateur"
 msgid "Viewers cannot edit all content"
 msgstr "Les téléspectateurs ne peuvent pas modifier tout le contenu"
 
-#: src/pages/landing/index.jsx:1306
+#: src/pages/landing/index.jsx:1319
 msgid "Visit the Help Center for FAQs, tutorials and more"
 msgstr "Consultez le centre d'aide pour consulter des FAQ, des didacticiels et bien plus encore."
 
-#: src/pages/landing/index.jsx:1312
-#~ msgid "Visit the Help Centre"
-#~ msgstr "Visitez le centre d'aide"
-
-#: src/pages/landing/index.jsx:972
+#: src/pages/landing/index.jsx:985
 msgid "Visit the website"
 msgstr "Visitez le site Web"
 
@@ -4327,7 +4291,7 @@ msgstr "La gestion des déchets"
 msgid "Wastewater/Sewage management"
 msgstr "Gestion des eaux usées/eaux usées"
 
-#: src/modules/workspace/view.jsx:426
+#: src/modules/workspace/view.jsx:442
 msgid "Watch this video to get started"
 msgstr "Regardez cette vidéo pour commencer"
 
@@ -4335,7 +4299,7 @@ msgstr "Regardez cette vidéo pour commencer"
 msgid "We are excited to hear from the members of our community. The GPML Digital Platform is crowdsourced and allows everyone to submit new content via this form."
 msgstr "Nous sommes ravis d’entendre les membres de notre communauté. La plateforme numérique GPML est participative et permet à chacun de soumettre du nouveau contenu via ce formulaire."
 
-#: src/modules/workspace/view.jsx:226
+#: src/modules/workspace/view.jsx:237
 msgid "We sent you a confirmation email, Please take a moment and validate your address to confirm your account."
 msgstr "Nous vous avons envoyé un e-mail de confirmation, veuillez prendre un moment et valider votre adresse pour confirmer votre compte."
 
@@ -4347,7 +4311,7 @@ msgstr "Nous l'examinerons sous peu."
 msgid "Webinars & Seminars"
 msgstr "Webinaires et séminaires"
 
-#: src/pages/forum/index.jsx:128
+#: src/pages/forum/index.jsx:133
 msgid "Welcome to the Global Partnership on Plastic Pollution and Marine Litter (GPML) Digital Platform forums page. A space where you can interact, network, and share insights and information with other like-minded advocates on issues related to plastic pollution and marine litter strategies, models and methodologies, data harmonization, innovative financing, and Capacity Building. Your voice matters, join now and be part of the wave for change."
 msgstr "Bienvenue sur la page des forums de la plateforme numérique du Partenariat mondial sur la pollution plastique et les déchets marins (GPML). Un espace où vous pouvez interagir, réseauter et partager des idées et des informations avec d'autres défenseurs partageant les mêmes idées sur les questions liées aux stratégies, modèles et méthodologies de pollution plastique et de déchets marins, à l'harmonisation des données, au financement innovant et au renforcement des capacités. Votre voix compte, rejoignez-nous maintenant et faites partie de la vague du changement."
 
@@ -4375,11 +4339,11 @@ msgstr "Quelles expertises recherchent-ils ?"
 msgid "What funding sources did you use?"
 msgstr "Quelles sources de financement avez-vous utilisées ?"
 
-#: src/pages/landing/index.jsx:561
+#: src/pages/landing/index.jsx:573
 msgid "What is the connection between this platform and GPML?"
 msgstr "Quel est le lien entre cette plateforme et GPML ?"
 
-#: src/pages/landing/index.jsx:952
+#: src/pages/landing/index.jsx:965
 msgid "WHAT IS THE FOCUS OF GPML?"
 msgstr "QUEL EST L'OBJECTIF DE GPML ?"
 
@@ -4387,11 +4351,11 @@ msgstr "QUEL EST L'OBJECTIF DE GPML ?"
 msgid "What is the MAIN focus of the initiative? (Please tick ALL that apply)."
 msgstr "Quel est l’objectif PRINCIPAL de l’initiative ? (Veuillez cocher TOUTES les réponses applicables)."
 
-#: src/modules/workspace/view.jsx:381
+#: src/modules/workspace/view.jsx:397
 msgid "What to do next?"
 msgstr "Que faire ensuite?"
 
-#: src/pages/landing/index.jsx:556
+#: src/pages/landing/index.jsx:568
 msgid "What we do?"
 msgstr "Que faisons-nous ?"
 
@@ -4417,7 +4381,7 @@ msgstr "Quel groupe représentatif correspond à votre entité ?"
 msgid "Which Sustainable Development Goals (SDGs) does your initiative apply to? (Please tick ALL that apply):"
 msgstr "À quels objectifs de développement durable (ODD) votre initiative s’applique-t-elle ? (Veuillez cocher TOUTES les réponses applicables) :"
 
-#: src/pages/landing/index.jsx:551
+#: src/pages/landing/index.jsx:563
 msgid "Who are we?"
 msgstr "Qui sommes nous?"
 
@@ -4429,11 +4393,11 @@ msgstr "Qui nous sommes"
 msgid "Why become a certified GPML member?"
 msgstr "Pourquoi devenir membre certifié GPML ?"
 
-#: src/pages/landing/index.jsx:566
+#: src/pages/landing/index.jsx:578
 msgid "Why join the GPML?"
 msgstr "Pourquoi rejoindre le GPML ?"
 
-#: src/pages/landing/index.jsx:696
+#: src/pages/landing/index.jsx:708
 msgid "Why us?"
 msgstr "Pourquoi nous?"
 
@@ -4462,14 +4426,14 @@ msgstr "Travailler avec les gens. Vous avez choisi le travail avec les gens comm
 msgid "Workshops"
 msgstr "Ateliers"
 
-#: src/modules/workspace/view.jsx:235
+#: src/modules/workspace/view.jsx:246
 msgid "workspace"
 msgstr "espace de travail"
 
 #: src/layouts/new-layout.js:224
 #: src/pages/landing/index.jsx:354
-#: src/pages/landing/index.jsx:853
-#: src/pages/landing/index.jsx:1121
+#: src/pages/landing/index.jsx:866
+#: src/pages/landing/index.jsx:1134
 msgid "Workspace"
 msgstr "Espace de travail"
 
@@ -4506,7 +4470,7 @@ msgstr "Vous devez avoir un compte et être connecté pour voir cette page"
 msgid "You’re almost set! <0/> We need to ask a few more questions to make the platform relevant to you."
 msgstr "Vous êtes presque prêt ! <0/> Nous devons poser quelques questions supplémentaires pour que la plateforme soit pertinente pour vous."
 
-#: src/modules/workspace/view.jsx:216
+#: src/modules/workspace/view.jsx:227
 msgid "Your account is pending reviewal. You can still explore the platform."
 msgstr "Votre compte est en attente de révision. Vous pouvez toujours explorer la plateforme."
 
