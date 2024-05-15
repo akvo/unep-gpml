@@ -428,11 +428,11 @@ const AdminSection = ({
   const [fetching, setFetching] = useState(false)
   const [form] = Form.useForm()
 
-  // useEffect(() => {
-  //   api.get(`/reviewer`).then((res) => {
-  //     setReviewers(res?.data?.reviewers)
-  //   })
-  // }, [])
+  useEffect(() => {
+    api.get(`/reviewer`).then((res) => {
+      setReviewers(res?.data?.reviewers)
+    })
+  }, [])
 
   useEffect(() => {
     if (user_id) {
