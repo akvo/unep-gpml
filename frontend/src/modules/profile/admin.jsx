@@ -114,7 +114,6 @@ const statusDictToAPI = invert(statusDictToHuman)
 
 const HeaderFilter = ({
   listOpts,
-  reviewers,
   setListOpts,
   initialReviewStatus,
   expert,
@@ -130,7 +129,6 @@ const HeaderFilter = ({
       className="filter-by-status"
       value={selectedValue}
       onChange={(x) => {
-        console.log(listOpts, 'listOpts')
         setSelectedValue(x)
         if (typeof x === 'undefined') {
           ;(async () => {
@@ -391,45 +389,38 @@ const AdminSection = ({
   })
 
   useEffect(() => {
-    if (stakeholdersData && stakeholdersData?.data?.length)
-      setStakeholdersListOpts({
-        titleFilter: null,
-        reviewStatus: 'SUBMITTED',
-        data: stakeholdersData,
-        type: 'stakeholders',
-        current: 1,
-        size: 10,
-      })
-    if (entitiesData && entitiesData?.data?.length) {
-      setEntitiesListOpts({
-        titleFilter: null,
-        reviewStatus: 'SUBMITTED',
-        data: entitiesData,
-        type: 'entities',
-        current: 1,
-        size: 10,
-      })
-    }
-    if (nonMemberEntitiesData && nonMemberEntitiesData?.data?.length) {
-      setNonMemberEantitiesListOpts({
-        titleFilter: null,
-        reviewStatus: 'SUBMITTED',
-        data: nonMemberEntitiesData,
-        type: 'non-member-entities',
-        current: 1,
-        size: 10,
-      })
-    }
-    if (resourcesData && resourcesData?.data?.length) {
-      setResourcesListOpts({
-        titleFilter: null,
-        reviewStatus: 'SUBMITTED',
-        data: resourcesData,
-        type: 'resources',
-        current: 1,
-        size: 10,
-      })
-    }
+    setStakeholdersListOpts({
+      titleFilter: null,
+      reviewStatus: 'SUBMITTED',
+      data: stakeholdersData,
+      type: 'stakeholders',
+      current: 1,
+      size: 10,
+    })
+    setEntitiesListOpts({
+      titleFilter: null,
+      reviewStatus: 'SUBMITTED',
+      data: entitiesData,
+      type: 'entities',
+      current: 1,
+      size: 10,
+    })
+    setNonMemberEantitiesListOpts({
+      titleFilter: null,
+      reviewStatus: 'SUBMITTED',
+      data: nonMemberEntitiesData,
+      type: 'non-member-entities',
+      current: 1,
+      size: 10,
+    })
+    setResourcesListOpts({
+      titleFilter: null,
+      reviewStatus: 'SUBMITTED',
+      data: resourcesData,
+      type: 'resources',
+      current: 1,
+      size: 10,
+    })
   }, [stakeholdersData, entitiesData, nonMemberEntitiesData, resourcesData])
 
   const [reviewers, setReviewers] = useState([])
@@ -437,11 +428,11 @@ const AdminSection = ({
   const [fetching, setFetching] = useState(false)
   const [form] = Form.useForm()
 
-  useEffect(() => {
-    api.get(`/reviewer`).then((res) => {
-      setReviewers(res?.data?.reviewers)
-    })
-  }, [])
+  // useEffect(() => {
+  //   api.get(`/reviewer`).then((res) => {
+  //     setReviewers(res?.data?.reviewers)
+  //   })
+  // }, [])
 
   useEffect(() => {
     if (user_id) {
