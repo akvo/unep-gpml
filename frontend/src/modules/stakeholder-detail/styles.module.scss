@@ -15,6 +15,17 @@
       width: 100%;
       max-width: 100%;
     }
+    .bookmarked-resources-wrapper {
+      margin-top: 20px;
+    }
+    .notification-container {
+      padding: 10px 20px;
+      display: flex;
+      gap: 10px;
+      button {
+        margin: 5px 0px;
+      }
+    }
     .topbar-container {
       // background-color: $primaryDarkBlue5;
       padding: 10px 0;

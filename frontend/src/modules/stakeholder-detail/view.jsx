@@ -12,6 +12,7 @@ import {
   Modal,
   notification,
   Tooltip,
+  Switch,
 } from 'antd'
 import StickyBox from 'react-sticky-box'
 import ReadMoreReact from 'read-more-less-react'
@@ -227,6 +228,7 @@ const StakeholderDetail = ({
   const [ownedResourcesPage, setOwnedResourcesPage] = useState(0)
   const [bookedResourcesPage, setBookedResourcesPage] = useState(0)
   const [warningVisible, setWarningVisible] = useState(false)
+  const [enableNotification, setEnableNotification] = useState(false)
 
   const prevValue = usePrevious(data)
   const { id } = router.query
@@ -309,6 +311,7 @@ const StakeholderDetail = ({
           .get(`/detail/stakeholder/${id}`)
           .then((d) => {
             setData(d.data)
+            setEnableNotification(d.data.chatEmailNotifications)
             getOwnedResources(0)
             getBookedResources(0)
           })
@@ -365,6 +368,14 @@ const StakeholderDetail = ({
         }
       })
     }
+  }
+
+  const handleNotification = (value) => {
+    setEnableNotification(value)
+    router.push({
+      pathname: '/unsubscribe-chat',
+      query: { id: data.id },
+    })
   }
 
   if (!data) {
@@ -521,6 +532,16 @@ const StakeholderDetail = ({
                       </List.Item>
                     )}
                   </List>
+                  <div className="notification-container">
+                    <Switch
+                      key="enableNotification"
+                      name="enableNotification"
+                      size="small"
+                      checked={enableNotification}
+                      onChange={handleNotification}
+                    />
+                    Receive Email Notifications for Forum Channel Activity
+                  </div>
                 </div>
               </CardComponent>
               <CardComponent title={<Trans>Contact info</Trans>}>
