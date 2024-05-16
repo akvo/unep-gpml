@@ -1,28 +1,13 @@
 import { t, msg } from '@lingui/macro'
+import { countries } from 'countries-list'
 
-export const isoA2 = {
-  mauritius: 'MU',
-  peru: 'PE',
-  cambodia: 'KH',
-  'solomon-islands': 'SB',
-  ecuador: 'EC',
-  senegal: 'SN',
-  'south-africa': 'ZA',
-  'cote-d-ivoire': 'CI',
-  'cape-verde': 'CV',
-  kiribati: 'KI',
-  'sierra-leone': 'SL',
-  'sao-tome-and-principe': 'ST',
-  jamaica: 'JM',
-  'trinidad-and-tobago': 'TT',
-  guinea: 'GN',
-  tuvalu: 'TV',
-  vanuatu: 'VU',
-  togo: 'TG',
-  'papua-new-guinea': 'PG',
-  fiji: 'FJ',
+export let isoA2 = {
   'country-a': '0A',
 }
+
+Object.keys(countries).forEach((key) => {
+  isoA2[countries[key].name.toLowerCase().replace(/ /g, '-')] = key
+})
 
 export const iso2id = {
   MU: 480,
