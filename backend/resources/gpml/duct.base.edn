@@ -211,7 +211,7 @@
                              {:post {:middleware [#ig/ref :gpml.auth/auth-required]
                                      :summary    "Unsubcribe from chat notifications"
                                      :swagger    {:tags ["stakeholder"]}
-                                     :parameters {}
+                                     :parameters {:path [:map [:id int?]]}
                                      :handler    #ig/ref :gpml.handler.stakeholder/chat-unsubcribe}}]
                             ["/associated-topics"
                              {:get {:middleware [#ig/ref :gpml.auth/auth-required]
