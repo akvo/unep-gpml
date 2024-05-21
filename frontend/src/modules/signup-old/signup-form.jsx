@@ -20,7 +20,6 @@ import { Trans, t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 import CatTagSelect from '../../components/cat-tag-select/cat-tag-select'
 import FormItem from 'antd/lib/form/FormItem'
-import { useRouter } from 'next/router'
 
 const { sectorOptions } = UIStore.currentState
 
@@ -152,7 +151,6 @@ const SignupForm = ({
     organisationType: s.organisationType,
     nonMemberOrganisations: s.nonMemberOrganisations,
   }))
-  const router = useRouter()
   const [noOrg, setNoOrg] = useState(false)
   const [formInitialValues, setInitialValues] = useState(false)
   const [pubEmail, setPubEmail] = useState({
@@ -166,7 +164,7 @@ const SignupForm = ({
     orgValue: false,
   })
 
-  const [enableNotification, setEnableNotification] = useState(false)
+  const [chatEmailNotifications, setEnableNotification] = useState(false)
   const defaultFormSchema = useDefaultFormSchema()
 
   const formRef = useRef()
@@ -307,14 +305,6 @@ const SignupForm = ({
   }
 
   const required = (value) => (value ? undefined : 'Required')
-
-  const handleNotification = (value) => {
-    setEnableNotification(value)
-    router.push({
-      pathname: '/unsubscribe-chat',
-      query: { id: initialValues.id },
-    })
-  }
 
   return (
     <Form layout="vertical">
@@ -550,16 +540,32 @@ const SignupForm = ({
                       }}
                     </Field>
                   </Form.Item>
-                  <div className="notification-container">
-                    <Switch
-                      key="enableNotification"
-                      name="enableNotification"
-                      size="small"
-                      checked={enableNotification}
-                      onChange={handleNotification}
-                    />
-                    Receive Email Notifications for Forum Channel Activity
-                  </div>
+                  <Form.Item label={t`Email Notifications`}>
+                    <Field
+                      name="chatEmailNotifications"
+                      style={{ width: '100%' }}
+                    >
+                      {({ input, meta }) => {
+                        const handleNotification = (value) => {
+                          setEnableNotification(value)
+                          input.onChange(value)
+                        }
+                        return (
+                          <div className="notification-container">
+                            <Switch
+                              key="chatEmailNotifications"
+                              name="chatEmailNotifications"
+                              size="small"
+                              checked={chatEmailNotifications}
+                              onChange={handleNotification}
+                            />
+                            Receive Email Notifications for Forum Channel
+                            Activity
+                          </div>
+                        )
+                      }}
+                    </Field>
+                  </Form.Item>
                 </div>
               </div>
             </>
