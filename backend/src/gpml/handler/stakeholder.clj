@@ -475,7 +475,7 @@
       (r/forbidden {:message "Unauthorized"})
       (try
         (log logger :info :unsubcribing-from-chat-notifications {:user-id (:id user)})
-        (db.stakeholder/update-chat-email-notifications (:spec db) (assoc user :chat-email-notifications true))
+        (db.stakeholder/update-chat-email-notifications (:spec db) (assoc user :chat-email-notifications false))
         (resp/status {:success? true} 204)
         (catch Exception e
           (log logger :error :failed-to-update-stakeholder e)
