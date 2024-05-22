@@ -348,7 +348,7 @@ msgid "Are you sure you want to delete this comment?"
 msgstr "Êtes-vous sûr de vouloir supprimer ce commentaire?"
 
 #: src/modules/entity-detail/view.jsx:129
-#: src/modules/stakeholder-detail/view.jsx:162
+#: src/modules/stakeholder-detail/view.jsx:163
 msgid "Are you sure you want to delete this entity?"
 msgstr "Êtes-vous sûr de vouloir supprimer cette entité ?"
 
@@ -478,7 +478,7 @@ msgid "Banner"
 msgstr "Bannière"
 
 #: src/modules/flexible-forms/common.js:347
-#: src/modules/stakeholder-detail/view.jsx:474
+#: src/modules/stakeholder-detail/view.jsx:475
 msgid "Basic info"
 msgstr "Informations de base"
 
@@ -506,7 +506,7 @@ msgstr "Campagne/programme de changement de comportement"
 msgid "Benefits of joining:<0><1>Access to a global network of members​</1><2>Opportunities to showcase your work in our newsletter, online and at events</2><3>A Data Hub to guide efforts towards SDGs and more​</3><4>Thousands of resources at your fingertips</4><5>Networking with other stakeholders​</5><6>Access to financing opportunities, and more!</6></0>"
 msgstr "Avantages de l'adhésion :<0><1>Accès à un réseau mondial de membres​</1><2>Possibilités de présenter votre travail dans notre newsletter, en ligne et lors d'événements</2><3>Un hub de données pour vous guider efforts vers les ODD et plus encore​</3><4>Des milliers de ressources à portée de main</4><5>Réseautage avec d'autres parties prenantes​</5><6>Accès à des opportunités de financement, et plus encore !</6> </0>"
 
-#: src/modules/stakeholder-detail/view.jsx:593
+#: src/modules/stakeholder-detail/view.jsx:594
 msgid "Bio"
 msgstr "Biographie"
 
@@ -855,7 +855,7 @@ msgstr "Consommation"
 msgid "Contact"
 msgstr "Contact"
 
-#: src/modules/stakeholder-detail/view.jsx:526
+#: src/modules/stakeholder-detail/view.jsx:527
 msgid "Contact info"
 msgstr "Informations de contact"
 
@@ -1043,8 +1043,8 @@ msgstr "Décisions conçues pour créer un impact favorable sur les facteurs cl�
 #: src/modules/details-page/view.jsx:331
 #: src/modules/entity-detail/view.jsx:131
 #: src/modules/entity-detail/view.jsx:157
-#: src/modules/stakeholder-detail/view.jsx:164
-#: src/modules/stakeholder-detail/view.jsx:190
+#: src/modules/stakeholder-detail/view.jsx:165
+#: src/modules/stakeholder-detail/view.jsx:191
 #: src/modules/workspace/ps/setup-team-table.jsx:206
 #: src/modules/workspace/view.jsx:518
 #: src/pages/forum/[forum]/index.jsx:309
@@ -1315,6 +1315,10 @@ msgstr "E-mail"
 msgid "Email is required"
 msgstr "L'e-mail est obligatoire"
 
+#: src/modules/signup-old/signup-form.jsx:543
+msgid "Email Notifications"
+msgstr ""
+
 #: src/pages/landing/index.jsx:312
 msgid "Empowering"
 msgstr "Soutenir les"
@@ -1391,11 +1395,11 @@ msgstr "ENTITÉ"
 msgid "Entity connection"
 msgstr "Connexion d'entité"
 
-#: src/modules/stakeholder-detail/view.jsx:172
+#: src/modules/stakeholder-detail/view.jsx:173
 msgid "Entity deleted successfully"
 msgstr "Entité supprimée avec succès"
 
-#: src/modules/signup-old/signup-form.jsx:365
+#: src/modules/signup-old/signup-form.jsx:366
 msgid "Entity details"
 msgstr "Détails de l'entité"
 
@@ -1469,7 +1473,7 @@ msgstr "Politique existante ou changement de politique récent"
 msgid "Existing regulation is not enforced"
 msgstr "La réglementation existante n’est pas appliquée"
 
-#: src/modules/signup-old/signup-form.jsx:444
+#: src/modules/signup-old/signup-form.jsx:445
 msgid "Expertise and activities"
 msgstr "Expertises et activités"
 
@@ -1576,7 +1580,7 @@ msgid "Focal point changed"
 msgstr "Le point focal a changé"
 
 #: src/modules/entity-detail/view.jsx:107
-#: src/modules/stakeholder-detail/view.jsx:139
+#: src/modules/stakeholder-detail/view.jsx:140
 msgid "Follow"
 msgstr "Suivre"
 
@@ -1773,7 +1777,7 @@ msgstr "Gouvernements"
 msgid "GPML Community"
 msgstr "Communauté GPML"
 
-#: src/modules/signup-old/signup-form.jsx:375
+#: src/modules/signup-old/signup-form.jsx:376
 msgid "GPML Entity"
 msgstr "Entité GPML"
 
@@ -1905,7 +1909,7 @@ msgstr "Guides pratiques"
 msgid "Human health and wellbeing"
 msgstr "Santé et bien-être humains"
 
-#: src/modules/signup-old/signup-form.jsx:372
+#: src/modules/signup-old/signup-form.jsx:373
 msgid "I am a private citizen"
 msgstr "Je suis un citoyen privé"
 
@@ -2353,7 +2357,7 @@ msgstr "Chargement"
 #: src/components/event-calendar/view.jsx:181
 #: src/modules/details-page/view.jsx:366
 #: src/modules/entity-detail/view.jsx:349
-#: src/modules/stakeholder-detail/view.jsx:376
+#: src/modules/stakeholder-detail/view.jsx:377
 #: src/pages/workspace/[slug]/layout.js:264
 msgid "Loading..."
 msgstr "Chargement..."
@@ -2387,6 +2391,10 @@ msgstr "Se connecter"
 #: src/modules/details-page/comment.jsx:318
 msgid "Login to comment"
 msgstr "Connectez-vous pour commenter"
+
+#: src/pages/unsubscribe-chat/index.jsx:44
+msgid "Login to proceed..."
+msgstr ""
 
 #: src/modules/login/login-view.jsx:263
 #: src/modules/login/view.jsx:334
@@ -2726,7 +2734,7 @@ msgstr "Non, il n'y a pas de mécanisme de reporting"
 msgid "No, there is not enough resources to support reporting"
 msgstr "Non, il n'y a pas suffisamment de ressources pour prendre en charge le reporting"
 
-#: src/modules/signup-old/signup-form.jsx:408
+#: src/modules/signup-old/signup-form.jsx:409
 msgid "Non Member Entity"
 msgstr "Entité non membre"
 
@@ -2778,8 +2786,8 @@ msgid "Ocean Innovation Challenge"
 msgstr "Défi Innovation Océane"
 
 #: src/modules/signup-old/signup-form.jsx:85
-#: src/modules/signup-old/signup-form.jsx:446
-#: src/modules/stakeholder-detail/view.jsx:658
+#: src/modules/signup-old/signup-form.jsx:447
+#: src/modules/stakeholder-detail/view.jsx:659
 msgid "Offering"
 msgstr "Offre"
 
@@ -2821,7 +2829,7 @@ msgstr "En ligne"
 
 #: src/modules/details-page/comment.jsx:108
 #: src/modules/details-page/view.jsx:346
-#: src/modules/stakeholder-detail/view.jsx:181
+#: src/modules/stakeholder-detail/view.jsx:182
 msgid "Oops, something went wrong"
 msgstr "Oups, quelque chose s'est mal passé"
 
@@ -2963,7 +2971,7 @@ msgstr "Pression des pairs d'acteurs similaires"
 msgid "People like plastics (convenience, hygiene etc.)"
 msgstr "Les gens aiment le plastique (commodité, hygiène, etc.)"
 
-#: src/modules/signup-old/signup-form.jsx:344
+#: src/modules/signup-old/signup-form.jsx:345
 msgid "Personal details"
 msgstr "Détails personnels"
 
@@ -3014,7 +3022,7 @@ msgstr "Gestion des déchets plastiques"
 #: src/modules/details-page/comment.jsx:94
 #: src/modules/details-page/view.jsx:330
 #: src/modules/entity-detail/view.jsx:130
-#: src/modules/stakeholder-detail/view.jsx:163
+#: src/modules/stakeholder-detail/view.jsx:164
 msgid "Please be aware this action cannot be undone."
 msgstr "Veuillez noter que cette action ne peut pas être annulée."
 
@@ -3432,8 +3440,8 @@ msgid "See all partners"
 msgstr "Voir tous les partenaires"
 
 #: src/modules/signup-old/signup-form.jsx:77
-#: src/modules/signup-old/signup-form.jsx:495
-#: src/modules/stakeholder-detail/view.jsx:619
+#: src/modules/signup-old/signup-form.jsx:496
+#: src/modules/stakeholder-detail/view.jsx:620
 msgid "Seeking"
 msgstr "En cherchant"
 
@@ -3600,8 +3608,8 @@ msgstr "Normes"
 msgid "Start Date"
 msgstr "Date de début"
 
-#: src/modules/signup-old/signup-form.jsx:382
-#: src/modules/signup-old/signup-form.jsx:415
+#: src/modules/signup-old/signup-form.jsx:383
+#: src/modules/signup-old/signup-form.jsx:416
 #: src/modules/workspace/ps/setup-team-form.jsx:149
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:534
 msgid "Start typing..."
@@ -4108,7 +4116,7 @@ msgid "Type of the entity"
 msgstr "Type de l'entité"
 
 #: src/modules/entity-detail/view.jsx:103
-#: src/modules/stakeholder-detail/view.jsx:135
+#: src/modules/stakeholder-detail/view.jsx:136
 msgid "Unfollow"
 msgstr "Ne plus suivre"
 
@@ -4121,6 +4129,10 @@ msgstr "Unité d'enseignement comprenant une séquence d'activités éducatives 
 #: src/store.js:589
 msgid "Unleashing marine robots for good"
 msgstr "Libérer les robots marins pour de bon"
+
+#: src/pages/unsubscribe-chat/index.jsx:46
+msgid "Unsubscribing..."
+msgstr ""
 
 #: src/store.js:635
 msgid "Upcoming capacity development activities and events on marine litter, plastic pollution and related topics."
@@ -4135,7 +4147,7 @@ msgid "Upcoming trainings, capacity development activities and events."
 msgstr "Formations, activités et événements de développement des capacités à venir."
 
 #: src/modules/entity-detail/view.jsx:116
-#: src/modules/stakeholder-detail/view.jsx:148
+#: src/modules/stakeholder-detail/view.jsx:149
 msgid "Update"
 msgstr "Mise à jour"
 
@@ -4469,6 +4481,10 @@ msgstr "Vous pouvez accéder au contenu existant via le"
 #: src/modules/stakeholder-overview/unathenticated-page.jsx:33
 msgid "You need to have an account and be signed in to see this page"
 msgstr "Vous devez avoir un compte et être connecté pour voir cette page"
+
+#: src/pages/unsubscribe-chat/index.jsx:49
+msgid "You will no longer receive email notifications for forum activity. You can turn this back on from your <0>profile</0>."
+msgstr ""
 
 #: src/modules/onboarding/view.jsx:268
 msgid "You’re almost set! <0/> We need to ask a few more questions to make the platform relevant to you."
