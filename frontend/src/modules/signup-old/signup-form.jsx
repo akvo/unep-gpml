@@ -151,7 +151,6 @@ const SignupForm = ({
     organisationType: s.organisationType,
     nonMemberOrganisations: s.nonMemberOrganisations,
   }))
-
   const [noOrg, setNoOrg] = useState(false)
   const [formInitialValues, setInitialValues] = useState(false)
   const [pubEmail, setPubEmail] = useState({
@@ -165,6 +164,7 @@ const SignupForm = ({
     orgValue: false,
   })
 
+  const [chatEmailNotifications, setEnableNotification] = useState(false)
   const defaultFormSchema = useDefaultFormSchema()
 
   const formRef = useRef()
@@ -240,6 +240,7 @@ const SignupForm = ({
   useEffect(() => {
     if (initialValues) {
       handleChangePublicEmail(initialValues.publicEmail)
+      setEnableNotification(initialValues.chatEmailNotifications)
     }
     if (initialValues && initialValues?.org === null) {
       handleChangePrivateCitizen({ target: { checked: true } })
@@ -535,6 +536,32 @@ const SignupForm = ({
                               handleRemove={handleRemove}
                             />
                           </FormItem>
+                        )
+                      }}
+                    </Field>
+                  </Form.Item>
+                  <Form.Item label={t`Email Notifications`}>
+                    <Field
+                      name="chatEmailNotifications"
+                      style={{ width: '100%' }}
+                    >
+                      {({ input, meta }) => {
+                        const handleNotification = (value) => {
+                          setEnableNotification(value)
+                          input.onChange(value)
+                        }
+                        return (
+                          <div className="notification-container">
+                            <Switch
+                              key="chatEmailNotifications"
+                              name="chatEmailNotifications"
+                              size="small"
+                              checked={chatEmailNotifications}
+                              onChange={handleNotification}
+                            />
+                            Receive Email Notifications for Forum Channel
+                            Activity
+                          </div>
                         )
                       }}
                     </Field>
