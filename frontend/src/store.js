@@ -112,6 +112,11 @@ const menuList = [
         id: 'Digital Platform',
         to: '/page/regional-nodes',
       },
+      {
+        key: msg`Contact Us`,
+        id: 'Contact Us',
+        to: '/page/contact-us',
+      },
     ],
   },
 ]
