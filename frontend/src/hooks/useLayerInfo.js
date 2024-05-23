@@ -1,16 +1,17 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { getStrapiUrl } from "../utils/misc";
 
 const useLayerInfo = () => {
     const [layers, setLayers] = useState([]);
     const [loading, setLoading] = useState(true);
-
+    const strapiURL = getStrapiUrl();
     useEffect(() => {
 
         const fetchLayers = async () => {
             try {
                 const response = await axios.get(
-                    `https://unep-gpml.akvotest.org/strapi/api/layers?pagination[pageSize]=100`
+                    `${strapiURL}/api/layers?pagination[pageSize]=100`
                 );
 
                 setLayers(response.data.data || []);

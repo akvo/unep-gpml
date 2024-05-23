@@ -1,15 +1,17 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { getStrapiUrl } from "../utils/misc";
 
 const useSubcategories = () => {
   const [subcategories, setSubategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const strapiURL = getStrapiUrl();
 
   useEffect(() => {
     const fetchSubategories = async () => {
       try {
         const response = await axios.get(
-          `https://unep-gpml.akvotest.org/strapi/api/subcategories?pagination[pageSize]=100`
+          `${strapiURL}/api/subcategories?pagination[pageSize]=100`
         );
 
         setSubategories(response.data || []);

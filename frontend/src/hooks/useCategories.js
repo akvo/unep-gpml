@@ -1,16 +1,20 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { getStrapiUrl } from "../utils/misc";
 
 const useCategories = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const strapiURL = getStrapiUrl();
+
 
   useEffect(() => {
 
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          "https://unep-gpml.akvotest.org/strapi/api/categories"
+          `${strapiURL}/api/categories`
         );
 
         setCategories(response.data.data || []);
