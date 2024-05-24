@@ -63,6 +63,10 @@ const LegendCard = ({
       'c480f87fa33a4264b5aac7739dd93af6',
       'ba06282496e548a1adbdff5df17e770e',
       '5432cebd4d8f416487b6f90ddf532068',
+      '2d6805cc5ea2493689656902d26f1ea6',
+      'f4e666cb317a4087baa382f908314bd3',
+      '9ad32b018256498985a7e09393b349d9',
+      '3c59a0aa4eda462fb7f91a753d6fa621'
     ]
 
     const allLegendItems = classBreakInfos
