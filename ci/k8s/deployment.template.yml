@@ -300,7 +300,7 @@ spec:
             memory: "200Mi"
           limits:
             cpu: "600m"
-            memory: "1000Mi"
+            memory: "2000Mi"
         env:
         - name: DATABASE_CLIENT
           valueFrom:
