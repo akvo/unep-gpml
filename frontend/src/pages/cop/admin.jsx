@@ -1,23 +1,21 @@
 import { Form, Input, Select } from 'antd'
 import { UIStore } from '../../store'
 import Head from 'next/head'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { loadCatalog } from '../../translations/utils'
-import api from '../../utils/api'
 
 const Page = () => {
   const [values, setValues] = useState([])
-  const [orgs, setOrgs] = useState(null)
+  const { organisations, nonMemberOrganisations } = UIStore.useState((s) => ({
+    organisations: s.organisations,
+    nonMemberOrganisations: s.nonMemberOrganisations,
+  }))
   const filterOption = (input, option) =>
     (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
   const handleChange = (vals) => {
     setValues(vals)
   }
-  useEffect(() => {
-    api.get('/non-member-organisation').then((d) => {
-      setOrgs(d.data)
-    })
-  }, [])
+
   return (
     <>
       <Head>
@@ -31,7 +29,7 @@ const Page = () => {
                 <Input value={values.join(',')} />
               </Form.Item>
               <Form.Item label="Organisations">
-                {orgs && (
+                {organisations && nonMemberOrganisations && (
                   <Select
                     mode="multiple"
                     allowClear
@@ -42,10 +40,12 @@ const Page = () => {
                     filterOption={filterOption}
                     value={values}
                     onChange={handleChange}
-                    options={orgs.map((it) => ({
-                      value: it.id,
-                      label: it.name,
-                    }))}
+                    options={[...organisations, ...nonMemberOrganisations].map(
+                      (it) => ({
+                        value: it.id,
+                        label: it.name,
+                      })
+                    )}
                   />
                 )}
               </Form.Item>
