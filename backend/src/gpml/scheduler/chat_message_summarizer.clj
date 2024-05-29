@@ -250,11 +250,11 @@ You can read them here: %s"
                               [(pogonos/render @email-html-template {:messageCount message-count-humanized
                                                                      :channelURL channel-url
                                                                      :channelName channel-name
+                                                                     :baseUrl app-domain
                                                                      :messages (mapv (fn [recent-message]
                                                                                        {:pre [(check! port.chat/Message recent-message)]}
                                                                                        {:userName (:username recent-message)
                                                                                         :message (:message recent-message)
-                                                                                        :baseUrl app-domain
                                                                                         ;; XXX format as "ago" - the simplest thing we can do to avoid timezones
                                                                                         :time (some-> recent-message :created (format-date-time logger))})
                                                                                      (reverse (take 5 recent-messages)))})]))
