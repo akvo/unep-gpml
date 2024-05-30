@@ -49,7 +49,7 @@ function UnsubscribeChat({
           <Trans>
             You will no longer receive email notifications for forum activity.
             You can turn this back on from your{' '}
-            <Link href={`/stakeholder/${profile.id}`}>profile</Link>.
+            <Link href="/profile">profile</Link>.
           </Trans>
         )}
       </h6>
