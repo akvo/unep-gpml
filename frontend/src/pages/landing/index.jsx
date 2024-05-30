@@ -680,7 +680,7 @@ const ActNow = () => {
           label: t`Discover`,
           url: '/knowledge/library/map/action-plan',
         },
-        { label: t`Add`, url: '/flexible-form' },
+        { label: t`Add`, url: '/flexible-forms' },
       ],
     },
     {
