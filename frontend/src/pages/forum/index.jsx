@@ -226,6 +226,7 @@ const ChannelCard = ({ item, handleOnView, profile, handleEditItem }) => {
       })
     }
   }
+
   return (
     <Card>
       <div className="channel">
