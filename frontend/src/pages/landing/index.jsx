@@ -65,13 +65,13 @@ const Landing = (props) => {
       <WhoAreWe />
       <ActNow />
       <LatestNews />
-      <Features />
+      {/* <Features /> */}
       {/* <Trusted /> */}
       <Activities />
       {/* <OurVoices /> */}
       {/* <Partnership {...props} /> */}
       <Partners />
-      <HelpCentre />
+      {/* <HelpCentre /> */}
     </div>
   )
 }
@@ -674,7 +674,7 @@ const ActNow = () => {
     {
       bgColor: 'green',
       content: t`Reduce your country’s footprint. Create and advance your plastic startegy.`,
-      title: t`National Source Inventories`,
+      title: t`National Action Plans`,
       links: [
         {
           label: t`Discover`,
@@ -785,15 +785,6 @@ const LatestNews = () => {
             <br />
             <Trans>How is the network co-solutioning?</Trans>
           </h2>
-        </div>
-        <div className="news-wrapper hide-sm">
-          <p className="p-l">
-            <Trans>
-              Learn about inspiring co-soluting efforts from the GPML network
-              and all the other actors contributing to the plastic action
-              platform.
-            </Trans>
-          </p>
         </div>
         <div className="news-wrapper news-items">
           {items.map((item, dx) => {
