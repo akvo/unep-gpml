@@ -32,6 +32,14 @@ import api from '../../../utils/api'
 import { MoreOutlined } from '@ant-design/icons'
 import { loadCatalog } from '../../../translations/utils'
 import Script from 'next/script'
+import dynamic from 'next/dynamic'
+
+const DynamicForumModal = dynamic(
+  () => import('../../../modules/forum/forum-modal'),
+  {
+    ssr: false,
+  }
+)
 
 const ForumView = ({
   isAuthenticated,
@@ -39,13 +47,17 @@ const ForumView = ({
   profile,
   setShouldLoginClose,
   loadingProfile,
+  setShouldJoin,
 }) => {
   const router = useRouter()
   const [activeForum, setActiveForum] = useState(null)
   const [sdk, setSDK] = useState(null)
   const [discussion, setDiscussion] = useState(null)
   const [userJoined, setUserJoined] = useState(false)
-
+  const [viewModal, setViewModal] = useState({
+    open: false,
+    data: {},
+  })
   const { chatAccountAuthToken: accessToken } = profile || {}
 
   const iframeURL = useMemo(() => {
@@ -82,6 +94,15 @@ const ForumView = ({
       setLoginVisible(true)
     }
   }, [isAuthenticated, loadingProfile])
+
+  useEffect(() => {
+    if (!userJoined && activeForum) {
+      setViewModal({
+        open: true,
+        data: { ...activeForum },
+      })
+    }
+  }, [userJoined])
 
   const handleSDKLoaded = async () => {
     if (window?.DSChatSDK && !sdk) {
@@ -226,6 +247,16 @@ const ForumView = ({
               </div>
             )}
           </Layout>
+          <DynamicForumModal
+            {...{
+              viewModal,
+              setViewModal,
+              setLoginVisible,
+              isAuthenticated,
+              profile,
+              setShouldJoin,
+            }}
+          />
           {/* </div> */}
         </div>
       </div>
