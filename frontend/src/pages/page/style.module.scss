@@ -2,38 +2,70 @@
 
 .page {
   padding: 80px 0px;
+
   h1 {
     font-weight: 700;
     font-size: $fzXXL;
   }
+
   :global {
     font-size: 16px;
+
     .date {
       color: $primaryPurple;
     }
+
     .content {
       padding: 10px 0px;
       margin-top: 30px;
+
       img {
         width: 100%;
       }
     }
+
     h3 {
       font-size: $fzL;
     }
+
     h4 {
       font-size: $fzM;
     }
+
     h3,
     h4 {
       font-weight: bold;
     }
+
     ul {
       list-style: disc;
       padding-left: 20px;
+
       li {
         margin: 10px 0;
       }
+    }
+
+    .ant-form-item {
+      flex-direction: column;
+    }
+
+    .ant-form-item-label {
+      label {
+        &::after {
+          content: none;
+        }
+      }
+    }
+
+    form {
+      padding: 20px 0px;
+    }
+
+    .submitted-text {
+      text-align: center;
+      padding: 20px 0px;
+      font-size: 24px;
     }
   }
 }
