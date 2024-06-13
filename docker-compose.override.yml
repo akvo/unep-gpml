@@ -1,4 +1,3 @@
-version: "3"
 services:
   mainnetwork:
     image: alpine:3.14
