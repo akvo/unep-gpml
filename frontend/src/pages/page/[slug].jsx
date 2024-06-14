@@ -5,7 +5,7 @@ import moment from 'moment'
 import Head from 'next/head'
 import { loadCatalog } from '../../translations/utils'
 import { getStrapiUrl } from '../../utils/misc'
-import { Form as AntdForm, Input, Row, Col } from 'antd'
+import { Form as AntdForm, Input, Row, Col, notification } from 'antd'
 import { Form as FinalForm, Field } from 'react-final-form'
 import Button from '../../components/button'
 import { Trans, t } from '@lingui/macro'
@@ -29,6 +29,13 @@ const StrapiPage = ({ pageData }) => {
       setSubmitted(true)
       setLoading(false)
     } catch (error) {
+      if (error) {
+        notification.error({
+          message: error.response.data
+            ? error.response.data.errorDetails
+            : 'An error occured',
+        })
+      }
       setLoading(false)
     }
   }
