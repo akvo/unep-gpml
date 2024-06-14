@@ -763,7 +763,8 @@
   :public-storage-bucket-name          #duct/env ["GCS_PUBLIC_BUCKET_NAME" Str]
   :brs-entities-to-import              #ig/ref :gpml.config/brs-gpml-entities-mapping
   :subscribe-settings                  {:management-dest-email #duct/env ["SUBSCRIPTIONS_MANAGEMENT_EMAIL" Str]}
-  :contact-settings                    {:cobsea {:dest-email #duct/env ["CONTACT_COBSEA_MANAGEMENT_EMAIL" Str]}}}
+  :contact-settings                    {:cobsea {:dest-email #duct/env ["CONTACT_COBSEA_MANAGEMENT_EMAIL" Str]}
+                                        :gpml {:dest-email #duct/env ["CONTACT_GPML_MANAGEMENT_EMAIL" Str]}}}
  :duct.server.http/jetty                                            {:handler #ig/ref :gpml.handler.main/handler}
  :gpml.handler.main/root                                            {}
  :gpml.handler.main/swagger-handler                                 {}
