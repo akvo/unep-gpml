@@ -20,13 +20,47 @@ const View = () => {
         reports. */}
       </p>
       <a
-        href="https://leap.unep.org/knowledge/toolkits/legislative-guide"
+        href="https://leap.unep.org/en/knowledge/toolkits/plastic"
         target="_blank"
       >
         <Button type="primary" withArrow>
           <Trans>Open The Guide</Trans>
         </Button>
       </a>
+      <ul style={{ marginTop: '20px' }}>
+        <li>
+          <a
+            href="https://leap.unep.org/en/knowledge/legislative-guidance/tackling-plastic-pollution-legislative-guide-regulation-single-use"
+            target="_blank"
+          >
+            <Button size="small" type="link">
+              Tackling Plastic Pollution – Legislative Guide for the Regulation
+              of Single-Use Plastic Products
+            </Button>
+          </a>
+        </li>
+        <li style={{ margin: '10px 0' }}>
+          <a
+            href="https://leap.unep.org/en/knowledge/legislative-guidance/marine-litter-legislation-toolkit-policymakers"
+            target="_blank"
+          >
+            <Button size="small" type="link">
+              Marine Litter Legislation: A Toolkit for Policymakers
+            </Button>
+          </a>
+        </li>
+        <li style={{ margin: '10px 0' }}>
+          <a
+            href="https://leap.unep.org/en/knowledge/reports/legal-limits-single-use-plastics-and-microplastics-global-review"
+            target="_blank"
+          >
+            <Button size="small" type="link">
+              Legal Limits on Single-Use Plastics and Microplastics: A Global
+              Review of National Laws and Regulations
+            </Button>
+          </a>
+        </li>
+      </ul>
       {/* <iframe
         src="https://leap.unep.org/knowledge/toolkits/legislative-guide"
         frameborder="0"
