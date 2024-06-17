@@ -687,7 +687,7 @@ const ActNow = () => {
       bgColor: 'violet',
       content: t`Join others in coordinating efforts towards shared plastic solutions. From data to capacity development communities`,
       title: t`Communities of practise`,
-      links: [{ label: t`Join and collaborate`, url: '/forum' }],
+      links: [{ label: t`Join and collaborate`, url: '/cop' }],
     },
     {
       bgColor: 'blue',
@@ -770,7 +770,7 @@ const LatestNews = () => {
         setItems(transformStrapiResponse(d.data))
         setLoading(false)
       })
-  }, [])
+  }, [router])
   return (
     <div className={styles.latestNews}>
       <div className="container">
@@ -783,7 +783,6 @@ const LatestNews = () => {
               <Trans>Latest news:</Trans>
             </strong>
             <br />
-            <Trans>How is the network co-solutioning?</Trans>
           </h2>
         </div>
         <div className="news-wrapper news-items">
@@ -794,24 +793,7 @@ const LatestNews = () => {
                 bordered={false}
                 cover={
                   <div className="cover-image-container">
-                    <div className="cover-image-overlay">
-                      {/* <span className={`badge ${badgeColor?.[dx]}`}>
-                        {item.badge}
-                      </span> */}
-                      {/* {item.publishedAt && (
-                        <span className="date">
-                          <span>
-                            <span className="h5 bold">
-                              {moment(item.publishedAt).format('DD')}
-                            </span>
-                            <br />
-                            <span className="month">
-                              {moment(item.publishedAt).format('MMM')}
-                            </span>
-                          </span>
-                        </span>
-                      )} */}
-                    </div>
+                    <div className="cover-image-overlay"></div>
                     <Link href={`/post/${item.id}-${item.slug}`}>
                       <Image
                         alt={item.title}

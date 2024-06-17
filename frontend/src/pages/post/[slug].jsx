@@ -38,12 +38,11 @@ export async function getServerSideProps(context) {
   const text = slug.split('-')
   const id = text.shift()
   const result = text.join('-')
-
   try {
     const strapiUrl = getStrapiUrl()
 
     const response = await axios.get(
-      `${strapiUrl}/api/posts?filters[slug][$eq]=${result}&populate=*`
+      `${strapiUrl}/api/posts?filters[slug][$eq]=${result}&populate=*&locale=${context.locale}`
     )
     if (response.data.data.length === 0) {
       return { notFound: true }
