@@ -4,6 +4,7 @@
   from {
     transform: scaleX(0);
   }
+
   to {
     transform: scaleX(1);
   }
@@ -20,6 +21,7 @@
     display: flex;
     flex-direction: column;
     margin-bottom: 160px;
+
     h1 {
       font-weight: normal;
       margin-top: -30px;
@@ -27,14 +29,17 @@
       position: relative;
       z-index: 2;
       color: white;
+
       b {
         font-weight: 600;
         display: inline-block;
         position: relative;
         white-space: nowrap;
+
         @media screen and (max-width: $bpMobile) {
           white-space: normal;
         }
+
         &:after {
           content: ' ';
           background-color: $primaryGreen;
@@ -46,6 +51,7 @@
           bottom: 0px;
           transform-origin: 0px 0px;
         }
+
         &:global(.timeout) {
           &:after {
             animation: timeout 5s linear infinite;
@@ -53,24 +59,29 @@
         }
       }
     }
+
     :global {
       .text {
         max-width: 580px;
         position: relative;
         z-index: 1;
+
         :global(.p-container) {
           height: 188px;
           position: relative;
+
           p {
             position: absolute;
           }
         }
       }
+
       .globe {
         position: absolute;
         right: -130px;
         top: -120px;
         z-index: 0;
+
         &:before {
           content: ' ';
           position: absolute;
@@ -81,10 +92,12 @@
           z-index: -1;
           background: url(/globe-y.jpg) repeat-x;
         }
+
         :global(.labels) {
           position: absolute;
           top: 150px;
           left: 370px;
+
           :global(.label) {
             height: 35px;
             cursor: pointer;
@@ -99,10 +112,12 @@
             border-radius: 43px;
             overflow: hidden;
             transition: all 0.3s ease-out;
+
             span {
               position: relative;
               z-index: 2;
               transition: all 0.3s ease-out;
+
               &:before {
                 position: absolute;
                 box-sizing: border-box;
@@ -115,6 +130,7 @@
                 top: -0.5px;
                 transition: all 0.2s ease-out;
               }
+
               &:after {
                 content: ' ';
                 position: absolute;
@@ -130,6 +146,7 @@
                 transition: all 0.2s ease-out;
               }
             }
+
             &:before {
               content: ' ';
               box-sizing: border-box;
@@ -145,11 +162,14 @@
               left: 0;
               transition: all 0.3s linear;
             }
+
             &:global(.selected) {
               color: $primaryDarkBlue;
               font-weight: bold;
               font-size: 16px;
+
               span {
+
                 // display: inline-block;
                 // transform: scale(1.2);
                 &:before {
@@ -157,34 +177,42 @@
                   border-color: $primaryGreen;
                   transform: translateX(-7px) scale(1.4);
                 }
+
                 &:after {
                   transform: scale(1);
                 }
               }
+
               &:before {
                 background-color: white;
               }
             }
+
             &:nth-child(1) {
               left: 70px;
               top: 170px;
             }
+
             &:nth-child(2) {
               left: calc(70px + 220px);
               top: calc(170px + 120px);
             }
+
             &:nth-child(3) {
               left: 245px;
               top: 0;
             }
+
             &:nth-child(4) {
               left: calc(70px + 400px);
               top: calc(170px - 10px);
             }
+
             &:nth-child(5) {
               left: calc(70px + 80px);
               top: calc(170px + 240px);
             }
+
             &:nth-child(6) {
               left: calc(70px + 80px + 250px);
               top: calc(170px + 240px);
@@ -192,31 +220,40 @@
           }
         }
       }
+
       @media screen and (max-width: $bpMobile) {
         padding-top: 0px;
+
         .text {
           max-width: auto;
           margin-top: -100px;
+
           :global(.p-container) {
             height: 220px;
           }
         }
+
         .globe {
           right: 0;
           position: static;
           margin-left: -25px;
+
           img {
             margin-top: -30px;
           }
+
           :global(.labels) {
             top: 0;
             left: 0px;
+
             :global(.label) {
               height: 23px;
               font-size: 11px;
+
               &:not(.selected) {
                 line-height: 23px;
                 padding-left: 35px;
+
                 span {
                   &:before {
                     transform: scale(0.8);
@@ -225,32 +262,39 @@
                   }
                 }
               }
+
               &:global(.selected) {
                 font-size: $fzXS;
                 font-weight: bold;
                 height: 35px;
                 line-height: 35px;
               }
+
               &:nth-child(1) {
                 left: 24px;
                 top: 175px;
               }
+
               &:nth-child(2) {
                 left: 55px;
                 top: 235px;
               }
+
               &:nth-child(3) {
                 left: 70px;
                 top: 280px;
               }
+
               &:nth-child(4) {
                 left: 220px;
                 top: 150px;
               }
+
               &:nth-child(5) {
                 left: 80px;
                 top: 80px;
               }
+
               &:nth-child(6) {
                 left: 190px;
                 top: 90px;
@@ -261,6 +305,7 @@
       }
     }
   }
+
   :global {
     .container {
       position: relative;
@@ -278,17 +323,21 @@
       padding: 20px 40px;
       box-sizing: border-box;
       overflow: hidden;
+
       .ant-select {
         background-color: white;
       }
+
       .bar {
         display: flex;
         padding-bottom: 18px;
         padding-left: 0;
         margin-bottom: 18px;
         border-bottom: 1px solid $primaryDarkBlue2;
+
         .ant-select {
           flex: 1;
+
           .ant-select-selector {
             // display: block;
             border: none !important;
@@ -296,9 +345,11 @@
             box-shadow: none !important;
             background-color: transparent;
             padding: 0;
+
             .ant-select-selection-search {
               width: 100% !important;
               left: 0;
+
               input[type='search'] {
                 width: 100%;
                 height: 32px;
@@ -306,24 +357,29 @@
                 padding: 0;
               }
             }
+
             .ant-select-selection-placeholder,
             .ant-select-selection-item,
             .ant-select-selection-search input[type='search'] {
               font-size: $fzM !important;
               font: var(--font-archia), sans-serif;
             }
+
             .ant-select-selection-placeholder {
               top: 35%;
             }
           }
         }
+
         .localisation {
           width: 180px;
           display: flex;
           justify-content: center;
+
           @media screen and (max-width: $bpMobile) {
             width: auto;
           }
+
           button {
             max-height: 46px;
             display: flex;
@@ -334,10 +390,12 @@
             color: $primaryDarkBlue;
             border: none;
             margin-right: 7px;
+
             @media screen and (max-width: $bpMobile) {
               padding: 0px;
               margin-right: 0px;
             }
+
             span {
               overflow: hidden;
               white-space: nowrap;
@@ -345,23 +403,30 @@
               display: block;
               text-align: left;
               width: 100px;
+
               @media screen and (max-width: $bpMobile) {
                 display: none;
               }
             }
+
             svg {
               height: 20px;
+
               path {
                 stroke: $primaryDarkBlue;
               }
+
               margin-right: 7px;
+
               @media screen and (max-width: $bpMobile) {
                 margin-right: 0px;
                 padding-left: 0px;
               }
             }
+
             &:hover {
               color: $primaryDarkBlue4;
+
               svg {
                 path {
                   stroke: $primaryDarkBlue4;
@@ -371,17 +436,20 @@
           }
         }
       }
+
       .tags {
         margin-top: 12px;
         display: flex;
         align-items: flex-start;
         overflow-y: hidden;
-        & > b {
+
+        &>b {
           width: fit-content;
           margin-right: 10px;
           transform: translateY(5px);
           display: inline-block;
         }
+
         .ant-tag {
           padding: 0 12px;
           border-radius: 100px;
@@ -394,12 +462,14 @@
           line-height: 28px;
           cursor: pointer;
           transition: all 0.25s ease-out;
+
           &:hover {
             background-color: $primaryDarkBlue;
             border-color: $primaryDarkBlue;
             color: white;
           }
         }
+
         .suggestions {
           width: 100%;
           height: 46px;
@@ -407,27 +477,34 @@
           white-space: nowrap;
         }
       }
+
       @media screen and (min-width: $bpMobile) {
         .ant-select {
           transform: translateY(3px);
         }
       }
+
       .ant-btn.ant-btn-primary {
         max-height: 46px;
       }
+
       @media screen and (max-width: $bpMobile) {
         padding: 12px;
         height: 132px;
         top: -245px;
+
         .bar {
           border-bottom: none;
           display: flex;
           margin-bottom: 10px;
           padding-bottom: 10px;
+
           .ant-select {
             width: 100%;
             height: 30px;
+
             .ant-select-selector {
+
               .ant-select-selection-placeholder,
               .ant-select-selection-item,
               .ant-select-selection-search input[type='search'] {
@@ -436,15 +513,18 @@
                 line-height: 30px;
                 padding-left: 10px;
               }
+
               .ant-select-selection-item {
                 display: block;
                 max-width: 200px;
               }
             }
           }
+
           .ant-select-arrow {
             margin-right: 7px !important;
           }
+
           .localisation {
             height: 30px;
             margin-top: 0;
@@ -452,12 +532,15 @@
             padding-left: 10px;
             margin-left: auto;
             margin-right: 0;
+
             svg {
               margin-right: 0;
             }
+
             @media screen and (max-width: $bpMobile) {
               padding-left: 0px;
             }
+
             &:before {
               content: ' ';
               position: absolute;
@@ -469,19 +552,23 @@
             }
           }
         }
+
         .ant-btn.hide-desktop {
           width: 100% !important;
         }
       }
     }
+
     .page-sub-heading {
       color: #7468ff;
       text-transform: uppercase;
     }
   }
+
   .actNow {
     :global {
       padding: 80px 0;
+
       .act-now-container {
         background: url('/act-now.jpg');
         background-size: cover;
@@ -490,13 +577,16 @@
         border-radius: 40px;
         padding-bottom: 150px;
         position: relative;
+
         .wrapper {
           padding: 48px 70px;
+
           h3 {
             color: white;
             font-weight: 600;
             margin: 0;
             padding: 18px 0px 32px 0px;
+
             span {
               font-size: 48px;
               font-style: normal;
@@ -504,6 +594,7 @@
               line-height: 56px;
             }
           }
+
           p {
             margin: 0;
             color: white;
@@ -511,25 +602,31 @@
           }
         }
       }
+
       .slider-container {
         margin-top: -150px;
+
         .slider-wrapper {
           padding: 0px 40px;
+
           .swiper {
             @media screen and (max-width: $bpMobile) {
               overflow: visible;
               padding-right: 20px;
             }
           }
+
           .swiper-slide {
             height: auto;
           }
+
           .swiper-wrapper {
             @media screen and (max-width: $bpMobile) {
               padding-bottom: 80px;
             }
           }
         }
+
         .card {
           border-radius: 16px;
           padding: 24px;
@@ -539,51 +636,65 @@
           gap: 12px;
           height: 100%;
           box-sizing: border-box;
+
           h2 {
             font-weight: 600;
           }
+
           > :last-child {
             margin-top: auto;
           }
+
           p {
             padding-bottom: 20px;
           }
+
           .multilink {
             display: flex;
             flex-direction: column;
             gap: 8px;
           }
+
           .monolink {
             padding-bottom: 20px;
           }
+
           &.card--purple {
             background-color: $primaryPurple;
           }
+
           &.card--green {
             background-color: $primaryGreen;
             color: $primaryDarkBlue;
           }
+
           &.card--violet {
             background-color: $primaryViolet;
           }
+
           &.card--blue {
             background-color: $primaryBlue;
             color: $primaryDarkBlue;
           }
+
           &.card--purple,
           &.card--violet {
             h2 {
               color: white;
             }
+
             .ant-btn-link {
               color: white !important;
+
               svg {
                 path {
                   stroke: white !important;
                 }
               }
+
               &:hover {
                 color: $primaryDarkBlue !important;
+
                 svg path {
                   stroke: $primaryDarkBlue !important;
                 }
@@ -593,28 +704,34 @@
         }
       }
     }
+
     @media screen and (max-width: $bpMobile) {
       :global {
         padding: 32px 0px;
+
         .act-now-container {
           border-radius: 20px;
           margin: 0 20px;
           background: $primaryDarkBlue;
           padding-bottom: 0px;
+
           .wrapper {
             padding: 24px 16px;
+
             h3 {
               font-size: 32px;
               font-style: normal;
               font-weight: 700;
               line-height: 36px;
               padding-bottom: 24px;
+
               span {
                 font-size: 32px;
                 font-weight: 400;
                 line-height: 36px;
               }
             }
+
             p {
               font-size: 18px;
               font-style: normal;
@@ -624,12 +741,15 @@
             }
           }
         }
+
         .slider-container {
           margin: 20px 0px 0px 0px;
           padding: 0px 20px 0px 20px;
           overflow: hidden;
+
           .slider-wrapper {
             padding: 0;
+
             .swiper-slide {
               width: 80%;
             }
@@ -638,61 +758,77 @@
       }
     }
   }
+
   .features {
     padding: 0px 0px 80px 0px;
+
     @media screen and (max-width: $bpMobile) {
       padding: 0px 0px 32px 0px;
     }
+
     :global {
+
       .page-sub-heading,
       .h-xxl {
         padding-bottom: 18px;
       }
+
       .slider-container {
         padding: 42px 40px 0px 50px;
         padding-left: calc((100% - 1148px) / 2);
         overflow: hidden;
+
         @media screen and (max-width: $bpMobile) {
           padding: 0px 20px 0px 20px;
         }
+
         .slider-wrapper {
           .feature-card {
             max-width: 340px;
             border-radius: 15px;
             box-sizing: border-box;
             overflow: hidden;
+
             .card-title-container {
               position: relative;
               background-color: $primaryDarkBlue;
               padding: 50px 32px 25px 32px;
+
               h3 {
                 margin: 0;
               }
+
               @media screen and (max-width: $bpMobile) {
                 padding: 50px 24px 25px 24px;
               }
+
               &.card--data-tool {
                 background-image: url('/date-tools.svg');
               }
+
               &.card--workspace-feature {
                 background-image: url('/workspace-feature.svg');
                 background-position: right;
                 background-repeat: no-repeat;
               }
+
               &.card--match-making {
                 background-image: url('/match-making.svg');
                 background-position: right;
                 background-repeat: no-repeat;
               }
+
               &.card--ai-innovations {
                 background-image: url('/ai-innovations.svg');
                 background-position: right;
                 background-repeat: no-repeat;
               }
+
               .card-label {
                 position: absolute;
                 top: 16px;
               }
+
               .h-l {
                 color: white;
                 text-transform: capitalize;
@@ -700,21 +836,26 @@
               }
             }
           }
+
           .card-content-container {
             padding: 32px;
             border: 1px solid $primaryDarkBlue2;
             border-top: none;
             border-bottom-left-radius: 15px;
             border-bottom-right-radius: 15px;
+
             @media screen and (max-width: $bpMobile) {
               padding: 24px;
             }
           }
+
           .swiper {
             padding-bottom: 80px;
             overflow: visible;
+
             .swiper-slide {
               width: 335px;
+
               @media screen and (max-width: $bpMobile) {
                 width: 320px;
               }
@@ -724,15 +865,19 @@
       }
     }
   }
+
   .ourVoices {
     padding: 80px 0px;
+
     @media screen and (max-width: $bpMobile) {
       padding: 32px 0px 0px;
     }
+
     :global {
       .page-sub-heading {
         padding-bottom: 18px;
       }
+
       .h-xxl {
         span {
           @media screen and (max-width: $bpMobile) {
@@ -740,56 +885,70 @@
           }
         }
       }
+
       .group-wrapper {
         img {
           border-radius: 16px;
         }
+
         button {
           width: fit-content !important;
+
           @media screen and (max-width: $bpMobile) {
             width: 100% !important;
             justify-content: space-between;
+
             span {
               width: 100%;
               text-align: center;
             }
           }
         }
+
         .group-one {
           display: flex;
           position: relative;
           padding: 48px 0px;
+
           @media screen and (max-width: $bpMobile) {
             flex-direction: column;
             padding: 24px 0px 0px;
           }
+
           .group-card {
             bottom: 0px;
             right: 0;
+
             @media screen and (max-width: $bpMobile) {
               top: -20px;
             }
+
             .label-s {
               background-color: $primaryGreen;
               width: fit-content;
             }
           }
         }
+
         .group-two {
           display: flex;
           position: relative;
           justify-content: flex-end;
           padding: 48px 0px;
+
           @media screen and (max-width: $bpMobile) {
             flex-direction: column-reverse;
             padding: 14px 0px;
           }
+
           .group-card {
             bottom: 0px;
             left: 0;
+
             @media screen and (max-width: $bpMobile) {
               top: -20px;
             }
+
             .label-s {
               background-color: $primaryViolet;
               color: white;
@@ -797,6 +956,7 @@
             }
           }
         }
+
         .group-card {
           padding: 32px;
           background-color: $primaryGrey;
@@ -806,12 +966,15 @@
           flex-direction: column;
           gap: 24px;
           position: absolute;
+
           .ant-btn-default {
             width: fit-content;
+
             @media screen and (max-width: $bpMobile) {
               width: auto;
             }
           }
+
           @media screen and (max-width: $bpMobile) {
             width: auto;
             position: relative;
@@ -822,20 +985,25 @@
       }
     }
   }
+
   .activities {
     padding-top: 0px;
+
     @media screen and (max-width: $bpMobile) {
       padding-top: 32px;
     }
+
     :global {
       .title-wrapper {
         @media screen and (max-width: $bpMobile) {
           flex-direction: column;
+
           button {
             margin-top: 22px;
             margin-bottom: 10px;
             width: 100% !important;
             justify-content: space-between;
+
             span {
               width: 100%;
               text-align: center;
@@ -843,15 +1011,19 @@
           }
         }
       }
+
       .title-holder {
         max-width: 800px;
+
         .page-sub-heading,
         .h-xxl {
           padding-bottom: 18px;
         }
       }
+
       .activity-box-wrapper {
         padding-top: 22px;
+
         ul {
           padding: 0;
           display: flex;
@@ -860,34 +1032,41 @@
           flex-wrap: wrap;
           column-gap: 20px;
           row-gap: 20px;
+
           li {
             text-align: center;
             align-content: flex-start;
+
             @media screen and (max-width: $bpMobile) {
               width: calc(50vw - 40px);
               margin-bottom: 10px;
             }
+
             &:nth-child(1) {
               .icon {
                 background-color: $primaryBlue;
               }
             }
+
             &:nth-child(2),
             &:nth-child(4) {
               .icon {
                 background-color: $primaryPurple;
               }
             }
+
             &:nth-child(3) {
               .icon {
                 background-color: $primaryGreen;
               }
             }
+
             &:nth-child(5) {
               .icon {
                 background-color: $primaryPurple4;
               }
             }
+
             .icon {
               width: 126px;
               height: 126px;
@@ -898,15 +1077,18 @@
               border-radius: 16px;
               margin-bottom: 24px;
             }
+
             .h-m {
               font-weight: 600;
               max-width: 170px;
             }
+
             @media screen and (max-width: $bpMobile) {
               .h-m {
                 font-size: 18px;
                 line-height: 24px;
               }
+
               .icon {
                 width: calc(50vw - 40px);
                 height: calc(50vw - 40px);
@@ -917,22 +1099,28 @@
       }
     }
   }
+
   :global(.title-wrapper) {
     display: flex;
     justify-content: space-between;
+
     .page-sub-heading {
       padding-bottom: 18px;
     }
+
     h2 {
       font-weight: 700;
+
       span {
         font-weight: 400;
       }
     }
+
     .p-l {
       max-width: 734px;
     }
   }
+
   :global(.card-label) {
     background-color: white;
     border-radius: 12px;
@@ -951,115 +1139,137 @@
 
 .about {
   padding: 24px 0;
+
   :global {
     .who-are-we-mobile {
       display: none;
+
       @media screen and (max-width: $bpMobile) {
         display: block;
       }
     }
+
     .who-are-we-lg-md {
       display: block;
+
       @media screen and (max-width: $bpMobile) {
         display: none;
       }
     }
+
     .ant-tabs,
     .ant-collapse-header {
       display: flex;
       gap: 32px;
       padding: 20px 12px;
     }
+
     .ant-collapse-header {
       flex-direction: row-reverse;
       align-items: center;
       justify-content: space-between;
     }
-    .ant-collapse > .ant-collapse-item {
+
+    .ant-collapse>.ant-collapse-item {
       border-radius: 16px;
       margin-bottom: 24px;
     }
-    .ant-collapse > .ant-collapse-item .p-s {
+
+    .ant-collapse>.ant-collapse-item .p-s {
       color: $primaryDarkBlue4;
     }
+
     .ant-tabs .ant-tabs-nav {
       max-width: 460px;
       width: 50%;
     }
+
     .ant-tabs .ant-tabs-content-holder {
       width: 650px;
     }
+
     .ant-tabs .caps-heading-1 {
       font-family: var(--font-archia), sans-serif;
       color: $primaryPurple;
       text-transform: uppercase;
     }
-    .ant-tabs-left > .ant-tabs-nav .ant-tabs-tab {
+
+    .ant-tabs-left>.ant-tabs-nav .ant-tabs-tab {
       padding: 20px 24px;
       transition: all 0.3s ease-out;
       color: $primaryDarkBlueText;
+
       &:hover:not(.ant-tabs-tab-active) {
         svg {
           circle {
             fill: $primaryDarkBlue;
           }
+
           path {
             transform: translateX(3px);
           }
         }
       }
     }
-    .ant-tabs-left > .ant-tabs-nav .ant-tabs-tab + .ant-tabs-tab {
+
+    .ant-tabs-left>.ant-tabs-nav .ant-tabs-tab+.ant-tabs-tab {
       margin: 24px 0 0 0;
     }
+
     .ant-tabs .ant-tabs-tab-btn {
       width: 100%;
     }
+
     .ant-tabs .tab-label {
       cursor: pointer;
       display: flex;
       flex-direction: row;
       align-items: center;
       justify-content: space-between;
+
       span.h6.bold {
         max-width: 70%;
       }
     }
+
     .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
       color: $primaryDarkBlue;
     }
-    .ant-tabs-left > .ant-tabs-nav .ant-tabs-tab {
+
+    .ant-tabs-left>.ant-tabs-nav .ant-tabs-tab {
       text-align: left;
       border-radius: 8px;
     }
-    .ant-tabs > .ant-tabs-nav .ant-tabs-nav-wrap {
+
+    .ant-tabs>.ant-tabs-nav .ant-tabs-nav-wrap {
       white-space: normal;
       overflow: visible;
     }
-    .ant-tabs-left > .ant-tabs-content-holder {
+
+    .ant-tabs-left>.ant-tabs-content-holder {
       margin-left: 0;
       border-left: none;
     }
-    .ant-tabs-left
-      > .ant-tabs-content-holder
-      > .ant-tabs-content
-      > .ant-tabs-tabpane {
+
+    .ant-tabs-left>.ant-tabs-content-holder>.ant-tabs-content>.ant-tabs-tabpane {
       padding-left: 0;
     }
+
     .ant-tabs-ink-bar {
       background-color: transparent;
     }
+
     .ant-tabs .ant-tabs-tab,
-    .ant-collapse
-      > .ant-collapse-item:not(.ant-collapse-item-active)
-      > .ant-collapse-header {
+    .ant-collapse>.ant-collapse-item:not(.ant-collapse-item-active)>.ant-collapse-header {
       font-family: var(--font-archia), sans-serif;
       background-color: $primaryGrey;
+
       svg {
         path {
           stroke: $primaryWhite;
           transition: all 0.25s ease-out;
         }
+
         circle {
           stroke: transparent;
           fill: $primaryPurple;
@@ -1067,54 +1277,66 @@
         }
       }
     }
+
     .ant-collapse-header {
       .ant-collapse-expand-icon svg {
         transition: transform 0.3s ease-in-out;
         transform: rotate(90deg);
       }
+
       &[aria-expanded='true'] {
         .ant-collapse-expand-icon svg {
           transform: rotate(270deg);
         }
       }
     }
+
     .ant-collapse-header .ant-collapse-expand-icon {
       cursor: pointer;
     }
+
     .ant-tabs-tabpane {
       .p-l {
         line-height: 34px;
       }
+
       ul {
         list-style: disc;
         padding-left: 30px;
         line-height: 1.2;
+
         li {
           padding: 10px 0;
         }
       }
     }
+
     .ant-tabs .ant-tabs-tab-active,
     .ant-collapse-item-active {
       background-color: $primaryWhite;
       box-shadow: 0px 40px 32px -20px rgba(101, 93, 122, 0.06),
         0px 20px 44px 0px rgba(101, 93, 122, 0.06);
+
       svg circle {
         fill: $primaryDarkBlue;
       }
     }
+
     .ant-collapse-content-active .p-s {
       line-height: 22px;
     }
-    .ant-collapse-borderless > .ant-collapse-item {
+
+    .ant-collapse-borderless>.ant-collapse-item {
       border-bottom: none;
     }
-    .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+
+    .ant-collapse>.ant-collapse-item>.ant-collapse-header {
       align-items: center;
       padding: 20px 12px;
       border-radius: 16px;
       color: $primaryDarkBlue;
     }
+
     .ant-collapse-borderless {
       border-radius: 16px;
       background-color: transparent;
@@ -1124,48 +1346,61 @@
 
 .latestNews {
   margin-bottom: 80px;
+
   @media screen and (max-width: $bpMobile) {
     margin-bottom: 20px;
   }
+
   :global {
     .container .news-wrapper {
       margin-bottom: 18px;
     }
+
     .container .news-wrapper .p-l {
       width: 70%;
+
       @media only screen and (min-device-width: $bpMobile) and (max-device-width: 1024px) {
         width: 80%;
       }
     }
+
     .container .news-wrapper.hide-sm {
       display: block;
+
       @media only screen and (max-width: 640px) {
         display: none;
       }
     }
+
     .caps-heading-1 {
       font-family: var(--font-archia), sans-serif;
       color: $primaryPurple;
     }
+
     h2 {
       font-weight: 500;
       margin-block-start: 12px;
       margin-block-end: 0;
     }
+
     h2 strong {
       font-weight: 700;
     }
+
     .ant-card-body {
       padding: 24px 0;
     }
+
     .ant-card-body h5 {
       margin-block-start: 18px;
       margin-block-end: 8px;
     }
+
     .ant-card-body p {
       margin-block-start: 0;
       margin-block-end: 15px;
     }
+
     .ant-card-body .read-more {
       display: flex;
       flex-direction: row;
@@ -1177,16 +1412,20 @@
       font-weight: 500;
       margin-bottom: 16px;
     }
+
     .news-items .ant-card .ant-card-cover img {
       width: 100%;
       border-radius: 16px;
     }
+
     .news-items .ant-card .ant-card-cover .cover-image-container {
       position: relative;
       padding: 0px;
+
       img {
         object-fit: cover;
       }
+
       .cover-image-overlay {
         position: absolute;
         top: 0;
@@ -1196,24 +1435,29 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+
         .badge {
           width: fit-content;
           height: 24px;
           line-height: 24px;
           padding: 0 10px;
           border-radius: 12px;
+
           &.blue {
             background-color: $primaryBlue;
             color: $primaryWhite;
           }
+
           &.green {
             background-color: $primaryGreen;
           }
+
           &.purple {
             background-color: $primaryPurple;
             color: $primaryWhite;
           }
         }
+
         .date {
           width: 60px;
           height: 60px;
@@ -1224,14 +1468,17 @@
           background-color: $primaryWhite;
           border-radius: 4px;
           line-height: 10px;
+
           .month {
             text-transform: uppercase;
           }
         }
+
         img {
           object-fit: cover;
         }
       }
+
       .badge,
       .date .month {
         font-family: var(--font-archia), sans-serif;
@@ -1240,14 +1487,17 @@
         font-weight: 700;
       }
     }
+
     .news-items {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       column-gap: 24px;
       row-gap: 24px;
+
       @media only screen and (min-device-width: $bpMobile) and (max-device-width: 1024px) {
         grid-template-columns: repeat(2, 1fr);
       }
+
       @media only screen and (max-width: 640px) {
         grid-template-columns: 1fr;
       }
@@ -1257,9 +1507,11 @@
 
 .partnership {
   padding-top: 80px;
+
   @media screen and (max-width: $bpMobile) {
     padding: 24px 0px;
   }
+
   :global {
     .content-container {
       display: flex;
@@ -1269,6 +1521,7 @@
       background-image: url('/partnership-landing-desktop.jpg');
       background-repeat: no-repeat;
       background-size: cover;
+
       @media screen and (max-width: $bpMobile) {
         border-radius: 16px;
         padding-bottom: 0px;
@@ -1282,43 +1535,54 @@
         display: flex;
         flex-direction: column;
         gap: 24px;
+
         @media screen and (max-width: $bpMobile) {
           padding: 25px;
         }
+
         h2 {
           color: white;
           font-weight: 600;
           max-width: 661px;
+
           @media screen and (max-width: $bpMobile) {
             max-width: 230px;
           }
         }
+
         p {
           color: white;
           max-width: 575px;
+
           @media screen and (max-width: $bpMobile) {
             font-size: 18px;
             line-height: 28px;
           }
         }
+
         .ant-btn {
           width: fit-content !important;
+
           @media screen and (max-width: $bpMobile) {
             width: auto !important;
           }
         }
       }
     }
+
     .links-container {
       padding: 0px 60px;
       margin-top: -40px;
+
       @media screen and (max-width: $bpMobile) {
         padding: 0px;
         margin-top: 24px;
+
         .ant-row {
           gap: 24px;
         }
       }
+
       .links-card {
         display: flex;
         flex-direction: column;
@@ -1329,19 +1593,23 @@
         padding: 32px;
         border: 1px solid $primaryDarkBlue2;
         background-color: $primaryGrey;
+
         .h-m {
           color: $primaryDarkBlue;
           font-weight: 700;
         }
+
         p {
           font-size: 20px;
           line-height: normal;
           font-weight: 400;
         }
+
         .link-list {
           padding: 0;
           margin: 0;
           list-style-type: none;
+
           li {
             display: flex;
             align-items: center;
@@ -1351,23 +1619,29 @@
             line-height: normal;
             font-family: var(--font-dm-sans), sans-serif;
             cursor: pointer;
+
             &:last-child {
               margin-bottom: 0px;
             }
+
             a {
               color: $primaryDarkBlueText;
             }
+
             svg {
               margin-right: 12px;
+
               circle {
                 fill: $primaryGrey;
               }
+
               path {
                 stroke: $primaryDarkBlue;
               }
             }
           }
         }
+
         .icon-list {
           list-style-type: none;
           padding: 0;
@@ -1375,8 +1649,10 @@
           display: flex;
           align-items: center;
           gap: 20px;
+
           li {
             height: 32px;
+
             a {
               color: $primaryDarkBlue;
             }
@@ -1394,38 +1670,47 @@
   min-height: 325px;
   border-radius: 40px;
   background-color: $primaryDarkBlue;
+
   @media only screen and (max-width: $bpMobile) {
     min-height: auto;
   }
+
   @media only screen and (max-width: 640px) {
     flex-direction: column-reverse;
     border-radius: 16px;
     padding-bottom: 14px;
   }
+
   :global {
     .trusted-text {
       max-width: 575px;
       margin: 50px 0 44px 42px;
+
       @media only screen and (min-device-width: $bpMobile) and (max-device-width: 1024px) {
         margin: 42px 0 42px 42px;
       }
+
       @media only screen and (max-width: 640px) {
         margin: 8px;
         padding: 20px 8px 7px;
         text-align: center;
+
         h3.bold {
           letter-spacing: -0.013em;
         }
       }
     }
+
     .trusted-text h3.semibold {
       color: $primaryWhite;
       margin-block-end: 24px;
+
       @media only screen and (max-width: $bpMobile) {
         font-size: $fzL;
         line-height: $lhL;
       }
     }
+
     .trusted-circle {
       width: 100%;
       height: auto;
@@ -1435,12 +1720,15 @@
       background-repeat: no-repeat;
       background-size: 125% 335px;
       background-position: right bottom;
+
       @media only screen and (min-device-width: 820px) and (max-device-width: 1024px) {
         background-size: 125% 550px;
       }
+
       @media only screen and (min-device-width: $bpMobile) and (max-device-width: 819px) {
         background-size: 310px 480px;
       }
+
       @media only screen and (max-width: 640px) {
         height: 252px;
         border-top-left-radius: 16px;
@@ -1467,68 +1755,79 @@
   gap: 41px;
   padding: 80px 0;
   margin-top: 80px;
+
   @media only screen and (max-width: 640px) {
     gap: 32px;
     padding: 32px 0;
   }
+
   :global {
     .partner-container {
       width: 100%;
       max-width: 1366px;
+
       @media only screen and (min-device-width: $bpMobile) and (max-device-width: 1024px) {
         max-width: 768px;
       }
+
       @media only screen and (max-width: 640px) {
         width: 100%;
       }
     }
+
     .partner-container .partner-items {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      gap: 62px;
-      overflow-x: auto;
-      padding-right: 30px;
+
       @media only screen and (max-width: $bpMobile) {
         padding-bottom: 10px;
         gap: 42.64px;
       }
-      li {
+
+      .swiper-wrapper {
+        align-items: center;
+        justify-content: center;
+      }
+
+      .swiper-slide {
         width: 100%;
+
         @media only screen and (max-width: $bpMobile) {
-          width: 111px;
+          margin-bottom: 40px;
         }
+
         img {
-          width: 100%;
+          max-width: 150px;
+          margin: 0 auto;
           height: auto;
+          max-height: 200px;
           -webkit-filter: grayscale(1);
           filter: grayscale(1);
+          margin: 0 auto;
+
+
           &:hover {
             -webkit-filter: grayscale(0);
             filter: none;
           }
-          @media only screen and (min-device-width: $bpMobile) and (max-device-width: 1024px) {
-            width: 210px;
-          }
-          @media only screen and (max-width: $bpMobile) {
-            width: inherit;
-            max-width: 110px;
-          }
+
         }
       }
     }
+
     .container h2.semibold {
       color: $primaryDarkBlue;
       text-align: center;
       text-transform: capitalize;
+
       @media only screen and (max-width: $bpMobile) {
         font-size: $fzL;
         line-height: $lhL;
       }
     }
+
     .partner-button-container {
       display: flex;
       flex-direction: row;
+
       .container {
         align-items: center;
         justify-content: center;
@@ -1537,19 +1836,23 @@
 
       @media screen and (max-width: $bpMobile) {
         width: 100%;
+
         .container {
           flex: 1;
         }
+
         .ant-btn {
           width: 100% !important;
           justify-content: space-between;
-          & > span {
+
+          &>span {
             width: 100%;
             text-align: center;
           }
         }
       }
     }
+
     .partner-button .ant-btn.ant-btn-background-ghost:hover {
       svg path {
         transform: translateX(3px);
@@ -1566,24 +1869,30 @@
   gap: 26px;
   padding: 60px 0;
   background-color: $primaryGrey;
+
   @media only screen and (max-width: 640px) {
     gap: 30px;
     padding: 32px 25px;
   }
+
   :global {
     .help-centre-text {
       text-align: center;
+
       h2.bold,
       h6.semibold {
         color: $primaryDarkBlue;
       }
+
       h2.bold {
         margin-bottom: 24px;
       }
+
       h6.semibold {
         margin-bottom: 7px;
       }
     }
+
     .help-centre-button {
       width: 100%;
       display: flex;
@@ -1591,23 +1900,28 @@
       align-items: center;
       justify-content: center;
     }
+
     .help-centre-button .ant-btn.ant-btn-default.secondary:hover {
       svg path {
         transform: translateX(3px);
       }
     }
+
     @media only screen and (max-width: 640px) {
       .help-centre-text {
         margin-top: 30px;
       }
+
       .help-centre-text h2.bold {
         font-size: $fzXL;
         line-height: $lhL;
       }
+
       .ant-btn.ant-btn-default.secondary {
         align-items: center;
         justify-content: space-between;
         width: 100% !important;
+
         span {
           width: 100%;
           text-align: center;
@@ -1624,31 +1938,37 @@
   gap: 42px;
   height: 173px;
   margin-bottom: 74px;
+
   @media only screen and (max-width: 640px) {
     flex-direction: column;
     gap: 18px;
     margin-bottom: 32px;
     min-height: 334px;
   }
+
   :global {
     .caption-container {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
       gap: 18px;
+
       h2 {
         color: $primaryDarkBlue;
+
         @media only screen and (max-width: 640px) {
           font-size: $fzL;
           line-height: $lhL;
         }
       }
     }
+
     .powered-by-container {
       .caps-heading-1.page-sub-heading {
         text-align: center;
         margin-bottom: 7px;
       }
+
       .powered-by-images {
         display: inline-flex;
         align-items: flex-start;
@@ -1663,71 +1983,89 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 53px;
+
   @media only screen and (max-width: $bpMobile) {
     gap: 32px;
   }
+
   :global {
+
     .stats-container,
     .summaries {
       width: 100%;
     }
+
     ul.stats {
       padding-inline-start: 0;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       column-gap: 86px;
       row-gap: 86px;
+
       @media only screen and (max-width: $bpMobile) {
         grid-template-columns: repeat(2, 1fr);
         column-gap: 0;
         row-gap: 22px;
       }
+
       li {
+
         h2,
         strong.h-xs {
           color: $primaryDarkBlue;
         }
+
         h2 {
           font-weight: 700;
           margin-bottom: 16px;
         }
+
         strong.h-xs {
           font-family: var(--font-archia);
           font-weight: 700;
           letter-spacing: 3.2px;
         }
+
         &:not(:last-child) {
           border-right: 1px solid $primaryDarkBlue2;
           padding-right: 86px;
         }
+
         @media only screen and (max-width: $bpMobile) {
           border-top: 1px solid $primaryDarkBlue2;
           padding-top: 22px;
+
           strong.h-xs {
             letter-spacing: 0.24px;
           }
+
           &:not(:last-child) {
             border-right: none;
             padding-right: 0;
           }
+
           &:nth-child(odd) {
             padding-right: 22px;
           }
+
           &:nth-child(even) {
             padding-left: 22px;
           }
         }
       }
     }
+
     .summaries {
       display: flex;
       flex-direction: row;
       align-items: center;
       justify-content: center;
       gap: 24px;
+
       @media only screen and (max-width: 640px) {
         flex-direction: column;
       }
+
       span {
         width: 100%;
         display: flex;
@@ -1738,19 +2076,24 @@
         border-radius: 16px;
         padding: 24px;
         color: $primaryDarkBlue;
+
         &.purple {
           background-color: $primaryPurple4;
         }
+
         &.green {
           background-color: $primaryGreen;
         }
+
         &.blue {
           background-color: $primaryBlue5;
         }
+
         h5 {
           text-align: center;
           font-weight: 600;
           letter-spacing: -0.312px;
+
           @media only screen and (max-width: $bpMobile) {
             width: min-content;
             white-space: break-spaces;
@@ -1768,11 +2111,13 @@
         color: #000;
         font-size: 18px;
         line-height: 32px;
+
         &.ant-select-item-option-active {
           background-color: $primaryBlue2;
         }
       }
     }
+
     @media screen and (max-width: $bpMobile) {
       .rc-virtual-list-holder-inner {
         .ant-select-item {
