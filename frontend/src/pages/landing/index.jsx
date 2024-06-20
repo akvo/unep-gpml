@@ -457,10 +457,6 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
   )
 }
 
-const Showcasing = () => {
-  return <div className="showcasing"></div>
-}
-
 const ShowcasingAndStats = (props) => {
   const { stakeholders, organisations, community } = UIStore.useState((s) => ({
     stakeholders: s.stakeholders,
@@ -539,7 +535,7 @@ const ShowcasingAndStats = (props) => {
           <p>
             <div>
               <h3>Knowledge Hub</h3>
-              <span>Crowdsourcing XXX materials</span>
+              <span>Crowdsourcing {totalCount} materials</span>
               <Button type="link">
                 Explore the resources{' '}
                 <div className="icn">
@@ -562,7 +558,8 @@ const ShowcasingAndStats = (props) => {
             <div>
               <h3>Data Hub</h3>
               <span>
-                Visualising XXX data layers accross the plastic lifecycle{' '}
+                Visualising {props?.layers} data layers accross the plastic
+                lifecycle{' '}
               </span>
               <Button type="link">
                 Explore the data layers{' '}
@@ -581,7 +578,8 @@ const ShowcasingAndStats = (props) => {
             <div>
               <h3>Communities of Practice</h3>
               <span>
-                5 CoPs of experts and scientist filling knowledge and data gap
+                {props?.cop} CoPs of experts and scientist filling knowledge and
+                data gap
               </span>
               <Button type="link">
                 Explore the CoPs{' '}
