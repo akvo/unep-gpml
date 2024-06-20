@@ -1674,17 +1674,18 @@
         rgba(242, 244, 254, 0.52) 50%
       );
       border-radius: 20px;
-
-      &:nth-child(2n) {
-        flex-direction: row-reverse;
-        background: linear-gradient(
-          90deg,
-          rgba(245, 247, 255, 0) 20.72%,
-          rgba(242, 244, 254, 0.52) 50%
-        );
-        p {
-          & > div {
-            margin-left: 70px;
+      @media screen and (min-width: $bpMobile) {
+        &:nth-child(2n) {
+          flex-direction: row-reverse;
+          background: linear-gradient(
+            90deg,
+            rgba(245, 247, 255, 0) 20.72%,
+            rgba(242, 244, 254, 0.52) 50%
+          );
+          p {
+            & > div {
+              margin-left: 70px;
+            }
           }
         }
       }
@@ -1726,6 +1727,22 @@
             .icn svg path {
               transform: none !important;
             }
+          }
+        }
+      }
+      @media screen and (max-width: $bpMobile) {
+        flex-direction: column !important;
+        .icon {
+          margin-bottom: 30px;
+        }
+        p {
+          text-align: center;
+          align-items: center;
+          div {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
           }
         }
       }

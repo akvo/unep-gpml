@@ -500,10 +500,10 @@ const ShowcasingAndStats = (props) => {
       <div className={styles.showCasingSection}>
         <div className="caption-container">
           <div className="caps-heading-1 page-sub-heading">
-            <Trans>SHOWCASING</Trans>
+            <Trans>FEATURES</Trans>
           </div>
           <h2>
-            <Trans>Already on the platform</Trans>
+            <Trans>Browse the platform content</Trans>
           </h2>
         </div>
         <div className="powered-by-container">
