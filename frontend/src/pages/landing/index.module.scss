@@ -1658,6 +1658,81 @@
   }
 }
 
+.newFeaturesSection {
+  :global {
+    .feature {
+      display: flex;
+      width: 100%;
+      flex-direction: row;
+      align-items: center;
+      margin-bottom: 20px;
+      padding: 40px 70px 50px;
+
+      background: linear-gradient(
+        270deg,
+        rgba(245, 247, 255, 0) 20.72%,
+        rgba(242, 244, 254, 0.52) 50%
+      );
+      border-radius: 20px;
+
+      &:nth-child(2n) {
+        flex-direction: row-reverse;
+        background: linear-gradient(
+          90deg,
+          rgba(245, 247, 255, 0) 20.72%,
+          rgba(242, 244, 254, 0.52) 50%
+        );
+        p {
+          & > div {
+            margin-left: 70px;
+          }
+        }
+      }
+      .icon {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      p {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        @media screen and (min-width: $bpMobile) {
+          & > div {
+            width: 380px;
+          }
+        }
+        // justify-content: space-around;
+        h3 {
+          font-size: 30px;
+          line-height: 1.2;
+          margin-bottom: 10px;
+          font-weight: 600;
+        }
+        .ant-btn {
+          margin-top: 20px;
+          .icn {
+            display: inline;
+
+            transform: translateY(5px) rotate(-90deg);
+          }
+          &:hover {
+            .icn svg {
+              transform: translateY(2px);
+              transition: all 0.15s ease-out;
+            }
+            .icn svg path {
+              transform: none !important;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 .statsSection {
   display: flex;
   flex-direction: column;

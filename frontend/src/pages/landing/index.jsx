@@ -26,6 +26,7 @@ import {
   LinkedinIcon,
   YoutubeIcon,
   LongArrowRight,
+  Pointer,
 } from '../../components/icons'
 import { useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
@@ -456,6 +457,10 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
   )
 }
 
+const Showcasing = () => {
+  return <div className="showcasing"></div>
+}
+
 const ShowcasingAndStats = (props) => {
   const { stakeholders, organisations, community } = UIStore.useState((s) => ({
     stakeholders: s.stakeholders,
@@ -521,7 +526,121 @@ const ShowcasingAndStats = (props) => {
           </div>
         </div>
       </div>
-      <div className={styles.statsSection}>
+      <div className={styles.newFeaturesSection}>
+        <div className="feature">
+          <div className="icon">
+            <Image
+              src="/iconxl-knowledge-hub.svg"
+              width={265}
+              height={136}
+              alt="knowledge hub"
+            />
+          </div>
+          <p>
+            <div>
+              <h3>Knowledge Hub</h3>
+              <span>Crowdsourcing XXX materials</span>
+              <Button type="link">
+                Explore the resources{' '}
+                <div className="icn">
+                  <Pointer />
+                </div>
+              </Button>
+            </div>
+          </p>
+        </div>
+        <div className="feature">
+          <div className="icon">
+            <Image
+              src="/iconxl-data-hub.svg"
+              width={320}
+              height={160}
+              alt="data hub"
+            />
+          </div>
+          <p>
+            <div>
+              <h3>Data Hub</h3>
+              <span>
+                Visualising XXX data layers accross the plastic lifecycle{' '}
+              </span>
+              <Button type="link">
+                Explore the data layers{' '}
+                <div className="icn">
+                  <Pointer />
+                </div>
+              </Button>
+            </div>
+          </p>
+        </div>
+        <div className="feature">
+          <div className="icon">
+            <Image src="/iconxl-cop.svg" width={321} height={191} alt="cop" />
+          </div>
+          <p>
+            <div>
+              <h3>Communities of Practice</h3>
+              <span>
+                5 CoPs of experts and scientist filling knowledge and data gap
+              </span>
+              <Button type="link">
+                Explore the CoPs{' '}
+                <div className="icn">
+                  <Pointer />
+                </div>
+              </Button>
+            </div>
+          </p>
+        </div>
+        <div className="feature">
+          <div className="icon">
+            <Image
+              src="/iconxl-community.svg"
+              width={321}
+              height={204}
+              alt="community"
+            />
+          </div>
+          <p>
+            <div>
+              <h3>Community</h3>
+              <span>Connecting 1259 experts and stakeholders</span>
+              <Button type="link">
+                Explore the community{' '}
+                <div className="icn">
+                  <Pointer />
+                </div>
+              </Button>
+            </div>
+          </p>
+        </div>
+        <div className="feature">
+          <div className="icon">
+            <Image
+              src="/iconxl-workspace.svg"
+              width={321}
+              height={166}
+              alt="workspace"
+            />
+          </div>
+          <p>
+            <div>
+              <h3>Workspace</h3>
+              <span>
+                Supporting 21 countries in developing national source
+                inventories towards national strategies/roadmaps/action plans
+              </span>
+              <Button type="link">
+                Access the workspace
+                <div className="icn">
+                  <Pointer />
+                </div>
+              </Button>
+            </div>
+          </p>
+        </div>
+      </div>
+      {/* <div className={styles.statsSection}>
         <div className="stats-container">
           <ul className="stats">
             {items.map((item, ix) => (
@@ -547,7 +666,7 @@ const ShowcasingAndStats = (props) => {
             </h5>
           </span>
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }
