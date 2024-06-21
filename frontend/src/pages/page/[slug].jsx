@@ -28,6 +28,10 @@ const StrapiPage = ({ pageData }) => {
       await api.post('/contact', data)
       setSubmitted(true)
       setLoading(false)
+
+      setTimeout(() => {
+        setSubmitted(false)
+      }, 5000)
     } catch (error) {
       if (error) {
         notification.error({
