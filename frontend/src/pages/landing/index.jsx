@@ -464,12 +464,27 @@ const ShowcasingAndStats = (props) => {
     community: s.community,
   }))
 
+  const [expertsCount, setExpertsCount] = useState(0)
+
   const totalCount = props?.data?.reduce((sum, item) => {
     if (item.topic !== '[]') {
       return sum + item.count
     }
     return sum
   }, 0)
+
+  useEffect(() => {
+    const url = `/stakeholder/expert/list`
+    api
+      .get(url, { page_size: 100, page_n: 0 })
+      .then((resp) => {
+        const data = resp?.data
+        setExpertsCount(data.count)
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+  }, [])
 
   const { i18n } = useLingui()
   const items = [
@@ -491,6 +506,7 @@ const ShowcasingAndStats = (props) => {
       label: t`COMMUNITIES OF PRACTICE`,
     },
   ]
+
   return (
     <div className="container">
       <div className={styles.showCasingSection}>
@@ -602,7 +618,9 @@ const ShowcasingAndStats = (props) => {
           <p>
             <div>
               <h3>Community</h3>
-              <span>Connecting 1259 experts and stakeholders</span>
+              <span>
+                Connecting {expertsCount} experts and {stakeholders.count}
+              </span>
               <Button type="link">
                 Explore the community{' '}
                 <div className="icn">
