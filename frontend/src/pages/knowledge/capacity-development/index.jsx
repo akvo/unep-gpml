@@ -5,6 +5,7 @@ import { Empty, Select, Spin, notification } from 'antd'
 import { getStrapiUrl } from '../../../utils/misc'
 import axios from 'axios'
 import { SearchIcon } from '../../../components/icons'
+import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
 
 const categories = ['all', 'online course', 'Masterclass', 'Webinar', 'Other']
 
@@ -166,21 +167,25 @@ const LearningCentreCard = ({ data, loading }) => {
 
   return (
     <div class="masonry-grid">
-      {data.map((item) => (
-        <div className="learning-centre-card">
-          <img src={item.image} />
-          <div className="content">
-            <p className="category">{item.category}</p>
-            <h2>{item.title}</h2>
-            <p className="description">{item.description}</p>
-            <div className="tags">
-              {item.learning_centre_tags.map((tag) => (
-                <span>{tag}</span>
-              ))}
+      <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3 }}>
+        <Masonry gutter="30px">
+          {data.map((item) => (
+            <div className="learning-centre-card">
+              <img src={item.image} />
+              <div className="content">
+                <p className="category">{item.category}</p>
+                <h2>{item.title}</h2>
+                <p className="description">{item.description}</p>
+                <div className="tags">
+                  {item.learning_centre_tags.map((tag) => (
+                    <span>{tag}</span>
+                  ))}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      ))}
+          ))}
+        </Masonry>
+      </ResponsiveMasonry>
     </div>
   )
 }

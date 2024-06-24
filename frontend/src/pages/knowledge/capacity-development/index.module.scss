@@ -86,24 +86,20 @@
         }
 
         .masonry-grid {
-            column-count: 3;
-            column-gap: 20px;
-            margin: 30px 0px;
+            padding: 30px 0px;
 
             @media screen and (max-width: $bpMobile) {
-
                 column-count: 1;
             }
 
             .learning-centre-card {
-                box-shadow: 0px 4px 27px 0px #00000026;
+                box-shadow: 0px 4px 27px rgba(0, 0, 0, 0.15);
                 background: #fff;
                 border-radius: 8px;
                 overflow: hidden;
                 display: flex;
                 flex-direction: column;
                 height: fit-content;
-                margin-bottom: 20px;
 
                 img {
                     width: 100%;
