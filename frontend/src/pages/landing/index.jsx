@@ -1209,43 +1209,25 @@ const Partnership = ({ isAuthenticated, setLoginVisible }) => {
 }
 
 const Partners = () => {
-  const items = [
-    {
-      id: 1,
-      name: 'IMO',
-      url: '/partners/partner-imo.png',
-    },
-    {
-      id: 2,
-      name: 'SEA Solutions',
-      url: '/partners/partner-sea-os-solutions.png',
-    },
-    {
-      id: 3,
-      name: 'Ocean conservancy',
-      url: '/partners/parner-ocean-conservancy.png',
-    },
-    {
-      id: 4,
-      name: 'FAO',
-      url: '/partners/partner-fao.png',
-    },
-    {
-      id: 5,
-      name: 'INFORMEA',
-      url: '/partners/partner-informea.png',
-    },
-    {
-      id: 6,
-      name: 'Duke',
-      url: '/partners/partner-duke.png',
-    },
-    {
-      id: 7,
-      name: 'GESAMP',
-      url: '/partners/partner-gesamp.png',
-    },
-  ]
+  const [items, setItems] = useState([])
+  const [width] = useDeviceSize()
+  const strapiUrl = getStrapiUrl()
+  useEffect(() => {
+    fetch(`${strapiUrl}/api/partners?populate=*`)
+      .then((d) => d.json())
+      .then((d) => {
+        const simplifiedItems = d.data.map((item) => {
+          const { title, url, image } = item.attributes
+          return {
+            title,
+            url,
+            image: image.data.attributes.url,
+          }
+        })
+        setItems(simplifiedItems)
+      })
+  }, [])
+
   return (
     <div className={styles.partnerSection}>
       <div className="container">
@@ -1255,11 +1237,24 @@ const Partners = () => {
       </div>
       <div className="partner-container">
         <ul className="partner-items">
-          {items.map((item, ix) => (
-            <li key={ix}>
-              <Image alt={item.name} src={item.url} width={200} height={97} />
-            </li>
-          ))}
+          <Swiper
+            spaceBetween={width <= 1024 ? 20 : 40}
+            slidesPerView={width <= 1024 ? 2 : 5}
+            pagination={pagination}
+            modules={[Pagination]}
+          >
+            {items.map((item, ix) => (
+              <SwiperSlide key={ix}>
+                {item.url ? (
+                  <a href={item.url} target="_blank" rel="noopener noreferrer">
+                    <img alt={item.name} src={item.image} />
+                  </a>
+                ) : (
+                  <img alt={item.name} src={item.image} />
+                )}
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </ul>
       </div>
       <div className="partner-button-container">
