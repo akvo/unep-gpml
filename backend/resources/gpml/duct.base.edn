@@ -55,7 +55,7 @@
                            [""
                             {:get {:summary    "Browse available resources (selected properties)"
                                    :swagger    {:tags ["resources"]}
-                                   :parameters {:query #ig/ref :gpml.handler.browse/query-params}
+                                   :parameters {:query #ig/ref :gpml.handler.browse/resources-query-params}
                                    :handler    #ig/ref :gpml.handler.browse/resources}}]]
                           ["/submission" {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                        #ig/ref :gpml.auth/auth-required]
@@ -780,6 +780,7 @@
  :gpml.handler.browse/get                                           #ig/ref :gpml.config/common
  :gpml.handler.browse/query-params                                  #ig/ref :gpml.config/common
  :gpml.handler.browse/resources                                     #ig/ref :gpml.config/common
+ :gpml.handler.browse/resources-query-params                        #ig/ref :gpml.config/common
  :gpml.handler.submission/get                                       #ig/ref :gpml.config/common
  :gpml.handler.submission/get-params                                {}
  :gpml.handler.submission/get-detail                                #ig/ref :gpml.config/common

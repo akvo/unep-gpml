@@ -16,6 +16,7 @@
    [gpml.util.postgresql :as pg-util]
    [gpml.util.regular-expressions :as util.regex]
    [integrant.core :as ig]
+   [malli.util :as mu]
    [medley.core :as medley]
    [taoensso.timbre :as timbre])
   (:import
@@ -282,6 +283,37 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
         (not ps_bookmark_sections_keys)
         (and ps_bookmark_sections_keys ps_country_iso_code_a2))))]])
 
+(defn resources-api-schema
+  [opts]
+  (mu/merge (api-opts-schema opts)
+            [:and
+             [:map
+              [:incAllProps
+               {:optional true
+                :swagger {:description "If set to 'true' includes all the properties of each resource."
+                          :type "boolean"
+                          :allowEmptyValue false}}
+               [:boolean]]
+              [:incBadges
+               {:optional true
+                :swagger {:description "If set to 'true' includes the badges of each resource."
+                          :type "boolean"
+                          :allowEmptyValue false}}
+               [:boolean]]
+              [:incBookmarked
+               {:optional true
+                :swagger {:description "If set to 'true' includes the bookmarked flag of each resource."
+                          :type "boolean"
+                          :allowEmptyValue false}}
+               [:boolean]]
+              [:bookmarked
+               {:optional true
+                :swagger {:description "If set to 'true' includes only the bookmarked resources for  the authenticated user"
+                          :type "boolean"
+                          :allowEmptyValue false}}
+               [:boolean]]]]))
+
+
 (defn api-filters->filters
   "Transforms API query parameters into a map of database filters."
   [{:keys [limit offset startDate endDate user-id favorites country transnational
@@ -497,6 +529,9 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
 
 (defmethod ig/init-key :gpml.handler.browse/query-params [_ config]
   (api-opts-schema config))
+
+(defmethod ig/init-key :gpml.handler.browse/resources-query-params [_ config]
+  (resources-api-schema config))
 
 (defmethod ig/init-key :gpml.handler.browse/resources [_ config]
   (fn [{{:keys [query]} :parameters
