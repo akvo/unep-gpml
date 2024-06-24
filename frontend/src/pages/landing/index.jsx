@@ -1257,15 +1257,6 @@ const Partners = () => {
           </Swiper>
         </ul>
       </div>
-      <div className="partner-button-container">
-        <div className="container">
-          <Link href="/partners">
-            <Button withArrow={<LongArrowRight />} size="large" ghost>
-              <Trans>See all partners</Trans>
-            </Button>
-          </Link>
-        </div>
-      </div>
     </div>
   )
 }
