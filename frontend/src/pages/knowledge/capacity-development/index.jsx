@@ -4,14 +4,15 @@ import Head from 'next/head'
 import { Empty, Select, Spin, notification } from 'antd'
 import { getStrapiUrl } from '../../../utils/misc'
 import axios from 'axios'
-import { SearchIcon } from '../../../components/icons'
+import { CloseIcon, SearchIcon } from '../../../components/icons'
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
+import Link from 'next/link'
 
 const categories = ['all', 'online course', 'Masterclass', 'Webinar', 'Other']
 
-function CapacityBuilding() {
-  const [items, setItems] = useState([])
-  const [tags, setTags] = useState([])
+function CapacityBuilding({ initialItems, initialTags }) {
+  const [items, setItems] = useState(initialItems)
+  const [tags, setTags] = useState(initialTags)
   const [loading, setLoading] = useState(false)
   const [selectedTags, setSelectedTags] = useState([])
   const [selectedCategory, setSelectedCategory] = useState('all')
@@ -25,72 +26,6 @@ function CapacityBuilding() {
   const handleCategoryChange = (category) => {
     setSelectedCategory(category.toLowerCase())
   }
-
-  useEffect(() => {
-    const fetchLearningCentres = async () => {
-      setLoading(true)
-      try {
-        const response = await axios.get(
-          `${strapiURL}/api/learning-centres?populate=learning_centre_tags,image`
-        )
-        const simplifiedItems = response.data.data.map((item) => {
-          const {
-            title,
-            url,
-            Category,
-            description,
-            image,
-            learning_centre_tags,
-          } = item.attributes
-          return {
-            title,
-            url,
-            description,
-            category: Category,
-            image: image.data.attributes.url,
-            learning_centre_tags: learning_centre_tags.data.map(
-              (tag) => tag.attributes.name
-            ),
-          }
-        })
-        setLoading(false)
-        setItems(simplifiedItems)
-      } catch (error) {
-        notification.error({
-          message: error.response.data
-            ? error.response.data.errorDetails
-            : 'An error occured',
-        })
-        setLoading(false)
-      }
-    }
-
-    const fetchLearningCentresTags = async () => {
-      try {
-        const response = await axios.get(
-          `${strapiURL}/api/learning-centre-tags`
-        )
-        const simplifiedItems = response.data.data.map((item) => {
-          const { name } = item.attributes
-          return {
-            name,
-          }
-        })
-        setTags(simplifiedItems)
-      } catch (error) {
-        if (error) {
-          notification.error({
-            message: error.response.data
-              ? error.response.data.errorDetails
-              : 'An error occured',
-          })
-        }
-      }
-    }
-
-    fetchLearningCentres()
-    fetchLearningCentresTags()
-  }, [])
 
   const filteredItems = items.filter((item) => {
     const tagMatch =
@@ -114,6 +49,7 @@ function CapacityBuilding() {
             <ul>
               {categories.map((category) => (
                 <li
+                  key={category}
                   className={`${
                     selectedCategory.toLowerCase() === category.toLowerCase()
                       ? 'selected'
@@ -137,7 +73,8 @@ function CapacityBuilding() {
                 value: item.name,
                 label: item.name,
               }))}
-              suffixIcon={<SearchIcon />}
+              suffixIcon={selectedTags.length === 0 ? <SearchIcon /> : null}
+              clearIcon={<CloseIcon />}
               onChange={handleTagChange}
             />
           </div>
@@ -170,24 +107,81 @@ const LearningCentreCard = ({ data, loading }) => {
       <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3 }}>
         <Masonry gutter="30px">
           {data.map((item) => (
-            <div className="learning-centre-card">
+            <Link
+              href={item.url}
+              className="learning-centre-card"
+              key={item.title}
+            >
               <img src={item.image} />
               <div className="content">
                 <p className="category">{item.category}</p>
                 <h2>{item.title}</h2>
                 <p className="description">{item.description}</p>
                 <div className="tags">
-                  {item.learning_centre_tags.map((tag) => (
-                    <span>{tag}</span>
+                  {item.learning_centre_tags.map((tag, index) => (
+                    <span key={`${tag}-${index}`}>{tag}</span>
                   ))}
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </Masonry>
       </ResponsiveMasonry>
     </div>
   )
+}
+
+export async function getStaticProps() {
+  const strapiURL = getStrapiUrl()
+
+  const fetchLearningCentres = async () => {
+    const response = await axios.get(
+      `${strapiURL}/api/learning-centres?populate=learning_centre_tags,image`
+    )
+    const simplifiedItems = response.data.data.map((item) => {
+      const {
+        title,
+        url,
+        Category,
+        description,
+        image,
+        learning_centre_tags,
+      } = item.attributes
+      return {
+        title,
+        url,
+        description,
+        category: Category,
+        image: image.data.attributes.url,
+        learning_centre_tags: learning_centre_tags.data.map(
+          (tag) => tag.attributes.name
+        ),
+      }
+    })
+    return simplifiedItems
+  }
+
+  const fetchLearningCentresTags = async () => {
+    const response = await axios.get(`${strapiURL}/api/learning-centre-tags`)
+    const simplifiedTags = response.data.data.map((item) => {
+      const { name } = item.attributes
+      return { name }
+    })
+    return simplifiedTags
+  }
+
+  const [items, tags] = await Promise.all([
+    fetchLearningCentres(),
+    fetchLearningCentresTags(),
+  ])
+
+  return {
+    props: {
+      initialItems: items,
+      initialTags: tags,
+    },
+    revalidate: 60,
+  }
 }
 
 export default CapacityBuilding
