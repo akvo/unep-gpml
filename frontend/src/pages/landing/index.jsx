@@ -458,6 +458,7 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
 }
 
 const ShowcasingAndStats = (props) => {
+  const { isAuthenticated, setLoginVisible } = props
   const { stakeholders, organisations, community } = UIStore.useState((s) => ({
     stakeholders: s.stakeholders,
     organisations: s.organisations,
@@ -550,14 +551,23 @@ const ShowcasingAndStats = (props) => {
           </div>
           <p>
             <div>
-              <h3>Knowledge Hub</h3>
-              <span>Crowdsourcing {totalCount} materials</span>
-              <Button type="link">
-                Explore the resources{' '}
-                <div className="icn">
-                  <Pointer />
-                </div>
-              </Button>
+              <h3>
+                <Trans>Knowledge Hub</Trans>
+              </h3>
+              <span>
+                <Trans>
+                  Crowdsourcing a vast repository/library of {totalCount}{' '}
+                  curated knowledge products and materials.
+                </Trans>
+              </span>
+              <Link href="/knowledge/library">
+                <Button type="link">
+                  <Trans>Explore the resources</Trans>{' '}
+                  <div className="icn">
+                    <Pointer />
+                  </div>
+                </Button>
+              </Link>
             </div>
           </p>
         </div>
@@ -572,17 +582,23 @@ const ShowcasingAndStats = (props) => {
           </div>
           <p>
             <div>
-              <h3>Data Hub</h3>
+              <h3>
+                <Trans>Data Hub</Trans>
+              </h3>
               <span>
-                Visualising {props?.layers} data layers accross the plastic
-                lifecycle{' '}
+                <Trans>
+                  Visualizing an extensive array of {props?.layers} data layers
+                  across the plastic lifecycle, providing in-depth insights.
+                </Trans>
               </span>
-              <Button type="link">
-                Explore the data layers{' '}
-                <div className="icn">
-                  <Pointer />
-                </div>
-              </Button>
+              <Link href="/data/maps">
+                <Button type="link">
+                  <Trans>Explore the data layers</Trans>{' '}
+                  <div className="icn">
+                    <Pointer />
+                  </div>
+                </Button>
+              </Link>
             </div>
           </p>
         </div>
@@ -592,17 +608,24 @@ const ShowcasingAndStats = (props) => {
           </div>
           <p>
             <div>
-              <h3>Communities of Practice</h3>
+              <h3>
+                <Trans>Communities of Practice</Trans>
+              </h3>
               <span>
-                {props?.cop} CoPs of experts and scientist filling knowledge and
-                data gap
+                <Trans>
+                  Harnessing the expertise of {props?.cop} Communities of
+                  Practice (CoPs) comprised of leading experts and scientists to
+                  bridge critical knowledge and data gaps.
+                </Trans>
               </span>
-              <Button type="link">
-                Explore the CoPs{' '}
-                <div className="icn">
-                  <Pointer />
-                </div>
-              </Button>
+              <Link href="/cop">
+                <Button type="link">
+                  <Trans>Explore the CoPs</Trans>{' '}
+                  <div className="icn">
+                    <Pointer />
+                  </div>
+                </Button>
+              </Link>
             </div>
           </p>
         </div>
@@ -619,14 +642,21 @@ const ShowcasingAndStats = (props) => {
             <div>
               <h3>Community</h3>
               <span>
-                Connecting {expertsCount} experts and {stakeholders.count}
+                <Trans>
+                  Fostering a dynamic network of {expertsCount} experts,{' '}
+                  {stakeholders?.stakeholders?.length} stakeholders and{' '}
+                  {organisations.length} member organisations, enhancing
+                  collaboration and shared innovation.
+                </Trans>
               </span>
-              <Button type="link">
-                Explore the community{' '}
-                <div className="icn">
-                  <Pointer />
-                </div>
-              </Button>
+              <Link href="/community">
+                <Button type="link">
+                  <Trans>Explore the community</Trans>{' '}
+                  <div className="icn">
+                    <Pointer />
+                  </div>
+                </Button>
+              </Link>
             </div>
           </p>
         </div>
@@ -641,17 +671,35 @@ const ShowcasingAndStats = (props) => {
           </div>
           <p>
             <div>
-              <h3>Workspace</h3>
+              <h3>
+                <Trans>Workspace</Trans>
+              </h3>
               <span>
-                Supporting 21 countries in developing national source
-                inventories towards national strategies/roadmaps/action plans
+                <Trans>
+                  Empowering 18 countries in crafting comprehensive national
+                  source inventories, which facilitates the development of a
+                  National Roadmap/Strategy/Plan through evidence-based
+                  approach. Additionally, forums can be accessed from the
+                  workspace, promoting collaboration and sharing of information.
+                </Trans>
               </span>
-              <Button type="link">
-                Access the workspace
-                <div className="icn">
-                  <Pointer />
-                </div>
-              </Button>
+              {!isAuthenticated ? (
+                <Button type="link" onClick={() => setLoginVisible(true)}>
+                  <Trans>Access the workspace</Trans>
+                  <div className="icn">
+                    <Pointer />
+                  </div>
+                </Button>
+              ) : (
+                <Link href="/workspace">
+                  <Button type="link">
+                    <Trans>Access the workspace</Trans>
+                    <div className="icn">
+                      <Pointer />
+                    </div>
+                  </Button>
+                </Link>
+              )}
             </div>
           </p>
         </div>
