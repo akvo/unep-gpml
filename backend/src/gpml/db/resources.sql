@@ -1,0 +1,4 @@
+-- :name get-resources :? :*
+-- :doc Gets the list of resoources. If count-only? parameter is set to true, the query will only group and count the topics.
+-- :require [gpml.db.resources]
+--~ (#'gpml.db.resources/generate-resources-query params)
