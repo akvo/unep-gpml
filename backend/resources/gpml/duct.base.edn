@@ -56,7 +56,7 @@
                             {:get {:summary    "Browse available resources (selected properties)"
                                    :swagger    {:tags ["resources"]}
                                    :parameters {:query #ig/ref :gpml.handler.browse/query-params}
-                                   :handler    #ig/ref :gpml.handler.browse/get}}]]
+                                   :handler    #ig/ref :gpml.handler.browse/resources}}]]
                           ["/submission" {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                        #ig/ref :gpml.auth/auth-required]
                                           :responses  {401 {:description "Need authentication"}
@@ -779,6 +779,7 @@
  :gpml.handler.country-group/get                                    {:db #ig/ref :duct.database/sql}
  :gpml.handler.browse/get                                           #ig/ref :gpml.config/common
  :gpml.handler.browse/query-params                                  #ig/ref :gpml.config/common
+ :gpml.handler.browse/resources                                     #ig/ref :gpml.config/common
  :gpml.handler.submission/get                                       #ig/ref :gpml.config/common
  :gpml.handler.submission/get-params                                {}
  :gpml.handler.submission/get-detail                                #ig/ref :gpml.config/common

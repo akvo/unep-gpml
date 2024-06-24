@@ -454,6 +454,38 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
           (r/server-error (assoc-in response [:error-details :error] (pg-util/get-sql-state t)))
           (r/server-error (assoc-in response [:error-details :error] (ex-message t))))))))
 
+(defn- resources-response [{:keys [logger] {db :spec} :db :as config} query approved? admin]
+  (try
+    (let [api-search-opts (->> query
+                               (api-filters->filters)
+                               (merge {:approved approved?
+                                       :admin admin})
+                               (add-geo-coverage-filters config)
+                               (add-plastic-strategy-filters config))
+          get-topics-start-time (System/currentTimeMillis)
+          results (->> api-search-opts
+                       (db.topic/get-topics db)
+                       (map (partial resource->api-resource config))
+                       (map #(select-keys % [:id :title :type :files :topic])))
+          get-topics-exec-time (- (System/currentTimeMillis) get-topics-start-time)
+          count-topics-start-time (System/currentTimeMillis)
+          counts (->> (assoc api-search-opts :count-only? true)
+                      (db.topic/get-topics db))
+          count-topics-exec-time (- (System/currentTimeMillis) count-topics-start-time)]
+      (log logger :info :query-exec-time {:get-topics-exec-time (str get-topics-exec-time "ms")
+                                          :count-topics-exec-time (str count-topics-exec-time "ms")})
+      (r/ok {:success? true
+             :results results
+             :counts counts}))
+    (catch Exception t
+      (timbre/with-context+ query
+        (log logger :error :failed-to-get-topics t))
+      (let [response {:success? false
+                      :reason :could-not-get-topics}]
+        (if (instance? SQLException t)
+          (r/server-error (assoc-in response [:error-details :error] (pg-util/get-sql-state t)))
+          (r/server-error (assoc-in response [:error-details :error] (ex-message t))))))))
+
 (defmethod ig/init-key :gpml.handler.browse/get [_ config]
   (fn [{{:keys [query]} :parameters
         approved? :approved?
@@ -465,3 +497,12 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
 
 (defmethod ig/init-key :gpml.handler.browse/query-params [_ config]
   (api-opts-schema config))
+
+(defmethod ig/init-key :gpml.handler.browse/resources [_ config]
+  (fn [{{:keys [query]} :parameters
+        approved? :approved?
+        user :user}]
+    (#'resources-response config
+                          (merge query {:user-id (:id user)})
+                          approved?
+                          (h.r.permission/super-admin? config (:id user)))))
