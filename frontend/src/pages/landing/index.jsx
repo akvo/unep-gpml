@@ -1239,19 +1239,19 @@ const Partners = () => {
         <ul className="partner-items">
           <Swiper
             spaceBetween={width <= 1024 ? 20 : 40}
-            slidesPerView={width <= 1024 ? 2 : 6}
+            slidesPerView={width <= 1024 ? 2 : 5}
             pagination={pagination}
             modules={[Pagination]}
           >
             {items.map((item, ix) => (
               <SwiperSlide key={ix}>
-                <a
-                  href={item.url ? item.url : '#'}
-                  legacyBehavior
-                  target="_blank"
-                >
+                {item.url ? (
+                  <a href={item.url} target="_blank" rel="noopener noreferrer">
+                    <img alt={item.name} src={item.image} />
+                  </a>
+                ) : (
                   <img alt={item.name} src={item.image} />
-                </a>
+                )}
               </SwiperSlide>
             ))}
           </Swiper>
