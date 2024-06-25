@@ -45,6 +45,7 @@
     "react-ga4": "^2.1.0",
     "react-jsonschema-form-extras": "^0.9.67",
     "react-multi-carousel": "^2.6.3",
+    "react-responsive-masonry": "^2.2.0",
     "react-router-dom": "^5.2.0",
     "react-rte": "^0.16.4",
     "react-simple-maps": "^2.3.0",
