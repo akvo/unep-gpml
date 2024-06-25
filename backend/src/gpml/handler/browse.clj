@@ -320,7 +320,8 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
   [{:keys [limit offset startDate endDate user-id favorites country transnational
            topic tag affiliation representativeGroup subContentType entity orderBy
            descending q incCountsForTags featured capacity_building upcoming
-           ps_country_iso_code_a2 ps_bookmark_sections_keys badges inc_entity_connections]
+           ps_country_iso_code_a2 ps_bookmark_sections_keys badges inc_entity_connections
+           bookmarked]
     :or {limit default-limit
          offset default-offset}}]
   (cond-> {}
@@ -336,7 +337,7 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
     endDate
     (assoc :end-date endDate)
 
-    (and user-id favorites)
+    (and user-id (or favorites bookmarked))
     (assoc :user-id user-id :favorites true :resource-types dom.resource/types)
 
     (seq country)
