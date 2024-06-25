@@ -1,7 +1,7 @@
 (ns gpml.handler.browse
   (:require
-   [clojure.string :as str]
    [clojure.set :as set]
+   [clojure.string :as str]
    [duct.logger :refer [log]]
    [gpml.db.country-group :as db.country-group]
    [gpml.db.resource.connection :as db.resource.connection]
