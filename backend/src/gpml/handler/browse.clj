@@ -487,6 +487,12 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
           (r/server-error (assoc-in response [:error-details :error] (pg-util/get-sql-state t)))
           (r/server-error (assoc-in response [:error-details :error] (ex-message t))))))))
 
+(defn- selected-keys [query]
+  (let [ks [:id :title :type :images :topic]]
+    (if (:incBadges query)
+      (conj ks :incBadges)
+      ks)))
+
 (defn- resources-response [{:keys [logger] {db :spec} :db :as config} query approved? admin]
   (try
     (let [api-search-opts (->> query
@@ -499,10 +505,12 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
           results (->> api-search-opts
                        (db.topic/get-topics db)
                        (map (partial resource->api-resource config))
-                       (map #(set/rename-keys % {:files :images})))
+                       (map #(set/rename-keys % {:files :images
+                                                 :badges :incBadges})))
+          ks (selected-keys query)
           results (if (:incAllProps query)
                     results
-                    (map #(select-keys % [:id :title :type :images :topic]) results))
+                    (map #(select-keys % ks) results))
           get-topics-exec-time (- (System/currentTimeMillis) get-topics-start-time)
           count-topics-start-time (System/currentTimeMillis)
           counts (->> (assoc api-search-opts :count-only? true)
