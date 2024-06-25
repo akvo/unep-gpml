@@ -1,12 +1,14 @@
 @import '../../styles/vars.scss';
 
 .knowledgeHub {
+  display: flex;
   :global {
     .filter-sidebar {
       background: #f5f7ff;
       padding: 20px;
       @media screen and (min-width: 768px) {
         width: 350px;
+        min-width: 350px;
         min-height: calc(100vh - 300px);
       }
       .section {
@@ -40,6 +42,13 @@
             height: 100%;
           }
         }
+      }
+    }
+    .results {
+      display: flex;
+      flex-wrap: wrap;
+      .resource-card {
+        margin: 15px 0 0 15px;
       }
     }
   }

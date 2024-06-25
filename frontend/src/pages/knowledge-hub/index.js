@@ -1,10 +1,13 @@
 import classNames from 'classnames'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styles from './index.module.scss'
 import { Check, Check2 } from '../../components/icons'
 import { motion, AnimatePresence } from 'framer-motion'
+import api from '../../utils/api'
+import ResourceCard from '../../components/resource-card/resource-card'
 
 const KnowledgeHub = () => {
+  const [results, setResults] = useState([])
   const themes = [
     { name: 'Plastic Production & Distribution' },
     { name: 'Plastic Consumption' },
@@ -21,6 +24,11 @@ const KnowledgeHub = () => {
     { name: 'Financing Resource' },
     { name: 'Case Studies' },
   ]
+  useEffect(() => {
+    api.get('/resources').then((d) => {
+      setResults(d.data.results)
+    })
+  }, [])
   return (
     <div className={styles.knowledgeHub}>
       <aside className="filter-sidebar">
@@ -42,9 +50,16 @@ const KnowledgeHub = () => {
           </div>
         </div>
       </aside>
+      <div className="results">
+        {results?.map((result) => (
+          <ResourceCard item={result} />
+        ))}
+      </div>
     </div>
   )
 }
+
+// const ResourceCard = () => {}
 
 const FilterToggle = ({ children }) => {
   const [on, setOn] = useState(false)

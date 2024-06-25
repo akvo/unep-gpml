@@ -2,12 +2,12 @@
 .resourceCard {
   overflow: hidden;
   border-radius: 10px;
-  border: 1px solid #e6e6e6;
   background: #fff;
-  box-shadow: 0px 24px 40px 0px rgba(0, 0, 0, 0.01);
+  border: none;
+  box-shadow: 0px 8px 40px 0px rgba(0, 0, 0, 0.1);
   position: relative;
-  width: 190px;
-  height: 250px;
+  width: 195px;
+  height: 290px;
   padding: 10px 12px;
   img {
     border: none;
@@ -19,33 +19,16 @@
   }
 
   :global {
-    .tags {
-      position: absolute;
-      bottom: 10px;
-      right: 10px;
-      z-index: 3;
-      display: flex;
-      & > * {
-        margin-left: 5px;
-      }
-      .tag {
-        border-radius: 12px;
-        border: 1px solid $primaryDarkBlue;
-        line-height: 24px;
-        font-family: $ff1;
-        font-size: 12px;
-        font-weight: 700;
-        text-transform: uppercase;
-        padding: 0 7px;
-        background-color: rgba(255, 255, 255, 0.85);
-      }
-      .badge {
-        height: 25px;
-        svg {
-          width: 25px;
-          height: 25px;
-        }
-      }
+    .type {
+      font-size: 11px;
+      font-family: $ff1;
+      font-weight: bold;
+      letter-spacing: 0.24px;
+    }
+    h4 {
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 22px;
     }
   }
   .bookmarkBtn {

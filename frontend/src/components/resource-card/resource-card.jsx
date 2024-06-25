@@ -21,25 +21,27 @@ const ResourceCard = ({ item, bookmarked, onBookmark, onClick }) => {
   } else {
     inner = (
       <>
-        <h4 className="h-xs w-bold">{item.title}</h4>
+        <h4 className="h-xs">{item.title}</h4>
       </>
     )
   }
   return (
     <div
-      className={classNames(styles.resourceCard, {
+      className={classNames(styles.resourceCard, 'resource-card', {
         [styles.withImage]: withImage,
       })}
       onClick={handleClick}
     >
-      {inner}
+      <div className="type caps-heading-xs">
+        {item?.type?.replace(/_/g, ' ')}
+      </div>
       {onBookmark != null && (
         <BookmarkBtn {...{ bookmarked, onBookmark, item }} />
       )}
-      <div className="tags">
+      {inner}
+      {/* <div className="tags">
         <AssignedBadges assignedBadges={item.assignedBadges} />
-        <div className="tag">{item?.type?.replace(/_/g, ' ')}</div>
-      </div>
+      </div> */}
     </div>
   )
 }
