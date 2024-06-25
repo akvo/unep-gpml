@@ -499,8 +499,10 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
           results (->> api-search-opts
                        (db.topic/get-topics db)
                        (map (partial resource->api-resource config))
-                       (map #(select-keys % [:id :title :type :files :topic]))
                        (map #(set/rename-keys % {:files :images})))
+          results (if (:incAllProps query)
+                    results
+                    (map #(select-keys % [:id :title :type :images :topic]) results))
           get-topics-exec-time (- (System/currentTimeMillis) get-topics-start-time)
           count-topics-start-time (System/currentTimeMillis)
           counts (->> (assoc api-search-opts :count-only? true)
