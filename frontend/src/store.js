@@ -33,7 +33,7 @@ const menuList = [
         icon: <BookIcon />,
       },
       {
-        to: '/knowledge/capacity-development',
+        to: '/knowledge/learning-centre',
         title: msg`Learning center`,
         key: msg`Learning center`,
         id: 'Learning center',

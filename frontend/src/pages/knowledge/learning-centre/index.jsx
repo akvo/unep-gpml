@@ -10,9 +10,9 @@ import Link from 'next/link'
 
 const categories = ['all', 'online course', 'Masterclass', 'Webinar', 'Other']
 
-function CapacityBuilding({ initialItems, initialTags }) {
+function CapacityBuilding({ initialItems }) {
   const [items, setItems] = useState(initialItems)
-  const [tags, setTags] = useState(initialTags)
+  const [tags, setTags] = useState([])
   const [loading, setLoading] = useState(false)
   const [selectedTags, setSelectedTags] = useState([])
   const [selectedCategory, setSelectedCategory] = useState('all')
@@ -26,6 +26,33 @@ function CapacityBuilding({ initialItems, initialTags }) {
   const handleCategoryChange = (category) => {
     setSelectedCategory(category.toLowerCase())
   }
+
+  useEffect(() => {
+    const fetchLearningCentresTags = async () => {
+      try {
+        const response = await axios.get(
+          `${strapiURL}/api/learning-centre-tags`
+        )
+        const simplifiedItems = response.data.data.map((item) => {
+          const { name } = item.attributes
+          return {
+            name,
+          }
+        })
+        setTags(simplifiedItems)
+      } catch (error) {
+        if (error) {
+          notification.error({
+            message: error.response.data
+              ? error.response.data.errorDetails
+              : 'An error occured',
+          })
+        }
+      }
+    }
+
+    fetchLearningCentresTags()
+  }, [])
 
   const filteredItems = items.filter((item) => {
     const tagMatch =
@@ -162,24 +189,11 @@ export async function getStaticProps() {
     return simplifiedItems
   }
 
-  const fetchLearningCentresTags = async () => {
-    const response = await axios.get(`${strapiURL}/api/learning-centre-tags`)
-    const simplifiedTags = response.data.data.map((item) => {
-      const { name } = item.attributes
-      return { name }
-    })
-    return simplifiedTags
-  }
-
-  const [items, tags] = await Promise.all([
-    fetchLearningCentres(),
-    fetchLearningCentresTags(),
-  ])
+  const [items] = await Promise.all([fetchLearningCentres()])
 
   return {
     props: {
       initialItems: items,
-      initialTags: tags,
     },
     revalidate: 60,
   }
