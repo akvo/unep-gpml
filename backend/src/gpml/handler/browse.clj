@@ -1,6 +1,7 @@
 (ns gpml.handler.browse
   (:require
    [clojure.string :as str]
+   [clojure.set :as set]
    [duct.logger :refer [log]]
    [gpml.db.country-group :as db.country-group]
    [gpml.db.resource.connection :as db.resource.connection]
@@ -498,7 +499,8 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
           results (->> api-search-opts
                        (db.topic/get-topics db)
                        (map (partial resource->api-resource config))
-                       (map #(select-keys % [:id :title :type :files :topic])))
+                       (map #(select-keys % [:id :title :type :files :topic]))
+                       (map #(set/rename-keys % {:files :images})))
           get-topics-exec-time (- (System/currentTimeMillis) get-topics-start-time)
           count-topics-start-time (System/currentTimeMillis)
           counts (->> (assoc api-search-opts :count-only? true)
