@@ -107,10 +107,11 @@ const LearningCentreCard = ({ data, loading }) => {
       <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3 }}>
         <Masonry gutter="30px">
           {data.map((item) => (
-            <Link
+            <a
               href={item.url}
               className="learning-centre-card"
               key={item.title}
+              target="_blank"
             >
               <img src={item.image} />
               <div className="content">
@@ -123,7 +124,7 @@ const LearningCentreCard = ({ data, loading }) => {
                   ))}
                 </div>
               </div>
-            </Link>
+            </a>
           ))}
         </Masonry>
       </ResponsiveMasonry>
