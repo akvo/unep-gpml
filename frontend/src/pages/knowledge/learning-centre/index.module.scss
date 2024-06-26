@@ -39,7 +39,7 @@
           text-transform: uppercase;
         }
         .ant-select-selector {
-          box-shadow: none;
+          box-shadow: none !important;
         }
 
         @media screen and (max-width: $bpMobile) {
