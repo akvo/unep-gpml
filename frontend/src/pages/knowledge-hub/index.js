@@ -5,9 +5,25 @@ import { Check, Check2 } from '../../components/icons'
 import { motion, AnimatePresence } from 'framer-motion'
 import api from '../../utils/api'
 import ResourceCard from '../../components/resource-card/resource-card'
+import DetailModal from '../../modules/details-page/modal'
+import { useRouter } from 'next/router'
+import bodyScrollLock from '../../modules/details-page/scroll-utils'
 
-const KnowledgeHub = () => {
+const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
   const [results, setResults] = useState([])
+  const router = useRouter()
+  const [params, setParams] = useState(null)
+  const [modalVisible, setModalVisible] = useState(false)
+  useEffect(() => {
+    if (!modalVisible) {
+      const previousHref = router.asPath
+      window.history.pushState(
+        { urlPath: `/${previousHref}` },
+        '',
+        `${previousHref}`
+      )
+    }
+  }, [modalVisible])
   const themes = [
     { name: 'Plastic Production & Distribution' },
     { name: 'Plastic Consumption' },
@@ -24,6 +40,17 @@ const KnowledgeHub = () => {
     { name: 'Financing Resource' },
     { name: 'Case Studies' },
   ]
+  const showModal = ({ e, item }) => {
+    const { type, id } = item
+    e?.preventDefault()
+    if (type && id) {
+      const detailUrl = `/${type.replace(/_/g, '-')}/${id}`
+      setParams({ type, id, item })
+      window.history.pushState({}, '', detailUrl)
+      setModalVisible(true)
+      bodyScrollLock.enable()
+    }
+  }
   useEffect(() => {
     api.get('/resources').then((d) => {
       setResults(d.data.results)
@@ -52,9 +79,23 @@ const KnowledgeHub = () => {
       </aside>
       <div className="results">
         {results?.map((result) => (
-          <ResourceCard item={result} />
+          <ResourceCard
+            item={result}
+            // onBookmark={handleBookmark}
+            onClick={showModal}
+          />
         ))}
       </div>
+      <DetailModal
+        match={{ params }}
+        visible={modalVisible}
+        setVisible={setModalVisible}
+        isServer={false}
+        {...{
+          setLoginVisible,
+          isAuthenticated,
+        }}
+      />
     </div>
   )
 }
