@@ -320,7 +320,8 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
   [{:keys [limit offset startDate endDate user-id favorites country transnational
            topic tag affiliation representativeGroup subContentType entity orderBy
            descending q incCountsForTags featured capacity_building upcoming
-           ps_country_iso_code_a2 ps_bookmark_sections_keys badges inc_entity_connections]
+           ps_country_iso_code_a2 ps_bookmark_sections_keys badges inc_entity_connections
+           bookmarked incBadges]
     :or {limit default-limit
          offset default-offset}}]
   (cond-> {}
@@ -336,7 +337,7 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
     endDate
     (assoc :end-date endDate)
 
-    (and user-id favorites)
+    (and user-id (or favorites bookmarked))
     (assoc :user-id user-id :favorites true :resource-types dom.resource/types)
 
     (seq country)
@@ -380,6 +381,9 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
 
     (some? badges)
     (assoc :badges badges)
+
+    (some? incBadges)
+    (assoc :badges incBadges)
 
     upcoming
     (assoc :upcoming upcoming)
@@ -506,7 +510,7 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
                        (db.topic/get-topics db)
                        (map (partial resource->api-resource config))
                        (map #(set/rename-keys % {:files :images
-                                                 :badges :incBadges})))
+                                                 :assigned_badges :incBadges})))
           ks (selected-keys query)
           results (if (:incAllProps query)
                     results
