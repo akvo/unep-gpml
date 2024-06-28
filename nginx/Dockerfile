@@ -1,6 +1,6 @@
-FROM nginx:1.19.6-alpine
+FROM nginx:1.26.1-alpine
 
-EXPOSE 80
+ENV GCS_BASE_URL=https://storage.googleapis.com/unep-gpml-public-test
 
-
-COPY conf.d/default.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY templates/default.conf.template /etc/nginx/templates/default.conf.template

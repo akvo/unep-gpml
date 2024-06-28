@@ -80,4 +80,53 @@ server {
         proxy_pass_request_headers on;
     }
 
+    # Image resize via nginx
+    location /img400 {
+
+      image_filter_buffer 10M;
+      image_filter resize 400 -;
+
+      proxy_pass         ${GCS_BASE_URL};
+      proxy_redirect     off;
+      proxy_set_header   Host storage.googleapis.com;
+      proxy_method       GET;
+      proxy_pass_request_body off;
+    }
+
+    location /img800 {
+
+      image_filter_buffer 10M;
+      image_filter resize 800 -;
+
+      proxy_pass         ${GCS_BASE_URL};
+      proxy_redirect     off;
+      proxy_set_header   Host storage.googleapis.com;
+      proxy_method       GET;
+      proxy_pass_request_body off;
+    }
+
+    location /img1200 {
+
+      image_filter_buffer 10M;
+      image_filter resize 1200 -;
+
+      proxy_pass         ${GCS_BASE_URL};
+      proxy_redirect     off;
+      proxy_set_header   Host storage.googleapis.com;
+      proxy_method       GET;
+      proxy_pass_request_body off;
+    }
+
+    location /img1600 {
+
+      image_filter_buffer 10M;
+      image_filter resize 1600 -;
+
+      proxy_pass         ${GCS_BASE_URL};
+      proxy_redirect     off;
+      proxy_set_header   Host storage.googleapis.com;
+      proxy_method       GET;
+      proxy_pass_request_body off;
+    }
+
 }
