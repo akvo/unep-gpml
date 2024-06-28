@@ -81,7 +81,7 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
         {results?.map((result) => (
           <ResourceCard
             item={result}
-            // onBookmark={handleBookmark}
+            onBookmark={() => {}}
             onClick={showModal}
           />
         ))}

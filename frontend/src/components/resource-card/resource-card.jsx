@@ -11,20 +11,6 @@ const ResourceCard = ({ item, bookmarked, onBookmark, onClick }) => {
   const handleClick = (e) => {
     onClick({ e, item })
   }
-  let inner
-  if (withImage) {
-    inner = (
-      <>
-        <Image src={item.image} width={190} height={250} />
-      </>
-    )
-  } else {
-    inner = (
-      <>
-        <h4 className="h-xs">{item.title}</h4>
-      </>
-    )
-  }
   return (
     <div
       className={classNames(styles.resourceCard, 'resource-card', {
@@ -38,10 +24,11 @@ const ResourceCard = ({ item, bookmarked, onBookmark, onClick }) => {
       {onBookmark != null && (
         <BookmarkBtn {...{ bookmarked, onBookmark, item }} />
       )}
-      {inner}
-      {/* <div className="tags">
+      <h4 className="h-xs">{item.title}</h4>
+      {withImage && <Image src={item.image} width={190} height={250} />}
+      <div className="meta">
         <AssignedBadges assignedBadges={item.assignedBadges} />
-      </div> */}
+      </div>
     </div>
   )
 }
