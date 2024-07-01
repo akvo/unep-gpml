@@ -6,9 +6,9 @@ import { getStrapiUrl } from '../../../utils/misc'
 import axios from 'axios'
 import { CloseIcon, SearchIcon } from '../../../components/icons'
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
-import Link from 'next/link'
-
-const categories = ['all', 'online course', 'Masterclass', 'Webinar', 'Other']
+import { loadCatalog } from '../../../translations/utils'
+import { Trans, t } from '@lingui/macro'
+import { useLingui } from '@lingui/react'
 
 function CapacityBuilding({ initialItems }) {
   const [items, setItems] = useState(initialItems)
@@ -16,6 +16,15 @@ function CapacityBuilding({ initialItems }) {
   const [loading, setLoading] = useState(false)
   const [selectedTags, setSelectedTags] = useState([])
   const [selectedCategory, setSelectedCategory] = useState('all')
+  const { i18n } = useLingui()
+
+  const categories = [
+    i18n._(t`all`),
+    i18n._(t`online course`),
+    i18n._(t`Masterclass`),
+    i18n._(t`Webinar`),
+    i18n._(t`Other`),
+  ]
 
   const strapiURL = getStrapiUrl()
 
@@ -70,7 +79,9 @@ function CapacityBuilding({ initialItems }) {
         <title>Learning Centre | UNEP GPML Digital Platform</title>
       </Head>
       <div className={`${styles.learningCentre} container`}>
-        <h1>Learning Centre</h1>
+        <h1>
+          <Trans>Learning Centre</Trans>
+        </h1>
         <div className="header">
           <div className="categories">
             <ul>
@@ -159,12 +170,12 @@ const LearningCentreCard = ({ data, loading }) => {
   )
 }
 
-export async function getStaticProps() {
+export async function getStaticProps(ctx) {
   const strapiURL = getStrapiUrl()
 
   const fetchLearningCentres = async () => {
     const response = await axios.get(
-      `${strapiURL}/api/learning-centres?populate=learning_centre_tags,image`
+      `${strapiURL}/api/learning-centres?populate=learning_centre_tags,image&locale=${ctx.locale}`
     )
     const simplifiedItems = response.data.data.map((item) => {
       const {
@@ -194,6 +205,7 @@ export async function getStaticProps() {
   return {
     props: {
       initialItems: items,
+      i18n: await loadCatalog(ctx.locale),
     },
     revalidate: 60,
   }
