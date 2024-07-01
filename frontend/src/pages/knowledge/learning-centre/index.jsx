@@ -172,6 +172,7 @@ const LearningCentreCard = ({ data, loading }) => {
 
 export async function getStaticProps(ctx) {
   const strapiURL = getStrapiUrl()
+  console.log(strapiURL,"strapiURL")
 
   const fetchLearningCentres = async () => {
     const response = await axios.get(
