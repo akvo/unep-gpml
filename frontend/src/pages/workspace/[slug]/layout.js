@@ -220,7 +220,8 @@ const NestedLayout = ({ children }) => {
      */
     try {
       const [_, countrySlug] = slug?.split(`${PREFIX_SLUG}-`)
-      const countryISOA2 = isoA2?.[countrySlug]
+      const countryISOA2 =
+        isoA2?.[countrySlug === 'cote-d-ivoire' ? 'ivory-coast' : countrySlug]
       /**
        * Make sure isoA2 code is valid and profile id is exists
        * @var profile?.id = if profile id is exist then the API token should be present and valid for auth purpose.
