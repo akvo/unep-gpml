@@ -29,11 +29,24 @@ module.exports = {
         port: '',
         pathname: '/unep-gpml-public-production/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'unep-gpml.akvotest.org',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'digital.gpmarinelitter.org',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
   async rewrites() {
     let domain = 'http://backend:3000'
-    if (process.env.REACT_APP_FEENV_LOCAL_DEV_NO_DOCKER) { // For local development without Docker
+    if (process.env.REACT_APP_FEENV_LOCAL_DEV_NO_DOCKER) {
+      // For local development without Docker
       domain = 'http://localhost:3000'
     }
     if (process.env.REACT_APP_FEENV) {
@@ -67,7 +80,7 @@ module.exports = {
         destination: '/page/who-we-are',
         permanent: true,
       },
-    ];
+    ]
   },
   webpack(config) {
     config.module.rules.push({

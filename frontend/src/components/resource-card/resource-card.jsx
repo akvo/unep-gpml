@@ -5,12 +5,16 @@ import { BookmarkIconProper, badges } from '../icons'
 import { useState } from 'react'
 import { Tooltip } from 'antd'
 import { t } from '@lingui/macro'
+import { getBaseUrl } from '../../utils/misc'
+
+const baseUrl = getBaseUrl()
 
 const ResourceCard = ({ item, bookmarked, onBookmark, onClick }) => {
-  const withImage = item.image != null
+  const withImage = item.images.length > 0
   const handleClick = (e) => {
     onClick({ e, item })
   }
+  const hasMeta = item.incBadges.length > 0 || item?.likes > 0 // add likes also
   return (
     <div
       className={classNames(styles.resourceCard, 'resource-card', {
@@ -24,11 +28,19 @@ const ResourceCard = ({ item, bookmarked, onBookmark, onClick }) => {
       {onBookmark != null && (
         <BookmarkBtn {...{ bookmarked, onBookmark, item }} />
       )}
-      <h4 className="h-xs">{item.title}</h4>
-      {withImage && <Image src={item.image} width={190} height={250} />}
-      <div className="meta">
-        <AssignedBadges assignedBadges={item.assignedBadges} />
-      </div>
+      <h4 className={classNames('h-xs', { hasMeta })}>{item.title}</h4>
+      {hasMeta && (
+        <div className="meta">
+          <AssignedBadges assignedBadges={item.incBadges} />
+        </div>
+      )}
+      {withImage && (
+        <Image
+          src={`${baseUrl}/img400/${item.images[0].objectKey}`}
+          width={195}
+          height={175}
+        />
+      )}
     </div>
   )
 }
@@ -36,13 +48,7 @@ export const AssignedBadges = ({ assignedBadges }) => {
   return (
     <>
       {assignedBadges?.map((badge) => (
-        <Tooltip
-          title={
-            badge.badgeName === 'resource-verified'
-              ? t`GPML Verified`
-              : t`Government Verified`
-          }
-        >
+        <div className="badge-container">
           <div
             className={classNames('badge', {
               gov: badge.badgeName !== 'resource-verified',
@@ -50,7 +56,12 @@ export const AssignedBadges = ({ assignedBadges }) => {
           >
             {badges.verified}
           </div>
-        </Tooltip>
+          <span>
+            {badge.badgeName === 'resource-verified'
+              ? t`GPML Verified`
+              : t`Government Verified`}
+          </span>
+        </div>
       ))}
     </>
   )

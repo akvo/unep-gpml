@@ -52,7 +52,7 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
     }
   }
   useEffect(() => {
-    api.get('/resources').then((d) => {
+    api.get('/resources?topic=case_study&incBadges=true').then((d) => {
       setResults(d.data.results)
     })
   }, [])
