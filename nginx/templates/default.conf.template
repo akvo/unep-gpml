@@ -1,4 +1,4 @@
-proxy_cache_path /var/cache/nginx levels=1 keys_zone=resized:2m max_size=1g use_temp_path=off;
+proxy_cache_path /var/cache/nginx levels=1 keys_zone=resized:2m max_size=${PROXY_MAX_SIZE} use_temp_path=off;
 
 large_client_header_buffers 16 32k;
 
