@@ -60,34 +60,36 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
   return (
     <div className={styles.knowledgeHub}>
       <aside className="filter-sidebar">
-        <Input className="src" allowClear placeholder="Search Resources" />
-        <div className="caps-heading-xs">browse resources by</div>
-        <div className="section">
-          <h4 className="h-xs w-semi">Theme</h4>
-          <div className="filters">
-            {themes.map((theme) => (
-              <FilterToggle>{theme.name}</FilterToggle>
-            ))}
+        <div className="sticky">
+          <Input className="src" allowClear placeholder="Search Resources" />
+          <div className="caps-heading-xs">browse resources by</div>
+          <div className="section">
+            <h4 className="h-xs w-semi">Theme</h4>
+            <div className="filters">
+              {themes.map((theme) => (
+                <FilterToggle>{theme.name}</FilterToggle>
+              ))}
+            </div>
           </div>
-        </div>
-        <div className="section">
-          <h4 className="h-xs w-semi">Resource Type</h4>
-          <div className="filters">
-            {types.map((type) => (
-              <FilterToggle>{type.name}</FilterToggle>
-            ))}
+          <div className="section">
+            <h4 className="h-xs w-semi">Resource Type</h4>
+            <div className="filters">
+              {types.map((type) => (
+                <FilterToggle>{type.name}</FilterToggle>
+              ))}
+            </div>
           </div>
-        </div>
-        <div className="section">
-          <h4 className="h-xs w-semi">Country</h4>
-          <Select placeholder="add country select here"></Select>
+          <div className="section">
+            <h4 className="h-xs w-semi">Country</h4>
+            <Select placeholder="add country select here"></Select>
+          </div>
         </div>
       </aside>
       <div className="results">
         {results?.map((result) => (
           <ResourceCard
             item={result}
-            onBookmark={() => {}}
+            // onBookmark={() => {}}
             onClick={showModal}
           />
         ))}
