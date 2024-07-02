@@ -8,6 +8,7 @@ import ResourceCard from '../../components/resource-card/resource-card'
 import DetailModal from '../../modules/details-page/modal'
 import { useRouter } from 'next/router'
 import bodyScrollLock from '../../modules/details-page/scroll-utils'
+import { Input, Select } from 'antd'
 
 const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
   const [results, setResults] = useState([])
@@ -52,13 +53,14 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
     }
   }
   useEffect(() => {
-    api.get('/resources?topic=case_study&incBadges=true').then((d) => {
+    api.get('/resources?incBadges=true').then((d) => {
       setResults(d.data.results)
     })
   }, [])
   return (
     <div className={styles.knowledgeHub}>
       <aside className="filter-sidebar">
+        <Input className="src" allowClear placeholder="Search Resources" />
         <div className="caps-heading-xs">browse resources by</div>
         <div className="section">
           <h4 className="h-xs w-semi">Theme</h4>
@@ -75,6 +77,10 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
               <FilterToggle>{type.name}</FilterToggle>
             ))}
           </div>
+        </div>
+        <div className="section">
+          <h4 className="h-xs w-semi">Country</h4>
+          <Select placeholder="add country select here"></Select>
         </div>
       </aside>
       <div className="results">

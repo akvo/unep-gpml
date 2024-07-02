@@ -10,7 +10,7 @@ import { getBaseUrl } from '../../utils/misc'
 const baseUrl = getBaseUrl()
 
 const ResourceCard = ({ item, bookmarked, onBookmark, onClick }) => {
-  const withImage = item.images.length > 0
+  const withImage = item?.images?.length > 0
   const handleClick = (e) => {
     onClick({ e, item })
   }
@@ -36,7 +36,7 @@ const ResourceCard = ({ item, bookmarked, onBookmark, onClick }) => {
       )}
       {withImage && (
         <Image
-          src={`${baseUrl}/img400/${item.images[0].objectKey}`}
+          src={`${baseUrl}/img400/${item?.images?.[0].objectKey}`}
           width={195}
           height={175}
         />

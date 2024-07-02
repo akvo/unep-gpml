@@ -11,6 +11,18 @@
         min-width: 350px;
         min-height: calc(100vh - 300px);
       }
+      .src {
+        line-height: 32px;
+        height: 32px;
+        border: 1px solid #ccc;
+        margin-bottom: 20px;
+        input {
+          font-size: 14px;
+          font-style: normal;
+          font-weight: 500;
+          border-radius: 0;
+        }
+      }
       .section {
         margin-top: 15px;
         .h-xs {
