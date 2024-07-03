@@ -1,4 +1,4 @@
-proxy_cache_path /var/cache/nginx levels=1 keys_zone=resized:2m max_size=${PROXY_MAX_SIZE} use_temp_path=off;
+proxy_cache_path /var/cache/nginx levels=1:2 keys_zone=resized:5m max_size=${PROXY_MAX_SIZE} inactive=${PROXY_CACHE_VALID} use_temp_path=off;
 
 large_client_header_buffers 16 32k;
 
@@ -87,7 +87,6 @@ server {
         proxy_pass        http://127.0.0.1:9079;
         proxy_cache       resized;
         proxy_cache_valid ${PROXY_CACHE_VALID};
-        proxy_ignore_headers Expires Cache-Control;
         add_header X-Cache-Status $upstream_cache_status;
     }
 
@@ -95,7 +94,6 @@ server {
         proxy_pass        http://127.0.0.1:9079;
         proxy_cache       resized;
         proxy_cache_valid ${PROXY_CACHE_VALID};
-        proxy_ignore_headers Expires Cache-Control;
         add_header X-Cache-Status $upstream_cache_status;
     }
 
@@ -103,7 +101,6 @@ server {
         proxy_pass        http://127.0.0.1:9079;
         proxy_cache       resized;
         proxy_cache_valid ${PROXY_CACHE_VALID};
-        proxy_ignore_headers Expires Cache-Control;
         add_header X-Cache-Status $upstream_cache_status;
     }
 
@@ -120,6 +117,10 @@ server {
     listen 9079;
     allow 127.0.0.1;
     deny all;
+
+    proxy_ignore_headers Expires Cache-Control;
+    proxy_hide_header Expires;
+    proxy_hide_header Cache-Control;
 
     location /img400 {
         image_filter_buffer 10M;
