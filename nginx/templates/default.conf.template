@@ -87,6 +87,7 @@ server {
         proxy_pass        http://127.0.0.1:9079;
         proxy_cache       resized;
         proxy_cache_valid ${PROXY_CACHE_VALID};
+        proxy_ignore_headers Expires Cache-Control;
         add_header X-Cache-Status $upstream_cache_status;
     }
 
@@ -94,6 +95,7 @@ server {
         proxy_pass        http://127.0.0.1:9079;
         proxy_cache       resized;
         proxy_cache_valid ${PROXY_CACHE_VALID};
+        proxy_ignore_headers Expires Cache-Control;
         add_header X-Cache-Status $upstream_cache_status;
     }
 
@@ -101,6 +103,7 @@ server {
         proxy_pass        http://127.0.0.1:9079;
         proxy_cache       resized;
         proxy_cache_valid ${PROXY_CACHE_VALID};
+        proxy_ignore_headers Expires Cache-Control;
         add_header X-Cache-Status $upstream_cache_status;
     }
 
@@ -108,6 +111,7 @@ server {
         proxy_pass        http://127.0.0.1:9079;
         proxy_cache       resized;
         proxy_cache_valid ${PROXY_CACHE_VALID};
+        proxy_ignore_headers Expires Cache-Control;
         add_header X-Cache-Status $upstream_cache_status;
     }
 }
