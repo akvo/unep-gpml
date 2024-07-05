@@ -367,6 +367,20 @@
                                                        [:topic-type #ig/ref :gpml.handler.detail/topics]
                                                        [:topic-id int?]]}
                                    :handler    #ig/ref :gpml.handler.favorite/get}}]]
+                          ["/like" {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                 #ig/ref :gpml.auth/auth-required]}
+                           [""
+                            {:post {:summary    "Creates a `like` for a resource"
+                                    :swagger    {:tags     ["like"]
+                                                 :security [{:id_token []}]}
+                                    :parameters {:body #ig/ref :gpml.handler.like/post-params}
+                                    :handler    #ig/ref :gpml.handler.like/post}}]
+                           ["/{topic-type}/{topic-id}"
+                            {:delete {:summary "Deletes a `like` for a resource"
+                                      :swagger {:tags ["like"]
+                                                :security [{:id_token []}]}
+                                      :parameters #ig/ref :gpml.handler.detail/get-params
+                                      :handler #ig/ref :gpml.handler.like/delete}}]]
                           ["/auth" {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                  #ig/ref :gpml.auth/auth-required]}
                            ["/{topic-type}/{topic-id}"
@@ -862,6 +876,10 @@
  :gpml.handler.favorite/get                                         #ig/ref :gpml.config/common
  :gpml.handler.favorite/post                                        #ig/ref :gpml.config/common
  :gpml.handler.favorite/post-params                                 {}
+ :gpml.handler.like/post                                            #ig/ref :gpml.config/common
+ :gpml.handler.like/delete                                          #ig/ref :gpml.config/common
+ :gpml.handler.like/post-params                                     {}
+ :gpml.handler.like/get-params                                      {}
  :gpml.handler.env/get                                              {:auth0  {:domain   #duct/env "OIDC_ISSUER"
                                                                               :clientId #duct/env "OIDC_AUDIENCE"
                                                                               :audience #duct/env "OIDC_AUDIENCE_M2M"}
