@@ -4,6 +4,7 @@
    [gpml.db.country :as db.country]
    [gpml.db.like :as db.like]
    [gpml.db.stakeholder :as db.stakeholder]
+   [gpml.db.topic :as db.topic]
    [gpml.fixtures :as fixtures]
    [gpml.seeder.main :as seeder]
    [gpml.test-util :as test-util]))
@@ -42,8 +43,13 @@
         (db.like/create-like db {:stakeholder-id sth2-id
                                  :resource-type "technology"
                                  :resource-id 1}))
+      (testing "Like counts should be correct"
+        (let [tech (into [] (comp (map :json)
+                                  (filter #(= 1 (:id %))))
+                         (db.topic/get-topics db {:topic #{"technology"}}))]
+          (is (= 2 (:likes (first tech))))))
       (testing "Attempting to create the `like` should fail"
         (is (thrown-with-msg? java.sql.BatchUpdateException #"duplicate key value"
-             (db.like/create-like db {:stakeholder-id sth1-id
-                                      :resource-type "technology"
-                                      :resource-id 1})))))))
+                              (db.like/create-like db {:stakeholder-id sth1-id
+                                                       :resource-type "technology"
+                                                       :resource-id 1})))))))
