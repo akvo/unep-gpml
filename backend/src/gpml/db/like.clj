@@ -3,7 +3,7 @@
   (:require
    [hugsql.core :as hugsql]))
 
-(declare create-like delete-like)
+(declare create-like delete-like get-likes)
 
 (hugsql/def-db-fns "gpml/db/like.sql")
 
@@ -18,7 +18,7 @@
                resource-type
                resource-type)))
 
-(defn generate-delete-from [{:keys [resource-type]}]
+(defn generate-table-like [{:keys [resource-type]}]
   (format "%s_like"
           (get table-rename-mapping
                resource-type
@@ -26,6 +26,12 @@
 
 (defn generate-delete-where [{:keys [resource-type]}]
   (format "%s_id = :resource-id AND stakeholder_id = :stakeholder-id"
+          (get table-rename-mapping
+               resource-type
+               resource-type)))
+
+(defn generate-select-where [{:keys [resource-type]}]
+  (format "AND %s_id = :resource-id"
           (get table-rename-mapping
                resource-type
                resource-type)))
