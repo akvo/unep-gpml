@@ -492,7 +492,7 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
           (r/server-error (assoc-in response [:error-details :error] (ex-message t))))))))
 
 (defn- selected-keys [query]
-  (let [ks [:id :title :type :images :topic]]
+  (let [ks [:id :title :type :images :topic :likes]]
     (if (:incBadges query)
       (conj ks :incBadges)
       ks)))
