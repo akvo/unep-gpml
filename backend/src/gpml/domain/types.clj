@@ -65,7 +65,8 @@
     "policy"
     "stakeholder"
     "technical_resource"
-    "technology"})
+    "technology"
+    "data_catalog"})
 
 (def resources-types
   "Resources types currently on the platform. Note that `resources` is
@@ -78,7 +79,8 @@
     "case_study"
     "financing_resource"
     "technical_resource"
-    "action_plan"})
+    "action_plan"
+    "data_catalog"})
 
 (def plastic-strategy-bookmarkable-entity-types
   (set (map keyword (conj topic-entity-tables "organisation"))))

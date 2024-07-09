@@ -16,7 +16,8 @@
   table."
   {"financing_resource" "resource"
    "action_plan" "resource"
-   "technical_resource" "resource"})
+   "technical_resource" "resource"
+   "data_catalog" "resource"})
 
 (def post-params
   [:and

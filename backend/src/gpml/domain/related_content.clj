@@ -13,7 +13,8 @@
     "financing_resource"
     "technical_resource"
     "action_plan"
-    "case_study"})
+    "case_study"
+    "data_catalog"})
 
 (def relation-types
   "Possible resource relation types.
