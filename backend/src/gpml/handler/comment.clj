@@ -139,7 +139,7 @@
       (util/update-if-not-nil :resource-id #(Integer/parseInt %))))
 
 (defn- send-new-comment-created-notification [{:keys [db mailjet-config]} {:keys [resource-id resource-type author-id]}]
-  (let [resource-type (if (some #{resource-type} ["financing_resource" "action_plan" "technical_resource"])
+  (let [resource-type (if (some #{resource-type} ["financing_resource" "action_plan" "technical_resource" "data_catalog"])
                         "resource"
                         resource-type)
         stakeholder-resource-association
