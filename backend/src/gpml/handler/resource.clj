@@ -167,7 +167,7 @@
    (into
     [:map
      [:resource_type
-      [:enum "Financing Resource", "Technical Resource", "Action Plan"]]
+      [:enum "Financing Resource", "Technical Resource", "Action Plan", "Data Catalog"]]
      [:title string?]
      [:country {:optional true} integer?]
      [:org {:optional true} map?

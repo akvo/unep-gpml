@@ -8,7 +8,7 @@
 
   FIXME: this currently is not an enum value
   and it should be, instead of plain text."
-  #{"technical_resource" "action_plan" "financing_resource"})
+  #{"technical_resource" "action_plan" "financing_resource" "data_catalog"})
 
 (def Resource
   "The Resource entity schema."
