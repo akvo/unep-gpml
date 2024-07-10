@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import Image from 'next/image'
 import styles from './style.module.scss'
-import { BookmarkIconProper, badges } from '../icons'
+import { BookmarkIconProper, Like, badges } from '../icons'
 import { useState } from 'react'
 import { Tooltip } from 'antd'
 import { t } from '@lingui/macro'
@@ -14,7 +14,7 @@ const ResourceCard = ({ item, bookmarked, onBookmark, onClick }) => {
   const handleClick = (e) => {
     onClick({ e, item })
   }
-  const hasMeta = item.incBadges.length > 0 || item?.likes > 0 // add likes also
+  const hasMeta = item.incBadges.length > 0 || item?.likes > 0
   return (
     <div
       className={classNames(styles.resourceCard, 'resource-card', {
@@ -31,6 +31,9 @@ const ResourceCard = ({ item, bookmarked, onBookmark, onClick }) => {
       <h4 className={classNames('h-xs', { hasMeta })}>{item.title}</h4>
       {hasMeta && (
         <div className="meta">
+          <div className="likes">
+            <Like /> <span>{item.likes}</span>
+          </div>
           <AssignedBadges assignedBadges={item.incBadges} />
         </div>
       )}

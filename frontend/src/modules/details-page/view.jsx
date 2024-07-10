@@ -7,7 +7,7 @@ import React, {
   useRef,
 } from 'react'
 import styles from './style.module.scss'
-import { Row, Col, List, Avatar, Popover, Tag, Modal, notification } from 'antd'
+import { Row, Col, List, Popover } from 'antd'
 
 import {
   InfoCircleOutlined,
@@ -18,10 +18,7 @@ import {
 import api from '../../utils/api'
 import { UIStore } from '../../store'
 import { titleCase } from '../../utils/string'
-import { eventTrack } from '../../utils/misc'
 import LeftImage from '../../images/sea-dark.jpg'
-import { useAuth0 } from '@auth0/auth0-react'
-import { useHistory, useLocation } from 'react-router-dom'
 import uniqBy from 'lodash/uniqBy'
 import isEmpty from 'lodash/isEmpty'
 import { redirectError } from '../error/error-util'
@@ -124,9 +121,6 @@ const DetailsView = ({
   const [data, setData] = useState(null)
   const [relations, setRelations] = useState([])
   const [comments, setComments] = useState([])
-  // const { loginWithPopup } = useAuth0();
-  const [warningVisible, setWarningVisible] = useState(false)
-  const [visible, setVisible] = useState(false)
   const [showReplyBox, setShowReplyBox] = useState('')
   const [editComment, setEditComment] = useState('')
   const [translations, setTranslations] = useState({})
@@ -137,8 +131,6 @@ const DetailsView = ({
       it.topicId === parseInt(id) &&
       it.topic === resourceTypeToTopicType(type.replace('-', '_'))
   )
-
-  const isConnectStakeholders = ['organisation', 'stakeholder'].includes(type)
 
   const allowBookmark = type !== 'stakeholder' || profile.id !== id
 
@@ -247,113 +239,6 @@ const DetailsView = ({
     }
   }
 
-  const handleEditBtn = (type = null) => {
-    eventTrack('Resource view', 'Update', 'Button')
-    let form = null
-    let link = null
-    switch (type) {
-      case 'initiative':
-        form = 'initiative'
-        link = 'edit/initiative'
-        type = 'initiative'
-        break
-      case 'action-plan':
-        form = 'actionPlan'
-        link = 'edit/action-plan'
-        type = 'action_plan'
-        break
-      case 'policy':
-        form = 'policy'
-        link = 'edit/policy'
-        type = 'policy'
-        break
-      case 'technical-resource':
-        form = 'technicalResource'
-        link = 'edit/technical-resource'
-        type = 'technical_resource'
-        break
-      case 'financing-resource':
-        form = 'financingResource'
-        link = 'edit/financing-resource'
-        type = 'financing_resource'
-        break
-      case 'technology':
-        form = 'technology'
-        link = 'edit/technology'
-        type = 'technology'
-        break
-      case 'event':
-        form = 'event'
-        link = 'edit/event'
-        type = 'event'
-        break
-      case 'case-study':
-        form = 'caseStudy'
-        link = 'edit/case-study'
-        type = 'case_study'
-        break
-      default:
-        form = 'entity'
-        link = 'edit/entity'
-        type = 'initiative'
-        break
-    }
-    UIStore.update((e) => {
-      e.formEdit = {
-        ...e.formEdit,
-        flexible: {
-          status: 'edit',
-          id: id,
-        },
-      }
-      e.formStep = {
-        ...e.formStep,
-        flexible: 1,
-      }
-    })
-    router.push(
-      {
-        pathname: `/${link}/${id}`,
-        query: { type: type },
-      },
-      `/${link}/${id}`
-    )
-  }
-
-  const handleDeleteBtn = () => {
-    Modal.error({
-      className: 'popup-delete',
-      centered: true,
-      closable: true,
-      icon: false,
-      title: t`Are you sure you want to delete this resource?`,
-      content: t`Please be aware this action cannot be undone.`,
-      okText: t`Delete`,
-      okType: 'danger',
-      cancelText: t`Cancel`,
-      okButtonProps: { size: 'small' },
-      onOk() {
-        return api
-          .delete(`/detail/${type.replace('-', '_')}/${id}`)
-          .then((res) => {
-            notification.success({
-              message: t`Resource deleted successfully`,
-            })
-          })
-          .catch((err) => {
-            console.error(err)
-            notification.error({
-              message: t`Oops, something went wrong`,
-            })
-          })
-      },
-    })
-  }
-
-  const handleVisible = () => {
-    setVisible(!visible)
-  }
-
   const [comment, setComment] = useState('')
   const [newComment, setNewComment] = useState('')
 
@@ -417,11 +302,7 @@ const DetailsView = ({
             isAuthenticated,
             type,
             id,
-            handleEditBtn,
-            handleDeleteBtn,
             allowBookmark,
-            visible,
-            handleVisible,
             showLess,
             setShowLess,
             placeholder,
@@ -432,6 +313,7 @@ const DetailsView = ({
             setLanguage,
             bookmark2PS,
             onBookmark2PS,
+            UIStore,
           }}
         />
         <Row

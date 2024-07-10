@@ -37,6 +37,19 @@
       margin-top: -3px;
       margin-bottom: 3px;
       height: 22px;
+      .likes {
+        margin-top: 3px;
+        svg {
+          transform: translateY(2px);
+        }
+        span {
+          font-family: $ff1;
+          font-size: 12px;
+          font-style: normal;
+          font-weight: 600;
+          color: $primaryPurple7;
+        }
+      }
       .badge-container {
         display: flex;
         .badge {
