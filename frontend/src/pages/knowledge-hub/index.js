@@ -9,12 +9,26 @@ import DetailModal from '../../modules/details-page/modal'
 import { useRouter } from 'next/router'
 import bodyScrollLock from '../../modules/details-page/scroll-utils'
 import { Input, Select } from 'antd'
+import { debounce } from 'lodash'
+import Button from '../../components/button'
+import { Trans } from '@lingui/macro'
 
 const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
   const [results, setResults] = useState([])
+  const [search, setSearch] = useState('')
+  const [selectedThemes, setSelectedThemes] = useState([])
+  const [selectedTypes, setSelectedTypes] = useState([])
   const router = useRouter()
   const [params, setParams] = useState(null)
   const [modalVisible, setModalVisible] = useState(false)
+  const [offset, setOffset] = useState(0)
+  const [limit] = useState(20)
+  const [hasMore, setHasMore] = useState(true)
+
+  useEffect(() => {
+    fetchData()
+  }, [search, selectedThemes, selectedTypes])
+
   useEffect(() => {
     if (!modalVisible) {
       const previousHref = router.asPath
@@ -25,6 +39,7 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
       )
     }
   }, [modalVisible])
+
   const themes = [
     { name: 'Plastic Production & Distribution' },
     { name: 'Plastic Consumption' },
@@ -33,14 +48,28 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
     { name: 'Waste Management' },
     { name: 'Just Transition of Informal Sector' },
   ]
+
   const types = [
-    { name: 'Technical Resource' },
-    { name: 'Technology' },
-    { name: 'Action Plan' },
-    { name: 'Policy & Legislation' },
-    { name: 'Financing Resource' },
-    { name: 'Case Studies' },
+    { name: 'Technical Resource', value: 'technical_resource' },
+    { name: 'Technology', value: 'technology' },
+    { name: 'Action Plan', value: 'action_plan' },
+    { name: 'Policy & Legislation', value: 'policy' },
+    { name: 'Financing Resource', value: 'financing_resource' },
+    { name: 'Case Studies', value: 'case_study' },
   ]
+
+  const handleThemeToggle = (theme) => {
+    setSelectedThemes((prev) =>
+      prev.includes(theme) ? prev.filter((t) => t !== theme) : [...prev, theme]
+    )
+  }
+
+  const handleTypeToggle = (type) => {
+    setSelectedTypes((prev) =>
+      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
+    )
+  }
+
   const showModal = ({ e, item }) => {
     const { type, id } = item
     e?.preventDefault()
@@ -52,22 +81,74 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
       bodyScrollLock.enable()
     }
   }
-  useEffect(() => {
-    api.get('/resources?incBadges=true').then((d) => {
-      setResults(d.data.results)
-    })
-  }, [])
+
+  const fetchData = async (newOffset = 0) => {
+    const params = new URLSearchParams()
+
+    if (search) params.append('q', search)
+    if (selectedThemes.length > 0)
+      params.append('tag', selectedThemes.join(','))
+    if (selectedTypes.length > 0)
+      params.append('topic', selectedTypes.join(','))
+
+    params.append('incBadges', 'true')
+    params.append('limit', limit)
+    params.append('offset', newOffset)
+
+    const response = await api.get(`/resources?${params.toString()}`)
+    const newResults = response.data.results
+
+    if (newOffset === 0) {
+      setResults(newResults)
+    } else {
+      setResults((prevResults) => [...prevResults, ...newResults])
+    }
+
+    setHasMore(newResults.length === limit)
+  }
+
+  const clearSearch = () => {
+    setSearch('')
+  }
+
+  const loadMore = () => {
+    const newOffset = offset + limit
+    fetchData(newOffset)
+    setOffset(newOffset)
+  }
+
+  const debouncedSearch = debounce((value) => {
+    setSearch(value)
+  }, 300)
+
   return (
     <div className={styles.knowledgeHub}>
       <aside className="filter-sidebar">
         <div className="sticky">
-          <Input className="src" allowClear placeholder="Search Resources" />
+          <Input
+            className="src"
+            allowClear
+            placeholder="Search Resources"
+            value={search}
+            onChange={(e) => {
+              if (e.target.value) {
+                debouncedSearch(e.target.value)
+              } else {
+                clearSearch()
+              }
+            }}
+          />
           <div className="caps-heading-xs">browse resources by</div>
           <div className="section">
             <h4 className="h-xs w-semi">Theme</h4>
             <div className="filters">
               {themes.map((theme) => (
-                <FilterToggle>{theme.name}</FilterToggle>
+                <FilterToggle
+                  key={theme.name}
+                  onToggle={() => handleThemeToggle(theme.name)}
+                >
+                  {theme.name}
+                </FilterToggle>
               ))}
             </div>
           </div>
@@ -75,7 +156,12 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
             <h4 className="h-xs w-semi">Resource Type</h4>
             <div className="filters">
               {types.map((type) => (
-                <FilterToggle>{type.name}</FilterToggle>
+                <FilterToggle
+                  key={type.name}
+                  onToggle={() => handleTypeToggle(type.value)}
+                >
+                  {type.name}
+                </FilterToggle>
               ))}
             </div>
           </div>
@@ -93,6 +179,11 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
             onClick={showModal}
           />
         ))}
+        {hasMore && (
+          <Button size="large" ghost onClick={loadMore}>
+            <Trans>Load More</Trans>
+          </Button>
+        )}
       </div>
       <DetailModal
         match={{ params }}
@@ -110,10 +201,14 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
 
 // const ResourceCard = () => {}
 
-const FilterToggle = ({ children }) => {
+const FilterToggle = ({ children, onToggle }) => {
   const [on, setOn] = useState(false)
+  const handleClick = () => {
+    setOn(!on)
+    onToggle()
+  }
   return (
-    <div className={classNames('filter', { on })} onClick={() => setOn(!on)}>
+    <div className={classNames('filter', { on })} onClick={handleClick}>
       <AnimatePresence>
         {on && (
           <motion.div
