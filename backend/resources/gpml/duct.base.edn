@@ -370,7 +370,11 @@
                           ["/like" {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                  #ig/ref :gpml.auth/auth-required]}
                            [""
-                            {:post {:summary    "Creates a `like` for a resource"
+                            {:get {:summary    "Get the liked resources for a given stakeholder"
+                                   :swagger    {:tags     ["like"]
+                                                :security [{:id_token []}]}
+                                   :handler    #ig/ref :gpml.handler.like/get}
+                             :post {:summary    "Creates a `like` for a resource"
                                     :swagger    {:tags     ["like"]
                                                  :security [{:id_token []}]}
                                     :parameters {:body #ig/ref :gpml.handler.like/post-params}
@@ -877,6 +881,7 @@
  :gpml.handler.favorite/post                                        #ig/ref :gpml.config/common
  :gpml.handler.favorite/post-params                                 {}
  :gpml.handler.like/post                                            #ig/ref :gpml.config/common
+ :gpml.handler.like/get                                             #ig/ref :gpml.config/common
  :gpml.handler.like/delete                                          #ig/ref :gpml.config/common
  :gpml.handler.like/post-params                                     {}
  :gpml.handler.like/get-params                                      {}
