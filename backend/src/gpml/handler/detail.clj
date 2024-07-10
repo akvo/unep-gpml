@@ -385,8 +385,8 @@
       likes?
       (assoc :likes (if (= "stakeholder" resource-type)
                       []
-                      (db.like/get-likes conn {:resource-type resource-type
-                                               :resource-id id}))))))
+                      (db.like/get-stakeholders conn {:resource-type resource-type
+                                                      :resource-id id}))))))
 
 (defmulti extra-details (fn [_ resource-type _] resource-type) :default :nothing)
 
