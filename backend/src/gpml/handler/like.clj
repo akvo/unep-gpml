@@ -37,23 +37,37 @@
                :type "integer"}}
     [:int {:min 1}]]])
 
+(defmethod ig/init-key ::get [_ {:keys [logger db]}]
+  (fn [{:keys [user]}]
+    (try
+      (let [db (:spec db)]
+        (r/ok {:success? true
+               :results (db.like/get-likes db {:stakeholder-id (:id user)})}))
+      (catch Exception e
+        (log logger :error :failed-to-like-resource e)
+        (r/server-error {:success? false
+                         :reason :failed-to-like-resource
+                         :error-details {:error (if (instance? SQLException e)
+                                                  (pg-util/get-sql-state e)
+                                                  (.getMessage e))}})))))
+
 (defmethod ig/init-key ::post [_ {:keys [logger db]}]
   (fn [{:keys [user body-params]}]
     (try
-        (let [db (:spec db)
-              {resource-id :topic_id resource-type :topic} body-params]
-          (db.like/create-like db {:resource-id resource-id
-                                   :resource-type resource-type
-                                   :stakeholder-id (:id user)})
-          (r/ok {:success? true
-                 :message "OK"}))
-        (catch Exception e
-          (log logger :error :failed-to-like-resource e)
-          (r/server-error {:success? false
-                           :reason :failed-to-like-resource
-                           :error-details {:error (if (instance? SQLException e)
-                                                    (pg-util/get-sql-state e)
-                                                    (.getMessage e))}})))))
+      (let [db (:spec db)
+            {resource-id :topic_id resource-type :topic} body-params]
+        (db.like/create-like db {:resource-id resource-id
+                                 :resource-type resource-type
+                                 :stakeholder-id (:id user)})
+        (r/ok {:success? true
+               :message "OK"}))
+      (catch Exception e
+        (log logger :error :failed-to-like-resource e)
+        (r/server-error {:success? false
+                         :reason :failed-to-like-resource
+                         :error-details {:error (if (instance? SQLException e)
+                                                  (pg-util/get-sql-state e)
+                                                  (.getMessage e))}})))))
 
 (defmethod ig/init-key ::delete [_ {:keys [logger db]}]
   (fn [{{:keys [user]} :jwt-claims {{:keys [topic-type topic-id]} :path} :parameters}]

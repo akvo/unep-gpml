@@ -3,7 +3,7 @@
   (:require
    [hugsql.core :as hugsql]))
 
-(declare create-like delete-like get-likes)
+(declare create-like delete-like get-stakeholders get-likes)
 
 (hugsql/def-db-fns "gpml/db/like.sql")
 
