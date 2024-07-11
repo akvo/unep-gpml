@@ -26,8 +26,9 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
   const [offset, setOffset] = useState(0)
   const [limit] = useState(20)
   const [hasMore, setHasMore] = useState(true)
-  const { countries } = UIStore.useState((s) => ({
+  const { countries, tags } = UIStore.useState((s) => ({
     countries: s.countries,
+    tags: s.tags,
   }))
 
   const countryOpts = countries
@@ -54,14 +55,11 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
     }
   }, [modalVisible])
 
-  const themes = [
-    { name: 'Plastic Production & Distribution' },
-    { name: 'Plastic Consumption' },
-    { name: 'Reuse' },
-    { name: 'Recycle' },
-    { name: 'Waste Management' },
-    { name: 'Just Transition of Informal Sector' },
-  ]
+  const themes = tags?.['theme']?.map((item) => {
+    return {
+      name: item.tag,
+    }
+  })
 
   const types = [
     { name: 'Technical Resource', value: 'technical_resource' },
@@ -165,7 +163,7 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
           <div className="section">
             <h4 className="h-xs w-semi">Theme</h4>
             <div className="filters">
-              {themes.map((theme) => (
+              {themes?.map((theme) => (
                 <FilterToggle
                   key={theme.name}
                   onToggle={() => handleThemeToggle(theme.name)}
