@@ -52,4 +52,10 @@
         (is (thrown-with-msg? java.sql.BatchUpdateException #"duplicate key value"
                               (db.like/create-like db {:stakeholder-id sth1-id
                                                        :resource-type "technology"
-                                                       :resource-id 1})))))))
+                                                       :resource-id 1}))))
+      (testing "Deleting a like should work"
+        (is (not-empty (db.like/get-likes db {:stakeholder-id sth1-id})))
+        (db.like/delete-like db {:stakeholder-id sth1-id
+                                 :resource-type "technology"
+                                 :resource-id  1})
+        (is (empty? (db.like/get-likes db {:stakeholder-id sth1-id})))))))

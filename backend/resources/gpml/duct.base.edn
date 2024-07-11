@@ -380,11 +380,12 @@
                                     :parameters {:body #ig/ref :gpml.handler.like/post-params}
                                     :handler    #ig/ref :gpml.handler.like/post}}]
                            ["/{topic-type}/{topic-id}"
-                            {:delete {:summary "Deletes a `like` for a resource"
-                                      :swagger {:tags ["like"]
-                                                :security [{:id_token []}]}
-                                      :parameters #ig/ref :gpml.handler.detail/get-params
-                                      :handler #ig/ref :gpml.handler.like/delete}}]]
+                            [""
+                             {:delete {:summary "Deletes a `like` for a resource"
+                                       :swagger {:tags ["like"]
+                                                 :security [{:id_token []}]}
+                                       :parameters #ig/ref :gpml.handler.like/get-params
+                                       :handler #ig/ref :gpml.handler.like/delete}}]]]
                           ["/auth" {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                  #ig/ref :gpml.auth/auth-required]}
                            ["/{topic-type}/{topic-id}"
