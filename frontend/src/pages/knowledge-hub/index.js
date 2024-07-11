@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import { useEffect, useState } from 'react'
 import styles from './index.module.scss'
-import { Check, Check2 } from '../../components/icons'
+import { Check, Check2, SearchIcon } from '../../components/icons'
 import { motion, AnimatePresence } from 'framer-motion'
 import api from '../../utils/api'
 import ResourceCard from '../../components/resource-card/resource-card'
@@ -11,23 +11,37 @@ import bodyScrollLock from '../../modules/details-page/scroll-utils'
 import { Input, Select } from 'antd'
 import { debounce } from 'lodash'
 import Button from '../../components/button'
-import { Trans } from '@lingui/macro'
+import { Trans, t } from '@lingui/macro'
+import { UIStore } from '../../store'
 
 const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
   const [results, setResults] = useState([])
   const [search, setSearch] = useState('')
   const [selectedThemes, setSelectedThemes] = useState([])
   const [selectedTypes, setSelectedTypes] = useState([])
+  const [selectedCountries, setSelectedCountries] = useState([])
   const router = useRouter()
   const [params, setParams] = useState(null)
   const [modalVisible, setModalVisible] = useState(false)
   const [offset, setOffset] = useState(0)
   const [limit] = useState(20)
   const [hasMore, setHasMore] = useState(true)
+  const { countries } = UIStore.useState((s) => ({
+    countries: s.countries,
+  }))
+
+  const countryOpts = countries
+    ? countries
+        .filter(
+          (country) => country.description.toLowerCase() === 'member state'
+        )
+        .map((it) => ({ value: it.id, label: it.name }))
+        .sort((a, b) => a.label.localeCompare(b.label))
+    : []
 
   useEffect(() => {
     fetchData()
-  }, [search, selectedThemes, selectedTypes])
+  }, [search, selectedThemes, selectedTypes, selectedCountries])
 
   useEffect(() => {
     if (!modalVisible) {
@@ -70,6 +84,14 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
     )
   }
 
+  const handleCountryChange = (value) => {
+    if (value) {
+      setSelectedCountries(value)
+    } else {
+      setSelectedCountries([])
+    }
+  }
+
   const showModal = ({ e, item }) => {
     const { type, id } = item
     e?.preventDefault()
@@ -90,6 +112,8 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
       params.append('tag', selectedThemes.join(','))
     if (selectedTypes.length > 0)
       params.append('topic', selectedTypes.join(','))
+    if (selectedCountries.length > 0)
+      params.append('country', selectedCountries.join(','))
 
     params.append('incBadges', 'true')
     params.append('limit', limit)
@@ -129,7 +153,6 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
             className="src"
             allowClear
             placeholder="Search Resources"
-            value={search}
             onChange={(e) => {
               if (e.target.value) {
                 debouncedSearch(e.target.value)
@@ -167,20 +190,40 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
           </div>
           <div className="section">
             <h4 className="h-xs w-semi">Country</h4>
-            <Select placeholder="add country select here"></Select>
+
+            <Select
+              size="small"
+              showSearch
+              allowClear
+              mode="multiple"
+              dropdownClassName="multiselection-dropdown"
+              dropdownMatchSelectWidth={false}
+              placeholder={t`Countries`}
+              options={countryOpts}
+              optionFilterProp="children"
+              filterOption={(input, option) =>
+                option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+              showArrow
+              suffixIcon={<SearchIcon />}
+              virtual={false}
+              onChange={handleCountryChange}
+            />
           </div>
         </div>
       </aside>
-      <div className="results">
-        {results?.map((result) => (
-          <ResourceCard
-            item={result}
-            // onBookmark={() => {}}
-            onClick={showModal}
-          />
-        ))}
-        {hasMore && (
-          <Button size="large" ghost onClick={loadMore}>
+      <div>
+        <div className="results">
+          {results?.map((result) => (
+            <ResourceCard
+              item={result}
+              // onBookmark={() => {}}
+              onClick={showModal}
+            />
+          ))}
+        </div>
+        {hasMore && results.length > 0 && (
+          <Button size="large" ghost onClick={loadMore} className="load-more">
             <Trans>Load More</Trans>
           </Button>
         )}

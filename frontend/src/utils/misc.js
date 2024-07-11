@@ -56,6 +56,7 @@ export const topicNames = (topic) => {
     organisation: 'Entity',
     stakeholder: 'Individual',
     capacityBuilding: 'Capacity Building',
+    caseStudy: 'Case Study',
   }
   return names[humps.camelize(topic)]
 }

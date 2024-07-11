@@ -39,6 +39,11 @@
         .h-xs {
           margin-bottom: 10px;
         }
+
+        .ant-select {
+          border: 1px solid #ccc;
+          width: 100%;
+        }
       }
 
       .filters {
@@ -81,10 +86,10 @@
       .resource-card {
         margin: 15px 0 0 15px;
       }
+    }
 
-      button {
-        margin: 40px auto 0px;
-      }
+    .load-more {
+      margin: 40px auto;
     }
   }
 }
