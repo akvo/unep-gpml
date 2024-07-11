@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './style.module.scss'
 import {
   Col,
@@ -23,7 +23,7 @@ import moment from 'moment'
 import TextArea from 'rc-textarea'
 import { Trans, t } from '@lingui/macro'
 
-export const CommentList = ({
+const CommentList = ({
   item,
   showReplyBox,
   setShowReplyBox,
@@ -205,22 +205,19 @@ export const CommentList = ({
 }
 
 const Comments = ({
-  comment,
   comments,
-  showReplyBox,
-  setShowReplyBox,
-  setComment,
   profile,
   getComment,
   type,
   id,
-  editComment,
-  setEditComment,
   setLoginVisible,
   isAuthenticated,
-  newComment,
-  setNewComment,
 }) => {
+  const [showReplyBox, setShowReplyBox] = useState('')
+  const [editComment, setEditComment] = useState('')
+  const [comment, setComment] = useState('')
+  const [newComment, setNewComment] = useState('')
+
   const onSubmit = (val) => {
     const resourceType = (type) => {
       if (type === 'initiative') {

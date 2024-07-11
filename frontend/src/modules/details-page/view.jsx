@@ -121,8 +121,6 @@ const DetailsView = ({
   const [data, setData] = useState(null)
   const [relations, setRelations] = useState([])
   const [comments, setComments] = useState([])
-  const [showReplyBox, setShowReplyBox] = useState('')
-  const [editComment, setEditComment] = useState('')
   const [translations, setTranslations] = useState({})
   const [selectedLanguage, setLanguage] = useState('')
 
@@ -239,9 +237,6 @@ const DetailsView = ({
     }
   }
 
-  const [comment, setComment] = useState('')
-  const [newComment, setNewComment] = useState('')
-
   if (!data) {
     return (
       <div className="details-view">
@@ -297,15 +292,10 @@ const DetailsView = ({
         <Header
           {...{
             data,
-            LeftImage,
             profile,
             isAuthenticated,
             type,
             id,
-            allowBookmark,
-            showLess,
-            setShowLess,
-            placeholder,
             handleRelationChange,
             relation,
             translations,
@@ -567,15 +557,7 @@ const DetailsView = ({
             profile,
             type,
             id,
-            comment,
             comments,
-            editComment,
-            setEditComment,
-            newComment,
-            setNewComment,
-            showReplyBox,
-            setShowReplyBox,
-            setComment,
             getComment,
             setLoginVisible,
             isAuthenticated,
