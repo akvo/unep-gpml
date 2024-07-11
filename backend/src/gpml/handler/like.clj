@@ -70,7 +70,7 @@
                                                   (.getMessage e))}})))))
 
 (defmethod ig/init-key ::delete [_ {:keys [logger db]}]
-  (fn [{{:keys [user]} :jwt-claims {{:keys [topic-type topic-id]} :path} :parameters}]
+  (fn [{:keys [user] {{:keys [topic-type topic-id]} :path} :parameters}]
     (try
       (let [db (:spec db)]
         (db.like/delete-like db {:resource-id topic-id
