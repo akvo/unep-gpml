@@ -255,6 +255,22 @@
             font-weight: 700;
           }
         }
+        .meta {
+          display: flex;
+          .badge-container {
+            display: flex;
+            span {
+              text-transform: uppercase;
+              font-weight: bold;
+              font-size: 13px;
+              font-family: $ff1;
+              color: $primaryGreen7;
+              margin-left: 7px;
+              line-height: 17px;
+              margin-top: 2px;
+            }
+          }
+        }
       }
 
       .resource-info {

@@ -203,9 +203,11 @@ const Header = ({
         {topicNames(type)}
       </h3>
       <h4 className="detail-resource-title">
-        <AssignedBadges assignedBadges={data.assignedBadges} />
         {selectedLanguage ? translations?.title[selectedLanguage] : data?.title}
       </h4>
+      <div className="meta">
+        <AssignedBadges assignedBadges={data.assignedBadges} />
+      </div>
 
       <Col className="tool-buttons">
         {onBookmark2PS != null && (

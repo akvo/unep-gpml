@@ -31,9 +31,11 @@ const ResourceCard = ({ item, bookmarked, onBookmark, onClick }) => {
       <h4 className={classNames('h-xs', { hasMeta })}>{item.title}</h4>
       {hasMeta && (
         <div className="meta">
-          <div className="likes">
-            <Like /> <span>{item.likes}</span>
-          </div>
+          {item.likes > 0 && (
+            <div className="likes">
+              <Like /> <span>{item.likes}</span>
+            </div>
+          )}
           <AssignedBadges assignedBadges={item.incBadges} />
         </div>
       )}
