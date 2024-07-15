@@ -170,7 +170,7 @@ const LearningCentreCard = ({ data, loading }) => {
   )
 }
 
-export async function getStaticProps(ctx) {
+export async function getServerSideProps(ctx) {
   const strapiURL = getStrapiUrl()
 
   const fetchLearningCentres = async () => {
@@ -207,7 +207,6 @@ export async function getStaticProps(ctx) {
       initialItems: items,
       i18n: await loadCatalog(ctx.locale),
     },
-    revalidate: 60,
   }
 }
 
