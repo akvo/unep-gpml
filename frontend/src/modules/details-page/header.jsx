@@ -34,6 +34,8 @@ const Header = ({
   bookmark2PS,
   onBookmark2PS,
   UIStore,
+  likes,
+  setLikes,
 }) => {
   const router = useRouter()
   const bookmarked =
@@ -158,11 +160,22 @@ const Header = ({
       },
     })
   }
+  const isLiked = likes?.findIndex((it) => it.id === profile.id) !== -1
   const handleLike = () => {
-    api.post('/like', {
-      topic: data.topic,
-      topicId: id,
-    })
+    if (!isLiked) {
+      api.post('/like', {
+        topic: data.topic,
+        topicId: id,
+      })
+      setLikes((_likes) => {
+        return [..._likes, profile]
+      })
+    } else {
+      api.delete(`/like/${data.topic}/${id}`)
+      setLikes((_likes) => {
+        return _likes.filter((it) => it.id !== profile.id)
+      })
+    }
   }
 
   const noEditTopics = new Set(['stakeholder'])
@@ -238,8 +251,12 @@ const Header = ({
             <ArrowRight />
           </Button>
         )}
-        <Button ghost onClick={handleLike}>
-          Like
+        <Button
+          ghost
+          onClick={handleLike}
+          className={classNames('like-btn', { isLiked })}
+        >
+          {isLiked ? 'Liked' : 'Like'}
           <Like />
         </Button>
         {data?.recording && (

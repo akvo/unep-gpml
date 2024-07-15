@@ -206,6 +206,18 @@
               }
             }
           }
+          .like-btn {
+            svg {
+            }
+            &:hover {
+              svg {
+                path {
+                  stroke: #fff;
+                  fill: transparent;
+                }
+              }
+            }
+          }
         }
 
         .detail-resource-type {

@@ -102,7 +102,6 @@ const DetailsView = ({
   onBookmark2PS,
   updateData,
 }) => {
-  const [showLess, setShowLess] = useState(true)
   const {
     profile,
     countries,
@@ -121,6 +120,7 @@ const DetailsView = ({
   const [data, setData] = useState(null)
   const [relations, setRelations] = useState([])
   const [comments, setComments] = useState([])
+  const [likes, setLikes] = useState([])
   const [translations, setTranslations] = useState({})
   const [selectedLanguage, setLanguage] = useState('')
 
@@ -183,6 +183,7 @@ const DetailsView = ({
             })
             .catch((e) => console.log(e))
           setData(d.data)
+          setLikes(d.data.likes)
           getComment(id, type.replace('-', '_'))
         })
         .catch((err) => {
@@ -304,6 +305,8 @@ const DetailsView = ({
             bookmark2PS,
             onBookmark2PS,
             UIStore,
+            likes,
+            setLikes,
           }}
         />
         <Row
