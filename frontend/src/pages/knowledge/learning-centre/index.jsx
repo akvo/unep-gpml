@@ -191,7 +191,7 @@ export async function getServerSideProps(ctx) {
         url,
         description,
         category: Category,
-        image: image.data.attributes.url,
+        image: image?.data ? image?.data?.attributes.url : '',
         learning_centre_tags: learning_centre_tags.data.map(
           (tag) => tag.attributes.name
         ),
