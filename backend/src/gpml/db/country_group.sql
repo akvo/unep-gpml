@@ -57,6 +57,11 @@ select * from country_group where type = :type
 insert into country_group_country (country_group, country)
 values(:country_group, :country)
 
+-- :name new-country-group-countries :! :1
+-- :doc Add countries to country_group
+insert into country_group_country (country_group, country)
+values :t*:values RETURNING *;
+
 -- :name get-country-groups-countries :query :many
 -- :doc Get country groups countries by country groups ids.
 SELECT cgc.country AS id
