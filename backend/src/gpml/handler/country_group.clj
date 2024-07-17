@@ -46,3 +46,19 @@
                          :error-details {:error (if (instance? SQLException e)
                                                   (pg-util/get-sql-state e)
                                                   (.getMessage e))}})))))
+
+(defmethod ig/init-key :gpml.handler.country-group/delete [_ {:keys [db logger]}]
+  (fn [{{{:keys [id]} :path} :parameters}]
+    (try
+      (jdbc/with-db-transaction [tx (:spec db)]
+        (db.country-group/delete-country-group tx {:id id})
+        (r/ok {:success? true}))
+      (catch Exception e
+        (prn e)
+        (timbre/with-context+ id)
+        (log logger :error :failed-to-delete-country-group e)
+        (r/server-error {:success? false
+                         :reason :failed-to-delete-country-group
+                         :error-details {:error (if (instance? SQLException e)
+                                                  (pg-util/get-sql-state e)
+                                                  (.getMessage e))}})))))
