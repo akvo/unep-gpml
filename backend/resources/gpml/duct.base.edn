@@ -39,12 +39,24 @@
                            [""
                             {:get {:summary "List available country groups"
                                    :swagger {:tags ["country"]}
-                                   :handler #ig/ref :gpml.handler.country-group/get}}]
+                                   :handler #ig/ref :gpml.handler.country-group/get}
+                             :post {:summary "Create new country group"
+                                    :swagger {:tags ["country"] :security [{:id_token []}]}
+                                    :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                 #ig/ref :gpml.auth/auth-required]
+                                    :parameters {:body #ig/ref :gpml.handler.country-group/post-params}
+                                    :handler #ig/ref :gpml.handler.country-group/post}}]
                            ["/:id"
                             {:get {:summary    "List countries within a country group"
                                    :swagger    {:tags ["country"]}
                                    :parameters {:path [:map [:id int?]]}
-                                   :handler    #ig/ref :gpml.handler.country-group/get}}]]
+                                   :handler    #ig/ref :gpml.handler.country-group/get}
+                             :delete {:summary "Deletes a country group"
+                                      :swagger {:tags ["country"]}
+                                      :parameters {:path [:map [:id int?]]}
+                                      :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                   #ig/ref :gpml.auth/auth-required]
+                                      :handler #ig/ref :gpml.handler.country-group/delete}}]]
                           ["/browse" {:middleware [#ig/ref :gpml.auth/auth-middleware]}
                            [""
                             {:get {:summary    "Browse available resources (full objects)"
@@ -796,6 +808,9 @@
  :gpml.db/spec                                                      {:db #ig/ref :duct.database/sql}
  :gpml.handler.country/get                                          {:db #ig/ref :duct.database/sql}
  :gpml.handler.country-group/get                                    {:db #ig/ref :duct.database/sql}
+ :gpml.handler.country-group/post-params                            {}
+ :gpml.handler.country-group/post                                   #ig/ref :gpml.config/common
+ :gpml.handler.country-group/delete                                 #ig/ref :gpml.config/common
  :gpml.handler.browse/get                                           #ig/ref :gpml.config/common
  :gpml.handler.browse/query-params                                  #ig/ref :gpml.config/common
  :gpml.handler.browse/resources                                     #ig/ref :gpml.config/common
