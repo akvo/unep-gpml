@@ -31,6 +31,7 @@
         margin-top: 0;
         border: 1px solid $primaryPurple7;
         border-radius: 4px;
+
         .ant-select-selection-placeholder {
           color: $primaryPurple7;
           font-family: $ff1;
@@ -38,6 +39,7 @@
           letter-spacing: 1px;
           text-transform: uppercase;
         }
+
         .ant-select-selector {
           box-shadow: none !important;
         }
@@ -164,6 +166,7 @@
             padding: 10px 0px;
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
 
             span {
               display: block;
