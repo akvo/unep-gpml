@@ -31,37 +31,38 @@
    :language "en"})
 
 (defn add-country-data [conn]
-  (db.country/new-country conn {:name "Spain" :description "Member State" :iso_code_a3 "ESP"})
-  (db.country/new-country conn {:name "India" :description "Member State" :iso_code_a3 "IND"})
-  (db.country/new-country conn {:name "Indonesia" :description "Member State" :iso_code_a3 "IDN"})
-  (db.country/new-country conn {:name "Kenya" :description "Member State" :iso_code_a3 "KEN"})
-  (db.country/new-country conn {:name "Netherlands" :description "Member State" :iso_code_a3 "NLD"})
-  (db.country/new-country conn {:name "All" :description "Member State" :iso_code_a3 nil})
-  (db.country-group/new-country-group conn {:name "Asia" :type "region"})
-  (db.country-group/new-country-group conn {:name "Europe" :type "region"})
-  (jdbc/insert-multi! conn :country_group_country
-                      [{:country_group 1 :country 2}
-                       {:country_group 1 :country 3}
-                       {:country_group 2 :country 1}]))
+  (let [countries [(db.country/new-country conn {:name "Spain" :description "Member State" :iso_code_a3 "ESP"})
+                   (db.country/new-country conn {:name "India" :description "Member State" :iso_code_a3 "IND"})
+                   (db.country/new-country conn {:name "Indonesia" :description "Member State" :iso_code_a3 "IDN"})
+                   (db.country/new-country conn {:name "Kenya" :description "Member State" :iso_code_a3 "KEN"})
+                   (db.country/new-country conn {:name "Netherlands" :description "Member State" :iso_code_a3 "NLD"})
+                   (db.country/new-country conn {:name "All" :description "Member State" :iso_code_a3 nil})]
+        country-groups [(db.country-group/new-country-group conn {:name "Asia" :type "region"})
+                        (db.country-group/new-country-group conn {:name "Europe" :type "region"})]]
+    (jdbc/insert-multi! conn :country_group_country
+                        [{:country_group ((nth country-groups 0) :id) :country ((nth countries 1) :id)}
+                         {:country_group ((nth country-groups 0) :id) :country ((nth countries 2) :id)}
+                         {:country_group ((nth country-groups 1) :id) :country ((nth countries 1) :id)}])
+    {:countries countries :country-groups country-groups}))
 
 (defn add-resource-data [conn]
-  (add-country-data conn)
-  (db.resource/new-resource conn (make-resource "Resource 1" "national"))
-  (db.resource/new-resource conn (make-resource "Resource 2" "national"))
-  (db.resource/new-resource conn (make-resource "Resource 3" "transnational"))
-  (db.resource/new-resource conn (make-resource "Resource 4" "global"))
-  (db.resource/new-resource conn (make-resource "Resource 5" "national"))
-  (jdbc/insert-multi! conn :resource_geo_coverage
-                      [;; Resource 1
-                       {:resource 10001 :country 1}
-                       {:resource 10001 :country 2}
-                       {:resource 10001 :country 3}
-                       ;; Resource 2
-                       {:resource 10002 :country 4}
-                       ;; Resource 3
-                       {:resource 10003 :country_group 1}
-                       {:resource 10003 :country_group 2}
-                       {:resource 10005 :country 3}]))
+  (let [country-data (add-country-data conn)]
+    (db.resource/new-resource conn (make-resource "Resource 1" "national"))
+    (db.resource/new-resource conn (make-resource "Resource 2" "national"))
+    (db.resource/new-resource conn (make-resource "Resource 3" "transnational"))
+    (db.resource/new-resource conn (make-resource "Resource 4" "global"))
+    (db.resource/new-resource conn (make-resource "Resource 5" "national"))
+    (jdbc/insert-multi! conn :resource_geo_coverage
+                        [;; Resource 1
+                         {:resource 10001 :country ((nth (:countries country-data) 0) :id)}
+                         {:resource 10001 :country ((nth (:countries country-data) 1) :id)}
+                         {:resource 10001 :country ((nth (:countries country-data) 2) :id)}
+                         ;; Resource 2
+                         {:resource 10002 :country ((nth (:countries country-data) 3) :id)}
+                         ;; Resource 3
+                         {:resource 10003 :country_group ((nth (:country-groups country-data) 0) :id)}
+                         {:resource 10003 :country_group ((nth (:country-groups country-data) 1) :id)}
+                         {:resource 10005 :country ((nth (:countries country-data) 2) :id)}])))
 
 (deftest test-map-specific-counts
   (testing "Test map counts for landing page"
