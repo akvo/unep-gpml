@@ -85,3 +85,8 @@ WHERE 1=1
 --~(when (seq (get-in params [:filters :ids])) " AND id IN (:v*:filters.ids)")
 --~(when (seq (get-in params [:filters :types])) " AND type IN (:v*:filters.types)")
 ORDER BY id;
+
+
+-- :name delete-country-group :execute :affected
+-- :doc Deletes a country group
+DELETE FROM country_group WHERE id = :id;
