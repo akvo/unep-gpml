@@ -190,6 +190,11 @@ spec:
             secretKeyRef:
               name: unep-gpml
               key: contact-cobsea-management-email
+        - name: CONTACT_GPML_MANAGEMENT_EMAIL
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: contact-gpml-management-email
         - name: CORS_ALLOWED_ORIGINS
           valueFrom:
             secretKeyRef:

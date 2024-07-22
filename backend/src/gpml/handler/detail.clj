@@ -13,6 +13,7 @@
    [gpml.db.detail :as db.detail]
    [gpml.db.initiative :as db.initiative]
    [gpml.db.language :as db.language]
+   [gpml.db.like :as db.like]
    [gpml.db.organisation :as db.organisation]
    [gpml.db.policy :as db.policy]
    [gpml.db.project :as db.project]
@@ -342,10 +343,10 @@
 
 (defn- add-extra-details [{:keys [db] :as config} {:keys [id affiliation] :as resource} resource-type
                           {:keys [files-urls? owners? tags? entity-connections?
-                                  stakeholder-connections? related-content? affiliation?]
+                                  stakeholder-connections? related-content? affiliation? likes?]
                            :or {files-urls? true owners? true tags? true entity-connections? true
                                 stakeholder-connections? true related-content? true
-                                affiliation? false}}]
+                                affiliation? false likes? true}}]
   (let [conn (:spec db)
         api-resource-type (if-not (= "resource" resource-type)
                             resource-type
@@ -379,7 +380,13 @@
                           (mapv :user_id)))
 
       files-urls?
-      (->> (add-files-urls config)))))
+      (->> (add-files-urls config))
+
+      likes?
+      (assoc :likes (if (= "stakeholder" resource-type)
+                      []
+                      (db.like/get-stakeholders conn {:resource-type resource-type
+                                                      :resource-id id}))))))
 
 (defmulti extra-details (fn [_ resource-type _] resource-type) :default :nothing)
 

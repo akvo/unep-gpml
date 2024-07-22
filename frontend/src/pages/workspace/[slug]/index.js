@@ -2,7 +2,10 @@ import NestedLayout from './layout'
 import NewLayout from '../../../layouts/new-layout'
 import style from './index.module.scss'
 import { Trans } from '@lingui/macro'
+import Button from '../../../components/button'
 import { loadCatalog } from '../../../translations/utils'
+import { useRouter } from 'next/router'
+import { PREFIX_SLUG, isoA2 } from '../../../modules/workspace/ps/config'
 
 const links = {
   PG:

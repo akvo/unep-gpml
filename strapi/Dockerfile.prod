@@ -26,6 +26,7 @@ COPY --from=build /opt/node_modules ./node_modules
 WORKDIR /opt/app
 COPY --from=build /opt/app ./
 ENV PATH /opt/node_modules/.bin:$PATH
+ENV NODE_OPTIONS=--max_old_space_size=2048
 
 RUN chown -R node:node /opt/app
 USER node

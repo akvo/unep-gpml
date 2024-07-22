@@ -1,0 +1,50 @@
+{
+  "kind": "collectionType",
+  "collectionName": "learning_centres",
+  "info": {
+    "singularName": "learning-centre",
+    "pluralName": "learning-centres",
+    "displayName": "Learning Centre",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "Category": {
+      "type": "enumeration",
+      "enum": [
+        "Online Course",
+        "Masterclass",
+        "Webinar",
+        "Other"
+      ]
+    },
+    "url": {
+      "type": "string"
+    },
+    "learning_centre_tags": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::learning-centre-tag.learning-centre-tag"
+    }
+  }
+}
