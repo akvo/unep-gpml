@@ -13,7 +13,7 @@ const links = {
   ZA:
     'https://docs.google.com/document/d/129KI2ideXphYCfMubD8KSXp0SHlDx3v9/edit?usp=sharing&ouid=116096234198181148284&rtpof=true&sd=true',
   TG:
-    'https://docs.google.com/document/d/1cIgDRB-5HS5O_1R-WteDeLJj58bbgWkP/edit?usp=sharing&ouid=116096234198181148284&rtpof=true&sd=true',
+    'https://docs.google.com/document/d/1wjyDbvgqhyNLBHecgEoYJmzrpQ2IqFzUi0TJTav_lw8/edit?usp=sharing',
   SN:
     'https://docs.google.com/document/d/1BhaiuBY5gpnvtsl2CWY2RdMLpBEeT3Af/edit?usp=sharing&ouid=116096234198181148284&rtpof=true&sd=true',
   KI:
@@ -42,6 +42,8 @@ const links = {
     'https://docs.google.com/document/d/1LRTO9IPY9xaZZ_RiNBRjJbYQ4_1CPISp/edit?usp=sharing&ouid=116096234198181148284&rtpof=true&sd=true',
   CI:
     'https://docs.google.com/document/d/1xdgmeCv6MKdpdI2Zy5FM5ytwrNZYDt7m/edit?usp=sharing&ouid=116096234198181148284&rtpof=true&sd=true',
+  WS:
+    'https://docs.google.com/document/d/1nMYX7rTRwhrffTCXMvaGIFPxFSTUy33Wl7qQKtJwSUI/edit?usp=sharing',
 }
 
 const Page = () => {
