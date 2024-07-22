@@ -305,8 +305,10 @@ const FlexibleForms = ({
   }, [state])
 
   useEffect(() => {
-    if (!isAuthenticated && loadingProfile) {
+    if (!isAuthenticated && !loadingProfile) {
       setLoginVisible(true)
+    } else if (!loadingProfile) {
+      setLoginVisible(false)
     }
   }, [isAuthenticated, loadingProfile])
 
@@ -527,6 +529,7 @@ const FlexibleForms = ({
 
   useEffect(() => {
     if (status === 'edit' || id) {
+      const type = type ? type : query.slug[0]
       const dataId = Number(id)
       setMainType(getTypeByResource(type).type)
       setLabel(getTypeByResource(type).name)
