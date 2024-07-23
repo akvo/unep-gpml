@@ -44,3 +44,20 @@ export const validateSchema = (schema) => (values) => {
   });
   return errors;
 };
+
+export const transformObjectToArray = (inputObject) => {
+  const outputArray = [];
+
+  for (const key in inputObject) {
+    if (inputObject.hasOwnProperty(key)) {
+      const element = inputObject[key];
+      outputArray.push({
+        label: element.label,
+        symbol: element.symbol,
+        value: element.value
+      });
+    }
+  }
+
+  return outputArray;
+};
