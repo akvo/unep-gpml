@@ -20,7 +20,7 @@
    :abstract "Test Description"
    :data_source "Testing Data Source"
    :record_number "342543DD"
-   :implementing_mea 1
+   :implementing_mea (-> (:country_groups data) first :id)
    :type_of_law "Regulation"
    :status "Repealed"
    :first_publication_date "2021-04-01"
