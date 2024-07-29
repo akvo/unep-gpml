@@ -77,7 +77,30 @@
         }
       }
     }
-
+    .content {
+      position: relative;
+      width: 100%;
+      .no-results {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: calc(50vh - 70px);
+      }
+    }
+    .loading {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      // align-items: center;
+      justify-content: center;
+      z-index: 2;
+      background-color: rgba(255, 255, 255, 0.75);
+      .ant-spin {
+        margin-top: calc(50vh - 100px);
+      }
+    }
     .results {
       display: flex;
       flex-wrap: wrap;

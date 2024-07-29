@@ -8,30 +8,45 @@ import ResourceCard from '../../components/resource-card/resource-card'
 import DetailModal from '../../modules/details-page/modal'
 import { useRouter } from 'next/router'
 import bodyScrollLock from '../../modules/details-page/scroll-utils'
-import { Input, Select } from 'antd'
+import { Input, Select, Spin } from 'antd'
 import { debounce } from 'lodash'
 import Button from '../../components/button'
 import { Trans, t } from '@lingui/macro'
 import { UIStore } from '../../store'
 import { multicountryGroups } from '../../modules/knowledge-library/multicountry'
+import { LoadingOutlined } from '@ant-design/icons'
 
+const geoMap = [
+  'Africa',
+  'Asia',
+  'Europ',
+  'Latin American and Caribbean',
+  'Least Developed Countries',
+  'LLDCs',
+  'SIDs',
+]
 
-const geoMap = ['Africa', 'Asia', 'Europ','Latin American and Caribbean','Least Developed Countries','LLDCs', 'SIDs']
-
-const getCountryIdsFromGeoGroups = (selectedGeoCountryGroup,geoCountryGroups) => {
-  let countryIds = [];
-  selectedGeoCountryGroup.forEach(groupName => {
-      const group = geoCountryGroups.find(g => g.name === groupName);
-      if (group) {
-          countryIds = [...countryIds, ...group.countries.map(country => country.id)];
-      }
-  });
-  return countryIds;
+const getCountryIdsFromGeoGroups = (
+  selectedGeoCountryGroup,
+  geoCountryGroups
+) => {
+  let countryIds = []
+  selectedGeoCountryGroup.forEach((groupName) => {
+    const group = geoCountryGroups.find((g) => g.name === groupName)
+    if (group) {
+      countryIds = [
+        ...countryIds,
+        ...group.countries.map((country) => country.id),
+      ]
+    }
+  })
+  return countryIds
 }
 
 const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
   const [results, setResults] = useState([])
   const [search, setSearch] = useState('')
+  const [loading, setLoading] = useState(false)
   const [selectedThemes, setSelectedThemes] = useState([])
   const [selectedTypes, setSelectedTypes] = useState([])
   const [selectedCountries, setSelectedCountries] = useState([])
@@ -42,9 +57,8 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
   const [offset, setOffset] = useState(0)
   const [limit] = useState(20)
   const [hasMore, setHasMore] = useState(true)
-  const { countries, tags, transnationalOptions } = UIStore.useState((s) => ({
+  const { countries, transnationalOptions } = UIStore.useState((s) => ({
     countries: s.countries,
-    tags: s.tags,
     transnationalOptions: s.transnationalOptions,
   }))
 
@@ -59,7 +73,13 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
 
   useEffect(() => {
     fetchData()
-  }, [search, selectedThemes, selectedTypes, selectedCountries, selectedGeoCountryGroup])
+  }, [
+    search,
+    selectedThemes,
+    selectedTypes,
+    selectedCountries,
+    selectedGeoCountryGroup,
+  ])
 
   useEffect(() => {
     if (!modalVisible) {
@@ -72,12 +92,14 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
     }
   }, [modalVisible])
 
-
-  const themes = tags?.['theme']?.map((item) => {
-    return {
-      name: item.tag,
-    }
-  })
+  const themes = [
+    'Plastic Production & Distribution',
+    'Plastic Consumption',
+    'Reuse',
+    'Recycle',
+    'Waste Management',
+    'Just Transition of Informal Sector',
+  ].map((it) => ({ name: it }))
 
   const types = [
     { name: 'Technical Resource', value: 'technical_resource' },
@@ -134,13 +156,26 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
       params.append('tag', selectedThemes.join(','))
     if (selectedTypes.length > 0)
       params.append('topic', selectedTypes.join(','))
-    const selectedCountryGroupCountries = getCountryIdsFromGeoGroups(selectedGeoCountryGroup,transnationalOptions);
-    if (selectedCountries.length > 0 || selectedCountryGroupCountries.length > 0)
-      params.append('country', selectedCountryGroupCountries.length > 0? selectedCountryGroupCountries.join(',') : selectedCountries.join(','))
+    const selectedCountryGroupCountries = getCountryIdsFromGeoGroups(
+      selectedGeoCountryGroup,
+      transnationalOptions
+    )
+    if (
+      selectedCountries.length > 0 ||
+      selectedCountryGroupCountries.length > 0
+    )
+      params.append(
+        'country',
+        selectedCountryGroupCountries.length > 0
+          ? selectedCountryGroupCountries.join(',')
+          : selectedCountries.join(',')
+      )
 
     params.append('incBadges', 'true')
     params.append('limit', limit)
     params.append('offset', newOffset)
+
+    setLoading(true)
 
     const response = await api.get(`/resources?${params.toString()}`)
     const newResults = response.data.results
@@ -152,6 +187,7 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
     }
 
     setHasMore(newResults.length === limit)
+    setLoading(false)
   }
 
   const clearSearch = () => {
@@ -166,9 +202,11 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
 
   const debouncedSearch = debounce((value) => {
     setSearch(value)
-  }, 300);
+  }, 300)
 
-  const filterByGeoMap = transnationalOptions.filter(country => geoMap.includes(country.name))
+  const filterByGeoMap = transnationalOptions.filter((country) =>
+    geoMap.includes(country.name)
+  )
 
   return (
     <div className={styles.knowledgeHub}>
@@ -250,7 +288,14 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
           </div>
         </div>
       </aside>
-      <div>
+      <div className="content">
+        {loading && (
+          <div className="loading">
+            <Spin
+              indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />}
+            />
+          </div>
+        )}
         <div className="results">
           {results?.map((result) => (
             <ResourceCard
@@ -259,6 +304,13 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
               onClick={showModal}
             />
           ))}
+          {results?.length === 0 && !loading && (
+            <>
+              <div className="no-results">
+                <h4 className="caps-heading-s">No results</h4>
+              </div>
+            </>
+          )}
         </div>
         {hasMore && results.length > 0 && (
           <Button size="large" ghost onClick={loadMore} className="load-more">
