@@ -66,9 +66,9 @@
 
 (deftest test-map-specific-counts
   (testing "Test map counts for landing page"
-    (let [db-key :duct.database.sql/hikaricp
+    (let [db-key [:duct.database.sql/hikaricp :duct.database.sql.hikaricp/read-write]
           system (ig/init fixtures/*system* [db-key])
-          conn (-> system db-key :spec)
+          conn (:spec (get system db-key))
           _ (add-resource-data conn)
           {:keys [country_counts]} (db.landing/get-resource-map-counts conn {:entity-group :topic})
           financing-resource (fn [country-id]
@@ -99,9 +99,9 @@
 
 (deftest test-summary
   (testing "Test summary data for landing page"
-    (let [db-key :duct.database.sql/hikaricp
+    (let [db-key [:duct.database.sql/hikaricp :duct.database.sql.hikaricp/read-write]
           system (ig/init fixtures/*system* [db-key])
-          conn (-> system db-key :spec)
+          conn (:spec (get system db-key))
           _ (add-resource-data conn)
           _ (db.event/new-event conn
                                 {:title "any"
@@ -132,9 +132,9 @@
   (db.country-group/get-country-groups-by-countries db {:filters {:countries-ids [country-id]}}))
 
 (deftest landing-counts
-  (let [db-key :duct.database.sql/hikaricp
+  (let [db-key [:duct.database.sql/hikaricp :duct.database.sql.hikaricp/read-write]
         system (ig/init fixtures/*system* [db-key])
-        conn (-> system db-key :spec)
+        conn (:spec (get system db-key))
         _ (add-resource-data conn)
         {:keys [country_counts]} (db.landing/get-resource-map-counts conn {:entity-group :topic})]
     (testing "Landing counts match browse results"

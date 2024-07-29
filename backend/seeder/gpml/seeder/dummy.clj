@@ -145,8 +145,8 @@
 (comment
 
   (def db (-> (dev-system)
-              (ig/init [:duct.database.sql/hikaricp])
-              :duct.database.sql/hikaricp
+              (ig/init [:duct.database.sql.hikaricp/read-write])
+              :duct.database.sql.hikaricp/read-write
               :spec))
 
   ;; Create New Account as Admin

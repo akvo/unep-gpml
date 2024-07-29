@@ -790,8 +790,9 @@
                                                                      :secret    #duct/env ["AUTH0_BACKEND_SECRET" Str]}
  [:duct/const :gpml.config/common]
  {:profile                             #gpml/profile []
-  :db                                  #ig/ref :duct.database/sql
-  :hikari                              #ig/ref :duct.database.sql/hikaricp
+  :db                                  #ig/ref :duct.database.sql.hikaricp/read-write
+  :db-read-only                        #ig/ref :duct.database.sql.hikaricp/read-only
+  :hikari                              #ig/ref :duct.database.sql.hikaricp/read-write
   :logger                              #ig/ref :duct/logger
   :scheduler                           #ig/ref :gpml/scheduler
   :storage-client-adapter              #ig/ref :gpml.boundary.adapter.storage-client.gcs/client
@@ -814,9 +815,9 @@
  :duct.server.http/jetty                                            {:handler #ig/ref :gpml.handler.main/handler}
  :gpml.handler.main/root                                            {}
  :gpml.handler.main/swagger-handler                                 {}
- :gpml.db/spec                                                      {:db #ig/ref :duct.database/sql}
- :gpml.handler.country/get                                          {:db #ig/ref :duct.database/sql}
- :gpml.handler.country-group/get                                    {:db #ig/ref :duct.database/sql}
+ :gpml.db/spec                                                      {:db #ig/ref :duct.database.sql.hikaricp/read-write}
+ :gpml.handler.country/get                                          {:db #ig/ref :duct.database.sql.hikaricp/read-write}
+ :gpml.handler.country-group/get                                    {:db #ig/ref :duct.database.sql.hikaricp/read-write}
  :gpml.handler.country-group/post-params                            {}
  :gpml.handler.country-group/post                                   #ig/ref :gpml.config/common
  :gpml.handler.country-group/delete                                 #ig/ref :gpml.config/common
@@ -842,7 +843,7 @@
  :gpml.handler.review/review-status-params                          {}
  :gpml.handler.landing/get                                          #ig/ref :gpml.config/common
  :gpml.handler.landing/get-query-params                             {}
- :gpml.handler.nav/get                                              {:db #ig/ref :duct.database/sql}
+ :gpml.handler.nav/get                                              {:db #ig/ref :duct.database.sql.hikaricp/read-write}
  :gpml.handler.event/post                                           #ig/ref :gpml.config/common
  :gpml.handler.event/post-params                                    {}
  :gpml.handler.resource/post                                        #ig/ref :gpml.config/common
@@ -851,7 +852,7 @@
  :gpml.handler.policy/post-params                                   {}
  :gpml.handler.technology/post                                      #ig/ref :gpml.config/common
  :gpml.handler.technology/post-params                               {}
- :gpml.handler.initiative/get                                       {:db #ig/ref :duct.database/sql}
+ :gpml.handler.initiative/get                                       {:db #ig/ref :duct.database.sql.hikaricp/read-write}
  :gpml.handler.initiative/post                                      #ig/ref :gpml.config/common
  :gpml.handler.initiative/post-params                               {}
  :gpml.handler.stakeholder/get-params                               {}
@@ -879,15 +880,15 @@
  :gpml.handler.stakeholder.expert/post-suggest                      #ig/ref :gpml.config/common
  :gpml.handler.stakeholder.expert/post-suggest-params               {}
  :gpml.handler.stakeholder.expert/post-suggest-responses            {}
- :gpml.handler.currency/all                                         {:db #ig/ref :duct.database/sql}
- :gpml.handler.tag/by-topic                                         {:db #ig/ref :duct.database/sql}
- :gpml.handler.tag/all                                              {:db #ig/ref :duct.database/sql}
- :gpml.handler.tag/get-popular-topics-tags                          {:db #ig/ref :duct.database/sql}
+ :gpml.handler.currency/all                                         {:db #ig/ref :duct.database.sql.hikaricp/read-write}
+ :gpml.handler.tag/by-topic                                         {:db #ig/ref :duct.database.sql.hikaricp/read-write}
+ :gpml.handler.tag/all                                              {:db #ig/ref :duct.database.sql.hikaricp/read-write}
+ :gpml.handler.tag/get-popular-topics-tags                          {:db #ig/ref :duct.database.sql.hikaricp/read-write}
  :gpml.handler.tag/get-popular-topics-tags-params                   {}
  :gpml.handler.tag/get-all-query-params                             {}
  :gpml.handler.tag/post                                             #ig/ref :gpml.config/common
  :gpml.handler.tag/post-params                                      {}
- :gpml.handler.tag/put                                              {:db #ig/ref :duct.database/sql}
+ :gpml.handler.tag/put                                              {:db #ig/ref :duct.database.sql.hikaricp/read-write}
  :gpml.handler.tag/put-params                                       {}
  :gpml.handler.tag/put-response                                     {}
  :gpml.handler.non-member-organisation/get                          #ig/ref :gpml.config/common
@@ -903,7 +904,7 @@
  :gpml.handler.organisation/get-id                                  #ig/ref :gpml.config/common
  :gpml.handler.programmatic.organisation/post                       #ig/ref :gpml.config/common
  :gpml.handler.programmatic.organisation/post-params                {}
- :gpml.handler.file/profile-cv                                      {:db #ig/ref :duct.database/sql}
+ :gpml.handler.file/profile-cv                                      {:db #ig/ref :duct.database.sql.hikaricp/read-write}
  :gpml.handler.favorite/get                                         #ig/ref :gpml.config/common
  :gpml.handler.favorite/post                                        #ig/ref :gpml.config/common
  :gpml.handler.favorite/post-params                                 {}
@@ -944,10 +945,10 @@
  :gpml.handler.resource.translation/query-params                    {}
  :gpml.handler.resource.translation/delete-params                   {}
  :gpml.handler.resource.translation/put-params                      {}
- :gpml.handler.list/get                                             {:db #ig/ref :duct.database/sql}
+ :gpml.handler.list/get                                             {:db #ig/ref :duct.database.sql.hikaricp/read-write}
  :gpml.handler.list/get-params                                      {}
  :gpml.handler.list/get-response                                    {}
- :gpml.handler.organisation-detail/get-content                      {:db #ig/ref :duct.database/sql}
+ :gpml.handler.organisation-detail/get-content                      {:db #ig/ref :duct.database.sql.hikaricp/read-write}
  :gpml.handler.organisation-detail/get-content-params               {}
  :gpml.handler.organisation-detail/get-members                      #ig/ref :gpml.config/common
  :gpml.handler.organisation-detail/get-members-params               {}
@@ -1052,31 +1053,38 @@
                                                :logger  #ig/ref :duct/logger
                                                :profile #gpml/profile []}
  :duct.migrator/ragtime                       {:migrations #ig/ref :duct.migrator.ragtime/resources
+                                               :database   #ig/ref :duct.database.sql.hikaricp/read-write
                                                :logger     #ig/ref :duct/logger
                                                :strategy   :raise-error}
  :duct.migrator.ragtime/resources             {:path "migrations"}
  :gpml.auth/auth-middleware                   {:issuer   #duct/env ["OIDC_ISSUER" Str]
                                                :audience #duct/env ["OIDC_AUDIENCE" Str]
-                                               :db       #ig/ref :duct.database/sql}
+                                               :db       #ig/ref :duct.database.sql.hikaricp/read-write}
  :gpml.auth/auth-middleware-gpml-programmatic {:issuer   #duct/env ["OIDC_ISSUER" Str]
                                                :audience #duct/env ["OIDC_AUDIENCE_M2M" Str]
-                                               :db       #ig/ref :duct.database/sql}
+                                               :db       #ig/ref :duct.database.sql.hikaricp/read-write}
  :gpml.auth/auth-middleware-auth0-actions     {:issuer   #duct/env ["OIDC_ISSUER" Str]
                                                :audience #duct/env ["OIDC_AUDIENCE_AUTH0_ACTIONS" Str]
-                                               :db       #ig/ref :duct.database/sql}
+                                               :db       #ig/ref :duct.database.sql.hikaricp/read-write}
  :gpml.auth/auth-required                     {}
  :gpml.auth/admin-auth-required               #ig/ref :gpml.config/common
  :gpml.handler.monitoring/collector           {}
  :gpml.handler.main/cors-allowed-origins      {:allowed-origins #duct/env ["CORS_ALLOWED_ORIGINS"]}
  :gpml.handler.monitoring/jetty-configurator  {:collector #ig/ref :gpml.handler.monitoring/collector}
- :gpml.handler.monitoring/hikaricp            {:hikari-cp         #ig/ref :duct.database.sql/hikaricp
+ :gpml.handler.monitoring/hikaricp            {:hikari-cp         #ig/ref :duct.database.sql.hikaricp/read-write
                                                :metrics-collector #ig/ref :gpml.handler.monitoring/collector}
- :duct.database.sql/hikaricp                  {:jdbc-url          #duct/env ["DATABASE_URL" Str]
-                                               ;; We don't want log entries for sql sentences (not even ragtime ones!):
-                                               ;; XXX log once, then switch to false depending on runtime-modified sys prop
-                                               :logger            false
-                                               :minimum-idle      10
-                                               :maximum-pool-size 25}
+ [:duct.database.sql/hikaricp :duct.database.sql.hikaricp/read-write]  {:jdbc-url          #duct/env ["DATABASE_URL" Str]
+                                                                        ;; We don't want log entries for sql sentences (not even ragtime ones!):
+                                                                        ;; XXX log once, then switch to false depending on runtime-modified sys prop
+                                                                        :logger            false
+                                                                        :minimum-idle      5
+                                                                        :maximum-pool-size 10}
+ [:duct.database.sql/hikaricp :duct.database.sql.hikaricp/read-only]  {:jdbc-url          #duct/env ["DATABASE_URL" Str]
+                                                                       :logger            false
+                                                                       :minimum-idle      1
+                                                                       :maximum-pool-size 2
+                                                                       :auto-commit false
+                                                                       :read-only true}
  :gpml.boundary.adapter.datasource/brs        {:api-url          #duct/env ["BRS_API_URL" Str]
                                                :logger           #ig/ref :duct/logger
                                                :retry-config     {:timeout 180000}

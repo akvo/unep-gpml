@@ -489,8 +489,8 @@
        (resync-event tx))))
   ([]
    (let [db (-> (dev-system)
-                (ig/init [:duct.database.sql/hikaricp])
-                :duct.database.sql/hikaricp
+                (ig/init [[:duct.database.sql/hikaricp :duct.database.sql.hikaricp/read-write]])
+                :duct.database.sql.hikaricp/read-write
                 :spec)]
      (seed db
            {:country? true
@@ -508,14 +508,14 @@
   (seed)
 
   (time (seed (-> (dev-system)
-                  (ig/init [:duct.database.sql/hikaricp])
-                  :duct.database.sql/hikaricp
+                  (ig/init [:duct.database.sql.hikaricp/read-write])
+                  :duct.database.sql.hikaricp/read-write
                   :spec)
               {:resource? true}))
 
   (def db (-> (dev-system)
-              (ig/init [:duct.database.sql/hikaricp])
-              :duct.database.sql/hikaricp
+              (ig/init [:duct.database.sql.hikaricp/read-write])
+              :duct.database.sql.hikaricp/read-write
               :spec))
 
   ;; example resyncing
