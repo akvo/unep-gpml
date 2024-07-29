@@ -55,7 +55,6 @@
     (try
       (when (str/blank? openapi-api-key)
         (throw (Exception. "Internal server error")))
-      (prn openapi-api-key)
       (log logger :info :search {:query query :user (:id user)})
       (let [resp (open-api-request logger openapi-api-key (:q query))
             sql (-> resp :body :choices first :message :content str/trim)]
