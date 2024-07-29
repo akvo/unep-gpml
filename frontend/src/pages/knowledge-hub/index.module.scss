@@ -87,6 +87,14 @@
         justify-content: center;
         margin-top: calc(50vh - 70px);
       }
+      .sorting {
+        margin: 25px 0 5px 20px;
+        a {
+          color: $primaryDarkBlue4 !important;
+          font-family: $ff1;
+          font-weight: 500;
+        }
+      }
     }
     .loading {
       position: absolute;

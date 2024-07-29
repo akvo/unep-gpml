@@ -8,13 +8,13 @@ import ResourceCard from '../../components/resource-card/resource-card'
 import DetailModal from '../../modules/details-page/modal'
 import { useRouter } from 'next/router'
 import bodyScrollLock from '../../modules/details-page/scroll-utils'
-import { Input, Select, Spin } from 'antd'
+import { Dropdown, Input, Menu, Select, Space, Spin } from 'antd'
 import { debounce } from 'lodash'
 import Button from '../../components/button'
 import { Trans, t } from '@lingui/macro'
 import { UIStore } from '../../store'
 import { multicountryGroups } from '../../modules/knowledge-library/multicountry'
-import { LoadingOutlined } from '@ant-design/icons'
+import { DownOutlined, LoadingOutlined } from '@ant-design/icons'
 
 const geoMap = [
   'Africa',
@@ -208,6 +208,15 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
     geoMap.includes(country.name)
   )
 
+  const [sorting, setSorting] = useState('newest')
+  const handleSortingChange = (e, v) => {
+    setSorting(e.key)
+  }
+  const sortingOpts = [
+    { key: 'newest', label: 'Most Recent First' },
+    { key: 'oldest', label: 'Oldest First' },
+  ]
+
   return (
     <div className={styles.knowledgeHub}>
       <aside className="filter-sidebar">
@@ -289,6 +298,30 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
         </div>
       </aside>
       <div className="content">
+        <div className="sorting">
+          <Dropdown
+            overlay={
+              <Menu
+                defaultSelectedKeys={['newest']}
+                selectable
+                onSelect={handleSortingChange}
+                selectedKeys={sorting}
+              >
+                {sortingOpts.map((it) => (
+                  <Menu.Item key={it.key}>{it.label}</Menu.Item>
+                ))}
+              </Menu>
+            }
+            trigger={['click']}
+          >
+            <a onClick={(e) => e.preventDefault()}>
+              <Space>
+                {sortingOpts.find((it) => it.key === sorting)?.label}
+                <DownOutlined />
+              </Space>
+            </a>
+          </Dropdown>
+        </div>
         {loading && (
           <div className="loading">
             <Spin
