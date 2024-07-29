@@ -46,7 +46,10 @@
                                      :presence_penalty 0})}))
 
 
-(defmethod ig/init-key ::get [_ {:keys [db logger openapi-api-key]}]
+(defn- sql-allowed? [sql]
+  (boolean (re-matches #"^(?i)select \* from v_resources where.*" sql)))
+
+(defmethod ig/init-key ::get [_ {:keys [db-read-only logger openapi-api-key]}]
   (fn [{{:keys [query]} :parameters
         user :user}]
     (try
@@ -55,14 +58,14 @@
       (prn openapi-api-key)
       (log logger :info :search {:query query :user (:id user)})
       (let [resp (open-api-request logger openapi-api-key (:q query))
-            sql (-> resp :body :choices first :message :content)]
-        (when (not (-> sql str/lower-case (str/starts-with? "select * from v_resources where")))
+            sql (-> resp :body :choices first :message :content str/trim)]
+        (when (not (sql-allowed? sql))
           (log logger :error :invalid-query sql)
           (throw (Exception. "Invalid query")))
         (r/ok {:success? true
                :query query
                :sql sql
-               :data (db/execute! db [sql])}))
+               :data (db/execute! db-read-only [sql])}))
       (catch Exception e
         (timbre/with-context+ query
           (log logger :error :failed-to-execute-query e))
