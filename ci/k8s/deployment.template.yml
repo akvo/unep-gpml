@@ -11,7 +11,7 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-        run: unep-gpml
+      run: unep-gpml
   template:
     metadata:
       labels:
