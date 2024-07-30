@@ -16,16 +16,6 @@ import { UIStore } from '../../store'
 import { multicountryGroups } from '../../modules/knowledge-library/multicountry'
 import { DownOutlined, LoadingOutlined } from '@ant-design/icons'
 
-const geoMap = [
-  'Africa',
-  'Asia',
-  'Europ',
-  'Latin American and Caribbean',
-  'Least Developed Countries',
-  'LLDCs',
-  'SIDs',
-]
-
 const getCountryIdsFromGeoGroups = (
   selectedGeoCountryGroup,
   geoCountryGroups
@@ -57,9 +47,9 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
   const [offset, setOffset] = useState(0)
   const [limit] = useState(20)
   const [hasMore, setHasMore] = useState(true)
-  const { countries, transnationalOptions } = UIStore.useState((s) => ({
+  const { countries, featuredOptions } = UIStore.useState((s) => ({
     countries: s.countries,
-    transnationalOptions: s.transnationalOptions,
+    featuredOptions: s.featuredOptions,
   }))
 
   const countryOpts = countries
@@ -158,7 +148,7 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
       params.append('topic', selectedTypes.join(','))
     const selectedCountryGroupCountries = getCountryIdsFromGeoGroups(
       selectedGeoCountryGroup,
-      transnationalOptions
+      featuredOptions
     )
     if (
       selectedCountries.length > 0 ||
@@ -203,10 +193,6 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
   const debouncedSearch = debounce((value) => {
     setSearch(value)
   }, 300)
-
-  const filterByGeoMap = transnationalOptions.filter((country) =>
-    geoMap.includes(country.name)
-  )
 
   const [sorting, setSorting] = useState('newest')
   const handleSortingChange = (e, v) => {
@@ -263,7 +249,7 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
           <div className="section">
             <h4 className="h-xs w-semi">Geography</h4>
             <div className="filters">
-              {filterByGeoMap.map((type) => (
+              {featuredOptions.map((type) => (
                 <FilterToggle
                   key={type.name}
                   onToggle={() => handleGeoToggle(type.name)}
