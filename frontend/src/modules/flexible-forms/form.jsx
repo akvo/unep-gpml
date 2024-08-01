@@ -225,7 +225,10 @@ const FlexibleForm = ({
       }
     }
 
-    if (data.resourceType === 'Action Plan') {
+    if (
+      data.resourceType === 'Action Plan' ||
+      data.resourceType === 'Data Catalog'
+    ) {
       if (data.hasOwnProperty('validTo')) {
         data.validTo = data?.validTo
       }

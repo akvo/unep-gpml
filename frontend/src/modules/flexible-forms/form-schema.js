@@ -1455,6 +1455,262 @@ export const useSchema = () => {
         },
       },
     },
+    data_catalog: {
+      type: 'object',
+      version: '2',
+      label: 'data_catalog',
+      properties: {
+        S4: {
+          title: '',
+          type: 'object',
+          depend: {
+            id: 'tabs',
+            value: ['S4'],
+          },
+          properties: {
+            S4_G1: {
+              title: '',
+              type: 'object',
+              depend: {
+                id: 'steps',
+                value: 0,
+              },
+              required: ['title', 'summary', 'url'],
+              properties: {
+                title: {
+                  title: t`Title`,
+                  type: 'string',
+                },
+                summary: {
+                  title: t`Description`,
+                  type: 'string',
+                },
+                url: {
+                  title: t`URL`,
+                  type: 'string',
+                  format: 'url',
+                },
+              },
+            },
+            S4_G2: {
+              title: '',
+              type: 'object',
+              depend: {
+                id: 'steps',
+                value: 1,
+              },
+              required: [
+                'geoCoverageType',
+                'geoCoverageValueTransnational',
+                'geoCoverageCountries',
+                'geoCoverageValueSubnational',
+              ],
+              properties: {
+                geoCoverageType: {
+                  title: t`Select Geo-Coverage Type`,
+                  type: 'string',
+                  enum: ['global', 'transnational', 'national', 'sub-national'],
+                  enumNames: [
+                    t`Global`,
+                    t`Transnational`,
+                    t`National`,
+                    t`Subnational`,
+                  ],
+                },
+                geoCoverageValueTransnational: {
+                  title: t`GEO COVERAGE (Transnational)`,
+                  enum: [],
+                  countries: [],
+                  depend: {
+                    id: 'geoCoverageType',
+                    value: ['transnational'],
+                  },
+                },
+                geoCoverageCountries: {
+                  title: t`GEO COVERAGE (Countries)`,
+                  enum: [],
+                  depend: {
+                    id: 'geoCoverageType',
+                    value: ['national'],
+                  },
+                },
+                geoCoverageValueSubnational: {
+                  title: t`Select a country`,
+                  enum: [],
+                  depend: {
+                    id: 'geoCoverageType',
+                    value: ['sub-national'],
+                  },
+                },
+                geoCoverageCountryStates: {
+                  title: t`Select a State`,
+                  enum: [],
+                  depend: {
+                    id: 'geoCoverageType',
+                    value: ['sub-national'],
+                  },
+                },
+              },
+            },
+            S4_G3: {
+              title: '',
+              type: 'object',
+              depend: {
+                id: 'steps',
+                value: 2,
+              },
+              required: ['tags'],
+              properties: {
+                tags: {
+                  title: t`Tags`,
+                  enum: [],
+                },
+              },
+            },
+            S4_G4: {
+              title: '',
+              type: 'object',
+              depend: {
+                id: 'steps',
+                value: 3,
+              },
+              required: [],
+              properties: {
+                image: {
+                  title: t`Image`,
+                  type: 'string',
+                  format: 'data-url',
+                },
+                thumbnail: {
+                  title: t`Thumbnail`,
+                  type: 'string',
+                  format: 'data-url',
+                },
+              },
+            },
+            S4_G5: {
+              title: '',
+              type: 'object',
+              depend: {
+                id: 'steps',
+                value: 4,
+              },
+              required: [],
+              properties: {
+                entity: {
+                  title: t`Entity connection`,
+                  description: 'entity',
+                  custom: 'entity',
+                  type: 'array',
+                  items: {
+                    title: '',
+                    type: 'object',
+                    required: ['role', 'entity'],
+                    properties: {
+                      role: {
+                        title: t`Entity role`,
+                        enum: entityRoleOptions.map((x) => x.toLowerCase()),
+                        enumNames: entityRoleOptions,
+                      },
+                      entity: {
+                        title: t`Entity`,
+                        enum: [],
+                        enumNames: [],
+                      },
+                    },
+                  },
+                },
+                individual: {
+                  title: t`Individual connection`,
+                  description: 'individual',
+                  custom: 'stakeholder',
+                  type: 'array',
+                  items: {
+                    title: '',
+                    type: 'object',
+                    required: ['role', 'stakeholder'],
+                    properties: {
+                      role: {
+                        title: t`User role`,
+                        enum: individualRoleOptions.map((x) =>
+                          x !== 'Resource Editor'
+                            ? x.toLowerCase()
+                            : x.toLowerCase().replace(/ /g, '_')
+                        ),
+                        enumNames: individualRoleOptions,
+                      },
+                      stakeholder: {
+                        title: t`Indvidual`,
+                        enum: [],
+                        enumNames: [],
+                      },
+                    },
+                  },
+                },
+              },
+            },
+            S4_G6: {
+              title: '',
+              type: 'object',
+              depend: {
+                id: 'steps',
+                value: 5,
+              },
+              properties: {
+                info: {
+                  title: t`Info And Docs`,
+                  type: 'string',
+                },
+                related: {
+                  title: t`Related Resource`,
+                  enum: [],
+                  enumNames: [],
+                },
+              },
+            },
+          },
+        },
+        S5: {
+          title: '',
+          type: 'object',
+          depend: {
+            id: 'tabs',
+            value: ['S5'],
+          },
+          required: [],
+          properties: {
+            dateOne: {
+              type: 'object',
+              title: '',
+              required: [],
+              properties: {
+                publishYear: {
+                  title: t`Publication Year`,
+                  type: 'string',
+                },
+              },
+            },
+            date: {
+              type: 'object',
+              title: '',
+              required: [],
+              properties: {
+                validFrom: {
+                  title: t`Valid From`,
+                  type: 'string',
+                  format: 'date',
+                },
+                validTo: {
+                  title: t`Valid To`,
+                  type: 'string',
+                  format: 'date',
+                },
+              },
+            },
+          },
+        },
+      },
+    },
     policy: {
       type: 'object',
       version: '2',

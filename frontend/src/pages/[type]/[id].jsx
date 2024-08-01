@@ -15,6 +15,7 @@ const VALID_TYPES = [
   'technology',
   'event',
   'case-study',
+  'data-catalog',
 ]
 
 const Details = ({

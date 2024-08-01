@@ -54,6 +54,11 @@ export const getTypeByResource = (type) => {
       name = 'Action Plan'
       translations = 'resource'
       break
+    case 'data_catalog':
+      t = 'data_catalog'
+      name = 'Data Catalog'
+      translations = 'resource'
+      break
     case 'event':
       t = 'event_flexible'
       name = 'Event'
@@ -529,7 +534,7 @@ const FlexibleForms = ({
 
   useEffect(() => {
     if (status === 'edit' || id) {
-      const type = type ? type : query.slug[0]
+      const type = type ? type : query.slug[0]?.replace('-', '_')
       const dataId = Number(id)
       setMainType(getTypeByResource(type).type)
       setLabel(getTypeByResource(type).name)
@@ -1385,16 +1390,6 @@ const FlexibleForms = ({
                                 key={item.code}
                               >
                                 <div className="content-circle-wrapper">
-                                  <div className="content-circle">
-                                    <img
-                                      src={
-                                        mainType === item.code
-                                          ? imgSelected
-                                          : img
-                                      }
-                                      alt={`${name} Image`}
-                                    />
-                                  </div>
                                   <div className="info-icon-container">
                                     <h2>{name}</h2>
                                     {item.code !== 'case_study' && (
