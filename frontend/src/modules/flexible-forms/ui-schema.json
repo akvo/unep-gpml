@@ -586,6 +586,190 @@
       }
     }
   },
+  "data_catalog": {
+    "S4": {
+      "classNames": "list-group",
+      "S4_G1": {
+        "title": {
+          "ui:placeholder": "Title"
+        },
+        "summary": {
+          "ui:placeholder": "Description",
+          "ui:widget": "textarea",
+          "ui:maxLength": 1000,
+          "ui:showCount": true
+        },
+        "url": {
+          "ui:addOnBefore": "https://",
+          "ui:widget": "URLWidget",
+          "ui:placeholder": "Url"
+        },
+        "ui:order": ["title", "summary", "url"]
+      },
+      "S4_G2": {
+        "geoCoverageType": {
+          "ui:widget": "radio"
+        },
+        "geoCoverageValueTransnational": {
+          "ui:placeholder": "Geo-coverage",
+          "ui:widget": "SelectGeoWidget",
+          "ui:showSearch": true,
+          "ui:mode": "multiple"
+        },
+        "geoCoverageCountries": {
+          "ui:placeholder": "Geo-coverage (Country)",
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "multiple"
+        },
+        "geoCoverageValueNational": {
+          "ui:placeholder": "Select a country",
+          "ui:widget": "select",
+          "ui:showSearch": true
+        },
+        "geoCoverageValueSubnational": {
+          "ui:placeholder": "Select a country",
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:options": {
+            "type": "single"
+          }
+        },
+        "geoCoverageCountryStates": {
+          "ui:placeholder": "Select a State",
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:options": {
+            "type": "single"
+          }
+        },
+        "ui:order": [
+          "geoCoverageType",
+          "geoCoverageValueTransnational",
+          "geoCoverageCountries",
+          "geoCoverageValueNational",
+          "geoCoverageValueSubnational",
+          "geoCoverageCountryStates"
+        ]
+      },
+      "S4_G3": {
+        "tags": {
+          "ui:widget": "select",
+          "ui:showSearch": true,
+          "ui:mode": "tags",
+          "ui:placeholder": "Pick at least one tag",
+          "ui:options": {
+            "ui:showTag": true
+          }
+        },
+        "ui:order": ["tags"]
+      },
+      "S4_G4": {
+        "image": {
+          "ui:options": { "accept": "image/*" },
+          "ui:widget": "file"
+        },
+        "thumbnail": {
+          "ui:options": { "accept": "image/*" },
+          "ui:widget": "file"
+        },
+        "ui:order": ["image", "thumbnail"]
+      },
+      "S4_G5": {
+        "entity": {
+          "ui:options": {
+            "orderable": false,
+            "collapsible": true,
+            "addItemText": "Connect another entity"
+          },
+          "ui:group": "border",
+          "items": {
+            "role": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select entity role",
+              "ui:span": 24
+            },
+            "entity": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select an entity",
+              "ui:span": 24,
+              "ui:options": {
+                "showEntity": true,
+                "type": "single"
+              }
+            }
+          }
+        },
+        "individual": {
+          "ui:options": {
+            "orderable": false,
+            "collapsible": true,
+            "addItemText": "Connect a new individual"
+          },
+          "ui:group": "border",
+          "items": {
+            "role": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select user role",
+              "ui:span": 24
+            },
+            "stakeholder": {
+              "ui:showSearch": true,
+              "ui:widget": "select",
+              "ui:placeholder": "Select an individual",
+              "ui:span": 24,
+              "ui:options": {
+                "type": "single"
+              }
+            }
+          }
+        },
+        "ui:order": ["entity", "individual"]
+      },
+      "S4_G6": {
+        "classNames": "list-group-item",
+        "info": {
+          "ui:widget": "RichWidget"
+        },
+        "related": {
+          "ui:widget": "SelectSearchWidget",
+          "ui:showSearch": true,
+          "ui:mode": "multiple",
+          "ui:placeholder": "Start typing to find a resource"
+        },
+        "ui:order": ["info", "related"]
+      }
+    },
+    "S5": {
+      "classNames": "list-group",
+      "dateOne": {
+        "publishYear": {
+          "ui:widget": "date",
+          "ui:showSearch": true,
+          "ui:span": 12,
+          "ui:options": {
+            "mode": "year",
+            "disableDate": "future"
+          }
+        }
+      },
+      "date": {
+        "validFrom": {
+          "ui:placeholder": "YYYY-MM-DD",
+          "ui:widget": "date",
+          "ui:span": 12
+        },
+        "validTo": {
+          "ui:placeholder": "YYYY-MM-DD - Leave empty if ongoing",
+          "ui:widget": "date",
+          "ui:span": 12
+        }
+      }
+    }
+  },
   "policy": {
     "S2": {
       "classNames": "list-group",
