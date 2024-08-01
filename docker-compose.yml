@@ -47,6 +47,7 @@ services:
       - CHAT_API_URL_PATH
       - CHAT_API_KEY
       - CHAT_API_USER_ID
+      - OPENAI_API_KEY
   frontend:
     environment:
       - PORT=3001

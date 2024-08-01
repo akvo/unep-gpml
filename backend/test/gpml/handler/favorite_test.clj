@@ -65,7 +65,7 @@
   (testing "Creating new association via POST"
     (let [system (-> fixtures/*system*
                      (ig/init [::favorite/post]))
-          db (-> system :duct.database.sql/hikaricp :spec)
+          db (:spec (get system [:duct.database.sql/hikaricp :duct.database.sql.hikaricp/read-write]))
           handler (::favorite/post system)
           _ (seeder/seed db {:country? true
                              :technology? true})

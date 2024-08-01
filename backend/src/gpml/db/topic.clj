@@ -30,7 +30,8 @@
   table."
   {"financing_resource" "resource"
    "action_plan" "resource"
-   "technical_resource" "resource"})
+   "technical_resource" "resource"
+   "data_catalog" "resource"})
 
 (defn- rename-tables [tables]
   (let [tables-to-rename (filter #(some #{%} (keys table-rename-mapping)) tables)
@@ -209,6 +210,12 @@
 
                      :else
                      "LEFT JOIN file f ON f.id IN (e.image_id, e.thumbnail_id)")
+        likes-select (if (= entity-name "stakeholder")
+                     ""
+                     (format ",COUNT(distinct l.stakeholder_id) FILTER (WHERE l.%s_id IS NOT NULL) AS likes" entity-name))
+        likes-join (if (= entity-name "stakeholder")
+                     ""
+                     (format "LEFT JOIN %1$s_like l ON l.%1$s_id = e.id" entity-name))
         where-cond (cond-> "WHERE 1=1"
                      id
                      (str " AND e.id = :id")
@@ -253,10 +260,12 @@
        %s
        %s
        %s
-       json_agg(jsonb_build_object('id', f.id, 'object-key', f.object_key, 'visibility', f.visibility)) FILTER (WHERE f.id IS NOT NULL) AS files,
-       json_agg(json_build_object('id', t.id, 'tag', t.tag)) FILTER (WHERE t.id IS NOT NULL) AS tags
+       json_agg(distinct jsonb_build_object('id', f.id, 'object-key', f.object_key, 'visibility', f.visibility)) FILTER (WHERE f.id IS NOT NULL) AS files,
+       json_agg(distinct jsonb_build_object('id', t.id, 'tag', t.tag)) FILTER (WHERE t.id IS NOT NULL) AS tags
+       %s
    FROM %s e
    LEFT JOIN %s_tag et ON et.%s = e.id LEFT JOIN tag t ON et.tag = t.id
+   %s
    %s
    %s
    %s
@@ -269,7 +278,9 @@
                       [ps-bookmark-select]
                       [badges-select]
                       [entity-connections-select]
+                      [likes-select]
                       (repeat 3 entity-name)
+                      [likes-join]
                       [files-join]
                       [entity-connections-join]
                       [geo-coverage-join]

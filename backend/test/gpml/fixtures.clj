@@ -64,7 +64,9 @@
   (str/replace url "gpml_test" db-name))
 
 (defn uuid [] (str/replace (str (UUID/randomUUID)) "-" "_"))
+
 (def mails-sent (atom []))
+
 (defn with-test-system [f]
   (migrate-template-test-db)
   (reset! mails-sent [])
@@ -73,8 +75,10 @@
         jdbc-url (-> tmp :gpml.test/db :connection-uri)
         dev-db-jdbc-url (adapt-jdbc-url jdbc-url "gpml")
         test-db-url (adapt-jdbc-url jdbc-url new-db-name)
-        system (update tmp :duct.database.sql/hikaricp (fn [cfg]
-                                                         (assoc cfg :jdbc-url test-db-url)))]
+        system (update tmp
+                       [:duct.database.sql/hikaricp :duct.database.sql.hikaricp/read-write]
+                       (fn [cfg]
+                         (assoc cfg :jdbc-url test-db-url)))]
     (create-test-db dev-db-jdbc-url new-db-name)
     (with-redefs [email/send-email (fn [_ sender subject receivers texts htmls]
                                      (swap! mails-sent conj {:sender    sender

@@ -23,10 +23,14 @@ const Page = ({ isAuthenticated, setLoginVisible, profile, setShouldJoin }) => {
   const [orgs, setOrgs] = useState(null)
   const [viewModal, setViewModal] = useState({ open: false })
   const [loading, setLoading] = useState(true)
+
+  const { organisations, nonMemberOrganisations } = UIStore.useState((s) => ({
+    organisations: s.organisations,
+    nonMemberOrganisations: s.nonMemberOrganisations,
+  }))
+
+
   useEffect(() => {
-    api.get('/non-member-organisation').then((d) => {
-      setOrgs(d.data)
-    })
     fetch(`${strapiUrl}/api/cops?locale=en&populate=attachments`)
       .then((d) => d.json())
       .then((d) => {
@@ -96,11 +100,11 @@ const Page = ({ isAuthenticated, setLoginVisible, profile, setShouldJoin }) => {
                 </div>
                 <div className="col">
                   <div className="label">Lead</div>
-                  <LinkTag id={cop.lead} orgs={orgs} />
+                  <LinkTag id={cop.lead} orgs={[...organisations, ...nonMemberOrganisations]} />
                   <div className="label">Members</div>
                   <div className="members">
                     {cop.members?.split(',').map((member) => (
-                      <LinkTag id={member} orgs={orgs} />
+                      <LinkTag id={member} orgs={[...organisations, ...nonMemberOrganisations]} />
                     ))}
                   </div>
                   {allForums?.length > 0 && cop.forumId && (

@@ -80,6 +80,11 @@ module.exports = {
         destination: '/page/who-we-are',
         permanent: true,
       },
+      {
+        source: '/knowledge/capacity-development',
+        destination: '/knowledge/learning-centre',
+        permanent: true,
+      },
     ]
   },
   webpack(config) {

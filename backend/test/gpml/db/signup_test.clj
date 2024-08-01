@@ -40,9 +40,9 @@
 
 (deftest test-new-profile
   (testing "Test profile is get inserted"
-    (let [db-key :duct.database.sql/hikaricp
+    (let [db-key [:duct.database.sql/hikaricp :duct.database.sql.hikaricp/read-write]
           system (ig/init fixtures/*system* [db-key])
-          conn (-> system db-key :spec)
+          conn (:spec (get system db-key))
           _ (add-stakeholder-data conn)
           stakeholder (first (db.stakeholder/all-stakeholder conn))]
       (is (= (:review_status stakeholder) "SUBMITTED"))
