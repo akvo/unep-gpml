@@ -337,13 +337,6 @@ const mainContentType = [
     desc: msg`An action plan is a detailed plan outlining actions needed to reach one or more goals. Alternatively, it can be defined as a sequence of steps that must be taken, or activities that must be performed well, for a strategy to succeed. Development of action plans is required under many multilateral environmental agreements to facilitate implementation.`,
   },
   {
-    code: 'data_catalog',
-    name: msg`Data Catalog`,
-    examples: [],
-    childs: [],
-    desc: msg`Data Catalog`,
-  },
-  {
     code: 'policy',
     name: msg`Policy`,
     examples: [
@@ -768,6 +761,13 @@ const mainContentType = [
       },
     ],
     desc: msg`The definition of capacity development is broad. It is a holistic enterprise, encompassing a multitude of activities. It means building abilities, relationships and values that will enable organisations, groups and individuals to improve their performance and achieve their development objectives. It includes strengthening the processes, systems and rules that influence collective and individual behaviour and performance in all development endeavours. And it means enhancing people’s technical ability and willingness to play new developmental roles and adapt to new demands and situations.`,
+  },
+  {
+    code: 'data_catalog',
+    name: msg`Data Catalog`,
+    examples: [],
+    childs: [],
+    desc: msg`Data Catalog`,
   },
 ]
 
