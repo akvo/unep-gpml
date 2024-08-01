@@ -1,14 +1,34 @@
 (ns gpml.db
   (:require
    [clojure.java.jdbc :as jdbc]
+   [gpml.util.json :as json]
    [gpml.util.malli :refer [check! failure-with success-with]]
    [honey.sql]
    [integrant.core :as ig]
    [next.jdbc]
-   [next.jdbc.result-set]
+   [next.jdbc.result-set :as rs]
    [taoensso.timbre :as timbre])
   (:import
-   (org.postgresql.jdbc PgArray)))
+   (org.postgresql.jdbc PgArray)
+   (org.postgresql.util PGobject)))
+
+(set! *warn-on-reflection* true)
+
+(defn <-pgobject
+  "Transform PGobject containing `json` or `jsonb` value to Clojure data."
+  [^PGobject v]
+  (let [type  (.getType v)
+        value (.getValue v)]
+    (if (#{"jsonb" "json"} type)
+      (some-> value json/<-json (with-meta {:pgtype type}))
+      value)))
+
+(extend-protocol rs/ReadableColumn
+  org.postgresql.util.PGobject
+  (read-column-by-label [^PGobject v _]
+    (<-pgobject v))
+  (read-column-by-index [^PGobject v _2 _3]
+    (<-pgobject v)))
 
 (defmethod ig/init-key :gpml.db/spec [_ {:keys [db]}]
   (:spec db))

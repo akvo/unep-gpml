@@ -58,13 +58,13 @@
       (log logger :info :search {:query query :user (:id user)})
       (let [resp (open-api-request logger openapi-api-key (:q query))
             sql (-> resp :body :choices first :message :content str/trim)]
+        (log logger :info :openai-generated-query {:q (:q query) :sql sql})
         (when (not (sql-allowed? sql))
           (log logger :error :invalid-query sql)
           (throw (Exception. "Invalid query")))
-        (r/ok {:success? true
-               :query query
-               :sql sql
-               :data (db/execute! db-read-only [sql])}))
+        (let [data (db/execute! db-read-only [sql])]
+          (r/ok {:success? true
+                 :results (->> data :result (map :json))})))
       (catch Exception e
         (timbre/with-context+ query
           (log logger :error :failed-to-execute-query e))

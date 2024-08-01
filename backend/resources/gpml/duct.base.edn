@@ -57,9 +57,7 @@
                                       :middleware [#ig/ref :gpml.auth/auth-middleware
                                                    #ig/ref :gpml.auth/auth-required]
                                       :handler #ig/ref :gpml.handler.country-group/delete}}]]
-                          ["/search" {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                                   #ig/ref :gpml.auth/auth-required
-                                                   #ig/ref :gpml.auth/admin-auth-required]}
+                          ["/search" {:middleware [#ig/ref :gpml.auth/auth-middleware]}
                            [""
                             {:get {:summary    "Search available resources using natural language"
                                    :swagger    {:tags ["search"]}
