@@ -1,21 +1,8 @@
 import { languages } from 'countries-list'
 import { Store } from 'pullstate'
 import BookIcon from './images/book-open.svg'
-import CaseStudiesSvg from './images/folder.svg'
 import CapacityBuildingSvg from './images/owl.svg'
-import HelpCenterSvg from './images/help.svg'
-import IconCommunity from './images/community.svg'
-import ExpertIcon from './images/education.svg'
-import IconEvent from './images/calendar.svg'
-import IconPartner from './images/partners.svg'
-import IconForum from './images/engage.svg'
-import AnalyticAndStatisticSvg from './images/statistics.svg'
-import DataCatalogueSvg from './images/archive.svg'
-import GlossarySvg from './images/glossary.svg'
-import MapSvg from './images/map.svg'
-import ExploreSvg from './images/api.svg'
 import { t, msg } from '@lingui/macro'
-import { i18n } from '@lingui/core'
 
 const geoCoverageTypeOptions = ['Global', 'Transnational', 'National']
 
@@ -348,6 +335,13 @@ const mainContentType = [
       },
     ],
     desc: msg`An action plan is a detailed plan outlining actions needed to reach one or more goals. Alternatively, it can be defined as a sequence of steps that must be taken, or activities that must be performed well, for a strategy to succeed. Development of action plans is required under many multilateral environmental agreements to facilitate implementation.`,
+  },
+  {
+    code: 'data_catalog',
+    name: msg`Data Catalog`,
+    examples: [],
+    childs: [],
+    desc: msg`Data Catalog`,
   },
   {
     code: 'policy',
