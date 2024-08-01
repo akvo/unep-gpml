@@ -590,14 +590,22 @@ policy_tag AS (
     rt.policy
 ),
 policy_country_group AS (
-  SELECT
-    rgc.policy,
-    string_agg(cg.name, ',') AS country_group
-  FROM
-    policy_geo_coverage rgc
-    LEFT JOIN country_group cg ON rgc.country_group = cg.id
-  GROUP BY
-    rgc.policy
+SELECT
+  pgc.policy,
+  cg.country_group
+FROM
+  policy_geo_coverage pgc
+  LEFT JOIN (
+    SELECT
+      cgc.country,
+      string_agg(DISTINCT trim(cg."name"), ',') AS country_group
+    FROM
+      country_group_country cgc,
+      country_group cg
+    WHERE
+      cg.id = cgc.country_group
+    GROUP BY
+      cgc.country) cg ON pgc.country = cg.country
 ),
 policy_country AS (
   SELECT
