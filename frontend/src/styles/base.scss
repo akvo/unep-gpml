@@ -143,6 +143,16 @@ h6 {
   text-transform: uppercase;
   color: $primaryPurple;
 }
+.caps-heading-xs {
+  font-family: $ff1;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 12px; /* 100% */
+  letter-spacing: 0.24px;
+  text-transform: uppercase;
+  color: $primaryPurple;
+}
 .container {
   margin: 0 40px;
   @media screen and (min-width: 1240px) {

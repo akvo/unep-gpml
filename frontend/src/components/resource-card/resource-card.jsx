@@ -1,45 +1,51 @@
 import classNames from 'classnames'
 import Image from 'next/image'
 import styles from './style.module.scss'
-import { BookmarkIconProper, badges } from '../icons'
+import { BookmarkIconProper, Like, badges } from '../icons'
 import { useState } from 'react'
 import { Tooltip } from 'antd'
 import { t } from '@lingui/macro'
+import { getBaseUrl } from '../../utils/misc'
+
+const baseUrl = getBaseUrl()
 
 const ResourceCard = ({ item, bookmarked, onBookmark, onClick }) => {
-  const withImage = item.image != null
+  const withImage = item?.images?.length > 0
   const handleClick = (e) => {
     onClick({ e, item })
   }
-  let inner
-  if (withImage) {
-    inner = (
-      <>
-        <Image src={item.image} width={190} height={250} />
-      </>
-    )
-  } else {
-    inner = (
-      <>
-        <h4 className="h-xs w-bold">{item.title}</h4>
-      </>
-    )
-  }
+  const hasMeta = item.incBadges.length > 0 || item?.likes > 0
   return (
     <div
-      className={classNames(styles.resourceCard, {
+      className={classNames(styles.resourceCard, 'resource-card', {
         [styles.withImage]: withImage,
       })}
       onClick={handleClick}
     >
-      {inner}
+      <div className="type caps-heading-xs">
+        {item?.type?.replace(/_/g, ' ')}
+      </div>
       {onBookmark != null && (
         <BookmarkBtn {...{ bookmarked, onBookmark, item }} />
       )}
-      <div className="tags">
-        <AssignedBadges assignedBadges={item.assignedBadges} />
-        <div className="tag">{item?.type?.replace(/_/g, ' ')}</div>
-      </div>
+      <h4 className={classNames('h-xs', { hasMeta })}>{item.title}</h4>
+      {hasMeta && (
+        <div className="meta">
+          {item.likes > 0 && (
+            <div className="likes">
+              <Like /> <span>{item.likes}</span>
+            </div>
+          )}
+          <AssignedBadges assignedBadges={item.incBadges} />
+        </div>
+      )}
+      {withImage && (
+        <Image
+          src={`${baseUrl}/img400/${item?.images?.[0].objectKey}`}
+          width={195}
+          height={175}
+        />
+      )}
     </div>
   )
 }
@@ -47,13 +53,7 @@ export const AssignedBadges = ({ assignedBadges }) => {
   return (
     <>
       {assignedBadges?.map((badge) => (
-        <Tooltip
-          title={
-            badge.badgeName === 'resource-verified'
-              ? t`GPML Verified`
-              : t`Government Verified`
-          }
-        >
+        <div className="badge-container">
           <div
             className={classNames('badge', {
               gov: badge.badgeName !== 'resource-verified',
@@ -61,7 +61,12 @@ export const AssignedBadges = ({ assignedBadges }) => {
           >
             {badges.verified}
           </div>
-        </Tooltip>
+          <span>
+            {badge.badgeName === 'resource-verified'
+              ? t`GPML Verified`
+              : t`Government Verified`}
+          </span>
+        </div>
       ))}
     </>
   )

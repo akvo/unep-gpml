@@ -29,6 +29,18 @@ module.exports = {
         port: '',
         pathname: '/unep-gpml-public-production/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'unep-gpml.akvotest.org',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'digital.gpmarinelitter.org',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
   async rewrites() {
