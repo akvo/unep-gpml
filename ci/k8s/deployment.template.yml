@@ -220,11 +220,11 @@ spec:
             secretKeyRef:
               name: unep-gpml
               key: dead-simple-chat-api-key
-        - name: OPENAPI_API_KEY
+        - name: OPENAI_API_KEY
           valueFrom:
             secretKeyRef:
               name: unep-gpml
-              key: openapi-api-key
+              key: openai-api-key
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: "/secrets/cloudsql/credentials.json"
         readinessProbe:
