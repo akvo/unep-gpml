@@ -13,7 +13,7 @@
   (testing "Country endpoint returns non empty response"
     (let [system (ig/init fixtures/*system* [::country/get])
           handler (::country/get system)
-          db (-> system :duct.database.sql/hikaricp :spec)
+          db (:spec (get system [:duct.database.sql/hikaricp :duct.database.sql.hikaricp/read-write]))
           _ (db.country/new-country db {:name "The Netherlands" :iso_code_a3 "NLD" :description "Member State"})
           resp (handler (mock/request :get "/"))]
       (is (= 200 (:status resp)))
