@@ -1366,11 +1366,6 @@ const FlexibleForms = ({
                         style={{ width: displayModal ? '50%' : '100%' }}
                       >
                         {mainContentType.map((item) => {
-                          const img = `/${item?.code?.replace(/_/g, '-')}.svg`
-                          const imgSelected = `/${item?.code?.replace(
-                            /_/g,
-                            '-'
-                          )}-selected.svg`
                           const name =
                             item?.code === 'capacity_building'
                               ? 'Capacity Development'
@@ -1386,16 +1381,17 @@ const FlexibleForms = ({
                               <div className="content-circle-wrapper">
                                 <div className="info-icon-container">
                                   <h2>{name}</h2>
-                                  {item.code !== 'case_study' && (
-                                    <Tooltip
-                                      placement="top"
-                                      title={<Trans id={item?.desc?.id} />}
-                                    >
-                                      <div className="info-icon-wrapper">
-                                        <InfoIcon />
-                                      </div>
-                                    </Tooltip>
-                                  )}
+                                  {item.code !== 'case_study' &&
+                                    item.code !== 'data_catalog' && (
+                                      <Tooltip
+                                        placement="top"
+                                        title={<Trans id={item?.desc?.id} />}
+                                      >
+                                        <div className="info-icon-wrapper">
+                                          <InfoIcon />
+                                        </div>
+                                      </Tooltip>
+                                    )}
                                 </div>
                               </div>
                             </Radio.Button>
