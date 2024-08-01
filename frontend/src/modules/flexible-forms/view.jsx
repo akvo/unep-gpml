@@ -40,7 +40,7 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { Trans } from '@lingui/macro'
 import Button from '../../components/button'
-import { LongArrowRight } from '../../components/icons'
+import { InfoIcon, LongArrowRight } from '../../components/icons'
 import { i18n } from '@lingui/core'
 import { useSchema } from './form-schema'
 
@@ -1360,7 +1360,7 @@ const FlexibleForms = ({
                         /> */}
                       </div>
                       <Radio.Group
-                        className="ant-row"
+                        className="resource-type-container"
                         onChange={handleMainContentType}
                         value={mainType}
                         style={{ width: displayModal ? '50%' : '100%' }}
@@ -1377,35 +1377,28 @@ const FlexibleForms = ({
                               : i18n._(item?.name)
 
                           return (
-                            <Col
-                              className="gutter-row"
-                              xs={12}
-                              lg={displayModal ? 12 : 6}
+                            <Radio.Button
+                              className="custom-radio"
+                              id={item.code}
+                              value={item.code}
                               key={item.code}
                             >
-                              <Radio.Button
-                                className="custom-radio"
-                                id={item.code}
-                                value={item.code}
-                                key={item.code}
-                              >
-                                <div className="content-circle-wrapper">
-                                  <div className="info-icon-container">
-                                    <h2>{name}</h2>
-                                    {item.code !== 'case_study' && (
-                                      <Tooltip
-                                        placement="top"
-                                        title={<Trans id={item?.desc?.id} />}
-                                      >
-                                        <div className="info-icon-wrapper">
-                                          <img src="/i-blue.png" />
-                                        </div>
-                                      </Tooltip>
-                                    )}
-                                  </div>
+                              <div className="content-circle-wrapper">
+                                <div className="info-icon-container">
+                                  <h2>{name}</h2>
+                                  {item.code !== 'case_study' && (
+                                    <Tooltip
+                                      placement="top"
+                                      title={<Trans id={item?.desc?.id} />}
+                                    >
+                                      <div className="info-icon-wrapper">
+                                        <InfoIcon />
+                                      </div>
+                                    </Tooltip>
+                                  )}
                                 </div>
-                              </Radio.Button>
-                            </Col>
+                              </div>
+                            </Radio.Button>
                           )
                         })}
                       </Radio.Group>

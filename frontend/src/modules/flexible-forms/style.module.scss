@@ -357,13 +357,18 @@
             }
           }
 
+          .resource-type-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+          }
+
           .custom-radio {
             height: auto;
             margin-bottom: 5px;
             display: block;
-            border: 2px solid #fff;
-            padding: 0px;
-            border-radius: 10px;
+            padding: 18px 22px;
+            border-radius: 8px;
 
             &:focus-within {
               box-shadow: none;
@@ -384,9 +389,6 @@
                 color: white;
               }
 
-              .info-icon-wrapper {
-                background-color: #D7E0FF !important;
-              }
             }
           }
 
@@ -400,13 +402,11 @@
               .info-icon-wrapper {
                 width: 20px;
                 height: 20px;
-                background: #D7E0FF;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 border-radius: 50%;
                 margin-left: 10px;
-                border: 1px solid #4147D5;
               }
             }
 
@@ -430,10 +430,11 @@
             h2 {
               margin-bottom: 0px;
               text-align: center;
-              font-size: 14px;
-              font-weight: 400;
+              font-size: 16px;
+              line-height: 22px;
+              font-weight: 600;
               text-transform: capitalize;
-              font-family: var(--font-dm-sans), sans-serif;
+              font-family: var(--font-font-archia), sans-serif;
             }
 
             &.selected {
