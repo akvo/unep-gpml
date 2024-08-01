@@ -11,7 +11,7 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-        run: unep-gpml
+      run: unep-gpml
   template:
     metadata:
       labels:
@@ -220,6 +220,11 @@ spec:
             secretKeyRef:
               name: unep-gpml
               key: dead-simple-chat-api-key
+        - name: OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: openai-api-key
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: "/secrets/cloudsql/credentials.json"
         readinessProbe:

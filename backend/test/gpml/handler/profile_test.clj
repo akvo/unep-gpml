@@ -168,7 +168,7 @@
   (testing "New profile without organisation and some other non-required detail is created"
     (let [system (ig/init fixtures/*system* [::stakeholder/post])
           handler (::stakeholder/post system)
-          db (-> system :duct.database.sql/hikaricp :spec)
+          db (:spec (get system [:duct.database.sql/hikaricp :duct.database.sql.hikaricp/read-write]))
           data (seed-important-database db)
           body-params (assoc (new-profile 1)
                              :org nil
@@ -245,7 +245,7 @@
   (testing "Update profile once its signed up"
     (let [system (ig/init fixtures/*system* [::stakeholder/put])
           handler (::stakeholder/put system)
-          db (-> system :duct.database.sql/hikaricp :spec)
+          db (:spec (get system [:duct.database.sql/hikaricp :duct.database.sql.hikaricp/read-write]))
           data (seed-important-database db)
           ;; John created account with country value Indonesia and organisation Akvo
           sth-id (:id (db.stakeholder/new-stakeholder db (new-profile 1)))
@@ -291,7 +291,7 @@
   (testing "Profile endpoint returns non empty response"
     (let [system (ig/init fixtures/*system* [::stakeholder/profile])
           handler (::stakeholder/profile system)
-          db (-> system :duct.database.sql/hikaricp :spec)
+          db (:spec (get system [:duct.database.sql/hikaricp :duct.database.sql.hikaricp/read-write]))
           _ (seed-important-database db)
           tags (->> (db.tag/all-tags db)
                     (take 2)

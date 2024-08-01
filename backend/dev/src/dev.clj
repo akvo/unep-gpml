@@ -48,7 +48,7 @@
   (load "local"))
 
 (defn db-conn []
-  (-> system :duct.database.sql/hikaricp :spec))
+  (-> system [:duct.database.sql/hikaricp :duct.database.sql.hikaricp/read-write] :spec))
 
 (defn conn []
   (db-conn))
@@ -57,7 +57,7 @@
   (get system c))
 
 (defn hikari []
-  (component :duct.database.sql/hikaricp))
+  (component [:duct.database.sql/hikaricp :duct.database.sql.hikaricp/read-write]))
 
 (defn config-component []
   (get system [:duct/const :gpml.config/common]))
