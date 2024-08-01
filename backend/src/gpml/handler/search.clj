@@ -50,15 +50,13 @@
   (boolean (re-matches #"^(?i)select \* from v_resources where.*" sql)))
 
 (defmethod ig/init-key ::get [_ {:keys [db-read-only logger openapi-api-key]}]
-  (fn [{{:keys [query]} :parameters
-        user :user}]
+  (fn [{{:keys [query]} :parameters}]
     (try
       (when (str/blank? openapi-api-key)
         (throw (Exception. "Internal server error")))
-      (log logger :info :search {:query query :user (:id user)})
       (let [resp (open-api-request logger openapi-api-key (:q query))
             sql (-> resp :body :choices first :message :content str/trim)]
-        (log logger :info :openai-generated-query {:q (:q query) :sql sql})
+        (log logger :report :openai-generated-query {:q (:q query) :sql sql :response (:body resp)})
         (when (not (sql-allowed? sql))
           (log logger :error :invalid-query sql)
           (throw (Exception. "Invalid query")))
