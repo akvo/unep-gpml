@@ -117,7 +117,7 @@ export async function getServerSideProps(context) {
 
   try {
     const dataRes = await api.get(
-      `${API_ENDPOINT}/detail/${type.replace('-', '_')}/${id}`
+      `${API_ENDPOINT}detail/${type.replace('-', '_')}/${id}`
     )
     const translationsRes = await api.get(
       `${API_ENDPOINT}/translations/${

@@ -262,6 +262,11 @@ const DetailsView = ({
         link = 'edit/action-plan'
         type = 'action_plan'
         break
+      case 'data-catalog':
+        form = 'dataCatalog'
+        link = 'edit/data-catalog'
+        type = 'data_catalog'
+        break
       case 'policy':
         form = 'policy'
         link = 'edit/policy'
