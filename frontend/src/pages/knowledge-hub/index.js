@@ -131,7 +131,7 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
     e?.preventDefault()
     if (type && id) {
       const detailUrl = `/${type.replace(/_/g, '-')}/${id}`
-      setParams({ type, id, item })
+      setParams({ type: type.replace(/_/g, '-'), id, item })
       window.history.pushState({}, '', detailUrl)
       setModalVisible(true)
       bodyScrollLock.enable()
