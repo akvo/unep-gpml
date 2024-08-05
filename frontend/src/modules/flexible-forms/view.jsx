@@ -529,7 +529,7 @@ const FlexibleForms = ({
 
   useEffect(() => {
     if (status === 'edit' || id) {
-      const type = type ? type : query.slug[0]
+      const type = query.slug[0]?.replace('-', '_')
       const dataId = Number(id)
       setMainType(getTypeByResource(type).type)
       setLabel(getTypeByResource(type).name)
@@ -631,7 +631,7 @@ const FlexibleForms = ({
         })
       }
     }
-  }, [status, initialFormData, type])
+  }, [status, initialFormData])
 
   // useEffect(() => {
   //   UIStore.update((e) => {
