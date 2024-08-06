@@ -1,0 +1,39 @@
+@import '../../styles/vars.scss';
+.search {
+  :global {
+    .search-bar {
+      margin-top: 20px;
+      margin-bottom: 20px;
+      padding: 25px;
+
+      /* Primary/White */
+      background: #ffffff;
+      /* shadow */
+      box-shadow: 0px 20px 20px rgba(40, 44, 217, 0.12);
+      border-radius: 20px;
+      form {
+        display: flex;
+        .ant-input {
+          background-color: transparent;
+          outline: none !important;
+          font-size: 24px;
+          line-height: 32px;
+          font-family: $ff1;
+          &:focus {
+            outline: none;
+            box-shadow: none;
+          }
+        }
+      }
+    }
+    .results {
+      display: flex;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+
+      & > div {
+        margin: 15px 0 0 15px;
+      }
+    }
+  }
+}
