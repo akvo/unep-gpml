@@ -56,7 +56,7 @@
         (throw (Exception. "Internal server error")))
       (let [resp (open-api-request logger openapi-api-key (:q query))
             sql (-> resp :body :choices first :message :content str/trim)]
-        (log logger :report :openai-generated-query {:q (:q query) :sql sql :response (:body resp)})
+        (log logger :warn :openai-generated-query {:q (:q query) :sql sql :response (:body resp)})
         (when (not (sql-allowed? sql))
           (log logger :error :invalid-query sql)
           (throw (Exception. "Invalid query")))
