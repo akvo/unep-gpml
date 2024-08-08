@@ -16,7 +16,6 @@ import { UIStore } from '../../store'
 import { multicountryGroups } from '../../modules/knowledge-library/multicountry'
 import { DownOutlined, LoadingOutlined } from '@ant-design/icons'
 import { loadCatalog } from '../../translations/utils'
-import { Trans, t } from '@lingui/macro'
 
 const getCountryIdsFromGeoGroups = (
   selectedGeoCountryGroup,
