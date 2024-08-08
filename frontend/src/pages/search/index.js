@@ -1,4 +1,4 @@
-import { Form, Input } from 'antd'
+import { Form, Input, Spin } from 'antd'
 import Button from '../../components/button'
 import api from '../../utils/api'
 import { useEffect, useState } from 'react'
@@ -8,17 +8,19 @@ import styles from './index.module.scss'
 import DetailModal from '../../modules/details-page/modal'
 import { useRouter } from 'next/router'
 import StakeholderCard from '../../components/stakeholder-card/stakeholder-card'
+import { LoadingOutlined } from '@ant-design/icons'
 
 const emptyObj = { resources: [], stakeholders: [], datasets: [] }
 
 const Search = ({ setLoginVisible, isAuthenticated }) => {
+  const [loading, setLoading] = useState(false)
   const [val, setVal] = useState('')
   const [items, setItems] = useState({ ...emptyObj })
   const router = useRouter()
   const [params, setParams] = useState(null)
   const onSearch = () => {
+    setLoading(true)
     api.get(`search?q=${val.replace(/ /g, '+')}`).then((d) => {
-      console.log(d.data.results)
       const obj = { ...emptyObj }
       obj.resources = d.data.results.filter(
         (it) => it.type !== 'stakeholder' && it.type !== 'organisation'
@@ -27,6 +29,7 @@ const Search = ({ setLoginVisible, isAuthenticated }) => {
         (it) => it.type === 'stakeholder' || it.type === 'organisation'
       )
       setItems(obj)
+      setLoading(false)
     })
   }
   const [modalVisible, setModalVisible] = useState(false)
@@ -63,9 +66,18 @@ const Search = ({ setLoginVisible, isAuthenticated }) => {
                 setVal(e.target.value)
               }}
             />
-            <Button type="primary" size="small" onClick={onSearch}>
-              Search
-            </Button>
+            {!loading && (
+              <Button type="primary" size="small" onClick={onSearch}>
+                Search
+              </Button>
+            )}
+            {loading && (
+              <div className="loading">
+                <Spin
+                  indicator={<LoadingOutlined style={{ fontSize: 44 }} spin />}
+                />
+              </div>
+            )}
           </Form>
         </div>
         <div className="content">
@@ -89,6 +101,19 @@ const Search = ({ setLoginVisible, isAuthenticated }) => {
               </div>
             </>
           )}
+
+          {items.resources.length === 0 &&
+            items.stakeholders.length === 0 &&
+            items.datasets.length === 0 &&
+            !loading && (
+              <>
+                <div className="no-results">
+                  <h4 className="caps-heading-s">
+                    We couldn't find any matches.
+                  </h4>
+                </div>
+              </>
+            )}
         </div>
       </div>
       <DetailModal

@@ -13,6 +13,7 @@
       border-radius: 20px;
       form {
         display: flex;
+        position: relative;
         .ant-input {
           background-color: transparent;
           outline: none !important;
@@ -30,10 +31,28 @@
       display: flex;
       flex-wrap: wrap;
       margin-bottom: 40px;
+      min-height: 300px;
 
       & > div {
         margin: 15px 0 0 15px;
       }
+    }
+    .content {
+      position: relative;
+    }
+    .loading {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      .anticon {
+        color: $primaryGreen;
+      }
+    }
+    .no-results {
+      min-height: 300px;
+      width: 100%;
+      display: flex;
+      align-items: center;
     }
   }
 }
