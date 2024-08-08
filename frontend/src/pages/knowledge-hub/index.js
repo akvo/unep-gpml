@@ -15,6 +15,7 @@ import { Trans, t } from '@lingui/macro'
 import { UIStore } from '../../store'
 import { multicountryGroups } from '../../modules/knowledge-library/multicountry'
 import { DownOutlined, LoadingOutlined } from '@ant-design/icons'
+import { loadCatalog } from '../../translations/utils'
 
 const getCountryIdsFromGeoGroups = (
   selectedGeoCountryGroup,
@@ -131,7 +132,7 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
     e?.preventDefault()
     if (type && id) {
       const detailUrl = `/${type.replace(/_/g, '-')}/${id}`
-      setParams({ type, id, item })
+      setParams({ type: type.replace(/_/g, '-'), id, item })
       window.history.pushState({}, '', detailUrl)
       setModalVisible(true)
       bodyScrollLock.enable()
@@ -375,6 +376,14 @@ const FilterToggle = ({ children, onToggle }) => {
       {children}
     </div>
   )
+}
+
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
 }
 
 export default KnowledgeHub
