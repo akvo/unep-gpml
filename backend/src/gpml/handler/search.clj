@@ -39,7 +39,7 @@
                                                 {:role "user"
                                                  :content [{:type "text"
                                                             :text q}]}]
-                                     :temperature 1
+                                     :temperature 0.2
                                      :max_tokens 1500
                                      :top_p 1
                                      :frequency_penalty 0
