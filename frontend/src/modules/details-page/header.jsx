@@ -23,6 +23,7 @@ import { useRouter } from 'next/router'
 const Header = ({
   data,
   profile,
+  loading,
   isAuthenticated,
   type,
   id,
@@ -184,7 +185,7 @@ const Header = ({
     ?.filter((stakeholder) => stakeholder?.role?.toLowerCase() === 'owner')
     .map((stakeholder) => stakeholder?.stakeholderId)
 
-  const find = resourceOwners.includes(profile?.id)
+  const find = resourceOwners?.includes(profile?.id)
 
   const canEdit = () =>
     isAuthenticated &&
@@ -205,9 +206,11 @@ const Header = ({
       <h4 className="detail-resource-title">
         {selectedLanguage ? translations?.title[selectedLanguage] : data?.title}
       </h4>
-      <div className="meta">
-        <AssignedBadges assignedBadges={data.assignedBadges} />
-      </div>
+      {data && !loading && (
+        <div className="meta">
+          <AssignedBadges assignedBadges={data?.assignedBadges} />
+        </div>
+      )}
 
       <Col className="tool-buttons">
         {onBookmark2PS != null && (

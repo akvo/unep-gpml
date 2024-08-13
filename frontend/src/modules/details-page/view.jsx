@@ -7,7 +7,7 @@ import React, {
   useRef,
 } from 'react'
 import styles from './style.module.scss'
-import { Row, Col, List, Popover } from 'antd'
+import { Row, Col, List, Popover, Skeleton } from 'antd'
 
 import {
   InfoCircleOutlined,
@@ -90,6 +90,8 @@ const renderCountries = (data, countries) => {
 }
 
 const DetailsView = ({
+  match,
+  visible,
   serverData,
   serverTranslations,
   type,
@@ -107,14 +109,11 @@ const DetailsView = ({
     countries,
     languages,
     transnationalOptions,
-    placeholder,
   } = UIStore.useState((s) => ({
     profile: s.profile,
     countries: s.countries,
     languages: s.languages,
     transnationalOptions: s.transnationalOptions,
-    icons: s.icons,
-    placeholder: s.placeholder,
   }))
   const router = useRouter()
   const [data, setData] = useState(null)
@@ -123,6 +122,7 @@ const DetailsView = ({
   const [likes, setLikes] = useState([])
   const [translations, setTranslations] = useState({})
   const [selectedLanguage, setLanguage] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const relation = relations.find(
     (it) =>
@@ -185,6 +185,7 @@ const DetailsView = ({
           setData(d.data)
           setLikes(d.data.likes)
           getComment(id, type.replace('-', '_'))
+          setLoading(false)
         })
         .catch((err) => {
           console.error(err)
@@ -237,19 +238,25 @@ const DetailsView = ({
       setComments(res.data?.comments)
     }
   }
+  useEffect(() => {
+    if (visible && match?.params?.item !== null) {
+      setData(match.params.item)
+      setLoading(true)
+    }
+  }, [visible, match])
 
-  if (!data) {
-    return (
-      <div className="details-view">
-        <div className="loading">
-          <LoadingOutlined spin />
-          <i>
-            <Trans>Loading...</Trans>
-          </i>
-        </div>
-      </div>
-    )
-  }
+  // if (!data) {
+  //   return (
+  //     <div className="details-view">
+  //       <div className="loading">
+  //         <LoadingOutlined spin />
+  //         <i>
+  //           <Trans>Loading...</Trans>
+  //         </i>
+  //       </div>
+  //     </div>
+  //   )
+  // }
 
   const description = data?.description ? data?.description : data?.summary
 
@@ -296,6 +303,7 @@ const DetailsView = ({
             profile,
             isAuthenticated,
             type,
+            loading,
             id,
             handleRelationChange,
             relation,
@@ -309,161 +317,164 @@ const DetailsView = ({
             setLikes,
           }}
         />
-        <Row
-          className="resource-info "
-          gutter={{
-            lg: 24,
-          }}
-        >
-          {data?.image && (
-            <a
-              className="resource-image-wrapper"
-              href={`${
-                data?.url && data?.url?.includes('https://')
-                  ? data?.url
-                  : data.languages
-                  ? data?.languages[0].url
-                  : data?.url?.includes('http://')
-                  ? data?.url
-                  : 'https://' + data?.url
-              }`}
-              target="_blank"
-            >
-              <img
-                className="resource-image"
-                id="detail-resource-image"
-                src={data?.image}
-                alt={data?.title}
-              />
-            </a>
-          )}
-
-          <Col className="details-content-wrapper section-description section">
-            {description && (
-              <Row>
-                <h3 className="content-heading">
-                  <Trans>Description</Trans>
-                </h3>
-                <p className="content-paragraph">
-                  {selectedLanguage
-                    ? translations?.summary[selectedLanguage]
-                    : description}
-                </p>
-              </Row>
+        {loading && <Skeleton />}
+        {!loading && (
+          <Row
+            className="resource-info "
+            gutter={{
+              lg: 24,
+            }}
+          >
+            {data?.image && (
+              <a
+                className="resource-image-wrapper"
+                href={`${
+                  data?.url && data?.url?.includes('https://')
+                    ? data?.url
+                    : data.languages
+                    ? data?.languages[0].url
+                    : data?.url?.includes('http://')
+                    ? data?.url
+                    : 'https://' + data?.url
+                }`}
+                target="_blank"
+              >
+                <img
+                  className="resource-image"
+                  id="detail-resource-image"
+                  src={data?.image}
+                  alt={data?.title}
+                />
+              </a>
             )}
 
-            <Row>
-              {data?.geoCoverageType && (
-                <Col className="section-geo-coverage">
-                  <div className="extra-wrapper">
-                    <h3 className="content-heading">
-                      <Trans>Location & Geocoverage</Trans>
-                    </h3>
-                    <div
-                      style={{
-                        marginBottom: data?.geoCoverageType === 'global' && 0,
-                      }}
-                      className="detail-item geocoverage-item"
-                    >
-                      <div className="transnational-icon detail-item-icon">
-                        <TransnationalImage />
-                      </div>
-                      <span>{titleCase(data?.geoCoverageType || '')}</span>
-                    </div>
-
-                    {data?.geoCoverageType !== 'global' && (
-                      <>
-                        {data?.geoCoverageType !== 'sub-national' &&
-                          data?.geoCoverageType !== 'national' &&
-                          (data?.geoCoverageCountryGroups?.length > 0 ||
-                            data.geoCoverageCountries.length > 0) &&
-                          renderGeoCoverageCountryGroups(
-                            data,
-                            countries,
-                            transnationalOptions
-                          ) && (
-                            <div className="detail-item">
-                              <Row>
-                                <div className="location-icon detail-item-icon">
-                                  <LocationImage />
-                                </div>
-                                <div>
-                                  {renderGeoCoverageCountryGroups(
-                                    data,
-                                    countries,
-                                    transnationalOptions
-                                  )}
-                                  {renderCountries(
-                                    data,
-                                    countries,
-                                    transnationalOptions
-                                  )}
-                                </div>
-                              </Row>
-                            </div>
-                          )}
-
-                        {(data?.geoCoverageType === 'sub-national' ||
-                          data?.geoCoverageType === 'national') &&
-                          data?.geoCoverageValues &&
-                          data?.geoCoverageValues.length > 0 &&
-                          renderCountries(
-                            data,
-                            countries,
-                            transnationalOptions
-                          ) && (
-                            <div className="detail-item">
-                              <Row>
-                                <div className="location-icon detail-item-icon">
-                                  <LocationImage />
-                                </div>
-                                <div>
-                                  {renderCountries(
-                                    data,
-                                    countries,
-                                    transnationalOptions
-                                  )}
-                                </div>
-                              </Row>
-                            </div>
-                          )}
-
-                        {(data?.subnationalCity ||
-                          data?.q24SubnationalCity) && (
-                          <div className="detail-item">
-                            <Row>
-                              <div className="city-icon detail-item-icon">
-                                <CityImage />
-                              </div>
-                              <div>
-                                {data?.subnationalCity
-                                  ? data?.subnationalCity
-                                  : data?.q24SubnationalCity}
-                              </div>
-                            </Row>
-                          </div>
-                        )}
-                      </>
-                    )}
-
-                    {data?.languages && (
-                      <span className="detail-item">
-                        {data?.languages
-                          .map((language) => {
-                            const langs =
-                              !isEmpty(languages) &&
-                              languages[language?.isoCode]?.name
-                            return langs || ''
-                          })
-                          .join(', ')}
-                      </span>
-                    )}
-                  </div>
-                </Col>
+            <Col className="details-content-wrapper section-description section">
+              {description && (
+                <Row>
+                  <h3 className="content-heading">
+                    <Trans>Description</Trans>
+                  </h3>
+                  <p className="content-paragraph">
+                    {selectedLanguage
+                      ? translations?.summary[selectedLanguage]
+                      : description}
+                  </p>
+                </Row>
               )}
-            </Row>
-          </Col>
-        </Row>
+
+              <Row>
+                {data?.geoCoverageType && (
+                  <Col className="section-geo-coverage">
+                    <div className="extra-wrapper">
+                      <h3 className="content-heading">
+                        <Trans>Location & Geocoverage</Trans>
+                      </h3>
+                      <div
+                        style={{
+                          marginBottom: data?.geoCoverageType === 'global' && 0,
+                        }}
+                        className="detail-item geocoverage-item"
+                      >
+                        <div className="transnational-icon detail-item-icon">
+                          <TransnationalImage />
+                        </div>
+                        <span>{titleCase(data?.geoCoverageType || '')}</span>
+                      </div>
+
+                      {data?.geoCoverageType !== 'global' && (
+                        <>
+                          {data?.geoCoverageType !== 'sub-national' &&
+                            data?.geoCoverageType !== 'national' &&
+                            (data?.geoCoverageCountryGroups?.length > 0 ||
+                              data.geoCoverageCountries.length > 0) &&
+                            renderGeoCoverageCountryGroups(
+                              data,
+                              countries,
+                              transnationalOptions
+                            ) && (
+                              <div className="detail-item">
+                                <Row>
+                                  <div className="location-icon detail-item-icon">
+                                    <LocationImage />
+                                  </div>
+                                  <div>
+                                    {renderGeoCoverageCountryGroups(
+                                      data,
+                                      countries,
+                                      transnationalOptions
+                                    )}
+                                    {renderCountries(
+                                      data,
+                                      countries,
+                                      transnationalOptions
+                                    )}
+                                  </div>
+                                </Row>
+                              </div>
+                            )}
+
+                          {(data?.geoCoverageType === 'sub-national' ||
+                            data?.geoCoverageType === 'national') &&
+                            data?.geoCoverageValues &&
+                            data?.geoCoverageValues.length > 0 &&
+                            renderCountries(
+                              data,
+                              countries,
+                              transnationalOptions
+                            ) && (
+                              <div className="detail-item">
+                                <Row>
+                                  <div className="location-icon detail-item-icon">
+                                    <LocationImage />
+                                  </div>
+                                  <div>
+                                    {renderCountries(
+                                      data,
+                                      countries,
+                                      transnationalOptions
+                                    )}
+                                  </div>
+                                </Row>
+                              </div>
+                            )}
+
+                          {(data?.subnationalCity ||
+                            data?.q24SubnationalCity) && (
+                            <div className="detail-item">
+                              <Row>
+                                <div className="city-icon detail-item-icon">
+                                  <CityImage />
+                                </div>
+                                <div>
+                                  {data?.subnationalCity
+                                    ? data?.subnationalCity
+                                    : data?.q24SubnationalCity}
+                                </div>
+                              </Row>
+                            </div>
+                          )}
+                        </>
+                      )}
+
+                      {data?.languages && (
+                        <span className="detail-item">
+                          {data?.languages
+                            .map((language) => {
+                              const langs =
+                                !isEmpty(languages) &&
+                                languages[language?.isoCode]?.name
+                              return langs || ''
+                            })
+                            .join(', ')}
+                        </span>
+                      )}
+                    </div>
+                  </Col>
+                )}
+              </Row>
+            </Col>
+          </Row>
+        )}
         {/* TAGS */}
         {data?.tags && data?.tags?.length > 0 && (
           <Col className="section-tag section">
@@ -495,7 +506,7 @@ const DetailsView = ({
 
         {/* CONNECTION */}
         {(data?.entityConnections?.length > 0 ||
-          data?.stakeholderConnections.filter(
+          data?.stakeholderConnections?.filter(
             (x) => x.stakeholderRole !== 'ADMIN' || x.role === 'interested in'
           )?.length > 0) && (
           <Col className="section section-connection-stakeholder">
@@ -532,7 +543,9 @@ const DetailsView = ({
           </Col>
         )}
 
-        <Records {...{ countries, languages, type, data, profile }} />
+        {data != null && !loading && (
+          <Records {...{ countries, languages, type, data, profile }} />
+        )}
 
         {/* RELATED CONTENT */}
         {data?.relatedContent &&

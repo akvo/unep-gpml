@@ -39,6 +39,7 @@ const DetailModal = ({
         id={match?.params?.id}
         {...{
           match,
+          visible,
           setFilterMenu,
           isAuthenticated,
           setLoginVisible,
