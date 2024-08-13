@@ -256,14 +256,16 @@ const Header = ({
             <ArrowRight />
           </Button>
         )}
-        <Button
-          ghost
-          onClick={handleLike}
-          className={classNames('like-btn', { isLiked })}
-        >
-          {isLiked ? 'Liked' : 'Like'}
-          <Like />
-        </Button>
+        {isAuthenticated && (
+          <Button
+            ghost
+            onClick={handleLike}
+            className={classNames('like-btn', { isLiked })}
+          >
+            {isLiked ? 'Liked' : 'Like'}
+            <Like />
+          </Button>
+        )}
         {data?.recording && (
           <Button
             className="recording-button two-tone-button"

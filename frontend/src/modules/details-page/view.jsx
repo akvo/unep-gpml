@@ -317,7 +317,21 @@ const DetailsView = ({
             setLikes,
           }}
         />
-        {loading && <Skeleton />}
+        {loading && (
+          <Row
+            style={{ margin: '20px 40px' }}
+            gutter={{
+              lg: 24,
+            }}
+          >
+            <Skeleton
+              paragraph={{
+                rows: 7,
+              }}
+              active
+            />
+          </Row>
+        )}
         {!loading && (
           <Row
             className="resource-info "
@@ -568,17 +582,19 @@ const DetailsView = ({
           )}
 
         {/* COMMENTS */}
-        <Comments
-          {...{
-            profile,
-            type,
-            id,
-            comments,
-            getComment,
-            setLoginVisible,
-            isAuthenticated,
-          }}
-        />
+        {!loading && (
+          <Comments
+            {...{
+              profile,
+              type,
+              id,
+              comments,
+              getComment,
+              setLoginVisible,
+              isAuthenticated,
+            }}
+          />
+        )}
       </div>
     </div>
   )
