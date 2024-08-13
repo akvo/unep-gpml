@@ -6,12 +6,14 @@ const StakeholderCard = ({ item }) => {
       ? `${item.firstName} ${item.lastName}`
       : item.name
   return (
-    <div className={resourceCardStyle.resourceCard}>
-      <div className="type caps-heading-xs">
-        {item?.type?.replace(/_/g, ' ')}
+    <a href={`/${item.type}/${item.id}`} target="_blank">
+      <div className={resourceCardStyle.resourceCard}>
+        <div className="type caps-heading-xs">
+          {item?.type?.replace(/_/g, ' ')}
+        </div>
+        <h4 className="h-xs">{title}</h4>
       </div>
-      <h4 className="h-xs">{title}</h4>
-    </div>
+    </a>
   )
 }
 

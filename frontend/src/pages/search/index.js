@@ -26,11 +26,15 @@ const Search = ({ setLoginVisible, isAuthenticated }) => {
     api.get(`search?q=${val.replace(/ /g, '+')}`).then((d) => {
       const obj = { ...emptyObj }
       obj.resources = d.data.results.filter(
-        (it) => it.type !== 'stakeholder' && it.type !== 'organisation'
+        (it) =>
+          it.type !== 'stakeholder' &&
+          it.type !== 'organisation' &&
+          it.type !== 'dataset'
       )
       obj.stakeholders = d.data.results.filter(
         (it) => it.type === 'stakeholder' || it.type === 'organisation'
       )
+      obj.datasets = d.data.results.filter((it) => it.type === 'dataset')
       setItems(obj)
       setLoading(false)
     })
@@ -71,13 +75,14 @@ const Search = ({ setLoginVisible, isAuthenticated }) => {
     }
   }
   const suggestions = [
-    'Show me data on plastic waste in Africa',
+    'Data on plastic waste in Africa',
     'Potential partners for recycling in Cambodia',
     'Is there any legislation currently in force regarding waste management in Guatemala',
-    'Show me data on protected marine areas',
+    'Data on protected marine areas',
     'Funds on plastic pollution in Asia',
     'What initiatives is UNEP a partner of',
     'What technical resources are funded by UNEP',
+    'Datasets on beach litter',
   ]
   return (
     <div className={styles.search}>
@@ -155,6 +160,16 @@ const Search = ({ setLoginVisible, isAuthenticated }) => {
               <div className="results">
                 {items.stakeholders.map((it) => (
                   <StakeholderCard item={it} key={`${it.type}-${it.id}`} />
+                ))}
+              </div>
+            </>
+          )}
+          {items.datasets.length > 0 && (
+            <>
+              <h4 className="caps-heading-1">data hub</h4>
+              <div className="results">
+                {items.datasets.map((it) => (
+                  <ResourceCard item={it} key={`${it.type}-${it.id}`} />
                 ))}
               </div>
             </>
