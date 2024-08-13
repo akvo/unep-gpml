@@ -86,7 +86,11 @@ const Search = ({ setLoginVisible, isAuthenticated }) => {
               <h4 className="caps-heading-1">knowledge hub</h4>
               <div className="results">
                 {items.resources.map((it) => (
-                  <ResourceCard item={it} key={it.id} onClick={showModal} />
+                  <ResourceCard
+                    item={it}
+                    key={`${it.type}-${it.id}`}
+                    onClick={showModal}
+                  />
                 ))}
               </div>
             </>
