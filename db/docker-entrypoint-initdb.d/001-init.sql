@@ -22128,7 +22128,7 @@ COPY public.ragtime_migrations (id, created_at) FROM stdin;
 219-adjust-country-group-sequence#16d05a2a	2024-08-01T17:30:12.710
 220-add-delete-cascade-to-country-group-country#9753fc12	2024-08-01T17:30:12.732
 221-add-featured-country-group-type#b7258361	2024-08-01T17:30:12.750
-222-add-v-resources-view#171b574d	2024-08-13T15:58:45.584
+222-add-v-resources-view#921ce2a8	2024-08-14T10:41:02.630
 \.
 
 
@@ -31063,7 +31063,7 @@ UNION ALL
     NULL::text AS country_group,
     regexp_replace(l.data_source, '[\x00-\x1F\x7F]+'::text, ''::text, 'g'::text) AS publisher,
     NULL::text AS partner,
-    jsonb_build_object('id', l.id, 'title', l.title, 'type', 'dataset', 'images', t.formats) AS json
+    jsonb_build_object('id', l.id, 'title', l.title, 'type', 'dataset', 'images', t.formats, 'categoryId', l.category_id, 'subcategoryId', l.subcategory_id, 'arcgislayerId', l.arcgislayer_id) AS json
    FROM (public.layers l
      LEFT JOIN ( SELECT m.related_id,
             f.formats

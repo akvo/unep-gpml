@@ -1108,7 +1108,7 @@ SELECT
   NULL AS country_group,
   regexp_replace(data_source, '[\x00-\x1F\x7F]+', '', 'g') AS publisher, -- the data contains non-visible characters
   NULL AS partner,
-  jsonb_build_object('id', l.id, 'title', l.title, 'type', 'dataset', 'images', t.formats) AS json
+  jsonb_build_object('id', l.id, 'title', l.title, 'type', 'dataset', 'images', t.formats, 'categoryId', l.category_id, 'subcategoryId', l.subcategory_id, 'arcgislayerId', l.arcgislayer_id) AS json
 FROM
   layers l
   LEFT JOIN (
