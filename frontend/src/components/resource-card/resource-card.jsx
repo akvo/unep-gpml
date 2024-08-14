@@ -10,11 +10,11 @@ import { getBaseUrl } from '../../utils/misc'
 const baseUrl = getBaseUrl()
 
 const ResourceCard = ({ item, bookmarked, onBookmark, onClick }) => {
-  const withImage = item?.images?.length > 0
+  const withImage = item?.images?.length > 0 || item?.images?.thumbnail
   const handleClick = (e) => {
     onClick({ e, item })
   }
-  const hasMeta = item.incBadges.length > 0 || item?.likes > 0
+  const hasMeta = item?.incBadges?.length > 0 || item?.likes > 0
   return (
     <div
       className={classNames(styles.resourceCard, 'resource-card', {
@@ -36,12 +36,21 @@ const ResourceCard = ({ item, bookmarked, onBookmark, onClick }) => {
               <Like /> <span>{item.likes}</span>
             </div>
           )}
-          <AssignedBadges assignedBadges={item.incBadges} />
+          {item?.incBadges && (
+            <AssignedBadges assignedBadges={item?.incBadges} />
+          )}
         </div>
       )}
-      {withImage && (
+      {item?.images?.length > 0 && (
         <Image
           src={`${baseUrl}/img400/${item?.images?.[0].objectKey}`}
+          width={195}
+          height={175}
+        />
+      )}
+      {item?.images?.thumbnail && (
+        <Image
+          src={item?.images?.medium?.url || item?.images?.thumbnail.url}
           width={195}
           height={175}
         />
