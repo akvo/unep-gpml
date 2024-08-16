@@ -10,6 +10,7 @@ import { useRouter } from 'next/router'
 import StakeholderCard from '../../components/stakeholder-card/stakeholder-card'
 import { LoadingOutlined } from '@ant-design/icons'
 import { Pointer, ThoughtBubble } from '../../components/icons'
+import { loadCatalog } from '../../translations/utils'
 
 const emptyObj = { resources: [], stakeholders: [], datasets: [] }
 
@@ -201,6 +202,14 @@ const Search = ({ setLoginVisible, isAuthenticated }) => {
       />
     </div>
   )
+}
+
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
 }
 
 export default Search
