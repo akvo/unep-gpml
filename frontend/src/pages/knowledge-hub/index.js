@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import styles from './index.module.scss'
 import { Check, Check2, SearchIcon } from '../../components/icons'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -34,20 +34,25 @@ const getCountryIdsFromGeoGroups = (
   return countryIds
 }
 
-const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
-  const [results, setResults] = useState([])
+const KnowledgeHub = ({ serverData, setLoginVisible, isAuthenticated }) => {
+  const router = useRouter()
+  const [results, setResults] = useState(serverData.results)
   const [search, setSearch] = useState('')
   const [loading, setLoading] = useState(false)
-  const [selectedThemes, setSelectedThemes] = useState([])
-  const [selectedTypes, setSelectedTypes] = useState([])
-  const [selectedCountries, setSelectedCountries] = useState([])
-  const [selectedGeoCountryGroup, setSelectedGeoCountryGroup] = useState([])
-  const router = useRouter()
+  const selectedThemes = router.query.tag ? router.query.tag.split(',') : []
+  const selectedTypes = router.query.topic ? router.query.topic.split(',') : []
+  const selectedCountries = router.query.country
+    ? router.query.country.split(',')
+    : []
+  const selectedGeoCountryGroup = router.query.geo
+    ? router.query.geo.split(',')
+    : []
+  const [searchInput, setSearchInput] = useState(router.query.q || '')
   const [params, setParams] = useState(null)
   const [modalVisible, setModalVisible] = useState(false)
   const [offset, setOffset] = useState(0)
   const [limit] = useState(20)
-  const [hasMore, setHasMore] = useState(true)
+  const [hasMore, setHasMore] = useState(serverData.hasMore)
   const { countries, featuredOptions } = UIStore.useState((s) => ({
     countries: s.countries,
     featuredOptions: s.featuredOptions,
@@ -63,14 +68,47 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
     : []
 
   useEffect(() => {
-    fetchData()
-  }, [
-    search,
-    selectedThemes,
-    selectedTypes,
-    selectedCountries,
-    selectedGeoCountryGroup,
-  ])
+    setResults(serverData.results)
+    setHasMore(serverData.hasMore)
+    setOffset(0)
+  }, [serverData])
+
+  const updateQueryParams = useCallback(
+    (updates) => {
+      const currentQuery = router.query
+      const selectedCountryGroupCountries = getCountryIdsFromGeoGroups(
+        updates.geo ? updates.geo.split(',') : [],
+        featuredOptions
+      )
+
+      const newQuery = {
+        ...(currentQuery.q && { q: currentQuery.q }),
+        ...(currentQuery.tag && { tag: currentQuery.tag }),
+        ...(currentQuery.topic && { topic: currentQuery.topic }),
+        ...(currentQuery.country && { country: currentQuery.country }),
+        ...(currentQuery.geo && { geo: currentQuery.geo }),
+        ...(currentQuery.sort && { sort: currentQuery.sort }),
+        ...updates,
+      }
+
+      if (newQuery.geo) {
+        newQuery.country = selectedCountryGroupCountries.join(',')
+      } else if (newQuery.country) {
+        delete newQuery.geo
+      }
+      // Remove empty query params
+      Object.keys(newQuery).forEach(
+        (key) =>
+          (newQuery[key] === undefined || newQuery[key] === '') &&
+          delete newQuery[key]
+      )
+
+      router.push({ pathname: router.pathname, query: newQuery }, undefined, {
+        shallow: false,
+      })
+    },
+    [router]
+  )
 
   useEffect(() => {
     if (!modalVisible) {
@@ -102,29 +140,35 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
   ]
 
   const handleThemeToggle = (theme) => {
-    setSelectedThemes((prev) =>
-      prev.includes(theme) ? prev.filter((t) => t !== theme) : [...prev, theme]
-    )
+    const newThemes = selectedThemes.includes(theme)
+      ? selectedThemes.filter((t) => t !== theme)
+      : [...selectedThemes, theme]
+    updateQueryParams({
+      tag: newThemes.length > 0 ? newThemes.join(',') : undefined,
+    })
   }
 
   const handleTypeToggle = (type) => {
-    setSelectedTypes((prev) =>
-      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
-    )
+    const newTypes = selectedTypes.includes(type)
+      ? selectedTypes.filter((t) => t !== type)
+      : [...selectedTypes, type]
+    updateQueryParams({
+      topic: newTypes.length > 0 ? newTypes.join(',') : undefined,
+    })
   }
 
-  const handleGeoToggle = (type) => {
-    setSelectedGeoCountryGroup((prev) =>
-      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
-    )
+  const handleGeoToggle = (group) => {
+    const newGeoGroups = selectedGeoCountryGroup.includes(group)
+      ? selectedGeoCountryGroup.filter((g) => g !== group)
+      : [...selectedGeoCountryGroup, group]
+    updateQueryParams({
+      geo: newGeoGroups.length > 0 ? newGeoGroups.join(',') : undefined,
+      country: undefined,
+    })
   }
 
   const handleCountryChange = (value) => {
-    if (value) {
-      setSelectedCountries(value)
-    } else {
-      setSelectedCountries([])
-    }
+    updateQueryParams({ ...router.query, countries: value })
   }
 
   const showModal = ({ e, item }) => {
@@ -181,19 +225,29 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
     setLoading(false)
   }
 
-  const clearSearch = () => {
-    setSearch('')
-  }
-
   const loadMore = () => {
     const newOffset = offset + limit
     fetchData(newOffset)
     setOffset(newOffset)
   }
 
-  const debouncedSearch = debounce((value) => {
-    setSearch(value)
-  }, 300)
+  const handleSearchChange = (e) => {
+    const value = e.target.value
+    setSearchInput(value)
+    if (value) {
+      debouncedUpdateSearch(value)
+    } else {
+      debouncedUpdateSearch.cancel()
+      updateQueryParams({ ...router.query, q: '' })
+    }
+  }
+
+  const debouncedUpdateSearch = useCallback(
+    debounce((value) => {
+      updateQueryParams({ ...router.query, q: value })
+    }, 300),
+    [updateQueryParams]
+  )
 
   const [sorting, setSorting] = useState('newest')
   const handleSortingChange = (e, v) => {
@@ -212,13 +266,8 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
             className="src"
             allowClear
             placeholder="Search Resources"
-            onChange={(e) => {
-              if (e.target.value) {
-                debouncedSearch(e.target.value)
-              } else {
-                clearSearch()
-              }
-            }}
+            value={searchInput}
+            onChange={handleSearchChange}
           />
           <div className="caps-heading-xs">browse resources by</div>
           <div className="section">
@@ -228,6 +277,7 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
                 <FilterToggle
                   key={theme.name}
                   onToggle={() => handleThemeToggle(theme.name)}
+                  isSelected={selectedThemes.includes(theme.name)}
                 >
                   {theme.name}
                 </FilterToggle>
@@ -241,6 +291,7 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
                 <FilterToggle
                   key={type.name}
                   onToggle={() => handleTypeToggle(type.value)}
+                  isSelected={selectedTypes.includes(type.value)}
                 >
                   {type.name}
                 </FilterToggle>
@@ -254,6 +305,7 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
                 <FilterToggle
                   key={type.name}
                   onToggle={() => handleGeoToggle(type.name)}
+                  isSelected={selectedGeoCountryGroup.includes(type.name)}
                 >
                   {type.name}
                 </FilterToggle>
@@ -354,16 +406,17 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
 
 // const ResourceCard = () => {}
 
-const FilterToggle = ({ children, onToggle }) => {
-  const [on, setOn] = useState(false)
+const FilterToggle = ({ children, onToggle, isSelected }) => {
   const handleClick = () => {
-    setOn(!on)
     onToggle()
   }
   return (
-    <div className={classNames('filter', { on })} onClick={handleClick}>
+    <div
+      className={classNames('filter', { on: isSelected })}
+      onClick={handleClick}
+    >
       <AnimatePresence>
-        {on && (
+        {isSelected && (
           <motion.div
             initial={{ width: 0, height: 0, marginRight: 0 }}
             animate={{ width: 9, height: 8, marginRight: 5 }}
@@ -378,11 +431,54 @@ const FilterToggle = ({ children, onToggle }) => {
   )
 }
 
-export const getStaticProps = async (ctx) => {
-  return {
-    props: {
-      i18n: await loadCatalog(ctx.locale),
-    },
+export async function getServerSideProps(context) {
+  const { query, req } = context
+
+  const forwardedProtos = (req.headers['x-forwarded-proto'] || '').split(',')
+
+  const protocol = forwardedProtos[0] || 'http'
+
+  const baseUrl = `${protocol}://${req.headers.host}/`
+
+  const API_ENDPOINT = process.env.REACT_APP_FEENV
+    ? 'https://unep-gpml.akvotest.org/api/'
+    : `${baseUrl}/api/`
+
+  const limit = 20
+
+  const params = new URLSearchParams({
+    ...(query.q && { q: query.q }),
+    ...(query.tag && { tag: query.tag }),
+    ...(query.topic && { topic: query.topic }),
+    ...(query.country && { country: query.country }),
+    incBadges: 'true',
+    limit: limit.toString(),
+    offset: '0',
+  })
+
+  try {
+    const response = await api.get(
+      `${API_ENDPOINT}/resources?${params.toString()}`
+    )
+    const serverData = {
+      results: response.data.results,
+      hasMore: response.data.results.length === limit,
+    }
+
+    return {
+      props: {
+        serverData,
+        i18n: await loadCatalog(context.locale),
+      },
+    }
+  } catch (error) {
+    console.error('Error fetching initial data:', error)
+    return {
+      props: {
+        serverData: { results: [], hasMore: false },
+        i18n: await loadCatalog(context.locale),
+      },
+    }
   }
 }
 
