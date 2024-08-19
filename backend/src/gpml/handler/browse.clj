@@ -24,7 +24,7 @@
    (java.sql SQLException)))
 
 (def topic-re (util.regex/comma-separated-enums-re dom.types/topic-types))
-(def ^:private order-by-fields ["title" "description" "id" "featured"])
+(def ^:private order-by-fields ["title" "description" "id" "featured" "created"])
 (def ^:private default-limit 50)
 (def ^:private default-offset 0)
 
@@ -178,7 +178,7 @@
                             (throw e))))}
       pos-int?]]
     [:orderBy {:optional true
-               :swagger {:description "One of the following properties to order the list of results: title, description, id"
+               :swagger {:description "One of the following properties to order the list of results: title, description, created, id"
                          :type "string"
                          :allowEmptyValue false}}
      (apply vector :enum order-by-fields)]
@@ -313,7 +313,6 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
                           :type "boolean"
                           :allowEmptyValue false}}
                [:boolean]]]]))
-
 
 (defn api-filters->filters
   "Transforms API query parameters into a map of database filters."
