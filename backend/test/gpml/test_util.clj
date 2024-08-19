@@ -7,8 +7,8 @@
 
 (defn db-test-conn []
   (-> fixtures/*system*
-      (ig/init [:duct.database.sql/hikaricp])
-      :duct.database.sql/hikaricp
+      (ig/init [:duct.database.sql/hikaricp :duct.database.sql.hikaricp/read-write])
+      (get [:duct.database.sql/hikaricp :duct.database.sql.hikaricp/read-write])
       :spec))
 
 (defn create-test-stakeholder [{:keys [db logger]} email review-status role]

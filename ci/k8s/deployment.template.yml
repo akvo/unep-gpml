@@ -11,7 +11,7 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-        run: unep-gpml
+      run: unep-gpml
   template:
     metadata:
       labels:
@@ -33,6 +33,13 @@ spec:
           limits:
             cpu: "200m"
             memory: "64Mi"
+        env:
+        - name: GCS_BASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: strapi-gcs-base-url
+
       - name: frontend
         image: eu.gcr.io/akvo-lumen/unep-gpml/frontend:${CI_COMMIT}
         ports:
@@ -220,6 +227,11 @@ spec:
             secretKeyRef:
               name: unep-gpml
               key: dead-simple-chat-api-key
+        - name: OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: openai-api-key
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: "/secrets/cloudsql/credentials.json"
         readinessProbe:

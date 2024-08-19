@@ -1,7 +1,7 @@
-{:duct.database.sql/hikaricp {:idle-timeout 10000
-                              :minimum-idle 0
-                              :logger #ig/ref :duct/logger
-                              :maximum-pool-size 1}
+{[:duct.database.sql/hikaricp :duct.database.sql.hikaricp/read-write] {:idle-timeout 10000
+                                                                       :minimum-idle 0
+                                                                       :logger #ig/ref :duct/logger
+                                                                       :maximum-pool-size 1}
 
  :mocks.boundary.adapter.storage-client/local-file-system {:base-path #duct/env ["LOCAL_FS_STORAGE_BASE_PATH" Str]}
 

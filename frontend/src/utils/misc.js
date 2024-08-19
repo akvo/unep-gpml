@@ -56,6 +56,7 @@ export const topicNames = (topic) => {
     organisation: 'Entity',
     stakeholder: 'Individual',
     capacityBuilding: 'Capacity Building',
+    caseStudy: 'Case Study',
   }
   return names[humps.camelize(topic)]
 }
@@ -260,13 +261,23 @@ export function transformStrapiResponse(value) {
 }
 
 export function getStrapiUrl() {
+  let $env = process.env.NEXT_PUBLIC_ENV  || 'test';
+  const domains = {
+    test: 'unep-gpml.akvotest.org',
+    staging: 'unep-gpml.akvotest.org',
+    prod: 'digital.gpmarinelitter.org',
+  }
+  return `https://${domains[$env]}/strapi`
+}
+
+export function getBaseUrl() {
   let $env = process.env.NEXT_PUBLIC_ENV
   const domains = {
     test: 'unep-gpml.akvotest.org',
     staging: 'digital.gpmarinelitter.org',
     prod: 'digital.gpmarinelitter.org',
   }
-  return `https://${domains[$env]}/strapi`
+  return `https://${domains[$env]}`
 }
 
 export function stripHtml(html) {

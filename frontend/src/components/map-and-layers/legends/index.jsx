@@ -8,6 +8,7 @@ import useQueryParameters from '../../../hooks/useQueryParameters'
 import useLayerInfo from '../../../hooks/useLayerInfo'
 import useLoadMap from '../../../hooks/useLoadMap'
 import useLegends from '../../../hooks/useLegends'
+import { transformObjectToArray } from '../../../utils/form-utils'
 
 const LegendCard = ({
   layerId,
@@ -78,12 +79,12 @@ const LegendCard = ({
       : []
     return allLegendItems?.map(({ label, symbol }) => {
       let colorStyle
-      if (Array.isArray(symbol.color) && !symbol?.data?.symbol) {
-        colorStyle = `rgba(${symbol.color.join(', ')})`
+      if (Array.isArray(symbol?.color) && !symbol?.data?.symbol) {
+        colorStyle = `rgba(${symbol?.color.join(', ')})`
       } else if (symbol?.data?.symbol) {
-        colorStyle = `rgba(${symbol.data.symbol.symbolLayers[1].color[0]}, ${symbol.data.symbol.symbolLayers[1].color[1]}, ${symbol.data.symbol.symbolLayers[1].color[2]}, ${symbol.data.symbol.symbolLayers[1].color[3]})`
-      } else if (typeof symbol.color === 'object' && symbol.color !== null) {
-        colorStyle = `rgba(${symbol.color.r}, ${symbol.color.g}, ${symbol.color.b}, ${symbol.color.a})`
+        colorStyle = `rgba(${symbol?.data.symbol.symbolLayers[1].color[0]}, ${symbol?.data.symbol.symbolLayers[1].color[1]}, ${symbol?.data.symbol?.symbolLayers[1].color[2]}, ${symbol?.data.symbol?.symbolLayers[1].color[3]})`
+      } else if (typeof symbol?.color === 'object' && symbol.color !== null) {
+        colorStyle = `rgba(${symbol?.color.r}, ${symbol?.color.g}, ${symbol?.color.b}, ${symbol?.color.a})`
       } else {
         console.warn(`Unexpected color format for label: ${label}`)
         return null
@@ -135,7 +136,7 @@ const LegendCard = ({
         {title}
       </Typography>
       <Typography style={{ fontSize: '14px', paddingBottom: '5px' }}>
-        UNIT: [{unit}]
+        Unit: [{unit}]
       </Typography>
 
       <Typography
@@ -163,7 +164,10 @@ const LegendCard = ({
         : renderLegendItems(
             legends?.legends?.drawingInfo?.renderer
               ? legends?.legends?.drawingInfo?.renderer?.classBreakInfos
-              : mapp?.renderers[0]?.renderer?.renderer?.classBreakInfos
+              : mapp?.renderers[0]?.renderer?.renderer?.classBreakInfos ||
+                  transformObjectToArray(
+                    mapp?.renderers[0]?.renderer?.renderer?._valueInfoMap
+                  )
           )}
 
       {layerId && (

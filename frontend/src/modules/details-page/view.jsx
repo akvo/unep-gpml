@@ -7,7 +7,7 @@ import React, {
   useRef,
 } from 'react'
 import styles from './style.module.scss'
-import { Row, Col, List, Avatar, Popover, Tag, Modal, notification } from 'antd'
+import { Row, Col, List, Popover, Skeleton } from 'antd'
 
 import {
   InfoCircleOutlined,
@@ -18,10 +18,7 @@ import {
 import api from '../../utils/api'
 import { UIStore } from '../../store'
 import { titleCase } from '../../utils/string'
-import { eventTrack } from '../../utils/misc'
 import LeftImage from '../../images/sea-dark.jpg'
-import { useAuth0 } from '@auth0/auth0-react'
-import { useHistory, useLocation } from 'react-router-dom'
 import uniqBy from 'lodash/uniqBy'
 import isEmpty from 'lodash/isEmpty'
 import { redirectError } from '../error/error-util'
@@ -93,6 +90,8 @@ const renderCountries = (data, countries) => {
 }
 
 const DetailsView = ({
+  match,
+  visible,
   serverData,
   serverTranslations,
   type,
@@ -105,40 +104,31 @@ const DetailsView = ({
   onBookmark2PS,
   updateData,
 }) => {
-  const [showLess, setShowLess] = useState(true)
   const {
     profile,
     countries,
     languages,
     transnationalOptions,
-    placeholder,
   } = UIStore.useState((s) => ({
     profile: s.profile,
     countries: s.countries,
     languages: s.languages,
     transnationalOptions: s.transnationalOptions,
-    icons: s.icons,
-    placeholder: s.placeholder,
   }))
   const router = useRouter()
   const [data, setData] = useState(null)
   const [relations, setRelations] = useState([])
   const [comments, setComments] = useState([])
-  // const { loginWithPopup } = useAuth0();
-  const [warningVisible, setWarningVisible] = useState(false)
-  const [visible, setVisible] = useState(false)
-  const [showReplyBox, setShowReplyBox] = useState('')
-  const [editComment, setEditComment] = useState('')
+  const [likes, setLikes] = useState([])
   const [translations, setTranslations] = useState({})
   const [selectedLanguage, setLanguage] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const relation = relations.find(
     (it) =>
       it.topicId === parseInt(id) &&
       it.topic === resourceTypeToTopicType(type.replace('-', '_'))
   )
-
-  const isConnectStakeholders = ['organisation', 'stakeholder'].includes(type)
 
   const allowBookmark = type !== 'stakeholder' || profile.id !== id
 
@@ -193,7 +183,9 @@ const DetailsView = ({
             })
             .catch((e) => console.log(e))
           setData(d.data)
+          setLikes(d.data.likes)
           getComment(id, type.replace('-', '_'))
+          setLoading(false)
         })
         .catch((err) => {
           console.error(err)
@@ -246,129 +238,25 @@ const DetailsView = ({
       setComments(res.data?.comments)
     }
   }
-
-  const handleEditBtn = (type = null) => {
-    eventTrack('Resource view', 'Update', 'Button')
-    let form = null
-    let link = null
-    switch (type) {
-      case 'initiative':
-        form = 'initiative'
-        link = 'edit/initiative'
-        type = 'initiative'
-        break
-      case 'action-plan':
-        form = 'actionPlan'
-        link = 'edit/action-plan'
-        type = 'action_plan'
-        break
-      case 'policy':
-        form = 'policy'
-        link = 'edit/policy'
-        type = 'policy'
-        break
-      case 'technical-resource':
-        form = 'technicalResource'
-        link = 'edit/technical-resource'
-        type = 'technical_resource'
-        break
-      case 'financing-resource':
-        form = 'financingResource'
-        link = 'edit/financing-resource'
-        type = 'financing_resource'
-        break
-      case 'technology':
-        form = 'technology'
-        link = 'edit/technology'
-        type = 'technology'
-        break
-      case 'event':
-        form = 'event'
-        link = 'edit/event'
-        type = 'event'
-        break
-      case 'case-study':
-        form = 'caseStudy'
-        link = 'edit/case-study'
-        type = 'case_study'
-        break
-      default:
-        form = 'entity'
-        link = 'edit/entity'
-        type = 'initiative'
-        break
+  useEffect(() => {
+    if (visible && match?.params?.item !== null) {
+      setData(match.params.item)
+      setLoading(true)
     }
-    UIStore.update((e) => {
-      e.formEdit = {
-        ...e.formEdit,
-        flexible: {
-          status: 'edit',
-          id: id,
-        },
-      }
-      e.formStep = {
-        ...e.formStep,
-        flexible: 1,
-      }
-    })
-    router.push(
-      {
-        pathname: `/${link}/${id}`,
-        query: { type: type },
-      },
-      `/${link}/${id}`
-    )
-  }
+  }, [visible, match])
 
-  const handleDeleteBtn = () => {
-    Modal.error({
-      className: 'popup-delete',
-      centered: true,
-      closable: true,
-      icon: false,
-      title: t`Are you sure you want to delete this resource?`,
-      content: t`Please be aware this action cannot be undone.`,
-      okText: t`Delete`,
-      okType: 'danger',
-      cancelText: t`Cancel`,
-      okButtonProps: { size: 'small' },
-      onOk() {
-        return api
-          .delete(`/detail/${type.replace('-', '_')}/${id}`)
-          .then((res) => {
-            notification.success({
-              message: t`Resource deleted successfully`,
-            })
-          })
-          .catch((err) => {
-            console.error(err)
-            notification.error({
-              message: t`Oops, something went wrong`,
-            })
-          })
-      },
-    })
-  }
-
-  const handleVisible = () => {
-    setVisible(!visible)
-  }
-
-  const [comment, setComment] = useState('')
-  const [newComment, setNewComment] = useState('')
-
-  if (!data) {
-    return (
-      <div className="details-view">
-        <div className="loading">
-          <LoadingOutlined spin />
-          <i>
-            <Trans>Loading...</Trans>
-          </i>
-        </div>
-      </div>
-    )
-  }
+  // if (!data) {
+  //   return (
+  //     <div className="details-view">
+  //       <div className="loading">
+  //         <LoadingOutlined spin />
+  //         <i>
+  //           <Trans>Loading...</Trans>
+  //         </i>
+  //       </div>
+  //     </div>
+  //   )
+  // }
 
   const description = data?.description ? data?.description : data?.summary
 
@@ -412,19 +300,11 @@ const DetailsView = ({
         <Header
           {...{
             data,
-            LeftImage,
             profile,
             isAuthenticated,
             type,
+            loading,
             id,
-            handleEditBtn,
-            handleDeleteBtn,
-            allowBookmark,
-            visible,
-            handleVisible,
-            showLess,
-            setShowLess,
-            placeholder,
             handleRelationChange,
             relation,
             translations,
@@ -432,163 +312,183 @@ const DetailsView = ({
             setLanguage,
             bookmark2PS,
             onBookmark2PS,
+            UIStore,
+            likes,
+            setLikes,
           }}
         />
-        <Row
-          className="resource-info "
-          gutter={{
-            lg: 24,
-          }}
-        >
-          {data?.image && (
-            <a
-              className="resource-image-wrapper"
-              href={`${
-                data?.url && data?.url?.includes('https://')
-                  ? data?.url
-                  : data.languages
-                  ? data?.languages[0].url
-                  : data?.url?.includes('http://')
-                  ? data?.url
-                  : 'https://' + data?.url
-              }`}
-              target="_blank"
-            >
-              <img
-                className="resource-image"
-                id="detail-resource-image"
-                src={data?.image}
-                alt={data?.title}
-              />
-            </a>
-          )}
-
-          <Col className="details-content-wrapper section-description section">
-            {description && (
-              <Row>
-                <h3 className="content-heading">
-                  <Trans>Description</Trans>
-                </h3>
-                <p className="content-paragraph">
-                  {selectedLanguage
-                    ? translations?.summary[selectedLanguage]
-                    : description}
-                </p>
-              </Row>
+        {loading && (
+          <Row
+            style={{ margin: '20px 40px' }}
+            gutter={{
+              lg: 24,
+            }}
+          >
+            <Skeleton
+              paragraph={{
+                rows: 7,
+              }}
+              active
+            />
+          </Row>
+        )}
+        {!loading && (
+          <Row
+            className="resource-info "
+            gutter={{
+              lg: 24,
+            }}
+          >
+            {data?.image && (
+              <a
+                className="resource-image-wrapper"
+                href={`${
+                  data?.url && data?.url?.includes('https://')
+                    ? data?.url
+                    : data.languages
+                    ? data?.languages[0].url
+                    : data?.url?.includes('http://')
+                    ? data?.url
+                    : 'https://' + data?.url
+                }`}
+                target="_blank"
+              >
+                <img
+                  className="resource-image"
+                  id="detail-resource-image"
+                  src={data?.image}
+                  alt={data?.title}
+                />
+              </a>
             )}
 
-            <Row>
-              {data?.geoCoverageType && (
-                <Col className="section-geo-coverage">
-                  <div className="extra-wrapper">
-                    <h3 className="content-heading">
-                      <Trans>Location & Geocoverage</Trans>
-                    </h3>
-                    <div
-                      style={{
-                        marginBottom: data?.geoCoverageType === 'global' && 0,
-                      }}
-                      className="detail-item geocoverage-item"
-                    >
-                      <div className="transnational-icon detail-item-icon">
-                        <TransnationalImage />
-                      </div>
-                      <span>{titleCase(data?.geoCoverageType || '')}</span>
-                    </div>
-
-                    {data?.geoCoverageType !== 'global' && (
-                      <>
-                        {data?.geoCoverageType !== 'sub-national' &&
-                          data?.geoCoverageType !== 'national' &&
-                          (data?.geoCoverageCountryGroups?.length > 0 ||
-                            data.geoCoverageCountries.length > 0) &&
-                          renderGeoCoverageCountryGroups(
-                            data,
-                            countries,
-                            transnationalOptions
-                          ) && (
-                            <div className="detail-item">
-                              <Row>
-                                <div className="location-icon detail-item-icon">
-                                  <LocationImage />
-                                </div>
-                                <div>
-                                  {renderGeoCoverageCountryGroups(
-                                    data,
-                                    countries,
-                                    transnationalOptions
-                                  )}
-                                  {renderCountries(
-                                    data,
-                                    countries,
-                                    transnationalOptions
-                                  )}
-                                </div>
-                              </Row>
-                            </div>
-                          )}
-
-                        {(data?.geoCoverageType === 'sub-national' ||
-                          data?.geoCoverageType === 'national') &&
-                          data?.geoCoverageValues &&
-                          data?.geoCoverageValues.length > 0 &&
-                          renderCountries(
-                            data,
-                            countries,
-                            transnationalOptions
-                          ) && (
-                            <div className="detail-item">
-                              <Row>
-                                <div className="location-icon detail-item-icon">
-                                  <LocationImage />
-                                </div>
-                                <div>
-                                  {renderCountries(
-                                    data,
-                                    countries,
-                                    transnationalOptions
-                                  )}
-                                </div>
-                              </Row>
-                            </div>
-                          )}
-
-                        {(data?.subnationalCity ||
-                          data?.q24SubnationalCity) && (
-                          <div className="detail-item">
-                            <Row>
-                              <div className="city-icon detail-item-icon">
-                                <CityImage />
-                              </div>
-                              <div>
-                                {data?.subnationalCity
-                                  ? data?.subnationalCity
-                                  : data?.q24SubnationalCity}
-                              </div>
-                            </Row>
-                          </div>
-                        )}
-                      </>
-                    )}
-
-                    {data?.languages && (
-                      <span className="detail-item">
-                        {data?.languages
-                          .map((language) => {
-                            const langs =
-                              !isEmpty(languages) &&
-                              languages[language?.isoCode]?.name
-                            return langs || ''
-                          })
-                          .join(', ')}
-                      </span>
-                    )}
-                  </div>
-                </Col>
+            <Col className="details-content-wrapper section-description section">
+              {description && (
+                <Row>
+                  <h3 className="content-heading">
+                    <Trans>Description</Trans>
+                  </h3>
+                  <p className="content-paragraph">
+                    {selectedLanguage
+                      ? translations?.summary[selectedLanguage]
+                      : description}
+                  </p>
+                </Row>
               )}
-            </Row>
-          </Col>
-        </Row>
+
+              <Row>
+                {data?.geoCoverageType && (
+                  <Col className="section-geo-coverage">
+                    <div className="extra-wrapper">
+                      <h3 className="content-heading">
+                        <Trans>Location & Geocoverage</Trans>
+                      </h3>
+                      <div
+                        style={{
+                          marginBottom: data?.geoCoverageType === 'global' && 0,
+                        }}
+                        className="detail-item geocoverage-item"
+                      >
+                        <div className="transnational-icon detail-item-icon">
+                          <TransnationalImage />
+                        </div>
+                        <span>{titleCase(data?.geoCoverageType || '')}</span>
+                      </div>
+
+                      {data?.geoCoverageType !== 'global' && (
+                        <>
+                          {data?.geoCoverageType !== 'sub-national' &&
+                            data?.geoCoverageType !== 'national' &&
+                            (data?.geoCoverageCountryGroups?.length > 0 ||
+                              data.geoCoverageCountries.length > 0) &&
+                            renderGeoCoverageCountryGroups(
+                              data,
+                              countries,
+                              transnationalOptions
+                            ) && (
+                              <div className="detail-item">
+                                <Row>
+                                  <div className="location-icon detail-item-icon">
+                                    <LocationImage />
+                                  </div>
+                                  <div>
+                                    {renderGeoCoverageCountryGroups(
+                                      data,
+                                      countries,
+                                      transnationalOptions
+                                    )}
+                                    {renderCountries(
+                                      data,
+                                      countries,
+                                      transnationalOptions
+                                    )}
+                                  </div>
+                                </Row>
+                              </div>
+                            )}
+
+                          {(data?.geoCoverageType === 'sub-national' ||
+                            data?.geoCoverageType === 'national') &&
+                            data?.geoCoverageValues &&
+                            data?.geoCoverageValues.length > 0 &&
+                            renderCountries(
+                              data,
+                              countries,
+                              transnationalOptions
+                            ) && (
+                              <div className="detail-item">
+                                <Row>
+                                  <div className="location-icon detail-item-icon">
+                                    <LocationImage />
+                                  </div>
+                                  <div>
+                                    {renderCountries(
+                                      data,
+                                      countries,
+                                      transnationalOptions
+                                    )}
+                                  </div>
+                                </Row>
+                              </div>
+                            )}
+
+                          {(data?.subnationalCity ||
+                            data?.q24SubnationalCity) && (
+                            <div className="detail-item">
+                              <Row>
+                                <div className="city-icon detail-item-icon">
+                                  <CityImage />
+                                </div>
+                                <div>
+                                  {data?.subnationalCity
+                                    ? data?.subnationalCity
+                                    : data?.q24SubnationalCity}
+                                </div>
+                              </Row>
+                            </div>
+                          )}
+                        </>
+                      )}
+
+                      {data?.languages && (
+                        <span className="detail-item">
+                          {data?.languages
+                            .map((language) => {
+                              const langs =
+                                !isEmpty(languages) &&
+                                languages[language?.isoCode]?.name
+                              return langs || ''
+                            })
+                            .join(', ')}
+                        </span>
+                      )}
+                    </div>
+                  </Col>
+                )}
+              </Row>
+            </Col>
+          </Row>
+        )}
         {/* TAGS */}
         {data?.tags && data?.tags?.length > 0 && (
           <Col className="section-tag section">
@@ -620,7 +520,7 @@ const DetailsView = ({
 
         {/* CONNECTION */}
         {(data?.entityConnections?.length > 0 ||
-          data?.stakeholderConnections.filter(
+          data?.stakeholderConnections?.filter(
             (x) => x.stakeholderRole !== 'ADMIN' || x.role === 'interested in'
           )?.length > 0) && (
           <Col className="section section-connection-stakeholder">
@@ -657,7 +557,9 @@ const DetailsView = ({
           </Col>
         )}
 
-        <Records {...{ countries, languages, type, data, profile }} />
+        {data != null && !loading && (
+          <Records {...{ countries, languages, type, data, profile }} />
+        )}
 
         {/* RELATED CONTENT */}
         {data?.relatedContent &&
@@ -680,25 +582,19 @@ const DetailsView = ({
           )}
 
         {/* COMMENTS */}
-        <Comments
-          {...{
-            profile,
-            type,
-            id,
-            comment,
-            comments,
-            editComment,
-            setEditComment,
-            newComment,
-            setNewComment,
-            showReplyBox,
-            setShowReplyBox,
-            setComment,
-            getComment,
-            setLoginVisible,
-            isAuthenticated,
-          }}
-        />
+        {!loading && (
+          <Comments
+            {...{
+              profile,
+              type,
+              id,
+              comments,
+              getComment,
+              setLoginVisible,
+              isAuthenticated,
+            }}
+          />
+        )}
       </div>
     </div>
   )

@@ -302,8 +302,6 @@ const ModalAddEntity = ({ visible, close, isMember, setEntity, tag }) => {
 
   const uiSchema = useUiSchema()
 
-  console.log(uiSchema, 'uiSchema')
-
   return (
     <Modal
       width={600}

@@ -1,5 +1,6 @@
 (ns gpml.handler.browse
   (:require
+   [clojure.set :as set]
    [clojure.string :as str]
    [duct.logger :refer [log]]
    [gpml.db.country-group :as db.country-group]
@@ -16,13 +17,14 @@
    [gpml.util.postgresql :as pg-util]
    [gpml.util.regular-expressions :as util.regex]
    [integrant.core :as ig]
+   [malli.util :as mu]
    [medley.core :as medley]
    [taoensso.timbre :as timbre])
   (:import
    (java.sql SQLException)))
 
 (def topic-re (util.regex/comma-separated-enums-re dom.types/topic-types))
-(def ^:private order-by-fields ["title" "description" "id" "featured"])
+(def ^:private order-by-fields ["title" "description" "id" "featured" "created"])
 (def ^:private default-limit 50)
 (def ^:private default-offset 0)
 
@@ -176,7 +178,7 @@
                             (throw e))))}
       pos-int?]]
     [:orderBy {:optional true
-               :swagger {:description "One of the following properties to order the list of results: title, description, id"
+               :swagger {:description "One of the following properties to order the list of results: title, description, created, id"
                          :type "string"
                          :allowEmptyValue false}}
      (apply vector :enum order-by-fields)]
@@ -282,12 +284,43 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
         (not ps_bookmark_sections_keys)
         (and ps_bookmark_sections_keys ps_country_iso_code_a2))))]])
 
+(defn resources-api-schema
+  [opts]
+  (mu/merge (api-opts-schema opts)
+            [:and
+             [:map
+              [:incAllProps
+               {:optional true
+                :swagger {:description "If set to 'true' includes all the properties of each resource."
+                          :type "boolean"
+                          :allowEmptyValue false}}
+               [:boolean]]
+              [:incBadges
+               {:optional true
+                :swagger {:description "If set to 'true' includes the badges of each resource."
+                          :type "boolean"
+                          :allowEmptyValue false}}
+               [:boolean]]
+              [:incBookmarked
+               {:optional true
+                :swagger {:description "If set to 'true' includes the bookmarked flag of each resource."
+                          :type "boolean"
+                          :allowEmptyValue false}}
+               [:boolean]]
+              [:bookmarked
+               {:optional true
+                :swagger {:description "If set to 'true' includes only the bookmarked resources for  the authenticated user"
+                          :type "boolean"
+                          :allowEmptyValue false}}
+               [:boolean]]]]))
+
 (defn api-filters->filters
   "Transforms API query parameters into a map of database filters."
   [{:keys [limit offset startDate endDate user-id favorites country transnational
            topic tag affiliation representativeGroup subContentType entity orderBy
            descending q incCountsForTags featured capacity_building upcoming
-           ps_country_iso_code_a2 ps_bookmark_sections_keys badges inc_entity_connections]
+           ps_country_iso_code_a2 ps_bookmark_sections_keys badges inc_entity_connections
+           bookmarked incBadges]
     :or {limit default-limit
          offset default-offset}}]
   (cond-> {}
@@ -303,7 +336,7 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
     endDate
     (assoc :end-date endDate)
 
-    (and user-id favorites)
+    (and user-id (or favorites bookmarked))
     (assoc :user-id user-id :favorites true :resource-types dom.resource/types)
 
     (seq country)
@@ -347,6 +380,9 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
 
     (some? badges)
     (assoc :badges badges)
+
+    (some? incBadges)
+    (assoc :badges incBadges)
 
     upcoming
     (assoc :upcoming upcoming)
@@ -454,6 +490,49 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
           (r/server-error (assoc-in response [:error-details :error] (pg-util/get-sql-state t)))
           (r/server-error (assoc-in response [:error-details :error] (ex-message t))))))))
 
+(defn- selected-keys [query]
+  (let [ks [:id :title :type :images :topic :likes]]
+    (if (:incBadges query)
+      (conj ks :incBadges)
+      ks)))
+
+(defn- resources-response [{:keys [logger] {db :spec} :db :as config} query approved? admin]
+  (try
+    (let [api-search-opts (->> query
+                               (api-filters->filters)
+                               (merge {:approved approved?
+                                       :admin admin})
+                               (add-geo-coverage-filters config)
+                               (add-plastic-strategy-filters config))
+          get-topics-start-time (System/currentTimeMillis)
+          results (->> api-search-opts
+                       (db.topic/get-topics db)
+                       (map (partial resource->api-resource config))
+                       (map #(set/rename-keys % {:files :images
+                                                 :assigned_badges :incBadges})))
+          ks (selected-keys query)
+          results (if (:incAllProps query)
+                    results
+                    (map #(select-keys % ks) results))
+          get-topics-exec-time (- (System/currentTimeMillis) get-topics-start-time)
+          count-topics-start-time (System/currentTimeMillis)
+          counts (->> (assoc api-search-opts :count-only? true)
+                      (db.topic/get-topics db))
+          count-topics-exec-time (- (System/currentTimeMillis) count-topics-start-time)]
+      (log logger :info :query-exec-time {:get-topics-exec-time (str get-topics-exec-time "ms")
+                                          :count-topics-exec-time (str count-topics-exec-time "ms")})
+      (r/ok {:success? true
+             :results results
+             :counts counts}))
+    (catch Exception t
+      (timbre/with-context+ query
+        (log logger :error :failed-to-get-topics t))
+      (let [response {:success? false
+                      :reason :could-not-get-topics}]
+        (if (instance? SQLException t)
+          (r/server-error (assoc-in response [:error-details :error] (pg-util/get-sql-state t)))
+          (r/server-error (assoc-in response [:error-details :error] (ex-message t))))))))
+
 (defmethod ig/init-key :gpml.handler.browse/get [_ config]
   (fn [{{:keys [query]} :parameters
         approved? :approved?
@@ -465,3 +544,15 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
 
 (defmethod ig/init-key :gpml.handler.browse/query-params [_ config]
   (api-opts-schema config))
+
+(defmethod ig/init-key :gpml.handler.browse/resources-query-params [_ config]
+  (resources-api-schema config))
+
+(defmethod ig/init-key :gpml.handler.browse/resources [_ config]
+  (fn [{{:keys [query]} :parameters
+        approved? :approved?
+        user :user}]
+    (#'resources-response config
+                          (merge query {:user-id (:id user)})
+                          approved?
+                          (h.r.permission/super-admin? config (:id user)))))

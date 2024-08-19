@@ -1,0 +1,18 @@
+{
+  "kind": "collectionType",
+  "collectionName": "learning_centre_tags",
+  "info": {
+    "singularName": "learning-centre-tag",
+    "pluralName": "learning-centre-tags",
+    "displayName": "Learning Centre Tag"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    }
+  }
+}

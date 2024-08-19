@@ -63,7 +63,7 @@
                  [org.apache.commons/commons-compress "1.26.1"]
                  [org.apache.httpcomponents/httpclient "4.5.14"]
                  [org.apache.httpcomponents/httpcore "4.4.16"]
-                 [org.clojure/clojure "1.11.2"]
+                 [org.clojure/clojure "1.11.3"]
                  [org.clojure/core.async "1.6.681"]
                  [org.clojure/data.csv "1.0.0"]
                  [org.eclipse.jetty/jetty-server "11.0.20"]

@@ -46,12 +46,26 @@ const getDifferences = (oldObj, newObj) => {
         changes[key] = nestedChanges
       }
     } else if (Array.isArray(newObj[key]) && Array.isArray(oldObj[key])) {
-      for (let i = 0; i < newObj[key].length; i++) {
-        const arrNestedChanges = getDifferences(oldObj[key][i], newObj[key][i])
-        if (Object.keys(arrNestedChanges).length) {
-          if (!changes[key]) changes[key] = []
-          changes[key][i] = arrNestedChanges
+      const arrChanges = []
+      for (
+        let i = 0;
+        i < Math.max(newObj[key].length, oldObj[key].length);
+        i++
+      ) {
+        if (newObj[key][i] && oldObj[key][i]) {
+          const arrNestedChanges = getDifferences(
+            oldObj[key][i],
+            newObj[key][i]
+          )
+          if (Object.keys(arrNestedChanges).length) {
+            arrChanges[i] = arrNestedChanges
+          }
+        } else if (newObj[key][i] !== oldObj[key][i]) {
+          arrChanges[i] = newObj[key][i] !== undefined ? newObj[key][i] : null
         }
+      }
+      if (arrChanges.length) {
+        changes[key] = arrChanges
       }
     } else if (oldObj?.[key] !== newObj?.[key]) {
       changes[key] = newObj?.[key]

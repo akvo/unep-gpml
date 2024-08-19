@@ -14,7 +14,7 @@
   (let [system (ig/init fixtures/*system* [::auth/post-topic-auth])
         config (get system [:duct/const :gpml.config/common])
         handler (::auth/post-topic-auth system)
-        db (-> system :duct.database.sql/hikaricp :spec)
+        db (:spec (get system [:duct.database.sql/hikaricp :duct.database.sql.hikaricp/read-write]))
         admin-id (test-util/create-test-stakeholder config
                                                     "john.doe.admin@mail.invalid"
                                                     "APPROVED"

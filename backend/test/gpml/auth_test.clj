@@ -62,7 +62,7 @@
   (testing "Testing get-user-info logic"
     (let [system (-> fixtures/*system*
                      (ig/init [::auth/auth-middleware]))
-          db (-> system :duct.database.sql/hikaricp :spec)
+          db (:spec (get system [:duct.database.sql/hikaricp :duct.database.sql.hikaricp/read-write]))
 
           ;; Create approved user
           approved (new-stakeholder db 1 "user@un.org" "USER" "APPROVED")
