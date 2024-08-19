@@ -26,6 +26,7 @@ import {
   LinkedinIcon,
   YoutubeIcon,
   LongArrowRight,
+  Pointer,
 } from '../../components/icons'
 import { useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
@@ -457,11 +458,14 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
 }
 
 const ShowcasingAndStats = (props) => {
+  const { isAuthenticated, setLoginVisible } = props
   const { stakeholders, organisations, community } = UIStore.useState((s) => ({
     stakeholders: s.stakeholders,
     organisations: s.organisations,
     community: s.community,
   }))
+
+  const [expertsCount, setExpertsCount] = useState(0)
 
   const totalCount = props?.data?.reduce((sum, item) => {
     if (item.topic !== '[]') {
@@ -469,6 +473,19 @@ const ShowcasingAndStats = (props) => {
     }
     return sum
   }, 0)
+
+  useEffect(() => {
+    const url = `/stakeholder/expert/list`
+    api
+      .get(url, { page_size: 100, page_n: 0 })
+      .then((resp) => {
+        const data = resp?.data
+        setExpertsCount(data.count)
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+  }, [])
 
   const { i18n } = useLingui()
   const items = [
@@ -490,15 +507,16 @@ const ShowcasingAndStats = (props) => {
       label: t`COMMUNITIES OF PRACTICE`,
     },
   ]
+
   return (
     <div className="container">
       <div className={styles.showCasingSection}>
         <div className="caption-container">
           <div className="caps-heading-1 page-sub-heading">
-            <Trans>SHOWCASING</Trans>
+            <Trans>FEATURES</Trans>
           </div>
           <h2>
-            <Trans>Already on the platform</Trans>
+            <Trans>Browse the platform content</Trans>
           </h2>
         </div>
         <div className="powered-by-container">
@@ -521,7 +539,172 @@ const ShowcasingAndStats = (props) => {
           </div>
         </div>
       </div>
-      <div className={styles.statsSection}>
+      <div className={styles.newFeaturesSection}>
+        <div className="feature">
+          <div className="icon">
+            <Image
+              src="/iconxl-knowledge-hub.svg"
+              width={265}
+              height={136}
+              alt="knowledge hub"
+            />
+          </div>
+          <p>
+            <div>
+              <h3>
+                <Trans>Knowledge Hub</Trans>
+              </h3>
+              <span>
+                <Trans>
+                  Crowdsourcing a vast repository/library of {totalCount}{' '}
+                  curated knowledge products and materials.
+                </Trans>
+              </span>
+              <Link href="/knowledge/library">
+                <Button type="link">
+                  <Trans>Explore the resources</Trans>{' '}
+                  <div className="icn">
+                    <Pointer />
+                  </div>
+                </Button>
+              </Link>
+            </div>
+          </p>
+        </div>
+        <div className="feature">
+          <div className="icon">
+            <Image
+              src="/iconxl-data-hub.svg"
+              width={320}
+              height={160}
+              alt="data hub"
+            />
+          </div>
+          <p>
+            <div>
+              <h3>
+                <Trans>Data Hub</Trans>
+              </h3>
+              <span>
+                <Trans>
+                  Visualizing an extensive array of {props?.layers} data layers
+                  across the plastic lifecycle, providing in-depth insights.
+                </Trans>
+              </span>
+              <Link href="/data/maps">
+                <Button type="link">
+                  <Trans>Explore the data layers</Trans>{' '}
+                  <div className="icn">
+                    <Pointer />
+                  </div>
+                </Button>
+              </Link>
+            </div>
+          </p>
+        </div>
+        <div className="feature">
+          <div className="icon">
+            <Image src="/iconxl-cop.svg" width={321} height={191} alt="cop" />
+          </div>
+          <p>
+            <div>
+              <h3>
+                <Trans>Communities of Practice</Trans>
+              </h3>
+              <span>
+                <Trans>
+                  Harnessing the expertise of {props?.cop} Communities of
+                  Practice (CoPs) comprised of leading experts and scientists to
+                  bridge critical knowledge and data gaps.
+                </Trans>
+              </span>
+              <Link href="/cop">
+                <Button type="link">
+                  <Trans>Explore the CoPs</Trans>{' '}
+                  <div className="icn">
+                    <Pointer />
+                  </div>
+                </Button>
+              </Link>
+            </div>
+          </p>
+        </div>
+        <div className="feature">
+          <div className="icon">
+            <Image
+              src="/iconxl-community.svg"
+              width={321}
+              height={204}
+              alt="community"
+            />
+          </div>
+          <p>
+            <div>
+              <h3>Community</h3>
+              <span>
+                <Trans>
+                  Fostering a dynamic network of {expertsCount} experts,{' '}
+                  {stakeholders?.stakeholders?.length} stakeholders and{' '}
+                  {organisations.length} member organisations, enhancing
+                  collaboration and shared innovation.
+                </Trans>
+              </span>
+              <Link href="/community">
+                <Button type="link">
+                  <Trans>Explore the community</Trans>{' '}
+                  <div className="icn">
+                    <Pointer />
+                  </div>
+                </Button>
+              </Link>
+            </div>
+          </p>
+        </div>
+        <div className="feature">
+          <div className="icon">
+            <Image
+              src="/iconxl-workspace.svg"
+              width={321}
+              height={166}
+              alt="workspace"
+            />
+          </div>
+          <p>
+            <div>
+              <h3>
+                <Trans>Workspace</Trans>
+              </h3>
+              <span>
+                <Trans>
+                  Empowering 18 countries in crafting comprehensive national
+                  source inventories, which facilitates the development of a
+                  National Roadmap/Strategy/Plan through evidence-based
+                  approach. Additionally, forums can be accessed from the
+                  workspace, promoting collaboration and sharing of information.
+                </Trans>
+              </span>
+              {!isAuthenticated ? (
+                <Button type="link" onClick={() => setLoginVisible(true)}>
+                  <Trans>Access the workspace</Trans>
+                  <div className="icn">
+                    <Pointer />
+                  </div>
+                </Button>
+              ) : (
+                <Link href="/workspace">
+                  <Button type="link">
+                    <Trans>Access the workspace</Trans>
+                    <div className="icn">
+                      <Pointer />
+                    </div>
+                  </Button>
+                </Link>
+              )}
+            </div>
+          </p>
+        </div>
+      </div>
+      {/* <div className={styles.statsSection}>
         <div className="stats-container">
           <ul className="stats">
             {items.map((item, ix) => (
@@ -547,7 +730,7 @@ const ShowcasingAndStats = (props) => {
             </h5>
           </span>
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }
