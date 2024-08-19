@@ -34,9 +34,16 @@ const getCountryIdsFromGeoGroups = (
   return countryIds
 }
 
-const KnowledgeHub = ({ serverData, setLoginVisible, isAuthenticated }) => {
+const KnowledgeHub = ({
+  newResults,
+  hasMore,
+  offset,
+  isLoadMore,
+  setLoginVisible,
+  isAuthenticated,
+}) => {
   const router = useRouter()
-  const [results, setResults] = useState(serverData.results)
+  const [results, setResults] = useState(newResults)
   const [search, setSearch] = useState('')
   const [loading, setLoading] = useState(false)
   const selectedThemes = router.query.tag ? router.query.tag.split(',') : []
@@ -50,13 +57,17 @@ const KnowledgeHub = ({ serverData, setLoginVisible, isAuthenticated }) => {
   const [searchInput, setSearchInput] = useState(router.query.q || '')
   const [params, setParams] = useState(null)
   const [modalVisible, setModalVisible] = useState(false)
-  const [offset, setOffset] = useState(0)
-  const [limit] = useState(20)
-  const [hasMore, setHasMore] = useState(serverData.hasMore)
   const { countries, featuredOptions } = UIStore.useState((s) => ({
     countries: s.countries,
     featuredOptions: s.featuredOptions,
   }))
+  const [sorting, setSorting] = useState(
+    router.query.orderBy === 'created'
+      ? router.query.descending === 'true'
+        ? 'newest'
+        : 'oldest'
+      : 'newest'
+  )
 
   const countryOpts = countries
     ? countries
@@ -66,12 +77,6 @@ const KnowledgeHub = ({ serverData, setLoginVisible, isAuthenticated }) => {
         .map((it) => ({ value: it.id, label: it.name }))
         .sort((a, b) => a.label.localeCompare(b.label))
     : []
-
-  useEffect(() => {
-    setResults(serverData.results)
-    setHasMore(serverData.hasMore)
-    setOffset(0)
-  }, [serverData])
 
   const updateQueryParams = useCallback(
     (updates) => {
@@ -87,7 +92,8 @@ const KnowledgeHub = ({ serverData, setLoginVisible, isAuthenticated }) => {
         ...(currentQuery.topic && { topic: currentQuery.topic }),
         ...(currentQuery.country && { country: currentQuery.country }),
         ...(currentQuery.geo && { geo: currentQuery.geo }),
-        ...(currentQuery.sort && { sort: currentQuery.sort }),
+        orderBy: currentQuery.orderBy || 'created',
+        descending: currentQuery.descending || 'true',
         ...updates,
       }
 
@@ -183,52 +189,27 @@ const KnowledgeHub = ({ serverData, setLoginVisible, isAuthenticated }) => {
     }
   }
 
-  const fetchData = async (newOffset = 0) => {
-    const params = new URLSearchParams()
-
-    if (search) params.append('q', search)
-    if (selectedThemes.length > 0)
-      params.append('tag', selectedThemes.join(','))
-    if (selectedTypes.length > 0)
-      params.append('topic', selectedTypes.join(','))
-    const selectedCountryGroupCountries = getCountryIdsFromGeoGroups(
-      selectedGeoCountryGroup,
-      featuredOptions
-    )
-    if (
-      selectedCountries.length > 0 ||
-      selectedCountryGroupCountries.length > 0
-    )
-      params.append(
-        'country',
-        selectedCountryGroupCountries.length > 0
-          ? selectedCountryGroupCountries.join(',')
-          : selectedCountries.join(',')
-      )
-
-    params.append('incBadges', 'true')
-    params.append('limit', limit)
-    params.append('offset', newOffset)
-
-    setLoading(true)
-
-    const response = await api.get(`/resources?${params.toString()}`)
-    const newResults = response.data.results
-
-    if (newOffset === 0) {
-      setResults(newResults)
-    } else {
+  useEffect(() => {
+    if (isLoadMore) {
       setResults((prevResults) => [...prevResults, ...newResults])
+    } else {
+      setResults(newResults)
     }
-
-    setHasMore(newResults.length === limit)
     setLoading(false)
-  }
+  }, [newResults, isLoadMore])
 
   const loadMore = () => {
-    const newOffset = offset + limit
-    fetchData(newOffset)
-    setOffset(newOffset)
+    if (!loading && hasMore) {
+      setLoading(true)
+      const newOffset = offset
+      const newQuery = { ...router.query, offset: newOffset }
+      router
+        .push({ pathname: router.pathname, query: newQuery }, undefined, {
+          shallow: false,
+        })
+        .then(() => setLoading(false))
+        .catch(() => setLoading(false))
+    }
   }
 
   const handleSearchChange = (e) => {
@@ -248,15 +229,29 @@ const KnowledgeHub = ({ serverData, setLoginVisible, isAuthenticated }) => {
     }, 300),
     [updateQueryParams]
   )
-
-  const [sorting, setSorting] = useState('newest')
-  const handleSortingChange = (e, v) => {
-    setSorting(e.key)
-  }
   const sortingOpts = [
-    { key: 'newest', label: 'Most Recent First' },
-    { key: 'oldest', label: 'Oldest First' },
+    {
+      key: 'newest',
+      label: 'Most Recent First',
+      apiParams: { orderBy: 'created', descending: 'true' },
+    },
+    {
+      key: 'oldest',
+      label: 'Oldest First',
+      apiParams: { orderBy: 'created', descending: 'false' },
+    },
   ]
+
+  const handleSortingChange = useCallback(
+    (key) => {
+      const selectedSort = sortingOpts.find((opt) => opt.key === key.key)
+      if (selectedSort) {
+        setSorting(key.key)
+        updateQueryParams(selectedSort.apiParams)
+      }
+    },
+    [updateQueryParams]
+  )
 
   return (
     <div className={styles.knowledgeHub}>
@@ -445,6 +440,7 @@ export async function getServerSideProps(context) {
     : `${baseUrl}/api/`
 
   const limit = 20
+  const offset = parseInt(query.offset) || 0
 
   const params = new URLSearchParams({
     ...(query.q && { q: query.q }),
@@ -453,21 +449,23 @@ export async function getServerSideProps(context) {
     ...(query.country && { country: query.country }),
     incBadges: 'true',
     limit: limit.toString(),
-    offset: '0',
+    offset: offset.toString(),
+    orderBy: query.orderBy || 'created',
+    descending: query.descending || 'true',
   })
 
   try {
     const response = await api.get(
       `${API_ENDPOINT}/resources?${params.toString()}`
     )
-    const serverData = {
-      results: response.data.results,
-      hasMore: response.data.results.length === limit,
-    }
+    const newResults = response.data.results
 
     return {
       props: {
-        serverData,
+        newResults,
+        hasMore: newResults.length === limit,
+        offset: offset + newResults.length,
+        isLoadMore: offset > 0,
         i18n: await loadCatalog(context.locale),
       },
     }
@@ -475,7 +473,10 @@ export async function getServerSideProps(context) {
     console.error('Error fetching initial data:', error)
     return {
       props: {
-        serverData: { results: [], hasMore: false },
+        newResults: [],
+        hasMore: false,
+        offset: 0,
+        isLoadMore: false,
         i18n: await loadCatalog(context.locale),
       },
     }
