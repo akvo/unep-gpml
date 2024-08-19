@@ -2,7 +2,9 @@ import { Form, Input, Spin } from 'antd'
 import Button from '../../components/button'
 import api from '../../utils/api'
 import { useEffect, useRef, useState } from 'react'
-import ResourceCard from '../../components/resource-card/resource-card'
+import ResourceCard, {
+  ResourceCardSkeleton,
+} from '../../components/resource-card/resource-card'
 import bodyScrollLock from '../../modules/details-page/scroll-utils'
 import styles from './index.module.scss'
 import DetailModal from '../../modules/details-page/modal'
@@ -24,6 +26,7 @@ const Search = ({ setLoginVisible, isAuthenticated }) => {
   const moreBtnRef = useRef()
   const onSearch = () => {
     setLoading(true)
+    setItems({ ...emptyObj })
     api.get(`search?q=${val.replace(/ /g, '+')}`).then((d) => {
       const obj = { ...emptyObj }
       obj.resources = d.data.results.filter(
@@ -105,7 +108,7 @@ const Search = ({ setLoginVisible, isAuthenticated }) => {
             {loading && (
               <div className="loading">
                 <Spin
-                  indicator={<LoadingOutlined style={{ fontSize: 44 }} spin />}
+                  indicator={<LoadingOutlined style={{ fontSize: 40 }} spin />}
                 />
               </div>
             )}
@@ -141,6 +144,15 @@ const Search = ({ setLoginVisible, isAuthenticated }) => {
           </div>
         </div>
         <div className="content">
+          {loading && (
+            <>
+              <div className="results">
+                <ResourceCardSkeleton />
+                <ResourceCardSkeleton />
+                <ResourceCardSkeleton />
+              </div>
+            </>
+          )}
           {items.resources.length > 0 && (
             <>
               <h4 className="caps-heading-1">knowledge hub</h4>
