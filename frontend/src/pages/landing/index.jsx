@@ -49,6 +49,7 @@ import {
 import LocationDropdown from '../../components/location-dropdown/location-dropdown'
 import CountryTransnationalFilter from '../../components/select/country-transnational-filter'
 import api from '../../utils/api'
+import { SearchBar } from '../search'
 
 const pagination = {
   clickable: true,
@@ -359,98 +360,11 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
         </div>
       </div>
       <div className="container">
-        <div className="search-bar">
-          <div className="bar">
-            <Select
-              dropdownClassName={styles.dropdownSuggestion}
-              placeholder={t`Search the resource database...`}
-              options={tagOpts}
-              optionFilterProp="children"
-              filterOption={(input, option) =>
-                option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
-              }
-              value={filter?.tag}
-              onChange={(val) => {
-                setFilter({
-                  tag: val,
-                })
-              }}
-              suffixIcon={width < 768 && <Magnifier />}
-              virtual={false}
-              showSearch
-            />
-            <div className="localisation h-xs">
-              <LocationDropdown
-                {...{
-                  country,
-                  multiCountry,
-                  countryList,
-                  dropdownVisible,
-                  setDropdownVisible,
-                }}
-                placeholder={<Trans>Globally</Trans>}
-                value={value}
-              />
-            </div>
-            <Button
-              type="primary"
-              size="small"
-              className="left-icon hide-mobile"
-              onClick={handleOnSearch}
-            >
-              <Magnifier />
-              <Trans>Search</Trans>
-            </Button>
-          </div>
-          <Button
-            type="primary"
-            className="hide-desktop noicon"
-            onClick={handleOnSearch}
-          >
-            <Trans>Search</Trans>
-          </Button>
-          <div className="tags hide-mobile">
-            <b>
-              <Trans>Suggested:</Trans>
-            </b>
-            <div className="suggestions">
-              {suggestedTags.slice(0, maxTags).map((suggestion, sx) => (
-                <Tag
-                  key={sx}
-                  className="h-xxs"
-                  onClick={() => setFilter({ tag: suggestion })}
-                >
-                  {suggestion}
-                </Tag>
-              ))}
-              {suggestedTags.length > maxTags && (
-                <Dropdown
-                  overlay={
-                    <Menu>
-                      {suggestedTags
-                        .slice(maxTags, suggestedTags.length)
-                        .map((tag, tx) => {
-                          return (
-                            <Menu.Item
-                              key={tx}
-                              onClick={() => setFilter({ tag })}
-                            >
-                              {tag}
-                            </Menu.Item>
-                          )
-                        })}
-                    </Menu>
-                  }
-                  trigger={['click']}
-                >
-                  <Tag className="h-xxs">
-                    {`+${suggestedTags.length - maxTags} more`}
-                  </Tag>
-                </Dropdown>
-              )}
-            </div>
-          </div>
-        </div>
+        <SearchBar
+          onSearch={(val) => {
+            router.push(`/search?q=${val.replace(/ /g, '+')}`)
+          }}
+        />
       </div>
     </>
   )

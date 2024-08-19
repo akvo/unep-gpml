@@ -20,7 +20,7 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    margin-bottom: 160px;
+    margin-bottom: 180px;
 
     h1 {
       font-weight: normal;
@@ -169,7 +169,6 @@
               font-size: 16px;
 
               span {
-
                 // display: inline-block;
                 // transform: scale(1.2);
                 &:before {
@@ -317,8 +316,7 @@
       background-color: white;
       border-radius: 20px;
       box-shadow: 0px 20px 20px rgba(40, 44, 217, 0.12);
-      height: 163px;
-      top: -235px;
+      top: -275px;
       z-index: 5;
       padding: 20px 40px;
       box-sizing: border-box;
@@ -443,7 +441,7 @@
         align-items: flex-start;
         overflow-y: hidden;
 
-        &>b {
+        & > b {
           width: fit-content;
           margin-right: 10px;
           transform: translateY(5px);
@@ -504,7 +502,6 @@
             height: 30px;
 
             .ant-select-selector {
-
               .ant-select-selection-placeholder,
               .ant-select-selection-item,
               .ant-select-selection-search input[type='search'] {
@@ -767,7 +764,6 @@
     }
 
     :global {
-
       .page-sub-heading,
       .h-xxl {
         padding-bottom: 18px;
@@ -1170,12 +1166,12 @@
       justify-content: space-between;
     }
 
-    .ant-collapse>.ant-collapse-item {
+    .ant-collapse > .ant-collapse-item {
       border-radius: 16px;
       margin-bottom: 24px;
     }
 
-    .ant-collapse>.ant-collapse-item .p-s {
+    .ant-collapse > .ant-collapse-item .p-s {
       color: $primaryDarkBlue4;
     }
 
@@ -1194,7 +1190,7 @@
       text-transform: uppercase;
     }
 
-    .ant-tabs-left>.ant-tabs-nav .ant-tabs-tab {
+    .ant-tabs-left > .ant-tabs-nav .ant-tabs-tab {
       padding: 20px 24px;
       transition: all 0.3s ease-out;
       color: $primaryDarkBlueText;
@@ -1212,7 +1208,7 @@
       }
     }
 
-    .ant-tabs-left>.ant-tabs-nav .ant-tabs-tab+.ant-tabs-tab {
+    .ant-tabs-left > .ant-tabs-nav .ant-tabs-tab + .ant-tabs-tab {
       margin: 24px 0 0 0;
     }
 
@@ -1236,22 +1232,25 @@
       color: $primaryDarkBlue;
     }
 
-    .ant-tabs-left>.ant-tabs-nav .ant-tabs-tab {
+    .ant-tabs-left > .ant-tabs-nav .ant-tabs-tab {
       text-align: left;
       border-radius: 8px;
     }
 
-    .ant-tabs>.ant-tabs-nav .ant-tabs-nav-wrap {
+    .ant-tabs > .ant-tabs-nav .ant-tabs-nav-wrap {
       white-space: normal;
       overflow: visible;
     }
 
-    .ant-tabs-left>.ant-tabs-content-holder {
+    .ant-tabs-left > .ant-tabs-content-holder {
       margin-left: 0;
       border-left: none;
     }
 
-    .ant-tabs-left>.ant-tabs-content-holder>.ant-tabs-content>.ant-tabs-tabpane {
+    .ant-tabs-left
+      > .ant-tabs-content-holder
+      > .ant-tabs-content
+      > .ant-tabs-tabpane {
       padding-left: 0;
     }
 
@@ -1260,7 +1259,9 @@
     }
 
     .ant-tabs .ant-tabs-tab,
-    .ant-collapse>.ant-collapse-item:not(.ant-collapse-item-active)>.ant-collapse-header {
+    .ant-collapse
+      > .ant-collapse-item:not(.ant-collapse-item-active)
+      > .ant-collapse-header {
       font-family: var(--font-archia), sans-serif;
       background-color: $primaryGrey;
 
@@ -1326,11 +1327,11 @@
       line-height: 22px;
     }
 
-    .ant-collapse-borderless>.ant-collapse-item {
+    .ant-collapse-borderless > .ant-collapse-item {
       border-bottom: none;
     }
 
-    .ant-collapse>.ant-collapse-item>.ant-collapse-header {
+    .ant-collapse > .ant-collapse-item > .ant-collapse-header {
       align-items: center;
       padding: 20px 12px;
       border-radius: 16px;
@@ -1780,7 +1781,6 @@
     }
 
     .partner-container .partner-items {
-
       @media only screen and (max-width: $bpMobile) {
         padding-bottom: 10px;
         gap: 42.64px;
@@ -1810,12 +1810,10 @@
           filter: grayscale(1);
           margin: 0 auto;
 
-
           &:hover {
             -webkit-filter: grayscale(0);
             filter: none;
           }
-
         }
       }
     }
@@ -1852,7 +1850,7 @@
           width: 100% !important;
           justify-content: space-between;
 
-          &>span {
+          & > span {
             width: 100%;
             text-align: center;
           }
@@ -1996,7 +1994,6 @@
   }
 
   :global {
-
     .stats-container,
     .summaries {
       width: 100%;
@@ -2016,7 +2013,6 @@
       }
 
       li {
-
         h2,
         strong.h-xs {
           color: $primaryDarkBlue;
