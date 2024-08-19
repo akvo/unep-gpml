@@ -27,21 +27,26 @@ const Search = ({ setLoginVisible, isAuthenticated }) => {
   const onSearch = () => {
     setLoading(true)
     setItems({ ...emptyObj })
-    api.get(`search?q=${val.replace(/ /g, '+')}`).then((d) => {
-      const obj = { ...emptyObj }
-      obj.resources = d.data.results.filter(
-        (it) =>
-          it.type !== 'stakeholder' &&
-          it.type !== 'organisation' &&
-          it.type !== 'dataset'
-      )
-      obj.stakeholders = d.data.results.filter(
-        (it) => it.type === 'stakeholder' || it.type === 'organisation'
-      )
-      obj.datasets = d.data.results.filter((it) => it.type === 'dataset')
-      setItems(obj)
-      setLoading(false)
-    })
+    api
+      .get(`search?q=${val.replace(/ /g, '+')}`)
+      .then((d) => {
+        const obj = { ...emptyObj }
+        obj.resources = d.data.results.filter(
+          (it) =>
+            it.type !== 'stakeholder' &&
+            it.type !== 'organisation' &&
+            it.type !== 'dataset'
+        )
+        obj.stakeholders = d.data.results.filter(
+          (it) => it.type === 'stakeholder' || it.type === 'organisation'
+        )
+        obj.datasets = d.data.results.filter((it) => it.type === 'dataset')
+        setItems(obj)
+        setLoading(false)
+      })
+      .catch(() => {
+        setLoading(false)
+      })
   }
   const [modalVisible, setModalVisible] = useState(false)
   useEffect(() => {
