@@ -110,7 +110,7 @@ const menuList = [
       {
         key: msg`Digital Platform`,
         id: 'Digital Platform',
-        to: '/page/regional-nodes',
+        to: '/page/about-platform',
       },
       {
         key: msg`Contact Us`,
