@@ -2,7 +2,9 @@ import { Form, Input, Spin } from 'antd'
 import Button from '../../components/button'
 import api from '../../utils/api'
 import { useEffect, useRef, useState } from 'react'
-import ResourceCard from '../../components/resource-card/resource-card'
+import ResourceCard, {
+  ResourceCardSkeleton,
+} from '../../components/resource-card/resource-card'
 import bodyScrollLock from '../../modules/details-page/scroll-utils'
 import styles from './index.module.scss'
 import DetailModal from '../../modules/details-page/modal'
@@ -24,21 +26,27 @@ const Search = ({ setLoginVisible, isAuthenticated }) => {
   const moreBtnRef = useRef()
   const onSearch = () => {
     setLoading(true)
-    api.get(`search?q=${val.replace(/ /g, '+')}`).then((d) => {
-      const obj = { ...emptyObj }
-      obj.resources = d.data.results.filter(
-        (it) =>
-          it.type !== 'stakeholder' &&
-          it.type !== 'organisation' &&
-          it.type !== 'dataset'
-      )
-      obj.stakeholders = d.data.results.filter(
-        (it) => it.type === 'stakeholder' || it.type === 'organisation'
-      )
-      obj.datasets = d.data.results.filter((it) => it.type === 'dataset')
-      setItems(obj)
-      setLoading(false)
-    })
+    setItems({ ...emptyObj })
+    api
+      .get(`search?q=${val.replace(/ /g, '+')}`)
+      .then((d) => {
+        const obj = { ...emptyObj }
+        obj.resources = d.data.results.filter(
+          (it) =>
+            it.type !== 'stakeholder' &&
+            it.type !== 'organisation' &&
+            it.type !== 'dataset'
+        )
+        obj.stakeholders = d.data.results.filter(
+          (it) => it.type === 'stakeholder' || it.type === 'organisation'
+        )
+        obj.datasets = d.data.results.filter((it) => it.type === 'dataset')
+        setItems(obj)
+        setLoading(false)
+      })
+      .catch(() => {
+        setLoading(false)
+      })
   }
   const [modalVisible, setModalVisible] = useState(false)
   useEffect(() => {
@@ -105,7 +113,7 @@ const Search = ({ setLoginVisible, isAuthenticated }) => {
             {loading && (
               <div className="loading">
                 <Spin
-                  indicator={<LoadingOutlined style={{ fontSize: 44 }} spin />}
+                  indicator={<LoadingOutlined style={{ fontSize: 40 }} spin />}
                 />
               </div>
             )}
@@ -141,6 +149,15 @@ const Search = ({ setLoginVisible, isAuthenticated }) => {
           </div>
         </div>
         <div className="content">
+          {loading && (
+            <>
+              <div className="results">
+                <ResourceCardSkeleton />
+                <ResourceCardSkeleton />
+                <ResourceCardSkeleton />
+              </div>
+            </>
+          )}
           {items.resources.length > 0 && (
             <>
               <h4 className="caps-heading-1">knowledge hub</h4>
@@ -170,7 +187,15 @@ const Search = ({ setLoginVisible, isAuthenticated }) => {
               <h4 className="caps-heading-1">data hub</h4>
               <div className="results">
                 {items.datasets.map((it) => (
-                  <ResourceCard item={it} key={`${it.type}-${it.id}`} />
+                  <ResourceCard
+                    item={it}
+                    key={`${it.type}-${it.id}`}
+                    onClick={({ e, item }) => {
+                      router.push(
+                        `/data/maps?categoryId=${item.categoryId}&subcategoryId=${item.subcategoryId}&layers=${item.arcgislayerId}`
+                      )
+                    }}
+                  />
                 ))}
               </div>
             </>

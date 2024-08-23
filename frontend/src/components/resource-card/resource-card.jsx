@@ -3,7 +3,7 @@ import Image from 'next/image'
 import styles from './style.module.scss'
 import { BookmarkIconProper, Like, badges } from '../icons'
 import { useState } from 'react'
-import { Tooltip } from 'antd'
+import { Skeleton, Tooltip } from 'antd'
 import { t } from '@lingui/macro'
 import { getBaseUrl } from '../../utils/misc'
 
@@ -55,6 +55,13 @@ const ResourceCard = ({ item, bookmarked, onBookmark, onClick }) => {
           height={175}
         />
       )}
+    </div>
+  )
+}
+export const ResourceCardSkeleton = () => {
+  return (
+    <div className={styles.resourceCard}>
+      <Skeleton active loading />
     </div>
   )
 }
