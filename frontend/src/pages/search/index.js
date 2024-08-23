@@ -187,7 +187,15 @@ const Search = ({ setLoginVisible, isAuthenticated }) => {
               <h4 className="caps-heading-1">data hub</h4>
               <div className="results">
                 {items.datasets.map((it) => (
-                  <ResourceCard item={it} key={`${it.type}-${it.id}`} />
+                  <ResourceCard
+                    item={it}
+                    key={`${it.type}-${it.id}`}
+                    onClick={({ e, item }) => {
+                      router.push(
+                        `/data/maps?categoryId=${item.categoryId}&subcategoryId=${item.subcategoryId}&layers=${item.arcgislayerId}`
+                      )
+                    }}
+                  />
                 ))}
               </div>
             </>
