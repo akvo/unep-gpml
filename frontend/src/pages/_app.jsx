@@ -109,6 +109,7 @@ function MyApp({ Component, pageProps }) {
       organisations: uniqBy(sortBy(organisation.data, ['name'])).sort((a, b) =>
         a.name?.localeCompare(b.name)
       ),
+      countryGroup: countryGroup.data,
       nonMemberOrganisations: uniqBy(
         sortBy(nonMemberOrganisations.data, ['name'])
       ).sort((a, b) => a.name?.localeCompare(b.name)),

@@ -44,6 +44,7 @@ import { Trans, t } from '@lingui/macro'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Button from '../../components/button'
+import CountryGroups from './countryGroup'
 
 const { Search } = Input
 const { TabPane } = Tabs
@@ -429,9 +430,9 @@ const AdminSection = ({
   const [form] = Form.useForm()
 
   useEffect(() => {
-    api.get(`/reviewer`).then((res) => {
-      setReviewers(res?.data?.reviewers)
-    })
+    // api.get(`/reviewer`).then((res) => {
+    //   setReviewers(res?.data?.reviewers)
+    // })
   }, [])
 
   useEffect(() => {
@@ -1432,6 +1433,13 @@ const AdminSection = ({
             </Form.Item>
           </Form>
           {renderList(tagsListOpts, setTagsListOpts)}
+        </TabPane>
+        <TabPane
+          tab="CountryGroups"
+          key="CountryGroups"
+          className="profile-tab-pane"
+        >
+          <CountryGroups />
         </TabPane>
         {user_id && (
           <TabPane
