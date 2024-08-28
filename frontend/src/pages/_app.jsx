@@ -52,7 +52,7 @@ function MyApp({ Component, pageProps }) {
   const isAuthenticated = new Date().getTime() < _expiresAt
 
   const setSession = useCallback((authResult) => {
-    const expiresAt = 30 * 1000 + new Date().getTime()
+    const expiresAt = authResult.expiresIn * 1000 + new Date().getTime()
     localStorage.setItem('idToken', authResult.idToken)
     localStorage.setItem('expiresAt', expiresAt.toString())
     localStorage.setItem(
@@ -166,7 +166,7 @@ function MyApp({ Component, pageProps }) {
     })
   }, [])
 
-  const isTokenNearlyExpired = (expiresAt, threshold = 5000) => {
+  const isTokenNearlyExpired = (expiresAt, threshold = 300000) => {
     const now = new Date().getTime()
     return expiresAt - now < threshold
   }
