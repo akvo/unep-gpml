@@ -16,6 +16,7 @@ import { UIStore } from '../../store'
 import { multicountryGroups } from '../../modules/knowledge-library/multicountry'
 import { DownOutlined, LoadingOutlined } from '@ant-design/icons'
 import { loadCatalog } from '../../translations/utils'
+import Link from 'next/link'
 
 const getCountryIdsFromGeoGroups = (
   selectedGeoCountryGroup,
@@ -92,8 +93,7 @@ const KnowledgeHub = ({
         ...(currentQuery.topic && { topic: currentQuery.topic }),
         ...(currentQuery.country && { country: currentQuery.country }),
         ...(currentQuery.geo && { geo: currentQuery.geo }),
-        orderBy: currentQuery.orderBy || 'created',
-        descending: currentQuery.descending || 'true',
+        ...(currentQuery.descending && { descending: currentQuery.descending }),
         ...updates,
       }
 
@@ -101,6 +101,10 @@ const KnowledgeHub = ({
         newQuery.country = selectedCountryGroupCountries.join(',')
       } else if (newQuery.country) {
         delete newQuery.geo
+      }
+
+      if (newQuery.orderBy) {
+        delete newQuery.orderBy
       }
       // Remove empty query params
       Object.keys(newQuery).forEach(
@@ -273,6 +277,7 @@ const KnowledgeHub = ({
                   key={theme.name}
                   onToggle={() => handleThemeToggle(theme.name)}
                   isSelected={selectedThemes.includes(theme.name)}
+                  href={`/themes/${theme.name.toLowerCase()}`}
                 >
                   {theme.name}
                 </FilterToggle>
@@ -287,6 +292,7 @@ const KnowledgeHub = ({
                   key={type.name}
                   onToggle={() => handleTypeToggle(type.value)}
                   isSelected={selectedTypes.includes(type.value)}
+                  href={`/themes/${type.name.toLowerCase()}`}
                 >
                   {type.name}
                 </FilterToggle>
@@ -301,6 +307,7 @@ const KnowledgeHub = ({
                   key={type.name}
                   onToggle={() => handleGeoToggle(type.name)}
                   isSelected={selectedGeoCountryGroup.includes(type.name)}
+                  href={`/themes/${type.name.toLowerCase()}`}
                 >
                   {type.name}
                 </FilterToggle>
@@ -401,12 +408,14 @@ const KnowledgeHub = ({
 
 // const ResourceCard = () => {}
 
-const FilterToggle = ({ children, onToggle, isSelected }) => {
-  const handleClick = () => {
+const FilterToggle = ({ children, onToggle, isSelected, href }) => {
+  const handleClick = (e) => {
+    e.preventDefault()
     onToggle()
   }
   return (
-    <div
+    <Link
+      href={href}
       className={classNames('filter', { on: isSelected })}
       onClick={handleClick}
     >
@@ -422,7 +431,7 @@ const FilterToggle = ({ children, onToggle, isSelected }) => {
         )}
       </AnimatePresence>
       {children}
-    </div>
+    </Link>
   )
 }
 

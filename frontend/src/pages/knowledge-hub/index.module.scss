@@ -61,6 +61,7 @@
           font-weight: 600;
           cursor: pointer;
           transition: all 0.12s ease-out;
+          color: inherit;
 
           &:hover {
             background-color: $primaryPurple3;
@@ -77,9 +78,11 @@
         }
       }
     }
+
     .content {
       position: relative;
       width: 100%;
+
       .no-results {
         width: 100%;
         display: flex;
@@ -87,8 +90,10 @@
         justify-content: center;
         margin-top: calc(50vh - 70px);
       }
+
       .sorting {
         margin: 25px 0 5px 20px;
+
         a {
           color: $primaryDarkBlue4 !important;
           font-family: $ff1;
@@ -96,6 +101,7 @@
         }
       }
     }
+
     .loading {
       position: absolute;
       width: 100%;
@@ -105,10 +111,12 @@
       justify-content: center;
       z-index: 2;
       background-color: rgba(255, 255, 255, 0.75);
+
       .ant-spin {
         margin-top: calc(50vh - 100px);
       }
     }
+
     .results {
       display: flex;
       flex-wrap: wrap;
