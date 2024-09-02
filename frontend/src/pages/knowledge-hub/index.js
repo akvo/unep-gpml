@@ -22,6 +22,7 @@ const getCountryIdsFromGeoGroups = (
   selectedGeoCountryGroup,
   geoCountryGroups
 ) => {
+  console.log(selectedGeoCountryGroup, geoCountryGroups)
   let countryIds = []
   selectedGeoCountryGroup.forEach((groupName) => {
     const group = geoCountryGroups.find((g) => g.name === groupName)
@@ -84,9 +85,8 @@ const KnowledgeHub = ({
       const currentQuery = router.query
       const selectedCountryGroupCountries = getCountryIdsFromGeoGroups(
         updates.geo ? updates.geo.split(',') : [],
-        featuredOptions
+        updates.featuredOptions ? updates.featuredOptions : featuredOptions
       )
-
       const newQuery = {
         ...(currentQuery.q && { q: currentQuery.q }),
         ...(currentQuery.tag && { tag: currentQuery.tag }),
@@ -105,6 +105,9 @@ const KnowledgeHub = ({
 
       if (newQuery.orderBy) {
         delete newQuery.orderBy
+      }
+      if (newQuery.featuredOptions) {
+        delete newQuery.featuredOptions
       }
       // Remove empty query params
       Object.keys(newQuery).forEach(
@@ -174,6 +177,7 @@ const KnowledgeHub = ({
     updateQueryParams({
       geo: newGeoGroups.length > 0 ? newGeoGroups.join(',') : undefined,
       country: undefined,
+      featuredOptions: featuredOptions,
     })
   }
 
