@@ -62,7 +62,7 @@ function MyApp({ Component, pageProps }) {
 
     setState((prevState) => ({
       ...prevState,
-      _expiresAt: authResult.expiresIn * 1000 + new Date().getTime(),
+      _expiresAt: expiresAt,
       idToken: authResult.idToken,
       authResult,
     }))
@@ -105,6 +105,7 @@ function MyApp({ Component, pageProps }) {
       transnationalOptions: countryGroup.data.filter(
         (x) => x.type === 'transnational'
       ),
+      featuredOptions: countryGroup.data.filter((x) => x.type === 'featured'),
       organisations: uniqBy(sortBy(organisation.data, ['name'])).sort((a, b) =>
         a.name?.localeCompare(b.name)
       ),
@@ -204,9 +205,9 @@ function MyApp({ Component, pageProps }) {
         })
       } else {
         renewToken((err, renewedAuthResult) => {
-            if(renewedAuthResult){
-              api.setToken(renewedAuthResult.idToken)
-            }
+          if (renewedAuthResult) {
+            api.setToken(renewedAuthResult.idToken)
+          }
         })
       }
     }
@@ -352,6 +353,7 @@ function MyApp({ Component, pageProps }) {
           typeof window !== 'undefined' ? window.location.origin : ''
         }
         cacheLocation="localstorage"
+        useRefreshTokens
       >
         <I18nProvider i18n={i18n}>
           {loadScript && (

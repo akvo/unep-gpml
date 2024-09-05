@@ -636,7 +636,7 @@ const FlexibleForms = ({
         })
       }
     }
-  }, [status, initialFormData, type])
+  }, [status, initialFormData])
 
   // useEffect(() => {
   //   UIStore.update((e) => {

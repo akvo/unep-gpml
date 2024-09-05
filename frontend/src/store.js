@@ -97,7 +97,7 @@ const menuList = [
       {
         key: msg`Digital Platform`,
         id: 'Digital Platform',
-        to: '/page/regional-nodes',
+        to: '/page/about-platform',
       },
       {
         key: msg`Contact Us`,
@@ -787,6 +787,7 @@ const UIStore = new Store({
   regionOptions: [],
   meaOptions: [],
   transnationalOptions: [],
+  featuredOptions: [],
   organisationType: sectorOptions,
   sectorOptions: sectorOptions,
   representativeGroup: representativeGroup,

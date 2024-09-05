@@ -30,7 +30,10 @@
     background-color: $primaryGreen;
     border-color: $primaryGreen;
     color: $primaryDarkBlue;
-    &:not(.noicon):not(.left-icon) {
+    // &:not(.noicon):not(.left-icon) {
+    //   padding-right: 60px;
+    // }
+    &.withArrow {
       padding-right: 60px;
     }
     &:active:not(:disabled) {

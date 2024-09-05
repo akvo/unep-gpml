@@ -88,28 +88,47 @@ resource_tag AS (
 ),
 resource_country_group AS (
   SELECT
-    rgc.resource,
-    string_agg(cg.name, ',') AS country_group
-  FROM
-    resource_geo_coverage rgc
-    LEFT JOIN country_group cg ON rgc.country_group = cg.id
-  GROUP BY
-    rgc.resource
-),
-resource_country AS (
-  SELECT
-    resource,
-    string_agg(country, ',') AS country
+    a.resource,
+    string_agg(DISTINCT a.name, ',') AS country_group
   FROM (
     SELECT
       rgc.resource,
-      coalesce(cg.country, c2.name) AS country
+      cg.name AS name
     FROM
-      resource_geo_coverage rgc
-    LEFT JOIN (
+      resource_geo_coverage rgc,
+      country_group_country cgc,
+      country_group cg
+    WHERE
+      rgc.country = cgc.country
+      AND cgc.country_group = cg.id
+      AND rgc.country_group IS NULL
+      AND rgc.country IS NOT NULL
+    UNION ALL
+    SELECT
+      rgc.resource,
+      cg.name AS name
+    FROM
+      resource_geo_coverage rgc,
+      country_group cg
+    WHERE
+      rgc.country_group = cg.id) a
+  GROUP BY
+    a.resource
+),
+resource_country AS (
+  SELECT
+    a.resource,
+    string_agg(DISTINCT a.name, ',') AS country
+FROM (
+  SELECT
+    rgc.resource,
+    cg.name
+  FROM
+    resource_geo_coverage rgc
+    JOIN (
       SELECT
         cg.id AS id,
-        c.name AS country
+        c.name AS name
       FROM
         country_group cg,
         country_group_country cgc,
@@ -117,9 +136,17 @@ resource_country AS (
       WHERE
         cg.id = cgc.country_group
         AND cgc.country = c.id) cg ON rgc.country_group = cg.id
-    LEFT JOIN country c2 ON rgc.country = c2.id) geo
-GROUP BY
-  resource
+    UNION ALL
+    SELECT
+      rgc.resource,
+      c.name
+    FROM
+      resource_geo_coverage rgc,
+      country c
+    WHERE
+      rgc.country = c.id) a
+  GROUP BY
+    a.resource
 ),
 resource_json AS (
   SELECT
@@ -179,28 +206,47 @@ WITH stakeholder_tag AS (
 ),
 stakeholder_country_group AS (
   SELECT
-    sgc.stakeholder,
-    string_agg(cg.name, ',') AS country_group
-  FROM
-    stakeholder_geo_coverage sgc
-    LEFT JOIN country_group cg ON sgc.country_group = cg.id
-  GROUP BY
-    sgc.stakeholder
-),
-stakeholder_country AS (
-  SELECT
-    stakeholder,
-    string_agg(country, ',') AS country
+    a.stakeholder,
+    string_agg(DISTINCT a.name, ',') AS country_group
   FROM (
     SELECT
       sgc.stakeholder,
-      coalesce(cg.country, c2.name) AS country
+      cg.name AS name
     FROM
-      stakeholder_geo_coverage sgc
-    LEFT JOIN (
+      stakeholder_geo_coverage sgc,
+      country_group_country cgc,
+      country_group cg
+    WHERE
+      sgc.country = cgc.country
+      AND cgc.country_group = cg.id
+      AND sgc.country_group IS NULL
+      AND sgc.country IS NOT NULL
+    UNION ALL
+    SELECT
+      sgc.stakeholder,
+      cg.name AS name
+    FROM
+      stakeholder_geo_coverage sgc,
+      country_group cg
+    WHERE
+      sgc.country_group = cg.id) a
+  GROUP BY
+    a.stakeholder
+),
+stakeholder_country AS (
+  SELECT
+    a.stakeholder,
+    string_agg(DISTINCT a.name, ',') AS country
+FROM (
+  SELECT
+    sgc.stakeholder,
+    cg.name
+  FROM
+    stakeholder_geo_coverage sgc
+    JOIN (
       SELECT
         cg.id AS id,
-        c.name AS country
+        c.name AS name
       FROM
         country_group cg,
         country_group_country cgc,
@@ -208,14 +254,22 @@ stakeholder_country AS (
       WHERE
         cg.id = cgc.country_group
         AND cgc.country = c.id) cg ON sgc.country_group = cg.id
-    LEFT JOIN country c2 ON sgc.country = c2.id) geo
-GROUP BY
-  stakeholder
+    UNION ALL
+    SELECT
+      sgc.stakeholder,
+      c.name
+    FROM
+      stakeholder_geo_coverage sgc,
+      country c
+    WHERE
+      sgc.country = c.id) a
+  GROUP BY
+    a.stakeholder
 ),
 stakeholder_json AS (
-SELECT
-  s.id AS stakeholder,
-  jsonb_build_object('id', s.id, 'first_name', s.first_name, 'last_name', s.last_name, 'type', 'stakeholder', 'images', json_agg(DISTINCT jsonb_build_object('id', f.id, 'object-key', f.object_key, 'visibility', f.visibility)) FILTER (WHERE f.id IS NOT NULL)) AS json
+  SELECT
+    s.id AS stakeholder,
+    jsonb_build_object('id', s.id, 'first_name', s.first_name, 'last_name', s.last_name, 'type', 'stakeholder', 'images', json_agg(DISTINCT jsonb_build_object('id', f.id, 'object-key', f.object_key, 'visibility', f.visibility)) FILTER (WHERE f.id IS NOT NULL)) AS json
 FROM
   stakeholder s
   LEFT JOIN file f ON s.picture_id = f.id
@@ -249,19 +303,19 @@ UNION ALL
 (
 -- organisation
 WITH organisation_country AS (
+SELECT
+  a.organisation,
+  string_agg(DISTINCT a.name, ',') AS country
+FROM (
   SELECT
-    organisation,
-    string_agg(country, ',') AS country
-  FROM (
-    SELECT
-      ogc.organisation,
-      coalesce(cg.country, c2.name) AS country
-    FROM
-      organisation_geo_coverage ogc
-    LEFT JOIN (
+    ogc.organisation,
+    cg.name
+  FROM
+    organisation_geo_coverage ogc
+    JOIN (
       SELECT
         cg.id AS id,
-        c.name AS country
+        c.name AS name
       FROM
         country_group cg,
         country_group_country cgc,
@@ -269,19 +323,46 @@ WITH organisation_country AS (
       WHERE
         cg.id = cgc.country_group
         AND cgc.country = c.id) cg ON ogc.country_group = cg.id
-    LEFT JOIN country c2 ON ogc.country = c2.id) geo
+    UNION ALL
+    SELECT
+      ogc.organisation,
+      c.name
+    FROM
+      organisation_geo_coverage ogc,
+      country c
+    WHERE
+      ogc.country = c.id) a
 GROUP BY
-  organisation
+  a.organisation
 ),
 organisation_country_group AS (
+SELECT
+  a.organisation,
+  string_agg(DISTINCT a.name, ',') AS country_group
+FROM (
   SELECT
     ogc.organisation,
-    string_agg(cg.name, ',') AS country_group
-FROM
-  organisation_geo_coverage ogc
-  LEFT JOIN country_group cg ON ogc.country_group = cg.id
+    cg.name AS name
+  FROM
+    organisation_geo_coverage ogc,
+    country_group_country cgc,
+    country_group cg
+  WHERE
+    ogc.country = cgc.country
+    AND cgc.country_group = cg.id
+    AND ogc.country_group IS NULL
+    AND ogc.country IS NOT NULL
+  UNION ALL
+  SELECT
+    ogc.organisation,
+    cg.name AS name
+  FROM
+    organisation_geo_coverage ogc,
+    country_group cg
+  WHERE
+    ogc.country_group = cg.id) a
 GROUP BY
-  ogc.organisation
+  a.organisation
 ),
 organisation_tag AS (
   SELECT
@@ -370,39 +451,66 @@ event_tag AS (
     rt.event
 ),
 event_country_group AS (
+SELECT
+  a.event,
+  string_agg(DISTINCT a.name, ',') AS country_group
+FROM (
   SELECT
-    rgc.event,
-    string_agg(cg.name, ',') AS country_group
+    egc.event,
+    cg.name AS name
   FROM
-    event_geo_coverage rgc
-    LEFT JOIN country_group cg ON rgc.country_group = cg.id
-  GROUP BY
-    rgc.event
+    event_geo_coverage egc,
+    country_group_country cgc,
+    country_group cg
+  WHERE
+    egc.country = cgc.country
+    AND cgc.country_group = cg.id
+    AND egc.country_group IS NULL
+    AND egc.country IS NOT NULL
+  UNION ALL
+  SELECT
+    egc.event,
+    cg.name AS name
+  FROM
+    event_geo_coverage egc,
+    country_group cg
+  WHERE
+    egc.country_group = cg.id) a
+GROUP BY
+  a.event
 ),
 event_country AS (
+SELECT
+  a.event,
+  string_agg(DISTINCT a.name, ',') AS country
+FROM (
   SELECT
-    event,
-    string_agg(country, ',') AS country
-  FROM (
-    SELECT
-      rgc.event,
-      coalesce(cg.country, c2.name) AS country
-    FROM
-      event_geo_coverage rgc
-    LEFT JOIN (
+    egc.event,
+    cg.name
+  FROM
+    event_geo_coverage egc
+    JOIN (
       SELECT
         cg.id AS id,
-        c.name AS country
+        c.name AS name
       FROM
         country_group cg,
         country_group_country cgc,
         country c
       WHERE
         cg.id = cgc.country_group
-        AND cgc.country = c.id) cg ON rgc.country_group = cg.id
-    LEFT JOIN country c2 ON rgc.country = c2.id) geo
+        AND cgc.country = c.id) cg ON egc.country_group = cg.id
+    UNION ALL
+    SELECT
+      egc.event,
+      c.name
+    FROM
+      event_geo_coverage egc,
+      country c
+    WHERE
+      egc.country = c.id) a
 GROUP BY
-  event
+  a.event
 ),
 event_json AS (
 SELECT
@@ -481,43 +589,70 @@ technology_tag AS (
 ),
 technology_country_group AS (
   SELECT
-    rgc.technology,
-    string_agg(cg.name, ',') AS country_group
-  FROM
-    technology_geo_coverage rgc
-    LEFT JOIN country_group cg ON rgc.country_group = cg.id
+    a.technology,
+    string_agg(DISTINCT a.name, ',') AS country_group
+  FROM (
+    SELECT
+      tgc.technology,
+      cg.name AS name
+    FROM
+      technology_geo_coverage tgc,
+      country_group_country cgc,
+      country_group cg
+    WHERE
+      tgc.country = cgc.country
+      AND cgc.country_group = cg.id
+      AND tgc.country_group IS NULL
+      AND tgc.country IS NOT NULL
+    UNION ALL
+    SELECT
+      tgc.technology,
+      cg.name AS name
+    FROM
+      technology_geo_coverage tgc,
+      country_group cg
+    WHERE
+      tgc.country_group = cg.id) a
   GROUP BY
-    rgc.technology
+    a.technology
 ),
 technology_country AS (
   SELECT
-    technology,
-    string_agg(country, ',') AS country
-  FROM (
-    SELECT
-      rgc.technology,
-      coalesce(cg.country, c2.name) AS country
-    FROM
-      technology_geo_coverage rgc
-    LEFT JOIN (
+    a.technology,
+    string_agg(DISTINCT a.name, ',') AS country
+FROM (
+  SELECT
+    tgc.technology,
+    cg.name
+  FROM
+    technology_geo_coverage tgc
+    JOIN (
       SELECT
         cg.id AS id,
-        c.name AS country
+        c.name AS name
       FROM
         country_group cg,
         country_group_country cgc,
         country c
       WHERE
         cg.id = cgc.country_group
-        AND cgc.country = c.id) cg ON rgc.country_group = cg.id
-    LEFT JOIN country c2 ON rgc.country = c2.id) geo
-GROUP BY
-  technology
+        AND cgc.country = c.id) cg ON tgc.country_group = cg.id
+    UNION ALL
+    SELECT
+      tgc.technology,
+      c.name
+    FROM
+      technology_geo_coverage tgc,
+      country c
+    WHERE
+      tgc.country = c.id) a
+  GROUP BY
+    a.technology
 ),
 technology_json AS (
-SELECT
-  t.id AS technology,
-  jsonb_build_object('id', t.id, 'title', t.name, 'type', 'technology', 'images', json_agg(DISTINCT jsonb_build_object('id', f.id, 'object-key', f.object_key, 'visibility', f.visibility)) FILTER (WHERE f.id IS NOT NULL)) AS json
+  SELECT
+    t.id AS technology,
+    jsonb_build_object('id', t.id, 'title', t.name, 'type', 'technology', 'images', json_agg(DISTINCT jsonb_build_object('id', f.id, 'object-key', f.object_key, 'visibility', f.visibility)) FILTER (WHERE f.id IS NOT NULL)) AS json
 FROM
   technology t
   LEFT JOIN file f ON t.image_id = f.id
@@ -590,39 +725,66 @@ policy_tag AS (
     rt.policy
 ),
 policy_country_group AS (
+SELECT
+  a.policy,
+  string_agg(DISTINCT a.name, ',') AS country_group
+FROM (
   SELECT
-    rgc.policy,
-    string_agg(cg.name, ',') AS country_group
+    pgc.policy,
+    cg.name AS name
   FROM
-    policy_geo_coverage rgc
-    LEFT JOIN country_group cg ON rgc.country_group = cg.id
-  GROUP BY
-    rgc.policy
+    policy_geo_coverage pgc,
+    country_group_country cgc,
+    country_group cg
+  WHERE
+    pgc.country = cgc.country
+    AND cgc.country_group = cg.id
+    AND pgc.country_group IS NULL
+    AND pgc.country IS NOT NULL
+  UNION ALL
+  SELECT
+    pgc.policy,
+    cg.name AS name
+  FROM
+    policy_geo_coverage pgc,
+    country_group cg
+  WHERE
+    pgc.country_group = cg.id) a
+GROUP BY
+  a.policy
 ),
 policy_country AS (
+SELECT
+  a.policy,
+  string_agg(DISTINCT a.name, ',') AS country
+FROM (
   SELECT
-    policy,
-    string_agg(country, ',') AS country
-  FROM (
-    SELECT
-      rgc.policy,
-      coalesce(cg.country, c2.name) AS country
-    FROM
-      policy_geo_coverage rgc
-    LEFT JOIN (
+    pgc.policy,
+    cg.name
+  FROM
+    policy_geo_coverage pgc
+    JOIN (
       SELECT
         cg.id AS id,
-        c.name AS country
+        c.name AS name
       FROM
         country_group cg,
         country_group_country cgc,
         country c
       WHERE
         cg.id = cgc.country_group
-        AND cgc.country = c.id) cg ON rgc.country_group = cg.id
-    LEFT JOIN country c2 ON rgc.country = c2.id) geo
+        AND cgc.country = c.id) cg ON pgc.country_group = cg.id
+    UNION ALL
+    SELECT
+      pgc.policy,
+      c.name
+    FROM
+      policy_geo_coverage pgc,
+      country c
+    WHERE
+      pgc.country = c.id) a
 GROUP BY
-  policy
+  a.policy
 ),
 policy_json AS (
 SELECT
@@ -699,39 +861,66 @@ initiative_tag AS (
     rt.initiative
 ),
 initiative_country_group AS (
+SELECT
+  a.initiative,
+  string_agg(DISTINCT a.name, ',') AS country_group
+FROM (
   SELECT
-    rgc.initiative,
-    string_agg(cg.name, ',') AS country_group
+    igc.initiative,
+    cg.name AS name
   FROM
-    initiative_geo_coverage rgc
-    LEFT JOIN country_group cg ON rgc.country_group = cg.id
-  GROUP BY
-    rgc.initiative
+    initiative_geo_coverage igc,
+    country_group_country cgc,
+    country_group cg
+  WHERE
+    igc.country = cgc.country
+    AND cgc.country_group = cg.id
+    AND igc.country_group IS NULL
+    AND igc.country IS NOT NULL
+  UNION ALL
+  SELECT
+    igc.initiative,
+    cg.name AS name
+  FROM
+    initiative_geo_coverage igc,
+    country_group cg
+  WHERE
+    igc.country_group = cg.id) a
+GROUP BY
+  a.initiative
 ),
 initiative_country AS (
+SELECT
+  a.initiative,
+  string_agg(DISTINCT a.name, ',') AS country
+FROM (
   SELECT
-    initiative,
-    string_agg(country, ',') AS country
-  FROM (
-    SELECT
-      rgc.initiative,
-      coalesce(cg.country, c2.name) AS country
-    FROM
-      initiative_geo_coverage rgc
-    LEFT JOIN (
+    igc.initiative,
+    cg.name
+  FROM
+    initiative_geo_coverage igc
+    JOIN (
       SELECT
         cg.id AS id,
-        c.name AS country
+        c.name AS name
       FROM
         country_group cg,
         country_group_country cgc,
         country c
       WHERE
         cg.id = cgc.country_group
-        AND cgc.country = c.id) cg ON rgc.country_group = cg.id
-    LEFT JOIN country c2 ON rgc.country = c2.id) geo
+        AND cgc.country = c.id) cg ON igc.country_group = cg.id
+    UNION ALL
+    SELECT
+      igc.initiative,
+      c.name
+    FROM
+      initiative_geo_coverage igc,
+      country c
+    WHERE
+      igc.country = c.id) a
 GROUP BY
-  initiative
+  a.initiative
 ),
 initiative_json AS (
   SELECT
@@ -809,39 +998,66 @@ case_study_tag AS (
     rt.case_study
 ),
 case_study_country_group AS (
+SELECT
+  a.case_study,
+  string_agg(DISTINCT a.name, ',') AS country_group
+FROM (
   SELECT
-    rgc.case_study,
-    string_agg(cg.name, ',') AS country_group
+    csgc.case_study,
+    cg.name AS name
   FROM
-    case_study_geo_coverage rgc
-    LEFT JOIN country_group cg ON rgc.country_group = cg.id
-  GROUP BY
-    rgc.case_study
+    case_study_geo_coverage csgc,
+    country_group_country cgc,
+    country_group cg
+  WHERE
+    csgc.country = cgc.country
+    AND cgc.country_group = cg.id
+    AND csgc.country_group IS NULL
+    AND csgc.country IS NOT NULL
+  UNION ALL
+  SELECT
+    csgc.case_study,
+    cg.name AS name
+  FROM
+    case_study_geo_coverage csgc,
+    country_group cg
+  WHERE
+    csgc.country_group = cg.id) a
+GROUP BY
+  a.case_study
 ),
 case_study_country AS (
+SELECT
+  a.case_study,
+  string_agg(DISTINCT a.name, ',') AS country
+FROM (
   SELECT
-    case_study,
-    string_agg(country, ',') AS country
-  FROM (
-    SELECT
-      rgc.case_study,
-      coalesce(cg.country, c2.name) AS country
-    FROM
-      case_study_geo_coverage rgc
-    LEFT JOIN (
+    csgc.case_study,
+    cg.name
+  FROM
+    case_study_geo_coverage csgc
+    JOIN (
       SELECT
         cg.id AS id,
-        c.name AS country
+        c.name AS name
       FROM
         country_group cg,
         country_group_country cgc,
         country c
       WHERE
         cg.id = cgc.country_group
-        AND cgc.country = c.id) cg ON rgc.country_group = cg.id
-    LEFT JOIN country c2 ON rgc.country = c2.id) geo
+        AND cgc.country = c.id) cg ON csgc.country_group = cg.id
+    UNION ALL
+    SELECT
+      csgc.case_study,
+      c.name
+    FROM
+      case_study_geo_coverage csgc,
+      country c
+    WHERE
+      csgc.country = c.id) a
 GROUP BY
-  case_study
+  a.case_study
 ),
 case_study_json AS (
   SELECT
@@ -892,7 +1108,7 @@ SELECT
   NULL AS country_group,
   regexp_replace(data_source, '[\x00-\x1F\x7F]+', '', 'g') AS publisher, -- the data contains non-visible characters
   NULL AS partner,
-  jsonb_build_object('id', l.id, 'title', l.title, 'type', 'case_study', 'images', t.formats) AS json
+  jsonb_build_object('id', l.id, 'title', l.title, 'type', 'dataset', 'images', t.formats, 'categoryId', l.category_id, 'subcategoryId', l.subcategory_id, 'arcgislayerId', l.arcgislayer_id) AS json
 FROM
   layers l
   LEFT JOIN (
@@ -904,7 +1120,6 @@ FROM
       LEFT JOIN files_related_morphs m ON f.id = m.file_id
     WHERE
       m.field = 'thumbnail') t ON l.id = t.related_id
- where t.formats is not null
 ORDER BY
   l.id
 )
