@@ -238,6 +238,64 @@ const DetailsView = ({
       setComments(res.data?.comments)
     }
   }
+  
+  const handleEditBtn = (type = null) => {
+    eventTrack('Resource view', 'Update', 'Button')
+    let form = null
+    let link = null
+    switch (type) {
+      case 'initiative':
+        form = 'initiative'
+        link = 'edit/initiative'
+        type = 'initiative'
+        break
+      case 'action-plan':
+        form = 'actionPlan'
+        link = 'edit/action-plan'
+        type = 'action_plan'
+        break
+      case 'data-catalog':
+        form = 'dataCatalog'
+        link = 'edit/data-catalog'
+        type = 'data_catalog'
+        break
+      case 'policy':
+        form = 'policy'
+        link = 'edit/policy'
+        type = 'policy'
+        break
+      case 'technical-resource':
+        form = 'technicalResource'
+        link = 'edit/technical-resource'
+        type = 'technical_resource'
+        break
+      case 'financing-resource':
+        form = 'financingResource'
+        link = 'edit/financing-resource'
+        type = 'financing_resource'
+        break
+      case 'technology':
+        form = 'technology'
+        link = 'edit/technology'
+        type = 'technology'
+        break
+      case 'event':
+        form = 'event'
+        link = 'edit/event'
+        type = 'event'
+        break
+      case 'case-study':
+        form = 'caseStudy'
+        link = 'edit/case-study'
+        type = 'case_study'
+        break
+      default:
+        form = 'entity'
+        link = 'edit/entity'
+        type = 'initiative'
+        break
+    }
+  }
   useEffect(() => {
     if (visible && match?.params?.item !== null) {
       setData(match.params.item)

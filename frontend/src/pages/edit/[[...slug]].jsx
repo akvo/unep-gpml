@@ -22,6 +22,7 @@ const EditPage = ({ setLoginVisible, isAuthenticated, loadingProfile }) => {
       'initiative',
       'case-study',
       'event',
+      'data-catalog',
     ].includes(slugType)
   ) {
     return (
