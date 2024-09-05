@@ -15,6 +15,7 @@
    [gpml.util.result :refer [failure]]
    [gpml.util.thread-transactions :refer [saga]]
    [integrant.core :as ig]
+   [java-time.api :as jt]
    [taoensso.timbre :as timbre]))
 
 (def NewUser
@@ -276,7 +277,60 @@
                                                  privacy))
                                             channels)))))))
 
-(defn get-channel* [{:keys [logger api-key]} channel-id]
+(defn present-messages [messages & [discussion-id]]
+  (mapv (fn [{:keys [message created user]}]
+          (cond-> {:message message
+                   :created created
+                   ;; We pass :chat-account-id for the service to retrieve users from the DB later.
+                   ;; Note that this is a sensitive field that is removed from HTTP responses.
+                   :chat-account-id (:unique-user-identifier user)
+                   :username (:username user)
+                   :unique-user-identifier (:unique-user-identifier user)}
+            discussion-id (assoc :discussion-id discussion-id)))
+        messages))
+
+(defn get-discussion-messages* [{:keys [logger api-key]} channel-id discussion-id]
+  {:pre  [channel-id discussion-id]
+   :post [(check! #'port.chat/get-discussion-messages %)]}
+  (let [{:keys [status body]
+         {:keys [messages]} :body}
+        ;; https://deadsimplechat.com/developer/rest-api/get-channel-messages
+        (http-client/request logger
+                             {:url (build-api-endpoint-url "/api/v1/chatroom/" channel-id "/channel/" discussion-id "/messages")
+                              :method :get
+                              :query-params {:auth api-key}
+                              :as :json-keyword-keys})]
+    (if (<= 200 status 299)
+      {:success? true
+       :messages (present-messages (cske/transform-keys ->kebab-case messages)
+                                   discussion-id)}
+      (failure {:reason :failed-to-get-channel-discussions
+                :error-details body
+                :status status}))))
+
+(defn extract-discussion [body]
+  (set/rename-keys (select-keys (cske/transform-keys ->kebab-case body)
+                                [:id :room-id :notify-all-users :channel-name :enabled])
+                   {:room-id :channel-id
+                    :channel-name :name}))
+
+(defn get-channel-discussions* [{:keys [logger api-key]} channel-id]
+  {:pre  [channel-id]
+   :post [(check! #'port.chat/get-channel-discussions %)]}
+  (let [{:keys [status body]}
+        (http-client/request logger
+                             {:url (build-api-endpoint-url "/api/v1/chatroom/" channel-id "/channels")
+                              :method :get
+                              :query-params {:auth api-key}
+                              :as :json-keyword-keys})]
+    (if (<= 200 status 299)
+      {:success? true
+       :discussions (mapv extract-discussion body)}
+      (failure {:reason :failed-to-get-channel-discussions
+                :error-details body
+                :status status}))))
+
+(defn get-channel* [{:keys [logger api-key] :as this} channel-id include-discussion-messages?]
   {:pre  [(check! RoomId channel-id)]
    :post [(check! #'port.chat/get-channel %)]}
   (let [{:keys [status]
@@ -316,28 +370,42 @@
               (failure {:reason :failed-to-get-messages
                         :error-details {:result messages}
                         :status status})
-              {:success? true
-               :channel (-> (cske/transform-keys ->kebab-case channel)
-                            (present-channel)
-                            (assoc :members (update (cske/transform-keys ->kebab-case members)
-                                                    :data
-                                                    (fn [d]
-                                                      (into []
-                                                            (comp (map :user)
-                                                                  (map #(select-keys % user-info-keys)))
-                                                            d))))
-                            (assoc :messages (update (cske/transform-keys ->kebab-case messages)
-                                                     :messages
-                                                     (fn [messages]
-                                                       (mapv (fn [{:keys [message created user]}]
-                                                               {:message message
-                                                                :created created
-                                                                ;; We pass :chat-account-id for the service to retrieve users from the DB later.
-                                                                ;; Note that this is a sensitive field that is removed from HTTP responses.
-                                                                :chat-account-id (:unique-user-identifier user)
-                                                                :username (:username user)
-                                                                :unique-user-identifier (:unique-user-identifier user)})
-                                                             messages)))))})))))))
+              (let [result (-> (cske/transform-keys ->kebab-case channel)
+                               (present-channel)
+                               (assoc :members (update (cske/transform-keys ->kebab-case members)
+                                                       :data
+                                                       (fn [d]
+                                                         (into []
+                                                               (comp (map :user)
+                                                                     (map #(select-keys % user-info-keys)))
+                                                               d))))
+                               (assoc :messages (update (cske/transform-keys ->kebab-case messages)
+                                                        :messages
+                                                        present-messages)))]
+                (if-not include-discussion-messages?
+                  {:success? true
+                   :channel result}
+                  (let [{:keys [success? discussions]} (get-channel-discussions* this channel-id)]
+                    (if-not success?
+                      {:success? false}
+                      (reduce (fn [acc {discussion-id :id}]
+                                {:pre [discussion-id]}
+                                (let [{:keys [success? messages]} (get-discussion-messages* this channel-id discussion-id)]
+                                  (if-not success?
+                                    (reduced {:success? false})
+                                    (-> acc
+                                        (update-in [:channel :messages :messages] into messages)
+                                        (update-in [:channel :messages :messages]
+                                                   (fn [xs]
+                                                     (vec (sort-by (fn [{:keys [created]}]
+                                                                     (or (jt/instant created)
+                                                                         (jt/instant)))
+                                                                   (fn reverse-cmp [a b]
+                                                                     (compare b a))
+                                                                   xs))))))))
+                              {:success? true
+                               :channel result}
+                              discussions))))))))))))
 
 (defn get-user-joined-channels* [{:keys [logger api-key] :as chat-adapter} user-id extra-channel-ids]
   {:pre  [(check! port.chat/UniqueUserIdentifier user-id)]
@@ -491,12 +559,6 @@
   {:post [(check! #'port.chat/create-private-channel %)]}
   (create-channel* adapter (assoc channel :privacy port.chat/private) private-permission-level))
 
-(defn extract-discussion [body]
-  (set/rename-keys (select-keys (cske/transform-keys ->kebab-case body)
-                                [:id :room-id :notify-all-users :channel-name :enabled])
-                   {:room-id :channel-id
-                    :channel-name :name}))
-
 (defn create-channel-discussion* [{:keys [logger api-key]} room-id discussion]
   {:pre  [(check! string? room-id
                   port.chat/NewDiscussion discussion)]
@@ -583,7 +645,7 @@
     (fn get-channel [_context]
       ;; Get the channel so that we can preserve its metadata
       ;; (most critically, its :environment)
-      (get-channel* config channel-id))
+      (get-channel* config channel-id false))
 
     (fn do-set-custom-fields [context]
       (let [existing-metadata (-> context :channel :metadata)
@@ -614,22 +676,6 @@
               (failure {:reason :failed-to-set-public-channel-custom-fields
                         :error-details body
                         :status status}))))))))
-
-(defn get-channel-discussions* [{:keys [logger api-key]} channel-id]
-  {:pre  [channel-id]
-   :post [(check! #'port.chat/get-channel-discussions %)]}
-  (let [{:keys [status body]}
-        (http-client/request logger
-                             {:url (build-api-endpoint-url "/api/v1/chatroom/" channel-id "/channels")
-                              :method :get
-                              :query-params {:auth api-key}
-                              :as :json-keyword-keys})]
-    (if (<= 200 status 299)
-      {:success? true
-       :discussions (mapv extract-discussion body)}
-      (failure {:reason :failed-to-get-channel-discussions
-                :error-details body
-                :status status}))))
 
 (defn get-channel-present-users* [{:keys [logger api-key]} channel-id]
   {:pre  [channel-id]
@@ -668,6 +714,7 @@
      `port.chat/get-private-channels              (get-all-channels-fn "private")
      `port.chat/get-public-channels               (get-all-channels-fn "public")
      `port.chat/get-channel-discussions           get-channel-discussions*
+     `port.chat/get-discussion-messages           get-discussion-messages*
      `port.chat/get-channel-present-users         get-channel-present-users*
      `port.chat/get-user-info                     get-user-info*
      `port.chat/get-user-joined-channels          get-user-joined-channels*
@@ -754,7 +801,8 @@
   (println (format "https://deadsimplechat.com/%s?uniqueUserIdentifier=%s" (-> a-public-channel :channel :id) uniqueUserIdentifier))
 
   (port.chat/get-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                         (-> a-public-channel :channel :id))
+                         (-> a-public-channel :channel :id)
+                         false)
 
   ;;
   (port.chat/get-channel-present-users (dev/component :gpml.boundary.adapter.chat/ds-chat)

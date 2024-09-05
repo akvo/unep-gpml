@@ -48,7 +48,7 @@
   (load "local"))
 
 (defn db-conn []
-  (-> system [:duct.database.sql/hikaricp :duct.database.sql.hikaricp/read-write] :spec))
+  (-> system (get [:duct.database.sql/hikaricp :duct.database.sql.hikaricp/read-write]) :spec))
 
 (defn conn []
   (db-conn))

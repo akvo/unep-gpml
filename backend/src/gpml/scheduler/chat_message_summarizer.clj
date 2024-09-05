@@ -96,7 +96,7 @@
       (reduce (fn [acc {:keys [id] :as _channel}]
                 {:pre [id]}
                 (let [{:keys [success?]
-                       :as channel-result} (port.chat/get-channel chat id)]
+                       :as channel-result} (port.chat/get-channel chat id true)]
                   (cond
                     (not success?)
                     (reduced channel-result)
@@ -145,7 +145,7 @@
                                   sql-result)]
                 ;; Only keep the channels for which there was a DB hit.
                 ;; Normally all channels are backed by the DB,
-                ;; but this may not happens when one wipes the dev DB, or similar sync-related conditions.
+                ;; but this may not happen when one wipes the dev DB, or similar sync-related conditions.
                 (update draft :extended-channels select-keys (mapv :chat-channel-id sql-result))))))))
 
     (fn persist-changes [context]
@@ -218,6 +218,12 @@
                         ;; _extended-channel :- gpml.boundary.port.chat/ExtendedChannel
                         {channel-name :name :as _extended-channel} (get-in context [:extended-channels chat-channel-id :channel])
                         channel-url (format "%s/forum/%s" app-domain chat-channel-id)
+                        channel-urls (vec (sort-by count (into #{}
+                                                               (map (fn [{:keys [discussion-id]}]
+                                                                      (if discussion-id
+                                                                        (format "%s/forum/%s/%s" app-domain chat-channel-id discussion-id)
+                                                                        (format "%s/forum/%s" app-domain chat-channel-id))))
+                                                               recent-messages)))
                         full-name (str first-name " " last-name)
                         message-count-humanized (format "%s New %s"
                                                         (count recent-messages)
@@ -233,7 +239,9 @@ You can read them here: %s"
                                        full-name
                                        (count recent-messages)
                                        channel-name
-                                       channel-url)]]]
+                                       (->> channel-urls
+                                            (interpose " ")
+                                            (apply str)))]]]
             (assert (check! [:map
                              [:email any?]
                              [:first-name any?]
@@ -249,6 +257,7 @@ You can read them here: %s"
                               texts
                               [(pogonos/render @email-html-template {:messageCount message-count-humanized
                                                                      :channelURL channel-url
+                                                                     :channelURLS channel-urls
                                                                      :channelName channel-name
                                                                      :baseUrl app-domain
                                                                      :messages (mapv (fn [recent-message]
@@ -269,24 +278,38 @@ You can read them here: %s"
 
   ;; create a channel:
   @(def a-public-channel (port.chat/create-public-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
-                                                          {:name (str (random-uuid))}))
-  ;; create a user:
-  (let [{:keys [id]} (dev/make-user! (format "a%s@a%s.com" (random-uuid) (random-uuid)))]
+                                                          {:name (str "Parent " (random-uuid))}))
 
-    @(def a-user
-       ;; exercises port.chat/create-user-account while also persisting the result to the DB:
-       (gpml.service.chat/create-user-account (dev/config-component)
-                                              id))
+  @(def discussion (port.chat/create-channel-discussion (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                                        (-> a-public-channel :channel :id)
+                                                        {:name (str "Discussion " (random-uuid))}))
 
-    @(def uniqueUserIdentifier (-> a-user :stakeholder :chat-account-id)))
+  (dotimes [_ 2]
+    ;; create two users:
+    (let [{:keys [id]} (dev/make-user! (format "a%s@a%s.com" (random-uuid) (random-uuid)))]
 
-  ;; use service for that user to join that channel:
-  (gpml.service.chat/join-channel (dev/config-component)
-                                  (-> a-public-channel :channel :id)
-                                  (:stakeholder a-user))
+      @(def a-user
+         ;; exercises port.chat/create-user-account while also persisting the result to the DB:
+         (gpml.service.chat/create-user-account (dev/config-component)
+                                                id))
 
-  ;; write a message as a user in that channel (manual step - open the link in your browser):
-  (println (format "https://deadsimplechat.com/%s?uniqueUserIdentifier=%s" (-> a-public-channel :channel :id) uniqueUserIdentifier))
+      @(def uniqueUserIdentifier (-> a-user :stakeholder :chat-account-id)))
+
+    ;; use service for that user to join that channel:
+    (gpml.service.chat/join-channel (dev/config-component)
+                                    (-> a-public-channel :channel :id)
+                                    (:stakeholder a-user))
+
+    ;; write a message as each of the two users in that channel (manual step - open each link in your browser):
+    (println (format "https://deadsimplechat.com/%s?uniqueUserIdentifier=%s" (-> a-public-channel :channel :id) uniqueUserIdentifier)))
+
+  (port.chat/get-discussion-messages (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                                     (-> a-public-channel :channel :id)
+                                     (-> discussion :discussion :id))
+
+  (port.chat/get-channel (dev/component :gpml.boundary.adapter.chat/ds-chat)
+                         (-> a-public-channel :channel :id)
+                         true)
 
   ;; exercise the feature:
   (-> (summarize-chat-messages (dev/config-component)

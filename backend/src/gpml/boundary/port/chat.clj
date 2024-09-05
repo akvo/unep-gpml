@@ -96,6 +96,7 @@
           true
           (catch Exception _
             false)))]]]
+   [:discussion-id {:optional true} :string]
    [:chat-account-id :string]
    [:username :string]
    [:unique-user-identifier UniqueUserIdentifier]])
@@ -276,7 +277,12 @@
   (^{:schema [:or
               (success-with :channel ExtendedChannel)
               (failure-with :error-details any?)]}
-    get-channel [this channel-id])
+    get-channel [this channel-id include-discussion-messages?])
+
+  (^{:schema [:or
+              (success-with :messages [:vector Message])
+              (failure-with :error-details any?)]}
+    get-discussion-messages [this channel-id discussion-id])
 
   (^{:schema [:or
               (success-with :discussions [:sequential Discussion])
