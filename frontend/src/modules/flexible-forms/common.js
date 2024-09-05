@@ -96,7 +96,7 @@ const getSchema = ({
   relatedResource,
   schema,
 }) => {
-  const prop = cloneDeep(schema[selectedMainContentType].properties)
+  const prop = cloneDeep(schema[selectedMainContentType]?.properties)
 
   let array = [...organisations, ...nonMemberOrganisations]
 
@@ -224,6 +224,7 @@ const getSchema = ({
   if (
     selectedMainContentType === 'technical' ||
     selectedMainContentType === 'action' ||
+    selectedMainContentType === 'data_catalog' ||
     selectedMainContentType === 'case_study'
   ) {
     let array = Object.keys(tags)
