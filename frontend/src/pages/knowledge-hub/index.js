@@ -281,7 +281,7 @@ const KnowledgeHub = ({
                   key={theme.name}
                   onToggle={() => handleThemeToggle(theme.name)}
                   isSelected={selectedThemes.includes(theme.name)}
-                  href={`/knowledge/hub?theme=${theme.name.toLowerCase()}`}
+                  href={`/knowledge-hub?theme=${theme.name.toLowerCase()}`}
                 >
                   {theme.name}
                 </FilterToggle>
@@ -296,7 +296,7 @@ const KnowledgeHub = ({
                   key={type.name}
                   onToggle={() => handleTypeToggle(type.value)}
                   isSelected={selectedTypes.includes(type.value)}
-                  href={`/knowledge/hub?type=${type.name.toLowerCase()}`}
+                  href={`/knowledge-hub?type=${type.name.toLowerCase()}`}
                 >
                   {type.name}
                 </FilterToggle>
@@ -311,7 +311,7 @@ const KnowledgeHub = ({
                   key={type.name}
                   onToggle={() => handleGeoToggle(type.name)}
                   isSelected={selectedGeoCountryGroup.includes(type.name)}
-                  href={`/knowledge/hub?geo=${type.name.toLowerCase()}`}
+                  href={`/knowledge-hub?geo=${type.name.toLowerCase()}`}
                 >
                   {type.name}
                 </FilterToggle>
