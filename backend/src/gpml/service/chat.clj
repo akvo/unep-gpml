@@ -237,7 +237,7 @@
   (saga logger {:success? true
                 :channel-id channel-id}
     (fn tx-get-channel [context]
-      (let [result (port.chat/get-channel chat-adapter channel-id)]
+      (let [result (port.chat/get-channel chat-adapter channel-id false)]
         (if (:success? result)
           (assoc context :channel (:channel result))
           (failure context
@@ -379,7 +379,7 @@
   [{:keys [chat-adapter]}
    channel-id
    context]
-  (let [{:keys [success?] :as result} (port.chat/get-channel chat-adapter channel-id)]
+  (let [{:keys [success?] :as result} (port.chat/get-channel chat-adapter channel-id false)]
     (if-not success?
       result
       (assoc context :private? (-> result :channel

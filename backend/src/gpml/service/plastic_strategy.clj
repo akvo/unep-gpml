@@ -258,7 +258,7 @@
                   %)]}
   (let [{:keys [success?]} (and chat-channel-id
                                 (not (string/blank? chat-channel-id))
-                                (port.chat/get-channel chat-adapter chat-channel-id))]
+                                (port.chat/get-channel chat-adapter chat-channel-id false))]
     (if success?
       {:success? true
        :channel-id chat-channel-id}
