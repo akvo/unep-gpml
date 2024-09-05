@@ -150,6 +150,8 @@ const KnowledgeHub = ({
     { name: 'Policy & Legislation', value: 'policy' },
     { name: 'Financing Resource', value: 'financing_resource' },
     { name: 'Case Studies', value: 'case_study' },
+    { name: 'Initiatives', value: 'initiative' },
+    { name: 'Events', value: 'event' },
   ]
 
   const handleThemeToggle = (theme) => {
@@ -281,7 +283,7 @@ const KnowledgeHub = ({
                   key={theme.name}
                   onToggle={() => handleThemeToggle(theme.name)}
                   isSelected={selectedThemes.includes(theme.name)}
-                  href={`/knowledge-hub?theme=${theme.name.toLowerCase()}`}
+                  href={`/knowledge-hub?tag=${theme.name.toLowerCase()}`}
                 >
                   {theme.name}
                 </FilterToggle>
@@ -296,7 +298,7 @@ const KnowledgeHub = ({
                   key={type.name}
                   onToggle={() => handleTypeToggle(type.value)}
                   isSelected={selectedTypes.includes(type.value)}
-                  href={`/knowledge-hub?type=${type.name.toLowerCase()}`}
+                  href={`/knowledge-hub?topic=${type.name.toLowerCase()}`}
                 >
                   {type.name}
                 </FilterToggle>
