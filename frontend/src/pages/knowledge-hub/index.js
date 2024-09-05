@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import styles from './index.module.scss'
 import { Check, Check2, SearchIcon } from '../../components/icons'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -16,11 +16,13 @@ import { UIStore } from '../../store'
 import { multicountryGroups } from '../../modules/knowledge-library/multicountry'
 import { DownOutlined, LoadingOutlined } from '@ant-design/icons'
 import { loadCatalog } from '../../translations/utils'
+import Link from 'next/link'
 
 const getCountryIdsFromGeoGroups = (
   selectedGeoCountryGroup,
   geoCountryGroups
 ) => {
+  console.log(selectedGeoCountryGroup, geoCountryGroups)
   let countryIds = []
   selectedGeoCountryGroup.forEach((groupName) => {
     const group = geoCountryGroups.find((g) => g.name === groupName)
@@ -34,24 +36,40 @@ const getCountryIdsFromGeoGroups = (
   return countryIds
 }
 
-const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
-  const [results, setResults] = useState([])
+const KnowledgeHub = ({
+  newResults,
+  hasMore,
+  offset,
+  isLoadMore,
+  setLoginVisible,
+  isAuthenticated,
+}) => {
+  const router = useRouter()
+  const [results, setResults] = useState(newResults)
   const [search, setSearch] = useState('')
   const [loading, setLoading] = useState(false)
-  const [selectedThemes, setSelectedThemes] = useState([])
-  const [selectedTypes, setSelectedTypes] = useState([])
-  const [selectedCountries, setSelectedCountries] = useState([])
-  const [selectedGeoCountryGroup, setSelectedGeoCountryGroup] = useState([])
-  const router = useRouter()
+  const selectedThemes = router.query.tag ? router.query.tag.split(',') : []
+  const selectedTypes = router.query.topic ? router.query.topic.split(',') : []
+  const selectedCountries = router.query.country
+    ? router.query.country.split(',')
+    : []
+  const selectedGeoCountryGroup = router.query.geo
+    ? router.query.geo.split(',')
+    : []
+  const [searchInput, setSearchInput] = useState(router.query.q || '')
   const [params, setParams] = useState(null)
   const [modalVisible, setModalVisible] = useState(false)
-  const [offset, setOffset] = useState(0)
-  const [limit] = useState(20)
-  const [hasMore, setHasMore] = useState(true)
   const { countries, featuredOptions } = UIStore.useState((s) => ({
     countries: s.countries,
     featuredOptions: s.featuredOptions,
   }))
+  const [sorting, setSorting] = useState(
+    router.query.orderBy === 'created'
+      ? router.query.descending === 'true'
+        ? 'newest'
+        : 'oldest'
+      : 'newest'
+  )
 
   const countryOpts = countries
     ? countries
@@ -62,15 +80,48 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
         .sort((a, b) => a.label.localeCompare(b.label))
     : []
 
-  useEffect(() => {
-    fetchData()
-  }, [
-    search,
-    selectedThemes,
-    selectedTypes,
-    selectedCountries,
-    selectedGeoCountryGroup,
-  ])
+  const updateQueryParams = useCallback(
+    (updates) => {
+      const currentQuery = router.query
+      const selectedCountryGroupCountries = getCountryIdsFromGeoGroups(
+        updates.geo ? updates.geo.split(',') : [],
+        updates.featuredOptions ? updates.featuredOptions : featuredOptions
+      )
+      const newQuery = {
+        ...(currentQuery.q && { q: currentQuery.q }),
+        ...(currentQuery.tag && { tag: currentQuery.tag }),
+        ...(currentQuery.topic && { topic: currentQuery.topic }),
+        ...(currentQuery.country && { country: currentQuery.country }),
+        ...(currentQuery.geo && { geo: currentQuery.geo }),
+        ...(currentQuery.descending && { descending: currentQuery.descending }),
+        ...updates,
+      }
+
+      if (newQuery.geo) {
+        newQuery.country = selectedCountryGroupCountries.join(',')
+      } else if (newQuery.country) {
+        delete newQuery.geo
+      }
+
+      if (newQuery.orderBy) {
+        delete newQuery.orderBy
+      }
+      if (newQuery.featuredOptions) {
+        delete newQuery.featuredOptions
+      }
+      // Remove empty query params
+      Object.keys(newQuery).forEach(
+        (key) =>
+          (newQuery[key] === undefined || newQuery[key] === '') &&
+          delete newQuery[key]
+      )
+
+      router.push({ pathname: router.pathname, query: newQuery }, undefined, {
+        shallow: false,
+      })
+    },
+    [router]
+  )
 
   useEffect(() => {
     if (!modalVisible) {
@@ -99,32 +150,41 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
     { name: 'Policy & Legislation', value: 'policy' },
     { name: 'Financing Resource', value: 'financing_resource' },
     { name: 'Case Studies', value: 'case_study' },
+    { name: 'Initiatives', value: 'initiative' },
+    { name: 'Events', value: 'event' },
   ]
 
   const handleThemeToggle = (theme) => {
-    setSelectedThemes((prev) =>
-      prev.includes(theme) ? prev.filter((t) => t !== theme) : [...prev, theme]
-    )
+    const newThemes = selectedThemes.includes(theme)
+      ? selectedThemes.filter((t) => t !== theme)
+      : [...selectedThemes, theme]
+    updateQueryParams({
+      tag: newThemes.length > 0 ? newThemes.join(',') : undefined,
+    })
   }
 
   const handleTypeToggle = (type) => {
-    setSelectedTypes((prev) =>
-      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
-    )
+    const newTypes = selectedTypes.includes(type)
+      ? selectedTypes.filter((t) => t !== type)
+      : [...selectedTypes, type]
+    updateQueryParams({
+      topic: newTypes.length > 0 ? newTypes.join(',') : undefined,
+    })
   }
 
-  const handleGeoToggle = (type) => {
-    setSelectedGeoCountryGroup((prev) =>
-      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
-    )
+  const handleGeoToggle = (group) => {
+    const newGeoGroups = selectedGeoCountryGroup.includes(group)
+      ? selectedGeoCountryGroup.filter((g) => g !== group)
+      : [...selectedGeoCountryGroup, group]
+    updateQueryParams({
+      geo: newGeoGroups.length > 0 ? newGeoGroups.join(',') : undefined,
+      country: undefined,
+      featuredOptions: featuredOptions,
+    })
   }
 
   const handleCountryChange = (value) => {
-    if (value) {
-      setSelectedCountries(value)
-    } else {
-      setSelectedCountries([])
-    }
+    updateQueryParams({ ...router.query, countries: value })
   }
 
   const showModal = ({ e, item }) => {
@@ -139,70 +199,69 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
     }
   }
 
-  const fetchData = async (newOffset = 0) => {
-    const params = new URLSearchParams()
-
-    if (search) params.append('q', search)
-    if (selectedThemes.length > 0)
-      params.append('tag', selectedThemes.join(','))
-    if (selectedTypes.length > 0)
-      params.append('topic', selectedTypes.join(','))
-    const selectedCountryGroupCountries = getCountryIdsFromGeoGroups(
-      selectedGeoCountryGroup,
-      featuredOptions
-    )
-    if (
-      selectedCountries.length > 0 ||
-      selectedCountryGroupCountries.length > 0
-    )
-      params.append(
-        'country',
-        selectedCountryGroupCountries.length > 0
-          ? selectedCountryGroupCountries.join(',')
-          : selectedCountries.join(',')
-      )
-
-    params.append('incBadges', 'true')
-    params.append('limit', limit)
-    params.append('offset', newOffset)
-
-    setLoading(true)
-
-    const response = await api.get(`/resources?${params.toString()}`)
-    const newResults = response.data.results
-
-    if (newOffset === 0) {
-      setResults(newResults)
-    } else {
+  useEffect(() => {
+    if (isLoadMore) {
       setResults((prevResults) => [...prevResults, ...newResults])
+    } else {
+      setResults(newResults)
     }
-
-    setHasMore(newResults.length === limit)
     setLoading(false)
-  }
-
-  const clearSearch = () => {
-    setSearch('')
-  }
+  }, [newResults, isLoadMore])
 
   const loadMore = () => {
-    const newOffset = offset + limit
-    fetchData(newOffset)
-    setOffset(newOffset)
+    if (!loading && hasMore) {
+      setLoading(true)
+      const newOffset = offset
+      const newQuery = { ...router.query, offset: newOffset }
+      router
+        .push({ pathname: router.pathname, query: newQuery }, undefined, {
+          shallow: false,
+        })
+        .then(() => setLoading(false))
+        .catch(() => setLoading(false))
+    }
   }
 
-  const debouncedSearch = debounce((value) => {
-    setSearch(value)
-  }, 300)
-
-  const [sorting, setSorting] = useState('newest')
-  const handleSortingChange = (e, v) => {
-    setSorting(e.key)
+  const handleSearchChange = (e) => {
+    const value = e.target.value
+    setSearchInput(value)
+    if (value) {
+      debouncedUpdateSearch(value)
+    } else {
+      debouncedUpdateSearch.cancel()
+      updateQueryParams({ ...router.query, q: '' })
+    }
   }
+
+  const debouncedUpdateSearch = useCallback(
+    debounce((value) => {
+      updateQueryParams({ ...router.query, q: value })
+    }, 300),
+    [updateQueryParams]
+  )
   const sortingOpts = [
-    { key: 'newest', label: 'Most Recent First' },
-    { key: 'oldest', label: 'Oldest First' },
+    {
+      key: 'newest',
+      label: 'Most Recent First',
+      apiParams: { orderBy: 'created', descending: 'true' },
+    },
+    {
+      key: 'oldest',
+      label: 'Oldest First',
+      apiParams: { orderBy: 'created', descending: 'false' },
+    },
   ]
+
+  const handleSortingChange = useCallback(
+    (key) => {
+      const selectedSort = sortingOpts.find((opt) => opt.key === key.key)
+      if (selectedSort) {
+        setSorting(key.key)
+        updateQueryParams(selectedSort.apiParams)
+      }
+    },
+    [updateQueryParams]
+  )
 
   return (
     <div className={styles.knowledgeHub}>
@@ -212,13 +271,8 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
             className="src"
             allowClear
             placeholder="Search Resources"
-            onChange={(e) => {
-              if (e.target.value) {
-                debouncedSearch(e.target.value)
-              } else {
-                clearSearch()
-              }
-            }}
+            value={searchInput}
+            onChange={handleSearchChange}
           />
           <div className="caps-heading-xs">browse resources by</div>
           <div className="section">
@@ -228,6 +282,8 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
                 <FilterToggle
                   key={theme.name}
                   onToggle={() => handleThemeToggle(theme.name)}
+                  isSelected={selectedThemes.includes(theme.name)}
+                  href={`/knowledge-hub?tag=${theme.name.toLowerCase()}`}
                 >
                   {theme.name}
                 </FilterToggle>
@@ -241,6 +297,8 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
                 <FilterToggle
                   key={type.name}
                   onToggle={() => handleTypeToggle(type.value)}
+                  isSelected={selectedTypes.includes(type.value)}
+                  href={`/knowledge-hub?topic=${type.name.toLowerCase()}`}
                 >
                   {type.name}
                 </FilterToggle>
@@ -254,6 +312,8 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
                 <FilterToggle
                   key={type.name}
                   onToggle={() => handleGeoToggle(type.name)}
+                  isSelected={selectedGeoCountryGroup.includes(type.name)}
+                  href={`/knowledge-hub?geo=${type.name.toLowerCase()}`}
                 >
                   {type.name}
                 </FilterToggle>
@@ -354,16 +414,19 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
 
 // const ResourceCard = () => {}
 
-const FilterToggle = ({ children, onToggle }) => {
-  const [on, setOn] = useState(false)
-  const handleClick = () => {
-    setOn(!on)
+const FilterToggle = ({ children, onToggle, isSelected, href }) => {
+  const handleClick = (e) => {
+    e.preventDefault()
     onToggle()
   }
   return (
-    <div className={classNames('filter', { on })} onClick={handleClick}>
+    <Link
+      href={href}
+      className={classNames('filter', { on: isSelected })}
+      onClick={handleClick}
+    >
       <AnimatePresence>
-        {on && (
+        {isSelected && (
           <motion.div
             initial={{ width: 0, height: 0, marginRight: 0 }}
             animate={{ width: 9, height: 8, marginRight: 5 }}
@@ -374,15 +437,64 @@ const FilterToggle = ({ children, onToggle }) => {
         )}
       </AnimatePresence>
       {children}
-    </div>
+    </Link>
   )
 }
 
-export const getStaticProps = async (ctx) => {
-  return {
-    props: {
-      i18n: await loadCatalog(ctx.locale),
-    },
+export async function getServerSideProps(context) {
+  const { query, req } = context
+
+  const forwardedProtos = (req.headers['x-forwarded-proto'] || '').split(',')
+
+  const protocol = forwardedProtos[0] || 'http'
+
+  const baseUrl = `${protocol}://${req.headers.host}/`
+
+  const API_ENDPOINT = process.env.REACT_APP_FEENV
+    ? 'https://unep-gpml.akvotest.org/api/'
+    : `${baseUrl}/api/`
+
+  const limit = 20
+  const offset = parseInt(query.offset) || 0
+
+  const params = new URLSearchParams({
+    ...(query.q && { q: query.q }),
+    ...(query.tag && { tag: query.tag }),
+    ...(query.topic && { topic: query.topic }),
+    ...(query.country && { country: query.country }),
+    incBadges: 'true',
+    limit: limit.toString(),
+    offset: offset.toString(),
+    orderBy: query.orderBy || 'created',
+    descending: query.descending || 'true',
+  })
+
+  try {
+    const response = await api.get(
+      `${API_ENDPOINT}/resources?${params.toString()}`
+    )
+    const newResults = response.data.results
+
+    return {
+      props: {
+        newResults,
+        hasMore: newResults.length === limit,
+        offset: offset + newResults.length,
+        isLoadMore: offset > 0,
+        i18n: await loadCatalog(context.locale),
+      },
+    }
+  } catch (error) {
+    console.error('Error fetching initial data:', error)
+    return {
+      props: {
+        newResults: [],
+        hasMore: false,
+        offset: 0,
+        isLoadMore: false,
+        i18n: await loadCatalog(context.locale),
+      },
+    }
   }
 }
 
