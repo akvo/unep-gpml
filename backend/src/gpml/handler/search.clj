@@ -45,7 +45,6 @@
                                      :frequency_penalty 0
                                      :presence_penalty 0})}))
 
-
 (defn- sql-allowed? [sql]
   (boolean (re-matches #"^(?i)select \* from v_resources where.*" sql)))
 

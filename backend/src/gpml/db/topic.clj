@@ -211,8 +211,8 @@
                      :else
                      "LEFT JOIN file f ON f.id IN (e.image_id, e.thumbnail_id)")
         likes-select (if (= entity-name "stakeholder")
-                     ""
-                     (format ",COUNT(distinct l.stakeholder_id) FILTER (WHERE l.%s_id IS NOT NULL) AS likes" entity-name))
+                       ""
+                       (format ",COUNT(distinct l.stakeholder_id) FILTER (WHERE l.%s_id IS NOT NULL) AS likes" entity-name))
         likes-join (if (= entity-name "stakeholder")
                      ""
                      (format "LEFT JOIN %1$s_like l ON l.%1$s_id = e.id" entity-name))
