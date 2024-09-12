@@ -2,7 +2,9 @@
 
 .knowledgeHub {
   display: flex;
-
+  @media screen and (max-width: $bpMobile) {
+    flex-direction: column;
+  }
   :global {
     .filter-sidebar {
       background: #f5f7ff;
@@ -33,18 +35,45 @@
         top: 20px;
       }
 
-      .section {
-        margin-top: 15px;
-
-        .h-xs {
-          margin-bottom: 10px;
-        }
-
-        .ant-select {
-          border: 1px solid #ccc;
-          width: 100%;
+      .ant-collapse {
+        border: none;
+        background-color: transparent;
+        .ant-collapse-item {
+          border: none;
+          margin-top: 10px;
+          .ant-collapse-header {
+            background-color: transparent;
+            padding: 0;
+            position: relative;
+            border: none;
+            margin-bottom: 5px;
+            .ant-collapse-expand-icon {
+              position: absolute;
+              right: -10px;
+            }
+          }
+          .ant-collapse-content {
+            border: none;
+            background-color: transparent;
+            padding: 0;
+            margin: 0;
+            .ant-collapse-content-box {
+              padding: 0;
+            }
+          }
         }
       }
+      .h-xs {
+        margin-bottom: 10px;
+      }
+
+      .ant-select {
+        border: 1px solid #ccc;
+        width: 100%;
+      }
+      // .section {
+      //   margin-top: 15px;
+      // }
 
       .filters {
         display: flex;
