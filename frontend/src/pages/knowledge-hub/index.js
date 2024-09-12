@@ -8,7 +8,7 @@ import ResourceCard from '../../components/resource-card/resource-card'
 import DetailModal from '../../modules/details-page/modal'
 import { useRouter } from 'next/router'
 import bodyScrollLock from '../../modules/details-page/scroll-utils'
-import { Dropdown, Input, Menu, Select, Space, Spin } from 'antd'
+import { Collapse, Dropdown, Input, Menu, Select, Space, Spin } from 'antd'
 import { debounce } from 'lodash'
 import Button from '../../components/button'
 import { Trans, t } from '@lingui/macro'
@@ -46,7 +46,7 @@ const KnowledgeHub = ({
 }) => {
   const router = useRouter()
   const [results, setResults] = useState(newResults)
-  const [search, setSearch] = useState('')
+  const [collapseKeys, setCollapseKeys] = useState(['p1', 'p2', 'p3'])
   const [loading, setLoading] = useState(false)
   const selectedThemes = router.query.tag ? router.query.tag.split(',') : []
   const selectedTypes = router.query.topic ? router.query.topic.split(',') : []
@@ -263,6 +263,21 @@ const KnowledgeHub = ({
     [updateQueryParams]
   )
 
+  useEffect(() => {
+    const onresize = () => {
+      if (window.innerWidth <= 768) {
+        setCollapseKeys([])
+      } else {
+        setCollapseKeys(['p1', 'p2', 'p3'])
+      }
+    }
+    onresize()
+    window.addEventListener('resize', onresize)
+  }, [])
+
+  const handleCollapseChange = (v) => {
+    setCollapseKeys(v)
+  }
   return (
     <div className={styles.knowledgeHub}>
       <aside className="filter-sidebar">
@@ -275,73 +290,77 @@ const KnowledgeHub = ({
             onChange={handleSearchChange}
           />
           <div className="caps-heading-xs">browse resources by</div>
-          <div className="section">
-            <h4 className="h-xs w-semi">Theme</h4>
-            <div className="filters">
-              {themes?.map((theme) => (
-                <FilterToggle
-                  key={theme.name}
-                  onToggle={() => handleThemeToggle(theme.name)}
-                  isSelected={selectedThemes.includes(theme.name)}
-                  href={`/knowledge-hub?tag=${theme.name.toLowerCase()}`}
-                >
-                  {theme.name}
-                </FilterToggle>
-              ))}
-            </div>
-          </div>
-          <div className="section">
-            <h4 className="h-xs w-semi">Resource Type</h4>
-            <div className="filters">
-              {types.map((type) => (
-                <FilterToggle
-                  key={type.name}
-                  onToggle={() => handleTypeToggle(type.value)}
-                  isSelected={selectedTypes.includes(type.value)}
-                  href={`/knowledge-hub?topic=${type.name.toLowerCase()}`}
-                >
-                  {type.name}
-                </FilterToggle>
-              ))}
-            </div>
-          </div>
-          <div className="section">
-            <h4 className="h-xs w-semi">Geography</h4>
-            <div className="filters">
-              {featuredOptions.map((type) => (
-                <FilterToggle
-                  key={type.name}
-                  onToggle={() => handleGeoToggle(type.name)}
-                  isSelected={selectedGeoCountryGroup.includes(type.name)}
-                  href={`/knowledge-hub?geo=${type.name.toLowerCase()}`}
-                >
-                  {type.name}
-                </FilterToggle>
-              ))}
-            </div>
-          </div>
-          <div className="section">
-            <h4 className="h-xs w-semi">Country</h4>
-
-            <Select
-              size="small"
-              showSearch
-              allowClear
-              mode="multiple"
-              dropdownClassName="multiselection-dropdown"
-              dropdownMatchSelectWidth={false}
-              placeholder={t`Countries`}
-              options={countryOpts}
-              optionFilterProp="children"
-              filterOption={(input, option) =>
-                option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
-              }
-              showArrow
-              suffixIcon={<SearchIcon />}
-              virtual={false}
-              onChange={handleCountryChange}
-            />
-          </div>
+          <Collapse onChange={handleCollapseChange} activeKey={collapseKeys}>
+            <Collapse.Panel
+              key="p1"
+              header={<h4 className="h-xs w-semi">Theme</h4>}
+            >
+              <div className="filters">
+                {themes?.map((theme) => (
+                  <FilterToggle
+                    key={theme.name}
+                    onToggle={() => handleThemeToggle(theme.name)}
+                    isSelected={selectedThemes.includes(theme.name)}
+                    href={`/knowledge-hub?tag=${theme.name.toLowerCase()}`}
+                  >
+                    {theme.name}
+                  </FilterToggle>
+                ))}
+              </div>
+            </Collapse.Panel>
+            <Collapse.Panel
+              key="p2"
+              header={<h4 className="h-xs w-semi">Resource Type</h4>}
+            >
+              <div className="filters">
+                {types.map((type) => (
+                  <FilterToggle
+                    key={type.name}
+                    onToggle={() => handleTypeToggle(type.value)}
+                    isSelected={selectedTypes.includes(type.value)}
+                    href={`/knowledge-hub?topic=${type.name.toLowerCase()}`}
+                  >
+                    {type.name}
+                  </FilterToggle>
+                ))}
+              </div>
+            </Collapse.Panel>
+            <Collapse.Panel
+              key="p3"
+              header={<h4 className="h-xs w-semi">Geography</h4>}
+            >
+              <div className="filters">
+                {featuredOptions.map((type) => (
+                  <FilterToggle
+                    key={type.name}
+                    onToggle={() => handleGeoToggle(type.name)}
+                    isSelected={selectedGeoCountryGroup.includes(type.name)}
+                    href={`/knowledge-hub?geo=${type.name.toLowerCase()}`}
+                  >
+                    {type.name}
+                  </FilterToggle>
+                ))}
+              </div>
+              <Select
+                size="small"
+                showSearch
+                allowClear
+                mode="multiple"
+                dropdownClassName="multiselection-dropdown"
+                dropdownMatchSelectWidth={false}
+                placeholder={t`Countries`}
+                options={countryOpts}
+                optionFilterProp="children"
+                filterOption={(input, option) =>
+                  option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+                showArrow
+                suffixIcon={<SearchIcon />}
+                virtual={false}
+                onChange={handleCountryChange}
+              />
+            </Collapse.Panel>
+          </Collapse>
         </div>
       </aside>
       <div className="content">
