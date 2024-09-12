@@ -22,7 +22,6 @@ const getCountryIdsFromGeoGroups = (
   selectedGeoCountryGroup,
   geoCountryGroups
 ) => {
-  console.log(selectedGeoCountryGroup, geoCountryGroups)
   let countryIds = []
   selectedGeoCountryGroup.forEach((groupName) => {
     const group = geoCountryGroups.find((g) => g.name === groupName)
