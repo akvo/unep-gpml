@@ -25,7 +25,7 @@ const menuList = [
     id: 'Knowledge Hub',
     children: [
       {
-        to: '/knowledge/library',
+        to: '/knowledge-hub',
         title: msg`Library`,
         key: msg`Library`,
         id: 'Library',
