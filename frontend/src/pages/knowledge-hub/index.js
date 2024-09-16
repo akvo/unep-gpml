@@ -154,9 +154,10 @@ const KnowledgeHub = ({
   ]
 
   const handleThemeToggle = (theme) => {
-    const newThemes = selectedThemes.includes(theme)
-      ? selectedThemes.filter((t) => t !== theme)
-      : [...selectedThemes, theme]
+    const lowerCaseTheme = theme.toLowerCase()
+    const newThemes = selectedThemes.includes(lowerCaseTheme)
+      ? selectedThemes.filter((t) => t !== lowerCaseTheme)
+      : [...selectedThemes, lowerCaseTheme]
     updateQueryParams({
       tag: newThemes.length > 0 ? newThemes.join(',') : undefined,
     })
@@ -299,8 +300,13 @@ const KnowledgeHub = ({
                   <FilterToggle
                     key={theme.name}
                     onToggle={() => handleThemeToggle(theme.name)}
-                    isSelected={selectedThemes.includes(theme.name)}
-                    href={`/knowledge-hub?tag=${theme.name.toLowerCase()}`}
+                    isSelected={selectedThemes.some(
+                      (selectedTheme) =>
+                        selectedTheme.toLowerCase() === theme.name.toLowerCase()
+                    )}
+                    href={`/knowledge-hub?tag=${encodeURIComponent(
+                      theme.name.toLowerCase()
+                    )}`}
                   >
                     {theme.name}
                   </FilterToggle>
