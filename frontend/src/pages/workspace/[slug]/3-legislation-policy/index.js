@@ -13,9 +13,19 @@ const slides = {
     'https://docs.google.com/presentation/d/1MqU2HXl1I3JdpdRQYlDfwrIvO7p92iHB-UU35TndW20/embed?start=false&loop=false&delayms=60000',
 }
 
+const legaSlides = {
+  en:
+    'https://docs.google.com/document/d/1YdUU8qh0awdjc-v88zA7V5-oI4b0abLfYR5VnRlpVsI/edit?usp=sharing',
+  es:
+    'https://docs.google.com/document/d/1n0DaWyPNDOsSLzTFTyYBW7jSZQSUVr5z/edit?usp=drive_link&ouid=105922766546831874317&rtpof=true&sd=true',
+  fr:
+    'https://docs.google.com/document/d/1hbHGfQINoIrNcpQkh-3pmjzzNtt3JDgI/edit?usp=sharing&ouid=105922766546831874317&rtpof=true&sd=true',
+}
+
 const View = () => {
   const router = useRouter()
   const slideURL = slides[router.locale]
+  const legalSlideURL = legaSlides[router.locale]
 
   const match = slideURL.match(/\/d\/(.+?)\//)
   return (
@@ -29,6 +39,11 @@ const View = () => {
       <p>
         <Trans>description-intro-3-legislation-policy</Trans>
       </p>
+      <a href={`${legalSlideURL}`} target="_blank">
+        <Button size="small" type="link">
+          Download Legal and Policy Review Report
+        </Button>
+      </a>
       <a
         href={`https://docs.google.com/presentation/d/${match[1]}/export/pptx`}
         target="_blank"
