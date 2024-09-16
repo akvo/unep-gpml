@@ -184,7 +184,7 @@ const KnowledgeHub = ({
   }
 
   const handleCountryChange = (value) => {
-    updateQueryParams({ ...router.query, countries: value })
+    updateQueryParams({ ...router.query, country: value })
   }
 
   const showModal = ({ e, item }) => {
