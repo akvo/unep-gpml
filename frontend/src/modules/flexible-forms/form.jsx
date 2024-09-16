@@ -40,6 +40,11 @@ const getDifferences = (oldObj, newObj) => {
     obj && typeof obj === 'object' && !Array.isArray(obj)
 
   for (let key in newObj) {
+    if (key === 'geoCoverageCountries') {
+      changes[key] = newObj[key]
+      continue
+    }
+
     if (isPlainObject(newObj[key]) && isPlainObject(oldObj[key])) {
       const nestedChanges = getDifferences(oldObj[key], newObj[key])
       if (Object.keys(nestedChanges).length) {
