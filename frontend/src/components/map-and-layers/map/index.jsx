@@ -107,7 +107,7 @@ const Map = ({ initialViewProperties }) => {
       {layerstoset && layerstoset.length > 0 && (
         <Details
           layerId={
-            queryParameters?.layers[queryParameters.layers[0]]?.arcgislayerId
+            queryParameters?.layer
           }
         ></Details>
       )}
