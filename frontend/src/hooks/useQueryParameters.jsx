@@ -36,8 +36,13 @@ const useQueryParameters = () => {
       if (key === 'layers') {
         sessionStorage.setItem('layers', JSON.stringify(params[key]))
 
-        if (params[key].id) {
-          serialized.layer = encodeURIComponent(params[key].id)
+        if (
+          params[key].length > 0 &&
+          params[key][0]?.attributes?.arcgislayerId
+        ) {
+          serialized.layer = encodeURIComponent(
+            params[key][0].attributes.arcgislayerId
+          )
         }
       } else {
         const value = params[key]
@@ -48,11 +53,6 @@ const useQueryParameters = () => {
         }
       }
     })
-    const layer = sessionStorage.getItem('layers')
-
-    serialized.layers = layer
-      ? JSON.parse(layer)[0]?.attributes?.arcgislayerId
-      : []
 
     return serialized
   }
