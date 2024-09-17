@@ -11,7 +11,7 @@ const useLayers = (renderers) => {
 
   const allLayers = useLayerInfo()
 
-  if (!layersFromQuery) {
+  if (layerFromQuery) {
     layersFromQuery = allLayers?.layers.filter(lay => lay.attributes.arcgislayerId === layerFromQuery)
   }
 

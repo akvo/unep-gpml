@@ -45,7 +45,7 @@ const useLoadMap = (layers) => {
       setIsLoading(true);
       try {
         const renderersList = [];
-        const selectedLayers = layersFromQuery ? layersFromQuery : layers
+        const selectedLayers = layers ? layers : layersFromQuery
         for (const layer of selectedLayers) {
           const loadedRenderer = await loadWebMapLayer(layer);
 
