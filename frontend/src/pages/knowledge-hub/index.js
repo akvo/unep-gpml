@@ -17,6 +17,7 @@ import { multicountryGroups } from '../../modules/knowledge-library/multicountry
 import { DownOutlined, LoadingOutlined } from '@ant-design/icons'
 import { loadCatalog } from '../../translations/utils'
 import Link from 'next/link'
+import { lifecycleStageTags } from '../../utils/misc'
 
 const getCountryIdsFromGeoGroups = (
   selectedGeoCountryGroup,
@@ -130,13 +131,7 @@ const KnowledgeHub = ({
     }
   }, [modalVisible])
 
-  const themes = [
-    'Production',
-    'Consumption',
-    'Waste Management',
-    'Legacy Plastics',
-    'Full Life Cycle',
-  ].map((it) => ({ name: it }))
+  const themes = lifecycleStageTags.map((it) => ({ name: it }))
 
   const types = [
     { name: 'Technical Resource', value: 'technical_resource' },
