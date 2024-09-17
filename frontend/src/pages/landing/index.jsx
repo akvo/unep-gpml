@@ -470,7 +470,7 @@ const ShowcasingAndStats = (props) => {
               </h3>
               <span>
                 <Trans>
-                  Crowdsourcing a vast repository/library of {totalCount}{' '}
+                  Crowdsourcing a vast repository/library of <b>{totalCount}</b>{' '}
                   curated knowledge products and materials.
                 </Trans>
               </span>
@@ -501,8 +501,9 @@ const ShowcasingAndStats = (props) => {
               </h3>
               <span>
                 <Trans>
-                  Visualizing an extensive array of {props?.layers} data layers
-                  across the plastic lifecycle, providing in-depth insights.
+                  Visualizing an extensive array of <b>{props?.layers}</b> data
+                  layers across the plastic lifecycle, providing in-depth
+                  insights.
                 </Trans>
               </span>
               <Link href="/data/maps">
@@ -527,7 +528,7 @@ const ShowcasingAndStats = (props) => {
               </h3>
               <span>
                 <Trans>
-                  Harnessing the expertise of {props?.cop} Communities of
+                  Harnessing the expertise of <b>{props?.cop}</b> Communities of
                   Practice (CoPs) comprised of leading experts and scientists to
                   bridge critical knowledge and data gaps.
                 </Trans>
@@ -557,9 +558,9 @@ const ShowcasingAndStats = (props) => {
               <h3>Community</h3>
               <span>
                 <Trans>
-                  Fostering a dynamic network of {expertsCount} experts,{' '}
-                  {stakeholders?.stakeholders?.length} stakeholders and{' '}
-                  {organisations.length} member organisations, enhancing
+                  Fostering a dynamic network of <b>{expertsCount}</b> experts,{' '}
+                  <b>{stakeholders?.stakeholders?.length}</b> stakeholders and{' '}
+                  <b>{organisations.length}</b> member organisations, enhancing
                   collaboration and shared innovation.
                 </Trans>
               </span>
@@ -590,9 +591,9 @@ const ShowcasingAndStats = (props) => {
               </h3>
               <span>
                 <Trans>
-                  Empowering 18 countries in crafting comprehensive national
-                  source inventories, which facilitates the development of a
-                  National Roadmap/Strategy/Plan through evidence-based
+                  Empowering <b>18</b> countries in crafting comprehensive
+                  national source inventories, which facilitates the development
+                  of a National Roadmap/Strategy/Plan through evidence-based
                   approach. Additionally, forums can be accessed from the
                   workspace, promoting collaboration and sharing of information.
                 </Trans>
