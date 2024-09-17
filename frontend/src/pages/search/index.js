@@ -116,7 +116,7 @@ const Search = ({ setLoginVisible, isAuthenticated }) => {
                     key={`${it.type}-${it.id}`}
                     onClick={({ e, item }) => {
                       router.push(
-                        `/data/maps?categoryId=${item.categoryId}&subcategoryId=${item.subcategoryId}&layers=${item.arcgislayerId}`
+                        `/data/maps?categoryId=${item.categoryId}&subcategoryId=${item.subcategoryId}&layer=${item.arcgislayerId}`
                       )
                     }}
                   />
