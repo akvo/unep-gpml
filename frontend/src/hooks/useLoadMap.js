@@ -4,7 +4,7 @@ import useQueryParameters from "./useQueryParameters";
 import { isEqual } from "lodash";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 
-const useLoadMap = () => {
+const useLoadMap = (layers) => {
   const { queryParameters } = useQueryParameters();
   const { layers: layersFromQuery } = queryParameters;
 
@@ -45,7 +45,8 @@ const useLoadMap = () => {
       setIsLoading(true);
       try {
         const renderersList = [];
-        for (const layer of layersFromQuery) {
+        const selectedLayers = layersFromQuery ? layersFromQuery : layers
+        for (const layer of selectedLayers) {
           const loadedRenderer = await loadWebMapLayer(layer);
 
           if (loadedRenderer) {
