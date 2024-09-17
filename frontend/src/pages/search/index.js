@@ -187,12 +187,12 @@ export const SearchBar = ({ onSearch, loading }) => {
       setVal(router.query.q)
       onSearch(router.query.q)
     }
-  }, [])
+  }, [router.query])
   return (
     <div className={classNames(styles.searchBar, 'search-bar')}>
       <Form
         onFinish={() => {
-          onSearch(val)
+          router.push(`/search?q=${val.replace(/ /g, '+')}`)
         }}
       >
         <Input
@@ -207,7 +207,7 @@ export const SearchBar = ({ onSearch, loading }) => {
             type="primary"
             size="small"
             onClick={() => {
-              onSearch(val)
+              router.push(`/search?q=${val.replace(/ /g, '+')}`)
             }}
           >
             Search
