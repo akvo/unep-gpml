@@ -2025,6 +2025,10 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        b {
+          color: $primaryPurple7;
+          font-weight: 900;
+        }
         @media screen and (min-width: $bpMobile) {
           & > div {
             width: 380px;
