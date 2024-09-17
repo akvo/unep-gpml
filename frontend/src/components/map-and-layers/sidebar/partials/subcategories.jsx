@@ -91,7 +91,7 @@ const Subcategories = ({ subcategories, layers, loading }) => {
                     size="small"
                     onChange={() => handleLayerClick(layer)}
                     checked={
-                      (queryParameters.layers &&
+                      (queryParameters.layers && !queryParameters.layer &&
                         queryParameters.layers[0]?.id === layer.id) ||
                       (queryParameters.layer &&
                         queryParameters.layer === layer.attributes.arcgislayerId)

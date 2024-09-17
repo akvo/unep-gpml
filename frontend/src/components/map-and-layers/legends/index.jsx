@@ -207,11 +207,11 @@ const Legends = () => {
 
   const allLayers = useLayerInfo()
 
-  const layers = queryParameters?.layers
-    ? queryParameters?.layers
-    : allLayers?.layers?.filter(
+  const layers = queryParameters?.layer
+    ? allLayers?.layers?.filter(
         (layer) => layer.attributes.arcgislayerId == queryParameters.layer
       )
+    : queryParameters?.layers
 
   return layers?.map((layer, index) => (
     <LegendCard
