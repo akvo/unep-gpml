@@ -322,3 +322,11 @@ export const getBadgeTitle = (badgeKey) => {
     badges[badgeKey] || { title: 'Unknown Badge', image: 'default-badge.svg' }
   )
 }
+
+export const lifecycleStageTags = [
+  'Production',
+  'Consumption',
+  'Waste Management',
+  'Legacy Plastics',
+  'Full Life Cycle',
+]
