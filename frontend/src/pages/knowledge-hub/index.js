@@ -49,9 +49,6 @@ const KnowledgeHub = ({
   const [loading, setLoading] = useState(false)
   const selectedThemes = router.query.tag ? router.query.tag.split(',') : []
   const selectedTypes = router.query.topic ? router.query.topic.split(',') : []
-  const selectedCountries = router.query.country
-    ? router.query.country.split(',')
-    : []
   const selectedGeoCountryGroup = router.query.geo
     ? router.query.geo.split(',')
     : []
@@ -134,12 +131,11 @@ const KnowledgeHub = ({
   }, [modalVisible])
 
   const themes = [
-    'Plastic Production & Distribution',
-    'Plastic Consumption',
-    'Reuse',
-    'Recycle',
+    'Production',
+    'Consumption',
     'Waste Management',
-    'Just Transition of Informal Sector',
+    'Legacy Plastics',
+    'Full Life Cycle',
   ].map((it) => ({ name: it }))
 
   const types = [
@@ -293,7 +289,7 @@ const KnowledgeHub = ({
           <Collapse onChange={handleCollapseChange} activeKey={collapseKeys}>
             <Collapse.Panel
               key="p1"
-              header={<h4 className="h-xs w-semi">Theme</h4>}
+              header={<h4 className="h-xs w-semi">Life Cycle Stage</h4>}
             >
               <div className="filters">
                 {themes?.map((theme) => (
@@ -353,6 +349,7 @@ const KnowledgeHub = ({
                 mode="multiple"
                 dropdownClassName="multiselection-dropdown"
                 dropdownMatchSelectWidth={false}
+                placement="topLeft"
                 placeholder={t`Countries`}
                 options={countryOpts}
                 optionFilterProp="children"

@@ -70,6 +70,28 @@
       .ant-select {
         border: 1px solid #ccc;
         width: 100%;
+        .ant-select-selection-item {
+          background-color: #aca4ff;
+          color: #1a1826;
+          font-weight: bold;
+          border-radius: 20px;
+          .ant-select-selection-item-remove {
+            color: #1a1826;
+            opacity: 0.5;
+            font-weight: bold;
+            svg {
+              path {
+                stroke: #fff !important;
+                stroke-width: 5 !important;
+              }
+            }
+          }
+        }
+      }
+      .ant-select.ant-select-sm:not(.ant-select-customize-input)
+        .ant-select-selector {
+        padding: 4px 7px;
+        min-height: 40px;
       }
       // .section {
       //   margin-top: 15px;
