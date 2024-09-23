@@ -1,20 +1,21 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { getStrapiUrl } from "../utils/misc";
+import { useRouter } from "next/router";
 
 const useCategories = () => {
+  const router = useRouter()
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const strapiURL = getStrapiUrl();
-
 
   useEffect(() => {
 
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          `${strapiURL}/api/categories`
+          `${strapiURL}/api/categories?locale=${router.locale}`
         );
 
         setCategories(response.data.data || []);
