@@ -227,7 +227,7 @@
                      (str " AND org.id IN (:v*:entity)")
 
                      (seq tag)
-                     (str " AND t.tag IN (:v*:tag)")
+                     (str " AND LOWER(t.tag) IN (:v*:tag)")
 
                      (seq representative-group)
                      (str " AND org.type IN (:v*:representative-group)")
