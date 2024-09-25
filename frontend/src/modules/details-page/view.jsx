@@ -704,6 +704,10 @@ const Records = ({ countries, languages, type, data }) => {
       return false
     }
 
+    if (key === 'status' && data[value] !== 'In force') {
+      return null
+    }
+
     return (
       <Fragment key={`${type}-${name}`}>
         {displayEntry && (

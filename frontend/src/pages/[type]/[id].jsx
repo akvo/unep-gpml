@@ -32,13 +32,13 @@ const Details = ({
   }
 
   const sliceMetaDesc = (words = '', maxLength = 158) => {
-    if (words.length <= maxLength) {
+    if (words?.length <= maxLength) {
       return words
     }
-    let slicedWords = words.slice(0, maxLength)
-    let lastSpaceIndex = slicedWords.lastIndexOf(' ')
+    let slicedWords = words?.slice(0, maxLength)
+    let lastSpaceIndex = slicedWords?.lastIndexOf(' ')
     if (lastSpaceIndex !== -1) {
-      slicedWords = slicedWords.slice(0, lastSpaceIndex)
+      slicedWords = slicedWords?.slice(0, lastSpaceIndex)
     }
     return slicedWords
   }
