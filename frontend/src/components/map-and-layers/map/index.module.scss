@@ -43,40 +43,45 @@
     }
     
 
-    
     .esri-popup .popup-table tr:last-child td {
-      border-bottom: none; 
+      border-bottom: none;
       border-bottom: black;
     }
 
     .esri-popup__main-container {
       background-color: white !important;
       padding: 16px;
-      width:400px;
+      width: 400px;
       display: flex;
-      justify-content:space-around;
+      justify-content: space-around;
       border-radius: 3px;
     }
 
     .esri-popup__header {
-      background-color: #f0f0f0; font-size: 8px; 
+      background-color: #f0f0f0;
+      font-size: 14px;
       border-bottom: 1px solid #dcdcdc;
-      border-bottom: black;
+      padding: 0px 0px;
+      margin: 0;
+      text-align: left;
+      line-height: 1;
+      height: auto;
     }
 
-    .esri-widget__heading.esri-features__heading { font-size: 18px; 
-      font-weight: bold;     display: flex;
-      justify-content:space-around;
-       color: #1d90f5; 
-       font-family:  sans-serif;
-       width: 100%;
-      }
+    .esri-widget__heading.esri-features__heading {
+      font-size: 18px;
+      font-weight: bold;
+      color: #1d90f5;
+      font-family: sans-serif;
+      margin: 0;
+      line-height: 1;
+    }
 
-       .esri-popup__content {
-        max-height: 300px;
-        width: 100%; 
-        overflow: auto; 
-      }
+    .esri-popup__content {
+      max-height: 300px;
+      width: 100%; 
+      overflow: auto; 
+    }
     .legend-card {
       border: none;
       box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
