@@ -1,12 +1,18 @@
 (ns gpml.db.tag
   #:ns-tracker{:resource-deps ["tag.sql"]}
   (:require
+   [clojure.java.jdbc :as jdbc]
    [clojure.string :as str]
+   [duct.logger :refer [log]]
    [gpml.domain.tag :as dom.tag]
    [gpml.domain.types :as dom.types]
    [gpml.util :as util]
+   [gpml.util.postgresql :as pg-util]
    [gpml.util.sql :as sql-util]
-   [hugsql.core :as hugsql]))
+   [hugsql.core :as hugsql]
+   [taoensso.timbre :as timbre])
+  (:import
+   [java.sql SQLException]))
 
 (declare get-tags
          tag-by-tags
@@ -23,7 +29,9 @@
          get-tag-categories
          update-tag
          tag->db-tag
-         create-tags)
+         create-tags
+         delete-tag*
+         migrate-resource-tag*)
 
 (hugsql/def-db-fns "gpml/db/tag.sql" {:quoting :ansi})
 
@@ -122,6 +130,38 @@
   [opts]
   (-> opts
       (util/update-if-not-nil :tags #(map str/lower-case %))))
+
+(defn migrate-resource-tag [db logger {:keys [origin-tag target-tag]}]
+  (try
+    (jdbc/with-db-transaction [tx db]
+      (doseq [table dom.types/topic-entity-tables]
+        (migrate-resource-tag* tx
+                               {:table (format "%s_tag" table)
+                                :origin-tag origin-tag
+                                :target-tag target-tag}))
+      {:success? true})
+    (catch Exception e
+      (timbre/with-context+ {:origin-tag origin-tag :target-tag target-tag}
+        (log logger :error :failed-to-migrate-tag e))
+      {:success? false
+       :reason :failed-to-migrate-tag
+       :error-details {:error (if (instance? SQLException e)
+                                (pg-util/get-sql-state e)
+                                (ex-message e))}})))
+
+(defn delete-tag [db logger {:keys [id]}]
+  (try
+    (jdbc/with-db-transaction [tx db]
+      (delete-tag* tx {:id id})
+      {:success? true})
+    (catch Exception e
+      (timbre/with-context+ {:id id}
+        (log logger :error :failed-to-delete-tag e))
+      {:success? false
+       :reason :failed-to-delete-tag
+       :error-details {:error (if (instance? SQLException e)
+                                (pg-util/get-sql-state e)
+                                (ex-message e))}})))
 
 (comment
   (require 'dev)
