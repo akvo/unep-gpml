@@ -231,3 +231,35 @@
 
 (defmethod ig/init-key :gpml.handler.tag/get-all-query-params [_ _]
   get-all-query-params)
+
+(defmethod ig/init-key :gpml.handler.tag/delete
+  [_ {:keys [db logger]}]
+  (fn [{{{:keys [id]} :path} :parameters}]
+    (let [result (db.tag/delete-tag (:spec db) logger {:id id})]
+      (if (:success? result)
+        (r/ok result)
+        (r/server-error result)))))
+
+(defmethod ig/init-key :gpml.handler.tag.migration/post
+  [_ {:keys [db logger]}]
+  (fn [req]
+    (let [body-params (get-in req [:parameters :body])
+          result (db.tag/migrate-resource-tag (:spec db) logger
+                                              {:origin-tag (:tag1 body-params)
+                                               :target-tag (:tag2 body-params)})]
+      (if (:success? result)
+        (r/ok result)
+        (r/server-error result)))))
+
+(defmethod ig/init-key :gpml.handler.tag.migration/post-params
+  [_ _]
+  {:body
+   [:map
+    [:tag1
+     {:swagger {:description "Origin tag"
+                :type "integer"}}
+     [:fn pos-int?]]
+    [:tag2
+     {:swagger {:description "Target tag"
+                :type "integer"}}
+     [:fn pos-int?]]]})
