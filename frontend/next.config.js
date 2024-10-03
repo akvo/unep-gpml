@@ -85,6 +85,16 @@ module.exports = {
         destination: '/knowledge/learning-centre',
         permanent: true,
       },
+      {
+        source: '/robots.txt',
+        destination: '/api/robots.txt',
+        permanent: true,
+      },
+      {
+        source: '/sitemap.xml',
+        destination: '/api/sitemap.xml',
+        permanent: true,
+      },
     ]
   },
   webpack(config) {
