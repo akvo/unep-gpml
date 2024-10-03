@@ -139,3 +139,13 @@ WHERE 1=1
 --~(when (seq (get-in params [:filters :review_statuses])) " AND t.review_status = ANY(:filters.review_statuses")
 --~(when (seq (get-in params [:filters :reviewed_by])) " AND t.review_status IN (:v*:filters.reviewed_by")
 ;
+
+-- :name migrate-resource-tag* :execute :affected
+-- :doc  Change resource tag from :origin-tag to :target-tag
+UPDATE :i:table
+SET tag = :target-tag
+WHERE tag = :origin-tag;
+
+-- :name delete-tag* :! :n
+DELETE FROM tag
+WHERE id = :id;
