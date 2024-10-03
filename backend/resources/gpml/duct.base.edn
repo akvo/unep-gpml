@@ -300,6 +300,15 @@
                                     :responses  #ig/ref :gpml.handler.tag/put-response
                                     :parameters #ig/ref :gpml.handler.tag/put-params
                                     :handler    #ig/ref :gpml.handler.tag/put}}]
+                           ["/delete/:id"
+                            {:delete {:summary    "Delete a tag"
+                                      :conflicting true
+                                      :swagger    {:tags ["tag"]
+                                                   :security [{:id_token []}]}
+                                      :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                   #ig/ref :gpml.auth/auth-required]
+                                      :parameters {:path [:map [:id int?]]}
+                                      :handler    #ig/ref :gpml.handler.tag/delete}}]
                            ["/:topic-type"
                             {:get {:summary "List tags by topic type"
                                    :swagger {:tags ["tag"]}
@@ -772,7 +781,14 @@
                                                   #ig/ref :gpml.auth/auth-required]
                                      :swagger    {:tags ["badge"] :security [{:id_token []}]}
                                      :handler    #ig/ref :gpml.handler.badge.assign/post
-                                     :parameters #ig/ref :gpml.handler.badge.assign/post-params}}]]]]]
+                                     :parameters #ig/ref :gpml.handler.badge.assign/post-params}}]]]
+                          ["/tag-migration"
+                           {:post {:summary     "Migrate resource from tag1 to tag2"
+                                   :middleware  [#ig/ref :gpml.auth/auth-middleware
+                                                 #ig/ref :gpml.auth/auth-required]
+                                   :swagger     {:tags ["tag"] :security [{:id_token []}]}
+                                   :parameters  #ig/ref :gpml.handler.tag.migration/post-params
+                                   :handler     #ig/ref :gpml.handler.tag.migration/post}}]]]
   :logger               #ig/ref :duct.logger/timbre
   :cors-allowed-origins #ig/ref :gpml.handler.main/cors-allowed-origins}
  [:duct/const :gpml.config/brs-gpml-entities-mapping]
@@ -887,6 +903,7 @@
  :gpml.handler.tag/post                                             #ig/ref :gpml.config/common
  :gpml.handler.tag/post-params                                      {}
  :gpml.handler.tag/put                                              {:db #ig/ref :duct.database.sql.hikaricp/read-write}
+ :gpml.handler.tag/delete                                           #ig/ref :gpml.config/common
  :gpml.handler.tag/put-params                                       {}
  :gpml.handler.tag/put-response                                     {}
  :gpml.handler.non-member-organisation/get                          #ig/ref :gpml.config/common
@@ -1045,6 +1062,8 @@
  :gpml.handler.badge.assign/post-params                             {}
  :gpml.handler.programmatic.badge/post                              #ig/ref :gpml.config/common
  :gpml.handler.programmatic.badge/post-params                       {}
+ :gpml.handler.tag.migration/post                                   #ig/ref :gpml.config/common
+ :gpml.handler.tag.migration/post-params                            {}
  :gpml.boundary.adapter.storage-client.gcs/client                   {}
 
  :gpml.boundary.adapter.chat/ds-chat          {:api-key #duct/env ["DEAD_SIMPLE_CHAT_API_KEY" Str]
