@@ -60,14 +60,6 @@ module.exports = {
     }
     return [
       {
-        source: '/api/robots.txt',
-        destination: `${domain}/api/robots.txt`,
-      },
-      {
-        source: '/api/sitemap.xml',
-        destination: `${domain}/api/sitemap.xml`,
-      },
-      {
         source: '/api/:path*',
         destination: `${domain}/api/:path*`,
       },
