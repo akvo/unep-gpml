@@ -1,42 +1,42 @@
-import React, { useEffect, useState } from "react";
-import styles from "./styles.module.scss";
-import { Collapse, Checkbox, Button, Radio } from "antd";
-import api from "../../utils/api";
+import React, { useEffect, useState } from 'react'
+import styles from './styles.module.scss'
+import { Collapse, Checkbox, Button, Radio } from 'antd'
+import api from '../../utils/api'
 import {
   CheckOutlined,
   UpCircleOutlined,
   CloseOutlined,
   SendOutlined,
   CheckCircleOutlined,
-} from "@ant-design/icons";
-import AtlasSvg from "../../images/book-atlas.svg";
-import AnalyticAndStatisticSvg from "../../images/analytic-and-statistic-icon.svg";
-import DataCatalogueSvg from "../../images/data-catalogue-icon.svg";
-import CaseStudiesSvg from "../../images/capacity-building/ic-case-studies.svg";
-import CapacityBuildingSvg from "../../images/capacity-building/ic-capacity-building.svg";
-import IconForum from "../../images/events/forum-icon.svg";
-import { stages } from "./get-started";
-import classNames from "classnames";
-import Link from "next/link";
-import { useRouter } from "next/router";
+} from '@ant-design/icons'
+import AtlasSvg from '../../images/book-atlas.svg'
+import AnalyticAndStatisticSvg from '../../images/analytic-and-statistic-icon.svg'
+import DataCatalogueSvg from '../../images/data-catalogue-icon.svg'
+import CaseStudiesSvg from '../../images/capacity-building/ic-case-studies.svg'
+import CapacityBuildingSvg from '../../images/capacity-building/ic-capacity-building.svg'
+import IconForum from '../../images/events/forum-icon.svg'
+import { stages } from './get-started'
+import classNames from 'classnames'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 
-const { Panel } = Collapse;
+const { Panel } = Collapse
 
 const ignoreChecklistCount = [
-  "Have you already mapped your waste flows?",
-  "Have you already mapped your material flows?",
-];
+  'Have you already mapped your waste flows?',
+  'Have you already mapped your material flows?',
+]
 
 export const stagesChecklist = [
   {
-    key: "S1",
-    title: "Create",
+    key: 'S1',
+    title: 'Create',
     children: [
       {
-        title: "Assessment - situation analysis",
+        title: 'Assessment - situation analysis',
         children: [
           {
-            title: "Map available research and knowledge",
+            title: 'Map available research and knowledge',
             content: (checklist) => (
               <>
                 The Digital Platform offers a single point of open access for
@@ -46,11 +46,11 @@ export const stagesChecklist = [
                 different resources, integrates data and connects stakeholders
                 to guide action around this pressing global issue.
                 <br />
-                Browse through the{" "}
+                Browse through the{' '}
                 <Link to="/knowledge/library">resource library</Link> to see
                 what is available for your country and other regions. You can
                 also upload new resources if you have resources that are not yet
-                available on the Digital Platform through the{" "}
+                available on the Digital Platform through the{' '}
                 <Link to="/flexible-forms">add content form</Link>.
                 <br />
                 <div className="buttons">
@@ -72,7 +72,7 @@ export const stagesChecklist = [
                         <CapacityBuildingSvg />
                       </div>
                       <div className="button-content">
-                        <p className="content-title">Learning center</p>
+                        <p className="content-title">Learning centre</p>
                         <p className="content-desc">
                           Learning and capacity development resources
                         </p>
@@ -85,13 +85,13 @@ export const stagesChecklist = [
           },
           {
             title:
-              "Scientific analysis of information on sources, pathways and sinks",
+              'Scientific analysis of information on sources, pathways and sinks',
             content: (checklist) => (
               <>
                 The Digital Platform offers a single point of open access for
                 data and information to support stakeholders’ needs.
                 <br />
-                Browse through the{" "}
+                Browse through the{' '}
                 <Link to="/knowledge/library">resource library</Link> to access
                 resources on sources pathways and sinks.
                 <br />
@@ -115,7 +115,7 @@ export const stagesChecklist = [
             ),
           },
           {
-            title: "Map waste flows",
+            title: 'Map waste flows',
             content: (checklist, handleStages) => (
               <>
                 Understanding how plastic moves from the consumer through the
@@ -130,55 +130,55 @@ export const stagesChecklist = [
                     <Radio.Group
                       options={[
                         {
-                          label: "Yes",
+                          label: 'Yes',
                           value: true,
                         },
                         {
-                          label: "No",
+                          label: 'No',
                           value: false,
                         },
                       ]}
                       onChange={(e) =>
                         handleStages(
-                          "Create",
-                          "Have you already mapped your waste flows?",
+                          'Create',
+                          'Have you already mapped your waste flows?',
                           e.target.value
                         )
                       }
                       optionType="button"
                     />
                   </div>
-                  {checklist["Create"]?.hasOwnProperty(
-                    "Have you already mapped your waste flows?"
+                  {checklist['Create']?.hasOwnProperty(
+                    'Have you already mapped your waste flows?'
                   ) && (
                     <div className="answers" style={{ marginTop: 10 }}>
-                      {checklist["Create"][
-                        "Have you already mapped your waste flows?"
+                      {checklist['Create'][
+                        'Have you already mapped your waste flows?'
                       ] ? (
                         <p>
-                          The GPML{" "}
+                          The GPML{' '}
                           <a
                             href="https://unepazecosysadlsstorage.z20.web.core.windows.net/"
                             target="_blank"
                           >
                             Data catalogue
-                          </a>{" "}
+                          </a>{' '}
                           allows GPML partners to list a wide range of
                           potentially relevant datasets to list data on your
-                          country’s waste flows{" "}
+                          country’s waste flows{' '}
                           <a
                             href="https://unepazecosysadlsstorage.z20.web.core.windows.net/add-data"
                             target="_blank"
                           >
                             click here
                           </a>
-                          .{" "}
+                          .{' '}
                         </p>
                       ) : (
                         <p>
                           The GPML Digital platform provides data to support
                           decision makers. To view the different data layers
-                          available,{" "}
+                          available,{' '}
                           <a
                             href="https://digital-gpmarinelitter.hub.arcgis.com/maps/0e3d5a7a75d2460a965321fca04d96dd/about"
                             target="_blank"
@@ -223,7 +223,7 @@ export const stagesChecklist = [
             ),
           },
           {
-            title: "Map material flows",
+            title: 'Map material flows',
             content: (checklist, handleStages) => (
               <>
                 Understanding how plastic moves through the economy from
@@ -238,42 +238,42 @@ export const stagesChecklist = [
                     <Radio.Group
                       options={[
                         {
-                          label: "Yes",
+                          label: 'Yes',
                           value: true,
                         },
                         {
-                          label: "No",
+                          label: 'No',
                           value: false,
                         },
                       ]}
                       onChange={(e) =>
                         handleStages(
-                          "Create",
-                          "Have you already mapped your material flows?",
+                          'Create',
+                          'Have you already mapped your material flows?',
                           e.target.value
                         )
                       }
                       optionType="button"
                     />
                   </div>
-                  {checklist["Create"]?.hasOwnProperty(
-                    "Have you already mapped your material flows?"
+                  {checklist['Create']?.hasOwnProperty(
+                    'Have you already mapped your material flows?'
                   ) && (
                     <div className="answers" style={{ marginTop: 10 }}>
-                      {checklist["Create"][
-                        "Have you already mapped your material flows?"
+                      {checklist['Create'][
+                        'Have you already mapped your material flows?'
                       ] ? (
                         <p>
-                          The GPML{" "}
+                          The GPML{' '}
                           <a
                             href="https://unepazecosysadlsstorage.z20.web.core.windows.net/"
                             target="_blank"
                           >
                             Data catalogue
-                          </a>{" "}
+                          </a>{' '}
                           allows GPML partners to list a wide range of
                           potentially relevant datasets to list data on your
-                          country’s material flows{" "}
+                          country’s material flows{' '}
                           <a
                             href="https://unepazecosysadlsstorage.z20.web.core.windows.net/add-data"
                             target="_blank"
@@ -286,7 +286,7 @@ export const stagesChecklist = [
                         <p>
                           The GPML Digital platform provides data to support
                           decision makers. Models that could be used to map
-                          material flows are available,{" "}
+                          material flows are available,{' '}
                           <a
                             href="https://datahub.gpmarinelitter.org/"
                             target="_blank"
@@ -331,7 +331,7 @@ export const stagesChecklist = [
             ),
           },
           {
-            title: "Identify gaps in information and knowledge",
+            title: 'Identify gaps in information and knowledge',
             content: (checklist) => (
               <>
                 By analysing the available data and gaining an understanding of
@@ -343,9 +343,9 @@ export const stagesChecklist = [
                 resources, integrates data and connects stakeholders to guide
                 action around this pressing global issue.
                 <br />
-                Browse through the{" "}
-                <Link to="/knowledge/library">knowledge library</Link> and{" "}
-                <Link to="https://datahub.gpmarinelitter.org/">Data Hub</Link>{" "}
+                Browse through the{' '}
+                <Link to="/knowledge/library">knowledge library</Link> and{' '}
+                <Link to="https://datahub.gpmarinelitter.org/">Data Hub</Link>{' '}
                 to see what is available for your country and other regions
                 <br />
                 <div className="buttons">
@@ -392,7 +392,7 @@ export const stagesChecklist = [
             ),
           },
           {
-            title: "Set baselines, where possible",
+            title: 'Set baselines, where possible',
             content: (checklist) => (
               <>
                 Where sufficient information is available, quantitative
@@ -409,19 +409,19 @@ export const stagesChecklist = [
                 marine waters.
                 <br />
                 <br />
-                The GPML{" "}
+                The GPML{' '}
                 <Link to="https://datahub.gpmarinelitter.org/">
                   Data Hub
-                </Link>{" "}
+                </Link>{' '}
                 consists of National Source Inventories for data documentation
                 and exploratory analysis. The inventory of the proposed
-                indicators used in the GPML is available for download in the{" "}
+                indicators used in the GPML is available for download in the{' '}
                 <a
                   href="https://unepazecosysadlsstorage.z20.web.core.windows.net/"
                   target="_blank"
                 >
                   Data catalogue
-                </a>{" "}
+                </a>{' '}
                 <div className="buttons">
                   <h5>which tool to use?</h5>
                   <div className="button-wrapper">
@@ -455,7 +455,7 @@ export const stagesChecklist = [
             ),
           },
           {
-            title: "Expected outputs",
+            title: 'Expected outputs',
             content: (checklist) => (
               <>
                 <b>Report:</b> Situation analysis of plastic flows and emissions
@@ -465,10 +465,10 @@ export const stagesChecklist = [
         ],
       },
       {
-        title: "Legal assessment to position the action plan",
+        title: 'Legal assessment to position the action plan',
         children: [
           {
-            title: "Map legislative landscape",
+            title: 'Map legislative landscape',
             content: (checklist) => (
               <>
                 An action plan does not operate in isolation but is nested
@@ -480,7 +480,7 @@ export const stagesChecklist = [
                 <br />
                 <br />
                 The GPML Digital platform provides a wide range of policies.
-                Browse through the different policies available for your country{" "}
+                Browse through the different policies available for your country{' '}
                 <Link to="/knowledge/library?topic=policy">here</Link>
                 <br />
                 <div className="buttons">
@@ -504,7 +504,7 @@ export const stagesChecklist = [
           },
           {
             title:
-              "Identify suitable legislation (if any) under which the action plan can be developed",
+              'Identify suitable legislation (if any) under which the action plan can be developed',
             content: (checklist) => (
               <>
                 An action plan could fall under an Environment Act or a Waste
@@ -512,7 +512,7 @@ export const stagesChecklist = [
                 a wide range of policies.
                 <br />
                 <br />
-                Browse through the different policies available for your country{" "}
+                Browse through the different policies available for your country{' '}
                 <Link to="/knowledge/library?topic=policy">here</Link>
                 <br />
                 <div className="buttons">
@@ -536,7 +536,7 @@ export const stagesChecklist = [
           },
           {
             title:
-              "Identify any specific environmental, social, or economic goals the action plan can deliver on as per existing legislations/policies?",
+              'Identify any specific environmental, social, or economic goals the action plan can deliver on as per existing legislations/policies?',
             content: (checklist) => (
               <>
                 An action plan can deliver on more than plastic pollution. It
@@ -554,19 +554,19 @@ export const stagesChecklist = [
                 monitoring of costal and marine waters.
                 <br />
                 <br />
-                The GPML{" "}
+                The GPML{' '}
                 <Link to="https://datahub.gpmarinelitter.org">
                   Data Hub
-                </Link>{" "}
+                </Link>{' '}
                 consists of National Source Inventories for data documentation
                 and exploratory analysis. The inventory of the proposed
-                indicators used in the GPML is available for download{" "}
+                indicators used in the GPML is available for download{' '}
                 <a
                   href="https://unepazecosysadlsstorage.z20.web.core.windows.net/"
                   target="_blank"
                 >
                   Data catalogue
-                </a>{" "}
+                </a>{' '}
                 <div className="buttons">
                   <h5>which tool to use?</h5>
                   <div className="button-wrapper">
@@ -600,7 +600,7 @@ export const stagesChecklist = [
             ),
           },
           {
-            title: "Expected outputs",
+            title: 'Expected outputs',
             content: (checklist) => (
               <>
                 <b>Report:</b> Situation analysis of relevant legal frameworks
@@ -611,10 +611,10 @@ export const stagesChecklist = [
         ],
       },
       {
-        title: "Stakeholder mapping and engagement",
+        title: 'Stakeholder mapping and engagement',
         children: [
           {
-            title: "Map actors and stakeholders",
+            title: 'Map actors and stakeholders',
             content: (checklist) => (
               <>
                 Actors are those who can help make the changes we need.
@@ -625,7 +625,7 @@ export const stagesChecklist = [
                 <br />
                 <br />
                 The GPML digital platform provides a database of experts and
-                other stakeholders, to access this network click{" "}
+                other stakeholders, to access this network click{' '}
                 <Link to="/connect/community">here</Link>
                 <br />
                 <div className="buttons">
@@ -648,7 +648,7 @@ export const stagesChecklist = [
             ),
           },
           {
-            title: "Conduct workshops, Interviews: Governments",
+            title: 'Conduct workshops, Interviews: Governments',
             content: (checklist) => (
               <>
                 There are many ways to engage actors and stakeholders. This may
@@ -658,22 +658,22 @@ export const stagesChecklist = [
                 the ability to comment and provide input.
                 <br />
                 <br />
-                The GPML Platform supports the creation of dedicated{" "}
+                The GPML Platform supports the creation of dedicated{' '}
                 <a
                   href="https://communities.gpmarinelitter.org/"
                   target="_blank"
                 >
                   forum channels
-                </a>{" "}
+                </a>{' '}
                 to facilitate user consultations and discussions on plastic
                 pollution, marine litter, and lifecycle management amongst
                 stakeholders. To request a dedicated forum for your workshop,
-                reach out to{" "}
+                reach out to{' '}
                 <Link
                   to="#"
                   onClick={(e) => {
-                    window.location.href = "mailto:unep-gpmarinelitter@un.org";
-                    e.preventDefault();
+                    window.location.href = 'mailto:unep-gpmarinelitter@un.org'
+                    e.preventDefault()
                   }}
                 >
                   unep-gpmarinelitter@un.org
@@ -698,7 +698,7 @@ export const stagesChecklist = [
             ),
           },
           {
-            title: "Conduct workshops, Interviews: Private Sector (for-profit)",
+            title: 'Conduct workshops, Interviews: Private Sector (for-profit)',
             content: (checklist) => (
               <>
                 There are many ways to engage actors and stakeholders. This may
@@ -708,26 +708,26 @@ export const stagesChecklist = [
                 the ability to comment and provide input.
                 <br />
                 <br />
-                The GPML Platform supports the creation of dedicated{" "}
+                The GPML Platform supports the creation of dedicated{' '}
                 <a
                   href="https://communities.gpmarinelitter.org/"
                   target="_blank"
                 >
                   forum channels
-                </a>{" "}
+                </a>{' '}
                 to facilitate user consultations and discussions on plastic
                 pollution, marine litter, and lifecycle management amongst
                 stakeholders. To request a dedicated forum for your workshop,
-                reach out to{" "}
+                reach out to{' '}
                 <Link
                   to="#"
                   onClick={(e) => {
-                    window.location.href = "mailto:unep-gpmarinelitter@un.org";
-                    e.preventDefault();
+                    window.location.href = 'mailto:unep-gpmarinelitter@un.org'
+                    e.preventDefault()
                   }}
                 >
                   unep-gpmarinelitter@un.org
-                </Link>{" "}
+                </Link>{' '}
                 <div className="buttons">
                   <h5>which tool to use?</h5>
                   <div className="button-wrapper">
@@ -749,7 +749,7 @@ export const stagesChecklist = [
           },
           {
             title:
-              "Conduct workshops, Interviews: Civil Society (not-for-profit)",
+              'Conduct workshops, Interviews: Civil Society (not-for-profit)',
             content: (checklist) => (
               <>
                 There are many ways to engage actors and stakeholders. This may
@@ -759,26 +759,26 @@ export const stagesChecklist = [
                 the ability to comment and provide input.
                 <br />
                 <br />
-                The GPML Platform supports the creation of dedicated{" "}
+                The GPML Platform supports the creation of dedicated{' '}
                 <a
                   href="https://communities.gpmarinelitter.org/"
                   target="_blank"
                 >
                   forum channels
-                </a>{" "}
+                </a>{' '}
                 to facilitate user consultations and discussions on plastic
                 pollution, marine litter, and lifecycle management amongst
                 stakeholders. To request a dedicated forum for your workshop,
-                reach out to{" "}
+                reach out to{' '}
                 <Link
                   to="#"
                   onClick={(e) => {
-                    window.location.href = "mailto:unep-gpmarinelitter@un.org";
-                    e.preventDefault();
+                    window.location.href = 'mailto:unep-gpmarinelitter@un.org'
+                    e.preventDefault()
                   }}
                 >
                   unep-gpmarinelitter@un.org
-                </Link>{" "}
+                </Link>{' '}
                 <div className="buttons">
                   <h5>which tool to use?</h5>
                   <div className="button-wrapper">
@@ -800,7 +800,7 @@ export const stagesChecklist = [
           },
           {
             title:
-              "Conduct workshops, Interviews: Intergovernmental Organizations (IGOs)",
+              'Conduct workshops, Interviews: Intergovernmental Organizations (IGOs)',
             content: (checklist) => (
               <>
                 There are many ways to engage actors and stakeholders. This may
@@ -810,26 +810,26 @@ export const stagesChecklist = [
                 the ability to comment and provide input.
                 <br />
                 <br />
-                The GPML Platform supports the creation of dedicated{" "}
+                The GPML Platform supports the creation of dedicated{' '}
                 <a
                   href="https://communities.gpmarinelitter.org/"
                   target="_blank"
                 >
                   forum channels
-                </a>{" "}
+                </a>{' '}
                 to facilitate user consultations and discussions on plastic
                 pollution, marine litter, and lifecycle management amongst
                 stakeholders. To request a dedicated forum for your workshop,
-                reach out to{" "}
+                reach out to{' '}
                 <Link
                   to="#"
                   onClick={(e) => {
-                    window.location.href = "mailto:unep-gpmarinelitter@un.org";
-                    e.preventDefault();
+                    window.location.href = 'mailto:unep-gpmarinelitter@un.org'
+                    e.preventDefault()
                   }}
                 >
                   unep-gpmarinelitter@un.org
-                </Link>{" "}
+                </Link>{' '}
                 <div className="buttons">
                   <h5>which tool to use?</h5>
                   <div className="button-wrapper">
@@ -850,7 +850,7 @@ export const stagesChecklist = [
             ),
           },
           {
-            title: "Expected outputs",
+            title: 'Expected outputs',
             content: (checklist) => (
               <>
                 <b>Report:</b> Report on actors and findings (needs, barriers,
@@ -861,11 +861,11 @@ export const stagesChecklist = [
         ],
       },
       {
-        title: "Selection of Implementation actionS",
+        title: 'Selection of Implementation actionS',
         children: [
           {
             title:
-              "Stakeholder consultation on the gaps and priority actions for the NAP",
+              'Stakeholder consultation on the gaps and priority actions for the NAP',
             content: (checklist) => (
               <>
                 There are many ways to engage actors and stakeholders. This may
@@ -875,26 +875,26 @@ export const stagesChecklist = [
                 the ability to comment and provide input.
                 <br />
                 <br />
-                The GPML Platform supports the creation of dedicated{" "}
+                The GPML Platform supports the creation of dedicated{' '}
                 <a
                   href="https://communities.gpmarinelitter.org/"
                   target="_blank"
                 >
                   forum channels
-                </a>{" "}
+                </a>{' '}
                 to facilitate user consultations and discussions on plastic
                 pollution, marine litter, and lifecycle management amongst
                 stakeholders. To request a dedicated forum for your workshop,
-                reach out to{" "}
+                reach out to{' '}
                 <Link
                   to="#"
                   onClick={(e) => {
-                    window.location.href = "mailto:unep-gpmarinelitter@un.org";
-                    e.preventDefault();
+                    window.location.href = 'mailto:unep-gpmarinelitter@un.org'
+                    e.preventDefault()
                   }}
                 >
                   unep-gpmarinelitter@un.org
-                </Link>{" "}
+                </Link>{' '}
                 <div className="buttons">
                   <h5>which tool to use?</h5>
                   <div className="button-wrapper">
@@ -915,10 +915,10 @@ export const stagesChecklist = [
             ),
           },
           {
-            title: "Agree control measures for Land-based sources",
+            title: 'Agree control measures for Land-based sources',
             content: (checklist) => (
               <>
-                Browse through the action plans in the{" "}
+                Browse through the action plans in the{' '}
                 <Link to="/knowledge/library">Knowledge Library</Link> for
                 inspiration on possible control measures for land-based sources.
                 <div className="buttons">
@@ -941,10 +941,10 @@ export const stagesChecklist = [
             ),
           },
           {
-            title: "Agree control measures for Sea-based sources",
+            title: 'Agree control measures for Sea-based sources',
             content: (checklist) => (
               <>
-                Browse through the action plans in the{" "}
+                Browse through the action plans in the{' '}
                 <Link to="/knowledge/library">Knowledge Library</Link> for
                 inspiration on possible control measures for sea-based sources.
                 <div className="buttons">
@@ -967,10 +967,10 @@ export const stagesChecklist = [
             ),
           },
           {
-            title: "Agree measures for Removal",
+            title: 'Agree measures for Removal',
             content: (checklist) => (
               <>
-                Browse through the action plans in the{" "}
+                Browse through the action plans in the{' '}
                 <Link to="/knowledge/library">Knowledge Library</Link> for
                 inspiration on possible measures for removal.
                 <div className="buttons">
@@ -993,10 +993,10 @@ export const stagesChecklist = [
             ),
           },
           {
-            title: "Agree measures for Awareness and Education",
+            title: 'Agree measures for Awareness and Education',
             content: (checklist) => (
               <>
-                Browse through the action plans in the{" "}
+                Browse through the action plans in the{' '}
                 <Link to="/knowledge/library">Knowledge Library</Link> for
                 inspiration on measures for awareness and education.
                 <div className="buttons">
@@ -1019,7 +1019,7 @@ export const stagesChecklist = [
             ),
           },
           {
-            title: "Expected outputs",
+            title: 'Expected outputs',
             content: (checklist) => (
               <>
                 Priority action, roles and responsibilities agreed and
@@ -1030,16 +1030,16 @@ export const stagesChecklist = [
         ],
       },
       {
-        title: "Design a national monitoring programme",
+        title: 'Design a national monitoring programme',
         children: [
           {
             title:
-              "Draft model of monitoring programme based on situation analysis findings",
+              'Draft model of monitoring programme based on situation analysis findings',
             content: (checklist) => (
               <>
                 The Digital Platform allows for access to a wide range of
                 knowledge products including guidelines and reports on
-                monitoring. Such reports can be accessed through the{" "}
+                monitoring. Such reports can be accessed through the{' '}
                 <Link to="/knowledge/library">Knowledge Library</Link>.
                 <div className="buttons">
                   <h5>which tool to use?</h5>
@@ -1061,12 +1061,12 @@ export const stagesChecklist = [
             ),
           },
           {
-            title: "Conduct monitoring and hotspot pilots",
+            title: 'Conduct monitoring and hotspot pilots',
             content: (checklist) => (
               <>
                 The Digital Platform allows for access to a wide range of
                 knowledge products including guidelines and reports on hotspots.
-                Such reports can be accessed through the{" "}
+                Such reports can be accessed through the{' '}
                 <Link to="/knowledge/library">Knowledge Library</Link>.
                 <div className="buttons">
                   <h5>which tool to use?</h5>
@@ -1088,13 +1088,13 @@ export const stagesChecklist = [
             ),
           },
           {
-            title: "Agree ongoing monitoring programme, actors and funding",
+            title: 'Agree ongoing monitoring programme, actors and funding',
             content: (checklist) => (
               <>
-                The Digital Platform{" "}
+                The Digital Platform{' '}
                 <Link to="/knowledge/library">Knowledge Library</Link> allows
                 for access to a wide range of knowledge products including
-                financing resources and guidelines, and reports on monitoring.{" "}
+                financing resources and guidelines, and reports on monitoring.{' '}
                 <div className="buttons">
                   <h5>which tool to use?</h5>
                   <div className="button-wrapper">
@@ -1115,7 +1115,7 @@ export const stagesChecklist = [
             ),
           },
           {
-            title: "Expected outputs",
+            title: 'Expected outputs',
             content: (checklist) => (
               <>Ongoing national monitoring programme with funding allocated</>
             ),
@@ -1123,28 +1123,28 @@ export const stagesChecklist = [
         ],
       },
       {
-        title: "Plan for regular reporting",
+        title: 'Plan for regular reporting',
         children: [
           {
-            title: "Consultation on reporting elements",
+            title: 'Consultation on reporting elements',
             content: (checklist) => (
               <>
-                The GPML Platform supports the creation of dedicated{" "}
+                The GPML Platform supports the creation of dedicated{' '}
                 <a
                   href="https://communities.gpmarinelitter.org/"
                   target="_blank"
                 >
                   forum channels
-                </a>{" "}
+                </a>{' '}
                 for conducting consultations and discussions on plastic
                 pollution, marine litter, and lifecycle management amongst
                 stakeholders. To request a dedicated forum for your
-                consultation, reach out to{" "}
+                consultation, reach out to{' '}
                 <Link
                   to="#"
                   onClick={(e) => {
-                    window.location.href = "mailto:unep-gpmarinelitter@un.org";
-                    e.preventDefault();
+                    window.location.href = 'mailto:unep-gpmarinelitter@un.org'
+                    e.preventDefault()
                   }}
                 >
                   unep-gpmarinelitter@un.org
@@ -1169,14 +1169,14 @@ export const stagesChecklist = [
             ),
           },
           {
-            title: "Agree on Indicators/measures of success",
+            title: 'Agree on Indicators/measures of success',
             content: (checklist) => (
               <>
-                The GPML{" "}
-                <Link to="https://datahub.gpmarinelitter.org">Data Hub</Link>{" "}
+                The GPML{' '}
+                <Link to="https://datahub.gpmarinelitter.org">Data Hub</Link>{' '}
                 consists of National Source Inventories for data documentation
                 and exploratory analysis. The inventory of the proposed
-                indicators used in the GPML is available for download in the{" "}
+                indicators used in the GPML is available for download in the{' '}
                 <a
                   href="https://unepazecosysadlsstorage.z20.web.core.windows.net/"
                   target="_blank"
@@ -1224,11 +1224,11 @@ export const stagesChecklist = [
             ),
           },
           {
-            title: "Agree reporting elements and timeframe",
+            title: 'Agree reporting elements and timeframe',
             content: (checklist) => (
               <>
                 Decide on the scope and time frame for the action plan
-                reporting. Browse through the action plans in the{" "}
+                reporting. Browse through the action plans in the{' '}
                 <Link to="/knowledge/library">Knowledge Library</Link> for ideas
                 on how to structure the reporting elements.
                 <div className="buttons">
@@ -1251,14 +1251,14 @@ export const stagesChecklist = [
             ),
           },
           {
-            title: "Design report template",
+            title: 'Design report template',
             content: (checklist) => (
               <>
-                The GPML{" "}
-                <Link to="https://datahub.gpmarinelitter.org">Data Hub</Link>{" "}
+                The GPML{' '}
+                <Link to="https://datahub.gpmarinelitter.org">Data Hub</Link>{' '}
                 consists of National Source Inventories for data documentation
                 and exploratory analysis. The inventory of the proposed
-                indicators used in the GPML is available for download in the{" "}
+                indicators used in the GPML is available for download in the{' '}
                 <a
                   href="https://unepazecosysadlsstorage.z20.web.core.windows.net/"
                   target="_blank"
@@ -1306,7 +1306,7 @@ export const stagesChecklist = [
             ),
           },
           {
-            title: "Expected outputs",
+            title: 'Expected outputs',
             content: (checklist) => (
               <>Reporting template with roles and responsibilities</>
             ),
@@ -1314,14 +1314,14 @@ export const stagesChecklist = [
         ],
       },
       {
-        title: "Adoption of the action plan",
+        title: 'Adoption of the action plan',
         children: [
           {
-            title: "Draft action plan for comment",
+            title: 'Draft action plan for comment',
             content: (checklist) => (
               <>
                 For inspiration on how to structure your action plan, browse
-                through the action plans in the{" "}
+                through the action plans in the{' '}
                 <Link to="/knowledge/library">Knowledge Library</Link>.
                 <div className="buttons">
                   <h5>which tool to use?</h5>
@@ -1343,7 +1343,7 @@ export const stagesChecklist = [
             ),
           },
           {
-            title: "Include comments in second draft of action plan",
+            title: 'Include comments in second draft of action plan',
             content: (checklist) => (
               <>
                 Update your action plan document to factor in feedback that you
@@ -1352,7 +1352,7 @@ export const stagesChecklist = [
             ),
           },
           {
-            title: "Conduct final consultation of action plan",
+            title: 'Conduct final consultation of action plan',
             content: (checklist) => (
               <>
                 There are many ways to engage actors and stakeholders. This may
@@ -1362,22 +1362,22 @@ export const stagesChecklist = [
                 the ability to comment and provide input.
                 <br />
                 <br />
-                The GPML Platform supports the creation of dedicated{" "}
+                The GPML Platform supports the creation of dedicated{' '}
                 <a
                   href="https://communities.gpmarinelitter.org/"
                   target="_blank"
                 >
                   forum channels
-                </a>{" "}
+                </a>{' '}
                 to facilitate user consultations and discussions on plastic
                 pollution, marine litter, and lifecycle management amongst
                 stakeholders. To request a dedicated forum for your workshop,
-                reach out to{" "}
+                reach out to{' '}
                 <Link
                   to="#"
                   onClick={(e) => {
-                    window.location.href = "mailto:unep-gpmarinelitter@un.org";
-                    e.preventDefault();
+                    window.location.href = 'mailto:unep-gpmarinelitter@un.org'
+                    e.preventDefault()
                   }}
                 >
                   unep-gpmarinelitter@un.org
@@ -1402,13 +1402,13 @@ export const stagesChecklist = [
             ),
           },
           {
-            title: "Develop roadmap for implementation of the action plan",
+            title: 'Develop roadmap for implementation of the action plan',
             content: (checklist) => (
               <>
                 Create a plan for the implementation of your action plan. For
                 inspiration on how to structure your action plan implementation
-                roadmap, browse through the action plans in the{" "}
-                <Link to="/knowledge/library">Knowledge Library</Link>.{" "}
+                roadmap, browse through the action plans in the{' '}
+                <Link to="/knowledge/library">Knowledge Library</Link>.{' '}
                 <div className="buttons">
                   <h5>which tool to use?</h5>
                   <div className="button-wrapper">
@@ -1429,7 +1429,7 @@ export const stagesChecklist = [
             ),
           },
           {
-            title: "Action plan and roadmap adopted by government",
+            title: 'Action plan and roadmap adopted by government',
             content: (checklist) => (
               <>
                 The GPML Digital Platform promotes all stakeholders to
@@ -1439,7 +1439,7 @@ export const stagesChecklist = [
                 <br />
                 <Link to="/knowledge/library?topic=action-plan">
                   Click here
-                </Link>{" "}
+                </Link>{' '}
                 to add you action plan to the knowledge library
                 <br />
                 <div className="buttons">
@@ -1462,7 +1462,7 @@ export const stagesChecklist = [
             ),
           },
           {
-            title: "Expected outputs",
+            title: 'Expected outputs',
             content: (checklist) => (
               <>National Action Plan and Implementation Roadmap</>
             ),
@@ -1472,14 +1472,14 @@ export const stagesChecklist = [
     ],
   },
   {
-    key: "S2",
-    title: "Implement",
+    key: 'S2',
+    title: 'Implement',
     children: [
       {
-        title: "Implementation",
+        title: 'Implementation',
         children: [
           {
-            title: "Allocate funding",
+            title: 'Allocate funding',
             content: (checklist) => (
               <>
                 Allocation of funds for the implementation of the action plan.
@@ -1488,29 +1488,29 @@ export const stagesChecklist = [
           },
           {
             title:
-              "Engage relevant government agencies and actors for each action",
+              'Engage relevant government agencies and actors for each action',
             content: (checklist) => (
               <>
-                The GPML Platform supports the creation of dedicated{" "}
+                The GPML Platform supports the creation of dedicated{' '}
                 <a
                   href="https://communities.gpmarinelitter.org/"
                   target="_blank"
                 >
                   forum channels
-                </a>{" "}
+                </a>{' '}
                 to facilitate user consultations and discussions on plastic
                 pollution, marine litter, and lifecycle management amongst
                 stakeholders. To request a dedicated forum for your workshop,
-                reach out to{" "}
+                reach out to{' '}
                 <Link
                   to="#"
                   onClick={(e) => {
-                    window.location.href = "mailto:unep-gpmarinelitter@un.org";
-                    e.preventDefault();
+                    window.location.href = 'mailto:unep-gpmarinelitter@un.org'
+                    e.preventDefault()
                   }}
                 >
                   unep-gpmarinelitter@un.org
-                </Link>{" "}
+                </Link>{' '}
                 <div className="buttons">
                   <h5>which tool to use?</h5>
                   <div className="button-wrapper">
@@ -1531,13 +1531,13 @@ export const stagesChecklist = [
             ),
           },
           {
-            title: "Conduct monitoring and hot spotting surveys",
+            title: 'Conduct monitoring and hot spotting surveys',
             content: (checklist) => (
               <>
-                The Digital Platform{" "}
+                The Digital Platform{' '}
                 <Link to="/knowledge/library">Knowledge Library</Link> allows
                 for access to a wide range of knowledge products including
-                guidelines and reports on monitoring and hotspots.{" "}
+                guidelines and reports on monitoring and hotspots.{' '}
                 <div className="buttons">
                   <h5>which tool to use?</h5>
                   <div className="button-wrapper">
@@ -1562,18 +1562,18 @@ export const stagesChecklist = [
     ],
   },
   {
-    key: "S3",
-    title: "Report",
+    key: 'S3',
+    title: 'Report',
     children: [
       {
-        title: "Mid-term/periodic report",
+        title: 'Mid-term/periodic report',
         children: [
           {
-            title: "Collect progress updates from relevant stakeholders",
+            title: 'Collect progress updates from relevant stakeholders',
             content: (checklist) => (
               <>
                 The GPML Digital Platform promotes all stakeholders to
-                contribute additional data to its{" "}
+                contribute additional data to its{' '}
                 <a
                   href="https://unepazecosysadlsstorage.z20.web.core.windows.net/"
                   target="_blank"
@@ -1602,11 +1602,11 @@ export const stagesChecklist = [
             ),
           },
           {
-            title: "Collect metrics as per monitoring programme",
+            title: 'Collect metrics as per monitoring programme',
             content: (checklist) => (
               <>
                 The GPML Digital Platform promotes all stakeholders to
-                contribute additional data to its{" "}
+                contribute additional data to its{' '}
                 <a
                   href="https://unepazecosysadlsstorage.z20.web.core.windows.net/"
                   target="_blank"
@@ -1635,15 +1635,15 @@ export const stagesChecklist = [
             ),
           },
           {
-            title: "Analyse metrics against indicators where applicable",
+            title: 'Analyse metrics against indicators where applicable',
             content: (checklist) => (
               <>
-                The GPML{" "}
-                <Link to="https://datahub.gpmarinelitter.org">Data Hub</Link>{" "}
+                The GPML{' '}
+                <Link to="https://datahub.gpmarinelitter.org">Data Hub</Link>{' '}
                 also consists of National Source Inventories for data
                 documentation and exploratory analysis based on a set of
                 proposed indicators. The inventory of the proposed indicators
-                used in the GPML is available for download in the{" "}
+                used in the GPML is available for download in the{' '}
                 <a
                   href="https://unepazecosysadlsstorage.z20.web.core.windows.net/"
                   target="_blank"
@@ -1654,7 +1654,7 @@ export const stagesChecklist = [
                 <br />
                 <br />
                 If not already added, we encourage you to add your action plan
-                data to the GPML digital platform{" "}
+                data to the GPML digital platform{' '}
                 <a
                   href="https://unepazecosysadlsstorage.z20.web.core.windows.net/"
                   target="_blank"
@@ -1694,10 +1694,10 @@ export const stagesChecklist = [
             ),
           },
           {
-            title: "Draft report",
+            title: 'Draft report',
             content: (checklist) => (
               <>
-                Browse through the action plans in the{" "}
+                Browse through the action plans in the{' '}
                 <Link to="/knowledge/library">Knowledge Library</Link> for ideas
                 on how to structure the action plan report.
                 <div className="buttons">
@@ -1720,7 +1720,7 @@ export const stagesChecklist = [
             ),
           },
           {
-            title: "Review progress and identify successes and shortfalls",
+            title: 'Review progress and identify successes and shortfalls',
             content: (checklist) => (
               <>
                 Review your action plan implementation process and identify your
@@ -1729,7 +1729,7 @@ export const stagesChecklist = [
             ),
           },
           {
-            title: "Expected outputs",
+            title: 'Expected outputs',
             content: (checklist) => <>Periodic progress report</>,
           },
         ],
@@ -1737,36 +1737,36 @@ export const stagesChecklist = [
     ],
   },
   {
-    key: "S4",
-    title: "Update",
+    key: 'S4',
+    title: 'Update',
     children: [
       {
-        title: "Review",
+        title: 'Review',
         children: [
           {
-            title: "Stakeholder engagement in review of effectiveness",
+            title: 'Stakeholder engagement in review of effectiveness',
             content: (checklist) => (
               <>
-                The GPML Platform supports the creation of dedicated{" "}
+                The GPML Platform supports the creation of dedicated{' '}
                 <a
                   href="https://communities.gpmarinelitter.org/"
                   target="_blank"
                 >
                   forum channels
-                </a>{" "}
+                </a>{' '}
                 to facilitate user consultations and discussions on plastic
                 pollution, marine litter, and lifecycle management amongst
                 stakeholders. To request a dedicated forum for your workshop,
-                reach out to{" "}
+                reach out to{' '}
                 <Link
                   to="#"
                   onClick={(e) => {
-                    window.location.href = "mailto:unep-gpmarinelitter@un.org";
-                    e.preventDefault();
+                    window.location.href = 'mailto:unep-gpmarinelitter@un.org'
+                    e.preventDefault()
                   }}
                 >
                   unep-gpmarinelitter@un.org
-                </Link>{" "}
+                </Link>{' '}
                 <div className="buttons">
                   <h5>which tool to use?</h5>
                   <div className="button-wrapper">
@@ -1788,15 +1788,15 @@ export const stagesChecklist = [
           },
           {
             title:
-              "Map actions and results to actions and indicators of action plan",
+              'Map actions and results to actions and indicators of action plan',
             content: (checklist) => (
               <>
-                The GPML{" "}
-                <Link to="https://datahub.gpmarinelitter.org">Data Hub</Link>{" "}
+                The GPML{' '}
+                <Link to="https://datahub.gpmarinelitter.org">Data Hub</Link>{' '}
                 also consists of National Source Inventories for data
                 documentation and exploratory analysis based on a set of
                 proposed indicators. The inventory of the proposed indicators
-                used in the GPML is available for download in the{" "}
+                used in the GPML is available for download in the{' '}
                 <a
                   href="https://unepazecosysadlsstorage.z20.web.core.windows.net/"
                   target="_blank"
@@ -1837,7 +1837,7 @@ export const stagesChecklist = [
             ),
           },
           {
-            title: "Review of the action plan itself",
+            title: 'Review of the action plan itself',
             content: (checklist) => (
               <>
                 Review your action plan document and identify gaps or changes
@@ -1846,7 +1846,7 @@ export const stagesChecklist = [
             ),
           },
           {
-            title: "Expected outputs",
+            title: 'Expected outputs',
             content: (checklist) => (
               <>Report identifying opportunities for updating the action plan</>
             ),
@@ -1854,10 +1854,10 @@ export const stagesChecklist = [
         ],
       },
       {
-        title: "Update action plan",
+        title: 'Update action plan',
         children: [
           {
-            title: "Stakeholder engagement",
+            title: 'Stakeholder engagement',
             content: (checklist) => (
               <>
                 Engage your stakeholders on the successes and shortfalls as well
@@ -1867,16 +1867,16 @@ export const stagesChecklist = [
                 The GPML Platform supports the creation of dedicated forum
                 channels for discussing marine litter, plastic pollution and
                 lifecycle management amongst stakeholders. To request a
-                dedicated forum for your stakeholder consultations reach out to{" "}
+                dedicated forum for your stakeholder consultations reach out to{' '}
                 <Link
                   to="#"
                   onClick={(e) => {
-                    window.location.href = "mailto:unep-gpmarinelitter@un.org";
-                    e.preventDefault();
+                    window.location.href = 'mailto:unep-gpmarinelitter@un.org'
+                    e.preventDefault()
                   }}
                 >
                   unep-gpmarinelitter@un.org
-                </Link>{" "}
+                </Link>{' '}
                 <div className="buttons">
                   <h5>which tool to use?</h5>
                   <div className="button-wrapper">
@@ -1897,11 +1897,11 @@ export const stagesChecklist = [
             ),
           },
           {
-            title: "Draft updated action plan",
+            title: 'Draft updated action plan',
             content: (checklist) => <>Update your action plan document.</>,
           },
           {
-            title: "Review of updated action plan",
+            title: 'Review of updated action plan',
             content: (checklist) => (
               <>
                 Review the updated action plan and update your action plan
@@ -1910,7 +1910,7 @@ export const stagesChecklist = [
             ),
           },
           {
-            title: "Develop implementation roadmap for updated action plan",
+            title: 'Develop implementation roadmap for updated action plan',
             content: (checklist) => (
               <>
                 The GPML Digital Platform encourages all stakeholders to keep
@@ -1919,7 +1919,7 @@ export const stagesChecklist = [
             ),
           },
           {
-            title: "Expected outputs",
+            title: 'Expected outputs',
             content: (checklist) => (
               <>Updated action plan and implementation roadmap adopted</>
             ),
@@ -1928,7 +1928,7 @@ export const stagesChecklist = [
       },
     ],
   },
-];
+]
 
 const getCheckListObject = (stage) => {
   const getPreviousItems = stagesChecklist
@@ -1940,57 +1940,57 @@ const getCheckListObject = (stage) => {
       a.children.flatMap((b) =>
         b.children.map((e) => ({ label: a.title, ...e }))
       )
-    );
+    )
 
   const checklist = getPreviousItems.reduce((object, item) => {
-    object[item.label] = object[item.label] || {};
-    object[item.label][item.title] = true;
-    delete object[item.label]?.["Expected outputs"];
-    return object;
-  }, {});
+    object[item.label] = object[item.label] || {}
+    object[item.label][item.title] = true
+    delete object[item.label]?.['Expected outputs']
+    return object
+  }, {})
 
-  return checklist;
-};
+  return checklist
+}
 
 const ProjectView = ({ profile, ...props }) => {
-  const router = useRouter();
-  const { id } = router.query;
+  const router = useRouter()
+  const { id } = router.query
 
-  const [projectDetail, setProjectDetail] = useState({});
-  const [checklist, setChecklist] = useState({});
+  const [projectDetail, setProjectDetail] = useState({})
+  const [checklist, setChecklist] = useState({})
 
   useEffect(() => {
-    if (id && profile && profile.reviewStatus === "APPROVED") {
+    if (id && profile && profile.reviewStatus === 'APPROVED') {
       api
         .getRaw(`/project/${id}`)
         .then((resp) => {
-          setProjectDetail(JSON.parse(resp?.data).project);
+          setProjectDetail(JSON.parse(resp?.data).project)
           setChecklist(
             JSON.parse(resp?.data).project?.checklist
               ? JSON.parse(resp?.data).project?.checklist
               : getCheckListObject(JSON.parse(resp?.data).project.stage)
-          );
+          )
         })
-        .catch((e) => console.log(e));
+        .catch((e) => console.log(e))
     }
-  }, [profile]);
+  }, [profile])
 
   const handleStages = (title, name, value) => {
     setChecklist({
       ...checklist,
       [title]: { ...checklist[title], [name]: value },
-    });
+    })
     const data = {
       ...checklist,
       [title]: { ...checklist[title], [name]: value },
-    };
+    }
     api
       .putRaw(`/project/${id}`, { checklist: data })
       .then((resp) => {
-        console.log(resp);
+        console.log(resp)
       })
-      .catch((e) => console.log(e));
-  };
+      .catch((e) => console.log(e))
+  }
 
   return (
     <div className={styles.project}>
@@ -2026,15 +2026,15 @@ const ProjectView = ({ profile, ...props }) => {
                   (k) =>
                     checklist?.[item.title][k] === true &&
                     !ignoreChecklistCount.includes(k)
-                )?.length;
+                )?.length
                 const totalStages = item.children
                   .map((child) => child.children)
                   .flat()
-                  .filter((output) => output.title !== "Expected outputs")
-                  .length;
+                  .filter((output) => output.title !== 'Expected outputs')
+                  .length
                 const isCompleted =
                   completedStages === totalStages ||
-                  index < stages.indexOf(projectDetail.stage);
+                  index < stages.indexOf(projectDetail.stage)
 
                 return (
                   <Panel
@@ -2048,7 +2048,7 @@ const ProjectView = ({ profile, ...props }) => {
                         </div>
                         <div
                           className={`task-completed ${
-                            isCompleted ? "done" : ""
+                            isCompleted ? 'done' : ''
                           }`}
                         >
                           {isCompleted && <CheckCircleOutlined />}
@@ -2069,7 +2069,7 @@ const ProjectView = ({ profile, ...props }) => {
                           <UpCircleOutlined rotate={isActive ? 180 : 0} />
                         )}
                         className="child"
-                        defaultActiveKey={["0"]}
+                        defaultActiveKey={['0']}
                       >
                         {renderSubStages(
                           item.title,
@@ -2080,15 +2080,15 @@ const ProjectView = ({ profile, ...props }) => {
                       </Collapse>
                     </div>
                   </Panel>
-                );
+                )
               })}
             </Collapse>
           </div>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 const renderSubStages = (title, data, checklist, handleStages) => {
   const children = data?.map((childItem, index) => (
@@ -2114,7 +2114,7 @@ const renderSubStages = (title, data, checklist, handleStages) => {
               <Panel
                 header={
                   <>
-                    {subChild.title !== "Expected outputs" ? (
+                    {subChild.title !== 'Expected outputs' ? (
                       <Checkbox
                         disabled
                         checked={checklist[title]?.[subChild.title]}
@@ -2128,11 +2128,11 @@ const renderSubStages = (title, data, checklist, handleStages) => {
                 }
                 key={index + subChild.title}
                 className={`${
-                  subChild.title === "Expected outputs" ? "expected-output" : ""
+                  subChild.title === 'Expected outputs' ? 'expected-output' : ''
                 }`}
               >
                 <div className="sub-stages">
-                  {subChild.title !== "Expected outputs" ? (
+                  {subChild.title !== 'Expected outputs' ? (
                     <div className="content">
                       <h5>Task description</h5>
                       <p>{subChild?.content(checklist, handleStages)}</p>
@@ -2168,13 +2168,13 @@ const renderSubStages = (title, data, checklist, handleStages) => {
                   )}
                 </div>
               </Panel>
-            );
+            )
           })}
         </Collapse>
       </div>
     </Panel>
-  ));
-  return [children];
-};
+  ))
+  return [children]
+}
 
-export default ProjectView;
+export default ProjectView
