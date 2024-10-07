@@ -16,63 +16,47 @@ const ResourceCard = ({ item, bookmarked, onBookmark, onClick }) => {
   }
   const hasMeta = item?.incBadges?.length > 0 || item?.likes > 0
 
-  const handleOpenInNewTab = () => {
-    const { type, id } = item
-    const detailUrl = `/${type.replace(/_/g, '-')}/${id}`
-    window.open(detailUrl, '_blank')
-  }
-
-  const menu = (
-    <Menu>
-      <Menu.Item key="1" onClick={handleOpenInNewTab}>
-        Open in new tab
-      </Menu.Item>
-    </Menu>
-  )
-
   return (
-    <Dropdown overlay={menu} trigger={['contextMenu']}>
-      <div
-        className={classNames(styles.resourceCard, 'resource-card', {
-          [styles.withImage]: withImage,
-        })}
-        onClick={handleClick}
-      >
-        <div className="type caps-heading-xs">
-          {item?.type?.replace(/_/g, ' ')}
-        </div>
-        {onBookmark != null && (
-          <BookmarkBtn {...{ bookmarked, onBookmark, item }} />
-        )}
-        <h4 className={classNames('h-xs', { hasMeta })}>{item.title}</h4>
-        {hasMeta && (
-          <div className="meta">
-            {item.likes > 0 && (
-              <div className="likes">
-                <Like /> <span>{item.likes}</span>
-              </div>
-            )}
-            {item?.incBadges && (
-              <AssignedBadges assignedBadges={item?.incBadges} />
-            )}
-          </div>
-        )}
-        {item?.images?.length > 0 && (
-          <Image
-            src={`${baseUrl}/img400/${item?.images?.[0].objectKey}`}
-            width={195}
-            height={175}
-          />
-        )}
-        {item?.images?.thumbnail && (
-          <Image
-            src={item?.images?.medium?.url || item?.images?.thumbnail.url}
-            width={195}
-            height={175}
-          />
-        )}
+    <div
+      className={classNames(styles.resourceCard, 'resource-card', {
+        [styles.withImage]: withImage,
+      })}
+      onClick={handleClick}
+    >
+      <div className="type caps-heading-xs">
+        {item?.type?.replace(/_/g, ' ')}
       </div>
-    </Dropdown>
+      {onBookmark != null && (
+        <BookmarkBtn {...{ bookmarked, onBookmark, item }} />
+      )}
+      <h4 className={classNames('h-xs', { hasMeta })}>{item.title}</h4>
+      {hasMeta && (
+        <div className="meta">
+          {item.likes > 0 && (
+            <div className="likes">
+              <Like /> <span>{item.likes}</span>
+            </div>
+          )}
+          {item?.incBadges && (
+            <AssignedBadges assignedBadges={item?.incBadges} />
+          )}
+        </div>
+      )}
+      {item?.images?.length > 0 && (
+        <Image
+          src={`${baseUrl}/img400/${item?.images?.[0].objectKey}`}
+          width={195}
+          height={175}
+        />
+      )}
+      {item?.images?.thumbnail && (
+        <Image
+          src={item?.images?.medium?.url || item?.images?.thumbnail.url}
+          width={195}
+          height={175}
+        />
+      )}
+    </div>
   )
 }
 export const ResourceCardSkeleton = () => {

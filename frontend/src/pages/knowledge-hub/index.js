@@ -199,17 +199,33 @@ const KnowledgeHub = ({
     setLoading(false)
   }, [newResults, isLoadMore])
 
-  const loadMore = () => {
+  const loadMore = async () => {
     if (!loading && hasMore) {
       setLoading(true)
-      const newOffset = offset
-      const newQuery = { ...router.query, offset: newOffset }
-      router
-        .push({ pathname: router.pathname, query: newQuery }, undefined, {
-          shallow: false,
+
+      try {
+        const newOffset = offset + results.length
+        const params = new URLSearchParams({
+          ...(router.query.q && { q: router.query.q }),
+          ...(router.query.tag && { tag: router.query.tag }),
+          ...(router.query.topic && { topic: router.query.topic }),
+          ...(router.query.country && { country: router.query.country }),
+          incBadges: 'true',
+          limit: '20',
+          offset: newOffset.toString(),
+          orderBy: router.query.orderBy || 'created',
+          descending: router.query.descending || 'true',
         })
-        .then(() => setLoading(false))
-        .catch(() => setLoading(false))
+
+        const response = await api.get(`/resources?${params.toString()}`)
+
+        const newResults = response.data.results
+        setResults((prevResults) => [...prevResults, ...newResults])
+      } catch (error) {
+        console.error('Error loading more data:', error)
+      } finally {
+        setLoading(false)
+      }
     }
   }
 
@@ -394,11 +410,18 @@ const KnowledgeHub = ({
         )}
         <div className="results">
           {results?.map((result) => (
-            <ResourceCard
-              item={result}
-              // onBookmark={() => {}}
-              onClick={showModal}
-            />
+            <Link
+              href={`/${result.type.replace(/_/g, '-')}/${result.id}`}
+              onClick={(e) => {
+                e.preventDefault()
+              }}
+            >
+              <ResourceCard
+                item={result}
+                // onBookmark={() => {}}
+                onClick={showModal}
+              />
+            </Link>
           ))}
           {results?.length === 0 && !loading && (
             <>
