@@ -21,9 +21,9 @@ const menuList = [
       },
       {
         to: '/knowledge/learning-centre',
-        title: msg`Learning center`,
-        key: msg`Learning center`,
-        id: 'Learning center',
+        title: msg`Learning centre`,
+        key: msg`Learning centre`,
+        id: 'Learning centre',
         subtitle: msg`Learning and capacity development resources`,
         icon: <CapacityBuildingSvg />,
         iconClass: 'learning',
