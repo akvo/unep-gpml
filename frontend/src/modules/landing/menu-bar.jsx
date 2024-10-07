@@ -258,7 +258,7 @@ const pathContent = {
     iconClass: 'casestudies',
   },
   '/knowledge/capacity-development': {
-    title: 'Learning center',
+    title: 'Learning centre',
     subtitle: 'Learning and capacity development resources',
     icon: <CapacityBuildingSvg />,
     iconClass: 'learning',

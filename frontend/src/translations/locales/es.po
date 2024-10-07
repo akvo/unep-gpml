@@ -2291,7 +2291,7 @@ msgstr "Recursos de aprendizaje y desarrollo de capacidades"
 
 #: src/store.js:24
 #: src/store.js:25
-msgid "Learning center"
+msgid "Learning centre"
 msgstr "Centro de Aprendizaje"
 
 #: src/pages/knowledge/learning-centre/index.jsx:83
