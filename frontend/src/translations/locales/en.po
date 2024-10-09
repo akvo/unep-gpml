@@ -452,6 +452,10 @@ msgstr "Awareness-raising is a process that seeks to inform and educate people a
 msgid "Back"
 msgstr "Back"
 
+#: src/pages/_error.jsx:19
+msgid "Back Home"
+msgstr "Back Home"
+
 #: src/pages/forum/[forum]/index.jsx:163
 msgid "Back to all Forums"
 msgstr "Back to all Forums"
@@ -918,7 +922,7 @@ msgstr "Cost considerations (e.g., reducing costs of existing processes or of di
 
 #: src/components/select/country-transnational-filter.jsx:139
 #: src/components/select/country-transnational-filter.jsx:151
-#: src/pages/knowledge-hub/index.js:348
+#: src/pages/knowledge-hub/index.js:364
 msgid "Countries"
 msgstr "Countries"
 
@@ -1804,7 +1808,7 @@ msgstr "Go to the partnership"
 msgid "Good Health and Well-being"
 msgstr "Good Health and Well-being"
 
-#: src/components/resource-card/resource-card.jsx:100
+#: src/components/resource-card/resource-card.jsx:84
 msgid "Government Verified"
 msgstr "Government Verified"
 
@@ -1840,7 +1844,7 @@ msgstr "GPML Partnership"
 msgid "GPML Tools"
 msgstr "GPML Tools"
 
-#: src/components/resource-card/resource-card.jsx:99
+#: src/components/resource-card/resource-card.jsx:83
 msgid "GPML Verified"
 msgstr "GPML Verified"
 
@@ -2390,7 +2394,7 @@ msgid "LinkedIn"
 msgstr "LinkedIn"
 
 #: src/modules/knowledge-lib/resource-view.jsx:506
-#: src/pages/knowledge-hub/index.js:413
+#: src/pages/knowledge-hub/index.js:436
 msgid "Load More"
 msgstr "Load More"
 
@@ -3313,7 +3317,7 @@ msgstr "Related Content, Documents & Info"
 msgid "Related Resource"
 msgstr "Related Resource"
 
-#: src/components/resource-card/resource-card.jsx:113
+#: src/components/resource-card/resource-card.jsx:97
 #: src/modules/details-page/header.jsx:218
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:330
 #: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:440
@@ -3428,7 +3432,7 @@ msgstr "Rules of an obligatory nature that are negative, disallowing certain phe
 msgid "Rules of Procedure and Mechanism"
 msgstr "Rules of Procedure and Mechanism"
 
-#: src/components/resource-card/resource-card.jsx:113
+#: src/components/resource-card/resource-card.jsx:97
 #: src/modules/details-page/header.jsx:218
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:330
 #: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:440
@@ -3611,6 +3615,10 @@ msgstr "Social impacts will be evaluated"
 #: src/modules/profile/admin.jsx:621
 msgid "Something went wrong"
 msgstr "Something went wrong"
+
+#: src/pages/_error.jsx:16
+msgid "Sorry, the page you visited does not exist."
+msgstr "Sorry, the page you visited does not exist."
 
 #: src/modules/experts/view.jsx:166
 #: src/modules/knowledge-lib/resource-view.jsx:317
