@@ -133,9 +133,25 @@ const TagView = () => {
           .delete(`/tag/delete/${record.id}`)
           .then(() => {
             notification.success({ message: 'Tag deleted successfully' })
-            setDataSource((prevData) =>
-              prevData.filter((item) => item.id !== record.id)
-            )
+            setDataSource((prevData) => {
+              const updatedData = prevData.filter(
+                (item) => item.id !== record.id
+              )
+
+              const updatedFilteredData = updatedData.filter((item) => {
+                const matchesSearch = searchTerm
+                  ? item.tag.toLowerCase().includes(searchTerm.toLowerCase())
+                  : true
+                const matchesCategory = categoryFilter
+                  ? item.category === categoryFilter
+                  : true
+                return matchesSearch && matchesCategory
+              })
+
+              setFilteredData(updatedFilteredData)
+
+              return updatedData
+            })
           })
           .catch((error) => {
             message.error('Failed to delete tag')
@@ -219,6 +235,7 @@ const MigrationModal = ({
           onChange={(value) => handleTagChange(value, 'tag1')}
           value={selectedTags.tag1}
           style={{ width: '100%' }}
+          optionFilterProp="children"
         >
           {uniqueTags.map((tag) => (
             <Option
@@ -240,6 +257,7 @@ const MigrationModal = ({
           onChange={(value) => handleTagChange(value, 'tag2')}
           value={selectedTags.tag2}
           style={{ width: '100%' }}
+          optionFilterProp="children"
         >
           {uniqueTags.map((tag) => (
             <Option
