@@ -452,6 +452,10 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
+#: src/pages/_error.jsx:19
+msgid "Back Home"
+msgstr ""
+
 #: src/pages/forum/[forum]/index.jsx:163
 msgid "Back to all Forums"
 msgstr ""
@@ -918,7 +922,7 @@ msgstr ""
 
 #: src/components/select/country-transnational-filter.jsx:139
 #: src/components/select/country-transnational-filter.jsx:151
-#: src/pages/knowledge-hub/index.js:348
+#: src/pages/knowledge-hub/index.js:364
 msgid "Countries"
 msgstr ""
 
@@ -1794,7 +1798,7 @@ msgstr ""
 msgid "Good Health and Well-being"
 msgstr ""
 
-#: src/components/resource-card/resource-card.jsx:100
+#: src/components/resource-card/resource-card.jsx:84
 msgid "Government Verified"
 msgstr ""
 
@@ -1830,7 +1834,7 @@ msgstr ""
 msgid "GPML Tools"
 msgstr ""
 
-#: src/components/resource-card/resource-card.jsx:99
+#: src/components/resource-card/resource-card.jsx:83
 msgid "GPML Verified"
 msgstr ""
 
@@ -2380,7 +2384,7 @@ msgid "LinkedIn"
 msgstr ""
 
 #: src/modules/knowledge-lib/resource-view.jsx:506
-#: src/pages/knowledge-hub/index.js:413
+#: src/pages/knowledge-hub/index.js:436
 msgid "Load More"
 msgstr ""
 
@@ -3303,7 +3307,7 @@ msgstr ""
 msgid "Related Resource"
 msgstr ""
 
-#: src/components/resource-card/resource-card.jsx:113
+#: src/components/resource-card/resource-card.jsx:97
 #: src/modules/details-page/header.jsx:218
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:330
 #: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:440
@@ -3418,7 +3422,7 @@ msgstr ""
 msgid "Rules of Procedure and Mechanism"
 msgstr ""
 
-#: src/components/resource-card/resource-card.jsx:113
+#: src/components/resource-card/resource-card.jsx:97
 #: src/modules/details-page/header.jsx:218
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:330
 #: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:440
@@ -3600,6 +3604,10 @@ msgstr ""
 #: src/modules/profile/admin.jsx:592
 #: src/modules/profile/admin.jsx:621
 msgid "Something went wrong"
+msgstr ""
+
+#: src/pages/_error.jsx:16
+msgid "Sorry, the page you visited does not exist."
 msgstr ""
 
 #: src/modules/experts/view.jsx:166

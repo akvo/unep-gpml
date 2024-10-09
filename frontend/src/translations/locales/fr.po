@@ -452,6 +452,10 @@ msgstr "La sensibilisation est un processus qui vise à informer et à éduquer 
 msgid "Back"
 msgstr "Retour"
 
+#: src/pages/_error.jsx:19
+msgid "Back Home"
+msgstr ""
+
 #: src/pages/forum/[forum]/index.jsx:163
 msgid "Back to all Forums"
 msgstr "Retour à tous les forums"
@@ -918,7 +922,7 @@ msgstr "Considérations liées aux coûts (par exemple, réduction des coûts de
 
 #: src/components/select/country-transnational-filter.jsx:139
 #: src/components/select/country-transnational-filter.jsx:151
-#: src/pages/knowledge-hub/index.js:348
+#: src/pages/knowledge-hub/index.js:364
 msgid "Countries"
 msgstr "Des pays"
 
@@ -1808,7 +1812,7 @@ msgstr "Accédez au partenariat"
 msgid "Good Health and Well-being"
 msgstr "Bonne santé et bien-être"
 
-#: src/components/resource-card/resource-card.jsx:100
+#: src/components/resource-card/resource-card.jsx:84
 msgid "Government Verified"
 msgstr "Vérifié par le gouvernement"
 
@@ -1844,7 +1848,7 @@ msgstr "Partenariat GPML"
 msgid "GPML Tools"
 msgstr "Outils GPML"
 
-#: src/components/resource-card/resource-card.jsx:99
+#: src/components/resource-card/resource-card.jsx:83
 msgid "GPML Verified"
 msgstr "GPML vérifié"
 
@@ -2394,7 +2398,7 @@ msgid "LinkedIn"
 msgstr "LinkedIn"
 
 #: src/modules/knowledge-lib/resource-view.jsx:506
-#: src/pages/knowledge-hub/index.js:413
+#: src/pages/knowledge-hub/index.js:436
 msgid "Load More"
 msgstr "Voir plus"
 
@@ -3317,7 +3321,7 @@ msgstr "Contenu, documents et informations connexes"
 msgid "Related Resource"
 msgstr "Ressource connexe"
 
-#: src/components/resource-card/resource-card.jsx:113
+#: src/components/resource-card/resource-card.jsx:97
 #: src/modules/details-page/header.jsx:218
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:330
 #: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:440
@@ -3432,7 +3436,7 @@ msgstr "Règles à caractère obligatoire et négatives, interdisant certains ph
 msgid "Rules of Procedure and Mechanism"
 msgstr "Règlement intérieur et mécanisme"
 
-#: src/components/resource-card/resource-card.jsx:113
+#: src/components/resource-card/resource-card.jsx:97
 #: src/modules/details-page/header.jsx:218
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:330
 #: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:440
@@ -3615,6 +3619,10 @@ msgstr "Les impacts sociaux seront évalués"
 #: src/modules/profile/admin.jsx:621
 msgid "Something went wrong"
 msgstr "Quelque chose s'est mal passé"
+
+#: src/pages/_error.jsx:16
+msgid "Sorry, the page you visited does not exist."
+msgstr "Désolé, la page que vous avez visitée n'existe pas"
 
 #: src/modules/experts/view.jsx:166
 #: src/modules/knowledge-lib/resource-view.jsx:317
