@@ -93,13 +93,16 @@ const TagView = () => {
       dataIndex: 'tag',
       key: 'tag',
       filterSearch: true,
+      sorter: (a, b) => a.tag.localeCompare(b.tag),
+      sortDirections: ['descend', 'ascend'],
     },
     {
       title: 'Category',
       dataIndex: 'category',
       key: 'category',
-      sorter: (a, b) => a.category.length - b.category.length,
+      sorter: (a, b) => a.category.localeCompare(b.category),
       sortDirections: ['descend', 'ascend'],
+      width: 300,
     },
     {
       title: 'Action',
@@ -110,6 +113,7 @@ const TagView = () => {
           <a onClick={() => showDeleteConfirm(record)}>Delete</a>
         </Space>
       ),
+      width: 200,
     },
   ]
 
