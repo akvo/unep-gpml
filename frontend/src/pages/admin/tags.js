@@ -14,8 +14,12 @@ const TagView = () => {
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [selectedTags, setSelectedTags] = useState({ tag1: null, tag2: null })
 
-  const showMigrateModal = () => {
+  const showMigrateModal = (record) => {
     setIsModalVisible(true)
+    setSelectedTags((prevTags) => ({
+      ...prevTags,
+      tag1: record.id,
+    }))
   }
 
   useEffect(() => {
@@ -102,7 +106,7 @@ const TagView = () => {
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <a onClick={showMigrateModal}>Migrate</a>
+          <a onClick={() => showMigrateModal(record)}>Migrate</a>
           <a onClick={() => showDeleteConfirm(record)}>Delete</a>
         </Space>
       ),
