@@ -1,0 +1,18 @@
+.admin {
+  padding: 100px 0;
+
+  :global {}
+}
+
+.migrationModal {
+  :global {
+    .wrapper {
+      display: flex;
+      gap: 20px;
+
+      .ant-select {
+        margin-bottom: 0px;
+      }
+    }
+  }
+}
