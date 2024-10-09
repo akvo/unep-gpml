@@ -1,6 +1,7 @@
 import React from 'react'
 import StakeholderDetailPage from '../../modules/stakeholder-detail/view'
 import { loadCatalog } from '../../translations/utils'
+import withAuth from '../../components/withAuth'
 
 function StakeholderDetail({
   setLoginVisible,
@@ -29,4 +30,4 @@ export const getStaticProps = async (ctx) => {
   }
 }
 
-export default StakeholderDetail
+export default withAuth(StakeholderDetail)

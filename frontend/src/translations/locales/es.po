@@ -452,6 +452,10 @@ msgstr "La sensibilización es un proceso que busca informar y educar a las pers
 msgid "Back"
 msgstr "Atrás"
 
+#: src/pages/_error.jsx:19
+msgid "Back Home"
+msgstr ""
+
 #: src/pages/forum/[forum]/index.jsx:163
 msgid "Back to all Forums"
 msgstr "Volver a todos los foros"
@@ -918,7 +922,7 @@ msgstr "Consideraciones de costos (por ejemplo, reducir los costos de los proces
 
 #: src/components/select/country-transnational-filter.jsx:139
 #: src/components/select/country-transnational-filter.jsx:151
-#: src/pages/knowledge-hub/index.js:348
+#: src/pages/knowledge-hub/index.js:364
 msgid "Countries"
 msgstr "Países"
 
@@ -1803,7 +1807,7 @@ msgstr "Ir a la asociación"
 msgid "Good Health and Well-being"
 msgstr "Buena Salud y Bienestar"
 
-#: src/components/resource-card/resource-card.jsx:100
+#: src/components/resource-card/resource-card.jsx:84
 msgid "Government Verified"
 msgstr "Gobierno verificado"
 
@@ -1839,7 +1843,7 @@ msgstr "Asociación GPML"
 msgid "GPML Tools"
 msgstr "Herramientas GPML"
 
-#: src/components/resource-card/resource-card.jsx:99
+#: src/components/resource-card/resource-card.jsx:83
 msgid "GPML Verified"
 msgstr "GPML Verificado"
 
@@ -2389,7 +2393,7 @@ msgid "LinkedIn"
 msgstr "LinkedIn"
 
 #: src/modules/knowledge-lib/resource-view.jsx:506
-#: src/pages/knowledge-hub/index.js:413
+#: src/pages/knowledge-hub/index.js:436
 msgid "Load More"
 msgstr "Carga más"
 
@@ -3312,7 +3316,7 @@ msgstr "Contenido, documentos e información relacionados"
 msgid "Related Resource"
 msgstr "Recurso relacionado"
 
-#: src/components/resource-card/resource-card.jsx:113
+#: src/components/resource-card/resource-card.jsx:97
 #: src/modules/details-page/header.jsx:218
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:330
 #: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:440
@@ -3427,7 +3431,7 @@ msgstr "Normas de carácter obligatorio que son negativas, impidiendo determinad
 msgid "Rules of Procedure and Mechanism"
 msgstr "Reglas de Procedimiento y Mecanismo"
 
-#: src/components/resource-card/resource-card.jsx:113
+#: src/components/resource-card/resource-card.jsx:97
 #: src/modules/details-page/header.jsx:218
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:330
 #: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:440
@@ -3610,6 +3614,10 @@ msgstr "Se evaluarán impactos sociales"
 #: src/modules/profile/admin.jsx:621
 msgid "Something went wrong"
 msgstr "Algo salió mal"
+
+#: src/pages/_error.jsx:16
+msgid "Sorry, the page you visited does not exist."
+msgstr "Lo sentimos, la página que visitaste no existe."
 
 #: src/modules/experts/view.jsx:166
 #: src/modules/knowledge-lib/resource-view.jsx:317
