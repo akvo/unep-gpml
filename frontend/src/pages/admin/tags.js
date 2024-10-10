@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import api from '../../utils/api'
 import { SearchIcon } from '../../components/icons'
 import styles from './index.module.scss'
+import { loadCatalog } from '../../translations/utils'
 
 const { confirm } = Modal
 
@@ -276,6 +277,14 @@ const MigrationModal = ({
       </div>
     </Modal>
   )
+}
+
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
 }
 
 export default TagView
