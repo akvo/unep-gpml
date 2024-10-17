@@ -24,7 +24,7 @@ import isEmpty from 'lodash/isEmpty'
 import { redirectError } from '../error/error-util'
 import { detailMaps } from './mapping'
 import moment from 'moment'
-import { resourceTypeToTopicType } from '../../utils/misc'
+import { lifecycleStageTags, resourceTypeToTopicType } from '../../utils/misc'
 import { multicountryGroups } from '../knowledge-library/multicountry'
 import ResourceCards from '../../components/resource-cards/resource-cards'
 import Comments from './comment'
@@ -238,6 +238,64 @@ const DetailsView = ({
       setComments(res.data?.comments)
     }
   }
+
+  const handleEditBtn = (type = null) => {
+    eventTrack('Resource view', 'Update', 'Button')
+    let form = null
+    let link = null
+    switch (type) {
+      case 'initiative':
+        form = 'initiative'
+        link = 'edit/initiative'
+        type = 'initiative'
+        break
+      case 'action-plan':
+        form = 'actionPlan'
+        link = 'edit/action-plan'
+        type = 'action_plan'
+        break
+      case 'data-catalog':
+        form = 'dataCatalog'
+        link = 'edit/data-catalog'
+        type = 'data_catalog'
+        break
+      case 'policy':
+        form = 'policy'
+        link = 'edit/policy'
+        type = 'policy'
+        break
+      case 'technical-resource':
+        form = 'technicalResource'
+        link = 'edit/technical-resource'
+        type = 'technical_resource'
+        break
+      case 'financing-resource':
+        form = 'financingResource'
+        link = 'edit/financing-resource'
+        type = 'financing_resource'
+        break
+      case 'technology':
+        form = 'technology'
+        link = 'edit/technology'
+        type = 'technology'
+        break
+      case 'event':
+        form = 'event'
+        link = 'edit/event'
+        type = 'event'
+        break
+      case 'case-study':
+        form = 'caseStudy'
+        link = 'edit/case-study'
+        type = 'case_study'
+        break
+      default:
+        form = 'entity'
+        link = 'edit/entity'
+        type = 'initiative'
+        break
+    }
+  }
   useEffect(() => {
     if (visible && match?.params?.item !== null) {
       setData(match.params.item)
@@ -271,6 +329,25 @@ const DetailsView = ({
       role: entity?.role,
     }
   })
+
+  const tagsToShow =
+    data?.tags && data?.tags?.length > 0
+      ? data.tags.filter(
+          (item) =>
+            !lifecycleStageTags.some(
+              (filterItem) =>
+                filterItem.toLowerCase() === item.tag.toLowerCase()
+            )
+        )
+      : []
+  const lifecycleTagsToShow =
+    data?.tags && data?.tags?.length > 0
+      ? data.tags.filter((item) =>
+          lifecycleStageTags.some(
+            (filterItem) => filterItem.toLowerCase() === item.tag.toLowerCase()
+          )
+        )
+      : []
 
   const stakeholderConnections = data?.stakeholderConnections
     ?.filter(
@@ -489,8 +566,36 @@ const DetailsView = ({
             </Col>
           </Row>
         )}
+
+        {lifecycleTagsToShow?.length > 0 && (
+          <Col className="section-tag section">
+            <div className="extra-wrapper">
+              <h3 className="content-heading">
+                <Trans>Life Cycle Stage</Trans>
+              </h3>
+              <List itemLayout="horizontal">
+                <List.Item>
+                  <List.Item.Meta
+                    title={
+                      <ul className="tag-list">
+                        {lifecycleTagsToShow.map((tag) => (
+                          <li className="tag-list-item" key={tag?.tag}>
+                            <div className="label">
+                              <span>{tag?.tag || ''}</span>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    }
+                  />
+                </List.Item>
+              </List>
+            </div>
+          </Col>
+        )}
+
         {/* TAGS */}
-        {data?.tags && data?.tags?.length > 0 && (
+        {tagsToShow?.length > 0 && (
           <Col className="section-tag section">
             <div className="extra-wrapper">
               <h3 className="content-heading">
@@ -501,14 +606,13 @@ const DetailsView = ({
                   <List.Item.Meta
                     title={
                       <ul className="tag-list">
-                        {data?.tags &&
-                          data?.tags.map((tag) => (
-                            <li className="tag-list-item" key={tag?.tag}>
-                              <div className="label">
-                                <span>{tag?.tag || ''}</span>
-                              </div>
-                            </li>
-                          ))}
+                        {tagsToShow?.map((tag) => (
+                          <li className="tag-list-item" key={tag?.tag}>
+                            <div className="label">
+                              <span>{tag?.tag || ''}</span>
+                            </div>
+                          </li>
+                        ))}
                       </ul>
                     }
                   />
@@ -644,6 +748,10 @@ const Records = ({ countries, languages, type, data }) => {
       (key === 'focusArea' && data[key]?.length === 0)
     ) {
       return false
+    }
+
+    if (key === 'status' && data[value] !== 'In force') {
+      return null
     }
 
     return (

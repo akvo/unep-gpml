@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import styles from './index.module.scss'
 import { Check, Check2, SearchIcon } from '../../components/icons'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -8,7 +8,7 @@ import ResourceCard from '../../components/resource-card/resource-card'
 import DetailModal from '../../modules/details-page/modal'
 import { useRouter } from 'next/router'
 import bodyScrollLock from '../../modules/details-page/scroll-utils'
-import { Dropdown, Input, Menu, Select, Space, Spin } from 'antd'
+import { Collapse, Dropdown, Input, Menu, Select, Space, Spin } from 'antd'
 import { debounce } from 'lodash'
 import Button from '../../components/button'
 import { Trans, t } from '@lingui/macro'
@@ -16,6 +16,8 @@ import { UIStore } from '../../store'
 import { multicountryGroups } from '../../modules/knowledge-library/multicountry'
 import { DownOutlined, LoadingOutlined } from '@ant-design/icons'
 import { loadCatalog } from '../../translations/utils'
+import Link from 'next/link'
+import { lifecycleStageTags } from '../../utils/misc'
 
 const getCountryIdsFromGeoGroups = (
   selectedGeoCountryGroup,
@@ -34,24 +36,37 @@ const getCountryIdsFromGeoGroups = (
   return countryIds
 }
 
-const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
-  const [results, setResults] = useState([])
-  const [search, setSearch] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [selectedThemes, setSelectedThemes] = useState([])
-  const [selectedTypes, setSelectedTypes] = useState([])
-  const [selectedCountries, setSelectedCountries] = useState([])
-  const [selectedGeoCountryGroup, setSelectedGeoCountryGroup] = useState([])
+const KnowledgeHub = ({
+  newResults,
+  hasMore,
+  offset,
+  isLoadMore,
+  setLoginVisible,
+  isAuthenticated,
+}) => {
   const router = useRouter()
+  const [results, setResults] = useState(newResults)
+  const [collapseKeys, setCollapseKeys] = useState(['p1', 'p2', 'p3'])
+  const [loading, setLoading] = useState(false)
+  const selectedThemes = router.query.tag ? router.query.tag.split(',') : []
+  const selectedTypes = router.query.topic ? router.query.topic.split(',') : []
+  const selectedGeoCountryGroup = router.query.geo
+    ? router.query.geo.split(',')
+    : []
+  const [searchInput, setSearchInput] = useState(router.query.q || '')
   const [params, setParams] = useState(null)
   const [modalVisible, setModalVisible] = useState(false)
-  const [offset, setOffset] = useState(0)
-  const [limit] = useState(20)
-  const [hasMore, setHasMore] = useState(true)
   const { countries, featuredOptions } = UIStore.useState((s) => ({
     countries: s.countries,
     featuredOptions: s.featuredOptions,
   }))
+  const [sorting, setSorting] = useState(
+    router.query.orderBy === 'created'
+      ? router.query.descending === 'true'
+        ? 'newest'
+        : 'oldest'
+      : 'newest'
+  )
 
   const countryOpts = countries
     ? countries
@@ -62,15 +77,48 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
         .sort((a, b) => a.label.localeCompare(b.label))
     : []
 
-  useEffect(() => {
-    fetchData()
-  }, [
-    search,
-    selectedThemes,
-    selectedTypes,
-    selectedCountries,
-    selectedGeoCountryGroup,
-  ])
+  const updateQueryParams = useCallback(
+    (updates) => {
+      const currentQuery = router.query
+      const selectedCountryGroupCountries = getCountryIdsFromGeoGroups(
+        updates.geo ? updates.geo.split(',') : [],
+        updates.featuredOptions ? updates.featuredOptions : featuredOptions
+      )
+      const newQuery = {
+        ...(currentQuery.q && { q: currentQuery.q }),
+        ...(currentQuery.tag && { tag: currentQuery.tag }),
+        ...(currentQuery.topic && { topic: currentQuery.topic }),
+        ...(currentQuery.country && { country: currentQuery.country }),
+        ...(currentQuery.geo && { geo: currentQuery.geo }),
+        ...(currentQuery.descending && { descending: currentQuery.descending }),
+        ...updates,
+      }
+
+      if (newQuery.geo) {
+        newQuery.country = selectedCountryGroupCountries.join(',')
+      } else if (newQuery.country) {
+        delete newQuery.geo
+      }
+
+      if (newQuery.orderBy) {
+        delete newQuery.orderBy
+      }
+      if (newQuery.featuredOptions) {
+        delete newQuery.featuredOptions
+      }
+      // Remove empty query params
+      Object.keys(newQuery).forEach(
+        (key) =>
+          (newQuery[key] === undefined || newQuery[key] === '') &&
+          delete newQuery[key]
+      )
+
+      router.push({ pathname: router.pathname, query: newQuery }, undefined, {
+        shallow: false,
+      })
+    },
+    [router]
+  )
 
   useEffect(() => {
     if (!modalVisible) {
@@ -83,14 +131,7 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
     }
   }, [modalVisible])
 
-  const themes = [
-    'Plastic Production & Distribution',
-    'Plastic Consumption',
-    'Reuse',
-    'Recycle',
-    'Waste Management',
-    'Just Transition of Informal Sector',
-  ].map((it) => ({ name: it }))
+  const themes = lifecycleStageTags.map((it) => ({ name: it }))
 
   const types = [
     { name: 'Technical Resource', value: 'technical_resource' },
@@ -99,32 +140,42 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
     { name: 'Policy & Legislation', value: 'policy' },
     { name: 'Financing Resource', value: 'financing_resource' },
     { name: 'Case Studies', value: 'case_study' },
+    { name: 'Initiatives', value: 'initiative' },
+    { name: 'Events', value: 'event' },
   ]
 
   const handleThemeToggle = (theme) => {
-    setSelectedThemes((prev) =>
-      prev.includes(theme) ? prev.filter((t) => t !== theme) : [...prev, theme]
-    )
+    const lowerCaseTheme = theme.toLowerCase()
+    const newThemes = selectedThemes.includes(lowerCaseTheme)
+      ? selectedThemes.filter((t) => t !== lowerCaseTheme)
+      : [...selectedThemes, lowerCaseTheme]
+    updateQueryParams({
+      tag: newThemes.length > 0 ? newThemes.join(',') : undefined,
+    })
   }
 
   const handleTypeToggle = (type) => {
-    setSelectedTypes((prev) =>
-      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
-    )
+    const newTypes = selectedTypes.includes(type)
+      ? selectedTypes.filter((t) => t !== type)
+      : [...selectedTypes, type]
+    updateQueryParams({
+      topic: newTypes.length > 0 ? newTypes.join(',') : undefined,
+    })
   }
 
-  const handleGeoToggle = (type) => {
-    setSelectedGeoCountryGroup((prev) =>
-      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
-    )
+  const handleGeoToggle = (group) => {
+    const newGeoGroups = selectedGeoCountryGroup.includes(group)
+      ? selectedGeoCountryGroup.filter((g) => g !== group)
+      : [...selectedGeoCountryGroup, group]
+    updateQueryParams({
+      geo: newGeoGroups.length > 0 ? newGeoGroups.join(',') : undefined,
+      country: undefined,
+      featuredOptions: featuredOptions,
+    })
   }
 
   const handleCountryChange = (value) => {
-    if (value) {
-      setSelectedCountries(value)
-    } else {
-      setSelectedCountries([])
-    }
+    updateQueryParams({ ...router.query, country: value })
   }
 
   const showModal = ({ e, item }) => {
@@ -139,71 +190,101 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
     }
   }
 
-  const fetchData = async (newOffset = 0) => {
-    const params = new URLSearchParams()
-
-    if (search) params.append('q', search)
-    if (selectedThemes.length > 0)
-      params.append('tag', selectedThemes.join(','))
-    if (selectedTypes.length > 0)
-      params.append('topic', selectedTypes.join(','))
-    const selectedCountryGroupCountries = getCountryIdsFromGeoGroups(
-      selectedGeoCountryGroup,
-      featuredOptions
-    )
-    if (
-      selectedCountries.length > 0 ||
-      selectedCountryGroupCountries.length > 0
-    )
-      params.append(
-        'country',
-        selectedCountryGroupCountries.length > 0
-          ? selectedCountryGroupCountries.join(',')
-          : selectedCountries.join(',')
-      )
-
-    params.append('incBadges', 'true')
-    params.append('limit', limit)
-    params.append('offset', newOffset)
-
-    setLoading(true)
-
-    const response = await api.get(`/resources?${params.toString()}`)
-    const newResults = response.data.results
-
-    if (newOffset === 0) {
-      setResults(newResults)
-    } else {
+  useEffect(() => {
+    if (isLoadMore) {
       setResults((prevResults) => [...prevResults, ...newResults])
+    } else {
+      setResults(newResults)
     }
-
-    setHasMore(newResults.length === limit)
     setLoading(false)
+  }, [newResults, isLoadMore])
+
+  const loadMore = async () => {
+    if (!loading && hasMore) {
+      setLoading(true)
+
+      try {
+        const newOffset = offset + results.length
+        const params = new URLSearchParams({
+          ...(router.query.q && { q: router.query.q }),
+          ...(router.query.tag && { tag: router.query.tag }),
+          ...(router.query.topic && { topic: router.query.topic }),
+          ...(router.query.country && { country: router.query.country }),
+          incBadges: 'true',
+          limit: '20',
+          offset: newOffset.toString(),
+          orderBy: router.query.orderBy || 'created',
+          descending: router.query.descending || 'true',
+        })
+
+        const response = await api.get(`/resources?${params.toString()}`)
+
+        const newResults = response.data.results
+        setResults((prevResults) => [...prevResults, ...newResults])
+      } catch (error) {
+        console.error('Error loading more data:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
   }
 
-  const clearSearch = () => {
-    setSearch('')
+  const handleSearchChange = (e) => {
+    const value = e.target.value
+    setSearchInput(value)
+    if (value) {
+      debouncedUpdateSearch(value)
+    } else {
+      debouncedUpdateSearch.cancel()
+      updateQueryParams({ ...router.query, q: '' })
+    }
   }
 
-  const loadMore = () => {
-    const newOffset = offset + limit
-    fetchData(newOffset)
-    setOffset(newOffset)
-  }
-
-  const debouncedSearch = debounce((value) => {
-    setSearch(value)
-  }, 300)
-
-  const [sorting, setSorting] = useState('newest')
-  const handleSortingChange = (e, v) => {
-    setSorting(e.key)
-  }
+  const debouncedUpdateSearch = useCallback(
+    debounce((value) => {
+      updateQueryParams({ ...router.query, q: value })
+    }, 300),
+    [updateQueryParams]
+  )
   const sortingOpts = [
-    { key: 'newest', label: 'Most Recent First' },
-    { key: 'oldest', label: 'Oldest First' },
+    {
+      key: 'newest',
+      label: 'Most Recent First',
+      apiParams: { orderBy: 'created', descending: 'true' },
+    },
+    {
+      key: 'oldest',
+      label: 'Oldest First',
+      apiParams: { orderBy: 'created', descending: 'false' },
+    },
   ]
 
+  const handleSortingChange = useCallback(
+    (key) => {
+      const selectedSort = sortingOpts.find((opt) => opt.key === key.key)
+      if (selectedSort) {
+        setSorting(key.key)
+        updateQueryParams(selectedSort.apiParams)
+      }
+    },
+    [updateQueryParams]
+  )
+
+  useEffect(() => {
+    const onresize = () => {
+      if (window.innerWidth <= 768) {
+        setCollapseKeys([])
+      } else {
+        setCollapseKeys(['p1', 'p2', 'p3'])
+      }
+    }
+    onresize()
+    window.addEventListener('resize', onresize)
+  }, [])
+
+  const handleCollapseChange = (v) => {
+    setCollapseKeys(v)
+  }
   return (
     <div className={styles.knowledgeHub}>
       <aside className="filter-sidebar">
@@ -212,76 +293,87 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
             className="src"
             allowClear
             placeholder="Search Resources"
-            onChange={(e) => {
-              if (e.target.value) {
-                debouncedSearch(e.target.value)
-              } else {
-                clearSearch()
-              }
-            }}
+            value={searchInput}
+            onChange={handleSearchChange}
           />
           <div className="caps-heading-xs">browse resources by</div>
-          <div className="section">
-            <h4 className="h-xs w-semi">Theme</h4>
-            <div className="filters">
-              {themes?.map((theme) => (
-                <FilterToggle
-                  key={theme.name}
-                  onToggle={() => handleThemeToggle(theme.name)}
-                >
-                  {theme.name}
-                </FilterToggle>
-              ))}
-            </div>
-          </div>
-          <div className="section">
-            <h4 className="h-xs w-semi">Resource Type</h4>
-            <div className="filters">
-              {types.map((type) => (
-                <FilterToggle
-                  key={type.name}
-                  onToggle={() => handleTypeToggle(type.value)}
-                >
-                  {type.name}
-                </FilterToggle>
-              ))}
-            </div>
-          </div>
-          <div className="section">
-            <h4 className="h-xs w-semi">Geography</h4>
-            <div className="filters">
-              {featuredOptions.map((type) => (
-                <FilterToggle
-                  key={type.name}
-                  onToggle={() => handleGeoToggle(type.name)}
-                >
-                  {type.name}
-                </FilterToggle>
-              ))}
-            </div>
-          </div>
-          <div className="section">
-            <h4 className="h-xs w-semi">Country</h4>
-
-            <Select
-              size="small"
-              showSearch
-              allowClear
-              mode="multiple"
-              dropdownClassName="multiselection-dropdown"
-              dropdownMatchSelectWidth={false}
-              placeholder={t`Countries`}
-              options={countryOpts}
-              optionFilterProp="children"
-              filterOption={(input, option) =>
-                option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
-              }
-              showArrow
-              suffixIcon={<SearchIcon />}
-              virtual={false}
-              onChange={handleCountryChange}
-            />
-          </div>
+          <Collapse onChange={handleCollapseChange} activeKey={collapseKeys}>
+            <Collapse.Panel
+              key="p1"
+              header={<h4 className="h-xs w-semi">Life Cycle Stage</h4>}
+            >
+              <div className="filters">
+                {themes?.map((theme) => (
+                  <FilterToggle
+                    key={theme.name}
+                    onToggle={() => handleThemeToggle(theme.name)}
+                    isSelected={selectedThemes.some(
+                      (selectedTheme) =>
+                        selectedTheme.toLowerCase() === theme.name.toLowerCase()
+                    )}
+                    href={`/knowledge-hub?tag=${encodeURIComponent(
+                      theme.name.toLowerCase()
+                    )}`}
+                  >
+                    {theme.name}
+                  </FilterToggle>
+                ))}
+              </div>
+            </Collapse.Panel>
+            <Collapse.Panel
+              key="p2"
+              header={<h4 className="h-xs w-semi">Resource Type</h4>}
+            >
+              <div className="filters">
+                {types.map((type) => (
+                  <FilterToggle
+                    key={type.name}
+                    onToggle={() => handleTypeToggle(type.value)}
+                    isSelected={selectedTypes.includes(type.value)}
+                    href={`/knowledge-hub?topic=${type.name.toLowerCase()}`}
+                  >
+                    {type.name}
+                  </FilterToggle>
+                ))}
+              </div>
+            </Collapse.Panel>
+            <Collapse.Panel
+              key="p3"
+              header={<h4 className="h-xs w-semi">Geography</h4>}
+            >
+              <div className="filters">
+                {featuredOptions.map((type) => (
+                  <FilterToggle
+                    key={type.name}
+                    onToggle={() => handleGeoToggle(type.name)}
+                    isSelected={selectedGeoCountryGroup.includes(type.name)}
+                    href={`/knowledge-hub?geo=${type.name.toLowerCase()}`}
+                  >
+                    {type.name}
+                  </FilterToggle>
+                ))}
+              </div>
+              <Select
+                size="small"
+                showSearch
+                allowClear
+                mode="multiple"
+                dropdownClassName="multiselection-dropdown"
+                dropdownMatchSelectWidth={false}
+                placement="topLeft"
+                placeholder={t`Countries`}
+                options={countryOpts}
+                optionFilterProp="children"
+                filterOption={(input, option) =>
+                  option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+                showArrow
+                suffixIcon={<SearchIcon />}
+                virtual={false}
+                onChange={handleCountryChange}
+              />
+            </Collapse.Panel>
+          </Collapse>
         </div>
       </aside>
       <div className="content">
@@ -318,11 +410,18 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
         )}
         <div className="results">
           {results?.map((result) => (
-            <ResourceCard
-              item={result}
-              // onBookmark={() => {}}
-              onClick={showModal}
-            />
+            <Link
+              href={`/${result.type.replace(/_/g, '-')}/${result.id}`}
+              onClick={(e) => {
+                e.preventDefault()
+              }}
+            >
+              <ResourceCard
+                item={result}
+                // onBookmark={() => {}}
+                onClick={showModal}
+              />
+            </Link>
           ))}
           {results?.length === 0 && !loading && (
             <>
@@ -354,16 +453,19 @@ const KnowledgeHub = ({ setLoginVisible, isAuthenticated }) => {
 
 // const ResourceCard = () => {}
 
-const FilterToggle = ({ children, onToggle }) => {
-  const [on, setOn] = useState(false)
-  const handleClick = () => {
-    setOn(!on)
+const FilterToggle = ({ children, onToggle, isSelected, href }) => {
+  const handleClick = (e) => {
+    e.preventDefault()
     onToggle()
   }
   return (
-    <div className={classNames('filter', { on })} onClick={handleClick}>
+    <Link
+      href={href}
+      className={classNames('filter', { on: isSelected })}
+      onClick={handleClick}
+    >
       <AnimatePresence>
-        {on && (
+        {isSelected && (
           <motion.div
             initial={{ width: 0, height: 0, marginRight: 0 }}
             animate={{ width: 9, height: 8, marginRight: 5 }}
@@ -374,15 +476,64 @@ const FilterToggle = ({ children, onToggle }) => {
         )}
       </AnimatePresence>
       {children}
-    </div>
+    </Link>
   )
 }
 
-export const getStaticProps = async (ctx) => {
-  return {
-    props: {
-      i18n: await loadCatalog(ctx.locale),
-    },
+export async function getServerSideProps(context) {
+  const { query, req } = context
+
+  const forwardedProtos = (req.headers['x-forwarded-proto'] || '').split(',')
+
+  const protocol = forwardedProtos[0] || 'http'
+
+  const baseUrl = `${protocol}://${req.headers.host}/`
+
+  const API_ENDPOINT = process.env.REACT_APP_FEENV
+    ? 'https://unep-gpml.akvotest.org/api/'
+    : `${baseUrl}/api/`
+
+  const limit = 20
+  const offset = parseInt(query.offset) || 0
+
+  const params = new URLSearchParams({
+    ...(query.q && { q: query.q }),
+    ...(query.tag && { tag: query.tag }),
+    ...(query.topic && { topic: query.topic }),
+    ...(query.country && { country: query.country }),
+    incBadges: 'true',
+    limit: limit.toString(),
+    offset: offset.toString(),
+    orderBy: query.orderBy || 'created',
+    descending: query.descending || 'true',
+  })
+
+  try {
+    const response = await api.get(
+      `${API_ENDPOINT}/resources?${params.toString()}`
+    )
+    const newResults = response.data.results
+
+    return {
+      props: {
+        newResults,
+        hasMore: newResults.length === limit,
+        offset: offset + newResults.length,
+        isLoadMore: offset > 0,
+        i18n: await loadCatalog(context.locale),
+      },
+    }
+  } catch (error) {
+    console.error('Error fetching initial data:', error)
+    return {
+      props: {
+        newResults: [],
+        hasMore: false,
+        offset: 0,
+        isLoadMore: false,
+        i18n: await loadCatalog(context.locale),
+      },
+    }
   }
 }
 

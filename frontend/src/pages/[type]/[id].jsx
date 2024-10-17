@@ -15,6 +15,7 @@ const VALID_TYPES = [
   'technology',
   'event',
   'case-study',
+  'data-catalog',
 ]
 
 const Details = ({
@@ -31,13 +32,13 @@ const Details = ({
   }
 
   const sliceMetaDesc = (words = '', maxLength = 158) => {
-    if (words.length <= maxLength) {
+    if (words?.length <= maxLength) {
       return words
     }
-    let slicedWords = words.slice(0, maxLength)
-    let lastSpaceIndex = slicedWords.lastIndexOf(' ')
+    let slicedWords = words?.slice(0, maxLength)
+    let lastSpaceIndex = slicedWords?.lastIndexOf(' ')
     if (lastSpaceIndex !== -1) {
-      slicedWords = slicedWords.slice(0, lastSpaceIndex)
+      slicedWords = slicedWords?.slice(0, lastSpaceIndex)
     }
     return slicedWords
   }
@@ -116,7 +117,7 @@ export async function getServerSideProps(context) {
 
   try {
     const dataRes = await api.get(
-      `${API_ENDPOINT}/detail/${type.replace('-', '_')}/${id}`
+      `${API_ENDPOINT}detail/${type.replace('-', '_')}/${id}`
     )
     const translationsRes = await api.get(
       `${API_ENDPOINT}/translations/${

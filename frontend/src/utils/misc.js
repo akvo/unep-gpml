@@ -65,6 +65,7 @@ export const resourceSubTypes = new Set([
   'financing_resource',
   'technical_resource',
   'action_plan',
+  'data_catalog',
 ])
 export const resourceTypeToTopicType = (type) =>
   resourceSubTypes.has(type) ? 'resource' : type
@@ -261,7 +262,7 @@ export function transformStrapiResponse(value) {
 }
 
 export function getStrapiUrl() {
-  let $env = process.env.NEXT_PUBLIC_ENV  || 'test';
+  let $env = process.env.NEXT_PUBLIC_ENV || 'test'
   const domains = {
     test: 'unep-gpml.akvotest.org',
     staging: 'unep-gpml.akvotest.org',
@@ -321,3 +322,11 @@ export const getBadgeTitle = (badgeKey) => {
     badges[badgeKey] || { title: 'Unknown Badge', image: 'default-badge.svg' }
   )
 }
+
+export const lifecycleStageTags = [
+  'Production',
+  'Consumption',
+  'Waste Management',
+  'Legacy Plastics',
+  'Full Life Cycle',
+]

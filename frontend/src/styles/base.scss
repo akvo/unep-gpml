@@ -1058,3 +1058,12 @@ ul {
     }
   }
 }
+
+.ant-select-dropdown {
+  border-radius: 4px;
+  .ant-select-item {
+    font-family: $ff2;
+    font-weight: 500;
+    color: $primaryDarkBlueText;
+  }
+}

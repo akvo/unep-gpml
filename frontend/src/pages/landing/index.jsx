@@ -50,6 +50,7 @@ import {
 import LocationDropdown from '../../components/location-dropdown/location-dropdown'
 import CountryTransnationalFilter from '../../components/select/country-transnational-filter'
 import api from '../../utils/api'
+import { SearchBar } from '../search'
 
 const pagination = {
   clickable: true,
@@ -360,98 +361,11 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
         </div>
       </div>
       <div className="container">
-        <div className="search-bar">
-          <div className="bar">
-            <Select
-              dropdownClassName={styles.dropdownSuggestion}
-              placeholder={t`Search the resource database...`}
-              options={tagOpts}
-              optionFilterProp="children"
-              filterOption={(input, option) =>
-                option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
-              }
-              value={filter?.tag}
-              onChange={(val) => {
-                setFilter({
-                  tag: val,
-                })
-              }}
-              suffixIcon={width < 768 && <Magnifier />}
-              virtual={false}
-              showSearch
-            />
-            <div className="localisation h-xs">
-              <LocationDropdown
-                {...{
-                  country,
-                  multiCountry,
-                  countryList,
-                  dropdownVisible,
-                  setDropdownVisible,
-                }}
-                placeholder={<Trans>Globally</Trans>}
-                value={value}
-              />
-            </div>
-            <Button
-              type="primary"
-              size="small"
-              className="left-icon hide-mobile"
-              onClick={handleOnSearch}
-            >
-              <Magnifier />
-              <Trans>Search</Trans>
-            </Button>
-          </div>
-          <Button
-            type="primary"
-            className="hide-desktop noicon"
-            onClick={handleOnSearch}
-          >
-            <Trans>Search</Trans>
-          </Button>
-          <div className="tags hide-mobile">
-            <b>
-              <Trans>Suggested:</Trans>
-            </b>
-            <div className="suggestions">
-              {suggestedTags.slice(0, maxTags).map((suggestion, sx) => (
-                <Tag
-                  key={sx}
-                  className="h-xxs"
-                  onClick={() => setFilter({ tag: suggestion })}
-                >
-                  {suggestion}
-                </Tag>
-              ))}
-              {suggestedTags.length > maxTags && (
-                <Dropdown
-                  overlay={
-                    <Menu>
-                      {suggestedTags
-                        .slice(maxTags, suggestedTags.length)
-                        .map((tag, tx) => {
-                          return (
-                            <Menu.Item
-                              key={tx}
-                              onClick={() => setFilter({ tag })}
-                            >
-                              {tag}
-                            </Menu.Item>
-                          )
-                        })}
-                    </Menu>
-                  }
-                  trigger={['click']}
-                >
-                  <Tag className="h-xxs">
-                    {`+${suggestedTags.length - maxTags} more`}
-                  </Tag>
-                </Dropdown>
-              )}
-            </div>
-          </div>
-        </div>
+        <SearchBar
+          onSearch={(val) => {
+            router.push(`/search?q=${val.replace(/ /g, '+')}`)
+          }}
+        />
       </div>
     </>
   )
@@ -556,7 +470,7 @@ const ShowcasingAndStats = (props) => {
               </h3>
               <span>
                 <Trans>
-                  Crowdsourcing a vast repository/library of {totalCount}{' '}
+                  Crowdsourcing a vast repository/library of <b>{totalCount}</b>{' '}
                   curated knowledge products and materials.
                 </Trans>
               </span>
@@ -587,8 +501,9 @@ const ShowcasingAndStats = (props) => {
               </h3>
               <span>
                 <Trans>
-                  Visualizing an extensive array of {props?.layers} data layers
-                  across the plastic lifecycle, providing in-depth insights.
+                  Visualizing an extensive array of <b>{props?.layers}</b> data
+                  layers across the plastic lifecycle, providing in-depth
+                  insights.
                 </Trans>
               </span>
               <Link href="/data/maps">
@@ -613,7 +528,7 @@ const ShowcasingAndStats = (props) => {
               </h3>
               <span>
                 <Trans>
-                  Harnessing the expertise of {props?.cop} Communities of
+                  Harnessing the expertise of <b>{props?.cop}</b> Communities of
                   Practice (CoPs) comprised of leading experts and scientists to
                   bridge critical knowledge and data gaps.
                 </Trans>
@@ -643,9 +558,9 @@ const ShowcasingAndStats = (props) => {
               <h3>Community</h3>
               <span>
                 <Trans>
-                  Fostering a dynamic network of {expertsCount} experts,{' '}
-                  {stakeholders?.stakeholders?.length} stakeholders and{' '}
-                  {organisations.length} member organisations, enhancing
+                  Fostering a dynamic network of <b>{expertsCount}</b> experts,{' '}
+                  <b>{stakeholders?.stakeholders?.length}</b> stakeholders and{' '}
+                  <b>{organisations.length}</b> member organisations, enhancing
                   collaboration and shared innovation.
                 </Trans>
               </span>
@@ -676,9 +591,9 @@ const ShowcasingAndStats = (props) => {
               </h3>
               <span>
                 <Trans>
-                  Empowering 18 countries in crafting comprehensive national
-                  source inventories, which facilitates the development of a
-                  National Roadmap/Strategy/Plan through evidence-based
+                  Empowering <b>18</b> countries in crafting comprehensive
+                  national source inventories, which facilitates the development
+                  of a National Roadmap/Strategy/Plan through evidence-based
                   approach. Additionally, forums can be accessed from the
                   workspace, promoting collaboration and sharing of information.
                 </Trans>
@@ -980,7 +895,7 @@ const LatestNews = () => {
                     <Link href={`/post/${item.id}-${item.slug}`}>
                       <Image
                         alt={item.title}
-                        src={item.cover.data?.attributes?.formats?.medium.url}
+                        src={item.cover.data?.attributes?.formats?.medium?.url}
                         width={366}
                         height={220}
                       />

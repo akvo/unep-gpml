@@ -30,7 +30,14 @@ const LayerInfo = ({ layer }) => {
           <strong>Data Source:</strong> {layer?.attributes.dataSource}
         </AntParagraph>
         <AntParagraph>
-          <strong>URL:</strong> {layer?.attributes.url}
+          <strong>URL:</strong>{' '}
+          <a
+            href={layer?.attributes.url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {layer?.attributes.url}
+          </a>
         </AntParagraph>
       </Card>
     </div>

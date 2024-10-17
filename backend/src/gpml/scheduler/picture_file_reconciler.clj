@@ -51,7 +51,7 @@
                  (fn enrich-channels [context]
                    (reduce (fn [acc {channel-id :id}]
                              {:pre [channel-id]}
-                             (let [result (port.chat/get-channel chat channel-id)]
+                             (let [result (port.chat/get-channel chat channel-id false)]
                                (if-not (:success? result)
                                  (failure acc
                                           :reason :could-not-get-channel

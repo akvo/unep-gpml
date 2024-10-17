@@ -18,10 +18,11 @@ const LegendCard = ({
   uniqueId,
   layerShortDescription,
   unit,
+  selectedLayers,
 }) => {
   const [tooltipPlacement, setTooltipPlacement] = useState('right')
   const legends = useLegends(layerId, arcgisMapId, layerMappingId)
-  const mapp = useLoadMap()
+  const mapp = useLoadMap(selectedLayers)
   const layers = useLayerInfo()
 
   const rendererObj = mapp.renderers.find((r) =>
@@ -67,7 +68,7 @@ const LegendCard = ({
       '2d6805cc5ea2493689656902d26f1ea6',
       'f4e666cb317a4087baa382f908314bd3',
       '9ad32b018256498985a7e09393b349d9',
-      '3c59a0aa4eda462fb7f91a753d6fa621'
+      '3c59a0aa4eda462fb7f91a753d6fa621',
     ]
 
     const allLegendItems = classBreakInfos
@@ -204,7 +205,15 @@ const LegendCard = ({
 const Legends = () => {
   const { queryParameters } = useQueryParameters()
 
-  return queryParameters?.layers?.map((layer, index) => (
+  const allLayers = useLayerInfo()
+
+  const layers = queryParameters?.layer
+    ? allLayers?.layers?.filter(
+        (layer) => layer.attributes.arcgislayerId == queryParameters.layer
+      )
+    : queryParameters?.layers
+
+  return layers?.map((layer, index) => (
     <LegendCard
       key={index}
       layerId={layer?.attributes.arcgislayerId}
@@ -214,6 +223,7 @@ const Legends = () => {
       layerMappingId={layer.attributes.layerMappingId}
       layerShortDescription={layer.attributes.shortDescription}
       unit={layer.attributes.units}
+      selectedLayers={layers}
     />
   ))
 }

@@ -349,7 +349,7 @@ This filter requires the 'ps_country_iso_code_a2' to be set."
     (assoc :topic topic)
 
     (seq tag)
-    (assoc :tag tag)
+    (assoc :tag (map (comp str/lower-case str/trim) tag))
 
     (seq incCountsForTags)
     (assoc :tags-to-count incCountsForTags)

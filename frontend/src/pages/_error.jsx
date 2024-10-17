@@ -1,21 +1,37 @@
 import * as Sentry from '@sentry/nextjs'
+import { Button, Result } from 'antd'
 import Error from 'next/error'
+import { t } from '@lingui/macro'
+import { useRouter } from 'next/router'
+import { loadCatalog } from '../translations/utils'
 
 const CustomErrorComponent = (props) => {
+  const router = useRouter()
+
   return (
     <div style={{ background: 'white' }}>
-      <Error statusCode={props.statusCode} />
+      <Result
+        status="404"
+        title="404"
+        subTitle={t`Sorry, the page you visited does not exist.`}
+        extra={
+          <Button type="primary" onClick={() => router.push('/')}>
+            {t`Back Home`}
+          </Button>
+        }
+      />
     </div>
   )
 }
 
 CustomErrorComponent.getInitialProps = async (contextData) => {
-  // In case this is running in a serverless function, await this in order to give Sentry
-  // time to send the error before the lambda exits
   await Sentry.captureUnderscoreErrorException(contextData)
 
-  // This will contain the status code of the response
-  return Error.getInitialProps(contextData)
+  const errorInitialProps = await Error.getInitialProps(contextData)
+
+  const i18n = await loadCatalog(contextData.locale)
+
+  return { ...errorInitialProps, i18n }
 }
 
 export default CustomErrorComponent

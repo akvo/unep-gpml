@@ -209,7 +209,7 @@ const detailPolicy = [
   },
   {
     key: 'status',
-    name: 'Status',
+    name: 'Legislation Status',
     value: 'status',
     type: 'name',
   },

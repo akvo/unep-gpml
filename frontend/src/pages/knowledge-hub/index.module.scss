@@ -2,7 +2,9 @@
 
 .knowledgeHub {
   display: flex;
-
+  @media screen and (max-width: $bpMobile) {
+    flex-direction: column;
+  }
   :global {
     .filter-sidebar {
       background: #f5f7ff;
@@ -12,6 +14,9 @@
         width: 350px;
         min-width: 350px;
         min-height: calc(100vh - 300px);
+        .filters {
+          width: 330px;
+        }
       }
 
       .src {
@@ -33,18 +38,67 @@
         top: 20px;
       }
 
-      .section {
-        margin-top: 15px;
-
-        .h-xs {
-          margin-bottom: 10px;
-        }
-
-        .ant-select {
-          border: 1px solid #ccc;
-          width: 100%;
+      .ant-collapse {
+        border: none;
+        background-color: transparent;
+        .ant-collapse-item {
+          border: none;
+          margin-top: 10px;
+          .ant-collapse-header {
+            background-color: transparent;
+            padding: 0;
+            position: relative;
+            border: none;
+            margin-bottom: 5px;
+            .ant-collapse-expand-icon {
+              position: absolute;
+              right: -10px;
+            }
+          }
+          .ant-collapse-content {
+            border: none;
+            background-color: transparent;
+            padding: 0;
+            margin: 0;
+            .ant-collapse-content-box {
+              padding: 0;
+            }
+          }
         }
       }
+      .h-xs {
+        margin-bottom: 10px;
+      }
+
+      .ant-select {
+        border: 1px solid #ccc;
+        width: 100%;
+        .ant-select-selection-item {
+          background-color: #aca4ff;
+          color: #1a1826;
+          font-weight: bold;
+          border-radius: 20px;
+          .ant-select-selection-item-remove {
+            color: #1a1826;
+            opacity: 0.5;
+            font-weight: bold;
+            svg {
+              path {
+                stroke: #fff !important;
+                stroke-width: 5 !important;
+              }
+            }
+          }
+        }
+      }
+      .ant-select.ant-select-sm:not(.ant-select-customize-input)
+        .ant-select-selector {
+        padding: 4px 7px;
+        min-height: 40px;
+      }
+      // .section {
+      //   margin-top: 15px;
+      // }
 
       .filters {
         display: flex;
@@ -61,6 +115,7 @@
           font-weight: 600;
           cursor: pointer;
           transition: all 0.12s ease-out;
+          color: inherit;
 
           &:hover {
             background-color: $primaryPurple3;
@@ -77,9 +132,11 @@
         }
       }
     }
+
     .content {
       position: relative;
       width: 100%;
+
       .no-results {
         width: 100%;
         display: flex;
@@ -87,8 +144,10 @@
         justify-content: center;
         margin-top: calc(50vh - 70px);
       }
+
       .sorting {
         margin: 25px 0 5px 20px;
+
         a {
           color: $primaryDarkBlue4 !important;
           font-family: $ff1;
@@ -96,19 +155,26 @@
         }
       }
     }
+
     .loading {
       position: absolute;
       width: 100%;
       height: 100%;
       display: flex;
-      // align-items: center;
+      top: 0;
       justify-content: center;
       z-index: 2;
       background-color: rgba(255, 255, 255, 0.75);
+
       .ant-spin {
-        margin-top: calc(50vh - 100px);
+        // margin-top: calc(50vh - 100px);
+        @media screen and (min-width: $bpMobile) {
+          position: fixed;
+          top: calc(50vh - 100px);
+        }
       }
     }
+
     .results {
       display: flex;
       flex-wrap: wrap;
@@ -116,6 +182,11 @@
 
       .resource-card {
         margin: 15px 0 0 15px;
+        @media screen and (max-width: $bpMobile) {
+          margin: 10px 0 0 12px;
+          width: calc(50vw - 20px);
+          overflow: hidden;
+        }
       }
     }
 

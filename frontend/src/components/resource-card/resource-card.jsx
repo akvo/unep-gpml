@@ -3,7 +3,7 @@ import Image from 'next/image'
 import styles from './style.module.scss'
 import { BookmarkIconProper, Like, badges } from '../icons'
 import { useState } from 'react'
-import { Skeleton, Tooltip } from 'antd'
+import { Dropdown, Menu, Skeleton, Tooltip } from 'antd'
 import { t } from '@lingui/macro'
 import { getBaseUrl } from '../../utils/misc'
 
@@ -15,6 +15,7 @@ const ResourceCard = ({ item, bookmarked, onBookmark, onClick }) => {
     onClick({ e, item })
   }
   const hasMeta = item?.incBadges?.length > 0 || item?.likes > 0
+
   return (
     <div
       className={classNames(styles.resourceCard, 'resource-card', {
