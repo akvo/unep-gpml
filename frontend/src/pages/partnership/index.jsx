@@ -89,7 +89,6 @@ function Partnership({ isAuthenticated }) {
       router.push('/partnership?submitted=true')
       try {
         let sendData = { ...data }
-        delete sendData.program
         const res = await createOrg(sendData)
         if ([200, 201].includes(res.status)) {
           await updateProfile(res.data.org, values.type)
@@ -241,7 +240,6 @@ function Partnership({ isAuthenticated }) {
         if (isAuthenticated && profile && Object.keys(profile).length > 0) {
           try {
             let sendData = { ...data }
-            delete sendData.program
             const res = await createOrg(sendData)
             if ([200, 201].includes(res.status)) {
               await updateProfile(res.data.org, values.type)
