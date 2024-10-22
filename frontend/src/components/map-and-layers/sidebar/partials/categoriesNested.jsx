@@ -42,12 +42,14 @@ const CategoriesNested = ({ categories }) => {
   }
 
   return (
-    <Sider breakpoint="lg" collapsedWidth="0" width={360}>
+    <Sider
+      breakpoint="lg"
+      collapsedWidth="0"
+      style={{ overflow: 'auto' }}
+      width={360}
+    >
       <div className="caps-heading-s">Topics</div>
-      <Menu
-        defaultSelectedKeys={['1']}
-        style={{ overflow: 'auto', maxHeight: '100%' }}
-      >
+      <Menu defaultSelectedKeys={['1']} style={{ maxHeight: '100%' }}>
         {categories.map((category) => (
           <div key={category.attributes.categoryId}>
             <Menu.Item
