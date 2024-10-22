@@ -76,6 +76,7 @@ const Subcategories = ({ subcategories, layers, loading }) => {
           <Panel
             key={subcategory.attributes.subcategoryId}
             header={subcategory.attributes.subcategoryName}
+            style={{overflow:"auto"}}
           >
             {filteredLayers
               .slice()
