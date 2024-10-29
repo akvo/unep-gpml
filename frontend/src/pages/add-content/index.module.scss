@@ -1,0 +1,97 @@
+@import '../../styles/vars.scss';
+
+.addContentForm {
+    padding: 80px 0px;
+
+    :global {
+        .title {
+            font-size: 48px;
+            font-weight: 700;
+            color: $primaryDarkBlueText;
+        }
+
+        .form-description {
+            font-size: 16px;
+            line-height: 26px;
+            color: black;
+
+            p {
+                padding-bottom: 5px;
+            }
+        }
+
+        .form-container {
+            padding: 20px 0px;
+
+            h4 {
+                color: $primaryDarkBlueText;
+                font-size: 24px;
+                padding-bottom: 10px;
+            }
+
+        }
+
+        .ant-card {
+
+            .ant-form-item {
+                flex-direction: column;
+            }
+
+            .ant-card-body {
+                padding: 0px;
+            }
+
+
+            .ant-upload-drag {
+                background-color: white;
+                border-width: 2px;
+                border-radius: 12px;
+                border-color: $primaryDarkBlue2;
+                padding: 10px;
+
+                .ant-upload-drag-icon {
+                    margin-bottom: 10px;
+                }
+
+                .ant-upload-text {
+                    color: $primaryDarkBlue3 !important;
+                }
+
+                .add-btn {
+                    padding: 10px;
+                    border-radius: 12px;
+                    background-color: #e3e1ff;
+                    color: #5d53cc;
+                    display: inline-block;
+                    font-size: 14px;
+                    font-weight: 700;
+                    margin: 10px 0 0;
+                }
+            }
+
+            border: none;
+        }
+
+        .content-type-btn {
+            background-color: $primaryGrey;
+            border-color: $primaryGrey;
+            color: $primaryDarkBlueText;
+            border-radius: 8px;
+
+            &:hover {
+                border-color: $primaryPurple;
+            }
+
+            &.selected {
+                background-color: $primaryPurple;
+                color: white;
+            }
+
+            &:active {
+                background-color: $primaryPurple;
+                color: white;
+                border-color: $primaryPurple;
+            }
+        }
+    }
+}
