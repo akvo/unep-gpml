@@ -10,6 +10,7 @@ import {
   Select,
   Row,
   Col,
+  notification,
 } from 'antd'
 import styles from './index.module.scss'
 import { UploadFileIcon } from '../../components/icons'
@@ -18,6 +19,7 @@ import { Trans } from '@lingui/macro'
 import { UIStore } from '../../store'
 import DatePicker from 'antd/lib/date-picker'
 import moment from 'moment'
+import api from '../../utils/api'
 
 const { Dragger } = Upload
 const { Title } = Typography
@@ -49,7 +51,7 @@ const formConfigs = {
   Project: {
     rows: [
       [{ name: 'title', span: 24, required: true }],
-      [{ name: 'description', span: 24, required: true }],
+      [{ name: 'summary', span: 24, required: true }],
       [{ name: 'geoCoverageType', span: 24, required: true }],
       [
         { name: 'tags', span: 12, required: true },
@@ -69,7 +71,7 @@ const formConfigs = {
   Legislation: {
     rows: [
       [{ name: 'title', span: 24 }],
-      [{ name: 'description', span: 24 }],
+      [{ name: 'summary', span: 24 }],
       [{ name: 'geoCoverageType', span: 12 }],
       [
         { name: 'tags', span: 12 },
@@ -81,14 +83,36 @@ const formConfigs = {
   'Technical Resource': {
     rows: [
       [{ name: 'title', span: 24, required: true }],
-      [{ name: 'description', span: 24, required: true }],
+      [{ name: 'summary', span: 24, required: true }],
       [{ name: 'geoCoverageType', span: 12, required: true }],
       [
-        { name: 'lifecycleStage', span: 12 },
+        {
+          name: 'geoCoverageValueTransnational',
+          span: 12,
+          required: true,
+          dependsOn: {
+            field: 'geoCoverageType',
+            value: 'transnational',
+          },
+        },
+      ],
+      [
+        {
+          name: 'geoCoverageCountries',
+          span: 12,
+          required: true,
+          dependsOn: {
+            field: 'geoCoverageType',
+            value: 'national',
+          },
+        },
+      ],
+      [
+        { name: 'lifecycleStage', span: 12, required: true },
         { name: 'tags', span: 12, required: true },
       ],
       [
-        { name: 'photo', span: 12 },
+        { name: 'photo', span: 12, required: true },
         { name: 'thumbnail', span: 12 },
       ],
       [
@@ -98,13 +122,54 @@ const formConfigs = {
       [{ name: 'publicationYear', span: 12 }],
     ],
   },
+  'Financing Resource': {
+    rows: [
+      [{ name: 'title', span: 24, required: true }],
+      [{ name: 'summary', span: 24, required: true }],
+      [{ name: 'geoCoverageType', span: 12, required: true }],
+      [
+        {
+          name: 'geoCoverageValueTransnational',
+          span: 12,
+          required: true,
+          dependsOn: {
+            field: 'geoCoverageType',
+            value: 'transnational',
+          },
+        },
+      ],
+      [
+        {
+          name: 'geoCoverageCountries',
+          span: 12,
+          required: true,
+          dependsOn: {
+            field: 'geoCoverageType',
+            value: 'national',
+          },
+        },
+      ],
+      [
+        { name: 'lifecycleStage', span: 12, required: true },
+        { name: 'tags', span: 12, required: true },
+      ],
+      [
+        { name: 'photo', span: 12, required: true },
+        { name: 'thumbnail', span: 12 },
+      ],
+      [
+        { name: 'owner', span: 12, required: true },
+        { name: 'partners', span: 12 },
+      ],
+    ],
+  },
 }
 
 // Default configuration
 const defaultConfig = {
   rows: [
     [{ name: 'title', span: 24, required: true }],
-    [{ name: 'description', span: 24, required: true }],
+    [{ name: 'summary', span: 24, required: true }],
     [{ name: 'geoCoverageType', span: 12, required: true }],
     [
       { name: 'tags', span: 12, required: true },
@@ -116,7 +181,11 @@ const defaultConfig = {
 
 // Select options
 const selectOptions = {
-  geoCoverageType: ['Global', 'Transnational', 'National'],
+  geoCoverageType: [
+    { key: 'Global', value: 'global' },
+    { key: 'Transnational', value: 'transnational' },
+    { key: 'National', value: 'national' },
+  ],
   lifecycleStage: ['Design', 'Implementation', 'Evaluation'],
   tags: ['Health', 'Technology', 'Environment'],
 }
@@ -135,7 +204,7 @@ const getSelectOptions = (storeData) => ({
   ],
 })
 
-const FormField = ({ name, input, meta, storeData }) => {
+const FormField = ({ name, input, meta, storeData, form }) => {
   const tags = Object.keys(getSelectOptions(storeData).tags)
     .map((k) => getSelectOptions(storeData).tags[k])
     .flat()
@@ -145,14 +214,14 @@ const FormField = ({ name, input, meta, storeData }) => {
   const renderFieldContent = () => {
     switch (name) {
       case 'title':
-      case 'description':
+      case 'summary':
         return (
           <FormLabel
             label={name.charAt(0).toUpperCase() + name.slice(1)}
             htmlFor={name}
             meta={meta}
           >
-            {name === 'description' ? (
+            {name === 'summary' ? (
               <Input.TextArea
                 {...input}
                 rows={4}
@@ -198,7 +267,11 @@ const FormField = ({ name, input, meta, storeData }) => {
               size="small"
               value={input.value || undefined}
               allowClear
-              onChange={input.onChange}
+              onChange={(value) => {
+                input.onChange(value)
+                form.change('geoCoverageValueTransnational', undefined)
+                form.change('geoCoverageCountries', undefined)
+              }}
               onBlur={input.onBlur}
               placeholder="Select Geo-coverage type"
               className={
@@ -206,11 +279,86 @@ const FormField = ({ name, input, meta, storeData }) => {
               }
             >
               {selectOptions.geoCoverageType.map((opt) => (
-                <Option key={opt} value={opt}>
-                  <Trans>{opt}</Trans>
+                <Option key={opt.value} value={opt.value}>
+                  <Trans>{opt.key}</Trans>
                 </Option>
               ))}
             </Select>
+            {meta.touched && meta.error && (
+              <p
+                color="error"
+                className="error transitionDiv"
+                style={
+                  meta.touched && meta.error ? mountedStyle : unmountedStyle
+                }
+              >
+                {meta.error}
+              </p>
+            )}
+          </FormLabel>
+        )
+
+      case 'geoCoverageValueTransnational':
+        return (
+          <FormLabel
+            label="GEO COVERAGE (Transnational)"
+            htmlFor="geoCoverageValueTransnational"
+            meta={meta}
+          >
+            <Select
+              {...input}
+              size="small"
+              value={input.value || undefined}
+              allowClear
+              placeholder="Select transnational "
+              className={
+                meta.touched && !meta.valid ? 'ant-input-status-error' : ''
+              }
+            >
+              {storeData.transnationalOptions.map((opt) => (
+                <Option key={opt.id} value={opt.id}>
+                  {opt.name}
+                </Option>
+              ))}
+            </Select>{' '}
+            {meta.touched && meta.error && (
+              <p
+                color="error"
+                className="error transitionDiv"
+                style={
+                  meta.touched && meta.error ? mountedStyle : unmountedStyle
+                }
+              >
+                {meta.error}
+              </p>
+            )}
+          </FormLabel>
+        )
+
+      case 'geoCoverageCountries':
+        return (
+          <FormLabel
+            label="GEO COVERAGE (Countries)"
+            htmlFor="geoCoverageCountries"
+            meta={meta}
+          >
+            <Select
+              {...input}
+              size="small"
+              mode="multiple"
+              value={input.value || []}
+              allowClear
+              placeholder="Select countries"
+              className={
+                meta.touched && !meta.valid ? 'ant-input-status-error' : ''
+              }
+            >
+              {storeData.countries.map((country) => (
+                <Option key={country.id} value={country.id}>
+                  {country.name}
+                </Option>
+              ))}
+            </Select>{' '}
             {meta.touched && meta.error && (
               <p
                 color="error"
@@ -263,7 +411,11 @@ const FormField = ({ name, input, meta, storeData }) => {
 
       case 'lifecycleStage':
         return (
-          <FormLabel label="Lifecycle Stage" htmlFor="lifecycleStage">
+          <FormLabel
+            label="Lifecycle Stage"
+            htmlFor="lifecycleStage"
+            meta={meta}
+          >
             <Select
               {...input}
               size="small"
@@ -282,13 +434,24 @@ const FormField = ({ name, input, meta, storeData }) => {
                   <Trans>{opt.tag}</Trans>
                 </Option>
               ))}
-            </Select>
+            </Select>{' '}
+            {meta.touched && meta.error && (
+              <p
+                color="error"
+                className="error transitionDiv"
+                style={
+                  meta.touched && meta.error ? mountedStyle : unmountedStyle
+                }
+              >
+                {meta.error}
+              </p>
+            )}
           </FormLabel>
         )
 
       case 'photo':
         return (
-          <FormLabel label="Photo" htmlFor="photo">
+          <FormLabel label="Photo" htmlFor="photo" meta={meta}>
             <Dragger
               {...input}
               beforeUpload={() => false}
@@ -301,7 +464,18 @@ const FormField = ({ name, input, meta, storeData }) => {
               </p>
               <p className="ant-upload-text">Accepts .jpg and .png</p>
               <p className="add-btn">Add a File</p>
-            </Dragger>
+            </Dragger>{' '}
+            {meta.touched && meta.error && (
+              <p
+                color="error"
+                className="error transitionDiv"
+                style={
+                  meta.touched && meta.error ? mountedStyle : unmountedStyle
+                }
+              >
+                {meta.error}
+              </p>
+            )}
           </FormLabel>
         )
 
@@ -310,6 +484,8 @@ const FormField = ({ name, input, meta, storeData }) => {
           <FormLabel
             label="Cover Thumbnail -  portrait format 300x400"
             htmlFor="thumbnail"
+            meta={meta}
+            isOptional={true}
           >
             <Dragger
               {...input}
@@ -423,35 +599,51 @@ const FormField = ({ name, input, meta, storeData }) => {
   return <div className="mb-4">{renderFieldContent()}</div>
 }
 
-const FormFields = ({ selectedType, storeData }) => {
+const FormFields = ({ selectedType, storeData, form }) => {
   const config = formConfigs[selectedType] || defaultConfig
 
   return (
     <div className="space-y-4">
-      {config.rows.map((row, rowIndex) => (
-        <Row key={rowIndex} gutter={16}>
-          {row.map(({ name, span }) => (
-            <Col key={name} span={span}>
-              <Field name={name}>
-                {({ input, meta }) => (
-                  <FormField
-                    name={name}
-                    input={input}
-                    meta={meta}
-                    storeData={storeData}
-                  />
-                )}
-              </Field>
-            </Col>
-          ))}
-        </Row>
-      ))}
+      <Field name="geoCoverageType">
+        {({ input: { value: geoType } }) =>
+          config.rows.map((row, rowIndex) => (
+            <Row key={rowIndex} gutter={16}>
+              {row.map(({ name, span }) => {
+                if (
+                  (name === 'geoCoverageValueTransnational' &&
+                    geoType !== 'transnational') ||
+                  (name === 'geoCoverageCountries' && geoType !== 'national')
+                ) {
+                  return null
+                }
+
+                return (
+                  <Col key={name} span={span}>
+                    <Field name={name}>
+                      {({ input, meta }) => (
+                        <FormField
+                          name={name}
+                          input={input}
+                          meta={meta}
+                          storeData={storeData}
+                          form={form}
+                        />
+                      )}
+                    </Field>
+                  </Col>
+                )
+              })}
+            </Row>
+          ))
+        }
+      </Field>
     </div>
   )
 }
 
 const DynamicContentForm = () => {
   const [selectedType, setSelectedType] = useState(null)
+  const [loading, setLoading] = useState(false)
 
   const storeData = UIStore.useState((s) => ({
     stakeholders: s.stakeholders?.stakeholders,
@@ -477,8 +669,62 @@ const DynamicContentForm = () => {
     relatedResource: s.relatedResource,
   }))
 
-  const onSubmit = (values) => {
-    console.log('Submitted values:', values)
+  const onSubmit = (values, form) => {
+    setLoading(true)
+    const cleanValues = Object.fromEntries(
+      Object.entries(values).filter(
+        ([_, value]) => value !== undefined && value !== null && value !== ''
+      )
+    )
+
+    const entityConnections = [
+      ...(values.owner?.map((id) => ({ role: 'owner', entity: id })) || []),
+      ...(values.partners?.map((id) => ({ role: 'partner', entity: id })) ||
+        []),
+    ]
+
+    const storeTags = Object.keys(getSelectOptions(storeData).tags)
+      .map((k) => getSelectOptions(storeData).tags[k])
+      .flat()
+
+    const formattedTags = [...values.tags, ...values.lifecycleStage]?.map(
+      (x) => ({
+        id: x,
+        ...(storeTags.find((t) => t.id === x) && {
+          tag: storeTags.find((t) => t.id === x)?.tag,
+        }),
+      })
+    )
+
+    const data = {
+      ...cleanValues,
+      resourceType: selectedType,
+      entityConnections,
+      source: 'gpml',
+      tags: formattedTags,
+      ...(cleanValues.geoCoverageValueTransnational && {
+        geoCoverageValueTransnational: [
+          cleanValues.geoCoverageValueTransnational,
+        ],
+      }),
+      ...(cleanValues.geoCoverageCountries && {
+        geoCoverageCountries: cleanValues.geoCoverageCountries,
+      }),
+      language: 'en',
+    }
+    api
+      .post('/resource', data)
+      .then((res) => {
+        notification.success({ message: 'Resource successfully created' })
+        form.reset()
+        setSelectedType(null)
+      })
+      .catch(() => {
+        notification.error({ message: 'An error occured' })
+      })
+      .finally(() => {
+        setLoading(false)
+      })
   }
 
   const validate = (values) => {
@@ -487,7 +733,15 @@ const DynamicContentForm = () => {
     if (!config) return errors
 
     config.rows.flat().forEach((field) => {
-      if (field.required && !values[field.name]) {
+      if (field.dependsOn) {
+        if (
+          values[field.dependsOn.field] === field.dependsOn.value &&
+          field.required &&
+          !values[field.name]
+        ) {
+          errors[field.name] = 'Required'
+        }
+      } else if (field.required && !values[field.name]) {
         errors[field.name] = 'Required'
       }
     })
@@ -499,10 +753,10 @@ const DynamicContentForm = () => {
     <div className={styles.addContentForm}>
       <div className="container">
         <Form
-          onSubmit={onSubmit}
+          onSubmit={(values, form) => onSubmit(values, form)}
           validate={validate}
           initialValues={{}}
-          render={({ handleSubmit }) => (
+          render={({ handleSubmit, form }) => (
             <form onSubmit={handleSubmit}>
               <Title className="title" level={3}>
                 Add Content
@@ -558,13 +812,14 @@ const DynamicContentForm = () => {
                     <FormFields
                       selectedType={selectedType}
                       storeData={storeData}
+                      form={form}
                     />
                     <Button
-                      type="primary"
                       htmlType="submit"
-                      className="w-full mt-6"
+                      loading={loading}
+                      disabled={loading}
                     >
-                      Submit
+                      Save & Publish
                     </Button>
                   </Card>
                 )}
