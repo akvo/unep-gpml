@@ -27,6 +27,7 @@
                 color: $primaryDarkBlueText;
                 font-size: 24px;
                 padding-bottom: 10px;
+                font-weight: 700;
             }
 
         }
@@ -39,6 +40,12 @@
 
             .ant-card-body {
                 padding: 0px;
+
+                .form-title {
+                    color: $primaryDarkBlueText;
+                    font-size: 24px;
+                    font-weight: 700;
+                }
             }
 
 
@@ -66,6 +73,18 @@
                     font-size: 14px;
                     font-weight: 700;
                     margin: 10px 0 0;
+                }
+            }
+
+            .error {
+                color: $systemError;
+            }
+
+            .ant-form-item-label {
+                label {
+                    &::after {
+                        content: none;
+                    }
                 }
             }
 

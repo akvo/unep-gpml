@@ -11,15 +11,25 @@ import {
   Row,
   Col,
 } from 'antd'
-import { UploadOutlined } from '@ant-design/icons'
 import styles from './index.module.scss'
 import { UploadFileIcon } from '../../components/icons'
 import FormLabel from '../../components/form-label'
 import { Trans } from '@lingui/macro'
+import { UIStore } from '../../store'
+import DatePicker from 'antd/lib/date-picker'
+import moment from 'moment'
 
 const { Dragger } = Upload
 const { Title } = Typography
 const { Option } = Select
+
+const mountedStyle = {
+  animation: 'inAnimation 250ms ease-in',
+}
+const unmountedStyle = {
+  animation: 'outAnimation 270ms ease-out',
+  animationFillMode: 'forwards',
+}
 
 // Content Types
 const contentTypes = [
@@ -37,40 +47,70 @@ const contentTypes = [
 // Form configurations with layout
 const formConfigs = {
   Project: {
-    fields: [
-      { name: 'title', layout: 'full' },
-      { name: 'description', layout: 'full' },
-      { name: 'geoCoverageType', layout: 'full' },
-      { name: 'tags', layout: 'half' },
-      { name: 'lifecycleStage', layout: 'half' },
-      { name: 'photo', layout: 'half' },
-      { name: 'thumbnail', layout: 'half' },
-      { name: 'owner', layout: 'half' },
-      { name: 'partners', layout: 'half' },
-      { name: 'publicationYear', layout: 'half' },
+    rows: [
+      [{ name: 'title', span: 24, required: true }],
+      [{ name: 'description', span: 24, required: true }],
+      [{ name: 'geoCoverageType', span: 24, required: true }],
+      [
+        { name: 'tags', span: 12, required: true },
+        { name: 'lifecycleStage', span: 12 },
+      ],
+      [
+        { name: 'photo', span: 12 },
+        { name: 'thumbnail', span: 12 },
+      ],
+      [
+        { name: 'owner', span: 12, required: true },
+        { name: 'partners', span: 12 },
+      ],
+      [{ name: 'publicationYear', span: 12 }],
     ],
   },
   Legislation: {
-    fields: [
-      { name: 'title', layout: 'half' },
-      { name: 'geoCoverageType', layout: 'half' },
-      { name: 'description', layout: 'full' },
-      { name: 'tags', layout: 'half' },
-      { name: 'lifecycleStage', layout: 'half' },
-      { name: 'photo', layout: 'full' },
+    rows: [
+      [{ name: 'title', span: 24 }],
+      [{ name: 'description', span: 24 }],
+      [{ name: 'geoCoverageType', span: 12 }],
+      [
+        { name: 'tags', span: 12 },
+        { name: 'lifecycleStage', span: 12 },
+      ],
+      [{ name: 'photo', span: 12 }],
     ],
   },
-  // Add other content types as needed
+  'Technical Resource': {
+    rows: [
+      [{ name: 'title', span: 24, required: true }],
+      [{ name: 'description', span: 24, required: true }],
+      [{ name: 'geoCoverageType', span: 12, required: true }],
+      [
+        { name: 'lifecycleStage', span: 12 },
+        { name: 'tags', span: 12, required: true },
+      ],
+      [
+        { name: 'photo', span: 12 },
+        { name: 'thumbnail', span: 12 },
+      ],
+      [
+        { name: 'owner', span: 12, required: true },
+        { name: 'partners', span: 12 },
+      ],
+      [{ name: 'publicationYear', span: 12 }],
+    ],
+  },
 }
 
 // Default configuration
 const defaultConfig = {
-  fields: [
-    { name: 'title', layout: 'half' },
-    { name: 'geoCoverageType', layout: 'half' },
-    { name: 'description', layout: 'full' },
-    { name: 'tags', layout: 'full' },
-    { name: 'photo', layout: 'full' },
+  rows: [
+    [{ name: 'title', span: 24, required: true }],
+    [{ name: 'description', span: 24, required: true }],
+    [{ name: 'geoCoverageType', span: 12, required: true }],
+    [
+      { name: 'tags', span: 12, required: true },
+      { name: 'lifecycleStage', span: 12 },
+    ],
+    [{ name: 'photo', span: 12 }],
   ],
 }
 
@@ -81,7 +121,27 @@ const selectOptions = {
   tags: ['Health', 'Technology', 'Environment'],
 }
 
-const FormField = ({ name, input, meta }) => {
+const getSelectOptions = (storeData) => ({
+  geoCoverageType: [
+    ...(storeData.countries || []),
+    ...(storeData.regionOptions || []),
+    ...(storeData.transnationalOptions || []),
+  ],
+  lifecycleStage: ['Design', 'Implementation', 'Evaluation'],
+  tags: storeData.tags || [],
+  owner: [
+    ...(storeData.organisations || []),
+    ...(storeData.nonMemberOrganisations || []),
+  ],
+})
+
+const FormField = ({ name, input, meta, storeData }) => {
+  const tags = Object.keys(getSelectOptions(storeData).tags)
+    .map((k) => getSelectOptions(storeData).tags[k])
+    .flat()
+
+  const entity = getSelectOptions(storeData).owner || []
+
   const renderFieldContent = () => {
     switch (name) {
       case 'title':
@@ -90,25 +150,57 @@ const FormField = ({ name, input, meta }) => {
           <FormLabel
             label={name.charAt(0).toUpperCase() + name.slice(1)}
             htmlFor={name}
+            meta={meta}
           >
             {name === 'description' ? (
-              <Input.TextArea {...input} rows={4} />
+              <Input.TextArea
+                {...input}
+                rows={4}
+                className={`${
+                  meta.touched && meta.error && !meta.valid
+                    ? 'ant-input-status-error'
+                    : ''
+                }`}
+              />
             ) : (
-              <Input {...input} />
+              <Input
+                {...input}
+                className={`${
+                  meta.touched && meta.error && !meta.valid
+                    ? 'ant-input-status-error'
+                    : ''
+                }`}
+              />
+            )}{' '}
+            {meta.touched && meta.error && (
+              <p
+                color="error"
+                className="error transitionDiv"
+                style={
+                  meta.touched && meta.error ? mountedStyle : unmountedStyle
+                }
+              >
+                {meta.error}
+              </p>
             )}
           </FormLabel>
         )
 
       case 'geoCoverageType':
         return (
-          <FormLabel label="Geo-coverage type" htmlFor="geoCoverageType">
+          <FormLabel
+            label="Geo-coverage type"
+            htmlFor="geoCoverageType"
+            meta={meta}
+          >
             <Select
               {...input}
               size="small"
-              value={input.value}
+              value={input.value || undefined}
               allowClear
               onChange={input.onChange}
               onBlur={input.onBlur}
+              placeholder="Select Geo-coverage type"
               className={
                 meta.touched && !meta.valid ? 'ant-input-status-error' : ''
               }
@@ -119,12 +211,23 @@ const FormField = ({ name, input, meta }) => {
                 </Option>
               ))}
             </Select>
+            {meta.touched && meta.error && (
+              <p
+                color="error"
+                className="error transitionDiv"
+                style={
+                  meta.touched && meta.error ? mountedStyle : unmountedStyle
+                }
+              >
+                {meta.error}
+              </p>
+            )}
           </FormLabel>
         )
 
       case 'tags':
         return (
-          <FormLabel label="Tags" htmlFor="tags">
+          <FormLabel label="Tags" htmlFor="tags" meta={meta}>
             <Select
               {...input}
               size="small"
@@ -138,12 +241,23 @@ const FormField = ({ name, input, meta }) => {
                 meta.touched && !meta.valid ? 'ant-input-status-error' : ''
               }
             >
-              {selectOptions.tags.map((opt) => (
-                <Option key={opt} value={opt}>
-                  <Trans>{opt}</Trans>
+              {tags.map((opt) => (
+                <Option key={opt.id} value={opt.id}>
+                  <Trans>{opt.tag}</Trans>
                 </Option>
               ))}
-            </Select>
+            </Select>{' '}
+            {meta.touched && meta.error && (
+              <p
+                color="error"
+                className="error transitionDiv"
+                style={
+                  meta.touched && meta.error ? mountedStyle : unmountedStyle
+                }
+              >
+                {meta.error}
+              </p>
+            )}
           </FormLabel>
         )
 
@@ -153,17 +267,19 @@ const FormField = ({ name, input, meta }) => {
             <Select
               {...input}
               size="small"
-              value={input.value}
+              value={input.value ? input.value : []}
               allowClear
+              mode="multiple"
+              placeholder="Select at least one"
               onChange={input.onChange}
               onBlur={input.onBlur}
               className={
                 meta.touched && !meta.valid ? 'ant-input-status-error' : ''
               }
             >
-              {selectOptions.lifecycleStage.map((opt) => (
-                <Option key={opt} value={opt}>
-                  <Trans>{opt}</Trans>
+              {tags.map((opt) => (
+                <Option key={opt.id} value={opt.id}>
+                  <Trans>{opt.tag}</Trans>
                 </Option>
               ))}
             </Select>
@@ -212,11 +328,11 @@ const FormField = ({ name, input, meta }) => {
         )
 
       case 'owner':
-      case 'partners':
         return (
           <FormLabel
             label={name.charAt(0).toUpperCase() + name.slice(1)}
             htmlFor={name}
+            meta={meta}
           >
             <Select
               {...input}
@@ -231,9 +347,39 @@ const FormField = ({ name, input, meta }) => {
                 meta.touched && !meta.valid ? 'ant-input-status-error' : ''
               }
             >
-              {['Option 1', 'Option 2', 'Option 3'].map((opt) => (
-                <Option key={opt} value={opt}>
-                  {opt}
+              {entity.map((opt) => (
+                <Option key={opt.id} value={opt.id}>
+                  {opt.name}
+                </Option>
+              ))}
+            </Select>
+          </FormLabel>
+        )
+
+      case 'partners':
+        return (
+          <FormLabel
+            label={name.charAt(0).toUpperCase() + name.slice(1)}
+            htmlFor={name}
+            isOptional={true}
+            meta={meta}
+          >
+            <Select
+              {...input}
+              size="small"
+              mode="multiple"
+              value={input.value ? input.value : []}
+              allowClear
+              onChange={input.onChange}
+              onBlur={input.onBlur}
+              placeholder={`Select ${name}`}
+              className={
+                meta.touched && !meta.valid ? 'ant-input-status-error' : ''
+              }
+            >
+              {entity.map((opt) => (
+                <Option key={opt.id} value={opt.id}>
+                  {opt.name}
                 </Option>
               ))}
             </Select>
@@ -243,7 +389,29 @@ const FormField = ({ name, input, meta }) => {
       case 'publicationYear':
         return (
           <FormLabel label="Publication Year" htmlFor="publicationYear">
-            <Input {...input} type="number" />
+            <DatePicker
+              {...input}
+              size="small"
+              picker="year"
+              className={
+                meta.touched && !meta.valid ? 'ant-input-status-error' : ''
+              }
+              placeholder="Select year"
+              value={input.value ? moment(input.value) : undefined}
+              onChange={(date) =>
+                input.onChange(date ? date.format('YYYY') : null)
+              }
+            />
+            {meta.touched && meta.error && (
+              <p
+                className="error transitionDiv"
+                style={
+                  meta.touched && meta.error ? mountedStyle : unmountedStyle
+                }
+              >
+                {meta.error}
+              </p>
+            )}
           </FormLabel>
         )
 
@@ -255,48 +423,23 @@ const FormField = ({ name, input, meta }) => {
   return <div className="mb-4">{renderFieldContent()}</div>
 }
 
-const FormFields = ({ selectedType }) => {
+const FormFields = ({ selectedType, storeData }) => {
   const config = formConfigs[selectedType] || defaultConfig
-
-  // Group fields into rows based on layout
-  const groupFieldsIntoRows = (fields) => {
-    const rows = []
-    let currentRow = []
-
-    fields.forEach((field) => {
-      if (field.layout === 'full') {
-        if (currentRow.length > 0) {
-          rows.push(currentRow)
-          currentRow = []
-        }
-        rows.push([field])
-      } else {
-        currentRow.push(field)
-        if (currentRow.length === 2) {
-          rows.push(currentRow)
-          currentRow = []
-        }
-      }
-    })
-
-    if (currentRow.length > 0) {
-      rows.push(currentRow)
-    }
-
-    return rows
-  }
-
-  const rows = groupFieldsIntoRows(config.fields)
 
   return (
     <div className="space-y-4">
-      {rows.map((row, rowIndex) => (
+      {config.rows.map((row, rowIndex) => (
         <Row key={rowIndex} gutter={16}>
-          {row.map(({ name, layout }) => (
-            <Col key={name} span={layout === 'half' ? 12 : 24}>
+          {row.map(({ name, span }) => (
+            <Col key={name} span={span}>
               <Field name={name}>
                 {({ input, meta }) => (
-                  <FormField name={name} input={input} meta={meta} />
+                  <FormField
+                    name={name}
+                    input={input}
+                    meta={meta}
+                    storeData={storeData}
+                  />
                 )}
               </Field>
             </Col>
@@ -310,14 +453,45 @@ const FormFields = ({ selectedType }) => {
 const DynamicContentForm = () => {
   const [selectedType, setSelectedType] = useState(null)
 
+  const storeData = UIStore.useState((s) => ({
+    stakeholders: s.stakeholders?.stakeholders,
+    countries: s.countries,
+    tags: s.tags,
+    regionOptions: s.regionOptions,
+    transnationalOptions: [
+      ...s.transnationalOptions,
+      { id: -1, type: 'transnational', name: 'Other', countries: [] },
+    ],
+    sectorOptions: s.sectorOptions,
+    organisationType: s.organisationType,
+    representativeGroup: s.representativeGroup,
+    mainContentType: s.mainContentType,
+    meaOptions: s.meaOptions,
+    nonMemberOrganisations: s.nonMemberOrganisations,
+    organisations: s.organisations,
+    profile: s.profile,
+    formStep: s.formStep,
+    formEdit: s.formEdit,
+    selectedMainContentType: s.selectedMainContentType,
+    currencies: s.currencies,
+    relatedResource: s.relatedResource,
+  }))
+
   const onSubmit = (values) => {
     console.log('Submitted values:', values)
   }
 
   const validate = (values) => {
+    const config = formConfigs[selectedType] || defaultConfig
     const errors = {}
-    if (!values.title) errors.title = 'Required'
-    if (!values.description) errors.description = 'Required'
+    if (!config) return errors
+
+    config.rows.flat().forEach((field) => {
+      if (field.required && !values[field.name]) {
+        errors[field.name] = 'Required'
+      }
+    })
+
     return errors
   }
 
@@ -378,7 +552,13 @@ const DynamicContentForm = () => {
 
                 {selectedType && (
                   <Card className="mt-8">
-                    <FormFields selectedType={selectedType} />
+                    <Title className="form-title" level={4}>
+                      All details of the technical resource
+                    </Title>
+                    <FormFields
+                      selectedType={selectedType}
+                      storeData={storeData}
+                    />
                     <Button
                       type="primary"
                       htmlType="submit"
