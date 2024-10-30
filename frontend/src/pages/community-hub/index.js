@@ -1,4 +1,4 @@
-import { Collapse, Dropdown, Input, Menu, Select, Spin } from 'antd'
+import { Button, Collapse, Dropdown, Input, Menu, Select, Spin } from 'antd'
 import kbStyles from '../knowledge-hub/index.module.scss'
 import { FilterToggle } from '../knowledge-hub'
 import { useEffect, useState } from 'react'
@@ -15,16 +15,11 @@ import Link from 'next/link'
 
 const itemsPerPage = 30
 
-const CommunityHub = ({
-  newResults,
-  hasMore,
-  offset,
-  isLoadMore,
-  setLoginVisible,
-  isAuthenticated,
-}) => {
+const CommunityHub = ({ setLoginVisible, isAuthenticated }) => {
   const [loading, setLoading] = useState(true)
   const [results, setResults] = useState([])
+  const [hasMore, setHasMore] = useState(true)
+  const [page, setPage] = useState(0)
   const [filters, setFilters] = useState({
     types: ['organisation', 'stakeholder'],
     country: [],
@@ -33,16 +28,10 @@ const CommunityHub = ({
     q: '',
   })
   const [collapseKeys, setCollapseKeys] = useState(['p1', 'p2'])
-  const router = useRouter()
-  const selectedTypes = ['organisation', 'stakeholder']
-  const selectedGeoCountryGroup = router.query.geo
-    ? router.query.geo.split(',')
-    : []
   const { countries, featuredOptions } = UIStore.useState((s) => ({
     countries: s.countries,
     featuredOptions: s.featuredOptions,
   }))
-  console.log(featuredOptions)
   const types = [
     { name: 'Organisations', value: 'organisation' },
     { name: 'Individuals', value: 'stakeholder' },
@@ -62,7 +51,7 @@ const CommunityHub = ({
       const newTypes = _filters.types.includes(type)
         ? _filters.types.filter((t) => t !== type)
         : [..._filters.types, type]
-      return { ...filters, types: newTypes, limit: itemsPerPage }
+      return { ...filters, types: newTypes }
     })
   }
 
@@ -71,7 +60,7 @@ const CommunityHub = ({
       const newGeoGroups = _filters.transnational.includes(transId)
         ? _filters.transnational.filter((g) => g !== transId)
         : [..._filters.transnational, transId]
-      return { ...filters, transnational: newGeoGroups, limit: itemsPerPage }
+      return { ...filters, transnational: newGeoGroups }
     })
   }
 
@@ -85,6 +74,7 @@ const CommunityHub = ({
     api.get(`/community?limit=${itemsPerPage}`).then((d) => {
       setResults(d.data.results)
       setLoading(false)
+      setHasMore(d.data.results.length === itemsPerPage)
     })
     const onresize = () => {
       if (window.innerWidth <= 768) {
@@ -104,29 +94,43 @@ const CommunityHub = ({
     setCollapseKeys(v)
   }
   useEffect(() => {
-    const $filters = { ...filters }
-    if (filters.types.length === 1) {
-      $filters.networkType = $filters.types[0]
-    }
-    $filters.transnational = $filters.transnational.join(',')
-    $filters.country = $filters.country.join(',')
-    delete $filters.types
+    const $filters = formatFilters(filters)
+    $filters.page = 0
     setLoading(true)
     api.get(`/community`, $filters).then((d) => {
       setResults(d.data.results)
       setLoading(false)
+      setHasMore(d.data.results.length === itemsPerPage)
     })
   }, [filters])
 
   let tmid
   const handleSearchChange = (e) => {
-    console.log(e.target.value)
     clearTimeout(tmid)
     tmid = setTimeout(() => {
       setFilters((_filters) => {
         return { ...filters, q: e.target.value }
       })
     }, 1000)
+  }
+
+  const loadMore = () => {
+    setPage((_page) => {
+      const $filters = formatFilters(filters)
+      $filters.page = _page + 1
+      setLoading(true)
+      api.get(`/community`, $filters).then((d) => {
+        setResults((_results) => {
+          return [..._results, ...d.data.results]
+        })
+        setLoading(false)
+        setHasMore(d.data.results.length === itemsPerPage)
+      })
+      return _page + 1
+    })
+    // setFilters((_filters) => {
+    //   return { ...filters, page: _filters.page + 1 }
+    // })
   }
   return (
     <div className={kbStyles.knowledgeHub}>
@@ -246,6 +250,18 @@ const CommunityHub = ({
       /> */}
     </div>
   )
+}
+
+const formatFilters = (filters) => {
+  const $filters = { ...filters }
+  if (filters.types.length === 1) {
+    $filters.networkType = $filters.types[0]
+  }
+  $filters.transnational = $filters.transnational.join(',')
+  $filters.country = $filters.country.join(',')
+  delete $filters.types
+
+  return $filters
 }
 
 export async function getServerSideProps(context) {
