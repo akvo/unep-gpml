@@ -1,0 +1,23 @@
+{
+    "collectionName": "components_value_per_country_value_per_countries",
+    "info": {
+      "displayName": "ValuePerCountry"
+    },
+    "options": {},
+    "attributes": {
+      "country": {
+        "type": "relation",
+        "relation": "oneToOne",
+        "target": "api::country.country"
+      },
+      "CountryName": {
+        "type": "string"
+      },
+      "Value": {
+        "type": "decimal"
+      },
+      "Year": {
+        "type": "string"
+      }
+    }
+  }
