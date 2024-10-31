@@ -4,6 +4,7 @@ import { Modal } from 'antd'
 import styles from './modal.module.scss'
 import DetailsView from './view'
 import bodyScrollLock from './scroll-utils'
+import { CloseIcon } from '../../components/icons'
 
 const DetailModal = ({
   match,
@@ -25,7 +26,9 @@ const DetailModal = ({
         setVisible(false)
         bodyScrollLock.disable()
       }}
+      closable
       className={styles.detailModal}
+      closeIcon={<CloseIcon />}
       wrapClassName="detail-modal-wrapper"
       destroyOnClose={true}
       centered={desktopViewport ? false : true}

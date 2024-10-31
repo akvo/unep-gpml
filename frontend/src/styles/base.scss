@@ -910,7 +910,16 @@ ul {
     border: none;
   }
   .ant-modal-close {
-    display: none;
+    .ant-modal-close-x {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    svg {
+      path {
+        stroke: $primaryDarkBlue4;
+      }
+    }
   }
   .ant-modal-footer {
     border: none;

@@ -61,16 +61,13 @@
         position: sticky;
         top: 0;
         border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-        padding: 40px 40px 15px 40px !important;
+        padding: 30px 40px 15px 40px !important;
         background-color: #fff;
         z-index: 10;
         border-radius: 10px 10px 0 0;
         font-weight: 500;
         @media (max-width: 600px) {
           padding: 30px 30px calc(30px - 14px) 30px !important;
-        }
-        .close-modal-button {
-          display: none;
         }
         .tool-buttons {
           display: flex;
