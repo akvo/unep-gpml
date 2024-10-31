@@ -19,6 +19,7 @@ const LegendCard = ({
   layerShortDescription,
   unit,
   selectedLayers,
+  hideNoData,
 }) => {
   const [tooltipPlacement, setTooltipPlacement] = useState('right')
   const legends = useLegends(layerId, arcgisMapId, layerMappingId)
@@ -60,22 +61,12 @@ const LegendCard = ({
         border: '1px solid black',
       },
     }
-    const hideNoData = [
-      '33f138dc9da943fbb0d9905267d5ce8e',
-      'c480f87fa33a4264b5aac7739dd93af6',
-      'ba06282496e548a1adbdff5df17e770e',
-      '5432cebd4d8f416487b6f90ddf532068',
-      '2d6805cc5ea2493689656902d26f1ea6',
-      'f4e666cb317a4087baa382f908314bd3',
-      '9ad32b018256498985a7e09393b349d9',
-      '3c59a0aa4eda462fb7f91a753d6fa621',
-    ]
 
     const allLegendItems = classBreakInfos
-      ? !hideNoData.find((l) => l === arcgisMapId)
+      ? !hideNoData
         ? [noDataLegendItem, ...classBreakInfos]
         : [...classBreakInfos]
-      : !hideNoData.find((l) => l === arcgisMapId)
+      : !hideNoData
       ? [noDataLegendItem]
       : []
     return allLegendItems?.map(({ label, symbol }) => {
@@ -93,6 +84,7 @@ const LegendCard = ({
 
       return (
         <div
+          key={label}
           style={{
             width: '100%',
             display: 'flex',
@@ -224,6 +216,7 @@ const Legends = () => {
       layerShortDescription={layer.attributes.shortDescription}
       unit={layer.attributes.units}
       selectedLayers={layers}
+      hideNoData={layer.attributes.HideNoData}
     />
   ))
 }
