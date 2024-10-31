@@ -1,15 +1,15 @@
 'use strict';
 
-const { addAllCountries } = require('../services/addAllCountries');
+const { populateCountriesTable } = require('../services/populateCountriesTable');
 
 const { createCoreController } = require('@strapi/strapi').factories;
 
 module.exports = createCoreController('api::country.country');
 
-
+// Add countries to countries table
 module.exports = {
     async addCountries(ctx) {
-        await addAllCountries();
+        await populateCountriesTable();
         ctx.send('Countries added');
     },
 };

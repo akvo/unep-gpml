@@ -1,8 +1,7 @@
-const { createCoreController } = require('@strapi/strapi').factories;
 const fetch = require('node-fetch');
 
 module.exports = {
-    async addAllCountries(ctx) {
+    async populateCountriesTable(ctx) {
         try {
             const response = await fetch('https://digital.gpmarinelitter.org/api/country');
             const countries = await response.json();
