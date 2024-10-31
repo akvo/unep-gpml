@@ -9,7 +9,6 @@ import { CloseIcon } from '../../components/icons'
 const DetailModal = ({
   match,
   setLoginVisible,
-  setFilterMenu,
   isAuthenticated,
   visible,
   setVisible,
@@ -43,7 +42,6 @@ const DetailModal = ({
         {...{
           match,
           visible,
-          setFilterMenu,
           isAuthenticated,
           setLoginVisible,
           bookmark2PS,
