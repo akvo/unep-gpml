@@ -98,7 +98,8 @@
             border-radius: 8px;
 
             &:hover {
-                border-color: $primaryPurple;
+                border-color: rgba(227, 225, 255, 1);
+                background-color: rgba(227, 225, 255, 1);
             }
 
             &.selected {
