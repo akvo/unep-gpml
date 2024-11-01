@@ -12,6 +12,7 @@ import { LoadingOutlined } from '@ant-design/icons'
 import api from '../../utils/api'
 import StakeholderCard from '../../components/stakeholder-card/stakeholder-card'
 import Link from 'next/link'
+import DetailModal from '../../modules/community-hub/modal'
 
 const itemsPerPage = 30
 
@@ -19,6 +20,8 @@ const CommunityHub = ({ setLoginVisible, isAuthenticated }) => {
   const [loading, setLoading] = useState(true)
   const [results, setResults] = useState([])
   const [hasMore, setHasMore] = useState(true)
+  const [modalVisible, setModalVisible] = useState(false)
+  const [openItem, setOpenItem] = useState(null)
   const [page, setPage] = useState(0)
   const [filters, setFilters] = useState({
     types: ['organisation', 'stakeholder'],
@@ -132,6 +135,15 @@ const CommunityHub = ({ setLoginVisible, isAuthenticated }) => {
     //   return { ...filters, page: _filters.page + 1 }
     // })
   }
+  const handleClick = (result) => (e) => {
+    e.preventDefault()
+    if (isAuthenticated) {
+      setModalVisible(true)
+      setOpenItem(result)
+    } else {
+      setLoginVisible(true)
+    }
+  }
   return (
     <div className={kbStyles.knowledgeHub}>
       <aside className="filter-sidebar">
@@ -211,9 +223,7 @@ const CommunityHub = ({ setLoginVisible, isAuthenticated }) => {
           {results?.map((result) => (
             <Link
               href={`/${result.type}/${result.id}`}
-              onClick={(e) => {
-                e.preventDefault()
-              }}
+              onClick={handleClick(result)}
             >
               <StakeholderCard
                 item={result}
@@ -238,16 +248,16 @@ const CommunityHub = ({ setLoginVisible, isAuthenticated }) => {
           </Button>
         )}
       </div>
-      {/* <DetailModal
-        match={{ params }}
+      <DetailModal
         visible={modalVisible}
         setVisible={setModalVisible}
         isServer={false}
         {...{
           setLoginVisible,
           isAuthenticated,
+          openItem,
         }}
-      /> */}
+      />
     </div>
   )
 }

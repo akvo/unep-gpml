@@ -15,10 +15,13 @@
   h4 {
     padding-right: 80px;
     margin-bottom: 15px;
+    min-height: 44px;
     // word-wrap: break-word;
   }
   h5 {
     padding-right: 50px;
+    max-height: 52px;
+    overflow: hidden;
   }
   img {
     width: 70px;

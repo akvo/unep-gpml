@@ -10,6 +10,8 @@ const StakeholderCard = ({ item, className }) => {
       : item.name
   const stakeholderType =
     item.type === 'stakeholder' ? 'individual' : 'organisation'
+
+  const subtitle = item.jobTitle || item.about
   return (
     <a href={`/${item.type}/${item.id}`} target="_blank">
       <div
@@ -25,7 +27,7 @@ const StakeholderCard = ({ item, className }) => {
           {item?.type?.replace(/_/g, ' ')}
         </div>
         <h4 className="h-xs">{title}</h4>
-        {item.jobTitle && <h5>{item.jobTitle}</h5>}
+        {subtitle && <h5>{subtitle}</h5>}
         {item?.picture != null && (
           <Image
             className={stakeholderType}
