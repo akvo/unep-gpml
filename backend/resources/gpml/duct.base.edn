@@ -555,9 +555,9 @@
                                                     #ig/ref :gpml.auth/auth-required]}
                            [""
                             {:post {:summary    "Create a project"
-                                    :swagger    {:tags ["project"]}
-                                    :parameters #ig/ref :gpml.handler.project/post-params
-                                    :responses  #ig/ref :gpml.handler.project/post-responses
+                                    :swagger    {:tags ["project"]
+                                                 :security [{:id_token []}]}
+                                    :parameters {:body #ig/ref :gpml.handler.project/post-params}
                                     :handler    #ig/ref :gpml.handler.project/post}
                              :get  {:summary    "Get projects"
                                     :swagger    {:tags ["project"]}
@@ -980,7 +980,6 @@
  :gpml.handler.invitation/put-params                                {}
  :gpml.handler.project/post                                         #ig/ref :gpml.config/common
  :gpml.handler.project/post-params                                  {}
- :gpml.handler.project/post-responses                               {}
  :gpml.handler.project/get                                          #ig/ref :gpml.config/common
  :gpml.handler.project/get-params                                   {}
  :gpml.handler.project/get-responses                                {}

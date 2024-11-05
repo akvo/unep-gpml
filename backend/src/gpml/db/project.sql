@@ -1,40 +1,68 @@
-----------------------DEPRECATED------------------------------
--- :name new-project :<! :1
+-- :name new-project :returning-execute :one
 -- :doc Insert a new projects
-insert into project(
-    uuid,
-    phase,
-    contribution,
-    funds,
+INSERT INTO project(
     title,
+    start_date,
+    end_date,
     summary,
-    url,
+    publish_year,
+    valid_from,
+    valid_to,
     geo_coverage_type,
-    review_status,
-    image
+    language
 --~ (when (contains? params :id) ", id")
+--~ (when (contains? params :created_by) ", created_by")
+--~ (when (contains? params :url) ", url")
+--~ (when (contains? params :info_docs) ", info_docs")
+--~ (when (contains? params :sub_content_type) ", sub_content_type")
+--~ (when (contains? params :capacity_building) ", capacity_building")
+--~ (when (contains? params :source) ", source")
+--~ (when (contains? params :videos) ", videos")
+--~ (when (contains? params :background) ", background")
+--~ (when (contains? params :purpose) ", purpose")
+--~ (when (contains? params :highlights) ", highlights")
+--~ (when (contains? params :outcomes) ", outcomes")
+--~ (when (contains? params :image_id) ", image_id")
+--~ (when (contains? params :thumbnail_id) ", thumbnail_id")
 )
-values(
-    :uuid,
-    :phase,
-    :contribution,
-    :funds,
+VALUES(
     :title,
+    :start_date::timestamptz,
+    :end_date::timestamptz,
     :summary,
-    :url,
+    :publish_year,
+    :valid_from,
+    :valid_to,
     :v:geo_coverage_type::geo_coverage_type,
-    :v:review_status::review_status,
-    :image
+    :language
 --~ (when (contains? params :id) ", :id")
+--~ (when (contains? params :created_by) ", :created_by")
+--~ (when (contains? params :url) ", :url")
+--~ (when (contains? params :info_docs) ", :info_docs")
+--~ (when (contains? params :sub_content_type) ", :sub_content_type")
+--~ (when (contains? params :capacity_building) ", :capacity_building")
+--~ (when (contains? params :source) ", :source")
+--~ (when (contains? params :videos) ", :v:videos::jsonb")
+--~ (when (contains? params :background) ", :background")
+--~ (when (contains? params :purpose) ", :purpose")
+--~ (when (contains? params :highlights) ", :v:highlights::jsonb")
+--~ (when (contains? params :outcomes) ", :v:outcomes::jsonb")
+--~ (when (contains? params :image_id) ", :image_id")
+--~ (when (contains? params :thumbnail_id) ", :thumbnail_id")
 )
 returning id;
 
+-- :name create-project-gallery :insert-returning :many
+-- :doc Creates a relation for project to image file.
+INSERT INTO project_gallery (project, image)
+VALUES :t*:images RETURNING *;
+
+----------------------DEPRECATED------------------------------
 -- :name project-actions-id :? :*
 select action from project_action where project = :id
 
 -- :name project-actions-details :? :*
 select action_detail,value from project_action_detail where project = :id
-----------------------END OF DEPRECATED CODE------------------------------
 
 -- :name get-projects :query :many
 -- :doc Get projects with filters.
@@ -73,3 +101,4 @@ where id = :id;
 -- :name delete-projects :execute :affected
 DELETE FROM project
 WHERE id = ANY(:filters.ids);
+----------------------END OF DEPRECATED CODE------------------------------
