@@ -333,7 +333,7 @@ const StakeholderDetail = ({
 
   useEffect(() => {
     if (!isAuthenticated && !loadingProfile) {
-      setLoginVisible(true)
+      // setLoginVisible(true)
     }
     if (isAuthenticated) {
       setLoginVisible(false)
