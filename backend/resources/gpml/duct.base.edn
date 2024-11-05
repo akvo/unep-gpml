@@ -558,28 +558,28 @@
                                     :swagger    {:tags ["project"]
                                                  :security [{:id_token []}]}
                                     :parameters {:body #ig/ref :gpml.handler.project/post-params}
-                                    :handler    #ig/ref :gpml.handler.project/post}
-                             :get  {:summary    "Get projects"
-                                    :swagger    {:tags ["project"]}
-                                    :parameters #ig/ref :gpml.handler.project/get-params
-                                    :responses  #ig/ref :gpml.handler.project/get-responses
-                                    :handler    #ig/ref :gpml.handler.project/get}}]
+                                    :handler    #ig/ref :gpml.handler.project/post}}]
+                             ;;:get  {:summary    "Get projects"
+                             ;;       :swagger    {:tags ["project"]}
+                             ;;       :parameters #ig/ref :gpml.handler.project/get-params
+                             ;;       :responses  #ig/ref :gpml.handler.project/get-responses
+                             ;;       :handler    #ig/ref :gpml.handler.project/get}}]
                            ["/:id"
                             {:get    {:summary    "Get a project"
-                                      :swagger    {:tags ["project"]}
-                                      :parameters #ig/ref :gpml.handler.project/get-by-id-params
-                                      :responses  #ig/ref :gpml.handler.project/get-by-id-responses
-                                      :handler    #ig/ref :gpml.handler.project/get-by-id}
-                             :put    {:summary    "Update a project"
-                                      :swagger    {:tags ["project"]}
-                                      :parameters #ig/ref :gpml.handler.project/put-params
-                                      :responses  #ig/ref :gpml.handler.project/put-responses
-                                      :handler    #ig/ref :gpml.handler.project/put}
-                             :delete {:summary    "Delete a project"
-                                      :swagger    {:tags ["project"]}
-                                      :parameters #ig/ref :gpml.handler.project/delete-params
-                                      :responses  #ig/ref :gpml.handler.project/delete-responses
-                                      :handler    #ig/ref :gpml.handler.project/delete}}]]
+                                      :swagger    {:tags ["project"]
+                                                   :security [{:id_token []}]}
+                                      :parameters {:path [:map [:id int?]]}
+                                      :handler    #ig/ref :gpml.handler.project/get-by-id}}]]
+                             ;;:put    {:summary    "Update a project"
+                             ;;         :swagger    {:tags ["project"]}
+                             ;;         :parameters #ig/ref :gpml.handler.project/put-params
+                             ;;         :responses  #ig/ref :gpml.handler.project/put-responses
+                             ;;         :handler    #ig/ref :gpml.handler.project/put}
+                             ;;:delete {:summary    "Delete a project"
+                             ;;         :swagger    {:tags ["project"]}
+                             ;;         :parameters #ig/ref :gpml.handler.project/delete-params
+                             ;;         :responses  #ig/ref :gpml.handler.project/delete-responses
+                             ;;         :handler    #ig/ref :gpml.handler.project/delete}}]]
                           ["/programmatic" {:middleware #ig/ref :gpml.handler.programmatic/common-middleware}
                            ["/organisation"
                             {:post {:summary    "Creates an organisation"
@@ -987,8 +987,6 @@
  :gpml.handler.project/put-params                                   {}
  :gpml.handler.project/put-responses                                {}
  :gpml.handler.project/get-by-id                                    #ig/ref :gpml.config/common
- :gpml.handler.project/get-by-id-params                             {}
- :gpml.handler.project/get-by-id-responses                          {}
  :gpml.handler.project/delete                                       #ig/ref :gpml.config/common
  :gpml.handler.project/delete-params                                {}
  :gpml.handler.project/delete-responses                             {}

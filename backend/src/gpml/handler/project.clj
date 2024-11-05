@@ -416,35 +416,15 @@
    500 {:body handler.util/default-error-response-body-schema}})
 
 (defmethod ig/init-key :gpml.handler.project/get-by-id
-  [_ config]
-  (fn [{{:keys [path]} :parameters user :user :as req}]
-    (if (h.r.permission/operation-allowed?
-         config
-         {:user-id (:id user)
-          :entity-type :project
-          :entity-id (:id path)
-          :operation-type :read})
-      (let [req (assoc-in req [:parameters :query :ids] [(:id path)])
-            result (get-projects config req)]
-        (if (:success? result)
-          (if-let [project (-> result :projects first)]
-            (r/ok {:success? true
-                   :project project})
-            (r/not-found {:success? false
-                          :reason :project-not-found}))
-          (r/server-error result)))
-      (r/forbidden {:message "Unauthorized"}))))
-
-(defmethod ig/init-key :gpml.handler.project/get-by-id-params
-  [_ _]
-  {:path (mu/select-keys dom.prj/Project [:id])})
-
-(defmethod ig/init-key :gpml.handler.project/get-by-id-responses
-  [_ _]
-  {200 {:body (-> handler.util/default-ok-response-body-schema
-                  (mu/assoc :project dom.prj/Project))}
-   400 {:body handler.util/default-error-response-body-schema}
-   500 {:body handler.util/default-error-response-body-schema}})
+  [_ {:keys [db]}]
+  (fn [{{:keys [path]} :parameters}]
+    (let [conn (:spec db)
+          project (db.prj/project-by-id conn path)]
+      (if (seq project)
+        (r/ok {:success? true
+               :project project})
+        (r/not-found {:success? false
+                      :reason :project-not-found})))))
 
 (defmethod ig/init-key :gpml.handler.project/delete
   [_ config]

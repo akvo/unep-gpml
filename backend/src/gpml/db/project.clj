@@ -6,6 +6,7 @@
    [hugsql.core :as hugsql]))
 
 (declare new-project
+         project-by-id
          create-project-gallery
          get-projects
          create-projects
