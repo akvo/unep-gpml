@@ -46,6 +46,12 @@
         }
         &.link {
           text-decoration: underline;
+          span {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex: 1;
+          }
         }
         &.linkedin {
           svg {
@@ -69,6 +75,9 @@
             stroke: $primaryDarkBlueText;
           }
         }
+      }
+      & > a {
+        overflow: hidden;
       }
     }
     .content {

@@ -16,7 +16,7 @@ import DetailModal from '../../modules/community-hub/modal'
 
 const itemsPerPage = 30
 
-const CommunityHub = ({ setLoginVisible, isAuthenticated }) => {
+const CommunityHub = ({ setLoginVisible, isAuthenticated, profile }) => {
   const [loading, setLoading] = useState(true)
   const [results, setResults] = useState([])
   const [hasMore, setHasMore] = useState(true)
@@ -255,6 +255,7 @@ const CommunityHub = ({ setLoginVisible, isAuthenticated }) => {
         {...{
           setLoginVisible,
           isAuthenticated,
+          profile,
           openItem,
         }}
       />

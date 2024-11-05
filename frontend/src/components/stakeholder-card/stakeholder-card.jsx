@@ -23,9 +23,7 @@ const StakeholderCard = ({ item, className }) => {
           styles[stakeholderType],
         ])}
       >
-        <div className="type caps-heading-xs">
-          {item?.type?.replace(/_/g, ' ')}
-        </div>
+        <div className="type caps-heading-xs">{stakeholderType}</div>
         <h4 className="h-xs">{title}</h4>
         {subtitle && <h5>{subtitle}</h5>}
         {item?.picture != null && (

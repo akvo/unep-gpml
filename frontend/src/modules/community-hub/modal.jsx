@@ -2,13 +2,14 @@
 import React, { useState, useEffect } from 'react'
 import { Modal } from 'antd'
 import styles from './style.module.scss'
-import DetailsView from './detail-view'
+import DetailView from './detail-view'
 import bodyScrollLock from '../details-page/scroll-utils'
 import { CloseIcon } from '../../components/icons'
 
 const DetailModal = ({
   setLoginVisible,
   isAuthenticated,
+  profile,
   visible,
   setVisible,
   openItem,
@@ -35,7 +36,7 @@ const DetailModal = ({
       }}
       footer={false}
     >
-      <DetailsView item={openItem} />
+      <DetailView item={openItem} {...{ profile }} />
     </Modal>
   )
 }

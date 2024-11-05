@@ -15,8 +15,11 @@ import {
   LocationPin,
 } from '../../components/icons'
 import { UIStore } from '../../store'
+import { Button, Popover, Row, Skeleton } from 'antd'
+import { MoreOutlined } from '@ant-design/icons'
+import Link from 'next/link'
 
-const DetailView = ({ item }) => {
+const DetailView = ({ item, profile }) => {
   const [data, setData] = useState({ ...item })
   const [loading, setLoading] = useState(true)
   const [resources, setResources] = useState(null)
@@ -45,7 +48,6 @@ const DetailView = ({ item }) => {
         }
       })
   }, [])
-  console.log(resources)
   if (data.type === 'stakeholder') {
     return (
       <div className={`${styles.detailView} ${styles.stakeholderDetailView}`}>
@@ -62,34 +64,60 @@ const DetailView = ({ item }) => {
           </h5>
         </div>
         <div className="content">
+          {loading && (
+            <Row
+              style={{ margin: '20px 40px' }}
+              gutter={{
+                lg: 24,
+              }}
+            >
+              <Skeleton
+                paragraph={{
+                  rows: 7,
+                }}
+                active
+              />
+            </Row>
+          )}
           {data.picture && (
             <div className="img">
               <Image src={data.picture} fill />
             </div>
           )}
-          <div className="meta">
-            {data.country && (
-              <div className="item location">
-                <LocationPin />
-                <span>
-                  {data.country &&
-                    countries.find((it) => it.id === data.country)?.name}
-                </span>
+          {!loading && (
+            <>
+              <div className="meta">
+                {data.country && (
+                  <div className="item location">
+                    <LocationPin />
+                    <span>
+                      {data.country &&
+                        countries.find((it) => it.id === data.country)?.name}
+                    </span>
+                  </div>
+                )}
+                {data.email && (
+                  <div className="item email">
+                    <Email />
+                    <span>{data.email}</span>
+                  </div>
+                )}
+                {data.linkedin && (
+                  <div className="item link linkedin">
+                    <LinkedinOutlined />
+                    <span>{data.linkedin}</span>
+                  </div>
+                )}
+                {profile.role === 'ADMIN' && (
+                  <Link href={`/edit/entity/${data.id}?formType=stakeholder`}>
+                    <Button size="small" type="link">
+                      Edit
+                    </Button>
+                  </Link>
+                )}
               </div>
-            )}
-            {data.email && (
-              <div className="item email">
-                <Email />
-                <span>{data.email}</span>
-              </div>
-            )}
-            {data.linkedin && (
-              <div className="item link linkedin">
-                <LinkedinOutlined />
-                <span>{data.linkedin}</span>
-              </div>
-            )}
-          </div>
+            </>
+          )}
         </div>
       </div>
     )
@@ -101,38 +129,82 @@ const DetailView = ({ item }) => {
           <h4 className="h-caps-m">member organisation</h4>
           <h1>{data.name}</h1>
           <div className="meta">
-            <div className="item location">
-              <LocationPin />
-              <span>
-                {data.country &&
-                  countries.find((it) => it.id === data.country)?.name}
-              </span>
-            </div>
-            <div className="item geo">
-              <Globe />
-              <span>{data.geoCoverageType}</span>
-            </div>
-            <a href={data.url} target="_blank">
-              <div className="item link">
-                <LinkIcon />
-                <span>{data.url}</span>
+            {data.country && (
+              <div className="item location">
+                <LocationPin />
+                <span>
+                  {countries.find((it) => it.id === data.country)?.name}
+                </span>
               </div>
-            </a>
+            )}
+            {data.geoCoverageType && (
+              <div className="item geo">
+                <Globe />
+                <span>{data.geoCoverageType}</span>
+              </div>
+            )}
+            {data.url && (
+              <a href={data.url} target="_blank">
+                <div className="item link">
+                  <LinkIcon />
+                  <span>{data.url}</span>
+                </div>
+              </a>
+            )}
             {/* <div className="item link linkedin">
               <LinkedinOutlined />
               <span>http...</span>
             </div> */}
+            {profile.role === 'ADMIN' && (
+              <Popover
+                placement="bottomLeft"
+                // overlayClassName={styles.forumOptions}
+                content={
+                  <ul>
+                    <li>
+                      <Link href={`/edit/entity/${data.id}?formType=entity`}>
+                        <Button size="small" type="link">
+                          Edit
+                        </Button>
+                      </Link>
+                    </li>
+                  </ul>
+                }
+                trigger="click"
+              >
+                <div className="admin-btn">
+                  <MoreOutlined />
+                </div>
+              </Popover>
+            )}
           </div>
         </div>
         <div className="content">
-          <p>
-            {data.picture && (
-              <div className="img">
-                <Image src={data.picture} fill />
-              </div>
-            )}
-            {data.program}
-          </p>
+          {loading && (
+            <Row
+              style={{ margin: '20px 40px' }}
+              gutter={{
+                lg: 24,
+              }}
+            >
+              <Skeleton
+                paragraph={{
+                  rows: 7,
+                }}
+                active
+              />
+            </Row>
+          )}
+          {!loading && (
+            <p>
+              {data.picture && (
+                <div className="img">
+                  <Image src={data.picture} fill />
+                </div>
+              )}
+              {data.program}
+            </p>
+          )}
           <div className="clearfix"></div>
           {resources != null && resources.length > 0 && (
             <>
