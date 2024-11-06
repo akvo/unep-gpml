@@ -369,23 +369,28 @@
      500 {:body handler.util/default-error-response-body-schema}}))
 
 (defmethod ig/init-key :gpml.handler.project/get
-  [_ config]
-  (fn [{:keys [user] :as req}]
-    (if (h.r.permission/operation-allowed?
-         config
-         {:user-id (:id user)
-          :entity-type :application
-          :custom-permission :read-projects
-          :root-context? true})
-      (let [result (get-projects config req)]
-        (if (:success? result)
-          (r/ok result)
-          (r/server-error result)))
-      (r/forbidden {:message "Unauthorized"}))))
+  [_ {:keys [db]}]
+  (fn [{:keys [parameters]}]
+    (let [conn (:spec db)
+          projects (db.prj/project-all conn (:query parameters))]
+      (r/ok {:success? true :results projects}))))
+
+(defmethod ig/init-key :gpml.handler.project/get-by-id
+  [_ {:keys [db]}]
+  (fn [{{:keys [path]} :parameters}]
+    (let [conn (:spec db)
+          project (db.prj/project-by-id conn path)]
+      (if (seq project)
+        (r/ok {:success? true
+               :project project})
+        (r/not-found {:success? false
+                      :reason :project-not-found})))))
 
 (defmethod ig/init-key :gpml.handler.project/get-params
   [_ _]
-  {:query api-opts-schema})
+  {:query [:map
+           [:page {:default 1} pos-int?]
+           [:limit {:default 5} pos-int?]]})
 
 (defmethod ig/init-key :gpml.handler.project/get-responses
   [_ _]
@@ -414,17 +419,6 @@
   [_ _]
   {200 {:body handler.util/default-ok-response-body-schema}
    500 {:body handler.util/default-error-response-body-schema}})
-
-(defmethod ig/init-key :gpml.handler.project/get-by-id
-  [_ {:keys [db]}]
-  (fn [{{:keys [path]} :parameters}]
-    (let [conn (:spec db)
-          project (db.prj/project-by-id conn path)]
-      (if (seq project)
-        (r/ok {:success? true
-               :project project})
-        (r/not-found {:success? false
-                      :reason :project-not-found})))))
 
 (defmethod ig/init-key :gpml.handler.project/delete
   [_ config]

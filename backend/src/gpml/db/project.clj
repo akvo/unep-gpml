@@ -7,6 +7,7 @@
 
 (declare new-project
          project-by-id
+         project-all
          create-project-gallery
          get-projects
          create-projects

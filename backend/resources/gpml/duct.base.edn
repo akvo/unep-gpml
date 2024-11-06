@@ -558,12 +558,12 @@
                                     :swagger    {:tags ["project"]
                                                  :security [{:id_token []}]}
                                     :parameters {:body #ig/ref :gpml.handler.project/post-params}
-                                    :handler    #ig/ref :gpml.handler.project/post}}]
-                             ;;:get  {:summary    "Get projects"
-                             ;;       :swagger    {:tags ["project"]}
-                             ;;       :parameters #ig/ref :gpml.handler.project/get-params
-                             ;;       :responses  #ig/ref :gpml.handler.project/get-responses
-                             ;;       :handler    #ig/ref :gpml.handler.project/get}}]
+                                    :handler    #ig/ref :gpml.handler.project/post}
+                             :get  {:summary    "Get projects"
+                                    :swagger    {:tags ["project"]
+                                                 :security [{:id_token []}]}
+                                    :parameters #ig/ref :gpml.handler.project/get-params
+                                    :handler    #ig/ref :gpml.handler.project/get}}]
                            ["/:id"
                             {:get    {:summary    "Get a project"
                                       :swagger    {:tags ["project"]

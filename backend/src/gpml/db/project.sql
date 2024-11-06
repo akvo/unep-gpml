@@ -90,6 +90,40 @@ LEFT JOIN project_tag et ON et.project = e.id LEFT JOIN tag t ON et.tag = t.id
 WHERE e.id = :id
 GROUP BY e.id;
 
+-- :name project-all :query :many
+SELECT
+  e.*,
+  json_agg(distinct jsonb_build_object('id', f.id, 'object-key', f.object_key, 'visibility', f.visibility)) FILTER (WHERE f.id IS NOT NULL) AS files,
+  array_remove(array_agg(DISTINCT g.image), NULL) AS gallery,
+  array_remove(array_agg(DISTINCT eg.country_group), NULL) AS geo_coverage_country_groups,
+  array_remove(array_agg(DISTINCT eg.country), NULL) AS geo_coverage_countries,
+  array_remove(array_agg(DISTINCT eg.country_state), NULL) AS geo_coverage_country_states,
+  COALESCE(
+    json_agg(
+      DISTINCT jsonb_build_object(
+        'entity_id', oe.organisation,
+        'name', org.name,
+        'representative_group', org.type,
+        'role', oe.association
+      )
+    ) FILTER (WHERE oe.id IS NOT NULL),
+	'[]'::json
+  ) AS entity_connections,
+  json_agg(distinct jsonb_build_object('id', t.id, 'tag', t.tag)) FILTER (WHERE t.id IS NOT NULL) AS tags
+FROM project e
+LEFT JOIN (
+  SELECT f.id, f.object_key, f.visibility, pg.project p_id FROM file f JOIN project_gallery pg ON f.id = pg.image
+  UNION ALL
+  SELeCT f.id, f.object_key, f.visibility, p.id p_id FROM file f JOIN project p on f.id = p.image_id or f.id = p.thumbnail_id
+) f ON e.id = f.p_id
+LEFT JOIN project_gallery g ON g.project = e.id
+LEFT JOIN project_geo_coverage eg ON eg.project = e.id
+LEFT JOIN organisation_project oe ON e.id = oe.project LEFT JOIN organisation org ON oe.organisation = org.id
+LEFT JOIN project_tag et ON et.project = e.id LEFT JOIN tag t ON et.tag = t.id
+GROUP BY e.id
+LIMIT :limit
+OFFSET :limit * (:page - 1);
+
 ----------------------DEPRECATED------------------------------
 -- :name project-actions-id :? :*
 select action from project_action where project = :id
