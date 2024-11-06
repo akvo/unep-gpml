@@ -1,19 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react'
 import { Modal } from 'antd'
-import styles from './modal.module.scss'
-import DetailsView from './view'
-import bodyScrollLock from './scroll-utils'
+import styles from './style.module.scss'
+import DetailView from './detail-view'
+import bodyScrollLock from '../details-page/scroll-utils'
 import { CloseIcon } from '../../components/icons'
 
 const DetailModal = ({
-  match,
   setLoginVisible,
   isAuthenticated,
+  profile,
   visible,
   setVisible,
-  bookmark2PS,
-  onBookmark2PS,
+  openItem,
 }) => {
   const desktopViewport =
     typeof window !== 'undefined' ? window.innerWidth > 600 : null
@@ -27,6 +26,7 @@ const DetailModal = ({
       }}
       closable
       className={styles.detailModal}
+      width={800}
       closeIcon={<CloseIcon />}
       wrapClassName="detail-modal-wrapper"
       destroyOnClose={true}
@@ -36,18 +36,7 @@ const DetailModal = ({
       }}
       footer={false}
     >
-      <DetailsView
-        type={match?.params?.type}
-        id={match?.params?.id}
-        {...{
-          match,
-          visible,
-          isAuthenticated,
-          setLoginVisible,
-          bookmark2PS,
-          onBookmark2PS,
-        }}
-      />
+      <DetailView item={openItem} {...{ profile }} />
     </Modal>
   )
 }
