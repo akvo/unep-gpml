@@ -2,7 +2,6 @@
   (:require
    [clojure.java.jdbc :as jdbc]
    [clojure.set :as set]
-   [clojure.string :as str]
    [duct.logger :refer [log]]
    [gpml.auth :as auth]
    [gpml.db.project :as db.prj]
@@ -27,77 +26,6 @@
    [taoensso.timbre :as timbre])
   (:import
    [java.sql SQLException]))
-
-(def ^:private api-opts-schema
-  [:map
-   [:ids
-    {:optional true
-     :swagger {:description "A comma separated list of Project's identifiers."
-               :type "string"
-               :allowEmptyValue false}}
-    [:sequential
-     {:decode/string (fn [s] (str/split s #","))}
-     pos-int?]]
-   [:geo_coverage_types
-    {:optional true
-     :swagger {:description "A comma separated list of geo_coverage_types"
-               :type "string"
-               :enum dom.types/geo-coverage-types
-               :allowEmptyValue false}}
-    [:sequential
-     {:decode/string (fn [s] (str/split s #","))}
-     (apply conj [:enum] dom.types/geo-coverage-types)]]
-   [:types
-    {:optional true
-     :swagger {:description "A comma separated list of Project's types."
-               :type "string"
-               :enum dom.prj/project-types
-               :allowEmptyValue false}}
-    [:sequential
-     {:decode/string (fn [s] (str/split s #","))}
-     (apply conj [:enum] dom.prj/project-types)]]
-   [:countries
-    {:optional true
-     :swagger {:description "A comma separated list of country identifiers."
-               :type "string"
-               :allowEmptyValue false}}
-    [:sequential
-     {:decode/string (fn [s] (str/split s #","))}
-     pos-int?]]
-   [:country_groups
-    {:optional true
-     :swagger {:description "A comma separated list of country group identifiers."
-               :type "string"
-               :allowEmptyValue false}}
-    [:sequential
-     {:decode/string (fn [s] (str/split s #","))}
-     pos-int?]]
-   [:stages
-    {:optional true
-     :swagger {:description "A comma separated list of Project's stages."
-               :type "string"
-               :allowEmptyValue false}}
-    [:sequential
-     {:decode/string (fn [s] (str/split s #","))}
-     (apply conj [:enum] dom.prj/project-stages)]]])
-
-(defn- get-projects [{:keys [db logger]} {:keys [parameters user]}]
-  (try
-    (let [db-opts (-> (:query parameters)
-                      (assoc :stakeholders_ids [(:id user)])
-                      (db.prj/opts->db-opts))
-          results (db.prj/get-projects (:spec db)
-                                       {:filters db-opts})]
-      {:success? true
-       :projects (map db.prj/db-project->project results)})
-    (catch Exception e
-      (timbre/with-context+ parameters
-        (log logger :error :failed-to-get-projects e))
-      {:success? false
-       :reason :failed-to-get-projects
-       :error-details {:error (if (instance? SQLException e)
-                                (pg-util/get-sql-state e)
-                                (.getMessage e))}})))
 
 (defn- update-project [{:keys [db logger]} {:keys [parameters]}]
   (try
