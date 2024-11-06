@@ -5,7 +5,11 @@
    [gpml.util.postgresql :as pg-util]
    [hugsql.core :as hugsql]))
 
-(declare get-projects
+(declare new-project
+         project-by-id
+         project-all
+         create-project-gallery
+         get-projects
          create-projects
          update-project
          delete-projects
@@ -14,6 +18,8 @@
          project-actions-details)
 
 (hugsql/def-db-fns "gpml/db/project.sql" {:quoting :ansi})
+
+(hugsql/def-sqlvec-fns "gpml/db/project.sql" {:quoting :ansi})
 
 (defn opts->db-opts
   "Transform optional argument map values into DB layer specific values."
