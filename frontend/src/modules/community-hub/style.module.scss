@@ -129,6 +129,21 @@
         width: 195px;
       }
     }
+    .more-card {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 290px;
+      font-weight: 500;
+      text-decoration: underline;
+      border: 1px dashed #ccc;
+      border-radius: 6px;
+      color: $primaryDarkBlueText;
+      cursor: pointer;
+      &.individual {
+        height: 170px;
+      }
+    }
   }
 }
 

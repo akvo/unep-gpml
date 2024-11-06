@@ -270,6 +270,7 @@ const formatFilters = (filters) => {
   }
   $filters.transnational = $filters.transnational.join(',')
   $filters.country = $filters.country.join(',')
+  if ($filters.networkType === 'organisation') $filters.isMember = true
   delete $filters.types
 
   return $filters

@@ -6,6 +6,7 @@ import ResourceCards from '../../components/resource-cards/resource-cards'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import ResourceCard from '../../components/resource-card/resource-card'
 import StakeholderCard from '../../components/stakeholder-card/stakeholder-card'
+import rescardStyles from '../../components/resource-card/style.module.scss'
 import {
   Email,
   Globe,
@@ -220,6 +221,18 @@ const DetailView = ({ item, profile }) => {
                     <ResourceCard item={item} />
                   </SwiperSlide>
                 ))}
+                {resources.length === 20 && (
+                  <SwiperSlide>
+                    <Link
+                      href={`/search?q=resources+by+${data.name.replace(
+                        / /g,
+                        '+'
+                      )}`}
+                    >
+                      <div className="more-card">View All</div>
+                    </Link>
+                  </SwiperSlide>
+                )}
               </Swiper>
             </>
           )}
@@ -241,6 +254,16 @@ const DetailView = ({ item, profile }) => {
                     />
                   </SwiperSlide>
                 ))}
+                <SwiperSlide>
+                  <Link
+                    href={`/search?q=members+of+${data.name.replace(
+                      / /g,
+                      '+'
+                    )}`}
+                  >
+                    <div className="more-card individual">View All</div>
+                  </Link>
+                </SwiperSlide>
               </Swiper>
             </>
           )}
