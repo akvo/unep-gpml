@@ -18,6 +18,7 @@ import { i18n } from '@lingui/core'
 import { MenuToggle, NavMobile, NavDesktop } from '../components/nav'
 import GpmlCircle from '../components/gpml-circle'
 import { changeLanguage } from '../translations/utils'
+import Image from 'next/image'
 
 const archia = localFont({
   src: [
@@ -118,7 +119,8 @@ const NewLayout = ({
               <Link href="/">
                 <div className="logo-container">
                   <div className="circle">
-                    <GpmlCircle />
+                    {/* <GpmlCircle /> */}
+                    <Image src="/Logo-white.png" width={81} height={74} />
                   </div>
                   <h5>
                     Global Partnership
