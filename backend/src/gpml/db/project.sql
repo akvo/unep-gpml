@@ -1,40 +1,135 @@
-----------------------DEPRECATED------------------------------
--- :name new-project :<! :1
+-- :name new-project :returning-execute :one
 -- :doc Insert a new projects
-insert into project(
-    uuid,
-    phase,
-    contribution,
-    funds,
+INSERT INTO project(
     title,
+    start_date,
+    end_date,
     summary,
-    url,
+    publish_year,
+    valid_from,
+    valid_to,
     geo_coverage_type,
-    review_status,
-    image
+    language
 --~ (when (contains? params :id) ", id")
+--~ (when (contains? params :created_by) ", created_by")
+--~ (when (contains? params :url) ", url")
+--~ (when (contains? params :info_docs) ", info_docs")
+--~ (when (contains? params :sub_content_type) ", sub_content_type")
+--~ (when (contains? params :capacity_building) ", capacity_building")
+--~ (when (contains? params :source) ", source")
+--~ (when (contains? params :videos) ", videos")
+--~ (when (contains? params :background) ", background")
+--~ (when (contains? params :purpose) ", purpose")
+--~ (when (contains? params :highlights) ", highlights")
+--~ (when (contains? params :outcomes) ", outcomes")
+--~ (when (contains? params :image_id) ", image_id")
+--~ (when (contains? params :thumbnail_id) ", thumbnail_id")
 )
-values(
-    :uuid,
-    :phase,
-    :contribution,
-    :funds,
+VALUES(
     :title,
+    :start_date::timestamptz,
+    :end_date::timestamptz,
     :summary,
-    :url,
+    :publish_year,
+    :valid_from,
+    :valid_to,
     :v:geo_coverage_type::geo_coverage_type,
-    :v:review_status::review_status,
-    :image
+    :language
 --~ (when (contains? params :id) ", :id")
+--~ (when (contains? params :created_by) ", :created_by")
+--~ (when (contains? params :url) ", :url")
+--~ (when (contains? params :info_docs) ", :info_docs")
+--~ (when (contains? params :sub_content_type) ", :sub_content_type")
+--~ (when (contains? params :capacity_building) ", :capacity_building")
+--~ (when (contains? params :source) ", :source")
+--~ (when (contains? params :videos) ", :v:videos::jsonb")
+--~ (when (contains? params :background) ", :background")
+--~ (when (contains? params :purpose) ", :purpose")
+--~ (when (contains? params :highlights) ", :v:highlights::jsonb")
+--~ (when (contains? params :outcomes) ", :v:outcomes::jsonb")
+--~ (when (contains? params :image_id) ", :image_id")
+--~ (when (contains? params :thumbnail_id) ", :thumbnail_id")
 )
 returning id;
 
+-- :name create-project-gallery :insert-returning :many
+-- :doc Creates a relation for project to image file.
+INSERT INTO project_gallery (project, image)
+VALUES :t*:images RETURNING *;
+
+-- :name project-by-id :query :one
+SELECT
+  e.*,
+  json_agg(distinct jsonb_build_object('id', f.id, 'object-key', f.object_key, 'visibility', f.visibility)) FILTER (WHERE f.id IS NOT NULL) AS files,
+  array_remove(array_agg(DISTINCT g.image), NULL) AS gallery,
+  array_remove(array_agg(DISTINCT eg.country_group), NULL) AS geo_coverage_country_groups,
+  array_remove(array_agg(DISTINCT eg.country), NULL) AS geo_coverage_countries,
+  array_remove(array_agg(DISTINCT eg.country_state), NULL) AS geo_coverage_country_states,
+  COALESCE(
+    json_agg(
+      DISTINCT jsonb_build_object(
+        'entity_id', oe.organisation,
+        'name', org.name,
+        'representative_group', org.type,
+        'role', oe.association
+      )
+    ) FILTER (WHERE oe.id IS NOT NULL),
+	'[]'::json
+  ) AS entity_connections,
+  json_agg(distinct jsonb_build_object('id', t.id, 'tag', t.tag)) FILTER (WHERE t.id IS NOT NULL) AS tags
+FROM project e
+LEFT JOIN (
+  SELECT f.id, f.object_key, f.visibility, pg.project p_id FROM file f JOIN project_gallery pg ON f.id = pg.image
+  UNION ALL
+  SELeCT f.id, f.object_key, f.visibility, p.id p_id FROM file f JOIN project p on f.id = p.image_id or f.id = p.thumbnail_id
+) f ON e.id = f.p_id
+LEFT JOIN project_gallery g ON g.project = e.id
+LEFT JOIN project_geo_coverage eg ON eg.project = e.id
+LEFT JOIN organisation_project oe ON e.id = oe.project LEFT JOIN organisation org ON oe.organisation = org.id
+LEFT JOIN project_tag et ON et.project = e.id LEFT JOIN tag t ON et.tag = t.id
+WHERE e.id = :id
+GROUP BY e.id;
+
+-- :name project-all :query :many
+SELECT
+  e.*,
+  json_agg(distinct jsonb_build_object('id', f.id, 'object-key', f.object_key, 'visibility', f.visibility)) FILTER (WHERE f.id IS NOT NULL) AS files,
+  array_remove(array_agg(DISTINCT g.image), NULL) AS gallery,
+  array_remove(array_agg(DISTINCT eg.country_group), NULL) AS geo_coverage_country_groups,
+  array_remove(array_agg(DISTINCT eg.country), NULL) AS geo_coverage_countries,
+  array_remove(array_agg(DISTINCT eg.country_state), NULL) AS geo_coverage_country_states,
+  COALESCE(
+    json_agg(
+      DISTINCT jsonb_build_object(
+        'entity_id', oe.organisation,
+        'name', org.name,
+        'representative_group', org.type,
+        'role', oe.association
+      )
+    ) FILTER (WHERE oe.id IS NOT NULL),
+	'[]'::json
+  ) AS entity_connections,
+  json_agg(distinct jsonb_build_object('id', t.id, 'tag', t.tag)) FILTER (WHERE t.id IS NOT NULL) AS tags
+FROM project e
+LEFT JOIN (
+  SELECT f.id, f.object_key, f.visibility, pg.project p_id FROM file f JOIN project_gallery pg ON f.id = pg.image
+  UNION ALL
+  SELeCT f.id, f.object_key, f.visibility, p.id p_id FROM file f JOIN project p on f.id = p.image_id or f.id = p.thumbnail_id
+) f ON e.id = f.p_id
+LEFT JOIN project_gallery g ON g.project = e.id
+LEFT JOIN project_geo_coverage eg ON eg.project = e.id
+LEFT JOIN organisation_project oe ON e.id = oe.project LEFT JOIN organisation org ON oe.organisation = org.id
+LEFT JOIN project_tag et ON et.project = e.id LEFT JOIN tag t ON et.tag = t.id
+GROUP BY e.id
+LIMIT :limit
+OFFSET :limit * (:page - 1);
+
+----------------------DEPRECATED------------------------------
 -- :name project-actions-id :? :*
 select action from project_action where project = :id
 
 -- :name project-actions-details :? :*
 select action_detail,value from project_action_detail where project = :id
-----------------------END OF DEPRECATED CODE------------------------------
 
 -- :name get-projects :query :many
 -- :doc Get projects with filters.
@@ -73,3 +168,4 @@ where id = :id;
 -- :name delete-projects :execute :affected
 DELETE FROM project
 WHERE id = ANY(:filters.ids);
+----------------------END OF DEPRECATED CODE------------------------------
