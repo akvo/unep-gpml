@@ -11,12 +11,9 @@ import Login from '../modules/login/view'
 import { Check, DownArrow, World, flags } from '../components/icons'
 import Link from 'next/link'
 import { Trans, t, msg } from '@lingui/macro'
-import { useCycle } from 'framer-motion'
 import { useDeviceSize } from '../modules/landing/landing'
-import { isRegistered } from '../utils/profile'
 import { i18n } from '@lingui/core'
-import { MenuToggle, NavMobile, NavDesktop } from '../components/nav'
-import GpmlCircle from '../components/gpml-circle'
+import { MenuToggle, NavMobile } from '../components/nav'
 import { changeLanguage } from '../translations/utils'
 import Image from 'next/image'
 
@@ -56,7 +53,6 @@ const dmSans = DM_Sans({
 
 const NewLayout = ({
   children,
-  isIndexPage,
   isAuthenticated,
   auth0Client,
   profile,
@@ -71,9 +67,11 @@ const NewLayout = ({
     menuList: s.menuList,
   }))
   const [openedItemKey, setOpenedItemKey] = useState(null)
-  const [showMenu, setShowMenu] = useState(false)
   const [width] = useDeviceSize()
-  const [isOpen, toggleOpen] = useCycle(false, true)
+  const [isOpen, setIsOpen] = useState(false)
+  const toggleOpen = () => {
+    setIsOpen((val) => !val)
+  }
 
   const handleOnLogoutRC = () => {
     try {
@@ -273,15 +271,6 @@ const NewLayout = ({
           <NavMobile
             {...{ isOpen, toggleOpen, isAuthenticated, setLoginVisible }}
           />
-
-          {/* <NavDesktop
-            isOpen={showMenu}
-            contentKey={openedItemKey}
-            toggle={() => {
-              setShowMenu(false)
-              setOpenedItemKey(null)
-            }}
-          /> */}
         </div>
         {children}
         {!router.pathname.includes('/workspace/[slug]') &&
@@ -291,10 +280,8 @@ const NewLayout = ({
                 if (width >= 768) {
                   if (openedItemKey === 'Tools') {
                     setOpenedItemKey(null)
-                    setShowMenu(false)
                   } else {
                     setOpenedItemKey('Tools')
-                    setShowMenu(true)
                   }
                 } else {
                   toggleOpen()

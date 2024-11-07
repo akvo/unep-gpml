@@ -1,27 +1,8 @@
-import {
-  Tabs,
-  Collapse,
-  Card,
-  Tag,
-  Input,
-  Col,
-  Row,
-  Form,
-  Select,
-  Dropdown,
-  Menu,
-  notification,
-} from 'antd'
+import { Tabs, Collapse, Card } from 'antd'
 import Image from 'next/image'
 import Link from 'next/link'
 import styles from './index.module.scss'
-import {
-  CirclePointer,
-  LinkedinIcon,
-  YoutubeIcon,
-  LongArrowRight,
-  Pointer,
-} from '../../components/icons'
+import { CirclePointer, LongArrowRight, Pointer } from '../../components/icons'
 import { useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
 import { motion, AnimatePresence } from 'framer-motion'
