@@ -161,6 +161,68 @@ const formConfigs = {
         { name: 'owner', span: 12, required: true },
         { name: 'partners', span: 12 },
       ],
+      [
+        { name: 'value', span: 12 },
+        { name: 'valueCurrency', span: 12 },
+      ],
+      [
+        { name: 'validFrom', label: 'YYYY-MM-DD', span: 12 },
+        {
+          name: 'validTo',
+          label: 'YYYY-MM-DD Leave empty if ongoing',
+          span: 12,
+        },
+      ],
+    ],
+  },
+  'Action Plan': {
+    rows: [
+      [{ name: 'title', span: 24, required: true }],
+      [{ name: 'summary', span: 24, required: true }],
+      [{ name: 'geoCoverageType', span: 12, required: true }],
+      [
+        {
+          name: 'geoCoverageValueTransnational',
+          span: 12,
+          required: true,
+          dependsOn: {
+            field: 'geoCoverageType',
+            value: 'transnational',
+          },
+        },
+      ],
+      [
+        {
+          name: 'geoCoverageCountries',
+          span: 12,
+          required: true,
+          dependsOn: {
+            field: 'geoCoverageType',
+            value: 'national',
+          },
+        },
+      ],
+      [
+        { name: 'lifecycleStage', span: 12, required: true },
+        { name: 'tags', span: 12, required: true },
+      ],
+      [
+        { name: 'photo', span: 12, required: true },
+        { name: 'thumbnail', span: 12 },
+      ],
+      [
+        { name: 'owner', span: 12, required: true },
+        { name: 'partners', span: 12 },
+      ],
+      [{ name: 'publicationYear', span: 12 }],
+      [
+        { name: 'validFrom', label: 'YYYY-MM-DD', span: 12 },
+        {
+          name: 'validTo',
+          label: 'YYYY-MM-DD Leave empty if ongoing',
+          span: 12,
+        },
+      ],
     ],
   },
 }
@@ -198,18 +260,24 @@ const getSelectOptions = (storeData) => ({
   ],
   lifecycleStage: ['Design', 'Implementation', 'Evaluation'],
   tags: storeData.tags || [],
+  currencies: storeData.currencies || [],
   owner: [
     ...(storeData.organisations || []),
     ...(storeData.nonMemberOrganisations || []),
   ],
 })
 
-const FormField = ({ name, input, meta, storeData, form }) => {
+const FormField = ({ name, input, meta, storeData, form, label }) => {
   const tags = Object.keys(getSelectOptions(storeData).tags)
     .map((k) => getSelectOptions(storeData).tags[k])
     .flat()
 
   const entity = getSelectOptions(storeData).owner || []
+
+  const currenciesList = getSelectOptions(storeData).currencies?.map((x) => ({
+    id: x.value,
+    label: x.label,
+  }))
 
   const renderFieldContent = () => {
     switch (name) {
@@ -241,6 +309,32 @@ const FormField = ({ name, input, meta, storeData, form }) => {
                 }`}
               />
             )}{' '}
+            {meta.touched && meta.error && (
+              <p
+                color="error"
+                className="error transitionDiv"
+                style={
+                  meta.touched && meta.error ? mountedStyle : unmountedStyle
+                }
+              >
+                {meta.error}
+              </p>
+            )}
+          </FormLabel>
+        )
+
+      case 'value':
+        return (
+          <FormLabel label="Value Amount" htmlFor="value" meta={meta}>
+            <Input
+              {...input}
+              type="number"
+              className={`${
+                meta.touched && meta.error && !meta.valid
+                  ? 'ant-input-status-error'
+                  : ''
+              }`}
+            />
             {meta.touched && meta.error && (
               <p
                 color="error"
@@ -373,6 +467,76 @@ const FormField = ({ name, input, meta, storeData, form }) => {
           </FormLabel>
         )
 
+      case 'valueCurrency':
+        return (
+          <FormLabel label="Value Currency" htmlFor="valueCurrency" meta={meta}>
+            <Select
+              {...input}
+              size="small"
+              value={input.value ? input.value : []}
+              allowClear
+              onChange={input.onChange}
+              onBlur={input.onBlur}
+              placeholder="Select value currency"
+              className={
+                meta.touched && !meta.valid ? 'ant-input-status-error' : ''
+              }
+            >
+              {currenciesList?.map((opt) => (
+                <Option key={opt.id} value={opt.id}>
+                  <Trans>{opt.label}</Trans>
+                </Option>
+              ))}
+            </Select>{' '}
+            {meta.touched && meta.error && (
+              <p
+                color="error"
+                className="error transitionDiv"
+                style={
+                  meta.touched && meta.error ? mountedStyle : unmountedStyle
+                }
+              >
+                {meta.error}
+              </p>
+            )}
+          </FormLabel>
+        )
+
+      case 'tags':
+        return (
+          <FormLabel label="Tags" htmlFor="tags" meta={meta}>
+            <Select
+              {...input}
+              size="small"
+              mode="multiple"
+              value={input.value ? input.value : []}
+              allowClear
+              onChange={input.onChange}
+              onBlur={input.onBlur}
+              placeholder="Select at least one"
+              className={
+                meta.touched && !meta.valid ? 'ant-input-status-error' : ''
+              }
+            >
+              {tags.map((opt) => (
+                <Option key={opt.id} value={opt.id}>
+                  <Trans>{opt.tag}</Trans>
+                </Option>
+              ))}
+            </Select>{' '}
+            {meta.touched && meta.error && (
+              <p
+                color="error"
+                className="error transitionDiv"
+                style={
+                  meta.touched && meta.error ? mountedStyle : unmountedStyle
+                }
+              >
+                {meta.error}
+              </p>
+            )}
+          </FormLabel>
+        )
       case 'tags':
         return (
           <FormLabel label="Tags" htmlFor="tags" meta={meta}>
@@ -591,6 +755,41 @@ const FormField = ({ name, input, meta, storeData, form }) => {
           </FormLabel>
         )
 
+      case 'validFrom':
+      case 'validTo':
+        return (
+          <FormLabel
+            label={name
+              .replace(/([A-Z])/g, ' $1')
+              .replace(/^./, (str) => str.toUpperCase())}
+            htmlFor={name}
+            meta={meta}
+          >
+            <DatePicker
+              {...input}
+              size="small"
+              className={
+                meta.touched && !meta.valid ? 'ant-input-status-error' : ''
+              }
+              placeholder={label ? label : name}
+              value={input.value ? moment(input.value) : undefined}
+              onChange={(date) =>
+                input.onChange(date ? date.format('YYYY-MM-DD') : null)
+              }
+            />
+            {meta.touched && meta.error && (
+              <p
+                className="error transitionDiv"
+                style={
+                  meta.touched && meta.error ? mountedStyle : unmountedStyle
+                }
+              >
+                {meta.error}
+              </p>
+            )}
+          </FormLabel>
+        )
+
       default:
         return null
     }
@@ -601,14 +800,14 @@ const FormField = ({ name, input, meta, storeData, form }) => {
 
 const FormFields = ({ selectedType, storeData, form }) => {
   const config = formConfigs[selectedType] || defaultConfig
-
+  console.log(config)
   return (
     <div className="space-y-4">
       <Field name="geoCoverageType">
         {({ input: { value: geoType } }) =>
           config.rows.map((row, rowIndex) => (
             <Row key={rowIndex} gutter={16}>
-              {row.map(({ name, span }) => {
+              {row.map(({ name, span, label }) => {
                 if (
                   (name === 'geoCoverageValueTransnational' &&
                     geoType !== 'transnational') ||
@@ -627,6 +826,7 @@ const FormFields = ({ selectedType, storeData, form }) => {
                           meta={meta}
                           storeData={storeData}
                           form={form}
+                          label={label}
                         />
                       )}
                     </Field>
@@ -710,8 +910,20 @@ const DynamicContentForm = () => {
       ...(cleanValues.geoCoverageCountries && {
         geoCoverageCountries: cleanValues.geoCoverageCountries,
       }),
+      ...(cleanValues.validFrom && {
+        validTo: cleanValues.validTo ? cleanValues.validTo : 'ongoing',
+      }),
+      ...(cleanValues.value && {
+        value: Number(cleanValues.value),
+      }),
       language: 'en',
     }
+
+    delete data.lifecycleStage
+    delete data.owner
+
+    console.log(data)
+    // return
     api
       .post('/resource', data)
       .then((res) => {
@@ -869,6 +1081,19 @@ const DynamicContentForm = () => {
       </div>
     </div>
   )
+}
+
+const getBase64 = (file) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    if (file) {
+      reader.readAsDataURL(file)
+      reader.onload = () => resolve(reader.result)
+      reader.onerror = () => reject(reader.result)
+    } else {
+      reject('No file provided')
+    }
+  })
 }
 
 export default DynamicContentForm
