@@ -193,7 +193,14 @@ const formConfigs = {
         { name: 'owner', span: 12, required: true },
         { name: 'partners', span: 12 },
       ],
-      [{ name: 'publicationYear', span: 12, label: 'Publication Year' }],
+      [
+        {
+          name: 'publicationYear',
+          span: 12,
+          label: 'Publication Year',
+          required: true,
+        },
+      ],
     ],
   },
   'Financing Resource': {
@@ -290,7 +297,14 @@ const formConfigs = {
         { name: 'owner', span: 12, required: true },
         { name: 'partners', span: 12 },
       ],
-      [{ name: 'publicationYear', span: 12, label: 'Publication Year' }],
+      [
+        {
+          name: 'publicationYear',
+          span: 12,
+          label: 'Publication Year',
+          required: true,
+        },
+      ],
       [
         { name: 'validFrom', label: 'YYYY-MM-DD', span: 12 },
         {
@@ -840,6 +854,11 @@ const FormField = ({ name, input, meta, storeData, form, label }) => {
               onChange={input.onChange}
               onBlur={input.onBlur}
               placeholder="Select at least one"
+              filterOption={(input, option) =>
+                (option?.children?.toString() ?? '')
+                  .toLowerCase()
+                  .includes(input.toLowerCase())
+              }
               className={
                 meta.touched && !meta.valid ? 'ant-input-status-error' : ''
               }
@@ -1372,12 +1391,22 @@ const DynamicContentForm = () => {
       .flat()
 
     const formattedTags = [...values.tags, ...values.lifecycleStage]?.map(
-      (x) => ({
-        id: x,
-        ...(storeTags.find((t) => t.id === x) && {
-          tag: storeTags.find((t) => t.id === x)?.tag,
-        }),
-      })
+      (x) => {
+        if (typeof x === 'number') {
+          const tagInfo = storeTags.find((t) => t.id === x)
+          return {
+            id: x,
+            ...(tagInfo && { tag: tagInfo.tag }),
+          }
+        } else {
+          return {
+            tag: x,
+            ...(storeTags.find((o) => o.tag === x) && {
+              id: storeTags.find((o) => o.tag === x)?.id,
+            }),
+          }
+        }
+      }
     )
 
     const data = {
@@ -1405,9 +1434,6 @@ const DynamicContentForm = () => {
       }),
       language: 'en',
     }
-
-    console.log(data)
-    return
 
     delete data.lifecycleStage
     delete data.owner
