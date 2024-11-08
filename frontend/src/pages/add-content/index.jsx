@@ -816,6 +816,11 @@ const FormField = ({ name, input, meta, storeData, form, label }) => {
               size="small"
               mode="multiple"
               value={input.value ? input.value : []}
+              filterOption={(input, option) =>
+                (option?.children?.toString() ?? '')
+                  .toLowerCase()
+                  .includes(input.toLowerCase())
+              }
               allowClear
               onChange={input.onChange}
               onBlur={input.onBlur}
@@ -846,6 +851,11 @@ const FormField = ({ name, input, meta, storeData, form, label }) => {
               size="small"
               mode="multiple"
               value={input.value ? input.value : []}
+              filterOption={(input, option) =>
+                (option?.children?.toString() ?? '')
+                  .toLowerCase()
+                  .includes(input.toLowerCase())
+              }
               allowClear
               onChange={input.onChange}
               onBlur={input.onBlur}
