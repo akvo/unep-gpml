@@ -1170,7 +1170,11 @@ const FormField = ({ name, input, meta, storeData, form, label }) => {
                           newValue[index] = e.target.value
                           onChange(newValue)
                         }}
-                        placeholder="Enter expected outcome"
+                        placeholder={
+                          name === 'videos'
+                            ? 'YouTube URL'
+                            : 'Enter expected outcome'
+                        }
                       />
 
                       {index !== 0 && (
