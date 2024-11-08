@@ -22,6 +22,7 @@ import DatePicker from 'antd/lib/date-picker'
 import moment from 'moment'
 import api from '../../utils/api'
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
+import { lifecycleStageTags } from '../../utils/misc'
 
 const { Dragger } = Upload
 const { Title } = Typography
@@ -52,10 +53,32 @@ const contentTypes = [
 const formConfigs = {
   Project: {
     rows: [
+      [{ name: 'url', span: 24 }],
       [{ name: 'title', span: 24, required: true }],
       [{ name: 'summary', span: 24, required: true }],
-      [{ name: 'url', span: 24, required: true }],
       [{ name: 'geoCoverageType', span: 24, required: true }],
+      [
+        {
+          name: 'geoCoverageValueTransnational',
+          span: 12,
+          required: true,
+          dependsOn: {
+            field: 'geoCoverageType',
+            value: 'transnational',
+          },
+        },
+      ],
+      [
+        {
+          name: 'geoCoverageCountries',
+          span: 12,
+          required: true,
+          dependsOn: {
+            field: 'geoCoverageType',
+            value: 'national',
+          },
+        },
+      ],
       [
         { name: 'tags', span: 12, required: true },
         { name: 'lifecycleStage', span: 12 },
@@ -97,10 +120,32 @@ const formConfigs = {
   },
   Legislation: {
     rows: [
+      [{ name: 'url', span: 24, required: true }],
       [{ name: 'title', span: 24 }],
       [{ name: 'summary', span: 24 }],
-      [{ name: 'url', span: 24, required: true }],
       [{ name: 'geoCoverageType', span: 12 }],
+      [
+        {
+          name: 'geoCoverageValueTransnational',
+          span: 12,
+          required: true,
+          dependsOn: {
+            field: 'geoCoverageType',
+            value: 'transnational',
+          },
+        },
+      ],
+      [
+        {
+          name: 'geoCoverageCountries',
+          span: 12,
+          required: true,
+          dependsOn: {
+            field: 'geoCoverageType',
+            value: 'national',
+          },
+        },
+      ],
       [
         { name: 'tags', span: 12 },
         { name: 'lifecycleStage', span: 12 },
@@ -110,9 +155,9 @@ const formConfigs = {
   },
   'Technical Resource': {
     rows: [
+      [{ name: 'url', span: 24, required: true }],
       [{ name: 'title', span: 24, required: true }],
       [{ name: 'summary', span: 24, required: true }],
-      [{ name: 'url', span: 24, required: true }],
       [{ name: 'geoCoverageType', span: 12, required: true }],
       [
         {
@@ -153,9 +198,9 @@ const formConfigs = {
   },
   'Financing Resource': {
     rows: [
+      [{ name: 'url', span: 24, required: true }],
       [{ name: 'title', span: 24, required: true }],
       [{ name: 'summary', span: 24, required: true }],
-      [{ name: 'url', span: 24, required: true }],
       [{ name: 'geoCoverageType', span: 12, required: true }],
       [
         {
@@ -207,9 +252,9 @@ const formConfigs = {
   },
   'Action Plan': {
     rows: [
+      [{ name: 'url', span: 24, required: true }],
       [{ name: 'title', span: 24, required: true }],
       [{ name: 'summary', span: 24, required: true }],
-      [{ name: 'url', span: 24, required: true }],
       [{ name: 'geoCoverageType', span: 12, required: true }],
       [
         {
@@ -258,9 +303,9 @@ const formConfigs = {
   },
   Technology: {
     rows: [
+      [{ name: 'url', span: 24, required: true }],
       [{ name: 'name', span: 24, required: true, label: 'Title' }],
       [{ name: 'remarks', span: 24, required: true, label: 'Description' }],
-      [{ name: 'url', span: 24, required: true }],
       [{ name: 'geoCoverageType', span: 12, required: true }],
       [
         {
@@ -301,9 +346,9 @@ const formConfigs = {
   },
   Legislation: {
     rows: [
+      [{ name: 'url', span: 24, required: true }],
       [{ name: 'name', span: 24, required: true, label: 'Title' }],
       [{ name: 'abstract', span: 24, required: true, label: 'Description' }],
-      [{ name: 'url', span: 24, required: true }],
       [{ name: 'geoCoverageType', span: 12, required: true }],
       [
         {
@@ -343,9 +388,9 @@ const formConfigs = {
   },
   Dataset: {
     rows: [
+      [{ name: 'url', span: 24, required: true }],
       [{ name: 'title', span: 24, required: true, label: 'Title' }],
       [{ name: 'summary', span: 24, required: true, label: 'Description' }],
-      [{ name: 'url', span: 24, required: true }],
       [{ name: 'geoCoverageType', span: 12, required: true }],
       [
         {
@@ -385,9 +430,9 @@ const formConfigs = {
   },
   Event: {
     rows: [
-      [{ name: 'title', span: 24, required: true, label: 'Title' }],
-      [{ name: 'summary', span: 24, required: true, label: 'Description' }],
       [{ name: 'url', span: 24, required: true }],
+      [{ name: 'title', span: 24, required: true, label: 'Title' }],
+      [{ name: 'description', span: 24, required: true, label: 'Description' }],
       [{ name: 'geoCoverageType', span: 12, required: true }],
       [
         {
@@ -424,20 +469,29 @@ const formConfigs = {
         { name: 'partners', span: 12 },
       ],
       [
-        { name: 'startDate', label: 'YYYY-MM-DD', span: 12 },
+        { name: 'startDate', label: 'YYYY-MM-DD', span: 12, required: true },
         {
           name: 'endDate',
           label: 'YYYY-MM-DD',
           span: 12,
+          required: true,
         },
       ],
       [
-        { name: 'recording', span: 12 },
+        {
+          name: 'eventType',
+          label: 'Event Type',
+          span: 24,
+          required: true,
+        },
+      ],
+      [
         {
           name: 'registrationUrl',
-          label: 'Registration',
-          span: 12,
+          label: 'Registration URL',
+          span: 24,
         },
+        { name: 'recording', span: 24, label: 'Recording URL' },
       ],
     ],
   },
@@ -446,9 +500,9 @@ const formConfigs = {
 // Default configuration
 const defaultConfig = {
   rows: [
+    [{ name: 'url', span: 24, required: true }],
     [{ name: 'title', span: 24, required: true }],
     [{ name: 'summary', span: 24, required: true }],
-    [{ name: 'url', span: 24, required: true }],
     [{ name: 'geoCoverageType', span: 12, required: true }],
     [
       { name: 'tags', span: 12, required: true },
@@ -465,8 +519,15 @@ const selectOptions = {
     { key: 'Transnational', value: 'transnational' },
     { key: 'National', value: 'national' },
   ],
-  lifecycleStage: ['Design', 'Implementation', 'Evaluation'],
+  lifecycleStage: lifecycleStageTags,
   tags: ['Health', 'Technology', 'Environment'],
+  eventType: [
+    'webinars/seminars',
+    'workshops',
+    'conferences',
+    'courses/training',
+    'campaigns/awareness raising',
+  ],
 }
 
 const getSelectOptions = (storeData) => ({
@@ -475,7 +536,6 @@ const getSelectOptions = (storeData) => ({
     ...(storeData.regionOptions || []),
     ...(storeData.transnationalOptions || []),
   ],
-  lifecycleStage: ['Design', 'Implementation', 'Evaluation'],
   tags: storeData.tags || [],
   currencies: storeData.currencies || [],
   owner: [
@@ -501,6 +561,7 @@ const FormField = ({ name, input, meta, storeData, form, label }) => {
       case 'title':
       case 'name':
       case 'summary':
+      case 'description':
       case 'remarks':
       case 'abstract':
       case 'background':
@@ -517,6 +578,7 @@ const FormField = ({ name, input, meta, storeData, form, label }) => {
             {name === 'summary' ||
             name === 'remarks' ||
             name === 'abstract' ||
+            name === 'description' ||
             name === 'purpose' ||
             name === 'background' ? (
               <Input.TextArea
@@ -731,28 +793,27 @@ const FormField = ({ name, input, meta, storeData, form, label }) => {
           </FormLabel>
         )
 
-      case 'tags':
+      case 'eventType':
         return (
-          <FormLabel label="Tags" htmlFor="tags" meta={meta}>
+          <FormLabel label="Event Type" htmlFor="eventType" meta={meta}>
             <Select
               {...input}
               size="small"
-              mode="multiple"
-              value={input.value ? input.value : []}
+              value={input.value || undefined}
               allowClear
               onChange={input.onChange}
               onBlur={input.onBlur}
-              placeholder="Select at least one"
+              placeholder="Select event type"
               className={
                 meta.touched && !meta.valid ? 'ant-input-status-error' : ''
               }
             >
-              {tags.map((opt) => (
-                <Option key={opt.id} value={opt.id}>
-                  <Trans>{opt.tag}</Trans>
+              {selectOptions.eventType.map((type) => (
+                <Option key={type} value={type}>
+                  {type.charAt(0).toUpperCase() + type.slice(1)}
                 </Option>
               ))}
-            </Select>{' '}
+            </Select>
             {meta.touched && meta.error && (
               <p
                 color="error"
@@ -766,6 +827,7 @@ const FormField = ({ name, input, meta, storeData, form, label }) => {
             )}
           </FormLabel>
         )
+
       case 'tags':
         return (
           <FormLabel label="Tags" htmlFor="tags" meta={meta}>
@@ -822,9 +884,9 @@ const FormField = ({ name, input, meta, storeData, form, label }) => {
                 meta.touched && !meta.valid ? 'ant-input-status-error' : ''
               }
             >
-              {tags.map((opt) => (
-                <Option key={opt.id} value={opt.id}>
-                  <Trans>{opt.tag}</Trans>
+              {selectOptions.lifecycleStage.map((opt) => (
+                <Option key={opt} value={opt}>
+                  <Trans>{opt}</Trans>
                 </Option>
               ))}
             </Select>{' '}
@@ -1083,6 +1145,7 @@ const FormField = ({ name, input, meta, storeData, form, label }) => {
             )}
           </FormLabel>
         )
+
       case 'highlights':
         return (
           <FormLabel
@@ -1154,11 +1217,11 @@ const FormField = ({ name, input, meta, storeData, form, label }) => {
       case 'videos':
         return (
           <FormLabel
-            label={label ? label : 'Expected outcomes'}
-            htmlFor="outcomes"
+            label={name === 'videos' ? 'Videos' : 'Expected outcomes'}
+            htmlFor={name}
             meta={meta}
           >
-            <Field name="outcomes">
+            <Field name={name}>
               {({ input: { value = [], onChange } }) => (
                 <div className="highlights-wrapper">
                   {(value || []).map((item, index) => (
@@ -1193,9 +1256,7 @@ const FormField = ({ name, input, meta, storeData, form, label }) => {
 
                   <Button
                     type="link"
-                    onClick={() =>
-                      onChange([...(value || []), { text: '', url: '' }])
-                    }
+                    onClick={() => onChange([...(value || []), ''])}
                   >
                     <div className="icn">
                       <PlusIcon />
@@ -1345,25 +1406,27 @@ const DynamicContentForm = () => {
       language: 'en',
     }
 
+    console.log(data)
+    return
+
     delete data.lifecycleStage
     delete data.owner
     delete data.partners
 
-    console.log(data)
-
     if (selectedType === 'Technology') {
-      handleOnSubmitTechnology(data, form)
-      return false
+      return handleOnSubmitTechnology(data, form)
     }
 
     if (selectedType === 'Legislation') {
-      handleOnSubmitPolicy(data, form)
-      return false
+      return handleOnSubmitPolicy(data, form)
     }
 
     if (selectedType === 'Project') {
-      handleOnSubmitProject(data, form)
-      return false
+      return handleOnSubmitProject(data, form)
+    }
+
+    if (selectedType === 'Event') {
+      return handleOnSubmitEvent(data, form)
     }
 
     api
@@ -1423,6 +1486,8 @@ const DynamicContentForm = () => {
       .finally(() => {
         setLoading(false)
       })
+
+    return true
   }
 
   const handleOnSubmitPolicy = (data, form) => {
@@ -1445,6 +1510,8 @@ const DynamicContentForm = () => {
       .finally(() => {
         setLoading(false)
       })
+
+    return true
   }
 
   const handleOnSubmitProject = (data, form) => {
@@ -1469,6 +1536,30 @@ const DynamicContentForm = () => {
       .finally(() => {
         setLoading(false)
       })
+
+    return true
+  }
+
+  const handleOnSubmitEvent = (data, form) => {
+    delete data.highlights
+    delete data.outcomes
+    delete data.videos
+
+    api
+      .post('/event', data)
+      .then((res) => {
+        notification.success({ message: 'Resource successfully created' })
+        form.reset()
+        setSelectedType(null)
+      })
+      .catch(() => {
+        notification.error({ message: 'An error occured' })
+      })
+      .finally(() => {
+        setLoading(false)
+      })
+
+    return true
   }
 
   return (
@@ -1481,6 +1572,7 @@ const DynamicContentForm = () => {
             initialValues={{
               highlights: [{ text: '', url: '' }],
               outcomes: [''],
+              videos: [''],
             }}
             render={({ handleSubmit, form }) => (
               <form onSubmit={handleSubmit}>
@@ -1549,7 +1641,7 @@ const DynamicContentForm = () => {
                           htmlType="submit"
                           loading={loading}
                           disabled={loading}
-                          className="w-full mt-6"
+                          className="submit-btn"
                         >
                           Save & Publish
                         </Button>
