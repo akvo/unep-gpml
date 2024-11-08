@@ -54,6 +54,7 @@ const formConfigs = {
     rows: [
       [{ name: 'title', span: 24, required: true }],
       [{ name: 'summary', span: 24, required: true }],
+      [{ name: 'url', span: 24, required: true }],
       [{ name: 'geoCoverageType', span: 24, required: true }],
       [
         { name: 'tags', span: 12, required: true },
@@ -88,6 +89,7 @@ const formConfigs = {
     rows: [
       [{ name: 'title', span: 24 }],
       [{ name: 'summary', span: 24 }],
+      [{ name: 'url', span: 24, required: true }],
       [{ name: 'geoCoverageType', span: 12 }],
       [
         { name: 'tags', span: 12 },
@@ -100,6 +102,7 @@ const formConfigs = {
     rows: [
       [{ name: 'title', span: 24, required: true }],
       [{ name: 'summary', span: 24, required: true }],
+      [{ name: 'url', span: 24, required: true }],
       [{ name: 'geoCoverageType', span: 12, required: true }],
       [
         {
@@ -142,6 +145,7 @@ const formConfigs = {
     rows: [
       [{ name: 'title', span: 24, required: true }],
       [{ name: 'summary', span: 24, required: true }],
+      [{ name: 'url', span: 24, required: true }],
       [{ name: 'geoCoverageType', span: 12, required: true }],
       [
         {
@@ -195,6 +199,7 @@ const formConfigs = {
     rows: [
       [{ name: 'title', span: 24, required: true }],
       [{ name: 'summary', span: 24, required: true }],
+      [{ name: 'url', span: 24, required: true }],
       [{ name: 'geoCoverageType', span: 12, required: true }],
       [
         {
@@ -245,6 +250,7 @@ const formConfigs = {
     rows: [
       [{ name: 'name', span: 24, required: true, label: 'Title' }],
       [{ name: 'remarks', span: 24, required: true, label: 'Description' }],
+      [{ name: 'url', span: 24, required: true }],
       [{ name: 'geoCoverageType', span: 12, required: true }],
       [
         {
@@ -287,6 +293,7 @@ const formConfigs = {
     rows: [
       [{ name: 'name', span: 24, required: true, label: 'Title' }],
       [{ name: 'abstract', span: 24, required: true, label: 'Description' }],
+      [{ name: 'url', span: 24, required: true }],
       [{ name: 'geoCoverageType', span: 12, required: true }],
       [
         {
@@ -328,6 +335,7 @@ const formConfigs = {
     rows: [
       [{ name: 'title', span: 24, required: true, label: 'Title' }],
       [{ name: 'summary', span: 24, required: true, label: 'Description' }],
+      [{ name: 'url', span: 24, required: true }],
       [{ name: 'geoCoverageType', span: 12, required: true }],
       [
         {
@@ -372,6 +380,7 @@ const defaultConfig = {
   rows: [
     [{ name: 'title', span: 24, required: true }],
     [{ name: 'summary', span: 24, required: true }],
+    [{ name: 'url', span: 24, required: true }],
     [{ name: 'geoCoverageType', span: 12, required: true }],
     [
       { name: 'tags', span: 12, required: true },
@@ -428,6 +437,7 @@ const FormField = ({ name, input, meta, storeData, form, label }) => {
       case 'abstract':
       case 'background':
       case 'purpose':
+      case 'url':
         return (
           <FormLabel
             label={label ? label : name.charAt(0).toUpperCase() + name.slice(1)}
@@ -1232,6 +1242,11 @@ const DynamicContentForm = () => {
       return false
     }
 
+    if (selectedType === 'Project') {
+      handleOnSubmitProject(data, form)
+      return false
+    }
+
     api
       .post('/resource', data)
       .then((res) => {
@@ -1313,10 +1328,34 @@ const DynamicContentForm = () => {
       })
   }
 
+  const handleOnSubmitProject = (data, form) => {
+    console.log(data)
+    return
+    // delete data.resourceType
+    // delete data.image
+    // data.version = 2
+    // data.subContentType = 'Bans and Restrictions'
+    // data.individualConnections = []
+
+    api
+      .post('/project', data)
+      .then((res) => {
+        notification.success({ message: 'Resource successfully created' })
+        form.reset()
+        setSelectedType(null)
+      })
+      .catch(() => {
+        notification.error({ message: 'An error occured' })
+      })
+      .finally(() => {
+        setLoading(false)
+      })
+  }
+
   return (
     <div className={styles.addContentForm}>
       <div className="container">
-        <AntForm layout="vertical">
+        <div className="ant-form ant-form-vertical">
           <Form
             onSubmit={(values, form) => onSubmit(values, form)}
             validate={validate}
@@ -1379,62 +1418,30 @@ const DynamicContentForm = () => {
                     <>
                       <Card className="mt-8">
                         <Title className="form-title" level={4}>
-                          URL of the {selectedType.toLowerCase()}
+                          All details of the {selectedType.toLowerCase()}
                         </Title>
-                        <Field name="url">
-                          {({ input, meta }) => (
-                            <FormLabel label="URL" htmlFor="url">
-                              <Input
-                                {...input}
-                                placeholder={`Enter URL of the ${selectedType.toLowerCase()}`}
-                                className={
-                                  meta.touched && meta.error
-                                    ? 'ant-input-status-error'
-                                    : ''
-                                }
-                              />
-                              {meta.touched && meta.error && (
-                                <p className="error transitionDiv">
-                                  {meta.error}
-                                </p>
-                              )}
-                            </FormLabel>
-                          )}
-                        </Field>
+                        <FormFields
+                          selectedType={selectedType}
+                          storeData={storeData}
+                          form={form}
+                        />
+                        <Button
+                          type="primary"
+                          htmlType="submit"
+                          loading={loading}
+                          disabled={loading}
+                          className="w-full mt-6"
+                        >
+                          Save & Publish
+                        </Button>
                       </Card>
-
-                      <Field name="url">
-                        {({ input: { value: urlValue } }) =>
-                          urlValue && (
-                            <Card className="mt-8">
-                              <Title className="form-title" level={4}>
-                                All details of the {selectedType.toLowerCase()}
-                              </Title>
-                              <FormFields
-                                selectedType={selectedType}
-                                storeData={storeData}
-                                form={form}
-                              />
-                              <Button
-                                type="primary"
-                                htmlType="submit"
-                                loading={loading}
-                                disabled={loading}
-                                className="w-full mt-6"
-                              >
-                                Save & Publish
-                              </Button>
-                            </Card>
-                          )
-                        }
-                      </Field>
                     </>
                   )}
                 </Space>
               </form>
             )}
           />
-        </AntForm>
+        </div>
       </div>
     </div>
   )
