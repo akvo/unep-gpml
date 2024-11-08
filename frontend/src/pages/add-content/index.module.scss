@@ -72,6 +72,29 @@
             top: 0;
           }
         }
+        .ant-upload-list-item {
+          .ant-upload-list-item-info {
+            padding: 4px;
+            border-radius: 8px;
+          }
+          .ant-btn {
+            svg {
+              &:focus {
+                top: 0;
+                position: relative;
+                left: 0;
+                right: 0;
+              }
+            }
+          }
+          &:hover {
+            .ant-btn {
+              border: none;
+              padding: 0px;
+              width: 30px;
+            }
+          }
+        }
       }
 
       .ant-upload-drag {

@@ -55,7 +55,7 @@ const formConfigs = {
     rows: [
       [{ name: 'url', span: 24 }],
       [{ name: 'title', span: 24, required: true }],
-      [{ name: 'summary', span: 24, required: true }],
+      [{ name: 'summary', span: 24, required: true, label: 'Description' }],
       [
         { name: 'geoCoverageType', span: 12, required: true },
         {
@@ -120,7 +120,7 @@ const formConfigs = {
     rows: [
       [{ name: 'url', span: 24, required: true }],
       [{ name: 'title', span: 24 }],
-      [{ name: 'summary', span: 24 }],
+      [{ name: 'summary', span: 24, required: true, label: 'Description' }],
       [
         { name: 'geoCoverageType', span: 12, required: true },
         {
@@ -153,7 +153,7 @@ const formConfigs = {
     rows: [
       [{ name: 'url', span: 24, required: true }],
       [{ name: 'title', span: 24, required: true }],
-      [{ name: 'summary', span: 24, required: true }],
+      [{ name: 'summary', span: 24, required: true, label: 'Description' }],
       [
         { name: 'geoCoverageType', span: 12, required: true },
         {
@@ -201,7 +201,7 @@ const formConfigs = {
     rows: [
       [{ name: 'url', span: 24, required: true }],
       [{ name: 'title', span: 24, required: true }],
-      [{ name: 'summary', span: 24, required: true }],
+      [{ name: 'summary', span: 24, required: true, label: 'Description' }],
       [
         { name: 'geoCoverageType', span: 12, required: true },
         {
@@ -253,7 +253,7 @@ const formConfigs = {
     rows: [
       [{ name: 'url', span: 24, required: true }],
       [{ name: 'title', span: 24, required: true }],
-      [{ name: 'summary', span: 24, required: true }],
+      [{ name: 'summary', span: 24, required: true, label: 'Description' }],
       [
         { name: 'geoCoverageType', span: 12, required: true },
         {
