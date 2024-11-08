@@ -65,6 +65,16 @@ const formConfigs = {
         { name: 'thumbnail', span: 12 },
       ],
       [
+        { name: 'gallery', span: 12 },
+        {
+          name: 'videos',
+          label: 'Videos',
+          span: 12,
+          required: true,
+          initialValue: [''],
+        },
+      ],
+      [
         { name: 'donors', span: 12, required: true },
         { name: 'partners', span: 12 },
       ],
@@ -872,6 +882,46 @@ const FormField = ({ name, input, meta, storeData, form, label }) => {
           </FormLabel>
         )
 
+      case 'gallery':
+        return (
+          <FormLabel label="Gallery" htmlFor="gallery" meta={meta}>
+            <Dragger
+              {...input}
+              beforeUpload={() => false}
+              onChange={async ({ file, fileList }) => {
+                try {
+                  if (file) {
+                    const base64 = await getBase64(file)
+                    input.onChange(base64)
+                  }
+                } catch (err) {
+                  console.error('Error converting to base64:', err)
+                  input.onChange(null)
+                }
+              }}
+              multiple={false}
+              accept=".jpg,.png"
+            >
+              <p className="ant-upload-drag-icon">
+                <UploadFileIcon />
+              </p>
+              <p className="ant-upload-text">Accepts .jpg and .png</p>
+              <p className="add-btn">Add a File</p>
+            </Dragger>{' '}
+            {meta.touched && meta.error && (
+              <p
+                color="error"
+                className="error transitionDiv"
+                style={
+                  meta.touched && meta.error ? mountedStyle : unmountedStyle
+                }
+              >
+                {meta.error}
+              </p>
+            )}
+          </FormLabel>
+        )
+
       case 'thumbnail':
         return (
           <FormLabel
@@ -1101,8 +1151,13 @@ const FormField = ({ name, input, meta, storeData, form, label }) => {
         )
 
       case 'outcomes':
+      case 'videos':
         return (
-          <FormLabel label="Expected outcomes" htmlFor="outcomes" meta={meta}>
+          <FormLabel
+            label={label ? label : 'Expected outcomes'}
+            htmlFor="outcomes"
+            meta={meta}
+          >
             <Field name="outcomes">
               {({ input: { value = [], onChange } }) => (
                 <div className="highlights-wrapper">
