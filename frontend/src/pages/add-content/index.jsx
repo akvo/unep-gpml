@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Form, Field } from 'react-final-form'
 import {
   Button,
@@ -580,749 +580,768 @@ const getSelectOptions = (storeData) => ({
   ],
 })
 
-const FormField = ({ name, input, meta, storeData, form, label }) => {
-  const tags = Object.keys(getSelectOptions(storeData).tags)
-    .map((k) => getSelectOptions(storeData).tags[k])
-    .flat()
+const FormField = React.memo(
+  ({ name, input, meta, storeData, form, label }) => {
+    console.log('redndered')
+    const tags = Object.keys(getSelectOptions(storeData).tags)
+      .map((k) => getSelectOptions(storeData).tags[k])
+      .flat()
 
-  const entity = getSelectOptions(storeData).owner || []
+    const entity = getSelectOptions(storeData).owner || []
 
-  const currenciesList = getSelectOptions(storeData).currencies?.map((x) => ({
-    id: x.value,
-    label: x.label,
-  }))
+    const currenciesList = getSelectOptions(storeData).currencies?.map((x) => ({
+      id: x.value,
+      label: x.label,
+    }))
 
-  const renderFieldContent = () => {
-    switch (name) {
-      case 'title':
-      case 'name':
-      case 'summary':
-      case 'description':
-      case 'remarks':
-      case 'abstract':
-      case 'background':
-      case 'purpose':
-      case 'url':
-      case 'registrationUrl':
-      case 'recording':
-        const optionalFields = {
-          url: true,
-        }
-        return (
-          <FormLabel
-            label={label ? label : name.charAt(0).toUpperCase() + name.slice(1)}
-            htmlFor={name}
-            meta={meta}
-            isOptional={optionalFields[name]}
-          >
-            {name === 'summary' ||
-            name === 'remarks' ||
-            name === 'abstract' ||
-            name === 'description' ||
-            name === 'purpose' ||
-            name === 'background' ? (
-              <Input.TextArea
-                {...input}
-                rows={4}
-                className={`${
-                  meta.touched && meta.error && !meta.valid
-                    ? 'ant-input-status-error'
-                    : ''
-                }`}
-              />
-            ) : (
+    const renderFieldContent = () => {
+      switch (name) {
+        case 'title':
+        case 'name':
+        case 'summary':
+        case 'description':
+        case 'remarks':
+        case 'abstract':
+        case 'background':
+        case 'purpose':
+        case 'url':
+        case 'registrationUrl':
+        case 'recording':
+          const optionalFields = {
+            url: true,
+          }
+          return (
+            <FormLabel
+              label={
+                label ? label : name.charAt(0).toUpperCase() + name.slice(1)
+              }
+              htmlFor={name}
+              meta={meta}
+              isOptional={optionalFields[name]}
+            >
+              {name === 'summary' ||
+              name === 'remarks' ||
+              name === 'abstract' ||
+              name === 'description' ||
+              name === 'purpose' ||
+              name === 'background' ? (
+                <Input.TextArea
+                  {...input}
+                  rows={4}
+                  className={`${
+                    meta.touched && meta.error && !meta.valid
+                      ? 'ant-input-status-error'
+                      : ''
+                  }`}
+                />
+              ) : (
+                <Input
+                  {...input}
+                  className={`${
+                    meta.touched && meta.error && !meta.valid
+                      ? 'ant-input-status-error'
+                      : ''
+                  }`}
+                />
+              )}{' '}
+              {meta.touched && meta.error && (
+                <p
+                  color="error"
+                  className="error transitionDiv"
+                  style={
+                    meta.touched && meta.error ? mountedStyle : unmountedStyle
+                  }
+                >
+                  {meta.error}
+                </p>
+              )}
+            </FormLabel>
+          )
+
+        case 'value':
+          return (
+            <FormLabel label="Value Amount" htmlFor="value" meta={meta}>
               <Input
                 {...input}
+                type="number"
                 className={`${
                   meta.touched && meta.error && !meta.valid
                     ? 'ant-input-status-error'
                     : ''
                 }`}
               />
-            )}{' '}
-            {meta.touched && meta.error && (
-              <p
-                color="error"
-                className="error transitionDiv"
-                style={
-                  meta.touched && meta.error ? mountedStyle : unmountedStyle
-                }
-              >
-                {meta.error}
-              </p>
-            )}
-          </FormLabel>
-        )
-
-      case 'value':
-        return (
-          <FormLabel label="Value Amount" htmlFor="value" meta={meta}>
-            <Input
-              {...input}
-              type="number"
-              className={`${
-                meta.touched && meta.error && !meta.valid
-                  ? 'ant-input-status-error'
-                  : ''
-              }`}
-            />
-            {meta.touched && meta.error && (
-              <p
-                color="error"
-                className="error transitionDiv"
-                style={
-                  meta.touched && meta.error ? mountedStyle : unmountedStyle
-                }
-              >
-                {meta.error}
-              </p>
-            )}
-          </FormLabel>
-        )
-
-      case 'geoCoverageType':
-        return (
-          <FormLabel
-            label="Geo-coverage type"
-            htmlFor="geoCoverageType"
-            meta={meta}
-          >
-            <Select
-              {...input}
-              size="small"
-              value={input.value || undefined}
-              allowClear
-              onChange={(value) => {
-                input.onChange(value)
-                form.change('geoCoverageValueTransnational', undefined)
-                form.change('geoCoverageCountries', undefined)
-              }}
-              onBlur={input.onBlur}
-              placeholder="Select Geo-coverage type"
-              className={
-                meta.touched && !meta.valid ? 'ant-input-status-error' : ''
-              }
-            >
-              {selectOptions.geoCoverageType.map((opt) => (
-                <Option key={opt.value} value={opt.value}>
-                  <Trans>{opt.key}</Trans>
-                </Option>
-              ))}
-            </Select>
-            {meta.touched && meta.error && (
-              <p
-                color="error"
-                className="error transitionDiv"
-                style={
-                  meta.touched && meta.error ? mountedStyle : unmountedStyle
-                }
-              >
-                {meta.error}
-              </p>
-            )}
-          </FormLabel>
-        )
-
-      case 'geoCoverageValueTransnational':
-        return (
-          <FormLabel
-            label="GEO COVERAGE (Transnational)"
-            htmlFor="geoCoverageValueTransnational"
-            meta={meta}
-          >
-            <Select
-              {...input}
-              size="small"
-              value={input.value || undefined}
-              allowClear
-              placeholder="Select transnational "
-              className={
-                meta.touched && !meta.valid ? 'ant-input-status-error' : ''
-              }
-            >
-              {storeData.transnationalOptions.map((opt) => (
-                <Option key={opt.id} value={opt.id}>
-                  {opt.name}
-                </Option>
-              ))}
-            </Select>{' '}
-            {meta.touched && meta.error && (
-              <p
-                color="error"
-                className="error transitionDiv"
-                style={
-                  meta.touched && meta.error ? mountedStyle : unmountedStyle
-                }
-              >
-                {meta.error}
-              </p>
-            )}
-          </FormLabel>
-        )
-
-      case 'geoCoverageCountries':
-        return (
-          <FormLabel
-            label="GEO COVERAGE (Countries)"
-            htmlFor="geoCoverageCountries"
-            meta={meta}
-          >
-            <Select
-              {...input}
-              size="small"
-              mode="multiple"
-              value={input.value || []}
-              allowClear
-              placeholder="Select countries"
-              className={
-                meta.touched && !meta.valid ? 'ant-input-status-error' : ''
-              }
-            >
-              {storeData.countries.map((country) => (
-                <Option key={country.id} value={country.id}>
-                  {country.name}
-                </Option>
-              ))}
-            </Select>{' '}
-            {meta.touched && meta.error && (
-              <p
-                color="error"
-                className="error transitionDiv"
-                style={
-                  meta.touched && meta.error ? mountedStyle : unmountedStyle
-                }
-              >
-                {meta.error}
-              </p>
-            )}
-          </FormLabel>
-        )
-
-      case 'valueCurrency':
-        return (
-          <FormLabel label="Value Currency" htmlFor="valueCurrency" meta={meta}>
-            <Select
-              {...input}
-              size="small"
-              value={input.value ? input.value : []}
-              allowClear
-              onChange={input.onChange}
-              onBlur={input.onBlur}
-              placeholder="Select value currency"
-              className={
-                meta.touched && !meta.valid ? 'ant-input-status-error' : ''
-              }
-            >
-              {currenciesList?.map((opt) => (
-                <Option key={opt.id} value={opt.id}>
-                  <Trans>{opt.label}</Trans>
-                </Option>
-              ))}
-            </Select>{' '}
-            {meta.touched && meta.error && (
-              <p
-                color="error"
-                className="error transitionDiv"
-                style={
-                  meta.touched && meta.error ? mountedStyle : unmountedStyle
-                }
-              >
-                {meta.error}
-              </p>
-            )}
-          </FormLabel>
-        )
-
-      case 'eventType':
-        return (
-          <FormLabel label="Event Type" htmlFor="eventType" meta={meta}>
-            <Select
-              {...input}
-              size="small"
-              value={input.value || undefined}
-              allowClear
-              onChange={input.onChange}
-              onBlur={input.onBlur}
-              placeholder="Select event type"
-              className={
-                meta.touched && !meta.valid ? 'ant-input-status-error' : ''
-              }
-            >
-              {selectOptions.eventType.map((type) => (
-                <Option key={type} value={type}>
-                  {type.charAt(0).toUpperCase() + type.slice(1)}
-                </Option>
-              ))}
-            </Select>
-            {meta.touched && meta.error && (
-              <p
-                color="error"
-                className="error transitionDiv"
-                style={
-                  meta.touched && meta.error ? mountedStyle : unmountedStyle
-                }
-              >
-                {meta.error}
-              </p>
-            )}
-          </FormLabel>
-        )
-
-      case 'tags':
-        return (
-          <FormLabel label="Tags" htmlFor="tags" meta={meta}>
-            <Select
-              {...input}
-              size="small"
-              mode="multiple"
-              value={input.value ? input.value : []}
-              allowClear
-              onChange={input.onChange}
-              onBlur={input.onBlur}
-              placeholder="Select at least one"
-              filterOption={(input, option) =>
-                (option?.children?.toString() ?? '')
-                  .toLowerCase()
-                  .includes(input.toLowerCase())
-              }
-              className={
-                meta.touched && !meta.valid ? 'ant-input-status-error' : ''
-              }
-            >
-              {tags.map((opt) => (
-                <Option key={opt.id} value={opt.id}>
-                  <Trans>{opt.tag}</Trans>
-                </Option>
-              ))}
-            </Select>{' '}
-            {meta.touched && meta.error && (
-              <p
-                color="error"
-                className="error transitionDiv"
-                style={
-                  meta.touched && meta.error ? mountedStyle : unmountedStyle
-                }
-              >
-                {meta.error}
-              </p>
-            )}
-          </FormLabel>
-        )
-
-      case 'lifecycleStage':
-        return (
-          <FormLabel
-            label="Lifecycle Stage"
-            htmlFor="lifecycleStage"
-            meta={meta}
-          >
-            <Select
-              {...input}
-              size="small"
-              value={input.value ? input.value : []}
-              allowClear
-              mode="multiple"
-              placeholder="Select at least one"
-              onChange={input.onChange}
-              onBlur={input.onBlur}
-              className={
-                meta.touched && !meta.valid ? 'ant-input-status-error' : ''
-              }
-            >
-              {selectOptions.lifecycleStage.map((opt) => (
-                <Option key={opt} value={opt}>
-                  <Trans>{opt}</Trans>
-                </Option>
-              ))}
-            </Select>{' '}
-            {meta.touched && meta.error && (
-              <p
-                color="error"
-                className="error transitionDiv"
-                style={
-                  meta.touched && meta.error ? mountedStyle : unmountedStyle
-                }
-              >
-                {meta.error}
-              </p>
-            )}
-          </FormLabel>
-        )
-
-      case 'image':
-        return (
-          <FormLabel label="Photo" htmlFor="image" meta={meta}>
-            <Dragger
-              {...input}
-              beforeUpload={() => false}
-              onChange={async ({ file, fileList }) => {
-                try {
-                  if (file) {
-                    const base64 = await getBase64(file)
-                    input.onChange(base64)
+              {meta.touched && meta.error && (
+                <p
+                  color="error"
+                  className="error transitionDiv"
+                  style={
+                    meta.touched && meta.error ? mountedStyle : unmountedStyle
                   }
-                } catch (err) {
-                  console.error('Error converting to base64:', err)
-                  input.onChange(null)
-                }
-              }}
-              multiple={false}
-              accept=".jpg,.png"
+                >
+                  {meta.error}
+                </p>
+              )}
+            </FormLabel>
+          )
+
+        case 'geoCoverageType':
+          return (
+            <FormLabel
+              label="Geo-coverage type"
+              htmlFor="geoCoverageType"
+              meta={meta}
             >
-              <p className="ant-upload-drag-icon">
-                <UploadFileIcon />
-              </p>
-              <p className="ant-upload-text">Accepts .jpg and .png</p>
-              <p className="add-btn">Add a File</p>
-            </Dragger>{' '}
-            {meta.touched && meta.error && (
-              <p
-                color="error"
-                className="error transitionDiv"
-                style={
-                  meta.touched && meta.error ? mountedStyle : unmountedStyle
+              <Select
+                {...input}
+                size="small"
+                value={input.value || undefined}
+                allowClear
+                onChange={(value) => {
+                  input.onChange(value)
+                  form.change('geoCoverageValueTransnational', undefined)
+                  form.change('geoCoverageCountries', undefined)
+                }}
+                onBlur={input.onBlur}
+                placeholder="Select Geo-coverage type"
+                className={
+                  meta.touched && !meta.valid ? 'ant-input-status-error' : ''
                 }
               >
-                {meta.error}
-              </p>
-            )}
-          </FormLabel>
-        )
-
-      case 'gallery':
-        return (
-          <FormLabel label="Gallery" htmlFor="gallery" meta={meta}>
-            <Dragger
-              {...input}
-              beforeUpload={() => false}
-              onChange={async ({ file, fileList }) => {
-                try {
-                  if (file) {
-                    const base64 = await getBase64(file)
-                    input.onChange(base64)
+                {selectOptions.geoCoverageType.map((opt) => (
+                  <Option key={opt.value} value={opt.value}>
+                    <Trans>{opt.key}</Trans>
+                  </Option>
+                ))}
+              </Select>
+              {meta.touched && meta.error && (
+                <p
+                  color="error"
+                  className="error transitionDiv"
+                  style={
+                    meta.touched && meta.error ? mountedStyle : unmountedStyle
                   }
-                } catch (err) {
-                  console.error('Error converting to base64:', err)
-                  input.onChange(null)
-                }
-              }}
-              multiple={true}
-              accept=".jpg,.png"
-            >
-              <p className="ant-upload-drag-icon">
-                <UploadFileIcon />
-              </p>
-              <p className="ant-upload-text">Accepts .jpg and .png</p>
-              <p className="add-btn">Add a File</p>
-            </Dragger>{' '}
-            {meta.touched && meta.error && (
-              <p
-                color="error"
-                className="error transitionDiv"
-                style={
-                  meta.touched && meta.error ? mountedStyle : unmountedStyle
-                }
-              >
-                {meta.error}
-              </p>
-            )}
-          </FormLabel>
-        )
+                >
+                  {meta.error}
+                </p>
+              )}
+            </FormLabel>
+          )
 
-      case 'thumbnail':
-        return (
-          <FormLabel
-            label="Cover Thumbnail -  portrait format 300x400"
-            htmlFor="thumbnail"
-            meta={meta}
-            isOptional={true}
-          >
-            <Dragger
-              {...input}
-              beforeUpload={() => false}
-              onChange={({ fileList }) => input.onChange(fileList)}
-              multiple={false}
-              accept=".jpg,.png"
+        case 'geoCoverageValueTransnational':
+          return (
+            <FormLabel
+              label="GEO COVERAGE (Transnational)"
+              htmlFor="geoCoverageValueTransnational"
+              meta={meta}
             >
-              <p className="ant-upload-drag-icon">
-                <UploadFileIcon />
-              </p>
-              <p className="ant-upload-text">Accepts .jpg and .png</p>
-              <p className="add-btn">Add a File</p>
-            </Dragger>
-          </FormLabel>
-        )
-
-      case 'owner':
-        return (
-          <FormLabel
-            label={name.charAt(0).toUpperCase() + name.slice(1)}
-            htmlFor={name}
-            meta={meta}
-          >
-            <Select
-              {...input}
-              size="small"
-              mode="multiple"
-              value={input.value ? input.value : []}
-              filterOption={(input, option) =>
-                (option?.children?.toString() ?? '')
-                  .toLowerCase()
-                  .includes(input.toLowerCase())
-              }
-              allowClear
-              onChange={input.onChange}
-              onBlur={input.onBlur}
-              placeholder={`Select ${name}`}
-              className={
-                meta.touched && !meta.valid ? 'ant-input-status-error' : ''
-              }
-            >
-              {entity.map((opt) => (
-                <Option key={opt.id} value={opt.id}>
-                  {opt.name}
-                </Option>
-              ))}
-            </Select>
-          </FormLabel>
-        )
-
-      case 'partners':
-      case 'donors':
-      case 'implementors':
-        return (
-          <FormLabel
-            label={name.charAt(0).toUpperCase() + name.slice(1)}
-            htmlFor={name}
-            isOptional={true}
-            meta={meta}
-          >
-            <Select
-              {...input}
-              size="small"
-              mode="multiple"
-              value={input.value ? input.value : []}
-              filterOption={(input, option) =>
-                (option?.children?.toString() ?? '')
-                  .toLowerCase()
-                  .includes(input.toLowerCase())
-              }
-              allowClear
-              onChange={input.onChange}
-              onBlur={input.onBlur}
-              placeholder={`Select ${name}`}
-              className={
-                meta.touched && !meta.valid ? 'ant-input-status-error' : ''
-              }
-            >
-              {entity.map((opt) => (
-                <Option key={opt.id} value={opt.id}>
-                  {opt.name}
-                </Option>
-              ))}
-            </Select>
-          </FormLabel>
-        )
-
-      case 'publicationYear':
-      case 'yearFounded':
-        return (
-          <FormLabel label={label ? label : name} htmlFor={name}>
-            <DatePicker
-              {...input}
-              size="small"
-              picker="year"
-              className={
-                meta.touched && !meta.valid ? 'ant-input-status-error' : ''
-              }
-              placeholder="Select year"
-              value={input.value ? moment(input.value) : undefined}
-              onChange={(date) =>
-                input.onChange(date ? date.format('YYYY') : null)
-              }
-            />
-            {meta.touched && meta.error && (
-              <p
-                className="error transitionDiv"
-                style={
-                  meta.touched && meta.error ? mountedStyle : unmountedStyle
+              <Select
+                {...input}
+                size="small"
+                value={input.value || undefined}
+                allowClear
+                placeholder="Select transnational "
+                className={
+                  meta.touched && !meta.valid ? 'ant-input-status-error' : ''
                 }
               >
-                {meta.error}
-              </p>
-            )}
-          </FormLabel>
-        )
+                {storeData.transnationalOptions.map((opt) => (
+                  <Option key={opt.id} value={opt.id}>
+                    {opt.name}
+                  </Option>
+                ))}
+              </Select>{' '}
+              {meta.touched && meta.error && (
+                <p
+                  color="error"
+                  className="error transitionDiv"
+                  style={
+                    meta.touched && meta.error ? mountedStyle : unmountedStyle
+                  }
+                >
+                  {meta.error}
+                </p>
+              )}
+            </FormLabel>
+          )
 
-      case 'validFrom':
-      case 'validTo':
-      case 'startDate':
-      case 'endDate':
-        return (
-          <FormLabel
-            label={name
-              .replace(/([A-Z])/g, ' $1')
-              .replace(/^./, (str) => str.toUpperCase())}
-            htmlFor={name}
-            meta={meta}
-          >
-            <DatePicker
-              {...input}
-              size="small"
-              className={
-                meta.touched && !meta.valid ? 'ant-input-status-error' : ''
-              }
-              placeholder={label ? label : name}
-              value={input.value ? moment(input.value) : undefined}
-              onChange={(date) =>
-                input.onChange(date ? date.format('YYYY-MM-DD') : null)
-              }
-            />
-            {meta.touched && meta.error && (
-              <p
-                className="error transitionDiv"
-                style={
-                  meta.touched && meta.error ? mountedStyle : unmountedStyle
+        case 'geoCoverageCountries':
+          return (
+            <FormLabel
+              label="GEO COVERAGE (Countries)"
+              htmlFor="geoCoverageCountries"
+              meta={meta}
+            >
+              <Select
+                {...input}
+                size="small"
+                mode="multiple"
+                value={input.value || []}
+                allowClear
+                placeholder="Select countries"
+                className={
+                  meta.touched && !meta.valid ? 'ant-input-status-error' : ''
                 }
               >
-                {meta.error}
-              </p>
-            )}
-          </FormLabel>
-        )
+                {storeData.countries.map((country) => (
+                  <Option key={country.id} value={country.id}>
+                    {country.name}
+                  </Option>
+                ))}
+              </Select>{' '}
+              {meta.touched && meta.error && (
+                <p
+                  color="error"
+                  className="error transitionDiv"
+                  style={
+                    meta.touched && meta.error ? mountedStyle : unmountedStyle
+                  }
+                >
+                  {meta.error}
+                </p>
+              )}
+            </FormLabel>
+          )
 
-      case 'highlights':
-        return (
-          <FormLabel
-            label="Key highlights (Optional)"
-            htmlFor="keyHighlights"
-            meta={meta}
-          >
-            <Field name="highlights">
-              {({ input: { value = [], onChange } }) => (
-                <div className="highlights-wrapper">
-                  {(value || []).map((item, index) => (
-                    <div key={index} className="highlights-input">
-                      <Input
-                        value={item.text || ''}
-                        onChange={(e) => {
-                          const newValue = [...value]
-                          newValue[index] = {
-                            ...newValue[index],
-                            text: e.target.value,
-                          }
-                          onChange(newValue)
-                        }}
-                        placeholder="Enter highlight text"
-                      />
-                      <Input
-                        value={item.url || ''}
-                        onChange={(e) => {
-                          const newValue = [...value]
-                          newValue[index] = {
-                            ...newValue[index],
-                            url: e.target.value,
-                          }
-                          onChange(newValue)
-                        }}
-                        placeholder="Link to PDF, document, video, etc"
-                      />
-                      {index !== 0 && (
-                        <Button
-                          onClick={() => {
-                            const newValue = value.filter((_, i) => i !== index)
-                            onChange(newValue)
-                          }}
-                          type="link"
-                        >
-                          <DeleteOutlined />
-                        </Button>
-                      )}
-                    </div>
-                  ))}
+        case 'valueCurrency':
+          return (
+            <FormLabel
+              label="Value Currency"
+              htmlFor="valueCurrency"
+              meta={meta}
+            >
+              <Select
+                {...input}
+                size="small"
+                value={input.value ? input.value : []}
+                allowClear
+                onChange={input.onChange}
+                onBlur={input.onBlur}
+                placeholder="Select value currency"
+                className={
+                  meta.touched && !meta.valid ? 'ant-input-status-error' : ''
+                }
+              >
+                {currenciesList?.map((opt) => (
+                  <Option key={opt.id} value={opt.id}>
+                    <Trans>{opt.label}</Trans>
+                  </Option>
+                ))}
+              </Select>{' '}
+              {meta.touched && meta.error && (
+                <p
+                  color="error"
+                  className="error transitionDiv"
+                  style={
+                    meta.touched && meta.error ? mountedStyle : unmountedStyle
+                  }
+                >
+                  {meta.error}
+                </p>
+              )}
+            </FormLabel>
+          )
 
-                  <Button
-                    type="link"
-                    onClick={() =>
-                      onChange([...(value || []), { text: '', url: '' }])
+        case 'eventType':
+          return (
+            <FormLabel label="Event Type" htmlFor="eventType" meta={meta}>
+              <Select
+                {...input}
+                size="small"
+                value={input.value || undefined}
+                allowClear
+                onChange={input.onChange}
+                onBlur={input.onBlur}
+                placeholder="Select event type"
+                className={
+                  meta.touched && !meta.valid ? 'ant-input-status-error' : ''
+                }
+              >
+                {selectOptions.eventType.map((type) => (
+                  <Option key={type} value={type}>
+                    {type.charAt(0).toUpperCase() + type.slice(1)}
+                  </Option>
+                ))}
+              </Select>
+              {meta.touched && meta.error && (
+                <p
+                  color="error"
+                  className="error transitionDiv"
+                  style={
+                    meta.touched && meta.error ? mountedStyle : unmountedStyle
+                  }
+                >
+                  {meta.error}
+                </p>
+              )}
+            </FormLabel>
+          )
+
+        case 'tags':
+          return (
+            <FormLabel label="Tags" htmlFor="tags" meta={meta}>
+              <Select
+                {...input}
+                size="small"
+                mode="multiple"
+                value={input.value ? input.value : []}
+                allowClear
+                onChange={input.onChange}
+                onBlur={input.onBlur}
+                placeholder="Select at least one"
+                filterOption={(input, option) =>
+                  (option?.children?.toString() ?? '')
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
+                }
+                className={
+                  meta.touched && !meta.valid ? 'ant-input-status-error' : ''
+                }
+              >
+                {tags.map((opt) => (
+                  <Option key={opt.id} value={opt.id}>
+                    <Trans>{opt.tag}</Trans>
+                  </Option>
+                ))}
+              </Select>{' '}
+              {meta.touched && meta.error && (
+                <p
+                  color="error"
+                  className="error transitionDiv"
+                  style={
+                    meta.touched && meta.error ? mountedStyle : unmountedStyle
+                  }
+                >
+                  {meta.error}
+                </p>
+              )}
+            </FormLabel>
+          )
+
+        case 'lifecycleStage':
+          return (
+            <FormLabel
+              label="Lifecycle Stage"
+              htmlFor="lifecycleStage"
+              meta={meta}
+            >
+              <Select
+                {...input}
+                size="small"
+                value={input.value ? input.value : []}
+                allowClear
+                mode="multiple"
+                placeholder="Select at least one"
+                onChange={input.onChange}
+                onBlur={input.onBlur}
+                className={
+                  meta.touched && !meta.valid ? 'ant-input-status-error' : ''
+                }
+              >
+                {selectOptions.lifecycleStage.map((opt) => (
+                  <Option key={opt} value={opt}>
+                    <Trans>{opt}</Trans>
+                  </Option>
+                ))}
+              </Select>{' '}
+              {meta.touched && meta.error && (
+                <p
+                  color="error"
+                  className="error transitionDiv"
+                  style={
+                    meta.touched && meta.error ? mountedStyle : unmountedStyle
+                  }
+                >
+                  {meta.error}
+                </p>
+              )}
+            </FormLabel>
+          )
+
+        case 'image':
+          return (
+            <FormLabel label="Photo" htmlFor="image" meta={meta}>
+              <Dragger
+                {...input}
+                beforeUpload={() => false}
+                onChange={async ({ file, fileList }) => {
+                  try {
+                    if (file) {
+                      const base64 = await getBase64(file)
+                      input.onChange(base64)
                     }
-                  >
-                    <div className="icn">
-                      <PlusIcon />
-                    </div>
-                    <Trans>Add Another</Trans>{' '}
-                  </Button>
-                </div>
+                  } catch (err) {
+                    console.error('Error converting to base64:', err)
+                    input.onChange(null)
+                  }
+                }}
+                multiple={false}
+                accept=".jpg,.png"
+              >
+                <p className="ant-upload-drag-icon">
+                  <UploadFileIcon />
+                </p>
+                <p className="ant-upload-text">Accepts .jpg and .png</p>
+                <p className="add-btn">Add a File</p>
+              </Dragger>{' '}
+              {meta.touched && meta.error && (
+                <p
+                  color="error"
+                  className="error transitionDiv"
+                  style={
+                    meta.touched && meta.error ? mountedStyle : unmountedStyle
+                  }
+                >
+                  {meta.error}
+                </p>
               )}
-            </Field>
-          </FormLabel>
-        )
+            </FormLabel>
+          )
 
-      case 'outcomes':
-      case 'videos':
-        return (
-          <FormLabel
-            label={name === 'videos' ? 'Videos' : 'Expected outcomes'}
-            htmlFor={name}
-            meta={meta}
-          >
-            <Field name={name}>
-              {({ input: { value = [], onChange } }) => (
-                <div className="highlights-wrapper">
-                  {(value || []).map((item, index) => (
-                    <div key={index} className="highlights-input">
-                      <Input
-                        value={item || ''}
-                        onChange={(e) => {
-                          const newValue = [...(value || [])]
-                          newValue[index] = e.target.value
-                          onChange(newValue)
-                        }}
-                        placeholder={
-                          name === 'videos'
-                            ? 'YouTube URL'
-                            : 'Enter expected outcome'
-                        }
-                      />
+        case 'gallery':
+          return (
+            <FormLabel label="Gallery" htmlFor="gallery" meta={meta}>
+              <Dragger
+                {...input}
+                beforeUpload={() => false}
+                onChange={async ({ file, fileList }) => {
+                  try {
+                    if (file) {
+                      const base64 = await getBase64(file)
+                      input.onChange(base64)
+                    }
+                  } catch (err) {
+                    console.error('Error converting to base64:', err)
+                    input.onChange(null)
+                  }
+                }}
+                multiple={true}
+                accept=".jpg,.png"
+              >
+                <p className="ant-upload-drag-icon">
+                  <UploadFileIcon />
+                </p>
+                <p className="ant-upload-text">Accepts .jpg and .png</p>
+                <p className="add-btn">Add a File</p>
+              </Dragger>{' '}
+              {meta.touched && meta.error && (
+                <p
+                  color="error"
+                  className="error transitionDiv"
+                  style={
+                    meta.touched && meta.error ? mountedStyle : unmountedStyle
+                  }
+                >
+                  {meta.error}
+                </p>
+              )}
+            </FormLabel>
+          )
 
-                      {index !== 0 && (
-                        <Button
-                          onClick={() => {
-                            const newValue = value.filter((_, i) => i !== index)
+        case 'thumbnail':
+          return (
+            <FormLabel
+              label="Cover Thumbnail -  portrait format 300x400"
+              htmlFor="thumbnail"
+              meta={meta}
+              isOptional={true}
+            >
+              <Dragger
+                {...input}
+                beforeUpload={() => false}
+                onChange={({ fileList }) => input.onChange(fileList)}
+                multiple={false}
+                accept=".jpg,.png"
+              >
+                <p className="ant-upload-drag-icon">
+                  <UploadFileIcon />
+                </p>
+                <p className="ant-upload-text">Accepts .jpg and .png</p>
+                <p className="add-btn">Add a File</p>
+              </Dragger>
+            </FormLabel>
+          )
+
+        case 'owner':
+          return (
+            <FormLabel
+              label={name.charAt(0).toUpperCase() + name.slice(1)}
+              htmlFor={name}
+              meta={meta}
+            >
+              <Select
+                {...input}
+                size="small"
+                mode="multiple"
+                value={input.value ? input.value : []}
+                filterOption={(input, option) =>
+                  (option?.children?.toString() ?? '')
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
+                }
+                allowClear
+                onChange={input.onChange}
+                onBlur={input.onBlur}
+                placeholder={`Select ${name}`}
+                className={
+                  meta.touched && !meta.valid ? 'ant-input-status-error' : ''
+                }
+              >
+                {entity.map((opt) => (
+                  <Option key={opt.id} value={opt.id}>
+                    {opt.name}
+                  </Option>
+                ))}
+              </Select>
+            </FormLabel>
+          )
+
+        case 'partners':
+        case 'donors':
+        case 'implementors':
+          return (
+            <FormLabel
+              label={name.charAt(0).toUpperCase() + name.slice(1)}
+              htmlFor={name}
+              isOptional={true}
+              meta={meta}
+            >
+              <Select
+                {...input}
+                size="small"
+                mode="multiple"
+                value={input.value ? input.value : []}
+                filterOption={(input, option) =>
+                  (option?.children?.toString() ?? '')
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
+                }
+                allowClear
+                onChange={input.onChange}
+                onBlur={input.onBlur}
+                placeholder={`Select ${name}`}
+                className={
+                  meta.touched && !meta.valid ? 'ant-input-status-error' : ''
+                }
+              >
+                {entity.map((opt) => (
+                  <Option key={opt.id} value={opt.id}>
+                    {opt.name}
+                  </Option>
+                ))}
+              </Select>
+            </FormLabel>
+          )
+
+        case 'publicationYear':
+        case 'yearFounded':
+          return (
+            <FormLabel label={label ? label : name} htmlFor={name}>
+              <DatePicker
+                {...input}
+                size="small"
+                picker="year"
+                className={
+                  meta.touched && !meta.valid ? 'ant-input-status-error' : ''
+                }
+                placeholder="Select year"
+                value={input.value ? moment(input.value) : undefined}
+                onChange={(date) =>
+                  input.onChange(date ? date.format('YYYY') : null)
+                }
+              />
+              {meta.touched && meta.error && (
+                <p
+                  className="error transitionDiv"
+                  style={
+                    meta.touched && meta.error ? mountedStyle : unmountedStyle
+                  }
+                >
+                  {meta.error}
+                </p>
+              )}
+            </FormLabel>
+          )
+
+        case 'validFrom':
+        case 'validTo':
+        case 'startDate':
+        case 'endDate':
+          return (
+            <FormLabel
+              label={name
+                .replace(/([A-Z])/g, ' $1')
+                .replace(/^./, (str) => str.toUpperCase())}
+              htmlFor={name}
+              meta={meta}
+            >
+              <DatePicker
+                {...input}
+                size="small"
+                className={
+                  meta.touched && !meta.valid ? 'ant-input-status-error' : ''
+                }
+                placeholder={label ? label : name}
+                value={input.value ? moment(input.value) : undefined}
+                onChange={(date) =>
+                  input.onChange(date ? date.format('YYYY-MM-DD') : null)
+                }
+              />
+              {meta.touched && meta.error && (
+                <p
+                  className="error transitionDiv"
+                  style={
+                    meta.touched && meta.error ? mountedStyle : unmountedStyle
+                  }
+                >
+                  {meta.error}
+                </p>
+              )}
+            </FormLabel>
+          )
+
+        case 'highlights':
+          return (
+            <FormLabel
+              label="Key highlights (Optional)"
+              htmlFor="keyHighlights"
+              meta={meta}
+            >
+              <Field name="highlights">
+                {({ input: { value = [], onChange } }) => (
+                  <div className="highlights-wrapper">
+                    {(value || []).map((item, index) => (
+                      <div key={index} className="highlights-input">
+                        <Input
+                          value={item.text || ''}
+                          onChange={(e) => {
+                            const newValue = [...value]
+                            newValue[index] = {
+                              ...newValue[index],
+                              text: e.target.value,
+                            }
                             onChange(newValue)
                           }}
-                          type="link"
-                        >
-                          <DeleteOutlined />
-                        </Button>
-                      )}
-                    </div>
-                  ))}
+                          placeholder="Enter highlight text"
+                        />
+                        <Input
+                          value={item.url || ''}
+                          onChange={(e) => {
+                            const newValue = [...value]
+                            newValue[index] = {
+                              ...newValue[index],
+                              url: e.target.value,
+                            }
+                            onChange(newValue)
+                          }}
+                          placeholder="Link to PDF, document, video, etc"
+                        />
+                        {index !== 0 && (
+                          <Button
+                            onClick={() => {
+                              const newValue = value.filter(
+                                (_, i) => i !== index
+                              )
+                              onChange(newValue)
+                            }}
+                            type="link"
+                          >
+                            <DeleteOutlined />
+                          </Button>
+                        )}
+                      </div>
+                    ))}
 
-                  <Button
-                    type="link"
-                    onClick={() => onChange([...(value || []), ''])}
-                  >
-                    <div className="icn">
-                      <PlusIcon />
-                    </div>
-                    <Trans>Add Another</Trans>{' '}
-                  </Button>
-                </div>
-              )}
-            </Field>
-          </FormLabel>
-        )
+                    <Button
+                      type="link"
+                      onClick={() =>
+                        onChange([...(value || []), { text: '', url: '' }])
+                      }
+                    >
+                      <div className="icn">
+                        <PlusIcon />
+                      </div>
+                      <Trans>Add Another</Trans>{' '}
+                    </Button>
+                  </div>
+                )}
+              </Field>
+            </FormLabel>
+          )
 
-      default:
-        return null
+        case 'outcomes':
+        case 'videos':
+          return (
+            <FormLabel
+              label={name === 'videos' ? 'Videos' : 'Expected outcomes'}
+              htmlFor={name}
+              meta={meta}
+            >
+              <Field name={name}>
+                {({ input: { value = [], onChange } }) => (
+                  <div className="highlights-wrapper">
+                    {(value || []).map((item, index) => (
+                      <div key={index} className="highlights-input">
+                        <Input
+                          value={item || ''}
+                          onChange={(e) => {
+                            const newValue = [...(value || [])]
+                            newValue[index] = e.target.value
+                            onChange(newValue)
+                          }}
+                          placeholder={
+                            name === 'videos'
+                              ? 'YouTube URL'
+                              : 'Enter expected outcome'
+                          }
+                        />
+
+                        {index !== 0 && (
+                          <Button
+                            onClick={() => {
+                              const newValue = value.filter(
+                                (_, i) => i !== index
+                              )
+                              onChange(newValue)
+                            }}
+                            type="link"
+                          >
+                            <DeleteOutlined />
+                          </Button>
+                        )}
+                      </div>
+                    ))}
+
+                    <Button
+                      type="link"
+                      onClick={() => onChange([...(value || []), ''])}
+                    >
+                      <div className="icn">
+                        <PlusIcon />
+                      </div>
+                      <Trans>Add Another</Trans>{' '}
+                    </Button>
+                  </div>
+                )}
+              </Field>
+            </FormLabel>
+          )
+
+        default:
+          return null
+      }
     }
+
+    return <div className="mb-4">{renderFieldContent()}</div>
+  },
+  (prevProps, nextProps) => {
+    return (
+      prevProps.input.value === nextProps.input.value &&
+      prevProps.meta.error === nextProps.meta.error &&
+      prevProps.meta.touched === nextProps.meta.touched
+    )
   }
-
-  return <div className="mb-4">{renderFieldContent()}</div>
-}
-
-const FormFields = ({ selectedType, storeData, form }) => {
+)
+const FormFields = React.memo(({ selectedType, storeData, form }) => {
   const config = formConfigs[selectedType] || defaultConfig
 
   return (
@@ -1363,7 +1382,7 @@ const FormFields = ({ selectedType, storeData, form }) => {
       </Field>
     </div>
   )
-}
+})
 
 const DynamicContentForm = () => {
   const [selectedType, setSelectedType] = useState(null)
@@ -1496,27 +1515,30 @@ const DynamicContentForm = () => {
       })
   }
 
-  const validate = (values) => {
-    const config = formConfigs[selectedType] || defaultConfig
-    const errors = {}
-    if (!config) return errors
+  const validate = useCallback(
+    (values) => {
+      const config = formConfigs[selectedType] || defaultConfig
+      const errors = {}
+      if (!config) return errors
 
-    config.rows.flat().forEach((field) => {
-      if (field.dependsOn) {
-        if (
-          values[field.dependsOn.field] === field.dependsOn.value &&
-          field.required &&
-          !values[field.name]
-        ) {
+      config.rows.flat().forEach((field) => {
+        if (field.dependsOn) {
+          if (
+            values[field.dependsOn.field] === field.dependsOn.value &&
+            field.required &&
+            !values[field.name]
+          ) {
+            errors[field.name] = 'Required'
+          }
+        } else if (field.required && !values[field.name]) {
           errors[field.name] = 'Required'
         }
-      } else if (field.required && !values[field.name]) {
-        errors[field.name] = 'Required'
-      }
-    })
+      })
 
-    return errors
-  }
+      return errors
+    },
+    [selectedType]
+  )
 
   const handleOnSubmitTechnology = (data, form) => {
     delete data.resourceType
