@@ -65,7 +65,7 @@ const formConfigs = {
         { name: 'owner', span: 12, required: true },
         { name: 'partners', span: 12 },
       ],
-      [{ name: 'publicationYear', span: 12 }],
+      [{ name: 'publicationYear', span: 12, label: 'Publication Year' }],
     ],
   },
   Legislation: {
@@ -119,7 +119,7 @@ const formConfigs = {
         { name: 'owner', span: 12, required: true },
         { name: 'partners', span: 12 },
       ],
-      [{ name: 'publicationYear', span: 12 }],
+      [{ name: 'publicationYear', span: 12, label: 'Publication Year' }],
     ],
   },
   'Financing Resource': {
@@ -214,7 +214,7 @@ const formConfigs = {
         { name: 'owner', span: 12, required: true },
         { name: 'partners', span: 12 },
       ],
-      [{ name: 'publicationYear', span: 12 }],
+      [{ name: 'publicationYear', span: 12, label: 'Publication Year' }],
       [
         { name: 'validFrom', label: 'YYYY-MM-DD', span: 12 },
         {
@@ -223,6 +223,48 @@ const formConfigs = {
           span: 12,
         },
       ],
+    ],
+  },
+  Technology: {
+    rows: [
+      [{ name: 'name', span: 24, required: true, label: 'Title' }],
+      [{ name: 'remarks', span: 24, required: true, label: 'Description' }],
+      [{ name: 'geoCoverageType', span: 12, required: true }],
+      [
+        {
+          name: 'geoCoverageValueTransnational',
+          span: 12,
+          required: true,
+          dependsOn: {
+            field: 'geoCoverageType',
+            value: 'transnational',
+          },
+        },
+      ],
+      [
+        {
+          name: 'geoCoverageCountries',
+          span: 12,
+          required: true,
+          dependsOn: {
+            field: 'geoCoverageType',
+            value: 'national',
+          },
+        },
+      ],
+      [
+        { name: 'lifecycleStage', span: 12, required: true },
+        { name: 'tags', span: 12, required: true },
+      ],
+      [
+        { name: 'photo', span: 12, required: true },
+        { name: 'thumbnail', span: 12 },
+      ],
+      [
+        { name: 'owner', span: 12, required: true },
+        { name: 'partners', span: 12 },
+      ],
+      [{ name: 'yearFounded', span: 12, label: 'Year Founded' }],
     ],
   },
 }
@@ -282,14 +324,16 @@ const FormField = ({ name, input, meta, storeData, form, label }) => {
   const renderFieldContent = () => {
     switch (name) {
       case 'title':
+      case 'name':
       case 'summary':
+      case 'remarks':
         return (
           <FormLabel
-            label={name.charAt(0).toUpperCase() + name.slice(1)}
+            label={label ? label : name.charAt(0).toUpperCase() + name.slice(1)}
             htmlFor={name}
             meta={meta}
           >
-            {name === 'summary' ? (
+            {name === 'summary' || name === 'remarks' ? (
               <Input.TextArea
                 {...input}
                 rows={4}
@@ -727,8 +771,9 @@ const FormField = ({ name, input, meta, storeData, form, label }) => {
         )
 
       case 'publicationYear':
+      case 'yearFounded':
         return (
-          <FormLabel label="Publication Year" htmlFor="publicationYear">
+          <FormLabel label={label ? label : name} htmlFor={name}>
             <DatePicker
               {...input}
               size="small"
@@ -800,7 +845,7 @@ const FormField = ({ name, input, meta, storeData, form, label }) => {
 
 const FormFields = ({ selectedType, storeData, form }) => {
   const config = formConfigs[selectedType] || defaultConfig
-  console.log(config)
+
   return (
     <div className="space-y-4">
       <Field name="geoCoverageType">
@@ -916,14 +961,23 @@ const DynamicContentForm = () => {
       ...(cleanValues.value && {
         value: Number(cleanValues.value),
       }),
+      ...(cleanValues.yearFounded && {
+        yearFounded: Number(cleanValues.yearFounded),
+      }),
       language: 'en',
     }
 
     delete data.lifecycleStage
     delete data.owner
+    delete data.partners
 
     console.log(data)
-    // return
+
+    if (selectedType === 'Technology') {
+      handleOnSubmitTechnology(data, form)
+      return false
+    }
+
     api
       .post('/resource', data)
       .then((res) => {
@@ -959,6 +1013,28 @@ const DynamicContentForm = () => {
     })
 
     return errors
+  }
+
+  const handleOnSubmitTechnology = (data, form) => {
+    delete data.resourceType
+    delete data.photo
+    data.version = 2
+    data.subContentType = ''
+    data.individualConnections = []
+
+    api
+      .post('/technology', data)
+      .then((res) => {
+        notification.success({ message: 'Resource successfully created' })
+        form.reset()
+        setSelectedType(null)
+      })
+      .catch(() => {
+        notification.error({ message: 'An error occured' })
+      })
+      .finally(() => {
+        setLoading(false)
+      })
   }
 
   return (
