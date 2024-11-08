@@ -13,13 +13,14 @@ import {
   notification,
 } from 'antd'
 import styles from './index.module.scss'
-import { UploadFileIcon } from '../../components/icons'
+import { PlusIcon, UploadFileIcon } from '../../components/icons'
 import FormLabel from '../../components/form-label'
 import { Trans } from '@lingui/macro'
 import { UIStore } from '../../store'
 import DatePicker from 'antd/lib/date-picker'
 import moment from 'moment'
 import api from '../../utils/api'
+import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
 
 const { Dragger } = Upload
 const { Title } = Typography
@@ -62,10 +63,24 @@ const formConfigs = {
         { name: 'thumbnail', span: 12 },
       ],
       [
-        { name: 'owner', span: 12, required: true },
+        { name: 'donors', span: 12, required: true },
         { name: 'partners', span: 12 },
       ],
-      [{ name: 'publicationYear', span: 12, label: 'Publication Year' }],
+      [{ name: 'implementors', span: 12, required: true }],
+      [
+        { name: 'startDate', label: 'YYYY-MM-DD', span: 12 },
+        {
+          name: 'endDate',
+          label: 'YYYY-MM-DD',
+          span: 12,
+        },
+      ],
+      [
+        { name: 'background', span: 12, required: true },
+        { name: 'purpose', span: 12, required: true },
+      ],
+      [{ name: 'highlights', span: 24, initialValue: [{ text: '', url: '' }] }],
+      [{ name: 'outcomes', span: 24, required: true, initialValue: [''] }],
     ],
   },
   Legislation: {
@@ -410,13 +425,19 @@ const FormField = ({ name, input, meta, storeData, form, label }) => {
       case 'summary':
       case 'remarks':
       case 'abstract':
+      case 'background':
+      case 'purpose':
         return (
           <FormLabel
             label={label ? label : name.charAt(0).toUpperCase() + name.slice(1)}
             htmlFor={name}
             meta={meta}
           >
-            {name === 'summary' || name === 'remarks' || name === 'abstract' ? (
+            {name === 'summary' ||
+            name === 'remarks' ||
+            name === 'abstract' ||
+            name === 'purpose' ||
+            name === 'background' ? (
               <Input.TextArea
                 {...input}
                 rows={4}
@@ -839,6 +860,8 @@ const FormField = ({ name, input, meta, storeData, form, label }) => {
         )
 
       case 'partners':
+      case 'donors':
+      case 'implementors':
         return (
           <FormLabel
             label={name.charAt(0).toUpperCase() + name.slice(1)}
@@ -905,6 +928,8 @@ const FormField = ({ name, input, meta, storeData, form, label }) => {
 
       case 'validFrom':
       case 'validTo':
+      case 'startDate':
+      case 'endDate':
         return (
           <FormLabel
             label={name
@@ -935,6 +960,121 @@ const FormField = ({ name, input, meta, storeData, form, label }) => {
                 {meta.error}
               </p>
             )}
+          </FormLabel>
+        )
+      case 'highlights':
+        return (
+          <FormLabel
+            label="Key highlights (Optional)"
+            htmlFor="keyHighlights"
+            meta={meta}
+          >
+            <Field name="highlights">
+              {({ input: { value = [], onChange } }) => (
+                <div className="highlights-wrapper">
+                  {(value || []).map((item, index) => (
+                    <div key={index} className="highlights-input">
+                      <Input
+                        value={item.text || ''}
+                        onChange={(e) => {
+                          const newValue = [...value]
+                          newValue[index] = {
+                            ...newValue[index],
+                            text: e.target.value,
+                          }
+                          onChange(newValue)
+                        }}
+                        placeholder="Enter highlight text"
+                      />
+                      <Input
+                        value={item.url || ''}
+                        onChange={(e) => {
+                          const newValue = [...value]
+                          newValue[index] = {
+                            ...newValue[index],
+                            url: e.target.value,
+                          }
+                          onChange(newValue)
+                        }}
+                        placeholder="Link to PDF, document, video, etc"
+                      />
+                      {index !== 0 && (
+                        <Button
+                          onClick={() => {
+                            const newValue = value.filter((_, i) => i !== index)
+                            onChange(newValue)
+                          }}
+                          type="link"
+                        >
+                          <DeleteOutlined />
+                        </Button>
+                      )}
+                    </div>
+                  ))}
+
+                  <Button
+                    type="link"
+                    onClick={() =>
+                      onChange([...(value || []), { text: '', url: '' }])
+                    }
+                  >
+                    <div className="icn">
+                      <PlusIcon />
+                    </div>
+                    <Trans>Add Another</Trans>{' '}
+                  </Button>
+                </div>
+              )}
+            </Field>
+          </FormLabel>
+        )
+
+      case 'outcomes':
+        return (
+          <FormLabel label="Expected outcomes" htmlFor="outcomes" meta={meta}>
+            <Field name="outcomes">
+              {({ input: { value = [], onChange } }) => (
+                <div className="highlights-wrapper">
+                  {(value || []).map((item, index) => (
+                    <div key={index} className="highlights-input">
+                      <Input
+                        value={item || ''}
+                        onChange={(e) => {
+                          const newValue = [...(value || [])]
+                          newValue[index] = e.target.value
+                          onChange(newValue)
+                        }}
+                        placeholder="Enter expected outcome"
+                      />
+
+                      {index !== 0 && (
+                        <Button
+                          onClick={() => {
+                            const newValue = value.filter((_, i) => i !== index)
+                            onChange(newValue)
+                          }}
+                          type="link"
+                        >
+                          <DeleteOutlined />
+                        </Button>
+                      )}
+                    </div>
+                  ))}
+
+                  <Button
+                    type="link"
+                    onClick={() =>
+                      onChange([...(value || []), { text: '', url: '' }])
+                    }
+                  >
+                    <div className="icn">
+                      <PlusIcon />
+                    </div>
+                    <Trans>Add Another</Trans>{' '}
+                  </Button>
+                </div>
+              )}
+            </Field>
           </FormLabel>
         )
 
@@ -1027,6 +1167,11 @@ const DynamicContentForm = () => {
 
     const entityConnections = [
       ...(values.owner?.map((id) => ({ role: 'owner', entity: id })) || []),
+      ...(values.implementors?.map((id) => ({
+        role: 'implementor',
+        entity: id,
+      })) || []),
+      ...(values.donors?.map((id) => ({ role: 'donor', entity: id })) || []),
       ...(values.partners?.map((id) => ({ role: 'partner', entity: id })) ||
         []),
     ]
@@ -1173,7 +1318,10 @@ const DynamicContentForm = () => {
         <Form
           onSubmit={(values, form) => onSubmit(values, form)}
           validate={validate}
-          initialValues={{}}
+          initialValues={{
+            highlights: [{ text: '', url: '' }],
+            outcomes: [''],
+          }}
           render={({ handleSubmit, form }) => (
             <form onSubmit={handleSubmit}>
               <Title className="title" level={3}>
