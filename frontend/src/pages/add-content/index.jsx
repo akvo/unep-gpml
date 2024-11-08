@@ -583,11 +583,15 @@ const FormField = ({ name, input, meta, storeData, form, label }) => {
       case 'url':
       case 'registrationUrl':
       case 'recording':
+        const optionalFields = {
+          url: true,
+        }
         return (
           <FormLabel
             label={label ? label : name.charAt(0).toUpperCase() + name.slice(1)}
             htmlFor={name}
             meta={meta}
+            isOptional={optionalFields[name]}
           >
             {name === 'summary' ||
             name === 'remarks' ||
@@ -980,7 +984,7 @@ const FormField = ({ name, input, meta, storeData, form, label }) => {
                   input.onChange(null)
                 }
               }}
-              multiple={false}
+              multiple={true}
               accept=".jpg,.png"
             >
               <p className="ant-upload-drag-icon">
