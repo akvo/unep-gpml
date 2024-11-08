@@ -373,6 +373,64 @@ const formConfigs = {
       ],
     ],
   },
+  Event: {
+    rows: [
+      [{ name: 'title', span: 24, required: true, label: 'Title' }],
+      [{ name: 'summary', span: 24, required: true, label: 'Description' }],
+      [{ name: 'url', span: 24, required: true }],
+      [{ name: 'geoCoverageType', span: 12, required: true }],
+      [
+        {
+          name: 'geoCoverageValueTransnational',
+          span: 12,
+          required: true,
+          dependsOn: {
+            field: 'geoCoverageType',
+            value: 'transnational',
+          },
+        },
+      ],
+      [
+        {
+          name: 'geoCoverageCountries',
+          span: 12,
+          required: true,
+          dependsOn: {
+            field: 'geoCoverageType',
+            value: 'national',
+          },
+        },
+      ],
+      [
+        { name: 'lifecycleStage', span: 12, required: true },
+        { name: 'tags', span: 12, required: true },
+      ],
+      [
+        { name: 'image', span: 12, required: true },
+        { name: 'thumbnail', span: 12 },
+      ],
+      [
+        { name: 'owner', span: 12, required: true },
+        { name: 'partners', span: 12 },
+      ],
+      [
+        { name: 'startDate', label: 'YYYY-MM-DD', span: 12 },
+        {
+          name: 'endDate',
+          label: 'YYYY-MM-DD',
+          span: 12,
+        },
+      ],
+      [
+        { name: 'recording', span: 12 },
+        {
+          name: 'registrationUrl',
+          label: 'Registration',
+          span: 12,
+        },
+      ],
+    ],
+  },
 }
 
 // Default configuration
@@ -438,6 +496,8 @@ const FormField = ({ name, input, meta, storeData, form, label }) => {
       case 'background':
       case 'purpose':
       case 'url':
+      case 'registrationUrl':
+      case 'recording':
         return (
           <FormLabel
             label={label ? label : name.charAt(0).toUpperCase() + name.slice(1)}
