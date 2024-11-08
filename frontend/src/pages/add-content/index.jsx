@@ -59,7 +59,7 @@ const formConfigs = {
         { name: 'lifecycleStage', span: 12 },
       ],
       [
-        { name: 'photo', span: 12 },
+        { name: 'image', span: 12 },
         { name: 'thumbnail', span: 12 },
       ],
       [
@@ -78,7 +78,7 @@ const formConfigs = {
         { name: 'tags', span: 12 },
         { name: 'lifecycleStage', span: 12 },
       ],
-      [{ name: 'photo', span: 12 }],
+      [{ name: 'image', span: 12 }],
     ],
   },
   'Technical Resource': {
@@ -113,7 +113,7 @@ const formConfigs = {
         { name: 'tags', span: 12, required: true },
       ],
       [
-        { name: 'photo', span: 12, required: true },
+        { name: 'image', span: 12, required: true },
         { name: 'thumbnail', span: 12 },
       ],
       [
@@ -155,7 +155,7 @@ const formConfigs = {
         { name: 'tags', span: 12, required: true },
       ],
       [
-        { name: 'photo', span: 12, required: true },
+        { name: 'image', span: 12, required: true },
         { name: 'thumbnail', span: 12 },
       ],
       [
@@ -208,7 +208,7 @@ const formConfigs = {
         { name: 'tags', span: 12, required: true },
       ],
       [
-        { name: 'photo', span: 12, required: true },
+        { name: 'image', span: 12, required: true },
         { name: 'thumbnail', span: 12 },
       ],
       [
@@ -258,7 +258,7 @@ const formConfigs = {
         { name: 'tags', span: 12, required: true },
       ],
       [
-        { name: 'photo', span: 12, required: true },
+        { name: 'image', span: 12, required: true },
         { name: 'thumbnail', span: 12 },
       ],
       [
@@ -266,6 +266,88 @@ const formConfigs = {
         { name: 'partners', span: 12 },
       ],
       [{ name: 'yearFounded', span: 12, label: 'Year Founded' }],
+    ],
+  },
+  Legislation: {
+    rows: [
+      [{ name: 'name', span: 24, required: true, label: 'Title' }],
+      [{ name: 'abstract', span: 24, required: true, label: 'Description' }],
+      [{ name: 'geoCoverageType', span: 12, required: true }],
+      [
+        {
+          name: 'geoCoverageValueTransnational',
+          span: 12,
+          required: true,
+          dependsOn: {
+            field: 'geoCoverageType',
+            value: 'transnational',
+          },
+        },
+      ],
+      [
+        {
+          name: 'geoCoverageCountries',
+          span: 12,
+          required: true,
+          dependsOn: {
+            field: 'geoCoverageType',
+            value: 'national',
+          },
+        },
+      ],
+      [
+        { name: 'lifecycleStage', span: 12, required: true },
+        { name: 'tags', span: 12, required: true },
+      ],
+      [
+        { name: 'image', span: 12, required: true },
+        { name: 'thumbnail', span: 12 },
+      ],
+      [
+        { name: 'owner', span: 12, required: true },
+        { name: 'partners', span: 12 },
+      ],
+    ],
+  },
+  Dataset: {
+    rows: [
+      [{ name: 'title', span: 24, required: true, label: 'Title' }],
+      [{ name: 'summary', span: 24, required: true, label: 'Description' }],
+      [{ name: 'geoCoverageType', span: 12, required: true }],
+      [
+        {
+          name: 'geoCoverageValueTransnational',
+          span: 12,
+          required: true,
+          dependsOn: {
+            field: 'geoCoverageType',
+            value: 'transnational',
+          },
+        },
+      ],
+      [
+        {
+          name: 'geoCoverageCountries',
+          span: 12,
+          required: true,
+          dependsOn: {
+            field: 'geoCoverageType',
+            value: 'national',
+          },
+        },
+      ],
+      [
+        { name: 'lifecycleStage', span: 12, required: true },
+        { name: 'tags', span: 12, required: true },
+      ],
+      [
+        { name: 'image', span: 12, required: true },
+        { name: 'thumbnail', span: 12 },
+      ],
+      [
+        { name: 'owner', span: 12, required: true },
+        { name: 'partners', span: 12 },
+      ],
     ],
   },
 }
@@ -280,7 +362,7 @@ const defaultConfig = {
       { name: 'tags', span: 12, required: true },
       { name: 'lifecycleStage', span: 12 },
     ],
-    [{ name: 'photo', span: 12 }],
+    [{ name: 'image', span: 12 }],
   ],
 }
 
@@ -328,13 +410,14 @@ const FormField = ({ name, input, meta, storeData, form, label }) => {
       case 'name':
       case 'summary':
       case 'remarks':
+      case 'abstract':
         return (
           <FormLabel
             label={label ? label : name.charAt(0).toUpperCase() + name.slice(1)}
             htmlFor={name}
             meta={meta}
           >
-            {name === 'summary' || name === 'remarks' ? (
+            {name === 'summary' || name === 'remarks' || name === 'abstract' ? (
               <Input.TextArea
                 {...input}
                 rows={4}
@@ -658,13 +741,23 @@ const FormField = ({ name, input, meta, storeData, form, label }) => {
           </FormLabel>
         )
 
-      case 'photo':
+      case 'image':
         return (
-          <FormLabel label="Photo" htmlFor="photo" meta={meta}>
+          <FormLabel label="Photo" htmlFor="image" meta={meta}>
             <Dragger
               {...input}
               beforeUpload={() => false}
-              onChange={({ fileList }) => input.onChange(fileList)}
+              onChange={async ({ file, fileList }) => {
+                try {
+                  if (file) {
+                    const base64 = await getBase64(file)
+                    input.onChange(base64)
+                  }
+                } catch (err) {
+                  console.error('Error converting to base64:', err)
+                  input.onChange(null)
+                }
+              }}
               multiple={false}
               accept=".jpg,.png"
             >
@@ -724,6 +817,11 @@ const FormField = ({ name, input, meta, storeData, form, label }) => {
               size="small"
               mode="multiple"
               value={input.value ? input.value : []}
+              filterOption={(input, option) =>
+                (option?.children?.toString() ?? '')
+                  .toLowerCase()
+                  .includes(input.toLowerCase())
+              }
               allowClear
               onChange={input.onChange}
               onBlur={input.onBlur}
@@ -754,6 +852,11 @@ const FormField = ({ name, input, meta, storeData, form, label }) => {
               size="small"
               mode="multiple"
               value={input.value ? input.value : []}
+              filterOption={(input, option) =>
+                (option?.children?.toString() ?? '')
+                  .toLowerCase()
+                  .includes(input.toLowerCase())
+              }
               allowClear
               onChange={input.onChange}
               onBlur={input.onBlur}
@@ -944,7 +1047,7 @@ const DynamicContentForm = () => {
 
     const data = {
       ...cleanValues,
-      resourceType: selectedType,
+      resourceType: selectedType === 'Dataset' ? 'Data Catalog' : selectedType,
       entityConnections,
       source: 'gpml',
       tags: formattedTags,
@@ -976,6 +1079,11 @@ const DynamicContentForm = () => {
 
     if (selectedType === 'Technology') {
       handleOnSubmitTechnology(data, form)
+      return false
+    }
+
+    if (selectedType === 'Legislation') {
+      handleOnSubmitPolicy(data, form)
       return false
     }
 
@@ -1018,13 +1126,35 @@ const DynamicContentForm = () => {
 
   const handleOnSubmitTechnology = (data, form) => {
     delete data.resourceType
-    delete data.photo
+    delete data.image
     data.version = 2
     data.subContentType = ''
     data.individualConnections = []
 
     api
       .post('/technology', data)
+      .then((res) => {
+        notification.success({ message: 'Resource successfully created' })
+        form.reset()
+        setSelectedType(null)
+      })
+      .catch(() => {
+        notification.error({ message: 'An error occured' })
+      })
+      .finally(() => {
+        setLoading(false)
+      })
+  }
+
+  const handleOnSubmitPolicy = (data, form) => {
+    delete data.resourceType
+    delete data.image
+    data.version = 2
+    data.subContentType = 'Bans and Restrictions'
+    data.individualConnections = []
+
+    api
+      .post('/policy', data)
       .then((res) => {
         notification.success({ message: 'Resource successfully created' })
         form.reset()
@@ -1165,13 +1295,9 @@ const DynamicContentForm = () => {
 const getBase64 = (file) => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
-    if (file) {
-      reader.readAsDataURL(file)
-      reader.onload = () => resolve(reader.result)
-      reader.onerror = () => reject(reader.result)
-    } else {
-      reject('No file provided')
-    }
+    reader.readAsDataURL(file)
+    reader.onload = () => resolve(reader.result)
+    reader.onerror = (error) => reject(error)
   })
 }
 
