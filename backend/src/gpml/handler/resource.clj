@@ -37,7 +37,7 @@
                                 created_by url info_docs sub_content_type related_content
                                 first_publication_date latest_amendment_date document_preview
                                 entity_connections individual_connections language
-                                capacity_building source]}]
+                                capacity_building source patent_owner registration_url]}]
   (let [image-id (when (seq image)
                    (handler.file/create-file config conn image :resource :images :public))
         thumbnail-id (when (seq thumbnail)
@@ -66,6 +66,8 @@
                       :first_publication_date first_publication_date
                       :latest_amendment_date latest_amendment_date
                       :document_preview document_preview
+                      :patent_owner patent_owner
+                      :registration_url registration_url
                       :language language
                       :source source}
                (some? capacity_building)
@@ -205,6 +207,8 @@
      [:info_docs {:optional true} string?]
      [:capacity_building {:optional true} boolean?]
      [:is_member {:optional true} boolean?]
+     [:patent_owner {:optional true} string?]
+     [:registration_url {:optional true} string?]
      [:sub_content_type {:optional true} string?]
      [:related_content {:optional true}
       [:vector {:optional true}
