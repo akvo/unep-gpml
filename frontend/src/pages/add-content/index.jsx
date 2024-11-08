@@ -56,8 +56,8 @@ const formConfigs = {
       [{ name: 'url', span: 24 }],
       [{ name: 'title', span: 24, required: true }],
       [{ name: 'summary', span: 24, required: true }],
-      [{ name: 'geoCoverageType', span: 24, required: true }],
       [
+        { name: 'geoCoverageType', span: 12, required: true },
         {
           name: 'geoCoverageValueTransnational',
           span: 12,
@@ -67,8 +67,6 @@ const formConfigs = {
             value: 'transnational',
           },
         },
-      ],
-      [
         {
           name: 'geoCoverageCountries',
           span: 12,
@@ -123,8 +121,8 @@ const formConfigs = {
       [{ name: 'url', span: 24, required: true }],
       [{ name: 'title', span: 24 }],
       [{ name: 'summary', span: 24 }],
-      [{ name: 'geoCoverageType', span: 12 }],
       [
+        { name: 'geoCoverageType', span: 12, required: true },
         {
           name: 'geoCoverageValueTransnational',
           span: 12,
@@ -134,8 +132,6 @@ const formConfigs = {
             value: 'transnational',
           },
         },
-      ],
-      [
         {
           name: 'geoCoverageCountries',
           span: 12,
@@ -158,8 +154,8 @@ const formConfigs = {
       [{ name: 'url', span: 24, required: true }],
       [{ name: 'title', span: 24, required: true }],
       [{ name: 'summary', span: 24, required: true }],
-      [{ name: 'geoCoverageType', span: 12, required: true }],
       [
+        { name: 'geoCoverageType', span: 12, required: true },
         {
           name: 'geoCoverageValueTransnational',
           span: 12,
@@ -169,8 +165,6 @@ const formConfigs = {
             value: 'transnational',
           },
         },
-      ],
-      [
         {
           name: 'geoCoverageCountries',
           span: 12,
@@ -208,8 +202,8 @@ const formConfigs = {
       [{ name: 'url', span: 24, required: true }],
       [{ name: 'title', span: 24, required: true }],
       [{ name: 'summary', span: 24, required: true }],
-      [{ name: 'geoCoverageType', span: 12, required: true }],
       [
+        { name: 'geoCoverageType', span: 12, required: true },
         {
           name: 'geoCoverageValueTransnational',
           span: 12,
@@ -219,8 +213,6 @@ const formConfigs = {
             value: 'transnational',
           },
         },
-      ],
-      [
         {
           name: 'geoCoverageCountries',
           span: 12,
@@ -262,8 +254,8 @@ const formConfigs = {
       [{ name: 'url', span: 24, required: true }],
       [{ name: 'title', span: 24, required: true }],
       [{ name: 'summary', span: 24, required: true }],
-      [{ name: 'geoCoverageType', span: 12, required: true }],
       [
+        { name: 'geoCoverageType', span: 12, required: true },
         {
           name: 'geoCoverageValueTransnational',
           span: 12,
@@ -273,8 +265,6 @@ const formConfigs = {
             value: 'transnational',
           },
         },
-      ],
-      [
         {
           name: 'geoCoverageCountries',
           span: 12,
@@ -320,8 +310,8 @@ const formConfigs = {
       [{ name: 'url', span: 24, required: true }],
       [{ name: 'name', span: 24, required: true, label: 'Title' }],
       [{ name: 'remarks', span: 24, required: true, label: 'Description' }],
-      [{ name: 'geoCoverageType', span: 12, required: true }],
       [
+        { name: 'geoCoverageType', span: 12, required: true },
         {
           name: 'geoCoverageValueTransnational',
           span: 12,
@@ -331,8 +321,6 @@ const formConfigs = {
             value: 'transnational',
           },
         },
-      ],
-      [
         {
           name: 'geoCoverageCountries',
           span: 12,
@@ -363,8 +351,8 @@ const formConfigs = {
       [{ name: 'url', span: 24, required: true }],
       [{ name: 'name', span: 24, required: true, label: 'Title' }],
       [{ name: 'abstract', span: 24, required: true, label: 'Description' }],
-      [{ name: 'geoCoverageType', span: 12, required: true }],
       [
+        { name: 'geoCoverageType', span: 12, required: true },
         {
           name: 'geoCoverageValueTransnational',
           span: 12,
@@ -374,8 +362,6 @@ const formConfigs = {
             value: 'transnational',
           },
         },
-      ],
-      [
         {
           name: 'geoCoverageCountries',
           span: 12,
@@ -405,8 +391,8 @@ const formConfigs = {
       [{ name: 'url', span: 24, required: true }],
       [{ name: 'title', span: 24, required: true, label: 'Title' }],
       [{ name: 'summary', span: 24, required: true, label: 'Description' }],
-      [{ name: 'geoCoverageType', span: 12, required: true }],
       [
+        { name: 'geoCoverageType', span: 12, required: true },
         {
           name: 'geoCoverageValueTransnational',
           span: 12,
@@ -416,8 +402,6 @@ const formConfigs = {
             value: 'transnational',
           },
         },
-      ],
-      [
         {
           name: 'geoCoverageCountries',
           span: 12,
@@ -447,8 +431,8 @@ const formConfigs = {
       [{ name: 'url', span: 24, required: true }],
       [{ name: 'title', span: 24, required: true, label: 'Title' }],
       [{ name: 'description', span: 24, required: true, label: 'Description' }],
-      [{ name: 'geoCoverageType', span: 12, required: true }],
       [
+        { name: 'geoCoverageType', span: 12, required: true },
         {
           name: 'geoCoverageValueTransnational',
           span: 12,
@@ -458,8 +442,6 @@ const formConfigs = {
             value: 'transnational',
           },
         },
-      ],
-      [
         {
           name: 'geoCoverageCountries',
           span: 12,
@@ -506,6 +488,46 @@ const formConfigs = {
           span: 24,
         },
         { name: 'recording', span: 24, label: 'Recording URL' },
+      ],
+    ],
+  },
+  Initiative: {
+    rows: [
+      [{ name: 'url', span: 24, required: true }],
+      [{ name: 'title', span: 24, required: true, label: 'Title' }],
+      [{ name: 'description', span: 24, required: true, label: 'Description' }],
+      [
+        { name: 'geoCoverageType', span: 12, required: true },
+        {
+          name: 'geoCoverageValueTransnational',
+          span: 12,
+          required: true,
+          dependsOn: {
+            field: 'geoCoverageType',
+            value: 'transnational',
+          },
+        },
+        {
+          name: 'geoCoverageCountries',
+          span: 12,
+          required: true,
+          dependsOn: {
+            field: 'geoCoverageType',
+            value: 'national',
+          },
+        },
+      ],
+      [
+        { name: 'lifecycleStage', span: 12, required: true },
+        { name: 'tags', span: 12, required: true },
+      ],
+      [
+        { name: 'image', span: 12, required: true },
+        { name: 'thumbnail', span: 12 },
+      ],
+      [
+        { name: 'owner', span: 12, required: true },
+        { name: 'partners', span: 12 },
       ],
     ],
   },
@@ -1645,9 +1667,17 @@ const DynamicContentForm = () => {
                           className={`content-type-btn ${
                             selectedType === type ? 'selected' : ''
                           }`}
-                          onClick={() =>
-                            setSelectedType(selectedType === type ? null : type)
-                          }
+                          onClick={() => {
+                            if (selectedType !== type) {
+                              setSelectedType(type)
+                              form.reset()
+                              form.restart({})
+                            } else {
+                              setSelectedType(null)
+                              form.reset()
+                              form.restart({})
+                            }
+                          }}
                         >
                           {type}
                         </Button>
