@@ -11,6 +11,7 @@ import {
   Row,
   Col,
   notification,
+  Form as AntForm,
 } from 'antd'
 import styles from './index.module.scss'
 import { UploadFileIcon } from '../../components/icons'
@@ -1040,120 +1041,122 @@ const DynamicContentForm = () => {
   return (
     <div className={styles.addContentForm}>
       <div className="container">
-        <Form
-          onSubmit={(values, form) => onSubmit(values, form)}
-          validate={validate}
-          initialValues={{}}
-          render={({ handleSubmit, form }) => (
-            <form onSubmit={handleSubmit}>
-              <Title className="title" level={3}>
-                Add Content
-              </Title>
+        <AntForm layout="vertical">
+          <Form
+            onSubmit={(values, form) => onSubmit(values, form)}
+            validate={validate}
+            initialValues={{}}
+            render={({ handleSubmit, form }) => (
+              <form onSubmit={handleSubmit}>
+                <Title className="title" level={3}>
+                  Add Content
+                </Title>
 
-              {!selectedType && (
-                <div className="form-description">
-                  <p>
-                    The GPML Digital Platform is crowdsourced and allows
-                    everyone to submit new content via this form.
-                  </p>
-                  <p>
-                    A wide range of resources can be submitted, and these
-                    include Action Plans, Initiatives, Technical resources,
-                    Financing resources, Policies, Events, and Technologies.
-                    Learn more about each category and sub-categories
-                    definitions in the "Content Type" section of this form. A
-                    quick summary sheet with categories and sub-categories can
-                    be downloaded here.
-                  </p>
-                  <p>
-                    You can access existing content via the Knowledge Exchange
-                    Library. Make sure to browse around and leave a review under
-                    the resources you enjoy the most!
-                  </p>
-                </div>
-              )}
-
-              <Space direction="vertical" size="large" className="w-full">
-                <div className="form-container">
-                  <Title level={4}>What type of content is this?</Title>
-                  <div
-                    style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}
-                  >
-                    {contentTypes.map((type) => (
-                      <Button
-                        key={type}
-                        className={`content-type-btn ${
-                          selectedType === type ? 'selected' : ''
-                        }`}
-                        onClick={() =>
-                          setSelectedType(selectedType === type ? null : type)
-                        }
-                      >
-                        {type}
-                      </Button>
-                    ))}
+                {!selectedType && (
+                  <div className="form-description">
+                    <p>
+                      The GPML Digital Platform is crowdsourced and allows
+                      everyone to submit new content via this form.
+                    </p>
+                    <p>
+                      A wide range of resources can be submitted, and these
+                      include Action Plans, Initiatives, Technical resources,
+                      Financing resources, Policies, Events, and Technologies.
+                      Learn more about each category and sub-categories
+                      definitions in the "Content Type" section of this form. A
+                      quick summary sheet with categories and sub-categories can
+                      be downloaded here.
+                    </p>
+                    <p>
+                      You can access existing content via the Knowledge Exchange
+                      Library. Make sure to browse around and leave a review
+                      under the resources you enjoy the most!
+                    </p>
                   </div>
-                </div>
-
-                {selectedType && (
-                  <>
-                    <Card className="mt-8">
-                      <Title className="form-title" level={4}>
-                        URL of the {selectedType.toLowerCase()}
-                      </Title>
-                      <Field name="url">
-                        {({ input, meta }) => (
-                          <FormLabel label="URL" htmlFor="url">
-                            <Input
-                              {...input}
-                              placeholder={`Enter URL of the ${selectedType.toLowerCase()}`}
-                              className={
-                                meta.touched && meta.error
-                                  ? 'ant-input-status-error'
-                                  : ''
-                              }
-                            />
-                            {meta.touched && meta.error && (
-                              <p className="error transitionDiv">
-                                {meta.error}
-                              </p>
-                            )}
-                          </FormLabel>
-                        )}
-                      </Field>
-                    </Card>
-
-                    <Field name="url">
-                      {({ input: { value: urlValue } }) =>
-                        urlValue && (
-                          <Card className="mt-8">
-                            <Title className="form-title" level={4}>
-                              All details of the {selectedType.toLowerCase()}
-                            </Title>
-                            <FormFields
-                              selectedType={selectedType}
-                              storeData={storeData}
-                              form={form}
-                            />
-                            <Button
-                              type="primary"
-                              htmlType="submit"
-                              loading={loading}
-                              disabled={loading}
-                              className="w-full mt-6"
-                            >
-                              Save & Publish
-                            </Button>
-                          </Card>
-                        )
-                      }
-                    </Field>
-                  </>
                 )}
-              </Space>
-            </form>
-          )}
-        />
+
+                <Space direction="vertical" size="large" className="w-full">
+                  <div className="form-container">
+                    <Title level={4}>What type of content is this?</Title>
+                    <div
+                      style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}
+                    >
+                      {contentTypes.map((type) => (
+                        <Button
+                          key={type}
+                          className={`content-type-btn ${
+                            selectedType === type ? 'selected' : ''
+                          }`}
+                          onClick={() =>
+                            setSelectedType(selectedType === type ? null : type)
+                          }
+                        >
+                          {type}
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {selectedType && (
+                    <>
+                      <Card className="mt-8">
+                        <Title className="form-title" level={4}>
+                          URL of the {selectedType.toLowerCase()}
+                        </Title>
+                        <Field name="url">
+                          {({ input, meta }) => (
+                            <FormLabel label="URL" htmlFor="url">
+                              <Input
+                                {...input}
+                                placeholder={`Enter URL of the ${selectedType.toLowerCase()}`}
+                                className={
+                                  meta.touched && meta.error
+                                    ? 'ant-input-status-error'
+                                    : ''
+                                }
+                              />
+                              {meta.touched && meta.error && (
+                                <p className="error transitionDiv">
+                                  {meta.error}
+                                </p>
+                              )}
+                            </FormLabel>
+                          )}
+                        </Field>
+                      </Card>
+
+                      <Field name="url">
+                        {({ input: { value: urlValue } }) =>
+                          urlValue && (
+                            <Card className="mt-8">
+                              <Title className="form-title" level={4}>
+                                All details of the {selectedType.toLowerCase()}
+                              </Title>
+                              <FormFields
+                                selectedType={selectedType}
+                                storeData={storeData}
+                                form={form}
+                              />
+                              <Button
+                                type="primary"
+                                htmlType="submit"
+                                loading={loading}
+                                disabled={loading}
+                                className="w-full mt-6"
+                              >
+                                Save & Publish
+                              </Button>
+                            </Card>
+                          )
+                        }
+                      </Field>
+                    </>
+                  )}
+                </Space>
+              </form>
+            )}
+          />
+        </AntForm>
       </div>
     </div>
   )
