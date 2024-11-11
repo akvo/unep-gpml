@@ -8,6 +8,7 @@ import ResourceCard, {
 import bodyScrollLock from '../../modules/details-page/scroll-utils'
 import styles from './index.module.scss'
 import DetailModal from '../../modules/details-page/modal'
+import MemberDetailModal from '../../modules/community-hub/modal'
 import { useRouter } from 'next/router'
 import StakeholderCard from '../../components/stakeholder-card/stakeholder-card'
 import { LoadingOutlined } from '@ant-design/icons'
@@ -20,6 +21,8 @@ const emptyObj = { resources: [], stakeholders: [], datasets: [] }
 const Search = ({ setLoginVisible, isAuthenticated }) => {
   const [loading, setLoading] = useState(false)
   const [items, setItems] = useState({ ...emptyObj })
+  const [memberModalVisible, setMemberModalVisible] = useState(false)
+  const [openMemberItem, setOpenMemberItem] = useState(null)
   const router = useRouter()
   const [params, setParams] = useState(null)
   const handleSearch = (val) => {
@@ -68,6 +71,16 @@ const Search = ({ setLoginVisible, isAuthenticated }) => {
       bodyScrollLock.enable()
     }
   }
+  const handleClickMember = (result) => (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (isAuthenticated) {
+      setMemberModalVisible(true)
+      setOpenMemberItem(result)
+    } else {
+      setLoginVisible(true)
+    }
+  }
   return (
     <div className={styles.search}>
       <div className="container">
@@ -101,7 +114,9 @@ const Search = ({ setLoginVisible, isAuthenticated }) => {
               <h4 className="caps-heading-1">community</h4>
               <div className="results">
                 {items.stakeholders.map((it) => (
-                  <StakeholderCard item={it} key={`${it.type}-${it.id}`} />
+                  <div onClick={handleClickMember(it)}>
+                    <StakeholderCard item={it} key={`${it.type}-${it.id}`} />
+                  </div>
                 ))}
               </div>
             </>
@@ -144,6 +159,17 @@ const Search = ({ setLoginVisible, isAuthenticated }) => {
         visible={modalVisible}
         setVisible={setModalVisible}
         isServer={false}
+        {...{
+          setLoginVisible,
+          isAuthenticated,
+        }}
+      />
+
+      <MemberDetailModal
+        visible={memberModalVisible}
+        setVisible={setMemberModalVisible}
+        isServer={false}
+        openItem={openMemberItem}
         {...{
           setLoginVisible,
           isAuthenticated,

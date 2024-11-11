@@ -19,7 +19,7 @@ import { loadCatalog } from '../../translations/utils'
 import Link from 'next/link'
 import { lifecycleStageTags } from '../../utils/misc'
 
-const getCountryIdsFromGeoGroups = (
+export const getCountryIdsFromGeoGroups = (
   selectedGeoCountryGroup,
   geoCountryGroups
 ) => {
@@ -280,6 +280,9 @@ const KnowledgeHub = ({
     }
     onresize()
     window.addEventListener('resize', onresize)
+    return () => {
+      window.removeEventListener('resize', onresize)
+    }
   }, [])
 
   const handleCollapseChange = (v) => {
@@ -453,17 +456,13 @@ const KnowledgeHub = ({
 
 // const ResourceCard = () => {}
 
-const FilterToggle = ({ children, onToggle, isSelected, href }) => {
+export const FilterToggle = ({ children, onToggle, isSelected, href }) => {
   const handleClick = (e) => {
     e.preventDefault()
     onToggle()
   }
-  return (
-    <Link
-      href={href}
-      className={classNames('filter', { on: isSelected })}
-      onClick={handleClick}
-    >
+  const content = (
+    <>
       <AnimatePresence>
         {isSelected && (
           <motion.div
@@ -476,6 +475,24 @@ const FilterToggle = ({ children, onToggle, isSelected, href }) => {
         )}
       </AnimatePresence>
       {children}
+    </>
+  )
+  if (!href)
+    return (
+      <span
+        className={classNames('filter', { on: isSelected })}
+        onClick={handleClick}
+      >
+        {content}
+      </span>
+    )
+  return (
+    <Link
+      href={href}
+      className={classNames('filter', { on: isSelected })}
+      onClick={handleClick}
+    >
+      {content}
     </Link>
   )
 }

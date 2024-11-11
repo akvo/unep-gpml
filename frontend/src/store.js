@@ -60,13 +60,13 @@ const menuList = [
     ],
   },
   {
-    key: msg`Community`,
+    key: msg`Community Hub`,
     id: 'Community',
     children: [
       {
-        key: msg`GPML Community`,
+        key: msg`Partner Network`,
         id: 'GPML Community',
-        to: '/community',
+        to: '/community-hub',
       },
       {
         key: msg`Join the Partnership`,
