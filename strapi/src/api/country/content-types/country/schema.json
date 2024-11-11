@@ -1,0 +1,36 @@
+{
+    "kind": "collectionType",
+    "collectionName": "countries",
+    "info": {
+      "singularName": "country",
+      "pluralName": "countries",
+      "displayName": "Country",
+      "description": ""
+    },
+    "options": {
+      "draftAndPublish": true
+    },
+    "pluginOptions": {
+      "i18n": {
+        "localized": true
+      }
+    },
+    "attributes": {
+      "CountryName": {
+        "type": "string",
+        "pluginOptions": {
+          "i18n": {
+            "localized": true
+          }
+        }
+      },
+      "CountryDBId": {
+        "type": "string",
+        "pluginOptions": {
+          "i18n": {
+            "localized": true
+          }
+        }
+      }
+    }
+  }
