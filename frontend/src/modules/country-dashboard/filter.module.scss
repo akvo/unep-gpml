@@ -1,0 +1,90 @@
+@import '../../styles/vars.scss';
+.filterModal {
+  width: 100% !important;
+  :global {
+    @media screen and (min-width: 840px) {
+      max-width: 700px !important;
+    }
+  }
+  :global {
+    .ant-modal-header {
+      padding-bottom: 0px;
+      .ant-modal-title {
+        font-weight: 700;
+        font-size: $fzS;
+        line-height: $lhS;
+        color: $primaryDarkBlue;
+        font-family: var(--font-archia), sans-serif;
+      }
+    }
+  }
+  :global {
+    .ant-modal-body {
+      padding: 17px 20px 20px 20px;
+      .filter-title {
+        color: $primaryDarkBlue;
+        font-size: $fzXXS;
+        line-height: $lhXXS;
+        font-weight: 500;
+        margin-bottom: 5px;
+        font-family: var(--font-dm-sans), sans-serif;
+        @media (max-width: 540px) {
+          font-size: 16px;
+        }
+      }
+      .ant-select-selection-placeholder {
+        font-weight: 500;
+      }
+      .search-input {
+        width: 100%;
+      }
+      :global {
+        .date-picker-container {
+          .ant-row {
+            width: auto !important;
+          }
+          .ant-picker {
+            width: 100%;
+            border: none;
+          }
+        }
+      }
+    }
+  }
+  :global {
+    .footer {
+      width: 100%;
+      background: #ffffff;
+      border-radius: 0px 0px 10px 10px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .action-buttons {
+        display: flex;
+        gap: 20px;
+      }
+      button {
+        font-weight: 700;
+        text-transform: capitalize;
+      }
+      .clear-button {
+        background-color: transparent;
+        border: none;
+        margin-right: 12px;
+        text-decoration-line: none;
+      }
+    }
+  }
+  @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+    .ant-modal-body {
+      padding: 17px 20px 20px 20px;
+    }
+    .invite-expert-buttons {
+      margin-top: 30px;
+    }
+    .ant-modal-header {
+      padding: 10px 20px;
+    }
+  }
+}

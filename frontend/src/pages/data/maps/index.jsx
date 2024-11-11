@@ -14,7 +14,7 @@ const DynamicMap = dynamic(
 const MapAndLayerPage = () => {
   return (
     <div className={styles.container}>
-      <Sidebar alt />
+      <Sidebar alt countryDashboard={false} />
       <DynamicMap
         initialViewProperties={{
           center: [0, 0],
