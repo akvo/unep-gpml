@@ -63,6 +63,22 @@
         }
       },
       "type": "integer"
+    },
+    "categoryCountryDashboardText": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "text"
+    },
+    "textTemplate": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "json"
     }
   }
 }
