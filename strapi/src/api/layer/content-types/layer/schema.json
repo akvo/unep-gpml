@@ -204,6 +204,24 @@
         }
       },
       "type": "boolean"
+    },
+    "ValuePerCountry": {
+      "type": "component",
+      "repeatable": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "value-per-country.value-per-country"
+    },
+    "countryDashboardText": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "text"
     }
   }
 }
