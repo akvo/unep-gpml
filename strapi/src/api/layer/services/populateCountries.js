@@ -59,8 +59,7 @@ module.exports = {
                     Value: row[outFields[1]],
                     City: outFields[3] && row[outFields[3]] ? row[outFields[3]] : "",
                     Year: row[outFields[0]]?.toString(),
-                    CountryName: country['CountryName'],
-                    country: country.id,
+                    CountryName: country['CountryName']
                 }));
             });
 
