@@ -1,47 +1,47 @@
 const axios = require('axios');
+const { getStrapiUrl } = require('./misc');
 
 module.exports = {
-    async populateCountriesForLayers(arcgislayerId) {
+    async populateCountriesForLayers(arcgislayerId, outFields) {
+        const strapiUrl = getStrapiUrl();
         try {
             const layer = await strapi.entityService.findMany('api::layer.layer', {
-                filters: {
-                    arcgislayerId,
-                }
+                filters: { arcgislayerId },
             });
 
             if (!layer.length) {
-                console.log(`Layer with arcgislayerid not found.`);
+                console.log(`Layer with arcgislayerId not found.`);
                 return;
             }
 
             const layerId = layer[0].id;
+            const arcgisUrl = `https://services3.arcgis.com/pI4ewELlDKS2OpCN/arcgis/rest/services/${arcgislayerId}/FeatureServer/0/query`;
 
-            const arcgisUrl = `https://services3.arcgis.com/pI4ewELlDKS2OpCN/arcgis/rest/services/${arcgislayerId}/FeatureServer/0/query?where=1=1&outFields=Year,Value,Country&f=json`;
+            let arcgisData = [];
+            let hasMore = true;
+            let offset = 0;
+            const limit = 100;
 
-            const response = await axios.get(arcgisUrl);
+            while (hasMore) {
+                const urlWithPagination = `${arcgisUrl}?where=1=1&outFields=${outFields.join(',')}&f=json&resultRecordCount=${limit}&resultOffset=${offset}`;
+                console.log('Fetching from:', urlWithPagination);
 
-            const arcgisData = response.data.features.map(feature => feature.attributes);
+                const response = await axios.get(urlWithPagination);
+                const features = response.data.features?.map((feature) => feature.attributes);
+
+                arcgisData = arcgisData.concat(features);
+                offset += limit;
+                hasMore = features.length === limit;
+            }
+
+            console.log('Total ArcGIS records retrieved:', arcgisData.length);
 
             const groupedData = arcgisData.reduce((acc, current) => {
-                const country = current.Country;
-
-                if (!acc[country]) {
-                    acc[country] = [];
-                }
+                const country = current[outFields[2]];
+                if (!acc[country]) acc[country] = [];
                 acc[country].push(current);
                 return acc;
             }, {});
-
-            //Agreement is to import only the last year for each country and its value.
-            const latestCountryData = Object.keys(groupedData).map(country => {
-                const countryRows = groupedData[country];
-
-                const latestRow = countryRows.reduce((prev, current) => {
-                    return parseInt(current.Year) > parseInt(prev.Year) ? current : prev;
-                });
-
-                return latestRow;
-            });
 
             const countries = await strapi.entityService.findMany('api::country.country', {
                 fields: ['id', 'CountryName'],
@@ -52,34 +52,29 @@ module.exports = {
                 return;
             }
 
-            const valuePerCountryData = countries.map(country => {
-                const allCountryRows = [];
+            const valuePerCountryData = countries.flatMap((country) => {
+                const countryRows = groupedData[country['CountryName']] || [];
 
-                countries.forEach(country => {
-                    const countryRows = latestCountryData.filter(row => row.Country === country["CountryName"]);
-
-                    if (countryRows.length > 0) {
-                        allCountryRows.push(...countryRows);
-                    }
-                });
-
-                const currentCountry = allCountryRows.find(row => row.Country === country["CountryName"])
-
-                return {
-                    Value: currentCountry ? currentCountry["Value"] : 0,
-                    Year: currentCountry ? currentCountry["Year"].toString() : null,
-                    CountryName: country["CountryName"],
-                    country: country["id"]
-                };
+                return countryRows?.map((row) => ({
+                    Value: row[outFields[1]],
+                    City: outFields[3] && row[outFields[3]] ? row[outFields[3]] : "",
+                    Year: row[outFields[0]]?.toString(),
+                    CountryName: country['CountryName'],
+                    country: country.id,
+                }));
             });
 
-            await strapi.entityService.update('api::layer.layer', layerId, {
-                data: {
-                    ValuePerCountry: valuePerCountryData,
-                },
-            });
+            const batchSize = 20;
 
-            console.log(`Updated layer ${layerId} with values from ArcGIS.`);
+            for (let i = 0; i < valuePerCountryData.length; i += batchSize) {
+                const batch = valuePerCountryData.slice(i, i + batchSize);
+
+                await axios.post(`${strapiUrl}/api/countries/${layerId}/append-value-per-country`, batch);
+
+                console.log(`Uploaded batch of ${batch.length} records.`);
+            }
+
+            console.log(`Successfully updated layer ${layerId} with all values from ArcGIS.`);
         } catch (err) {
             console.error('Error populating countries for layer:', err);
         }

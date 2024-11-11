@@ -1,23 +1,27 @@
 {
-    "collectionName": "components_value_per_country_value_per_countries",
-    "info": {
-      "displayName": "ValuePerCountry"
+  "collectionName": "components_value_per_country_value_per_countries",
+  "info": {
+    "displayName": "ValuePerCountry",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "country": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::country.country"
     },
-    "options": {},
-    "attributes": {
-      "country": {
-        "type": "relation",
-        "relation": "oneToOne",
-        "target": "api::country.country"
-      },
-      "CountryName": {
-        "type": "string"
-      },
-      "Value": {
-        "type": "decimal"
-      },
-      "Year": {
-        "type": "string"
-      }
+    "CountryName": {
+      "type": "string"
+    },
+    "Value": {
+      "type": "decimal"
+    },
+    "Year": {
+      "type": "string"
+    },
+    "City": {
+      "type": "string"
     }
   }
+}
