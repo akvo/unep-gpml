@@ -45,21 +45,11 @@
         .ant-collapse-header {
           font-size: 14px;
           font-weight: 500;
-          display: block; 
+          display: block;
           width: 100%;
           cursor: pointer;
-          
         }
-        .custom-select-placeholder .ant-select-selection-placeholder {
-          color: #677194 !important;
-        }
-        .countryDropdown {
-          width: 100%;
-          padding: 8px;
-          font-size: 16px;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-        }
+
         .ant-collapse-item-active {
           background-color: #fafbff;
           border-top: 1px solid rgba(204, 208, 219, 0.3);
