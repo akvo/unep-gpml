@@ -1,12 +1,17 @@
 import React, { useState } from 'react'
-import { Layout, Menu } from 'antd'
+import { Layout, Typography, Menu, Tag } from 'antd'
+import { CloseCircleFilled } from '@ant-design/icons'
 import useQueryParameters from '../../../../hooks/useQueryParameters'
-
+import useIndicators from '../../../../hooks/useIndicators'
+import Subcategories from './../partials/subcategories'
+import useSubcategories from '../../../../hooks/useSubcategories'
+import { useRouter } from 'next/router'
 const { Sider } = Layout
 const CategoriesNested = ({ categories }) => {
   const { queryParameters, setQueryParameters } = useQueryParameters()
   const [selectedCategory, setSelectedCategory] = useState(null)
-
+  const router = useRouter()
+  const categoryId = router.isReady ? router.query.categoryId : undefined
   const handleCategoryClick = (category) => {
     const newParams = {
       categoryId: category.attributes.categoryId,
@@ -14,7 +19,19 @@ const CategoriesNested = ({ categories }) => {
     setQueryParameters(newParams)
     setSelectedCategory(category.attributes.categoryId)
   }
-
+  const subcategories = useSubcategories(categoryId)
+  const subcategoriesByCategory = subcategories?.subcategories?.data?.filter(
+    (subcategory) =>
+      subcategory.attributes.categoryId === queryParameters.categoryId
+  )
+  const { layers, loading } = useIndicators()
+  const handleCloseLayer = (layerId) => {
+    console.log('buggg', queryParameters.layers)
+    const updatedLayers = queryParameters.layers?.filter(
+      (layer) => layer.id !== layerId
+    )
+    setQueryParameters({ layers: updatedLayers })
+  }
   const isCategorySelected = (category) => {
     return queryParameters.categoryId === category.attributes.categoryId
   }
@@ -42,6 +59,65 @@ const CategoriesNested = ({ categories }) => {
                 {category.attributes.name}
               </span>
             </Menu.Item>
+            {isCategorySelected(category) && (
+              <Subcategories
+                subcategories={subcategoriesByCategory}
+                layers={layers}
+                loading={loading}
+              />
+            )}
+            {queryParameters.layers &&
+              queryParameters.layers
+                ?.filter(
+                  (layer) => layer.categoryId === category.attributes.categoryId
+                )
+                .map((layer) => (
+                  <Tag
+                    style={{
+                      borderRadius: '40px',
+                      width: '65%',
+                      height: '32px',
+                      marginLeft: '25px',
+                      backgroundColor: '#2D3648',
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      gap: '20px',
+                      overflow: 'hidden',
+                      padding: '0 10px',
+                    }}
+                  >
+                    <div
+                      style={{
+                        maxWidth: 'calc(100% - 40px)',
+                        overflow: 'hidden',
+                      }}
+                      title={layer.name}
+                    >
+                      <Typography.Text
+                        style={{
+                          color: 'white',
+                          fontSize: '12px',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          paddingLeft: '20px',
+                          variant: 'typography/body2',
+                        }}
+                      >
+                        {layer.name}
+                      </Typography.Text>
+                    </div>
+                    <CloseCircleFilled
+                      onClick={() => handleCloseLayer(layer.id)}
+                      style={{
+                        color: 'gray',
+                        width: '20px',
+                        height: '20px',
+                        paddingLeft: '10px',
+                      }}
+                    />
+                  </Tag>
+                ))}
           </div>
         ))}
       </Menu>
