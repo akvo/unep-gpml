@@ -38,7 +38,7 @@ function CountryLibrary({}) {
   const router = useRouter()
   return (
     <div className={styles.knowledgeLib} style={{ backgroundColor: '#F5F7FF' }}>
-      <Fragment display="flex" flex-direction="row">
+      <Fragment>
         <ResourceView history={router} />
       </Fragment>
     </div>

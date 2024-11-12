@@ -15,7 +15,6 @@ import { withNewLayout } from '../layouts/new-layout'
 import { I18nProvider } from '@lingui/react'
 import { useLinguiInit } from '../translations/utils'
 import Script from 'next/script'
-import '../styles/styles.scss';
 
 function MyApp({ Component, pageProps }) {
   const i18n = useLinguiInit(pageProps.i18n)
