@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { useRouter } from 'next/router'
-import useLayerInfo from '../../hooks/useLayerInfo'
+import useLayerInfo from '../../../hooks/useLayerInfo'
 
 const PlasticImportExportPieCharts = ({ chartType }) => {
   const router = useRouter()
@@ -55,7 +55,7 @@ const PlasticImportExportPieCharts = ({ chartType }) => {
             layer.attributes.arcgislayerId === layerMapping[chartType][category]
         )
 
-        const countryData = layer?.attributes.ValuePerCountry.find(
+        const countryData = layer?.attributes.ValuePerCountry?.find(
           (item) => item.CountryName === country
         )
         return countryData ? countryData.Value : 0

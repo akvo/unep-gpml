@@ -3,13 +3,13 @@ import { Row, Col, Button, Tooltip } from 'antd'
 import { useRouter } from 'next/router'
 import useCategories from '../../hooks/useCategories'
 import useReplacedText from '../../hooks/useReplacePlaceholders'
-import PlasticImportExportChart from './PlasticImportExportChart'
-import PlasticImportExportTonnesChart from './PlasticImportExportTonnesChart'
-import PlasticImportExportPieCharts from './PlasticImportExportPieChart'
+import PlasticImportExportChart from '../../modules/country-dashboard/charts/PlasticImportExportChart'
+import PlasticImportExportTonnesChart from '../../modules/country-dashboard/charts/PlasticImportExportTonnesChart'
+import PlasticImportExportPieCharts from '../../modules/country-dashboard/charts/PlasticImportExportPieChart'
 import WasteProportionPieChart from './WasteProportionPieChart'
-import MSWGenerationChart from './MSWGeneration'
-import PlasticOceanBeachChart from './PlasticOceanBeachCHart'
-import PolicyComponent from './PolicyCOmponent'
+import MSWGenerationChart from '../../modules/country-dashboard/charts/MSWGeneration'
+import PlasticOceanBeachChart from '../../modules/country-dashboard/charts/PlasticOceanBeachCHart'
+import PolicyComponent from './PolicyComponent'
 import RequestDataUpdateModal from './RequestDataUpdateModal'
 
 const splitTextInHalf = (text) => {
@@ -34,10 +34,6 @@ const CountryOverview = () => {
   const handleClose = () => {
     setModalVisible(false)
   }
-
-  const text = categories.categories.find(
-    (cat) => cat.attributes.categoryId === router.query.categoryId
-  )?.attributes?.categoryCountryDashboardText
 
   const categoryText = useReplacedText(
     router.query.country,

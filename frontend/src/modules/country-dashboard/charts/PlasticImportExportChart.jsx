@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { useRouter } from 'next/router'
-import useLayerInfo from '../../hooks/useLayerInfo'
+import useLayerInfo from '../../../hooks/useLayerInfo'
 
 const PlasticImportExportChart = () => {
   const router = useRouter()
@@ -34,7 +34,7 @@ const PlasticImportExportChart = () => {
       const filteredImports = importLayer.attributes.ValuePerCountry?.filter(
         (item) => item.CountryName === country
       )
-      console.log('filteredImports', filteredImports)
+
       const filteredExports = exportLayer.attributes.ValuePerCountry?.filter(
         (item) => item.CountryName === country
       )

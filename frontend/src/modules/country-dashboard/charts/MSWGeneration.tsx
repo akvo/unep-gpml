@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { useRouter } from 'next/router'
-import useLayerInfo from '../../hooks/useLayerInfo'
+import useLayerInfo from '../../../hooks/useLayerInfo'
 
 const MSWGenerationChart = () => {
   const router = useRouter()
