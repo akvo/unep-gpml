@@ -59,7 +59,7 @@ const formConfigs = {
       [
         { name: 'geoCoverageType', span: 12, required: true },
         {
-          name: 'geoCoverageValueTransnational',
+          name: 'geoCoverageCountryGroups',
           span: 12,
           required: true,
           dependsOn: {
@@ -124,7 +124,7 @@ const formConfigs = {
       [
         { name: 'geoCoverageType', span: 12, required: true },
         {
-          name: 'geoCoverageValueTransnational',
+          name: 'geoCoverageCountryGroups',
           span: 12,
           required: true,
           dependsOn: {
@@ -157,7 +157,7 @@ const formConfigs = {
       [
         { name: 'geoCoverageType', span: 12, required: true },
         {
-          name: 'geoCoverageValueTransnational',
+          name: 'geoCoverageCountryGroups',
           span: 12,
           required: true,
           dependsOn: {
@@ -205,7 +205,7 @@ const formConfigs = {
       [
         { name: 'geoCoverageType', span: 12, required: true },
         {
-          name: 'geoCoverageValueTransnational',
+          name: 'geoCoverageCountryGroups',
           span: 12,
           required: true,
           dependsOn: {
@@ -257,7 +257,7 @@ const formConfigs = {
       [
         { name: 'geoCoverageType', span: 12, required: true },
         {
-          name: 'geoCoverageValueTransnational',
+          name: 'geoCoverageCountryGroups',
           span: 12,
           required: true,
           dependsOn: {
@@ -313,7 +313,7 @@ const formConfigs = {
       [
         { name: 'geoCoverageType', span: 12, required: true },
         {
-          name: 'geoCoverageValueTransnational',
+          name: 'geoCoverageCountryGroups',
           span: 12,
           required: true,
           dependsOn: {
@@ -354,7 +354,7 @@ const formConfigs = {
       [
         { name: 'geoCoverageType', span: 12, required: true },
         {
-          name: 'geoCoverageValueTransnational',
+          name: 'geoCoverageCountryGroups',
           span: 12,
           required: true,
           dependsOn: {
@@ -394,7 +394,7 @@ const formConfigs = {
       [
         { name: 'geoCoverageType', span: 12, required: true },
         {
-          name: 'geoCoverageValueTransnational',
+          name: 'geoCoverageCountryGroups',
           span: 12,
           required: true,
           dependsOn: {
@@ -434,7 +434,7 @@ const formConfigs = {
       [
         { name: 'geoCoverageType', span: 12, required: true },
         {
-          name: 'geoCoverageValueTransnational',
+          name: 'geoCoverageCountryGroups',
           span: 12,
           required: true,
           dependsOn: {
@@ -499,7 +499,7 @@ const formConfigs = {
       [
         { name: 'geoCoverageType', span: 12, required: true },
         {
-          name: 'geoCoverageValueTransnational',
+          name: 'geoCoverageCountryGroups',
           span: 12,
           required: true,
           dependsOn: {
@@ -581,7 +581,7 @@ const getSelectOptions = (storeData) => ({
 })
 
 const FormField = React.memo(
-  ({ name, input, meta, storeData, form, label }) => {
+  ({ name, input, meta, storeData, form, label, selectedType }) => {
     console.log('redndered')
     const tags = Object.keys(getSelectOptions(storeData).tags)
       .map((k) => getSelectOptions(storeData).tags[k])
@@ -593,6 +593,10 @@ const FormField = React.memo(
       id: x.value,
       label: x.label,
     }))
+
+    const fieldConfig = formConfigs[selectedType]?.rows
+      .flat()
+      .find((field) => field.name === name)
 
     const renderFieldContent = () => {
       switch (name) {
@@ -607,9 +611,6 @@ const FormField = React.memo(
         case 'url':
         case 'registrationUrl':
         case 'recording':
-          const optionalFields = {
-            url: true,
-          }
           return (
             <FormLabel
               label={
@@ -617,7 +618,7 @@ const FormField = React.memo(
               }
               htmlFor={name}
               meta={meta}
-              isOptional={optionalFields[name]}
+              isOptional={!fieldConfig?.required}
             >
               {name === 'summary' ||
               name === 'remarks' ||
@@ -660,7 +661,12 @@ const FormField = React.memo(
 
         case 'value':
           return (
-            <FormLabel label="Value Amount" htmlFor="value" meta={meta}>
+            <FormLabel
+              label="Value Amount"
+              htmlFor="value"
+              isOptional={!fieldConfig?.required}
+              meta={meta}
+            >
               <Input
                 {...input}
                 type="number"
@@ -690,6 +696,7 @@ const FormField = React.memo(
               label="Geo-coverage type"
               htmlFor="geoCoverageType"
               meta={meta}
+              isOptional={!fieldConfig?.required}
             >
               <Select
                 {...input}
@@ -698,7 +705,7 @@ const FormField = React.memo(
                 allowClear
                 onChange={(value) => {
                   input.onChange(value)
-                  form.change('geoCoverageValueTransnational', undefined)
+                  form.change('geoCoverageCountryGroups', undefined)
                   form.change('geoCoverageCountries', undefined)
                 }}
                 onBlur={input.onBlur}
@@ -727,12 +734,13 @@ const FormField = React.memo(
             </FormLabel>
           )
 
-        case 'geoCoverageValueTransnational':
+        case 'geoCoverageCountryGroups':
           return (
             <FormLabel
               label="GEO COVERAGE (Transnational)"
-              htmlFor="geoCoverageValueTransnational"
+              htmlFor="geoCoverageCountryGroups"
               meta={meta}
+              isOptional={!fieldConfig?.required}
             >
               <Select
                 {...input}
@@ -770,6 +778,7 @@ const FormField = React.memo(
               label="GEO COVERAGE (Countries)"
               htmlFor="geoCoverageCountries"
               meta={meta}
+              isOptional={!fieldConfig?.required}
             >
               <Select
                 {...input}
@@ -808,6 +817,7 @@ const FormField = React.memo(
               label="Value Currency"
               htmlFor="valueCurrency"
               meta={meta}
+              isOptional={!fieldConfig?.required}
             >
               <Select
                 {...input}
@@ -843,7 +853,12 @@ const FormField = React.memo(
 
         case 'eventType':
           return (
-            <FormLabel label="Event Type" htmlFor="eventType" meta={meta}>
+            <FormLabel
+              label="Event Type"
+              htmlFor="eventType"
+              isOptional={!fieldConfig?.required}
+              meta={meta}
+            >
               <Select
                 {...input}
                 size="small"
@@ -878,7 +893,12 @@ const FormField = React.memo(
 
         case 'tags':
           return (
-            <FormLabel label="Tags" htmlFor="tags" meta={meta}>
+            <FormLabel
+              label="Tags"
+              htmlFor="tags"
+              isOptional={!fieldConfig?.required}
+              meta={meta}
+            >
               <Select
                 {...input}
                 size="small"
@@ -923,6 +943,7 @@ const FormField = React.memo(
               label="Lifecycle Stage"
               htmlFor="lifecycleStage"
               meta={meta}
+              isOptional={!fieldConfig?.required}
             >
               <Select
                 {...input}
@@ -959,7 +980,12 @@ const FormField = React.memo(
 
         case 'image':
           return (
-            <FormLabel label="Photo" htmlFor="image" meta={meta}>
+            <FormLabel
+              label="Photo"
+              htmlFor="image"
+              meta={meta}
+              isOptional={!fieldConfig?.required}
+            >
               <Dragger
                 {...input}
                 beforeUpload={() => false}
@@ -999,7 +1025,12 @@ const FormField = React.memo(
 
         case 'gallery':
           return (
-            <FormLabel label="Gallery" htmlFor="gallery" meta={meta}>
+            <FormLabel
+              label="Gallery"
+              htmlFor="gallery"
+              meta={meta}
+              isOptional={!fieldConfig?.required}
+            >
               <Dragger
                 {...input}
                 beforeUpload={() => false}
@@ -1043,7 +1074,7 @@ const FormField = React.memo(
               label="Cover Thumbnail -  portrait format 300x400"
               htmlFor="thumbnail"
               meta={meta}
-              isOptional={true}
+              isOptional={!fieldConfig?.required}
             >
               <Dragger
                 {...input}
@@ -1067,6 +1098,7 @@ const FormField = React.memo(
               label={name.charAt(0).toUpperCase() + name.slice(1)}
               htmlFor={name}
               meta={meta}
+              isOptional={!fieldConfig?.required}
             >
               <Select
                 {...input}
@@ -1102,7 +1134,7 @@ const FormField = React.memo(
             <FormLabel
               label={name.charAt(0).toUpperCase() + name.slice(1)}
               htmlFor={name}
-              isOptional={true}
+              isOptional={!fieldConfig?.required}
               meta={meta}
             >
               <Select
@@ -1135,7 +1167,11 @@ const FormField = React.memo(
         case 'publicationYear':
         case 'yearFounded':
           return (
-            <FormLabel label={label ? label : name} htmlFor={name}>
+            <FormLabel
+              label={label ? label : name}
+              htmlFor={name}
+              isOptional={!fieldConfig?.required}
+            >
               <DatePicker
                 {...input}
                 size="small"
@@ -1173,6 +1209,7 @@ const FormField = React.memo(
                 .replace(/^./, (str) => str.toUpperCase())}
               htmlFor={name}
               meta={meta}
+              isOptional={!fieldConfig?.required}
             >
               <DatePicker
                 {...input}
@@ -1202,9 +1239,10 @@ const FormField = React.memo(
         case 'highlights':
           return (
             <FormLabel
-              label="Key highlights (Optional)"
+              label="Key highlights"
               htmlFor="keyHighlights"
               meta={meta}
+              isOptional={!fieldConfig?.required}
             >
               <Field name="highlights">
                 {({ input: { value = [], onChange } }) => (
@@ -1275,6 +1313,7 @@ const FormField = React.memo(
               label={name === 'videos' ? 'Videos' : 'Expected outcomes'}
               htmlFor={name}
               meta={meta}
+              isOptional={!fieldConfig?.required}
             >
               <Field name={name}>
                 {({ input: { value = [], onChange } }) => (
@@ -1352,7 +1391,7 @@ const FormFields = React.memo(({ selectedType, storeData, form }) => {
             <Row key={rowIndex} gutter={16}>
               {row.map(({ name, span, label }) => {
                 if (
-                  (name === 'geoCoverageValueTransnational' &&
+                  (name === 'geoCoverageCountryGroups' &&
                     geoType !== 'transnational') ||
                   (name === 'geoCoverageCountries' && geoType !== 'national')
                 ) {
@@ -1370,6 +1409,7 @@ const FormFields = React.memo(({ selectedType, storeData, form }) => {
                           storeData={storeData}
                           form={form}
                           label={label}
+                          selectedType={selectedType}
                         />
                       )}
                     </Field>
@@ -1412,7 +1452,7 @@ const DynamicContentForm = () => {
     relatedResource: s.relatedResource,
   }))
 
-  const onSubmit = (values, form) => {
+  const onSubmit = async (values, form) => {
     setLoading(true)
     const cleanValues = Object.fromEntries(
       Object.entries(values).filter(
@@ -1460,10 +1500,8 @@ const DynamicContentForm = () => {
       entityConnections,
       source: 'gpml',
       tags: formattedTags,
-      ...(cleanValues.geoCoverageValueTransnational && {
-        geoCoverageValueTransnational: [
-          cleanValues.geoCoverageValueTransnational,
-        ],
+      ...(cleanValues.geoCoverageCountryGroups && {
+        geoCoverageCountryGroups: [cleanValues.geoCoverageCountryGroups],
       }),
       ...(cleanValues.geoCoverageCountries && {
         geoCoverageCountries: cleanValues.geoCoverageCountries,
@@ -1485,19 +1523,23 @@ const DynamicContentForm = () => {
     delete data.partners
 
     if (selectedType === 'Technology') {
-      return handleOnSubmitTechnology(data, form)
+      await handleOnSubmitTechnology(data, form)
+      return
     }
 
     if (selectedType === 'Legislation') {
-      return handleOnSubmitPolicy(data, form)
+      await handleOnSubmitPolicy(data, form)
+      return
     }
 
     if (selectedType === 'Project') {
-      return handleOnSubmitProject(data, form)
+      await handleOnSubmitProject(data, form)
+      return
     }
 
     if (selectedType === 'Event') {
-      return handleOnSubmitEvent(data, form)
+      await handleOnSubmitEvent(data, form)
+      return
     }
 
     api
@@ -1590,14 +1632,14 @@ const DynamicContentForm = () => {
 
   const handleOnSubmitProject = (data, form) => {
     console.log(data)
-    return
-    // delete data.resourceType
-    // delete data.image
-    // data.version = 2
-    // data.subContentType = 'Bans and Restrictions'
-    // data.individualConnections = []
+    delete data.resourceType
+    delete data.donors
+    delete data.implementors
+    data.version = 2
+    data.subContentType = ''
+    data.individualConnections = []
 
-    api
+    return api
       .post('/project', data)
       .then((res) => {
         notification.success({ message: 'Resource successfully created' })
@@ -1605,13 +1647,11 @@ const DynamicContentForm = () => {
         setSelectedType(null)
       })
       .catch(() => {
-        notification.error({ message: 'An error occured' })
+        notification.error({ message: 'An error occurred' })
       })
       .finally(() => {
         setLoading(false)
       })
-
-    return true
   }
 
   const handleOnSubmitEvent = (data, form) => {
@@ -1648,8 +1688,17 @@ const DynamicContentForm = () => {
               outcomes: [''],
               videos: [''],
             }}
-            render={({ handleSubmit, form }) => (
-              <form onSubmit={handleSubmit}>
+            render={({ handleSubmit, submitting, pristine, form }) => (
+              <form
+                onSubmit={async (e) => {
+                  e.preventDefault()
+                  try {
+                    await handleSubmit(e)
+                  } catch (error) {
+                    console.error('Submission error:', error)
+                  }
+                }}
+              >
                 <Title className="title" level={3}>
                   Add Content
                 </Title>
