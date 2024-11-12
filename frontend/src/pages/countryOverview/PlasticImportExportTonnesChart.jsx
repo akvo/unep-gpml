@@ -90,21 +90,30 @@ const PlasticImportExportChart = () => {
         ),
       }
 
+      const getLatestYearData = (data) => {
+        if (!data || data.length === 0) return null
+        const sortedData = data.sort((a, b) => b.Year - a.Year)
+        return sortedData[0]
+      }
+
       const importResults = categories.map((category) => {
         const layer = importLayers[category]
-
-        const data = layer?.attributes.ValuePerCountry.find(
-          (item) => item.CountryName === country
+        const data = getLatestYearData(
+          layer?.attributes?.ValuePerCountry?.filter(
+            (item) => item.CountryName === country
+          )
         )
-        return data ? data.Value : 0
+        return data ? parseFloat(data.Value.toFixed(2)) : 0
       })
 
       const exportResults = categories.map((category) => {
         const layer = exportLayers[category]
-        const data = layer?.attributes.ValuePerCountry.find(
-          (item) => item.CountryName === country
+        const data = getLatestYearData(
+          layer?.attributes?.ValuePerCountry?.filter(
+            (item) => item.CountryName === country
+          )
         )
-        return data ? data.Value : 0
+        return data ? parseFloat(data.Value.toFixed(2)) : 0
       })
 
       setImportData(importResults)
