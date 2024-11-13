@@ -16,6 +16,21 @@
         font-size: 38px;
         font-weight: 700;
         line-height: 48px;
+        .badges {
+          .badge {
+            margin-left: 10px;
+            svg {
+              width: 24px;
+              height: 24px;
+            }
+          }
+          &.admin {
+            .badge:not(.enabled) {
+              filter: grayscale(0.35);
+              opacity: 0.5;
+            }
+          }
+        }
       }
       .h-caps-m {
         margin-top: 15px;
