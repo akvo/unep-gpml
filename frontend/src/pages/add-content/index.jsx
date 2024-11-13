@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { Form, Field } from 'react-final-form'
 import {
   Button,
@@ -1453,108 +1453,109 @@ const DynamicContentForm = () => {
   }))
 
   const onSubmit = async (values, form) => {
-    setLoading(true)
-    const cleanValues = Object.fromEntries(
-      Object.entries(values).filter(
-        ([_, value]) => value !== undefined && value !== null && value !== ''
+    try {
+      setLoading(true)
+      const cleanValues = Object.fromEntries(
+        Object.entries(values).filter(
+          ([_, value]) => value !== undefined && value !== null && value !== ''
+        )
       )
-    )
 
-    const entityConnections = [
-      ...(values.owner?.map((id) => ({ role: 'owner', entity: id })) || []),
-      ...(values.implementors?.map((id) => ({
-        role: 'implementor',
-        entity: id,
-      })) || []),
-      ...(values.donors?.map((id) => ({ role: 'donor', entity: id })) || []),
-      ...(values.partners?.map((id) => ({ role: 'partner', entity: id })) ||
-        []),
-    ]
+      const entityConnections = [
+        ...(values.owner?.map((id) => ({ role: 'owner', entity: id })) || []),
+        ...(values.implementors?.map((id) => ({
+          role: 'implementor',
+          entity: id,
+        })) || []),
+        ...(values.donors?.map((id) => ({ role: 'donor', entity: id })) || []),
+        ...(values.partners?.map((id) => ({ role: 'partner', entity: id })) ||
+          []),
+      ]
 
-    const storeTags = Object.keys(getSelectOptions(storeData).tags)
-      .map((k) => getSelectOptions(storeData).tags[k])
-      .flat()
+      const storeTags = Object.keys(getSelectOptions(storeData).tags)
+        .map((k) => getSelectOptions(storeData).tags[k])
+        .flat()
 
-    const formattedTags = [...values.tags, ...values.lifecycleStage]?.map(
-      (x) => {
-        if (typeof x === 'number') {
-          const tagInfo = storeTags.find((t) => t.id === x)
-          return {
-            id: x,
-            ...(tagInfo && { tag: tagInfo.tag }),
-          }
-        } else {
-          return {
-            tag: x,
-            ...(storeTags.find((o) => o.tag === x) && {
-              id: storeTags.find((o) => o.tag === x)?.id,
-            }),
+      const formattedTags = [...values.tags, ...values.lifecycleStage]?.map(
+        (x) => {
+          if (typeof x === 'number') {
+            const tagInfo = storeTags.find((t) => t.id === x)
+            return {
+              id: x,
+              ...(tagInfo && { tag: tagInfo.tag }),
+            }
+          } else {
+            return {
+              tag: x,
+              ...(storeTags.find(
+                (o) => o.tag.toLowerCase() === x.toLowerCase()
+              ) && {
+                id: storeTags.find(
+                  (o) => o.tag.toLowerCase() === x.toLowerCase()
+                )?.id,
+              }),
+            }
           }
         }
+      )
+
+      const data = {
+        ...cleanValues,
+        resourceType:
+          selectedType === 'Dataset' ? 'Data Catalog' : selectedType,
+        entityConnections,
+        source: 'gpml',
+        tags: formattedTags,
+        ...(cleanValues.geoCoverageCountryGroups && {
+          geoCoverageCountryGroups: [cleanValues.geoCoverageCountryGroups],
+        }),
+        ...(cleanValues.geoCoverageCountries && {
+          geoCoverageCountries: cleanValues.geoCoverageCountries,
+        }),
+        ...(cleanValues.validFrom && {
+          validTo: cleanValues.validTo ? cleanValues.validTo : 'ongoing',
+        }),
+        ...(cleanValues.value && {
+          value: Number(cleanValues.value),
+        }),
+        ...(cleanValues.yearFounded && {
+          yearFounded: Number(cleanValues.yearFounded),
+        }),
+        language: 'en',
       }
-    )
 
-    const data = {
-      ...cleanValues,
-      resourceType: selectedType === 'Dataset' ? 'Data Catalog' : selectedType,
-      entityConnections,
-      source: 'gpml',
-      tags: formattedTags,
-      ...(cleanValues.geoCoverageCountryGroups && {
-        geoCoverageCountryGroups: [cleanValues.geoCoverageCountryGroups],
-      }),
-      ...(cleanValues.geoCoverageCountries && {
-        geoCoverageCountries: cleanValues.geoCoverageCountries,
-      }),
-      ...(cleanValues.validFrom && {
-        validTo: cleanValues.validTo ? cleanValues.validTo : 'ongoing',
-      }),
-      ...(cleanValues.value && {
-        value: Number(cleanValues.value),
-      }),
-      ...(cleanValues.yearFounded && {
-        yearFounded: Number(cleanValues.yearFounded),
-      }),
-      language: 'en',
-    }
+      delete data.lifecycleStage
+      delete data.owner
+      delete data.partners
 
-    delete data.lifecycleStage
-    delete data.owner
-    delete data.partners
+      let response
 
-    if (selectedType === 'Technology') {
-      await handleOnSubmitTechnology(data, form)
-      return
-    }
+      if (selectedType === 'Technology') {
+        response = await handleOnSubmitTechnology(data, form)
+      } else if (selectedType === 'Legislation') {
+        response = await handleOnSubmitPolicy(data, form)
+      } else if (selectedType === 'Project') {
+        response = await handleOnSubmitProject(data, form)
+      } else if (selectedType === 'Event') {
+        response = await handleOnSubmitEvent(data, form)
+      } else {
+        response = await api.post('/resource', data)
+      }
 
-    if (selectedType === 'Legislation') {
-      await handleOnSubmitPolicy(data, form)
-      return
-    }
+      notification.success({ message: 'Resource successfully created' })
+      form.reset()
+      setSelectedType(null)
 
-    if (selectedType === 'Project') {
-      await handleOnSubmitProject(data, form)
-      return
-    }
-
-    if (selectedType === 'Event') {
-      await handleOnSubmitEvent(data, form)
-      return
-    }
-
-    api
-      .post('/resource', data)
-      .then((res) => {
-        notification.success({ message: 'Resource successfully created' })
-        form.reset()
-        setSelectedType(null)
+      return response
+    } catch (error) {
+      notification.error({
+        message: 'An error occurred',
+        description: error.message || 'Please try again',
       })
-      .catch(() => {
-        notification.error({ message: 'An error occured' })
-      })
-      .finally(() => {
-        setLoading(false)
-      })
+      throw error
+    } finally {
+      setLoading(false)
+    }
   }
 
   const validate = useCallback(
@@ -1654,27 +1655,31 @@ const DynamicContentForm = () => {
       })
   }
 
-  const handleOnSubmitEvent = (data, form) => {
-    delete data.highlights
-    delete data.outcomes
-    delete data.videos
+  const handleOnSubmitEvent = async (data, form) => {
+    try {
+      delete data.highlights
+      delete data.outcomes
+      delete data.videos
 
-    api
-      .post('/event', data)
-      .then((res) => {
-        notification.success({ message: 'Resource successfully created' })
-        form.reset()
-        setSelectedType(null)
-      })
-      .catch(() => {
-        notification.error({ message: 'An error occured' })
-      })
-      .finally(() => {
-        setLoading(false)
-      })
-
-    return true
+      await api.post('/event', data)
+      notification.success({ message: 'Resource successfully created' })
+      form.reset()
+      setSelectedType(null)
+      return true
+    } catch (error) {
+      notification.error({ message: 'An error occurred' })
+      throw error
+    }
   }
+
+  const initialValues = useMemo(
+    () => ({
+      highlights: [{ text: '', url: '' }],
+      outcomes: [''],
+      videos: [''],
+    }),
+    []
+  )
 
   return (
     <div className={styles.addContentForm}>
@@ -1683,105 +1688,103 @@ const DynamicContentForm = () => {
           <Form
             onSubmit={(values, form) => onSubmit(values, form)}
             validate={validate}
-            initialValues={{
-              highlights: [{ text: '', url: '' }],
-              outcomes: [''],
-              videos: [''],
-            }}
-            render={({ handleSubmit, submitting, pristine, form }) => (
-              <form
-                onSubmit={async (e) => {
-                  e.preventDefault()
-                  try {
-                    await handleSubmit(e)
-                  } catch (error) {
-                    console.error('Submission error:', error)
-                  }
-                }}
-              >
-                <Title className="title" level={3}>
-                  Add Content
-                </Title>
+            initialValues={initialValues}
+            render={({ handleSubmit, form }) => {
+              const onSubmit = async (e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                await handleSubmit(e)
+              }
+              return (
+                <>
+                  <form onSubmit={onSubmit}>
+                    <Title className="title" level={3}>
+                      Add Content
+                    </Title>
 
-                {!selectedType && (
-                  <div className="form-description">
-                    <p>
-                      The GPML Digital Platform is crowdsourced and allows
-                      everyone to submit new content via this form.
-                    </p>
-                    <p>
-                      A wide range of resources can be submitted, and these
-                      include Action Plans, Initiatives, Technical resources,
-                      Financing resources, Policies, Events, and Technologies.
-                      Learn more about each category and sub-categories
-                      definitions in the "Content Type" section of this form. A
-                      quick summary sheet with categories and sub-categories can
-                      be downloaded here.
-                    </p>
-                    <p>
-                      You can access existing content via the Knowledge Exchange
-                      Library. Make sure to browse around and leave a review
-                      under the resources you enjoy the most!
-                    </p>
-                  </div>
-                )}
+                    {!selectedType && (
+                      <div className="form-description">
+                        <p>
+                          The GPML Digital Platform is crowdsourced and allows
+                          everyone to submit new content via this form.
+                        </p>
+                        <p>
+                          A wide range of resources can be submitted, and these
+                          include Action Plans, Initiatives, Technical
+                          resources, Financing resources, Policies, Events, and
+                          Technologies. Learn more about each category and
+                          sub-categories definitions in the "Content Type"
+                          section of this form. A quick summary sheet with
+                          categories and sub-categories can be downloaded here.
+                        </p>
+                        <p>
+                          You can access existing content via the Knowledge
+                          Exchange Library. Make sure to browse around and leave
+                          a review under the resources you enjoy the most!
+                        </p>
+                      </div>
+                    )}
 
-                <Space direction="vertical" size="large" className="w-full">
-                  <div className="form-container">
-                    <Title level={4}>What type of content is this?</Title>
-                    <div
-                      style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}
-                    >
-                      {contentTypes.map((type) => (
-                        <Button
-                          key={type}
-                          className={`content-type-btn ${
-                            selectedType === type ? 'selected' : ''
-                          }`}
-                          onClick={() => {
-                            if (selectedType !== type) {
-                              setSelectedType(type)
-                              form.reset()
-                              form.restart({})
-                            } else {
-                              setSelectedType(null)
-                              form.reset()
-                              form.restart({})
-                            }
+                    <Space direction="vertical" size="large" className="w-full">
+                      <div className="form-container">
+                        <Title level={4}>What type of content is this?</Title>
+                        <div
+                          style={{
+                            display: 'flex',
+                            gap: '10px',
+                            flexWrap: 'wrap',
                           }}
                         >
-                          {type}
-                        </Button>
-                      ))}
-                    </div>
-                  </div>
+                          {contentTypes.map((type) => (
+                            <Button
+                              key={type}
+                              className={`content-type-btn ${
+                                selectedType === type ? 'selected' : ''
+                              }`}
+                              onClick={() => {
+                                if (selectedType !== type) {
+                                  setSelectedType(type)
+                                  form.restart(initialValues)
+                                } else {
+                                  setSelectedType(null)
+                                  form.restart(initialValues)
+                                }
+                              }}
+                            >
+                              {type}
+                            </Button>
+                          ))}
+                        </div>
+                      </div>
 
-                  {selectedType && (
-                    <>
-                      <Card className="mt-8">
-                        <Title className="form-title" level={4}>
-                          All details of the {selectedType.toLowerCase()}
-                        </Title>
-                        <FormFields
-                          selectedType={selectedType}
-                          storeData={storeData}
-                          form={form}
-                        />
-                        <Button
-                          type="primary"
-                          htmlType="submit"
-                          loading={loading}
-                          disabled={loading}
-                          className="submit-btn"
-                        >
-                          Save & Publish
-                        </Button>
-                      </Card>
-                    </>
-                  )}
-                </Space>
-              </form>
-            )}
+                      {selectedType && (
+                        <>
+                          <Card className="mt-8">
+                            <Title className="form-title" level={4}>
+                              All details of the {selectedType.toLowerCase()}
+                            </Title>
+                            <FormFields
+                              selectedType={selectedType}
+                              storeData={storeData}
+                              form={form}
+                            />
+                            <Button
+                              type="primary"
+                              htmlType="submit"
+                              loading={loading}
+                              disabled={loading}
+                              className="submit-btn"
+                            >
+                              Save & Publish
+                            </Button>
+                          </Card>
+                        </>
+                      )}
+                    </Space>
+                  </form>
+                </>
+              )
+            }}
           />
         </div>
       </div>

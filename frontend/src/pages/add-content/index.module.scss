@@ -1,166 +1,176 @@
 @import '../../styles/vars.scss';
 
 .addContentForm {
-  padding: 80px 0px;
+    padding: 80px 0px;
 
-  :global {
-    .title {
-      font-size: 48px;
-      font-weight: 700;
-      color: $primaryDarkBlueText;
-    }
-
-    .form-description {
-      font-size: 16px;
-      line-height: 26px;
-      color: black;
-
-      p {
-        padding-bottom: 5px;
-      }
-    }
-
-    .form-container {
-      padding: 20px 0px;
-
-      h4 {
-        color: $primaryDarkBlueText;
-        font-size: 24px;
-        padding-bottom: 10px;
-        font-weight: 700;
-      }
-    }
-
-    .ant-card {
-      .ant-form-item {
-        flex-direction: column;
-        margin-bottom: 30px;
-      }
-
-      .ant-card-body {
-        padding: 0px;
-
-        .form-title {
-          color: $primaryDarkBlueText;
-          font-size: 24px;
-          font-weight: 700;
+    :global {
+        .title {
+            font-size: 48px;
+            font-weight: 700;
+            color: $primaryDarkBlueText;
         }
 
-        .highlights-wrapper {
-          .highlights-input {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
-          }
-          .ant-btn {
-            .icn {
-              margin-bottom: -2px;
-              margin-right: 5px;
+        .form-description {
+            font-size: 16px;
+            line-height: 26px;
+            color: black;
+
+            p {
+                padding-bottom: 5px;
             }
-            svg {
-              padding-left: 0px;
-              width: 15px;
-              height: 15px;
-              padding-bottom: -2px;
+        }
+
+        .form-container {
+            padding: 20px 0px;
+
+            h4 {
+                color: $primaryDarkBlueText;
+                font-size: 24px;
+                padding-bottom: 10px;
+                font-weight: 700;
             }
-          }
         }
-        .submit-btn {
-          svg {
-            position: relative;
-            left: 0;
-            right: 0;
-            top: 0;
-          }
+
+        .ant-card {
+            .ant-form-item {
+                flex-direction: column;
+                margin-bottom: 30px;
+            }
+
+            .ant-card-body {
+                padding: 0px;
+
+                .form-title {
+                    color: $primaryDarkBlueText;
+                    font-size: 24px;
+                    font-weight: 700;
+                }
+
+                .highlights-wrapper {
+                    .highlights-input {
+                        display: flex;
+                        gap: 10px;
+                        margin-bottom: 10px;
+                    }
+
+                    .ant-btn {
+                        .icn {
+                            margin-bottom: -2px;
+                            margin-right: 5px;
+                        }
+
+                        svg {
+                            padding-left: 0px;
+                            width: 15px;
+                            height: 15px;
+                            padding-bottom: -2px;
+                        }
+                    }
+                }
+
+                .submit-btn {
+                    svg {
+                        position: relative;
+                        left: 0;
+                        right: 0;
+                        top: 0;
+                    }
+                }
+
+                .ant-upload-list-item {
+                    .ant-upload-list-item-info {
+                        padding: 4px;
+                        border-radius: 8px;
+                    }
+
+                    .ant-btn {
+                        svg {
+                            position: relative;
+                            top: 0;
+                            left: 0;
+
+                            &:focus {
+                                top: 0;
+                                position: relative;
+                                left: 0;
+                                right: 0;
+                            }
+                        }
+                    }
+
+                    &:hover {
+                        .ant-btn {
+                            border: none;
+                            padding: 0px;
+                            width: 30px;
+                        }
+                    }
+                }
+            }
+
+            .ant-upload-drag {
+                background-color: white;
+                border-width: 2px;
+                border-radius: 12px;
+                border-color: $primaryDarkBlue2;
+                padding: 10px;
+
+                .ant-upload-drag-icon {
+                    margin-bottom: 10px;
+                }
+
+                .ant-upload-text {
+                    color: $primaryDarkBlue3 !important;
+                }
+
+                .add-btn {
+                    padding: 10px;
+                    border-radius: 12px;
+                    background-color: #e3e1ff;
+                    color: #5d53cc;
+                    display: inline-block;
+                    font-size: 14px;
+                    font-weight: 700;
+                    margin: 10px 0 0;
+                }
+            }
+
+            .error {
+                color: $systemError;
+            }
+
+            .ant-form-item-label {
+                label {
+                    &::after {
+                        content: none;
+                    }
+                }
+            }
+
+            border: none;
         }
-        .ant-upload-list-item {
-          .ant-upload-list-item-info {
-            padding: 4px;
+
+        .content-type-btn {
+            background-color: $primaryGrey;
+            border-color: $primaryGrey;
+            color: $primaryDarkBlueText;
             border-radius: 8px;
-          }
-          .ant-btn {
-            svg {
-              &:focus {
-                top: 0;
-                position: relative;
-                left: 0;
-                right: 0;
-              }
+
+            &:hover {
+                border-color: rgba(227, 225, 255, 1);
+                background-color: rgba(227, 225, 255, 1);
             }
-          }
-          &:hover {
-            .ant-btn {
-              border: none;
-              padding: 0px;
-              width: 30px;
+
+            &.selected {
+                background-color: $primaryPurple;
+                color: white;
             }
-          }
+
+            &:active {
+                background-color: $primaryPurple;
+                color: white;
+                border-color: $primaryPurple;
+            }
         }
-      }
-
-      .ant-upload-drag {
-        background-color: white;
-        border-width: 2px;
-        border-radius: 12px;
-        border-color: $primaryDarkBlue2;
-        padding: 10px;
-
-        .ant-upload-drag-icon {
-          margin-bottom: 10px;
-        }
-
-        .ant-upload-text {
-          color: $primaryDarkBlue3 !important;
-        }
-
-        .add-btn {
-          padding: 10px;
-          border-radius: 12px;
-          background-color: #e3e1ff;
-          color: #5d53cc;
-          display: inline-block;
-          font-size: 14px;
-          font-weight: 700;
-          margin: 10px 0 0;
-        }
-      }
-
-      .error {
-        color: $systemError;
-      }
-
-      .ant-form-item-label {
-        label {
-          &::after {
-            content: none;
-          }
-        }
-      }
-
-      border: none;
     }
-
-    .content-type-btn {
-      background-color: $primaryGrey;
-      border-color: $primaryGrey;
-      color: $primaryDarkBlueText;
-      border-radius: 8px;
-
-      &:hover {
-        border-color: rgba(227, 225, 255, 1);
-        background-color: rgba(227, 225, 255, 1);
-      }
-
-      &.selected {
-        background-color: $primaryPurple;
-        color: white;
-      }
-
-      &:active {
-        background-color: $primaryPurple;
-        color: white;
-        border-color: $primaryPurple;
-      }
-    }
-  }
 }
