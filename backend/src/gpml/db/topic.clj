@@ -7,16 +7,18 @@
 (declare get-topics get-flat-topics)
 
 (hugsql/def-db-fns "gpml/db/topic.sql" {:quoting :ansi})
+(hugsql/def-sqlvec-fns "gpml/db/topic.sql" {:quoting :ansi})
 
 (def generic-cte-opts
   "Common set of options for all CTE generation functions."
-  {:tables ["event" "technology" "policy" "initiative" "resource" "case_study"]
+  {:tables ["event" "technology" "policy" "initiative" "resource" "case_study" "project"]
    :search-text-fields {"event" ["title" "description" "remarks"]
                         "technology" ["name"]
                         "policy" ["title" "original_title" "abstract" "remarks"]
                         "initiative" ["q2" "q3"]
                         "resource" ["title" "summary" "remarks"]
-                        "case_study" ["title" "description"]}})
+                        "case_study" ["title" "description"]
+                        "project" ["title" "summary" "background" "purpose"]}})
 
 #_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (def generic-entity-cte-opts
