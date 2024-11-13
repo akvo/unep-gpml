@@ -39,7 +39,7 @@ function CountryLibrary({}) {
   return (
     <div className={styles.knowledgeLib} style={{ backgroundColor: '#F5F7FF' }}>
       <Fragment>
-        <ResourceView history={router} />
+        <ResourceView />
       </Fragment>
     </div>
   )
