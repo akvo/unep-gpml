@@ -3,6 +3,7 @@ import { Layout, Select, Button } from 'antd'
 import useQueryParameters from '../../../../hooks/useQueryParameters'
 import { UIStore } from '../../../../store'
 import { isEmpty } from 'lodash'
+import { getBaseUrl } from '../../../../utils/misc'
 
 const { Sider } = Layout
 
@@ -10,6 +11,7 @@ const CategoriesNestedDashboard = ({ categories }) => {
   const { queryParameters, setQueryParameters } = useQueryParameters()
   const [selectedCategory, setSelectedCategory] = useState(null)
   const [selectedCountry, setSelectedCountry] = useState(null)
+  const baseURL = getBaseUrl()
 
   const { countries, transnationalOptions } = UIStore.useState((s) => ({
     countries: s.countries,
@@ -51,6 +53,15 @@ const CategoriesNestedDashboard = ({ categories }) => {
 
   const isCategorySelected = (category) => {
     return queryParameters.categoryId === category.attributes.categoryId
+  }
+
+  const handleViewGlobalDataClick = () => {
+    const categoryId = selectedCategory || queryParameters.categoryId
+    if (categoryId) {
+      window.location.href = `${baseURL}/data/maps?categoryId=${categoryId}`
+    } else {
+      alert('Please select a category before viewing global data.')
+    }
   }
 
   return (
@@ -107,23 +118,26 @@ const CategoriesNestedDashboard = ({ categories }) => {
         ))}
       </div>
 
-      <Button
-        type="primary"
-        style={{
-          margin: '450px 15px',
-          width: '90%',
-          height: '45px',
-          fontSize: '16px',
-          backgroundColor: '#ffffff',
-          border: '1px solid #1B2738',
-          borderRadius: '35px',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        View Global Data →
-      </Button>
+      {queryParameters.categoryId && queryParameters.country && (
+        <Button
+          type="primary"
+          style={{
+            margin: '450px 15px',
+            width: '90%',
+            height: '45px',
+            fontSize: '16px',
+            backgroundColor: '#ffffff',
+            border: '1px solid #1B2738',
+            borderRadius: '35px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          onClick={handleViewGlobalDataClick}
+        >
+          View Global Data →
+        </Button>
+      )}
     </Sider>
   )
 }
