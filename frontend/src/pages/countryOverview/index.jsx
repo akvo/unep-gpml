@@ -8,7 +8,7 @@ import PlasticImportExportTonnesChart from '../../modules/country-dashboard/char
 import PlasticImportExportPieCharts from '../../modules/country-dashboard/charts/PlasticImportExportPieChart'
 import MSWGenerationChart from '../../modules/country-dashboard/charts/MSWGeneration'
 import PlasticOceanBeachChart from '../../modules/country-dashboard/charts/PlasticOceanBeachCHart'
-import PolicyComponent from './PolicyComponent'
+import PolicyComponent from './PolicyComponents'
 import RequestDataUpdateModal from './RequestDataUpdateModal'
 
 const splitTextInHalf = (text) => {
