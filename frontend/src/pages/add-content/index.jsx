@@ -1223,6 +1223,7 @@ const FormField = React.memo(
               label={label ? label : name}
               htmlFor={name}
               isOptional={!fieldConfig?.required}
+              meta={meta}
             >
               <DatePicker
                 {...input}
