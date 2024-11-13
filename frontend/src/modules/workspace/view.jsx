@@ -22,7 +22,12 @@ import api from '../../utils/api'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
-import { PREFIX_SLUG, getParentChecked, stepsState } from './ps/config'
+import {
+  PREFIX_SLUG,
+  getParentChecked,
+  iso2name,
+  stepsState,
+} from './ps/config'
 import classNames from 'classnames'
 import SkeletonItems from './ps/skeleton-items'
 import Button from '../../components/button'
@@ -473,7 +478,7 @@ export const PSCard = ({ item, key, isAdmin }) => {
   const progressValue = Math.floor(
     (allSteps.filter((a) => a.checked).length / allSteps.length) * 100
   )
-  const countryName = kebabCase(item?.country?.name)
+  const countryName = kebabCase(iso2name[item.country.isoCodeA2])
   const handleDelete = () => {
     api.delete(`/plastic-strategy/${item.country.isoCodeA2}`)
     notification.info({ message: 'Deleted Plastic Strategy' })

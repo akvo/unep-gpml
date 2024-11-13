@@ -65,11 +65,11 @@ const menuList = [
     ],
   },
   {
-    key: msg`Community Hub`,
+    key: `Community Hub`,
     id: 'Community',
     children: [
       {
-        key: msg`Partner Network`,
+        key: `Partner Network`,
         id: 'GPML Community',
         to: '/community-hub',
       },

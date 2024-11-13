@@ -59,7 +59,12 @@ const DetailView = ({ item, profile }) => {
             {data.jobTitle}{' '}
             {data.affiliation && (
               <>
-                @ <span>{data.affiliation.name}</span>
+                @{' '}
+                <span>
+                  <Link href={`/organisation/${data.affiliation.id}`}>
+                    {data.affiliation.name}
+                  </Link>
+                </span>
               </>
             )}
           </h5>
@@ -254,16 +259,18 @@ const DetailView = ({ item, profile }) => {
                     />
                   </SwiperSlide>
                 ))}
-                <SwiperSlide>
-                  <Link
-                    href={`/search?q=members+of+${data.name.replace(
-                      / /g,
-                      '+'
-                    )}`}
-                  >
-                    <div className="more-card individual">View All</div>
-                  </Link>
-                </SwiperSlide>
+                {members.length === 20 && (
+                  <SwiperSlide>
+                    <Link
+                      href={`/search?q=members+of+${data.name.replace(
+                        / /g,
+                        '+'
+                      )}`}
+                    >
+                      <div className="more-card individual">View All</div>
+                    </Link>
+                  </SwiperSlide>
+                )}
               </Swiper>
             </>
           )}
