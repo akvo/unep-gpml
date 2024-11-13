@@ -2,23 +2,77 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import api from '../../utils/api'
 import styles from './style.module.scss'
-import ResourceCards from '../../components/resource-cards/resource-cards'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import ResourceCard from '../../components/resource-card/resource-card'
-import StakeholderCard from '../../components/stakeholder-card/stakeholder-card'
-import rescardStyles from '../../components/resource-card/style.module.scss'
+import StakeholderCard, {
+  badgeTitles,
+} from '../../components/stakeholder-card/stakeholder-card'
 import {
+  badges,
   Email,
   Globe,
-  LinkedinIcon,
   LinkedinOutlined,
   LinkIcon,
   LocationPin,
 } from '../../components/icons'
 import { UIStore } from '../../store'
-import { Button, Popover, Row, Skeleton } from 'antd'
+import {
+  Button,
+  Modal,
+  notification,
+  Popover,
+  Row,
+  Skeleton,
+  Tooltip,
+} from 'antd'
 import { MoreOutlined } from '@ant-design/icons'
 import Link from 'next/link'
+import classNames from 'classnames'
+
+const AdminBadges = ({ data, badgeOpts }) => {
+  const [assigned, setAssigned] = useState(
+    data.assignedBadges.map((it) => it.badgeName)
+  )
+  // const badgeOpts =
+  const handleClick = (badge, assign) => () => {
+    api.post(`/badge/${badge}/assign`, {
+      assign,
+      entityId: data.id,
+      entityType: data.type,
+    })
+    setAssigned((_assigned) => {
+      if (assign) {
+        return [..._assigned, badge]
+      } else {
+        return _assigned.filter((it) => it !== badge)
+      }
+    })
+  }
+  return (
+    <span className="admin badges">
+      {badgeOpts.map((badge) => {
+        const enabled = assigned.indexOf(badge) !== -1
+        return (
+          <Tooltip
+            title={`${enabled ? 'Remove' : 'Assign'} ${badgeTitles[badge]}`}
+          >
+            <span
+              onClick={handleClick(badge, !enabled)}
+              className={classNames('badge', badge, {
+                enabled,
+              })}
+            >
+              {badges.verified}
+            </span>
+          </Tooltip>
+        )
+      })}
+    </span>
+  )
+}
+const AdminBadgesOrg = ({ data }) => {
+  return <div>admin</div>
+}
 
 const DetailView = ({ item, profile }) => {
   const [data, setData] = useState({ ...item })
@@ -49,12 +103,31 @@ const DetailView = ({ item, profile }) => {
         }
       })
   }, [])
+  const assignedBadges = (
+    <span className="badges">
+      {data?.assignedBadges?.map((it) => (
+        <Tooltip title={badgeTitles[it.badgeName]}>
+          <span className={`badge ${it.badgeName}`}>{badges.verified}</span>
+        </Tooltip>
+      ))}
+    </span>
+  )
   if (data.type === 'stakeholder') {
     return (
       <div className={`${styles.detailView} ${styles.stakeholderDetailView}`}>
         <div className="header">
           <h4 className="h-caps-m">member individual</h4>
-          <h1>{data.name}</h1>
+          <h1>
+            {data.name}
+            {profile.role === 'ADMIN' ? (
+              <AdminBadges
+                {...{ data }}
+                badgeOpts={['user-verified', 'user-focal-point-verified']}
+              />
+            ) : (
+              assignedBadges
+            )}
+          </h1>
           <h5>
             {data.jobTitle}{' '}
             {data.affiliation && (
@@ -114,13 +187,14 @@ const DetailView = ({ item, profile }) => {
                     <span>{data.linkedin}</span>
                   </div>
                 )}
-                {profile.role === 'ADMIN' && (
+                {profile.role === 'ADMIN' && <AdminDropdown {...{ data }} />}
+                {/* {profile.role === 'ADMIN' && (
                   <Link href={`/edit/entity/${data.id}?formType=stakeholder`}>
                     <Button size="small" type="link">
                       Edit
                     </Button>
                   </Link>
-                )}
+                )} */}
               </div>
             </>
           )}
@@ -133,7 +207,17 @@ const DetailView = ({ item, profile }) => {
       <div className="org">
         <div className="header">
           <h4 className="h-caps-m">member organisation</h4>
-          <h1>{data.name}</h1>
+          <h1>
+            {data.name}
+            {profile.role === 'ADMIN' ? (
+              <AdminBadges
+                {...{ data }}
+                badgeOpts={['org-verified', 'org-partner-verified']}
+              />
+            ) : (
+              assignedBadges
+            )}
+          </h1>
           <div className="meta">
             {data.country && (
               <div className="item location">
@@ -161,28 +245,7 @@ const DetailView = ({ item, profile }) => {
               <LinkedinOutlined />
               <span>http...</span>
             </div> */}
-            {profile.role === 'ADMIN' && (
-              <Popover
-                placement="bottomLeft"
-                // overlayClassName={styles.forumOptions}
-                content={
-                  <ul>
-                    <li>
-                      <Link href={`/edit/entity/${data.id}?formType=entity`}>
-                        <Button size="small" type="link">
-                          Edit
-                        </Button>
-                      </Link>
-                    </li>
-                  </ul>
-                }
-                trigger="click"
-              >
-                <div className="admin-btn">
-                  <MoreOutlined />
-                </div>
-              </Popover>
-            )}
+            {profile.role === 'ADMIN' && <AdminDropdown {...{ data }} />}
           </div>
         </div>
         <div className="content">
@@ -277,6 +340,65 @@ const DetailView = ({ item, profile }) => {
         </div>
       </div>
     </div>
+  )
+}
+
+const AdminDropdown = ({ data }) => {
+  return (
+    <Popover
+      placement="bottomLeft"
+      // overlayClassName={styles.forumOptions}
+      content={
+        <ul>
+          <li>
+            <Link href={`/edit/entity/${data.id}?formType=${data.type}`}>
+              <Button size="small" type="link">
+                Edit
+              </Button>
+            </Link>
+          </li>
+          <li>
+            <Button
+              size="small"
+              type="link"
+              onClick={() => {
+                Modal.error({
+                  className: 'popup-delete',
+                  centered: true,
+                  closable: true,
+                  title: `Are you sure you want to delete this ${data.type}?`,
+                  content: `Please be aware this action cannot be undone.`,
+                  okText: `Delete`,
+                  okType: 'danger',
+                  onOk() {
+                    return api
+                      .delete(`/detail/${data.type}/${data.id}`)
+                      .then((res) => {
+                        notification.success({
+                          message: 'Entity deleted successfully',
+                        })
+                      })
+                      .catch((err) => {
+                        console.error(err)
+                        notification.error({
+                          message: 'Oops, something went wrong',
+                        })
+                      })
+                  },
+                })
+              }}
+            >
+              Delete
+            </Button>
+          </li>
+        </ul>
+      }
+      trigger="click"
+    >
+      <div className="admin-btn">
+        <MoreOutlined />
+      </div>
+    </Popover>
   )
 }
 
