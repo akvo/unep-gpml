@@ -25,7 +25,16 @@ const StakeholderCard = ({ item, className }) => {
       >
         <div className="type caps-heading-xs">{stakeholderType}</div>
         <h4 className="h-xs">{title}</h4>
-        {subtitle && <h5>{subtitle}</h5>}
+        {subtitle && (
+          <h5>
+            {subtitle}{' '}
+            {item.affiliation && (
+              <>
+                @ <span>{item.affiliation.name}</span>
+              </>
+            )}
+          </h5>
+        )}
         {item?.picture != null && (
           <Image
             className={stakeholderType}
