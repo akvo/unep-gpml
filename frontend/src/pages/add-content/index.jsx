@@ -19,7 +19,7 @@ import FormLabel from '../../components/form-label'
 import { Trans } from '@lingui/macro'
 import { UIStore } from '../../store'
 import DatePicker from 'antd/lib/date-picker'
-import moment from 'moment'
+import moment, { duration } from 'moment'
 import api from '../../utils/api'
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
 import { lifecycleStageTags } from '../../utils/misc'
@@ -526,7 +526,11 @@ const formConfigs = {
         { name: 'thumbnail', span: 12 },
       ],
       [
-        { name: 'owner', span: 12, required: true },
+        { name: 'implementors', span: 12, required: true },
+        { name: 'duration', span: 12, required: true },
+      ],
+      [
+        { name: 'owner', span: 12 },
         { name: 'partners', span: 12 },
       ],
     ],
@@ -563,6 +567,14 @@ const selectOptions = {
     'conferences',
     'courses/training',
     'campaigns/awareness raising',
+  ],
+  duration: [
+    `Single event`,
+    `Ongoing activity less than one year`,
+    `Ongoing activity 1-3 years`,
+    `Ongoing activity more than 3 years long`,
+    `Not applicable`,
+    `Other`,
   ],
 }
 
@@ -872,6 +884,46 @@ const FormField = React.memo(
                 }
               >
                 {selectOptions.eventType.map((type) => (
+                  <Option key={type} value={type}>
+                    {type.charAt(0).toUpperCase() + type.slice(1)}
+                  </Option>
+                ))}
+              </Select>
+              {meta.touched && meta.error && (
+                <p
+                  color="error"
+                  className="error transitionDiv"
+                  style={
+                    meta.touched && meta.error ? mountedStyle : unmountedStyle
+                  }
+                >
+                  {meta.error}
+                </p>
+              )}
+            </FormLabel>
+          )
+
+        case 'duration':
+          return (
+            <FormLabel
+              label="Duration"
+              htmlFor="duration"
+              isOptional={!fieldConfig?.required}
+              meta={meta}
+            >
+              <Select
+                {...input}
+                size="small"
+                value={input.value || undefined}
+                allowClear
+                onChange={input.onChange}
+                onBlur={input.onBlur}
+                placeholder="Select duration"
+                className={
+                  meta.touched && !meta.valid ? 'ant-input-status-error' : ''
+                }
+              >
+                {selectOptions.duration.map((type) => (
                   <Option key={type} value={type}>
                     {type.charAt(0).toUpperCase() + type.slice(1)}
                   </Option>
@@ -1538,6 +1590,8 @@ const DynamicContentForm = () => {
         response = await handleOnSubmitProject(data, form)
       } else if (selectedType === 'Event') {
         response = await handleOnSubmitEvent(data, form)
+      } else if (selectedType === 'Initiative') {
+        response = await handleOnSubmitInitiative(data, form)
       } else {
         response = await api.post('/resource', data)
       }
@@ -1592,11 +1646,7 @@ const DynamicContentForm = () => {
 
     api
       .post('/technology', data)
-      .then((res) => {
-        notification.success({ message: 'Resource successfully created' })
-        form.reset()
-        setSelectedType(null)
-      })
+      .then((res) => {})
       .catch(() => {
         notification.error({ message: 'An error occured' })
       })
@@ -1616,11 +1666,7 @@ const DynamicContentForm = () => {
 
     api
       .post('/policy', data)
-      .then((res) => {
-        notification.success({ message: 'Resource successfully created' })
-        form.reset()
-        setSelectedType(null)
-      })
+      .then((res) => {})
       .catch(() => {
         notification.error({ message: 'An error occured' })
       })
@@ -1632,7 +1678,6 @@ const DynamicContentForm = () => {
   }
 
   const handleOnSubmitProject = (data, form) => {
-    console.log(data)
     delete data.resourceType
     delete data.donors
     delete data.implementors
@@ -1642,11 +1687,7 @@ const DynamicContentForm = () => {
 
     return api
       .post('/project', data)
-      .then((res) => {
-        notification.success({ message: 'Resource successfully created' })
-        form.reset()
-        setSelectedType(null)
-      })
+      .then((res) => {})
       .catch(() => {
         notification.error({ message: 'An error occurred' })
       })
@@ -1662,9 +1703,52 @@ const DynamicContentForm = () => {
       delete data.videos
 
       await api.post('/event', data)
-      notification.success({ message: 'Resource successfully created' })
-      form.reset()
-      setSelectedType(null)
+      return true
+    } catch (error) {
+      notification.error({ message: 'An error occurred' })
+      throw error
+    }
+  }
+
+  const handleOnSubmitInitiative = async (data, form) => {
+    data.q2 = data.title
+    delete data.title
+    data.q3 = data.description
+    delete data.description
+    data.q24 = {
+      [data.geoCoverageType.toLowerCase()]: data.geoCoverageType,
+    }
+    data.qimage = data.image
+    Object.assign(data, convertDurationToQ38Format(data.duration))
+
+    if (data.geoCoverageCountryGroups) {
+      data.q24_4 = convertGeoCoverageGroupsToQ24_4(
+        data.geoCoverageCountryGroups,
+        storeData
+      )
+      delete data.geoCoverageCountryGroups
+    }
+    if (data.geoCoverageCountries) {
+      data.q24_2 = convertGeoCoverageCountriesToQ24_2(
+        data.geoCoverageCountries,
+        storeData
+      )
+      delete data.geoCoverageCountries
+    }
+
+    data.version = 2
+
+    delete data.duration
+    delete data.geoCoverageType
+    delete data.highlights
+    delete data.outcomes
+    delete data.implementors
+    delete data.videos
+    delete data.resourceType
+    delete data.image
+
+    try {
+      await api.post('/initiative', data)
       return true
     } catch (error) {
       notification.error({ message: 'An error occurred' })
@@ -1799,6 +1883,65 @@ const getBase64 = (file) => {
     reader.onload = () => resolve(reader.result)
     reader.onerror = (error) => reject(error)
   })
+}
+
+const convertDurationToQ38Format = (selectedDuration) => {
+  const durationMap = {
+    'Single event': '38-0',
+    'Ongoing activity less than one year': '38-1',
+    'Ongoing activity 1-3 years': '38-2',
+    'Ongoing activity more than 3 years long': '38-3',
+    'Not applicable': '38-4',
+    Other: '38-5',
+  }
+
+  const key = durationMap[selectedDuration]
+
+  if (key) {
+    return {
+      q38: {
+        [key]: selectedDuration,
+      },
+    }
+  }
+
+  return { q38: {} }
+}
+
+const convertGeoCoverageGroupsToQ24_4 = (groupIds, storeData) => {
+  if (!groupIds || !Array.isArray(groupIds)) {
+    return []
+  }
+
+  const allOptions = [...(storeData.transnationalOptions || [])]
+
+  return groupIds
+    .map((groupId) => {
+      const option = allOptions.find((opt) => opt.id === groupId)
+      if (option) {
+        return {
+          [option.id.toString()]: option.name,
+        }
+      }
+      return null
+    })
+    .filter(Boolean)
+}
+
+const convertGeoCoverageCountriesToQ24_2 = (countryIds, storeData) => {
+  if (!countryIds || !Array.isArray(countryIds)) {
+    return {}
+  }
+
+  const allOptions = [...(storeData.countries || [])]
+
+  return countryIds.reduce((acc, countryId) => {
+    const country = allOptions.find((opt) => opt.id === countryId)
+    if (country) {
+      acc[country.id] = country.name
+    }
+    return acc
+  }, {})
 }
 
 export default DynamicContentForm
