@@ -60,7 +60,7 @@ const menuList = [
     ],
   },
   {
-    key: msg`Community Hub`,
+    key: `Community Hub`,
     id: 'Community',
     children: [
       {
