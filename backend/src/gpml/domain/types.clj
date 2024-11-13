@@ -52,6 +52,7 @@
     "policy"
     "initiative"
     "case_study"
+    "project"
     "resource"})
 
 (def topic-types
@@ -66,7 +67,8 @@
     "stakeholder"
     "technical_resource"
     "technology"
-    "data_catalog"})
+    "data_catalog"
+    "project"})
 
 (def resources-types
   "Resources types currently on the platform. Note that `resources` is
@@ -80,7 +82,8 @@
     "financing_resource"
     "technical_resource"
     "action_plan"
-    "data_catalog"})
+    "data_catalog"
+    "project"})
 
 (def plastic-strategy-bookmarkable-entity-types
   (set (map keyword (conj topic-entity-tables "organisation"))))
