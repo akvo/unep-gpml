@@ -19,7 +19,7 @@ const Categories = ({ categories, onCategoryClick }) => {
   }
 
   const handleCloseLayer = (layerId) => {
-    const updatedLayers = queryParameters.layers.filter(
+    const updatedLayers = queryParameters?.layers?.filter(
       (layer) => layer.id !== layerId
     )
 
@@ -37,6 +37,7 @@ const Categories = ({ categories, onCategoryClick }) => {
       onBreakpoint={(broken) => {
         console.log(broken)
       }}
+      overflow={'auto'}
       onCollapse={(collapsed, type) => {
         console.log(collapsed, type)
       }}

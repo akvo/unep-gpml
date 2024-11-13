@@ -1,9 +1,15 @@
 const axios = require('axios');
-const { getStrapiUrl } = require('./misc');
+
+function parseNumber(value) {
+    if (typeof value === 'string') {
+        value = value.replace(/,/g, '');
+    }
+    return parseFloat(value);
+}
 
 module.exports = {
     async populateCountriesForLayers(arcgislayerId, outFields) {
-        const strapiUrl = getStrapiUrl();
+
         try {
             const layer = await strapi.entityService.findMany('api::layer.layer', {
                 filters: { arcgislayerId },
@@ -56,7 +62,7 @@ module.exports = {
                 const countryRows = groupedData[country['CountryName']] || [];
 
                 return countryRows?.map((row) => ({
-                    Value: row[outFields[1]],
+                    Value: parseNumber(row[outFields[1]]), 
                     City: outFields[3] && row[outFields[3]] ? row[outFields[3]] : "",
                     Year: row[outFields[0]]?.toString(),
                     CountryName: country['CountryName']
@@ -68,7 +74,7 @@ module.exports = {
             for (let i = 0; i < valuePerCountryData.length; i += batchSize) {
                 const batch = valuePerCountryData.slice(i, i + batchSize);
 
-                await axios.post(`${strapiUrl}/api/countries/${layerId}/append-value-per-country`, batch);
+                await axios.post(`https://unep-gpml.akvotest.org/strapi/api/countries/${layerId}/append-value-per-country`, batch);
 
                 console.log(`Uploaded batch of ${batch.length} records.`);
             }
