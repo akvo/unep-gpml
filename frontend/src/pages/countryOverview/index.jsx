@@ -6,7 +6,6 @@ import useReplacedText from '../../hooks/useReplacePlaceholders'
 import PlasticImportExportChart from '../../modules/country-dashboard/charts/PlasticImportExportChart'
 import PlasticImportExportTonnesChart from '../../modules/country-dashboard/charts/PlasticImportExportTonnesChart'
 import PlasticImportExportPieCharts from '../../modules/country-dashboard/charts/PlasticImportExportPieChart'
-import WasteProportionPieChart from './WasteProportionPieChart'
 import MSWGenerationChart from '../../modules/country-dashboard/charts/MSWGeneration'
 import PlasticOceanBeachChart from '../../modules/country-dashboard/charts/PlasticOceanBeachCHart'
 import PolicyComponent from './PolicyComponent'
@@ -204,18 +203,7 @@ const CountryOverview = () => {
               <MSWGenerationChart />
             </div>
           </Col>
-          <Col xs={24} md={12}>
-            <div
-              style={{
-                backgroundColor: '#FFFFFF',
-                borderRadius: '12px',
-                padding: '20px',
-                boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
-              }}
-            >
-              <WasteProportionPieChart chartType="import" />
-            </div>
-          </Col>
+    
         </Row>
       )}
 
