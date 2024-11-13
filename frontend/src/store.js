@@ -53,6 +53,11 @@ const menuList = [
       //   href: 'https://datahub.gpmarinelitter.org/',
       // },
       {
+        key: msg`Country dashboard`,
+        id: 'Country dashboard',
+        to: '/country-dashboard',
+      },
+      {
         key: msg`Data Catalogue`,
         id: 'Data Catalogue',
         href: 'https://unepazecosysadlsstorage.z20.web.core.windows.net/',
