@@ -13,10 +13,10 @@ http_get() {
   curl --verbose --url "${url}" "$@" 2>&1 | grep "< HTTP.*${code}"
 }
 
-#http_get "http://localhost/index.html" 200
-#http_get "http://localhost/api/swagger.json" 200
-#http_get "http://localhost/api/docs/index.html" 200
-#http_get "http://localhost/api/country" 200
+http_get "http://localhost/index.html" 200
+http_get "http://localhost/api/swagger.json" 200
+http_get "http://localhost/api/docs/index.html" 200
+http_get "http://localhost/api/country" 200
 
 # Authentication
 source ./token.sh
