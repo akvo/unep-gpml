@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Layout, Button, Select } from 'antd'
 import { useRouter } from 'next/router'
 import { isEmpty } from 'lodash'
+import { getBaseUrl } from '../../utils/misc'
 
 const { Content } = Layout
 
@@ -9,12 +10,13 @@ const DashboardLanding = () => {
   const [countryOpts, setCountryOpts] = useState([])
   const [countries, setCountries] = useState([])
   const router = useRouter()
+  const baseURL = getBaseUrl()
 
   useEffect(() => {
     const fetchCountries = async () => {
       try {
         const response = await fetch(
-          'https://digital.gpmarinelitter.org/api/country'
+          `${baseURL}/api/country`
         )
         const data = await response.json()
         setCountries(data)
