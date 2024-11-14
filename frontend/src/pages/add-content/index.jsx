@@ -78,8 +78,8 @@ const formConfigs = {
         },
       ],
       [
+        { name: 'lifecycleStage', span: 12, required: true },
         { name: 'tags', span: 12, required: true },
-        { name: 'lifecycleStage', span: 12 },
       ],
       [
         { name: 'image', span: 12 },
@@ -1529,28 +1529,28 @@ const DynamicContentForm = () => {
         .map((k) => getSelectOptions(storeData).tags[k])
         .flat()
 
-      const formattedTags = [...values.tags, ...values.lifecycleStage]?.map(
-        (x) => {
-          if (typeof x === 'number') {
-            const tagInfo = storeTags.find((t) => t.id === x)
-            return {
-              id: x,
-              ...(tagInfo && { tag: tagInfo.tag }),
-            }
-          } else {
-            return {
-              tag: x,
-              ...(storeTags.find(
-                (o) => o.tag.toLowerCase() === x.toLowerCase()
-              ) && {
-                id: storeTags.find(
-                  (o) => o.tag.toLowerCase() === x.toLowerCase()
-                )?.id,
-              }),
-            }
+      const formattedTags = [
+        ...(values.tags || []),
+        ...(values.lifecycleStage || []),
+      ]?.map((x) => {
+        if (typeof x === 'number') {
+          const tagInfo = storeTags.find((t) => t.id === x)
+          return {
+            id: x,
+            ...(tagInfo && { tag: tagInfo.tag }),
+          }
+        } else {
+          return {
+            tag: x,
+            ...(storeTags.find(
+              (o) => o.tag.toLowerCase() === x.toLowerCase()
+            ) && {
+              id: storeTags.find((o) => o.tag.toLowerCase() === x.toLowerCase())
+                ?.id,
+            }),
           }
         }
-      )
+      })
 
       const data = {
         ...cleanValues,
@@ -1558,7 +1558,7 @@ const DynamicContentForm = () => {
           selectedType === 'Dataset' ? 'Data Catalog' : selectedType,
         entityConnections,
         source: 'gpml',
-        tags: formattedTags,
+        ...(formattedTags.length > 0 && { tags: formattedTags }),
         ...(cleanValues.geoCoverageCountryGroups && {
           geoCoverageCountryGroups: [cleanValues.geoCoverageCountryGroups],
         }),
@@ -1581,33 +1581,36 @@ const DynamicContentForm = () => {
       delete data.owner
       delete data.partners
 
-      let response
-
-      if (selectedType === 'Technology') {
-        response = await handleOnSubmitTechnology(data, form)
-      } else if (selectedType === 'Legislation') {
-        response = await handleOnSubmitPolicy(data, form)
-      } else if (selectedType === 'Project') {
-        response = await handleOnSubmitProject(data, form)
-      } else if (selectedType === 'Event') {
-        response = await handleOnSubmitEvent(data, form)
-      } else if (selectedType === 'Initiative') {
-        response = await handleOnSubmitInitiative(data, form)
-      } else {
-        response = await api.post('/resource', data)
+      const submissionHandlers = {
+        Technology: handleOnSubmitTechnology,
+        Legislation: handleOnSubmitPolicy,
+        Project: handleOnSubmitProject,
+        Event: handleOnSubmitEvent,
+        Initiative: handleOnSubmitInitiative,
+        default: (data) => api.post('/resource', data),
       }
 
-      notification.success({ message: 'Resource successfully created' })
-      form.reset()
-      setSelectedType(null)
+      const submitHandler =
+        submissionHandlers[selectedType] || submissionHandlers.default
+      const response = await submitHandler(data, form)
 
-      return response
+      if (response) {
+        notification.success({ message: 'Resource successfully created' })
+        form.reset()
+        setSelectedType(null)
+        return response
+      }
     } catch (error) {
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        'Failed to create resource'
+
       notification.error({
         message: 'An error occurred',
-        description: error.message || 'Please try again',
+        description: errorMessage,
       })
-      throw error
+      console.error('Submission error:', error)
     } finally {
       setLoading(false)
     }
@@ -1638,63 +1641,61 @@ const DynamicContentForm = () => {
     [selectedType]
   )
 
-  const handleOnSubmitTechnology = (data, form) => {
+  const handleOnSubmitTechnology = async (data) => {
     delete data.resourceType
     delete data.image
     data.version = 2
     data.subContentType = ''
     data.individualConnections = []
 
-    api
-      .post('/technology', data)
-      .then((res) => {})
-      .catch(() => {
-        notification.error({ message: 'An error occured' })
-      })
-      .finally(() => {
-        setLoading(false)
-      })
-
-    return true
+    try {
+      const response = await api.post('/technology', data)
+      if (!response.data || response.error) {
+        throw new Error(response.error || 'Failed to create technology')
+      }
+      return response
+    } catch (error) {
+      throw error
+    }
   }
 
-  const handleOnSubmitPolicy = (data, form) => {
+  const handleOnSubmitPolicy = async (data, form) => {
     delete data.resourceType
     delete data.image
     data.version = 2
     data.subContentType = 'Bans and Restrictions'
     data.individualConnections = []
 
-    api
-      .post('/policy', data)
-      .then((res) => {})
-      .catch(() => {
-        notification.error({ message: 'An error occured' })
-      })
-      .finally(() => {
-        setLoading(false)
-      })
-
-    return true
+    try {
+      const response = await api.post('/policy', data)
+      if (!response.data || response.error) {
+        throw new Error(response.error || 'Failed to create policy')
+      }
+      return response
+    } catch (error) {
+      throw error
+    }
   }
 
-  const handleOnSubmitProject = (data, form) => {
-    delete data.resourceType
-    delete data.donors
-    delete data.implementors
-    data.version = 2
-    data.subContentType = ''
-    data.individualConnections = []
+  const handleOnSubmitProject = async (data, form) => {
+    try {
+      delete data.resourceType
+      delete data.donors
+      delete data.implementors
+      data.version = 2
+      data.subContentType = ''
+      data.individualConnections = []
 
-    return api
-      .post('/project', data)
-      .then((res) => {})
-      .catch(() => {
-        notification.error({ message: 'An error occurred' })
-      })
-      .finally(() => {
-        setLoading(false)
-      })
+      const response = await api.post('/project', data)
+
+      if (!response.data || response.error) {
+        throw new Error(response.error || 'Failed to create project')
+      }
+
+      return response
+    } catch (error) {
+      throw error
+    }
   }
 
   const handleOnSubmitEvent = async (data, form) => {
@@ -1703,10 +1704,14 @@ const DynamicContentForm = () => {
       delete data.outcomes
       delete data.videos
 
-      await api.post('/event', data)
-      return true
+      const response = await api.post('/event', data)
+
+      if (!response.data || response.error) {
+        throw new Error(response.error || 'Failed to create project')
+      }
+
+      return response
     } catch (error) {
-      notification.error({ message: 'An error occurred' })
       throw error
     }
   }
@@ -1749,10 +1754,14 @@ const DynamicContentForm = () => {
     delete data.image
 
     try {
-      await api.post('/initiative', data)
-      return true
+      const response = await api.post('/initiative', data)
+
+      if (!response.data || response.error) {
+        throw new Error(response.error || 'Failed to create initiative')
+      }
+
+      return response
     } catch (error) {
-      notification.error({ message: 'An error occurred' })
       throw error
     }
   }
