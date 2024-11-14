@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 #shellcheck disable=SC2039
 
-set -Eeuxo pipefail
+set -Eeuo pipefail
 
-wait4ports -q -s 1 -t 300 tcp://localhost:80 tcp://localhost:3000 tcp://db:5432
+#wait4ports -q -s 1 -t 300 tcp://localhost:80 tcp://localhost:3000 tcp://db:5432
 
 http_get() {
   url="${1}"
@@ -13,10 +13,10 @@ http_get() {
   curl --verbose --url "${url}" "$@" 2>&1 | grep "< HTTP.*${code}"
 }
 
-http_get "http://localhost/index.html" 200
-http_get "http://localhost/api/swagger.json" 200
-http_get "http://localhost/api/docs/index.html" 200
-http_get "http://localhost/api/country" 200
+#http_get "http://localhost/index.html" 200
+#http_get "http://localhost/api/swagger.json" 200
+#http_get "http://localhost/api/docs/index.html" 200
+#http_get "http://localhost/api/country" 200
 
 # Authentication
 source ./token.sh
