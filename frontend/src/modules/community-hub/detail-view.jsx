@@ -29,7 +29,7 @@ import { MoreOutlined } from '@ant-design/icons'
 import Link from 'next/link'
 import classNames from 'classnames'
 
-const AdminBadges = ({ data, badgeOpts }) => {
+export const AdminBadges = ({ data, badgeOpts }) => {
   const [assigned, setAssigned] = useState(
     data.assignedBadges.map((it) => it.badgeName)
   )
@@ -69,9 +69,6 @@ const AdminBadges = ({ data, badgeOpts }) => {
       })}
     </span>
   )
-}
-const AdminBadgesOrg = ({ data }) => {
-  return <div>admin</div>
 }
 
 const DetailView = ({ item, profile }) => {

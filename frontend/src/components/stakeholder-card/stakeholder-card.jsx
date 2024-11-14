@@ -10,6 +10,7 @@ export const badgeTitles = {
   'user-verified': 'Verified',
   'org-partner-verified': 'Verified Partner',
   'user-focal-point-verified': 'Verified Focal Point',
+  'resource-verified': 'Verified Resource',
 }
 
 const StakeholderCard = ({ item, className }) => {

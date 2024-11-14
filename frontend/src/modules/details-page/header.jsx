@@ -19,6 +19,7 @@ import { Trans, t } from '@lingui/macro'
 import { AssignedBadges } from '../../components/resource-card/resource-card'
 import api from '../../utils/api'
 import { useRouter } from 'next/router'
+import { AdminBadges } from '../community-hub/detail-view'
 
 const Header = ({
   data,
@@ -198,6 +199,7 @@ const Header = ({
     isAuthenticated &&
     ((profile.reviewStatus === 'APPROVED' && profile.role === 'ADMIN') || find)
 
+  const isAdmin = profile?.role === 'ADMIN'
   return (
     <div className="detail-header">
       <h3 className="detail-resource-type content-heading">
@@ -206,10 +208,16 @@ const Header = ({
       <h4 className="detail-resource-title">
         {selectedLanguage ? translations?.title[selectedLanguage] : data?.title}
       </h4>
-      {data && !loading && (
+      {data && !loading && !isAdmin && (
         <div className="meta">
-          <AssignedBadges assignedBadges={data?.assignedBadges} />
+          <AssignedBadges
+            assignedBadges={data?.assignedBadges}
+            isAdmin={isAdmin}
+          />
         </div>
+      )}
+      {isAdmin && !loading && data && (
+        <AdminBadges badgeOpts={['resource-verified']} data={data} />
       )}
 
       <Col className="tool-buttons">
