@@ -14,7 +14,7 @@ const useLayerInfo = () => {
         const fetchLayers = async () => {
             try {
                 const response = await axios.get(
-                    `${strapiURL}/api/layers?pagination[pageSize]=100`
+                    `${strapiURL}/api/layers?pagination[pageSize]=150&populate=ValuePerCountry`
                 );
 
                 setLayers(response.data.data || []);
