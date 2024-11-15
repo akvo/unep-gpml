@@ -125,7 +125,7 @@ const PlasticImportExportChart = () => {
 
   const getOption = () => ({
     title: {
-      text: `Plastic Import & Export (value) for ${country}`,
+      text: `Plastic Import & Export Value for ${country}`,
       left: 'center',
     },
     tooltip: {
