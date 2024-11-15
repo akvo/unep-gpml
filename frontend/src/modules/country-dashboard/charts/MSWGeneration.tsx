@@ -8,9 +8,8 @@ const MSWGenerationChart = () => {
   const { country } = router.query
   const { layers, loading } = useLayerInfo()
   const [nationalEstimate, setNationalEstimate] = useState(0)
-  const [dakarEstimates, setDakarEstimates] = useState([])
+  const [cityEstimates, setCityEstimates] = useState([])
   const [cities, setCities] = useState([])
-  const [year, setYear] = useState('')
 
   useEffect(() => {
     const fetchData = () => {
@@ -18,28 +17,27 @@ const MSWGenerationChart = () => {
 
       const layerMapping = {
         national: 'Municipal_solid_waste_generated_daily_per_capita_V3_WFL1',
-        dakar: 'MSW_generation_rate__kg_cap_day__WFL1',
+        city: 'MSW_generation_rate__kg_cap_day__WFL1',
       }
 
-      const nationalLayer = layers?.find(
+      const nationalLayer = layers.find(
         (layer) => layer.attributes.arcgislayerId === layerMapping.national
       )
-      const dakarLayer = layers?.find(
-        (layer) => layer.attributes.arcgislayerId === layerMapping.dakar
+      const cityLayer = layers.find(
+        (layer) => layer.attributes.arcgislayerId === layerMapping.city
       )
 
       const nationalData = nationalLayer?.attributes.ValuePerCountry?.find(
         (item) => item.CountryName === country
       )
 
-      const dakarData = dakarLayer?.attributes.ValuePerCountry.filter(
+      const cityData = cityLayer?.attributes.ValuePerCountry.filter(
         (item) => item.CountryName === country
       )
 
       setNationalEstimate(nationalData ? nationalData.Value : 0)
-      setDakarEstimates(dakarData ? dakarData.map((item) => item.Value) : [])
-      setCities(dakarData ? dakarData.map((item) => item.City) : [])
-      setYear(nationalData?.Year || '')
+      setCityEstimates(cityData ? cityData.map((item) => item.Value) : [])
+      setCities(cityData ? cityData.map((item) => item.City) : [])
     }
 
     fetchData()
@@ -47,38 +45,16 @@ const MSWGenerationChart = () => {
 
   const getOption = () => {
     const categories = ['National estimate', ...cities]
-    const seriesData = [
+    const dataValues = [
       {
-        name: 'National estimate',
-        type: 'bar',
-        barWidth: '25%',
-        data: [nationalEstimate, ...new Array(cities.length).fill(null)],
+        value: nationalEstimate,
         itemStyle: { color: '#00A4EC' },
-        label: {
-          show: true,
-          position: 'top',
-          formatter: (params) => (params.value ? params.value.toFixed(2) : ''),
-          color: '#1F3A93',
-          fontWeight: 'bold',
-        },
+        name: 'National estimate',
       },
-      ...cities.map((city, index) => ({
-        name: `${city} estimate`,
-        type: 'bar',
-        barWidth: '25%',
-        data: [
-          ...new Array(index + 1).fill(null),
-          dakarEstimates[index],
-          ...new Array(cities.length - index - 1).fill(null),
-        ],
+      ...cityEstimates.map((estimate, index) => ({
+        value: estimate,
         itemStyle: { color: index === 0 ? '#FF6F00' : '#FF5733' },
-        label: {
-          show: true,
-          position: 'top',
-          formatter: (params) => (params.value ? params.value.toFixed(2) : ''),
-          color: '#1F3A93',
-          fontWeight: 'bold',
-        },
+        name: `${cities[index]} estimate`,
       })),
     ]
 
@@ -86,17 +62,11 @@ const MSWGenerationChart = () => {
       title: {
         text: `Per capita MSW generation for ${country}`,
         left: 'center',
-        textStyle: {
-          fontSize: 18,
-          fontWeight: 'bold',
-          color: '#1F3A93',
-        },
+        textStyle: { fontSize: 18, fontWeight: 'bold', color: '#1F3A93' },
       },
       tooltip: {
         trigger: 'axis',
-        axisPointer: {
-          type: 'shadow',
-        },
+        axisPointer: { type: 'shadow' },
         formatter: (params) => {
           let content = `${params[0].axisValue}<br/>`
           params.forEach((item) => {
@@ -114,10 +84,7 @@ const MSWGenerationChart = () => {
         ],
         bottom: 0,
         itemGap: 20,
-        textStyle: {
-          fontSize: 12,
-          color: '#1F3A93',
-        },
+        textStyle: {fontSize: 12, color: '#1F3A93' },
       },
       xAxis: {
         type: 'category',
@@ -133,7 +100,7 @@ const MSWGenerationChart = () => {
         name: 'kg/person/day',
         min: 0,
         max: 2,
-        interval: 1,
+        interval: 0.5,
         nameTextStyle: {
           fontSize: 12,
           color: '#1F3A93',
@@ -143,10 +110,25 @@ const MSWGenerationChart = () => {
           formatter: '{value} ',
           fontSize: 12,
           color: '#1F3A93',
-          rotate: 0,
         },
+        splitLine: { show: true },
       },
-      series: seriesData,
+      series: [
+        {
+          name: 'Estimates',
+          type: 'bar',
+          barWidth: '40%',
+          data: dataValues,
+          label: {
+            show: true,
+            position: 'top',
+            formatter: (params) =>
+              params.value ? params.value.toFixed(2) : '',
+            color: '#1F3A93',
+            fontWeight: 'bold',
+          },
+        },
+      ],
       barCategoryGap: '50%',
     }
   }
