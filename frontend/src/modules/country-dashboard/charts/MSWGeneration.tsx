@@ -37,7 +37,12 @@ const MSWGenerationChart = () => {
 
       setNationalEstimate(nationalData ? nationalData.Value : 0)
       setCityEstimates(cityData ? cityData.map((item) => item.Value) : [])
-      setCities(cityData ? cityData.map((item) => item.City) : [])
+
+      setCities(
+        cityData
+          ? cityData.map((item, index) => item.City || `City ${index + 1}`)
+          : []
+      )
     }
 
     fetchData()
@@ -84,7 +89,7 @@ const MSWGenerationChart = () => {
         ],
         bottom: 0,
         itemGap: 20,
-        textStyle: {fontSize: 12, color: '#1F3A93' },
+        textStyle: { fontSize: 12, color: '#1F3A93' },
       },
       xAxis: {
         type: 'category',
