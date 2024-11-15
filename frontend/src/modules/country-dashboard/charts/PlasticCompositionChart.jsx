@@ -3,7 +3,7 @@ import ReactEcharts from 'echarts-for-react'
 import { useRouter } from 'next/router'
 import useLayerInfo from '../../../hooks/useLayerInfo'
 
-const MSWGenerationChart = () => {
+const PlasticCompositionChart = () => {
   const router = useRouter()
   const { country } = router.query
   const { layers, loading } = useLayerInfo()
@@ -17,32 +17,27 @@ const MSWGenerationChart = () => {
 
       const layerMapping = {
         national: 'Municipal_solid_waste_generated_daily_per_capita_V3_WFL1',
-        city: 'MSW_generation_rate__kg_cap_day__WFL1',
+        cities: 'Proportion_of_plastic_waste_generated_WFL1',
       }
 
       const nationalLayer = layers?.find(
-        (layer) => layer?.attributes?.arcgislayerId === layerMapping?.national
+        (layer) => layer.attributes.arcgislayerId === layerMapping?.national
       )
       const cityLayer = layers?.find(
-        (layer) => layer?.attributes?.arcgislayerId === layerMapping?.city
+        (layer) => layer.attributes.arcgislayerId === layerMapping?.cities
       )
 
       const nationalData = nationalLayer?.attributes.ValuePerCountry?.find(
         (item) => item.CountryName === country
       )
 
-      const cityData = cityLayer?.attributes?.ValuePerCountry?.filter(
-        (item) => item.CountryName === country
+      const cityData = cityLayer?.attributes.ValuePerCountry?.filter(
+        (item) => item?.CountryName === country
       )
 
-      setNationalEstimate(nationalData ? nationalData.Value : 0)
-      setCityEstimates(cityData ? cityData.map((item) => item?.Value) : [])
-
-      setCities(
-        cityData
-          ? cityData?.map((item, index) => item.City || `City ${index + 1}`)
-          : []
-      )
+      setNationalEstimate(nationalData ? nationalData?.Value : 0)
+      setCityEstimates(cityData ? cityData?.map((item) => item?.Value) : [])
+      setCities(cityData ? cityData?.map((item) => item.City) : [])
     }
 
     fetchData()
@@ -65,19 +60,23 @@ const MSWGenerationChart = () => {
 
     return {
       title: {
-        text: `Per capita MSW generation for ${country}`,
+        text: `Plastic composition in the MSW for ${country}`,
         left: 'center',
-        textStyle: { fontSize: 18, fontWeight: 'bold', color: '#1F3A93' },
+        textStyle: {
+          fontSize: 18,
+          fontWeight: 'bold',
+          color: '#1F3A93',
+        },
       },
       tooltip: {
         trigger: 'axis',
         axisPointer: { type: 'shadow' },
         formatter: (params) => {
-          let content = `${params[0]?.axisValue}<br/>`
+          let content = `${params[0].axisValue}<br/>`
           params.forEach((item) => {
             content += `${item.marker} ${item.seriesName}: ${
               item.value || '-'
-            } kg/person/day<br/>`
+            }%<br/>`
           })
           return content
         },
@@ -89,7 +88,10 @@ const MSWGenerationChart = () => {
         ],
         bottom: 0,
         itemGap: 20,
-        textStyle: { fontSize: 12, color: '#1F3A93' },
+        textStyle: {
+          fontSize: 12,
+          color: '#1F3A93',
+        },
       },
       xAxis: {
         type: 'category',
@@ -102,10 +104,10 @@ const MSWGenerationChart = () => {
       },
       yAxis: {
         type: 'value',
-        name: 'kg/person/day',
+        name: '%',
         min: 0,
-        max: 2,
-        interval: 0.5,
+        max: 100,
+        interval: 20,
         nameTextStyle: {
           fontSize: 12,
           color: '#1F3A93',
@@ -116,7 +118,6 @@ const MSWGenerationChart = () => {
           fontSize: 12,
           color: '#1F3A93',
         },
-        splitLine: { show: true },
       },
       series: [
         {
@@ -128,7 +129,7 @@ const MSWGenerationChart = () => {
             show: true,
             position: 'top',
             formatter: (params) =>
-              params.value ? params.value.toFixed(2) : '',
+              params.value ? `${params.value.toFixed(2)}%` : '',
             color: '#1F3A93',
             fontWeight: 'bold',
           },
@@ -161,4 +162,4 @@ const MSWGenerationChart = () => {
   )
 }
 
-export default MSWGenerationChart
+export default PlasticCompositionChart
