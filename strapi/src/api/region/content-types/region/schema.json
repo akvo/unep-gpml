@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "regions",
+  "info": {
+    "singularName": "region",
+    "pluralName": "regions",
+    "displayName": "Region",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "RegionName": {
+      "type": "string"
+    },
+    "MSWGenerationPerCapita": {
+      "type": "decimal"
+    },
+    "PlasticComposition": {
+      "type": "decimal"
+    }
+  }
+}

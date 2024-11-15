@@ -3,7 +3,7 @@ import ReactEcharts from 'echarts-for-react'
 import { useRouter } from 'next/router'
 import useLayerInfo from '../../../hooks/useLayerInfo'
 
-const MSWGenerationChart = () => {
+const PlasticCompositionChart = () => {
   const router = useRouter()
   const { country } = router.query
   const { layers, loading } = useLayerInfo()
@@ -18,7 +18,7 @@ const MSWGenerationChart = () => {
 
       const layerMapping = {
         national: 'Municipal_solid_waste_generated_daily_per_capita_V3_WFL1',
-        dakar: 'MSW_generation_rate__kg_cap_day__WFL1',
+        dakar: 'Proportion_of_plastic_waste_generated_WFL1',
       }
 
       const nationalLayer = layers?.find(
@@ -84,7 +84,7 @@ const MSWGenerationChart = () => {
 
     return {
       title: {
-        text: `Per capita MSW generation for ${country}`,
+        text: `Plastic composition in the MSW for ${country}`,
         left: 'center',
         textStyle: {
           fontSize: 18,
@@ -130,10 +130,10 @@ const MSWGenerationChart = () => {
       },
       yAxis: {
         type: 'value',
-        name: 'kg/person/day',
+        name: '%',
         min: 0,
-        max: 2,
-        interval: 1,
+        max: 100, // Set the max to 100
+        interval: 20, // Set an appropriate interval, e.g., 20
         nameTextStyle: {
           fontSize: 12,
           color: '#1F3A93',
@@ -146,6 +146,7 @@ const MSWGenerationChart = () => {
           rotate: 0,
         },
       },
+      
       series: seriesData,
       barCategoryGap: '50%',
     }
@@ -174,4 +175,4 @@ const MSWGenerationChart = () => {
   )
 }
 
-export default MSWGenerationChart
+export default PlasticCompositionChart

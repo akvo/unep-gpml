@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Row, Col, Button, Tooltip } from 'antd'
 import { useRouter } from 'next/router'
-import useCategories from '../../hooks/useCategories'
 import useReplacedText from '../../hooks/useReplacePlaceholders'
 import PlasticImportExportChart from '../../modules/country-dashboard/charts/PlasticImportExportChart'
 import PlasticImportExportTonnesChart from '../../modules/country-dashboard/charts/PlasticImportExportTonnesChart'
@@ -10,6 +9,7 @@ import MSWGenerationChart from '../../modules/country-dashboard/charts/MSWGenera
 import PlasticOceanBeachChart from '../../modules/country-dashboard/charts/PlasticOceanBeachCHart'
 import PolicyComponent from './PolicyComponents'
 import RequestDataUpdateModal from './RequestDataUpdateModal'
+import PlasticCompositionChart from '../../modules/country-dashboard/charts/PlasticCompositionChart'
 
 const splitTextInHalf = (text) => {
   const words = text.split(' ')
@@ -22,7 +22,7 @@ const splitTextInHalf = (text) => {
 const CountryOverview = () => {
   const router = useRouter()
 
-  const categories = useCategories()
+
 
   const [isModalVisible, setModalVisible] = useState(false)
 
@@ -53,19 +53,6 @@ const CountryOverview = () => {
             >
               {decodeURIComponent(router.query.country)?.toUpperCase()}
             </span>
-            <h3
-              style={{
-                fontSize: '28px',
-                fontWeight: 'bold',
-                marginTop: '10px',
-              }}
-            >
-              {
-                categories.categories.find(
-                  (cat) => cat.attributes.categoryId === router.query.categoryId
-                )?.attributes?.name
-              }
-            </h3>
           </div>
         </Col>
         <Col xs={24} md={6} style={{ textAlign: 'right' }}>
@@ -201,6 +188,18 @@ const CountryOverview = () => {
               }}
             >
               <MSWGenerationChart />
+            </div>
+          </Col>
+          <Col xs={24} md={12}>
+            <div
+              style={{
+                backgroundColor: '#FFFFFF',
+                borderRadius: '12px',
+                padding: '20px',
+                boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
+              }}
+            >
+              <PlasticCompositionChart />
             </div>
           </Col>
     
