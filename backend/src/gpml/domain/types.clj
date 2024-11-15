@@ -66,7 +66,8 @@
     "stakeholder"
     "technical_resource"
     "technology"
-    "data_catalog"})
+    "data_catalog"
+    "project"})
 
 (def resources-types
   "Resources types currently on the platform. Note that `resources` is
