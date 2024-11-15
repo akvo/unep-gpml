@@ -36,6 +36,9 @@ import CityImage from '../../images/city-icn.svg'
 import { getTypeByResource, languageOptions } from '../flexible-forms/view'
 import { useRouter } from 'next/router'
 import { Trans, t } from '@lingui/macro'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import StakeholderCard from '../../components/stakeholder-card/stakeholder-card'
+import Link from 'next/link'
 
 const currencyFormat = (curr) => Intl.NumberFormat().format(curr)
 
@@ -92,6 +95,7 @@ const renderCountries = (data, countries) => {
 const DetailsView = ({
   match,
   visible,
+  setVisible,
   serverData,
   serverTranslations,
   type,
@@ -245,17 +249,18 @@ const DetailsView = ({
 
   const description = data?.description ? data?.description : data?.summary
 
-  const entityConnections = data?.entityConnections?.map((entity) => {
-    return {
-      ...entity,
-      name: entity?.entity,
-      country: entity?.country || null,
-      id: entity?.entityId,
-      image: entity?.image,
-      type: 'entity',
-      role: entity?.role,
-    }
-  })
+  const entityConnections =
+    data?.entityConnections?.map((entity) => {
+      return {
+        ...entity,
+        name: entity?.entity,
+        country: entity?.country || null,
+        id: entity?.entityId,
+        image: entity?.image,
+        type: 'entity',
+        role: entity?.role,
+      }
+    }) || []
 
   const tagsToShow =
     data?.tags && data?.tags?.length > 0
@@ -276,31 +281,32 @@ const DetailsView = ({
         )
       : []
 
-  const stakeholderConnections = data?.stakeholderConnections
-    ?.filter(
-      (it, ind) =>
-        data.stakeholderConnections.findIndex(
-          (_it) => _it.stakeholderId === it.stakeholderId
-        ) === ind
-    ) // filter out diplicates
-    .sort((a, b) => {
-      if (a?.role?.toLowerCase() === 'owner') {
-        return -1
-      }
-    })
-    .map((stakeholder) => {
-      return {
-        ...stakeholder,
-        name: stakeholder?.stakeholder,
-      }
-    })
+  const stakeholderConnections =
+    data?.stakeholderConnections
+      ?.filter(
+        (it, ind) =>
+          data.stakeholderConnections.findIndex(
+            (_it) => _it.stakeholderId === it.stakeholderId
+          ) === ind
+      ) // filter out diplicates
+      .sort((a, b) => {
+        if (a?.role?.toLowerCase() === 'owner') {
+          return -1
+        }
+      })
+      .map((stakeholder) => {
+        return {
+          ...stakeholder,
+          name: stakeholder?.stakeholder,
+        }
+      }) || []
 
+  const handleTagClick = (e) => {
+    setVisible(false)
+  }
   return (
     <div className={`${styles.detailViewWrapper} detail-view-wrapper`}>
-      <div
-        className="detail-view"
-        style={!isAuthenticated ? { paddingBottom: '1px' } : { padding: 0 }}
-      >
+      <div className="detail-view">
         <Header
           {...{
             data,
@@ -507,9 +513,14 @@ const DetailsView = ({
                       <ul className="tag-list">
                         {lifecycleTagsToShow.map((tag) => (
                           <li className="tag-list-item" key={tag?.tag}>
-                            <div className="label">
-                              <span>{tag?.tag || ''}</span>
-                            </div>
+                            <Link
+                              href={`/knowledge-hub?tag=${tag.tag}`}
+                              onClick={handleTagClick}
+                            >
+                              <div className="label">
+                                <span>{tag?.tag || ''}</span>
+                              </div>
+                            </Link>
                           </li>
                         ))}
                       </ul>
@@ -535,9 +546,14 @@ const DetailsView = ({
                       <ul className="tag-list">
                         {tagsToShow?.map((tag) => (
                           <li className="tag-list-item" key={tag?.tag}>
-                            <div className="label">
-                              <span>{tag?.tag || ''}</span>
-                            </div>
+                            <Link
+                              href={`/knowledge-hub?tag=${tag.tag}`}
+                              onClick={handleTagClick}
+                            >
+                              <div className="label">
+                                <span>{tag?.tag || ''}</span>
+                              </div>
+                            </Link>
                           </li>
                         ))}
                       </ul>
@@ -613,7 +629,7 @@ const DetailsView = ({
           )}
 
         {/* COMMENTS */}
-        {!loading && (
+        {/* {!loading && (
           <Comments
             {...{
               profile,
@@ -625,7 +641,7 @@ const DetailsView = ({
               isAuthenticated,
             }}
           />
-        )}
+        )} */}
       </div>
     </div>
   )
@@ -768,6 +784,7 @@ const Records = ({ countries, languages, type, data }) => {
       </Fragment>
     )
   }
+
   return (
     <Col className="record-section section">
       <h3 className="content-heading">

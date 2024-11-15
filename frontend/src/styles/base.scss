@@ -1085,3 +1085,19 @@ ul {
     color: $primaryDarkBlueText;
   }
 }
+
+.badge {
+  &.org-partner-verified {
+    path:first-child {
+      fill: $primaryPurple;
+    }
+    path:last-child {
+      fill: white;
+    }
+  }
+  &.user-focal-point-verified {
+    path:first-child {
+      fill: $primaryBlue5;
+    }
+  }
+}

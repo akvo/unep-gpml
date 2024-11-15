@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #shellcheck disable=SC2039
 
-set -Eeuxo pipefail
+set -Eeuo pipefail
 
 wait4ports -q -s 1 -t 300 tcp://localhost:80 tcp://localhost:3000 tcp://db:5432
 
