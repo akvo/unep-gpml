@@ -3,6 +3,17 @@ const axios = require('axios');
 module.exports = {
     async replacePlaceholders(ctx) {
         try {
+
+            const decimalConfig = {
+                default: 0,
+                Municipal_solid_waste_generated_annually_V3_WFL1: 0,
+                Proportion_of_municipal_waste_recycled_13_10_24_WFL1: 2,
+                Municipal_solid_waste_generated_daily_per_capita_V3_WFL1: 2,
+                total: 0,
+                last: 2,
+                first: 2,
+            };
+
             const { country, categoryId } = ctx.params;
 
             const categoryAll = await strapi.entityService.findMany('api::category.category', categoryId);
@@ -76,11 +87,13 @@ module.exports = {
             };
 
 
-            placeholders.forEach(placeholder => {
+            placeholders.forEach((placeholder) => {
+                const decimals = decimalConfig[placeholder] || decimalConfig.default;
+
                 if (placeholder.includes('=')) {
-                    const [varName, formula] = placeholder.split('=').map(str => str.trim());
+                    const [varName, formula] = placeholder.split('=').map((str) => str.trim());
                     const result = evaluateFormula(formula);
-                    calculatedValues[varName] = result;
+                    calculatedValues[varName] = Number(result).toFixed(decimals);
                 } else {
                     const arcgislayerId = placeholder.split(/(_year|_total|_last|_first|_city|_city_1_value|_city_2_value|_city_1|_city_2)/)[0].trim();
                     const layer = layerDataByArcgisId[arcgislayerId];
@@ -113,8 +126,8 @@ module.exports = {
 
                     } else {
                         replacementValue = new Intl.NumberFormat(undefined, {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2
+                            minimumFractionDigits: decimals,
+                            maximumFractionDigits: decimals
                         }).format(
                             Math.round(layer.sort((a, b) => b.Year - a.Year)[0]?.Value * 100) / 100 || 0
                         );
