@@ -21,10 +21,10 @@ const PlasticCompositionChart = () => {
       }
 
       const nationalLayer = layers?.find(
-        (layer) => layer.attributes.arcgislayerId === layerMapping.national
+        (layer) => layer.attributes.arcgislayerId === layerMapping?.national
       )
       const cityLayer = layers?.find(
-        (layer) => layer.attributes.arcgislayerId === layerMapping.cities
+        (layer) => layer.attributes.arcgislayerId === layerMapping?.cities
       )
 
       const nationalData = nationalLayer?.attributes.ValuePerCountry?.find(
@@ -106,8 +106,8 @@ const PlasticCompositionChart = () => {
         type: 'value',
         name: '%',
         min: 0,
-        max: 100, // Set the max to 100 for percentage values
-        interval: 20, // Set an appropriate interval for better readability
+        max: 100,
+        interval: 20,
         nameTextStyle: {
           fontSize: 12,
           color: '#1F3A93',

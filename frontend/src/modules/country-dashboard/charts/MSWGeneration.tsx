@@ -20,27 +20,27 @@ const MSWGenerationChart = () => {
         city: 'MSW_generation_rate__kg_cap_day__WFL1',
       }
 
-      const nationalLayer = layers.find(
-        (layer) => layer.attributes.arcgislayerId === layerMapping.national
+      const nationalLayer = layers?.find(
+        (layer) => layer?.attributes?.arcgislayerId === layerMapping?.national
       )
-      const cityLayer = layers.find(
-        (layer) => layer.attributes.arcgislayerId === layerMapping.city
+      const cityLayer = layers?.find(
+        (layer) => layer?.attributes?.arcgislayerId === layerMapping?.city
       )
 
       const nationalData = nationalLayer?.attributes.ValuePerCountry?.find(
         (item) => item.CountryName === country
       )
 
-      const cityData = cityLayer?.attributes.ValuePerCountry.filter(
+      const cityData = cityLayer?.attributes?.ValuePerCountry?.filter(
         (item) => item.CountryName === country
       )
 
       setNationalEstimate(nationalData ? nationalData.Value : 0)
-      setCityEstimates(cityData ? cityData.map((item) => item.Value) : [])
+      setCityEstimates(cityData ? cityData.map((item) => item?.Value) : [])
 
       setCities(
         cityData
-          ? cityData.map((item, index) => item.City || `City ${index + 1}`)
+          ? cityData?.map((item, index) => item.City || `City ${index + 1}`)
           : []
       )
     }
@@ -73,7 +73,7 @@ const MSWGenerationChart = () => {
         trigger: 'axis',
         axisPointer: { type: 'shadow' },
         formatter: (params) => {
-          let content = `${params[0].axisValue}<br/>`
+          let content = `${params[0]?.axisValue}<br/>`
           params.forEach((item) => {
             content += `${item.marker} ${item.seriesName}: ${
               item.value || '-'
