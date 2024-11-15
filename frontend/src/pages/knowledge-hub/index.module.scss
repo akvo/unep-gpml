@@ -2,9 +2,11 @@
 
 .knowledgeHub {
   display: flex;
+
   @media screen and (max-width: $bpMobile) {
     flex-direction: column;
   }
+
   :global {
     .filter-sidebar {
       background: #f5f7ff;
@@ -14,6 +16,7 @@
         width: 350px;
         min-width: 350px;
         min-height: calc(100vh - 300px);
+
         .filters {
           width: 330px;
         }
@@ -41,31 +44,41 @@
       .ant-collapse {
         border: none;
         background-color: transparent;
+
         .ant-collapse-item {
           border: none;
           margin-top: 10px;
+
           .ant-collapse-header {
             background-color: transparent;
             padding: 0;
             position: relative;
             border: none;
             margin-bottom: 5px;
+
             .ant-collapse-expand-icon {
               position: absolute;
               right: -10px;
             }
           }
+
           .ant-collapse-content {
             border: none;
             background-color: transparent;
             padding: 0;
             margin: 0;
+
             .ant-collapse-content-box {
               padding: 0;
+            }
+
+            .ant-select-selection-overflow {
+              gap: 2px;
             }
           }
         }
       }
+
       .h-xs {
         margin-bottom: 10px;
       }
@@ -73,15 +86,18 @@
       .ant-select {
         border: 1px solid #ccc;
         width: 100%;
+
         .ant-select-selection-item {
           background-color: #aca4ff;
           color: #1a1826;
           font-weight: bold;
           border-radius: 20px;
+
           .ant-select-selection-item-remove {
             color: #1a1826;
             opacity: 0.5;
             font-weight: bold;
+
             svg {
               path {
                 stroke: #fff !important;
@@ -91,11 +107,12 @@
           }
         }
       }
-      .ant-select.ant-select-sm:not(.ant-select-customize-input)
-        .ant-select-selector {
+
+      .ant-select.ant-select-sm:not(.ant-select-customize-input) .ant-select-selector {
         padding: 4px 7px;
         min-height: 40px;
       }
+
       // .section {
       //   margin-top: 15px;
       // }
@@ -167,6 +184,7 @@
       background-color: rgba(255, 255, 255, 0.75);
 
       .ant-spin {
+
         // margin-top: calc(50vh - 100px);
         @media screen and (min-width: $bpMobile) {
           position: fixed;
@@ -182,6 +200,7 @@
 
       .resource-card {
         margin: 15px 0 0 15px;
+
         @media screen and (max-width: $bpMobile) {
           margin: 10px 0 0 12px;
           width: calc(50vw - 20px);
