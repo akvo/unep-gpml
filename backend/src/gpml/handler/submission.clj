@@ -267,5 +267,5 @@
   [:map
    [:id int?]
    [:item_type
-    [:enum "stakeholder", "event", "policy", "technology", "resource", "organisation", "initiative" "tag" "case_study"]]
+    [:enum "stakeholder", "event", "policy", "technology", "resource", "organisation", "initiative" "tag" "case_study" "project"]]
    [:review_status [:enum "APPROVED", "REJECTED"]]])
