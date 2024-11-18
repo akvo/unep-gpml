@@ -152,6 +152,22 @@ submission AS (
     LEFT JOIN badge b ON b.id = csb.badge_id
 --~ (when (:review_status params) " WHERE review_status = :review_status::review_status ")
     GROUP BY cs.id, f.id
+    UNION
+    SELECT p.id, 'project' AS type, 'project' AS topic, p.title, p.created_by, p.created, 'USER' as role, p.review_status, jsonb_build_object('id', f.id, 'object-key', f.object_key, 'visibility', f.visibility) AS image, p.featured,
+    COALESCE(jsonb_agg(
+      DISTINCT jsonb_build_object(
+	'badge_id', pb.badge_id,
+	'badge_name', b.name,
+	'project_id', pb.project_id,
+	'assigned_by', pb.assigned_by,
+	'assigned_at', pb.assigned_at)
+	) FILTER (WHERE pb.badge_id IS NOT NULL), '[]'::jsonb) AS assigned_badges
+    FROM project p
+    LEFT JOIN file f ON p.image_id = f.id
+    LEFT JOIN project_badge pb ON pb.project_id = p.id
+    LEFT JOIN badge b ON b.id = pb.badge_id
+--~ (when (:review_status params) " WHERE review_status = :review_status::review_status ")
+    GROUP BY p.id, f.id
     ORDER BY created
 ),
 authz AS (
@@ -239,6 +255,13 @@ authz AS (
     INNER JOIN stakeholder_case_study a ON a.case_study = s.id AND a.association = 'owner'
     INNER JOIN stakeholder st ON a.stakeholder = st.id
     WHERE s.type = 'case_study'
+    GROUP BY s.id, s.type
+    UNION
+    SELECT s.id, 'project' as type, COALESCE(jsonb_agg(jsonb_build_object('id', st.id, 'email', st.email)), '[]'::jsonb) AS owners, '[]'::jsonb AS focal_points
+    FROM submission s
+    INNER JOIN stakeholder_project a ON a.project = s.id AND a.association = 'owner'
+    INNER JOIN stakeholder st ON a.stakeholder = st.id
+    WHERE s.type = 'project'
     GROUP BY s.id, s.type
     ),
 reviewers AS (
