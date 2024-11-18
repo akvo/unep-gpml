@@ -8,7 +8,7 @@ module.exports = {
 
             for (const country of countries) {
 
-                const { id, name } = country;
+                const { id, name, iso_code_a3 } = country;
 
                 const existingCountry = await strapi.db.query('api::country.country').findOne({
                     where: { CountryDBId: id },
@@ -24,6 +24,7 @@ module.exports = {
                     data: {
                         CountryDBId: id,
                         CountryName: name,
+                        CountryCode: iso_code_a3
                     },
                 });
             }

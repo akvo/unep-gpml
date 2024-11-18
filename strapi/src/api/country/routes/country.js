@@ -14,5 +14,21 @@ module.exports = {
         auth: false,
       },
     },
+    {
+      method: "GET",
+      path: "/countries/assign-regions",
+      handler: "country.assignRegions",
+      config: {
+        auth: false,
+      },
+    },
+    {
+      method: "GET",
+      path: "/countries/getAllCountries",
+      handler: "country.getAllCountries",
+      config: {
+        auth: false,
+      },
+    }
   ],
 };

@@ -98,7 +98,11 @@ module.exports = {
                     const arcgislayerId = placeholder.split(/(_year|_total|_last|_first|_city|_city_1_value|_city_2_value|_city_1|_city_2)/)[0].trim();
                     const layer = layerDataByArcgisId[arcgislayerId];
 
-                    if (!layer || layer.length === 0) return;
+                    if (!layer || layer.length === 0) {
+                        calculatedValues[placeholder] = "[No data]";
+                        replacedText = replacedText.replace(/{{country}}/g, country || "No country specified");
+                        return; 
+                    }
 
                     let replacementValue = "No data";
 

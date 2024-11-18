@@ -2,18 +2,22 @@ import React, { useEffect, useState } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { useRouter } from 'next/router'
 import useLayerInfo from '../../../hooks/useLayerInfo'
+import useRegions from '../../../hooks/useRegions'
 
 const MSWGenerationChart = () => {
   const router = useRouter()
   const { country } = router.query
-  const { layers, loading } = useLayerInfo()
+  const { layers, loading: layerLoading } = useLayerInfo()
+  const { countriesWithRegions, loading: regionLoading } = useRegions()
+
   const [nationalEstimate, setNationalEstimate] = useState(0)
   const [cityEstimates, setCityEstimates] = useState([])
   const [cities, setCities] = useState([])
+  const [regionMswValue, setRegionMswValue] = useState(null)
 
   useEffect(() => {
-    const fetchData = () => {
-      if (loading || !country || !layers.length) return
+    const fetchData = async () => {
+      if (layerLoading || regionLoading || !country || !layers.length) return
 
       const layerMapping = {
         national: 'Municipal_solid_waste_generated_daily_per_capita_V3_WFL1',
@@ -37,16 +41,22 @@ const MSWGenerationChart = () => {
 
       setNationalEstimate(nationalData ? nationalData.Value : 0)
       setCityEstimates(cityData ? cityData.map((item) => item?.Value) : [])
-
       setCities(
         cityData
-          ? cityData?.map((item, index) => item.City || `City ${index + 1}`)
+          ? cityData.map((item, index) => item.City || `City ${index + 1}`)
           : []
       )
+
+      const selectedCountry = countriesWithRegions.find(
+        (c) => c.CountryName === country
+      )
+      if (selectedCountry) {
+        setRegionMswValue(selectedCountry.regionMswValue)
+      }
     }
 
     fetchData()
-  }, [country, layers, loading])
+  }, [country, layers, layerLoading, countriesWithRegions, regionLoading])
 
   const getOption = () => {
     const categories = ['National estimate', ...cities]
@@ -79,6 +89,9 @@ const MSWGenerationChart = () => {
               item.value || '-'
             } kg/person/day<br/>`
           })
+          if (regionMswValue) {
+            content += `<br/><span style="color: #FF0000; font-weight: bold;">Estimated Regional Average:</span> ${regionMswValue} kg/person/day`
+          }
           return content
         },
       },
@@ -131,6 +144,25 @@ const MSWGenerationChart = () => {
               params.value ? params.value.toFixed(2) : '',
             color: '#1F3A93',
             fontWeight: 'bold',
+          },
+          markLine: {
+            data: [
+              {
+                yAxis: regionMswValue || 0.78,
+                label: {
+                  formatter: () =>
+                    `Regional Average (${regionMswValue || 0.78})`,
+                  position: 'middle',
+                  color: '#000000',
+                  fontSize: 12,
+                  fontWeight: 'bold',
+                },
+                lineStyle: {
+                  type: 'dashed',
+                  color: '#FF0000',
+                },
+              },
+            ],
           },
         },
       ],
