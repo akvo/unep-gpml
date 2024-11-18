@@ -77,7 +77,7 @@ const MSWGenerationChart = () => {
       title: {
         text: `Per capita MSW generation for ${country}`,
         left: 'center',
-        textStyle: { fontSize: 18, fontWeight: 'bold', color: '#1F3A93' },
+        textStyle: { fontSize: 18, fontWeight: 'bold', color: '#020A5B' },
       },
       tooltip: {
         trigger: 'axis',
@@ -90,7 +90,7 @@ const MSWGenerationChart = () => {
             } kg/person/day<br/>`
           })
           if (regionMswValue) {
-            content += `<br/><span style="color: #FF0000; font-weight: bold;">Estimated Regional Average:</span> ${regionMswValue} kg/person/day`
+            content += `<br/><span style="color: #020A5B; font-weight: bold;">Estimated Regional Average:</span> ${regionMswValue} kg/person/day`
           }
           return content
         },
@@ -102,13 +102,13 @@ const MSWGenerationChart = () => {
         ],
         bottom: 0,
         itemGap: 20,
-        textStyle: { fontSize: 12, color: '#1F3A93' },
+        textStyle: { fontSize: 12, color: '#020A5B' },
       },
       xAxis: {
         type: 'category',
         data: categories,
         axisLabel: {
-          color: '#1F3A93',
+          color: '#020A5B',
           fontSize: 12,
           fontWeight: 'bold',
         },
@@ -121,13 +121,13 @@ const MSWGenerationChart = () => {
         interval: 0.5,
         nameTextStyle: {
           fontSize: 12,
-          color: '#1F3A93',
+          color: '#020A5B',
           fontWeight: 'bold',
         },
         axisLabel: {
           formatter: '{value} ',
           fontSize: 12,
-          color: '#1F3A93',
+          color: '#020A5B',
         },
         splitLine: { show: true },
       },
@@ -141,8 +141,8 @@ const MSWGenerationChart = () => {
             show: true,
             position: 'top',
             formatter: (params) =>
-              params.value ? params.value.toFixed(2) : '',
-            color: '#1F3A93',
+              params.value ? params.value.toFixed(2) + ' kg' : '',
+            color: '#020A5B',
             fontWeight: 'bold',
           },
           markLine: {
@@ -151,9 +151,9 @@ const MSWGenerationChart = () => {
                 yAxis: regionMswValue || 0.78,
                 label: {
                   formatter: () =>
-                    `Regional Average (${regionMswValue || 0.78})`,
+                    `Regional Average (${regionMswValue || 0.78}) kg`,
                   position: 'middle',
-                  color: '#000000',
+                  color: '#020A5B',
                   fontSize: 12,
                   fontWeight: 'bold',
                 },
@@ -180,12 +180,12 @@ const MSWGenerationChart = () => {
         style={{
           textAlign: 'left',
           padding: '10px',
-          color: '#1F3A93',
+          color: '#020A5B',
           fontSize: '12px',
         }}
       >
         Data provided by UNEP.{' '}
-        <a href="https://example.com" style={{ color: '#1F3A93' }}>
+        <a href="https://example.com" style={{ color: '#020A5B' }}>
           See source here
         </a>
       </div>

@@ -125,31 +125,50 @@ const PlasticImportExportChart = () => {
 
   const getOption = () => ({
     title: {
-      text: `Plastic Import & Export Value for ${country}`,
+      text: `Plastic import & export value for ${country}`,
+      textStyle: { fontSize: 18, fontWeight: 'bold', color: '#020A5B' },
       left: 'center',
     },
     tooltip: {
       trigger: 'axis',
+
       axisPointer: {
         type: 'shadow',
       },
     },
     legend: {
       data: categoriesTitle.map((category) => Object.values(category)[0]),
+      textStyle: { color: '#020A5B' },
       bottom: 0,
     },
     grid: {
       left: '3%',
       right: '4%',
+      textStyle: { color: '#020A5B' },
       bottom: '20%',
       containLabel: true,
     },
     xAxis: {
       type: 'value',
+      axisLabel: {
+        formatter: '{value} ',
+        fontSize: 12,
+        color: '#020A5B',
+      },
+      textStyle: { color: '#020A5B' },
     },
     yAxis: {
       type: 'category',
       name: 'million US dollars',
+      axisLabel: {
+        formatter: '{value} ',
+        fontSize: 12,
+        color: '#020A5B',
+      },
+      nameTextStyle: {
+        color: '#020A5B',
+        fontSize: 12,
+      },
       data: ['Import', 'Export'],
     },
     series: categories.map((category, index) => ({

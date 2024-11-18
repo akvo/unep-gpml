@@ -79,7 +79,7 @@ const PlasticCompositionChart = () => {
         textStyle: {
           fontSize: 18,
           fontWeight: 'bold',
-          color: '#1F3A93',
+          color: '#020A5B',
         },
       },
       tooltip: {
@@ -93,7 +93,7 @@ const PlasticCompositionChart = () => {
             }%<br/>`
           })
           if (regionPlasticComposition) {
-            content += `<br/><span style="color: #000000; font-weight: bold;">Estimated Regional Average:</span> ${regionPlasticComposition} kg/person/day`
+            content += `<br/><span style="color: #020A5B; font-weight: bold;">Estimated Regional Average:</span> ${regionPlasticComposition} kg/person/day`
           }
           return content
         },
@@ -107,14 +107,14 @@ const PlasticCompositionChart = () => {
         itemGap: 20,
         textStyle: {
           fontSize: 12,
-          color: '#1F3A93',
+          color: '#020A5B',
         },
       },
       xAxis: {
         type: 'category',
         data: categories,
         axisLabel: {
-          color: '#1F3A93',
+          color: '#020A5B',
           fontSize: 12,
           fontWeight: 'bold',
         },
@@ -127,13 +127,13 @@ const PlasticCompositionChart = () => {
         interval: 20,
         nameTextStyle: {
           fontSize: 12,
-          color: '#1F3A93',
+          color: '#020A5B',
           fontWeight: 'bold',
         },
         axisLabel: {
           formatter: '{value} ',
           fontSize: 12,
-          color: '#1F3A93',
+          color: '#020A5B',
         },
       },
       series: [
@@ -147,7 +147,7 @@ const PlasticCompositionChart = () => {
             position: 'top',
             formatter: (params) =>
               params.value ? `${params.value.toFixed(2)}%` : '',
-            color: '#1F3A93',
+            color: '#020A5B',
             fontWeight: 'bold',
           },
           markLine: {
@@ -158,13 +158,13 @@ const PlasticCompositionChart = () => {
                   formatter: () =>
                     `Regional Average (${regionPlasticComposition || 0.78})`,
                   position: 'middle',
-                  color: '#000000',
+                  color: '#020A5B',
                   fontSize: 12,
                   fontWeight: 'bold',
                 },
                 lineStyle: {
                   type: 'dashed',
-                  color: '#FF0000',
+                  color: '#020A5B',
                 },
               },
             ],
@@ -185,12 +185,12 @@ const PlasticCompositionChart = () => {
         style={{
           textAlign: 'left',
           padding: '10px',
-          color: '#1F3A93',
+          color: '#020A5B',
           fontSize: '12px',
         }}
       >
         Data provided by UNEP.{' '}
-        <a href="https://example.com" style={{ color: '#1F3A93' }}>
+        <a href="https://example.com" style={{ color: '#020A5B' }}>
           See source here
         </a>
       </div>
