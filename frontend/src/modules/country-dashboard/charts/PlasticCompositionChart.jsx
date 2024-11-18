@@ -2,18 +2,23 @@ import React, { useEffect, useState } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { useRouter } from 'next/router'
 import useLayerInfo from '../../../hooks/useLayerInfo'
+import useRegions from '../../../hooks/useRegions'
 
 const PlasticCompositionChart = () => {
   const router = useRouter()
   const { country } = router.query
-  const { layers, loading } = useLayerInfo()
+  const { layers, loading: layerLoading } = useLayerInfo()
   const [nationalEstimate, setNationalEstimate] = useState(0)
   const [cityEstimates, setCityEstimates] = useState([])
   const [cities, setCities] = useState([])
 
+  const { countriesWithRegions, loading: regionLoading } = useRegions()
+
+  const [regionPlasticComposition, setRegionPlasticComposition] = useState(null)
+
   useEffect(() => {
-    const fetchData = () => {
-      if (loading || !country || !layers.length) return
+    const fetchData = async () => {
+      if (layerLoading || regionLoading || !country || !layers.length) return
 
       const layerMapping = {
         national: 'Municipal_solid_waste_generated_daily_per_capita_V3_WFL1',
@@ -38,10 +43,17 @@ const PlasticCompositionChart = () => {
       setNationalEstimate(nationalData ? nationalData?.Value : 0)
       setCityEstimates(cityData ? cityData?.map((item) => item?.Value) : [])
       setCities(cityData ? cityData?.map((item) => item.City) : [])
+
+      const selectedCountry = countriesWithRegions.find(
+        (c) => c.CountryName === country
+      )
+      if (selectedCountry) {
+        setRegionPlasticComposition(selectedCountry.regionPlasticComposition)
+      }
     }
 
     fetchData()
-  }, [country, layers, loading])
+  }, [country, layers, layerLoading, countriesWithRegions, regionLoading])
 
   const getOption = () => {
     const categories = ['National estimate', ...cities]
@@ -78,6 +90,9 @@ const PlasticCompositionChart = () => {
               item.value || '-'
             }%<br/>`
           })
+          if (regionPlasticComposition) {
+            content += `<br/><span style="color: #FF0000; font-weight: bold;">Estimated Regional Average:</span> ${regionPlasticComposition} kg/person/day`
+          }
           return content
         },
       },
@@ -132,6 +147,25 @@ const PlasticCompositionChart = () => {
               params.value ? `${params.value.toFixed(2)}%` : '',
             color: '#1F3A93',
             fontWeight: 'bold',
+          },
+          markLine: {
+            data: [
+              {
+                yAxis: regionPlasticComposition || 0.78,
+                label: {
+                  formatter: () =>
+                    `Regional Average (${regionPlasticComposition || 0.78})`,
+                  position: 'middle',
+                  color: '#FF0000',
+                  fontSize: 12,
+                  fontWeight: 'bold',
+                },
+                lineStyle: {
+                  type: 'dashed',
+                  color: '#FF0000',
+                },
+              },
+            ],
           },
         },
       ],
