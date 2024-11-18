@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import styles from './index.module.scss'
 import { Check, Check2, SearchIcon } from '../../components/icons'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -48,17 +48,32 @@ const KnowledgeHub = ({
   const [results, setResults] = useState(newResults)
   const [collapseKeys, setCollapseKeys] = useState(['p1', 'p2', 'p3'])
   const [loading, setLoading] = useState(false)
-  const selectedThemes = router.query.tag ? router.query.tag.split(',') : []
   const selectedTypes = router.query.topic ? router.query.topic.split(',') : []
+
+  const tagsAndThemes = router.query.tag ? router.query.tag.split(',') : []
+  const selectedThemes = tagsAndThemes.filter((tag) =>
+    lifecycleStageTags.some(
+      (stageTag) => stageTag.toLowerCase() === tag.toLowerCase()
+    )
+  )
+
+  const selectedTags = tagsAndThemes.filter(
+    (tag) =>
+      !lifecycleStageTags.some(
+        (stageTag) => stageTag.toLowerCase() === tag.toLowerCase()
+      )
+  )
+
   const selectedGeoCountryGroup = router.query.geo
     ? router.query.geo.split(',')
     : []
   const [searchInput, setSearchInput] = useState(router.query.q || '')
   const [params, setParams] = useState(null)
   const [modalVisible, setModalVisible] = useState(false)
-  const { countries, featuredOptions } = UIStore.useState((s) => ({
+  const { countries, featuredOptions, tags } = UIStore.useState((s) => ({
     countries: s.countries,
     featuredOptions: s.featuredOptions,
+    tags: s.tags,
   }))
   const [sorting, setSorting] = useState(
     router.query.orderBy === 'created'
@@ -76,6 +91,42 @@ const KnowledgeHub = ({
         .map((it) => ({ value: it.id, label: it.name }))
         .sort((a, b) => a.label.localeCompare(b.label))
     : []
+
+  const tagOpts = useMemo(() => {
+    return tags && Object.keys(tags).length > 0
+      ? tags.general
+          .map((it) => ({ value: it.tag, label: it.tag }))
+          .filter((it) => !lifecycleStageTags.includes(it.value))
+          .sort((a, b) => a.label.localeCompare(b.label))
+      : []
+  }, [tags])
+
+  const [displayedOptions, setDisplayedOptions] = useState([])
+  const OPTION_PAGE_SIZE = 100
+
+  useEffect(() => {
+    setDisplayedOptions(tagOpts.slice(0, OPTION_PAGE_SIZE))
+  }, [tagOpts])
+
+  const onPopupScroll = (e) => {
+    const { target } = e
+    if (
+      target.scrollTop + target.offsetHeight >= target.scrollHeight &&
+      displayedOptions.length < tagOpts.length
+    ) {
+      const nextOptions = tagOpts.slice(
+        displayedOptions.length,
+        displayedOptions.length + OPTION_PAGE_SIZE
+      )
+      setDisplayedOptions((prevOptions) => [...prevOptions, ...nextOptions])
+    }
+  }
+
+  const handleDropdownVisibilityChange = (open) => {
+    if (!open) {
+      setDisplayedOptions(tagOpts.slice(0, OPTION_PAGE_SIZE))
+    }
+  }
 
   const updateQueryParams = useCallback(
     (updates) => {
@@ -137,11 +188,12 @@ const KnowledgeHub = ({
     { name: 'Technical Resource', value: 'technical_resource' },
     { name: 'Technology', value: 'technology' },
     { name: 'Action Plan', value: 'action_plan' },
-    { name: 'Policy & Legislation', value: 'policy' },
+    { name: 'Legislation', value: 'policy' },
     { name: 'Financing Resource', value: 'financing_resource' },
     { name: 'Case Studies', value: 'case_study' },
     { name: 'Initiatives', value: 'initiative' },
     { name: 'Events', value: 'event' },
+    { name: 'Data Portals', value: 'data_catalog' },
   ]
 
   const handleThemeToggle = (theme) => {
@@ -150,6 +202,7 @@ const KnowledgeHub = ({
       ? selectedThemes.filter((t) => t !== lowerCaseTheme)
       : [...selectedThemes, lowerCaseTheme]
     updateQueryParams({
+      ...router.query,
       tag: newThemes.length > 0 ? newThemes.join(',') : undefined,
     })
   }
@@ -176,6 +229,12 @@ const KnowledgeHub = ({
 
   const handleCountryChange = (value) => {
     updateQueryParams({ ...router.query, country: value })
+  }
+
+  const handleTagsChange = (value) => {
+    const tagQuery = value.join(',')
+
+    updateQueryParams({ ...router.query, tag: tagQuery })
   }
 
   const showModal = ({ e, item }) => {
@@ -322,6 +381,30 @@ const KnowledgeHub = ({
                   </FilterToggle>
                 ))}
               </div>
+              <Select
+                size="small"
+                showSearch
+                allowClear
+                mode="multiple"
+                dropdownStyle={{ width: '200px' }}
+                dropdownClassName="hub-tags-dropdown"
+                dropdownMatchSelectWidth={false}
+                placement="topLeft"
+                placeholder={t`Tags`}
+                options={displayedOptions}
+                optionFilterProp="children"
+                filterOption={(input, option) =>
+                  option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+                showArrow
+                virtual={true}
+                suffixIcon={<SearchIcon />}
+                onPopupScroll={onPopupScroll}
+                onChange={handleTagsChange}
+                value={selectedTags}
+                onDropdownVisibleChange={handleDropdownVisibilityChange}
+                className="tag-select"
+              />
             </Collapse.Panel>
             <Collapse.Panel
               key="p2"
@@ -372,7 +455,6 @@ const KnowledgeHub = ({
                 }
                 showArrow
                 suffixIcon={<SearchIcon />}
-                virtual={false}
                 onChange={handleCountryChange}
               />
             </Collapse.Panel>
