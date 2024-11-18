@@ -23,17 +23,19 @@
       }
 
       .src {
-        line-height: 32px;
-        height: 32px;
         border: 1px solid #ccc;
         margin-bottom: 20px;
 
         input {
+          line-height: 32px;
           font-size: 14px;
           font-style: normal;
           font-weight: 500;
           border-radius: 0;
         }
+      }
+      .tag-select {
+        margin-bottom: 12px;
       }
 
       .sticky {
@@ -108,7 +110,8 @@
         }
       }
 
-      .ant-select.ant-select-sm:not(.ant-select-customize-input) .ant-select-selector {
+      .ant-select.ant-select-sm:not(.ant-select-customize-input)
+        .ant-select-selector {
         padding: 4px 7px;
         min-height: 40px;
       }
@@ -184,7 +187,6 @@
       background-color: rgba(255, 255, 255, 0.75);
 
       .ant-spin {
-
         // margin-top: calc(50vh - 100px);
         @media screen and (min-width: $bpMobile) {
           position: fixed;

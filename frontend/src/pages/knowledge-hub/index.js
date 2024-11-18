@@ -381,11 +381,6 @@ const KnowledgeHub = ({
                   </FilterToggle>
                 ))}
               </div>
-            </Collapse.Panel>
-            <Collapse.Panel
-              key="p2"
-              header={<h4 className="h-xs w-semi">Tags</h4>}
-            >
               <Select
                 size="small"
                 showSearch
@@ -408,10 +403,11 @@ const KnowledgeHub = ({
                 onChange={handleTagsChange}
                 value={selectedTags}
                 onDropdownVisibleChange={handleDropdownVisibilityChange}
+                className="tag-select"
               />
             </Collapse.Panel>
             <Collapse.Panel
-              key="p3"
+              key="p2"
               header={<h4 className="h-xs w-semi">Resource Type</h4>}
             >
               <div className="filters">
@@ -428,7 +424,7 @@ const KnowledgeHub = ({
               </div>
             </Collapse.Panel>
             <Collapse.Panel
-              key="p4"
+              key="p3"
               header={<h4 className="h-xs w-semi">Geography</h4>}
             >
               <div className="filters">
