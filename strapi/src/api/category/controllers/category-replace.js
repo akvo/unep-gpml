@@ -104,29 +104,29 @@ module.exports = {
                         return; 
                     }
 
-                    let replacementValue = "No data";
+                    let replacementValue = "[No data]";
 
                     if (/_(Year|year)_first$/.test(placeholder)) {
                         const firstYearEntry = [...layer].sort((a, b) => a.Year - b.Year)[0];
-                        replacementValue = firstYearEntry?.Year?.toString() || "No data";
+                        replacementValue = firstYearEntry?.Year?.toString() || "[No data]";
                     } else if (/_(Year|year)_last$/.test(placeholder)) {
                         const lastYearEntry = [...layer].sort((a, b) => b.Year - a.Year)[0];
-                        replacementValue = lastYearEntry?.Year?.toString() || "No data";
+                        replacementValue = lastYearEntry?.Year?.toString() || "[No data]";
                     } else if (/_(Year|year)$/.test(placeholder)) {
-                        replacementValue = layer[0]?.Year?.toString() || "No data";
+                        replacementValue = layer[0]?.Year?.toString() || "[No data]";
                     } else if (/total$/i.test(placeholder)) {
                         const totalSum = layer.reduce((sum, entry) => sum + (entry.Value || 0), 0);
                         replacementValue = new Intl.NumberFormat().format(Math.round(totalSum));
                     } else if (/city_1_value$/i.test(placeholder)) {
-                        replacementValue = layer[0]?.Value?.toString() || "No data";
+                        replacementValue = layer[0]?.Value?.toString() || "[No data]";
                     } else if (/city_2_value$/i.test(placeholder)) {
-                        replacementValue = layer[1]?.Value?.toString() || "No data";
+                        replacementValue = layer[1]?.Value?.toString() || "[No data]";
                     } else if (/city_1$/i.test(placeholder)) {
-                        replacementValue = layer[0]?.City || "No data";
+                        replacementValue = layer[0]?.City || "[No data]";
                     } else if (/city_2$/i.test(placeholder)) {
-                        replacementValue = layer[1]?.City || "No data";
+                        replacementValue = layer[1]?.City || "[No data]";
                     } else if (/city$/i.test(placeholder)) {
-                        replacementValue = layer[0]?.City || "No data";
+                        replacementValue = layer[0]?.City || "[No data]";
 
                     } else {
                         replacementValue = new Intl.NumberFormat(undefined, {
