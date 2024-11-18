@@ -62,8 +62,9 @@ const PlasticImportExportChart = () => {
 
   const getOption = () => ({
     title: {
-      text: `Plastic Import & Export Value for ${country} `,
+      text: `Plastic import & export value for ${country} `,
       left: 'center',
+      textStyle: { fontSize: 18, fontWeight: 'bold', color: '#020A5B' },
     },
     tooltip: {
       trigger: 'axis',
@@ -73,14 +74,30 @@ const PlasticImportExportChart = () => {
     },
     legend: {
       data: ['Total exports', 'Total imports'],
+      textStyle: { color: '#020A5B' },
       bottom: 0,
     },
     xAxis: {
       type: 'category',
+      textStyle: { color: '#020A5B' },
       data: years,
+      axisLabel: {
+        formatter: '{value} ',
+        fontSize: 12,
+        color: '#020A5B',
+      },
     },
     yAxis: {
       type: 'value',
+      axisLabel: {
+        formatter: '{value} ',
+        fontSize: 12,
+        color: '#020A5B',
+      },
+      nameTextStyle: {
+        color: '#020A5B',
+        fontSize: 12, 
+      },
       name: 'million US dollars',
     },
     series: [
@@ -90,7 +107,7 @@ const PlasticImportExportChart = () => {
         data: totalExports,
         symbol: 'circle',
         itemStyle: {
-          color: '#384E85',
+          color: '#020A5B',
         },
       },
       {

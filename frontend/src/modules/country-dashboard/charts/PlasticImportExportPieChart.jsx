@@ -107,17 +107,18 @@ const PlasticImportExportPieCharts = ({ chartType }) => {
   const getPieOption = () => ({
     title: {
       text: `Plastic ${
-        chartType === 'import' ? 'Import' : 'Export'
-      } by Type for ${country}`,
+        chartType === 'import' ? 'import' : 'export'
+      } by type for ${country}`,
       subtext: `In 1000 metric tons for year ${latestYear || 'N/A'}`,
       left: 'center',
       textStyle: {
         fontSize: 16,
         fontWeight: 'bold',
+        color: '#020A5B',
       },
       subtextStyle: {
         fontSize: 14,
-        color: '#555',
+        color: '#020A5B',
         fontFamily: 'Roboto, Helvetica Neue, sans-serif',
         fontWeight: 'bold',
       },
@@ -125,6 +126,7 @@ const PlasticImportExportPieCharts = ({ chartType }) => {
     tooltip: {
       trigger: 'item',
       formatter: (params) => {
+        
         const { seriesName, name, value, percent } = params
         return `${seriesName} <br/>${name}: ${Math.round(value)} (${Math.round(
           percent
@@ -134,6 +136,9 @@ const PlasticImportExportPieCharts = ({ chartType }) => {
     legend: {
       orient: 'horizontal',
       left: 'center',
+      textStyle: {
+        color: '#020A5B',
+      },
       top: 'bottom',
       itemGap: 10,
       padding: [10, 30, 5, 10],
