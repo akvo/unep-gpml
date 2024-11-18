@@ -228,8 +228,8 @@
    (into
     [:map
      [:title string?]
-     [:start_date string?]
-     [:end_date string?]
+     [:start_date {:optional true} string?]
+     [:end_date {:optional true} string?]
      [:publish_year {:optional true} integer?]
      [:summary {:optional true} string?]
      [:valid_from {:optional true} string?]

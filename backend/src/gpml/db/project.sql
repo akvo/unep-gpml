@@ -2,14 +2,14 @@
 -- :doc Insert a new projects
 INSERT INTO project(
     title,
-    start_date,
-    end_date,
     summary,
     publish_year,
     valid_from,
     valid_to,
     geo_coverage_type,
     language
+--~ (when (contains? params :start_date) ", start_date")
+--~ (when (contains? params :end_date) ", end_date")
 --~ (when (contains? params :id) ", id")
 --~ (when (contains? params :created_by) ", created_by")
 --~ (when (contains? params :url) ", url")
@@ -27,14 +27,14 @@ INSERT INTO project(
 )
 VALUES(
     :title,
-    :start_date::timestamptz,
-    :end_date::timestamptz,
     :summary,
     :publish_year,
     :valid_from,
     :valid_to,
     :v:geo_coverage_type::geo_coverage_type,
     :language
+--~ (when (contains? params :start_date) ", :start_date::timestamptz")
+--~ (when (contains? params :end_date) ", :end_date::timestamptz")
 --~ (when (contains? params :id) ", :id")
 --~ (when (contains? params :created_by) ", :created_by")
 --~ (when (contains? params :url) ", :url")
