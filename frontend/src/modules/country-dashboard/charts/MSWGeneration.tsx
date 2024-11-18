@@ -153,7 +153,7 @@ const MSWGenerationChart = () => {
                   formatter: () =>
                     `Regional Average (${regionMswValue || 0.78})`,
                   position: 'middle',
-                  color: '#FF0000',
+                  color: '#000000',
                   fontSize: 12,
                   fontWeight: 'bold',
                 },

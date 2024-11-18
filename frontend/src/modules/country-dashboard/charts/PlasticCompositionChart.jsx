@@ -21,13 +21,15 @@ const PlasticCompositionChart = () => {
       if (layerLoading || regionLoading || !country || !layers.length) return
 
       const layerMapping = {
-        national: 'Municipal_solid_waste_generated_daily_per_capita_V3_WFL1',
+        national: 'Municipal_solid_waste_plastic_composition_WFL1',
         cities: 'Proportion_of_plastic_waste_generated_WFL1',
       }
 
       const nationalLayer = layers?.find(
         (layer) => layer.attributes.arcgislayerId === layerMapping?.national
       )
+
+      console.log('nationalLayernationalLayer',nationalLayer)
       const cityLayer = layers?.find(
         (layer) => layer.attributes.arcgislayerId === layerMapping?.cities
       )
@@ -91,7 +93,7 @@ const PlasticCompositionChart = () => {
             }%<br/>`
           })
           if (regionPlasticComposition) {
-            content += `<br/><span style="color: #FF0000; font-weight: bold;">Estimated Regional Average:</span> ${regionPlasticComposition} kg/person/day`
+            content += `<br/><span style="color: #000000; font-weight: bold;">Estimated Regional Average:</span> ${regionPlasticComposition} kg/person/day`
           }
           return content
         },
@@ -156,7 +158,7 @@ const PlasticCompositionChart = () => {
                   formatter: () =>
                     `Regional Average (${regionPlasticComposition || 0.78})`,
                   position: 'middle',
-                  color: '#FF0000',
+                  color: '#000000',
                   fontSize: 12,
                   fontWeight: 'bold',
                 },
