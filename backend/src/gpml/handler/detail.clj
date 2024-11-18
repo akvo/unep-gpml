@@ -417,6 +417,9 @@
 (defmethod extra-details "event" [config resource-type event]
   (add-extra-details config event resource-type {}))
 
+(defmethod extra-details "project" [config resource-type resource]
+  (add-extra-details config resource resource-type {}))
+
 (defmethod extra-details "organisation" [config resource-type organisation]
   (add-extra-details config organisation resource-type {:tags? true
                                                         :entity-connections? false
