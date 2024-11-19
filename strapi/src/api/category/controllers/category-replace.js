@@ -22,7 +22,7 @@ module.exports = {
                 return ctx.notFound('Category not found');
             }
 
-            const { template, placeholders } = category.textTemplate;
+            const { template, placeholders,regionMswValue } = category.textTemplate;
 
             const uniqueLayerIds = [...new Set(
                 placeholders
@@ -73,7 +73,7 @@ module.exports = {
                                 const [value] = layerValues.sort((a, b) => a.Year - b.Year).filter((entry, index, arr) => {
                                     return arr.findIndex(e => e.Year === entry.Year) === index;
                                 });
-                                return Math.round(value?.Value || 0);
+                                return Math.round(value?.Value || 0).toFixed(1);
                         }
                     }
                     return 0;
@@ -87,14 +87,20 @@ module.exports = {
                 }
             };
 
-
             placeholders.forEach((placeholder) => {
                 const decimals = decimalConfig[placeholder] || decimalConfig.default;
 
                 if (placeholder.includes('=')) {
                     const [varName, formula] = placeholder.split('=').map((str) => str.trim());
-                    const result = evaluateFormula(formula);
-                    calculatedValues[varName] = Number(result).toFixed(decimals);
+                    if (varName === 'regionalComparison') {
+                        const municipalValue = parseFloat(calculatedValues['Municipal_solid_waste_generated_daily_per_capita_V3_WFL1'] || 0);
+                        const regionalValue = parseFloat(regionMswValue || 0);
+
+                        calculatedValues[varName] = municipalValue > regionalValue ? 'higher' : 'lower';
+                    } else {
+                        const result = evaluateFormula(formula);
+                        calculatedValues[varName] = Number(result).toFixed(decimals);
+                    }
                 } else {
                     const arcgislayerId = placeholder.split(/(_year|_total|_last|_first|_city|_city_1_value|_city_2_value|_city_1|_city_2)/)[0].trim();
                     const layer = layerDataByArcgisId[arcgislayerId];
@@ -103,7 +109,7 @@ module.exports = {
                         calculatedValues[placeholder] = "[No data]";
                         replacedText = replacedText.replace(/{{country}}/g, country || "No country specified");
                         return;
-                                        }
+                    }
 
                     let replacementValue = "[No data]";
 
