@@ -15,9 +15,7 @@ const DashboardLanding = () => {
   useEffect(() => {
     const fetchCountries = async () => {
       try {
-        const response = await fetch(
-          `${baseURL}/api/country`
-        )
+        const response = await fetch(`${baseURL}/api/country`)
         const data = await response.json()
         setCountries(data)
       } catch (error) {
@@ -77,8 +75,7 @@ const DashboardLanding = () => {
           }}
         >
           Explore{' '}
-          <span style={{ textDecoration: 'underline' }}>national data</span> for
-          more transparency
+          <span style={{ textDecoration: 'underline' }}>national data</span>
         </h1>
         <p style={{ fontSize: '18px', marginBottom: '40px' }}>
           The national data allows you to view key plastic statistics for your
