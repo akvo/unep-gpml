@@ -126,7 +126,6 @@ const PlasticImportExportPieCharts = ({ chartType }) => {
     tooltip: {
       trigger: 'item',
       formatter: (params) => {
-        
         const { seriesName, name, value, percent } = params
         return `${seriesName} <br/>${name}: ${Math.round(value)} (${Math.round(
           percent
@@ -172,10 +171,30 @@ const PlasticImportExportPieCharts = ({ chartType }) => {
   })
 
   return (
-    <ReactEcharts
-      option={getPieOption()}
-      style={{ height: '400px', width: '100%' }}
-    />
+    <div style={{ position: 'relative' }}>
+      <ReactEcharts
+        option={getPieOption()}
+        style={{ height: '400px', width: '100%' }}
+      />
+      <div
+        style={{
+          textAlign: 'left',
+          padding: '10px',
+          color: '#020A5B',
+          fontSize: '12px',
+        }}
+      >
+        Datasource:{' '}
+        <a
+          href={`https://unctad.org/publication/global-trade-plastics-insights-first-life-cycle-trade-database`}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ color: '#020A5B', fontWeight: 'bold' }}
+        >
+          UNCTAD 2021
+        </a>{' '}
+      </div>
+    </div>
   )
 }
 

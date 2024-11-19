@@ -3,9 +3,11 @@ import ReactEcharts from 'echarts-for-react'
 import { useRouter } from 'next/router'
 import useLayerInfo from '../../../hooks/useLayerInfo'
 import useRegions from '../../../hooks/useRegions'
+import { getBaseUrl } from '../../../utils/misc'
 
 const MSWGenerationChart = () => {
   const router = useRouter()
+  const baseURL = getBaseUrl()
   const { country } = router.query
   const { layers, loading: layerLoading } = useLayerInfo()
   const { countriesWithRegions, loading: regionLoading } = useRegions()
@@ -184,9 +186,24 @@ const MSWGenerationChart = () => {
           fontSize: '12px',
         }}
       >
-        Data provided by UNEP.{' '}
-        <a href="https://example.com" style={{ color: '#020A5B' }}>
-          See source here
+        Datasource:{' '}
+        <a
+          href={`${baseURL}/data/maps?categoryId=waste-management&subcategoryId=generation&layer=Municipal_solid_waste_generated_daily_per_capita_V3_WFL1`}
+          style={{ color: '#020A5B', fontWeight: 'bold' }}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          UNEP 2020
+        </a>{' '}
+        and
+        <a
+          href={`${baseURL}/data/maps?categoryId=waste-management&subcategoryId=generation&layer=MSW_generation_rate__kg_cap_day__WFL1`}
+          style={{ color: '#020A5B', fontWeight: 'bold' }}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {' '}
+          UN Habitat 2021
         </a>
       </div>
     </div>

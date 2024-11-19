@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { useRouter } from 'next/router'
 import useLayerInfo from '../../../hooks/useLayerInfo'
+import { getBaseUrl } from '../../../utils/misc'
 
 const PlasticOceanBeachChart = () => {
   const router = useRouter()
+  const baseURL = getBaseUrl()
   const { country } = router.query
   const { layers, loading } = useLayerInfo()
   const [oceanPercentage, setOceanPercentage] = useState(0)
@@ -114,12 +116,12 @@ const PlasticOceanBeachChart = () => {
           {
             value: beachPercentage,
             name: 'Ends up in beaches',
-            itemStyle: { color: '#ffc107' }, 
+            itemStyle: { color: '#ffc107' },
           },
           {
             value: oceanPercentage,
             name: 'Ends up in the ocean',
-            itemStyle: { color: '#007bff' }, 
+            itemStyle: { color: '#007bff' },
           },
         ],
       },
@@ -127,10 +129,30 @@ const PlasticOceanBeachChart = () => {
   })
 
   return (
-    <ReactEcharts
-      option={getOption()}
-      style={{ height: '400px', width: '100%' }}
-    />
+    <div style={{ position: 'relative' }}>
+      <ReactEcharts
+        option={getOption()}
+        style={{ height: '400px', width: '100%' }}
+      />
+      <div
+        style={{
+          textAlign: 'left',
+          padding: '10px',
+          color: '#020A5B',
+          fontSize: '12px',
+        }}
+      >
+        Datasource:{' '}
+        <a
+          href={`${baseURL}/data/maps?categoryId=environmental-impact&subcategoryId=ocean-and-coast&layer=Mismanaged_plastic_waste_escaping_to_oceans_and_coasts_V3_WFL1`}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ color: '#020A5B', fontWeight: 'bold' }}
+        >
+          ​​Florida State University and UNEP, 2021
+        </a>{' '}
+      </div>
+    </div>
   )
 }
 
