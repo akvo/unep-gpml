@@ -5,6 +5,7 @@ import api from '../../utils/api'
 import { getTypeByResource } from '../../modules/flexible-forms/view'
 import { loadCatalog } from '../../translations/utils'
 import Head from 'next/head'
+import ProjectDetail from '../../modules/project-detail/project-detail'
 
 const VALID_TYPES = [
   'initiative',
@@ -16,6 +17,7 @@ const VALID_TYPES = [
   'event',
   'case-study',
   'data-catalog',
+  'project',
 ]
 
 const Details = ({
@@ -77,15 +79,21 @@ const Details = ({
         />
         <meta name="twitter:image" content={data?.image} />
       </Head>
-      <NewDetailsView
-        serverData={data}
-        serverTranslations={translations}
-        type={type}
-        id={id}
-        setLoginVisible={setLoginVisible}
-        isAuthenticated={isAuthenticated}
-        isServer={true}
-      />
+      {type === 'project' ? (
+        <ProjectDetail
+          {...{ data, setLoginVisible, isAuthenticated, isServer: true }}
+        />
+      ) : (
+        <NewDetailsView
+          serverData={data}
+          serverTranslations={translations}
+          type={type}
+          id={id}
+          setLoginVisible={setLoginVisible}
+          isAuthenticated={isAuthenticated}
+          isServer={true}
+        />
+      )}
     </>
   )
 }
@@ -119,15 +127,19 @@ export async function getServerSideProps(context) {
     const dataRes = await api.get(
       `${API_ENDPOINT}detail/${type.replace('-', '_')}/${id}`
     )
-    const translationsRes = await api.get(
-      `${API_ENDPOINT}/translations/${
-        getTypeByResource(type.replace('-', '_')).translations
-      }/${id}`
-    )
+    let translationsRes = null
+    if (type !== 'project') {
+      translationsRes = await api.get(
+        `${API_ENDPOINT}/translations/${
+          getTypeByResource(type.replace('-', '_')).translations
+        }/${id}`
+      )
+    }
+    // console.log(dataRes.data)
     return {
       props: {
         data: dataRes.data,
-        translations: translationsRes.data,
+        translations: translationsRes != null ? translationsRes?.data : null,
         url: baseUrl,
         i18n: await loadCatalog(context.locale),
         domainValue: req?.headers?.host,
