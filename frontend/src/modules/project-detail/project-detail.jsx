@@ -12,6 +12,7 @@ import { SwiperSlide, Swiper } from 'swiper/react'
 import { Navigation } from 'swiper'
 import Link from 'next/link'
 import moment from 'moment'
+import { lifecycleStageTags, resourceTypeToTopicType } from '../../utils/misc'
 
 const ProjectDetail = ({ data }) => {
   console.log(data)
@@ -26,6 +27,24 @@ const ProjectDetail = ({ data }) => {
     partner: 'Partners',
     owner: 'Owners',
   }
+  const tagsToShow =
+    data?.tags && data?.tags?.length > 0
+      ? data.tags.filter(
+          (item) =>
+            !lifecycleStageTags.some(
+              (filterItem) =>
+                filterItem.toLowerCase() === item.tag.toLowerCase()
+            )
+        )
+      : []
+  const lifecycleTagsToShow =
+    data?.tags && data?.tags?.length > 0
+      ? data.tags.filter((item) =>
+          lifecycleStageTags.some(
+            (filterItem) => filterItem.toLowerCase() === item.tag.toLowerCase()
+          )
+        )
+      : []
   return (
     <div className={styles.detailView}>
       <div className="container">
@@ -86,11 +105,13 @@ const ProjectDetail = ({ data }) => {
               </div>
             </SwiperSlide>
           )}
-          {data?.videos.map((video) => (
-            <SwiperSlide className="video-slide">
-              {convertYouTubeUrlToEmbed(video)}
-            </SwiperSlide>
-          ))}
+          {data?.videos
+            .filter((it) => it !== '')
+            .map((video) => (
+              <SwiperSlide className="video-slide">
+                {convertYouTubeUrlToEmbed(video)}
+              </SwiperSlide>
+            ))}
         </Swiper>
         <h3 className="h-m w-bold">Background</h3>
         <p className="two-cols">{data?.background}</p>
@@ -147,6 +168,36 @@ const ProjectDetail = ({ data }) => {
               ))}
             </div>
           ))}
+        </div>
+        <div className="cols">
+          <div className="col">
+            <h3 className="h-m w-bold">Life Cycle Stage</h3>
+            <div className="tag-list">
+              {lifecycleTagsToShow?.map((tag) => (
+                <div className="tag-item" key={tag?.tag}>
+                  <Link href={`/knowledge-hub?tag=${tag.tag}`}>
+                    <div className="label">
+                      <span>{tag?.tag || ''}</span>
+                    </div>
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="col">
+            <h3 className="h-m w-bold">Tags</h3>
+            <div className="tag-list">
+              {tagsToShow?.map((tag) => (
+                <div className="tag-item" key={tag?.tag}>
+                  <Link href={`/knowledge-hub?tag=${tag.tag}`}>
+                    <div className="label">
+                      <span>{tag?.tag || ''}</span>
+                    </div>
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>

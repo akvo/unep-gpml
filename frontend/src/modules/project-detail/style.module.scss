@@ -149,6 +149,16 @@
           }
         }
       }
+      .tag-list {
+        display: flex;
+        .tag-item {
+          margin-right: 15px;
+          a {
+            color: $primaryDarkBlueText;
+            text-decoration: underline;
+          }
+        }
+      }
     }
   }
 }
