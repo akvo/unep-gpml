@@ -68,6 +68,11 @@ const Header = ({
         link = 'edit/initiative'
         type = 'initiative'
         break
+      case 'project':
+        form = 'project'
+        link = 'edit/project'
+        type = 'project'
+        break
       case 'action-plan':
         form = 'actionPlan'
         link = 'edit/action-plan'
@@ -124,10 +129,13 @@ const Header = ({
     })
     router.push(
       {
-        pathname: `/${link}/${id}`,
-        query: { type: type },
+        pathname: '/add-content',
+        query: {
+          type: type,
+          id: id,
+        },
       },
-      `/${link}/${id}`
+      `/add-content`
     )
   }
 
