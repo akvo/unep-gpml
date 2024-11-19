@@ -4,6 +4,12 @@
     padding: 80px 0px;
 
     :global {
+
+        .loading-form {
+            display: flex;
+            justify-content: center;
+        }
+
         .title {
             font-size: 48px;
             font-weight: 700;

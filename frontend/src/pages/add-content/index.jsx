@@ -12,6 +12,7 @@ import {
   Col,
   notification,
   Form as AntForm,
+  Spin,
 } from 'antd'
 import styles from './index.module.scss'
 import { PlusIcon, UploadFileIcon } from '../../components/icons'
@@ -1475,6 +1476,7 @@ const DynamicContentForm = () => {
   const { id, type } = router.query
   const [selectedType, setSelectedType] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [loadingEditData, setLoadingEditData] = useState(false)
 
   const [initialValues, setInitialValues] = useState({
     highlights: [{ text: '', url: '' }],
@@ -1484,7 +1486,9 @@ const DynamicContentForm = () => {
 
   useEffect(() => {
     if (type && id) {
+      setLoadingEditData(true)
       api.get(`/detail/${type}/${id}`).then((response) => {
+        setLoadingEditData(false)
         const data = response.data
 
         const entityConnections = data.entityConnections || []
@@ -1888,85 +1892,105 @@ const DynamicContentForm = () => {
                       Add Content
                     </Title>
 
-                    {!selectedType && (
-                      <div className="form-description">
-                        <p>
-                          The GPML Digital Platform is crowdsourced and allows
-                          everyone to submit new content via this form.
-                        </p>
-                        <p>
-                          A wide range of resources can be submitted, and these
-                          include Action Plans, Initiatives, Technical
-                          resources, Financing resources, Policies, Events, and
-                          Technologies. Learn more about each category and
-                          sub-categories definitions in the "Content Type"
-                          section of this form. A quick summary sheet with
-                          categories and sub-categories can be downloaded here.
-                        </p>
-                        <p>
-                          You can access existing content via the Knowledge
-                          Exchange Library. Make sure to browse around and leave
-                          a review under the resources you enjoy the most!
-                        </p>
+                    {loadingEditData && (
+                      <div className="loading-form">
+                        <Spin />
                       </div>
                     )}
 
-                    <Space direction="vertical" size="large" className="w-full">
-                      <div className="form-container">
-                        <Title level={4}>What type of content is this?</Title>
-                        <div
-                          style={{
-                            display: 'flex',
-                            gap: '10px',
-                            flexWrap: 'wrap',
-                          }}
+                    {!loadingEditData && (
+                      <>
+                        {!selectedType && (
+                          <div className="form-description">
+                            <p>
+                              The GPML Digital Platform is crowdsourced and
+                              allows everyone to submit new content via this
+                              form.
+                            </p>
+                            <p>
+                              A wide range of resources can be submitted, and
+                              these include Action Plans, Initiatives, Technical
+                              resources, Financing resources, Policies, Events,
+                              and Technologies. Learn more about each category
+                              and sub-categories definitions in the "Content
+                              Type" section of this form. A quick summary sheet
+                              with categories and sub-categories can be
+                              downloaded here.
+                            </p>
+                            <p>
+                              You can access existing content via the Knowledge
+                              Exchange Library. Make sure to browse around and
+                              leave a review under the resources you enjoy the
+                              most!
+                            </p>
+                          </div>
+                        )}
+
+                        <Space
+                          direction="vertical"
+                          size="large"
+                          className="w-full"
                         >
-                          {contentTypes.map((type) => (
-                            <Button
-                              key={type}
-                              className={`content-type-btn ${
-                                selectedType === type ? 'selected' : ''
-                              }`}
-                              onClick={() => {
-                                if (selectedType !== type) {
-                                  setSelectedType(type)
-                                  form.restart(initialValues)
-                                } else {
-                                  setSelectedType(null)
-                                  form.restart(initialValues)
-                                }
+                          <div className="form-container">
+                            <Title level={4}>
+                              What type of content is this?
+                            </Title>
+                            <div
+                              style={{
+                                display: 'flex',
+                                gap: '10px',
+                                flexWrap: 'wrap',
                               }}
                             >
-                              {type}
-                            </Button>
-                          ))}
-                        </div>
-                      </div>
+                              {contentTypes.map((type) => (
+                                <Button
+                                  key={type}
+                                  className={`content-type-btn ${
+                                    selectedType === type ? 'selected' : ''
+                                  }`}
+                                  onClick={() => {
+                                    if (selectedType !== type) {
+                                      setSelectedType(type)
+                                      form.restart(initialValues)
+                                    } else {
+                                      setSelectedType(null)
+                                      form.restart(initialValues)
+                                    }
+                                  }}
+                                >
+                                  {type}
+                                </Button>
+                              ))}
+                            </div>
+                          </div>
 
-                      {selectedType && (
-                        <>
-                          <Card className="mt-8">
-                            <Title className="form-title" level={4}>
-                              All details of the {selectedType.toLowerCase()}
-                            </Title>
-                            <FormFields
-                              selectedType={selectedType}
-                              storeData={storeData}
-                              form={form}
-                            />
-                            <Button
-                              type="primary"
-                              htmlType="submit"
-                              loading={loading}
-                              disabled={loading}
-                              className="submit-btn"
-                            >
-                              Save & Publish
-                            </Button>
-                          </Card>
-                        </>
-                      )}
-                    </Space>
+                          {selectedType && (
+                            <>
+                              <Card className="mt-8">
+                                <Title className="form-title" level={4}>
+                                  All details of the{' '}
+                                  {selectedType.toLowerCase()}
+                                </Title>
+                                <FormFields
+                                  selectedType={selectedType}
+                                  storeData={storeData}
+                                  form={form}
+                                />
+                                <Button
+                                  type="primary"
+                                  htmlType="submit"
+                                  loading={loading}
+                                  disabled={loading}
+                                  className="submit-btn"
+                                >
+                                  Save & Publish
+                                </Button>
+                              </Card>
+                            </>
+                          )}
+                        </Space>
+                      </>
+                    )}
                   </form>
                 </>
               )
