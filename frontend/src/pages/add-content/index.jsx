@@ -1033,13 +1033,16 @@ const FormField = React.memo(
                 }}
                 multiple={false}
                 accept=".jpg,.png"
+                showUploadList={false}
               >
                 <p className="ant-upload-drag-icon">
                   <UploadFileIcon />
                 </p>
-                <p className="ant-upload-text">Accepts .jpg and .png</p>
-                <p className="add-btn">Add a File</p>
-              </Dragger>{' '}
+                <p className="ant-upload-text">
+                  Drag & drop or click to upload an image
+                </p>
+                <p className="add-btn">Only .jpg or .png files are accepted</p>
+              </Dragger>
               {meta.touched && meta.error && (
                 <p
                   color="error"
@@ -1050,6 +1053,16 @@ const FormField = React.memo(
                 >
                   {meta.error}
                 </p>
+              )}
+              {input.value && (
+                <div className="preview-img">
+                  {input.value && <img src={input.value} alt="Preview" />}{' '}
+                  <Button
+                    danger
+                    icon={<DeleteOutlined />}
+                    onClick={() => input.onChange(null)}
+                  />
+                </div>
               )}
             </FormLabel>
           )
@@ -1128,13 +1141,26 @@ const FormField = React.memo(
                 }}
                 multiple={false}
                 accept=".jpg,.png"
+                showUploadList={false}
               >
                 <p className="ant-upload-drag-icon">
                   <UploadFileIcon />
                 </p>
-                <p className="ant-upload-text">Accepts .jpg and .png</p>
-                <p className="add-btn">Add a File</p>
+                <p className="ant-upload-text">
+                  Drag & drop or click to upload an image
+                </p>
+                <p className="add-btn">Only .jpg or .png files are accepted</p>
               </Dragger>
+              {input.value && (
+                <div className="preview-img">
+                  {input.value && <img src={input.value} alt="Preview" />}{' '}
+                  <Button
+                    danger
+                    icon={<DeleteOutlined />}
+                    onClick={() => input.onChange(null)}
+                  />
+                </div>
+              )}
             </FormLabel>
           )
 
