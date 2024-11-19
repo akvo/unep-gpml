@@ -3,6 +3,7 @@ import ReactEcharts from 'echarts-for-react'
 import { useRouter } from 'next/router'
 import useLayerInfo from '../../../hooks/useLayerInfo'
 import useRegions from '../../../hooks/useRegions'
+import { getBaseUrl } from '../../../utils/misc'
 
 const PlasticCompositionChart = () => {
   const router = useRouter()
@@ -11,6 +12,7 @@ const PlasticCompositionChart = () => {
   const [nationalEstimate, setNationalEstimate] = useState(0)
   const [cityEstimates, setCityEstimates] = useState([])
   const [cities, setCities] = useState([])
+  const baseURL = getBaseUrl()
 
   const { countriesWithRegions, loading: regionLoading } = useRegions()
 
@@ -29,7 +31,7 @@ const PlasticCompositionChart = () => {
         (layer) => layer.attributes.arcgislayerId === layerMapping?.national
       )
 
-      console.log('nationalLayernationalLayer',nationalLayer)
+      console.log('nationalLayernationalLayer', nationalLayer)
       const cityLayer = layers?.find(
         (layer) => layer.attributes.arcgislayerId === layerMapping?.cities
       )
@@ -189,10 +191,13 @@ const PlasticCompositionChart = () => {
           fontSize: '12px',
         }}
       >
-        Data provided by UNEP.{' '}
-        <a href="https://example.com" style={{ color: '#020A5B' }}>
-          See source here
-        </a>
+        Datasource:{' '}
+        <a
+          href={`${baseURL}/data/maps?categoryId=waste-management&subcategoryId=generation&layer=Proportion_of_plastic_waste_generated_WFL1`}
+          style={{ color: '#020A5B', fontWeight: 'bold' }}
+        >
+          UN Habitat 2021
+        </a>{' '}
       </div>
     </div>
   )
