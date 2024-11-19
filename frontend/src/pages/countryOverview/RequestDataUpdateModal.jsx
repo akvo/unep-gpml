@@ -31,7 +31,7 @@ const RequestDataUpdateModal = ({ visible, onClose }) => {
       width={600}
     >
       <Form layout="vertical" form={form} onFinish={handleSubmit}>
-        <Form.Item label="Select indicator" name="indicator" required>
+        <Form.Item label="Select category" name="indicator" required>
           <Checkbox.Group>
             <Checkbox value="Waste Management">Waste Management</Checkbox>
             <Checkbox value="Plastic Trade">Plastic Trade</Checkbox>
