@@ -13,14 +13,27 @@ import { Navigation } from 'swiper'
 import Link from 'next/link'
 import moment from 'moment'
 import { lifecycleStageTags, resourceTypeToTopicType } from '../../utils/misc'
+import { useEffect, useState } from 'react'
+import api from '../../utils/api'
+import classNames from 'classnames'
+import { Row, Skeleton } from 'antd'
 
-const ProjectDetail = ({ data }) => {
-  console.log(data)
+const ProjectDetail = ({ data: inData, isModal }) => {
+  const [data, setData] = useState(inData)
+  const [loading, setLoading] = useState(isModal)
   const groupedConnections = {}
   data?.entityConnections?.forEach((it) => {
     if (!groupedConnections[it.role]) groupedConnections[it.role] = []
     groupedConnections[it.role].push(it)
   })
+  useEffect(() => {
+    if (isModal) {
+      api.get(`/detail/project/${inData.id}`).then((d) => {
+        setData(d.data)
+        setLoading(false)
+      })
+    }
+  }, [])
   const connectionLabels = {
     donor: 'Donors',
     implementor: 'Implementing Partners',
@@ -47,7 +60,7 @@ const ProjectDetail = ({ data }) => {
       : []
   return (
     <div className={styles.detailView}>
-      <div className="container">
+      <div className={classNames('container', { isModal })}>
         <div className="head">
           <h5 className="h-caps-m">project</h5>
           {data?.reviewStatus === 'SUBMITTED' && (
@@ -92,113 +105,132 @@ const ProjectDetail = ({ data }) => {
             )}
           </div>
         </div>
-        <Swiper
-          spaceBetween={15}
-          slidesPerView={'auto'}
-          navigation={true}
-          modules={[Navigation]}
-        >
-          {data?.image && (
-            <SwiperSlide>
-              <div className="cover-img">
-                <img src={data?.image} />
-              </div>
-            </SwiperSlide>
-          )}
-          {data?.videos
-            .filter((it) => it !== '')
-            .map((video) => (
-              <SwiperSlide className="video-slide">
-                {convertYouTubeUrlToEmbed(video)}
-              </SwiperSlide>
-            ))}
-        </Swiper>
-        <h3 className="h-m w-bold">Background</h3>
-        <p className="two-cols">{data?.background}</p>
-        <h3 className="h-m w-bold">Purpose</h3>
-        <p className="two-cols">{data?.purpose}</p>
-        <div className="cols">
-          <div className="col outcomes">
-            <h3 className="h-m w-bold">Expected Outcomes</h3>
-            <ul>
-              {data?.outcomes?.map((it) => (
-                <li>{it}</li>
-              ))}
-            </ul>
-          </div>
-          <div className="col highlights">
-            <h3 className="h-m w-bold">Key Highlights</h3>
-            <ul>
-              {data?.highlights?.map((it) => {
-                if (it.url && it.url !== '') {
-                  return (
-                    <li>
-                      <a href={it.url} target="_blank">
-                        {it.text}
-                        <div className="icon">
-                          <LinkExternal />
-                        </div>
-                      </a>
-                    </li>
-                  )
-                }
-                return <li>{it.text}</li>
-              })}
-            </ul>
-          </div>
-        </div>
-        <div className="grouped-connections">
-          {Object.keys(groupedConnections).map((groupKey) => (
-            <div className="group">
-              <h3 className="h-m w-bold">{connectionLabels[groupKey]}</h3>
-              {groupedConnections[groupKey].map((it) => (
-                <Link href={`/organisation/${it.entityId}`}>
-                  <div className="org-item">
-                    {it.image && (
-                      <Image
-                        src={it.image}
-                        width={60}
-                        height={60}
-                        objectFit="contain"
-                      />
-                    )}
-                    <span>{it.entity}</span>
+        {loading && (
+          <Row
+            style={{ margin: '20px 40px' }}
+            gutter={{
+              lg: 24,
+            }}
+          >
+            <Skeleton
+              paragraph={{
+                rows: 7,
+              }}
+              active
+            />
+          </Row>
+        )}
+        {!loading && (
+          <>
+            <Swiper
+              spaceBetween={15}
+              slidesPerView={'auto'}
+              navigation={true}
+              modules={[Navigation]}
+            >
+              {data?.image && (
+                <SwiperSlide>
+                  <div className="cover-img">
+                    <img src={data?.image} />
                   </div>
-                </Link>
-              ))}
+                </SwiperSlide>
+              )}
+              {data?.videos
+                ?.filter((it) => it !== '')
+                ?.map((video) => (
+                  <SwiperSlide className="video-slide">
+                    {convertYouTubeUrlToEmbed(video)}
+                  </SwiperSlide>
+                ))}
+            </Swiper>
+            <h3 className="h-m w-bold">Background</h3>
+            <p className="two-cols">{data?.background}</p>
+            <h3 className="h-m w-bold">Purpose</h3>
+            <p className="two-cols">{data?.purpose}</p>
+            <div className="cols">
+              <div className="col outcomes">
+                <h3 className="h-m w-bold">Expected Outcomes</h3>
+                <ul>
+                  {data?.outcomes?.map((it) => (
+                    <li>{it}</li>
+                  ))}
+                </ul>
+              </div>
+              <div className="col highlights">
+                <h3 className="h-m w-bold">Key Highlights</h3>
+                <ul>
+                  {data?.highlights?.map((it) => {
+                    if (it.url && it.url !== '') {
+                      return (
+                        <li>
+                          <a href={it.url} target="_blank">
+                            {it.text}
+                            <div className="icon">
+                              <LinkExternal />
+                            </div>
+                          </a>
+                        </li>
+                      )
+                    }
+                    return <li>{it.text}</li>
+                  })}
+                </ul>
+              </div>
             </div>
-          ))}
-        </div>
-        <div className="cols">
-          <div className="col">
-            <h3 className="h-m w-bold">Life Cycle Stage</h3>
-            <div className="tag-list">
-              {lifecycleTagsToShow?.map((tag) => (
-                <div className="tag-item" key={tag?.tag}>
-                  <Link href={`/knowledge-hub?tag=${tag.tag}`}>
-                    <div className="label">
-                      <span>{tag?.tag || ''}</span>
-                    </div>
-                  </Link>
+            <div className="grouped-connections">
+              {Object.keys(groupedConnections).map((groupKey) => (
+                <div className="group">
+                  <h3 className="h-m w-bold">{connectionLabels[groupKey]}</h3>
+                  {groupedConnections[groupKey].map((it) => (
+                    <Link href={`/organisation/${it.entityId}`}>
+                      <div className="org-item">
+                        {it.image && (
+                          <Image
+                            src={it.image}
+                            width={60}
+                            height={60}
+                            objectFit="contain"
+                          />
+                        )}
+                        <span>{it.entity}</span>
+                      </div>
+                    </Link>
+                  ))}
                 </div>
               ))}
             </div>
-          </div>
-          <div className="col">
-            <h3 className="h-m w-bold">Tags</h3>
-            <div className="tag-list">
-              {tagsToShow?.map((tag) => (
-                <div className="tag-item" key={tag?.tag}>
-                  <Link href={`/knowledge-hub?tag=${tag.tag}`}>
-                    <div className="label">
-                      <span>{tag?.tag || ''}</span>
+            <div className="cols">
+              <div className="col">
+                <h3 className="h-m w-bold">Life Cycle Stage</h3>
+                <div className="tag-list">
+                  {lifecycleTagsToShow?.map((tag) => (
+                    <div className="tag-item" key={tag?.tag}>
+                      <Link href={`/knowledge-hub?tag=${tag.tag}`}>
+                        <div className="label">
+                          <span>{tag?.tag || ''}</span>
+                        </div>
+                      </Link>
                     </div>
-                  </Link>
+                  ))}
                 </div>
-              ))}
+              </div>
+              <div className="col">
+                <h3 className="h-m w-bold">Tags</h3>
+                <div className="tag-list">
+                  {tagsToShow?.map((tag) => (
+                    <div className="tag-item" key={tag?.tag}>
+                      <Link href={`/knowledge-hub?tag=${tag.tag}`}>
+                        <div className="label">
+                          <span>{tag?.tag || ''}</span>
+                        </div>
+                      </Link>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          </>
+        )}
       </div>
     </div>
   )
