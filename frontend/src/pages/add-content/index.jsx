@@ -1088,9 +1088,16 @@ const FormField = React.memo(
                 beforeUpload={() => false}
                 onChange={async ({ file, fileList }) => {
                   try {
-                    if (file) {
-                      const base64 = await getBase64(file)
-                      input.onChange(base64)
+                    console.log(file, fileList)
+                    if (fileList) {
+                      // const base64 = await getBase64(file)
+                      async function processFiles(filesArray) {
+                        for (const file of filesArray) {
+                          await getBase64(file)
+                        }
+                      }
+                      const value = await processFiles(fileList)
+                      input.onChange(value)
                     }
                   } catch (err) {
                     console.error('Error converting to base64:', err)
@@ -1596,6 +1603,8 @@ const DynamicContentForm = () => {
 
       if (response) {
         notification.success({ message: 'Resource successfully created' })
+        // TODO: Navin handle redirect below
+        // window.location.href = `/${data.type}/${response.data.id}`
         form.reset()
         setSelectedType(null)
         return response
