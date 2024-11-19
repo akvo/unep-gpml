@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { useRouter } from 'next/router'
 import useLayerInfo from '../../../hooks/useLayerInfo'
+import { getBaseUrl } from '../../../utils/misc'
 
 const PlasticImportExportChart = () => {
   const router = useRouter()
+  const baseURL = getBaseUrl()
   const { country } = router.query
   const { layers, loading } = useLayerInfo()
   const [years, setYears] = useState([])
@@ -96,7 +98,7 @@ const PlasticImportExportChart = () => {
       },
       nameTextStyle: {
         color: '#020A5B',
-        fontSize: 12, 
+        fontSize: 12,
       },
       name: 'million US dollars',
     },
@@ -123,10 +125,30 @@ const PlasticImportExportChart = () => {
   })
 
   return (
-    <ReactEcharts
-      option={getOption()}
-      style={{ height: '400px', width: '100%' }}
-    />
+    <div style={{ position: 'relative' }}>
+      <ReactEcharts
+        option={getOption()}
+        style={{ height: '400px', width: '100%' }}
+      />
+      <div
+        style={{
+          textAlign: 'left',
+          padding: '10px',
+          color: '#020A5B',
+          fontSize: '12px',
+        }}
+      >
+        Datasource:{' '}
+        <a
+          href={`${baseURL}/data/maps?categoryId=industry-and-trade&subcategoryId=Import&layer=Plastic_waste___value__import__WFL1`}
+          style={{ color: '#020A5B', fontWeight: 'bold' }}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          UNCTAD 2021
+        </a>{' '}
+      </div>
+    </div>
   )
 }
 

@@ -186,10 +186,12 @@ const MSWGenerationChart = () => {
           fontSize: '12px',
         }}
       >
-        Datasource: {' '}
+        Datasource:{' '}
         <a
           href={`${baseURL}/data/maps?categoryId=waste-management&subcategoryId=generation&layer=Municipal_solid_waste_generated_daily_per_capita_V3_WFL1`}
           style={{ color: '#020A5B', fontWeight: 'bold' }}
+          target="_blank"
+          rel="noopener noreferrer"
         >
           UNEP 2020
         </a>{' '}
@@ -197,6 +199,8 @@ const MSWGenerationChart = () => {
         <a
           href={`${baseURL}/data/maps?categoryId=waste-management&subcategoryId=generation&layer=MSW_generation_rate__kg_cap_day__WFL1`}
           style={{ color: '#020A5B', fontWeight: 'bold' }}
+          target="_blank"
+          rel="noopener noreferrer"
         >
           {' '}
           UN Habitat 2021
