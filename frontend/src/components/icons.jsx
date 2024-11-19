@@ -22,6 +22,31 @@ export const CirclePointer = () => (
   </svg>
 )
 
+export const PlusIcon = () => (
+  <svg
+    width="15"
+    height="16"
+    viewBox="0 0 15 16"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M1.11884 7.93335H13.5804"
+      stroke="#020A5B"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M7.48279 14.2974V1.83582"
+      stroke="#020A5B"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+)
+
 export const InfoIcon = () => (
   <svg
     width="20"
