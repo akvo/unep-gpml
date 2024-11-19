@@ -68,10 +68,18 @@ const PlasticOceanBeachChart = () => {
 
   const getOption = () => ({
     title: {
-      text: 'Mismanaged plastic reaching ocean and beaches (percentages)',
+      text: 'Mismanaged plastic reaching oceans and coasts​',
+      subtext: `Percentage of the mismanaged waste between years 2010-2019`,
       left: 'center',
       textStyle: {
         fontSize: 16,
+        fontWeight: 'bold',
+        color: '#020A5B',
+      },
+      subtextStyle: {
+        fontSize: 12,
+        color: '#020A5B',
+        fontFamily: 'Roboto, Helvetica Neue, sans-serif',
         fontWeight: 'bold',
       },
     },
@@ -82,7 +90,11 @@ const PlasticOceanBeachChart = () => {
     legend: {
       orient: 'horizontal',
       bottom: 10,
-      data: ['Ends up in beaches', 'Ends up in the ocean'],
+      data: ['Ends up on the coasts', 'Ends up in the ocean'],
+      textStyle: {
+        fontSize: 12,
+        color: '#020A5B',
+      },
     },
     series: [
       {
