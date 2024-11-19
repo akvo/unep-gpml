@@ -36,7 +36,6 @@
    [gpml.service.association :as srv.association]
    [gpml.service.chat :as svc.chat]
    [gpml.service.file :as srv.file]
-   [gpml.service.permissions :as srv.permissions]
    [gpml.util :as util]
    [gpml.util.malli :as util.malli]
    [gpml.util.postgresql :as pg-util]
@@ -586,46 +585,17 @@
   {:path get-detail-path-params-schema})
 
 (defmethod ig/init-key :gpml.handler.detail/get
-  [_ {:keys [db logger] :as config}]
+  [_ {:keys [logger] :as config}]
   (fn [{{:keys [path query]} :parameters user :user}]
     (try
       (let [topic-type (resolve-resource-type (:topic-type path))
             topic-id (:topic-id path)
-            rbac-entity-type (h.r.permission/entity-type->context-type topic-type)
-            resource (db.resource.detail/get-resource (:spec db)
-                                                      {:table-name topic-type
-                                                       :id topic-id})
-            draft? (not= "APPROVED" (:review_status resource))
-            authorized? (if-not (or (= topic-type "stakeholder")
-                                    (= topic-type "organisation"))
-                          (if draft?
-                            (h.r.permission/operation-allowed?
-                             config
-                             {:user-id (:id user)
-                              :entity-type rbac-entity-type
-                              :entity-id topic-id
-                              :operation-type :read-draft})
-                            true)
-                          ;; Platform resources (topics) are public (approved ones)
-                          ;; except for stakeholders and organisations. To view
-                          ;; any of those entity's data, users needs to
-                          ;; have the
-                          ;; `stakeholder/read` or `organisation/read` permission.
-                          (h.r.permission/operation-allowed?
-                           config
-                           {:user-id (:id user)
-                            :entity-type rbac-entity-type
-                            :entity-id srv.permissions/root-app-resource-id
-                            :operation-type :read
-                            :custom-context-type srv.permissions/root-app-context-type}))]
-        (if-not authorized?
-          (r/forbidden {:message "Unauthorized"})
-          (let [result (get-detail config topic-id topic-type query)]
-            (if-not (:success? result)
-              (if (= (:reason result) :not-found)
-                (r/not-found result)
-                (r/server-error result))
-              (r/ok (:resource-details result))))))
+            result (get-detail config topic-id topic-type query)]
+        (if-not (:success? result)
+          (if (= (:reason result) :not-found)
+            (r/not-found result)
+            (r/server-error result))
+          (r/ok (:resource-details result))))
       (catch Exception t
         (timbre/with-context+ {:path-params path
                                :user user}
