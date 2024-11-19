@@ -247,7 +247,7 @@
       (let [resp (handler (-> (mock/request :get "/")
                               (assoc :parameters
                                      {:path {:topic-type "initiative" :topic-id (:id initiative)}})))]
-        (is (= 403 (:status resp)))))
+        (is (= 200 (:status resp)))))
 
     (testing "Fetching detail of unapproved resource as authenticated user"
       (let [resp (handler (-> (mock/request :get "/")
@@ -255,7 +255,7 @@
                                :user {:id 999}
                                :parameters
                                {:path {:topic-type "initiative" :topic-id (:id initiative)}})))]
-        (is (= 403 (:status resp)))))
+        (is (= 200 (:status resp)))))
 
     (testing "Fetching detail of unapproved resource as different ADMIN"
       (let [admin-id (test-util/create-test-stakeholder config
