@@ -31,6 +31,11 @@ const ProjectDetail = ({ data }) => {
       <div className="container">
         <div className="head">
           <h5 className="h-caps-m">project</h5>
+          {data?.reviewStatus === 'SUBMITTED' && (
+            <div className="pending">
+              <h5>Pending Approval</h5>
+            </div>
+          )}
           <h1 className="h-xxl">{data?.title}</h1>
           <div className="meta">
             {/* {data.country && (

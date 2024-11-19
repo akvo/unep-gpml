@@ -7,6 +7,21 @@
         h1 {
           font-weight: bold;
         }
+        .pending {
+          display: flex;
+          position: relative;
+          h5 {
+            position: absolute;
+            right: 0;
+            background-color: #f5970a;
+            font-weight: 700;
+            color: white;
+            padding: 5px 10px;
+            font-size: 16px;
+            border-radius: 10px;
+            text-transform: uppercase;
+          }
+        }
         .meta {
           display: flex;
           margin: 15px 0 25px;
