@@ -3,7 +3,6 @@ const axios = require('axios');
 module.exports = {
     async replacePlaceholders(ctx) {
         try {
-
             const decimalConfig = {
                 default: 0,
                 Municipal_solid_waste_generated_annually_V3_WFL1: 0,
@@ -30,13 +29,15 @@ module.exports = {
                     .map(placeholder => placeholder.split('=')[0].split(/(_year|_total|_last|_first|_city|\*|\/|\+|\-)/)[0].trim())
             )];
 
-            //TODO: Replace this url with dynamic
-            const layerData = await Promise.all(uniqueLayerIds.map(async (layerId) => {
-                const response = await axios.get(`https://unep-gpml.akvotest.org/strapi/api/layers?filters[arcgislayerId][$eq]=${layerId}&populate=ValuePerCountry`);
-                return response.data?.data[0];
-            }));
 
-            console.log(layerData)
+            const allLayersResponse = await axios.get(`https://unep-gpml.akvotest.org/strapi/api/layers?pagination[page]=1&pagination[pageSize]=150&populate=ValuePerCountry`);
+            const allLayers = allLayersResponse.data?.data || [];
+
+            const layerData = allLayers.filter(layer =>
+                uniqueLayerIds.includes(layer.attributes.arcgislayerId)
+            );
+
+
             if (!layerData || layerData.length === 0) {
                 return ctx.notFound('Layers not found');
             }
@@ -101,8 +102,8 @@ module.exports = {
                     if (!layer || layer.length === 0) {
                         calculatedValues[placeholder] = "[No data]";
                         replacedText = replacedText.replace(/{{country}}/g, country || "No country specified");
-                        return; 
-                    }
+                        return;
+                                        }
 
                     let replacementValue = "[No data]";
 
