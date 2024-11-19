@@ -1519,7 +1519,9 @@ const DynamicContentForm = () => {
           }),
           ...(data.type === 'policy' && { abstract: data.summary }),
           ...(data.type === 'technology' && { remarks: data.summary }),
-          ...(data.type === 'event' && { description: data.summary }),
+          ...((data.type === 'event' || data.type === 'initiative') && {
+            description: data.summary,
+          }),
           geoCoverageType: data.geoCoverageType || '',
           lifecycleStage: data.lifecycleStage || [],
           tags:
@@ -1849,8 +1851,11 @@ const DynamicContentForm = () => {
     delete data.resourceType
     delete data.image
 
+    const endpoint = id && type ? `/detail/${type}/${id}` : '/initiative'
+    const method = id && type ? 'put' : 'post'
+
     try {
-      const response = await api.post('/initiative', data)
+      const response = await api[method](endpoint, data)
 
       if (!response.data || response.error) {
         throw new Error(response.error || 'Failed to create initiative')
