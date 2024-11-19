@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Row, Col, Button, Tooltip } from 'antd'
 import { useRouter } from 'next/router'
 import useReplacedText from '../../hooks/useReplacePlaceholders'
@@ -10,8 +10,6 @@ import PlasticOceanBeachChart from '../../modules/country-dashboard/charts/Plast
 import PolicyComponent from './PolicyComponents'
 import RequestDataUpdateModal from './RequestDataUpdateModal'
 import PlasticCompositionChart from '../../modules/country-dashboard/charts/PlasticCompositionChart'
-import useRegions from '../../hooks/useRegions'
-import useCategories from '../../hooks/useCategories'
 
 const splitTextInHalf = (text) => {
   const words = text.split(' ')
@@ -23,10 +21,8 @@ const splitTextInHalf = (text) => {
 
 const CountryOverview = () => {
   const router = useRouter()
-  const { countriesWithRegions, loading: regionLoading } = useRegions()
 
   const [isModalVisible, setModalVisible] = useState(false)
-  const [regionMswValue, setRegionMswValue] = useState(null)
 
   const showModal = () => {
     setModalVisible(true)
@@ -38,22 +34,8 @@ const CountryOverview = () => {
 
   const categoryText = useReplacedText(
     router.query.country,
-    router.query.categoryId,
-    regionMswValue
+    router.query.categoryId
   )
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const selectedCountry = countriesWithRegions.find(
-        (c) => c.CountryName === router.query.country
-      )
-      if (selectedCountry) {
-        setRegionMswValue(selectedCountry.regionMswValue)
-      }
-    }
-
-    fetchData()
-  }, [router.query.country, countriesWithRegions, regionLoading])
 
   const [firstHalfText, secondHalfText] = splitTextInHalf(
     categoryText.replacedText || ''
@@ -201,7 +183,7 @@ const CountryOverview = () => {
                 boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
               }}
             >
-              <MSWGenerationChart regionMswValue={regionMswValue} />
+              <MSWGenerationChart />
             </div>
           </Col>
           <Col xs={24} md={12}>
