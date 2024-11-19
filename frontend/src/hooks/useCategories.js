@@ -15,7 +15,7 @@ const useCategories = () => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          `${strapiURL}/api/categories?locale=${router.locale}`
+          `${strapiURL}/api/categories?locale=${router.locale}&sort[order]=asc`
         );
 
         setCategories(response.data.data || []);
