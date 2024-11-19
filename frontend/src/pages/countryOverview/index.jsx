@@ -22,8 +22,6 @@ const splitTextInHalf = (text) => {
 const CountryOverview = () => {
   const router = useRouter()
 
-
-
   const [isModalVisible, setModalVisible] = useState(false)
 
   const showModal = () => {
@@ -55,7 +53,7 @@ const CountryOverview = () => {
             </span>
           </div>
         </Col>
-        <Col xs={24} md={6} style={{ textAlign: 'right' }}>
+        <Col xs={24} md={6} style={{ textAlign: 'center' }}>
           <span style={{ color: '#7C7C7C', fontSize: '14px' }}>
             <span
               style={{
@@ -71,16 +69,14 @@ const CountryOverview = () => {
           </span>
           <Tooltip title="Update country data by sending a request to the GPML Data Hub team.">
             <Button
-              type="primary"
+              class="ant-btn ant-btn-primary ant-btn-sm"
               onClick={showModal}
               style={{
-                marginTop: '10px',
-                backgroundColor: '#00C49A',
-                borderRadius: '30px',
-                height: '40px',
-                fontSize: '14px',
-                fontWeight: 'bold',
-                border: 'none',
+                backgroundColor: '#00f1bf',
+                marginLeft: '60px',
+
+                borderColor: '#00f1bf',
+                color: 'black',
               }}
             >
               Request Data Update
@@ -202,7 +198,6 @@ const CountryOverview = () => {
               <PlasticCompositionChart />
             </div>
           </Col>
-    
         </Row>
       )}
 

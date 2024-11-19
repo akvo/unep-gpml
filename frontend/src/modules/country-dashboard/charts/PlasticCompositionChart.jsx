@@ -146,7 +146,7 @@ const PlasticCompositionChart = () => {
             show: true,
             position: 'top',
             formatter: (params) =>
-              params.value ? `${params.value.toFixed(2)}%` : '',
+              params.value ? `${params.value.toFixed(0)}%` : '',
             color: '#020A5B',
             fontWeight: 'bold',
           },
