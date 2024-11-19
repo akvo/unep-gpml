@@ -1529,6 +1529,24 @@ export const LinkIcon = () => (
   </svg>
 )
 
+export const LinkExternal = () => (
+  <svg
+    width="28"
+    height="28"
+    viewBox="0 0 28 28"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M11.9583 5.83337H7.87501C7.33353 5.83337 6.81422 6.04848 6.43133 6.43136C6.04845 6.81425 5.83334 7.33356 5.83334 7.87504V20.125C5.83334 20.6665 6.04845 21.1858 6.43133 21.5687C6.81422 21.9516 7.33353 22.1667 7.87501 22.1667H20.125C20.6665 22.1667 21.1858 21.9516 21.5687 21.5687C21.9516 21.1858 22.1667 20.6665 22.1667 20.125V16.0417M14 14L22.1667 5.83337M22.1667 5.83337V10.9375M22.1667 5.83337H17.0625"
+      stroke="#1A7ED7"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>
+)
+
 export const LinkedinOutlined = () => (
   <svg
     width="30"
@@ -1597,5 +1615,83 @@ export const Email = () => (
       stroke-linecap="round"
       stroke-linejoin="round"
     />
+  </svg>
+)
+
+export const Calendar = () => (
+  <svg
+    width="22"
+    height="22"
+    viewBox="0 0 22 22"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <g clip-path="url(#clip0_3254_3143)">
+      <path
+        d="M5.04247 0.458557V5.04179"
+        stroke="#020A5B"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M16.958 0.458557V5.04179"
+        stroke="#020A5B"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M11.0002 6.87509V21.5414"
+        stroke="#020A5B"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M5.50034 6.87509V21.5414"
+        stroke="#020A5B"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M16.5001 6.87509V21.5414"
+        stroke="#020A5B"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M0.458328 14.2083H21.5412"
+        stroke="#020A5B"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M0.458328 10.5417H21.5412"
+        stroke="#020A5B"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M0.458328 17.8748H21.5412"
+        stroke="#020A5B"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M1.37498 2.29187H20.6246C20.6246 2.29187 21.5412 2.29187 21.5412 3.20852V20.6248C21.5412 20.6248 21.5412 21.5415 20.6246 21.5415H1.37498C1.37498 21.5415 0.458328 21.5415 0.458328 20.6248V3.20852C0.458328 3.20852 0.458328 2.29187 1.37498 2.29187Z"
+        stroke="#020A5B"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M0.458328 6.87509H21.5412"
+        stroke="#020A5B"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </g>
+    <defs>
+      <clipPath id="clip0_3254_3143">
+        <rect width="22" height="22" fill="white" />
+      </clipPath>
+    </defs>
   </svg>
 )

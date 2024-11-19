@@ -185,15 +185,16 @@ const KnowledgeHub = ({
   const themes = lifecycleStageTags.map((it) => ({ name: it }))
 
   const types = [
+    { name: 'Project', value: 'project' },
     { name: 'Technical Resource', value: 'technical_resource' },
     { name: 'Technology', value: 'technology' },
     { name: 'Action Plan', value: 'action_plan' },
     { name: 'Legislation', value: 'policy' },
     { name: 'Financing Resource', value: 'financing_resource' },
-    { name: 'Case Studies', value: 'case_study' },
-    { name: 'Initiatives', value: 'initiative' },
-    { name: 'Events', value: 'event' },
-    { name: 'Data Portals', value: 'data_catalog' },
+    { name: 'Case Study', value: 'case_study' },
+    { name: 'Initiative', value: 'initiative' },
+    { name: 'Event', value: 'event' },
+    { name: 'Data Portal', value: 'data_catalog' },
   ]
 
   const handleThemeToggle = (theme) => {

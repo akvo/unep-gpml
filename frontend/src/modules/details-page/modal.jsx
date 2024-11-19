@@ -5,6 +5,7 @@ import styles from './modal.module.scss'
 import DetailsView from './view'
 import bodyScrollLock from './scroll-utils'
 import { CloseIcon } from '../../components/icons'
+import ProjectDetail from '../project-detail/project-detail'
 
 const DetailModal = ({
   match,
@@ -36,18 +37,27 @@ const DetailModal = ({
       }}
       footer={false}
     >
-      <DetailsView
-        type={match?.params?.type}
-        id={match?.params?.id}
-        {...{
-          match,
-          visible,
-          isAuthenticated,
-          setLoginVisible,
-          bookmark2PS,
-          onBookmark2PS,
-        }}
-      />
+      {match?.params?.type === 'project' && (
+        <ProjectDetail
+          data={match?.params?.item}
+          isModal
+          {...{ match, visible, isAuthenticated, setLoginVisible }}
+        />
+      )}
+      {match?.params?.type !== 'project' && (
+        <DetailsView
+          type={match?.params?.type}
+          id={match?.params?.id}
+          {...{
+            match,
+            visible,
+            isAuthenticated,
+            setLoginVisible,
+            bookmark2PS,
+            onBookmark2PS,
+          }}
+        />
+      )}
     </Modal>
   )
 }

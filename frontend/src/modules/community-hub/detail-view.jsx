@@ -31,7 +31,7 @@ import classNames from 'classnames'
 
 export const AdminBadges = ({ data, badgeOpts }) => {
   const [assigned, setAssigned] = useState(
-    data.assignedBadges.map((it) => it.badgeName)
+    data?.assignedBadges?.map((it) => it.badgeName)
   )
   // const badgeOpts =
   const handleClick = (badge, assign) => () => {
@@ -51,7 +51,7 @@ export const AdminBadges = ({ data, badgeOpts }) => {
   return (
     <span className="admin badges">
       {badgeOpts.map((badge) => {
-        const enabled = assigned.indexOf(badge) !== -1
+        const enabled = assigned?.indexOf(badge) !== -1
         return (
           <Tooltip
             title={`${enabled ? 'Remove' : 'Assign'} ${badgeTitles[badge]}`}
@@ -199,6 +199,7 @@ const DetailView = ({ item, profile }) => {
       </div>
     )
   }
+  const imageSrc = data.picture || data.logo
   return (
     <div className={styles.detailView}>
       <div className="org">
@@ -263,9 +264,9 @@ const DetailView = ({ item, profile }) => {
           )}
           {!loading && (
             <p>
-              {data.picture && (
+              {imageSrc && (
                 <div className="img">
-                  <Image src={data.picture} fill />
+                  <Image src={imageSrc} fill />
                 </div>
               )}
               {data.program}
