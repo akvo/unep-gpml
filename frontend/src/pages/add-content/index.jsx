@@ -60,7 +60,7 @@ const contentTypeMap = {
   technical_resource: 'Technical Resource',
   technology: 'Technology',
   event: 'Event',
-  dataset: 'Dataset',
+  data_catalog: 'Dataset',
 }
 
 // Form configurations with layout

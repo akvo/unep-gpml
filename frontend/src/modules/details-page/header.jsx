@@ -73,6 +73,11 @@ const Header = ({
         link = 'edit/project'
         type = 'project'
         break
+      case 'data-catalog':
+        form = 'data_catalog'
+        link = 'edit/data-catalog'
+        type = 'data_catalog'
+        break
       case 'action-plan':
         form = 'actionPlan'
         link = 'edit/action-plan'
