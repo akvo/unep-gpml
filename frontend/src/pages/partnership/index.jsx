@@ -1459,7 +1459,7 @@ const handleSubmissionError = (err) => {
   })
 }
 
-const getBase64 = (file) => {
+export const getBase64 = (file) => {
   return new Promise((resolve, reject) => {
     var reader = new FileReader()
     if (file) {
