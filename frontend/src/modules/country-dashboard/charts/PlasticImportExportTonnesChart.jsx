@@ -183,10 +183,30 @@ const PlasticImportExportChart = () => {
   })
 
   return (
-    <ReactEcharts
-      option={getOption()}
-      style={{ height: '400px', width: '100%' }}
-    />
+    <div style={{ position: 'relative' }}>
+      <ReactEcharts
+        option={getOption()}
+        style={{ height: '400px', width: '100%' }}
+      />
+      <div
+        style={{
+          textAlign: 'left',
+          padding: '10px',
+          color: '#020A5B',
+          fontSize: '12px',
+        }}
+      >
+        Datasource:{' '}
+        <a
+          href={`https://unctad.org/publication/global-trade-plastics-insights-first-life-cycle-trade-database`}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ color: '#020A5B', fontWeight: 'bold' }}
+        >
+          UNCTAD 2021
+        </a>{' '}
+      </div>
+    </div>
   )
 }
 
