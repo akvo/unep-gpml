@@ -540,9 +540,9 @@ const defaultConfig = {
 // Select options
 const selectOptions = {
   geoCoverageType: [
-    { key: 'Global', value: 'global' },
-    { key: 'Transnational', value: 'transnational' },
-    { key: 'National', value: 'national' },
+    { key: t`Global`, value: 'global' },
+    { key: t`Transnational`, value: 'transnational' },
+    { key: t`National`, value: 'national' },
   ],
   lifecycleStage: lifecycleStageTags,
   tags: ['Health', 'Technology', 'Environment'],
@@ -1042,10 +1042,8 @@ const FormField = React.memo(
                 <p className="ant-upload-drag-icon">
                   <UploadFileIcon />
                 </p>
-                <p className="ant-upload-text">
-                  Drag & drop or click to upload an image
-                </p>
-                <p className="add-btn">Only .jpg or .png files are accepted</p>
+                <p className="ant-upload-text">Accepts .jpg and .png</p>
+                <p className="add-btn">Add a File</p>
               </Dragger>
               {meta.touched && meta.error && (
                 <p
@@ -1150,10 +1148,8 @@ const FormField = React.memo(
                 <p className="ant-upload-drag-icon">
                   <UploadFileIcon />
                 </p>
-                <p className="ant-upload-text">
-                  Drag & drop or click to upload an image
-                </p>
-                <p className="add-btn">Only .jpg or .png files are accepted</p>
+                <p className="ant-upload-text">Accepts .jpg and .png</p>
+                <p className="add-btn">Add a File</p>
               </Dragger>
               {input.value && (
                 <div className="preview-img">

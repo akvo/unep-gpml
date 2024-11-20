@@ -133,16 +133,13 @@ const Header = ({
         flexible: 1,
       }
     })
-    router.push(
-      {
-        pathname: '/add-content',
-        query: {
-          type: type,
-          id: id,
-        },
+    router.push({
+      pathname: '/add-content',
+      query: {
+        type: type,
+        id: id,
       },
-      `/add-content`
-    )
+    })
   }
 
   const handleDeleteBtn = () => {
