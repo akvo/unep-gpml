@@ -13,19 +13,20 @@ const PlasticImportExportPieCharts = ({ chartType }) => {
   const categories = [
     'plasticinPrimaryForm',
     'intermediateFormsOfPlastic',
-    'intermediateManufacturedPlasticGoods',
     'finalManufacturedPlasticGoods',
+    'intermediateManufacturedPlasticGoods',
     'plasticWaste',
   ]
 
   const categoriesTitle = [
     { plasticinPrimaryForm: 'Plastic in primary form' },
     { intermediateFormsOfPlastic: 'Intermediate forms of plastic' },
+    { finalManufacturedPlasticGoods: 'Final manufactured plastic goods' },
     {
       intermediateManufacturedPlasticGoods:
         'Intermediate manufactured plastic goods',
     },
-    { finalManufacturedPlasticGoods: 'Final manufactured plastic goods' },
+
     { plasticWaste: 'Plastic waste' },
   ]
 
@@ -38,10 +39,11 @@ const PlasticImportExportPieCharts = ({ chartType }) => {
           'Plastics_in_primary_forms___weight__import__WFL1',
         intermediateFormsOfPlastic:
           'Intermediate_forms_of_plastic_weight____import__WFL1',
-        intermediateManufacturedPlasticGoods:
-          'Intermediate___weight__import__WFL1',
         finalManufacturedPlasticGoods:
           'Final_manufactured_plastics_goods___weight__import__WFL1',
+        intermediateManufacturedPlasticGoods:
+          'Intermediate___weight__import__WFL1',
+
         plasticWaste: 'Plastic_waste_weigth____import__WFL1',
       },
       export: {
@@ -49,10 +51,11 @@ const PlasticImportExportPieCharts = ({ chartType }) => {
           'Plastics_in_primary_forms___weight__export__WFL1',
         intermediateFormsOfPlastic:
           'Intermediate_forms_of_plastic_weight____export__WFL1',
-        intermediateManufacturedPlasticGoods:
-          'Intermediate___weight__export__WFL1',
         finalManufacturedPlasticGoods:
           'Final_manufactured_plastics_goods_weight____export__WFL1',
+        intermediateManufacturedPlasticGoods:
+          'Intermediate___weight__export__WFL1',
+
         plasticWaste: 'Plastic_waste_weigth____export__WFL1',
       },
     }
@@ -184,7 +187,7 @@ const PlasticImportExportPieCharts = ({ chartType }) => {
           fontSize: '12px',
         }}
       >
-        Datasource:{' '}
+        Data source:{' '}
         <a
           href={`https://unctad.org/publication/global-trade-plastics-insights-first-life-cycle-trade-database`}
           target="_blank"
