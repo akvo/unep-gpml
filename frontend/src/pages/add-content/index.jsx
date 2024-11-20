@@ -23,6 +23,7 @@ import moment, { duration } from 'moment'
 import api from '../../utils/api'
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
 import { lifecycleStageTags } from '../../utils/misc'
+import { loadCatalog } from '../../translations/utils'
 
 const { Dragger } = Upload
 const { Title } = Typography
@@ -1961,6 +1962,14 @@ const convertGeoCoverageCountriesToQ24_2 = (countryIds, storeData) => {
     }
     return acc
   }, {})
+}
+
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
 }
 
 export default DynamicContentForm
