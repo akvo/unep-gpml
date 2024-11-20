@@ -186,7 +186,7 @@ const MSWGenerationChart = () => {
           fontSize: '12px',
         }}
       >
-        Datasource:{' '}
+        Data source:{' '}
         <a
           href={`${baseURL}/data/maps?categoryId=waste-management&subcategoryId=generation&layer=Municipal_solid_waste_generated_daily_per_capita_V3_WFL1`}
           style={{ color: '#020A5B', fontWeight: 'bold' }}
