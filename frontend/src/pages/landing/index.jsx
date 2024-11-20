@@ -240,7 +240,6 @@ const ShowcasingAndStats = (props) => {
   const { stakeholders, organisations } = UIStore.useState((s) => ({
     stakeholders: s.stakeholders,
     organisations: s.organisations,
-    community: s.community,
   }))
 
   const [expertsCount, setExpertsCount] = useState(0)
