@@ -157,7 +157,6 @@ const MSWGenerationChart = () => {
                   position: 'middle',
                   color: '#020A5B',
                   fontSize: 12,
-                  fontWeight: 'bold',
                 },
                 lineStyle: {
                   type: 'dashed',
