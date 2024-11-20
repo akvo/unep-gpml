@@ -113,7 +113,10 @@ const formConfigs = {
         { name: 'donors', span: 12, required: true },
         { name: 'partners', span: 12 },
       ],
-      [{ name: 'implementors', span: 12, required: true }],
+      [
+        { name: 'implementors', span: 12, required: true },
+        { name: 'owner', span: 12, required: true },
+      ],
       [
         { name: 'startDate', label: 'YYYY-MM-DD', span: 12 },
         {
@@ -1371,7 +1374,7 @@ const FormField = React.memo(
                       <div className="icn">
                         <PlusIcon />
                       </div>
-                      <Trans>Add Another</Trans>{' '}
+                      Add Another
                     </Button>
                   </div>
                 )}
@@ -1430,7 +1433,7 @@ const FormField = React.memo(
                       <div className="icn">
                         <PlusIcon />
                       </div>
-                      <Trans>Add Another</Trans>{' '}
+                      Add Another
                     </Button>
                   </div>
                 )}
