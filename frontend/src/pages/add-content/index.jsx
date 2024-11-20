@@ -974,7 +974,7 @@ const FormField = React.memo(
         case 'lifecycleStage':
           return (
             <FormLabel
-              label="Lifecycle Stage"
+              label="Life Cycle Stage"
               htmlFor="lifecycleStage"
               meta={meta}
               isOptional={!fieldConfig?.required}
