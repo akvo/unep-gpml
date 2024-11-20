@@ -335,6 +335,12 @@
       (= "organisation" resource-type)
       (assoc resource :logo (get-in files-w-urls [logo_id :url]))
 
+      (= "project" resource-type)
+      (assoc resource
+             :image (get-in files-w-urls [image_id :url])
+             :thumbnail (get-in files-w-urls [thumbnail_id :url])
+             :gallery (map #(get-in files-w-urls [% :url]) (:gallery_ids resource)))
+
       :else
       (assoc resource
              :image (get-in files-w-urls [image_id :url])
