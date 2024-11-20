@@ -100,6 +100,7 @@ const PlasticOceanBeachChart = () => {
       {
         name: 'Plastic distribution',
         type: 'pie',
+        top: '15%',
         radius: ['40%', '80%'],
         avoidLabelOverlap: false,
         itemStyle: {
