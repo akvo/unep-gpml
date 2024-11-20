@@ -12,3 +12,4 @@
          add-resource-related-org)
 
 (hugsql/def-db-fns "gpml/db/detail.sql")
+(hugsql/def-sqlvec-fns "gpml/db/detail.sql")

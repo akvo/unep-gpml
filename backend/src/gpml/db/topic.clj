@@ -88,6 +88,10 @@
    e.remarks AS summary,
    e.*")
 
+(def ^:private project-cols
+  "array_remove(array_agg(DISTINCT g.image), NULL) AS gallery_ids,
+   e.*")
+
 (defn- generic-topic-search-text-field-query [search-text-field]
   (format "COALESCE(e.%s, '')" search-text-field))
 
@@ -126,6 +130,7 @@
     "event" event-cols
     "technology" technology-cols
     "case_study" case-study-cols
+    "project" project-cols
     "e.*"))
 
 (defn- build-topic-data-query [entity-name
@@ -209,6 +214,14 @@
 
                      (= entity-name "organisation")
                      "LEFT JOIN file f ON e.logo_id = f.id"
+
+                     (= entity-name "project")
+                     "LEFT JOIN (
+                        SELECT f.id, f.object_key, f.visibility, pg.project p_id FROM file f JOIN project_gallery pg ON f.id = pg.image
+                        UNION ALL
+                        SELECT f.id, f.object_key, f.visibility, p.id p_id FROM file f JOIN project p on f.id IN(p.image_id, p.thumbnail_id)
+                      ) f ON f.p_id = e.id
+                      LEFT JOIN project_gallery g ON g.project = e.id"
 
                      :else
                      "LEFT JOIN file f ON f.id IN (e.image_id, e.thumbnail_id)")
