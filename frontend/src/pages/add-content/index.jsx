@@ -1553,11 +1553,30 @@ const DynamicContentForm = () => {
             description: data.summary,
           }),
           geoCoverageType: data.geoCoverageType || '',
-          lifecycleStage: data.lifecycleStage || [],
-          tags:
-            data.tags && data.tags.length > 0
-              ? data.tags.map((item) => item.id)
-              : [],
+          lifecycleStage: data.tags
+            ? data.tags
+                .filter((tag) =>
+                  lifecycleStageTags.some(
+                    (stage) => stage.toLowerCase() === tag.tag.toLowerCase()
+                  )
+                )
+                .map((item) =>
+                  item.tag
+                    .toLowerCase()
+                    .replace(/\b\w/g, (char) => char.toUpperCase())
+                )
+            : [],
+
+          tags: data.tags
+            ? data.tags
+                .filter(
+                  (tag) =>
+                    !lifecycleStageTags.some(
+                      (stage) => stage.toLowerCase() === tag.tag.toLowerCase()
+                    )
+                )
+                .map((item) => item.id)
+            : [],
           startDate: data.startDate ? moment(data.startDate) : null,
           endDate: data.endDate ? moment(data.endDate) : null,
         })
