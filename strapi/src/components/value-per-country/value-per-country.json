@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_value_per_country_value_per_countries",
+  "info": {
+    "displayName": "ValuePerCountry",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "CountryName": {
+      "type": "string"
+    },
+    "Value": {
+      "type": "decimal"
+    },
+    "Year": {
+      "type": "string"
+    },
+    "City": {
+      "type": "string"
+    }
+  }
+}

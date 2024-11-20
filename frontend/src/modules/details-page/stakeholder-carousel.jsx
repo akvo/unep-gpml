@@ -23,6 +23,8 @@ const StakeholderCarousel = ({ stakeholders }) => {
     landing: s.landing,
   }))
 
+  console.log(stakeholders)
+
   return (
     <div className={`${styles.connectionWrapper} connection-wrapper`}>
       <Swiper
@@ -88,15 +90,9 @@ const StakeholderCarousel = ({ stakeholders }) => {
                             <span>{country}</span>
                           </li>
                         )}
-                        {stakeholder?.type === 'entity' ? (
-                          <li className="list-item  connection-role">
-                            <Trans>ENTITY</Trans>
-                          </li>
-                        ) : stakeholder?.role === 'owner' ? (
-                          <li className="list-item  connection-role">
-                            <Trans>OWNER</Trans>
-                          </li>
-                        ) : null}
+                        <li className="list-item  connection-role">
+                          <Trans>{stakeholder?.role}</Trans>
+                        </li>
                       </ul>
                     </Card>
                   </a>

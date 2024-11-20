@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #shellcheck disable=SC2039
 
-set -Eeuxo pipefail
+set -Eeuo pipefail
 
 get_token () {
   curl --silent \

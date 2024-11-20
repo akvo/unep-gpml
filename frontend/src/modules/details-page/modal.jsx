@@ -4,11 +4,12 @@ import { Modal } from 'antd'
 import styles from './modal.module.scss'
 import DetailsView from './view'
 import bodyScrollLock from './scroll-utils'
+import { CloseIcon } from '../../components/icons'
+import ProjectDetail from '../project-detail/project-detail'
 
 const DetailModal = ({
   match,
   setLoginVisible,
-  setFilterMenu,
   isAuthenticated,
   visible,
   setVisible,
@@ -25,7 +26,9 @@ const DetailModal = ({
         setVisible(false)
         bodyScrollLock.disable()
       }}
+      closable
       className={styles.detailModal}
+      closeIcon={<CloseIcon />}
       wrapClassName="detail-modal-wrapper"
       destroyOnClose={true}
       centered={desktopViewport ? false : true}
@@ -34,19 +37,27 @@ const DetailModal = ({
       }}
       footer={false}
     >
-      <DetailsView
-        type={match?.params?.type}
-        id={match?.params?.id}
-        {...{
-          match,
-          visible,
-          setFilterMenu,
-          isAuthenticated,
-          setLoginVisible,
-          bookmark2PS,
-          onBookmark2PS,
-        }}
-      />
+      {match?.params?.type === 'project' && (
+        <ProjectDetail
+          data={match?.params?.item}
+          isModal
+          {...{ match, visible, isAuthenticated, setLoginVisible }}
+        />
+      )}
+      {match?.params?.type !== 'project' && (
+        <DetailsView
+          type={match?.params?.type}
+          id={match?.params?.id}
+          {...{
+            match,
+            visible,
+            isAuthenticated,
+            setLoginVisible,
+            bookmark2PS,
+            onBookmark2PS,
+          }}
+        />
+      )}
     </Modal>
   )
 }

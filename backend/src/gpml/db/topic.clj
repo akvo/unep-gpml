@@ -7,16 +7,18 @@
 (declare get-topics get-flat-topics)
 
 (hugsql/def-db-fns "gpml/db/topic.sql" {:quoting :ansi})
+(hugsql/def-sqlvec-fns "gpml/db/topic.sql" {:quoting :ansi})
 
 (def generic-cte-opts
   "Common set of options for all CTE generation functions."
-  {:tables ["event" "technology" "policy" "initiative" "resource" "case_study"]
+  {:tables ["event" "technology" "policy" "initiative" "resource" "case_study" "project"]
    :search-text-fields {"event" ["title" "description" "remarks"]
                         "technology" ["name"]
                         "policy" ["title" "original_title" "abstract" "remarks"]
                         "initiative" ["q2" "q3"]
                         "resource" ["title" "summary" "remarks"]
-                        "case_study" ["title" "description"]}})
+                        "case_study" ["title" "description"]
+                        "project" ["title" "summary" "background" "purpose"]}})
 
 #_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (def generic-entity-cte-opts
@@ -86,6 +88,10 @@
    e.remarks AS summary,
    e.*")
 
+(def ^:private project-cols
+  "array_remove(array_agg(DISTINCT g.image), NULL) AS gallery_ids,
+   e.*")
+
 (defn- generic-topic-search-text-field-query [search-text-field]
   (format "COALESCE(e.%s, '')" search-text-field))
 
@@ -124,6 +130,7 @@
     "event" event-cols
     "technology" technology-cols
     "case_study" case-study-cols
+    "project" project-cols
     "e.*"))
 
 (defn- build-topic-data-query [entity-name
@@ -207,6 +214,14 @@
 
                      (= entity-name "organisation")
                      "LEFT JOIN file f ON e.logo_id = f.id"
+
+                     (= entity-name "project")
+                     "LEFT JOIN (
+                        SELECT f.id, f.object_key, f.visibility, pg.project p_id FROM file f JOIN project_gallery pg ON f.id = pg.image
+                        UNION ALL
+                        SELECT f.id, f.object_key, f.visibility, p.id p_id FROM file f JOIN project p on f.id IN(p.image_id, p.thumbnail_id)
+                      ) f ON f.p_id = e.id
+                      LEFT JOIN project_gallery g ON g.project = e.id"
 
                      :else
                      "LEFT JOIN file f ON f.id IN (e.image_id, e.thumbnail_id)")

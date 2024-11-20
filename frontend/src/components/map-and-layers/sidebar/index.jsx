@@ -2,15 +2,14 @@ import React, { useState } from 'react'
 import Categories from './partials/categories'
 import useCategories from '../../../hooks/useCategories'
 import useSubcategories from '../../../hooks/useSubcategories'
-import Subcategories from './partials/subcategories'
 import styles from './index.module.scss'
 import CategoriesNested from './partials/categoriesNested'
+import CategoriesNestedDashboard from './partials/CategoriesNestedDashboard'
 
-const Sidebar = ({ alt }) => {
+const Sidebar = ({ alt, countryDashboard }) => {
   const [showLayerSidebar, setShowLayerSidebar] = useState(false)
 
   const { categories, loading } = useCategories()
-
   const subcategories = useSubcategories()
 
   if (loading) {
@@ -27,23 +26,21 @@ const Sidebar = ({ alt }) => {
 
   return (
     <div className={styles.container}>
-      {alt ? (
-        <>
-          <CategoriesNested
-            categories={categories}
-            subcategories={subcategories}
-          />
-        </>
+      {countryDashboard ? (
+        <CategoriesNestedDashboard
+          categories={categories}
+          subcategories={subcategories}
+          countryDashboard={countryDashboard}
+        />
       ) : (
-        <>
-          <Categories
-            categories={categories}
-            onCategoryClick={handleCategoryClick}
-          />
-          {showLayerSidebar && <Subcategories subcategories={subcategories} />}
-        </>
+        <CategoriesNested
+          categories={categories}
+          subcategories={subcategories}
+          countryDashboard={countryDashboard}
+        />
       )}
     </div>
   )
 }
+
 export default Sidebar

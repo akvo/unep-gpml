@@ -5,8 +5,13 @@ export let isoA2 = {
   'country-a': '0A',
 }
 
+export let iso2name = {
+  '0A': 'Country A',
+}
+
 Object.keys(countries).forEach((key) => {
   isoA2[countries[key].name.toLowerCase().replace(/ /g, '-')] = key
+  iso2name[key] = countries[key].name
 })
 
 export const iso2id = {

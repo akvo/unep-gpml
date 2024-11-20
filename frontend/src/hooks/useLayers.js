@@ -18,8 +18,8 @@ const useLayers = (renderers) => {
   const featureLayers = layersFromQuery?.reverse().map(layer => {
     const baseUrl = `https://services3.arcgis.com/pI4ewELlDKS2OpCN/arcgis/rest/services/${layer.attributes.arcgislayerId}/FeatureServer`;
 
-    const url = layer.attributes.featureId ? `${baseUrl}/${layer.attributes.featureId}` : baseUrl;
-    const layerRendererObject = renderers.find(renderer => renderer.key === layer.attributes.name)
+    const url = layer?.attributes.featureId ? `${baseUrl}/${layer?.attributes.featureId}` : baseUrl;
+    const layerRendererObject = renderers.find(renderer => renderer.key === layer?.attributes.name)
     const renderer = layerRendererObject ? layerRendererObject.renderer : null
 
     const parts = layer?.attributes?.outFields?.split(',');
@@ -35,7 +35,7 @@ const useLayers = (renderers) => {
 
     try {
       const featureLayer =
-        (layer.attributes.arcgisMapId !== null && layer.attributes.layerMappingId === null) ? new FeatureLayer({
+        (layer?.attributes.arcgisMapId !== null && layer?.attributes.layerMappingId === null) ? new FeatureLayer({
           portalItem: {
             id: layer.attributes.arcgisMapId,
           },
@@ -45,7 +45,7 @@ const useLayers = (renderers) => {
             outFields: arrayFields,
             ...(layer.attributes.arcgisMapId !== null ? { renderer: renderer } : {}),
             labelingInfo: [new LabelClass({
-              labelExpressionInfo: { expression: `$feature.${layer.attributes.labelField || "NAME"}` },
+              labelExpressionInfo: { expression: `$feature.${layer?.attributes.labelField || "NAME"}` },
               symbol: {
                 type: "text",
                 color: "#000000",

@@ -3,7 +3,7 @@
 .container {
   display: flex;
   flex-direction: row;
-  // width: 30%;
+  height:100%;  // width: 30%;
   :global {
     .ant-layout-sider {
       background-color: #fff;
@@ -49,6 +49,16 @@
           width: 100%;
           cursor: pointer;
           
+        }
+        .custom-select-placeholder .ant-select-selection-placeholder {
+          color: #677194 !important;
+        }
+        .countryDropdown {
+          width: 100%;
+          padding: 8px;
+          font-size: 16px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
         }
         .ant-collapse-item-active {
           background-color: #fafbff;

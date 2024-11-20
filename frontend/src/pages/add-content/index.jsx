@@ -25,6 +25,7 @@ import api from '../../utils/api'
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
 import { lifecycleStageTags } from '../../utils/misc'
 import { useRouter } from 'next/router'
+import { loadCatalog } from '../../translations/utils'
 
 const { Dragger } = Upload
 const { Title } = Typography
@@ -2139,6 +2140,14 @@ const getUpdatedFields = (initialValues, currentValues) => {
   })
 
   return updatedFields
+}
+
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
 }
 
 export default DynamicContentForm

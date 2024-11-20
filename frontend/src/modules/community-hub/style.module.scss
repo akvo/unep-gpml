@@ -1,0 +1,209 @@
+@import '../../styles/vars.scss';
+
+.detailModal {
+  :global {
+    .ant-modal-content {
+      // width: 800px;
+    }
+  }
+}
+
+.detailView {
+  :global {
+    .header {
+      padding: 0 20px;
+      h1 {
+        font-size: 38px;
+        font-weight: 700;
+        line-height: 48px;
+        .badges {
+          .badge {
+            margin-left: 10px;
+            svg {
+              width: 24px;
+              height: 24px;
+            }
+          }
+          &.admin {
+            .badge:not(.enabled) {
+              filter: grayscale(0.35);
+              opacity: 0.5;
+            }
+          }
+        }
+      }
+      .h-caps-m {
+        margin-top: 15px;
+        margin-bottom: 7px;
+      }
+    }
+    .meta {
+      display: flex;
+      margin: 15px 0 25px;
+      .item {
+        margin-right: 20px;
+        display: flex;
+        align-items: center;
+        font-weight: 500;
+        font-size: 18px;
+        color: $primaryDarkBlueText;
+        &.location {
+          svg {
+            height: 25px;
+            stroke-width: 3px;
+          }
+        }
+        &.geo {
+          svg {
+            height: 22px;
+          }
+          text-transform: capitalize;
+        }
+        &.link {
+          text-decoration: underline;
+          span {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex: 1;
+          }
+        }
+        &.linkedin {
+          svg {
+            // height: 22px;
+            // width: 22px;
+          }
+        }
+        &.email {
+          svg {
+            path {
+              // fill: $primaryDarkBlueText;
+            }
+          }
+        }
+        svg {
+          margin-right: 5px;
+          max-width: 30px;
+          max-height: 30px;
+          path,
+          line {
+            stroke: $primaryDarkBlueText;
+          }
+        }
+      }
+      & > a {
+        overflow: hidden;
+      }
+    }
+    .content {
+      h4.h-caps-m {
+        margin: 30px 0 0px;
+      }
+    }
+    .org {
+      .content {
+        padding: 0 20px;
+        .img {
+          display: inline-block;
+          float: left;
+          width: 350px;
+          height: auto;
+          position: relative;
+          margin-right: 20px;
+          img {
+            position: static !important;
+            object-fit: contain;
+            border: 10px solid $primaryDarkBlue2;
+          }
+        }
+        font-size: 16px;
+        line-height: 34px;
+      }
+    }
+    .clearfix {
+      clear: both;
+      height: 1px;
+      width: 100%;
+    }
+    .swiper {
+      overflow: visible;
+      padding-bottom: 20px;
+      padding-left: 40px;
+      padding-right: 40px;
+      margin-left: -44px;
+      padding-top: 24px;
+      width: calc(100% + 88px);
+      .swiper-slide {
+        width: 195px;
+      }
+    }
+    .swiper {
+    }
+    .members-slider {
+      .swiper-slide {
+        width: 195px;
+      }
+    }
+    .more-card {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 290px;
+      font-weight: 500;
+      text-decoration: underline;
+      border: 1px dashed #ccc;
+      border-radius: 6px;
+      color: $primaryDarkBlueText;
+      cursor: pointer;
+      &.individual {
+        height: 170px;
+      }
+    }
+  }
+}
+
+.stakeholderDetailView {
+  :global {
+    .header {
+      padding: 0 20px;
+      h1 {
+        font-size: 38px;
+        font-weight: 700;
+        line-height: 48px;
+      }
+      .h-caps-m {
+        margin-top: 15px;
+        margin-bottom: 7px;
+      }
+      h5 {
+        font-size: 16px;
+        margin-top: 5px;
+        a {
+          color: $primaryDarkBlueText;
+          text-decoration: underline;
+        }
+      }
+    }
+    .meta {
+      flex-direction: column;
+      .item {
+        margin-bottom: 15px;
+      }
+    }
+    .content {
+      padding: 20px 20px;
+      display: flex;
+      .img {
+        width: 180px;
+        height: 180px;
+        border-radius: 100%;
+        overflow: hidden;
+        margin-right: 20px;
+        img {
+          position: static !important;
+          object-fit: cover;
+        }
+      }
+    }
+  }
+}

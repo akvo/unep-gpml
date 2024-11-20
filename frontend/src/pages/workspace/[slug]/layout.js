@@ -220,6 +220,8 @@ const NestedLayout = ({ children }) => {
      */
     try {
       const [_, countrySlug] = slug?.split(`${PREFIX_SLUG}-`)
+      console.log('asd', countrySlug)
+      console.log(isoA2)
       const countryISOA2 =
         isoA2?.[countrySlug === 'cote-d-ivoire' ? 'ivory-coast' : countrySlug]
       /**
@@ -251,7 +253,7 @@ const NestedLayout = ({ children }) => {
       }
     })
   }, [])
-
+  console.log(psItem)
   const psCountryName = psItem?.country?.name
 
   return (

@@ -20,6 +20,7 @@
       margin: 0 5%;
       background-color: #fff;
       padding: 0;
+      padding-bottom: 30px;
       border-radius: 10px;
       @media (max-width: 600px) {
         margin: 0;
@@ -61,16 +62,13 @@
         position: sticky;
         top: 0;
         border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-        padding: 40px 40px 15px 40px !important;
+        padding: 30px 40px 15px 40px !important;
         background-color: #fff;
         z-index: 10;
         border-radius: 10px 10px 0 0;
         font-weight: 500;
         @media (max-width: 600px) {
           padding: 30px 30px calc(30px - 14px) 30px !important;
-        }
-        .close-modal-button {
-          display: none;
         }
         .tool-buttons {
           display: flex;
@@ -503,7 +501,18 @@
           }
         }
       }
-
+      .admin.badges {
+        .badge {
+          svg {
+            width: 30px;
+            height: 30px;
+          }
+          &:not(.enabled) {
+            filter: grayscale(0.35);
+            opacity: 0.5;
+          }
+        }
+      }
       .detail-item {
         font-weight: 500;
         font-size: 16px;
@@ -547,6 +556,7 @@
               font-weight: 600;
               line-height: $lhXXS;
               text-transform: capitalize;
+              color: $primaryDarkBlue;
             }
           }
         }

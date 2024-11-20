@@ -53,6 +53,11 @@ const menuList = [
       //   href: 'https://datahub.gpmarinelitter.org/',
       // },
       {
+        key: msg`Country dashboard`,
+        id: 'Country dashboard',
+        to: '/country-dashboard',
+      },
+      {
         key: msg`Data Catalogue`,
         id: 'Data Catalogue',
         href: 'https://unepazecosysadlsstorage.z20.web.core.windows.net/',
@@ -60,13 +65,13 @@ const menuList = [
     ],
   },
   {
-    key: msg`Community`,
+    key: `Community Hub`,
     id: 'Community',
     children: [
       {
-        key: msg`GPML Community`,
+        key: `Partner Network`,
         id: 'GPML Community',
-        to: '/community',
+        to: '/community-hub',
       },
       {
         key: msg`Join the Partnership`,

@@ -14,15 +14,9 @@ import {
 } from 'antd'
 import Image from 'next/image'
 import Link from 'next/link'
-import isEmpty from 'lodash/isEmpty'
-import values from 'lodash/values'
-import flatten from 'lodash/flatten'
 import styles from './index.module.scss'
 import {
   CirclePointer,
-  Magnifier,
-  Localiser,
-  ArrowRight,
   LinkedinIcon,
   YoutubeIcon,
   LongArrowRight,
@@ -33,7 +27,6 @@ import classNames from 'classnames'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination } from 'swiper'
-import moment from 'moment'
 import { useDeviceSize } from '../../modules/landing/landing'
 import Button from '../../components/button'
 import { Trans, t } from '@lingui/macro'
@@ -45,10 +38,7 @@ import {
   getStrapiUrl,
   stripHtml,
   transformStrapiResponse,
-  useQuery,
 } from '../../utils/misc'
-import LocationDropdown from '../../components/location-dropdown/location-dropdown'
-import CountryTransnationalFilter from '../../components/select/country-transnational-filter'
 import api from '../../utils/api'
 import { SearchBar } from '../search'
 
@@ -67,32 +57,15 @@ const Landing = (props) => {
       <WhoAreWe />
       <ActNow />
       <LatestNews />
-      {/* <Features /> */}
-      {/* <Trusted /> */}
       <Activities />
-      {/* <OurVoices /> */}
-      {/* <Partnership {...props} /> */}
       <Partners />
-      {/* <HelpCentre /> */}
     </div>
   )
 }
 
 const Hero = ({ setLoginVisible, isAuthenticated }) => {
-  const query = useQuery()
   const [selected, setSelected] = useState('Governments')
-  const [dropdownVisible, setDropdownVisible] = useState(false)
-  const [country, setCountry] = useState([])
-  const [multiCountry, setMultiCountry] = useState([])
-  const [disable, setDisable] = useState({
-    country: false,
-    multiCountry: false,
-  })
   const [timeout, _setTimeout] = useState(true)
-  const [filter, setFilter] = useState({})
-  const [filterCountries, setFilterCountries] = useState([])
-  const [value, setValue] = useState('')
-  const [multiCountryCountries, setMultiCountryCountries] = useState([])
 
   const intidRef = useRef()
   const [width] = useDeviceSize()
@@ -143,38 +116,6 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
     },
   ]
   const router = useRouter()
-  const tags = UIStore.useState((s) => s.tags)
-  const { countries, transnationalOptions } = UIStore.useState((s) => ({
-    countries: s.countries,
-    transnationalOptions: s.transnationalOptions,
-  }))
-  // populate options for tags dropdown
-  const tagsWithoutSpace =
-    !isEmpty(tags) &&
-    flatten(values(tags)).map((it) => ({
-      value: it?.tag?.trim(),
-      label: it?.tag?.trim(),
-    }))
-
-  const tagOpts = !isEmpty(tags)
-    ? [...new Set(tagsWithoutSpace.map((s) => JSON.stringify(s)))]
-        .map((s) => JSON.parse(s))
-        ?.sort((tag1, tag2) => tag1?.label.localeCompare(tag2?.label))
-    : []
-  const suggestedTags = [
-    'Plastic Pollution',
-    'Marine Litter',
-    'Report & Assessment',
-    'Circularity',
-    'Plastics',
-    'Waste management',
-    'Courses & Trainings',
-    'National Action Plans',
-  ]
-  const maxTags = 6
-
-  const { locale } = router
-
   useEffect(() => {
     let index = 0
     clearInterval(intidRef.current)
@@ -194,83 +135,6 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
     clearInterval(intidRef.current)
     _setTimeout(false)
   }
-
-  function removeEmptyKeys(obj) {
-    return Object.fromEntries(
-      Object.entries(obj).filter(([key, value]) => {
-        if (Array.isArray(value)) {
-          return value.length > 0
-        }
-        return value !== null && value !== undefined && value !== ''
-      })
-    )
-  }
-
-  const handleOnSearch = () => {
-    if (!filter?.tag && country.length === 0 && multiCountry.length === 0) {
-      return
-    }
-
-    const data = {
-      tag: filter?.tag?.toLowerCase(),
-      country: country,
-      transnational: multiCountry,
-    }
-
-    const cleanedData = removeEmptyKeys(data)
-
-    router.push({
-      pathname: '/knowledge/library',
-      query: cleanedData,
-    })
-  }
-
-  const countryOpts = countries
-    ?.filter((country) => country.description.toLowerCase() === 'member state')
-    ?.map((it) => ({ value: it.id, label: it.name }))
-    ?.sort((a, b) => a.label.localeCompare(b.label))
-
-  const updateQuery = (param, value, paramValueArr) => {
-    if (param === 'country') {
-      setDisable({
-        ...disable,
-        ...(value ? { multiCountry: true } : { multiCountry: false }),
-      })
-      setCountry(value)
-      setFilterCountries(value?.toString())
-      const find = countryOpts.find((item) => item.value === value)
-      setValue(find ? find.label : '')
-    }
-    if (param === 'transnational') {
-      setDisable({
-        ...disable,
-        ...(value ? { country: true } : { country: false }),
-      })
-      if (!value) {
-        setFilterCountries('')
-      }
-      setMultiCountry(value)
-
-      const find = transnationalOptions.find((item) => item.id === value)
-      setValue(find ? find.name : '')
-    }
-  }
-
-  const countryList = (
-    <CountryTransnationalFilter
-      {...{
-        query,
-        updateQuery,
-        multiCountryCountries,
-        setMultiCountryCountries,
-      }}
-      country={country || []}
-      multiCountry={multiCountry || []}
-      multiCountryLabelCustomIcon={true}
-      isExpert={true}
-      disable={disable}
-    />
-  )
 
   return (
     <>
@@ -373,7 +237,7 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
 
 const ShowcasingAndStats = (props) => {
   const { isAuthenticated, setLoginVisible } = props
-  const { stakeholders, organisations, community } = UIStore.useState((s) => ({
+  const { stakeholders, organisations } = UIStore.useState((s) => ({
     stakeholders: s.stakeholders,
     organisations: s.organisations,
     community: s.community,
@@ -401,27 +265,6 @@ const ShowcasingAndStats = (props) => {
       })
   }, [])
 
-  const { i18n } = useLingui()
-  const items = [
-    {
-      value: totalCount,
-      label: i18n._(t`NUMBER OF RESOURCES`),
-    },
-    {
-      value: props?.layers,
-      label: t`DATA LAYERS`,
-    },
-    {
-      value:
-        props?.data?.find((item) => item.topic === 'action_plan').count || 0,
-      label: t`ACTION PLANS`,
-    },
-    {
-      value: props?.cop,
-      label: t`COMMUNITIES OF PRACTICE`,
-    },
-  ]
-
   return (
     <div className="container">
       <div className={styles.showCasingSection}>
@@ -441,12 +284,6 @@ const ShowcasingAndStats = (props) => {
             <Image
               src="/powered-by-unep.svg"
               alt="UNEP"
-              width={146}
-              height={146}
-            />
-            <Image
-              src="/powered-by-gpml.svg"
-              alt="GPML"
               width={146}
               height={146}
             />
@@ -619,33 +456,6 @@ const ShowcasingAndStats = (props) => {
           </p>
         </div>
       </div>
-      {/* <div className={styles.statsSection}>
-        <div className="stats-container">
-          <ul className="stats">
-            {items.map((item, ix) => (
-              <li key={ix}>
-                <h2>{item.value}</h2>
-                <strong className="h-xs">{item.label}</strong>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="summaries">
-          <span className="green">
-            <h5>
-              {organisations?.length} <Trans>Member Organizations</Trans>
-            </h5>
-          </span>
-          <span className="blue">
-            <h5>
-              {stakeholders?.stakeholders?.length
-                ? stakeholders?.stakeholders?.length
-                : 0}{' '}
-              <Trans>Individuals</Trans>
-            </h5>
-          </span>
-        </div>
-      </div> */}
     </div>
   )
 }
@@ -653,7 +463,6 @@ const ShowcasingAndStats = (props) => {
 const WhoAreWe = () => {
   const [activeTab, setActiveTab] = useState('1')
   const [activeAccordion, setActiveAccordion] = useState('1')
-  const { i18n } = useLingui()
 
   const items = [
     {
@@ -748,7 +557,6 @@ const WhoAreWe = () => {
 
 const ActNow = () => {
   const [width] = useDeviceSize()
-  const { i18n } = useLingui()
   const items = [
     {
       content: t`Start your own initiative. Get inspired by others who are making progress to end plastic pollution.`,
@@ -885,7 +693,6 @@ const LatestNews = () => {
         </div>
         <div className="news-wrapper news-items">
           {items.map((item, dx) => {
-            // const badgeColor = ['blue', 'green', 'purple']
             return (
               <Card
                 bordered={false}
@@ -919,108 +726,6 @@ const LatestNews = () => {
             )
           })}
         </div>
-      </div>
-    </div>
-  )
-}
-
-const Features = () => {
-  const [width] = useDeviceSize()
-  const { i18n } = useLingui()
-  const items = [
-    {
-      title: t`Data tools`,
-      key: 'data-tool',
-      content: t`Access a suite of powerful data tools tailored for tackling plastic pollution and marine litter. Utilize comprehensive data sets, layers and statistics to  gain valuable insights that empower informed decision-making and drive effective action.`,
-    },
-    {
-      title: t`Workspace`,
-      key: 'workspace-feature',
-      content: `${t`Elevate your mission to address plastic pollution and marine litter through our integrated workspace feature. This feature enables you to coordinate with partners, centralize resources, strategize actions, and drive collective solutions`}.`,
-    },
-    {
-      label: t`Coming soon`,
-      title: t`Match-making`,
-      key: 'match-making',
-      content: t`Discover like-minded individuals and organizations passionate about combating plastic pollution and marine litter through our innovative matchmaking feature. Connect with fellow advocates, researchers, and activists to amplify your impact and collaborate on meaningful projects for a cleaner and healthier ocean ecosystem.`,
-    },
-    // {
-    //   title: t`AI Innovations`,
-    //   key: 'ai-innovations',
-    //   content: t`By leveraging AI and innovation, the platform will enable proactive strategies and solutions that efficiently combat plastic pollution and marine litter`,
-    // },
-  ]
-
-  return (
-    <section className={styles.features}>
-      {width >= 1024 && (
-        <div className="container">
-          <div className="title-wrapper">
-            <div className="title-holder">
-              <div className="caps-heading-1 page-sub-heading">
-                <Trans>How does it work?</Trans>
-              </div>
-              <h2 className="h-xxl">
-                <Trans>
-                  Features & Benefits <span>of using the platform</span>
-                </Trans>
-              </h2>
-              <p className="p-l">
-                <Trans>
-                  The platform offers a wide range of tools to support your
-                  decision-making and help a global network of actors to work
-                  together to create shared solutions to end plastic pollution.
-                </Trans>
-              </p>
-            </div>
-            {/* <div>
-              <Button withArrow={<LongArrowRight />} size="large" ghost>
-                <Trans>View All Features</Trans>
-              </Button>
-            </div> */}
-          </div>
-        </div>
-      )}
-      <div className="slider-container">
-        <div className="slider-wrapper">
-          <Swiper
-            spaceBetween={20}
-            slidesPerView={'auto'}
-            pagination={pagination}
-            modules={[Pagination]}
-          >
-            {items.map((item, index) => (
-              <SwiperSlide key={index}>
-                <FeatureCard item={item} />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-const Trusted = () => {
-  return (
-    <div className="container">
-      <div className={styles.trustedSection}>
-        <div className="trusted-text">
-          <h3 className="semibold">
-            <Trans>
-              Trusted data, Information badge system and Validation process.
-            </Trans>
-          </h3>
-          <a
-            target="_blank"
-            href="https://docs.google.com/presentation/d/e/2PACX-1vSi-8jTrnk3Lj7ieb-z2Hy-FIHE4jQhZyRjonWWOlYgPb2Mu5suUyPPfwylZR_7zDyIJE7kGNkfghTM/pub?start=false&loop=false&delayms=60000"
-          >
-            <Button withArrow type="primary" size="large">
-              <Trans>Discover</Trans>
-            </Button>
-          </a>
-        </div>
-        <div className="trusted-circle" />
       </div>
     </div>
   )
@@ -1111,201 +816,6 @@ const Activities = () => {
   )
 }
 
-const OurVoices = () => {
-  const [width] = useDeviceSize()
-  return (
-    <section className={styles.ourVoices}>
-      <div className="container">
-        <div className="title-wrapper">
-          <div className="title-holder">
-            <div className="caps-heading-1 page-sub-heading">Our Voices</div>
-            <h2 className="h-xxl">
-              Uniting Waste Pickers and Indigenous Communities:{' '}
-              <span>Take Action for Sustainable Empowerment</span>
-            </h2>
-          </div>
-        </div>
-        <div className="group-wrapper">
-          <div className="group-one">
-            <img
-              src={
-                width < 768
-                  ? '/voices-group-one-mobile.jpg'
-                  : '/voices-group-one.jpg'
-              }
-            />
-            <div className="group-card">
-              <div className="label-s">
-                <span>WASTE PICKERS</span>
-              </div>
-              <p className="p-l">
-                Cooperative actions for Caribbean fisheries officials after a
-                successful ghost gear retrieval training in Panama{' '}
-              </p>
-              <Button withArrow={<LongArrowRight />}>
-                Explore whole story
-              </Button>
-            </div>
-          </div>
-          <div className="group-two">
-            <div className="group-card">
-              <div className="label-s">
-                <span>Indigenous People</span>
-              </div>
-              <p className="p-l">
-                Cooperative actions for Caribbean fisheries officials after a
-                successful ghost gear retrieval training in Panama{' '}
-              </p>
-              <Button withArrow={<LongArrowRight />}>
-                Explore whole story
-              </Button>
-            </div>
-            <img
-              src={
-                width < 768
-                  ? '/voices-group-two-mobile.jpg'
-                  : '/voices-group-two.jpg'
-              }
-            />
-          </div>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-const Partnership = ({ isAuthenticated, setLoginVisible }) => {
-  return (
-    <section className={styles.partnership}>
-      <div className="container content-container">
-        <div className="partnership-content-wrapper">
-          <h2 className="h-xxl">
-            <Trans>
-              Join the Global Partnership on Plastic Pollution and Marine Litter
-            </Trans>
-          </h2>
-          <p className="h-m">
-            <Trans>
-              Become part of GPML to collaborate with thousands of organisations
-              and individuals from around the world
-            </Trans>
-          </p>
-          {!isAuthenticated ? (
-            <Button
-              onClick={() => setLoginVisible(true)}
-              type="primary"
-              size="large"
-              withArrow
-            >
-              <Trans>Join Now</Trans>
-            </Button>
-          ) : (
-            <Link href="/workspace">
-              <Button type="primary" size="large" withArrow>
-                <Trans>Workspace</Trans>
-              </Button>
-            </Link>
-          )}
-        </div>
-      </div>
-      <div className="container links-container">
-        <Row gutter={24}>
-          <Col lg={8} xl={8}>
-            <div className="links-card">
-              <h3 className="h-m">
-                <Trans>Become part of the network</Trans>
-              </h3>
-              <ul className="link-list">
-                <li onClick={() => setLoginVisible(true)}>
-                  <CirclePointer />
-                  <Trans>Sign Up</Trans>
-                </li>
-                <li>
-                  <CirclePointer />
-                  <Link href="/partnership">
-                    <Trans>Join the GPML</Trans>
-                  </Link>
-                </li>
-                <li>
-                  <CirclePointer />
-                  <Link href="/page/membership">
-                    <Trans>Become a partner</Trans>
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </Col>
-          <Col lg={8} xl={8}>
-            <div className="links-card">
-              <h3 className="h-m">
-                <Trans>Co-solution with our network</Trans>
-              </h3>
-              <ul className="link-list">
-                <li>
-                  <CirclePointer />
-                  <Link href="/community">
-                    <Trans>Network with others</Trans>
-                  </Link>
-                </li>
-                <li>
-                  <CirclePointer />
-                  <Link
-                    href={
-                      isAuthenticated ? '/flexible-forms' : '/knowledge-library'
-                    }
-                  >
-                    <Trans>Share your knowledge</Trans>
-                  </Link>
-                </li>
-                <li>
-                  <CirclePointer />
-                  <a
-                    href={
-                      isAuthenticated
-                        ? 'https://unepazecosysadlsstorage.z20.web.core.windows.net/add-data'
-                        : 'https://unepazecosysadlsstorage.z20.web.core.windows.net/'
-                    }
-                  >
-                    <Trans>Share your data</Trans>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </Col>
-          <Col lg={8} xl={8}>
-            <div className="links-card">
-              <Trans>
-                <h3 className="h-m">Spread the word</h3>
-                <p>Follow us on social media to be part of the movement. </p>
-              </Trans>
-              <ul className="icon-list">
-                <li>
-                  <a
-                    href="https://ke.linkedin.com/company/global-partnership-on-marine-litter"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <LinkedinIcon />
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://www.youtube.com/channel/UCoWXFwDeoD4c9GoXzFdm9Bg"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <YoutubeIcon />
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </Col>
-        </Row>
-      </div>
-    </section>
-  )
-}
-
 const Partners = () => {
   const [items, setItems] = useState([])
   const [width] = useDeviceSize()
@@ -1354,48 +864,6 @@ const Partners = () => {
             ))}
           </Swiper>
         </ul>
-      </div>
-    </div>
-  )
-}
-
-const HelpCentre = () => {
-  return (
-    <div className={styles.helpCentreSection}>
-      <Image
-        src="/globe-help-centre.svg"
-        alt="CTA Help centre"
-        width={64}
-        height={64}
-      />
-      <div className="help-centre-text">
-        <h2 className="bold">
-          <Trans>Any Questions?</Trans>
-        </h2>
-        <h6 className="semibold">
-          <Trans>Visit the Help Center for FAQs, tutorials and more</Trans>
-        </h6>
-      </div>
-      <div className="help-centre-button">
-        <a href="mailto:unep-gpmarinelitter@un.org">
-          <Button withArrow={<LongArrowRight />}>
-            <Trans>Contact Us</Trans>
-          </Button>
-        </a>
-      </div>
-    </div>
-  )
-}
-
-const FeatureCard = ({ item }) => {
-  return (
-    <div className="feature-card">
-      <div className={`card-title-container card--${item?.key}`}>
-        {item?.label && <span className="card-label">{item?.label}</span>}
-        <h3 className="h-l">{item.title}</h3>
-      </div>
-      <div className="card-content-container">
-        <p className="p-m">{item?.content}</p>
       </div>
     </div>
   )

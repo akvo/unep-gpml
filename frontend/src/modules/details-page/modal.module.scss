@@ -7,6 +7,9 @@
 
 .detailModal {
   width: 1024px !important;
+  @media (min-width: 1200px) {
+    max-width: 960px !important;
+  }
   @media (max-width: 600px) {
     width: 100% !important;
     max-width: 100%;
@@ -15,7 +18,6 @@
   :global {
     .ant-modal-close {
       position: sticky;
-      left: 100%;
       z-index: 1001;
       float: right;
     }
