@@ -138,7 +138,7 @@ const PlasticImportExportChart = () => {
           fontSize: '12px',
         }}
       >
-        Datasource:{' '}
+        Data source:{' '}
         <a
           href={`${baseURL}/data/maps?categoryId=industry-and-trade&subcategoryId=Import&layer=Plastic_waste___value__import__WFL1`}
           style={{ color: '#020A5B', fontWeight: 'bold' }}
