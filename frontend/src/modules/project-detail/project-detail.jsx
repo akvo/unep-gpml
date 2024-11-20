@@ -16,7 +16,8 @@ import { lifecycleStageTags, resourceTypeToTopicType } from '../../utils/misc'
 import { useEffect, useState } from 'react'
 import api from '../../utils/api'
 import classNames from 'classnames'
-import { Row, Skeleton } from 'antd'
+import { Button, notification, Popover, Row, Skeleton } from 'antd'
+import { MoreOutlined } from '@ant-design/icons'
 
 const ProjectDetail = ({ data: inData, isModal, setVisible }) => {
   const [data, setData] = useState(inData)
@@ -108,6 +109,7 @@ const ProjectDetail = ({ data: inData, isModal, setVisible }) => {
                 </div>
               </a>
             )}
+            <AdminDropdown {...{ data }} />
           </div>
         </div>
         {loading && (
@@ -266,6 +268,64 @@ function convertYouTubeUrlToEmbed(url) {
   } else {
     return 'Invalid YouTube URL'
   }
+}
+
+const AdminDropdown = ({ data }) => {
+  return (
+    <Popover
+      placement="bottomLeft"
+      content={
+        <ul>
+          <li>
+            <Link href={`/add-content/?id=${data.id}&type=${data.type}`}>
+              <Button size="small" type="link">
+                Edit
+              </Button>
+            </Link>
+          </li>
+          <li>
+            <Button
+              size="small"
+              type="link"
+              onClick={() => {
+                Modal.error({
+                  className: 'popup-delete',
+                  centered: true,
+                  closable: true,
+                  title: `Are you sure you want to delete this ${data.type}?`,
+                  content: `Please be aware this action cannot be undone.`,
+                  okText: `Delete`,
+                  okType: 'danger',
+                  onOk() {
+                    return api
+                      .delete(`/detail/${data.type}/${data.id}`)
+                      .then((res) => {
+                        notification.success({
+                          message: 'Entity deleted successfully',
+                        })
+                      })
+                      .catch((err) => {
+                        console.error(err)
+                        notification.error({
+                          message: 'Oops, something went wrong',
+                        })
+                      })
+                  },
+                })
+              }}
+            >
+              Delete
+            </Button>
+          </li>
+        </ul>
+      }
+      trigger="click"
+    >
+      <div className="admin-btn">
+        <MoreOutlined />
+      </div>
+    </Popover>
+  )
 }
 
 export default ProjectDetail
