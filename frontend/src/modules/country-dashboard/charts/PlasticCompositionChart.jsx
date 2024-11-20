@@ -125,7 +125,7 @@ const PlasticCompositionChart = () => {
         type: 'value',
         name: '%',
         min: 0,
-        max: 100,
+        max: 60,
         interval: 20,
         nameTextStyle: {
           fontSize: 12,
@@ -158,11 +158,12 @@ const PlasticCompositionChart = () => {
                 yAxis: regionPlasticComposition || 0.78,
                 label: {
                   formatter: () =>
-                    `Regional Average (${regionPlasticComposition || 0.78})`,
+                    `Regional Average (${
+                      regionPlasticComposition + '%' || 0.78 + '%'
+                    })`,
                   position: 'middle',
                   color: '#020A5B',
                   fontSize: 12,
-                  fontWeight: 'bold',
                 },
                 lineStyle: {
                   type: 'dashed',
