@@ -47,8 +47,6 @@ function MyApp({ Component, pageProps }) {
     shouldJoin,
   } = state
 
-  const isMounted = useRef(true)
-
   const isAuthenticated = new Date().getTime() < _expiresAt
 
   const setSession = useCallback((authResult) => {
@@ -68,66 +66,6 @@ function MyApp({ Component, pageProps }) {
     }))
     scheduleTokenRenewal()
   }, [])
-
-  const fetchData = useCallback(async () => {
-    const res = await Promise.all([
-      api.get('/tag'),
-      api.get('/currency'),
-      api.get('/country'),
-      api.get('/country-group'),
-      api.get('/organisation'),
-      api.get('/nav'),
-      api.get('/stakeholder'),
-      api.get('/non-member-organisation'),
-      api.get('/community?representativeGroup=Government'),
-    ])
-
-    const [
-      tag,
-      currency,
-      country,
-      countryGroup,
-      organisation,
-      nav,
-      stakeholder,
-      nonMemberOrganisations,
-      community,
-    ] = res
-
-    const data = {
-      tags: tag.data,
-      currencies: currency.data,
-      countries: uniqBy(country.data).sort((a, b) =>
-        a.name?.localeCompare(b.name)
-      ),
-      regionOptions: countryGroup.data.filter((x) => x.type === 'region'),
-      meaOptions: countryGroup.data.filter((x) => x.type === 'mea'),
-      transnationalOptions: countryGroup.data.filter(
-        (x) => x.type === 'transnational'
-      ),
-      featuredOptions: countryGroup.data.filter((x) => x.type === 'featured'),
-      organisations: uniqBy(sortBy(organisation.data, ['name'])).sort((a, b) =>
-        a.name?.localeCompare(b.name)
-      ),
-      nonMemberOrganisations: uniqBy(
-        sortBy(nonMemberOrganisations.data, ['name'])
-      ).sort((a, b) => a.name?.localeCompare(b.name)),
-      nav: nav.data,
-      stakeholders: stakeholder.data,
-      community: community.data,
-    }
-    UIStore.update((s) => {
-      Object.assign(s, data)
-    })
-  }, [])
-
-  useEffect(() => {
-    if (!isMounted.current) return
-    fetchData()
-    return () => {
-      isMounted.current = false
-    }
-  }, [fetchData])
 
   const renewToken = useCallback((cb) => {
     auth0Client.checkSession({}, (err, result) => {

@@ -3,6 +3,10 @@ import { Store } from 'pullstate'
 import BookIcon from './images/book-open.svg'
 import CapacityBuildingSvg from './images/owl.svg'
 import { t, msg } from '@lingui/macro'
+import { useEffect, useMemo } from 'react'
+import api from './utils/api'
+import uniqBy from 'lodash/uniqBy'
+import sortBy from 'lodash/sortBy'
 
 const geoCoverageTypeOptions = ['Global', 'Transnational', 'National']
 
@@ -870,5 +874,77 @@ const ChatStore = new Store({
   psForums: [],
   discussion: null,
 })
+
+const endpoints = {
+  tags: '/tag',
+  currencies: '/currency',
+  countries: '/country',
+  stakeholders: '/stakeholder',
+  organisations: '/organisation',
+  nav: '/nav',
+  countryGroups: '/country-group',
+  nonMemberOrganisations: '/non-member-organisation',
+  community: '/community?representativeGroup=Government',
+}
+
+const processData = (key, data) => {
+  switch (key) {
+    case 'countries':
+      return uniqBy(data).sort((a, b) => a.name?.localeCompare(b.name))
+    case 'organisations':
+      return uniqBy(sortBy(data, ['name'])).sort((a, b) =>
+        a.name?.localeCompare(b.name)
+      )
+    case 'countryGroups':
+      return {
+        regionOptions: data.filter((x) => x.type === 'region'),
+        meaOptions: data.filter((x) => x.type === 'mea'),
+        transnationalOptions: data.filter((x) => x.type === 'transnational'),
+        featuredOptions: data.filter((x) => x.type === 'featured'),
+      }
+    default:
+      return data
+  }
+}
+
+UIStore.fetchIfNeeded = async (key) => {
+  const currentState = UIStore.getRawState()[key]
+  const isEmpty = (value) => {
+    if (value === null) return true
+    if (Array.isArray(value)) return value.length === 0
+    if (typeof value === 'object') return Object.keys(value).length === 0
+    return false
+  }
+
+  if (isEmpty(currentState)) {
+    try {
+      const response = await api.get(endpoints[key])
+      UIStore.update((s) => {
+        s[key] = processData(key, response.data)
+      })
+    } catch (error) {
+      console.error(`Failed to fetch ${key}:`, error)
+    }
+  }
+}
+
+const originalUseState = UIStore.useState.bind(UIStore)
+UIStore.useState = (selector) => {
+  const state = originalUseState(selector)
+
+  const selectorString = useMemo(() => selector.toString(), [])
+  const keysToFetch = useMemo(
+    () => Object.keys(endpoints).filter((key) => selectorString.includes(key)),
+    [selectorString]
+  )
+
+  useEffect(() => {
+    keysToFetch.forEach((key) => {
+      UIStore.fetchIfNeeded(key)
+    })
+  }, [keysToFetch])
+
+  return state
+}
 
 export { UIStore, ChatStore }
