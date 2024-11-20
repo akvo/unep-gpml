@@ -18,7 +18,7 @@ import api from '../../utils/api'
 import classNames from 'classnames'
 import { Row, Skeleton } from 'antd'
 
-const ProjectDetail = ({ data: inData, isModal }) => {
+const ProjectDetail = ({ data: inData, isModal, setVisible }) => {
   const [data, setData] = useState(inData)
   const [loading, setLoading] = useState(isModal)
   const groupedConnections = {}
@@ -58,6 +58,11 @@ const ProjectDetail = ({ data: inData, isModal }) => {
           )
         )
       : []
+  const handleTagClick = (e) => {
+    if (isModal) {
+      setVisible(false)
+    }
+  }
   return (
     <div className={styles.detailView}>
       <div className={classNames('container', { isModal })}>
@@ -205,7 +210,10 @@ const ProjectDetail = ({ data: inData, isModal }) => {
                 <div className="tag-list">
                   {lifecycleTagsToShow?.map((tag) => (
                     <div className="tag-item" key={tag?.tag}>
-                      <Link href={`/knowledge-hub?tag=${tag.tag}`}>
+                      <Link
+                        href={`/knowledge-hub?tag=${tag.tag}`}
+                        onClick={handleTagClick}
+                      >
                         <div className="label">
                           <span>{tag?.tag || ''}</span>
                         </div>
@@ -219,7 +227,10 @@ const ProjectDetail = ({ data: inData, isModal }) => {
                 <div className="tag-list">
                   {tagsToShow?.map((tag) => (
                     <div className="tag-item" key={tag?.tag}>
-                      <Link href={`/knowledge-hub?tag=${tag.tag}`}>
+                      <Link
+                        href={`/knowledge-hub?tag=${tag.tag}`}
+                        onClick={handleTagClick}
+                      >
                         <div className="label">
                           <span>{tag?.tag || ''}</span>
                         </div>
