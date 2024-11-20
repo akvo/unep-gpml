@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Form, Field } from 'react-final-form'
 import {
   Button,
@@ -12,6 +12,7 @@ import {
   Col,
   notification,
   Form as AntForm,
+  Spin,
 } from 'antd'
 import styles from './index.module.scss'
 import { PlusIcon, UploadFileIcon } from '../../components/icons'
@@ -23,6 +24,8 @@ import moment, { duration } from 'moment'
 import api from '../../utils/api'
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
 import { lifecycleStageTags } from '../../utils/misc'
+import { useRouter } from 'next/router'
+import { loadCatalog } from '../../translations/utils'
 
 const { Dragger } = Upload
 const { Title } = Typography
@@ -48,6 +51,18 @@ const contentTypes = [
   'Event',
   'Dataset',
 ]
+
+const contentTypeMap = {
+  project: 'Project',
+  initiative: 'Initiative',
+  action_plan: 'Action Plan',
+  policy: 'Legislation',
+  financing_resource: 'Financing Resource',
+  technical_resource: 'Technical Resource',
+  technology: 'Technology',
+  event: 'Event',
+  data_catalog: 'Dataset',
+}
 
 // Form configurations with layout
 const formConfigs = {
@@ -99,7 +114,10 @@ const formConfigs = {
         { name: 'donors', span: 12, required: true },
         { name: 'partners', span: 12 },
       ],
-      [{ name: 'implementors', span: 12, required: true }],
+      [
+        { name: 'implementors', span: 12, required: true },
+        { name: 'owner', span: 12, required: true },
+      ],
       [
         { name: 'startDate', label: 'YYYY-MM-DD', span: 12 },
         {
@@ -114,39 +132,6 @@ const formConfigs = {
       ],
       [{ name: 'highlights', span: 24, initialValue: [{ text: '', url: '' }] }],
       [{ name: 'outcomes', span: 24, required: true, initialValue: [''] }],
-    ],
-  },
-  Legislation: {
-    rows: [
-      [{ name: 'url', span: 24, required: true }],
-      [{ name: 'title', span: 24 }],
-      [{ name: 'summary', span: 24, required: true, label: 'Description' }],
-      [
-        { name: 'geoCoverageType', span: 12, required: true },
-        {
-          name: 'geoCoverageCountryGroups',
-          span: 12,
-          required: true,
-          dependsOn: {
-            field: 'geoCoverageType',
-            value: 'transnational',
-          },
-        },
-        {
-          name: 'geoCoverageCountries',
-          span: 12,
-          required: true,
-          dependsOn: {
-            field: 'geoCoverageType',
-            value: 'national',
-          },
-        },
-      ],
-      [
-        { name: 'tags', span: 12 },
-        { name: 'lifecycleStage', span: 12 },
-      ],
-      [{ name: 'image', span: 12 }],
     ],
   },
   'Technical Resource': {
@@ -189,7 +174,7 @@ const formConfigs = {
       ],
       [
         {
-          name: 'publicationYear',
+          name: 'publishYear',
           span: 12,
           label: 'Publication Year',
           required: true,
@@ -289,7 +274,7 @@ const formConfigs = {
       ],
       [
         {
-          name: 'publicationYear',
+          name: 'publishYear',
           span: 12,
           label: 'Publication Year',
           required: true,
@@ -594,7 +579,6 @@ const getSelectOptions = (storeData) => ({
 
 const FormField = React.memo(
   ({ name, input, meta, storeData, form, label, selectedType }) => {
-    console.log('redndered')
     const tags = Object.keys(getSelectOptions(storeData).tags)
       .map((k) => getSelectOptions(storeData).tags[k])
       .flat()
@@ -942,7 +926,6 @@ const FormField = React.memo(
               )}
             </FormLabel>
           )
-
         case 'tags':
           return (
             <FormLabel
@@ -992,7 +975,7 @@ const FormField = React.memo(
         case 'lifecycleStage':
           return (
             <FormLabel
-              label="Lifecycle Stage"
+              label="Life Cycle Stage"
               htmlFor="lifecycleStage"
               meta={meta}
               isOptional={!fieldConfig?.required}
@@ -1054,13 +1037,16 @@ const FormField = React.memo(
                 }}
                 multiple={false}
                 accept=".jpg,.png"
+                showUploadList={false}
               >
                 <p className="ant-upload-drag-icon">
                   <UploadFileIcon />
                 </p>
-                <p className="ant-upload-text">Accepts .jpg and .png</p>
-                <p className="add-btn">Add a File</p>
-              </Dragger>{' '}
+                <p className="ant-upload-text">
+                  Drag & drop or click to upload an image
+                </p>
+                <p className="add-btn">Only .jpg or .png files are accepted</p>
+              </Dragger>
               {meta.touched && meta.error && (
                 <p
                   color="error"
@@ -1071,6 +1057,16 @@ const FormField = React.memo(
                 >
                   {meta.error}
                 </p>
+              )}
+              {input.value && (
+                <div className="preview-img">
+                  {input.value && <img src={input.value} alt="Preview" />}{' '}
+                  <Button
+                    danger
+                    icon={<DeleteOutlined />}
+                    onClick={() => input.onChange(null)}
+                  />
+                </div>
               )}
             </FormLabel>
           )
@@ -1088,9 +1084,7 @@ const FormField = React.memo(
                 beforeUpload={() => false}
                 onChange={async ({ file, fileList }) => {
                   try {
-                    console.log(file, fileList)
                     if (fileList) {
-                      // const base64 = await getBase64(file)
                       async function processFiles(filesArray) {
                         for (const file of filesArray) {
                           await getBase64(file)
@@ -1138,16 +1132,39 @@ const FormField = React.memo(
               <Dragger
                 {...input}
                 beforeUpload={() => false}
-                onChange={({ fileList }) => input.onChange(fileList)}
+                onChange={async ({ file, fileList }) => {
+                  try {
+                    if (file) {
+                      const base64 = await getBase64(file)
+                      input.onChange(base64)
+                    }
+                  } catch (err) {
+                    console.error('Error converting to base64:', err)
+                    input.onChange(null)
+                  }
+                }}
                 multiple={false}
                 accept=".jpg,.png"
+                showUploadList={false}
               >
                 <p className="ant-upload-drag-icon">
                   <UploadFileIcon />
                 </p>
-                <p className="ant-upload-text">Accepts .jpg and .png</p>
-                <p className="add-btn">Add a File</p>
+                <p className="ant-upload-text">
+                  Drag & drop or click to upload an image
+                </p>
+                <p className="add-btn">Only .jpg or .png files are accepted</p>
               </Dragger>
+              {input.value && (
+                <div className="preview-img">
+                  {input.value && <img src={input.value} alt="Preview" />}{' '}
+                  <Button
+                    danger
+                    icon={<DeleteOutlined />}
+                    onClick={() => input.onChange(null)}
+                  />
+                </div>
+              )}
             </FormLabel>
           )
 
@@ -1223,7 +1240,7 @@ const FormField = React.memo(
             </FormLabel>
           )
 
-        case 'publicationYear':
+        case 'publishYear':
         case 'yearFounded':
           return (
             <FormLabel
@@ -1358,7 +1375,7 @@ const FormField = React.memo(
                       <div className="icn">
                         <PlusIcon />
                       </div>
-                      <Trans>Add Another</Trans>{' '}
+                      Add Another
                     </Button>
                   </div>
                 )}
@@ -1417,7 +1434,7 @@ const FormField = React.memo(
                       <div className="icn">
                         <PlusIcon />
                       </div>
-                      <Trans>Add Another</Trans>{' '}
+                      Add Another
                     </Button>
                   </div>
                 )}
@@ -1485,8 +1502,97 @@ const FormFields = React.memo(({ selectedType, storeData, form }) => {
 })
 
 const DynamicContentForm = () => {
+  const router = useRouter()
+  const { id, type } = router.query
   const [selectedType, setSelectedType] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [loadingEditData, setLoadingEditData] = useState(false)
+
+  const [initialValues, setInitialValues] = useState({
+    highlights: [{ text: '', url: '' }],
+    outcomes: [''],
+    videos: [''],
+  })
+
+  useEffect(() => {
+    if (type && id) {
+      setLoadingEditData(true)
+      api.get(`/detail/${type}/${id}`).then((response) => {
+        setLoadingEditData(false)
+        const data = response.data
+
+        const entityConnections = data.entityConnections || []
+        const owner = entityConnections
+          .filter((connection) => connection.role === 'owner')
+          .map((connection) => connection.entityId)
+
+        const partners = entityConnections
+          .filter((connection) => connection.role === 'partner')
+          .map((connection) => connection.entityId)
+
+        const implementors = entityConnections
+          .filter((connection) => connection.role === 'implementor')
+          .map((connection) => connection.entityId)
+
+        const donors = entityConnections
+          .filter((connection) => connection.role === 'donor')
+          .map((connection) => connection.entityId)
+
+        const readableType = contentTypeMap[type.toLowerCase()] || null
+
+        setSelectedType(readableType)
+
+        setInitialValues({
+          ...data,
+          owner,
+          partners,
+          implementors,
+          donors,
+          ...((data.type === 'policy' || data.type === 'technology') && {
+            name: data.title,
+          }),
+          ...(data.type === 'policy' && { abstract: data.summary }),
+          ...(data.type === 'technology' && { remarks: data.summary }),
+          ...((data.type === 'event' || data.type === 'initiative') && {
+            description: data.summary,
+          }),
+          geoCoverageType: data.geoCoverageType || '',
+          lifecycleStage: data.tags
+            ? data.tags
+                .filter((tag) =>
+                  lifecycleStageTags.some(
+                    (stage) => stage.toLowerCase() === tag.tag.toLowerCase()
+                  )
+                )
+                .map((item) =>
+                  item.tag
+                    .toLowerCase()
+                    .replace(/\b\w/g, (char) => char.toUpperCase())
+                )
+            : [],
+
+          tags: data.tags
+            ? data.tags
+                .filter(
+                  (tag) =>
+                    !lifecycleStageTags.some(
+                      (stage) => stage.toLowerCase() === tag.tag.toLowerCase()
+                    )
+                )
+                .map((item) => item.id)
+            : [],
+          startDate: data.startDate ? moment(data.startDate) : null,
+          endDate: data.endDate ? moment(data.endDate) : null,
+        })
+      })
+    } else {
+      setInitialValues({
+        highlights: [{ text: '', url: '' }],
+        outcomes: [''],
+        videos: [''],
+      })
+    }
+  }, [type, id])
 
   const storeData = UIStore.useState((s) => ({
     stakeholders: s.stakeholders?.stakeholders,
@@ -1521,6 +1627,7 @@ const DynamicContentForm = () => {
         )
       )
 
+      const updatedData = getUpdatedFields(initialValues, cleanValues)
       const entityConnections = [
         ...(values.owner?.map((id) => ({ role: 'owner', entity: id })) || []),
         ...(values.implementors?.map((id) => ({
@@ -1560,27 +1667,50 @@ const DynamicContentForm = () => {
       })
 
       const data = {
-        ...cleanValues,
-        resourceType:
-          selectedType === 'Dataset' ? 'Data Catalog' : selectedType,
-        entityConnections,
-        source: 'gpml',
+        ...updatedData,
+        ...(!id &&
+          !type && {
+            resourceType:
+              selectedType === 'Dataset' ? 'Data Catalog' : selectedType,
+          }),
+        ...(!id &&
+          !type && {
+            source: 'gpml',
+          }),
+        ...(!id && !type
+          ? { entityConnections: entityConnections }
+          : {
+              entityConnections: entityConnections.map((item) => ({
+                entity: item.entity,
+                role: item.role,
+                id: values.entityConnections?.find(
+                  (connection) => connection.entityId === item.entity
+                )?.id,
+              })),
+            }),
         ...(formattedTags.length > 0 && { tags: formattedTags }),
-        ...(cleanValues.geoCoverageCountryGroups && {
-          geoCoverageCountryGroups: [cleanValues.geoCoverageCountryGroups],
+        ...(updatedData.geoCoverageCountryGroups && {
+          geoCoverageCountryGroups: [updatedData.geoCoverageCountryGroups],
         }),
-        ...(cleanValues.geoCoverageCountries && {
-          geoCoverageCountries: cleanValues.geoCoverageCountries,
+        ...(updatedData.geoCoverageCountries && {
+          geoCoverageCountries: updatedData.geoCoverageCountries,
         }),
-        ...(cleanValues.validFrom && {
-          validTo: cleanValues.validTo ? cleanValues.validTo : 'ongoing',
+        ...(updatedData.validFrom && {
+          validTo: updatedData.validTo ? updatedData.validTo : 'ongoing',
         }),
-        ...(cleanValues.value && {
-          value: Number(cleanValues.value),
+        ...(updatedData.value && {
+          value: Number(updatedData.value),
         }),
-        ...(cleanValues.yearFounded && {
-          yearFounded: Number(cleanValues.yearFounded),
+        ...(updatedData.yearFounded && {
+          yearFounded: Number(updatedData.yearFounded),
         }),
+        ...(updatedData.publishYear && {
+          publishYear: Number(updatedData.publishYear),
+        }),
+        ...(id &&
+          type === 'technology' && {
+            name: values.name,
+          }),
         language: 'en',
       }
 
@@ -1588,23 +1718,35 @@ const DynamicContentForm = () => {
       delete data.owner
       delete data.partners
 
+      const endpoint = id && type ? `/detail/${type}/${id}` : '/resource'
+      const method = id && type ? 'put' : 'post'
+
       const submissionHandlers = {
         Technology: handleOnSubmitTechnology,
         Legislation: handleOnSubmitPolicy,
         Project: handleOnSubmitProject,
         Event: handleOnSubmitEvent,
         Initiative: handleOnSubmitInitiative,
-        default: (data) => api.post('/resource', data),
+        default: (data) => api[method](endpoint, data),
       }
 
       const submitHandler =
-        submissionHandlers[selectedType] || submissionHandlers.default
+        id && type && selectedType !== 'Initiative'
+          ? submissionHandlers.default
+          : submissionHandlers[selectedType] || submissionHandlers.default
+
       const response = await submitHandler(data, form)
 
       if (response) {
-        notification.success({ message: 'Resource successfully created' })
-        // TODO: Navin handle redirect below
-        // window.location.href = `/${data.type}/${response.data.id}`
+        if (id && type) {
+          router.push(`/${type.replace('_', '-')}/${id}`)
+        }
+        notification.success({
+          message:
+            id && type
+              ? 'Resource successfully updated'
+              : 'Resource successfully created',
+        })
         form.reset()
         setSelectedType(null)
         return response
@@ -1762,8 +1904,11 @@ const DynamicContentForm = () => {
     delete data.resourceType
     delete data.image
 
+    const endpoint = id && type ? `/detail/${type}/${id}` : '/initiative'
+    const method = id && type ? 'put' : 'post'
+
     try {
-      const response = await api.post('/initiative', data)
+      const response = await api[method](endpoint, data)
 
       if (!response.data || response.error) {
         throw new Error(response.error || 'Failed to create initiative')
@@ -1774,15 +1919,6 @@ const DynamicContentForm = () => {
       throw error
     }
   }
-
-  const initialValues = useMemo(
-    () => ({
-      highlights: [{ text: '', url: '' }],
-      outcomes: [''],
-      videos: [''],
-    }),
-    []
-  )
 
   return (
     <div className={styles.addContentForm}>
@@ -1805,85 +1941,105 @@ const DynamicContentForm = () => {
                       Add Content
                     </Title>
 
-                    {!selectedType && (
-                      <div className="form-description">
-                        <p>
-                          The GPML Digital Platform is crowdsourced and allows
-                          everyone to submit new content via this form.
-                        </p>
-                        <p>
-                          A wide range of resources can be submitted, and these
-                          include Action Plans, Initiatives, Technical
-                          resources, Financing resources, Policies, Events, and
-                          Technologies. Learn more about each category and
-                          sub-categories definitions in the "Content Type"
-                          section of this form. A quick summary sheet with
-                          categories and sub-categories can be downloaded here.
-                        </p>
-                        <p>
-                          You can access existing content via the Knowledge
-                          Exchange Library. Make sure to browse around and leave
-                          a review under the resources you enjoy the most!
-                        </p>
+                    {loadingEditData && (
+                      <div className="loading-form">
+                        <Spin />
                       </div>
                     )}
 
-                    <Space direction="vertical" size="large" className="w-full">
-                      <div className="form-container">
-                        <Title level={4}>What type of content is this?</Title>
-                        <div
-                          style={{
-                            display: 'flex',
-                            gap: '10px',
-                            flexWrap: 'wrap',
-                          }}
+                    {!loadingEditData && (
+                      <>
+                        {!selectedType && (
+                          <div className="form-description">
+                            <p>
+                              The GPML Digital Platform is crowdsourced and
+                              allows everyone to submit new content via this
+                              form.
+                            </p>
+                            <p>
+                              A wide range of resources can be submitted, and
+                              these include Action Plans, Initiatives, Technical
+                              resources, Financing resources, Policies, Events,
+                              and Technologies. Learn more about each category
+                              and sub-categories definitions in the "Content
+                              Type" section of this form. A quick summary sheet
+                              with categories and sub-categories can be
+                              downloaded here.
+                            </p>
+                            <p>
+                              You can access existing content via the Knowledge
+                              Exchange Library. Make sure to browse around and
+                              leave a review under the resources you enjoy the
+                              most!
+                            </p>
+                          </div>
+                        )}
+
+                        <Space
+                          direction="vertical"
+                          size="large"
+                          className="w-full"
                         >
-                          {contentTypes.map((type) => (
-                            <Button
-                              key={type}
-                              className={`content-type-btn ${
-                                selectedType === type ? 'selected' : ''
-                              }`}
-                              onClick={() => {
-                                if (selectedType !== type) {
-                                  setSelectedType(type)
-                                  form.restart(initialValues)
-                                } else {
-                                  setSelectedType(null)
-                                  form.restart(initialValues)
-                                }
+                          <div className="form-container">
+                            <Title level={4}>
+                              What type of content is this?
+                            </Title>
+                            <div
+                              style={{
+                                display: 'flex',
+                                gap: '10px',
+                                flexWrap: 'wrap',
                               }}
                             >
-                              {type}
-                            </Button>
-                          ))}
-                        </div>
-                      </div>
+                              {contentTypes.map((type) => (
+                                <Button
+                                  key={type}
+                                  className={`content-type-btn ${
+                                    selectedType === type ? 'selected' : ''
+                                  }`}
+                                  onClick={() => {
+                                    if (selectedType !== type) {
+                                      setSelectedType(type)
+                                      form.restart(initialValues)
+                                    } else {
+                                      setSelectedType(null)
+                                      form.restart(initialValues)
+                                    }
+                                  }}
+                                >
+                                  {type}
+                                </Button>
+                              ))}
+                            </div>
+                          </div>
 
-                      {selectedType && (
-                        <>
-                          <Card className="mt-8">
-                            <Title className="form-title" level={4}>
-                              All details of the {selectedType.toLowerCase()}
-                            </Title>
-                            <FormFields
-                              selectedType={selectedType}
-                              storeData={storeData}
-                              form={form}
-                            />
-                            <Button
-                              type="primary"
-                              htmlType="submit"
-                              loading={loading}
-                              disabled={loading}
-                              className="submit-btn"
-                            >
-                              Save & Publish
-                            </Button>
-                          </Card>
-                        </>
-                      )}
-                    </Space>
+                          {selectedType && (
+                            <>
+                              <Card className="mt-8">
+                                <Title className="form-title" level={4}>
+                                  All details of the{' '}
+                                  {selectedType.toLowerCase()}
+                                </Title>
+                                <FormFields
+                                  selectedType={selectedType}
+                                  storeData={storeData}
+                                  form={form}
+                                />
+                                <Button
+                                  type="primary"
+                                  htmlType="submit"
+                                  loading={loading}
+                                  disabled={loading}
+                                  className="submit-btn"
+                                >
+                                  Save & Publish
+                                </Button>
+                              </Card>
+                            </>
+                          )}
+                        </Space>
+                      </>
+                    )}
                   </form>
                 </>
               )
@@ -1961,6 +2117,37 @@ const convertGeoCoverageCountriesToQ24_2 = (countryIds, storeData) => {
     }
     return acc
   }, {})
+}
+
+const excludedFields = ['geoCoverageType', 'geoCoverageCountries']
+
+const getUpdatedFields = (initialValues, currentValues) => {
+  const updatedFields = {}
+
+  Object.keys(currentValues).forEach((key) => {
+    if (
+      !excludedFields.includes(key) &&
+      JSON.stringify(initialValues[key]) !== JSON.stringify(currentValues[key])
+    ) {
+      updatedFields[key] = currentValues[key]
+    }
+  })
+
+  excludedFields.forEach((field) => {
+    if (currentValues[field] !== undefined) {
+      updatedFields[field] = currentValues[field]
+    }
+  })
+
+  return updatedFields
+}
+
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
 }
 
 export default DynamicContentForm

@@ -33,6 +33,12 @@ module.exports = {
         protocol: 'https',
         hostname: 'storage.googleapis.com',
         port: '',
+        pathname: '/akvo-unep-gpml/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'storage.googleapis.com',
+        port: '',
         pathname: '/unep-gpml-public-production/**',
       },
       {
