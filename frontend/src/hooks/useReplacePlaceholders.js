@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { getStrapiUrl } from '../utils/misc';
 
-const useReplacedText = (country, categoryId) => {
-    const [replacedText, setReplacedText] = useState('');
+const useReplacedText = (country, categoryId, placeholders) => {
+
+    const [placeholdersData, setPlaceholdersData] = useState({});
+    const [tooltips, setTooltips] = useState({});
     const [loading, setLoading] = useState(true);
     const strapiURL = getStrapiUrl();
 
@@ -11,14 +13,18 @@ const useReplacedText = (country, categoryId) => {
         const fetchReplacedText = async () => {
             setLoading(true);
             try {
-
-
-                const response = await axios.get(
-                    `${strapiURL}/api/category/category-replace/${country}/${categoryId}`
+                const response = await axios.post(
+                    `${strapiURL}/api/category/category-replace`,
+                    {
+                        country,
+                        categoryId,
+                        placeholders,
+                    }
                 );
 
-                if (response && response.data && response.data.replacedText) {
-                    setReplacedText(response.data.replacedText);
+                if (response && response.data) {
+                    setPlaceholdersData(response.data.placeholders || {});
+                    setTooltips(response.data.tooltips || {});
                 } else {
                     console.error('Invalid response structure:', response);
                 }
@@ -29,12 +35,12 @@ const useReplacedText = (country, categoryId) => {
             }
         };
 
-        if (country && categoryId) {
+        if (country && categoryId && placeholders?.length) {
             fetchReplacedText();
         }
-    }, [country, categoryId, strapiURL]);
+    }, [country, categoryId, placeholders, strapiURL]);
 
-    return { replacedText, loading };
+    return { placeholders: placeholdersData, tooltips, loading };
 };
 
 export default useReplacedText;
