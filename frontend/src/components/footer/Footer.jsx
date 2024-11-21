@@ -7,6 +7,7 @@ import { ArrowRight, LinkedinIcon, YoutubeIcon } from '../../components/icons'
 import moment from 'moment'
 import Button from '../../components/button'
 import api from '../../utils/api'
+import Image from 'next/image'
 
 const Footer = ({ showTools }) => {
   const [form] = Form.useForm()
@@ -62,6 +63,31 @@ const Footer = ({ showTools }) => {
                 <Trans>Privacy Policy & Terms of Use</Trans>
               </Link>
             </div>
+            <div style={{ marginTop: 30 }}>
+              <h6>
+                <Trans>Follow Us</Trans>
+              </h6>
+              <ul className="social-links">
+                <li>
+                  <a
+                    href="https://ke.linkedin.com/company/global-partnership-on-marine-litter"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <LinkedinIcon />
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.youtube.com/channel/UCoWXFwDeoD4c9GoXzFdm9Bg"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <YoutubeIcon />
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
           {/* <div className="footer-item">
               <h6 className="title">About us</h6>
@@ -77,81 +103,24 @@ const Footer = ({ showTools }) => {
                 </li>
               </ul>
             </div> */}
-          <div className="footer-item">
-            <h6 className="title">
-              <Trans>GPML Tools</Trans>
-            </h6>
+          <div className="footer-item quick-links">
+            <h6 className="title">Quick Links</h6>
             <ul>
               <li>
-                <a
-                  onClick={() => {
-                    showTools()
-                  }}
-                >
-                  <Trans>Show all tools</Trans>
+                <a href="https://www.unep.org/explore-topics/oceans-seas/global-partnership-plastic-pollution-and-marine-litter">
+                  UNEP GPML
+                </a>
+              </li>
+              <li>
+                <a href="https://www.unep.org/topics/chemicals-and-pollution-action/plastic-pollution/one-plastics-initiative/about-unep-plastics">
+                  UNEP One Plastics Initiative
                 </a>
               </li>
             </ul>
           </div>
-          <div className="footer-item">
-            <h6 className="title">
-              <Trans>Join Newsletter</Trans>
-            </h6>
-            <div className="footer-newsletter">
-              <div>
-                <p className="h-xs">
-                  <Trans>
-                    Stay tuned with the GPML latest news and events!
-                  </Trans>
-                </p>
-              </div>
-              <div className="newsletter-container">
-                <Form
-                  form={form}
-                  name="newsletter"
-                  layout="inline"
-                  onFinish={onFinish}
-                >
-                  <Form.Item name="email">
-                    <Input type="email" placeholder={t`Enter your email`} />
-                  </Form.Item>
-                  <Form.Item shouldUpdate>
-                    {() => (
-                      <Button
-                        htmlType="submit"
-                        icon={<ArrowRight viewBox="0 0 15 24" />}
-                        loading={loading}
-                      />
-                    )}
-                  </Form.Item>
-                </Form>
-              </div>
-              <div>
-                <h6>
-                  <Trans>Follow Us</Trans>
-                </h6>
-                <ul className="social-links">
-                  <li>
-                    <a
-                      href="https://ke.linkedin.com/company/global-partnership-on-marine-litter"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <LinkedinIcon />
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="https://www.youtube.com/channel/UCoWXFwDeoD4c9GoXzFdm9Bg"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <YoutubeIcon />
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
+          <div className="footer-item powered-by">
+            <h6 className="title">Powered by</h6>
+            <Image src="/powered-by-footer.png" width={425} height={143} />
           </div>
         </div>
         <hr />

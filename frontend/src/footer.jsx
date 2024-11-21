@@ -1,51 +1,51 @@
-import { useState, useRef } from "react";
-import { LinkedinOutlined, YoutubeOutlined } from "@ant-design/icons";
-import Link from "next/link";
-import Image from "next/image";
-import { Button, Input, notification } from "antd";
-import api from "./utils/api";
-import { CSSTransition } from "react-transition-group";
+import { useState, useRef } from 'react'
+import { LinkedinOutlined, YoutubeOutlined } from '@ant-design/icons'
+import Link from 'next/link'
+import Image from 'next/image'
+import { Button, Input, notification } from 'antd'
+import api from './utils/api'
+import { CSSTransition } from 'react-transition-group'
 
 const Footer = ({ setShowMenu }) => {
-  const [email, setEmail] = useState("");
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [showMessage, setShowMessage] = useState(false);
-  const [timeout, setTimeoutState] = useState(300);
-  const nodeRef = useRef(null);
+  const [email, setEmail] = useState('')
+  const [error, setError] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [showMessage, setShowMessage] = useState(false)
+  const [timeout, setTimeoutState] = useState(300)
+  const nodeRef = useRef(null)
 
   const isValidEmail = (email) => {
-    return /\S+@\S+\.\S+/.test(email);
-  };
+    return /\S+@\S+\.\S+/.test(email)
+  }
 
   const handleChange = (event) => {
     if (!isValidEmail(event.target.value)) {
-      setError("Email is invalid");
+      setError('Email is invalid')
     } else {
-      setError(null);
+      setError(null)
     }
-    setEmail(event.target.value);
-  };
+    setEmail(event.target.value)
+  }
 
   const subscribe = () => {
-    setLoading(true);
+    setLoading(true)
     api
-      .post("/subscribe", { email })
+      .post('/subscribe', { email })
       .then(async (res) => {
-        setEmail("");
-        setLoading(false);
-        setShowMessage(true);
+        setEmail('')
+        setLoading(false)
+        setShowMessage(true)
       })
       .catch((err) => {
-        setLoading(false);
-        console.log(err?.response);
+        setLoading(false)
+        console.log(err?.response)
         notification.error({
-          message: err?.response?.data["errorDetails"]
-            ? err?.response?.data["errorDetails"]?.email[0]
-            : "Oops, something went wrong",
-        });
-      });
-  };
+          message: err?.response?.data['errorDetails']
+            ? err?.response?.data['errorDetails']?.email[0]
+            : 'Oops, something went wrong',
+        })
+      })
+  }
 
   return (
     <footer>
@@ -82,16 +82,6 @@ const Footer = ({ setShowMenu }) => {
           <ul>
             <li>
               <h4>GPML Tools</h4>
-            </li>
-            <li>
-              <div
-                onClick={(e) => {
-                  e.preventDefault();
-                  setShowMenu(true);
-                }}
-              >
-                Show all tools
-              </div>
             </li>
           </ul>
         </div>
@@ -211,6 +201,6 @@ const Footer = ({ setShowMenu }) => {
         </div>
       </div>
     </footer>
-  );
-};
-export default Footer;
+  )
+}
+export default Footer
