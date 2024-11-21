@@ -15,7 +15,6 @@ module.exports = {
 
             const { country, placeholders: clientPlaceholders } = ctx.request.body;
 
-
             if (!clientPlaceholders || !Array.isArray(clientPlaceholders)) {
                 return ctx.badRequest('Invalid or missing placeholders array');
             }
@@ -38,9 +37,13 @@ module.exports = {
 
             const layerDataByArcgisId = {};
             layerData.forEach(layer => {
+
                 if (layer && layer.attributes) {
                     const { arcgislayerId, ValuePerCountry } = layer.attributes;
-                    layerDataByArcgisId[arcgislayerId] = ValuePerCountry?.filter(c => c.CountryName === country) || [];
+                    layerDataByArcgisId[arcgislayerId] = {
+                        values: ValuePerCountry?.filter(c => c.CountryName === country) || [],
+                        datasource: layer.attributes.dataSource || "Unknown source"
+                    };
                 }
             });
 
@@ -50,7 +53,10 @@ module.exports = {
             const evaluateFormula = (formula) => {
                 const evaluatedFormula = formula.replace(/\b(\w+_\w+(_\w+)*)\b/g, (match) => {
                     const arcgislayerId = match.replace(/(_year|_total|_last|_first|_city)$/, '');
-                    const layerValues = layerDataByArcgisId[arcgislayerId];
+                    const layerInfo = layerDataByArcgisId[arcgislayerId];
+                    const layerValues = layerInfo?.values;
+                    const datasource = layerInfo?.datasource;
+
                     const suffix = match.match(/(last|total|first|year|city)$/)?.[0];
 
                     if (layerValues) {
@@ -87,42 +93,45 @@ module.exports = {
                 if (placeholder.includes('=')) {
                     const [varName, formula] = placeholder.split('=').map((str) => str.trim());
                     const result = evaluateFormula(formula);
+                    const datasource = "Calculated from formula";
                     calculatedValues[varName] = Number(result).toFixed(decimals);
-                    tooltips[varName] = `Calculated from formula: ${formula}`;
+                    tooltips[varName] = `${datasource}`;
                 } else {
                     const arcgislayerId = placeholder.split(/(_year|_total|_last|_first|_city|_city_1_value|_city_2_value|_city_1|_city_2)/)[0].trim();
-                    const layer = layerDataByArcgisId[arcgislayerId];
+                    const layerInfo = layerDataByArcgisId[arcgislayerId];
+                    const layer = layerInfo?.values;
+                    const datasource = layerInfo?.datasource || "Unknown source";
 
                     if (!layer || layer.length === 0) {
                         calculatedValues[placeholder] = "[No data]";
-                        tooltips[placeholder] = "No data available for this placeholder";
+                        tooltips[placeholder] = `${datasource}`;
                         return;
                     }
 
                     let replacementValue = "[No data]";
-                    let tooltipText = "Data sourced from layer";
+                    let tooltipText = `${datasource}`;
 
                     if (/_(Year|year)_first$/.test(placeholder)) {
                         const firstYearEntry = [...layer].sort((a, b) => a.Year - b.Year)[0];
                         replacementValue = firstYearEntry?.Year?.toString() || "[No data]";
-                        tooltipText = "First year available in data";
+                        tooltipText = ` ${datasource}`;
                     } else if (/_(Year|year)_last$/.test(placeholder)) {
                         const lastYearEntry = [...layer].sort((a, b) => b.Year - a.Year)[0];
                         replacementValue = lastYearEntry?.Year?.toString() || "[No data]";
-                        tooltipText = "Last year available in data";
+                        tooltipText = `${datasource}`;
                     } else if (/_(Year|year)$/.test(placeholder)) {
                         replacementValue = layer[0]?.Year?.toString() || "[No data]";
-                        tooltipText = "Year associated with the data";
+                        tooltipText = `${datasource}`;
                     } else if (/total$/i.test(placeholder)) {
                         const totalSum = layer.reduce((sum, entry) => sum + (entry.Value || 0), 0);
                         replacementValue = new Intl.NumberFormat().format(Math.round(totalSum));
-                        tooltipText = "Total value calculated";
+                        tooltipText = ` ${datasource}`;
                     } else if (/city_1$/i.test(placeholder)) {
                         replacementValue = layer[0]?.City || "[No data]";
                     } else if (/city_2$/i.test(placeholder)) {
                         replacementValue = layer[1]?.City || "[No data]";
                     } else if (/city$/i.test(placeholder)) {
-                        replacementValue = layer[0]?.City || "[No data]"
+                        replacementValue = layer[0]?.City || "[No data]";
                     } else {
                         replacementValue = new Intl.NumberFormat(undefined, {
                             minimumFractionDigits: decimals,
@@ -130,7 +139,7 @@ module.exports = {
                         }).format(
                             Math.round(layer.sort((a, b) => b.Year - a.Year)[0]?.Value * 100) / 100 || 0
                         );
-                        tooltipText = "Value calculated from the latest available data";
+                        tooltipText = `${datasource}`;
                     }
 
                     calculatedValues[placeholder] = replacementValue;
@@ -139,6 +148,7 @@ module.exports = {
             });
 
             ctx.set('Content-Type', 'application/json');
+            console.log('dasdasdasdasd', tooltips)
             ctx.send({ placeholders: calculatedValues, tooltips });
 
         } catch (error) {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Row, Col, Button, Tooltip } from 'antd'
+import { Row, Col, Button } from 'antd'
 import { useRouter } from 'next/router'
 import useReplacedText from '../../hooks/useReplacePlaceholders'
 import PlasticImportExportChart from '../../modules/country-dashboard/charts/PlasticImportExportChart'
@@ -12,6 +12,8 @@ import RequestDataUpdateModal from './RequestDataUpdateModal'
 import PlasticCompositionChart from '../../modules/country-dashboard/charts/PlasticCompositionChart'
 import Handlebars from 'handlebars'
 import useCategories from '../../hooks/useCategories'
+import parse from 'html-react-parser'
+import { Tooltip } from 'antd'
 
 const splitTextInHalf = (text) => {
   const words = text.split(' ')
@@ -19,6 +21,43 @@ const splitTextInHalf = (text) => {
   const firstHalf = words.slice(0, halfIndex).join(' ')
   const secondHalf = words.slice(halfIndex).join(' ')
   return [firstHalf, secondHalf]
+}
+
+const addTooltipsToPlaceholders = (htmlString, placeholders, tooltips) => {
+  if (!placeholders || Object.keys(placeholders).length === 0) return htmlString
+
+  const options = {
+    replace: (node) => {
+      if (node.name === 'placeholder' && node.attribs?.key) {
+        const placeholderKey = node.attribs.key
+        const placeholderValue = placeholders[placeholderKey]
+
+        return (
+          <Tooltip
+            title={tooltips[placeholderKey]}
+            overlayInnerStyle={{
+              backgroundColor: '#fff',
+              color: '#020A5B',
+              borderRadius: '4px',
+            }}
+          >
+            <span
+              style={{
+                fontWeight: 'bold',
+                cursor: 'pointer',
+              }}
+            >
+              {placeholderValue}
+            </span>
+          </Tooltip>
+        )
+      }
+
+      return undefined
+    },
+  }
+
+  return parse(htmlString, options)
 }
 
 const CountryOverview = () => {
@@ -46,15 +85,35 @@ const CountryOverview = () => {
     selectedCategory?.attributes?.textTemplate?.placeholders
   )
 
-  const template = selectedCategory?.attributes?.textTemplate?.template || ''
-  const compiledTemplate = Handlebars.compile(template)
+  const wrapPlaceholders = (template) => {
+    return template.replace(/{{(.*?)}}/g, (match, placeholder) => {
+      return `<placeholder key="${placeholder}">{{${placeholder}}}</placeholder>`
+    })
+  }
 
+  const rawTemplate = selectedCategory?.attributes?.textTemplate?.template || ''
+  const wrappedTemplate = wrapPlaceholders(rawTemplate)
+
+  const compiledTemplate = Handlebars.compile(wrappedTemplate, {
+    noEscape: true,
+  })
   const categoryText = compiledTemplate({
     ...placeholders,
-    country: router.query.country,
+    country: `{{country}}`,
   })
-  console.log('categoryText', placeholders, categoryText)
+
   const [firstHalfText, secondHalfText] = splitTextInHalf(categoryText || '')
+
+  const textWithTooltipsfirstHalfText = addTooltipsToPlaceholders(
+    firstHalfText,
+    placeholders,
+    tooltips
+  )
+  const textWithTooltipsfirstSecondText = addTooltipsToPlaceholders(
+    secondHalfText,
+    placeholders,
+    tooltips
+  )
 
   return (
     <div style={{ maxWidth: '70%', margin: '0 auto', padding: '16px' }}>
@@ -107,16 +166,14 @@ const CountryOverview = () => {
       {router.query.categoryId !== 'overview' ? (
         <Row gutter={[16, 16]} style={{ marginBottom: '40px' }}>
           <Col xs={24} md={12}>
-            <p
-              style={{ fontSize: '16px', color: '#1B2738' }}
-              dangerouslySetInnerHTML={{ __html: firstHalfText }}
-            />
+            <div style={{ fontSize: '16px', color: '#1B2738' }}>
+              {textWithTooltipsfirstHalfText}
+            </div>
           </Col>
           <Col xs={24} md={12}>
-            <p
-              style={{ fontSize: '16px', color: '#1B2738' }}
-              dangerouslySetInnerHTML={{ __html: secondHalfText }}
-            />
+            <div style={{ fontSize: '16px', color: '#1B2738' }}>
+              {textWithTooltipsfirstSecondText}
+            </div>
           </Col>
         </Row>
       ) : (
