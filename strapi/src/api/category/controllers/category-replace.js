@@ -29,14 +29,12 @@ module.exports = {
                     .map(placeholder => placeholder.split('=')[0].split(/(_year|_total|_last|_first|_city|\*|\/|\+|\-)/)[0].trim())
             )];
 
-
             const allLayersResponse = await axios.get(`https://unep-gpml.akvotest.org/strapi/api/layers?pagination[page]=1&pagination[pageSize]=150&populate=ValuePerCountry`);
             const allLayers = allLayersResponse.data?.data || [];
 
             const layerData = allLayers.filter(layer =>
                 uniqueLayerIds.includes(layer.attributes.arcgislayerId)
             );
-
 
             if (!layerData || layerData.length === 0) {
                 return ctx.notFound('Layers not found');
@@ -50,8 +48,8 @@ module.exports = {
                 }
             });
 
-            let replacedText = template;
             const calculatedValues = {};
+            const tooltips = {};
 
             const evaluateFormula = (formula) => {
                 const evaluatedFormula = formula.replace(/\b(\w+_\w+(_\w+)*)\b/g, (match) => {
@@ -87,7 +85,6 @@ module.exports = {
                 }
             };
 
-
             placeholders.forEach((placeholder) => {
                 const decimals = decimalConfig[placeholder] || decimalConfig.default;
 
@@ -95,40 +92,38 @@ module.exports = {
                     const [varName, formula] = placeholder.split('=').map((str) => str.trim());
                     const result = evaluateFormula(formula);
                     calculatedValues[varName] = Number(result).toFixed(decimals);
+                    tooltips[varName] = `Calculated from formula: ${formula}`;
                 } else {
                     const arcgislayerId = placeholder.split(/(_year|_total|_last|_first|_city|_city_1_value|_city_2_value|_city_1|_city_2)/)[0].trim();
                     const layer = layerDataByArcgisId[arcgislayerId];
 
                     if (!layer || layer.length === 0) {
                         calculatedValues[placeholder] = "[No data]";
-                        replacedText = replacedText.replace(/{{country}}/g, country || "No country specified");
+                        tooltips[placeholder] = "No data available for this placeholder";
                         return;
-                                        }
+                    }
 
                     let replacementValue = "[No data]";
+                    let tooltipText = "Data sourced from layer";
 
                     if (/_(Year|year)_first$/.test(placeholder)) {
                         const firstYearEntry = [...layer].sort((a, b) => a.Year - b.Year)[0];
                         replacementValue = firstYearEntry?.Year?.toString() || "[No data]";
+                        tooltipText = "First year available in data";
                     } else if (/_(Year|year)_last$/.test(placeholder)) {
                         const lastYearEntry = [...layer].sort((a, b) => b.Year - a.Year)[0];
                         replacementValue = lastYearEntry?.Year?.toString() || "[No data]";
+                        tooltipText = "Last year available in data";
                     } else if (/_(Year|year)$/.test(placeholder)) {
                         replacementValue = layer[0]?.Year?.toString() || "[No data]";
+                        tooltipText = "Year associated with the data";
                     } else if (/total$/i.test(placeholder)) {
                         const totalSum = layer.reduce((sum, entry) => sum + (entry.Value || 0), 0);
                         replacementValue = new Intl.NumberFormat().format(Math.round(totalSum));
-                    } else if (/city_1_value$/i.test(placeholder)) {
-                        replacementValue = layer[0]?.Value?.toString() || "[No data]";
-                    } else if (/city_2_value$/i.test(placeholder)) {
-                        replacementValue = layer[1]?.Value?.toString() || "[No data]";
-                    } else if (/city_1$/i.test(placeholder)) {
-                        replacementValue = layer[0]?.City || "[No data]";
-                    } else if (/city_2$/i.test(placeholder)) {
-                        replacementValue = layer[1]?.City || "[No data]";
+                        tooltipText = "Total value calculated";
                     } else if (/city$/i.test(placeholder)) {
                         replacementValue = layer[0]?.City || "[No data]";
-
+                        tooltipText = "City with the highest recorded value";
                     } else {
                         replacementValue = new Intl.NumberFormat(undefined, {
                             minimumFractionDigits: decimals,
@@ -136,21 +131,16 @@ module.exports = {
                         }).format(
                             Math.round(layer.sort((a, b) => b.Year - a.Year)[0]?.Value * 100) / 100 || 0
                         );
+                        tooltipText = "Value calculated from the latest available data";
                     }
 
                     calculatedValues[placeholder] = replacementValue;
+                    tooltips[placeholder] = tooltipText;
                 }
             });
 
-            for (const [placeholder, value] of Object.entries(calculatedValues)) {
-                const escapedPlaceholder = placeholder.replace(/([()*+?.^$|[\]\\])/g, '\\$1');
-                replacedText = replacedText.replace(new RegExp(`{{${escapedPlaceholder}}}`, 'g'), value.toString());
-            }
-
-            replacedText = replacedText.replace(/{{country}}/g, country || "No country specified");
-
-            ctx.set('Content-Type', 'text/html');
-            ctx.send({ replacedText });
+            ctx.set('Content-Type', 'application/json');
+            ctx.send({ placeholders: calculatedValues, tooltips, categoryText: category.textTemplate.template });
 
         } catch (error) {
             console.error('Error in replacePlaceholders:', error);

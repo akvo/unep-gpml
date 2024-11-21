@@ -10,6 +10,8 @@ import PlasticOceanBeachChart from '../../modules/country-dashboard/charts/Plast
 import PolicyComponent from './PolicyComponents'
 import RequestDataUpdateModal from './RequestDataUpdateModal'
 import PlasticCompositionChart from '../../modules/country-dashboard/charts/PlasticCompositionChart'
+import Handlebars from 'handlebars'
+import useCategories from '../../hooks/useCategories'
 
 const splitTextInHalf = (text) => {
   const words = text.split(' ')
@@ -22,6 +24,14 @@ const splitTextInHalf = (text) => {
 const CountryOverview = () => {
   const router = useRouter()
 
+  const categories = useCategories()
+
+  const selectedCategory = categories.categories.find(
+    (c) => c.attributes.categoryId == router.query.categoryId
+  )
+
+  console.log('selectedCategoryselectedCategory???', selectedCategory)
+
   const [isModalVisible, setModalVisible] = useState(false)
 
   const showModal = () => {
@@ -32,14 +42,26 @@ const CountryOverview = () => {
     setModalVisible(false)
   }
 
-  const categoryText = useReplacedText(
-    router.query.country,
-    router.query.categoryId
-  )
+  const {
+    placeholders,
+    tooltips,
+    categoryText: template1,
+    loading,
+  } = useReplacedText(router.query.country, router.query.categoryId)
 
-  const [firstHalfText, secondHalfText] = splitTextInHalf(
-    categoryText.replacedText || ''
-  )
+
+
+  console.log('template1template1', tooltips)
+
+  const template = selectedCategory?.attributes?.textTemplate?.template || ''
+  const compiledTemplate = Handlebars.compile(template)
+
+  const categoryText = compiledTemplate({
+    ...placeholders,
+    country: router.query.country,
+  })
+  console.log('categoryText', placeholders, categoryText)
+  const [firstHalfText, secondHalfText] = splitTextInHalf(categoryText || '')
 
   return (
     <div style={{ maxWidth: '70%', margin: '0 auto', padding: '16px' }}>

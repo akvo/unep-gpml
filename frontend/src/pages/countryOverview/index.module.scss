@@ -13,6 +13,25 @@
   margin-bottom: 20px;
   padding: 0 10px;
 }
+.tooltip {
+  position: relative;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.tooltip:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  background-color: #000;
+  color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  z-index: 10;
+}
 .heading-container {
   display: flex;
   flex-direction: column;

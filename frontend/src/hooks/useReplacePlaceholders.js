@@ -3,7 +3,8 @@ import axios from 'axios';
 import { getStrapiUrl } from '../utils/misc';
 
 const useReplacedText = (country, categoryId) => {
-    const [replacedText, setReplacedText] = useState('');
+    const [placeholders, setPlaceholders] = useState({});
+    const [tooltips, setTooltips] = useState({});
     const [loading, setLoading] = useState(true);
     const strapiURL = getStrapiUrl();
 
@@ -11,14 +12,15 @@ const useReplacedText = (country, categoryId) => {
         const fetchReplacedText = async () => {
             setLoading(true);
             try {
-
-
+                //TODO: RETURN STRAPI URL
                 const response = await axios.get(
                     `${strapiURL}/api/category/category-replace/${country}/${categoryId}`
                 );
 
-                if (response && response.data && response.data.replacedText) {
-                    setReplacedText(response.data.replacedText);
+
+                if (response && response.data) {
+                    setPlaceholders(response.data.placeholders || {});
+                    setTooltips(response.data.tooltips || {});
                 } else {
                     console.error('Invalid response structure:', response);
                 }
@@ -33,8 +35,8 @@ const useReplacedText = (country, categoryId) => {
             fetchReplacedText();
         }
     }, [country, categoryId, strapiURL]);
-
-    return { replacedText, loading };
+    console.log('test', placeholders)
+    return { placeholders, tooltips, loading };
 };
 
 export default useReplacedText;
