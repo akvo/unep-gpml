@@ -148,7 +148,7 @@ module.exports = {
             });
 
             ctx.set('Content-Type', 'application/json');
-            console.log('dasdasdasdasd', tooltips)
+
             ctx.send({ placeholders: calculatedValues, tooltips });
 
         } catch (error) {
