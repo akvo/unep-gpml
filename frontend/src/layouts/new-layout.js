@@ -231,7 +231,7 @@ const NewLayout = ({
                       overlay={
                         <Menu className="user-btn-dropdown">
                           <Menu.Item key="add-content">
-                            <Link href="/flexible-forms">
+                            <Link href="/add-content">
                               <span>
                                 <Trans>Add Content</Trans>
                               </span>

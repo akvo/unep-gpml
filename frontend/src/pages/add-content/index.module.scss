@@ -10,6 +10,21 @@
             justify-content: center;
         }
 
+        .success-block {
+            h4 {
+                font-size: 24px;
+                font-weight: 700;
+                color: $primaryDarkBlueText;
+            }
+
+            p {
+                font-size: 16px;
+                line-height: 26px;
+                font-weight: 500;
+                color: $primaryDarkBlueText;
+            }
+        }
+
         .preview-img {
             margin-top: 10px;
             margin-bottom: 10px;
