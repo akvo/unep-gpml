@@ -121,9 +121,12 @@ module.exports = {
                         const totalSum = layer.reduce((sum, entry) => sum + (entry.Value || 0), 0);
                         replacementValue = new Intl.NumberFormat().format(Math.round(totalSum));
                         tooltipText = "Total value calculated";
-                    } else if (/city$/i.test(placeholder)) {
+                    } else if (/city_1$/i.test(placeholder)) {
                         replacementValue = layer[0]?.City || "[No data]";
-                        tooltipText = "City with the highest recorded value";
+                    } else if (/city_2$/i.test(placeholder)) {
+                        replacementValue = layer[1]?.City || "[No data]";
+                    } else if (/city$/i.test(placeholder)) {
+                        replacementValue = layer[0]?.City || "[No data]"
                     } else {
                         replacementValue = new Intl.NumberFormat(undefined, {
                             minimumFractionDigits: decimals,
