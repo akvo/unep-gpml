@@ -17,7 +17,7 @@ import {
 import styles from './index.module.scss'
 import { PlusIcon, UploadFileIcon } from '../../components/icons'
 import FormLabel from '../../components/form-label'
-import { Trans } from '@lingui/macro'
+import { Trans, t } from '@lingui/macro'
 import { UIStore } from '../../store'
 import DatePicker from 'antd/lib/date-picker'
 import moment, { duration } from 'moment'
