@@ -210,7 +210,19 @@
     }
     .footer-confirm-cookies {
       gap: 16px;
-      & > .ant-btn.ant-btn-link {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #000;
+      z-index: 10;
+      left: 0;
+      padding: 25px;
+      justify-content: center;
+      & > div {
+        display: flex;
+        gap: 20px;
+      }
+      .ant-btn.ant-btn-link {
         color: $primaryPurple !important;
         text-decoration-line: none !important;
         font-size: $fzXXS !important;
