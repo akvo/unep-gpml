@@ -1,8 +1,8 @@
 module.exports = {
     routes: [
         {
-            method: "GET",
-            path: "/category/category-replace/:country/:categoryId",
+            method: "POST",
+            path: "/category/category-replace",
             handler: "category-replace.replacePlaceholders",
             config: { auth: false },
         },
