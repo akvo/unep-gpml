@@ -17,7 +17,7 @@ import {
 import styles from './index.module.scss'
 import { PlusIcon, UploadFileIcon } from '../../components/icons'
 import FormLabel from '../../components/form-label'
-import { Trans } from '@lingui/macro'
+import { Trans, t } from '@lingui/macro'
 import { UIStore } from '../../store'
 import DatePicker from 'antd/lib/date-picker'
 import moment, { duration } from 'moment'
@@ -64,13 +64,18 @@ const contentTypeMap = {
   data_catalog: 'Dataset',
 }
 
+const getKeyByValue = (value) => {
+  return Object.keys(contentTypeMap).find(
+    (key) => contentTypeMap[key] === value
+  )
+}
+
 // Form configurations with layout
 const formConfigs = {
   Project: {
     rows: [
       [{ name: 'url', span: 24 }],
       [{ name: 'title', span: 24, required: true }],
-      [{ name: 'summary', span: 24, required: true, label: 'Description' }],
       [
         { name: 'geoCoverageType', span: 12, required: true },
         {
@@ -540,9 +545,9 @@ const defaultConfig = {
 // Select options
 const selectOptions = {
   geoCoverageType: [
-    { key: 'Global', value: 'global' },
-    { key: 'Transnational', value: 'transnational' },
-    { key: 'National', value: 'national' },
+    { key: t`Global`, value: 'global' },
+    { key: t`Transnational`, value: 'transnational' },
+    { key: t`National`, value: 'national' },
   ],
   lifecycleStage: lifecycleStageTags,
   tags: ['Health', 'Technology', 'Environment'],
@@ -712,7 +717,7 @@ const FormField = React.memo(
               >
                 {selectOptions.geoCoverageType.map((opt) => (
                   <Option key={opt.value} value={opt.value}>
-                    <Trans>{opt.key}</Trans>
+                    {opt.key}
                   </Option>
                 ))}
               </Select>
@@ -954,7 +959,7 @@ const FormField = React.memo(
               >
                 {tags.map((opt) => (
                   <Option key={opt.id} value={opt.id}>
-                    <Trans>{opt.tag}</Trans>
+                    {opt.tag}
                   </Option>
                 ))}
               </Select>{' '}
@@ -995,7 +1000,7 @@ const FormField = React.memo(
               >
                 {selectOptions.lifecycleStage.map((opt) => (
                   <Option key={opt} value={opt}>
-                    <Trans>{opt}</Trans>
+                    {opt}
                   </Option>
                 ))}
               </Select>{' '}
@@ -1042,10 +1047,8 @@ const FormField = React.memo(
                 <p className="ant-upload-drag-icon">
                   <UploadFileIcon />
                 </p>
-                <p className="ant-upload-text">
-                  Drag & drop or click to upload an image
-                </p>
-                <p className="add-btn">Only .jpg or .png files are accepted</p>
+                <p className="ant-upload-text">Accepts .jpg and .png</p>
+                <p className="add-btn">Add a File</p>
               </Dragger>
               {meta.touched && meta.error && (
                 <p
@@ -1086,9 +1089,11 @@ const FormField = React.memo(
                   try {
                     if (fileList) {
                       async function processFiles(filesArray) {
-                        for (const file of filesArray) {
-                          await getBase64(file)
+                        const ret = []
+                        for (const $file of filesArray) {
+                          ret.push(await getBase64($file.originFileObj))
                         }
+                        return ret
                       }
                       const value = await processFiles(fileList)
                       input.onChange(value)
@@ -1150,10 +1155,8 @@ const FormField = React.memo(
                 <p className="ant-upload-drag-icon">
                   <UploadFileIcon />
                 </p>
-                <p className="ant-upload-text">
-                  Drag & drop or click to upload an image
-                </p>
-                <p className="add-btn">Only .jpg or .png files are accepted</p>
+                <p className="ant-upload-text">Accepts .jpg and .png</p>
+                <p className="add-btn">Add a File</p>
               </Dragger>
               {input.value && (
                 <div className="preview-img">
@@ -1507,6 +1510,7 @@ const DynamicContentForm = () => {
   const [selectedType, setSelectedType] = useState(null)
   const [loading, setLoading] = useState(false)
   const [loadingEditData, setLoadingEditData] = useState(false)
+  const [showSuccess, setShowSuccess] = useState(false)
 
   const [initialValues, setInitialValues] = useState({
     highlights: [{ text: '', url: '' }],
@@ -1603,16 +1607,8 @@ const DynamicContentForm = () => {
       ...s.transnationalOptions,
       { id: -1, type: 'transnational', name: 'Other', countries: [] },
     ],
-    sectorOptions: s.sectorOptions,
-    organisationType: s.organisationType,
-    representativeGroup: s.representativeGroup,
-    mainContentType: s.mainContentType,
-    meaOptions: s.meaOptions,
     nonMemberOrganisations: s.nonMemberOrganisations,
     organisations: s.organisations,
-    profile: s.profile,
-    formStep: s.formStep,
-    formEdit: s.formEdit,
     selectedMainContentType: s.selectedMainContentType,
     currencies: s.currencies,
     relatedResource: s.relatedResource,
@@ -1741,12 +1737,10 @@ const DynamicContentForm = () => {
         if (id && type) {
           router.push(`/${type.replace('_', '-')}/${id}`)
         }
-        notification.success({
-          message:
-            id && type
-              ? 'Resource successfully updated'
-              : 'Resource successfully created',
-        })
+        setShowSuccess(true)
+        setTimeout(() => {
+          setShowSuccess(false)
+        }, 10000)
         form.reset()
         setSelectedType(null)
         return response
@@ -1761,7 +1755,6 @@ const DynamicContentForm = () => {
         message: 'An error occurred',
         description: errorMessage,
       })
-      console.error('Submission error:', error)
     } finally {
       setLoading(false)
     }
@@ -1924,127 +1917,133 @@ const DynamicContentForm = () => {
     <div className={styles.addContentForm}>
       <div className="container">
         <div className="ant-form ant-form-vertical">
-          <Form
-            onSubmit={(values, form) => onSubmit(values, form)}
-            validate={validate}
-            initialValues={initialValues}
-            render={({ handleSubmit, form }) => {
-              const onSubmit = async (e) => {
-                e.preventDefault()
-                e.stopPropagation()
-                await handleSubmit(e)
-              }
-              return (
-                <>
-                  <form onSubmit={onSubmit}>
-                    <Title className="title" level={3}>
-                      Add Content
-                    </Title>
+          <Title className="title" level={3}>
+            {id && type ? 'Edit' : 'Add'} Content
+          </Title>
+          {showSuccess ? (
+            <div className="success-block">
+              <h4>Submitted Successfully!</h4>
+              <p>Your newly added resource will be reviewed shortly.</p>
+            </div>
+          ) : (
+            <Form
+              onSubmit={(values, form) => onSubmit(values, form)}
+              validate={validate}
+              initialValues={initialValues}
+              render={({ handleSubmit, form }) => {
+                const onSubmit = async (e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  await handleSubmit(e)
+                }
+                return (
+                  <>
+                    <form onSubmit={onSubmit}>
+                      {loadingEditData && (
+                        <div className="loading-form">
+                          <Spin />
+                        </div>
+                      )}
 
-                    {loadingEditData && (
-                      <div className="loading-form">
-                        <Spin />
-                      </div>
-                    )}
-
-                    {!loadingEditData && (
-                      <>
-                        {!selectedType && (
-                          <div className="form-description">
-                            <p>
-                              The GPML Digital Platform is crowdsourced and
-                              allows everyone to submit new content via this
-                              form.
-                            </p>
-                            <p>
-                              A wide range of resources can be submitted, and
-                              these include Action Plans, Initiatives, Technical
-                              resources, Financing resources, Policies, Events,
-                              and Technologies. Learn more about each category
-                              and sub-categories definitions in the "Content
-                              Type" section of this form. A quick summary sheet
-                              with categories and sub-categories can be
-                              downloaded here.
-                            </p>
-                            <p>
-                              You can access existing content via the Knowledge
-                              Exchange Library. Make sure to browse around and
-                              leave a review under the resources you enjoy the
-                              most!
-                            </p>
-                          </div>
-                        )}
-
-                        <Space
-                          direction="vertical"
-                          size="large"
-                          className="w-full"
-                        >
-                          <div className="form-container">
-                            <Title level={4}>
-                              What type of content is this?
-                            </Title>
-                            <div
-                              style={{
-                                display: 'flex',
-                                gap: '10px',
-                                flexWrap: 'wrap',
-                              }}
-                            >
-                              {contentTypes.map((type) => (
-                                <Button
-                                  key={type}
-                                  className={`content-type-btn ${
-                                    selectedType === type ? 'selected' : ''
-                                  }`}
-                                  onClick={() => {
-                                    if (selectedType !== type) {
-                                      setSelectedType(type)
-                                      form.restart(initialValues)
-                                    } else {
-                                      setSelectedType(null)
-                                      form.restart(initialValues)
-                                    }
-                                  }}
-                                >
-                                  {type}
-                                </Button>
-                              ))}
+                      {!loadingEditData && (
+                        <>
+                          {!selectedType && (
+                            <div className="form-description">
+                              <p>
+                                The GPML Digital Platform is crowdsourced and
+                                allows everyone to submit new content via this
+                                form.
+                              </p>
+                              <p>
+                                A wide range of resources can be submitted, and
+                                these include Action Plans, Initiatives,
+                                Technical resources, Financing resources,
+                                Policies, Events, and Technologies. Learn more
+                                about each category and sub-categories
+                                definitions in the "Content Type" section of
+                                this form. A quick summary sheet with categories
+                                and sub-categories can be downloaded here.
+                              </p>
+                              <p>
+                                You can access existing content via the
+                                Knowledge Exchange Library. Make sure to browse
+                                around and leave a review under the resources
+                                you enjoy the most!
+                              </p>
                             </div>
-                          </div>
-
-                          {selectedType && (
-                            <>
-                              <Card className="mt-8">
-                                <Title className="form-title" level={4}>
-                                  All details of the{' '}
-                                  {selectedType.toLowerCase()}
-                                </Title>
-                                <FormFields
-                                  selectedType={selectedType}
-                                  storeData={storeData}
-                                  form={form}
-                                />
-                                <Button
-                                  type="primary"
-                                  htmlType="submit"
-                                  loading={loading}
-                                  disabled={loading}
-                                  className="submit-btn"
-                                >
-                                  Save & Publish
-                                </Button>
-                              </Card>
-                            </>
                           )}
-                        </Space>
-                      </>
-                    )}
-                  </form>
-                </>
-              )
-            }}
-          />
+
+                          <Space
+                            direction="vertical"
+                            size="large"
+                            className="w-full"
+                          >
+                            <div className="form-container">
+                              <Title level={4}>
+                                What type of content is this?
+                              </Title>
+                              <div
+                                style={{
+                                  display: 'flex',
+                                  gap: '10px',
+                                  flexWrap: 'wrap',
+                                }}
+                              >
+                                {contentTypes.map((type) => (
+                                  <Button
+                                    key={type}
+                                    className={`content-type-btn ${
+                                      selectedType === type ? 'selected' : ''
+                                    }`}
+                                    onClick={() => {
+                                      if (selectedType !== type) {
+                                        setSelectedType(type)
+                                        form.restart(initialValues)
+                                      } else {
+                                        setSelectedType(null)
+                                        form.restart(initialValues)
+                                      }
+                                    }}
+                                  >
+                                    {type}
+                                  </Button>
+                                ))}
+                              </div>
+                            </div>
+
+                            {selectedType && (
+                              <>
+                                <Card className="mt-8">
+                                  <Title className="form-title" level={4}>
+                                    All details of the{' '}
+                                    {selectedType.toLowerCase()}
+                                  </Title>
+                                  <FormFields
+                                    selectedType={selectedType}
+                                    storeData={storeData}
+                                    form={form}
+                                  />
+                                  <Button
+                                    type="primary"
+                                    htmlType="submit"
+                                    loading={loading}
+                                    disabled={loading}
+                                    className="submit-btn"
+                                  >
+                                    Save & Publish
+                                  </Button>
+                                </Card>
+                              </>
+                            )}
+                          </Space>
+                        </>
+                      )}
+                    </form>
+                  </>
+                )
+              }}
+            />
+          )}
         </div>
       </div>
     </div>

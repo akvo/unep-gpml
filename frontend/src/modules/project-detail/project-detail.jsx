@@ -9,7 +9,7 @@ import {
 } from '../../components/icons'
 import styles from './style.module.scss'
 import { SwiperSlide, Swiper } from 'swiper/react'
-import { Navigation } from 'swiper'
+import { Navigation, Pagination } from 'swiper'
 import Link from 'next/link'
 import moment from 'moment'
 import { lifecycleStageTags, resourceTypeToTopicType } from '../../utils/misc'
@@ -133,7 +133,8 @@ const ProjectDetail = ({ data: inData, isModal, setVisible }) => {
               spaceBetween={15}
               slidesPerView={'auto'}
               navigation={true}
-              modules={[Navigation]}
+              pagination={true}
+              modules={[Navigation, Pagination]}
             >
               {data?.image && (
                 <SwiperSlide>
@@ -142,6 +143,13 @@ const ProjectDetail = ({ data: inData, isModal, setVisible }) => {
                   </div>
                 </SwiperSlide>
               )}
+              {data?.gallery?.map((image) => (
+                <SwiperSlide>
+                  <div className="cover-img">
+                    <img src={image} />
+                  </div>
+                </SwiperSlide>
+              ))}
               {data?.videos
                 ?.filter((it) => it !== '')
                 ?.map((video) => (
