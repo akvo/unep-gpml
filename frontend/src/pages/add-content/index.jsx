@@ -1084,9 +1084,11 @@ const FormField = React.memo(
                   try {
                     if (fileList) {
                       async function processFiles(filesArray) {
-                        for (const file of filesArray) {
-                          await getBase64(file)
+                        const ret = []
+                        for (const $file of filesArray) {
+                          ret.push(await getBase64($file.originFileObj))
                         }
+                        return ret
                       }
                       const value = await processFiles(fileList)
                       input.onChange(value)
