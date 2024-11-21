@@ -712,7 +712,7 @@ const FormField = React.memo(
               >
                 {selectOptions.geoCoverageType.map((opt) => (
                   <Option key={opt.value} value={opt.value}>
-                    <Trans>{opt.key}</Trans>
+                    {opt.key}
                   </Option>
                 ))}
               </Select>
@@ -954,7 +954,7 @@ const FormField = React.memo(
               >
                 {tags.map((opt) => (
                   <Option key={opt.id} value={opt.id}>
-                    <Trans>{opt.tag}</Trans>
+                    {opt.tag}
                   </Option>
                 ))}
               </Select>{' '}
@@ -995,7 +995,7 @@ const FormField = React.memo(
               >
                 {selectOptions.lifecycleStage.map((opt) => (
                   <Option key={opt} value={opt}>
-                    <Trans>{opt}</Trans>
+                    {opt}
                   </Option>
                 ))}
               </Select>{' '}
