@@ -13,19 +13,15 @@ module.exports = {
                 first: 2,
             };
 
-            const { country, categoryId } = ctx.params;
+            const { country, placeholders: clientPlaceholders } = ctx.request.body;
 
-            const categoryAll = await strapi.entityService.findMany('api::category.category', categoryId);
-            const category = categoryAll.find(cat => cat.categoryId === categoryId);
 
-            if (!category) {
-                return ctx.notFound('Category not found');
+            if (!clientPlaceholders || !Array.isArray(clientPlaceholders)) {
+                return ctx.badRequest('Invalid or missing placeholders array');
             }
 
-            const { template, placeholders } = category.textTemplate;
-
             const uniqueLayerIds = [...new Set(
-                placeholders
+                clientPlaceholders
                     .map(placeholder => placeholder.split('=')[0].split(/(_year|_total|_last|_first|_city|\*|\/|\+|\-)/)[0].trim())
             )];
 
@@ -85,7 +81,7 @@ module.exports = {
                 }
             };
 
-            placeholders.forEach((placeholder) => {
+            clientPlaceholders.forEach((placeholder) => {
                 const decimals = decimalConfig[placeholder] || decimalConfig.default;
 
                 if (placeholder.includes('=')) {
@@ -143,7 +139,7 @@ module.exports = {
             });
 
             ctx.set('Content-Type', 'application/json');
-            ctx.send({ placeholders: calculatedValues, tooltips, categoryText: category.textTemplate.template });
+            ctx.send({ placeholders: calculatedValues, tooltips });
 
         } catch (error) {
             console.error('Error in replacePlaceholders:', error);

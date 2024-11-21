@@ -30,8 +30,6 @@ const CountryOverview = () => {
     (c) => c.attributes.categoryId == router.query.categoryId
   )
 
-  console.log('selectedCategoryselectedCategory???', selectedCategory)
-
   const [isModalVisible, setModalVisible] = useState(false)
 
   const showModal = () => {
@@ -42,16 +40,11 @@ const CountryOverview = () => {
     setModalVisible(false)
   }
 
-  const {
-    placeholders,
-    tooltips,
-    categoryText: template1,
-    loading,
-  } = useReplacedText(router.query.country, router.query.categoryId)
-
-
-
-  console.log('template1template1', tooltips)
+  const { placeholders, tooltips, loading } = useReplacedText(
+    router.query.country,
+    router.query.categoryId,
+    selectedCategory?.attributes?.textTemplate?.placeholders
+  )
 
   const template = selectedCategory?.attributes?.textTemplate?.template || ''
   const compiledTemplate = Handlebars.compile(template)
