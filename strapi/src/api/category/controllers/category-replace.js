@@ -8,6 +8,7 @@ module.exports = {
                 Municipal_solid_waste_generated_annually_V3_WFL1: 0,
                 Proportion_of_municipal_waste_recycled_13_10_24_WFL1: 2,
                 Municipal_solid_waste_generated_daily_per_capita_V3_WFL1: 2,
+                MSW_generation_rate__kg_cap_day__WFL1: 2,
                 total: 0,
                 last: 2,
                 first: 2,
@@ -24,12 +25,23 @@ module.exports = {
                     .map(placeholder => placeholder.split('=')[0].split(/(_year|_total|_last|_first|_city|\*|\/|\+|\-)/)[0].trim())
             )];
 
-            const allLayersResponse = await axios.get(`https://unep-gpml.akvotest.org/strapi/api/layers?pagination[page]=1&pagination[pageSize]=150&populate=ValuePerCountry`);
-            const allLayers = allLayersResponse.data?.data || [];
+            const filterQuery = {
+                arcgislayerId: {
+                    $in: uniqueLayerIds,
+                },
+            };
 
-            const layerData = allLayers.filter(layer =>
-                uniqueLayerIds.includes(layer.attributes.arcgislayerId)
-            );
+            const allLayersResponse = await strapi.entityService.findMany('api::layer.layer', {
+                populate: 'ValuePerCountry',
+                pagination: {
+                    page: 1,
+                    pageSize: 150,
+                },
+                filters: filterQuery,
+            });
+
+            const layerData = allLayersResponse || [];
+
 
             if (!layerData || layerData.length === 0) {
                 return ctx.notFound('Layers not found');
@@ -38,11 +50,11 @@ module.exports = {
             const layerDataByArcgisId = {};
             layerData.forEach(layer => {
 
-                if (layer && layer.attributes) {
-                    const { arcgislayerId, ValuePerCountry } = layer.attributes;
+                if (layer && layer) {
+                    const { arcgislayerId, ValuePerCountry } = layer;
                     layerDataByArcgisId[arcgislayerId] = {
                         values: ValuePerCountry?.filter(c => c.CountryName === country) || [],
-                        datasource: layer.attributes.dataSource || "Unknown source"
+                        datasource: layer.dataSource || "Unknown source"
                     };
                 }
             });
@@ -90,11 +102,18 @@ module.exports = {
             clientPlaceholders.forEach((placeholder) => {
                 const decimals = decimalConfig[placeholder] || decimalConfig.default;
 
+                if (placeholder === 'country') {
+                    // Handle country placeholder explicitly
+                    calculatedValues[placeholder] = country || "[No data]";
+                    tooltips[placeholder] = "Selected country";
+                    return;
+                }
+
                 if (placeholder.includes('=')) {
                     const [varName, formula] = placeholder.split('=').map((str) => str.trim());
                     const result = evaluateFormula(formula);
                     const datasource = "Calculated from formula";
-                    calculatedValues[varName] = Number(result).toFixed(decimals);
+                    calculatedValues[varName] = Number(result).toFixed(1);
                     tooltips[varName] = `${datasource}`;
                 } else {
                     const arcgislayerId = placeholder.split(/(_year|_total|_last|_first|_city|_city_1_value|_city_2_value|_city_1|_city_2)/)[0].trim();
@@ -110,13 +129,16 @@ module.exports = {
 
                     let replacementValue = "[No data]";
                     let tooltipText = `${datasource}`;
+                    const sortedLayer = [...layer].sort((a, b) => a.Year - b.Year);
+
+
 
                     if (/_(Year|year)_first$/.test(placeholder)) {
-                        const firstYearEntry = [...layer].sort((a, b) => a.Year - b.Year)[0];
+                        const firstYearEntry = sortedLayer[0];
                         replacementValue = firstYearEntry?.Year?.toString() || "[No data]";
                         tooltipText = ` ${datasource}`;
                     } else if (/_(Year|year)_last$/.test(placeholder)) {
-                        const lastYearEntry = [...layer].sort((a, b) => b.Year - a.Year)[0];
+                        const lastYearEntry = sortedLayer[0];
                         replacementValue = lastYearEntry?.Year?.toString() || "[No data]";
                         tooltipText = `${datasource}`;
                     } else if (/_(Year|year)$/.test(placeholder)) {
@@ -126,6 +148,34 @@ module.exports = {
                         const totalSum = layer.reduce((sum, entry) => sum + (entry.Value || 0), 0);
                         replacementValue = new Intl.NumberFormat().format(Math.round(totalSum));
                         tooltipText = ` ${datasource}`;
+                    } else if (/city_2_value$/i.test(placeholder)) {
+                        const arcgislayerId = placeholder.split(/(_city_2_value)/)[0].trim();
+                        const city2Value = layer[1]?.Value;
+                        if (arcgislayerId === "MSW_generation_rate__kg_cap_day__WFL1") {
+                            replacementValue = city2Value !== undefined
+                                ? city2Value.toFixed(2)
+                                : "[No data]";
+                        } else {
+                            replacementValue = city2Value !== undefined
+                                ? Math.round(city2Value).toString()
+                                : "[No data]";
+                        }
+                        tooltipText = datasource;
+                    } else if (/city_1_value$/i.test(placeholder)) {
+                        const arcgislayerId = placeholder.split(/(_city_1_value)/)[0].trim();
+                        const city1Value = layer[0]?.Value;
+                        if (arcgislayerId === "MSW_generation_rate__kg_cap_day__WFL1") {
+                            replacementValue = city1Value !== undefined
+                                ? city1Value.toFixed(2)
+                                : "[No data]";
+                        } else {
+                            replacementValue = city1Value !== undefined
+                                ? Math.round(city1Value).toString()
+                                : "[No data]";
+                        }
+                        tooltipText = datasource;
+
+
                     } else if (/city_1$/i.test(placeholder)) {
                         replacementValue = layer[0]?.City || "[No data]";
                     } else if (/city_2$/i.test(placeholder)) {
