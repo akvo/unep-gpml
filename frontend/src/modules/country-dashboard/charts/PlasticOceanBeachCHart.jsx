@@ -11,6 +11,7 @@ const PlasticOceanBeachChart = () => {
   const { layers, loading } = useLayerInfo()
   const [oceanPercentage, setOceanPercentage] = useState(0)
   const [beachPercentage, setBeachPercentage] = useState(0)
+  const [totalWeight, setTotalWeight] = useState(0)
 
   useEffect(() => {
     const fetchData = () => {
@@ -32,6 +33,11 @@ const PlasticOceanBeachChart = () => {
           'Mismanaged_plastic_waste_escaping_to_beaches_V3_WFL1'
       )
 
+      const totalWeightLayer = layers.find(
+        (layer) =>
+          layer.attributes.arcgislayerId ===
+          'Mismanaged_plastic_waste_escaping_to_oceans_and_coasts_V3_WFL1'
+      )
       if (!oceanLayer || !coastLayer || !beachLayer) {
         console.warn('One of the required layers not found.')
         return
@@ -50,6 +56,11 @@ const PlasticOceanBeachChart = () => {
           (item) => item.CountryName === country
         )?.Value || 0
 
+      const totalWeight =
+        totalWeightLayer.attributes.ValuePerCountry.find(
+          (item) => item.CountryName === country
+        )?.Value || 0
+
       const calculatedOceanPercentage = (
         (oceanValue * 100) /
         coastValue
@@ -61,85 +72,106 @@ const PlasticOceanBeachChart = () => {
 
       setOceanPercentage(calculatedOceanPercentage)
       setBeachPercentage(calculatedBeachPercentage)
+      setTotalWeight(totalWeight)
     }
 
     fetchData()
   }, [country, layers, loading])
 
-  const getOption = () => ({
-    title: {
-      text: 'Mismanaged plastic reaching oceans and coasts​',
-      subtext: `Percentage of the mismanaged waste between years 2010-2019`,
-      left: 'center',
-      textStyle: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: '#020A5B',
-      },
-      subtextStyle: {
-        fontSize: 12,
-        color: '#020A5B',
-        fontFamily: 'Roboto, Helvetica Neue, sans-serif',
-        fontWeight: 'bold',
-      },
-    },
-    tooltip: {
-      trigger: 'item',
-      formatter: '{a} <br/>{b}: {c} tonnes ({d}%)',
-    },
-    legend: {
-      orient: 'horizontal',
-      bottom: 10,
-      data: ['Ends up on the coasts', 'Ends up in the ocean'],
-      textStyle: {
-        fontSize: 12,
-        color: '#020A5B',
-      },
-    },
-    series: [
-      {
-        name: 'Plastic distribution',
-        type: 'pie',
-        top: '15%',
-        radius: ['40%', '80%'],
-        avoidLabelOverlap: false,
-        itemStyle: {
-          borderRadius: 0,
-          borderColor: '#fff',
-          borderWidth: 2,
+  const getOption = () => {
+    const formattedTotalWeight = new Intl.NumberFormat('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(totalWeight)
+
+    return {
+      title: {
+        text: 'Mismanaged plastic reaching oceans and coasts​',
+        subtext: `Percentage of the mismanaged waste between years 2010-2019`,
+        left: 'center',
+        textStyle: {
+          fontSize: 16,
+          fontWeight: 'bold',
+          color: '#020A5B',
         },
-        label: {
-          show: true,
-          position: 'inside',
-          formatter: '{d}%',
+        subtextStyle: {
           fontSize: 12,
-          color: '#fff',
+          color: '#020A5B',
+          fontFamily: 'Roboto, Helvetica Neue, sans-serif',
+          fontWeight: 'bold',
         },
-        emphasis: {
+      },
+      tooltip: {
+        trigger: 'item',
+        formatter: '{a} <br/>{b}: {c} %',
+      },
+      legend: {
+        orient: 'horizontal',
+        bottom: 10,
+        data: ['Ends up on the coasts', 'Ends up in the ocean'],
+        textStyle: {
+          fontSize: 12,
+          color: '#020A5B',
+        },
+      },
+      series: [
+        {
+          name: 'Plastic distribution',
+          type: 'pie',
+          top: '15%',
+          radius: ['40%', '80%'],
+          avoidLabelOverlap: false,
+          itemStyle: {
+            borderRadius: 0,
+            borderColor: '#fff',
+            borderWidth: 2,
+          },
           label: {
             show: true,
-            fontSize: '16',
-            fontWeight: 'bold',
+            position: 'inside',
+            formatter: '{d}%',
+            fontSize: 12,
+            color: '#fff',
           },
+          emphasis: {
+            label: {
+              show: true,
+              fontSize: '16',
+              fontWeight: 'bold',
+            },
+          },
+          labelLine: {
+            show: false,
+          },
+          data: [
+            {
+              value: beachPercentage,
+              name: 'Ends up on the coasts',
+              itemStyle: { color: '#ffc107' },
+            },
+            {
+              value: oceanPercentage,
+              name: 'Ends up in the ocean',
+              itemStyle: { color: '#007bff' },
+            },
+          ],
         },
-        labelLine: {
-          show: false,
+      ],
+      graphic: {
+        type: 'text',
+        left: 'center',
+        top: 'middle',
+        style: {
+          text: `${formattedTotalWeight} tonnes`,
+          fontSize: 12,
+          fontWeight: 'bold',
+          fill: '#020A5B',
+          textAlign: 'center',
+          textVerticalAlign: 'middle',
         },
-        data: [
-          {
-            value: beachPercentage,
-            name: 'Ends up in beaches',
-            itemStyle: { color: '#ffc107' },
-          },
-          {
-            value: oceanPercentage,
-            name: 'Ends up in the ocean',
-            itemStyle: { color: '#007bff' },
-          },
-        ],
       },
-    ],
-  })
+    }
+  }
 
   return (
     <div style={{ position: 'relative' }}>
