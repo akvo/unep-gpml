@@ -128,7 +128,7 @@ const PlasticOceanBeachChart = () => {
         data: [
           {
             value: beachPercentage,
-            name: 'Ends up in beaches',
+            name: 'Ends up on the coasts',
             itemStyle: { color: '#ffc107' },
           },
           {
