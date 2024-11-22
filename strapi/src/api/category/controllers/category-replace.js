@@ -25,10 +25,22 @@ module.exports = {
                     .map(placeholder => placeholder.split('=')[0].split(/(_year|_total|_last|_first|_city|\*|\/|\+|\-)/)[0].trim())
             )];
 
-            const filterQuery = uniqueLayerIds.map(id => `filters[arcgislayerId][$in][]=${id}`).join('&');
+            const filterQuery = {
+                arcgislayerId: {
+                    $in: uniqueLayerIds,
+                },
+            };
 
-            const allLayersResponse = await axios.get(`https://unep-gpml.akvotest.org/strapi/api/layers?pagination[page]=1&pagination[pageSize]=150&populate=ValuePerCountry&${filterQuery}`);
-            const layerData = allLayersResponse.data?.data || [];
+            const allLayersResponse = await strapi.entityService.findMany('api::layer.layer', {
+                populate: 'ValuePerCountry',
+                pagination: {
+                    page: 1,
+                    pageSize: 150,
+                },
+                filters: filterQuery,
+            });
+
+            const layerData = allLayersResponse || [];
 
 
             if (!layerData || layerData.length === 0) {
@@ -38,11 +50,11 @@ module.exports = {
             const layerDataByArcgisId = {};
             layerData.forEach(layer => {
 
-                if (layer && layer.attributes) {
-                    const { arcgislayerId, ValuePerCountry } = layer.attributes;
+                if (layer && layer) {
+                    const { arcgislayerId, ValuePerCountry } = layer;
                     layerDataByArcgisId[arcgislayerId] = {
                         values: ValuePerCountry?.filter(c => c.CountryName === country) || [],
-                        datasource: layer.attributes.dataSource || "Unknown source"
+                        datasource: layer.dataSource || "Unknown source"
                     };
                 }
             });
@@ -141,11 +153,11 @@ module.exports = {
                         const city2Value = layer[1]?.Value;
                         if (arcgislayerId === "MSW_generation_rate__kg_cap_day__WFL1") {
                             replacementValue = city2Value !== undefined
-                                ? city2Value.toFixed(2) 
+                                ? city2Value.toFixed(2)
                                 : "[No data]";
                         } else {
                             replacementValue = city2Value !== undefined
-                                ? Math.round(city2Value).toString() 
+                                ? Math.round(city2Value).toString()
                                 : "[No data]";
                         }
                         tooltipText = datasource;
@@ -154,11 +166,11 @@ module.exports = {
                         const city1Value = layer[0]?.Value;
                         if (arcgislayerId === "MSW_generation_rate__kg_cap_day__WFL1") {
                             replacementValue = city1Value !== undefined
-                                ? city1Value.toFixed(2) 
+                                ? city1Value.toFixed(2)
                                 : "[No data]";
                         } else {
                             replacementValue = city1Value !== undefined
-                                ? Math.round(city1Value).toString() 
+                                ? Math.round(city1Value).toString()
                                 : "[No data]";
                         }
                         tooltipText = datasource;
