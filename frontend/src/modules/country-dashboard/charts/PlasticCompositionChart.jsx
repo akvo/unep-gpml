@@ -192,7 +192,7 @@ const PlasticCompositionChart = () => {
           fontSize: '12px',
         }}
       >
-        Datasource:{' '}
+        Data source:{' '}
         <a
           href={`${baseURL}/data/maps?categoryId=waste-management&subcategoryId=generation&layer=Proportion_of_plastic_waste_generated_WFL1`}
           style={{ color: '#020A5B', fontWeight: 'bold' }}
