@@ -30,6 +30,7 @@ import Link from 'next/link'
 import classNames from 'classnames'
 import DetailModal from '../details-page/modal'
 import { useRouter } from 'next/router'
+import bodyScrollLock from '../../modules/details-page/scroll-utils'
 
 export const AdminBadges = ({ data, badgeOpts }) => {
   const [assigned, setAssigned] = useState(
