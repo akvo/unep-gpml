@@ -51,7 +51,7 @@ msgstr "<0>Be approved</0>and certified by the GPML as a member of the partnersh
 msgid "<0>Fill in the form.</0><1/>Tell us about your organisation's work in preventing and reducing plastic pollution and marine litter."
 msgstr "<0>Fill in the form.</0><1/>Tell us about your organisation's work in preventing and reducing plastic pollution and marine litter."
 
-#: src/pages/landing/index.jsx:743
+#: src/pages/landing/index.jsx:741
 msgid "<0>GPML’s</0> Action Tracks"
 msgstr "<0>GPML’s</0> Action Tracks"
 
@@ -83,25 +83,25 @@ msgstr "3 STEPS FOR AN ENTITY TO BECOME A MEMBER"
 msgid "A change in public opinion"
 msgstr "A change in public opinion"
 
-#: src/store.js:700
+#: src/store.js:695
 msgid "A collection of technology solutions and of environmentally sound technologies, which identifies commercial solutions for the prevention of marine litter following a lifecycle approach, from source to sea, with a focus on both land-based and near-shore (litter capturing) technologies. Environmentally sound technologies, sections explaining alternative materials, chemical recycling, additives etc."
 msgstr "A collection of technology solutions and of environmentally sound technologies, which identifies commercial solutions for the prevention of marine litter following a lifecycle approach, from source to sea, with a focus on both land-based and near-shore (litter capturing) technologies. Environmentally sound technologies, sections explaining alternative materials, chemical recycling, additives etc."
 
-#: src/store.js:523
-#: src/store.js:735
+#: src/store.js:518
+#: src/store.js:730
 msgid "A document that gives advice or help on how to do or understand something."
 msgstr "A document that gives advice or help on how to do or understand something."
 
-#: src/store.js:604
+#: src/store.js:599
 msgid "A meeting of people to discuss and/or perform practical work in a subject or activity"
 msgstr "A meeting of people to discuss and/or perform practical work in a subject or activity"
 
-#: src/store.js:529
+#: src/store.js:524
 msgid "A natural or established process by which something takes place or is brought about."
 msgstr "A natural or established process by which something takes place or is brought about."
 
-#: src/store.js:535
-#: src/store.js:740
+#: src/store.js:530
+#: src/store.js:735
 msgid "A resource or set of resources that helps you to do a particular activity."
 msgstr "A resource or set of resources that helps you to do a particular activity."
 
@@ -109,19 +109,19 @@ msgstr "A resource or set of resources that helps you to do a particular activit
 msgid "A series of phased releases, informed by user-centered design, will culminate in a final version in June 2023. Interim versions will enhance existing features and develop new ones in preparation for key events, including UNEA-5.2 dialogues and the 7th International Marine Debris Conference (7IMDC) planned for 2022, as well as UNEA-6, expected to be held in early 2023."
 msgstr "A series of phased releases, informed by user-centered design, will culminate in a final version in June 2023. Interim versions will enhance existing features and develop new ones in preparation for key events, including UNEA-5.2 dialogues and the 7th International Marine Debris Conference (7IMDC) planned for 2022, as well as UNEA-6, expected to be held in early 2023."
 
-#: src/store.js:685
+#: src/store.js:680
 msgid "A solution that is to be tested on a small scale that is seen to be complete in its own right. Piloting can also be seen as the pre-scale phase of a new approach that focuses on quality, validation, time, cost, adverse events, and initial short-term impact."
 msgstr "A solution that is to be tested on a small scale that is seen to be complete in its own right. Piloting can also be seen as the pre-scale phase of a new approach that focuses on quality, validation, time, cost, adverse events, and initial short-term impact."
 
-#: src/store.js:517
+#: src/store.js:512
 msgid "A textual document made that present focused, salient content to a specific audience but is not limited to assessment reports, evaluation report, annual report, progress/quadrennial assessment report."
 msgstr "A textual document made that present focused, salient content to a specific audience but is not limited to assessment reports, evaluation report, annual report, progress/quadrennial assessment report."
 
-#: src/store.js:469
+#: src/store.js:464
 msgid "A type of pooled funding involving multiple UN organisations and designed to receive contributions from donors to support specific national, regional or global results."
 msgstr "A type of pooled funding involving multiple UN organisations and designed to receive contributions from donors to support specific national, regional or global results."
 
-#: src/store.js:541
+#: src/store.js:536
 msgid "A type of technical report that is a work in progress, a preliminary form of a possible future document."
 msgstr "A type of technical report that is a work in progress, a preliminary form of a possible future document."
 
@@ -129,7 +129,7 @@ msgstr "A type of technical report that is a work in progress, a preliminary for
 msgid "A wide range of resources can be submitted, and these include Action Plans, Initiatives, Technical resources, Financing resources, Policies, Events, and Technologies. Learn more about each category and sub-categories definitions in the “Content Type” section of this form. A quick summary sheet with categories and sub-categories can be downloaded"
 msgstr "A wide range of resources can be submitted, and these include Action Plans, Initiatives, Technical resources, Financing resources, Policies, Events, and Technologies. Learn more about each category and sub-categories definitions in the “Content Type” section of this form. A quick summary sheet with categories and sub-categories can be downloaded"
 
-#: src/store.js:98
+#: src/store.js:93
 msgid "About"
 msgstr "About"
 
@@ -154,20 +154,16 @@ msgstr "Access the workspace"
 msgid "Access to a unique global audience for sharing knowledge and experiences in preventing and reducing plastic pollution and marine litter."
 msgstr "Access to a unique global audience for sharing knowledge and experiences in preventing and reducing plastic pollution and marine litter."
 
-#: src/pages/landing/index.jsx:808
+#: src/pages/landing/index.jsx:806
 msgid "Access to all"
 msgstr "Access to all"
 
-#: src/pages/landing/index.jsx:616
-msgid "Act Now: <0/> <1>Co-solution with the plastic network</1>"
-msgstr "Act Now: <0/> <1>Co-solution with the plastic network</1>"
-
-#: src/store.js:589
-#: src/store.js:723
+#: src/store.js:584
+#: src/store.js:718
 msgid "Action for the Oceans – Youth leaders raising awareness for the Oceans, together!"
 msgstr "Action for the Oceans – Youth leaders raising awareness for the Oceans, together!"
 
-#: src/store.js:293
+#: src/store.js:288
 msgid "Action Plan"
 msgstr "Action Plan"
 
@@ -229,7 +225,7 @@ msgstr "Affiliation"
 msgid "Affordable and Clean Energy"
 msgstr "Affordable and Clean Energy"
 
-#: src/store.js:268
+#: src/store.js:263
 msgid "Agreeing new or changing rules or standards that others should comply with, new regulation, agreements, policies, economic instruments etc. including voluntary commitments)."
 msgstr "Agreeing new or changing rules or standards that others should comply with, new regulation, agreements, policies, economic instruments etc. including voluntary commitments)."
 
@@ -237,12 +233,12 @@ msgstr "Agreeing new or changing rules or standards that others should comply wi
 msgid "Agriculture"
 msgstr "Agriculture"
 
-#: src/store.js:422
+#: src/store.js:417
 msgid "AI for Earth Grant"
 msgstr "AI for Earth Grant"
 
 #: src/modules/signup/view.jsx:45
-#: src/store.js:168
+#: src/store.js:163
 msgid "ALDFG"
 msgstr "ALDFG"
 
@@ -276,23 +272,23 @@ msgstr "All Resources"
 msgid "Already have an account?"
 msgstr "Already have an account?"
 
-#: src/store.js:346
+#: src/store.js:341
 msgid "An action plan is a detailed plan outlining actions needed to reach one or more goals. Alternatively, it can be defined as a sequence of steps that must be taken, or activities that must be performed well, for a strategy to succeed. Development of action plans is required under many multilateral environmental agreements to facilitate implementation."
 msgstr "An action plan is a detailed plan outlining actions needed to reach one or more goals. Alternatively, it can be defined as a sequence of steps that must be taken, or activities that must be performed well, for a strategy to succeed. Development of action plans is required under many multilateral environmental agreements to facilitate implementation."
 
-#: src/store.js:616
+#: src/store.js:611
 msgid "An activity done by a number of people or organizations, each of which is trying to do better than all of the others"
 msgstr "An activity done by a number of people or organizations, each of which is trying to do better than all of the others"
 
-#: src/store.js:457
+#: src/store.js:452
 msgid "An amount of money that a government or other institution gives to an individual or to an organization for a particular purpose."
 msgstr "An amount of money that a government or other institution gives to an individual or to an organization for a particular purpose."
 
-#: src/store.js:451
+#: src/store.js:446
 msgid "An amount of money that is borrowed, often from a bank, and has to be paid back, usually with an extra charge for borrowing."
 msgstr "An amount of money that is borrowed, often from a bank, and has to be paid back, usually with an extra charge for borrowing."
 
-#: src/store.js:598
+#: src/store.js:593
 msgid "An online or face-to-face meeting of people to discuss and/or perform practical work in a subject or activity"
 msgstr "An online or face-to-face meeting of people to discuss and/or perform practical work in a subject or activity"
 
@@ -304,8 +300,8 @@ msgstr "Annex C of the Concept Document."
 msgid "Anticipating a future policy change"
 msgstr "Anticipating a future policy change"
 
-#: src/store.js:547
-#: src/store.js:750
+#: src/store.js:542
+#: src/store.js:745
 msgid "Any resource – including print and non-print materials and online/open-access resources – which supports and enhances, directly or indirectly, learning, teaching and awareness raising."
 msgstr "Any resource – including print and non-print materials and online/open-access resources – which supports and enhances, directly or indirectly, learning, teaching and awareness raising."
 
@@ -362,7 +358,7 @@ msgstr "Area of expertise"
 msgid "Areas of expertise"
 msgstr "Areas of expertise"
 
-#: src/store.js:308
+#: src/store.js:303
 msgid "ASEAN Regional Action Plan for Combating Marine Debris in the ASEAN Member States (2021 – 2025)"
 msgstr "ASEAN Regional Action Plan for Combating Marine Debris in the ASEAN Member States (2021 – 2025)"
 
@@ -408,16 +404,12 @@ msgstr "Available Information"
 msgid "Available Tools"
 msgstr "Available Tools"
 
-#: src/pages/landing/index.jsx:621
-msgid "Avoid duplication of efforts. By using the platform, you can collaborate with other organisations and governments to create shared solutions to end plastic pollution."
-msgstr "Avoid duplication of efforts. By using the platform, you can collaborate with other organisations and governments to create shared solutions to end plastic pollution."
-
 #: src/modules/signup/view.jsx:33
-#: src/store.js:156
+#: src/store.js:151
 msgid "Awareness"
 msgstr "Awareness"
 
-#: src/store.js:625
+#: src/store.js:620
 msgid "Awareness Raising"
 msgstr "Awareness Raising"
 
@@ -426,11 +418,11 @@ msgid "Awareness raising and behaviour change"
 msgstr "Awareness raising and behaviour change"
 
 #: src/modules/signup/view.jsx:34
-#: src/store.js:157
+#: src/store.js:152
 msgid "Awareness-raising"
 msgstr "Awareness-raising"
 
-#: src/store.js:628
+#: src/store.js:623
 msgid "Awareness-raising is a process that seeks to inform and educate people about a topic or issue with the intention of influencing their attitudes, behaviours and beliefs towards the achievement of a defined purpose or goal.1 It can mobilize the power of public opinion in support of an issue and thereby influence the political will of decision makers.2 There are multiple awareness-raising strategies, methods and tools that can be used to convey and spread messages, and to gather the support necessary to influence public opinion."
 msgstr "Awareness-raising is a process that seeks to inform and educate people about a topic or issue with the intention of influencing their attitudes, behaviours and beliefs towards the achievement of a defined purpose or goal.1 It can mobilize the power of public opinion in support of an issue and thereby influence the political will of decision makers.2 There are multiple awareness-raising strategies, methods and tools that can be used to convey and spread messages, and to gather the support necessary to influence public opinion."
 
@@ -508,7 +500,7 @@ msgstr "Biodiversity"
 msgid "Biological diversity"
 msgstr "Biological diversity"
 
-#: src/store.js:460
+#: src/store.js:455
 msgid "Blended finance"
 msgstr "Blended finance"
 
@@ -543,7 +535,7 @@ msgstr "By submitting this form, I will be included in the public database of GP
 msgid "Calculation of Indicators"
 msgstr "Calculation of Indicators"
 
-#: src/store.js:259
+#: src/store.js:254
 msgid "California Ocean Litter Prevention Strategy"
 msgstr "California Ocean Litter Prevention Strategy"
 
@@ -571,12 +563,12 @@ msgid "CANCEL"
 msgstr "CANCEL"
 
 #: src/modules/knowledge-lib/filter-bar.jsx:24
-#: src/store.js:704
+#: src/store.js:699
 msgid "Capacity Development"
 msgstr "Capacity Development"
 
-#: src/store.js:556
-#: src/store.js:768
+#: src/store.js:551
+#: src/store.js:763
 msgid "Case studies"
 msgstr "Comparative Analysis – Case Studies"
 
@@ -594,7 +586,7 @@ msgstr "Case<0/>Studies"
 msgid "category"
 msgstr "category"
 
-#: src/store.js:391
+#: src/store.js:386
 msgid "Certification, Licensing and Registration"
 msgstr "Certification, Licensing and Registration"
 
@@ -606,7 +598,7 @@ msgstr "Certified"
 msgid "Challenge & Solution"
 msgstr "Challenge & Solution"
 
-#: src/store.js:613
+#: src/store.js:608
 msgid "Challenges & Contests"
 msgstr "Challenges & Contests"
 
@@ -673,7 +665,7 @@ msgid "Choose your filters below"
 msgstr "Choose your filters below"
 
 #: src/modules/signup/view.jsx:31
-#: src/store.js:154
+#: src/store.js:149
 msgid "Circularity"
 msgstr "Circularity"
 
@@ -738,7 +730,7 @@ msgstr "Climate and Atmosphere"
 msgid "Close"
 msgstr "Close"
 
-#: src/store.js:312
+#: src/store.js:307
 msgid "COBSEA Regional Action Plan on Marine Litter 2019"
 msgstr "COBSEA Regional Action Plan on Marine Litter 2019"
 
@@ -746,7 +738,7 @@ msgstr "COBSEA Regional Action Plan on Marine Litter 2019"
 msgid "Collaborate"
 msgstr "Collaborate"
 
-#: src/store.js:286
+#: src/store.js:281
 msgid "Collecting evidence around plastic discharge to the ocean/waterways, e.g., monitoring, analysis"
 msgstr "Collecting evidence around plastic discharge to the ocean/waterways, e.g., monitoring, analysis"
 
@@ -763,7 +755,7 @@ msgid "Comment deleted successfully"
 msgstr "Comment deleted successfully"
 
 #: src/pages/landing/index.jsx:363
-#: src/store.js:86
+#: src/store.js:81
 msgid "Communities of Practice"
 msgstr "Collaborate"
 
@@ -792,7 +784,7 @@ msgid "Concern about potential human health impacts"
 msgstr "Concern about potential human health impacts"
 
 #: src/modules/flexible-forms/form-schema.js:458
-#: src/store.js:607
+#: src/store.js:602
 msgid "Conferences"
 msgstr "Conferences"
 
@@ -834,7 +826,7 @@ msgid "Contact Info"
 msgstr "Contact Info"
 
 #: src/components/footer/Footer.jsx:57
-#: src/store.js:112
+#: src/store.js:107
 msgid "Contact Us"
 msgstr "Contact Us"
 
@@ -908,21 +900,21 @@ msgstr "Identification of Existing Instruments"
 msgid "Country Progress"
 msgstr "Country Progress"
 
-#: src/store.js:550
-#: src/store.js:619
-#: src/store.js:743
+#: src/store.js:545
+#: src/store.js:614
+#: src/store.js:738
 msgid "Courses & Trainings"
 msgstr "Courses & Trainings"
 
-#: src/store.js:337
+#: src/store.js:332
 msgid "Covers an entire country"
 msgstr "Covers an entire country"
 
-#: src/store.js:343
+#: src/store.js:338
 msgid "Covers part of a country e.g, city, or federal state"
 msgstr "Covers part of a country e.g, city, or federal state"
 
-#: src/store.js:331
+#: src/store.js:326
 msgid "Covers two or more countries"
 msgstr "Covers two or more countries"
 
@@ -930,7 +922,7 @@ msgstr "Covers two or more countries"
 msgid "Create Your Team"
 msgstr "Create Your Team"
 
-#: src/store.js:697
+#: src/store.js:692
 msgid "Creation of new knowledge and/or the use of existing knowledge in a new and creative way to generate new concepts, methodologies and understandings."
 msgstr "Creation of new knowledge and/or the use of existing knowledge in a new and creative way to generate new concepts, methodologies and understandings."
 
@@ -970,14 +962,14 @@ msgstr "CV / Portfolio"
 msgid "Data Analysis"
 msgstr "State of Knowledge on Plastic Data"
 
-#: src/store.js:776
-#: src/store.js:779
+#: src/pages/landing/index.jsx:619
+msgid "Data and information is a key for successful policy and action design to end plastic pollution. Immerse yourself in the rich resources in the platform."
+msgstr "Data and information is a key for successful policy and action design to end plastic pollution. Immerse yourself in the rich resources in the platform."
+
+#: src/store.js:771
+#: src/store.js:774
 msgid "Data Catalog"
 msgstr "Data Catalog"
-
-#: src/store.js:65
-msgid "Data Catalogue"
-msgstr "Data Catalogue"
 
 #: src/pages/workspace/[slug]/layout.js:49
 msgid "Data Collection"
@@ -1005,7 +997,7 @@ msgstr "Data tools"
 msgid "Data visualisations to track countries progress. Quickly connect with others working in the country to end plastic."
 msgstr "Data visualisations to track countries' progress. Quickly connect with others working in the country to end plastic."
 
-#: src/store.js:478
+#: src/store.js:473
 msgid "Debt securities issued by private or public entities to finance activities or projects linked to sustainable development, green goals, or ocean goals."
 msgstr "Debt securities issued by private or public entities to finance activities or projects linked to sustainable development, green goals, or ocean goals."
 
@@ -1013,7 +1005,7 @@ msgstr "Debt securities issued by private or public entities to finance activiti
 msgid "Decent Jobs and Economic Growth"
 msgstr "Decent Jobs and Economic Growth"
 
-#: src/store.js:382
+#: src/store.js:377
 msgid "Decisions designed to create favorable impact on key factors to create a desired outcome."
 msgstr "Decisions designed to create favorable impact on key factors to create a desired outcome."
 
@@ -1143,7 +1135,7 @@ msgstr "Developing a new material"
 msgid "Developing a new process"
 msgstr "Developing a new process"
 
-#: src/store.js:688
+#: src/store.js:683
 msgid "Development"
 msgstr "Development"
 
@@ -1155,7 +1147,7 @@ msgstr "Different environmental management of aquatic environments"
 msgid "Different environmental management of land-based environments"
 msgstr "Different environmental management of land-based environments"
 
-#: src/store.js:107
+#: src/store.js:102
 msgid "Digital Platform"
 msgstr "Digital Platform"
 
@@ -1221,7 +1213,7 @@ msgstr "Economic drivers (e.g., fines, subsidies, taxes)"
 msgid "Economic impacts will be evaluated"
 msgstr "Economic impacts will be evaluated"
 
-#: src/store.js:385
+#: src/store.js:380
 msgid "Economic Instruments"
 msgstr "Economic Instruments"
 
@@ -1248,7 +1240,7 @@ msgid "Editors can edit all content, but cannot manage the team"
 msgstr "Editors can edit all content, but cannot manage the team"
 
 #: src/modules/signup/view.jsx:32
-#: src/store.js:155
+#: src/store.js:150
 msgid "Education"
 msgstr "Education"
 
@@ -1256,8 +1248,8 @@ msgstr "Education"
 msgid "Education/Training"
 msgstr "Education/Training"
 
-#: src/store.js:544
-#: src/store.js:748
+#: src/store.js:539
+#: src/store.js:743
 msgid "Educational & Outreach resources"
 msgstr "Educational & Outreach resources"
 
@@ -1265,7 +1257,7 @@ msgstr "Educational & Outreach resources"
 msgid "Electrical and electronics"
 msgstr "Electrical and electronics"
 
-#: src/store.js:642
+#: src/store.js:637
 msgid "Ellipsis: Machine learning and aerial imagery to identify, map, and track plastic waste"
 msgstr "Ellipsis: Machine learning and aerial imagery to identify, map, and track plastic waste"
 
@@ -1295,7 +1287,7 @@ msgstr "Empowering"
 msgid "Empowering <0>18</0> countries in crafting comprehensive national source inventories, which facilitates the development of a National Roadmap/Strategy/Plan through evidence-based approach. Additionally, forums can be accessed from the workspace, promoting collaboration and sharing of information."
 msgstr "Empowering <0>18</0> countries in crafting comprehensive national source inventories, which facilitates the development of a National Roadmap/Strategy/Plan through evidence-based approach. Additionally, forums can be accessed from the workspace, promoting collaboration and sharing of information."
 
-#: src/store.js:274
+#: src/store.js:269
 msgid "Encouraging or enabling others, e.g., education, training, communication, awareness raising, behaviour change programmes"
 msgstr "Encouraging or enabling others, e.g., education, training, communication, awareness raising, behaviour change programmes"
 
@@ -1398,11 +1390,11 @@ msgstr "Environmental impacts will be evaluated"
 msgid "Environmental social planning"
 msgstr "Environmental social planning"
 
-#: src/store.js:243
+#: src/store.js:238
 msgid "Environmentally Sound Management and Destruction of PCBs"
 msgstr "Environmentally Sound Management and Destruction of PCBs"
 
-#: src/store.js:436
+#: src/store.js:431
 msgid "Equity Investment"
 msgstr "Equity Investment"
 
@@ -1418,7 +1410,7 @@ msgstr ""
 msgid "event"
 msgstr "event"
 
-#: src/store.js:566
+#: src/store.js:561
 msgid "Event"
 msgstr "Event"
 
@@ -1427,7 +1419,7 @@ msgid "Event Recording"
 msgstr "Event Recording"
 
 #: src/modules/knowledge-lib/filter-bar.jsx:20
-#: src/store.js:758
+#: src/store.js:753
 msgid "Events"
 msgstr "Events"
 
@@ -1515,16 +1507,16 @@ msgid "Final Review"
 msgstr "Final Review"
 
 #: src/modules/signup/view.jsx:40
-#: src/store.js:163
+#: src/store.js:158
 msgid "Financing"
 msgstr "Financing"
 
-#: src/store.js:407
+#: src/store.js:402
 msgid "Financing Resource"
 msgstr "Financing Resource"
 
 #: src/modules/knowledge-lib/filter-bar.jsx:36
-#: src/store.js:763
+#: src/store.js:758
 msgid "Financing Resources"
 msgstr "Financing Resources"
 
@@ -1549,7 +1541,7 @@ msgstr "First Publication Date"
 msgid "Fisheries"
 msgstr "Fisheries"
 
-#: src/store.js:646
+#: src/store.js:641
 msgid "Fishing for Litter: Ocean cleaning project that involves fishermen who collect debris during fishing activities"
 msgstr "Fishing for Litter: Ocean cleaning project that involves fishermen who collect debris during fishing activities"
 
@@ -1606,7 +1598,7 @@ msgstr "Forum"
 
 #: src/modules/workspace/view.jsx:258
 #: src/pages/forum/index.jsx:123
-#: src/store.js:91
+#: src/store.js:86
 msgid "Forums"
 msgstr "Forums"
 
@@ -1626,7 +1618,7 @@ msgstr "Frequently Asked Questions"
 msgid "Funding"
 msgstr "Funding"
 
-#: src/store.js:577
+#: src/store.js:572
 msgid "G-STIC Conference Second Edition"
 msgstr "G-STIC Conference Second Edition"
 
@@ -1698,6 +1690,10 @@ msgstr "Geo-coverage"
 msgid "Geo-coverage type"
 msgstr "Geo-coverage type"
 
+#: src/pages/landing/index.jsx:616
+msgid "Get Inspired:"
+msgstr "Get Inspired:"
+
 #: src/modules/help-center/view.jsx:25
 msgid "Get Started"
 msgstr "Get Started"
@@ -1707,7 +1703,7 @@ msgstr "Get Started"
 msgid "Getting Started"
 msgstr "Getting Started"
 
-#: src/store.js:573
+#: src/store.js:568
 msgid "Glasgow Climate Change Conference"
 msgstr "Glasgow Climate Change Conference"
 
@@ -1722,11 +1718,11 @@ msgstr "Glasgow Climate Change Conference"
 msgid "Global"
 msgstr "Global"
 
-#: src/store.js:322
+#: src/store.js:317
 msgid "Global Action Plan"
 msgstr "Global Action Plan"
 
-#: src/store.js:418
+#: src/store.js:413
 msgid "Global Partnership on Marine Litter"
 msgstr "Global Partnership on Marine Litter"
 
@@ -1738,7 +1734,7 @@ msgstr "Global Partnership on Plastic Pollution and Marine Litter (GPML)"
 msgid "Global Partnership on Plastic Pollution and Marine Litter (GPML) was launched at the United Nations Conference on Sustainable Development (Rio+20) in June 2012, in response to a request set out in the Manila Declaration on ‘Furthering the Implementation of the Global Programme of Action for the Protection of the Marine Environment from Land-based Activities’. The partnership is led by a Steering Committee and the United Nations Environment Programme (UNEP) provides secretariat services."
 msgstr "Global Partnership on Plastic Pollution and Marine Litter (GPML) was launched at the United Nations Conference on Sustainable Development (Rio+20) in June 2012, in response to a request set out in the Manila Declaration on ‘Furthering the Implementation of the Global Programme of Action for the Protection of the Marine Environment from Land-based Activities’. The partnership is led by a Steering Committee and the United Nations Environment Programme (UNEP) provides secretariat services."
 
-#: src/store.js:430
+#: src/store.js:425
 msgid "Global Plastics Action Partnership (GPAP)"
 msgstr "Global Plastics Action Partnership (GPAP)"
 
@@ -1792,7 +1788,7 @@ msgstr "GPML Tools"
 msgid "GPML Verified"
 msgstr "GPML Verified"
 
-#: src/store.js:454
+#: src/store.js:449
 msgid "Grants"
 msgstr "Grants"
 
@@ -1800,8 +1796,8 @@ msgstr "Grants"
 msgid "grid"
 msgstr "grid"
 
-#: src/store.js:520
-#: src/store.js:733
+#: src/store.js:515
+#: src/store.js:728
 msgid "Guidance Documents"
 msgstr "Guidance Documents"
 
@@ -1813,15 +1809,15 @@ msgstr "Guidance on how to add resources on the GPML Digital Platform"
 msgid "Guidance on how to sign up on the GPML Digital Platform"
 msgstr "Guidance on how to sign up on the GPML Digital Platform"
 
-#: src/store.js:496
+#: src/store.js:491
 msgid "Guidelines For The Monitoring And Assessment Of Plastic Litter In The Ocean"
 msgstr "Guidelines For The Monitoring And Assessment Of Plastic Litter In The Ocean"
 
-#: src/pages/landing/index.jsx:784
+#: src/pages/landing/index.jsx:782
 msgid "Guidelines standards & harmonization"
 msgstr "Guidelines standards & harmonization"
 
-#: src/store.js:304
+#: src/store.js:299
 msgid "Gulf of Mexico Alliance Regional Action Plan"
 msgstr "Gulf of Mexico Alliance Regional Action Plan"
 
@@ -1829,11 +1825,11 @@ msgstr "Gulf of Mexico Alliance Regional Action Plan"
 msgid "Habits in society too slow to change"
 msgstr "Habits in society too slow to change"
 
-#: src/store.js:508
+#: src/store.js:503
 msgid "Harm caused by Marine Litter"
 msgstr "Harm caused by Marine Litter"
 
-#: src/store.js:492
+#: src/store.js:487
 msgid "Harmonization of Microplastics Monitoring Methodologies in the Ocean"
 msgstr "Harmonization of Microplastics Monitoring Methodologies in the Ocean"
 
@@ -1845,11 +1841,11 @@ msgstr "Harnessing the expertise of <0>{0}</0> Communities of Practice (CoPs) co
 msgid "Headquarters"
 msgstr "Headquarters"
 
-#: src/store.js:300
+#: src/store.js:295
 msgid "HELCOM Regional action plan on marine litter"
 msgstr "HELCOM Regional action plan on marine litter"
 
-#: src/store.js:400
+#: src/store.js:395
 msgid "Help and advice provided on a set of ideas or plans that is used as a basis for making decisions, especially in politics, economics, or business."
 msgstr "Help and advice provided on a set of ideas or plans that is used as a basis for making decisions, especially in politics, economics, or business."
 
@@ -1865,7 +1861,7 @@ msgstr "HIDE EXAMPLES"
 msgid "High-level strategy"
 msgstr "High-level strategy"
 
-#: src/pages/landing/index.jsx:684
+#: src/pages/landing/index.jsx:682
 msgid "HIGHLIGHTS"
 msgstr "HIGHLIGHTS"
 
@@ -1975,7 +1971,7 @@ msgstr "In 4 to 10 years"
 msgid "In force"
 msgstr "In force"
 
-#: src/store.js:664
+#: src/store.js:659
 msgid "In market"
 msgstr "In market"
 
@@ -1983,7 +1979,7 @@ msgstr "In market"
 msgid "In more than 10 years"
 msgstr "In more than 10 years"
 
-#: src/store.js:388
+#: src/store.js:383
 msgid "Incentive measures bring about an intended behaviour or outcome as an alternative to command and control measures - legal codes and prescriptions."
 msgstr "Incentive measures bring about an intended behaviour or outcome as an alternative to command and control measures - legal codes and prescriptions."
 
@@ -2045,7 +2041,7 @@ msgstr "Information campaign"
 msgid "Informs and connects all actors working to address this urgent issue across the life cycle and from source to sea."
 msgstr "Informs and connects all actors working to address this urgent issue across the life cycle and from source to sea."
 
-#: src/store.js:235
+#: src/store.js:230
 msgid "Initiative"
 msgstr "Initiative"
 
@@ -2061,12 +2057,12 @@ msgstr "Initiative Scope & Target"
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/initiatives.js:142
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:123
 #: src/pages/workspace/[slug]/layout.js:35
-#: src/store.js:753
+#: src/store.js:748
 msgid "Initiatives"
 msgstr "Initiatives"
 
-#: src/store.js:559
-#: src/store.js:769
+#: src/store.js:554
+#: src/store.js:764
 msgid "Initiatives or projects that can be used as an example to show general principles."
 msgstr "Initiatives or projects that can be used as an example to show general principles."
 
@@ -2083,7 +2079,7 @@ msgid "Instructions"
 msgstr "Instructions"
 
 #: src/modules/signup/view.jsx:48
-#: src/store.js:171
+#: src/store.js:166
 msgid "International Cooperation"
 msgstr "International Cooperation"
 
@@ -2113,11 +2109,11 @@ msgstr "Invitation sent."
 msgid "Invite a new member"
 msgstr "Invite a new member"
 
-#: src/store.js:673
+#: src/store.js:668
 msgid "Involves obtaining a faster server with more powerful processors and more memory. This solution uses less network hardware, and consumes less power; but ultimately, for many platforms may only provide a short-term fix, especially if continued growth is expected"
 msgstr "Involves obtaining a faster server with more powerful processors and more memory. This solution uses less network hardware, and consumes less power; but ultimately, for many platforms may only provide a short-term fix, especially if continued growth is expected"
 
-#: src/store.js:679
+#: src/store.js:674
 msgid "Is the first complete solution to the original challenge. The first “prototype” is the first time all parts of a solution are tested together. It is the first time that the inter-dependencies of all components can be tested, analyzed, and refined."
 msgstr "Is the first complete solution to the original challenge. The first “prototype” is the first time all parts of a solution are tested together. It is the first time that the inter-dependencies of all components can be tested, analyzed, and refined."
 
@@ -2146,7 +2142,7 @@ msgstr "Join others in coordinating efforts towards shared plastic solutions. Fr
 msgid "Join the discussion..."
 msgstr "Join the discussion..."
 
-#: src/store.js:81
+#: src/store.js:76
 msgid "Join the Partnership"
 msgstr "Join the Partnership"
 
@@ -2199,7 +2195,7 @@ msgstr "Last name"
 msgid "Last Name"
 msgstr "Last Name"
 
-#: src/pages/landing/index.jsx:688
+#: src/pages/landing/index.jsx:686
 msgid "Latest news:"
 msgstr "Latest news:"
 
@@ -2241,7 +2237,7 @@ msgstr "Leave Channel"
 
 #: src/modules/flexible-forms/form-schema.js:1963
 #: src/modules/signup/view.jsx:42
-#: src/store.js:165
+#: src/store.js:160
 msgid "Legislation"
 msgstr "Legislation"
 
@@ -2264,7 +2260,7 @@ msgstr "Legislation or regulations"
 msgid "Legislation, Standards and Rules. You have selected legislation, standards and rules as the type of initiative. What did the initiative specifically involve? (Please tick ALL that apply):"
 msgstr "Legislation, Standards and Rules. You have selected legislation, standards and rules as the type of initiative. What did the initiative specifically involve? (Please tick ALL that apply):"
 
-#: src/store.js:265
+#: src/store.js:260
 msgid "Legislation, standards, rules"
 msgstr "Legislation, standards, rules"
 
@@ -2272,7 +2268,7 @@ msgstr "Legislation, standards, rules"
 msgid "LEGISLATION, STANDARDS, RULES (e.g., agreeing new or changing rules or standards that others should comply with, new regulation, agreements, policies, economic instruments etc. including voluntary commitments)."
 msgstr "LEGISLATION, STANDARDS, RULES (e.g., agreeing new or changing rules or standards that others should comply with, new regulation, agreements, policies, economic instruments etc. including voluntary commitments)."
 
-#: src/store.js:367
+#: src/store.js:362
 msgid "Legislations, Regulations & Standards"
 msgstr "Legislations, Regulations & Standards"
 
@@ -2342,7 +2338,7 @@ msgstr "Loading"
 msgid "Loading..."
 msgstr "Loading..."
 
-#: src/store.js:448
+#: src/store.js:443
 msgid "Loans"
 msgstr "Loans"
 
@@ -2389,7 +2385,7 @@ msgstr "Logout"
 msgid "Main & Sub Content"
 msgstr "Main & Sub Content"
 
-#: src/store.js:251
+#: src/store.js:246
 msgid "Make Lome Plastic Free"
 msgstr "Make Lome Plastic Free"
 
@@ -2421,11 +2417,11 @@ msgstr "Marine and Freshwater"
 msgid "Marine liter and plastic pollution is one of the biggest environmental problems we face. Managing the problem requires urgent cooperation. Find out more below."
 msgstr "Marine liter and plastic pollution is one of the biggest environmental problems we face. Managing the problem requires urgent cooperation. Find out more below."
 
-#: src/store.js:316
+#: src/store.js:311
 msgid "Marine Litter in the Black Sea Region"
 msgstr "Marine Litter in the Black Sea Region"
 
-#: src/store.js:500
+#: src/store.js:495
 msgid "Marine Litter Vital Graphics"
 msgstr "Marine Litter Vital Graphics"
 
@@ -2437,7 +2433,7 @@ msgstr "Marine organisms"
 msgid "Mark as Completed"
 msgstr "Mark as Completed"
 
-#: src/store.js:711
+#: src/store.js:706
 msgid "Massive Open Online Course (MOOC) on Marine Litter"
 msgstr "Massive Open Online Course (MOOC) on Marine Litter"
 
@@ -2457,7 +2453,7 @@ msgstr "Match-making"
 msgid "Max 500 letters"
 msgstr "Max 500 letters"
 
-#: src/store.js:370
+#: src/store.js:365
 msgid "Measures taken by governmental units to influence people by means of formulated rules and directives which mandate receivers act in accordance with what is ordered in these rules or directives."
 msgstr "Measures taken by governmental units to influence people by means of formulated rules and directives which mandate receivers act in accordance with what is ordered in these rules or directives."
 
@@ -2469,7 +2465,7 @@ msgstr "Media coverage, wide exposure of marine litter and plastic pollution"
 msgid "Medical"
 msgstr "Medical"
 
-#: src/store.js:610
+#: src/store.js:605
 msgid "Meetings, often lasting a few days, organized on a particular subject or to bring together people who have a common interest to exchange ideas and discuss issues, especially important public issues."
 msgstr "Meetings, often lasting a few days, organized on a particular subject or to bring together people who have a common interest to exchange ideas and discuss issues, especially important public issues."
 
@@ -2478,12 +2474,12 @@ msgid "Members of the public have actively complained / asked for change"
 msgstr "Members of the public have actively complained / asked for change"
 
 #: src/modules/signup/view.jsx:47
-#: src/store.js:170
+#: src/store.js:165
 msgid "Microfibers"
 msgstr "Microfibers"
 
 #: src/modules/signup/view.jsx:46
-#: src/store.js:169
+#: src/store.js:164
 msgid "Microplastics"
 msgstr "Microplastics"
 
@@ -2495,20 +2491,20 @@ msgstr "Miscellaneous"
 msgid "Mixed"
 msgstr "Mixed"
 
-#: src/store.js:439
+#: src/store.js:434
 msgid "Money that is invested in a company in the form of shares."
 msgstr "Money that is invested in a company in the form of shares."
 
-#: src/store.js:445
+#: src/store.js:440
 msgid "Money that is invested or is available for investment in a new company, especially one that involves risk."
 msgstr "Money that is invested or is available for investment in a new company, especially one that involves risk."
 
 #: src/modules/signup/view.jsx:35
-#: src/store.js:158
+#: src/store.js:153
 msgid "Monitoring"
 msgstr "Monitoring"
 
-#: src/store.js:283
+#: src/store.js:278
 msgid "Monitoring and Analysis"
 msgstr "Monitoring and Analysis"
 
@@ -2553,7 +2549,7 @@ msgstr "Moral considerations"
 msgid "Multi-Country"
 msgstr "Multi-Country"
 
-#: src/store.js:466
+#: src/store.js:461
 msgid "Multidonor trust fund"
 msgstr "Multidonor trust fund"
 
@@ -2562,7 +2558,7 @@ msgid "Multilateral Environmental Agreements (MEAs)"
 msgstr "Multilateral Environmental Agreements (MEAs)"
 
 #: src/modules/signup/view.jsx:49
-#: src/store.js:172
+#: src/store.js:167
 msgid "Multilateralism"
 msgstr "Multilateralism"
 
@@ -2596,11 +2592,11 @@ msgstr "Name of Organisation"
 msgid "National"
 msgstr "National"
 
-#: src/store.js:334
+#: src/store.js:329
 msgid "National Action Plan"
 msgstr "National Action Plan"
 
-#: src/pages/landing/index.jsx:800
+#: src/pages/landing/index.jsx:798
 msgid "National action plans"
 msgstr "National action plans"
 
@@ -2658,7 +2654,7 @@ msgstr "New product design"
 msgid "New standard(s) or guideline(s)"
 msgstr "New standard(s) or guideline(s)"
 
-#: src/store.js:280
+#: src/store.js:275
 msgid "New technical developments/innovation, e.g., research and development, new product design, new materials, processes etc., changes in practice, operations, environmental management and planning."
 msgstr "New technical developments/innovation, e.g., research and development, new product design, new materials, processes etc., changes in practice, operations, environmental management and planning."
 
@@ -2718,7 +2714,7 @@ msgstr "No, there is not enough resources to support reporting"
 msgid "Non Member Entity"
 msgstr "Non Member Entity"
 
-#: src/store.js:426
+#: src/store.js:421
 msgid "Norwegian Development Programme to Combat Marine Litter and Microplastics"
 msgstr "Norwegian Development Programme to Combat Marine Litter and Microplastics"
 
@@ -2757,7 +2753,7 @@ msgstr "Not enough support from within the member state/organisation"
 msgid "Not yet in force"
 msgstr "Not yet in force"
 
-#: src/store.js:719
+#: src/store.js:714
 msgid "Ocean Innovation Challenge"
 msgstr "Ocean Innovation Challenge"
 
@@ -2846,8 +2842,8 @@ msgstr "Organisation’s Logo"
 msgid "Organisation’s Website"
 msgstr "Organisation’s Website"
 
-#: src/store.js:481
-#: src/store.js:765
+#: src/store.js:476
+#: src/store.js:760
 msgid "Organizations or programmes providing financial support to entities tackling marine plastic litter. Such support includes grants, investment, and loans, among others."
 msgstr "Organizations or programmes providing financial support to entities tackling marine plastic litter. Such support includes grants, investment, and loans, among others."
 
@@ -2875,7 +2871,7 @@ msgstr "Other"
 msgid "Other training programmes"
 msgstr "Other training programmes"
 
-#: src/store.js:707
+#: src/store.js:702
 msgid "Our Coast is Dying"
 msgstr "Our Coast is Dying"
 
@@ -2883,7 +2879,7 @@ msgstr "Our Coast is Dying"
 msgid "Our community"
 msgstr "Our community"
 
-#: src/pages/landing/index.jsx:842
+#: src/pages/landing/index.jsx:840
 msgid "Our partners"
 msgstr "Our partners"
 
@@ -2919,7 +2915,7 @@ msgstr "Package of measures combining incentives and infrastructure (e.g. deposi
 msgid "Packaging"
 msgstr "Packaging"
 
-#: src/store.js:296
+#: src/store.js:291
 msgid "PAME, Regional Action Plan on Marine Litter in the Arctic (May 2021)"
 msgstr "PAME, Regional Action Plan on Marine Litter in the Arctic (May 2021)"
 
@@ -2976,7 +2972,7 @@ msgstr "Pick the main content type"
 msgid "Pick the sub-content type"
 msgstr "Pick the sub-content type"
 
-#: src/store.js:682
+#: src/store.js:677
 msgid "Pilot"
 msgstr "Pilot"
 
@@ -2984,15 +2980,15 @@ msgstr "Pilot"
 msgid "Pinned Documents"
 msgstr "Pinned Documents"
 
-#: src/store.js:650
+#: src/store.js:645
 msgid "Plastic Odyssey: The Expedition Around The World To Fight Against Plastic Pollution"
 msgstr "Plastic Odyssey: The Expedition Around The World To Fight Against Plastic Pollution"
 
-#: src/store.js:488
+#: src/store.js:483
 msgid "Plastic Pollution Calculator"
 msgstr "Plastic Pollution Calculator"
 
-#: src/store.js:247
+#: src/store.js:242
 msgid "Plastic Waste Management"
 msgstr "Plastic Waste Management"
 
@@ -3036,8 +3032,8 @@ msgid "Policies are imported from Law division system"
 msgstr "Policies are imported from Law division system"
 
 #: src/modules/signup/view.jsx:43
-#: src/store.js:166
-#: src/store.js:350
+#: src/store.js:161
+#: src/store.js:345
 msgid "Policy"
 msgstr "Policy"
 
@@ -3045,11 +3041,11 @@ msgstr "Policy"
 msgid "Policy change or development"
 msgstr "Policy change or development"
 
-#: src/store.js:403
+#: src/store.js:398
 msgid "Policy documents defined here as official (and occasionally unofficial translations of) documents that include public-facing laws and amendments, statutes, ordinances, management plans, executive orders, agreements, treaties, and memorandums of understanding, among others written and adopted by government entities, demonstrating an intent to reduce plastic pollution at varying stages of the plastics lifecycle."
 msgstr "Policy documents defined here as official (and occasionally unofficial translations of) documents that include public-facing laws and amendments, statutes, ordinances, management plans, executive orders, agreements, treaties, and memorandums of understanding, among others written and adopted by government entities, demonstrating an intent to reduce plastic pollution at varying stages of the plastics lifecycle."
 
-#: src/store.js:397
+#: src/store.js:392
 msgid "Policy Guidance and Information"
 msgstr "Policy Guidance and Information"
 
@@ -3057,7 +3053,7 @@ msgstr "Policy Guidance and Information"
 msgid "POWERED BY:"
 msgstr "POWERED BY:"
 
-#: src/store.js:727
+#: src/store.js:722
 msgid "Preparing a Waste Management Plan - A Methodological Guidance Note"
 msgstr "Preparing a Waste Management Plan - A Methodological Guidance Note"
 
@@ -3084,7 +3080,7 @@ msgstr "Private Sector"
 msgid "Problems with alternative materials and supplies"
 msgstr "Problems with alternative materials and supplies"
 
-#: src/store.js:394
+#: src/store.js:389
 msgid "Process of checking, verifying, and attaining general information about the abilityl to comply with the standard."
 msgstr "Process of checking, verifying, and attaining general information about the abilityl to comply with the standard."
 
@@ -3108,12 +3104,12 @@ msgstr "Profile cannot be approved since email is not verified"
 msgid "Profile Quick Link"
 msgstr "Profile Quick Link"
 
-#: src/store.js:373
+#: src/store.js:368
 msgid "Prohibitive Regulations, Bans & Restrictions"
 msgstr "Prohibitive Regulations, Bans & Restrictions"
 
 #: src/modules/signup/view.jsx:41
-#: src/store.js:164
+#: src/store.js:159
 msgid "Project development"
 msgstr "Project development"
 
@@ -3121,7 +3117,7 @@ msgstr "Project development"
 msgid "Project Team"
 msgstr "Project Team"
 
-#: src/store.js:414
+#: src/store.js:409
 msgid "Project to tackle marine litter and plastic pollution in Southeast Asia (SEA)"
 msgstr "Project to tackle marine litter and plastic pollution in Southeast Asia (SEA)"
 
@@ -3133,7 +3129,7 @@ msgstr "Protecting economy / livelihoods or shareholder value"
 msgid "Protecting future generations"
 msgstr "Protecting future generations"
 
-#: src/store.js:676
+#: src/store.js:671
 msgid "Prototype"
 msgstr "Prototype"
 
@@ -3158,7 +3154,7 @@ msgstr "Publication Year"
 msgid "Quality Education"
 msgstr "Quality Education"
 
-#: src/store.js:715
+#: src/store.js:710
 msgid "Raising Awareness Amongst Students"
 msgstr "Raising Awareness Amongst Students"
 
@@ -3170,7 +3166,7 @@ msgstr "Raw materials"
 msgid "Read more"
 msgstr "Read more"
 
-#: src/pages/landing/index.jsx:721
+#: src/pages/landing/index.jsx:719
 msgid "Read More"
 msgstr "Read More"
 
@@ -3187,7 +3183,7 @@ msgid "Records"
 msgstr "Records"
 
 #: src/modules/signup/view.jsx:38
-#: src/store.js:161
+#: src/store.js:156
 msgid "Recycling"
 msgstr "Recycling"
 
@@ -3203,7 +3199,7 @@ msgstr "Reduced Inequalities"
 msgid "Reducing the environmental impact"
 msgstr "Reducing the environmental impact"
 
-#: src/store.js:581
+#: src/store.js:576
 msgid "Reef Futures Symposium"
 msgstr "Reef Futures Symposium"
 
@@ -3248,7 +3244,7 @@ msgstr "Repealed"
 msgid "Reply to"
 msgstr "Reply to"
 
-#: src/store.js:514
+#: src/store.js:509
 msgid "Report & Assessment"
 msgstr "Report & Assessment"
 
@@ -3266,8 +3262,8 @@ msgid "Reputation / image of the member state or organisation"
 msgstr "Reputation / image of the member state or organisation"
 
 #: src/modules/signup/view.jsx:36
-#: src/store.js:159
-#: src/store.js:694
+#: src/store.js:154
+#: src/store.js:689
 msgid "Research"
 msgstr "Research"
 
@@ -3295,7 +3291,7 @@ msgstr "resources"
 msgid "Resources"
 msgstr "Resources"
 
-#: src/store.js:562
+#: src/store.js:557
 msgid "Resources and mechanisms collected through research based on publicly available information. Examples of technical resources range from pilot projects, policy recommendations, assessments, calculation model and tools, operational and technical guidelines, toolkits for decision-makers, best practices, manuals and more."
 msgstr "Resources and mechanisms collected through research based on publicly available information. Examples of technical resources range from pilot projects, policy recommendations, assessments, calculation model and tools, operational and technical guidelines, toolkits for decision-makers, best practices, manuals and more."
 
@@ -3340,11 +3336,11 @@ msgstr "Reviewers"
 msgid "Role"
 msgstr "Role"
 
-#: src/store.js:376
+#: src/store.js:371
 msgid "Rules of an obligatory nature that are negative, disallowing certain phenomena or actions."
 msgstr "Rules of an obligatory nature that are negative, disallowing certain phenomena or actions."
 
-#: src/store.js:526
+#: src/store.js:521
 msgid "Rules of Procedure and Mechanism"
 msgstr "Rules of Procedure and Mechanism"
 
@@ -3355,15 +3351,15 @@ msgstr "Rules of Procedure and Mechanism"
 msgid "Save to Library"
 msgstr "Save to Library"
 
-#: src/store.js:255
+#: src/store.js:250
 msgid "SB 270: Statewide Bag Ban"
 msgstr "SB 270: Statewide Bag Ban"
 
-#: src/store.js:670
+#: src/store.js:665
 msgid "Scale up"
 msgstr "Scale up"
 
-#: src/pages/landing/index.jsx:772
+#: src/pages/landing/index.jsx:770
 msgid "Science<0/>policy"
 msgstr "Science<0/>policy"
 
@@ -3371,16 +3367,16 @@ msgstr "Science<0/>policy"
 msgid "Scientific Communities"
 msgstr "Scientific Communities"
 
-#: src/store.js:569
+#: src/store.js:564
 msgid "SEA of Solutions 2021"
 msgstr "SEA of Solutions 2021"
 
 #: src/modules/signup/view.jsx:44
-#: src/store.js:167
+#: src/store.js:162
 msgid "Sea-based Sources"
 msgstr "Sea-based Sources"
 
-#: src/store.js:654
+#: src/store.js:649
 msgid "SeaChange: Converting ocean plastics to inert, non-toxic glass safe for marine life"
 msgstr "SeaChange: Converting ocean plastics to inert, non-toxic glass safe for marine life"
 
@@ -3601,11 +3597,11 @@ msgstr "Steering Committee"
 msgid "Step 1"
 msgstr "Step 1"
 
-#: src/store.js:379
+#: src/store.js:374
 msgid "Strategies & Action Plans"
 msgstr "Strategies & Action Plans"
 
-#: src/store.js:504
+#: src/store.js:499
 msgid "Study on industry involvement in the integrated approach to financing the sound management of chemicals and waste, prepared by the SAICM Secretariat"
 msgstr "Study on industry involvement in the integrated approach to financing the sound management of chemicals and waste, prepared by the SAICM Secretariat"
 
@@ -3613,11 +3609,11 @@ msgstr "Study on industry involvement in the integrated approach to financing th
 msgid "Sub-content type"
 msgstr "Sub-content type"
 
-#: src/store.js:361
+#: src/store.js:356
 msgid "Sub-Decree No. 168 on the management of plastic bags"
 msgstr "Sub-Decree No. 168 on the management of plastic bags"
 
-#: src/store.js:340
+#: src/store.js:335
 msgid "Sub-national Action Plan"
 msgstr "Sub-national Action Plan"
 
@@ -3689,7 +3685,7 @@ msgstr "Download the summary of the bookmarked content in this section and submi
 msgid "summary-description-6-national-plastic-strategy"
 msgstr "Upload the officially approved Plastic Strategy."
 
-#: src/pages/landing/index.jsx:792
+#: src/pages/landing/index.jsx:790
 msgid "Sustainable & innovative financing"
 msgstr "Sustainable & innovative financing"
 
@@ -3697,11 +3693,11 @@ msgstr "Sustainable & innovative financing"
 msgid "Sustainable Cities and Communities"
 msgstr "Sustainable Cities and Communities"
 
-#: src/store.js:410
+#: src/store.js:405
 msgid "Sustainable Development Bond on Sustainable Use of Oceans and Coastal Areas (“Blue Economy”)"
 msgstr "Sustainable Development Bond on Sustainable Use of Oceans and Coastal Areas (“Blue Economy”)"
 
-#: src/store.js:472
+#: src/store.js:467
 msgid "Sustainable development bonds, green bonds and blue bonds"
 msgstr "Sustainable development bonds, green bonds and blue bonds"
 
@@ -3709,7 +3705,7 @@ msgstr "Sustainable development bonds, green bonds and blue bonds"
 msgid "Sustainable Development Goals"
 msgstr "Sustainable Development Goals"
 
-#: src/store.js:239
+#: src/store.js:234
 msgid "Sustainable Industrial Zone Development"
 msgstr "Sustainable Industrial Zone Development"
 
@@ -3737,7 +3733,7 @@ msgstr "Tags"
 msgid "Team members"
 msgstr "Team members"
 
-#: src/store.js:485
+#: src/store.js:480
 msgid "Technical Resource"
 msgstr "Technical Resource"
 
@@ -3754,12 +3750,12 @@ msgid "Technologies"
 msgstr "Technologies"
 
 #: src/modules/signup/view.jsx:39
-#: src/store.js:162
-#: src/store.js:635
+#: src/store.js:157
+#: src/store.js:630
 msgid "Technology"
 msgstr "Technology"
 
-#: src/store.js:277
+#: src/store.js:272
 msgid "Technology and Processes"
 msgstr "Technology and Processes"
 
@@ -3784,19 +3780,19 @@ msgstr "Tertiary higher education"
 msgid "Textiles"
 msgstr "Textiles"
 
-#: src/store.js:658
+#: src/store.js:653
 msgid "The 3R Initiative: Credit-based market system to encourage plastic recycling and recovery"
 msgstr "The 3R Initiative: Credit-based market system to encourage plastic recycling and recovery"
 
-#: src/store.js:357
+#: src/store.js:352
 msgid "The Act to Prevent Pollution from Ships"
 msgstr "The Act to Prevent Pollution from Ships"
 
-#: src/pages/landing/index.jsx:748
+#: src/pages/landing/index.jsx:746
 msgid "The current core work of the GPML is organized through the following five Action Tracks, with the aim of advancing priority issues by connecting key stakeholders and facilitating collaboration and coordination. The platform offers a wide range of tools to facilitate this work."
 msgstr "The current core work of the GPML is organized through the following five Action Tracks, with the aim of advancing priority issues by connecting key stakeholders and facilitating collaboration and coordination. The platform offers a wide range of tools to facilitate this work."
 
-#: src/store.js:772
+#: src/store.js:767
 msgid "The definition of capacity development is broad. It is a holistic enterprise, encompassing a multitude of activities. It means building abilities, relationships and values that will enable organisations, groups and individuals to improve their performance and achieve their development objectives. It includes strengthening the processes, systems and rules that influence collective and individual behaviour and performance in all development endeavours. And it means enhancing people’s technical ability and willingness to play new developmental roles and adapt to new demands and situations."
 msgstr "The definition of capacity development is broad. It is a holistic enterprise, encompassing a multitude of activities. It means building abilities, relationships and values that will enable organisations, groups and individuals to improve their performance and achieve their development objectives. It includes strengthening the processes, systems and rules that influence collective and individual behaviour and performance in all development endeavours. And it means enhancing people’s technical ability and willingness to play new developmental roles and adapt to new demands and situations."
 
@@ -3866,7 +3862,7 @@ msgstr "The History of the GPML"
 msgid "The Issue: Marine Litter & Plastic Pollution"
 msgstr "The Issue: Marine Litter & Plastic Pollution"
 
-#: src/store.js:353
+#: src/store.js:348
 msgid "The National Environmental Act - Order No. 2034/33"
 msgstr "The National Environmental Act - Order No. 2034/33"
 
@@ -3878,11 +3874,11 @@ msgstr "The Platform supports interlinkages between the different components to 
 msgid "The release of an initial minimum viable product (MVP), or “Phase 1”, took place in February 2021, where a beta version of the GPML Digital Platform was made available. Following this, an iterative, user-centered design process is using techniques such as interviews, surveys and workshops to collect feedback from users to inform new versions of the Digital Platform. <0/>"
 msgstr "The release of an initial minimum viable product (MVP), or “Phase 1”, took place in February 2021, where a beta version of the GPML Digital Platform was made available. Following this, an iterative, user-centered design process is using techniques such as interviews, surveys and workshops to collect feedback from users to inform new versions of the Digital Platform. <0/>"
 
-#: src/store.js:463
+#: src/store.js:458
 msgid "The strategic use of development finance for the mobilisation of additional finance towards sustainable development."
 msgstr "The strategic use of development finance for the mobilisation of additional finance towards sustainable development."
 
-#: src/store.js:691
+#: src/store.js:686
 msgid "The systematic use of scientific, technical, economic, and commercial knowledge to meet specific business objectives or requirements."
 msgstr "The systematic use of scientific, technical, economic, and commercial knowledge to meet specific business objectives or requirements."
 
@@ -3904,8 +3900,8 @@ msgstr "The use of compostable plastic"
 msgid "There is no data to display"
 msgstr "There is no data to display"
 
-#: src/store.js:289
-#: src/store.js:755
+#: src/store.js:284
+#: src/store.js:750
 msgid "These include a wide range of actions from legislation, behaviour change initiatives, education, training, events, new technologies, monitoring and analysis initiatives and science Initiatives. Existing actions and initiatives have been collected via an online survey for voluntary inputs and narrative submissions. Initiatives are linked to a Dashboard."
 msgstr "These include a wide range of actions from legislation, behaviour change initiatives, education, training, events, new technologies, monitoring and analysis initiatives and science Initiatives. Existing actions and initiatives have been collected via an online survey for voluntary inputs and narrative submissions. Initiatives are linked to a Dashboard."
 
@@ -3950,8 +3946,8 @@ msgstr "Title:"
 msgid "to address plastic pollution"
 msgstr "to address plastic pollution"
 
-#: src/store.js:532
-#: src/store.js:738
+#: src/store.js:527
+#: src/store.js:733
 msgid "Tools & Toolkits"
 msgstr "Tools & Toolkits"
 
@@ -4021,7 +4017,7 @@ msgstr "Translation"
 msgid "Transnational"
 msgstr "Transnational"
 
-#: src/store.js:328
+#: src/store.js:323
 msgid "Transnational Action Plan"
 msgstr "Transnational Action Plan"
 
@@ -4067,13 +4063,13 @@ msgstr "Type of the entity"
 msgid "Unfollow"
 msgstr "Unfollow"
 
-#: src/store.js:553
-#: src/store.js:622
-#: src/store.js:745
+#: src/store.js:548
+#: src/store.js:617
+#: src/store.js:740
 msgid "Unit of instruction comprising a sequence of educational activities in a particular field or range of related fields of education."
 msgstr "Unit of instruction comprising a sequence of educational activities in a particular field or range of related fields of education."
 
-#: src/store.js:585
+#: src/store.js:580
 msgid "Unleashing marine robots for good"
 msgstr "Unleashing marine robots for good"
 
@@ -4081,7 +4077,7 @@ msgstr "Unleashing marine robots for good"
 msgid "Unsubscribing..."
 msgstr "Unsubscribing..."
 
-#: src/store.js:631
+#: src/store.js:626
 msgid "Upcoming capacity development activities and events on marine litter, plastic pollution and related topics."
 msgstr "Upcoming capacity development activities and events on marine litter, plastic pollution and related topics."
 
@@ -4089,7 +4085,7 @@ msgstr "Upcoming capacity development activities and events on marine litter, pl
 msgid "Upcoming Events"
 msgstr "Upcoming Events"
 
-#: src/store.js:760
+#: src/store.js:755
 msgid "Upcoming trainings, capacity development activities and events."
 msgstr "Upcoming trainings, capacity development activities and events."
 
@@ -4183,7 +4179,7 @@ msgstr "Value Currency"
 msgid "Value Remark"
 msgstr "Value Remark"
 
-#: src/store.js:442
+#: src/store.js:437
 msgid "Venture Capital"
 msgstr "Venture Capital"
 
@@ -4228,7 +4224,7 @@ msgstr "Viewer"
 msgid "Viewers cannot edit all content"
 msgstr "Viewers cannot edit all content"
 
-#: src/pages/landing/index.jsx:760
+#: src/pages/landing/index.jsx:758
 msgid "Visit the website"
 msgstr "Visit the website"
 
@@ -4244,13 +4240,13 @@ msgstr "Voluntary commitments"
 msgid "Voluntary donations"
 msgstr "Voluntary donations"
 
-#: src/store.js:638
+#: src/store.js:633
 msgid "Waste Free Oceans"
 msgstr "Waste Free Oceans"
 
 #: src/modules/flexible-forms/form-schema.js:543
 #: src/modules/signup/view.jsx:37
-#: src/store.js:160
+#: src/store.js:155
 msgid "Waste management"
 msgstr "Waste management"
 
@@ -4278,7 +4274,7 @@ msgstr "We will be reviewing it shortly."
 msgid "Webinar"
 msgstr "Webinar"
 
-#: src/store.js:595
+#: src/store.js:590
 msgid "Webinars & Seminars"
 msgstr "Webinars & Seminars"
 
@@ -4314,7 +4310,7 @@ msgstr "What funding sources did you use?"
 msgid "What is the connection between this platform and GPML?"
 msgstr "What is the connection between this platform and GPML?"
 
-#: src/pages/landing/index.jsx:740
+#: src/pages/landing/index.jsx:738
 msgid "WHAT IS THE FOCUS OF GPML?"
 msgstr "WHAT IS THE FOCUS OF GPML?"
 
@@ -4356,7 +4352,7 @@ msgstr "Which Sustainable Development Goals (SDGs) does your initiative apply to
 msgid "Who are we?"
 msgstr "Who are we?"
 
-#: src/store.js:102
+#: src/store.js:97
 msgid "Who we are"
 msgstr "Who we are"
 
@@ -4372,15 +4368,15 @@ msgstr "Why join the GPML?"
 msgid "Why us?"
 msgstr "Why us?"
 
-#: src/store.js:667
+#: src/store.js:662
 msgid "Within the geographical area that the provider offers the service"
 msgstr "Within the geographical area that the provider offers the service"
 
-#: src/store.js:538
+#: src/store.js:533
 msgid "Working Document"
 msgstr "Working Document"
 
-#: src/store.js:271
+#: src/store.js:266
 msgid "Working with people"
 msgstr "Working with people"
 
@@ -4393,7 +4389,7 @@ msgid "Working with People. You have chosen working with people as the type of i
 msgstr "Working with People. You have chosen working with people as the type of initiative. What did the initiative specifically involve? (Please tick ALL that apply):"
 
 #: src/modules/flexible-forms/form-schema.js:457
-#: src/store.js:601
+#: src/store.js:596
 msgid "Workshops"
 msgstr "Workshops"
 
@@ -4407,7 +4403,7 @@ msgstr "workspace"
 msgid "Workspace"
 msgstr "Workspace"
 
-#: src/store.js:325
+#: src/store.js:320
 msgid "Worldwide Coverage"
 msgstr "Worldwide Coverage"
 

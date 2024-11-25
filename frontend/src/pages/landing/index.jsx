@@ -613,15 +613,13 @@ const ActNow = () => {
             <Trans>Why us?</Trans>
           </div>
           <h3 className="h-xxl">
-            <Trans>
-              Act Now: <br /> <span>Co-solution with the plastic network</span>
-            </Trans>
+            <Trans>Get Inspired:</Trans>
           </h3>
           <p className="p-l">
             <Trans>
-              Avoid duplication of efforts. By using the platform, you can
-              collaborate with other organisations and governments to create
-              shared solutions to end plastic pollution.
+              Data and information is a key for successful policy and action
+              design to end plastic pollution. Immerse yourself in the rich
+              resources in the platform.
             </Trans>
           </p>
         </div>

@@ -61,11 +61,6 @@ const menuList = [
         id: 'Country dashboard',
         to: '/country-dashboard',
       },
-      {
-        key: msg`Data Catalogue`,
-        id: 'Data Catalogue',
-        href: 'https://unepazecosysadlsstorage.z20.web.core.windows.net/',
-      },
     ],
   },
   {
