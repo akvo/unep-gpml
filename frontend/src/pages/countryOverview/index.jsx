@@ -16,6 +16,15 @@ import parse from 'html-react-parser'
 import { Tooltip } from 'antd'
 
 const splitTextInHalf = (text) => {
+  const exportsIndex = text.indexOf(
+    "<strong style='font-size: 20px; color: #6236FF;'>Plastic exports</strong>"
+  )
+  if (exportsIndex !== -1) {
+    const firstHalf = text.slice(0, exportsIndex).trim()
+    const secondHalf = text.slice(exportsIndex).trim()
+    return [firstHalf, secondHalf]
+  }
+
   const words = text.split(' ')
   const halfIndex = Math.ceil(words.length / 2)
   const firstHalf = words.slice(0, halfIndex).join(' ')
@@ -87,7 +96,11 @@ const CountryOverview = () => {
 
   const wrapPlaceholders = (template) => {
     return template.replace(/{{(.*?)}}/g, (match, placeholder) => {
-      return `<placeholder key="${placeholder}">{{${placeholder}}}</placeholder>`
+      const nonBreakingPlaceholder =
+        placeholder === 'country' && !template.trim().startsWith('Estimated')
+          ? `<placeholder key="${placeholder}" style="white-space: nowrap;">{{country}}</placeholder>`
+          : `<placeholder key="${placeholder}">${match}</placeholder>`
+      return nonBreakingPlaceholder
     })
   }
 
