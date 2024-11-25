@@ -28,6 +28,8 @@ import {
 import { MoreOutlined } from '@ant-design/icons'
 import Link from 'next/link'
 import classNames from 'classnames'
+import DetailModal from '../details-page/modal'
+import { useRouter } from 'next/router'
 
 export const AdminBadges = ({ data, badgeOpts }) => {
   const [assigned, setAssigned] = useState(
@@ -71,7 +73,8 @@ export const AdminBadges = ({ data, badgeOpts }) => {
   )
 }
 
-const DetailView = ({ item, profile }) => {
+const DetailView = ({ item, profile, setLoginVisible, isAuthenticated }) => {
+  const router = useRouter()
   const [data, setData] = useState({ ...item })
   const [loading, setLoading] = useState(true)
   const [resources, setResources] = useState(null)
@@ -79,6 +82,8 @@ const DetailView = ({ item, profile }) => {
   const { countries } = UIStore.useState((s) => ({
     countries: s.countries,
   }))
+  const [modalVisible, setModalVisible] = useState(false)
+  const [params, setParams] = useState(null)
   useEffect(() => {
     if (data.type)
       api.get(`/detail/${data.type}/${data.id}`).then((d) => {
@@ -100,6 +105,18 @@ const DetailView = ({ item, profile }) => {
         }
       })
   }, [])
+
+  useEffect(() => {
+    if (!modalVisible) {
+      const previousHref = router.asPath
+      window.history.pushState(
+        { urlPath: `/${previousHref}` },
+        '',
+        `${previousHref}`
+      )
+    }
+  }, [modalVisible])
+
   const assignedBadges = (
     <span className="badges">
       {data?.assignedBadges?.map((it) => (
@@ -109,6 +126,19 @@ const DetailView = ({ item, profile }) => {
       ))}
     </span>
   )
+
+  const showModal = ({ e, item }) => {
+    const { type, id } = item
+    e?.preventDefault()
+    if (type && id) {
+      const detailUrl = `/${type.replace(/_/g, '-')}/${id}`
+      setParams({ type: type.replace(/_/g, '-'), id, item })
+      window.history.pushState({}, '', detailUrl)
+      setModalVisible(true)
+      bodyScrollLock.enable()
+    }
+  }
+
   if (data.type === 'stakeholder') {
     return (
       <div className={`${styles.detailView} ${styles.stakeholderDetailView}`}>
@@ -157,7 +187,7 @@ const DetailView = ({ item, profile }) => {
           )}
           {data.picture && (
             <div className="img">
-              <Image src={data.picture} fill />
+              <Image src={data.picture} fill alt="picture" />
             </div>
           )}
           {!loading && (
@@ -284,7 +314,7 @@ const DetailView = ({ item, profile }) => {
               >
                 {resources.map((item) => (
                   <SwiperSlide>
-                    <ResourceCard item={item} />
+                    <ResourceCard item={item} onClick={showModal} />
                   </SwiperSlide>
                 ))}
                 {resources.length === 20 && (
@@ -337,6 +367,17 @@ const DetailView = ({ item, profile }) => {
           )}
         </div>
       </div>
+
+      <DetailModal
+        match={{ params }}
+        visible={modalVisible}
+        setVisible={setModalVisible}
+        isServer={false}
+        {...{
+          setLoginVisible,
+          isAuthenticated,
+        }}
+      />
     </div>
   )
 }
