@@ -129,16 +129,13 @@ module.exports = {
 
                     let replacementValue = "[No data]";
                     let tooltipText = `${datasource}`;
-                    const sortedLayer = [...layer].sort((a, b) => a.Year - b.Year);
-
-
 
                     if (/_(Year|year)_first$/.test(placeholder)) {
-                        const firstYearEntry = sortedLayer[0];
+                        const firstYearEntry = [...layer].sort((a, b) => a.Year - b.Year)[0];
                         replacementValue = firstYearEntry?.Year?.toString() || "[No data]";
                         tooltipText = ` ${datasource}`;
                     } else if (/_(Year|year)_last$/.test(placeholder)) {
-                        const lastYearEntry = sortedLayer[0];
+                        const lastYearEntry = [...layer].sort((a, b) => b.Year - a.Year)[0];
                         replacementValue = lastYearEntry?.Year?.toString() || "[No data]";
                         tooltipText = `${datasource}`;
                     } else if (/_(Year|year)$/.test(placeholder)) {
