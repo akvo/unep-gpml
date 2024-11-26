@@ -75,19 +75,19 @@ const DashboardLanding = () => {
           }}
         >
           Explore{' '}
-          <span style={{ textDecoration: 'underline' }}>national data</span>
+          <span style={{ textDecoration: 'underline' }}>Country Dashboard</span>
         </h1>
         <p style={{ fontSize: '18px', marginBottom: '40px' }}>
-          The national data allows you to view key plastic statistics for your
-          country in one place. It presents the latest available data covering
-          key stages of the plastics and highlights indicators on plastic waste
-          management, trade, governance, and environment.
+          The Country Dashboard allows you to access key plastic datasets of
+          countries. It provides a snapshot of a country's plastic pollution
+          status, drawing global datasets on plastic trade, waste management,
+          plastics in the environment and governance.
         </p>
 
         <p style={{ fontSize: '16px', marginBottom: '20px' }}>
-          Most data are sourced from quality assured global datasets, enabling
-          the opportunity to compare the status of plastics management among
-          countries.
+          By doing so, it can facilitate evidence-based policy making and action
+          planning at the same time delineate existing data gaps that needs
+          further data collection.
         </p>
 
         <div
