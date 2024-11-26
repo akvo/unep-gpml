@@ -32,6 +32,11 @@ const splitTextInHalf = (text) => {
   return [firstHalf, secondHalf]
 }
 
+const splitTextByMarker = (text, marker) => {
+  const [firstPart, secondPart] = text.split(marker)
+  return [firstPart?.trim(), secondPart?.trim()]
+}
+
 const addTooltipsToPlaceholders = (htmlString, placeholders, tooltips) => {
   if (!placeholders || Object.keys(placeholders).length === 0) return htmlString
 
@@ -115,7 +120,11 @@ const CountryOverview = () => {
     country: `{{country}}`,
   })
 
-  const [firstHalfText, secondHalfText] = splitTextInHalf(categoryText || '')
+  const [firstHalfText, secondHalfText] =
+    selectedCategory?.attributes?.categoryId === 'environmental-impact' ||
+    selectedCategory?.attributes?.categoryId === 'waste-management'
+      ? splitTextByMarker(categoryText, '<!--NEW_COLUMN-->')
+      : splitTextInHalf(categoryText || '')
 
   const textWithTooltipsfirstHalfText = addTooltipsToPlaceholders(
     firstHalfText,
@@ -124,6 +133,12 @@ const CountryOverview = () => {
   )
   const textWithTooltipsfirstSecondText = addTooltipsToPlaceholders(
     secondHalfText,
+    placeholders,
+    tooltips
+  )
+
+  const governanceText = addTooltipsToPlaceholders(
+    categoryText,
     placeholders,
     tooltips
   )
@@ -176,7 +191,8 @@ const CountryOverview = () => {
         </Col>
       </Row>
 
-      {router.query.categoryId !== 'overview' ? (
+      {router.query.categoryId !== 'overview' &&
+      router.query.categoryId !== 'governance-and-regulations' ? (
         <Row gutter={[16, 16]} style={{ marginBottom: '40px' }}>
           <Col xs={24} md={12}>
             <div style={{ fontSize: '16px', color: '#1B2738' }}>
@@ -191,9 +207,7 @@ const CountryOverview = () => {
         </Row>
       ) : (
         <Row style={{ marginBottom: '40px', width: '100%' }}>
-          <p style={{ fontSize: '16px', color: '#1B2738' }}>
-            {'Explore highlighted data to find plastic data.'}
-          </p>
+          <p style={{ fontSize: '16px', color: '#1B2738' }}>{governanceText}</p>
         </Row>
       )}
 
@@ -287,36 +301,22 @@ const CountryOverview = () => {
       )}
 
       {router.query.categoryId === 'governance-and-regulations' && (
-        <Row>
-          <Col span={24}>
-            <div
-              style={{
-                backgroundColor: 'transparent',
-                width: '105%',
-                paddingRight: '530px',
-              }}
-            >
-              <PolicyComponent replacedText={categoryText.replacedText} />
-            </div>
-          </Col>
-        </Row>
+        <Col span={24}>
+          <PolicyComponent />
+        </Col>
       )}
 
       {router.query.categoryId === 'environmental-impact' && (
-        <Row gutter={[16, 16]}>
-          <Col xs={24} md={12}>
-            <div
-              style={{
-                backgroundColor: '#FFFFFF',
-                borderRadius: '12px',
-                padding: '20px',
-                boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
-              }}
-            >
-              <PlasticOceanBeachChart />
-            </div>
-          </Col>
-        </Row>
+        <div
+          style={{
+            backgroundColor: '#FFFFFF',
+            borderRadius: '12px',
+            padding: '20px',
+            boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
+          }}
+        >
+          <PlasticOceanBeachChart />
+        </div>
       )}
     </div>
   )

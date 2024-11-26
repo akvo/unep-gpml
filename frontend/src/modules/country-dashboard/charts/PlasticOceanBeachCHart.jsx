@@ -158,17 +158,34 @@ const PlasticOceanBeachChart = () => {
         },
       ],
       graphic: {
-        type: 'text',
+        type: 'group',
         left: 'center',
         top: 'middle',
-        style: {
-          text: `${formattedTotalWeight} tonnes`,
-          fontSize: 12,
-          fontWeight: 'bold',
-          fill: '#020A5B',
-          textAlign: 'center',
-          textVerticalAlign: 'middle',
-        },
+        children: [
+          {
+            type: 'text',
+            left: 'center',
+            style: {
+              text: `${formattedTotalWeight}`,
+              fontSize: 16,
+              fontWeight: 'bold',
+              fill: '#020A5B',
+              textAlign: 'center',
+            },
+          },
+          {
+            type: 'text',
+            left: 'center',
+            top: 20,
+            style: {
+              text: 'tonnes',
+              fontSize: 12,
+              fontWeight: 'normal',
+              fill: '#020A5B',
+              textAlign: 'center',
+            },
+          },
+        ],
       },
     }
   }
