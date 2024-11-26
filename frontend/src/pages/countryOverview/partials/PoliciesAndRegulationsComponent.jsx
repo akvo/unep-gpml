@@ -40,7 +40,6 @@ const PoliciesAndRegulationsComponent = ({
             color: 'inherit',
           }}
         >
-          See the global dataset
           <InfoCircleOutlined style={{ marginLeft: 8, color: '#8E44AD' }} />
         </a>
       </Tooltip>
