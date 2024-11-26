@@ -11,6 +11,17 @@ values(
 --~ (when (contains? params :id) ", :id")
 ) RETURNING id;
 
+-- :name update-country-group :execute :affected
+UPDATE country_group
+SET
+/*~
+(str/join ","
+  (for [[field _] (:updates params)]
+    (str (identifier-param-quote (name field) options)
+      " = :updates." (name field))))
+~*/
+WHERE id = :id;
+
 -- :name all-country-groups :? :*
 -- :doc Get all country groups
 SELECT cg.*, json_agg(json_build_object('id', c.id, 'name', c.name)) AS countries
@@ -90,3 +101,7 @@ ORDER BY id;
 -- :name delete-country-group :execute :affected
 -- :doc Deletes a country group
 DELETE FROM country_group WHERE id = :id;
+
+
+-- :name delete-country-group-countries :execute :affected
+DELETE FROM country_group_country WHERE country_group = :id
