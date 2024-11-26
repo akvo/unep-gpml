@@ -48,7 +48,7 @@ const EconomicInstrumentsComponent = ({
         style={{
           display: 'flex',
           flexDirection: 'row',
-          alignItems: 'left',
+          alignItems: 'center',
           marginBottom: '16px',
         }}
       >
