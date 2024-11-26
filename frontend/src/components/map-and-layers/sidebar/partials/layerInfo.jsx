@@ -24,7 +24,7 @@ const LayerInfo = ({ layer }) => {
 
     const worksheet = XLSX.utils.json_to_sheet(data)
     const workbook = XLSX.utils.book_new()
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Layer Data')
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Layer data")
 
     const excelBuffer = XLSX.write(workbook, {
       bookType: 'xlsx',
