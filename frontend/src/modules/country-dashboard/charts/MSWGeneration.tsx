@@ -202,7 +202,7 @@ const MSWGenerationChart = () => {
           rel="noopener noreferrer"
         >
           {' '}
-          UN Habitat 2021
+          UN Habitat 2022
         </a>
       </div>
     </div>

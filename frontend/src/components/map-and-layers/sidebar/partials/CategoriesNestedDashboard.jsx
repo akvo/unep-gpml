@@ -19,13 +19,11 @@ const CategoriesNestedDashboard = ({ categories }) => {
     landing: s.landing,
   }))
 
-  const isLoaded = () => !isEmpty(countries) && !isEmpty(transnationalOptions)
+  const isLoaded = () => !isEmpty(countries) 
 
   const countryOpts = isLoaded()
     ? countries
-        .filter(
-          (country) => country.description.toLowerCase() === 'member state'
-        )
+        .filter((country) => country.description === 'Member State')
         .map((it) => ({ value: it.id, label: it.name }))
         .sort((a, b) => a.label.localeCompare(b.label))
     : []
