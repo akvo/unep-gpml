@@ -16,7 +16,7 @@ const EconomicInstrumentsComponent = ({
   <Card
     style={{
       width: '130%',
-      height: 'auto',
+      height: '50%',
       borderRadius: '12px',
       boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
     }}
@@ -42,6 +42,7 @@ const EconomicInstrumentsComponent = ({
           bordered={false}
           style={{
             textAlign: 'center',
+            height: '50%',
             backgroundColor: 'transparent',
             boxShadow: 'none',
           }}
@@ -52,7 +53,7 @@ const EconomicInstrumentsComponent = ({
           <Text style={{ fontSize: '18px' }}>Cash for return schemes</Text>
         </Card>
       </Col>
-      <Col span={8}>
+      <Col span={10}>
         <Card
           bordered={false}
           style={{
@@ -103,7 +104,6 @@ const EconomicInstrumentsComponent = ({
       </Tooltip>
     </Text>
 
-    {/* New section */}
     <Row justify="space-around" style={{ marginTop: '20px' }}>
       <Col span={6}>
         <Card

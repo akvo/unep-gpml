@@ -11,12 +11,13 @@ const PoliciesAndRegulationsComponent = lazy(() =>
 )
 const baseUrl = getBaseUrl()
 const cardStyle = {
+  width: '92%',
   backgroundColor: 'transparent',
   marginBottom: '20px',
 }
 
 const containerStyle = {
-  width: '130%',
+  width: '120%',
   height: '50%',
   display: 'flex',
   justifyContent: 'space-between',

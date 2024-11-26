@@ -29,7 +29,6 @@ const PlasticCompositionChart = ({layers, layerLoading}) => {
         (layer) => layer.attributes.arcgislayerId === layerMapping?.national
       )
 
-      console.log('nationalLayernationalLayer', nationalLayer)
       const cityLayer = layers?.find(
         (layer) => layer.attributes.arcgislayerId === layerMapping?.cities
       )
