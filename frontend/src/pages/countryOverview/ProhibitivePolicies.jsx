@@ -3,13 +3,7 @@ import { Card, Typography, Tooltip } from 'antd'
 import { InfoCircleOutlined } from '@ant-design/icons'
 const { Title, Text } = Typography
 
-const PoliciesAndRegulationsComponent = ({
-  country,
-  baseUrl,
-  plasticLeakage,
-  regulatoryInstrumentsOnInnovation,
-  irresponsibleHandling,
-}) => (
+const ProhibitivePolicies = ({ bansOnPlastic, limitsPlastic, country }) => (
   <Card
     style={{
       width: '100%',
@@ -27,11 +21,11 @@ const PoliciesAndRegulationsComponent = ({
         fontWeight: 'normal',
       }}
     >
-      <strong>{country}</strong> has implemented the following affirmative
+      <strong>{country}</strong> has implemented the following prohibitive
       regulatory policy instruments on plastics:
       <Tooltip title="See the global dataset">
         <a
-          href={`https://digital.gpmarinelitter.org/data/maps?categoryId=governance-and-regulations&subcategoryId=policies-and-plans`}
+          href={`https://digital.gpmarinelitter.org/data/maps?categoryId=governance-and-regulations&subcategoryId=prohibitive-regulatory-instruments`}
           target="_blank"
           rel="noopener noreferrer"
           style={{
@@ -49,21 +43,16 @@ const PoliciesAndRegulationsComponent = ({
     <div style={{ marginTop: '16px' }}>
       {[
         {
-          count: 12,
-          text:
-            'Regulatory instruments on development of plans to address plastic pollution and management',
+          count: limitsPlastic,
+          text: 'Regulatory instruments on limiting plastics use',
         },
         {
-          count: plasticLeakage,
-          text: 'Regulatory instruments to capture plastic post-leakage',
+          count: bansOnPlastic,
+          text: 'Regulatory instruments on plastics bans',
         },
         {
-          count: irresponsibleHandling,
-          text: 'Regulatory instruments on responsible handling of plastics',
-        },
-        {
-          count: regulatoryInstrumentsOnInnovation,
-          text: 'Regulatory instruments on innovation',
+          count: 2,
+          text: 'Regulatory instruments on irresponsible handling of plastics',
         },
       ].map((item, index) => (
         <div
@@ -95,4 +84,4 @@ const PoliciesAndRegulationsComponent = ({
   </Card>
 )
 
-export default PoliciesAndRegulationsComponent
+export default ProhibitivePolicies

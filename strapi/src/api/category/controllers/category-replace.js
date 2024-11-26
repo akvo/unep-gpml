@@ -66,7 +66,7 @@ module.exports = {
                 const evaluatedFormula = formula.replace(/\b(\w+_\w+(_\w+)*)\b/g, (match) => {
                     const arcgislayerId = match.replace(/(_year|_total|_last|_first|_city)$/, '');
                     const layerInfo = layerDataByArcgisId[arcgislayerId];
-                    const layerValues = layerInfo?.values;
+                    const layerValues = layerInfo?.values.sort((a, b) => b.Year - a.Year);
                     const datasource = layerInfo?.datasource;
 
                     const suffix = match.match(/(last|total|first|year|city)$/)?.[0];
@@ -74,15 +74,15 @@ module.exports = {
                     if (layerValues) {
                         switch (suffix) {
                             case 'last':
-                                return Math.round(layerValues.sort((a, b) => b.Year - a.Year)[0]?.Value || 0);
+                                return Math.round(layerValues[0]?.Value || 0);
                             case 'first':
-                                return Math.round(layerValues.sort((a, b) => a.Year - b.Year)[0]?.Value || 0);
+                                return Math.round(layerValues[0]?.Value || 0);
                             case 'total':
                                 return Math.round(layerValues.reduce((sum, entry) => sum + (entry.Value || 0), 0));
                             case 'city':
                                 return layerValues[0]?.City || "No data";
                             default:
-                                const [value] = layerValues.sort((a, b) => a.Year - b.Year).filter((entry, index, arr) => {
+                                const [value] = layerValues.filter((entry, index, arr) => {
                                     return arr.findIndex(e => e.Year === entry.Year) === index;
                                 });
                                 return Math.round(value?.Value || 0);
@@ -103,7 +103,6 @@ module.exports = {
                 const decimals = decimalConfig[placeholder] || decimalConfig.default;
 
                 if (placeholder === 'country') {
-                    // Handle country placeholder explicitly
                     calculatedValues[placeholder] = country || "[No data]";
                     tooltips[placeholder] = "Selected country";
                     return;

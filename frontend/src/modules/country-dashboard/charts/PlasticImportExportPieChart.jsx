@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { useRouter } from 'next/router'
-import useLayerInfo from '../../../hooks/useLayerInfo'
 
-const PlasticImportExportPieCharts = ({ chartType }) => {
+const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
   const router = useRouter()
   const { country } = router.query
-  const { layers, loading } = useLayerInfo()
-
   const [data, setData] = useState([])
 
   const categories = [

@@ -11,7 +11,7 @@ const useSubcategories = () => {
     const fetchSubategories = async () => {
       try {
         const response = await axios.get(
-          `${strapiURL}/api/subcategories?pagination[pageSize]=100`
+          `${strapiURL}/api/subcategories?pagination[pageSize]=100&sort[order]=asc`
         );
 
         setSubategories(response.data || []);

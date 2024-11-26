@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { useRouter } from 'next/router'
-import useLayerInfo from '../../../hooks/useLayerInfo'
 import useRegions from '../../../hooks/useRegions'
 import { getBaseUrl } from '../../../utils/misc'
 
-const PlasticCompositionChart = () => {
+const PlasticCompositionChart = ({layers, layerLoading}) => {
   const router = useRouter()
   const { country } = router.query
-  const { layers, loading: layerLoading } = useLayerInfo()
   const [nationalEstimate, setNationalEstimate] = useState(0)
   const [cityEstimates, setCityEstimates] = useState([])
   const [cities, setCities] = useState([])
@@ -31,7 +29,6 @@ const PlasticCompositionChart = () => {
         (layer) => layer.attributes.arcgislayerId === layerMapping?.national
       )
 
-      console.log('nationalLayernationalLayer', nationalLayer)
       const cityLayer = layers?.find(
         (layer) => layer.attributes.arcgislayerId === layerMapping?.cities
       )
