@@ -14,6 +14,7 @@ import Handlebars from 'handlebars'
 import useCategories from '../../hooks/useCategories'
 import parse from 'html-react-parser'
 import { Tooltip } from 'antd'
+import useLayerInfo from '../../hooks/useLayerInfo'
 
 const splitTextInHalf = (text) => {
   const exportsIndex = text.indexOf(
@@ -30,6 +31,11 @@ const splitTextInHalf = (text) => {
   const firstHalf = words.slice(0, halfIndex).join(' ')
   const secondHalf = words.slice(halfIndex).join(' ')
   return [firstHalf, secondHalf]
+}
+
+const splitTextByMarker = (text, marker) => {
+  const [firstPart, secondPart] = text.split(marker)
+  return [firstPart?.trim(), secondPart?.trim()]
 }
 
 const addTooltipsToPlaceholders = (htmlString, placeholders, tooltips) => {
@@ -73,6 +79,7 @@ const CountryOverview = () => {
   const router = useRouter()
 
   const categories = useCategories()
+  const { layers, loading: layerLoading } = useLayerInfo()
 
   const selectedCategory = categories.categories.find(
     (c) => c.attributes.categoryId == router.query.categoryId
@@ -115,7 +122,11 @@ const CountryOverview = () => {
     country: `{{country}}`,
   })
 
-  const [firstHalfText, secondHalfText] = splitTextInHalf(categoryText || '')
+  const [firstHalfText, secondHalfText] =
+    selectedCategory?.attributes?.categoryId === 'environmental-impact' ||
+    selectedCategory?.attributes?.categoryId === 'waste-management'
+      ? splitTextByMarker(categoryText, '<!--NEW_COLUMN-->')
+      : splitTextInHalf(categoryText || '')
 
   const textWithTooltipsfirstHalfText = addTooltipsToPlaceholders(
     firstHalfText,
@@ -124,6 +135,12 @@ const CountryOverview = () => {
   )
   const textWithTooltipsfirstSecondText = addTooltipsToPlaceholders(
     secondHalfText,
+    placeholders,
+    tooltips
+  )
+
+  const governanceText = addTooltipsToPlaceholders(
+    categoryText,
     placeholders,
     tooltips
   )
@@ -176,7 +193,8 @@ const CountryOverview = () => {
         </Col>
       </Row>
 
-      {router.query.categoryId !== 'overview' ? (
+      {router.query.categoryId !== 'overview' &&
+      router.query.categoryId !== 'governance-and-regulations' ? (
         <Row gutter={[16, 16]} style={{ marginBottom: '40px' }}>
           <Col xs={24} md={12}>
             <div style={{ fontSize: '16px', color: '#1B2738' }}>
@@ -191,9 +209,7 @@ const CountryOverview = () => {
         </Row>
       ) : (
         <Row style={{ marginBottom: '40px', width: '100%' }}>
-          <p style={{ fontSize: '16px', color: '#1B2738' }}>
-            {'Explore highlighted data to find plastic data.'}
-          </p>
+          <p style={{ fontSize: '16px', color: '#1B2738' }}>{governanceText}</p>
         </Row>
       )}
 
@@ -209,7 +225,10 @@ const CountryOverview = () => {
                   boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
                 }}
               >
-                <PlasticImportExportChart />
+                <PlasticImportExportChart
+                  layers={layers}
+                  loading={layerLoading}
+                />
               </div>
             </Col>
           </Row>
@@ -223,7 +242,10 @@ const CountryOverview = () => {
                   boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
                 }}
               >
-                <PlasticImportExportTonnesChart />
+                <PlasticImportExportTonnesChart
+                  layers={layers}
+                  loading={layerLoading}
+                />
               </div>
             </Col>
           </Row>
@@ -238,7 +260,11 @@ const CountryOverview = () => {
                   boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
                 }}
               >
-                <PlasticImportExportPieCharts chartType="import" />
+                <PlasticImportExportPieCharts
+                  chartType="import"
+                  layers={layers}
+                  loading={layerLoading}
+                />
               </div>
             </Col>
             <Col xs={24} md={12}>
@@ -250,7 +276,11 @@ const CountryOverview = () => {
                   boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
                 }}
               >
-                <PlasticImportExportPieCharts chartType="export" />
+                <PlasticImportExportPieCharts
+                  chartType="export"
+                  layers={layers}
+                  loading={layerLoading}
+                />
               </div>
             </Col>
           </Row>
@@ -268,7 +298,7 @@ const CountryOverview = () => {
                 boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
               }}
             >
-              <MSWGenerationChart />
+              <MSWGenerationChart layers={layers} layerLoading={layerLoading} />
             </div>
           </Col>
           <Col xs={24} md={12}>
@@ -280,43 +310,32 @@ const CountryOverview = () => {
                 boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
               }}
             >
-              <PlasticCompositionChart />
+              <PlasticCompositionChart
+                layers={layers}
+                layerLoading={layerLoading}
+              />
             </div>
           </Col>
         </Row>
       )}
 
       {router.query.categoryId === 'governance-and-regulations' && (
-        <Row>
-          <Col span={24}>
-            <div
-              style={{
-                backgroundColor: 'transparent',
-                width: '105%',
-                paddingRight: '530px',
-              }}
-            >
-              <PolicyComponent replacedText={categoryText.replacedText} />
-            </div>
-          </Col>
-        </Row>
+        <Col span={24}>
+          <PolicyComponent layers={layers} layerLoading={layerLoading} />
+        </Col>
       )}
 
       {router.query.categoryId === 'environmental-impact' && (
-        <Row gutter={[16, 16]}>
-          <Col xs={24} md={12}>
-            <div
-              style={{
-                backgroundColor: '#FFFFFF',
-                borderRadius: '12px',
-                padding: '20px',
-                boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
-              }}
-            >
-              <PlasticOceanBeachChart />
-            </div>
-          </Col>
-        </Row>
+        <div
+          style={{
+            backgroundColor: '#FFFFFF',
+            borderRadius: '12px',
+            padding: '20px',
+            boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
+          }}
+        >
+          <PlasticOceanBeachChart layers={layers} layerLoading={layerLoading} />
+        </div>
       )}
     </div>
   )

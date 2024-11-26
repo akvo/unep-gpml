@@ -12,7 +12,9 @@ const LayerInfo = ({ layer }) => {
     <div style={{ border: 'none' }}>
       <Card>
         <AntTitle level={3}>{layer?.attributes.title}</AntTitle>
-        <AntParagraph>{layer?.attributes.metadata}</AntParagraph>
+        <div
+          dangerouslySetInnerHTML={{ __html: layer?.attributes.metadata }}
+        />
         <Button
           type="link"
           onClick={handleReadMoreClick}

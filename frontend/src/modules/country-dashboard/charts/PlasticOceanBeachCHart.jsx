@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { useRouter } from 'next/router'
-import useLayerInfo from '../../../hooks/useLayerInfo'
 import { getBaseUrl } from '../../../utils/misc'
 
-const PlasticOceanBeachChart = () => {
+const PlasticOceanBeachChart = ({ layers, loading }) => {
   const router = useRouter()
   const baseURL = getBaseUrl()
   const { country } = router.query
-  const { layers, loading } = useLayerInfo()
   const [oceanPercentage, setOceanPercentage] = useState(0)
   const [beachPercentage, setBeachPercentage] = useState(0)
   const [totalWeight, setTotalWeight] = useState(0)
@@ -158,17 +156,34 @@ const PlasticOceanBeachChart = () => {
         },
       ],
       graphic: {
-        type: 'text',
+        type: 'group',
         left: 'center',
         top: 'middle',
-        style: {
-          text: `${formattedTotalWeight} tonnes`,
-          fontSize: 12,
-          fontWeight: 'bold',
-          fill: '#020A5B',
-          textAlign: 'center',
-          textVerticalAlign: 'middle',
-        },
+        children: [
+          {
+            type: 'text',
+            left: 'center',
+            style: {
+              text: `${formattedTotalWeight}`,
+              fontSize: 16,
+              fontWeight: 'bold',
+              fill: '#020A5B',
+              textAlign: 'center',
+            },
+          },
+          {
+            type: 'text',
+            left: 'center',
+            top: 20,
+            style: {
+              text: 'tonnes',
+              fontSize: 12,
+              fontWeight: 'normal',
+              fill: '#020A5B',
+              textAlign: 'center',
+            },
+          },
+        ],
       },
     }
   }

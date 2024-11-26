@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { useRouter } from 'next/router'
-import useLayerInfo from '../../../hooks/useLayerInfo'
 import useRegions from '../../../hooks/useRegions'
 import { getBaseUrl } from '../../../utils/misc'
 
-const MSWGenerationChart = () => {
+const MSWGenerationChart = ({layers,layerLoading }) => {
   const router = useRouter()
   const baseURL = getBaseUrl()
   const { country } = router.query
-  const { layers, loading: layerLoading } = useLayerInfo()
   const { countriesWithRegions, loading: regionLoading } = useRegions()
 
   const [nationalEstimate, setNationalEstimate] = useState(0)
@@ -202,7 +200,7 @@ const MSWGenerationChart = () => {
           rel="noopener noreferrer"
         >
           {' '}
-          UN Habitat 2022
+          UN Habitat 2021
         </a>
       </div>
     </div>
