@@ -1,6 +1,5 @@
 import React, { useEffect, useState, lazy, Suspense } from 'react'
 import { useRouter } from 'next/router'
-import useLayerInfo from '../../hooks/useLayerInfo'
 import { getBaseUrl } from '../../utils/misc'
 
 const EconomicInstrumentsComponent = lazy(() =>
@@ -30,10 +29,9 @@ const headerStyle = {
   marginBottom: '10px',
 }
 
-const PolicyComponent = () => {
+const PolicyComponent = ({ layers, layerLoading: loading }) => {
   const router = useRouter()
   const { country } = router.query
-  const { layers, loading } = useLayerInfo()
 
   const [policyData, setPolicyData] = useState({
     cashReturn: 0,
