@@ -6,23 +6,22 @@ const { Title, Text } = Typography
 const ProhibitivePolicies = ({ bansOnPlastic, limitsPlastic, country }) => (
   <Card
     style={{
-      width: '100%',
+      width: '98%',
       borderRadius: '12px',
       boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
       padding: '20px',
     }}
   >
-    <Title
+    <Text
       level={4}
       style={{
-        color: '#1B2738',
-        fontSize: '24px',
-        fontFamily: 'Inter, sans-serif',
-        fontWeight: 'normal',
+        color: '#1B1B22',
+        fontSize: '16px',
+        fontWeight: '500',
       }}
     >
-      <strong>{country}</strong> has implemented the following prohibitive
-      regulatory policy instruments on plastics:
+      <strong style={{ color: '#020A5B' }}>{country}</strong> has implemented
+      the following prohibitive regulatory policy instruments on plastics:
       <Tooltip title="See the global dataset">
         <a
           href={`https://digital.gpmarinelitter.org/data/maps?categoryId=governance-and-regulations&subcategoryId=prohibitive-regulatory-instruments`}
@@ -35,11 +34,10 @@ const ProhibitivePolicies = ({ bansOnPlastic, limitsPlastic, country }) => (
             color: 'inherit',
           }}
         >
-          See the global dataset
           <InfoCircleOutlined style={{ marginLeft: 8, color: '#8E44AD' }} />
         </a>
       </Tooltip>
-    </Title>
+    </Text>
     <div style={{ marginTop: '16px' }}>
       {[
         {
@@ -61,21 +59,29 @@ const ProhibitivePolicies = ({ bansOnPlastic, limitsPlastic, country }) => (
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
-            marginBottom: '12px',
+            marginBottom: '1%',
           }}
         >
           <Title
-            level={1}
+            level={2}
             style={{
-              color: '#1B1B22',
-              minWidth: '50px',
+              color: '#020A5B',
+              minWidth: '5%',
               textAlign: 'right',
-              marginRight: '16px',
+              marginRight: '3%',
             }}
           >
             {item.count}
           </Title>
-          <Text style={{ fontSize: '18px', lineHeight: '24px' }}>
+          <div
+            style={{
+              width: '2px',
+              height: '40px',
+              backgroundColor: '#00F1BF',
+              marginRight: '8px',
+            }}
+          ></div>
+          <Text style={{ fontSize: '16px', lineHeight: '24px' }}>
             {item.text}
           </Text>
         </div>
