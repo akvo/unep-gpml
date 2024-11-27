@@ -35,7 +35,7 @@ msgstr ""
 msgid "{incompleteAmount} items are not completed"
 msgstr "{incompleteAmount} elementos no están completos"
 
-#: src/pages/workspace/[slug]/layout.js:272
+#: src/pages/workspace/[slug]/layout.js:263
 msgid "{progress}% complete"
 msgstr "{progress}% completado"
 
@@ -51,13 +51,13 @@ msgstr "<0>Estar aprobado</0>y certificado por la GPML como miembro de la asocia
 msgid "<0>Fill in the form.</0><1/>Tell us about your organisation's work in preventing and reducing plastic pollution and marine litter."
 msgstr "<0>Rellena el formulario.</0><1/>Cuéntanos sobre el trabajo de tu organización para prevenir y reducir la contaminación plástica y la basura marina."
 
-#: src/pages/landing/index.jsx:741
+#: src/pages/landing/index.jsx:735
 msgid "<0>GPML’s</0> Action Tracks"
 msgstr "Programa de Acciones de <0>GPML</0>"
 
 #: src/pages/workspace/[slug]/index.js:59
-msgid "<0>Instructions</0><1>This workflow tool has been created to assist your team with the development of a plastics strategy for your country. Some key steps are suggested for consideration while in the ‘create’ phase. The workflow will be further developed to assist with the phase of ‘implement’, ‘report’, and ‘review.’ <2/><3/>The workflow and resources associated with each suggested step are designed to facilitate and accelerate the activities of the ‘create’ phase of your plastic strategy. Such resources include data, documents, templates, case studies, relevant organizations (governmental and non governmental) as well as individuals active in the space.</1>{0}<4>Step 1: Establishment of a National Steering Committee & project team</4><5>This step assists in the establishment of a National Steering Committee (NSC) with representation from necessary government agencies as well as relevant non-governmental organizations. The NSC should aim to meet 2-4 times per year to assist with and drive the roadmap/strategy/plan. A project team could be established to assist the NSC, consisting of consultants and focal points, to lead the implementation of the project with the guidance of the NSC and UNEP.</5><6>Step 2: Stakeholder consultation process</6><7>Consultation should aim to understand the current issues faced by various stakeholders, as well as their role in solving the problem (actors) and how proposed activities of the national plastics strategy may affect them positively or negatively. Different stakeholders may also have access to important data. This step of the workflow provides guidance on organizing a comprehensive stakeholder consultation process to ensure all relevant sectors and stakeholders are consulted.</7><8>Step 3: Legislation & Policy Review and Analysis</8><9>An analysis of the legal and policy framework in your country can help identify current goals and targets that the national plastics strategy should aim to achieve, as well as gaps in this framework that the strategy could help close. This allows for identification of priority areas to track and the type of data needed to do so. In this stage, together with UNEP’s guidance, a review and analysis of the legislative and policy landscape as it pertains to marine litter and plastic pollution would be conducted.</9><10>Step 4: Data Analysis</10><11>Data is at the core of understanding the issues and current state of play, as well as the tracking of trends to determine effectiveness of the national plastics strategy. This step will help in compiling existing data and information into a State of Knowledge Report. This could include identification of areas in need of additional data collection, leading to additional secondary data collection. Note that all the data collected should be made publicly available.</11><12>Step 5: National Source Inventory Report</12><13>National plastics strategies should be underpinned by a National Source Inventory (NSI). This step will help in analyzingwe the data available and collected into a National Source Inventory Report on plastic pollution and marine litter that can inform discussions on possible actions to be included in the national plastics strategy. </13><14>Final Step: National Roadmap/Strategy/Plan</14><15>This step facilitates the development of a National Roadmap/Strategy/Plan based on the evidence and information gathered in the NSI Report. The roadmap should be time bound, measurable and include provisions of periodic revisions. The strategy can be formally adopted through parliament or act as a voluntary guideline for action. </15>"
-msgstr ""
+msgid "<0>Instructions</0><1>This workflow tool has been created to assist your team with the development of a plastics strategy for your country. Some key steps are suggested for consideration while in the ‘create’ phase. The workflow will be further developed to assist with the phase of ‘implement’, ‘report’, and ‘review.’ <2/><3/>The workflow and resources associated with each suggested step are designed to facilitate and accelerate the activities of the ‘create’ phase of your plastic strategy. Such resources include data, documents, templates, case studies, relevant organizations (governmental and non governmental) as well as individuals active in the space.</1>{0}<4>Step 1: National Steering Committee & Project Team</4><5>This step assists in the establishment of a National Steering Committee (NSC) with representation from necessary government agencies as well as relevant non-governmental organizations. The NSC should aim to meet 2-4 times per year to assist with and drive the roadmap/strategy/plan. A project team should be established to assist the NSC, consisting of consultants and focal points, to lead the implementation of the project with the guidance of the NSC and UNEP.</5><6>Step 2: Stakeholder consultations</6><7>Consultation should aim to understand the current issues faced by various stakeholders, as well as their role in solving the problem (actors) and how proposed activities of the national plastics strategy may affect them positively or negatively. Different stakeholders may also have access to important data. This step of the workflow provides guidance on organizing a comprehensive stakeholder consultation process to ensure all relevant sectors and stakeholders are consulted.</7><8>Step 3: State of Knowledge on Plastic Data</8><9>Data is at the core of understanding the issues and current state of play, as well as the tracking of trends to determine effectiveness of the national plastics strategy. This step will help in compiling existing data and information into a State of Knowledge Report. This could include identification of areas in need of additional data collection, leading to additional secondary data collection.</9><10>Step 4: Legislation & Policy Review</10><11>An analysis of the legal and policy framework in your country can help identify current goals and targets that the national plastics strategy should aim to achieve, as well as gaps in this framework that the strategy could help close. This allows for the identification of priority areas to track and the type of data needed to do so. In this stage, together with UNEP’s guidance, a review and analysis of the legislative and policy landscape as it pertains to marine litter and plastic pollution would be conducted.</11><12>Step 5: National Source Inventory</12><13>National plastics strategies should be underpinned by a National Source Inventory (NSI). This step will help in analysing the data available and collected into a National Source Inventory Report on plastic pollution and marine litter that can inform discussions on possible actions to be included in the national plastics strategy.</13><14>Final Step: National Roadmap/Strategy/Plan</14><15>This step facilitates the development of a National Roadmap/Strategy/Plan based on the evidence and information gathered in the NSI Report. The roadmap should be time bound, measurable and include provisions of periodic revisions. The strategy can be formally adopted through parliament or act as a voluntary guideline for action.</15>"
+msgstr "<0>Instrucciones</0><1>Esta herramienta de flujo de trabajo se ha creado para ayudar a su equipo con el desarrollo de una estrategia de plásticos para su país. Se sugieren algunos pasos clave para tener en cuenta durante la fase de "creación". El flujo de trabajo se desarrollará más a fondo para ayudar con la fase de "implementación", "informe" y "revisión". <2/><3/>El flujo de trabajo y los recursos asociados con cada paso sugerido están diseñados para facilitar y acelerar las actividades de la fase de "creación" de su estrategia de plásticos. Dichos recursos incluyen datos, documentos, plantillas, estudios de casos, organizaciones relevantes (gubernamentales y no gubernamentales), así como personas activas en el espacio.</1>{0}<4>Paso 1: Comité Directivo Nacional y Equipo de Proyecto</4><5>Este paso ayuda a establecer un Comité Directivo Nacional (NSC) con representación de las agencias gubernamentales necesarias, así como de las organizaciones no gubernamentales relevantes. El NSC debe tratar de reunirse de 2 a 4 veces al año para ayudar e impulsar la hoja de ruta/estrategia/plan. Se debe establecer un equipo de proyecto para ayudar al CDN, compuesto por consultores y puntos focales, para dirigir la implementación del proyecto con la orientación del CDN y el PNUMA.</5><6>Paso 2: Consultas con las partes interesadas</6><7>La consulta debe apuntar a comprender los problemas actuales que enfrentan las diversas partes interesadas, así como su papel en la solución del problema (actores) y cómo las actividades propuestas de la estrategia nacional sobre plásticos pueden afectarlos positiva o negativamente. Diferentes partes interesadas también pueden tener acceso a datos importantes. Este paso del flujo de trabajo proporciona orientación sobre la organización de un proceso integral de consulta con las partes interesadas para asegurar que se consulte a todos los sectores y partes interesadas relevantes.</7><8>Paso 3: Estado del conocimiento sobre los datos sobre plásticos</8><9>Los datos son fundamentales para comprender los problemas y el estado actual de la situación, así como para rastrear las tendencias para determinar la eficacia de la estrategia nacional sobre plásticos. Este paso ayudará a recopilar los datos e información existentes en un Informe sobre el estado del conocimiento. Esto podría incluir la identificación de áreas que necesitan una recopilación de datos adicionales, lo que lleva a una recopilación adicional de datos secundarios.</9><10>Paso 4: Revisión de la legislación y las políticas</10><11>Un análisis del marco legal y de políticas en su país puede ayudar a identificar los objetivos y metas actuales que la estrategia nacional sobre plásticos debería intentar alcanzar, así como las brechas en este marco que la estrategia podría ayudar a cerrar. Esto permite la identificación de áreas prioritarias para rastrear y el tipo de datos necesarios para hacerlo. En esta etapa, junto con la orientación del PNUMA, se realizaría una revisión y análisis del panorama legislativo y de políticas en lo que respecta a la basura marina y la contaminación plástica.</11><12>Paso 5: Inventario nacional de fuentes</12><13>Las estrategias nacionales sobre plásticos deben respaldarse con un Inventario nacional de fuentes (INE). Este paso ayudará a analizar los datos disponibles y recopilados en un Informe de Inventario Nacional de Fuentes sobre contaminación plástica y basura marina que puede servir de base para los debates sobre posibles medidas que se deben incluir en la estrategia nacional sobre plásticos.</13><14>Paso final: Hoja de ruta/Estrategia/Plan Nacional</14><15>Este paso facilita el desarrollo de una Hoja de ruta/Estrategia/Plan Nacional basado en la evidencia y la información recopilada en el Informe del INE. La hoja de ruta debe tener un plazo determinado, ser medible e incluir disposiciones de revisiones periódicas. La estrategia puede ser adoptada formalmente a través del parlamento o actuar como una directriz voluntaria para la acción.</15>"
 
 #: src/pages/partnership/index.jsx:319
 msgid "<0>Join the multi-stakeholder partnership</0> which brings together all the actors working on plastic pollution and marine litter prevention and reduction."
@@ -154,7 +154,7 @@ msgstr "Acceder al espacio de trabajo"
 msgid "Access to a unique global audience for sharing knowledge and experiences in preventing and reducing plastic pollution and marine litter."
 msgstr "Acceso a una audiencia global única para compartir conocimientos y experiencias en la prevención y reducción de la contaminación plástica y la basura marina."
 
-#: src/pages/landing/index.jsx:806
+#: src/pages/landing/index.jsx:800
 msgid "Access to all"
 msgstr "Acceso a todos"
 
@@ -172,7 +172,6 @@ msgid "Action Plans"
 msgstr "Planes de acción"
 
 #: src/modules/flexible-forms/view.jsx:1188
-#: src/pages/landing/index.jsx:588
 msgid "Add"
 msgstr "Agregar"
 
@@ -390,17 +389,17 @@ msgstr "Automotor"
 msgid "Available Data"
 msgstr "Datos disponibles"
 
-#: src/pages/workspace/[slug]/layout.js:48
+#: src/pages/workspace/[slug]/layout.js:44
 msgid "Available Data & Statistics"
 msgstr "Datos y estadísticas disponibles"
 
 #: src/pages/workspace/[slug]/4-data-analysis/available-information.js:46
-#: src/pages/workspace/[slug]/layout.js:51
+#: src/pages/workspace/[slug]/layout.js:47
 msgid "Available Information"
 msgstr "Información disponible"
 
 #: src/pages/workspace/[slug]/4-data-analysis/available-tools.js:46
-#: src/pages/workspace/[slug]/layout.js:46
+#: src/pages/workspace/[slug]/layout.js:42
 msgid "Available Tools"
 msgstr "Herramientas disponibles"
 
@@ -531,7 +530,7 @@ msgid "By submitting this form, I will be included in the public database of GPM
 msgstr "Al enviar este formulario, seré incluido en la base de datos pública de los miembros de la Plataforma Digital GPML y reconozco que la información proporcionada se hará pública y se utilizará para encontrar y conectarme a través de funcionalidades de emparejamiento inteligente con otras partes interesadas y recursos."
 
 #: src/pages/workspace/[slug]/4-data-analysis/calculation.js:45
-#: src/pages/workspace/[slug]/layout.js:50
+#: src/pages/workspace/[slug]/layout.js:46
 msgid "Calculation of Indicators"
 msgstr "Cálculo de indicadores"
 
@@ -574,13 +573,9 @@ msgstr "Estudios de caso"
 
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/case-studies.js:36
 #: src/pages/workspace/[slug]/3-legislation-policy/case-studies.js:47
-#: src/pages/workspace/[slug]/layout.js:34
+#: src/pages/workspace/[slug]/layout.js:32
 msgid "Case Studies"
 msgstr "Estudios de caso"
-
-#: src/pages/landing/index.jsx:565
-msgid "Case<0/>Studies"
-msgstr "Estudios de<0/>caso"
 
 #: src/modules/knowledge-lib/resource-view.jsx:514
 msgid "category"
@@ -746,28 +741,21 @@ msgstr "Recopilar evidencia sobre la descarga de plástico al océano/vías nave
 msgid "Collection / sorting of plastics after use"
 msgstr "Recogida/clasificación de plásticos tras su uso."
 
-#: src/pages/landing/index.jsx:600
-msgid "Coming soon"
-msgstr "Próximamente"
-
 #: src/modules/details-page/comment.jsx:101
 msgid "Comment deleted successfully"
 msgstr "Comentario eliminado con éxito"
 
 #: src/pages/landing/index.jsx:363
+#: src/pages/landing/index.jsx:595
 #: src/store.js:81
 msgid "Communities of Practice"
 msgstr "Comunidades de Practica"
-
-#: src/pages/landing/index.jsx:594
-msgid "Communities of practise"
-msgstr "Comunidades de práctica"
 
 #: src/modules/flexible-forms/form-schema.js:461
 msgid "Community engagement"
 msgstr "Participación de la comunidad"
 
-#: src/pages/workspace/[slug]/layout.js:378
+#: src/pages/workspace/[slug]/layout.js:369
 msgid "Completed"
 msgstr "Terminado"
 
@@ -878,7 +866,7 @@ msgstr "Consideraciones de costos (por ejemplo, reducir los costos de los proces
 #: src/components/select/country-transnational-filter.jsx:139
 #: src/components/select/country-transnational-filter.jsx:151
 #: src/pages/community-hub/index.js:199
-#: src/pages/knowledge-hub/index.js:451
+#: src/pages/knowledge-hub/index.js:424
 msgid "Countries"
 msgstr "Países"
 
@@ -892,13 +880,9 @@ msgid "Country dashboard"
 msgstr ""
 
 #: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:560
-#: src/pages/workspace/[slug]/layout.js:40
+#: src/pages/workspace/[slug]/layout.js:36
 msgid "Country Policy Framework"
 msgstr "Marco de políticas nacionales"
-
-#: src/pages/landing/index.jsx:601
-msgid "Country Progress"
-msgstr "Progreso del país"
 
 #: src/store.js:545
 #: src/store.js:614
@@ -958,11 +942,11 @@ msgstr "CV / Portafolio"
 #: src/pages/workspace/[slug]/4-data-analysis/calculation.js:42
 #: src/pages/workspace/[slug]/4-data-analysis/data-collection.js:43
 #: src/pages/workspace/[slug]/4-data-analysis/index.js:33
-#: src/pages/workspace/[slug]/layout.js:42
+#: src/pages/workspace/[slug]/layout.js:38
 msgid "Data Analysis"
 msgstr "Estado del conocimiento sobre datos plásticos"
 
-#: src/pages/landing/index.jsx:619
+#: src/pages/landing/index.jsx:613
 msgid "Data and information is a key for successful policy and action design to end plastic pollution. Immerse yourself in the rich resources in the platform."
 msgstr "Los datos y la información son clave para el diseño exitoso de políticas y acciones para poner fin a la contaminación plástica. Sumérgete en los ricos recursos de la plataforma"
 
@@ -971,12 +955,12 @@ msgstr "Los datos y la información son clave para el diseño exitoso de políti
 msgid "Data Catalog"
 msgstr ""
 
-#: src/pages/workspace/[slug]/layout.js:49
+#: src/pages/workspace/[slug]/layout.js:45
 msgid "Data Collection"
 msgstr "Recopilación de datos"
 
 #: src/pages/workspace/[slug]/4-data-analysis/data-collection.js:46
-#: src/pages/workspace/[slug]/layout.js:47
+#: src/pages/workspace/[slug]/layout.js:43
 msgid "Data Collection Tools"
 msgstr "Herramientas de recopilación de datos"
 
@@ -985,6 +969,10 @@ msgstr "Herramientas de recopilación de datos"
 msgid "Data Hub"
 msgstr "Centro de datos"
 
+#: src/pages/landing/index.jsx:578
+msgid "Data Maps"
+msgstr "Mapas de datos"
+
 #: src/modules/flexible-forms/form-schema.js:1956
 msgid "Data Source"
 msgstr "Fuente de datos"
@@ -992,10 +980,6 @@ msgstr "Fuente de datos"
 #: src/modules/workspace/view.jsx:67
 msgid "Data tools"
 msgstr "Herramientas de datos"
-
-#: src/pages/landing/index.jsx:599
-msgid "Data visualisations to track countries progress. Quickly connect with others working in the country to end plastic."
-msgstr "Visualizaciones de datos para seguir el progreso de los países. Conéctese rápidamente con otras personas que trabajan en el país para acabar con el plástico."
 
 #: src/store.js:473
 msgid "Debt securities issued by private or public entities to finance activities or projects linked to sustainable development, green goals, or ocean goals."
@@ -1151,10 +1135,16 @@ msgstr "Diferente gestión ambiental de los entornos terrestres."
 msgid "Digital Platform"
 msgstr "Plataforma Digital"
 
-#: src/pages/landing/index.jsx:574
-#: src/pages/landing/index.jsx:585
+#: src/pages/landing/index.jsx:570
+#: src/pages/landing/index.jsx:581
+#: src/pages/landing/index.jsx:590
+#: src/pages/landing/index.jsx:597
 msgid "Discover"
 msgstr "Descubrir"
+
+#: src/pages/landing/index.jsx:588
+msgid "Discover national plastic material flow and data narratives in countries to get inspired for necessary policies and actions."
+msgstr "Descubra el flujo de materiales plásticos a nivel nacional y las narrativas de datos en los países para inspirarse en las políticas y acciones necesarias."
 
 #: src/modules/details-page/comment.jsx:285
 msgid "Discussion"
@@ -1443,6 +1433,10 @@ msgstr "Experiencia y actividades"
 msgid "Experts"
 msgstr "Expertos"
 
+#: src/pages/landing/index.jsx:577
+msgid "Explore global plastic lifecycle datasets to deepen your understanding on the global trend of plastic pollution."
+msgstr "Explore conjuntos de datos globales sobre el ciclo de vida del plástico para profundizar su comprensión sobre la tendencia global de la contaminación plástica."
+
 #: src/pages/landing/index.jsx:405
 msgid "Explore the community"
 msgstr "Explora la comunidad"
@@ -1501,7 +1495,7 @@ msgid "Filters"
 msgstr "Filtros"
 
 #: src/pages/workspace/[slug]/7-final-review/index.js:20
-#: src/pages/workspace/[slug]/layout.js:57
+#: src/pages/workspace/[slug]/layout.js:51
 msgid "Final Review"
 msgstr "Revisión final"
 
@@ -1591,7 +1585,7 @@ msgstr "HAS OLVIDADO TU CONTRASEÑA"
 msgid "Forgot password?"
 msgstr "¿Has olvidado tu contraseña?"
 
-#: src/pages/workspace/[slug]/layout.js:285
+#: src/pages/workspace/[slug]/layout.js:276
 msgid "Forum"
 msgstr "Foro"
 
@@ -1689,7 +1683,7 @@ msgstr "Cobertura geográfica"
 msgid "Geo-coverage type"
 msgstr "Tipo de cobertura geográfica"
 
-#: src/pages/landing/index.jsx:616
+#: src/pages/landing/index.jsx:610
 msgid "Get Inspired:"
 msgstr "Inspírate"
 
@@ -1812,7 +1806,7 @@ msgstr "Orientación sobre cómo registrarse en la plataforma digital GPML"
 msgid "Guidelines For The Monitoring And Assessment Of Plastic Litter In The Ocean"
 msgstr "Directrices para el seguimiento y evaluación de la basura plástica en el océano"
 
-#: src/pages/landing/index.jsx:782
+#: src/pages/landing/index.jsx:776
 msgid "Guidelines standards & harmonization"
 msgstr "Directrices, estándares y armonización."
 
@@ -1860,7 +1854,7 @@ msgstr "OCULTAR EJEMPLOS"
 msgid "High-level strategy"
 msgstr "Estrategia de alto nivel"
 
-#: src/pages/landing/index.jsx:682
+#: src/pages/landing/index.jsx:676
 msgid "HIGHLIGHTS"
 msgstr "REFLEJOS"
 
@@ -2055,7 +2049,7 @@ msgstr "Alcance y objetivo de la iniciativa"
 #: src/modules/knowledge-lib/filter-bar.jsx:27
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/initiatives.js:142
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:123
-#: src/pages/workspace/[slug]/layout.js:35
+#: src/pages/workspace/[slug]/layout.js:33
 #: src/store.js:748
 msgid "Initiatives"
 msgstr "Iniciativas"
@@ -2124,18 +2118,14 @@ msgstr "¿Su iniciativa es una actividad puntual o está en curso?"
 msgid "Job Tilte"
 msgstr "Inclinación de trabajo"
 
-#: src/pages/landing/index.jsx:595
-msgid "Join and collaborate"
-msgstr "Únete y colabora"
-
 #: src/modules/workspace/view.jsx:382
 #: src/pages/landing/index.jsx:215
 msgid "Join Now"
 msgstr "Únete ahora"
 
-#: src/pages/landing/index.jsx:593
-msgid "Join others in coordinating efforts towards shared plastic solutions. From data to capacity development communities"
-msgstr "Únase a otros para coordinar esfuerzos hacia soluciones plásticas compartidas. De los datos a las comunidades de desarrollo de capacidades."
+#: src/pages/landing/index.jsx:594
+msgid "Join others in coordinating efforts in monitoring harmonization and action planning."
+msgstr "Unirse a otros para coordinar esfuerzos en el seguimiento de la armonización y la planificación de acciones."
 
 #: src/modules/details-page/comment.jsx:334
 msgid "Join the discussion..."
@@ -2154,6 +2144,10 @@ msgstr "ÚNETE POR CORREO ELECTRÓNICO"
 #: src/modules/about/about-us.jsx:347
 msgid "Key Features & Components"
 msgstr "Características y componentes clave"
+
+#: src/pages/knowledge-hub/index.js:448
+msgid "Keywords"
+msgstr "Palabras clave"
 
 #: src/modules/flexible-forms/view.jsx:1301
 msgid "Knowledge Exchange Library."
@@ -2194,7 +2188,7 @@ msgstr "Apellido"
 msgid "Last Name"
 msgstr "Apellido"
 
-#: src/pages/landing/index.jsx:686
+#: src/pages/landing/index.jsx:680
 msgid "Latest news:"
 msgstr "Últimas noticias:"
 
@@ -2240,10 +2234,13 @@ msgstr "Salir del canal"
 msgid "Legislation"
 msgstr "Legislación"
 
+#: src/pages/workspace/[slug]/layout.js:35
+msgid "Legislation & Policy Review"
+msgstr "Revisión de legislación y políticas"
+
 #: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:557
 #: src/pages/workspace/[slug]/3-legislation-policy/index.js:34
 #: src/pages/workspace/[slug]/3-legislation-policy/legislative-development.js:11
-#: src/pages/workspace/[slug]/layout.js:38
 msgid "Legislation & Policy Review Report"
 msgstr "Informe de revisión de legislación y políticas"
 
@@ -2272,10 +2269,11 @@ msgid "Legislations, Regulations & Standards"
 msgstr "Legislaciones, Regulaciones y Estándares"
 
 #: src/pages/workspace/[slug]/3-legislation-policy/legislative-development.js:14
-#: src/pages/workspace/[slug]/layout.js:41
+#: src/pages/workspace/[slug]/layout.js:37
 msgid "Legislative Development Guide"
 msgstr "Guía de desarrollo legislativo"
 
+#: src/pages/landing/index.jsx:565
 #: src/store.js:20
 #: src/store.js:21
 msgid "Library"
@@ -2317,7 +2315,7 @@ msgstr "LinkedIn"
 
 #: src/modules/knowledge-lib/resource-view.jsx:506
 #: src/pages/community-hub/index.js:247
-#: src/pages/knowledge-hub/index.js:522
+#: src/pages/knowledge-hub/index.js:524
 msgid "Load More"
 msgstr "Carga más"
 
@@ -2333,7 +2331,7 @@ msgstr "Cargando"
 #: src/components/event-calendar/view.jsx:181
 #: src/modules/entity-detail/view.jsx:349
 #: src/modules/stakeholder-detail/view.jsx:377
-#: src/pages/workspace/[slug]/layout.js:267
+#: src/pages/workspace/[slug]/layout.js:258
 msgid "Loading..."
 msgstr "Cargando..."
 
@@ -2428,7 +2426,7 @@ msgstr "Gráficos vitales para la basura marina"
 msgid "Marine organisms"
 msgstr "organismos marinos"
 
-#: src/pages/workspace/[slug]/layout.js:378
+#: src/pages/workspace/[slug]/layout.js:369
 msgid "Mark as Completed"
 msgstr "Marcar como completado"
 
@@ -2595,20 +2593,20 @@ msgstr "Nacional"
 msgid "National Action Plan"
 msgstr "Plan de acción nacional"
 
-#: src/pages/landing/index.jsx:798
+#: src/pages/landing/index.jsx:792
 msgid "National action plans"
 msgstr "Planes de acción nacionales"
 
-#: src/pages/landing/index.jsx:582
-msgid "National Action Plans"
-msgstr "Planes de acción nacionales"
+#: src/pages/landing/index.jsx:589
+msgid "National Dashboard"
+msgstr "Tablero Nacional"
 
 #: src/modules/flexible-forms/form-schema.js:871
 msgid "National or organisational values"
 msgstr "Valores nacionales u organizacionales"
 
 #: src/pages/workspace/[slug]/6-national-plastic-strategy/index.js:24
-#: src/pages/workspace/[slug]/layout.js:55
+#: src/pages/workspace/[slug]/layout.js:49
 msgid "National Plastic Strategy"
 msgstr "Estrategia Nacional del Plástico"
 
@@ -2618,12 +2616,12 @@ msgid "National Source Inventories"
 msgstr "Inventarios de fuentes nacionales"
 
 #: src/modules/workspace/view.jsx:490
-#: src/pages/workspace/[slug]/layout.js:265
+#: src/pages/workspace/[slug]/layout.js:48
+#: src/pages/workspace/[slug]/layout.js:256
 msgid "National Source Inventory"
 msgstr "Inventario Nacional de Fuentes"
 
 #: src/pages/workspace/[slug]/5-national-source/index.js:24
-#: src/pages/workspace/[slug]/layout.js:53
 msgid "National Source Inventory Report"
 msgstr "Informe de inventario de fuentes nacionales"
 
@@ -2662,7 +2660,7 @@ msgstr "Nuevos desarrollos/innovaciones técnicas, por ejemplo, investigación y
 #: src/modules/flexible-forms/view.jsx:1638
 #: src/modules/onboarding/view.jsx:288
 #: src/modules/onboarding/view.jsx:351
-#: src/pages/workspace/[slug]/layout.js:382
+#: src/pages/workspace/[slug]/layout.js:373
 msgid "Next"
 msgstr "Próximo"
 
@@ -2878,7 +2876,7 @@ msgstr "Nuestra Costa está Muriendo"
 msgid "Our community"
 msgstr "Nuestra comunidad"
 
-#: src/pages/landing/index.jsx:840
+#: src/pages/landing/index.jsx:834
 msgid "Our partners"
 msgstr "Nuestros compañeros"
 
@@ -3165,7 +3163,7 @@ msgstr "Materias primas"
 msgid "Read more"
 msgstr "Leer más"
 
-#: src/pages/landing/index.jsx:719
+#: src/pages/landing/index.jsx:713
 msgid "Read More"
 msgstr "Leer más"
 
@@ -3185,10 +3183,6 @@ msgstr "Registros"
 #: src/store.js:156
 msgid "Recycling"
 msgstr "Reciclaje"
-
-#: src/pages/landing/index.jsx:581
-msgid "Reduce your country’s footprint. Create and advance your plastic startegy."
-msgstr "Reduzca la huella de su país. Crea y avanza en tu estrategia plástica."
 
 #: src/modules/flexible-forms/form-schema.js:52
 msgid "Reduced Inequalities"
@@ -3358,7 +3352,7 @@ msgstr "SB 270: Prohibición estatal de bolsos"
 msgid "Scale up"
 msgstr "Aumentar proporcionalmente"
 
-#: src/pages/landing/index.jsx:770
+#: src/pages/landing/index.jsx:764
 msgid "Science<0/>policy"
 msgstr "Política científica<0/>"
 
@@ -3531,16 +3525,19 @@ msgstr "Consulta con las partes interesadas"
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/case-studies.js:33
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/index.js:24
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/initiatives.js:139
-#: src/pages/workspace/[slug]/layout.js:31
 msgid "Stakeholder Consultation Process"
 msgstr "Consulta con las partes interesadas"
+
+#: src/pages/workspace/[slug]/layout.js:30
+msgid "Stakeholder Consultations"
+msgstr "Consultas con las partes interesadas"
 
 #: src/modules/flexible-forms/form-schema.js:462
 msgid "Stakeholder engagement"
 msgstr "Participación de los interesados"
 
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:591
-#: src/pages/workspace/[slug]/layout.js:33
+#: src/pages/workspace/[slug]/layout.js:31
 msgid "Stakeholder Map"
 msgstr "Mapa de partes interesadas"
 
@@ -3563,10 +3560,6 @@ msgstr "Fecha de inicio"
 msgid "Start typing..."
 msgstr "Empieza a escribir..."
 
-#: src/pages/landing/index.jsx:561
-msgid "Start your own initiative. Get inspired by others who are making progress to end plastic pollution."
-msgstr "Comienza tu propia iniciativa. Inspírate con otras personas que están avanzando para acabar con la contaminación plástica."
-
 #: src/modules/flexible-forms/form-schema.js:190
 #: src/modules/flexible-forms/form-schema.js:1801
 #: src/modules/flexible-forms/form-schema.js:2102
@@ -3575,7 +3568,7 @@ msgstr "Comienza tu propia iniciativa. Inspírate con otras personas que están 
 msgid "State"
 msgstr "Estado"
 
-#: src/pages/workspace/[slug]/layout.js:44
+#: src/pages/workspace/[slug]/layout.js:40
 msgid "State of Knowledge on Plastic Data"
 msgstr "Estado del conocimiento sobre datos plásticos"
 
@@ -3657,7 +3650,7 @@ msgid "Suggested profiles"
 msgstr "Perfiles sugeridos"
 
 #: src/pages/workspace/[slug]/[step]/summary.js:233
-#: src/pages/workspace/[slug]/layout.js:36
+#: src/pages/workspace/[slug]/layout.js:34
 msgid "Summary & Report"
 msgstr "Informe resumido"
 
@@ -3684,7 +3677,7 @@ msgstr "Descargue el resumen del contenido marcado en esta sección y envíe su 
 msgid "summary-description-6-national-plastic-strategy"
 msgstr "Cargue la Estrategia del Plástico oficialmente aprobada."
 
-#: src/pages/landing/index.jsx:790
+#: src/pages/landing/index.jsx:784
 msgid "Sustainable & innovative financing"
 msgstr "Financiación sostenible e innovadora"
 
@@ -3723,7 +3716,6 @@ msgstr "Cambiar a"
 #: src/modules/flexible-forms/form-schema.js:2386
 #: src/modules/flexible-forms/form-schema.js:2625
 #: src/modules/knowledge-lib/filter-modal.jsx:264
-#: src/pages/knowledge-hub/index.js:394
 #: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:229
 msgid "Tags"
 msgstr "Etiquetas"
@@ -3787,7 +3779,7 @@ msgstr "La Iniciativa 3R: sistema de mercado basado en créditos para fomentar e
 msgid "The Act to Prevent Pollution from Ships"
 msgstr "La Ley para Prevenir la Contaminación Procedente de los Buques"
 
-#: src/pages/landing/index.jsx:746
+#: src/pages/landing/index.jsx:740
 msgid "The current core work of the GPML is organized through the following five Action Tracks, with the aim of advancing priority issues by connecting key stakeholders and facilitating collaboration and coordination. The platform offers a wide range of tools to facilitate this work."
 msgstr "El trabajo central actual del GPML está organizado a través de las siguientes cinco Vías de Acción, con el objetivo de avanzar en cuestiones prioritarias conectando a las partes interesadas clave y facilitando la colaboración y la coordinación. La plataforma ofrece una amplia gama de herramientas para facilitar este trabajo."
 
@@ -4091,7 +4083,7 @@ msgstr "Próximas capacitaciones, actividades de desarrollo de capacidades y eve
 msgid "Update"
 msgstr "Actualizar"
 
-#: src/pages/workspace/[slug]/layout.js:56
+#: src/pages/workspace/[slug]/layout.js:50
 msgid "Upload"
 msgstr "Subir"
 
@@ -4221,7 +4213,11 @@ msgstr "Observador"
 msgid "Viewers cannot edit all content"
 msgstr "Los espectadores no pueden editar todo el contenido."
 
-#: src/pages/landing/index.jsx:758
+#: src/pages/landing/index.jsx:561
+msgid "Visit Library and get informed by new reports, inspiring case studies, technical resources and on-going projects."
+msgstr "Visite la Biblioteca e infórmese con nuevos informes, estudios de casos inspiradores, recursos técnicos y proyectos en curso."
+
+#: src/pages/landing/index.jsx:752
 msgid "Visit the website"
 msgstr "Visita el sitio web"
 
@@ -4307,7 +4303,7 @@ msgstr "¿Qué fuentes de financiación utilizó?"
 msgid "What is the connection between this platform and GPML?"
 msgstr "¿Cuál es la conexión entre esta plataforma y GPML?"
 
-#: src/pages/landing/index.jsx:738
+#: src/pages/landing/index.jsx:732
 msgid "WHAT IS THE FOCUS OF GPML?"
 msgstr "¿CUÁL ES EL ENFOQUE DE GPML?"
 
@@ -4361,7 +4357,7 @@ msgstr "¿Por qué convertirse en miembro certificado de GPML?"
 msgid "Why join the GPML?"
 msgstr "¿Por qué unirse a GPML?"
 
-#: src/pages/landing/index.jsx:613
+#: src/pages/landing/index.jsx:607
 msgid "Why us?"
 msgstr "¿Porque nosotros?"
 
