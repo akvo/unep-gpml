@@ -113,14 +113,13 @@ const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
       left: 'center',
       textStyle: {
         fontSize: 16,
-        fontWeight: 'bold',
         color: '#020A5B',
       },
       subtextStyle: {
         fontSize: 14,
         color: '#020A5B',
         fontFamily: 'Roboto, Helvetica Neue, sans-serif',
-        fontWeight: 'bold',
+
       },
     },
     tooltip: {
