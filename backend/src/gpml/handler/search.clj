@@ -4,7 +4,9 @@
    [clojure.string :as str]
    [duct.logger :refer [log]]
    [gpml.db :as db]
+   [gpml.domain.file :as dom.file]
    [gpml.handler.responses :as r]
+   [gpml.service.file :as srv.file]
    [gpml.util.http-client :as http]
    [gpml.util.json :as json]
    [gpml.util.postgresql :as pg-util]
@@ -48,7 +50,17 @@
 (defn- sql-allowed? [sql]
   (boolean (re-matches #"^(?i)select \* from v_resources where.*" sql)))
 
-(defmethod ig/init-key ::get [_ {:keys [db-read-only logger openapi-api-key]}]
+(defn apply-resource-image [config resource]
+  (let [{images :images} resource
+        images-w-urls (->> images
+                           (map dom.file/decode-file)
+                           (srv.file/add-files-urls config))
+        image-url (->> images-w-urls first :url)]
+    (-> resource
+        (assoc :image image-url)
+        (dissoc :images))))
+
+(defmethod ig/init-key ::get [_ {:keys [db-read-only logger openapi-api-key] :as config}]
   (fn [{{:keys [query]} :parameters}]
     (try
       (when (str/blank? openapi-api-key)
@@ -61,7 +73,10 @@
           (throw (Exception. "Invalid query")))
         (let [data (db/execute! db-read-only [sql])]
           (r/ok {:success? true
-                 :results (->> data :result (map :json))})))
+                 :results (->> data
+                               :result
+                               (map :json)
+                               (map (partial apply-resource-image config)))})))
       (catch Exception e
         (timbre/with-context+ query
           (log logger :error :failed-to-execute-query e))
