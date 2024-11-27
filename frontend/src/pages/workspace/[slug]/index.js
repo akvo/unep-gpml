@@ -80,18 +80,18 @@ const Page = () => {
           </a>
         )}
         <h3 className="h-s w-bold">
-          Step 1: Establishment of a National Steering Committee & project team
+          Step 1: National Steering Committee & Project Team
         </h3>
         <p>
           This step assists in the establishment of a National Steering
           Committee (NSC) with representation from necessary government agencies
           as well as relevant non-governmental organizations. The NSC should aim
           to meet 2-4 times per year to assist with and drive the
-          roadmap/strategy/plan. A project team could be established to assist
+          roadmap/strategy/plan. A project team should be established to assist
           the NSC, consisting of consultants and focal points, to lead the
           implementation of the project with the guidance of the NSC and UNEP.
         </p>
-        <h3 className="h-s w-bold">Step 2: Stakeholder consultation process</h3>
+        <h3 className="h-s w-bold">Step 2: Stakeholder consultations</h3>
         <p>
           Consultation should aim to understand the current issues faced by
           various stakeholders, as well as their role in solving the problem
@@ -102,35 +102,34 @@ const Page = () => {
           process to ensure all relevant sectors and stakeholders are consulted.
         </p>
         <h3 className="h-s w-bold">
-          Step 3: Legislation & Policy Review and Analysis
+          Step 3: State of Knowledge on Plastic Data
         </h3>
-        <p>
-          An analysis of the legal and policy framework in your country can help
-          identify current goals and targets that the national plastics strategy
-          should aim to achieve, as well as gaps in this framework that the
-          strategy could help close. This allows for identification of priority
-          areas to track and the type of data needed to do so. In this stage,
-          together with UNEP’s guidance, a review and analysis of the
-          legislative and policy landscape as it pertains to marine litter and
-          plastic pollution would be conducted.
-        </p>
-        <h3 className="h-s w-bold">Step 4: Data Analysis</h3>
         <p>
           Data is at the core of understanding the issues and current state of
           play, as well as the tracking of trends to determine effectiveness of
           the national plastics strategy. This step will help in compiling
           existing data and information into a State of Knowledge Report. This
           could include identification of areas in need of additional data
-          collection, leading to additional secondary data collection. Note that
-          all the data collected should be made publicly available.
+          collection, leading to additional secondary data collection.
         </p>
-        <h3 className="h-s w-bold">Step 5: National Source Inventory Report</h3>
+        <h3 className="h-s w-bold">Step 4: Legislation & Policy Review</h3>
+        <p>
+          An analysis of the legal and policy framework in your country can help
+          identify current goals and targets that the national plastics strategy
+          should aim to achieve, as well as gaps in this framework that the
+          strategy could help close. This allows for the identification of
+          priority areas to track and the type of data needed to do so. In this
+          stage, together with UNEP’s guidance, a review and analysis of the
+          legislative and policy landscape as it pertains to marine litter and
+          plastic pollution would be conducted.
+        </p>
+        <h3 className="h-s w-bold">Step 5: National Source Inventory</h3>
         <p>
           National plastics strategies should be underpinned by a National
-          Source Inventory (NSI). This step will help in analyzingwe the data
+          Source Inventory (NSI). This step will help in analysing the data
           available and collected into a National Source Inventory Report on
           plastic pollution and marine litter that can inform discussions on
-          possible actions to be included in the national plastics strategy.{' '}
+          possible actions to be included in the national plastics strategy.
         </p>
         <h3 className="h-s w-bold">
           Final Step: National Roadmap/Strategy/Plan
@@ -140,7 +139,7 @@ const Page = () => {
           Roadmap/Strategy/Plan based on the evidence and information gathered
           in the NSI Report. The roadmap should be time bound, measurable and
           include provisions of periodic revisions. The strategy can be formally
-          adopted through parliament or act as a voluntary guideline for action.{' '}
+          adopted through parliament or act as a voluntary guideline for action.
         </p>
       </Trans>
     </div>
