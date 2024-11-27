@@ -52,29 +52,37 @@ const EconomicInstrumentsComponent = ({
           marginBottom: '16px',
         }}
       >
-        <Title
-          level={2}
+        <div
           style={{
-            margin: 0,
-            marginRight: '3%',
-            color: '#020A5B',
-            textAlign: 'left',
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minWidth: '40px',
           }}
         >
-          {item.count}
-        </Title>
+          <Title
+            level={2}
+            style={{
+              margin: 0,
+              color: '#020A5B',
+              textAlign: 'center',
+            }}
+          >
+            {item.count}
+          </Title>
+        </div>
         <div
           style={{
             width: '2px',
             height: '40px',
             backgroundColor: '#00F1BF',
-            margin: '8px 0',
+            margin: '0 12px', 
           }}
         ></div>
         <Text
           style={{
             fontSize: '16px',
-            marginLeft: '3%',
             color: '#1B1B22',
             textAlign: 'left',
           }}

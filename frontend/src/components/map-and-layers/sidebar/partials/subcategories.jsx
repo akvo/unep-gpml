@@ -80,9 +80,6 @@ const Subcategories = ({ subcategories, layers, loading }) => {
           >
             {filteredLayers
               .slice()
-              .sort((a, b) =>
-                a.attributes.title.localeCompare(b.attributes.title)
-              )
               .map((layer, layerIndex) => (
                 <div
                   className="layer-item"
