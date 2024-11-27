@@ -558,49 +558,43 @@ const ActNow = () => {
   const [width] = useDeviceSize()
   const items = [
     {
-      content: t`Start your own initiative. Get inspired by others who are making progress to end plastic pollution.`,
+      content: t`Visit Library and get informed by new reports, inspiring case studies, technical resources and on-going projects.`,
       bgColor: 'purple',
       title: (
         <>
-          <Trans>
-            Case
-            <br />
-            Studies
-          </Trans>
+          <Trans>Library</Trans>
         </>
       ),
       links: [
         {
           label: t`Discover`,
-          url: '/knowledge/library?subContentType=Case+studies',
+          url: '/knowledge-hub',
         },
       ],
     },
     {
       bgColor: 'green',
-      content: t`Reduce your country’s footprint. Create and advance your plastic startegy.`,
-      title: t`National Action Plans`,
+      content: t`Explore global plastic lifecycle datasets to deepen your understanding on the global trend of plastic pollution.`,
+      title: t`Data Maps`,
       links: [
         {
           label: t`Discover`,
-          url: '/knowledge/library/map/action-plan',
+          url: '/data/maps',
         },
-        { label: t`Add`, url: '/flexible-forms' },
       ],
     },
     {
       bgColor: 'violet',
-      content: t`Join others in coordinating efforts towards shared plastic solutions. From data to capacity development communities`,
-      title: t`Communities of practise`,
-      links: [{ label: t`Join and collaborate`, url: '/cop' }],
+      content: t`Discover national plastic material flow and data narratives in countries to get inspired for necessary policies and actions.`,
+      title: t`National Dashboard`,
+      links: [{ label: t`Discover`, url: '/country-dashboard' }],
     },
     {
       bgColor: 'blue',
-      content: t`Data visualisations to track countries progress. Quickly connect with others working in the country to end plastic.`,
-      label: t`Coming soon`,
-      title: t`Country Progress`,
+      content: t`Join others in coordinating efforts in monitoring harmonization and action planning.`,
+      title: t`Communities of Practice`,
       links: [
-        // { label: t`Track progress`, url: '#' },
+        { label: t`Discover`, url: '/partnership' },
         // { label: t`Track action`, url: '#' },
       ],
     },

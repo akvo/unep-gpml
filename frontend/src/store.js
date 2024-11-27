@@ -878,6 +878,8 @@ const endpoints = {
   organisations: '/organisation',
   nav: '/nav',
   countryGroups: '/country-group',
+  featuredOptions: '/country-group',
+  transnationalOptions: '/country-group',
   nonMemberOrganisations: '/non-member-organisation',
   community: '/community?representativeGroup=Government',
 }
@@ -890,12 +892,14 @@ const processData = (key, data) => {
       return uniqBy(sortBy(data, ['name'])).sort((a, b) =>
         a.name?.localeCompare(b.name)
       )
+    case 'featuredOptions':
+      return data.filter((x) => x.type === 'featured')
+    case 'transnationalOptions':
+      return data.filter((x) => x.type === 'transnational')
     case 'countryGroups':
       return {
         regionOptions: data.filter((x) => x.type === 'region'),
         meaOptions: data.filter((x) => x.type === 'mea'),
-        transnationalOptions: data.filter((x) => x.type === 'transnational'),
-        featuredOptions: data.filter((x) => x.type === 'featured'),
       }
     default:
       return data

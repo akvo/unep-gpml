@@ -50,7 +50,7 @@ export const stepsState = [
     ],
   },
   {
-    label: 'Stakeholder Consultation Process',
+    label: 'Stakeholder Consultations',
     slug: '2-stakeholder-consultation',
     substeps: [
       { label: 'Intro', slug: '', checked: false },
@@ -136,7 +136,7 @@ export const stepsState = [
     ],
   },
   {
-    label: 'Legislation & Policy Review Report',
+    label: 'Legislation & Policy Review',
     slug: '3-legislation-policy',
     substeps: [
       { label: 'Intro', slug: '', checked: false },
@@ -168,7 +168,7 @@ export const stepsState = [
     ],
   },
   {
-    label: 'National Source Inventory Report',
+    label: 'National Source Inventory',
     slug: '5-national-source',
     substeps: [
       { label: 'Intro', slug: '', checked: false },
