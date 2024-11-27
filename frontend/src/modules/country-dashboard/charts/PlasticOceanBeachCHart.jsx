@@ -77,10 +77,7 @@ const PlasticOceanBeachChart = ({ layers, loading }) => {
   }, [country, layers, loading])
 
   const getOption = () => {
-    const formattedTotalWeight = new Intl.NumberFormat('en-US', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    }).format(totalWeight)
+    const formattedTotalWeight = Math.round(totalWeight) 
 
     return {
       title: {
@@ -158,14 +155,14 @@ const PlasticOceanBeachChart = ({ layers, loading }) => {
       graphic: {
         type: 'group',
         left: 'center',
-        top: 'middle',
+        top: '50%',
         children: [
           {
             type: 'text',
             left: 'center',
             style: {
               text: `${formattedTotalWeight}`,
-              fontSize: 16,
+              fontSize: 20,
               fontWeight: 'bold',
               fill: '#020A5B',
               textAlign: 'center',
@@ -174,10 +171,10 @@ const PlasticOceanBeachChart = ({ layers, loading }) => {
           {
             type: 'text',
             left: 'center',
-            top: 20,
+            top: 25, 
             style: {
               text: 'tonnes',
-              fontSize: 12,
+              fontSize: 14,
               fontWeight: 'normal',
               fill: '#020A5B',
               textAlign: 'center',
