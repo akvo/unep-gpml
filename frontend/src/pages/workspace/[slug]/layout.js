@@ -27,16 +27,12 @@ export const useStepsDict = () => {
     ),
     Intro: t`Intro`,
     'Setup your team': i18n._(t`Setup your team`),
-    'Stakeholder Consultation Process': i18n._(
-      t`Stakeholder Consultation Process`
-    ),
+    'Stakeholder Consultations': i18n._(t`Stakeholder Consultations`),
     'Stakeholder Map': i18n._(t`Stakeholder Map`),
     'Case Studies': i18n._(t`Case Studies`),
     Initiatives: i18n._(t`Initiatives`),
     'Summary & Report': i18n._(t`Summary & Report`),
-    'Legislation & Policy Review Report': i18n._(
-      t`Legislation & Policy Review Report`
-    ),
+    'Legislation & Policy Review': i18n._(t`Legislation & Policy Review`),
     'Country Policy Framework': i18n._(t`Country Policy Framework`),
     'Legislative Development Guide': i18n._(t`Legislative Development Guide`),
     'Data Analysis': i18n._(t`Data Analysis`),
@@ -49,9 +45,7 @@ export const useStepsDict = () => {
     'Data Collection': i18n._(t`Data Collection`),
     'Calculation of Indicators': i18n._(t`Calculation of Indicators`),
     'Available Information': i18n._(t`Available Information`),
-    'National Source Inventory Report': i18n._(
-      t`National Source Inventory Report`
-    ),
+    'National Source Inventory': i18n._(t`National Source Inventory`),
     'National Plastic Strategy': i18n._(t`National Plastic Strategy`),
     Upload: i18n._(t`Upload`),
     'Final Review': i18n._(t`Final Review`),
@@ -220,8 +214,6 @@ const NestedLayout = ({ children }) => {
      */
     try {
       const [_, countrySlug] = slug?.split(`${PREFIX_SLUG}-`)
-      console.log('asd', countrySlug)
-      console.log(isoA2)
       const countryISOA2 =
         isoA2?.[countrySlug === 'cote-d-ivoire' ? 'ivory-coast' : countrySlug]
       /**
@@ -253,7 +245,6 @@ const NestedLayout = ({ children }) => {
       }
     })
   }, [])
-  console.log(psItem)
   const psCountryName = psItem?.country?.name
 
   return (

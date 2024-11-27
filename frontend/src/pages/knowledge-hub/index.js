@@ -46,7 +46,7 @@ const KnowledgeHub = ({
 }) => {
   const router = useRouter()
   const [results, setResults] = useState(newResults)
-  const [collapseKeys, setCollapseKeys] = useState(['p1', 'p2', 'p3'])
+  const [collapseKeys, setCollapseKeys] = useState(['p1', 'p2', 'p3', 'p4'])
   const [loading, setLoading] = useState(false)
   const selectedTypes = router.query.topic ? router.query.topic.split(',') : []
 
@@ -85,9 +85,6 @@ const KnowledgeHub = ({
 
   const countryOpts = countries
     ? countries
-        .filter(
-          (country) => country.description.toLowerCase() === 'member state'
-        )
         .map((it) => ({ value: it.id, label: it.name }))
         .sort((a, b) => a.label.localeCompare(b.label))
     : []
@@ -335,7 +332,7 @@ const KnowledgeHub = ({
       if (window.innerWidth <= 768) {
         setCollapseKeys([])
       } else {
-        setCollapseKeys(['p1', 'p2', 'p3'])
+        setCollapseKeys(['p1', 'p2', 'p3', 'p4'])
       }
     }
     onresize()
@@ -382,30 +379,6 @@ const KnowledgeHub = ({
                   </FilterToggle>
                 ))}
               </div>
-              <Select
-                size="small"
-                showSearch
-                allowClear
-                mode="multiple"
-                dropdownStyle={{ width: '200px' }}
-                dropdownClassName="hub-tags-dropdown"
-                dropdownMatchSelectWidth={false}
-                placement="topLeft"
-                placeholder={t`Tags`}
-                options={displayedOptions}
-                optionFilterProp="children"
-                filterOption={(input, option) =>
-                  option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                }
-                showArrow
-                virtual={true}
-                suffixIcon={<SearchIcon />}
-                onPopupScroll={onPopupScroll}
-                onChange={handleTagsChange}
-                value={selectedTags}
-                onDropdownVisibleChange={handleDropdownVisibilityChange}
-                className="tag-select"
-              />
             </Collapse.Panel>
             <Collapse.Panel
               key="p2"
@@ -457,6 +430,35 @@ const KnowledgeHub = ({
                 showArrow
                 suffixIcon={<SearchIcon />}
                 onChange={handleCountryChange}
+              />
+            </Collapse.Panel>
+            <Collapse.Panel
+              key="p4"
+              header={<h4 className="h-xs w-semi">Keywords</h4>}
+            >
+              <Select
+                size="small"
+                showSearch
+                allowClear
+                mode="multiple"
+                dropdownStyle={{ width: '200px' }}
+                dropdownClassName="hub-tags-dropdown"
+                dropdownMatchSelectWidth={false}
+                placement="topLeft"
+                placeholder={t`Keywords`}
+                options={displayedOptions}
+                optionFilterProp="children"
+                filterOption={(input, option) =>
+                  option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+                showArrow
+                virtual={true}
+                suffixIcon={<SearchIcon />}
+                onPopupScroll={onPopupScroll}
+                onChange={handleTagsChange}
+                value={selectedTags}
+                onDropdownVisibleChange={handleDropdownVisibilityChange}
+                className="tag-select"
               />
             </Collapse.Panel>
           </Collapse>
