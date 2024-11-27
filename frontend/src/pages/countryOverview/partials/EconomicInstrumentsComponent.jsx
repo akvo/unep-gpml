@@ -1,6 +1,7 @@
 import React from 'react'
 import { Card, Row, Col, Typography, Tooltip } from 'antd'
 import { InfoCircleOutlined } from '@ant-design/icons'
+import { getBaseUrl } from '../../../utils/misc'
 
 const { Title, Text } = Typography
 
@@ -13,6 +14,7 @@ const EconomicInstrumentsComponent = ({
   labeling,
   country,
 }) => {
+  const baseUrl = getBaseUrl()
   const economicPolicyData = [
     { count: cashReturn, text: 'cash for return schemes' },
     {
@@ -77,7 +79,7 @@ const EconomicInstrumentsComponent = ({
             width: '2px',
             height: '40px',
             backgroundColor: '#00F1BF',
-            margin: '0 12px', 
+            margin: '0 12px',
           }}
         ></div>
         <Text
@@ -110,8 +112,20 @@ const EconomicInstrumentsComponent = ({
       >
         <strong style={{ color: '#020A5B' }}>{country}</strong> has implemented
         the following economic instruments on plastics:
-        <Tooltip title="Information about implemented instruments on plastics">
-          <InfoCircleOutlined style={{ marginLeft: 8, color: '#8E44AD' }} />
+        <Tooltip title="See the global dataset">
+          <a
+            href={`${baseUrl}/data/maps?categoryId=governance-and-regulations&subcategoryId=Economic-instruments`}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              textDecoration: 'none',
+              color: 'inherit',
+            }}
+          >
+            <InfoCircleOutlined style={{ marginLeft: 8, color: '#8E44AD' }} />
+          </a>
         </Tooltip>
       </Text>
 
