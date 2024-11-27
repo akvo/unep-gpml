@@ -25,6 +25,7 @@
    [gpml.domain.initiative :as dom.initiative]
    [gpml.domain.resource :as dom.resource]
    [gpml.domain.types :as dom.types]
+   [gpml.handler.file :as handler.file]
    [gpml.handler.initiative :as handler.initiative]
    [gpml.handler.organisation :as handler.org]
    [gpml.handler.resource.geo-coverage :as handler.geo]
@@ -708,6 +709,25 @@
                                  image-payload)
         (throw (ex-info "Failed to delete old resource image file" {:result result}))))))
 
+(defn update-project-gallery [config conn project-id payload]
+  (let [base64-image? (comp util/base64? util/base64-headless)
+        {images true urls false} (group-by base64-image? payload)
+        resource (get-detail* conn "project" project-id {})
+        {:keys [files gallery_ids]} resource
+        gallery-w-urls (->> files
+                            (filter (fn [file] (some #(= (:id file) %) gallery_ids)))
+                            (map dom.file/decode-file)
+                            (srv.file/add-files-urls config)
+                            (medley/index-by :url))
+        old-urls (into [] (keys gallery-w-urls))
+        to-delete-urls (remove (fn [it] (some #(= it %) urls)) old-urls)
+        to-delete-files (map #(get-in gallery-w-urls [% :id]) to-delete-urls)]
+    (doseq [file-id to-delete-files]
+      (srv.file/delete-file config conn {:id file-id}))
+    (when (seq images)
+      (let [file-ids (map #(handler.file/create-file config conn % :project :image :public) images)]
+        (db.project/create-project-gallery conn {:images (map (partial vector project-id) file-ids)})))))
+
 (defn update-resource-image [config conn resource-type resource-id image-key image-payload]
   (let [resource (get-detail* conn resource-type resource-id {})
         file-id-key (keyword (str (name image-key) "_id"))
@@ -750,7 +770,7 @@
                            :geo_coverage_value_subnational
                            :entity_connections :related_content
                            :individual_connections
-                           :resource_type)
+                           :resource_type :gallery)
                           (merge (when (:topics updates)
                                    {:topics (pg-util/->JDBCArray (:topics updates) "text")}))
                           (set/rename-keys {:geo_coverage_value_subnational_city :subnational_city}))
@@ -761,6 +781,7 @@
                 :updates table-columns
                 :entity-type topic-type}
         status (db.detail/update-resource-table conn params)
+        gallery (remove nil? (:gallery updates))
         org (:org updates)
         org-id (and org
                     (or
@@ -772,6 +793,8 @@
         sth-associations (:individual_connections updates)]
     (doseq [[image-key image-data] (select-keys updates [:image :thumbnail])]
       (update-resource-image config conn table id image-key image-data))
+    (when (and (= topic-type "project") (seq gallery))
+      (update-project-gallery config conn id gallery))
     (when (contains? (set (keys updates)) :tags)
       (update-resource-tags conn logger mailjet-config table id tags))
     (when (seq related-contents)
