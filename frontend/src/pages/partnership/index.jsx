@@ -31,13 +31,28 @@ import { loadCatalog } from '../../translations/utils'
 
 function Partnership({ isAuthenticated }) {
   const router = useRouter()
+  // const {
+  //   representativeGroup,
+  //   countries,
+  //   profile,
+  //   tags,
+  //   transnationalOptions,
+  // } = UIStore.currentState
+
   const {
-    representativeGroup,
     countries,
-    profile,
+    representativeGroup,
     tags,
     transnationalOptions,
-  } = UIStore.currentState
+    profile,
+  } = UIStore.useState((s) => ({
+    countries: s.countries,
+    transnationalOptions: s.transnationalOptions,
+    representativeGroup: s.representativeGroup,
+    tags: s.tags,
+    profile: s.profile,
+  }))
+
   const [login, setLogin] = useState(false)
   const [loading, setLoading] = useState(false)
   const [initialValues, setInitialValues] = useState(null)
@@ -889,7 +904,6 @@ function Partnership({ isAuthenticated }) {
                                           }
                                           onBlur={() => input.onBlur()}
                                           value={input.value}
-                                          placeholder="Geo-coverage type"
                                           allowClear
                                           className={`dont-show ${
                                             meta.touched && !meta.valid
@@ -952,7 +966,6 @@ function Partnership({ isAuthenticated }) {
                                           }
                                           onBlur={() => input.onBlur()}
                                           value={input.value ? input.value : []}
-                                          placeholder="Geo-coverage type"
                                           allowClear
                                           className={`dont-show ${
                                             meta.touched && !meta.valid
