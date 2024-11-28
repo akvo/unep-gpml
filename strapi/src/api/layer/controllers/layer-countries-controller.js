@@ -42,6 +42,35 @@ module.exports = {
             ctx.throw(500, 'Failed to append entries');
         }
     },
+    async removeValuePerCountry(ctx) {
+        const { arcgislayerId } = ctx.params;
+        try {
+            const layer = await strapi.entityService.findMany('api::layer.layer', {
+                filters: { arcgislayerId },
+            });
+
+            if (!layer.length) {
+                console.log(`Layer with arcgislayerId not found.`);
+                return;
+            }
+
+            const layerId = layer[0].id;
+
+            if (!layer) {
+                throw new Error(`Layer with arcgislayerid ${layerId} not found`);
+            }
+
+            await strapi.entityService.update('api::layer.layer', layerId, {
+                data: {
+                    ValuePerCountry: [],
+                },
+            });
+
+            ctx.send({ message: `ValuePerCountry entries removed successfully for layer ID ${layerId}.` });
+        } catch (error) {
+            ctx.throw(500, 'Failed to remove ValuePerCountry entries', { error });
+        }
+    },
     async assignCountries(ctx) {
         await assignCountriesToLayers();
 
