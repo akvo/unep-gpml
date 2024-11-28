@@ -19,6 +19,14 @@ module.exports = {
             },
         },
         {
+            method: 'GET',
+            path: '/countries/removeValuePerCountry/:arcgislayerId',
+            handler: 'layer-countries-controller.removeValuePerCountry',
+            config: {
+                auth: false,
+            },
+        },
+        {
             method: 'POST',
             path: '/countries/:layerId/append-value-per-country',
             handler: 'layer-countries-controller.appendValuePerCountry',
