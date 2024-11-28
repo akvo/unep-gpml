@@ -103,7 +103,7 @@ module.exports = {
                 const decimals = decimalConfig[placeholder] || decimalConfig.default;
 
                 if (placeholder === 'country') {
-                    calculatedValues[placeholder] = country || "[No data]";
+                    calculatedValues[placeholder] = decodeURIComponent(country) || "[No data]";
                     tooltips[placeholder] = "Selected country";
                     return;
                 }
