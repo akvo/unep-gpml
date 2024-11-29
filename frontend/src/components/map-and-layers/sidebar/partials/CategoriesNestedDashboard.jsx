@@ -71,13 +71,13 @@ const CategoriesNestedDashboard = ({ categories }) => {
       style={{ backgroundColor: '#ffffff', height: '100%', padding: '10px' }}
     >
       <Select
+        showSearch
         size="large"
-        showArrow
         allowClear
-        placeholder="Select Country"
+        placeholder="Search Country"
         options={countryOpts}
         filterOption={(input, option) =>
-          option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          option?.label?.toLowerCase().includes(input.toLowerCase())
         }
         onChange={handleChangeCountry}
         style={{
