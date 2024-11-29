@@ -105,7 +105,7 @@ const PlasticOceanBeachChart = ({ layers, loading }) => {
       legend: {
         orient: 'horizontal',
         bottom: 10,
-        data: ['Ends up on the coasts', 'Ends up in the ocean'],
+        data: ['Ends up in the ocean', 'Ends up on the coasts'],
         textStyle: {
           fontSize: 12,
           color: '#020A5B',
