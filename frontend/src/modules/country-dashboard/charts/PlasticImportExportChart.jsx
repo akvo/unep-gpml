@@ -3,10 +3,10 @@ import ReactEcharts from 'echarts-for-react'
 import { useRouter } from 'next/router'
 import { getBaseUrl } from '../../../utils/misc'
 
-const PlasticImportExportChart = ({ layers, loading}) => {
+const PlasticImportExportChart = ({ layers, loading }) => {
   const router = useRouter()
   const baseURL = getBaseUrl()
-  const { country } = router.query
+  const { country, countryCode } = router.query
   const [years, setYears] = useState([])
   const [totalImports, setTotalImports] = useState([])
   const [totalExports, setTotalExports] = useState([])
@@ -32,11 +32,17 @@ const PlasticImportExportChart = ({ layers, loading}) => {
       }
 
       const filteredImports = importLayer.attributes.ValuePerCountry?.filter(
-        (item) => item.CountryName === country
+        (item) =>
+          item.CountryCode
+            ? item.CountryCode === countryCode
+            : item.CountryName === decodeURIComponent(country)
       )
 
       const filteredExports = exportLayer.attributes.ValuePerCountry?.filter(
-        (item) => item.CountryName === country
+        (item) =>
+          item.CountryCode
+            ? item.CountryCode === countryCode
+            : item.CountryName === decodeURIComponent(country)
       )
 
       const yearsSet = new Set()
@@ -62,7 +68,7 @@ const PlasticImportExportChart = ({ layers, loading}) => {
 
   const getOption = () => ({
     title: {
-      text: `Plastic import & export value for ${country} `,
+      text: `Plastic import & export value for ${decodeURIComponent(country)} `,
       left: 'center',
       textStyle: { fontSize: 18, fontWeight: 'bold', color: '#020A5B' },
     },
