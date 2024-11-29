@@ -97,6 +97,7 @@ const CountryOverview = () => {
 
   const { placeholders, tooltips, loading } = useReplacedText(
     router.query.country,
+    router.query.countryCode,
     router.query.categoryId,
     selectedCategory?.attributes?.textTemplate?.placeholders
   )

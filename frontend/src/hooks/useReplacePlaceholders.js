@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { getStrapiUrl } from '../utils/misc';
 
-const useReplacedText = (country, categoryId, placeholders) => {
+const useReplacedText = (country, countryCode, categoryId, placeholders) => {
 
     const [placeholdersData, setPlaceholdersData] = useState({});
     const [tooltips, setTooltips] = useState({});
@@ -17,6 +17,7 @@ const useReplacedText = (country, categoryId, placeholders) => {
                     `${strapiURL}/api/category/category-replace`,
                     {
                         country,
+                        countryCode,
                         categoryId,
                         placeholders,
                     }
