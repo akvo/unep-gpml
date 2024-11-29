@@ -6,7 +6,7 @@ import { getBaseUrl } from '../../../utils/misc'
 const PlasticOceanBeachChart = ({ layers, loading }) => {
   const router = useRouter()
   const baseURL = getBaseUrl()
-  const { country } = router.query
+  const { country, countryCode } = router.query
   const [oceanPercentage, setOceanPercentage] = useState(0)
   const [beachPercentage, setBeachPercentage] = useState(0)
   const [totalWeight, setTotalWeight] = useState(0)
@@ -42,23 +42,31 @@ const PlasticOceanBeachChart = ({ layers, loading }) => {
       }
 
       const oceanValue =
-        oceanLayer.attributes.ValuePerCountry.find(
-          (item) => item.CountryName === country
+        oceanLayer.attributes.ValuePerCountry.find((item) =>
+          item.CountryCode
+            ? item.CountryCode === countryCode
+            : item.CountryName === decodeURIComponent(country)
         )?.Value || 0
+
       const coastValue =
-        coastLayer.attributes.ValuePerCountry.find(
-          (item) => item.CountryName === country
+        coastLayer.attributes.ValuePerCountry.find((item) =>
+          item.CountryCode
+            ? item.CountryCode === countryCode
+            : item.CountryName === decodeURIComponent(country)
         )?.Value || 1
       const beachValue =
-        beachLayer.attributes.ValuePerCountry.find(
-          (item) => item.CountryName === country
+        beachLayer.attributes.ValuePerCountry.find((item) =>
+          item.CountryCode
+            ? item.CountryCode === countryCode
+            : item.CountryName === decodeURIComponent(country)
         )?.Value || 0
 
-        console.log('test')
 
       const totalWeight =
-        totalWeightLayer.attributes.ValuePerCountry.find(
-          (item) => item.CountryName === country
+        totalWeightLayer.attributes.ValuePerCountry.find((item) =>
+          item.CountryCode
+            ? item.CountryCode === countryCode
+            : item.CountryName === decodeURIComponent(country)
         )?.Value || 0
 
       const calculatedOceanPercentage = (
