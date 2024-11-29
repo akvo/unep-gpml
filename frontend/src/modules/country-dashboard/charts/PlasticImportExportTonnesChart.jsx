@@ -74,7 +74,7 @@ const PlasticImportExportChart = ({ layers, loading }) => {
         finalManufacturedPlasticGoods: layers.find(
           (layer) =>
             layer.attributes.arcgislayerId ===
-            'Final_manufactured_plastic_goods___value__export__WFL1'
+            'Final_manufactured_plastic_goods___value__export__V4_WFL1'
         ),
         intermediateManufacturedPlasticGoods: layers.find(
           (layer) =>
