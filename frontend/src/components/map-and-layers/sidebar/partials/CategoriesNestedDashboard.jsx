@@ -19,7 +19,7 @@ const CategoriesNestedDashboard = ({ categories }) => {
     landing: s.landing,
   }))
 
-  const isLoaded = () => !isEmpty(countries) 
+  const isLoaded = () => !isEmpty(countries)
 
   const countryOpts = isLoaded()
     ? countries
@@ -33,6 +33,7 @@ const CategoriesNestedDashboard = ({ categories }) => {
 
     const newParams = {
       country: selected?.name,
+      countryCode: selected?.isoCodeA3,
     }
 
     setQueryParameters(newParams)
