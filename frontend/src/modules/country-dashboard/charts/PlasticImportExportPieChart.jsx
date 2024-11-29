@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 
 const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
   const router = useRouter()
-  const { country } = router.query
+  const { country, countryCode } = router.query
   const [data, setData] = useState([])
 
   const categories = [
@@ -68,8 +68,10 @@ const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
 
         if (!layer) return 0
 
-        const countryData = layer.attributes.ValuePerCountry?.filter(
-          (item) => item.CountryName === country
+        const countryData = layer.attributes.ValuePerCountry?.filter((item) =>
+          item.CountryCode
+            ? item.CountryCode === countryCode
+            : item.CountryName === decodeURIComponent(country)
         )
 
         if (!countryData || !countryData.length) return 0
@@ -108,7 +110,7 @@ const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
     title: {
       text: `Plastic ${
         chartType === 'import' ? 'import' : 'export'
-      } by type for ${country}`,
+      } by type for ${decodeURIComponent(country)}`,
       subtext: `In 1000 metric tons for year ${latestYear || 'N/A'}`,
       left: 'center',
       textStyle: {
@@ -119,7 +121,6 @@ const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
         fontSize: 14,
         color: '#020A5B',
         fontFamily: 'Roboto, Helvetica Neue, sans-serif',
-
       },
     },
     tooltip: {

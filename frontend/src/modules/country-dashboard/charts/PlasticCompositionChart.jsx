@@ -4,9 +4,9 @@ import { useRouter } from 'next/router'
 import useRegions from '../../../hooks/useRegions'
 import { getBaseUrl } from '../../../utils/misc'
 
-const PlasticCompositionChart = ({layers, layerLoading}) => {
+const PlasticCompositionChart = ({ layers, layerLoading }) => {
   const router = useRouter()
-  const { country } = router.query
+  const { country, countryCode } = router.query
   const [nationalEstimate, setNationalEstimate] = useState(0)
   const [cityEstimates, setCityEstimates] = useState([])
   const [cities, setCities] = useState([])
@@ -21,7 +21,7 @@ const PlasticCompositionChart = ({layers, layerLoading}) => {
       if (layerLoading || regionLoading || !country || !layers.length) return
 
       const layerMapping = {
-        national: 'Municipal_solid_waste_plastic_composition_WFL1',
+        national: 'Municipal_solid_waste_plastic_composition_4_WFL1',
         cities: 'Proportion_of_plastic_waste_generated_WFL1',
       }
 
@@ -32,13 +32,17 @@ const PlasticCompositionChart = ({layers, layerLoading}) => {
       const cityLayer = layers?.find(
         (layer) => layer.attributes.arcgislayerId === layerMapping?.cities
       )
-
       const nationalData = nationalLayer?.attributes.ValuePerCountry?.find(
-        (item) => item.CountryName === country
+        (item) =>
+          item?.CountryCode
+            ? item?.CountryCode === countryCode
+            : item.CountryName === decodeURIComponent(country)
       )
 
-      const cityData = cityLayer?.attributes.ValuePerCountry?.filter(
-        (item) => item?.CountryName === country
+      const cityData = cityLayer?.attributes.ValuePerCountry?.filter((item) =>
+        item.CountryCode !== null
+          ? item.CountryCode === countryCode
+          : item.CountryName === decodeURIComponent(country)
       )
 
       setNationalEstimate(nationalData ? nationalData?.Value : 0)
@@ -73,7 +77,7 @@ const PlasticCompositionChart = ({layers, layerLoading}) => {
 
     return {
       title: {
-        text: `Plastic composition in the MSW for ${country}`,
+        text: `Plastic composition in the MSW for ${decodeURIComponent(country)}`,
         left: 'center',
         textStyle: {
           fontSize: 18,
