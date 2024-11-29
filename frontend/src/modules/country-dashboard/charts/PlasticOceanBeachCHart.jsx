@@ -77,7 +77,9 @@ const PlasticOceanBeachChart = ({ layers, loading }) => {
   }, [country, layers, loading])
 
   const getOption = () => {
-    const formattedTotalWeight = Math.round(totalWeight) 
+    const formattedTotalWeight = new Intl.NumberFormat('en-US').format(
+      Math.round(totalWeight)
+    )
 
     return {
       title: {
@@ -103,7 +105,7 @@ const PlasticOceanBeachChart = ({ layers, loading }) => {
       legend: {
         orient: 'horizontal',
         bottom: 10,
-        data: ['Ends up on the coasts', 'Ends up in the ocean'],
+        data: ['Ends up in the ocean', 'Ends up on the coasts'],
         textStyle: {
           fontSize: 12,
           color: '#020A5B',
@@ -171,7 +173,7 @@ const PlasticOceanBeachChart = ({ layers, loading }) => {
           {
             type: 'text',
             left: 'center',
-            top: 25, 
+            top: 25,
             style: {
               text: 'tonnes',
               fontSize: 14,
