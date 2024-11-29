@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 
 const PlasticImportExportChart = ({ layers, loading }) => {
   const router = useRouter()
-  const { country } = router.query
+  const { country, countryCode } = router.query
 
   const [importData, setImportData] = useState([])
   const [exportData, setExportData] = useState([])
@@ -97,8 +97,10 @@ const PlasticImportExportChart = ({ layers, loading }) => {
       const importResults = categories.map((category) => {
         const layer = importLayers[category]
         const data = getLatestYearData(
-          layer?.attributes?.ValuePerCountry?.filter(
-            (item) => item.CountryName === country
+          layer?.attributes?.ValuePerCountry?.filter((item) =>
+            item.CountryCode
+              ? item.CountryCode === countryCode
+              : item.CountryName === decodeURIComponent(country)
           )
         )
         return data ? parseFloat(data.Value.toFixed(2)) : 0
@@ -107,8 +109,10 @@ const PlasticImportExportChart = ({ layers, loading }) => {
       const exportResults = categories.map((category) => {
         const layer = exportLayers[category]
         const data = getLatestYearData(
-          layer?.attributes?.ValuePerCountry?.filter(
-            (item) => item.CountryName === country
+          layer?.attributes?.ValuePerCountry?.filter((item) =>
+            item.CountryCode
+              ? item.CountryCode === countryCode
+              : item.CountryName === decodeURIComponent(country)
           )
         )
         return data ? parseFloat(data.Value.toFixed(2)) : 0
@@ -123,7 +127,7 @@ const PlasticImportExportChart = ({ layers, loading }) => {
 
   const getOption = () => ({
     title: {
-      text: `Plastic import & export value for ${country}`,
+      text: `Plastic import & export value for ${decodeURIComponent(country)}`,
       textStyle: { fontSize: 18, fontWeight: 'bold', color: '#020A5B' },
       left: 'center',
     },
