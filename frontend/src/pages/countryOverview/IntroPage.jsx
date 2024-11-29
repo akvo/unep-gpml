@@ -9,6 +9,7 @@ const { Content } = Layout
 const DashboardLanding = () => {
   const [countryOpts, setCountryOpts] = useState([])
   const [countries, setCountries] = useState([])
+  const [selectedCountry, setSelectedCountry] = useState(null)
   const router = useRouter()
   const baseURL = getBaseUrl()
 
@@ -40,15 +41,20 @@ const DashboardLanding = () => {
   }, [countries])
 
   const handleCountryChange = (value) => {
-    const selectedCountry = countries.find((country) => country.id === value)
+    setSelectedCountry(value)
+  }
 
-    if (selectedCountry) {
+  const handleSelect = () => {
+    const country = countries.find((country) => country.id === selectedCountry)
+
+    if (country) {
       router.push(
         {
           pathname: router.pathname,
           query: {
             ...router.query,
-            country: selectedCountry.name,
+            country: country.name,
+            categoryId: router.query.categoryId || 'industry-and-trade',
           },
         },
         undefined,
@@ -116,6 +122,8 @@ const DashboardLanding = () => {
               borderRadius: '30px',
               width: '120px',
             }}
+            onClick={handleSelect}
+            disabled={!selectedCountry}
           >
             Select
           </Button>
