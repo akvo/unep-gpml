@@ -4,10 +4,10 @@ import { useRouter } from 'next/router'
 import useRegions from '../../../hooks/useRegions'
 import { getBaseUrl } from '../../../utils/misc'
 
-const MSWGenerationChart = ({layers,layerLoading }) => {
+const MSWGenerationChart = ({ layers, layerLoading }) => {
   const router = useRouter()
   const baseURL = getBaseUrl()
-  const { country } = router.query
+  const { country, countryCode } = router.query
   const { countriesWithRegions, loading: regionLoading } = useRegions()
 
   const [nationalEstimate, setNationalEstimate] = useState(0)
@@ -32,11 +32,16 @@ const MSWGenerationChart = ({layers,layerLoading }) => {
       )
 
       const nationalData = nationalLayer?.attributes.ValuePerCountry?.find(
-        (item) => item.CountryName === country
+        (item) =>
+          item.CountryCode
+            ? item.CountryCode === countryCode
+            : item.CountryName === decodeURIComponent(country)
       )
 
-      const cityData = cityLayer?.attributes?.ValuePerCountry?.filter(
-        (item) => item.CountryName === country
+      const cityData = cityLayer?.attributes?.ValuePerCountry?.filter((item) =>
+        item.CountryCode
+          ? item.CountryCode === countryCode
+          : item.CountryName === decodeURIComponent(country)
       )
 
       setNationalEstimate(nationalData ? nationalData.Value : 0)
@@ -75,7 +80,9 @@ const MSWGenerationChart = ({layers,layerLoading }) => {
 
     return {
       title: {
-        text: `Per capita MSW generation for ${country}`,
+        text: `Per capita MSW generation for ${decodeURIComponent(
+          country?.toString()
+        )}`,
         left: 'center',
         textStyle: { fontSize: 18, fontWeight: 'bold', color: '#020A5B' },
       },
