@@ -50,7 +50,7 @@ module.exports = {
                 if (layer && layer) {
                     const { arcgislayerId, ValuePerCountry } = layer;
                     layerDataByArcgisId[arcgislayerId] = {
-                        values: (ValuePerCountry?.filter(c => c.CountryCode ? c.CountryCode === countryCode : c.CountryName === country)) || [],
+                        values: (ValuePerCountry?.filter(c => c.CountryCode ? c.CountryCode === countryCode : c.CountryName.replace(/\s+/g, '') === decodeURIComponent(country).replace(/\s+/g, ''))) || [],
                         datasource: layer.dataSource || "Unknown source"
                     };
                 }
@@ -64,7 +64,6 @@ module.exports = {
                     const arcgislayerId = match.replace(/(_year|_total|_last|_first|_city)$/, '');
                     const layerInfo = layerDataByArcgisId[arcgislayerId];
                     const layerValues = layerInfo?.values;
-                    const datasource = layerInfo?.datasource;
 
                     const suffix = match.match(/(last|total|first|year|city)$/)?.[0];
 
