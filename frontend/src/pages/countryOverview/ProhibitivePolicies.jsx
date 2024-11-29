@@ -25,7 +25,7 @@ const ProhibitivePolicies = ({ bansOnPlastic, limitsPlastic, country }) => {
           fontWeight: '500',
         }}
       >
-        <strong style={{ color: '#020A5B' }}>{country}</strong> has implemented
+        <strong style={{ color: '#020A5B' }}>{decodeURIComponent(country)}</strong> has implemented
         the following prohibitive regulatory policy instruments on plastics:
         <Tooltip title="See the global dataset">
           <a

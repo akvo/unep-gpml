@@ -110,7 +110,7 @@ const EconomicInstrumentsComponent = ({
           fontWeight: '500',
         }}
       >
-        <strong style={{ color: '#020A5B' }}>{country}</strong> has implemented
+        <strong style={{ color: '#020A5B' }}>{decodeURIComponent(country)}</strong> has implemented
         the following economic instruments on plastics:
         <Tooltip title="See the global dataset">
           <a
