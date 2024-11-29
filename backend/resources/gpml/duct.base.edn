@@ -51,6 +51,13 @@
                                    :swagger    {:tags ["country"]}
                                    :parameters {:path [:map [:id int?]]}
                                    :handler    #ig/ref :gpml.handler.country-group/get}
+                             :patch {:summary "Update country group"
+                                     :swagger {:tags ["country"] :security [{:id_token []}]}
+                                     :middleware [#ig/ref :gpml.auth/auth-middleware
+                                                  #ig/ref :gpml.auth/auth-required]
+                                     :parameters {:path [:map [:id int?]]
+                                                  :body #ig/ref :gpml.handler.country-group/patch-params}
+                                     :handler #ig/ref :gpml.handler.country-group/patch}
                              :delete {:summary "Deletes a country group"
                                       :swagger {:tags ["country"]}
                                       :parameters {:path [:map [:id int?]]}
@@ -835,6 +842,8 @@
  :gpml.handler.country-group/get                                    {:db #ig/ref :duct.database.sql.hikaricp/read-write}
  :gpml.handler.country-group/post-params                            {}
  :gpml.handler.country-group/post                                   #ig/ref :gpml.config/common
+ :gpml.handler.country-group/patch-params                           {}
+ :gpml.handler.country-group/patch                                  #ig/ref :gpml.config/common
  :gpml.handler.country-group/delete                                 #ig/ref :gpml.config/common
  :gpml.handler.search/get                                           #ig/ref :gpml.config/common
  :gpml.handler.search/query-params                                  #ig/ref :gpml.config/common
