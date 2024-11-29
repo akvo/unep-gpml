@@ -14,7 +14,7 @@ module.exports = {
                 first: 2,
             };
 
-            const { country, placeholders: clientPlaceholders } = ctx.request.body;
+            const { country, countryCode, placeholders: clientPlaceholders } = ctx.request.body;
 
             if (!clientPlaceholders || !Array.isArray(clientPlaceholders)) {
                 return ctx.badRequest('Invalid or missing placeholders array');
@@ -30,7 +30,6 @@ module.exports = {
                     $in: uniqueLayerIds,
                 },
             };
-
             const allLayersResponse = await strapi.entityService.findMany('api::layer.layer', {
                 populate: 'ValuePerCountry',
                 pagination: {
@@ -42,18 +41,16 @@ module.exports = {
 
             const layerData = allLayersResponse || [];
 
-
             if (!layerData || layerData.length === 0) {
                 return ctx.notFound('Layers not found');
             }
 
             const layerDataByArcgisId = {};
             layerData.forEach(layer => {
-
                 if (layer && layer) {
                     const { arcgislayerId, ValuePerCountry } = layer;
                     layerDataByArcgisId[arcgislayerId] = {
-                        values: ValuePerCountry?.filter(c => c.CountryName === country) || [],
+                        values: (ValuePerCountry?.filter(c => c.CountryCode ? c.CountryCode === countryCode : c.CountryName === country)) || [],
                         datasource: layer.dataSource || "Unknown source"
                     };
                 }
