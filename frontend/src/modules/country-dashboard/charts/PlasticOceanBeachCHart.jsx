@@ -54,6 +54,8 @@ const PlasticOceanBeachChart = ({ layers, loading }) => {
           (item) => item.CountryName === country
         )?.Value || 0
 
+        console.log('test')
+
       const totalWeight =
         totalWeightLayer.attributes.ValuePerCountry.find(
           (item) => item.CountryName === country
