@@ -54,6 +54,7 @@ const DashboardLanding = () => {
           query: {
             ...router.query,
             country: country.name,
+            countryCode: country.iso_code_a3,
             categoryId: router.query.categoryId || 'industry-and-trade',
           },
         },
