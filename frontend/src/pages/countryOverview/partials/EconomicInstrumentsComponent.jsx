@@ -16,27 +16,27 @@ const EconomicInstrumentsComponent = ({
 }) => {
   const baseUrl = getBaseUrl()
   const economicPolicyData = [
-    { count: cashReturn, text: 'cash for return schemes' },
+    { count: cashReturn, text: 'Cash for return schemes' },
     {
       count: subsidies,
-      text: 'regulations mandating subsidies to avoid the use of plastics',
+      text: 'Subsidies supporting plastic pollution reduction',
     },
     {
       count: disincentives,
       text:
-        'regulations offering tax breaks for responsible plastics stewardship and avoided use of plastics',
+        'Disincentives to irresponsible plastic stewardship​',
     },
     {
       count: education,
-      text: 'regulatory instruments on education and outreach',
+      text: 'Regulatory instruments on education and outreach​',
     },
     {
       count: dataCollection,
-      text: 'regulatory instruments on plastics data collection',
+      text: 'Regulatory instruments on plastics data collection​',
     },
     {
       count: labeling,
-      text: 'regulatory instruments on plastics labelling',
+      text: 'Regulatory instruments on plastics labelling​',
     },
   ]
 
@@ -111,7 +111,7 @@ const EconomicInstrumentsComponent = ({
         }}
       >
         <strong style={{ color: '#020A5B' }}>{decodeURIComponent(country)}</strong> has implemented
-        the following economic instruments on plastics:
+        the following economic and information policy instruments on plastics:
         <Tooltip title="See the global dataset">
           <a
             href={`${baseUrl}/data/maps?categoryId=governance-and-regulations&subcategoryId=Economic-instruments`}
