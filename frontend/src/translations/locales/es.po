@@ -43,11 +43,11 @@ msgstr "{progress}% completado"
 msgid "{value} Initiatives"
 msgstr "{value} iniciativas"
 
-#: src/pages/partnership/index.jsx:350
+#: src/pages/partnership/index.jsx:365
 msgid "<0>Be approved</0>and certified by the GPML as a member of the partnership."
 msgstr "<0>Estar aprobado</0>y certificado por la GPML como miembro de la asociación."
 
-#: src/pages/partnership/index.jsx:339
+#: src/pages/partnership/index.jsx:354
 msgid "<0>Fill in the form.</0><1/>Tell us about your organisation's work in preventing and reducing plastic pollution and marine litter."
 msgstr "<0>Rellena el formulario.</0><1/>Cuéntanos sobre el trabajo de tu organización para prevenir y reducir la contaminación plástica y la basura marina."
 
@@ -57,13 +57,13 @@ msgstr "Programa de Acciones de <0>GPML</0>"
 
 #: src/pages/workspace/[slug]/index.js:59
 msgid "<0>Instructions</0><1>This workflow tool has been created to assist your team with the development of a plastics strategy for your country. Some key steps are suggested for consideration while in the ‘create’ phase. The workflow will be further developed to assist with the phase of ‘implement’, ‘report’, and ‘review.’ <2/><3/>The workflow and resources associated with each suggested step are designed to facilitate and accelerate the activities of the ‘create’ phase of your plastic strategy. Such resources include data, documents, templates, case studies, relevant organizations (governmental and non governmental) as well as individuals active in the space.</1>{0}<4>Step 1: National Steering Committee & Project Team</4><5>This step assists in the establishment of a National Steering Committee (NSC) with representation from necessary government agencies as well as relevant non-governmental organizations. The NSC should aim to meet 2-4 times per year to assist with and drive the roadmap/strategy/plan. A project team should be established to assist the NSC, consisting of consultants and focal points, to lead the implementation of the project with the guidance of the NSC and UNEP.</5><6>Step 2: Stakeholder consultations</6><7>Consultation should aim to understand the current issues faced by various stakeholders, as well as their role in solving the problem (actors) and how proposed activities of the national plastics strategy may affect them positively or negatively. Different stakeholders may also have access to important data. This step of the workflow provides guidance on organizing a comprehensive stakeholder consultation process to ensure all relevant sectors and stakeholders are consulted.</7><8>Step 3: State of Knowledge on Plastic Data</8><9>Data is at the core of understanding the issues and current state of play, as well as the tracking of trends to determine effectiveness of the national plastics strategy. This step will help in compiling existing data and information into a State of Knowledge Report. This could include identification of areas in need of additional data collection, leading to additional secondary data collection.</9><10>Step 4: Legislation & Policy Review</10><11>An analysis of the legal and policy framework in your country can help identify current goals and targets that the national plastics strategy should aim to achieve, as well as gaps in this framework that the strategy could help close. This allows for the identification of priority areas to track and the type of data needed to do so. In this stage, together with UNEP’s guidance, a review and analysis of the legislative and policy landscape as it pertains to marine litter and plastic pollution would be conducted.</11><12>Step 5: National Source Inventory</12><13>National plastics strategies should be underpinned by a National Source Inventory (NSI). This step will help in analysing the data available and collected into a National Source Inventory Report on plastic pollution and marine litter that can inform discussions on possible actions to be included in the national plastics strategy.</13><14>Final Step: National Roadmap/Strategy/Plan</14><15>This step facilitates the development of a National Roadmap/Strategy/Plan based on the evidence and information gathered in the NSI Report. The roadmap should be time bound, measurable and include provisions of periodic revisions. The strategy can be formally adopted through parliament or act as a voluntary guideline for action.</15>"
-msgstr "<0>Instrucciones</0><1>Esta herramienta de flujo de trabajo se ha creado para ayudar a su equipo con el desarrollo de una estrategia de plásticos para su país. Se sugieren algunos pasos clave para tener en cuenta durante la fase de "creación". El flujo de trabajo se desarrollará más a fondo para ayudar con la fase de "implementación", "informe" y "revisión". <2/><3/>El flujo de trabajo y los recursos asociados con cada paso sugerido están diseñados para facilitar y acelerar las actividades de la fase de "creación" de su estrategia de plásticos. Dichos recursos incluyen datos, documentos, plantillas, estudios de casos, organizaciones relevantes (gubernamentales y no gubernamentales), así como personas activas en el espacio.</1>{0}<4>Paso 1: Comité Directivo Nacional y Equipo de Proyecto</4><5>Este paso ayuda a establecer un Comité Directivo Nacional (NSC) con representación de las agencias gubernamentales necesarias, así como de las organizaciones no gubernamentales relevantes. El NSC debe tratar de reunirse de 2 a 4 veces al año para ayudar e impulsar la hoja de ruta/estrategia/plan. Se debe establecer un equipo de proyecto para ayudar al CDN, compuesto por consultores y puntos focales, para dirigir la implementación del proyecto con la orientación del CDN y el PNUMA.</5><6>Paso 2: Consultas con las partes interesadas</6><7>La consulta debe apuntar a comprender los problemas actuales que enfrentan las diversas partes interesadas, así como su papel en la solución del problema (actores) y cómo las actividades propuestas de la estrategia nacional sobre plásticos pueden afectarlos positiva o negativamente. Diferentes partes interesadas también pueden tener acceso a datos importantes. Este paso del flujo de trabajo proporciona orientación sobre la organización de un proceso integral de consulta con las partes interesadas para asegurar que se consulte a todos los sectores y partes interesadas relevantes.</7><8>Paso 3: Estado del conocimiento sobre los datos sobre plásticos</8><9>Los datos son fundamentales para comprender los problemas y el estado actual de la situación, así como para rastrear las tendencias para determinar la eficacia de la estrategia nacional sobre plásticos. Este paso ayudará a recopilar los datos e información existentes en un Informe sobre el estado del conocimiento. Esto podría incluir la identificación de áreas que necesitan una recopilación de datos adicionales, lo que lleva a una recopilación adicional de datos secundarios.</9><10>Paso 4: Revisión de la legislación y las políticas</10><11>Un análisis del marco legal y de políticas en su país puede ayudar a identificar los objetivos y metas actuales que la estrategia nacional sobre plásticos debería intentar alcanzar, así como las brechas en este marco que la estrategia podría ayudar a cerrar. Esto permite la identificación de áreas prioritarias para rastrear y el tipo de datos necesarios para hacerlo. En esta etapa, junto con la orientación del PNUMA, se realizaría una revisión y análisis del panorama legislativo y de políticas en lo que respecta a la basura marina y la contaminación plástica.</11><12>Paso 5: Inventario nacional de fuentes</12><13>Las estrategias nacionales sobre plásticos deben respaldarse con un Inventario nacional de fuentes (INE). Este paso ayudará a analizar los datos disponibles y recopilados en un Informe de Inventario Nacional de Fuentes sobre contaminación plástica y basura marina que puede servir de base para los debates sobre posibles medidas que se deben incluir en la estrategia nacional sobre plásticos.</13><14>Paso final: Hoja de ruta/Estrategia/Plan Nacional</14><15>Este paso facilita el desarrollo de una Hoja de ruta/Estrategia/Plan Nacional basado en la evidencia y la información recopilada en el Informe del INE. La hoja de ruta debe tener un plazo determinado, ser medible e incluir disposiciones de revisiones periódicas. La estrategia puede ser adoptada formalmente a través del parlamento o actuar como una directriz voluntaria para la acción.</15>"
+msgstr "<0>Instrucciones</0><1>Esta herramienta de flujo de trabajo se ha creado para ayudar a su equipo con el desarrollo de una estrategia de plásticos para su país. Se sugieren algunos pasos clave para tener en cuenta durante la fase de \"creación\". El flujo de trabajo se desarrollará más a fondo para ayudar con la fase de \"implementación\", \"informe\" y \"revisión\". <2/><3/>El flujo de trabajo y los recursos asociados con cada paso sugerido están diseñados para facilitar y acelerar las actividades de la fase de \"creación\" de su estrategia de plásticos. Dichos recursos incluyen datos, documentos, plantillas, estudios de casos, organizaciones relevantes (gubernamentales y no gubernamentales), así como personas activas en el espacio.</1>{0}<4>Paso 1: Comité Directivo Nacional y Equipo de Proyecto</4><5>Este paso ayuda a establecer un Comité Directivo Nacional (NSC) con representación de las agencias gubernamentales necesarias, así como de las organizaciones no gubernamentales relevantes. El NSC debe tratar de reunirse de 2 a 4 veces al año para ayudar e impulsar la hoja de ruta/estrategia/plan. Se debe establecer un equipo de proyecto para ayudar al CDN, compuesto por consultores y puntos focales, para dirigir la implementación del proyecto con la orientación del CDN y el PNUMA.</5><6>Paso 2: Consultas con las partes interesadas</6><7>La consulta debe apuntar a comprender los problemas actuales que enfrentan las diversas partes interesadas, así como su papel en la solución del problema (actores) y cómo las actividades propuestas de la estrategia nacional sobre plásticos pueden afectarlos positiva o negativamente. Diferentes partes interesadas también pueden tener acceso a datos importantes. Este paso del flujo de trabajo proporciona orientación sobre la organización de un proceso integral de consulta con las partes interesadas para asegurar que se consulte a todos los sectores y partes interesadas relevantes.</7><8>Paso 3: Estado del conocimiento sobre los datos sobre plásticos</8><9>Los datos son fundamentales para comprender los problemas y el estado actual de la situación, así como para rastrear las tendencias para determinar la eficacia de la estrategia nacional sobre plásticos. Este paso ayudará a recopilar los datos e información existentes en un Informe sobre el estado del conocimiento. Esto podría incluir la identificación de áreas que necesitan una recopilación de datos adicionales, lo que lleva a una recopilación adicional de datos secundarios.</9><10>Paso 4: Revisión de la legislación y las políticas</10><11>Un análisis del marco legal y de políticas en su país puede ayudar a identificar los objetivos y metas actuales que la estrategia nacional sobre plásticos debería intentar alcanzar, así como las brechas en este marco que la estrategia podría ayudar a cerrar. Esto permite la identificación de áreas prioritarias para rastrear y el tipo de datos necesarios para hacerlo. En esta etapa, junto con la orientación del PNUMA, se realizaría una revisión y análisis del panorama legislativo y de políticas en lo que respecta a la basura marina y la contaminación plástica.</11><12>Paso 5: Inventario nacional de fuentes</12><13>Las estrategias nacionales sobre plásticos deben respaldarse con un Inventario nacional de fuentes (INE). Este paso ayudará a analizar los datos disponibles y recopilados en un Informe de Inventario Nacional de Fuentes sobre contaminación plástica y basura marina que puede servir de base para los debates sobre posibles medidas que se deben incluir en la estrategia nacional sobre plásticos.</13><14>Paso final: Hoja de ruta/Estrategia/Plan Nacional</14><15>Este paso facilita el desarrollo de una Hoja de ruta/Estrategia/Plan Nacional basado en la evidencia y la información recopilada en el Informe del INE. La hoja de ruta debe tener un plazo determinado, ser medible e incluir disposiciones de revisiones periódicas. La estrategia puede ser adoptada formalmente a través del parlamento o actuar como una directriz voluntaria para la acción.</15>"
 
-#: src/pages/partnership/index.jsx:319
+#: src/pages/partnership/index.jsx:334
 msgid "<0>Join the multi-stakeholder partnership</0> which brings together all the actors working on plastic pollution and marine litter prevention and reduction."
 msgstr "<0>Únase a la asociación de múltiples partes interesadas</0> que reúne a todos los actores que trabajan en la prevención y reducción de la contaminación plástica y la basura marina."
 
-#: src/pages/partnership/index.jsx:359
+#: src/pages/partnership/index.jsx:374
 msgid "<0>Receive</0> an entity profile and focal point profile on the GPML Digital Platform."
 msgstr "<0>Recibir</0> un perfil de entidad y un perfil de punto focal en la Plataforma Digital GPML."
 
@@ -75,7 +75,7 @@ msgstr "<0>Utilizamos cookies para un mejor servicio.</0><1><2>Más información
 msgid "1 of 1"
 msgstr "1 de 1"
 
-#: src/pages/partnership/index.jsx:333
+#: src/pages/partnership/index.jsx:348
 msgid "3 STEPS FOR AN ENTITY TO BECOME A MEMBER"
 msgstr "3 PASOS PARA QUE UNA ENTIDAD SE HAGA MIEMBRO"
 
@@ -137,11 +137,11 @@ msgstr "Acerca de"
 msgid "About yourself"
 msgstr "Acerca de ti mismo"
 
-#: src/pages/partnership/index.jsx:717
+#: src/pages/partnership/index.jsx:732
 msgid "Accepts .jpg and .png"
 msgstr "Acepta .jpg y .png"
 
-#: src/pages/partnership/index.jsx:384
+#: src/pages/partnership/index.jsx:399
 msgid "Access"
 msgstr "Acceso"
 
@@ -150,7 +150,7 @@ msgstr "Acceso"
 msgid "Access the workspace"
 msgstr "Acceder al espacio de trabajo"
 
-#: src/pages/partnership/index.jsx:387
+#: src/pages/partnership/index.jsx:402
 msgid "Access to a unique global audience for sharing knowledge and experiences in preventing and reducing plastic pollution and marine litter."
 msgstr "Acceso a una audiencia global única para compartir conocimientos y experiencias en la prevención y reducción de la contaminación plástica y la basura marina."
 
@@ -175,7 +175,7 @@ msgstr "Planes de acción"
 msgid "Add"
 msgstr "Agregar"
 
-#: src/pages/partnership/index.jsx:720
+#: src/pages/partnership/index.jsx:735
 msgid "Add a File"
 msgstr "Agregar un archivo"
 
@@ -267,7 +267,7 @@ msgstr "Todo lo anterior"
 msgid "All Resources"
 msgstr "Todos los recursos"
 
-#: src/pages/partnership/index.jsx:1119
+#: src/pages/partnership/index.jsx:1132
 msgid "Already have an account?"
 msgstr "¿Ya tienes una cuenta?"
 
@@ -353,7 +353,7 @@ msgstr "¿Estás seguro de que deseas eliminar este recurso?"
 msgid "Area of expertise"
 msgstr "Área de experiencia"
 
-#: src/pages/partnership/index.jsx:767
+#: src/pages/partnership/index.jsx:782
 msgid "Areas of expertise"
 msgstr "Áreas de especialización"
 
@@ -525,7 +525,7 @@ msgid "By signing up you are agreeing to our"
 msgstr "Al registrarte estás aceptando nuestro"
 
 #: src/modules/onboarding/form-four.jsx:216
-#: src/pages/partnership/index.jsx:1082
+#: src/pages/partnership/index.jsx:1095
 msgid "By submitting this form, I will be included in the public database of GPML Digital Platform members and acknowledge that the provided information will be made public and used to find and connect via smart-matchmaking functionalities with other stakeholders and resources."
 msgstr "Al enviar este formulario, seré incluido en la base de datos pública de los miembros de la Plataforma Digital GPML y reconozco que la información proporcionada se hará pública y se utilizará para encontrar y conectarme a través de funcionalidades de emparejamiento inteligente con otras partes interesadas y recursos."
 
@@ -585,7 +585,7 @@ msgstr "categoría"
 msgid "Certification, Licensing and Registration"
 msgstr "Certificación, Licenciamiento y Registro"
 
-#: src/pages/partnership/index.jsx:441
+#: src/pages/partnership/index.jsx:456
 msgid "Certified"
 msgstr "Certificado"
 
@@ -729,7 +729,7 @@ msgstr "Cerca"
 msgid "COBSEA Regional Action Plan on Marine Litter 2019"
 msgstr "Plan de Acción Regional COBSEA sobre Basura Marina 2019"
 
-#: src/pages/partnership/index.jsx:399
+#: src/pages/partnership/index.jsx:414
 msgid "Collaborate"
 msgstr "Colaborar"
 
@@ -1256,8 +1256,8 @@ msgstr "Elipsis: aprendizaje automático e imágenes aéreas para identificar, m
 #: src/modules/login/view.jsx:275
 #: src/modules/signup-old/signup-form.jsx:44
 #: src/modules/workspace/ps/setup-team-form.jsx:226
-#: src/pages/partnership/index.jsx:1181
-#: src/pages/partnership/index.jsx:1397
+#: src/pages/partnership/index.jsx:1194
+#: src/pages/partnership/index.jsx:1410
 msgid "Email"
 msgstr "Correo electrónico"
 
@@ -1412,7 +1412,7 @@ msgstr "Grabación de eventos"
 msgid "Events"
 msgstr "Eventos"
 
-#: src/pages/partnership/index.jsx:416
+#: src/pages/partnership/index.jsx:431
 msgid "Exclusive invites to online and in-person events and the opportunity to showcase your work."
 msgstr "Invitaciones exclusivas a eventos en línea y presenciales y la oportunidad de exhibir su trabajo."
 
@@ -1478,7 +1478,7 @@ msgstr "Las funciones de la plataforma digital GPML están disponibles a través
 msgid "Field to submit"
 msgstr "Campo para enviar"
 
-#: src/pages/partnership/index.jsx:486
+#: src/pages/partnership/index.jsx:501
 msgid "Fill in the form"
 msgstr "Rellene el formulario"
 
@@ -1522,7 +1522,7 @@ msgid "First name"
 msgstr "Nombre de pila"
 
 #: src/modules/onboarding/form-four.jsx:46
-#: src/pages/partnership/index.jsx:1308
+#: src/pages/partnership/index.jsx:1321
 msgid "First Name"
 msgstr "Nombre de pila"
 
@@ -1542,7 +1542,7 @@ msgstr "Pesca de Basura: Proyecto de limpieza de océanos que involucra a pescad
 msgid "Focal Point"
 msgstr "Punto focal"
 
-#: src/pages/partnership/index.jsx:1114
+#: src/pages/partnership/index.jsx:1127
 msgid "Focal Point Account in GPML"
 msgstr "Cuenta de punto focal en GPML"
 
@@ -1637,7 +1637,7 @@ msgstr "Igualdad de género"
 msgid "Geo coverage"
 msgstr "Cobertura geográfica"
 
-#: src/pages/partnership/index.jsx:943
+#: src/pages/partnership/index.jsx:957
 msgid "Geo Coverage (countries)"
 msgstr "Cobertura geográfica (países)"
 
@@ -1650,7 +1650,7 @@ msgstr "Cobertura geográfica (países)"
 msgid "GEO COVERAGE (Countries)"
 msgstr "COBERTURA GEO (Países)"
 
-#: src/pages/partnership/index.jsx:880
+#: src/pages/partnership/index.jsx:895
 msgid "Geo Coverage (Transnational)"
 msgstr "Cobertura geográfica (transnacional)"
 
@@ -1673,13 +1673,13 @@ msgid "Geo coverage type"
 msgstr "Tipo de cobertura geográfica"
 
 #: src/modules/stakeholder-overview/filter-drawer.jsx:335
-#: src/pages/partnership/index.jsx:798
+#: src/pages/partnership/index.jsx:813
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:108
 #: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:237
 msgid "Geo-coverage"
 msgstr "Cobertura geográfica"
 
-#: src/pages/partnership/index.jsx:816
+#: src/pages/partnership/index.jsx:831
 msgid "Geo-coverage type"
 msgstr "Tipo de cobertura geográfica"
 
@@ -1707,7 +1707,7 @@ msgstr "Conferencia sobre el cambio climático de Glasgow"
 #: src/modules/flexible-forms/form-schema.js:2336
 #: src/modules/flexible-forms/form-schema.js:2575
 #: src/pages/add-content/index.jsx:548
-#: src/pages/partnership/index.jsx:836
+#: src/pages/partnership/index.jsx:851
 msgid "Global"
 msgstr "Global"
 
@@ -1830,7 +1830,7 @@ msgstr "Armonización de metodologías de seguimiento de microplásticos en el o
 msgid "Harnessing the expertise of <0>{0}</0> Communities of Practice (CoPs) comprised of leading experts and scientists to bridge critical knowledge and data gaps."
 msgstr ""
 
-#: src/pages/partnership/index.jsx:1011
+#: src/pages/partnership/index.jsx:1024
 msgid "Headquarters"
 msgstr "Sede"
 
@@ -2184,7 +2184,7 @@ msgid "Last name"
 msgstr "Apellido"
 
 #: src/modules/onboarding/form-four.jsx:68
-#: src/pages/partnership/index.jsx:1349
+#: src/pages/partnership/index.jsx:1362
 msgid "Last Name"
 msgstr "Apellido"
 
@@ -2196,7 +2196,7 @@ msgstr "Últimas noticias:"
 msgid "Leadership by specific individuals in the member state or organisation (who personallydrove change)"
 msgstr "Liderazgo de personas específicas del estado u organización miembro (que impulsaron personalmente el cambio)"
 
-#: src/pages/partnership/index.jsx:427
+#: src/pages/partnership/index.jsx:442
 msgid "Learn"
 msgstr "Aprender"
 
@@ -2572,7 +2572,7 @@ msgstr "Nombre"
 msgid "Name is required"
 msgstr "Se requiere el nombre"
 
-#: src/pages/partnership/index.jsx:513
+#: src/pages/partnership/index.jsx:528
 msgid "Name of Organisation"
 msgstr "Nombre de la organización"
 
@@ -2585,7 +2585,7 @@ msgstr "Nombre de la organización"
 #: src/modules/flexible-forms/form-schema.js:2577
 #: src/modules/map/map-chart.jsx:714
 #: src/pages/add-content/index.jsx:550
-#: src/pages/partnership/index.jsx:842
+#: src/pages/partnership/index.jsx:857
 msgid "National"
 msgstr "Nacional"
 
@@ -2810,11 +2810,11 @@ msgstr "Huy! Algo salió mal"
 msgid "Open The Guide"
 msgstr "Abrir la guía"
 
-#: src/pages/partnership/index.jsx:430
+#: src/pages/partnership/index.jsx:445
 msgid "Opportunities to access a variety of resources, data and trainings to enhance capacity development."
 msgstr "Oportunidades para acceder a una variedad de recursos, datos y capacitaciones para mejorar el desarrollo de capacidades."
 
-#: src/pages/partnership/index.jsx:402
+#: src/pages/partnership/index.jsx:417
 msgid "Opportunities to collaborate with other stakeholders to create and advance solutions."
 msgstr "Oportunidades para colaborar con otras partes interesadas para crear y promover soluciones."
 
@@ -2827,15 +2827,15 @@ msgstr "Opcional"
 msgid "Organisation"
 msgstr "Organización"
 
-#: src/pages/partnership/index.jsx:556
+#: src/pages/partnership/index.jsx:571
 msgid "Organisation's efforts in addressing plastic pollution"
 msgstr "Esfuerzos de la organización para abordar la contaminación plástica"
 
-#: src/pages/partnership/index.jsx:675
+#: src/pages/partnership/index.jsx:690
 msgid "Organisation’s Logo"
 msgstr "Logotipo de la organización"
 
-#: src/pages/partnership/index.jsx:639
+#: src/pages/partnership/index.jsx:654
 msgid "Organisation’s Website"
 msgstr "Sitio web de la organización"
 
@@ -2925,7 +2925,7 @@ msgid "Partnerships for the Goals"
 msgstr "Alianzas para los objetivos"
 
 #: src/modules/login/view.jsx:308
-#: src/pages/partnership/index.jsx:1219
+#: src/pages/partnership/index.jsx:1232
 msgid "Password"
 msgstr "Contraseña"
 
@@ -3450,7 +3450,7 @@ msgid "Setup your team"
 msgstr "Configura tu equipo"
 
 #: src/modules/details-page/header.jsx:439
-#: src/pages/partnership/index.jsx:413
+#: src/pages/partnership/index.jsx:428
 msgid "Share"
 msgstr "Compartir"
 
@@ -3585,7 +3585,7 @@ msgstr "Estado de la revisión:"
 msgid "Steering Committee"
 msgstr "Comité Directivo"
 
-#: src/pages/partnership/index.jsx:483
+#: src/pages/partnership/index.jsx:498
 msgid "Step 1"
 msgstr "Paso 1"
 
@@ -3624,7 +3624,7 @@ msgstr "Entregar"
 msgid "Submit an application for your organisation - <0>{0}</0> - to become part of the GPML."
 msgstr "Envíe una solicitud para que su organización, <0>{0}</0>, forme parte de GPML."
 
-#: src/pages/partnership/index.jsx:1148
+#: src/pages/partnership/index.jsx:1161
 msgid "Submit Application"
 msgstr "Presentar la solicitud"
 
@@ -4002,7 +4002,7 @@ msgstr "Traducción"
 #: src/modules/flexible-forms/form-schema.js:2576
 #: src/modules/map/map-chart.jsx:717
 #: src/pages/add-content/index.jsx:549
-#: src/pages/partnership/index.jsx:839
+#: src/pages/partnership/index.jsx:854
 msgid "Transnational"
 msgstr "transnacional"
 
@@ -4259,7 +4259,7 @@ msgstr "Estamos emocionados de saber de los miembros de nuestra comunidad. La pl
 msgid "We sent you a confirmation email, Please take a moment and validate your address to confirm your account."
 msgstr "Le enviamos un correo electrónico de confirmación. Tómese un momento y valide su dirección para confirmar su cuenta."
 
-#: src/pages/partnership/index.jsx:474
+#: src/pages/partnership/index.jsx:489
 msgid "We will be reviewing it shortly."
 msgstr "Lo estaremos revisando en breve."
 
@@ -4331,7 +4331,7 @@ msgstr "¿Dónde pueden los usuarios comunicarse mejor con usted para obtener m�
 msgid "Which Multilateral Environmental Agreements (MEAs) does your initiative apply to? (Please tick ALL that apply):"
 msgstr "¿A qué acuerdos ambientales multilaterales (AAM) se aplica su iniciativa? (Por favor marque todo lo que corresponda):"
 
-#: src/pages/partnership/index.jsx:599
+#: src/pages/partnership/index.jsx:614
 msgid "Which representative group fits your Entity?"
 msgstr "¿Qué grupo representativo se adapta a su Entidad?"
 
@@ -4349,7 +4349,7 @@ msgstr "¿Quienes somos?"
 msgid "Who we are"
 msgstr "Quienes somos"
 
-#: src/pages/partnership/index.jsx:373
+#: src/pages/partnership/index.jsx:388
 msgid "Why become a certified GPML member?"
 msgstr "¿Por qué convertirse en miembro certificado de GPML?"
 
@@ -4437,7 +4437,7 @@ msgstr "¡Ya casi estás listo! <0/> Necesitamos hacer algunas preguntas más pa
 msgid "Your account is pending reviewal. You can still explore the platform."
 msgstr "Su cuenta está pendiente de revisión. Aún puedes explorar la plataforma."
 
-#: src/pages/partnership/index.jsx:471
+#: src/pages/partnership/index.jsx:486
 msgid "Your application is received."
 msgstr "Se recibe su solicitud."
 
@@ -4445,7 +4445,7 @@ msgstr "Se recibe su solicitud."
 msgid "Your message has been sent!"
 msgstr ""
 
-#: src/pages/partnership/index.jsx:444
+#: src/pages/partnership/index.jsx:459
 msgid "Your organisation will receive a certificate, which officially acknowledges its GPML membership."
 msgstr "Su organización recibirá un certificado que reconoce oficialmente su membresía en GPML."
 
