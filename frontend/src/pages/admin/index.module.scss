@@ -1,7 +1,165 @@
+@import '../../styles/vars.scss';
+
 .admin {
   padding: 100px 0;
 
-  :global {}
+  :global {
+
+    .geography {
+      padding: 10px 0px;
+
+      h2 {
+        color: black;
+        font-size: 16px;
+        line-height: 20px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        font-weight: 700;
+        margin-bottom: 20px;
+      }
+
+      .add-btn {
+        margin-top: 20px;
+      }
+
+      .ant-card {
+        margin-bottom: 20px;
+        border-radius: 6px;
+        overflow: hidden;
+      }
+
+      .ant-card-body {
+        background-color: #fff;
+        padding: 12px;
+
+        .ant-select-selection-overflow {
+          padding: 5px;
+        }
+
+        .group-header {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          margin-bottom: 14px;
+        }
+
+        .delete-button {
+          border-radius: 8px;
+          padding: 8px 10px;
+
+          &:hover {
+            svg {
+              path {
+                fill: $primaryDarkBlueText;
+              }
+            }
+          }
+
+          svg {
+            padding-left: 0px;
+
+
+            path {
+              stroke: none;
+            }
+          }
+        }
+      }
+    }
+
+    .resource-view {
+
+      .resource-header {
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        p {
+          color: black;
+          font-size: 16px;
+          line-height: 20px;
+          letter-spacing: 1px;
+          text-transform: uppercase;
+          font-weight: 700;
+        }
+      }
+
+      .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        row-gap: 30px;
+
+        .card-wrapper {
+          width: 200px;
+          cursor: pointer;
+
+          .resource-card {
+            border-radius: 10px;
+            background: #fff;
+            border: none;
+            box-shadow: 0 8px 40px 0 rgba(0, 0, 0, .1);
+            position: relative;
+            height: 290px;
+            padding: 10px 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            p {
+              font-size: 16px;
+              font-weight: bold;
+              line-height: 22px;
+              color: $primaryDarkBlueText;
+            }
+
+            .badge {
+              border: 1px solid $primaryDarkBlueText;
+              border-radius: 12px;
+              width: fit-content;
+              padding: 4px 8px;
+              font-size: 14px;
+              line-height: 14px;
+              font-weight: 700;
+              margin-left: auto;
+              text-transform: capitalize;
+            }
+
+          }
+
+          .card-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+
+            button {
+              min-width: 180px;
+              justify-content: center;
+            }
+
+            .decline-button {
+              color: $systemError3;
+
+              &:hover {
+                background-color: $systemError4;
+                border-color: $systemError4;
+                color: #fff;
+              }
+            }
+          }
+        }
+
+      }
+
+      .load-more-button {
+        margin: 40px auto 0px;
+      }
+    }
+  }
 }
 
 .migrationModal {
