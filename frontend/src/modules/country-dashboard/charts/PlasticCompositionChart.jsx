@@ -98,7 +98,7 @@ const PlasticCompositionChart = ({ layers, layerLoading }) => {
             }%<br/>`
           })
           if (regionPlasticComposition) {
-            content += `<br/><span style="color: #020A5B; font-weight: bold;">Estimated Regional Average:</span> ${regionPlasticComposition} kg/person/day`
+            content += `<br/><span style="color: #020A5B; font-weight: bold;">Estimated Regional Average:</span> ${regionPlasticComposition} %`
           }
           return content
         },
@@ -200,7 +200,7 @@ const PlasticCompositionChart = ({ layers, layerLoading }) => {
           href={`${baseURL}/data/maps?categoryId=waste-management&subcategoryId=generation&layer=Proportion_of_plastic_waste_generated_WFL1`}
           style={{ color: '#020A5B', fontWeight: 'bold' }}
         >
-          UN Habitat 2021
+          World Bank
         </a>{' '}
       </div>
     </div>
