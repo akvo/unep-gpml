@@ -159,6 +159,9 @@ const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
           value: item.value,
           name: item.name,
         })),
+        label: {
+          show: false,
+        },
         emphasis: {
           itemStyle: {
             shadowBlur: 10,
