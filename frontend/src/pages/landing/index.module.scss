@@ -488,8 +488,30 @@
 
       @media screen and (max-width: $bpMobile) {
         padding: 12px;
-        height: 132px;
-        top: -245px;
+        height: 187px;
+        top: -267px;
+
+        form {
+          .ant-input {
+            font-size: 20px;
+          }
+        }
+        .ant-btn-primary {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          .hide-desktop {
+            display: block;
+            width: 7px;
+            svg {
+              position: static;
+              top: 0;
+              line-height: 1;
+              margin: 0;
+              transform: translateX(-2px) scale(1.1) rotate(-90deg);
+            }
+          }
+        }
 
         .bar {
           border-bottom: none;
