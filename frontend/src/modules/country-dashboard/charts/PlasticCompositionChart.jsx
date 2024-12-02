@@ -49,8 +49,10 @@ const PlasticCompositionChart = ({ layers, layerLoading }) => {
       setCityEstimates(cityData ? cityData?.map((item) => item?.Value) : [])
       setCities(cityData ? cityData?.map((item) => item.City) : [])
 
-      const selectedCountry = countriesWithRegions.find(
-        (c) => c.CountryName === country
+      const selectedCountry = countriesWithRegions.find((c) =>
+        c.CountryCode !== null
+          ? c.CountryCode === countryCode
+          : c.CountryName === decodeURIComponent(country)
       )
       if (selectedCountry) {
         setRegionPlasticComposition(selectedCountry.regionPlasticComposition)
