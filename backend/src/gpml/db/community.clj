@@ -60,7 +60,21 @@
                SELECT 'gpml_member_entities' AS network_type, COUNT(*)
                FROM community_members
                WHERE review_status = 'APPROVED' AND is_member IS TRUE;" (or tags-join "") where-cond)
-      (format "SELECT cm.*
+      (format "SELECT
+                 cm.id,
+                 cm.name,
+                 cm.type,
+                 cm.country,
+                 cm.geo_coverage_type,
+                 cm.picture_id,
+                 cm.created,
+                 cm.affiliation,
+                 cm.representative_group,
+                 cm.review_status,
+                 cm.is_member,
+                 cm.job_title,
+                 cm.files,
+                 cm.assigned_badges
                FROM community_members cm
                %s
                %s
