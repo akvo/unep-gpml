@@ -98,7 +98,7 @@ const PlasticCompositionChart = ({ layers, layerLoading }) => {
             }%<br/>`
           })
           if (regionPlasticComposition) {
-            content += `<br/><span style="color: #020A5B; font-weight: bold;">Estimated Regional Average:</span> ${regionPlasticComposition} kg/person/day`
+            content += `<br/><span style="color: #020A5B; font-weight: bold;">Estimated Regional Average:</span> ${regionPlasticComposition} %`
           }
           return content
         },

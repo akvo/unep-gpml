@@ -87,14 +87,14 @@ const DashboardLanding = () => {
         <p style={{ fontSize: '18px', marginBottom: '40px' }}>
           The Country Dashboard allows you to access key plastic datasets of
           countries. It provides a snapshot of a country's plastic pollution
-          status, drawing global datasets on plastic trade, waste management,
-          plastics in the environment and governance.
+          status, by drawing on global datasets on plastic trade, waste
+          management, plastics in the environment and governance.
         </p>
 
         <p style={{ fontSize: '16px', marginBottom: '20px' }}>
-          By doing so, it can facilitate evidence-based policy making and action
-          planning at the same time delineate existing data gaps that needs
-          further data collection.
+          In doing so, it supports evidence-based policy making and action
+          planning, while also identifying data gaps that require further data
+          collection efforts.
         </p>
 
         <div

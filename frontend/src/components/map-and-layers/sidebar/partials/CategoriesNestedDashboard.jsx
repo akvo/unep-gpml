@@ -57,7 +57,7 @@ const CategoriesNestedDashboard = ({ categories }) => {
   const handleViewGlobalDataClick = () => {
     const categoryId = selectedCategory || queryParameters.categoryId
     if (categoryId) {
-      window.location.href = `${baseURL}/data/maps?categoryId=${categoryId}`
+      window.open(`${baseURL}/data/maps?categoryId=${categoryId}`, '_blank')
     } else {
       alert('Please select a category before viewing global data.')
     }
