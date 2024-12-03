@@ -123,6 +123,7 @@ const CountryOverview = () => {
     country: `{{country}}`,
   })
 
+  console.log('test')
   const [firstHalfText, secondHalfText] =
     selectedCategory?.attributes?.categoryId === 'environmental-impact' ||
     selectedCategory?.attributes?.categoryId === 'waste-management'
