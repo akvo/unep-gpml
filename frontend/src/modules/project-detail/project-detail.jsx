@@ -96,7 +96,7 @@ const ProjectDetail = ({ data: inData, isModal, setVisible }) => {
                 <span>From {moment(data.startDate).format('MMM YYYY')}</span>
                 {data?.endDate && (
                   <span>
-                    &nbsp;to {moment(data.startDate).format('MMM YYYY')}
+                    &nbsp;to {moment(data.endDate).format('MMM YYYY')}
                   </span>
                 )}
               </div>
