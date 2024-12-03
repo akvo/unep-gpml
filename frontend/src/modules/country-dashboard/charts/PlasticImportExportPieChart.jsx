@@ -111,7 +111,7 @@ const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
       text: `Plastic ${
         chartType === 'import' ? 'import' : 'export'
       } by type for ${decodeURIComponent(country)}`,
-      subtext: `In 1000 metric tons for year ${latestYear || 'N/A'}`,
+      subtext: `In 1000 metric tons for year ${2021 || 'N/A'}`,
       left: 'center',
       textStyle: {
         fontSize: 16,

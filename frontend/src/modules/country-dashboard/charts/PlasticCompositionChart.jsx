@@ -79,7 +79,9 @@ const PlasticCompositionChart = ({ layers, layerLoading }) => {
 
     return {
       title: {
-        text: `Plastic composition in the MSW for ${decodeURIComponent(country)}`,
+        text: `Plastic composition in the MSW for ${decodeURIComponent(
+          country
+        )}`,
         left: 'center',
         textStyle: {
           fontSize: 18,
@@ -161,10 +163,11 @@ const PlasticCompositionChart = ({ layers, layerLoading }) => {
                 yAxis: regionPlasticComposition || 0.78,
                 label: {
                   formatter: () =>
-                    `Regional Average (${
+                    `Regional\n Average\n (${
                       regionPlasticComposition + '%' || 0.78 + '%'
                     })`,
                   position: 'middle',
+                  offset: [240, -5],
                   color: '#020A5B',
                   fontSize: 12,
                 },
