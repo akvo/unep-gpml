@@ -158,8 +158,9 @@ const MSWGenerationChart = ({ layers, layerLoading }) => {
                 yAxis: regionMswValue || 0.78,
                 label: {
                   formatter: () =>
-                    `Regional Average (${regionMswValue || 0.78}) kg`,
+                    `Regional\n Average\n(${regionMswValue || 0.78} kg)`,
                   position: 'middle',
+                  offset: [240, -5],
                   color: '#020A5B',
                   fontSize: 12,
                 },
