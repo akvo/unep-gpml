@@ -75,6 +75,7 @@ export const AdminBadges = ({ data, badgeOpts }) => {
 }
 
 const DetailView = ({ item, profile, setLoginVisible, isAuthenticated }) => {
+  console.log('item', item)
   const router = useRouter()
   const [data, setData] = useState({ ...item })
   const [loading, setLoading] = useState(true)

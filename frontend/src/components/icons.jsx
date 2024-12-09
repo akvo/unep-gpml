@@ -1695,3 +1695,35 @@ export const Calendar = () => (
     </defs>
   </svg>
 )
+export const DeleteIcon = () => (
+  <svg
+    width="22"
+    height="22"
+    viewBox="0 0 22 22"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M8.17071 4C8.58254 2.83481 9.6938 2 11 2C12.3062 2 13.4175 2.83481 13.8293 4H8.17071ZM6.10002 4C6.56329 1.71776 8.58104 0 11 0C13.419 0 15.4367 1.71776 15.9 4H22V6H20V22H2V6H0V4H6.10002ZM6.5 17.5V9.5H8.5V17.5H6.5ZM13.5 9.5V17.5H15.5V9.5H13.5Z"
+      fill="white"
+    />
+  </svg>
+)
+export const CheckedIcon = () => (
+  <svg
+    width="24"
+    height="19"
+    viewBox="0 0 24 19"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      fill-rule="evenodd"
+      clip-rule="evenodd"
+      d="M23.9141 2.914L8.50006 18.328L0.0860596 9.914L2.91406 7.086L8.50006 12.672L21.0861 0.0859985L23.9141 2.914Z"
+      fill="white"
+    />
+  </svg>
+)
