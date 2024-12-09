@@ -6,6 +6,7 @@ import ResourceView from './resource'
 import OrganisationView from './organisation'
 import IndividualsView from './individuals'
 import GeographyView from './geography'
+import withAuth from '../../components/withAuth'
 
 const Admin = ({ isAuthenticated, setLoginVisible, profile }) => {
   return (
@@ -45,4 +46,4 @@ export const getStaticProps = async (ctx) => {
   }
 }
 
-export default Admin
+export default withAuth(Admin)

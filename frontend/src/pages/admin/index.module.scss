@@ -5,6 +5,14 @@
 
   :global {
 
+    .no-data {
+      text-align: center;
+      margin-top: 40px;
+      font-weight: 700;
+      font-size: 16px;
+      color: $primaryDarkBlueText;
+    }
+
     .geography {
       padding: 10px 0px;
 

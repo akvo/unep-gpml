@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import {
   Card,
   Button,
@@ -28,33 +28,34 @@ const Individuals = ({ isAuthenticated, setLoginVisible, profile }) => {
   const [openItem, setOpenItem] = useState(null)
   const [modalVisible, setModalVisible] = useState(false)
 
-  const fetchData = async (page, limit, status, append = false) => {
-    setLoading(true)
-    try {
-      const result = await fetchSubmissionData(
-        page,
-        limit,
-        'stakeholders',
-        status
-      )
+  const fetchData = useCallback(
+    async (currentPage, currentLimit, currentStatus, append = false) => {
+      setLoading(true)
+      try {
+        const result = await fetchSubmissionData(
+          currentPage,
+          currentLimit,
+          'stakeholders',
+          currentStatus
+        )
 
-      setData((prevData) =>
-        append ? [...prevData, ...result.data] : result.data
-      )
-
-      if (result.data.length < limit) {
-        setHasMore(false)
+        setData((prevData) =>
+          append ? [...prevData, ...result.data] : result.data
+        )
+        const hasMorePages = currentPage * currentLimit < result.count
+        setHasMore(hasMorePages)
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      } finally {
+        setLoading(false)
       }
-    } catch (error) {
-      console.error('Error fetching data:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
+    },
+    []
+  )
 
   useEffect(() => {
-    fetchData(1, limit, status)
-    setHasMore(true)
+    setPage(1) // Reset page when status changes
+    fetchData(1, limit, status, false) // false ensures data isn't appended
   }, [status, limit])
 
   const handleLoadMore = () => {
@@ -65,7 +66,8 @@ const Individuals = ({ isAuthenticated, setLoginVisible, profile }) => {
 
   const handleStatusChange = (value) => {
     setStatus(value)
-    setPage(1)
+    setData([]) // Clear existing data when status changes
+    setHasMore(true) // Reset hasMore state
   }
 
   const showDeleteConfirm = (record) => {
@@ -129,6 +131,9 @@ const Individuals = ({ isAuthenticated, setLoginVisible, profile }) => {
         message.error('Failed to approve individual')
       })
   }
+
+  // Determine if load more button should be shown
+  const shouldShowLoadMore = !loading && hasMore && data.length > 0
 
   return (
     <div className="resource-view">
@@ -199,7 +204,7 @@ const Individuals = ({ isAuthenticated, setLoginVisible, profile }) => {
         </div>
       </Spin>
       <div>
-        {hasMore && (
+        {shouldShowLoadMore ? (
           <Button
             className="load-more-button"
             size="small"
@@ -209,8 +214,10 @@ const Individuals = ({ isAuthenticated, setLoginVisible, profile }) => {
           >
             Load More
           </Button>
+        ) : (
+          data.length > 0 &&
+          !loading && <p className="no-data">No more data to load</p>
         )}
-        {!hasMore && <p>No more data to load</p>}
       </div>
 
       <DetailModal
