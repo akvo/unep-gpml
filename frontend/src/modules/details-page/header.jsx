@@ -197,11 +197,10 @@ const Header = ({
     .map((stakeholder) => stakeholder?.stakeholderId)
 
   const find = resourceOwners?.includes(profile?.id)
-
   const canEdit = () =>
     isAuthenticated &&
     profile.reviewStatus === 'APPROVED' &&
-    (profile.role === 'ADMIN' || data.owners.includes(profile.id) || find) &&
+    (profile.role === 'ADMIN' || data?.owners?.includes(profile.id) || find) &&
     ((type !== 'initiative' && !noEditTopics.has(type)) ||
       (type === 'initiative' && id > 10000))
 
