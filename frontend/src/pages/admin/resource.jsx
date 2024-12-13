@@ -16,6 +16,7 @@ import api from '../../utils/api'
 import DetailModal from '../../modules/details-page/modal'
 import bodyScrollLock from '../../modules/details-page/scroll-utils'
 import { useRouter } from 'next/router'
+const { Option } = Select
 
 const { confirm } = Modal
 

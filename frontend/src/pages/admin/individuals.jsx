@@ -15,6 +15,7 @@ import { fetchSubmissionData } from '../../modules/profile/utils'
 import { t, Trans } from '@lingui/macro'
 import api from '../../utils/api'
 import DetailModal from '../../modules/community-hub/modal'
+const { Option } = Select
 
 const { confirm } = Modal
 

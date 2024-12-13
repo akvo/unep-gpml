@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Form, Field } from 'react-final-form'
 import {
   Button,
@@ -26,6 +26,11 @@ import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
 import { lifecycleStageTags } from '../../utils/misc'
 import { useRouter } from 'next/router'
 import { loadCatalog } from '../../translations/utils'
+import debounce from 'lodash/debounce'
+import dynamic from 'next/dynamic'
+const RichTextEditor = dynamic(() => import('react-rte'), {
+  ssr: false, // Disable server-side rendering for the editor
+})
 
 const { Dragger } = Upload
 const { Title } = Typography
@@ -137,6 +142,7 @@ const formConfigs = {
       ],
       [{ name: 'highlights', span: 24, initialValue: [{ text: '', url: '' }] }],
       [{ name: 'outcomes', span: 24, required: true, initialValue: [''] }],
+      [{ name: 'relatedContent', span: 12, label: 'Related Content' }],
     ],
   },
   'Technical Resource': {
@@ -185,6 +191,7 @@ const formConfigs = {
           required: true,
         },
       ],
+      [{ name: 'relatedContent', span: 12 }],
     ],
   },
   'Financing Resource': {
@@ -237,6 +244,7 @@ const formConfigs = {
           span: 12,
         },
       ],
+      [{ name: 'relatedContent', span: 12 }],
     ],
   },
   'Action Plan': {
@@ -293,6 +301,7 @@ const formConfigs = {
           span: 12,
         },
       ],
+      [{ name: 'relatedContent', span: 12 }],
     ],
   },
   Technology: {
@@ -334,6 +343,7 @@ const formConfigs = {
         { name: 'partners', span: 12 },
       ],
       [{ name: 'yearFounded', span: 12, label: 'Year Founded' }],
+      [{ name: 'relatedContent', span: 12 }],
     ],
   },
   Legislation: {
@@ -374,6 +384,7 @@ const formConfigs = {
         { name: 'owner', span: 12, required: true },
         { name: 'partners', span: 12 },
       ],
+      [{ name: 'relatedContent', span: 12 }],
     ],
   },
   Dataset: {
@@ -413,6 +424,10 @@ const formConfigs = {
       [
         { name: 'owner', span: 12, required: true },
         { name: 'partners', span: 12 },
+      ],
+      [
+        { name: 'relatedContent', span: 12 },
+        { name: 'infoDocs', span: 12 },
       ],
     ],
   },
@@ -479,6 +494,7 @@ const formConfigs = {
         },
         { name: 'recording', span: 24, label: 'Recording URL' },
       ],
+      [{ name: 'relatedContent', span: 12 }],
     ],
   },
   Initiative: {
@@ -523,6 +539,7 @@ const formConfigs = {
         { name: 'owner', span: 12 },
         { name: 'partners', span: 12 },
       ],
+      [{ name: 'relatedContent', span: 12 }],
     ],
   },
 }
@@ -1313,6 +1330,49 @@ const FormField = React.memo(
                   {meta.error}
                 </p>
               )}
+            </FormLabel>
+          )
+
+        case 'relatedContent':
+          return (
+            <FormLabel
+              label="Related Content"
+              htmlFor={name}
+              isOptional={!fieldConfig?.required}
+              meta={meta}
+            >
+              <RelatedSelectWidget
+                name={name}
+                input={input}
+                meta={meta}
+                fieldConfig={fieldConfig}
+                placeholder={`Select ${name}`}
+                getSearchResults={(queryString) =>
+                  api.get(`/list?${String(queryString)}`)
+                }
+              />
+            </FormLabel>
+          )
+        case 'infoDocs':
+          return (
+            <FormLabel
+              label="Info And Docs"
+              htmlFor={name}
+              isOptional={!fieldConfig?.required}
+              meta={meta}
+            >
+              <InfoDocsWidget
+                id={name}
+                value={input.value || ''}
+                onChange={input.onChange}
+                onBlur={input.onBlur}
+                required={fieldConfig?.required}
+                readonly={false}
+                options={{
+                  emptyValue: '',
+                }}
+                rawErrors={meta.error ? [meta.error] : []}
+              />
             </FormLabel>
           )
 
@@ -2139,6 +2199,222 @@ const getUpdatedFields = (initialValues, currentValues) => {
   })
 
   return updatedFields
+}
+
+const RelatedSelectWidget = ({
+  name,
+  input,
+  meta,
+  placeholder,
+  getSearchResults,
+}) => {
+  const [fetching, setFetching] = useState(false)
+  const [data, setData] = useState([])
+  const [searchStr, setSearchStr] = useState('')
+  const fetchRef = useRef(0)
+
+  const handleSearch = React.useMemo(() => {
+    const loadOptions = async (value) => {
+      setSearchStr(value)
+      fetchRef.current += 1
+      const fetchId = fetchRef.current
+
+      setFetching(true)
+      try {
+        const searchParams = new URLSearchParams()
+        searchParams.set('limit', 10)
+        searchParams.set('q', value)
+
+        const response = await getSearchResults(searchParams.toString())
+
+        if (fetchId !== fetchRef.current) return
+
+        const transformedData = response.data.map((item) => ({
+          id: item.id,
+          name: item.title,
+          type: item.type,
+        }))
+
+        setData(transformedData)
+      } catch (error) {
+        console.error('Search error:', error)
+      } finally {
+        setFetching(false)
+      }
+    }
+
+    return debounce(loadOptions, 300)
+  }, [getSearchResults])
+
+  const handleChange = (values, options) => {
+    const formattedValue = values
+      .map((selectedValue) => {
+        if (!selectedValue) return null
+
+        const id = parseInt(selectedValue)
+        if (isNaN(id)) return null
+
+        const selectedItem = data.find((item) => item.id === id)
+        if (selectedItem) {
+          return {
+            id: selectedItem.id,
+            type: selectedItem.type,
+          }
+        }
+        return null
+      })
+      .filter(Boolean)
+
+    input.onChange(formattedValue)
+  }
+
+  return (
+    <Select
+      mode="multiple"
+      showSearch
+      size="small"
+      value={input.value ? input.value.map((v) => v.id.toString()) : []}
+      onChange={handleChange}
+      onBlur={input.onBlur}
+      onSearch={handleSearch}
+      placeholder={placeholder || `Search ${name}`}
+      style={{ width: '100%' }}
+      filterOption={false}
+      notFoundContent={
+        fetching ? (
+          <Spin size="small" />
+        ) : searchStr.length > 0 ? (
+          <div style={{ padding: '8px', textAlign: 'center' }}>
+            No Results Found
+          </div>
+        ) : null
+      }
+      className={meta.touched && !meta.valid ? 'ant-input-status-error' : ''}
+    >
+      {data.map((item) => (
+        <Option key={item.id} value={item.id.toString()}>
+          {item.name}
+        </Option>
+      ))}
+    </Select>
+  )
+}
+
+const InfoDocsWidget = ({
+  autofocus,
+  disabled,
+  formContext,
+  id,
+  onBlur,
+  onChange,
+  onFocus,
+  options,
+  readonly,
+  required,
+  schema,
+  value,
+  rawErrors,
+}) => {
+  const [editorValue, setEditorValue] = useState()
+  const router = useRouter()
+
+  const handleChange = (newValue) => {
+    setEditorValue(newValue)
+    if (onChange) {
+      onChange(newValue === '' ? options.emptyValue : newValue.toString('html'))
+    }
+  }
+
+  useEffect(() => {
+    const initializeEditor = async () => {
+      try {
+        const module = await import('react-rte')
+        const initialValue = module.createValueFromString(value || '', 'html')
+        setEditorValue(initialValue)
+      } catch (error) {
+        console.error('Error initializing rich text editor:', error)
+      }
+    }
+
+    initializeEditor()
+  }, [router.pathname])
+
+  const toolbarConfig = {
+    display: [
+      'INLINE_STYLE_BUTTONS',
+      'BLOCK_TYPE_BUTTONS',
+      'LINK_BUTTONS',
+      'BLOCK_TYPE_DROPDOWN',
+      'HISTORY_BUTTONS',
+    ],
+    INLINE_STYLE_BUTTONS: [
+      {
+        label: 'Bold',
+        style: 'BOLD',
+        className: 'custom-css-class',
+        title: 'Make text bold (Ctrl+B)',
+      },
+      {
+        label: 'Italic',
+        style: 'ITALIC',
+        title: 'Make text italic (Ctrl+I)',
+      },
+      {
+        label: 'Underline',
+        style: 'UNDERLINE',
+        title: 'Underline text (Ctrl+U)',
+      },
+      {
+        label: 'Code',
+        style: 'CODE',
+        title: 'Format as inline code',
+      },
+    ],
+    BLOCK_TYPE_DROPDOWN: [
+      { label: 'Normal', style: 'unstyled' },
+      { label: 'Heading Large', style: 'header-one' },
+      { label: 'Heading Medium', style: 'header-two' },
+      { label: 'Heading Small', style: 'header-three' },
+    ],
+    BLOCK_TYPE_BUTTONS: [
+      { label: 'UL', style: 'unordered-list-item', title: 'Bulleted List' },
+      { label: 'OL', style: 'ordered-list-item', title: 'Numbered List' },
+    ],
+  }
+
+  const editorStyle = {
+    minHeight: '200px',
+    border: rawErrors?.length ? '1px solid #ff4d4f' : '1px solid #d9d9d9',
+    borderRadius: '4px',
+  }
+
+  if (!editorValue) {
+    return null
+  }
+
+  return (
+    <div className="info-docs-editor">
+      <RichTextEditor
+        toolbarConfig={toolbarConfig}
+        onChange={handleChange}
+        value={editorValue}
+        placeholder="Start typing your documentation here..."
+        readOnly={readonly || disabled}
+        autoFocus={autofocus}
+        style={editorStyle}
+      />
+      {rawErrors?.length > 0 && (
+        <div
+          className="error-message"
+          style={{ color: '#ff4d4f', marginTop: '4px' }}
+        >
+          {rawErrors.map((error, index) => (
+            <div key={index}>{error}</div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
 }
 
 export const getStaticProps = async (ctx) => {
