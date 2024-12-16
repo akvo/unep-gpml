@@ -84,7 +84,7 @@ const DashboardLanding = () => {
           Explore{' '}
           <span style={{ textDecoration: 'underline' }}>Country Dashboard</span>
         </h1>
-        <p style={{ fontSize: '18px', marginBottom: '40px' }}>
+        <p style={{ fontSize: '18px', marginBottom: '20px' }}>
           The GPML Country Dashboard provides a comprehensive snapshot of
           plastic flows in both the economy and the environment for each
           country. It consolidates data from best available global datasets into
@@ -93,7 +93,7 @@ const DashboardLanding = () => {
           require further collection efforts in specific countries.
         </p>
 
-        <p style={{ fontSize: '16px', marginBottom: '20px' }}>
+        <p style={{ fontSize: '18px', marginBottom: '20px' }}>
           The data featured on the Country Dashboard comes from reliable
           sources, including country reports on the Sustainable Development
           Goals, as well as modeled global estimates from UN agencies, academic
@@ -103,7 +103,7 @@ const DashboardLanding = () => {
           outputs.
         </p>
 
-        <p style={{ fontSize: '16px', marginBottom: '20px' }}>
+        <p style={{ fontSize: '18px', marginBottom: '20px' }}>
           You are currently viewing the beta version of the Country Dashboard,
           and we welcome your feedback on its usability and content. We
           particularly welcome suggestions for updated and improved data sources
