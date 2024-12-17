@@ -42,10 +42,10 @@ const CategoriesNested = ({ categories }) => {
   }
 
   return (
+
     <Sider
       breakpoint="lg"
       collapsedWidth="0"
-      style={{ overflow: 'auto' }}
       width={360}
     >
       <div className="caps-heading-s">Topics</div>
