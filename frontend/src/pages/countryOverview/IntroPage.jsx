@@ -103,8 +103,8 @@ const DashboardLanding = () => {
           outputs.
         </p>
 
-        <p style={{ fontSize: '18px', marginBottom: '20px' }}>
-          You are currently viewing the beta version of the Country Dashboard,
+        <p style={{ fontSize: '18px', fontStyle: 'italic', marginBottom: '20px' }}>
+          * You are currently viewing the beta version of the Country Dashboard,
           and we welcome your feedback on its usability and content. We
           particularly welcome suggestions for updated and improved data sources
           for your country. To request a data update, please use the "Request
