@@ -142,7 +142,10 @@ const formConfigs = {
       ],
       [{ name: 'highlights', span: 24, initialValue: [{ text: '', url: '' }] }],
       [{ name: 'outcomes', span: 24, required: true, initialValue: [''] }],
-      [{ name: 'relatedContent', span: 12, label: 'Related Content' }],
+      [
+        { name: 'relatedContent', span: 12 },
+        { name: 'infoDocs', span: 12 },
+      ],
     ],
   },
   'Technical Resource': {
@@ -191,7 +194,10 @@ const formConfigs = {
           required: true,
         },
       ],
-      [{ name: 'relatedContent', span: 12 }],
+      [
+        { name: 'relatedContent', span: 12 },
+        { name: 'infoDocs', span: 12 },
+      ],
     ],
   },
   'Financing Resource': {
@@ -244,7 +250,10 @@ const formConfigs = {
           span: 12,
         },
       ],
-      [{ name: 'relatedContent', span: 12 }],
+      [
+        { name: 'relatedContent', span: 12 },
+        { name: 'infoDocs', span: 12 },
+      ],
     ],
   },
   'Action Plan': {
@@ -301,7 +310,10 @@ const formConfigs = {
           span: 12,
         },
       ],
-      [{ name: 'relatedContent', span: 12 }],
+      [
+        { name: 'relatedContent', span: 12 },
+        { name: 'infoDocs', span: 12 },
+      ],
     ],
   },
   Technology: {
@@ -343,7 +355,10 @@ const formConfigs = {
         { name: 'partners', span: 12 },
       ],
       [{ name: 'yearFounded', span: 12, label: 'Year Founded' }],
-      [{ name: 'relatedContent', span: 12 }],
+      [
+        { name: 'relatedContent', span: 12 },
+        { name: 'infoDocs', span: 12 },
+      ],
     ],
   },
   Legislation: {
@@ -384,7 +399,10 @@ const formConfigs = {
         { name: 'owner', span: 12, required: true },
         { name: 'partners', span: 12 },
       ],
-      [{ name: 'relatedContent', span: 12 }],
+      [
+        { name: 'relatedContent', span: 12 },
+        { name: 'infoDocs', span: 12 },
+      ],
     ],
   },
   Dataset: {
@@ -494,7 +512,10 @@ const formConfigs = {
         },
         { name: 'recording', span: 24, label: 'Recording URL' },
       ],
-      [{ name: 'relatedContent', span: 12 }],
+      [
+        { name: 'relatedContent', span: 12 },
+        { name: 'infoDocs', span: 12 },
+      ],
     ],
   },
   Initiative: {
@@ -539,7 +560,10 @@ const formConfigs = {
         { name: 'owner', span: 12 },
         { name: 'partners', span: 12 },
       ],
-      [{ name: 'relatedContent', span: 12 }],
+      [
+        { name: 'relatedContent', span: 12 },
+        { name: 'infoDocs', span: 12 },
+      ],
     ],
   },
 }
