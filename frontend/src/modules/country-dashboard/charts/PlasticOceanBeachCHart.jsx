@@ -93,8 +93,8 @@ const PlasticOceanBeachChart = ({ layers, loading }) => {
 
     return {
       title: {
-        text: 'Mismanaged plastic reaching oceans and coasts​',
-        subtext: `Percentage of the mismanaged waste between years 2010-2019`,
+        text: 'Escaped plastic reaching oceans and coasts​',
+        subtext: `Percentage of the escaped waste between years 2010-2019`,
         left: 'center',
         textStyle: {
           fontSize: 16,
