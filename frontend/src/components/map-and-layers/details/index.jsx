@@ -22,6 +22,7 @@ const Details = ({ title, layerId }) => {
       position={position}
       disabled={false}
       bounds="parent"
+      cancel=".cancel-drag" 
     >
       <div
         style={{
@@ -42,12 +43,12 @@ const Details = ({ title, layerId }) => {
             cursor: 'move',
           }}
           bodyStyle={{
-            pointerEvents: 'auto',
+            pointerEvents: 'auto', 
           }}
           className="legend-card"
         >
           <Button
-            className="show-hide-btn"
+            className="show-hide-btn cancel-drag" 
             type="text"
             onClick={toggleShowLegend}
             icon={showLegend ? <UpOutlined /> : <DownOutlined />}
