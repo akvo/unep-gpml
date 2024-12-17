@@ -197,12 +197,7 @@
   [_ {:keys [db logger] :as config}]
   (fn [{:keys [body-params parameters user]}]
     (try
-      (if-not (h.r.permission/operation-allowed?
-               config
-               {:user-id (:id user)
-                :entity-type :project
-                :operation-type :create
-                :root-context? true})
+      (if-not (= (:review_status user) "APPROVED")
         (r/forbidden {:message "Unauthorized"})
         (jdbc/with-db-transaction [tx (:spec db)]
           (let [project-id (create-project

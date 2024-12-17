@@ -54,14 +54,15 @@
                                                       "john.doe@mail.invalid"
                                                       "APPROVED"
                                                       "USER")
+            sth (test-util/stakeholder-by-id config {:id sth-id})
             ;; create John create new technology with available organisation
             resp-one (handler (-> (mock/request :post "/")
-                                  (assoc :user {:id sth-id}
+                                  (assoc :user sth
                                          :body-params (new-technology data)
                                          :parameters {:body {:source dom.types/default-resource-source}})))
             ;; create John create new technology with new organisation
             resp-two (handler (-> (mock/request :post "/")
-                                  (assoc :user {:id sth-id}
+                                  (assoc :user sth
                                          :body-params (assoc (new-technology data)
                                                              :owners [sth-id]
                                                              :org
@@ -110,8 +111,9 @@
                                                       "john.doe2@mail.invalid"
                                                       "SUBMITTED"
                                                       "USER")
+            sth (test-util/stakeholder-by-id config {:id sth-id})
             resp (handler (-> (mock/request :post "/")
-                              (assoc :user {:id sth-id}
+                              (assoc :user sth
                                      :body-params (new-technology data)
                                      :parameters {:body {:source dom.types/default-resource-source}})))]
         (is (= 403 (:status resp)))))))
