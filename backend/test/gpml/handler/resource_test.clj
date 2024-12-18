@@ -61,13 +61,14 @@
                                                       "USER")
             ;; create John create new resource with available organisation
             payload (new-resource data)
+            sth (test-util/stakeholder-by-id config {:id sth-id})
             resp-one (handler (-> (mock/request :post "/")
-                                  (assoc :user {:id sth-id}
+                                  (assoc :user sth
                                          :parameters {:body {:source dom.types/default-resource-source}}
                                          :body-params payload)))
             ;; create John create new resource with new organisation
             resp-two (handler (-> (mock/request :post "/")
-                                  (assoc :user {:id sth-id}
+                                  (assoc :user sth
                                          :parameters {:body {:source dom.types/default-resource-source}}
                                          :body-params
                                          (assoc (new-resource (merge data {:owners [sth-id]}))
@@ -105,8 +106,9 @@
                                                       "USER")
             ;; create John create new resource with available organisation
             payload (new-resource data)
+            sth (test-util/stakeholder-by-id config {:id sth-id})
             resp-one (handler (-> (mock/request :post "/")
-                                  (assoc :user {:id sth-id}
+                                  (assoc :user sth
                                          :parameters {:body {:source dom.types/default-resource-source}}
                                          :body-params payload)))]
         (is (= 403 (:status resp-one)))))))

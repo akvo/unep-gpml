@@ -26,13 +26,14 @@
                                                       "john.doe@mail.invalid"
                                                       "APPROVED"
                                                       "USER")
+            sth (test-util/stakeholder-by-id config {:id sth-id})
             ;; John create new initiative with new organisation
             submission (seeder/parse-data
                         (slurp (io/resource "examples/submission-initiative.json"))
                         {:keywords? true
                          :add-default-lang? true})
             resp (handler (-> (mock/request :post "/")
-                              (assoc :user {:id sth-id})
+                              (assoc :user sth)
                               (assoc :body-params (assoc submission :version 1))
                               (assoc :parameters {:body {:source dom.types/default-resource-source}})))
             data (db.initiative/initiative-by-id conn (:body resp))]
@@ -51,13 +52,14 @@
                                                       "john.doe2@mail.invalid"
                                                       "SUBMITTED"
                                                       "USER")
+            sth (test-util/stakeholder-by-id config {:id sth-id})
             ;; John create new initiative with new organisation
             submission (seeder/parse-data
                         (slurp (io/resource "examples/submission-initiative.json"))
                         {:keywords? true
                          :add-default-lang? true})
             resp (handler (-> (mock/request :post "/")
-                              (assoc :user {:id sth-id})
+                              (assoc :user sth)
                               (assoc :body-params (assoc submission :version 1))
                               (assoc :parameters {:body {:source dom.types/default-resource-source}})))]
         (is (= 403 (:status resp)))))))

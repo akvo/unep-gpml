@@ -7,7 +7,6 @@
    [gpml.domain.case-study :as dom.case-study]
    [gpml.handler.file :as handler.file]
    [gpml.handler.resource.geo-coverage :as handler.geo]
-   [gpml.handler.resource.permission :as h.r.permission]
    [gpml.handler.resource.related-content :as handler.resource.related-content]
    [gpml.handler.resource.tag :as handler.resource.tag]
    [gpml.handler.responses :as r]
@@ -112,12 +111,7 @@
   [_ {:keys [db logger] :as config}]
   (fn [{:keys [parameters user]}]
     (try
-      (if (h.r.permission/operation-allowed?
-           config
-           {:user-id (:id user)
-            :entity-type :case-study
-            :operation-type :create
-            :root-context? true})
+      (if (= (:review_status user) "APPROVED")
         (jdbc/with-db-transaction [tx (:spec db)]
           (let [cs-id (create-case-study
                        config
