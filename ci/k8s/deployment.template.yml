@@ -55,14 +55,16 @@ spec:
           httpGet:
             path: /
             port: 3001
-          initialDelaySeconds: 30
+          initialDelaySeconds: 120
+          timeoutSeconds: 5
         livenessProbe:
           httpGet:
             path: /
             port: 3001
-          initialDelaySeconds: 60
+          initialDelaySeconds: 120
           periodSeconds: 30
           failureThreshold: 4
+          timeoutSeconds: 5
         env:
         - name: NEXT_PUBLIC_ENV
           valueFrom:
