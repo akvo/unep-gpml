@@ -29,14 +29,29 @@ const View = () => {
       <p>
         <Trans>description-intro-5-national-source</Trans>
       </p>
-      <a
-        href={`https://docs.google.com/presentation/d/${match[1]}/export/pptx`}
-        target="_blank"
-      >
-        <Button size="small" type="link">
-          Download
-        </Button>
-      </a>
+      <ul>
+        <li>
+          <a
+            href="https://docs.google.com/spreadsheets/d/1fXG_jOQAr0LZM69v_h--h_OryI08NgZ6/edit?gid=912237927#gid=912237927"
+            target="_blank"
+          >
+            <Button size="small" type="link">
+              Simple Excel Tool for Indicator Mapping
+            </Button>
+          </a>
+        </li>
+        <li>
+          <a
+            href={`https://docs.google.com/presentation/d/${match[1]}/export/pptx`}
+            target="_blank"
+          >
+            <Button size="small" type="link">
+              Download Slides
+            </Button>
+          </a>
+        </li>
+      </ul>
+
       <iframe
         src={slideURL}
         frameborder="0"
