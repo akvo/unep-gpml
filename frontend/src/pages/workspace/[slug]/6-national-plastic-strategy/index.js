@@ -29,14 +29,29 @@ const View = () => {
       <p>
         <Trans>description-intro-6-national-plastic-strategy</Trans>
       </p>
-      <a
-        href={`https://docs.google.com/presentation/d/${match[1]}/export/pptx`}
-        target="_blank"
-      >
-        <Button size="small" type="link">
-          Download
-        </Button>
-      </a>
+      <ul>
+        <li>
+          <a
+            href="https://docs.google.com/document/d/1y37NoY4c51ztstQeOzHCvS8hIkVY698i/edit"
+            target="_blank"
+          >
+            <Button size="small" type="link">
+              Potential elements of a National Plastics Strategy
+            </Button>
+          </a>
+        </li>
+        <li>
+          <a
+            href={`https://docs.google.com/presentation/d/${match[1]}/export/pptx`}
+            target="_blank"
+          >
+            <Button size="small" type="link">
+              Download Slides
+            </Button>
+          </a>
+        </li>
+      </ul>
+
       <iframe
         src={slideURL}
         frameborder="0"
