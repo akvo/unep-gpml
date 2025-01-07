@@ -262,7 +262,8 @@ const formDataMapping = [
 const EntityEditSignUp = ({ match: { params }, ...props }) => {
   const router = useRouter()
   const { formType } = router.query
-  const isEntityType = formType === 'entity' ? true : false
+  const isEntityType =
+    formType === 'entity' || formType === 'organisation' ? true : false
   const isStakeholderType = !isEntityType
   const {
     tabs,
@@ -351,32 +352,8 @@ const EntityEditSignUp = ({ match: { params }, ...props }) => {
   }, [schema, highlight])
 
   const isLoaded = useCallback(() => {
-    return Boolean(
-      !isEmpty(countries) &&
-        !isEmpty(tags) &&
-        !isEmpty(profile) &&
-        !isEmpty(regionOptions) &&
-        !isEmpty(transnationalOptions) &&
-        !isEmpty(organisations) &&
-        !isEmpty(sectorOptions) &&
-        !isEmpty(organisationType) &&
-        !isEmpty(meaOptions) &&
-        !isEmpty(stakeholders) &&
-        !isEmpty(representativeGroup)
-    )
-  }, [
-    countries,
-    tags,
-    profile,
-    regionOptions,
-    transnationalOptions,
-    sectorOptions,
-    organisations,
-    organisationType,
-    meaOptions,
-    stakeholders,
-    representativeGroup,
-  ])
+    return Boolean(!isEmpty(countries) && !isEmpty(tags) && !isEmpty(profile))
+  }, [countries, tags, profile])
 
   const getRevertValue = (type, value, name) => {
     let res = value
