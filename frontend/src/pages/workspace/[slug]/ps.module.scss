@@ -186,6 +186,12 @@
     padding: 25px 0;
   }
   :global {
+    ul {
+      li {
+        padding: 5px 0;
+        line-height: 30px;
+      }
+    }
     .iframe-container {
       position: absolute;
       .ant-btn {
