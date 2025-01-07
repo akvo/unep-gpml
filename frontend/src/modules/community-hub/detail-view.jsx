@@ -148,7 +148,7 @@ const DetailView = ({ item, profile, setLoginVisible, isAuthenticated }) => {
           <h4 className="h-caps-m">member individual</h4>
           <h1>
             {data.name}
-            {profile.role === 'ADMIN' ? (
+            {profile?.role === 'ADMIN' ? (
               <AdminBadges
                 {...{ data }}
                 badgeOpts={['user-verified', 'user-focal-point-verified']}
@@ -216,7 +216,7 @@ const DetailView = ({ item, profile, setLoginVisible, isAuthenticated }) => {
                     <span>{data.linkedin}</span>
                   </div>
                 )}
-                {profile.role === 'ADMIN' && <AdminDropdown {...{ data }} />}
+                {profile?.role === 'ADMIN' && <AdminDropdown {...{ data }} />}
                 {/* {profile.role === 'ADMIN' && (
                   <Link href={`/edit/entity/${data.id}?formType=stakeholder`}>
                     <Button size="small" type="link">
@@ -239,7 +239,7 @@ const DetailView = ({ item, profile, setLoginVisible, isAuthenticated }) => {
           <h4 className="h-caps-m">member organisation</h4>
           <h1>
             {data.name}
-            {profile.role === 'ADMIN' ? (
+            {profile?.role === 'ADMIN' ? (
               <AdminBadges
                 {...{ data }}
                 badgeOpts={['org-verified', 'org-partner-verified']}
@@ -275,7 +275,7 @@ const DetailView = ({ item, profile, setLoginVisible, isAuthenticated }) => {
               <LinkedinOutlined />
               <span>http...</span>
             </div> */}
-            {profile.role === 'ADMIN' && <AdminDropdown {...{ data }} />}
+            {profile?.role === 'ADMIN' && <AdminDropdown {...{ data }} />}
           </div>
         </div>
         <div className="content">
