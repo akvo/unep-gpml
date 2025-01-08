@@ -132,9 +132,11 @@ const ProjectDetail = ({ data: inData, isModal, setVisible }) => {
             <Swiper
               spaceBetween={15}
               slidesPerView={'auto'}
-              navigation={true}
-              pagination={true}
-              modules={[Navigation, Pagination]}
+              // navigation={true}
+              pagination={{
+                clickable: true,
+              }}
+              modules={[Pagination]}
             >
               {data?.image && (
                 <SwiperSlide>

@@ -12,6 +12,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
   color: $primaryDarkBlue;
 }
+#root {
+  overflow-x: hidden;
+}
 .h-xxl {
   font-size: $fzXXL;
   line-height: $lhXXL;
@@ -1098,6 +1101,21 @@ ul {
   &.user-focal-point-verified {
     path:first-child {
       fill: $primaryBlue5;
+    }
+  }
+}
+
+.swiper {
+  padding-bottom: 40px !important;
+  .swiper-pagination {
+    bottom: 0px !important;
+    .swiper-pagination-bullet {
+      background-color: #d9d9d9;
+      width: 14px;
+      height: 14px;
+      &.swiper-pagination-bullet-active {
+        background-color: #444444;
+      }
     }
   }
 }

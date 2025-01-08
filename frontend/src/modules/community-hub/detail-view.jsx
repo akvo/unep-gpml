@@ -31,6 +31,7 @@ import classNames from 'classnames'
 import DetailModal from '../details-page/modal'
 import { useRouter } from 'next/router'
 import bodyScrollLock from '../../modules/details-page/scroll-utils'
+import { Pagination as SwiperPagination, Navigation } from 'swiper'
 
 export const AdminBadges = ({ data, badgeOpts }) => {
   const [assigned, setAssigned] = useState(
@@ -313,6 +314,10 @@ const DetailView = ({ item, profile, setLoginVisible, isAuthenticated }) => {
                 slidesPerGroup={4}
                 slidesPerView={'auto'}
                 className="resource-cards"
+                pagination={{
+                  clickable: true,
+                }}
+                modules={[SwiperPagination]}
               >
                 {resources.map((item) => (
                   <SwiperSlide>
