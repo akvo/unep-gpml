@@ -18,7 +18,7 @@ const PlasticOceanBeachChart = ({ layers, loading }) => {
       const oceanLayer = layers.find(
         (layer) =>
           layer.attributes.arcgislayerId ===
-          'Mismanaged_plastic_waste_escaping_to_oceans_V4_WFL1'
+          'Mismanaged_plastic_waste_escaping_to_oceans_V3_WFL1'
       )
       const coastLayer = layers.find(
         (layer) =>

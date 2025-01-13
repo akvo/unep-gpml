@@ -14,44 +14,18 @@ module.exports = {
                 first: 2,
             };
 
-            const { country, countryCode, placeholders: clientPlaceholders } = ctx.request.body;
+            const { country, countryCode, placeholders: clientPlaceholders, layerJson } = ctx.request.body;
 
-            if (!clientPlaceholders || !Array.isArray(clientPlaceholders)) {
-                return ctx.badRequest('Invalid or missing placeholders array');
-            }
-
-            const uniqueLayerIds = [...new Set(
-                clientPlaceholders
-                    .map(placeholder => placeholder.split('=')[0].split(/(_year|_total|_last|_first|_city|\*|\/|\+|\-)/)[0].trim())
-            )];
-
-            const filterQuery = {
-                arcgislayerId: {
-                    $in: uniqueLayerIds,
-                },
-            };
-            const allLayersResponse = await strapi.entityService.findMany('api::layer.layer', {
-                populate: 'ValuePerCountry',
-                pagination: {
-                    page: 1,
-                    pageSize: 150,
-                },
-                filters: filterQuery,
-            });
-
-            const layerData = allLayersResponse || [];
-
-            if (!layerData || layerData.length === 0) {
-                return ctx.notFound('Layers not found');
-            }
 
             const layerDataByArcgisId = {};
-            layerData.forEach(layer => {
-                if (layer && layer) {
-                    const { arcgislayerId, ValuePerCountry } = layer;
+            const placeholdersLayers = JSON.parse(layerJson)
+
+            placeholdersLayers.forEach(layer => {
+                if (layer && layer.attributes) {
+                    const { arcgislayerId, ValuePerCountry } = layer.attributes;
                     layerDataByArcgisId[arcgislayerId] = {
                         values: (ValuePerCountry?.filter(c => c.CountryCode ? c.CountryCode === countryCode : c.CountryName.replace(/\s+/g, '') === decodeURIComponent(country).replace(/\s+/g, ''))) || [],
-                        datasource: layer.dataSource || "Unknown source"
+                        datasource: layer.attributes.dataSource || "Unknown source"
                     };
                 }
             });
