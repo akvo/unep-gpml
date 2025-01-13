@@ -18,18 +18,19 @@ const PlasticImportExportChart = ({ layers, loading }) => {
       const importLayer = layers?.find(
         (layer) =>
           layer.attributes.arcgislayerId ===
-          'Total_plastic___value__import__WFL1'
+          'Total_plastic___value__import__V2_WFL1'
       )
       const exportLayer = layers?.find(
         (layer) =>
           layer.attributes.arcgislayerId ===
-          'Total_plastic___value__export__WFL1'
+          'Total_plastic___value__export__V2_WFL1'
       )
 
       if (!importLayer || !exportLayer) {
         console.warn('Import or export layer not found.')
         return
       }
+      
 
       const filteredImports = importLayer.attributes.ValuePerCountry?.filter(
         (item) =>

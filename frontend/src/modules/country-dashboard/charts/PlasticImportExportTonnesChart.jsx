@@ -36,27 +36,27 @@ const PlasticImportExportChart = ({ layers, loading }) => {
         plasticinPrimaryForm: layers.find(
           (layer) =>
             layer.attributes.arcgislayerId ===
-            'Plastic_in_primary_form___value__import__WFL1'
+            'Plastic_in_primary_form___value__import__V2_WFL1'
         ),
         intermediateFormsOfPlastic: layers.find(
           (layer) =>
             layer.attributes.arcgislayerId ===
-            'Intermediate___value__import__WFL1'
+            'Intermediate_forms_of_plastic___value__import__WFL1'
         ),
         finalManufacturedPlasticGoods: layers.find(
           (layer) =>
             layer.attributes.arcgislayerId ===
-            'Final_manufactured_plastics_goods___Import__million__WFL1'
+            'Final_manufactured_plastic_goods___value__import__WFL1'
         ),
         intermediateManufacturedPlasticGoods: layers.find(
           (layer) =>
             layer.attributes.arcgislayerId ===
-            'Inter__man_plastic_goods___value_V3_WFL1'
+            'Intermediate_man___value__import__V2_WFL1'
         ),
         plasticWaste: layers.find(
           (layer) =>
             layer.attributes.arcgislayerId ===
-            'Plastic_waste___value__import__WFL1'
+            'Plastic_waste___value__import__V2_WFL1'
         ),
       }
 
@@ -64,27 +64,27 @@ const PlasticImportExportChart = ({ layers, loading }) => {
         plasticinPrimaryForm: layers.find(
           (layer) =>
             layer.attributes.arcgislayerId ===
-            'Plastic_in_primary_form___value__export__WFL1'
+            'Plastic_in_primary_form___value__export__V2_WFL1'
         ),
         intermediateFormsOfPlastic: layers.find(
           (layer) =>
             layer.attributes.arcgislayerId ===
-            'Intermediate_forms_of_plastic___value__export__WFL1'
+            'Intermediate_forms_of_plastic___value__export__V2_WFL1'
         ),
         finalManufacturedPlasticGoods: layers.find(
           (layer) =>
             layer.attributes.arcgislayerId ===
-            'Final_manufactured_plastic_goods___value__export__V4_WFL1'
+            'Final_manufactured_plastic_goods___value__export__V2_WFL1'
         ),
         intermediateManufacturedPlasticGoods: layers.find(
           (layer) =>
             layer.attributes.arcgislayerId ===
-            'Intermediate_V2___value__export__WFL1'
+            'Intermediate_man___value__export__WFL1'
         ),
         plasticWaste: layers.find(
           (layer) =>
             layer.attributes.arcgislayerId ===
-            'Plastic_waste___value__export__WFL1'
+            'Plastic_waste___value__export__V2_WFL1'
         ),
       }
 
