@@ -95,11 +95,37 @@ const CountryOverview = () => {
     setModalVisible(false)
   }
 
+  const uniqueLayerIds = [
+    ...new Set(
+      selectedCategory?.attributes?.textTemplate?.placeholders.map(
+        (placeholder) =>
+          placeholder
+            .split('=')[0]
+            .split(/(_year|_total|_last|_first|_city|\*|\/|\+|\-)/)[0]
+            .trim()
+      )
+    ),
+  ]
+
+  const filteredLayers = layers.filter((layer) =>
+    uniqueLayerIds.includes(layer.attributes.arcgislayerId)
+  )
+
+  const filteredByCOuntry = filteredLayers.filter((l) =>
+    l.attributes.ValuePerCountry.filter(
+      (vpc) =>
+        vpc.CountryCode === router.query.countryCode ||
+        vpc.CountryName === router.query.country
+    )
+  )
+  const layerJson = JSON.stringify(filteredByCOuntry)
+
   const { placeholders, tooltips, loading } = useReplacedText(
     router.query.country,
     router.query.countryCode,
     router.query.categoryId,
-    selectedCategory?.attributes?.textTemplate?.placeholders
+    selectedCategory?.attributes?.textTemplate?.placeholders,
+    layerJson
   )
 
   const wrapPlaceholders = (template) => {
