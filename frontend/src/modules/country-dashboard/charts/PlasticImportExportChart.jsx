@@ -30,6 +30,7 @@ const PlasticImportExportChart = ({ layers, loading }) => {
         console.warn('Import or export layer not found.')
         return
       }
+      
 
       const filteredImports = importLayer.attributes.ValuePerCountry?.filter(
         (item) =>
