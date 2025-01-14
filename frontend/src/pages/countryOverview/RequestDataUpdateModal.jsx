@@ -1,20 +1,24 @@
 import React, { useState } from 'react'
-import {
-  Modal,
-  Form,
-  Input,
-  Button,
-  Select,
-  Checkbox,
-  Upload,
-  Tooltip,
-} from 'antd'
-import { UploadOutlined, InfoCircleOutlined } from '@ant-design/icons'
+import { Modal, Form, Input, Button, Select, Checkbox, Upload } from 'antd'
+import { UploadOutlined } from '@ant-design/icons'
+import { isEmpty } from 'lodash'
+import { UIStore } from '../../store'
 
 const { Option } = Select
 
 const RequestDataUpdateModal = ({ visible, onClose }) => {
   const [form] = Form.useForm()
+
+  const { countries } = UIStore.useState((s) => ({ countries: s.countries }))
+
+  const isLoaded = () => !isEmpty(countries)
+
+  const countryOpts = isLoaded()
+    ? countries
+        .filter((country) => country.description === 'Member State')
+        .map((it) => ({ value: it.id, label: it.name }))
+        .sort((a, b) => a.label.localeCompare(b.label))
+    : []
 
   const handleSubmit = (values) => {
     console.log('Form values: ', values)
@@ -47,10 +51,14 @@ const RequestDataUpdateModal = ({ visible, onClose }) => {
           name="country"
           rules={[{ required: true, message: 'Please select a country!' }]}
         >
-          <Select placeholder="Country for which data update is requested ">
-            <Option value="Senegal">Senegal</Option>
-            <Option value="Albania">Albania</Option>
-          </Select>
+          <Select
+            showSearch
+            placeholder="Country for which data update is requested"
+            options={countryOpts}
+            filterOption={(input, option) =>
+              option?.label?.toLowerCase().includes(input.toLowerCase())
+            }
+          />
         </Form.Item>
 
         <Form.Item label="Source of the updated dataset" name="source">
@@ -127,8 +135,7 @@ const RequestDataUpdateModal = ({ visible, onClose }) => {
           />
         </Form.Item>
 
-
-        <Form.Item label="Attach updated indicator dataset" name="dataset">
+       <Form.Item label="Attach updated indicator dataset" name="dataset">
           <Upload>
             <Button icon={<UploadOutlined />}>Upload Dataset</Button>
           </Upload>
