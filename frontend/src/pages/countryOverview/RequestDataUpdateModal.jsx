@@ -80,14 +80,14 @@ const RequestDataUpdateModal = ({ visible, onClose }) => {
 
         <Form.Item label="Personal details">
           <Form.Item
-            name="firstName"
+            name="firstName_user"
             rules={[{ required: true, message: 'Please enter your name!' }]}
             style={{ display: 'inline-block', width: 'calc(50% - 8px)' }}
           >
             <Input placeholder="First name" />
           </Form.Item>
           <Form.Item
-            name="lastName"
+            name="lastName_user"
             rules={[{ required: true, message: 'Please enter your surname!' }]}
             style={{
               display: 'inline-block',
@@ -99,7 +99,7 @@ const RequestDataUpdateModal = ({ visible, onClose }) => {
           </Form.Item>
         </Form.Item>
 
-        <Form.Item label="Organisational affiliation" name="organization">
+        <Form.Item label="Organisational affiliation" name="organization_user">
           <Input placeholder="Please insert the name of organisation you are affiliated with." />
         </Form.Item>
 
@@ -135,7 +135,7 @@ const RequestDataUpdateModal = ({ visible, onClose }) => {
           />
         </Form.Item>
 
-       <Form.Item label="Attach updated indicator dataset" name="dataset">
+        <Form.Item label="Attach updated indicator dataset" name="dataset">
           <Upload>
             <Button icon={<UploadOutlined />}>Upload Dataset</Button>
           </Upload>
