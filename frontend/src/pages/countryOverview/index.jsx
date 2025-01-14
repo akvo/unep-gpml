@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Row, Col, Button } from 'antd'
+import { Row, Col, Button, Spin } from 'antd'
 import { useRouter } from 'next/router'
 import useReplacedText from '../../hooks/useReplacePlaceholders'
 import PlasticImportExportChart from '../../modules/country-dashboard/charts/PlasticImportExportChart'
@@ -127,6 +127,16 @@ const CountryOverview = () => {
     selectedCategory?.attributes?.textTemplate?.placeholders,
     layerJson
   )
+
+  if (loading || layerLoading || !selectedCategory) {
+    return (
+      <div
+        style={{ textAlign: 'center', padding: '250px', paddingRight: '850px' }}
+      >
+        <Spin tip="Loading data..." size="large" />
+      </div>
+    )
+  }
 
   const wrapPlaceholders = (template) => {
     return template.replace(/{{(.*?)}}/g, (match, placeholder) => {
