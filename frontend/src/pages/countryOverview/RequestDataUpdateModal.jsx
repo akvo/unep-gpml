@@ -12,6 +12,7 @@ const RequestDataUpdateModal = ({ visible, onClose }) => {
   const { countries } = UIStore.useState((s) => ({ countries: s.countries }))
 
   const isLoaded = () => !isEmpty(countries)
+  console.log('Trigger build')
 
   const countryOpts = isLoaded()
     ? countries
