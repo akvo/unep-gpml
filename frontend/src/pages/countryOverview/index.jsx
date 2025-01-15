@@ -48,7 +48,6 @@ const addTooltipsToPlaceholders = (htmlString, placeholders, tooltips) => {
   const exportTrend =
     placeholders['exportIncreasePercentage'] > 0 ? 'increased' : 'decreased'
   placeholders['exportTrend'] = exportTrend
-  console.log('placeholders', placeholders)
 
   const options = {
     replace: (node) => {
