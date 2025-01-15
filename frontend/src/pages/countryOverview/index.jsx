@@ -41,6 +41,14 @@ const splitTextByMarker = (text, marker) => {
 const addTooltipsToPlaceholders = (htmlString, placeholders, tooltips) => {
   if (!placeholders || Object.keys(placeholders).length === 0) return htmlString
 
+  const importTrend =
+    placeholders['importIncreasePercentage'] > 0 ? 'increased' : 'decreased'
+  placeholders['importTrend'] = importTrend
+
+  const exportTrend =
+    placeholders['exportIncreasePercentage'] > 0 ? 'increased' : 'decreased'
+  placeholders['exportTrend'] = exportTrend
+
   const options = {
     replace: (node) => {
       if (node.name === 'placeholder' && node.attribs?.key) {
