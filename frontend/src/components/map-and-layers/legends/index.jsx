@@ -5,7 +5,7 @@ import { Tooltip } from 'antd'
 import { InfoCircleFilled } from '@ant-design/icons'
 import LayerInfo from '../sidebar/partials/layerInfo'
 import useQueryParameters from '../../../hooks/useQueryParameters'
-import useLayerInfo from '../../../hooks/useLayerInfo'
+import useIndicators from '../../../hooks/useIndicators'
 import useLoadMap from '../../../hooks/useLoadMap'
 import useLegends from '../../../hooks/useLegends'
 import { transformObjectToArray } from '../../../utils/form-utils'
@@ -24,7 +24,7 @@ const LegendCard = ({
   const [tooltipPlacement, setTooltipPlacement] = useState('right')
   const legends = useLegends(layerId, arcgisMapId, layerMappingId)
   const mapp = useLoadMap(selectedLayers)
-  const layers = useLayerInfo()
+  const layers = useIndicators()
 
   const rendererObj = mapp.renderers.find((r) =>
     r.key.trim() === 'Threat to Reefs'
@@ -197,7 +197,7 @@ const LegendCard = ({
 const Legends = () => {
   const { queryParameters } = useQueryParameters()
 
-  const allLayers = useLayerInfo()
+  const allLayers = useIndicators()
 
   const layers = queryParameters?.layer
     ? allLayers?.layers?.filter(

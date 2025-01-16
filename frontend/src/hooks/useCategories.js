@@ -28,7 +28,7 @@ const useCategories = () => {
 
 
     fetchCategories();
-  }, []);
+  }, [router.locale]);
 
   return { categories, loading };
 };
