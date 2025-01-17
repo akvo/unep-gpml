@@ -97,14 +97,15 @@ const CategoriesNestedDashboard = ({ categories }) => {
             key={category.attributes.categoryId}
             onClick={() => handleCategoryClick(category)}
             style={{
+              fontFamily:'var(--font-archia), sans-serif',
               padding: '10px 20px',
-              fontSize: '16px',
+              fontSize: '18px',
               color: '#1B2738',
               fontWeight: isCategorySelected(category) ? 'bold' : 'normal',
               backgroundColor: isCategorySelected(category)
                 ? '#E3DDFD'
                 : 'transparent',
-              borderRadius: '8px',
+              width: '100%',
               marginBottom: '10px',
               cursor: 'pointer',
               userSelect: 'none',
