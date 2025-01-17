@@ -74,6 +74,7 @@ const CategoriesNestedDashboard = ({ categories }) => {
         showSearch
         size="large"
         allowClear
+        value={queryParameters.country ? queryParameters.country : ''}
         placeholder="Search Country"
         options={countryOpts}
         filterOption={(input, option) =>
