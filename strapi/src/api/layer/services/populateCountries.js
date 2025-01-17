@@ -50,22 +50,22 @@ module.exports = {
             }, {});
 
             const countries = await strapi.entityService.findMany('api::country.country', {
-                fields: ['id', 'CountryName'],
+                fields: ['id', 'CountryName', 'CountryCode'],
             });
 
             if (!countries.length) {
                 console.log('No countries found.');
                 return;
-            }
-
+            }     
             const valuePerCountryData = countries.flatMap((country) => {
-                const countryRows = groupedData[country['CountryName']] || [];
-
+                const countryRows = groupedData[country['CountryCode']] || [];
+              
                 return countryRows?.map((row) => ({
-                    Value: parseNumber(row[outFields[1]]), 
+                    Value: parseNumber(Math.round(row[outFields[1]]).toFixed(2)), 
                     City: outFields[3] && row[outFields[3]] ? row[outFields[3]] : "",
                     Year: row[outFields[0]]?.toString(),
-                    CountryName: country['CountryName']
+                    CountryName: country['CountryName'],
+                    CountryCode: country['CountryCode']
                 }));
             });
 
@@ -74,7 +74,7 @@ module.exports = {
             for (let i = 0; i < valuePerCountryData.length; i += batchSize) {
                 const batch = valuePerCountryData.slice(i, i + batchSize);
 
-                await axios.post(`https://unep-gpml.akvotest.org/strapi/api/countries/${layerId}/append-value-per-country`, batch);
+              await axios.post(`https://unep-gpml.akvotest.org/strapi/api/countries/${layerId}/append-value-per-country`, batch);
 
                 console.log(`Uploaded batch of ${batch.length} records.`);
             }
