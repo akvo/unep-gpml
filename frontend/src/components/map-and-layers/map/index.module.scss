@@ -18,7 +18,7 @@
     }
 
     .esri-popup {
-      font-family:  sans-serif;
+      font-family: sans-serif;
       font-size: 12px;
       font-style: normal;
       border-bottom: black;
@@ -28,20 +28,20 @@
       .ant-typography {
         font-family: var(--font-archia), sans-serif;
       }
-    
-      font-size: 13px;
       transform: translate(-50%, -50%);
-      text-align: left;
-      border-radius: 4px;
-      overflow: auto;
+      z-index: 1000;
+      cursor: move;
+      font-family: sans-serif;
+      font-size: 13px;
+      background: white;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
     }
-   
+
     .esri-popup .popup-table {
       width: 100%;
-      border-collapse: collapse; 
+      border-collapse: collapse;
     }
-    
 
     .esri-popup .popup-table tr:last-child td {
       border-bottom: none;
@@ -79,8 +79,8 @@
 
     .esri-popup__content {
       max-height: 300px;
-      width: 100%; 
-      overflow: auto; 
+      width: 100%;
+      overflow: auto;
     }
     .legend-card {
       border: none;
@@ -94,15 +94,17 @@
 
     .esri-features.esri-widget.esri-widget--panel {
       width: 100%;
-     justify-content:space-around;
+      justify-content: space-around;
     }
 
-    .popup-field{
-    display: flex;
-    justify-content:space-between;
-    align-items:flex-start;
-    align-content: flex-start;
-    border-bottom: 1px solid black;
+    .popup-field,
+    .esri-feature-fields {
+      display: flex;
+      width: 100%;
+      border-bottom: 1px solid black;
+      justify-content: space-between;
+      align-items: flex-start;
+      align-content: flex-start;
     }
 
     .esri-feature-fields{
@@ -110,11 +112,17 @@
       display: flex;
     }
 
-    .esri-widget__table{ width: 100%;}
+    .esri-widget__table {
+      width: 100%;
+    }
 
-    .esri-feature-fields__field-header{ border-bottom: 1px solid black;}
+    .esri-feature-fields__field-header {
+      border-bottom: 1px solid black;
+    }
 
-    .esri-feature-fields__field-data{ border-bottom: 1px solid black;}
+    .esri-feature-fields__field-data {
+      border-bottom: 1px solid black;
+    }
     .show-hide-btn {
       background-color: transparent;
       padding: 0;
