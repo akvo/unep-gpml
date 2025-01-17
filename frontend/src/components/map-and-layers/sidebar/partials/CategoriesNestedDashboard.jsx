@@ -74,6 +74,20 @@ const CategoriesNestedDashboard = ({ categories }) => {
         margin: '0',
       }}
     >
+      <div
+        style={{
+          marginLeft: '15px',
+          marginTop: '10px',
+          marginBottom: '20px',
+          fontSize: '16px',
+          fontWeight: 'bold',
+          fontFamily: 'var(--font-archia), sans-serif',
+          color: '#7468ff',
+        }}
+      >
+        NATIONAL DATA
+      </div>
+
       <Select
         showSearch
         size="large"
@@ -86,11 +100,12 @@ const CategoriesNestedDashboard = ({ categories }) => {
         }
         onChange={handleChangeCountry}
         style={{
-          marginLeft: '15px',
+          marginLeft: '10px',
           width: '90%',
           height: '50px',
           padding: '4px',
           fontSize: '18px',
+          fontFamily: 'var(--font-archia), sans-serif',
           borderRadius: '8px',
           border: '1px solid #ccc',
         }}
