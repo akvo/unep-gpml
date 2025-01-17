@@ -49,7 +49,7 @@ const CategoriesNestedDashboard = ({ categories }) => {
     setQueryParameters(newParams)
     setSelectedCategory(category.attributes.categoryId)
   }
-
+  console.log('Trigger build')
   const isCategorySelected = (category) => {
     return queryParameters.categoryId === category.attributes.categoryId
   }
@@ -68,7 +68,11 @@ const CategoriesNestedDashboard = ({ categories }) => {
       breakpoint="lg"
       collapsedWidth="0"
       width={360}
-      style={{ backgroundColor: '#ffffff', height: '100%', padding: '10px' }}
+      style={{
+        height: '100%',
+        padding: '0',
+        margin: '0',
+      }}
     >
       <Select
         showSearch
@@ -98,7 +102,7 @@ const CategoriesNestedDashboard = ({ categories }) => {
             key={category.attributes.categoryId}
             onClick={() => handleCategoryClick(category)}
             style={{
-              fontFamily:'var(--font-archia), sans-serif',
+              fontFamily: 'var(--font-archia), sans-serif',
               padding: '10px 20px',
               fontSize: '18px',
               color: '#1B2738',
