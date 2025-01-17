@@ -12,6 +12,48 @@ import useLoadMap from '../../../hooks/useLoadMap'
 import Basemap from '@arcgis/core/Basemap'
 import TileLayer from '@arcgis/core/layers/TileLayer.js'
 
+const makePopupDraggable = (popupContainer) => {
+  if (!popupContainer) return
+
+  popupContainer.style.position = 'absolute'
+  popupContainer.style.cursor = 'move'
+  popupContainer.style.zIndex = '200'
+
+  let isDragging = false
+  let offsetX = 0
+  let offsetY = 0
+
+  const onMouseDown = (event) => {
+    isDragging = true
+    offsetX = event.clientX - popupContainer.getBoundingClientRect().left
+    offsetY = event.clientY - popupContainer.getBoundingClientRect().top
+    popupContainer.style.transition = 'none'
+  }
+
+  const onMouseMove = (event) => {
+    if (!isDragging) return
+    const newLeft = event.clientX - offsetX
+    const newTop = event.clientY - offsetY
+    popupContainer.style.left = `${newLeft}px`
+    popupContainer.style.top = `${newTop}px`
+  }
+
+  const onMouseUp = () => {
+    isDragging = false
+    popupContainer.style.transition = ''
+  }
+
+  popupContainer.addEventListener('mousedown', onMouseDown)
+  document.addEventListener('mousemove', onMouseMove)
+  document.addEventListener('mouseup', onMouseUp)
+
+  return () => {
+    popupContainer.removeEventListener('mousedown', onMouseDown)
+    document.removeEventListener('mousemove', onMouseMove)
+    document.removeEventListener('mouseup', onMouseUp)
+  }
+}
+
 const Map = ({ initialViewProperties }) => {
   const mapDiv = useRef(null)
   const viewRef = useRef(null)
@@ -50,7 +92,7 @@ const Map = ({ initialViewProperties }) => {
       },
       popup: {
         popupEnabled: true,
-        dockEnabled: true,
+        dockEnabled: false,
         dockOptions: {
           buttonEnabled: false,
           breakpoint: false,
@@ -59,7 +101,21 @@ const Map = ({ initialViewProperties }) => {
       ...initialViewProperties,
     })
     viewRef.current = view
+
+    let cleanupDraggable = null
+
+    const interval = setInterval(() => {
+      const popupContainer = document.querySelector('.esri-popup')
+      if (popupContainer && !cleanupDraggable) {
+        cleanupDraggable = makePopupDraggable(popupContainer)
+      } else if (!popupContainer && cleanupDraggable) {
+        cleanupDraggable()
+        cleanupDraggable = null
+      }
+    }, 1000)
+
     return () => {
+      clearInterval(interval)
       if (viewRef.current) {
         viewRef.current
           .when(() => {
@@ -69,6 +125,9 @@ const Map = ({ initialViewProperties }) => {
           .catch((error) => {
             console.error('Error when closing the view:', error)
           })
+      }
+      if (cleanupDraggable) {
+        cleanupDraggable()
       }
     }
   }, [])
