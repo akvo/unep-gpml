@@ -49,7 +49,7 @@ const CategoriesNestedDashboard = ({ categories }) => {
     setQueryParameters(newParams)
     setSelectedCategory(category.attributes.categoryId)
   }
-
+  console.log('Trigger build')
   const isCategorySelected = (category) => {
     return queryParameters.categoryId === category.attributes.categoryId
   }
