@@ -12,6 +12,7 @@ const { Sider } = Layout
 const CategoriesNested = ({ categories }) => {
   const { queryParameters, setQueryParameters } = useQueryParameters()
   const [selectedCategory, setSelectedCategory] = useState(null)
+  const [isCollapsed, setIsCollapsed] = useState(false) // Manage collapsed state
   const router = useRouter()
 
   const categoryId = router.isReady ? router.query.categoryId : undefined
@@ -42,11 +43,16 @@ const CategoriesNested = ({ categories }) => {
   }
 
   return (
-
     <Sider
       breakpoint="lg"
       collapsedWidth="0"
       width={360}
+      collapsible
+      collapsed={isCollapsed}
+      onCollapse={(collapsed) => setIsCollapsed(collapsed)}
+      style={{
+        overflow: isCollapsed ? '' : 'auto',
+      }}
     >
       <div className="caps-heading-s">Topics</div>
       <Menu defaultSelectedKeys={['1']} style={{ maxHeight: '100%' }}>
