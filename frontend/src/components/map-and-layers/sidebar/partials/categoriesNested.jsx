@@ -12,7 +12,7 @@ const { Sider } = Layout
 const CategoriesNested = ({ categories }) => {
   const { queryParameters, setQueryParameters } = useQueryParameters()
   const [selectedCategory, setSelectedCategory] = useState(null)
-  const [isCollapsed, setIsCollapsed] = useState(false) // Manage collapsed state
+  const [isCollapsed, setIsCollapsed] = useState(false)
   const router = useRouter()
 
   const categoryId = router.isReady ? router.query.categoryId : undefined
