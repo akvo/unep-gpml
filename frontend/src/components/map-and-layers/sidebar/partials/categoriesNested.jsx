@@ -21,6 +21,7 @@ const CategoriesNested = ({ categories }) => {
     const newParams = {
       categoryId: category.attributes.categoryId,
     }
+    console.log('build')
 
     setQueryParameters(newParams)
     setSelectedCategory(category.attributes.categoryId)
