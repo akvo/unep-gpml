@@ -203,7 +203,9 @@ const CountryOverview = () => {
           </div>
         </Col>
         <Col xs={24} md={6} style={{ textAlign: 'center' }}>
-          <span style={{ color: '#7C7C7C', fontSize: '14px' }}>
+          <span
+            style={{ color: '#7C7C7C', marginRight: '140px', fontSize: '14px' }}
+          >
             <span
               style={{
                 backgroundColor: '#8E44AD',
@@ -218,14 +220,17 @@ const CountryOverview = () => {
           </span>
           <Tooltip title="Update country data by sending a request to the GPML Data Hub team.">
             <Button
-              class="ant-btn ant-btn-primary ant-btn-sm"
               onClick={showModal}
               style={{
                 backgroundColor: '#00f1bf',
-                marginLeft: '60px',
-
+                textAlign: 'center',
+                height: '34px',
+                width: '237px',
                 borderColor: '#00f1bf',
-                color: 'black',
+                color: '#020A5B',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
               }}
             >
               Request Data Update
