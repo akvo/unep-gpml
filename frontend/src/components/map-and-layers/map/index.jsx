@@ -68,13 +68,12 @@ const Map = ({ initialViewProperties }) => {
 
     const customBasemapLayer = new TileLayer({
       url:
-        'https://geoservices.un.org/arcgis/rest/services/ClearMap_WebTopo/MapServer',
+        'https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer',
     })
 
     const customBasemap = new Basemap({
       baseLayers: [customBasemapLayer],
       title: 'Custom Basemap',
-      id: 'custom_basemap',
     })
 
     const webMap = new ArcGISMap({
