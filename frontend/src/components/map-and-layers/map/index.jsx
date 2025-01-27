@@ -11,6 +11,8 @@ import Card from 'antd/lib/card/Card'
 import useLoadMap from '../../../hooks/useLoadMap'
 import Basemap from '@arcgis/core/Basemap'
 import TileLayer from '@arcgis/core/layers/TileLayer.js'
+import VectorTileLayer from '@arcgis/core/layers/VectorTileLayer.js'
+import WebMap from '@arcgis/core/WebMap'
 
 const makePopupDraggable = (popupContainer) => {
   if (!popupContainer) return
@@ -71,9 +73,15 @@ const Map = ({ initialViewProperties }) => {
         'https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer',
     })
 
+    const overlayLayer = new VectorTileLayer({
+      url:
+        'https://tiles.arcgis.com/tiles/Mj0hjvkNtV7NRhA7/arcgis/rest/services/UN_Basemap/VectorTileServer',
+    })
+
     const customBasemap = new Basemap({
-      baseLayers: [customBasemapLayer],
-      title: 'Custom Basemap',
+      baseLayers: [customBasemapLayer, overlayLayer],
+      title: 'Custom Basemap with Overlay',
+      id: 'custom_basemap',
     })
 
     const webMap = new ArcGISMap({
