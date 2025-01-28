@@ -73,16 +73,11 @@ const Map = ({ initialViewProperties }) => {
         'https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer',
     })
 
-    const overlayLayer = new VectorTileLayer({
-      url:
-        'https://tiles.arcgis.com/tiles/Mj0hjvkNtV7NRhA7/arcgis/rest/services/UN_Basemap/VectorTileServer',
+    const customBasemap = new Basemap({
+      baseLayers: [customBasemapLayer],
+      title: 'Custom Basemap',
     })
 
-    const customBasemap = new Basemap({
-      baseLayers: [customBasemapLayer, overlayLayer],
-      title: 'Custom Basemap with Overlay',
-      id: 'custom_basemap',
-    })
 
     const webMap = new ArcGISMap({
       basemap: customBasemap,
