@@ -6,11 +6,8 @@ import { Tooltip } from 'antd'
 import { InfoCircleFilled } from '@ant-design/icons'
 import LayerInfo from './layerInfo'
 import { useRouter } from 'next/router'
-import useLayerInfo from '../../../../hooks/useLayerInfo'
-
 const { Panel } = Collapse
-const Subcategories = ({ subcategories,layers, loading }) => {
-  // const { layers: downloadLayer } = useLayerInfo()
+const Subcategories = ({ subcategories, layers, loading }) => {
   const { queryParameters, setQueryParameters } = useQueryParameters()
   const [expandedSubcategory, setExpandedSubcategory] = useState(null)
   const router = useRouter()
@@ -29,8 +26,6 @@ const Subcategories = ({ subcategories,layers, loading }) => {
       setExpandedSubcategory(router.query.subcategoryId || null)
     }
   }, [])
-
-  console.log('Build')
 
   const handleSubcategoryChange = (key) => {
     setExpandedSubcategory(key)
@@ -63,7 +58,7 @@ const Subcategories = ({ subcategories,layers, loading }) => {
     return <div>Loading...</div>
   }
 
-  let filteredLayers = layers?.filter(
+  let filteredLayers = layers.filter(
     (layer) => layer.attributes.subcategoryId === expandedSubcategory
   )
 
@@ -81,61 +76,63 @@ const Subcategories = ({ subcategories,layers, loading }) => {
           <Panel
             key={subcategory.attributes.subcategoryId}
             header={subcategory.attributes.subcategoryName}
-            style={{ overflow: 'auto' }}
+            style={{overflow:"auto"}}
           >
-            {filteredLayers.slice().map((layer, layerIndex) => (
-              <div
-                className="layer-item"
-                key={`${subcategory.attributes.subcategoryId}-${layerIndex}`}
-              >
-                <Switch
-                  size="small"
-                  onChange={() => handleLayerClick(layer)}
-                  checked={
-                    (queryParameters.layers &&
-                      !queryParameters.layer &&
-                      queryParameters.layers[0]?.id === layer.id) ||
-                    (queryParameters.layer &&
-                      queryParameters.layer === layer.attributes.arcgislayerId)
-                  }
-                />
-
-                <Typography
-                  style={{
-                    fontSize: '14px',
-                    textAlign: 'left',
-                    font: 'Inter',
-                  }}
+            {filteredLayers
+              .slice()
+              .map((layer, layerIndex) => (
+                <div
+                  className="layer-item"
+                  key={`${subcategory.attributes.subcategoryId}-${layerIndex}`}
                 >
-                  {layer.attributes.title}
-                </Typography>
-
-                <Tooltip
-                  overlayStyle={{ maxWidth: '600px', width: 'auto' }}
-                  overlay={
-                    <LayerInfo
-                      layer={filteredLayers?.find(
-                        (layerInfoItem) =>
-                          layerInfoItem.arcgislayerId === layer.arcgislayerId &&
-                          layerInfoItem.id === layer.id
-                      )}
-                    ></LayerInfo>
-                  }
-                  overlayInnerStyle={{
-                    backgroundColor: 'white',
-                    width: 'auto',
-                    height: 'auto',
-                  }}
-                >
-                  <InfoCircleFilled
-                    style={{
-                      color: 'rgba(0, 0, 0, 0.45)',
-                    }}
-                    onClick={() => null}
+                  <Switch
+                    size="small"
+                    onChange={() => handleLayerClick(layer)}
+                    checked={
+                      (queryParameters.layers && !queryParameters.layer &&
+                        queryParameters.layers[0]?.id === layer.id) ||
+                      (queryParameters.layer &&
+                        queryParameters.layer === layer.attributes.arcgislayerId)
+                    }
                   />
-                </Tooltip>
-              </div>
-            ))}
+
+                  <Typography
+                    style={{
+                      fontSize: '14px',
+                      textAlign: 'left',
+                      font: 'Inter',
+                    }}
+                  >
+                    {layer.attributes.title}
+                  </Typography>
+
+                  <Tooltip
+                    overlayStyle={{ maxWidth: '600px', width: 'auto' }}
+                    overlay={
+                      <LayerInfo
+                        layer={filteredLayers?.find(
+                          (layerInfoItem) =>
+                            layerInfoItem.arcgislayerId ===
+                              layer.arcgislayerId &&
+                            layerInfoItem.id === layer.id
+                        )}
+                      ></LayerInfo>
+                    }
+                    overlayInnerStyle={{
+                      backgroundColor: 'white',
+                      width: 'auto',
+                      height: 'auto',
+                    }}
+                  >
+                    <InfoCircleFilled
+                      style={{
+                        color: 'rgba(0, 0, 0, 0.45)',
+                      }}
+                      onClick={() => null}
+                    />
+                  </Tooltip>
+                </div>
+              ))}
           </Panel>
         ))}
       </Collapse>
