@@ -6,7 +6,7 @@ import styles from './index.module.scss'
 import CategoriesNested from './partials/categoriesNested'
 import CategoriesNestedDashboard from './partials/CategoriesNestedDashboard'
 
-const Sidebar = ({ alt, countryDashboard, layers }) => {
+const Sidebar = ({ alt, countryDashboard }) => {
   const [showLayerSidebar, setShowLayerSidebar] = useState(false)
 
   const { categories, loading } = useCategories()
@@ -37,7 +37,6 @@ const Sidebar = ({ alt, countryDashboard, layers }) => {
           categories={categories}
           subcategories={subcategories}
           countryDashboard={countryDashboard}
-          layers={layers}
         />
       )}
     </div>
