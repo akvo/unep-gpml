@@ -9,8 +9,8 @@ import { useRouter } from 'next/router'
 import useLayerInfo from '../../../../hooks/useLayerInfo'
 
 const { Panel } = Collapse
-const Subcategories = ({ subcategories, loading }) => {
-  const { layers: downloadLayer } = useLayerInfo()
+const Subcategories = ({ subcategories,layers, loading }) => {
+  // const { layers: downloadLayer } = useLayerInfo()
   const { queryParameters, setQueryParameters } = useQueryParameters()
   const [expandedSubcategory, setExpandedSubcategory] = useState(null)
   const router = useRouter()
@@ -61,7 +61,7 @@ const Subcategories = ({ subcategories, loading }) => {
     return <div>Loading...</div>
   }
 
-  let filteredLayers = downloadLayer?.filter(
+  let filteredLayers = layers?.filter(
     (layer) => layer.attributes.subcategoryId === expandedSubcategory
   )
 
