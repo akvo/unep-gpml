@@ -3,6 +3,7 @@ import Sidebar from '../../../components/map-and-layers/sidebar'
 import styles from './index.module.scss'
 import dynamic from 'next/dynamic'
 import { loadCatalog } from '../../../translations/utils'
+import useLayerInfo from '../../../hooks/useLayerInfo'
 
 const DynamicMap = dynamic(
   () => import('../../../components/map-and-layers/map'),
@@ -12,9 +13,11 @@ const DynamicMap = dynamic(
 )
 
 const MapAndLayerPage = () => {
+  const layers = useLayerInfo()
+
   return (
     <div className={styles.container}>
-      <Sidebar alt countryDashboard={false} />
+      <Sidebar alt countryDashboard={false} layers={layers.layers} />
       <DynamicMap
         initialViewProperties={{
           center: [0, 0],
