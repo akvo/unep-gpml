@@ -20,6 +20,7 @@ const Subcategories = ({ subcategories, layers, loading }) => {
       setQueryParameters({ layers: selectedLayers })
     }
   }, [])
+  console.log('xx')
 
   useEffect(() => {
     if (router.query.subcategoryId !== expandedSubcategory) {
