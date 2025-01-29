@@ -2,17 +2,17 @@ import React, { useState } from 'react'
 import { Layout, Typography, Menu, Tag } from 'antd'
 import { CloseCircleFilled } from '@ant-design/icons'
 import useQueryParameters from '../../../../hooks/useQueryParameters'
-import useIndicators from '../../../../hooks/useIndicators'
 import Subcategories from './../partials/subcategories'
 import useSubcategories from '../../../../hooks/useSubcategories'
 import { useRouter } from 'next/router'
 
 const { Sider } = Layout
 
-const CategoriesNested = ({ categories }) => {
+const CategoriesNested = ({ categories, layers }) => {
   const { queryParameters, setQueryParameters } = useQueryParameters()
   const [selectedCategory, setSelectedCategory] = useState(null)
   const [isCollapsed, setIsCollapsed] = useState(false)
+
   const router = useRouter()
 
   const categoryId = router.isReady ? router.query.categoryId : undefined
@@ -21,7 +21,6 @@ const CategoriesNested = ({ categories }) => {
     const newParams = {
       categoryId: category.attributes.categoryId,
     }
-    console.log('build')
 
     setQueryParameters(newParams)
     setSelectedCategory(category.attributes.categoryId)
@@ -32,7 +31,6 @@ const CategoriesNested = ({ categories }) => {
     (subcategory) =>
       subcategory.attributes.categoryId === queryParameters.categoryId
   )
-  const { layers, loading } = useIndicators()
   const handleCloseLayer = (layerId) => {
     const updatedLayers = queryParameters.layers?.filter(
       (layer) => layer.id !== layerId
@@ -81,7 +79,6 @@ const CategoriesNested = ({ categories }) => {
               <Subcategories
                 subcategories={subcategoriesByCategory}
                 layers={layers}
-                loading={loading}
               />
             )}
             {queryParameters.layers &&

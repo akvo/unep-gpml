@@ -24,7 +24,7 @@ const LayerInfo = ({ layer }) => {
 
     const worksheet = XLSX.utils.json_to_sheet(data)
     const workbook = XLSX.utils.book_new()
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Layer data")
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Layer data')
 
     const excelBuffer = XLSX.write(workbook, {
       bookType: 'xlsx',
@@ -34,6 +34,10 @@ const LayerInfo = ({ layer }) => {
 
     saveAs(blob, `${layer?.attributes.title || 'LayerData'}.xlsx`)
   }
+
+  const hasDataToDownload =
+    Array.isArray(layer?.attributes?.ValuePerCountry) &&
+    layer.attributes.ValuePerCountry.length > 0
 
   return (
     <div style={{ border: 'none' }}>
@@ -66,13 +70,16 @@ const LayerInfo = ({ layer }) => {
             {layer?.attributes.url}
           </a>
         </AntParagraph>
-        <Button
-          type="primary"
-          onClick={handleDownloadData}
-          style={{ marginTop: '10px' }}
-        >
-          Download Data
-        </Button>
+
+        {hasDataToDownload && (
+          <Button
+            type="primary"
+            onClick={handleDownloadData}
+            style={{ marginTop: '10px' }}
+          >
+            Download Data
+          </Button>
+        )}
       </Card>
     </div>
   )
