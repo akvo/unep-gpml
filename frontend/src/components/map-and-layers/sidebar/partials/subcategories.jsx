@@ -30,6 +30,8 @@ const Subcategories = ({ subcategories,layers, loading }) => {
     }
   }, [])
 
+  console.log('Build')
+
   const handleSubcategoryChange = (key) => {
     setExpandedSubcategory(key)
 
