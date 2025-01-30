@@ -127,8 +127,15 @@ const PlasticImportExportChart = ({ layers, loading }) => {
 
   const getOption = () => ({
     title: {
-      text: `Plastic import & export value for ${decodeURIComponent(country)}`,
-      textStyle: { fontSize: 18, fontWeight: 'bold', color: '#020A5B' },
+      text:
+        window.innerWidth < 768
+          ? `Plastic import & export value\nfor ${decodeURIComponent(country)}`
+          : `Plastic import & export value for ${decodeURIComponent(country)}`,
+      textStyle: {
+        fontSize: window.innerWidth < 768 ? 14 : 18,
+        fontWeight: 'bold',
+        color: '#020A5B',
+      },
       left: 'center',
     },
     tooltip: {
@@ -141,13 +148,17 @@ const PlasticImportExportChart = ({ layers, loading }) => {
     legend: {
       data: categoriesTitle.map((category) => Object.values(category)[0]),
       textStyle: { color: '#020A5B' },
-      bottom: 0,
+      bottom: window.innerWidth < 768 ? 'auto' : 0,
+      top: window.innerWidth < 768 ? 'bottom' : 'auto',
+      orient: window.innerWidth < 768 ? 'vertical' : 'horizontal',
+      left: window.innerWidth < 768 ? 'center' : 'auto',
+      itemGap: window.innerWidth < 768 ? 5 : 10,
     },
     grid: {
       left: '3%',
       right: '4%',
       textStyle: { color: '#020A5B' },
-      bottom: '20%',
+      bottom: window.innerWidth < 768 ? '30%' : '20%',
       containLabel: true,
     },
     xAxis: {
@@ -178,6 +189,7 @@ const PlasticImportExportChart = ({ layers, loading }) => {
       type: 'bar',
       stack: 'ImportExport',
       data: [importData[index], exportData[index]],
+      barWidth: window.innerWidth < 768 ? 50 : 90,
       itemStyle: {
         color: ['#384E85', '#FFB800', '#f56a00', '#A7AD3E', '#FFA424'][index],
       },
