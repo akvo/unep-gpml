@@ -30,7 +30,7 @@ const PlasticImportExportChart = ({ layers, loading }) => {
         console.warn('Import or export layer not found.')
         return
       }
-      
+
 
       const filteredImports = importLayer.attributes.ValuePerCountry?.filter(
         (item) =>
@@ -69,9 +69,18 @@ const PlasticImportExportChart = ({ layers, loading }) => {
 
   const getOption = () => ({
     title: {
-      text: `Plastic import & export value for ${decodeURIComponent(country)} `,
+      text:
+        window.innerWidth < 768
+          ? `Plastic import & export value\nfor ${decodeURIComponent(country)}`
+          : `Plastic import & export value for ${decodeURIComponent(country)}`,
       left: 'center',
-      textStyle: { fontSize: 18, fontWeight: 'bold', color: '#020A5B' },
+      textStyle: {
+        fontSize: window.innerWidth < 768 ? 14 : 18,
+        fontWeight: 'bold',
+        color: '#020A5B',
+        wordWrap: 'break-word',
+        overflow: 'break',
+      },
     },
     tooltip: {
       trigger: 'axis',
@@ -101,11 +110,12 @@ const PlasticImportExportChart = ({ layers, loading }) => {
         fontSize: 12,
         color: '#020A5B',
       },
+      name: 'million US dollars',
       nameTextStyle: {
         color: '#020A5B',
-        fontSize: 12,
+        fontSize: 12, 
+
       },
-      name: 'million US dollars',
     },
     series: [
       {
