@@ -114,7 +114,7 @@ const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
       subtext: `In 1000 metric tons for year ${2021 || 'N/A'}`,
       left: 'center',
       textStyle: {
-        fontSize: 16,
+        fontSize: window.innerWidth < 768 ? 14 : 18,
         color: '#020A5B',
       },
       subtextStyle: {

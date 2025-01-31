@@ -80,11 +80,20 @@ const MSWGenerationChart = ({ layers, layerLoading }) => {
 
     return {
       title: {
-        text: `Per capita MSW generation for ${decodeURIComponent(
-          country?.toString()
-        )}`,
+        text:
+          window.innerWidth < 768
+            ? `Per capita MSW generation for\n${decodeURIComponent(
+                country?.toString()
+              )}`
+            : `Per capita MSW generation for  ${decodeURIComponent(
+                country?.toString()
+              )}`,
         left: 'center',
-        textStyle: { fontSize: 18, fontWeight: 'bold', color: '#020A5B' },
+        textStyle: {
+          fontSize: window.innerWidth < 768 ? 14 : 18,
+          fontWeight: 'bold',
+          color: '#020A5B',
+        },
       },
       tooltip: {
         trigger: 'axis',
