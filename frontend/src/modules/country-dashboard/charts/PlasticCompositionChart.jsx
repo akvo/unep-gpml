@@ -79,12 +79,17 @@ const PlasticCompositionChart = ({ layers, layerLoading }) => {
 
     return {
       title: {
-        text: `Plastic composition in the MSW for ${decodeURIComponent(
-          country
-        )}`,
+        text:
+          window.innerWidth < 768
+            ? `Plastic composition in the MSW\nfor ${decodeURIComponent(
+                country
+              )}`
+            : `Plastic composition in the MSW for ${decodeURIComponent(
+                country
+              )}`,
         left: 'center',
         textStyle: {
-          fontSize: 18,
+          fontSize: window.innerWidth < 768 ? 14 : 18,
           fontWeight: 'bold',
           color: '#020A5B',
         },
