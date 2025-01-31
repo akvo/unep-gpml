@@ -67,6 +67,8 @@ const PlasticImportExportChart = ({ layers, loading }) => {
     fetchData()
   }, [country, layers, loading])
 
+  console.log('trigger build')
+
   const getOption = () => ({
     title: {
       text:
