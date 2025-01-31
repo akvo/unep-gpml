@@ -31,7 +31,6 @@ const PlasticImportExportChart = ({ layers, loading }) => {
         return
       }
 
-
       const filteredImports = importLayer.attributes.ValuePerCountry?.filter(
         (item) =>
           item.CountryCode
@@ -66,8 +65,6 @@ const PlasticImportExportChart = ({ layers, loading }) => {
 
     fetchData()
   }, [country, layers, loading])
-
-  console.log('trigger build')
 
   const getOption = () => ({
     title: {
@@ -115,8 +112,7 @@ const PlasticImportExportChart = ({ layers, loading }) => {
       name: 'million US dollars',
       nameTextStyle: {
         color: '#020A5B',
-        fontSize: 12, 
-
+        fontSize: 12,
       },
     },
     series: [
