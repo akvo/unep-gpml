@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Layout, Select, Button } from 'antd'
 import useQueryParameters from '../../../../hooks/useQueryParameters'
 import { UIStore } from '../../../../store'
@@ -12,6 +12,7 @@ const CategoriesNestedDashboard = ({ categories }) => {
   const [selectedCategory, setSelectedCategory] = useState(null)
   const [selectedCountry, setSelectedCountry] = useState(null)
   const baseURL = getBaseUrl()
+  const [isMobile, setIsMobile] = useState(false)
 
   const { countries, transnationalOptions } = UIStore.useState((s) => ({
     countries: s.countries,
@@ -20,6 +21,17 @@ const CategoriesNestedDashboard = ({ categories }) => {
   }))
 
   const isLoaded = () => !isEmpty(countries)
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+
+    handleResize()
+    window.addEventListener('resize', handleResize)
+
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   const countryOpts = isLoaded()
     ? countries
@@ -66,7 +78,7 @@ const CategoriesNestedDashboard = ({ categories }) => {
   return (
     <Sider
       breakpoint="lg"
-      collapsedWidth="0"
+      collapsedWidth="100%"
       width={360}
       style={{
         height: '100%',
@@ -76,10 +88,11 @@ const CategoriesNestedDashboard = ({ categories }) => {
     >
       <div
         style={{
+          position: isMobile ? 'sticky' : 'relative',
           marginLeft: '15px',
           marginTop: '10px',
-          marginBottom: '20px',
-          fontSize: '16px',
+          marginBottom: isMobile ? '5px' : '20px',
+          fontSize: isMobile ? '15px' : '16px',
           fontWeight: 'bold',
           fontFamily: 'var(--font-archia), sans-serif',
           color: '#7468ff',
@@ -102,16 +115,16 @@ const CategoriesNestedDashboard = ({ categories }) => {
         style={{
           marginLeft: '10px',
           width: '90%',
-          height: '50px',
-          padding: '4px',
-          fontSize: '18px',
+          height: '50%',
+          padding: isMobile ? '0px' : '4px',
+          fontSize: isMobile ? '14px' : '18px',
           fontFamily: 'var(--font-archia), sans-serif',
           borderRadius: '8px',
           border: '1px solid #ccc',
         }}
       />
 
-      <div style={{ marginTop: '20px' }}>
+      <div style={{ marginTop: isMobile ? '0px' : '20px' }}>
         {categories.map((category) => (
           <div
             key={category.attributes.categoryId}
@@ -119,14 +132,14 @@ const CategoriesNestedDashboard = ({ categories }) => {
             style={{
               fontFamily: 'var(--font-archia), sans-serif',
               padding: '10px 20px',
-              fontSize: '18px',
+              fontSize: isMobile ? '16px' : '18px',
               color: '#1B2738',
               fontWeight: isCategorySelected(category) ? 'bold' : 'normal',
               backgroundColor: isCategorySelected(category)
                 ? '#E3DDFD'
                 : 'transparent',
               width: '100%',
-              marginBottom: '10px',
+              marginBottom: isMobile ? '0px' : '10px',
               cursor: 'pointer',
               userSelect: 'none',
               border: 'none',
@@ -138,7 +151,7 @@ const CategoriesNestedDashboard = ({ categories }) => {
         ))}
       </div>
 
-      {queryParameters.categoryId && queryParameters.country && (
+      {queryParameters.categoryId && queryParameters.country && !isMobile && (
         <Button
           type="primary"
           style={{
