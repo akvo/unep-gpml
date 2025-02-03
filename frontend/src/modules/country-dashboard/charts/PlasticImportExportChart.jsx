@@ -81,6 +81,12 @@ const PlasticImportExportChart = ({ layers, loading }) => {
         overflow: 'break',
       },
     },
+    grid: {
+      left: '20%',
+      right: '4%',
+      top:'20%',
+      textStyle: { color: '#020A5B' },
+    },
     tooltip: {
       trigger: 'axis',
       axisPointer: {
