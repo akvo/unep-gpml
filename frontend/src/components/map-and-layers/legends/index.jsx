@@ -138,7 +138,12 @@ const LegendCard = ({
     >
       <Typography
         level={5}
-        style={{ margin: 0, fontSize: '16px', fontWeight: 'bold' }}
+        style={{
+          margin: 0,
+          color: isMobile ? '#000647' : 'black',
+          fontSize: isMobile ? '20px' : '16px',
+          fontWeight: 'bold',
+        }}
       >
         {title}
       </Typography>
@@ -149,7 +154,7 @@ const LegendCard = ({
           justifyContent: 'space-between',
         }}
       >
-        <Typography style={{ fontSize: '14px', paddingBottom: '5px' }}>
+        <Typography style={{ fontSize: '14px',color: isMobile ? '#000647' : 'black', paddingBottom: '5px' }}>
           Unit: [{unit}]
         </Typography>
         {layerId && (
