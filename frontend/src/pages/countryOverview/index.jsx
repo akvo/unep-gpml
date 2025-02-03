@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Row, Col, Button, Spin } from 'antd'
 import { useRouter } from 'next/router'
 import useReplacedText from '../../hooks/useReplacePlaceholders'
@@ -77,6 +77,17 @@ const addTooltipsToPlaceholders = (htmlString, placeholders, tooltips) => {
 
 const CountryOverview = () => {
   const router = useRouter()
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   const categories = useCategories()
   const { layers, loading: layerLoading } = useLayerInfo()
@@ -111,14 +122,14 @@ const CountryOverview = () => {
     uniqueLayerIds.includes(layer.attributes.arcgislayerId)
   )
 
-  const filteredByCOuntry = filteredLayers.filter((l) =>
+  const filteredByCountry = filteredLayers.filter((l) =>
     l.attributes.ValuePerCountry.filter(
       (vpc) =>
         vpc.CountryCode === router.query.countryCode ||
         vpc.CountryName === router.query.country
     )
   )
-  const layerJson = JSON.stringify(filteredByCOuntry)
+  const layerJson = JSON.stringify(filteredByCountry)
 
   const { placeholders, tooltips, loading } = useReplacedText(
     router.query.country,
@@ -130,9 +141,7 @@ const CountryOverview = () => {
 
   if (loading || layerLoading || !selectedCategory) {
     return (
-      <div
-        style={{ textAlign: 'center', padding: '250px', paddingRight: '850px' }}
-      >
+      <div style={{ textAlign: 'center' }}>
         <Spin tip="Loading data..." size="large" />
       </div>
     )
@@ -166,7 +175,6 @@ const CountryOverview = () => {
     country: `{{country}}`,
   })
 
-
   const [firstHalfText, secondHalfText] =
     selectedCategory?.attributes?.categoryId === 'environmental-impact' ||
     selectedCategory?.attributes?.categoryId === 'waste-management'
@@ -191,7 +199,13 @@ const CountryOverview = () => {
   )
 
   return (
-    <div style={{ maxWidth: '70%', margin: '0 auto', padding: '16px' }}>
+    <div
+      style={{
+        maxWidth: isMobile ? '90%' : '70%',
+        margin: '0 auto',
+        padding: '16px',
+      }}
+    >
       <Row className="header-row" style={{ marginBottom: '20px' }}>
         <Col xs={24} md={18}>
           <div style={{ marginBottom: '10px' }}>
@@ -204,7 +218,11 @@ const CountryOverview = () => {
         </Col>
         <Col xs={24} md={6} style={{ textAlign: 'center' }}>
           <span
-            style={{ color: '#7C7C7C', marginRight: '140px', fontSize: '14px' }}
+            style={{
+              color: '#7C7C7C',
+              marginRight: '140px',
+              fontSize: isMobile ? '12px' : '14px',
+            }}
           >
             <span
               style={{

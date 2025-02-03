@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Layout, Typography, Menu, Tag } from 'antd'
 import { CloseCircleFilled } from '@ant-design/icons'
 import useQueryParameters from '../../../../hooks/useQueryParameters'
@@ -9,11 +9,24 @@ import { useRouter } from 'next/router'
 
 const { Sider } = Layout
 
-const CategoriesNested = ({ categories }) => {
+const CategoriesNested = ({ categories, layers }) => {
   const { queryParameters, setQueryParameters } = useQueryParameters()
   const [selectedCategory, setSelectedCategory] = useState(null)
   const [isCollapsed, setIsCollapsed] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
   const router = useRouter()
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+
+    handleResize()
+    window.addEventListener('resize', handleResize)
+
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   const categoryId = router.isReady ? router.query.categoryId : undefined
 
@@ -21,7 +34,6 @@ const CategoriesNested = ({ categories }) => {
     const newParams = {
       categoryId: category.attributes.categoryId,
     }
-    console.log('build')
 
     setQueryParameters(newParams)
     setSelectedCategory(category.attributes.categoryId)
@@ -32,7 +44,7 @@ const CategoriesNested = ({ categories }) => {
     (subcategory) =>
       subcategory.attributes.categoryId === queryParameters.categoryId
   )
-  const { layers, loading } = useIndicators()
+
   const handleCloseLayer = (layerId) => {
     const updatedLayers = queryParameters.layers?.filter(
       (layer) => layer.id !== layerId
@@ -46,17 +58,26 @@ const CategoriesNested = ({ categories }) => {
   return (
     <Sider
       breakpoint="lg"
-      collapsedWidth="0"
-      width={360}
+      collapsedWidth="100%"
+      width={isMobile ? '100%' : 360}
       collapsible
       collapsed={isCollapsed}
+      trigger={null}
       onCollapse={(collapsed) => setIsCollapsed(collapsed)}
       style={{
-        overflow: isCollapsed ? '' : 'auto',
+        position: isMobile ? 'sticky' : 'relative',
+        top: isMobile ? 0 : 'auto',
+        zIndex: isMobile ? 1000 : 'auto',
+        overflow: 'auto',
+        backgroundColor: 'white',
+        paddingTop: '0px',
       }}
     >
-      <div className="caps-heading-s">Topics</div>
-      <Menu defaultSelectedKeys={['1']} style={{ maxHeight: '100%' }}>
+      <Menu
+        defaultSelectedKeys={['1']}
+        mode={isMobile ? 'vertical' : 'inline'}
+        style={{ maxHeight: '100%' }}
+      >
         {categories.map((category) => (
           <div key={category.attributes.categoryId}>
             <Menu.Item
@@ -81,7 +102,7 @@ const CategoriesNested = ({ categories }) => {
               <Subcategories
                 subcategories={subcategoriesByCategory}
                 layers={layers}
-                loading={loading}
+                // loading={loading}
               />
             )}
             {queryParameters.layers &&
