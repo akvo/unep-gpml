@@ -108,9 +108,14 @@ const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
 
   const getPieOption = () => ({
     title: {
-      text: `Plastic ${
-        chartType === 'import' ? 'import' : 'export'
-      } by type for ${decodeURIComponent(country)}`,
+      text:
+        window.innerWidth < 768
+          ? `Plastic ${
+              chartType === 'import' ? 'import' : 'export'
+            } by type for\n${decodeURIComponent(country)}`
+          : `Plastic ${
+              chartType === 'import' ? 'import' : 'export'
+            } by type for ${decodeURIComponent(country)}`,
       subtext: `In 1000 metric tons for year ${2021 || 'N/A'}`,
       left: 'center',
       textStyle: {
@@ -140,7 +145,7 @@ const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
       },
       top: 'bottom',
       itemGap: 10,
-      padding: [10, 30, 5, 10],
+      padding: [20, 30, 5, 10],
       data: categoriesTitle.map((category) => Object.values(category)[0]),
     },
     grid: {
