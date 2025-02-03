@@ -10,8 +10,22 @@ const DashboardLanding = () => {
   const [countryOpts, setCountryOpts] = useState([])
   const [countries, setCountries] = useState([])
   const [selectedCountry, setSelectedCountry] = useState(null)
+  const [windowWidth, setWindowWidth] = useState(1200)
   const router = useRouter()
   const baseURL = getBaseUrl()
+
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+
+    handleResize()
+    window.addEventListener('resize', handleResize)
+
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -20,7 +34,7 @@ const DashboardLanding = () => {
         const data = await response.json()
         setCountries(data)
       } catch (error) {
-        console.error('Error fetching countries:', error)
+        console.error(`Error fetching countries:`, error)
       }
     }
 
@@ -39,6 +53,19 @@ const DashboardLanding = () => {
       setCountryOpts(filteredCountries)
     }
   }, [countries])
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setWindowWidth(window.innerWidth)
+
+      const handleResize = () => {
+        setWindowWidth(window.innerWidth)
+      }
+
+      window.addEventListener('resize', handleResize)
+      return () => window.removeEventListener('resize', handleResize)
+    }
+  }, [])
 
   const handleCountryChange = (value) => {
     setSelectedCountry(value)
@@ -65,26 +92,32 @@ const DashboardLanding = () => {
   }
 
   return (
-    <Layout style={{ height: '100vh' }}>
+    <Layout style={{ height: isMobile ? '100%' : '100vh', width: 'auto' }}>
       <Content
         style={{
-          padding: '60px 40px',
+          padding: windowWidth < 768 ? '20px 20px' : '60px 40px',
           background: '#0A1F44',
           color: '#fff',
         }}
       >
         <h1
           style={{
-            fontSize: '48px',
+            fontSize: windowWidth < 768 ? '20px' : '48px',
             lineHeight: '56px',
-            marginBottom: '24px',
+            marginBottom: windowWidth < 768 ? '12px' : '24px',
             color: '#FFFFFF',
           }}
         >
           Explore{' '}
           <span style={{ textDecoration: 'underline' }}>Country Dashboard</span>
         </h1>
-        <p style={{ fontSize: '18px', marginBottom: '20px' }}>
+
+        <p
+          style={{
+            fontSize: windowWidth < 768 ? '14px' : '18px',
+            marginBottom: windowWidth < 768 ? '10px' : '20px',
+          }}
+        >
           The GPML Country Dashboard provides a comprehensive snapshot of
           plastic flows in both the economy and the environment for each
           country. It consolidates data from best available global datasets into
@@ -93,7 +126,12 @@ const DashboardLanding = () => {
           require further collection efforts in specific countries.
         </p>
 
-        <p style={{ fontSize: '18px', marginBottom: '20px' }}>
+        <p
+          style={{
+            fontSize: windowWidth < 768 ? '14px' : '18px',
+            marginBottom: '20px',
+          }}
+        >
           The data featured on the Country Dashboard comes from reliable
           sources, including country reports on the Sustainable Development
           Goals, as well as modeled global estimates from UN agencies, academic
@@ -103,7 +141,13 @@ const DashboardLanding = () => {
           outputs.
         </p>
 
-        <p style={{ fontSize: '18px', fontStyle: 'italic', marginBottom: '20px' }}>
+        <p
+          style={{
+            fontSize: windowWidth < 768 ? '14px' : '18px',
+            fontStyle: 'italic',
+            marginBottom: '20px',
+          }}
+        >
           * You are currently viewing the beta version of the Country Dashboard,
           and we welcome your feedback on its usability and content. We
           particularly welcome suggestions for updated and improved data sources
@@ -115,8 +159,9 @@ const DashboardLanding = () => {
           style={{ display: 'flex', alignItems: 'center', marginTop: '40px' }}
         >
           <Select
-            placeholder="Search for a country..."
+            placeholder={`Search for a country...`}
             size="large"
+            value={router.query.country}
             showSearch
             options={countryOpts}
             style={{

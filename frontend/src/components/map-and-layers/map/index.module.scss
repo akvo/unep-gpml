@@ -55,6 +55,22 @@
       display: flex;
       justify-content: space-around;
       border-radius: 3px;
+
+      @media (max-width: 768px) {
+        position: fixed;
+        top: 80%;
+        position: fixed;
+        left: 70%;
+        transform: translate(-50%, -50%);
+        max-width: 90vw;
+        width: auto;
+        min-width: 250px;
+        background: white;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        z-index: 1000;
+        font-size: 13px;
+      }
     }
 
     .esri-popup__header {

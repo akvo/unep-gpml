@@ -29,8 +29,6 @@ const useLayers = (renderers) => {
 
     quotedParts?.forEach(element => {
       arrayFields.push(element)
-
-
     });
 
     try {
@@ -58,21 +56,6 @@ const useLayers = (renderers) => {
                 }
               }
             })],
-            popupTemplate: {
-              title: `{ROMNAM}`,
-              content: ({ graphic }) => {
-                const attributes = graphic.attributes;
-                return arrayFields.map(field => {
-                  const displayKey = keyToDisplayName[field] || field;
-                  const displayValue = `{${field}}`;
-
-                  return `<div class="popup-field">
-                <strong class="popup-field-name">${displayKey}:</strong>
-                <span class="popup-field-value">${displayValue}</span>
-              </div>`;
-                }).join('');
-              }
-            }
           });
 
       featureLayer.load().then(() => {

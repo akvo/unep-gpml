@@ -22,15 +22,18 @@ const LegendCard = ({
   hideNoData,
 }) => {
   const [tooltipPlacement, setTooltipPlacement] = useState('right')
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
   const legends = useLegends(layerId, arcgisMapId, layerMappingId)
   const mapp = useLoadMap(selectedLayers)
   const layers = useIndicators()
 
-  const rendererObj = mapp.renderers.find((r) =>
-    r.key.trim() === 'Threat to Reefs'
-      ? title.trim()
-      : 'Mismanaged plastic waste (MPW) from the ocean reaching the national coasts'
-  )?.renderer
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   const updateTooltipPlacement = () => {
     const mapContainer = document.getElementById('mapContainer')
@@ -69,44 +72,59 @@ const LegendCard = ({
       : !hideNoData
       ? [noDataLegendItem]
       : []
-    return allLegendItems?.map(({ label, symbol }) => {
-      let colorStyle
-      if (Array.isArray(symbol?.color) && !symbol?.data?.symbol) {
-        colorStyle = `rgba(${symbol?.color.join(', ')})`
-      } else if (symbol?.data?.symbol) {
-        colorStyle = `rgba(${symbol?.data.symbol.symbolLayers[1].color[0]}, ${symbol?.data.symbol.symbolLayers[1].color[1]}, ${symbol?.data.symbol?.symbolLayers[1].color[2]}, ${symbol?.data.symbol?.symbolLayers[1].color[3]})`
-      } else if (typeof symbol?.color === 'object' && symbol.color !== null) {
-        colorStyle = `rgba(${symbol?.color.r}, ${symbol?.color.g}, ${symbol?.color.b}, ${symbol?.color.a})`
-      } else {
-        console.warn(`Unexpected color format for label: ${label}`)
-        return null
-      }
 
-      return (
-        <div
-          key={label}
-          style={{
-            width: '100%',
-            display: 'flex',
-            alignItems: 'center',
-          }}
-        >
-          <div
-            style={{
-              width: '10px',
-              height: '10px',
-              backgroundColor: colorStyle,
-              border: '1px solid gray',
-              marginRight: '6px',
-              borderRadius: '2px',
-            }}
-          ></div>
-          <Typography style={{ color: '#09334B', variant: 'typography/body2' }}>
-            {label}
-          </Typography>
-        </div>
-      )
-    })
+    return (
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: isMobile ? '1fr 1fr' : '1fr',
+          gap: '6px',
+        }}
+      >
+        {allLegendItems?.map(({ label, symbol }) => {
+          let colorStyle
+          if (Array.isArray(symbol?.color) && !symbol?.data?.symbol) {
+            colorStyle = `rgba(${symbol?.color.join(', ')})`
+          } else if (symbol?.data?.symbol) {
+            colorStyle = `rgba(${symbol?.data.symbol.symbolLayers[1].color[0]}, ${symbol?.data.symbol.symbolLayers[1].color[1]}, ${symbol?.data.symbol?.symbolLayers[1].color[2]}, ${symbol?.data.symbol?.symbolLayers[1].color[3]})`
+          } else if (
+            typeof symbol?.color === 'object' &&
+            symbol.color !== null
+          ) {
+            colorStyle = `rgba(${symbol?.color.r}, ${symbol?.color.g}, ${symbol?.color.b}, ${symbol?.color.a})`
+          } else {
+            console.warn(`Unexpected color format for label: ${label}`)
+            return null
+          }
+
+          return (
+            <div
+              key={label}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              <div
+                style={{
+                  width: '10px',
+                  height: '10px',
+                  backgroundColor: colorStyle,
+                  border: '1px solid gray',
+                  marginRight: '6px',
+                  borderRadius: '2px',
+                }}
+              ></div>
+              <Typography
+                style={{ color: '#09334B', variant: 'typography/body2' }}
+              >
+                {label}
+              </Typography>
+            </div>
+          )
+        })}
+      </div>
+    )
   }
 
   return (
@@ -120,18 +138,45 @@ const LegendCard = ({
     >
       <Typography
         level={5}
-        style={{
-          margin: 0,
-          fontSize: '16px',
-          fontWeight: 'bold',
-        }}
+        style={{ margin: 0, fontSize: '16px', fontWeight: 'bold' }}
       >
         {title}
       </Typography>
-      <Typography style={{ fontSize: '14px', paddingBottom: '5px' }}>
-        Unit: [{unit}]
-      </Typography>
-
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}
+      >
+        <Typography style={{ fontSize: '14px', paddingBottom: '5px' }}>
+          Unit: [{unit}]
+        </Typography>
+        {layerId && (
+          <Tooltip
+            placement={tooltipPlacement}
+            overlay={
+              <LayerInfo
+                layer={layers?.layers?.find(
+                  (layerInfoItem) =>
+                    layerInfoItem.attributes.arcgislayerId === layerId &&
+                    uniqueId === layerInfoItem.id
+                )}
+              />
+            }
+            overlayInnerStyle={{
+              backgroundColor: 'white',
+              width: 'auto',
+              height: 'auto',
+            }}
+          >
+            <InfoCircleFilled
+              style={{ color: 'rgba(0, 0, 0, 0.45)' }}
+              onClick={() => null}
+            />
+          </Tooltip>
+        )}
+      </div>
       <Typography
         style={{
           fontSize: '12px',
@@ -144,7 +189,6 @@ const LegendCard = ({
       >
         {layerShortDescription}
       </Typography>
-
       {arcgisMapId && layerMappingId !== null
         ? rendererObj &&
           renderLegendItems(
@@ -162,34 +206,6 @@ const LegendCard = ({
                     mapp?.renderers[0]?.renderer?.renderer?._valueInfoMap
                   )
           )}
-
-      {layerId && (
-        <Tooltip
-          placement={tooltipPlacement}
-          overlayStyle={{ maxWidth: '500px', width: 'auto' }}
-          overlay={
-            <LayerInfo
-              layer={layers?.layers?.find(
-                (layerInfoItem) =>
-                  layerInfoItem.attributes.arcgislayerId === layerId &&
-                  uniqueId === layerInfoItem.id
-              )}
-            ></LayerInfo>
-          }
-          overlayInnerStyle={{
-            backgroundColor: 'white',
-            width: 'auto',
-            height: 'auto',
-          }}
-        >
-          <InfoCircleFilled
-            style={{
-              color: 'rgba(0, 0, 0, 0.45)',
-            }}
-            onClick={() => null}
-          />
-        </Tooltip>
-      )}
     </Card>
   )
 }
