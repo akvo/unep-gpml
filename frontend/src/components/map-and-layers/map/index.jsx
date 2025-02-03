@@ -65,6 +65,8 @@ const Map = ({ initialViewProperties }) => {
   const renderer = useLoadMap()
   const layerstoset = useLayers(renderer.renderers)
 
+  console.log('build 1')
+
   useEffect(() => {
     if (!mapDiv.current || viewRef.current) return
 
