@@ -61,7 +61,6 @@ const PlasticOceanBeachChart = ({ layers, loading }) => {
             : item.CountryName === decodeURIComponent(country)
         )?.Value || 0
 
-
       const totalWeight =
         totalWeightLayer.attributes.ValuePerCountry.find((item) =>
           item.CountryCode
@@ -93,16 +92,22 @@ const PlasticOceanBeachChart = ({ layers, loading }) => {
 
     return {
       title: {
-        text: 'Escaped plastic reaching oceans and coasts​',
-        subtext: `Percentage of the escaped waste between years 2010-2019`,
+        text:
+          window.innerWidth < 768
+            ? 'Escaped plastic reaching \noceans and coasts​'
+            : 'Escaped plastic reaching oceans and coasts​',
+        subtext:
+          window.innerWidth < 768
+            ? `Percentage of the escaped waste\n between years 2010-2019`
+            : `Percentage of the escaped waste between years 2010-2019`,
         left: 'center',
         textStyle: {
-          fontSize: 16,
+          fontSize: window.innerWidth < 768 ? 14 : 16,
           fontWeight: 'bold',
           color: '#020A5B',
         },
         subtextStyle: {
-          fontSize: 12,
+          fontSize: window.innerWidth < 768 ? 11 : 12,
           color: '#020A5B',
           fontFamily: 'Roboto, Helvetica Neue, sans-serif',
           fontWeight: 'bold',
