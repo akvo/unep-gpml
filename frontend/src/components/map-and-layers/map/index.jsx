@@ -257,11 +257,12 @@ const Map = ({ initialViewProperties }) => {
   }, [layerstoset])
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} style={{ height: '100vh' }}>
       <Card
         style={{
+          height: '100vh',
           width: '100%',
-          height: '100%',
+          position: 'relative',
         }}
         ref={mapDiv}
       ></Card>
