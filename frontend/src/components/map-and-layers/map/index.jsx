@@ -41,6 +41,7 @@ const makePopupDraggable = (popupContainer, view) => {
   if (!popupContainer) return
 
   adjustPopupForMobile(popupContainer)
+  console.log('xx')
 
   popupContainer.style.position = 'absolute'
   popupContainer.style.cursor = 'move'
@@ -103,7 +104,8 @@ const Map = ({ initialViewProperties }) => {
   console.log('build 1')
 
   useEffect(() => {
-    if (!mapDiv.current || viewRef.current) return
+    if (!mapDiv.current || viewRef.current || mapDiv.current.offsetHeight === 0)
+      return
 
     const customBasemapLayer = new TileLayer({
       url:
@@ -127,7 +129,7 @@ const Map = ({ initialViewProperties }) => {
       map: webMap,
       constraints: {
         rotationEnabled: false,
-        minZoom: 3,
+        minZoom: isMobile ? 1 : 3,
         maxZoom: 18,
       },
       popup: {
@@ -257,11 +259,12 @@ const Map = ({ initialViewProperties }) => {
   }, [layerstoset])
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} style={{ height: '100vh' }}>
       <Card
         style={{
+          height: '100vh',
           width: '100%',
-          height: '100%',
+          position: 'relative',
         }}
         ref={mapDiv}
       ></Card>
