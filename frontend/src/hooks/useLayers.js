@@ -14,7 +14,7 @@ const useLayers = (renderers) => {
   if (layerFromQuery) {
     layersFromQuery = allLayers?.layers.filter(lay => lay.attributes.arcgislayerId === layerFromQuery)
   }
-
+  const featureLayersMap = [];
   const featureLayers = layersFromQuery?.reverse().map(layer => {
     const baseUrl = `https://services3.arcgis.com/pI4ewELlDKS2OpCN/arcgis/rest/services/${layer.attributes.arcgislayerId}/FeatureServer`;
 
@@ -58,6 +58,8 @@ const useLayers = (renderers) => {
             })],
           });
 
+      featureLayersMap.push(featureLayer)
+
       featureLayer.load().then(() => {
 
       }).catch((error) => {
@@ -71,7 +73,7 @@ const useLayers = (renderers) => {
     }
   }).filter(layer => layer !== null);
 
-  return featureLayers;
+  return featureLayersMap;
 };
 
 export default useLayers;
