@@ -41,6 +41,7 @@ const makePopupDraggable = (popupContainer, view) => {
   if (!popupContainer) return
 
   adjustPopupForMobile(popupContainer)
+  console.log('xx')
 
   popupContainer.style.position = 'absolute'
   popupContainer.style.cursor = 'move'
