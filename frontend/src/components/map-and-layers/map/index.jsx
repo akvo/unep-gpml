@@ -11,16 +11,12 @@ import Card from 'antd/lib/card/Card'
 import useLoadMap from '../../../hooks/useLoadMap'
 import Basemap from '@arcgis/core/Basemap'
 import TileLayer from '@arcgis/core/layers/TileLayer.js'
-
 const isMobile = () => {
-  return (
-    typeof window !== 'undefined' &&
-    (window.matchMedia('(pointer: coarse)').matches ||
-      /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-        navigator.userAgent
-      ))
-  )
+  return window.innerWidth <= 768
 }
+
+
+
 
 const adjustPopupForMobile = (popupContainer) => {
   if (!popupContainer) return
@@ -123,13 +119,13 @@ const Map = ({ initialViewProperties }) => {
       showAttribution: false,
       attribution: '',
     })
-
+    console.log('isMobile',isMobile())
     const view = new MapView({
       container: mapDiv.current,
       map: webMap,
       constraints: {
         rotationEnabled: false,
-        minZoom: isMobile ? 1 : 3,
+        minZoom: isMobile() ? 1 : 3,
         maxZoom: 18,
       },
       popup: {
