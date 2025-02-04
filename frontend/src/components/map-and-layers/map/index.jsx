@@ -101,7 +101,8 @@ const Map = ({ initialViewProperties }) => {
   const layerstoset = useLayers(renderer.renderers)
 
   useEffect(() => {
-    if (!mapDiv.current || viewRef.current) return
+    if (!mapDiv.current || viewRef.current || mapDiv.current.offsetHeight === 0)
+      return
 
     const customBasemapLayer = new TileLayer({
       url:
@@ -125,7 +126,7 @@ const Map = ({ initialViewProperties }) => {
       map: webMap,
       constraints: {
         rotationEnabled: false,
-        minZoom: 3,
+        minZoom: isMobile ? 1 : 3,
         maxZoom: 18,
       },
       popup: {
