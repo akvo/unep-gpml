@@ -113,24 +113,50 @@ const Map = ({ initialViewProperties }) => {
       attribution: '',
     })
 
-    const view = new MapView({
-      container: mapDiv.current,
-      map: webMap,
-      constraints: {
-        rotationEnabled: false,
-        minZoom: 3,
-        maxZoom: 18,
-      },
-      popup: {
-        popupEnabled: true,
-        dockEnabled: false,
-        dockOptions: {
-          buttonEnabled: false,
-          breakpoint: false,
-        },
-      },
-      ...initialViewProperties,
-    })
+    const view = isMobile()
+      ? new MapView({
+          container: mapDiv.current,
+          map: webMap,
+          constraints: {
+            rotationEnabled: false,
+            minZoom: 2,
+            maxZoom: 18,
+            extent: {
+              xmin: -20037508.34,
+              ymin: -20037508.34,
+              xmax: 20037508.34,
+              ymax: 20037508.34,
+              spatialReference: { wkid: 102100 }, // Web Mercator Projection
+            },
+          },
+          popup: {
+            popupEnabled: true,
+            dockEnabled: false,
+            dockOptions: {
+              buttonEnabled: false,
+              breakpoint: false,
+            },
+          },
+          ...initialViewProperties,
+        })
+      : new MapView({
+          container: mapDiv.current,
+          map: webMap,
+          constraints: {
+            rotationEnabled: false,
+            minZoom: 3,
+            maxZoom: 18,
+          },
+          popup: {
+            popupEnabled: true,
+            dockEnabled: false,
+            dockOptions: {
+              buttonEnabled: false,
+              breakpoint: false,
+            },
+          },
+          ...initialViewProperties,
+        })
 
     view.navigation = {
       browserTouchPanEnabled: true,
@@ -177,7 +203,7 @@ const Map = ({ initialViewProperties }) => {
 
           view.goTo({
             center: [
-              view.center.longitude - deltaX * 0.0005, 
+              view.center.longitude - deltaX * 0.0005,
               view.center.latitude + deltaY * 0.0005,
             ],
           })
