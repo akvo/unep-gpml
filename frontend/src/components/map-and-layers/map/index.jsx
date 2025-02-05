@@ -118,7 +118,7 @@ const Map = ({ initialViewProperties }) => {
       map: webMap,
       constraints: {
         rotationEnabled: false,
-        minZoom: isMobile() ? 1 : 3,
+        minZoom: 3,
         maxZoom: 18,
       },
       popup: {
