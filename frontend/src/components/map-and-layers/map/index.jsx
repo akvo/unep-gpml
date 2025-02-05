@@ -226,7 +226,7 @@ const Map = ({ initialViewProperties }) => {
         cleanupDraggable()
       }
     }
-  }, [isMobile])
+  }, [isMobile()])
 
   useEffect(() => {
     const webMap = viewRef.current?.map
@@ -250,11 +250,15 @@ const Map = ({ initialViewProperties }) => {
   }, [layerstoset])
 
   return (
-    <div className={styles.container} style={{ height: '100vh' }}>
+    <div
+      className={styles.container}
+      style={{ height: '100vh', minHeight: '100vh' }}
+    >
       <div
         ref={mapDiv}
         style={{
           height: '100vh',
+          minHeight: '100vh',
           width: '100%',
           position: 'relative',
         }}
