@@ -15,9 +15,6 @@ const isMobile = () => {
   return window.innerWidth <= 768
 }
 
-
-
-
 const adjustPopupForMobile = (popupContainer) => {
   if (!popupContainer) return
 
@@ -119,7 +116,7 @@ const Map = ({ initialViewProperties }) => {
       showAttribution: false,
       attribution: '',
     })
-    console.log('isMobile',isMobile())
+
     const view = new MapView({
       container: mapDiv.current,
       map: webMap,
@@ -231,7 +228,7 @@ const Map = ({ initialViewProperties }) => {
         cleanupDraggable()
       }
     }
-  }, [isMobile])
+  }, [isMobile()])
 
   useEffect(() => {
     const webMap = viewRef.current?.map
@@ -255,15 +252,19 @@ const Map = ({ initialViewProperties }) => {
   }, [layerstoset])
 
   return (
-    <div className={styles.container} style={{ height: '100vh' }}>
-      <Card
+    <div
+      className={styles.container}
+      style={{ height: '100vh', minHeight: '100vh' }}
+    >
+      <div
+        ref={mapDiv}
         style={{
           height: '100vh',
+          minHeight: '100vh',
           width: '100%',
           position: 'relative',
         }}
-        ref={mapDiv}
-      ></Card>
+      />
 
       {layerstoset && layerstoset.length > 0 && (
         <Details layerId={queryParameters?.layer}></Details>
