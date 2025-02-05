@@ -7,10 +7,10 @@ import useQueryParameters from '../../../hooks/useQueryParameters'
 import useLayers from '../../../hooks/useLayers'
 
 import Details from '../details'
-import Card from 'antd/lib/card/Card'
 import useLoadMap from '../../../hooks/useLoadMap'
 import Basemap from '@arcgis/core/Basemap'
 import TileLayer from '@arcgis/core/layers/TileLayer.js'
+
 const isMobile = () => {
   return window.innerWidth <= 768
 }
@@ -34,8 +34,6 @@ const makePopupDraggable = (popupContainer, view) => {
   if (!popupContainer) return
 
   adjustPopupForMobile(popupContainer)
-  console.log('xx')
-
   popupContainer.style.position = 'absolute'
   popupContainer.style.cursor = 'move'
   popupContainer.style.zIndex = '300'
@@ -93,8 +91,6 @@ const Map = ({ initialViewProperties }) => {
   const { queryParameters } = useQueryParameters()
   const renderer = useLoadMap()
   const layerstoset = useLayers(renderer.renderers)
-
-  console.log('build 1')
 
   useEffect(() => {
     if (!mapDiv.current || viewRef.current || mapDiv.current.offsetHeight === 0)
@@ -157,7 +153,9 @@ const Map = ({ initialViewProperties }) => {
       }
     }, 1000)
 
-    if (isMobile) {
+    const preventDefaultGesture = (e) => e.preventDefault()
+
+    if (isMobile()) {
       let lastTouchX = null
       let lastTouchY = null
 
@@ -179,8 +177,8 @@ const Map = ({ initialViewProperties }) => {
 
           view.goTo({
             center: [
-              view.center.longitude - deltaX * 0.01,
-              view.center.latitude + deltaY * 0.01,
+              view.center.longitude - deltaX * 0.0005, 
+              view.center.latitude + deltaY * 0.0005,
             ],
           })
 
@@ -205,7 +203,14 @@ const Map = ({ initialViewProperties }) => {
         passive: false,
       })
 
+      document.addEventListener('gesturestart', preventDefaultGesture)
+      document.addEventListener('gesturechange', preventDefaultGesture)
+      document.addEventListener('gestureend', preventDefaultGesture)
+
       return () => {
+        document.removeEventListener('gesturestart', preventDefaultGesture)
+        document.removeEventListener('gesturechange', preventDefaultGesture)
+        document.removeEventListener('gestureend', preventDefaultGesture)
         view.container.removeEventListener('touchstart', onTouchStart)
         view.container.removeEventListener('touchmove', onTouchMove)
         view.container.removeEventListener('touchend', onTouchEnd)
