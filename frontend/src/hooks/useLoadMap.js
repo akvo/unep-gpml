@@ -22,21 +22,21 @@ const useLoadMap = (layers) => {
 
           webMap = new FeatureLayer({
             portalItem: {
-              id: layer.attributes.arcgisMapId
+              id: layer?.attributes?.arcgisMapId
             }
           })
 
         } else {
           webMap = new WebMap({
             portalItem: {
-              id: layer.attributes.arcgisMapId
+              id: layer?.attributes.arcgisMapId
             }
           });
         }
 
 
-        await webMap.load();
-        return layer.attributes.layerMappingId !== null ? webMap?.layers?.getItemAt(layer.attributes.layerMappingId)?.renderer : webMap;
+        await webMap?.load();
+        return layer.attributes.layerMappingId !== null ? webMap?.layers?.getItemAt(layer?.attributes.layerMappingId)?.renderer : webMap;
       }
       return null;
     };
@@ -45,18 +45,16 @@ const useLoadMap = (layers) => {
       setIsLoading(true);
       try {
         const renderersList = [];
-        const selectedLayers = layers ? layers : layersFromQuery
+        const selectedLayers = Array.isArray(layers) ? layers : Array.isArray(layersFromQuery) ? layersFromQuery : [];
+
         for (const layer of selectedLayers) {
           const loadedRenderer = await loadWebMapLayer(layer);
-
           if (loadedRenderer) {
-            renderersList.push({ key: layer.attributes.name, renderer: loadedRenderer });
+            renderersList.push({ key: layer?.attributes.name, renderer: loadedRenderer });
           }
         }
 
-
         setRenderers(renderersList);
-
       } catch (error) {
         console.error("Failed to load web map or layers", error);
       } finally {
