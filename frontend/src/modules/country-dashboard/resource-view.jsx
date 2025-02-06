@@ -67,7 +67,6 @@ function ResourceView() {
           maxHeight: '1000px',
           width: '100%',
           overflow: 'auto',
-          paddingTop: '50px',
           paddingBottom: '70px',
         }}
       >

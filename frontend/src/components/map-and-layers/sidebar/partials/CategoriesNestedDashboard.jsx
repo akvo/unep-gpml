@@ -89,7 +89,7 @@ const CategoriesNestedDashboard = ({ categories }) => {
       <div
         style={{
           position: isMobile ? 'sticky' : 'relative',
-          marginLeft: '15px',
+          marginLeft: '20px',
           marginTop: '10px',
           marginBottom: isMobile ? '5px' : '20px',
           fontSize: isMobile ? '15px' : '16px',
@@ -113,8 +113,8 @@ const CategoriesNestedDashboard = ({ categories }) => {
         }
         onChange={handleChangeCountry}
         style={{
-          marginLeft: '10px',
-          width: '90%',
+          marginLeft: '5px',
+          width: '97%',
           height: '50%',
           padding: isMobile ? '0px' : '4px',
           fontSize: isMobile ? '14px' : '18px',
@@ -132,6 +132,9 @@ const CategoriesNestedDashboard = ({ categories }) => {
             style={{
               fontFamily: 'var(--font-archia), sans-serif',
               padding: '10px 20px',
+
+              paddingTop: '20px',
+
               fontSize: isMobile ? '16px' : '18px',
               color: '#1B2738',
               fontWeight: isCategorySelected(category) ? 'bold' : 'normal',
