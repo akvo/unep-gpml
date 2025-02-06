@@ -27,7 +27,7 @@ const useLayers = () => {
 
 
         fetchLayers();
-    }, []);
+    }, [router.locale]);
 
     return { layers, loading };
 };
