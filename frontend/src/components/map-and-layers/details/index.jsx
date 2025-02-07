@@ -9,6 +9,8 @@ const Details = ({ title, layerId }) => {
   const [showLegend, setShowLegend] = useState(true)
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
 
+  console.log('build')
+
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768)
