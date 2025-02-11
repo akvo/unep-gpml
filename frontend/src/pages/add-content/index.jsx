@@ -13,6 +13,7 @@ import {
   notification,
   Form as AntForm,
   Spin,
+  Divider,
 } from 'antd'
 import styles from './index.module.scss'
 import { PlusIcon, UploadFileIcon } from '../../components/icons'
@@ -26,6 +27,8 @@ import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
 import { lifecycleStageTags } from '../../utils/misc'
 import { useRouter } from 'next/router'
 import { loadCatalog } from '../../translations/utils'
+import withAuth from '../../components/withAuth'
+import ModalAddEntity from '../../modules/flexible-forms/entity-modal/add-entity-modal'
 import debounce from 'lodash/debounce'
 import dynamic from 'next/dynamic'
 const RichTextEditor = dynamic(() => import('react-rte'), {
@@ -1082,7 +1085,7 @@ const FormField = React.memo(
                   }
                 }}
                 multiple={false}
-                accept=".jpg,.png"
+                accept=".jpg,.jpeg,.png,.webp"
                 showUploadList={false}
               >
                 <p className="ant-upload-drag-icon">
@@ -1145,7 +1148,7 @@ const FormField = React.memo(
                   }
                 }}
                 multiple={true}
-                accept=".jpg,.png"
+                accept=".jpg,.jpeg,.png,.webp"
               >
                 <p className="ant-upload-drag-icon">
                   <UploadFileIcon />
@@ -1190,7 +1193,7 @@ const FormField = React.memo(
                   }
                 }}
                 multiple={false}
-                accept=".jpg,.png"
+                accept=".jpg,.jpeg,.png,.webp"
                 showUploadList={false}
               >
                 <p className="ant-upload-drag-icon">
@@ -1211,7 +1214,6 @@ const FormField = React.memo(
               )}
             </FormLabel>
           )
-
         case 'owner':
           return (
             <FormLabel
@@ -1237,6 +1239,24 @@ const FormField = React.memo(
                 className={
                   meta.touched && !meta.valid ? 'ant-input-status-error' : ''
                 }
+                dropdownRender={(menu) => (
+                  <>
+                    {menu}
+                    <Divider style={{ margin: '8px 0' }} />
+                    <Button
+                      type="link"
+                      size="small"
+                      onClick={(e) => {
+                        e.preventDefault()
+                        form.mutators.setShowModal(true)
+                      }}
+                      icon={<PlusOutlined />}
+                      style={{ padding: '4px 8px' }}
+                    >
+                      Add new entity
+                    </Button>
+                  </>
+                )}
               >
                 {entity.map((opt) => (
                   <Option key={opt.id} value={opt.id}>
@@ -1537,10 +1557,15 @@ const FormField = React.memo(
     return <div className="mb-4">{renderFieldContent()}</div>
   },
   (prevProps, nextProps) => {
+    const isStoreDataEqual =
+      JSON.stringify(prevProps.storeData) ===
+      JSON.stringify(nextProps.storeData)
     return (
       prevProps.input.value === nextProps.input.value &&
       prevProps.meta.error === nextProps.meta.error &&
-      prevProps.meta.touched === nextProps.meta.touched
+      prevProps.meta.touched === nextProps.meta.touched &&
+      prevProps.selectedType === nextProps.selectedType &&
+      isStoreDataEqual
     )
   }
 )
@@ -1595,6 +1620,8 @@ const DynamicContentForm = () => {
   const [loading, setLoading] = useState(false)
   const [loadingEditData, setLoadingEditData] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
+  const [showModal, setShowModal] = useState(false)
+  const formRef = useRef()
 
   const [initialValues, setInitialValues] = useState({
     highlights: [{ text: '', url: '' }],
@@ -1997,6 +2024,19 @@ const DynamicContentForm = () => {
     }
   }
 
+  const setOrg = (org) => {
+    const form = formRef.current
+    const currentOwners = form.getState().values.owner || []
+    form.change('owner', [...currentOwners, org.id])
+    setShowModal(false)
+  }
+
+  const formMutators = {
+    setShowModal: ([value], state, { changeValue }) => {
+      setShowModal(value)
+    },
+  }
+
   return (
     <div className={styles.addContentForm}>
       <div className="container">
@@ -2014,12 +2054,14 @@ const DynamicContentForm = () => {
               onSubmit={(values, form) => onSubmit(values, form)}
               validate={validate}
               initialValues={initialValues}
+              mutators={{ setShowModal: formMutators.setShowModal }}
               render={({ handleSubmit, form }) => {
                 const onSubmit = async (e) => {
                   e.preventDefault()
                   e.stopPropagation()
                   await handleSubmit(e)
                 }
+                formRef.current = form
                 return (
                   <>
                     <form onSubmit={onSubmit}>
@@ -2130,6 +2172,11 @@ const DynamicContentForm = () => {
           )}
         </div>
       </div>
+      <ModalAddEntity
+        visible={showModal}
+        close={() => setShowModal(!showModal)}
+        setEntity={setOrg}
+      />
     </div>
   )
 }
@@ -2449,4 +2496,4 @@ export const getStaticProps = async (ctx) => {
   }
 }
 
-export default DynamicContentForm
+export default withAuth(DynamicContentForm)
