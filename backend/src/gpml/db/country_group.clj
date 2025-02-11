@@ -4,6 +4,7 @@
    [hugsql.core :as hugsql]))
 
 (declare new-country-group
+         update-country-group
          all-country-groups
          country-group-detail
          country-group-by-name
@@ -15,6 +16,7 @@
          get-country-groups-countries
          get-country-groups-by-countries
          get-country-groups
-         delete-country-group)
+         delete-country-group
+         delete-country-group-countries)
 
 (hugsql/def-db-fns "gpml/db/country_group.sql")

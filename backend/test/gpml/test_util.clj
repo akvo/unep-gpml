@@ -11,6 +11,10 @@
       (get [:duct.database.sql/hikaricp :duct.database.sql.hikaricp/read-write])
       :spec))
 
+(defn stakeholder-by-id [{:keys [db]} user]
+  (let [conn (:spec db)]
+    (db.stakeholder/stakeholder-by-id conn user)))
+
 (defn create-test-stakeholder [{:keys [db logger]} email review-status role]
   (let [conn (:spec db)
         info {:picture "https://picsum.photos/200"

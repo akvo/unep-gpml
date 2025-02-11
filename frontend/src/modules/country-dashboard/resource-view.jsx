@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useMemo } from 'react'
+import React, { useState, useEffect, Fragment } from 'react'
 import { useRouter } from 'next/router'
 import Sidebar from '../../components/map-and-layers/sidebar'
 import CountryOverview from '../../pages/countryOverview'
@@ -6,18 +6,58 @@ import DashboardLanding from '../../pages/countryOverview/IntroPage'
 
 function ResourceView() {
   const router = useRouter()
-  const { isReady, query } = router
+  const { query } = router
   const { country } = query
 
-  const [loading, setLoading] = useState(true)
+  const [isMobile, setIsMobile] = useState(false)
 
-  useMemo(() => {
-    if (isReady && !loading) {
-      updateQuery('replace')
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768)
     }
-  }, [isReady, query])
 
-  return (
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  return isMobile ? (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}
+    >
+      <div style={{ width: '90%', maxWidth: '1200px', paddingTop: '20px' }}>
+        {country && router.query.categoryId ? (
+          <CountryOverview country={country} />
+        ) : (
+          <DashboardLanding />
+        )}
+      </div>
+      <div
+        style={{
+          width: '100%',
+          backgroundColor: '#f8f9fa',
+          boxShadow: '0px 2px 5px rgba(0,0,0,0.1)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          position: 'sticky',
+          top: 0,
+          zIndex: 1000,
+        }}
+      >
+        <Sidebar
+          alt={false}
+          countryDashboard={true}
+          alwaysOpen={true}
+          style={{ width: '100%' }}
+        />
+      </div>
+    </div>
+  ) : (
     <Fragment>
       <div
         style={{
@@ -27,7 +67,7 @@ function ResourceView() {
           maxHeight: '1000px',
           width: '100%',
           overflow: 'auto',
-          paddingTop: '50px',
+          paddingBottom: '70px',
         }}
       >
         <Sidebar alt={false} countryDashboard={true} />

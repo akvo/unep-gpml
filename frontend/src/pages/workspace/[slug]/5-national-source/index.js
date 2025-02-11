@@ -3,6 +3,7 @@ import { PageLayout } from '..'
 import { Trans, t } from '@lingui/macro'
 import { loadCatalog } from '../../../../translations/utils'
 import Button from '../../../../components/button'
+import { PREFIX_SLUG, isoA2 } from '../../../../modules/workspace/ps/config'
 
 const slides = {
   en:
@@ -17,7 +18,14 @@ const View = () => {
   const router = useRouter()
   const slideURL = slides[router.locale]
 
+  const { slug } = router.query
+
+  const [_, countrySlug] = slug?.split(`${PREFIX_SLUG}-`)
+  const countryISOA2 =
+    isoA2?.[countrySlug === 'cote-d-ivoire' ? 'ivory-coast' : countrySlug]
+
   const match = slideURL.match(/\/d\/(.+?)\//)
+
   return (
     <>
       <h4 className="caps-heading-m">
@@ -29,14 +37,33 @@ const View = () => {
       <p>
         <Trans>description-intro-5-national-source</Trans>
       </p>
-      <a
-        href={`https://docs.google.com/presentation/d/${match[1]}/export/pptx`}
-        target="_blank"
-      >
-        <Button size="small" type="link">
-          Download
-        </Button>
-      </a>
+      <ul>
+        <li>
+          <a
+            href={
+              countryISOA2 === 'KH'
+                ? 'https://docs.google.com/spreadsheets/d/1Cami7EJtTabFqVLFSU07T6-pwPAdjZGE/edit?gid=615205835#gid=615205835'
+                : 'https://docs.google.com/spreadsheets/d/1fXG_jOQAr0LZM69v_h--h_OryI08NgZ6/edit?gid=912237927#gid=912237927'
+            }
+            target="_blank"
+          >
+            <Button size="small" type="link">
+              Simple Excel Tool for Indicator Mapping
+            </Button>
+          </a>
+        </li>
+        <li>
+          <a
+            href={`https://docs.google.com/presentation/d/${match[1]}/export/pptx`}
+            target="_blank"
+          >
+            <Button size="small" type="link">
+              Download Slides
+            </Button>
+          </a>
+        </li>
+      </ul>
+
       <iframe
         src={slideURL}
         frameborder="0"

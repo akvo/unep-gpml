@@ -20,6 +20,7 @@ const Subcategories = ({ subcategories, layers, loading }) => {
       setQueryParameters({ layers: selectedLayers })
     }
   }, [])
+  console.log('xx')
 
   useEffect(() => {
     if (router.query.subcategoryId !== expandedSubcategory) {
@@ -80,9 +81,6 @@ const Subcategories = ({ subcategories, layers, loading }) => {
           >
             {filteredLayers
               .slice()
-              .sort((a, b) =>
-                a.attributes.title.localeCompare(b.attributes.title)
-              )
               .map((layer, layerIndex) => (
                 <div
                   className="layer-item"

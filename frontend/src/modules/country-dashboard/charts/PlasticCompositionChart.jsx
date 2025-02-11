@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { useRouter } from 'next/router'
-import useLayerInfo from '../../../hooks/useLayerInfo'
 import useRegions from '../../../hooks/useRegions'
 import { getBaseUrl } from '../../../utils/misc'
 
-const PlasticCompositionChart = () => {
+const PlasticCompositionChart = ({ layers, layerLoading }) => {
   const router = useRouter()
-  const { country } = router.query
-  const { layers, loading: layerLoading } = useLayerInfo()
+  const { country, countryCode } = router.query
   const [nationalEstimate, setNationalEstimate] = useState(0)
   const [cityEstimates, setCityEstimates] = useState([])
   const [cities, setCities] = useState([])
@@ -23,7 +21,7 @@ const PlasticCompositionChart = () => {
       if (layerLoading || regionLoading || !country || !layers.length) return
 
       const layerMapping = {
-        national: 'Municipal_solid_waste_plastic_composition_WFL1',
+        national: 'Municipal_solid_waste_plastic_composition_4_WFL1',
         cities: 'Proportion_of_plastic_waste_generated_WFL1',
       }
 
@@ -31,25 +29,30 @@ const PlasticCompositionChart = () => {
         (layer) => layer.attributes.arcgislayerId === layerMapping?.national
       )
 
-      console.log('nationalLayernationalLayer', nationalLayer)
       const cityLayer = layers?.find(
         (layer) => layer.attributes.arcgislayerId === layerMapping?.cities
       )
-
       const nationalData = nationalLayer?.attributes.ValuePerCountry?.find(
-        (item) => item.CountryName === country
+        (item) =>
+          item?.CountryCode
+            ? item?.CountryCode === countryCode
+            : item.CountryName === decodeURIComponent(country)
       )
 
-      const cityData = cityLayer?.attributes.ValuePerCountry?.filter(
-        (item) => item?.CountryName === country
+      const cityData = cityLayer?.attributes.ValuePerCountry?.filter((item) =>
+        item.CountryCode !== null
+          ? item.CountryCode === countryCode
+          : item.CountryName === decodeURIComponent(country)
       )
 
       setNationalEstimate(nationalData ? nationalData?.Value : 0)
       setCityEstimates(cityData ? cityData?.map((item) => item?.Value) : [])
       setCities(cityData ? cityData?.map((item) => item.City) : [])
 
-      const selectedCountry = countriesWithRegions.find(
-        (c) => c.CountryName === country
+      const selectedCountry = countriesWithRegions.find((c) =>
+        c.CountryCode !== null
+          ? c.CountryCode === countryCode
+          : c.CountryName === decodeURIComponent(country)
       )
       if (selectedCountry) {
         setRegionPlasticComposition(selectedCountry.regionPlasticComposition)
@@ -76,10 +79,17 @@ const PlasticCompositionChart = () => {
 
     return {
       title: {
-        text: `Plastic composition in the MSW for ${country}`,
+        text:
+          window.innerWidth < 768
+            ? `Plastic composition in the MSW\nfor ${decodeURIComponent(
+                country
+              )}`
+            : `Plastic composition in the MSW for ${decodeURIComponent(
+                country
+              )}`,
         left: 'center',
         textStyle: {
-          fontSize: 18,
+          fontSize: window.innerWidth < 768 ? 14 : 18,
           fontWeight: 'bold',
           color: '#020A5B',
         },
@@ -95,7 +105,7 @@ const PlasticCompositionChart = () => {
             }%<br/>`
           })
           if (regionPlasticComposition) {
-            content += `<br/><span style="color: #020A5B; font-weight: bold;">Estimated Regional Average:</span> ${regionPlasticComposition} kg/person/day`
+            content += `<br/><span style="color: #020A5B; font-weight: bold;">Estimated Regional Average:</span> ${regionPlasticComposition} %`
           }
           return content
         },
@@ -125,7 +135,7 @@ const PlasticCompositionChart = () => {
         type: 'value',
         name: '%',
         min: 0,
-        max: 100,
+        max: 60,
         interval: 20,
         nameTextStyle: {
           fontSize: 12,
@@ -158,11 +168,13 @@ const PlasticCompositionChart = () => {
                 yAxis: regionPlasticComposition || 0.78,
                 label: {
                   formatter: () =>
-                    `Regional Average (${regionPlasticComposition || 0.78})`,
+                    `Regional\n Average\n (${
+                      regionPlasticComposition + '%' || 0.78 + '%'
+                    })`,
                   position: 'middle',
+                  offset: [240, -5],
                   color: '#020A5B',
                   fontSize: 12,
-                  fontWeight: 'bold',
                 },
                 lineStyle: {
                   type: 'dashed',
@@ -191,12 +203,12 @@ const PlasticCompositionChart = () => {
           fontSize: '12px',
         }}
       >
-        Datasource:{' '}
+        Data source:{' '}
         <a
           href={`${baseURL}/data/maps?categoryId=waste-management&subcategoryId=generation&layer=Proportion_of_plastic_waste_generated_WFL1`}
           style={{ color: '#020A5B', fontWeight: 'bold' }}
         >
-          UN Habitat 2021
+          World Bank
         </a>{' '}
       </div>
     </div>

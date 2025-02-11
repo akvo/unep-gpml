@@ -31,8 +31,8 @@ spec:
             cpu: "100m"
             memory: "32Mi"
           limits:
-            cpu: "200m"
-            memory: "64Mi"
+            cpu: "1000m"
+            memory: "2048Mi"
         env:
         - name: GCS_BASE_URL
           valueFrom:
@@ -49,8 +49,22 @@ spec:
             cpu: "300m"
             memory: "200Mi"
           limits:
-            cpu: "600m"
-            memory: "1000Mi"
+            cpu: "2000m"
+            memory: "4096Mi"
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 3001
+          initialDelaySeconds: 120
+          timeoutSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3001
+          initialDelaySeconds: 120
+          periodSeconds: 30
+          failureThreshold: 4
+          timeoutSeconds: 5
         env:
         - name: NEXT_PUBLIC_ENV
           valueFrom:
@@ -316,8 +330,8 @@ spec:
             cpu: "300m"
             memory: "200Mi"
           limits:
-            cpu: "600m"
-            memory: "2000Mi"
+            cpu: "1000m"
+            memory: "2048Mi"
         env:
         - name: DATABASE_CLIENT
           valueFrom:

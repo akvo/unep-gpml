@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Layout, Select, Button } from 'antd'
 import useQueryParameters from '../../../../hooks/useQueryParameters'
 import { UIStore } from '../../../../store'
@@ -12,6 +12,7 @@ const CategoriesNestedDashboard = ({ categories }) => {
   const [selectedCategory, setSelectedCategory] = useState(null)
   const [selectedCountry, setSelectedCountry] = useState(null)
   const baseURL = getBaseUrl()
+  const [isMobile, setIsMobile] = useState(false)
 
   const { countries, transnationalOptions } = UIStore.useState((s) => ({
     countries: s.countries,
@@ -19,13 +20,22 @@ const CategoriesNestedDashboard = ({ categories }) => {
     landing: s.landing,
   }))
 
-  const isLoaded = () => !isEmpty(countries) && !isEmpty(transnationalOptions)
+  const isLoaded = () => !isEmpty(countries)
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+
+    handleResize()
+    window.addEventListener('resize', handleResize)
+
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   const countryOpts = isLoaded()
     ? countries
-        .filter(
-          (country) => country.description.toLowerCase() === 'member state'
-        )
+        .filter((country) => country.description === 'Member State')
         .map((it) => ({ value: it.id, label: it.name }))
         .sort((a, b) => a.label.localeCompare(b.label))
     : []
@@ -35,6 +45,7 @@ const CategoriesNestedDashboard = ({ categories }) => {
 
     const newParams = {
       country: selected?.name,
+      countryCode: selected?.isoCodeA3,
     }
 
     setQueryParameters(newParams)
@@ -50,7 +61,7 @@ const CategoriesNestedDashboard = ({ categories }) => {
     setQueryParameters(newParams)
     setSelectedCategory(category.attributes.categoryId)
   }
-
+  console.log('Trigger build')
   const isCategorySelected = (category) => {
     return queryParameters.categoryId === category.attributes.categoryId
   }
@@ -58,7 +69,7 @@ const CategoriesNestedDashboard = ({ categories }) => {
   const handleViewGlobalDataClick = () => {
     const categoryId = selectedCategory || queryParameters.categoryId
     if (categoryId) {
-      window.location.href = `${baseURL}/data/maps?categoryId=${categoryId}`
+      window.open(`${baseURL}/data/maps?categoryId=${categoryId}`, '_blank')
     } else {
       alert('Please select a category before viewing global data.')
     }
@@ -67,46 +78,71 @@ const CategoriesNestedDashboard = ({ categories }) => {
   return (
     <Sider
       breakpoint="lg"
-      collapsedWidth="0"
+      collapsedWidth="100%"
       width={360}
-      style={{ backgroundColor: '#ffffff', height: '100%', padding: '10px' }}
+      style={{
+        height: '100%',
+        padding: '0',
+        margin: '0',
+      }}
     >
+      <div
+        style={{
+          position: isMobile ? 'sticky' : 'relative',
+          marginLeft: '20px',
+          marginTop: '10px',
+          marginBottom: isMobile ? '5px' : '20px',
+          fontSize: isMobile ? '15px' : '16px',
+          fontWeight: 'bold',
+          fontFamily: 'var(--font-archia), sans-serif',
+          color: '#7468ff',
+        }}
+      >
+        NATIONAL DATA
+      </div>
+
       <Select
+        showSearch
         size="large"
-        showArrow
         allowClear
-        placeholder="Select Country"
+        value={queryParameters.country ? queryParameters.country : ''}
+        placeholder="Search Country"
         options={countryOpts}
         filterOption={(input, option) =>
-          option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          option?.label?.toLowerCase().includes(input.toLowerCase())
         }
         onChange={handleChangeCountry}
         style={{
-          marginLeft: '15px',
-          width: '90%',
-          height: '50px',
-          padding: '4px',
-          fontSize: '18px',
+          marginLeft: '5px',
+          width: '97%',
+          height: '50%',
+          padding: isMobile ? '0px' : '4px',
+          fontSize: isMobile ? '14px' : '18px',
+          fontFamily: 'var(--font-archia), sans-serif',
           borderRadius: '8px',
           border: '1px solid #ccc',
         }}
       />
 
-      <div style={{ marginTop: '20px' }}>
+      <div style={{ marginTop: isMobile ? '0px' : '20px' }}>
         {categories.map((category) => (
           <div
             key={category.attributes.categoryId}
             onClick={() => handleCategoryClick(category)}
             style={{
+              fontFamily: 'var(--font-archia), sans-serif',
               padding: '10px 20px',
-              fontSize: '16px',
+
+              paddingTop: '20px',
+
+              fontSize: isMobile ? '16px' : '18px',
               color: '#1B2738',
               fontWeight: isCategorySelected(category) ? 'bold' : 'normal',
               backgroundColor: isCategorySelected(category)
                 ? '#E3DDFD'
                 : 'transparent',
-              borderRadius: '8px',
-              marginBottom: '10px',
+              width: '100%',
+              marginBottom: isMobile ? '0px' : '10px',
               cursor: 'pointer',
               userSelect: 'none',
               border: 'none',
@@ -118,7 +154,7 @@ const CategoriesNestedDashboard = ({ categories }) => {
         ))}
       </div>
 
-      {queryParameters.categoryId && queryParameters.country && (
+      {queryParameters.categoryId && queryParameters.country && !isMobile && (
         <Button
           type="primary"
           style={{

@@ -7,10 +7,81 @@ import useQueryParameters from '../../../hooks/useQueryParameters'
 import useLayers from '../../../hooks/useLayers'
 
 import Details from '../details'
-import Card from 'antd/lib/card/Card'
 import useLoadMap from '../../../hooks/useLoadMap'
 import Basemap from '@arcgis/core/Basemap'
 import TileLayer from '@arcgis/core/layers/TileLayer.js'
+
+const isMobile = () => {
+  return window.innerWidth <= 768
+}
+
+const adjustPopupForMobile = (popupContainer) => {
+  if (!popupContainer) return
+
+  const screenWidth = window.innerWidth
+  const screenHeight = window.innerHeight
+
+  if (screenWidth <= 768) {
+    popupContainer.style.left = `${screenWidth / 2}px`
+    popupContainer.style.top = `${screenHeight / 2}px`
+    popupContainer.style.transform = 'translate(-50%, -50%)'
+    popupContainer.style.width = '90vw'
+    popupContainer.style.maxWidth = '400px'
+  }
+}
+
+const makePopupDraggable = (popupContainer, view) => {
+  if (!popupContainer) return
+
+  adjustPopupForMobile(popupContainer)
+  popupContainer.style.position = 'absolute'
+  popupContainer.style.cursor = 'move'
+  popupContainer.style.zIndex = '300'
+
+  let isDragging = false
+  let offsetX = 0
+  let offsetY = 0
+  let lastPosition = { left: null, top: null }
+
+  const onMouseDown = (event) => {
+    isDragging = true
+    offsetX = event.clientX - popupContainer.getBoundingClientRect().left
+    offsetY = event.clientY - popupContainer.getBoundingClientRect().top
+    popupContainer.style.transition = 'none'
+  }
+
+  const onMouseMove = (event) => {
+    if (!isDragging) return
+    const newLeft = event.clientX - offsetX
+    const newTop = event.clientY - offsetY
+    popupContainer.style.left = `${newLeft}px`
+    popupContainer.style.top = `${newTop}px`
+
+    lastPosition = { left: newLeft, top: newTop }
+  }
+
+  const onMouseUp = () => {
+    isDragging = false
+    popupContainer.style.transition = ''
+  }
+
+  view.popup.watch('visible', (isVisible) => {
+    if (isVisible && lastPosition.left !== null && lastPosition.top !== null) {
+      popupContainer.style.left = `${lastPosition.left}px`
+      popupContainer.style.top = `${lastPosition.top}px`
+    }
+  })
+
+  popupContainer.addEventListener('mousedown', onMouseDown)
+  document.addEventListener('mousemove', onMouseMove)
+  document.addEventListener('mouseup', onMouseUp)
+
+  return () => {
+    popupContainer.removeEventListener('mousedown', onMouseDown)
+    document.removeEventListener('mousemove', onMouseMove)
+    document.removeEventListener('mouseup', onMouseUp)
+  }
+}
 
 const Map = ({ initialViewProperties }) => {
   const mapDiv = useRef(null)
@@ -22,7 +93,8 @@ const Map = ({ initialViewProperties }) => {
   const layerstoset = useLayers(renderer.renderers)
 
   useEffect(() => {
-    if (!mapDiv.current || viewRef.current) return
+    if (!mapDiv.current || viewRef.current || mapDiv.current.offsetHeight === 0)
+      return
 
     const customBasemapLayer = new TileLayer({
       url:
@@ -41,25 +113,138 @@ const Map = ({ initialViewProperties }) => {
       attribution: '',
     })
 
-    const view = new MapView({
-      container: mapDiv.current,
-      map: webMap,
-      constraints: {
-        minZoom: 3,
-        maxZoom: 18,
-      },
-      popup: {
-        popupEnabled: true,
-        dockEnabled: true,
-        dockOptions: {
-          buttonEnabled: false,
-          breakpoint: false,
-        },
-      },
-      ...initialViewProperties,
-    })
+    const view = isMobile()
+      ? new MapView({
+          container: mapDiv.current,
+          map: webMap,
+          constraints: {
+            rotationEnabled: false,
+            minZoom: 2,
+            maxZoom: 18,
+            extent: {
+              xmin: -20037508.34,
+              ymin: -20037508.34,
+              xmax: 20037508.34,
+              ymax: 20037508.34,
+              spatialReference: { wkid: 102100 }, // Web Mercator Projection
+            },
+          },
+          popup: {
+            popupEnabled: true,
+            dockEnabled: false,
+            dockOptions: {
+              buttonEnabled: false,
+              breakpoint: false,
+            },
+          },
+          ...initialViewProperties,
+        })
+      : new MapView({
+          container: mapDiv.current,
+          map: webMap,
+          constraints: {
+            rotationEnabled: false,
+            minZoom: 3,
+            maxZoom: 18,
+          },
+          popup: {
+            popupEnabled: true,
+            dockEnabled: false,
+            dockOptions: {
+              buttonEnabled: false,
+              breakpoint: false,
+            },
+          },
+          ...initialViewProperties,
+        })
+
+    view.navigation = {
+      browserTouchPanEnabled: true,
+      mouseWheelZoomEnabled: true,
+      multiTouchZoomEnabled: true,
+    }
+
     viewRef.current = view
+
+    let cleanupDraggable = null
+
+    const interval = setInterval(() => {
+      const popupContainer = document.querySelector('.esri-popup')
+      if (popupContainer && !cleanupDraggable) {
+        cleanupDraggable = makePopupDraggable(popupContainer)
+        adjustPopupForMobile(popupContainer)
+      } else if (!popupContainer && cleanupDraggable) {
+        cleanupDraggable()
+        cleanupDraggable = null
+      }
+    }, 1000)
+
+    const preventDefaultGesture = (e) => e.preventDefault()
+
+    if (isMobile()) {
+      let lastTouchX = null
+      let lastTouchY = null
+
+      function onTouchStart(event) {
+        if (event.touches.length === 1) {
+          lastTouchX = event.touches[0].clientX
+          lastTouchY = event.touches[0].clientY
+        }
+      }
+
+      function onTouchMove(event) {
+        if (
+          event.touches.length === 1 &&
+          lastTouchX !== null &&
+          lastTouchY !== null
+        ) {
+          const deltaX = event.touches[0].clientX - lastTouchX
+          const deltaY = event.touches[0].clientY - lastTouchY
+
+          view.goTo({
+            center: [
+              view.center.longitude - deltaX * 0.0005,
+              view.center.latitude + deltaY * 0.0005,
+            ],
+          })
+
+          lastTouchX = event.touches[0].clientX
+          lastTouchY = event.touches[0].clientY
+          event.preventDefault()
+        }
+      }
+
+      function onTouchEnd() {
+        lastTouchX = null
+        lastTouchY = null
+      }
+
+      view.container.addEventListener('touchstart', onTouchStart, {
+        passive: false,
+      })
+      view.container.addEventListener('touchmove', onTouchMove, {
+        passive: false,
+      })
+      view.container.addEventListener('touchend', onTouchEnd, {
+        passive: false,
+      })
+
+      document.addEventListener('gesturestart', preventDefaultGesture)
+      document.addEventListener('gesturechange', preventDefaultGesture)
+      document.addEventListener('gestureend', preventDefaultGesture)
+
+      return () => {
+        document.removeEventListener('gesturestart', preventDefaultGesture)
+        document.removeEventListener('gesturechange', preventDefaultGesture)
+        document.removeEventListener('gestureend', preventDefaultGesture)
+        view.container.removeEventListener('touchstart', onTouchStart)
+        view.container.removeEventListener('touchmove', onTouchMove)
+        view.container.removeEventListener('touchend', onTouchEnd)
+      }
+    }
+
     return () => {
+      clearInterval(interval)
       if (viewRef.current) {
         viewRef.current
           .when(() => {
@@ -70,8 +255,11 @@ const Map = ({ initialViewProperties }) => {
             console.error('Error when closing the view:', error)
           })
       }
+      if (cleanupDraggable) {
+        cleanupDraggable()
+      }
     }
-  }, [])
+  }, [isMobile()])
 
   useEffect(() => {
     const webMap = viewRef.current?.map
@@ -95,14 +283,19 @@ const Map = ({ initialViewProperties }) => {
   }, [layerstoset])
 
   return (
-    <div className={styles.container}>
-      <Card
-        style={{
-          width: '100%',
-          height: '100%',
-        }}
+    <div
+      className={styles.container}
+      style={{ height: '100vh', minHeight: '100vh' }}
+    >
+      <div
         ref={mapDiv}
-      ></Card>
+        style={{
+          height: '100vh',
+          minHeight: '100vh',
+          width: '100%',
+          position: 'relative',
+        }}
+      />
 
       {layerstoset && layerstoset.length > 0 && (
         <Details layerId={queryParameters?.layer}></Details>

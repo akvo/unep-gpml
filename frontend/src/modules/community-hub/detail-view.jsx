@@ -31,6 +31,7 @@ import classNames from 'classnames'
 import DetailModal from '../details-page/modal'
 import { useRouter } from 'next/router'
 import bodyScrollLock from '../../modules/details-page/scroll-utils'
+import { Pagination as SwiperPagination, Navigation } from 'swiper'
 
 export const AdminBadges = ({ data, badgeOpts }) => {
   const [assigned, setAssigned] = useState(
@@ -75,6 +76,7 @@ export const AdminBadges = ({ data, badgeOpts }) => {
 }
 
 const DetailView = ({ item, profile, setLoginVisible, isAuthenticated }) => {
+  console.log('item', item)
   const router = useRouter()
   const [data, setData] = useState({ ...item })
   const [loading, setLoading] = useState(true)
@@ -147,7 +149,7 @@ const DetailView = ({ item, profile, setLoginVisible, isAuthenticated }) => {
           <h4 className="h-caps-m">member individual</h4>
           <h1>
             {data.name}
-            {profile.role === 'ADMIN' ? (
+            {profile?.role === 'ADMIN' ? (
               <AdminBadges
                 {...{ data }}
                 badgeOpts={['user-verified', 'user-focal-point-verified']}
@@ -215,7 +217,7 @@ const DetailView = ({ item, profile, setLoginVisible, isAuthenticated }) => {
                     <span>{data.linkedin}</span>
                   </div>
                 )}
-                {profile.role === 'ADMIN' && <AdminDropdown {...{ data }} />}
+                {profile?.role === 'ADMIN' && <AdminDropdown {...{ data }} />}
                 {/* {profile.role === 'ADMIN' && (
                   <Link href={`/edit/entity/${data.id}?formType=stakeholder`}>
                     <Button size="small" type="link">
@@ -238,7 +240,7 @@ const DetailView = ({ item, profile, setLoginVisible, isAuthenticated }) => {
           <h4 className="h-caps-m">member organisation</h4>
           <h1>
             {data.name}
-            {profile.role === 'ADMIN' ? (
+            {profile?.role === 'ADMIN' ? (
               <AdminBadges
                 {...{ data }}
                 badgeOpts={['org-verified', 'org-partner-verified']}
@@ -274,7 +276,7 @@ const DetailView = ({ item, profile, setLoginVisible, isAuthenticated }) => {
               <LinkedinOutlined />
               <span>http...</span>
             </div> */}
-            {profile.role === 'ADMIN' && <AdminDropdown {...{ data }} />}
+            {profile?.role === 'ADMIN' && <AdminDropdown {...{ data }} />}
           </div>
         </div>
         <div className="content">
@@ -312,6 +314,10 @@ const DetailView = ({ item, profile, setLoginVisible, isAuthenticated }) => {
                 slidesPerGroup={4}
                 slidesPerView={'auto'}
                 className="resource-cards"
+                pagination={{
+                  clickable: true,
+                }}
+                modules={[SwiperPagination]}
               >
                 {resources.map((item) => (
                   <SwiperSlide>

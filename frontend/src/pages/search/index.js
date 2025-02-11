@@ -236,7 +236,10 @@ export const SearchBar = ({ onSearch, loading }) => {
               router.push(`/search?q=${val.replace(/ /g, '+')}`)
             }}
           >
-            Search
+            <span className="hide-desktop">
+              <Pointer />
+            </span>
+            <span className="hide-mobile">Search</span>
           </Button>
         )}
         {loading && (

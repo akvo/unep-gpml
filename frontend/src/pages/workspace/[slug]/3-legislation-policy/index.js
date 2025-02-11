@@ -39,19 +39,26 @@ const View = () => {
       <p>
         <Trans>description-intro-3-legislation-policy</Trans>
       </p>
-      <a href={`${legalSlideURL}`} target="_blank">
-        <Button size="small" type="link">
-          Download Legal and Policy Review Report
-        </Button>
-      </a>
-      <a
-        href={`https://docs.google.com/presentation/d/${match[1]}/export/pptx`}
-        target="_blank"
-      >
-        <Button size="small" type="link">
-          Download
-        </Button>
-      </a>
+      <ul>
+        <li>
+          <a href={`${legalSlideURL}`} target="_blank">
+            <Button size="small" type="link">
+              Download Legal and Policy Review Report
+            </Button>
+          </a>
+        </li>
+        <li>
+          <a
+            href={`https://docs.google.com/presentation/d/${match[1]}/export/pptx`}
+            target="_blank"
+          >
+            <Button size="small" type="link">
+              Download
+            </Button>
+          </a>
+        </li>
+      </ul>
+
       <iframe
         src={slideURL}
         frameborder="0"

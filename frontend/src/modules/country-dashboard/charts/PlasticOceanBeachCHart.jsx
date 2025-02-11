@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { useRouter } from 'next/router'
-import useLayerInfo from '../../../hooks/useLayerInfo'
 import { getBaseUrl } from '../../../utils/misc'
 
-const PlasticOceanBeachChart = () => {
+const PlasticOceanBeachChart = ({ layers, loading }) => {
   const router = useRouter()
   const baseURL = getBaseUrl()
-  const { country } = router.query
-  const { layers, loading } = useLayerInfo()
+  const { country, countryCode } = router.query
   const [oceanPercentage, setOceanPercentage] = useState(0)
   const [beachPercentage, setBeachPercentage] = useState(0)
+  const [totalWeight, setTotalWeight] = useState(0)
 
   useEffect(() => {
     const fetchData = () => {
@@ -19,7 +18,7 @@ const PlasticOceanBeachChart = () => {
       const oceanLayer = layers.find(
         (layer) =>
           layer.attributes.arcgislayerId ===
-          'Mismanaged_plastic_waste_escaping_to_oceans_V4_WFL1'
+          'Mismanaged_plastic_waste_escaping_to_oceans_V3_WFL1'
       )
       const coastLayer = layers.find(
         (layer) =>
@@ -32,22 +31,41 @@ const PlasticOceanBeachChart = () => {
           'Mismanaged_plastic_waste_escaping_to_beaches_V3_WFL1'
       )
 
+      const totalWeightLayer = layers.find(
+        (layer) =>
+          layer.attributes.arcgislayerId ===
+          'Mismanaged_plastic_waste_escaping_to_oceans_and_coasts_V3_WFL1'
+      )
       if (!oceanLayer || !coastLayer || !beachLayer) {
         console.warn('One of the required layers not found.')
         return
       }
 
       const oceanValue =
-        oceanLayer.attributes.ValuePerCountry.find(
-          (item) => item.CountryName === country
+        oceanLayer.attributes.ValuePerCountry.find((item) =>
+          item.CountryCode
+            ? item.CountryCode === countryCode
+            : item.CountryName === decodeURIComponent(country)
         )?.Value || 0
+
       const coastValue =
-        coastLayer.attributes.ValuePerCountry.find(
-          (item) => item.CountryName === country
+        coastLayer.attributes.ValuePerCountry.find((item) =>
+          item.CountryCode
+            ? item.CountryCode === countryCode
+            : item.CountryName === decodeURIComponent(country)
         )?.Value || 1
       const beachValue =
-        beachLayer.attributes.ValuePerCountry.find(
-          (item) => item.CountryName === country
+        beachLayer.attributes.ValuePerCountry.find((item) =>
+          item.CountryCode
+            ? item.CountryCode === countryCode
+            : item.CountryName === decodeURIComponent(country)
+        )?.Value || 0
+
+      const totalWeight =
+        totalWeightLayer.attributes.ValuePerCountry.find((item) =>
+          item.CountryCode
+            ? item.CountryCode === countryCode
+            : item.CountryName === decodeURIComponent(country)
         )?.Value || 0
 
       const calculatedOceanPercentage = (
@@ -61,72 +79,128 @@ const PlasticOceanBeachChart = () => {
 
       setOceanPercentage(calculatedOceanPercentage)
       setBeachPercentage(calculatedBeachPercentage)
+      setTotalWeight(totalWeight)
     }
 
     fetchData()
   }, [country, layers, loading])
 
-  const getOption = () => ({
-    title: {
-      text: 'Mismanaged plastic reaching ocean and beaches (percentages)',
-      left: 'center',
-      textStyle: {
-        fontSize: 16,
-        fontWeight: 'bold',
+  const getOption = () => {
+    const formattedTotalWeight = new Intl.NumberFormat('en-US').format(
+      Math.round(totalWeight)
+    )
+
+    return {
+      title: {
+        text:
+          window.innerWidth < 768
+            ? 'Escaped plastic reaching \noceans and coasts​'
+            : 'Escaped plastic reaching oceans and coasts​',
+        subtext:
+          window.innerWidth < 768
+            ? `Percentage of the escaped waste\n between years 2010-2019`
+            : `Percentage of the escaped waste between years 2010-2019`,
+        left: 'center',
+        textStyle: {
+          fontSize: window.innerWidth < 768 ? 14 : 16,
+          fontWeight: 'bold',
+          color: '#020A5B',
+        },
+        subtextStyle: {
+          fontSize: window.innerWidth < 768 ? 11 : 12,
+          color: '#020A5B',
+          fontFamily: 'Roboto, Helvetica Neue, sans-serif',
+          fontWeight: 'bold',
+        },
       },
-    },
-    tooltip: {
-      trigger: 'item',
-      formatter: '{a} <br/>{b}: {c} tonnes ({d}%)',
-    },
-    legend: {
-      orient: 'horizontal',
-      bottom: 10,
-      data: ['Ends up in beaches', 'Ends up in the ocean'],
-    },
-    series: [
-      {
-        name: 'Plastic distribution',
-        type: 'pie',
-        radius: ['40%', '80%'],
-        avoidLabelOverlap: false,
-        itemStyle: {
-          borderRadius: 0,
-          borderColor: '#fff',
-          borderWidth: 2,
-        },
-        label: {
-          show: true,
-          position: 'inside',
-          formatter: '{d}%',
+      tooltip: {
+        trigger: 'item',
+        formatter: '{a} <br/>{b}: {c} %',
+      },
+      legend: {
+        orient: 'horizontal',
+        bottom: 10,
+        data: ['Ends up in the ocean', 'Ends up on the coasts'],
+        textStyle: {
           fontSize: 12,
-          color: '#fff',
+          color: '#020A5B',
         },
-        emphasis: {
+      },
+      series: [
+        {
+          name: 'Plastic distribution',
+          type: 'pie',
+          top: '15%',
+          radius: ['40%', '80%'],
+          avoidLabelOverlap: false,
+          itemStyle: {
+            borderRadius: 0,
+            borderColor: '#fff',
+            borderWidth: 2,
+          },
           label: {
             show: true,
-            fontSize: '16',
-            fontWeight: 'bold',
+            position: 'inside',
+            formatter: '{d}%',
+            fontSize: 12,
+            color: '#fff',
           },
+          emphasis: {
+            label: {
+              show: true,
+              fontSize: '16',
+              fontWeight: 'bold',
+            },
+          },
+          labelLine: {
+            show: false,
+          },
+          data: [
+            {
+              value: beachPercentage,
+              name: 'Ends up on the coasts',
+              itemStyle: { color: '#ffc107' },
+            },
+            {
+              value: oceanPercentage,
+              name: 'Ends up in the ocean',
+              itemStyle: { color: '#007bff' },
+            },
+          ],
         },
-        labelLine: {
-          show: false,
-        },
-        data: [
+      ],
+      graphic: {
+        type: 'group',
+        left: 'center',
+        top: '50%',
+        children: [
           {
-            value: beachPercentage,
-            name: 'Ends up in beaches',
-            itemStyle: { color: '#ffc107' },
+            type: 'text',
+            left: 'center',
+            style: {
+              text: `${formattedTotalWeight}`,
+              fontSize: 20,
+              fontWeight: 'bold',
+              fill: '#020A5B',
+              textAlign: 'center',
+            },
           },
           {
-            value: oceanPercentage,
-            name: 'Ends up in the ocean',
-            itemStyle: { color: '#007bff' },
+            type: 'text',
+            left: 'center',
+            top: 25,
+            style: {
+              text: 'tonnes',
+              fontSize: 14,
+              fontWeight: 'normal',
+              fill: '#020A5B',
+              textAlign: 'center',
+            },
           },
         ],
       },
-    ],
-  })
+    }
+  }
 
   return (
     <div style={{ position: 'relative' }}>
@@ -142,7 +216,7 @@ const PlasticOceanBeachChart = () => {
           fontSize: '12px',
         }}
       >
-        Datasource:{' '}
+        Data source:{' '}
         <a
           href={`${baseURL}/data/maps?categoryId=environmental-impact&subcategoryId=ocean-and-coast&layer=Mismanaged_plastic_waste_escaping_to_oceans_and_coasts_V3_WFL1`}
           target="_blank"

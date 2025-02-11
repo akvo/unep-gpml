@@ -41,8 +41,9 @@
                                                     "APPROVED"
                                                     "ADMIN")
           payload (new-event (merge data {:owners [(:id sth-id)]}))
+          sth (test-util/stakeholder-by-id config {:id sth-id})
           resp-one (handler (-> (mock/request :post "/")
-                                (assoc :user {:id sth-id})
+                                (assoc :user sth)
                                 (assoc :body-params payload)
                                 (assoc :parameters {:body {:source dom.types/default-resource-source}})))
           event-one (db.event/event-by-id conn (:body resp-one))]

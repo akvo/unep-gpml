@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { useRouter } from 'next/router'
-import useLayerInfo from '../../../hooks/useLayerInfo'
 
-const PlasticImportExportChart = () => {
+const PlasticImportExportChart = ({ layers, loading }) => {
   const router = useRouter()
-  const { country } = router.query
-  const { layers, loading } = useLayerInfo()
+  const { country, countryCode } = router.query
 
   const [importData, setImportData] = useState([])
   const [exportData, setExportData] = useState([])
@@ -38,27 +36,27 @@ const PlasticImportExportChart = () => {
         plasticinPrimaryForm: layers.find(
           (layer) =>
             layer.attributes.arcgislayerId ===
-            'Plastic_in_primary_form___value__import__WFL1'
+            'Plastic_in_primary_form___value__import__V2_WFL1'
         ),
         intermediateFormsOfPlastic: layers.find(
           (layer) =>
             layer.attributes.arcgislayerId ===
-            'Intermediate___value__import__WFL1'
+            'Intermediate_forms_of_plastic___value__import__WFL1'
         ),
         finalManufacturedPlasticGoods: layers.find(
           (layer) =>
             layer.attributes.arcgislayerId ===
-            'Final_manufactured_plastics_goods___Import__million__WFL1'
+            'Final_manufactured_plastic_goods___value__import__WFL1'
         ),
         intermediateManufacturedPlasticGoods: layers.find(
           (layer) =>
             layer.attributes.arcgislayerId ===
-            'Inter__man_plastic_goods___value_V3_WFL1'
+            'Intermediate_man___value__import__V2_WFL1'
         ),
         plasticWaste: layers.find(
           (layer) =>
             layer.attributes.arcgislayerId ===
-            'Plastic_waste___value__import__WFL1'
+            'Plastic_waste___value__import__V2_WFL1'
         ),
       }
 
@@ -66,27 +64,27 @@ const PlasticImportExportChart = () => {
         plasticinPrimaryForm: layers.find(
           (layer) =>
             layer.attributes.arcgislayerId ===
-            'Plastic_in_primary_form___value__export__WFL1'
+            'Plastic_in_primary_form___value__export__V2_WFL1'
         ),
         intermediateFormsOfPlastic: layers.find(
           (layer) =>
             layer.attributes.arcgislayerId ===
-            'Intermediate_forms_of_plastic___value__export__WFL1'
+            'Intermediate_forms_of_plastic___value__export__V2_WFL1'
         ),
         finalManufacturedPlasticGoods: layers.find(
           (layer) =>
             layer.attributes.arcgislayerId ===
-            'Final_manufactured_plastic_goods___value__export__WFL1'
+            'Final_manufactured_plastic_goods___value__export__V2_WFL1'
         ),
         intermediateManufacturedPlasticGoods: layers.find(
           (layer) =>
             layer.attributes.arcgislayerId ===
-            'Intermediate_V2___value__export__WFL1'
+            'Intermediate_man___value__export__WFL1'
         ),
         plasticWaste: layers.find(
           (layer) =>
             layer.attributes.arcgislayerId ===
-            'Plastic_waste___value__export__WFL1'
+            'Plastic_waste___value__export__V2_WFL1'
         ),
       }
 
@@ -99,8 +97,10 @@ const PlasticImportExportChart = () => {
       const importResults = categories.map((category) => {
         const layer = importLayers[category]
         const data = getLatestYearData(
-          layer?.attributes?.ValuePerCountry?.filter(
-            (item) => item.CountryName === country
+          layer?.attributes?.ValuePerCountry?.filter((item) =>
+            item.CountryCode
+              ? item.CountryCode === countryCode
+              : item.CountryName === decodeURIComponent(country)
           )
         )
         return data ? parseFloat(data.Value.toFixed(2)) : 0
@@ -109,8 +109,10 @@ const PlasticImportExportChart = () => {
       const exportResults = categories.map((category) => {
         const layer = exportLayers[category]
         const data = getLatestYearData(
-          layer?.attributes?.ValuePerCountry?.filter(
-            (item) => item.CountryName === country
+          layer?.attributes?.ValuePerCountry?.filter((item) =>
+            item.CountryCode
+              ? item.CountryCode === countryCode
+              : item.CountryName === decodeURIComponent(country)
           )
         )
         return data ? parseFloat(data.Value.toFixed(2)) : 0
@@ -125,8 +127,15 @@ const PlasticImportExportChart = () => {
 
   const getOption = () => ({
     title: {
-      text: `Plastic import & export value for ${country}`,
-      textStyle: { fontSize: 18, fontWeight: 'bold', color: '#020A5B' },
+      text:
+        window.innerWidth < 768
+          ? `Plastic import & export value\nfor ${decodeURIComponent(country)}`
+          : `Plastic import & export value for ${decodeURIComponent(country)}`,
+      textStyle: {
+        fontSize: window.innerWidth < 768 ? 14 : 18,
+        fontWeight: 'bold',
+        color: '#020A5B',
+      },
       left: 'center',
     },
     tooltip: {
@@ -139,13 +148,17 @@ const PlasticImportExportChart = () => {
     legend: {
       data: categoriesTitle.map((category) => Object.values(category)[0]),
       textStyle: { color: '#020A5B' },
-      bottom: 0,
+      bottom: window.innerWidth < 768 ? 'auto' : 0,
+      top: window.innerWidth < 768 ? 'bottom' : 'auto',
+      orient: window.innerWidth < 768 ? 'vertical' : 'horizontal',
+      left: window.innerWidth < 768 ? 'center' : 'auto',
+      itemGap: window.innerWidth < 768 ? 5 : 10,
     },
     grid: {
       left: '3%',
       right: '4%',
       textStyle: { color: '#020A5B' },
-      bottom: '20%',
+      bottom: window.innerWidth < 768 ? '30%' : '20%',
       containLabel: true,
     },
     xAxis: {
@@ -176,6 +189,7 @@ const PlasticImportExportChart = () => {
       type: 'bar',
       stack: 'ImportExport',
       data: [importData[index], exportData[index]],
+      barWidth: window.innerWidth < 768 ? 50 : 90,
       itemStyle: {
         color: ['#384E85', '#FFB800', '#f56a00', '#A7AD3E', '#FFA424'][index],
       },
@@ -196,7 +210,7 @@ const PlasticImportExportChart = () => {
           fontSize: '12px',
         }}
       >
-        Datasource:{' '}
+        Data source:{' '}
         <a
           href={`https://unctad.org/publication/global-trade-plastics-insights-first-life-cycle-trade-database`}
           target="_blank"

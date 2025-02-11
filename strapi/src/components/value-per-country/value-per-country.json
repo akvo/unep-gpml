@@ -17,6 +17,9 @@
     },
     "City": {
       "type": "string"
+    },
+    "CountryCode": {
+      "type": "string"
     }
   }
 }

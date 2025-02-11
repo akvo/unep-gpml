@@ -31,6 +31,7 @@ const StakeholderCard = ({ item, className }) => {
       ))}
     </span>
   )
+  const image = item.picture || item.image
   return (
     <a href={`/${item.type}/${item.id}`} target="_blank">
       <div
@@ -58,10 +59,10 @@ const StakeholderCard = ({ item, className }) => {
             )}
           </h5>
         )}
-        {item?.picture != null && (
+        {image != null && (
           <Image
             className={stakeholderType}
-            src={item?.picture}
+            src={image}
             width={195}
             height={175}
           />

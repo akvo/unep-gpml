@@ -41,7 +41,7 @@ const DetailModal = ({
         <ProjectDetail
           data={match?.params?.item}
           isModal
-          {...{ match, visible, isAuthenticated, setLoginVisible }}
+          {...{ match, visible, isAuthenticated, setLoginVisible, setVisible }}
         />
       )}
       {match?.params?.type !== 'project' && (

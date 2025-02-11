@@ -1,31 +1,29 @@
 import React, { useEffect, useState } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { useRouter } from 'next/router'
-import useLayerInfo from '../../../hooks/useLayerInfo'
 
-const PlasticImportExportPieCharts = ({ chartType }) => {
+const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
   const router = useRouter()
-  const { country } = router.query
-  const { layers, loading } = useLayerInfo()
-
+  const { country, countryCode } = router.query
   const [data, setData] = useState([])
 
   const categories = [
     'plasticinPrimaryForm',
     'intermediateFormsOfPlastic',
-    'intermediateManufacturedPlasticGoods',
     'finalManufacturedPlasticGoods',
+    'intermediateManufacturedPlasticGoods',
     'plasticWaste',
   ]
 
   const categoriesTitle = [
     { plasticinPrimaryForm: 'Plastic in primary form' },
     { intermediateFormsOfPlastic: 'Intermediate forms of plastic' },
+    { finalManufacturedPlasticGoods: 'Final manufactured plastic goods' },
     {
       intermediateManufacturedPlasticGoods:
         'Intermediate manufactured plastic goods',
     },
-    { finalManufacturedPlasticGoods: 'Final manufactured plastic goods' },
+
     { plasticWaste: 'Plastic waste' },
   ]
 
@@ -38,10 +36,11 @@ const PlasticImportExportPieCharts = ({ chartType }) => {
           'Plastics_in_primary_forms___weight__import__WFL1',
         intermediateFormsOfPlastic:
           'Intermediate_forms_of_plastic_weight____import__WFL1',
-        intermediateManufacturedPlasticGoods:
-          'Intermediate___weight__import__WFL1',
         finalManufacturedPlasticGoods:
           'Final_manufactured_plastics_goods___weight__import__WFL1',
+        intermediateManufacturedPlasticGoods:
+          'Intermediate___weight__import__WFL1',
+
         plasticWaste: 'Plastic_waste_weigth____import__WFL1',
       },
       export: {
@@ -49,10 +48,11 @@ const PlasticImportExportPieCharts = ({ chartType }) => {
           'Plastics_in_primary_forms___weight__export__WFL1',
         intermediateFormsOfPlastic:
           'Intermediate_forms_of_plastic_weight____export__WFL1',
-        intermediateManufacturedPlasticGoods:
-          'Intermediate___weight__export__WFL1',
         finalManufacturedPlasticGoods:
           'Final_manufactured_plastics_goods_weight____export__WFL1',
+        intermediateManufacturedPlasticGoods:
+          'Intermediate___weight__export__WFL1',
+
         plasticWaste: 'Plastic_waste_weigth____export__WFL1',
       },
     }
@@ -68,8 +68,10 @@ const PlasticImportExportPieCharts = ({ chartType }) => {
 
         if (!layer) return 0
 
-        const countryData = layer.attributes.ValuePerCountry?.filter(
-          (item) => item.CountryName === country
+        const countryData = layer.attributes.ValuePerCountry?.filter((item) =>
+          item.CountryCode
+            ? item.CountryCode === countryCode
+            : item.CountryName === decodeURIComponent(country)
         )
 
         if (!countryData || !countryData.length) return 0
@@ -106,21 +108,24 @@ const PlasticImportExportPieCharts = ({ chartType }) => {
 
   const getPieOption = () => ({
     title: {
-      text: `Plastic ${
-        chartType === 'import' ? 'import' : 'export'
-      } by type for ${country}`,
-      subtext: `In 1000 metric tons for year ${latestYear || 'N/A'}`,
+      text:
+        window.innerWidth < 768
+          ? `Plastic ${
+              chartType === 'import' ? 'import' : 'export'
+            } by type for\n${decodeURIComponent(country)}`
+          : `Plastic ${
+              chartType === 'import' ? 'import' : 'export'
+            } by type for ${decodeURIComponent(country)}`,
+      subtext: `In 1000 metric tons for year ${2021 || 'N/A'}`,
       left: 'center',
       textStyle: {
-        fontSize: 16,
-        fontWeight: 'bold',
+        fontSize: window.innerWidth < 768 ? 14 : 18,
         color: '#020A5B',
       },
       subtextStyle: {
         fontSize: 14,
         color: '#020A5B',
         fontFamily: 'Roboto, Helvetica Neue, sans-serif',
-        fontWeight: 'bold',
       },
     },
     tooltip: {
@@ -140,7 +145,7 @@ const PlasticImportExportPieCharts = ({ chartType }) => {
       },
       top: 'bottom',
       itemGap: 10,
-      padding: [10, 30, 5, 10],
+      padding: [20, 30, 5, 10],
       data: categoriesTitle.map((category) => Object.values(category)[0]),
     },
     grid: {
@@ -159,6 +164,9 @@ const PlasticImportExportPieCharts = ({ chartType }) => {
           value: item.value,
           name: item.name,
         })),
+        label: {
+          show: false,
+        },
         emphasis: {
           itemStyle: {
             shadowBlur: 10,
@@ -184,7 +192,7 @@ const PlasticImportExportPieCharts = ({ chartType }) => {
           fontSize: '12px',
         }}
       >
-        Datasource:{' '}
+        Data source:{' '}
         <a
           href={`https://unctad.org/publication/global-trade-plastics-insights-first-life-cycle-trade-database`}
           target="_blank"

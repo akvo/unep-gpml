@@ -142,9 +142,12 @@
       }
       .grouped-connections {
         display: flex;
+        flex-wrap: wrap;
         .group {
           flex: 1;
+          min-width: 50%;
           margin-bottom: 30px;
+          padding-right: 10px;
           .org-item {
             height: 60px;
             display: flex;
@@ -154,6 +157,7 @@
             align-items: center;
             img {
               object-fit: contain;
+              margin-right: 10px;
             }
           }
         }

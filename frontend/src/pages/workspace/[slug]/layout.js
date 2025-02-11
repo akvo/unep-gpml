@@ -70,31 +70,38 @@ const NestedLayout = ({ children }) => {
     indexStep === step?.indexStep
 
   const psSteps = useMemo(() => {
-    /**
-     * Always use the SLUG from the config file (stepState).
-     * Just in case the SLUG from BE is different from the latest update.
-     */
-    return psItem?.steps
-      ? psItem.steps.map((step) => {
-          const findStep = stepsState.find((s) => s?.label === step?.label)
-          if (findStep) {
-            return {
-              ...step,
-              substeps: step?.substeps?.map((subItem) => {
-                const findSubStep = findStep.substeps.find(
-                  (s) => s?.label === subItem?.label
-                )
-                if (findSubStep) {
-                  return { ...subItem, slug: findSubStep.slug }
-                }
-                return subItem
-              }),
-              slug: findStep.slug,
+    if (!psItem?.steps) return stepsState
+
+    return psItem.steps.map((step) => {
+      const findStep = stepsState.find(
+        (s) =>
+          s.slug === step.slug ||
+          s.label === step.label.replace(' Process', '').replace(' Report', '')
+      )
+
+      if (findStep) {
+        return {
+          ...step,
+          label: findStep.label,
+          slug: findStep.slug,
+          substeps: step?.substeps?.map((subItem) => {
+            const findSubStep = findStep.substeps?.find(
+              (s) => s.slug === subItem.slug || s.label === subItem.label
+            )
+
+            if (findSubStep) {
+              return {
+                ...subItem,
+                label: findSubStep.label,
+                slug: findSubStep.slug,
+              }
             }
-          }
-          return step
-        })
-      : stepsState
+            return subItem
+          }),
+        }
+      }
+      return step
+    })
   }, [psItem, stepsState])
 
   /**

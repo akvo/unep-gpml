@@ -21,6 +21,7 @@
      `port/delete-public-channel             (mock (success-with)) #_ds-chat/delete-channel*
      `port/delete-user-account               (mock (success-with)) #_ds-chat/delete-user-account*
      `port/get-all-channels                  (mock (success-with)) #_ds-chat/get-all-channels*
+     `port/get-channel                       (mock (success-with :channel port/ExtendedChannel)) #_ds-chat/get-channel*
      `port/get-private-channels              (mock (success-with)) #_ds-chat/get-all-channels*
      `port/get-public-channels               (mock (success-with)) #_ds-chat/get-all-channels*
      `port/get-channel-discussions           (mock (success-with)) #_ds-chat/get-channel-discussions*

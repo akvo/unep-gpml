@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { useRouter } from 'next/router'
-import useLayerInfo from '../../../hooks/useLayerInfo'
 import { getBaseUrl } from '../../../utils/misc'
 
-const PlasticImportExportChart = () => {
+const PlasticImportExportChart = ({ layers, loading }) => {
   const router = useRouter()
   const baseURL = getBaseUrl()
-  const { country } = router.query
-  const { layers, loading } = useLayerInfo()
+  const { country, countryCode } = router.query
   const [years, setYears] = useState([])
   const [totalImports, setTotalImports] = useState([])
   const [totalExports, setTotalExports] = useState([])
@@ -20,12 +18,12 @@ const PlasticImportExportChart = () => {
       const importLayer = layers?.find(
         (layer) =>
           layer.attributes.arcgislayerId ===
-          'Total_plastic___value__import__WFL1'
+          'Total_plastic___value__import__V2_WFL1'
       )
       const exportLayer = layers?.find(
         (layer) =>
           layer.attributes.arcgislayerId ===
-          'Total_plastic___value__export__WFL1'
+          'Total_plastic___value__export__V2_WFL1'
       )
 
       if (!importLayer || !exportLayer) {
@@ -34,11 +32,17 @@ const PlasticImportExportChart = () => {
       }
 
       const filteredImports = importLayer.attributes.ValuePerCountry?.filter(
-        (item) => item.CountryName === country
+        (item) =>
+          item.CountryCode
+            ? item.CountryCode === countryCode
+            : item.CountryName === decodeURIComponent(country)
       )
 
       const filteredExports = exportLayer.attributes.ValuePerCountry?.filter(
-        (item) => item.CountryName === country
+        (item) =>
+          item.CountryCode
+            ? item.CountryCode === countryCode
+            : item.CountryName === decodeURIComponent(country)
       )
 
       const yearsSet = new Set()
@@ -64,9 +68,24 @@ const PlasticImportExportChart = () => {
 
   const getOption = () => ({
     title: {
-      text: `Plastic import & export value for ${country} `,
+      text:
+        window.innerWidth < 768
+          ? `Plastic import & export value\nfor ${decodeURIComponent(country)}`
+          : `Plastic import & export value for ${decodeURIComponent(country)}`,
       left: 'center',
-      textStyle: { fontSize: 18, fontWeight: 'bold', color: '#020A5B' },
+      textStyle: {
+        fontSize: window.innerWidth < 768 ? 14 : 18,
+        fontWeight: 'bold',
+        color: '#020A5B',
+        wordWrap: 'break-word',
+        overflow: 'break',
+      },
+    },
+    grid: {
+      left: '20%',
+      right: '4%',
+      top:'20%',
+      textStyle: { color: '#020A5B' },
     },
     tooltip: {
       trigger: 'axis',
@@ -96,11 +115,11 @@ const PlasticImportExportChart = () => {
         fontSize: 12,
         color: '#020A5B',
       },
+      name: 'million US dollars',
       nameTextStyle: {
         color: '#020A5B',
         fontSize: 12,
       },
-      name: 'million US dollars',
     },
     series: [
       {
@@ -138,7 +157,7 @@ const PlasticImportExportChart = () => {
           fontSize: '12px',
         }}
       >
-        Datasource:{' '}
+        Data source:{' '}
         <a
           href={`${baseURL}/data/maps?categoryId=industry-and-trade&subcategoryId=Import&layer=Plastic_waste___value__import__WFL1`}
           style={{ color: '#020A5B', fontWeight: 'bold' }}

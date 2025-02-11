@@ -30,15 +30,15 @@ const View = () => {
       <p>
         <Trans>description-intro-1-project-team</Trans>
       </p>
+      <a
+        href={`https://docs.google.com/presentation/d/${match?.[1]}/export/pptx`}
+        target="_blank"
+      >
+        <Button size="small" type="link">
+          Download
+        </Button>
+      </a>
       <div className="iframe-container">
-        <a
-          href={`https://docs.google.com/presentation/d/${match?.[1]}/export/pptx`}
-          target="_blank"
-        >
-          <Button size="small" type="link">
-            Download
-          </Button>
-        </a>
         <iframe
           src={slideURL}
           frameborder="0"

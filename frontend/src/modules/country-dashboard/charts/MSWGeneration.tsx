@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { useRouter } from 'next/router'
-import useLayerInfo from '../../../hooks/useLayerInfo'
 import useRegions from '../../../hooks/useRegions'
 import { getBaseUrl } from '../../../utils/misc'
 
-const MSWGenerationChart = () => {
+const MSWGenerationChart = ({ layers, layerLoading }) => {
   const router = useRouter()
   const baseURL = getBaseUrl()
-  const { country } = router.query
-  const { layers, loading: layerLoading } = useLayerInfo()
+  const { country, countryCode } = router.query
   const { countriesWithRegions, loading: regionLoading } = useRegions()
 
   const [nationalEstimate, setNationalEstimate] = useState(0)
@@ -34,11 +32,16 @@ const MSWGenerationChart = () => {
       )
 
       const nationalData = nationalLayer?.attributes.ValuePerCountry?.find(
-        (item) => item.CountryName === country
+        (item) =>
+          item.CountryCode
+            ? item.CountryCode === countryCode
+            : item.CountryName === decodeURIComponent(country)
       )
 
-      const cityData = cityLayer?.attributes?.ValuePerCountry?.filter(
-        (item) => item.CountryName === country
+      const cityData = cityLayer?.attributes?.ValuePerCountry?.filter((item) =>
+        item.CountryCode
+          ? item.CountryCode === countryCode
+          : item.CountryName === decodeURIComponent(country)
       )
 
       setNationalEstimate(nationalData ? nationalData.Value : 0)
@@ -77,9 +80,20 @@ const MSWGenerationChart = () => {
 
     return {
       title: {
-        text: `Per capita MSW generation for ${country}`,
+        text:
+          window.innerWidth < 768
+            ? `Per capita MSW generation for\n${decodeURIComponent(
+                country?.toString()
+              )}`
+            : `Per capita MSW generation for  ${decodeURIComponent(
+                country?.toString()
+              )}`,
         left: 'center',
-        textStyle: { fontSize: 18, fontWeight: 'bold', color: '#020A5B' },
+        textStyle: {
+          fontSize: window.innerWidth < 768 ? 14 : 18,
+          fontWeight: 'bold',
+          color: '#020A5B',
+        },
       },
       tooltip: {
         trigger: 'axis',
@@ -153,11 +167,11 @@ const MSWGenerationChart = () => {
                 yAxis: regionMswValue || 0.78,
                 label: {
                   formatter: () =>
-                    `Regional Average (${regionMswValue || 0.78}) kg`,
+                    `Regional\n Average\n(${regionMswValue || 0.78} kg)`,
                   position: 'middle',
+                  offset: [240, -5],
                   color: '#020A5B',
                   fontSize: 12,
-                  fontWeight: 'bold',
                 },
                 lineStyle: {
                   type: 'dashed',
@@ -186,7 +200,7 @@ const MSWGenerationChart = () => {
           fontSize: '12px',
         }}
       >
-        Datasource:{' '}
+        Data source:{' '}
         <a
           href={`${baseURL}/data/maps?categoryId=waste-management&subcategoryId=generation&layer=Municipal_solid_waste_generated_daily_per_capita_V3_WFL1`}
           style={{ color: '#020A5B', fontWeight: 'bold' }}
