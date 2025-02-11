@@ -1214,7 +1214,6 @@ const FormField = React.memo(
               )}
             </FormLabel>
           )
-
         case 'owner':
           return (
             <FormLabel
@@ -1558,10 +1557,15 @@ const FormField = React.memo(
     return <div className="mb-4">{renderFieldContent()}</div>
   },
   (prevProps, nextProps) => {
+    const isStoreDataEqual =
+      JSON.stringify(prevProps.storeData) ===
+      JSON.stringify(nextProps.storeData)
     return (
       prevProps.input.value === nextProps.input.value &&
       prevProps.meta.error === nextProps.meta.error &&
-      prevProps.meta.touched === nextProps.meta.touched
+      prevProps.meta.touched === nextProps.meta.touched &&
+      prevProps.selectedType === nextProps.selectedType &&
+      isStoreDataEqual
     )
   }
 )

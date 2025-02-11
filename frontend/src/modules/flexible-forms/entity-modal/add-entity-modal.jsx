@@ -115,12 +115,7 @@ const ModalAddEntity = ({ visible, close, isMember, setEntity, tag }) => {
   const [sending, setSending] = useState(false)
 
   const isLoaded = useCallback(() => {
-    return Boolean(
-      !isEmpty(countries) &&
-        !isEmpty(tags) &&
-        !isEmpty(transnationalOptions) &&
-        !isEmpty(organisations)
-    )
+    return Boolean(!isEmpty(countries))
   }, [countries])
 
   useEffect(() => {
