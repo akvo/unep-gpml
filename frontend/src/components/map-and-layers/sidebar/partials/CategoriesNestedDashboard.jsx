@@ -19,7 +19,7 @@ const CategoriesNestedDashboard = ({ categories }) => {
     transnationalOptions: s.transnationalOptions,
     landing: s.landing,
   }))
-  console.log('xx')
+
   const isLoaded = () => !isEmpty(countries)
 
   useEffect(() => {
