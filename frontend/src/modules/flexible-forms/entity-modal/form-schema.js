@@ -2,13 +2,11 @@ import { useLingui } from '@lingui/react'
 import { UIStore } from '../../../store'
 import { t, msg } from '@lingui/macro'
 
-const {
+export const useSchema = ({
   geoCoverageTypeOptions,
   representativeGroup,
   countries,
-} = UIStore.currentState
-
-export const useSchema = () => {
+}) => {
   const { i18n } = useLingui()
 
   const schema = {
@@ -84,7 +82,6 @@ export const useSchema = () => {
       },
     },
   }
-
   return schema
 }
 

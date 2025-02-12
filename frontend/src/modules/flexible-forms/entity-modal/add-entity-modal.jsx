@@ -76,6 +76,8 @@ const ModalAddEntity = ({ visible, close, isMember, setEntity, tag }) => {
     transnationalOptions,
     formStep,
     formEdit,
+    geoCoverageTypeOptions,
+    representativeGroup,
   } = UIStore.useState((s) => ({
     countries: s.countries,
     organisations: s.organisations,
@@ -85,9 +87,15 @@ const ModalAddEntity = ({ visible, close, isMember, setEntity, tag }) => {
     transnationalOptions: s.transnationalOptions,
     formStep: s.formStep,
     formEdit: s.formEdit,
+    geoCoverageTypeOptions: s.geoCoverageTypeOptions,
+    representativeGroup: s.representativeGroup,
   }))
 
-  const schema = useSchema()
+  const schema = useSchema({
+    countries,
+    geoCoverageTypeOptions,
+    representativeGroup,
+  })
 
   const formData = entityData.useState()
   const { editId, data } = formData
@@ -107,14 +115,7 @@ const ModalAddEntity = ({ visible, close, isMember, setEntity, tag }) => {
   const [sending, setSending] = useState(false)
 
   const isLoaded = useCallback(() => {
-    return Boolean(
-      !isEmpty(countries) &&
-        !isEmpty(tags) &&
-        !isEmpty(regionOptions) &&
-        !isEmpty(transnationalOptions) &&
-        !isEmpty(organisations) &&
-        !isEmpty(meaOptions)
-    )
+    return Boolean(!isEmpty(countries))
   }, [countries])
 
   useEffect(() => {
