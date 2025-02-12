@@ -75,6 +75,10 @@ const CategoriesNestedDashboard = ({ categories }) => {
     }
   }
 
+  const handleBackToHomePage = () => {
+    window.history.back()
+  }
+
   return (
     <Sider
       breakpoint="lg"
@@ -96,11 +100,13 @@ const CategoriesNestedDashboard = ({ categories }) => {
           fontWeight: 'bold',
           fontFamily: 'var(--font-archia), sans-serif',
           color: '#7468ff',
+          cursor: 'pointer',
+          textDecoration: 'underline',
         }}
+        onClick={handleBackToHomePage}
       >
-        NATIONAL DATA
+        <span style={{ fontSize: '14px' }}>←</span> NATIONAL DATA
       </div>
-
       <Select
         showSearch
         size="large"
