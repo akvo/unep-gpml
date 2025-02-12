@@ -102,7 +102,6 @@ const CategoriesNested = ({ categories, layers }) => {
               <Subcategories
                 subcategories={subcategoriesByCategory}
                 layers={layers}
-                // loading={loading}
               />
             )}
             {queryParameters.layers &&
