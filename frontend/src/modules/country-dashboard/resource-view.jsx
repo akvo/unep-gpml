@@ -70,7 +70,9 @@ function ResourceView() {
           paddingBottom: '70px',
         }}
       >
-        <Sidebar alt={false} countryDashboard={true} />
+        {country && router.query.categoryId && (
+          <Sidebar alt={false} countryDashboard={true} />
+        )}
 
         {country && router.query.categoryId ? (
           <CountryOverview country={country} />
