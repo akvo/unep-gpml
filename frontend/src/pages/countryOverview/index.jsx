@@ -160,7 +160,7 @@ const CountryOverview = () => {
     return template.replace(/{{(.*?)}}/g, (match, placeholder) => {
       const nonBreakingPlaceholder =
         placeholder === 'country' && !template.trim().startsWith('Estimated')
-          ? `<placeholder key="${placeholder}" style="white-space: nowrap;">{{country}}</placeholder>`
+          ? `<placeholder key="${placeholder}" style="white-space: nowrap;"> {{country}} </placeholder>`
           : `<placeholder key="${placeholder}">${match}</placeholder>`
       return nonBreakingPlaceholder
     })
