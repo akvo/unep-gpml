@@ -3,6 +3,8 @@ import { Layout, Button, Select } from 'antd'
 import { useRouter } from 'next/router'
 import { isEmpty } from 'lodash'
 import { getBaseUrl } from '../../utils/misc'
+import { loadCatalog } from '../../translations/utils'
+import { t, Trans } from '@lingui/macro'
 
 const { Content } = Layout
 
@@ -108,8 +110,11 @@ const DashboardLanding = () => {
             color: '#FFFFFF',
           }}
         >
-          Explore{' '}
-          <span style={{ textDecoration: 'underline' }}>Country Dashboard</span>
+          <Trans>Explore </Trans>
+          <span style={{ textDecoration: 'underline' }}>
+            {' '}
+            <Trans> Country Dashboard</Trans>
+          </span>
         </h1>
 
         <p
@@ -118,12 +123,15 @@ const DashboardLanding = () => {
             marginBottom: windowWidth < 768 ? '10px' : '20px',
           }}
         >
-          The GPML Country Dashboard provides a comprehensive snapshot of
-          plastic flows in both the economy and the environment for each
-          country. It consolidates data from best available global datasets into
-          one accessible platform, aiming to support evidence-based policymaking
-          and action planning. Additionally, it helps identify data gaps that
-          require further collection efforts in specific countries.
+          <Trans>
+            The GPML Country Dashboard provides a comprehensive snapshot of
+            plastic flows in both the economy and the environment for each
+            country. It consolidates data from best available global datasets
+            into one accessible platform, aiming to support evidence-based
+            policymaking and action planning. Additionally, it helps identify
+            data gaps that require further collection efforts in specific
+            countries.
+          </Trans>
         </p>
 
         <p
@@ -132,13 +140,16 @@ const DashboardLanding = () => {
             marginBottom: '20px',
           }}
         >
-          The data featured on the Country Dashboard comes from reliable
-          sources, including country reports on the Sustainable Development
-          Goals, as well as modeled global estimates from UN agencies, academic
-          institutions, and recognized research organizations. All data sources
-          are clearly indicated, including links to the original methodologies
-          and any information regarding uncertainties related to the modeling
-          outputs.
+          <Trans>
+            {' '}
+            The data featured on the Country Dashboard comes from reliable
+            sources, including country reports on the Sustainable Development
+            Goals, as well as modeled global estimates from UN agencies,
+            academic institutions, and recognized research organizations. All
+            data sources are clearly indicated, including links to the original
+            methodologies and any information regarding uncertainties related to
+            the modeling outputs.{' '}
+          </Trans>
         </p>
 
         <p
@@ -148,18 +159,21 @@ const DashboardLanding = () => {
             marginBottom: '20px',
           }}
         >
-          * You are currently viewing the beta version of the Country Dashboard,
-          and we welcome your feedback on its usability and content. We
-          particularly welcome suggestions for updated and improved data sources
-          for your country. To request a data update, please use the "Request
-          Data Update" button within your Country Dashboard section.
+          <Trans>
+            * You are currently viewing the beta version of the Country
+            Dashboard, and we welcome your feedback on its usability and
+            content. We particularly welcome suggestions for updated and
+            improved data sources for your country. To request a data update,
+            please use the "Request Data Update" button within your Country
+            Dashboard section.
+          </Trans>
         </p>
 
         <div
           style={{ display: 'flex', alignItems: 'center', marginTop: '40px' }}
         >
           <Select
-            placeholder={`Search for a country...`}
+            placeholder={t`Select the country`}
             size="large"
             value={router.query.country}
             showSearch
@@ -180,17 +194,29 @@ const DashboardLanding = () => {
             style={{
               backgroundColor: '#00C49A',
               borderRadius: '30px',
-              width: '120px',
+              width: '150px',
+              height: '4vh',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}
             onClick={handleSelect}
             disabled={!selectedCountry}
           >
-            Select
+            <Trans>Select</Trans>
           </Button>
         </div>
       </Content>
     </Layout>
   )
+}
+
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
 }
 
 export default DashboardLanding
