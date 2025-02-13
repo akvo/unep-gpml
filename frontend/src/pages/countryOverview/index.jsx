@@ -41,6 +41,8 @@ const splitTextByMarker = (text, marker) => {
 const addTooltipsToPlaceholders = (htmlString, placeholders, tooltips) => {
   if (!placeholders || Object.keys(placeholders).length === 0) return htmlString
 
+  console.log('run build')
+
   const options = {
     replace: (node) => {
       if (node.name === 'placeholder' && node.attribs?.key) {
