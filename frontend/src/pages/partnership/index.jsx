@@ -90,7 +90,6 @@ function Partnership({ isAuthenticated }) {
       is_member: false,
       country: values.orgHeadquarter,
       geo_coverage_type: values.geoCoverageType,
-      tags: matchedTags,
       program: values.program,
       ...(values.geo_coverage_countries && {
         geo_coverage_countries: values.geo_coverage_countries,
@@ -738,7 +737,7 @@ function Partnership({ isAuthenticated }) {
                             </FormLabel>
                           )}
                         </Field>
-                        <Field
+                        {/* <Field
                           name="tags"
                           style={{ width: '100%' }}
                           validate={required}
@@ -806,7 +805,7 @@ function Partnership({ isAuthenticated }) {
                               </FormLabel>
                             )
                           }}
-                        </Field>
+                        </Field> */}
 
                         <div className="geo">
                           <h2>

@@ -434,7 +434,7 @@ function ProfileLayout({ children }) {
       <div className="profile-container">
         <div className="ui container">
           <Row className="menu-container profile-wrapper">
-            <Col xs={24} sm={24} md={7} lg={6} className="menu-wrapper">
+            {/* <Col xs={24} sm={24} md={7} lg={6} className="menu-wrapper">
               <StickyBox
                 offsetTop={20}
                 offsetBottom={40}
@@ -468,7 +468,7 @@ function ProfileLayout({ children }) {
                   {renderMenuItem(profile)}
                 </Menu>
               </StickyBox>
-            </Col>
+            </Col> */}
             <Col
               xs={24}
               sm={24}

@@ -7,7 +7,6 @@ import styles from './styles.module.scss'
 import Checkbox from 'antd/lib/checkbox/Checkbox'
 import {
   LinkedinOutlined,
-  TwitterOutlined,
   CheckCircleOutlined,
   ExclamationCircleOutlined,
 } from '@ant-design/icons'
@@ -48,7 +47,6 @@ export const useDefaultFormSchema = () => {
       },
       socialLocation: {
         linkedIn: { label: i18n._(t`LinkedIn`), prefix: <LinkedinOutlined /> },
-        twitter: { label: i18n._(t`Twitter`), prefix: <TwitterOutlined /> },
         picture: {
           label: i18n._(t`Photo`),
           control: 'file',
@@ -441,7 +439,7 @@ const SignupForm = ({
                   </Form.Item>
                 </div>
                 <div className={sectionGrid}>
-                  <h2>
+                  {/* <h2>
                     <Trans>Expertise and activities</Trans>
                   </h2>
                   <Form.Item label={t`Offering`}>
@@ -539,7 +537,7 @@ const SignupForm = ({
                         )
                       }}
                     </Field>
-                  </Form.Item>
+                  </Form.Item> */}
                   <Form.Item label={t`Email Notifications`}>
                     <Field
                       name="chatEmailNotifications"
