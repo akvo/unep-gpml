@@ -182,16 +182,16 @@ const KnowledgeHub = ({
   const themes = lifecycleStageTags.map((it) => ({ name: it }))
 
   const types = [
-    { name: 'Project', value: 'project' },
-    { name: 'Technical Resource', value: 'technical_resource' },
-    { name: 'Technology', value: 'technology' },
-    { name: 'Action Plan', value: 'action_plan' },
-    { name: 'Legislation', value: 'policy' },
-    { name: 'Financing Resource', value: 'financing_resource' },
-    { name: 'Case Study', value: 'case_study' },
-    { name: 'Initiative', value: 'initiative' },
-    { name: 'Event', value: 'event' },
-    { name: 'Data Portal', value: 'data_catalog' },
+    { name: t`Project`, value: 'project' },
+    { name: t`Technical Resource`, value: 'technical_resource' },
+    { name: t`Technology`, value: 'technology' },
+    { name: t`Action Plan`, value: 'action_plan' },
+    { name: t`Legislation`, value: 'policy' },
+    { name: t`Financing Resource`, value: 'financing_resource' },
+    { name: t`Case Study`, value: 'case_study' },
+    { name: t`Initiative`, value: 'initiative' },
+    { name: t`Event`, value: 'event' },
+    { name: t`Data Portal`, value: 'data_catalog' },
   ]
 
   const handleThemeToggle = (theme) => {
@@ -306,12 +306,12 @@ const KnowledgeHub = ({
   const sortingOpts = [
     {
       key: 'newest',
-      label: 'Most Recent First',
+      label: t`Most Recent First`,
       apiParams: { orderBy: 'created', descending: 'true' },
     },
     {
       key: 'oldest',
-      label: 'Oldest First',
+      label: t`Oldest First`,
       apiParams: { orderBy: 'created', descending: 'false' },
     },
   ]
@@ -352,15 +352,21 @@ const KnowledgeHub = ({
           <Input
             className="src"
             allowClear
-            placeholder="Search Resources"
+            placeholder={t`Search Resources`}
             value={searchInput}
             onChange={handleSearchChange}
           />
-          <div className="caps-heading-xs">browse resources by</div>
+          <div className="caps-heading-xs">
+            <Trans>browse resources by</Trans>
+          </div>
           <Collapse onChange={handleCollapseChange} activeKey={collapseKeys}>
             <Collapse.Panel
               key="p1"
-              header={<h4 className="h-xs w-semi">Life Cycle Stage</h4>}
+              header={
+                <h4 className="h-xs w-semi">
+                  <Trans>Life Cycle Stage</Trans>
+                </h4>
+              }
             >
               <div className="filters">
                 {themes?.map((theme) => (
@@ -382,7 +388,11 @@ const KnowledgeHub = ({
             </Collapse.Panel>
             <Collapse.Panel
               key="p2"
-              header={<h4 className="h-xs w-semi">Resource Type</h4>}
+              header={
+                <h4 className="h-xs w-semi">
+                  <Trans>Resource Type</Trans>
+                </h4>
+              }
             >
               <div className="filters">
                 {types.map((type) => (
@@ -399,7 +409,11 @@ const KnowledgeHub = ({
             </Collapse.Panel>
             <Collapse.Panel
               key="p3"
-              header={<h4 className="h-xs w-semi">Geography</h4>}
+              header={
+                <h4 className="h-xs w-semi">
+                  <Trans>Geography</Trans>
+                </h4>
+              }
             >
               <div className="filters">
                 {featuredOptions.map((type) => (
@@ -434,7 +448,11 @@ const KnowledgeHub = ({
             </Collapse.Panel>
             <Collapse.Panel
               key="p4"
-              header={<h4 className="h-xs w-semi">Keywords</h4>}
+              header={
+                <h4 className="h-xs w-semi">
+                  <Trans>Keywords</Trans>
+                </h4>
+              }
             >
               <Select
                 size="small"
@@ -514,7 +532,9 @@ const KnowledgeHub = ({
           {results?.length === 0 && !loading && (
             <>
               <div className="no-results">
-                <h4 className="caps-heading-s">No results</h4>
+                <h4 className="caps-heading-s">
+                  <Trans>No results</Trans>
+                </h4>
               </div>
             </>
           )}
