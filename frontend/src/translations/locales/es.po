@@ -411,6 +411,7 @@ msgid "Constitution"
 msgstr "Constitución"
 
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:56
+#: src/utils/misc.js:340
 msgid "Consumption"
 msgstr "Consumo"
 
@@ -461,7 +462,7 @@ msgid "Cost considerations (e.g., reducing costs of existing processes or of dis
 msgstr "Consideraciones de costos (por ejemplo, reducir los costos de los procesos existentes o de eliminación)"
 
 #: src/modules/flexible-forms/entity-modal/form-schema.js:42
-#: src/modules/signup-old/signup-form.jsx:59
+#: src/modules/signup-old/signup-form.jsx:57
 msgid "Country"
 msgstr "País"
 
@@ -683,10 +684,10 @@ msgstr "Electricidad y electronica"
 #: src/modules/flexible-forms/form-schema.js:1179
 #: src/modules/login/forgot-password.js:69
 #: src/modules/login/view.jsx:275
-#: src/modules/signup-old/signup-form.jsx:44
+#: src/modules/signup-old/signup-form.jsx:43
 #: src/modules/workspace/ps/setup-team-form.jsx:226
-#: src/pages/partnership/index.jsx:1194
-#: src/pages/partnership/index.jsx:1410
+#: src/pages/partnership/index.jsx:1193
+#: src/pages/partnership/index.jsx:1409
 msgid "Email"
 msgstr "Correo electrónico"
 
@@ -800,6 +801,7 @@ msgstr "Política existente o cambio de política reciente"
 msgid "Existing regulation is not enforced"
 msgstr "La regulación existente no se aplica"
 
+#: src/modules/signup-old/signup-form.jsx:445
 #: src/modules/map/map-chart.jsx:803
 #: src/modules/profile/admin.jsx:1216
 msgid "Experts"
@@ -941,7 +943,7 @@ msgid "Geo coverage type"
 msgstr "Tipo de cobertura geográfica"
 
 #: src/modules/stakeholder-overview/filter-drawer.jsx:335
-#: src/pages/partnership/index.jsx:813
+#: src/pages/partnership/index.jsx:812
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:108
 #: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:237
 msgid "Geo-coverage"
@@ -963,7 +965,7 @@ msgstr "Empezando"
 #: src/modules/flexible-forms/form-schema.js:2336
 #: src/modules/flexible-forms/form-schema.js:2575
 #: src/pages/add-content/index.jsx:592
-#: src/pages/partnership/index.jsx:851
+#: src/pages/partnership/index.jsx:850
 msgid "Global"
 msgstr "Global"
 
@@ -1276,8 +1278,10 @@ msgstr "Liderazgo de personas específicas del estado u organización miembro (q
 msgid "Learn More"
 msgstr "Aprende más"
 
+#: src/components/resource-card/resource-card.jsx:18
 #: src/modules/flexible-forms/form-schema.js:1963
 #: src/modules/signup/view.jsx:42
+#: src/pages/knowledge-hub/index.js:191
 #: src/store.js:160
 msgid "Legislation"
 msgstr "Legislación"
@@ -1335,13 +1339,13 @@ msgid "Linkedin"
 msgstr "LinkedIn"
 
 #: src/modules/flexible-forms/form-schema.js:1180
-#: src/modules/signup-old/signup-form.jsx:50
+#: src/modules/signup-old/signup-form.jsx:49
 msgid "LinkedIn"
 msgstr "LinkedIn"
 
 #: src/modules/knowledge-lib/resource-view.jsx:506
 #: src/pages/community-hub/index.js:247
-#: src/pages/knowledge-hub/index.js:524
+#: src/pages/knowledge-hub/index.js:546
 msgid "Load More"
 msgstr "Carga más"
 
@@ -1489,7 +1493,7 @@ msgstr "Nombre"
 #: src/modules/flexible-forms/form-schema.js:2577
 #: src/modules/map/map-chart.jsx:714
 #: src/pages/add-content/index.jsx:594
-#: src/pages/partnership/index.jsx:857
+#: src/pages/partnership/index.jsx:856
 msgid "National"
 msgstr "Nacional"
 
@@ -1604,8 +1608,7 @@ msgstr "No hay suficiente apoyo dentro del estado miembro/organización."
 msgid "Not yet in force"
 msgstr "Aún no en vigor"
 
-#: src/modules/signup-old/signup-form.jsx:85
-#: src/modules/signup-old/signup-form.jsx:447
+#: src/modules/signup-old/signup-form.jsx:83
 #: src/modules/stakeholder-detail/view.jsx:659
 msgid "Offering"
 msgstr "Ofrecimiento"
@@ -1870,7 +1873,7 @@ msgstr "Contenido relacionado"
 msgid "Related Resource"
 msgstr "Recurso relacionado"
 
-#: src/components/resource-card/resource-card.jsx:97
+#: src/components/resource-card/resource-card.jsx:109
 #: src/modules/details-page/header.jsx:235
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:330
 #: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:440
@@ -1935,7 +1938,7 @@ msgstr "Revisión y síntesis: Materiales/Otros"
 msgid "Role"
 msgstr "Rol"
 
-#: src/components/resource-card/resource-card.jsx:97
+#: src/components/resource-card/resource-card.jsx:109
 #: src/modules/details-page/header.jsx:235
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:330
 #: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:440
@@ -1971,8 +1974,7 @@ msgstr "Sector. ¿Su iniciativa se dirige a un sector específico? (Por favor ma
 msgid "See all"
 msgstr "Ver todo"
 
-#: src/modules/signup-old/signup-form.jsx:77
-#: src/modules/signup-old/signup-form.jsx:496
+#: src/modules/signup-old/signup-form.jsx:75
 #: src/modules/stakeholder-detail/view.jsx:620
 msgid "Seeking"
 msgstr "Buscando"
@@ -2027,7 +2029,7 @@ msgid "Setup your team"
 msgstr "Configura tu equipo"
 
 #: src/modules/details-page/header.jsx:438
-#: src/pages/partnership/index.jsx:428
+#: src/pages/partnership/index.jsx:427
 msgid "Share"
 msgstr "Compartir"
 
@@ -2100,8 +2102,8 @@ msgstr "Estándares"
 msgid "Start Date"
 msgstr "Fecha de inicio"
 
-#: src/modules/signup-old/signup-form.jsx:383
-#: src/modules/signup-old/signup-form.jsx:416
+#: src/modules/signup-old/signup-form.jsx:381
+#: src/modules/signup-old/signup-form.jsx:414
 #: src/modules/workspace/ps/setup-team-form.jsx:149
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:534
 msgid "Start typing..."
@@ -2299,7 +2301,7 @@ msgstr "Miniatura (300x400)"
 #: src/modules/flexible-forms/form-schema.js:2036
 #: src/modules/flexible-forms/form-schema.js:2301
 #: src/modules/flexible-forms/form-schema.js:2540
-#: src/modules/signup-old/signup-form.jsx:33
+#: src/modules/signup-old/signup-form.jsx:32
 #: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:208
 msgid "Title"
 msgstr "Título"
@@ -2366,7 +2368,7 @@ msgstr "Comercio e inversión"
 #: src/modules/flexible-forms/form-schema.js:2576
 #: src/modules/map/map-chart.jsx:717
 #: src/pages/add-content/index.jsx:593
-#: src/pages/partnership/index.jsx:854
+#: src/pages/partnership/index.jsx:853
 msgid "Transnational"
 msgstr "transnacional"
 
@@ -2380,7 +2382,6 @@ msgstr "Transporte"
 
 #: src/modules/flexible-forms/form-schema.js:1181
 #: src/modules/onboarding/form-four.jsx:166
-#: src/modules/signup-old/signup-form.jsx:51
 #: src/modules/stakeholder-overview/card.jsx:180
 msgid "Twitter"
 msgstr "Gorjeo"
@@ -2678,7 +2679,7 @@ msgstr "Un tipo de financiación mancomunada que involucra a múltiples organiza
 msgid "A type of technical report that is a work in progress, a preliminary form of a possible future document."
 msgstr "Un tipo de informe técnico que es un trabajo en progreso, una forma preliminar de un posible documento futuro."
 
-#: src/modules/signup-old/signup-form.jsx:93
+#: src/modules/signup-old/signup-form.jsx:91
 msgid "About yourself"
 msgstr "Acerca de ti mismo"
 
@@ -2688,6 +2689,8 @@ msgstr "Acerca de ti mismo"
 msgid "Action for the Oceans – Youth leaders raising awareness for the Oceans, together!"
 msgstr "Acción por los Océanos – ¡Líderes juveniles creando conciencia sobre los océanos, juntos!"
 
+#: src/components/resource-card/resource-card.jsx:17
+#: src/pages/knowledge-hub/index.js:190
 #: src/store.js:288
 msgid "Action Plan"
 msgstr "Planes de ACCION"
@@ -2750,6 +2753,7 @@ msgstr "¿Está usted afiliado a alguna entidad?"
 msgid "Are you sure you want to"
 msgstr "Estás seguro que quieres"
 
+#: src/pages/partnership/index.jsx:782
 #: src/store.js:303
 msgid "ASEAN Regional Action Plan for Combating Marine Debris in the ASEAN Member States (2021 – 2025)"
 msgstr "Plan de acción regional de la ASEAN para combatir los desechos marinos en los Estados miembros de la ASEAN (2021 – 2025)"
@@ -2798,7 +2802,7 @@ msgid "Blended finance"
 msgstr "Finanzas mixtas"
 
 #: src/modules/onboarding/form-four.jsx:216
-#: src/pages/partnership/index.jsx:1095
+#: src/pages/partnership/index.jsx:1094
 msgid "By submitting this form, I will be included in the public database of GPML Digital Platform members and acknowledge that the provided information will be made public and used to find and connect via smart-matchmaking functionalities with other stakeholders and resources."
 msgstr "Al enviar este formulario, seré incluido en la base de datos pública de los miembros de la Plataforma Digital GPML y reconozco que la información proporcionada se hará pública y se utilizará para encontrar y conectarme a través de funcionalidades de emparejamiento inteligente con otras partes interesadas y recursos."
 
@@ -2860,7 +2864,7 @@ msgstr "Tipo de contenido"
 #: src/components/select/country-transnational-filter.jsx:139
 #: src/components/select/country-transnational-filter.jsx:151
 #: src/pages/community-hub/index.js:199
-#: src/pages/knowledge-hub/index.js:424
+#: src/pages/knowledge-hub/index.js:440
 msgid "Countries"
 msgstr "Países"
 
@@ -2887,7 +2891,7 @@ msgid "Creation of new knowledge and/or the use of existing knowledge in a new a
 msgstr "Creación de nuevos conocimientos y/o uso de conocimientos existentes de una manera nueva y creativa para generar nuevos conceptos, metodologías y comprensiones."
 
 #: src/modules/onboarding/form-four.jsx:188
-#: src/modules/signup-old/signup-form.jsx:99
+#: src/modules/signup-old/signup-form.jsx:97
 msgid "CV / Portfolio"
 msgstr "CV / Portafolio"
 
@@ -2949,7 +2953,7 @@ msgstr "Introduce el nombre de tu entidad"
 msgid "Enter your entity and job title"
 msgstr "Ingrese su entidad y puesto de trabajo"
 
-#: src/modules/signup-old/signup-form.jsx:366
+#: src/modules/signup-old/signup-form.jsx:364
 msgid "Entity details"
 msgstr "Detalles de la entidad"
 
@@ -2965,6 +2969,8 @@ msgstr "Inversión de capital"
 msgid "event"
 msgstr "evento"
 
+#: src/components/resource-card/resource-card.jsx:22
+#: src/pages/knowledge-hub/index.js:195
 #: src/store.js:561
 msgid "Event"
 msgstr "Evento"
@@ -3002,11 +3008,13 @@ msgstr "Filtrando por:"
 msgid "Financing"
 msgstr "Financiación"
 
+#: src/components/resource-card/resource-card.jsx:19
+#: src/pages/knowledge-hub/index.js:192
 #: src/store.js:402
 msgid "Financing Resource"
 msgstr "Recurso de financiación"
 
-#: src/modules/signup-old/signup-form.jsx:41
+#: src/modules/signup-old/signup-form.jsx:40
 msgid "First name"
 msgstr "Nombre de pila"
 
@@ -3050,7 +3058,7 @@ msgstr "Ir a la asociación"
 msgid "GPML Community"
 msgstr "Comunidad GPML"
 
-#: src/modules/signup-old/signup-form.jsx:376
+#: src/modules/signup-old/signup-form.jsx:374
 msgid "GPML Entity"
 msgstr "Entidad GPML"
 
@@ -3087,7 +3095,7 @@ msgstr "HELCOM Plan de acción regional sobre basura marina"
 msgid "Help and advice provided on a set of ideas or plans that is used as a basis for making decisions, especially in politics, economics, or business."
 msgstr "Ayuda y asesoramiento que se proporciona sobre un conjunto de ideas o planes que se utilizan como base para la toma de decisiones, especialmente en política, economía o negocios."
 
-#: src/modules/signup-old/signup-form.jsx:373
+#: src/modules/signup-old/signup-form.jsx:371
 msgid "I am a private citizen"
 msgstr "soy un ciudadano privado"
 
@@ -3107,6 +3115,8 @@ msgstr "En el mercado"
 msgid "Incentive measures bring about an intended behaviour or outcome as an alternative to command and control measures - legal codes and prescriptions."
 msgstr "Las medidas de incentivo provocan un comportamiento o resultado previsto como alternativa a las medidas de mando y control: códigos y prescripciones legales."
 
+#: src/components/resource-card/resource-card.jsx:21
+#: src/pages/knowledge-hub/index.js:194
 #: src/store.js:230
 msgid "Initiative"
 msgstr "Iniciativa"
@@ -3129,7 +3139,7 @@ msgstr "Implica obtener un servidor más rápido, con procesadores más potentes
 msgid "Is the first complete solution to the original challenge. The first “prototype” is the first time all parts of a solution are tested together. It is the first time that the inter-dependencies of all components can be tested, analyzed, and refined."
 msgstr "Es la primera solución completa al desafío original. El primer \"prototipo\" es la primera vez que se prueban juntas todas las partes de una solución. Es la primera vez que se pueden probar, analizar y perfeccionar las interdependencias de todos los componentes."
 
-#: src/modules/signup-old/signup-form.jsx:72
+#: src/modules/signup-old/signup-form.jsx:70
 msgid "Job Tilte"
 msgstr "Inclinación de trabajo"
 
@@ -3137,7 +3147,7 @@ msgstr "Inclinación de trabajo"
 msgid "Key Features & Components"
 msgstr "Características y componentes clave"
 
-#: src/modules/signup-old/signup-form.jsx:42
+#: src/modules/signup-old/signup-form.jsx:41
 msgid "Last name"
 msgstr "Apellido"
 
@@ -3255,7 +3265,7 @@ msgstr "no hay información para mostrar"
 msgid "No event on"
 msgstr "Ningún evento en"
 
-#: src/modules/signup-old/signup-form.jsx:409
+#: src/modules/signup-old/signup-form.jsx:407
 msgid "Non Member Entity"
 msgstr "Entidad no miembro"
 
@@ -3300,7 +3310,7 @@ msgstr "Las propiedades cambiaron"
 msgid "PAME, Regional Action Plan on Marine Litter in the Arctic (May 2021)"
 msgstr "PAME, Plan de acción regional sobre basura marina en el Ártico (mayo de 2021)"
 
-#: src/modules/signup-old/signup-form.jsx:345
+#: src/modules/signup-old/signup-form.jsx:343
 msgid "Personal details"
 msgstr "Detalles personales"
 
@@ -3308,7 +3318,7 @@ msgstr "Detalles personales"
 msgid "Personal Details"
 msgstr "Detalles personales"
 
-#: src/modules/signup-old/signup-form.jsx:53
+#: src/modules/signup-old/signup-form.jsx:51
 msgid "Photo"
 msgstr "Foto"
 
@@ -3530,11 +3540,15 @@ msgstr "Bonos de desarrollo sostenible, bonos verdes y bonos azules"
 msgid "Sustainable Industrial Zone Development"
 msgstr "Desarrollo de Zona Industrial Sostenible"
 
+#: src/components/resource-card/resource-card.jsx:15
+#: src/pages/knowledge-hub/index.js:188
 #: src/store.js:480
 msgid "Technical Resource"
 msgstr "Recurso Técnico"
 
+#: src/components/resource-card/resource-card.jsx:16
 #: src/modules/signup/view.jsx:39
+#: src/pages/knowledge-hub/index.js:189
 #: src/store.js:157
 #: src/store.js:630
 msgid "Technology"
@@ -3719,11 +3733,11 @@ msgstr "Área de experiencia"
 msgid "Content on the platform"
 msgstr "Contenido en la plataforma"
 
-#: src/components/resource-card/resource-card.jsx:84
+#: src/components/resource-card/resource-card.jsx:96
 msgid "Government Verified"
 msgstr "Gobierno verificado"
 
-#: src/components/resource-card/resource-card.jsx:83
+#: src/components/resource-card/resource-card.jsx:95
 msgid "GPML Verified"
 msgstr "GPML Verificado"
 
@@ -3732,7 +3746,7 @@ msgid "Logout"
 msgstr "Cerrar sesión"
 
 #: src/modules/login/view.jsx:308
-#: src/pages/partnership/index.jsx:1232
+#: src/pages/partnership/index.jsx:1231
 msgid "Password"
 msgstr "Contraseña"
 
@@ -4010,12 +4024,12 @@ msgid "Why us?"
 msgstr "¿Porque nosotros?"
 
 #: src/modules/onboarding/form-four.jsx:46
-#: src/pages/partnership/index.jsx:1321
+#: src/pages/partnership/index.jsx:1320
 msgid "First Name"
 msgstr "Nombre de pila"
 
 #: src/modules/onboarding/form-four.jsx:68
-#: src/pages/partnership/index.jsx:1362
+#: src/pages/partnership/index.jsx:1361
 msgid "Last Name"
 msgstr "Apellido"
 
@@ -4064,7 +4078,7 @@ msgstr "Los espectadores no pueden editar todo el contenido."
 msgid "About"
 msgstr "Acerca de"
 
-#: src/pages/partnership/index.jsx:399
+#: src/pages/partnership/index.jsx:398
 msgid "Access"
 msgstr "Acceso"
 
@@ -4072,11 +4086,11 @@ msgstr "Acceso"
 msgid "By proceeding to join the Global Partnership on Plastic Pollution & Marine Litter, you are confirming that you have the authorisation to submit this application on behalf of your organisation."
 msgstr "Al unirse a la Asociación Global sobre Contaminación Plástica y Basura Marina, usted confirma que tiene autorización para enviar esta solicitud en nombre de su organización."
 
-#: src/pages/partnership/index.jsx:456
+#: src/pages/partnership/index.jsx:455
 msgid "Certified"
 msgstr "Certificado"
 
-#: src/pages/partnership/index.jsx:414
+#: src/pages/partnership/index.jsx:413
 msgid "Collaborate"
 msgstr "Colaborar"
 
@@ -4109,7 +4123,7 @@ msgstr "Únase a la asociación"
 msgid "Knowledge Hub"
 msgstr "Centro de conocimiento"
 
-#: src/pages/partnership/index.jsx:442
+#: src/pages/partnership/index.jsx:441
 msgid "Learn"
 msgstr "Aprender"
 
@@ -4155,7 +4169,7 @@ msgstr "Notas regionales"
 msgid "Submit an application for your organisation - <0>{0}</0> - to become part of the GPML."
 msgstr "Envíe una solicitud para que su organización, <0>{0}</0>, forme parte de GPML."
 
-#: src/pages/partnership/index.jsx:1161
+#: src/pages/partnership/index.jsx:1160
 msgid "Submit Application"
 msgstr "Presentar la solicitud"
 
@@ -4163,39 +4177,39 @@ msgstr "Presentar la solicitud"
 msgid "Who we are"
 msgstr "Quienes somos"
 
-#: src/pages/partnership/index.jsx:365
+#: src/pages/partnership/index.jsx:364
 msgid "<0>Be approved</0>and certified by the GPML as a member of the partnership."
 msgstr "<0>Estar aprobado</0>y certificado por la GPML como miembro de la asociación."
 
-#: src/pages/partnership/index.jsx:354
+#: src/pages/partnership/index.jsx:353
 msgid "<0>Fill in the form.</0><1/>Tell us about your organisation's work in preventing and reducing plastic pollution and marine litter."
 msgstr "<0>Rellena el formulario.</0><1/>Cuéntanos sobre el trabajo de tu organización para prevenir y reducir la contaminación plástica y la basura marina."
 
-#: src/pages/partnership/index.jsx:334
+#: src/pages/partnership/index.jsx:333
 msgid "<0>Join the multi-stakeholder partnership</0> which brings together all the actors working on plastic pollution and marine litter prevention and reduction."
 msgstr "<0>Únase a la asociación de múltiples partes interesadas</0> que reúne a todos los actores que trabajan en la prevención y reducción de la contaminación plástica y la basura marina."
 
-#: src/pages/partnership/index.jsx:374
+#: src/pages/partnership/index.jsx:373
 msgid "<0>Receive</0> an entity profile and focal point profile on the GPML Digital Platform."
 msgstr "<0>Recibir</0> un perfil de entidad y un perfil de punto focal en la Plataforma Digital GPML."
 
-#: src/pages/partnership/index.jsx:348
+#: src/pages/partnership/index.jsx:347
 msgid "3 STEPS FOR AN ENTITY TO BECOME A MEMBER"
 msgstr "3 PASOS PARA QUE UNA ENTIDAD SE HAGA MIEMBRO"
 
-#: src/pages/partnership/index.jsx:732
+#: src/pages/partnership/index.jsx:731
 msgid "Accepts .jpg and .png"
 msgstr "Acepta .jpg y .png"
 
-#: src/pages/partnership/index.jsx:402
+#: src/pages/partnership/index.jsx:401
 msgid "Access to a unique global audience for sharing knowledge and experiences in preventing and reducing plastic pollution and marine litter."
 msgstr "Acceso a una audiencia global única para compartir conocimientos y experiencias en la prevención y reducción de la contaminación plástica y la basura marina."
 
-#: src/pages/partnership/index.jsx:735
+#: src/pages/partnership/index.jsx:734
 msgid "Add a File"
 msgstr "Agregar un archivo"
 
-#: src/pages/partnership/index.jsx:1132
+#: src/pages/partnership/index.jsx:1131
 msgid "Already have an account?"
 msgstr "¿Ya tienes una cuenta?"
 
@@ -4215,79 +4229,79 @@ msgstr "Descargar diapositivas"
 msgid "Download State of Knowledge Report Template"
 msgstr "Descargar plantilla de informe sobre el estado del conocimiento"
 
-#: src/pages/partnership/index.jsx:431
+#: src/pages/partnership/index.jsx:430
 msgid "Exclusive invites to online and in-person events and the opportunity to showcase your work."
 msgstr "Invitaciones exclusivas a eventos en línea y presenciales y la oportunidad de exhibir su trabajo."
 
-#: src/pages/partnership/index.jsx:501
+#: src/pages/partnership/index.jsx:500
 msgid "Fill in the form"
 msgstr "Rellene el formulario"
 
-#: src/pages/partnership/index.jsx:1127
+#: src/pages/partnership/index.jsx:1126
 msgid "Focal Point Account in GPML"
 msgstr "Cuenta de punto focal en GPML"
 
-#: src/pages/partnership/index.jsx:957
+#: src/pages/partnership/index.jsx:956
 msgid "Geo Coverage (countries)"
 msgstr "Cobertura geográfica (países)"
 
-#: src/pages/partnership/index.jsx:895
+#: src/pages/partnership/index.jsx:894
 msgid "Geo Coverage (Transnational)"
 msgstr "Cobertura geográfica (transnacional)"
 
-#: src/pages/partnership/index.jsx:831
+#: src/pages/partnership/index.jsx:830
 msgid "Geo-coverage type"
 msgstr "Tipo de cobertura geográfica"
 
-#: src/pages/partnership/index.jsx:1024
+#: src/pages/partnership/index.jsx:1023
 msgid "Headquarters"
 msgstr "Sede"
 
-#: src/pages/partnership/index.jsx:528
+#: src/pages/partnership/index.jsx:527
 msgid "Name of Organisation"
 msgstr "Nombre de la organización"
 
-#: src/pages/partnership/index.jsx:445
+#: src/pages/partnership/index.jsx:444
 msgid "Opportunities to access a variety of resources, data and trainings to enhance capacity development."
 msgstr "Oportunidades para acceder a una variedad de recursos, datos y capacitaciones para mejorar el desarrollo de capacidades."
 
-#: src/pages/partnership/index.jsx:417
+#: src/pages/partnership/index.jsx:416
 msgid "Opportunities to collaborate with other stakeholders to create and advance solutions."
 msgstr "Oportunidades para colaborar con otras partes interesadas para crear y promover soluciones."
 
-#: src/pages/partnership/index.jsx:571
+#: src/pages/partnership/index.jsx:570
 msgid "Organisation's efforts in addressing plastic pollution"
 msgstr "Esfuerzos de la organización para abordar la contaminación plástica"
 
-#: src/pages/partnership/index.jsx:690
+#: src/pages/partnership/index.jsx:689
 msgid "Organisation’s Logo"
 msgstr "Logotipo de la organización"
 
-#: src/pages/partnership/index.jsx:654
+#: src/pages/partnership/index.jsx:653
 msgid "Organisation’s Website"
 msgstr "Sitio web de la organización"
 
-#: src/pages/partnership/index.jsx:498
+#: src/pages/partnership/index.jsx:497
 msgid "Step 1"
 msgstr "Paso 1"
 
-#: src/pages/partnership/index.jsx:489
+#: src/pages/partnership/index.jsx:488
 msgid "We will be reviewing it shortly."
 msgstr "Lo estaremos revisando en breve."
 
-#: src/pages/partnership/index.jsx:614
+#: src/pages/partnership/index.jsx:613
 msgid "Which representative group fits your Entity?"
 msgstr "¿Qué grupo representativo se adapta a su Entidad?"
 
-#: src/pages/partnership/index.jsx:388
+#: src/pages/partnership/index.jsx:387
 msgid "Why become a certified GPML member?"
 msgstr "¿Por qué convertirse en miembro certificado de GPML?"
 
-#: src/pages/partnership/index.jsx:486
+#: src/pages/partnership/index.jsx:485
 msgid "Your application is received."
 msgstr "Se recibe su solicitud."
 
-#: src/pages/partnership/index.jsx:459
+#: src/pages/partnership/index.jsx:458
 msgid "Your organisation will receive a certificate, which officially acknowledges its GPML membership."
 msgstr "Su organización recibirá un certificado que reconoce oficialmente su membresía en GPML."
 
@@ -4304,7 +4318,7 @@ msgstr "Navegar por el contenido de la plataforma"
 msgid "Crowdsourcing a vast repository/library of {totalCount} curated knowledge products and materials."
 msgstr "Crowdsourcing de un vasto repositorio/biblioteca de {totalCount} productos y materiales de conocimiento seleccionados."
 
-#: src/modules/signup-old/signup-form.jsx:543
+#: src/modules/signup-old/signup-form.jsx:541
 msgid "Email Notifications"
 msgstr "Notificaciónes de Correo Electrónico"
 
@@ -4486,7 +4500,8 @@ msgstr "¿Existe actualmente alguna legislación vigente en materia de gestión 
 msgid "Join others in coordinating efforts in monitoring harmonization and action planning."
 msgstr "Unirse a otros para coordinar esfuerzos en el seguimiento de la armonización y la planificación de acciones."
 
-#: src/pages/knowledge-hub/index.js:448
+#: src/pages/knowledge-hub/index.js:455
+#: src/pages/knowledge-hub/index.js:468
 msgid "Keywords"
 msgstr "Palabras clave"
 
@@ -4512,6 +4527,7 @@ msgid "Legislation & Policy Review"
 msgstr "Revisión de legislación y políticas"
 
 #: src/modules/details-page/view.jsx:507
+#: src/pages/knowledge-hub/index.js:369
 msgid "Life Cycle Stage"
 msgstr "Etapa del ciclo de vida"
 
@@ -4622,4 +4638,63 @@ msgstr "Desarrollado por"
 #: src/components/footer/Footer.jsx:112
 msgid "Quick Links"
 msgstr "Enlaces rápidos"
+
+#: src/pages/knowledge-hub/index.js:362
+msgid "browse resources by"
+msgstr "Explorar recursos por"
+
+#: src/components/resource-card/resource-card.jsx:20
+#: src/pages/knowledge-hub/index.js:193
+msgid "Case Study"
+msgstr "Estudio de caso"
+
+#: src/components/resource-card/resource-card.jsx:23
+#: src/pages/knowledge-hub/index.js:196
+msgid "Data Portal"
+msgstr "Portal de datos"
+
+#: src/utils/misc.js:343
+msgid "Full Life Cycle"
+msgstr "Ciclo de vida completo"
+
+#: src/pages/knowledge-hub/index.js:416
+msgid "Geography"
+msgstr "Geografía"
+
+#: src/utils/misc.js:342
+msgid "Legacy Plastics"
+msgstr "Plásticos heredados"
+
+#: src/pages/knowledge-hub/index.js:311
+msgid "Most Recent First"
+msgstr "Más reciente primero"
+
+#: src/pages/knowledge-hub/index.js:538
+msgid "No results"
+msgstr "No hay resultados"
+
+#: src/pages/knowledge-hub/index.js:316
+msgid "Oldest First"
+msgstr "El más antiguo primero"
+
+#: src/utils/misc.js:339
+msgid "Production"
+msgstr "Producción"
+
+#: src/components/resource-card/resource-card.jsx:14
+#: src/pages/knowledge-hub/index.js:187
+msgid "Project"
+msgstr "Proyecto"
+
+#: src/pages/knowledge-hub/index.js:395
+msgid "Resource Type"
+msgstr "Tipo de recurso"
+
+#: src/pages/knowledge-hub/index.js:357
+msgid "Search Resources"
+msgstr "Buscar recursos"
+
+#: src/utils/misc.js:341
+msgid "Waste Management"
+msgstr "Gestión de residuos"
 

@@ -17,7 +17,8 @@ import { multicountryGroups } from '../../modules/knowledge-library/multicountry
 import { DownOutlined, LoadingOutlined } from '@ant-design/icons'
 import { loadCatalog } from '../../translations/utils'
 import Link from 'next/link'
-import { lifecycleStageTags } from '../../utils/misc'
+import { useLifecycleStageTags } from '../../utils/misc'
+// import { lifecycleStageTags } from '../../utils/misc'
 
 export const getCountryIdsFromGeoGroups = (
   selectedGeoCountryGroup,
@@ -49,6 +50,7 @@ const KnowledgeHub = ({
   const [collapseKeys, setCollapseKeys] = useState(['p1', 'p2', 'p3', 'p4'])
   const [loading, setLoading] = useState(false)
   const selectedTypes = router.query.topic ? router.query.topic.split(',') : []
+  const lifecycleStageTags = useLifecycleStageTags()
 
   const tagsAndThemes = router.query.tag ? router.query.tag.split(',') : []
   const selectedThemes = tagsAndThemes.filter((tag) =>
