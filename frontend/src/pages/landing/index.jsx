@@ -236,6 +236,7 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
 }
 
 const ShowcasingAndStats = (props) => {
+  const { i18n } = useLingui()
   const { isAuthenticated, setLoginVisible } = props
   const { stakeholders, organisations } = UIStore.useState((s) => ({
     stakeholders: s.stakeholders,
@@ -243,7 +244,7 @@ const ShowcasingAndStats = (props) => {
   }))
 
   const [expertsCount, setExpertsCount] = useState(0)
-
+  const { _locale } = i18n
   const totalCount = props?.data?.reduce((sum, item) => {
     if (item.topic !== '[]') {
       return sum + item.count
@@ -281,7 +282,9 @@ const ShowcasingAndStats = (props) => {
           </div>
           <div className="powered-by-images">
             <Image
-              src="/powered-by-unep.svg"
+              src={`/powered-by-unep${
+                _locale === 'en' ? '' : `-${_locale}`
+              }.svg`}
               alt="UNEP"
               width={146}
               height={146}
@@ -797,7 +800,7 @@ const Activities = () => {
                 <img src="/activity-access.svg" />
               </div>
               <p className="h-m">
-                <Trans>Access to all</Trans>
+                <Trans>Access for All</Trans>
               </p>
             </li>
           </ul>
