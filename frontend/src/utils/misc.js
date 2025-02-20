@@ -3,6 +3,8 @@ import auth0 from 'auth0-js'
 import ReactGA from 'react-ga4'
 import { useRouter } from 'next/router'
 import { i18n } from '@lingui/core'
+import { useLingui } from '@lingui/react'
+import { t } from '@lingui/macro'
 
 export const tTypes = [
   'project',
@@ -330,3 +332,16 @@ export const lifecycleStageTags = [
   'Legacy Plastics',
   'Full Life Cycle',
 ]
+
+export const useLifecycleStageTags = () => {
+  const { i18n } = useLingui()
+  const tags = [
+    i18n._(t`Production`),
+    i18n._(t`Consumption`),
+    i18n._(t`Waste Management`),
+    i18n._(t`Legacy Plastics`),
+    i18n._(t`Full Life Cycle`),
+  ]
+
+  return tags
+}
