@@ -76,7 +76,6 @@ export const AdminBadges = ({ data, badgeOpts }) => {
 }
 
 const DetailView = ({ item, profile, setLoginVisible, isAuthenticated }) => {
-  console.log('item', item)
   const router = useRouter()
   const [data, setData] = useState({ ...item })
   const [loading, setLoading] = useState(true)
@@ -347,6 +346,10 @@ const DetailView = ({ item, profile, setLoginVisible, isAuthenticated }) => {
                 slidesPerGroup={4}
                 slidesPerView={'auto'}
                 className="members-slider"
+                pagination={{
+                  clickable: true,
+                }}
+                modules={[SwiperPagination]}
               >
                 {members.map((member) => (
                   <SwiperSlide>

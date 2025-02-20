@@ -8,6 +8,11 @@
   }
 }
 
+.detailViewContainer {
+  padding: 30px 0;
+  overflow-x: hidden;
+}
+
 .detailView {
   :global {
     .header {
