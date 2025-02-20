@@ -32,6 +32,7 @@ import DetailModal from '../details-page/modal'
 import { useRouter } from 'next/router'
 import bodyScrollLock from '../../modules/details-page/scroll-utils'
 import { Pagination as SwiperPagination, Navigation } from 'swiper'
+import { Trans } from '@lingui/macro'
 
 export const AdminBadges = ({ data, badgeOpts }) => {
   const [assigned, setAssigned] = useState(
@@ -76,7 +77,6 @@ export const AdminBadges = ({ data, badgeOpts }) => {
 }
 
 const DetailView = ({ item, profile, setLoginVisible, isAuthenticated }) => {
-  console.log('item', item)
   const router = useRouter()
   const [data, setData] = useState({ ...item })
   const [loading, setLoading] = useState(true)
@@ -146,7 +146,9 @@ const DetailView = ({ item, profile, setLoginVisible, isAuthenticated }) => {
     return (
       <div className={`${styles.detailView} ${styles.stakeholderDetailView}`}>
         <div className="header">
-          <h4 className="h-caps-m">member individual</h4>
+          <h4 className="h-caps-m">
+            <Trans>member individual</Trans>
+          </h4>
           <h1>
             {data.name}
             {profile?.role === 'ADMIN' ? (
@@ -237,7 +239,9 @@ const DetailView = ({ item, profile, setLoginVisible, isAuthenticated }) => {
     <div className={styles.detailView}>
       <div className="org">
         <div className="header">
-          <h4 className="h-caps-m">member organisation</h4>
+          <h4 className="h-caps-m">
+            <Trans>member organisation</Trans>
+          </h4>
           <h1>
             {data.name}
             {profile?.role === 'ADMIN' ? (
@@ -308,7 +312,9 @@ const DetailView = ({ item, profile, setLoginVisible, isAuthenticated }) => {
           <div className="clearfix"></div>
           {resources != null && resources.length > 0 && (
             <>
-              <h4 className="h-caps-m">Associated content</h4>
+              <h4 className="h-caps-m">
+                <Trans>Associated content</Trans>
+              </h4>
               <Swiper
                 spaceBetween={15}
                 slidesPerGroup={4}
@@ -341,12 +347,18 @@ const DetailView = ({ item, profile, setLoginVisible, isAuthenticated }) => {
           )}
           {members != null && members.length > 0 && (
             <>
-              <h4 className="h-caps-m">Individual members</h4>
+              <h4 className="h-caps-m">
+                <Trans>Individual members</Trans>
+              </h4>
               <Swiper
                 spaceBetween={15}
                 slidesPerGroup={4}
                 slidesPerView={'auto'}
                 className="members-slider"
+                pagination={{
+                  clickable: true,
+                }}
+                modules={[SwiperPagination]}
               >
                 {members.map((member) => (
                   <SwiperSlide>
@@ -365,7 +377,9 @@ const DetailView = ({ item, profile, setLoginVisible, isAuthenticated }) => {
                         '+'
                       )}`}
                     >
-                      <div className="more-card individual">View All</div>
+                      <div className="more-card individual">
+                        <Trans>View All</Trans>
+                      </div>
                     </Link>
                   </SwiperSlide>
                 )}
