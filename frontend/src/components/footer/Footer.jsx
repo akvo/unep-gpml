@@ -8,11 +8,15 @@ import moment from 'moment'
 import Button from '../../components/button'
 import api from '../../utils/api'
 import Image from 'next/image'
+import { useLingui } from '@lingui/react'
 
 const Footer = ({ showTools }) => {
+  const { i18n } = useLingui()
   const [form] = Form.useForm()
   const [loading, setLoading] = useState(false)
   const [showCookieConsent, setShowCookieConsent] = useState(true)
+
+  const { _locale } = i18n
 
   useEffect(() => {
     const cookieConsent = localStorage.getItem('cookieConsent')
@@ -104,7 +108,9 @@ const Footer = ({ showTools }) => {
               </ul>
             </div> */}
           <div className="footer-item quick-links">
-            <h6 className="title">Quick Links</h6>
+            <h6 className="title">
+              <Trans>Quick Links</Trans>
+            </h6>
             <ul>
               <li>
                 <a href="https://www.unep.org/explore-topics/oceans-seas/global-partnership-plastic-pollution-and-marine-litter">
@@ -119,8 +125,20 @@ const Footer = ({ showTools }) => {
             </ul>
           </div>
           <div className="footer-item powered-by">
-            <h6 className="title">Powered by</h6>
-            <Image src="/powered-by-footer.png" width={425} height={143} />
+            <h6 className="title">
+              <Trans>Powered by</Trans>
+            </h6>
+            <Image
+              src={`/powered-by-footer${
+                _locale === 'en' ? '' : `-${_locale}`
+              }.png`}
+              // width={425}
+              // height={143}
+              width={0} // Set width to 0
+              height={0} // Set height to 0
+              sizes="100vw" // Optional: Specify responsive sizes
+              style={{ height: '143px', width: 'auto' }}
+            />
           </div>
         </div>
         <hr />

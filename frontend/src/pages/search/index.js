@@ -15,6 +15,8 @@ import { LoadingOutlined } from '@ant-design/icons'
 import { Pointer, ThoughtBubble } from '../../components/icons'
 import { loadCatalog } from '../../translations/utils'
 import classNames from 'classnames'
+// import { Trans } from '@lingui/react'
+import { t, Trans } from '@lingui/macro'
 
 const emptyObj = { resources: [], stakeholders: [], datasets: [] }
 
@@ -97,7 +99,9 @@ const Search = ({ setLoginVisible, isAuthenticated }) => {
           )}
           {items.resources.length > 0 && (
             <>
-              <h4 className="caps-heading-1">knowledge hub</h4>
+              <h4 className="caps-heading-1">
+                <Trans>knowledge hub</Trans>
+              </h4>
               <div className="results">
                 {items.resources.map((it) => (
                   <ResourceCard
@@ -111,7 +115,9 @@ const Search = ({ setLoginVisible, isAuthenticated }) => {
           )}
           {items.stakeholders.length > 0 && (
             <>
-              <h4 className="caps-heading-1">community</h4>
+              <h4 className="caps-heading-1">
+                <Trans>community</Trans>
+              </h4>
               <div className="results">
                 {items.stakeholders.map((it) => (
                   <div onClick={handleClickMember(it)}>
@@ -123,7 +129,9 @@ const Search = ({ setLoginVisible, isAuthenticated }) => {
           )}
           {items.datasets.length > 0 && (
             <>
-              <h4 className="caps-heading-1">data hub</h4>
+              <h4 className="caps-heading-1">
+                <Trans>data hub</Trans>
+              </h4>
               <div className="results">
                 {items.datasets.map((it) => (
                   <ResourceCard
@@ -198,13 +206,13 @@ export const SearchBar = ({ onSearch, loading }) => {
     }
   }
   const suggestions = [
-    'Potential partners for recycling in Cambodia',
-    'Data on beach litter',
-    'Funds on plastic pollution in Asia',
-    'Is there any legislation currently in force regarding waste management in Guatemala',
-    'Data on protected marine areas',
-    'What initiatives is UNEP a partner of',
-    'What technical resources are funded by UNEP',
+    t`Potential partners for recycling in Cambodia`,
+    t`Data on beach litter`,
+    t`Funds on plastic pollution in Asia`,
+    t`Is there any legislation currently in force regarding waste management in Guatemala`,
+    t`Data on protected marine areas`,
+    t`What initiatives is UNEP a partner of`,
+    t`What technical resources are funded by UNEP`,
   ]
   const [showModal, setShowModal] = useState(false)
 
@@ -222,7 +230,7 @@ export const SearchBar = ({ onSearch, loading }) => {
         }}
       >
         <Input
-          placeholder="Search all platform content..."
+          placeholder={t`Search all platform content...`}
           value={val}
           onChange={(e) => {
             setVal(e.target.value)
@@ -239,7 +247,9 @@ export const SearchBar = ({ onSearch, loading }) => {
             <span className="hide-desktop">
               <Pointer />
             </span>
-            <span className="hide-mobile">Search</span>
+            <span className="hide-mobile">
+              <Trans>Search</Trans>
+            </span>
           </Button>
         )}
         {loading && (
@@ -255,10 +265,12 @@ export const SearchBar = ({ onSearch, loading }) => {
           <div className="icon">
             <ThoughtBubble />
           </div>
-          <span>suggestions</span>
+          <span>
+            <Trans>suggestions</Trans>
+          </span>
         </div>
         <div className="powered" onClick={() => setShowModal(true)}>
-          Powered by OpenAI
+          <Trans>Powered by OpenAI</Trans>
         </div>
         <Modal
           visible={showModal}
@@ -266,11 +278,13 @@ export const SearchBar = ({ onSearch, loading }) => {
           footer={null}
           closable
         >
-          Our platform-wide search is powered by OpenAI in order to translate
-          human-language questions into queries to our database. This feature is
-          experimental and does not support broad conversation-like interaction
-          similar to ChatGPT. You may ask questions following a pattern similar
-          to the suggestions provided.
+          <Trans>
+            Our platform-wide search is powered by OpenAI in order to translate
+            human-language questions into queries to our database. This feature
+            is experimental and does not support broad conversation-like
+            interaction similar to ChatGPT. You may ask questions following a
+            pattern similar to the suggestions provided.
+          </Trans>
         </Modal>
         <div className="holder" ref={holderRef} onScroll={handleScroll}>
           <ul>
