@@ -270,8 +270,9 @@ export function getStrapiUrl() {
     staging: 'unep-gpml.akvotest.org',
     prod: 'digital.gpmarinelitter.org',
   }
-  return `https://${domains[$env]}/strapi`
+  return `https://digital.gpmarinelitter.org/strapi`
 }
+
 
 export function getBaseUrl() {
   let $env = process.env.NEXT_PUBLIC_ENV
@@ -280,7 +281,7 @@ export function getBaseUrl() {
     staging: 'digital.gpmarinelitter.org',
     prod: 'digital.gpmarinelitter.org',
   }
-  return `https://${domains[$env]}`
+  return `https://unep-gpml.akvotest.org`
 }
 
 export function stripHtml(html) {

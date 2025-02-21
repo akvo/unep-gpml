@@ -8,6 +8,8 @@ module.exports = {
         const { arcgislayerId } = ctx.params;
         const { outFields } = ctx.request.body;
 
+        console.log('outFields',outFields)
+
         if (!outFields || !Array.isArray(outFields) || outFields?.length < 3) {
             ctx.throw(400, 'Invalid outFields: Please provide an array with Year, Value, and Country fields.');
         }
@@ -22,7 +24,7 @@ module.exports = {
 
 
         try {
-            const layer = await strapi.entityService.findOne('api::layer.layer', layerId, {
+            const layer = await strapi.entityService.findOne('api::layer.layer', 3, {
                 populate: { ValuePerCountry: true },
             });
 
@@ -31,7 +33,7 @@ module.exports = {
                 ...entries
             ];
 
-            await strapi.entityService.update('api::layer.layer', layerId, {
+            await strapi.entityService.update('api::layer.layer', 3, {
                 data: {
                     ValuePerCountry: updatedValuePerCountry,
                 },

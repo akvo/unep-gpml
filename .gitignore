@@ -10,3 +10,5 @@ notify.team.sh
 .DS_Store
 frontend/package-lock.json
 frontend/yarn.lock
+node_modules
+.node_modules

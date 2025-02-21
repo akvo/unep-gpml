@@ -10,11 +10,11 @@ const useRegions = () => {
     useEffect(() => {
         const fetchRegionsAndCountries = async () => {
             try {
-                const countryResponse = await axios.get(`${strapiURL}/api/countries/getAllCountries`);
+                const countryResponse = await axios.get(`https://digital.gpmarinelitter.org/strapi/api/countries/getAllCountries`);
 
                 const countries = countryResponse.data;
 
-                const regionResponse = await axios.get(`${strapiURL}/api/regions`);
+                const regionResponse = await axios.get(`https://digital.gpmarinelitter.org/strapi/api/regions`);
 
                 const regions = regionResponse.data.data;
 

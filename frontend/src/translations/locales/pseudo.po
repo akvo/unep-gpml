@@ -18,6 +18,37 @@ msgstr ""
 msgid "GEO COVERAGE (Countries)"
 msgstr ""
 
+#. js-lingui-explicit-id
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:140
+#~ msgid "chart.legend_imports"
+#~ msgstr ""
+
+#. js-lingui-explicit-id
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:165
+#~ msgid "chart.data_source"
+#~ msgstr ""
+
+#. js-lingui-explicit-id
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:74
+#~ msgid "chart.title_mobile"
+#~ msgstr ""
+
+#. js-lingui-explicit-id
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:75
+#~ msgid "chart.title"
+#~ msgstr ""
+
+#. js-lingui-explicit-id
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:98
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:127
+#~ msgid "chart.legend_exports"
+#~ msgstr ""
+
+#. js-lingui-explicit-id
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:119
+#~ msgid "chart.y_axis_label"
+#~ msgstr ""
+
 #: src/modules/workspace/ps/setup-team-form.jsx:277
 msgid "- Please select -"
 msgstr ""
@@ -41,6 +72,20 @@ msgstr ""
 
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:414
 msgid "{value} Initiatives"
+msgstr ""
+
+#: src/pages/countryOverview/IntroPage.jsx:162
+msgid "* You are currently viewing the beta version of the Country Dashboard, and we welcome your feedback on its usability and content. We particularly welcome suggestions for updated and improved data sources for your country. To request a data update, please use the \"Request Data Update\" button within your Country Dashboard section."
+msgstr ""
+
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:75
+msgid ""
+"`Plastic import & export value\n"
+"for ${0}`"
+msgstr ""
+
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:79
+msgid "`Plastic import & export value for ${0}`"
 msgstr ""
 
 #: src/pages/countryOverview/IntroPage.jsx:162
@@ -1033,6 +1078,10 @@ msgstr ""
 msgid "Data Source"
 msgstr ""
 
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:168
+msgid "Data source:"
+msgstr ""
+
 #: src/modules/workspace/view.jsx:67
 msgid "Data tools"
 msgstr ""
@@ -1448,6 +1497,10 @@ msgstr ""
 msgid "Equity Investment"
 msgstr ""
 
+#: src/pages/countryOverview/IntroPage.jsx:25
+#~ msgid "Error fetching countries:"
+#~ msgstr ""
+
 #: src/pages/workspace/[slug]/1-project-team/setup-team.js:24
 msgid "Establish a National Steering Committee (NSC) with representation from relevant government agencies as well as relevant non-governmental organisations. The NSC will aim to meet 2-4 times per year to assist with and drive the roadmap/strategy/plan. Establish a project team consisting of consultants to lead the implementation of the project with the guidance of the NSC and UNEP."
 msgstr ""
@@ -1490,6 +1543,10 @@ msgstr ""
 #: src/modules/map/map-chart.jsx:803
 #: src/modules/profile/admin.jsx:1216
 msgid "Experts"
+msgstr ""
+
+#: src/pages/countryOverview/IntroPage.jsx:113
+msgid "Explore"
 msgstr ""
 
 #: src/pages/countryOverview/IntroPage.jsx:113
@@ -2283,6 +2340,14 @@ msgstr ""
 #: src/components/map-and-layers/sidebar/partials/layerInfo.jsx:29
 msgid "Layer data"
 msgstr ""
+
+#: src/components/map-and-layers/sidebar/partials/layerInfo.jsx:29
+msgid "Layer data"
+msgstr ""
+
+#: src/components/map-and-layers/sidebar/partials/layerInfo.jsx:37
+#~ msgid "LayerData"
+#~ msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:868
 msgid "Leadership by specific individuals in the member state or organisation (who personallydrove change)"
@@ -3532,6 +3597,10 @@ msgstr ""
 #: src/pages/search/index.js:233
 msgid "Search all platform content..."
 msgstr ""
+
+#: src/pages/countryOverview/IntroPage.jsx:142
+#~ msgid "Search for a country..."
+#~ msgstr ""
 
 #: src/modules/profile/admin.jsx:83
 msgid "Search for a resource"
