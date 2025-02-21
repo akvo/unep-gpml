@@ -4,6 +4,7 @@ import useQueryParameters from '../../../../hooks/useQueryParameters'
 import { UIStore } from '../../../../store'
 import { isEmpty } from 'lodash'
 import { getBaseUrl } from '../../../../utils/misc'
+import classNames from 'classnames'
 
 const { Sider } = Layout
 
@@ -80,80 +81,31 @@ const CategoriesNestedDashboard = ({ categories }) => {
   }
 
   return (
-    <Sider
-      breakpoint="lg"
-      collapsedWidth="100%"
-      width={360}
-      style={{
-        height: '100%',
-        padding: '0',
-        margin: '0',
-      }}
-    >
-      <div
-        style={{
-          position: isMobile ? 'sticky' : 'relative',
-          marginLeft: '20px',
-          marginTop: '10px',
-          marginBottom: isMobile ? '5px' : '20px',
-          fontSize: isMobile ? '15px' : '16px',
-          fontWeight: 'bold',
-          fontFamily: 'var(--font-archia), sans-serif',
-          color: '#7468ff',
-          cursor: 'pointer',
-          textDecoration: 'underline',
-        }}
-        onClick={handleBackToHomePage}
-      >
+    <Sider breakpoint="lg" collapsedWidth="100%" width={360}>
+      <div className="caps-heading-s" onClick={handleBackToHomePage}>
         <span style={{ fontSize: '14px' }}>←</span> NATIONAL DATA
       </div>
       <Select
         showSearch
         size="large"
-        allowClear
         value={queryParameters.country ? queryParameters.country : ''}
         placeholder="Search Country"
         options={countryOpts}
+        suffixIcon={<DropdownSvg />}
         filterOption={(input, option) =>
           option?.label?.toLowerCase().includes(input.toLowerCase())
         }
         onChange={handleChangeCountry}
-        style={{
-          marginLeft: '5px',
-          width: '97%',
-          height: '50%',
-          padding: isMobile ? '0px' : '4px',
-          fontSize: isMobile ? '14px' : '18px',
-          fontFamily: 'var(--font-archia), sans-serif',
-          borderRadius: '8px',
-          border: '1px solid #ccc',
-        }}
       />
 
-      <div style={{ marginTop: isMobile ? '0px' : '20px' }}>
+      <div style={{ marginTop: isMobile ? '0px' : '20px' }} className="nav">
         {categories.map((category) => (
           <div
             key={category.attributes.categoryId}
             onClick={() => handleCategoryClick(category)}
-            style={{
-              fontFamily: 'var(--font-archia), sans-serif',
-              padding: '10px 20px',
-
-              paddingTop: '20px',
-
-              fontSize: isMobile ? '16px' : '18px',
-              color: '#1B2738',
-              fontWeight: isCategorySelected(category) ? 'bold' : 'normal',
-              backgroundColor: isCategorySelected(category)
-                ? '#E3DDFD'
-                : 'transparent',
-              width: '100%',
-              marginBottom: isMobile ? '0px' : '10px',
-              cursor: 'pointer',
-              userSelect: 'none',
-              border: 'none',
-              boxShadow: 'none',
-            }}
+            className={classNames('nav-item', {
+              selected: isCategorySelected(category),
+            })}
           >
             {category.attributes.name}
           </div>
@@ -161,22 +113,7 @@ const CategoriesNestedDashboard = ({ categories }) => {
       </div>
 
       {queryParameters.categoryId && queryParameters.country && !isMobile && (
-        <Button
-          type="primary"
-          style={{
-            margin: '450px 15px',
-            width: '90%',
-            height: '45px',
-            fontSize: '16px',
-            backgroundColor: '#ffffff',
-            border: '1px solid #1B2738',
-            borderRadius: '35px',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-          onClick={handleViewGlobalDataClick}
-        >
+        <Button type="ghost" style={{}} onClick={handleViewGlobalDataClick}>
           View Global Data →
         </Button>
       )}
@@ -184,4 +121,15 @@ const CategoriesNestedDashboard = ({ categories }) => {
   )
 }
 
+const DropdownSvg = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="14"
+    height="9"
+    viewBox="0 0 14 9"
+    fill="none"
+  >
+    <path d="M1 1L7 7L13 1" stroke="#020A5B" strokeWidth="2" />
+  </svg>
+)
 export default CategoriesNestedDashboard
