@@ -54,7 +54,6 @@ const Subcategories = ({ subcategories, layers, loading }) => {
       })
     }
   }
-
   if (loading) {
     return <div>Loading...</div>
   }
@@ -77,63 +76,61 @@ const Subcategories = ({ subcategories, layers, loading }) => {
           <Panel
             key={subcategory.attributes.subcategoryId}
             header={subcategory.attributes.subcategoryName}
-            style={{overflow:"auto"}}
+            style={{ overflow: 'auto' }}
           >
-            {filteredLayers
-              .slice()
-              .map((layer, layerIndex) => (
-                <div
-                  className="layer-item"
-                  key={`${subcategory.attributes.subcategoryId}-${layerIndex}`}
+            {filteredLayers.slice().map((layer, layerIndex) => (
+              <div
+                className="layer-item"
+                key={`${subcategory.attributes.subcategoryId}-${layerIndex}`}
+              >
+                <Switch
+                  size="small"
+                  onChange={() => handleLayerClick(layer)}
+                  checked={
+                    (queryParameters.layers &&
+                      !queryParameters.layer &&
+                      queryParameters.layers[0]?.id === layer.id) ||
+                    (queryParameters.layer &&
+                      queryParameters.layer === layer.attributes.arcgislayerId)
+                  }
+                />
+
+                <Typography
+                  style={{
+                    fontSize: '14px',
+                    textAlign: 'left',
+                    font: 'Inter',
+                  }}
                 >
-                  <Switch
-                    size="small"
-                    onChange={() => handleLayerClick(layer)}
-                    checked={
-                      (queryParameters.layers && !queryParameters.layer &&
-                        queryParameters.layers[0]?.id === layer.id) ||
-                      (queryParameters.layer &&
-                        queryParameters.layer === layer.attributes.arcgislayerId)
-                    }
-                  />
+                  {layer.attributes.title}
+                </Typography>
 
-                  <Typography
+                <Tooltip
+                  overlayStyle={{ maxWidth: '600px', width: 'auto' }}
+                  overlay={
+                    <LayerInfo
+                      layer={filteredLayers?.find(
+                        (layerInfoItem) =>
+                          layerInfoItem.arcgislayerId === layer.arcgislayerId &&
+                          layerInfoItem.id === layer.id
+                      )}
+                    ></LayerInfo>
+                  }
+                  overlayInnerStyle={{
+                    backgroundColor: 'white',
+                    width: 'auto',
+                    height: 'auto',
+                  }}
+                >
+                  <InfoCircleFilled
                     style={{
-                      fontSize: '14px',
-                      textAlign: 'left',
-                      font: 'Inter',
+                      color: 'rgba(0, 0, 0, 0.45)',
                     }}
-                  >
-                    {layer.attributes.title}
-                  </Typography>
-
-                  <Tooltip
-                    overlayStyle={{ maxWidth: '600px', width: 'auto' }}
-                    overlay={
-                      <LayerInfo
-                        layer={filteredLayers?.find(
-                          (layerInfoItem) =>
-                            layerInfoItem.arcgislayerId ===
-                              layer.arcgislayerId &&
-                            layerInfoItem.id === layer.id
-                        )}
-                      ></LayerInfo>
-                    }
-                    overlayInnerStyle={{
-                      backgroundColor: 'white',
-                      width: 'auto',
-                      height: 'auto',
-                    }}
-                  >
-                    <InfoCircleFilled
-                      style={{
-                        color: 'rgba(0, 0, 0, 0.45)',
-                      }}
-                      onClick={() => null}
-                    />
-                  </Tooltip>
-                </div>
-              ))}
+                    onClick={() => null}
+                  />
+                </Tooltip>
+              </div>
+            ))}
           </Panel>
         ))}
       </Collapse>

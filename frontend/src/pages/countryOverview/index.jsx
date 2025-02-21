@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Row, Col, Button, Spin } from 'antd'
+import { Row, Col, Button, Spin, Select, Tooltip, Typography } from 'antd'
 import { useRouter } from 'next/router'
 import useReplacedText from '../../hooks/useReplacePlaceholders'
 import PlasticImportExportChart from '../../modules/country-dashboard/charts/PlasticImportExportChart'
@@ -13,8 +13,14 @@ import PlasticCompositionChart from '../../modules/country-dashboard/charts/Plas
 import Handlebars from 'handlebars'
 import useCategories from '../../hooks/useCategories'
 import parse from 'html-react-parser'
-import { Tooltip } from 'antd'
+import styles from './index.module.scss'
+
 import useLayerInfo from '../../hooks/useLayerInfo'
+import { UIStore } from '../../store'
+import useQueryParameters from '../../hooks/useQueryParameters'
+import { getBaseUrl } from '../../utils/misc'
+
+const { Text } = Typography
 
 const splitTextInHalf = (text) => {
   const exportsIndex = text.indexOf(
@@ -76,10 +82,19 @@ const addTooltipsToPlaceholders = (htmlString, placeholders, tooltips) => {
 
   return parse(htmlString, options)
 }
-
 const CountryOverview = () => {
   const router = useRouter()
+  const { queryParameters, setQueryParameters } = useQueryParameters()
   const [isMobile, setIsMobile] = useState(false)
+  const [selectedCategory, setSelectedCategory] = useState(null)
+  const [selectedCountry, setSelectedCountry] = useState(null)
+  const { categories } = useCategories()
+  const { layers, loading: layerLoading } = useLayerInfo()
+  const baseURL = getBaseUrl()
+
+  const { countries } = UIStore.useState((s) => ({
+    countries: s.countries,
+  }))
 
   useEffect(() => {
     const handleResize = () => {
@@ -91,12 +106,41 @@ const CountryOverview = () => {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  const categories = useCategories()
-  const { layers, loading: layerLoading } = useLayerInfo()
+  useEffect(() => {
+    if (queryParameters.country) {
+      setSelectedCountry(queryParameters.country)
+    }
+  }, [queryParameters])
 
-  const selectedCategory = categories.categories.find(
+  const selectedCategoryObject = categories.find(
     (c) => c.attributes.categoryId == router.query.categoryId
   )
+
+  const countryOpts =
+    countries?.map((it) => ({
+      value: it.id,
+      label: it.name,
+    })) || []
+
+  const categoryOpts =
+    categories?.map((cat) => ({
+      value: cat.attributes.categoryId,
+      label: cat.attributes.name,
+    })) || []
+
+  const handleChangeCountry = (val) => {
+    const selected = countries.find((x) => x.id === val)
+    setQueryParameters({
+      country: selected?.name,
+      countryCode: selected?.isoCodeA3,
+    })
+    setSelectedCountry(selected?.name)
+  }
+
+  const handleCategoryChange = (val) => {
+    setQueryParameters({ categoryId: val })
+    setSelectedCategory(val)
+  }
 
   const [isModalVisible, setModalVisible] = useState(false)
 
@@ -110,7 +154,7 @@ const CountryOverview = () => {
 
   const uniqueLayerIds = [
     ...new Set(
-      selectedCategory?.attributes?.textTemplate?.placeholders.map(
+      selectedCategoryObject?.attributes?.textTemplate?.placeholders.map(
         (placeholder) =>
           placeholder
             .split('=')[0]
@@ -137,13 +181,13 @@ const CountryOverview = () => {
     router.query.country,
     router.query.countryCode,
     router.query.categoryId,
-    selectedCategory?.attributes?.textTemplate?.placeholders,
+    selectedCategoryObject?.attributes?.textTemplate?.placeholders,
     layerJson
   )
 
-  if (loading || layerLoading || !selectedCategory) {
+  if (loading || layerLoading || !selectedCategoryObject) {
     return (
-      <div style={{ textAlign: 'center' }}>
+      <div className={styles.spinner}>
         <Spin tip="Loading data..." size="large" />
       </div>
     )
@@ -166,7 +210,8 @@ const CountryOverview = () => {
     })
   }
 
-  const rawTemplate = selectedCategory?.attributes?.textTemplate?.template || ''
+  const rawTemplate =
+    selectedCategoryObject?.attributes?.textTemplate?.template || ''
   const wrappedTemplate = wrapPlaceholders(rawTemplate)
 
   const compiledTemplate = Handlebars.compile(wrappedTemplate, {
@@ -178,8 +223,8 @@ const CountryOverview = () => {
   })
 
   const [firstHalfText, secondHalfText] =
-    selectedCategory?.attributes?.categoryId === 'environmental-impact' ||
-    selectedCategory?.attributes?.categoryId === 'waste-management'
+    selectedCategoryObject?.attributes?.categoryId === 'environmental-impact' ||
+    selectedCategoryObject?.attributes?.categoryId === 'waste-management'
       ? splitTextByMarker(categoryText, '<!--NEW_COLUMN-->')
       : splitTextInHalf(categoryText || '')
 
@@ -200,59 +245,68 @@ const CountryOverview = () => {
     tooltips
   )
 
+  const handleViewGlobalDataClick = () => {
+    const categoryId = selectedCategory || queryParameters.categoryId
+    if (categoryId) {
+      window.location.href = `${baseURL}/data/maps?categoryId=${categoryId}`
+    } else {
+      alert('Please select a category before viewing global data.')
+    }
+  }
+  console.log('styles.text', styles)
   return (
-    <div
-      style={{
-        maxWidth: isMobile ? '90%' : '70%',
-        margin: '0 auto',
-        padding: '16px',
-      }}
-    >
-      <Row className="header-row" style={{ marginBottom: '20px' }}>
+    <div className={styles.text}>
+      {isMobile && (
+        <div
+          style={{
+            padding: '20px',
+            background: '#fff',
+            width: '100%',
+            marginBottom: '20px',
+          }}
+        >
+          <Text
+            strong
+            style={{ color: '#7468ff', display: 'block', marginBottom: '10px' }}
+          >
+            NATIONAL DATA
+          </Text>
+          <Select
+            showSearch
+            size="large"
+            value={selectedCountry}
+            placeholder="Select a Country"
+            options={countryOpts}
+            onChange={handleChangeCountry}
+            style={{ width: '100%', marginBottom: '10px' }}
+          />
+          <Select
+            showSearch
+            size="large"
+            value={router.query.categoryId}
+            placeholder="Select a Category"
+            options={categoryOpts}
+            onChange={handleCategoryChange}
+            style={{ width: '100%' }}
+          />
+        </div>
+      )}
+
+      <Row className={styles.headerRow}>
         <Col xs={24} md={18}>
-          <div style={{ marginBottom: '10px' }}>
-            <span
-              style={{ color: '#6236FF', fontSize: '24px', fontWeight: 'bold' }}
-            >
+          <div>
+            <span className={styles.titleCountryText}>
               {decodeURIComponent(router.query.country)?.toUpperCase()}
             </span>
           </div>
         </Col>
-        <Col xs={24} md={6} style={{ textAlign: 'center' }}>
-          <span
-            style={{
-              color: '#7C7C7C',
-              marginRight: '140px',
-              fontSize: isMobile ? '12px' : '14px',
-            }}
-          >
-            <span
-              style={{
-                backgroundColor: '#8E44AD',
-                borderRadius: '50%',
-                width: '8px',
-                height: '8px',
-                display: 'inline-block',
-                marginRight: '5px',
-              }}
-            ></span>
-            Data last updated: 02-20-22
+        <Col xs={24} md={6} className={styles.containerButton}>
+          <span className={styles.textButton}>
+            <span className={styles.dot}></span>
+            Page last updated: 02-20-22
           </span>
           <Tooltip title="Update country data by sending a request to the GPML Data Hub team.">
-            <Button
-              onClick={showModal}
-              style={{
-                backgroundColor: '#00f1bf',
-                textAlign: 'center',
-                height: '34px',
-                width: '237px',
-                borderColor: '#00f1bf',
-                color: '#020A5B',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
+            <Button className={styles.buttonStyle} onClick={showModal}>
               Request Data Update
             </Button>
             <RequestDataUpdateModal
@@ -278,7 +332,7 @@ const CountryOverview = () => {
           </Col>
         </Row>
       ) : (
-        <Row style={{ marginBottom: '40px', width: '100%' }}>
+        <Row style={{ marginBottom: '40px' }}>
           <p style={{ fontSize: '16px', color: '#1B2738' }}>{governanceText}</p>
         </Row>
       )}
@@ -287,14 +341,7 @@ const CountryOverview = () => {
         <>
           <Row style={{ marginBottom: '40px' }}>
             <Col span={24}>
-              <div
-                style={{
-                  backgroundColor: '#FFFFFF',
-                  borderRadius: '12px',
-                  padding: '20px',
-                  boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
-                }}
-              >
+              <div className={styles.plasticImportChart}>
                 <PlasticImportExportChart
                   layers={layers}
                   loading={layerLoading}
@@ -406,6 +453,27 @@ const CountryOverview = () => {
         >
           <PlasticOceanBeachChart layers={layers} layerLoading={layerLoading} />
         </div>
+      )}
+
+      {queryParameters.categoryId && queryParameters.country && isMobile && (
+        <Button
+          type="primary"
+          style={{
+            marginTop: '20px',
+            width: '100%',
+            height: '45px',
+            fontSize: '16px',
+            backgroundColor: '#ffffff',
+            border: '1px solid #1B2738',
+            borderRadius: '35px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          onClick={handleViewGlobalDataClick}
+        >
+          View Global Data →
+        </Button>
       )}
     </div>
   )

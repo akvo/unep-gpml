@@ -33,7 +33,21 @@ module.exports = [
       },
     },
   },
-  'strapi::cors',
+  {
+    name: "strapi::cors",
+    config: {
+      enabled: false,
+      origin: ["*"], 
+      methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"],
+      headers: [
+        "Content-Type",
+        "Authorization",
+        "baggage", 
+        "sentry-trace", 
+      ],
+      credentials: false,
+    },
+  },
   'strapi::poweredBy',
   'strapi::logger',
   'strapi::query',

@@ -3,9 +3,10 @@ import CategoriesNested from './partials/categoriesNested'
 import CategoriesNestedDashboard from './partials/CategoriesNestedDashboard'
 import useCategories from '../../../hooks/useCategories'
 import useSubcategories from '../../../hooks/useSubcategories'
+import Details from '../details'
 import styles from './index.module.scss'
 
-const Sidebar = ({ alt, countryDashboard, layers }) => {
+const Sidebar = ({ alt, countryDashboard, layers, queryParameters }) => {
   const [isMobile, setIsMobile] = useState(false)
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false)
 
@@ -36,28 +37,36 @@ const Sidebar = ({ alt, countryDashboard, layers }) => {
   }
 
   return (
-    <div className={styles.container}>
+    <div  className={styles.container}>
       {isMobile ? (
         <>
-          <div className={styles.mobileHeader} onClick={handleToggleSidebar}>
-            <span>Topics</span>
-            <span>{isSidebarExpanded ? '▲' : '▼'}</span>
-          </div>
-          {isSidebarExpanded && (
+          {countryDashboard ? (
+            <CategoriesNestedDashboard
+              categories={categories}
+              subcategories={subcategories}
+              countryDashboard={countryDashboard}
+            />
+          ) : (
             <>
-              {countryDashboard ? (
-                <CategoriesNestedDashboard
-                  categories={categories}
-                  subcategories={subcategories}
-                  countryDashboard={countryDashboard}
-                />
-              ) : (
-                <CategoriesNested
-                  categories={categories}
-                  subcategories={subcategories}
-                  layers={layers}
-                  countryDashboard={countryDashboard}
-                />
+              <div
+                className={styles.mobileHeader}
+                onClick={handleToggleSidebar}
+              >
+                <span>Topics</span>
+                <span>{isSidebarExpanded ? '▲' : '▼'}</span>
+              </div>
+              {isSidebarExpanded && (
+                <>
+                  <CategoriesNested
+                    categories={categories}
+                    subcategories={subcategories}
+                    layers={layers}
+                    countryDashboard={countryDashboard}
+                  />
+                  {queryParameters?.layer && (
+                    <Details layerId={queryParameters.layer} />
+                  )}
+                </>
               )}
             </>
           )}

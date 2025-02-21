@@ -13,7 +13,7 @@ const useReplacedText = (country, countryCode, categoryId, placeholders, layerJs
             setLoading(true);
             try {
                 const response = await axios.post(
-                    `${strapiURL}/api/category/category-replace`,
+                    `http://localhost:1337/api/category/category-replace`,
                     {
                         country,
                         countryCode,
