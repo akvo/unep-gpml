@@ -10,6 +10,18 @@ import { getBaseUrl } from '../../utils/misc'
 const baseUrl = getBaseUrl()
 
 const ResourceCard = ({ item, bookmarked, onBookmark, onClick }) => {
+  const types = [
+    { name: t`Project`, value: 'project' },
+    { name: t`Technical Resource`, value: 'technical_resource' },
+    { name: t`Technology`, value: 'technology' },
+    { name: t`Action Plan`, value: 'action_plan' },
+    { name: t`Legislation`, value: 'policy' },
+    { name: t`Financing Resource`, value: 'financing_resource' },
+    { name: t`Case Study`, value: 'case_study' },
+    { name: t`Initiative`, value: 'initiative' },
+    { name: t`Event`, value: 'event' },
+    { name: t`Data Portal`, value: 'data_catalog' },
+  ]
   const withImage = item?.images?.length > 0 || item?.images?.thumbnail
   const handleClick = (e) => {
     onClick({ e, item })
@@ -24,7 +36,7 @@ const ResourceCard = ({ item, bookmarked, onBookmark, onClick }) => {
       onClick={handleClick}
     >
       <div className="type caps-heading-xs">
-        {item?.type?.replace(/_/g, ' ')}
+        {types.find((it) => it.value === item?.type)?.name}
       </div>
       {onBookmark != null && (
         <BookmarkBtn {...{ bookmarked, onBookmark, item }} />
