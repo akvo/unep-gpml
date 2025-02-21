@@ -15,6 +15,7 @@ import useCategories from '../../hooks/useCategories'
 import parse from 'html-react-parser'
 import { Tooltip } from 'antd'
 import useLayerInfo from '../../hooks/useLayerInfo'
+import styles from './index.module.scss'
 
 const splitTextInHalf = (text) => {
   const exportsIndex = text.indexOf(
@@ -143,7 +144,7 @@ const CountryOverview = () => {
 
   if (loading || layerLoading || !selectedCategory) {
     return (
-      <div style={{ textAlign: 'center' }}>
+      <div className={styles.spinner}>
         <Spin tip="Loading data..." size="large" />
       </div>
     )
