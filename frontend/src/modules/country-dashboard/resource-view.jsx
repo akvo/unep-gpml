@@ -64,10 +64,10 @@ function ResourceView() {
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'space-between',
-          maxHeight: '1000px',
+          // maxHeight: '1000px',
           width: '100%',
-          overflow: 'auto',
-          paddingBottom: '70px',
+          overflow: 'visible',
+          // paddingBottom: '70px',
         }}
       >
         {country && router.query.categoryId && (

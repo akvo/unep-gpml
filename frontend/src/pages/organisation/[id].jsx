@@ -4,15 +4,19 @@ import { loadCatalog } from '../../translations/utils'
 import withAuth from '../../components/withAuth'
 import DetailView from '../../modules/community-hub/detail-view'
 import { useRouter } from 'next/router'
+import styles from '../../modules/community-hub/style.module.scss'
+import classNames from 'classnames'
 
 function Organisation({ isAuthenticated, profile }) {
   const router = useRouter()
   return (
-    <div className="container" style={{ padding: '30px 0' }}>
-      <DetailView
-        item={{ id: router.query.id, type: 'organisation' }}
-        {...{ profile }}
-      />
+    <div className={styles.detailViewContainer}>
+      <div className="container">
+        <DetailView
+          item={{ id: router.query.id, type: 'organisation' }}
+          {...{ profile }}
+        />
+      </div>
     </div>
   )
 }
