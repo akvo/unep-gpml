@@ -4,7 +4,6 @@ import Head from 'next/head'
 import { loadCatalog } from '../../translations/utils'
 
 function CountryView({ isAuthenticated }) {
-  console.log('trigger build')
   return (
     <>
       <Head>
