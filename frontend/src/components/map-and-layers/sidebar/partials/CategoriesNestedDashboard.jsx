@@ -5,6 +5,9 @@ import { UIStore } from '../../../../store'
 import { isEmpty } from 'lodash'
 import { getBaseUrl } from '../../../../utils/misc'
 import classNames from 'classnames'
+import { loadCatalog } from '../../../../translations/utils'
+import { useLingui } from '@lingui/react'
+import { t } from '@lingui/macro'
 
 const { Sider } = Layout
 
@@ -83,7 +86,7 @@ const CategoriesNestedDashboard = ({ categories }) => {
   return (
     <Sider breakpoint="lg" collapsedWidth="100%" width={360}>
       <div className="caps-heading-s" onClick={handleBackToHomePage}>
-        <span style={{ fontSize: '14px' }}>←</span> NATIONAL DATA
+        <span style={{ fontSize: '14px' }}>←</span> {t`National data`}
       </div>
       <Select
         showSearch
@@ -114,7 +117,7 @@ const CategoriesNestedDashboard = ({ categories }) => {
 
       {queryParameters.categoryId && queryParameters.country && !isMobile && (
         <Button type="ghost" style={{}} onClick={handleViewGlobalDataClick}>
-          View Global Data →
+          {t`View Global Data `} →
         </Button>
       )}
     </Sider>
@@ -132,4 +135,13 @@ const DropdownSvg = () => (
     <path d="M1 1L7 7L13 1" stroke="#020A5B" strokeWidth="2" />
   </svg>
 )
+
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
+}
+
 export default CategoriesNestedDashboard
