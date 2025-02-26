@@ -16,6 +16,7 @@ import parse from 'html-react-parser'
 import { Tooltip } from 'antd'
 import useLayerInfo from '../../hooks/useLayerInfo'
 import styles from './index.module.scss'
+import { t } from '@lingui/macro'
 
 const splitTextInHalf = (text) => {
   const exportsIndex = text.indexOf(
@@ -254,7 +255,7 @@ const CountryOverview = () => {
                 alignItems: 'center',
               }}
             >
-              Request Data Update
+              {t`Request Data Update`}             
             </Button>
             <RequestDataUpdateModal
               visible={isModalVisible}
@@ -412,4 +413,11 @@ const CountryOverview = () => {
   )
 }
 
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
+}
 export default CountryOverview
