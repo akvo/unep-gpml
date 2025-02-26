@@ -20,6 +20,14 @@
   background-color: #fff;
 }
 
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+}
+
 .tooltip:hover::after {
   content: attr(data-tooltip);
   position: absolute;
@@ -27,14 +35,13 @@
   color: #fff;
   padding: 5px 10px;
   border-radius: 5px;
-  top: 100%; /* Adjust if necessary */
+  top: 100%; 
   left: 50%;
   transform: translateX(-50%);
   white-space: nowrap;
   z-index: 10;
   font-size: 12px;
 }
-
 
 .heading-container {
   display: flex;
