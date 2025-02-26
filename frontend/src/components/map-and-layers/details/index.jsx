@@ -19,8 +19,6 @@ const Details = ({ title, layerId }) => {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  console.log('trigger build')
-
   const handleOnDrag = (e, { x, y }) => {
     setPosition({ x, y })
   }
