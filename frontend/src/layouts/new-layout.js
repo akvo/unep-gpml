@@ -101,8 +101,7 @@ const NewLayout = ({
   useEffect(() => {
     if (router.locale !== 'en' && !localStorage.getItem('trans-info')) {
       notification.info({
-        description:
-          'Some translations on this website are generated with the use of AI for informational purposes only. While reasonable efforts are made to increase accuracy, the United Nations Environment Programme (UNEP) does not warrant the accuracy, completeness, or reliability of the translations. For official purposes, please refer to content in the original language.',
+        description: t`Some translations on this website are generated with the use of AI for informational purposes only. While reasonable efforts are made to increase accuracy, the United Nations Environment Programme (UNEP) does not warrant the accuracy, completeness, or reliability of the translations. For official purposes, please refer to content in the original language.`,
         duration: 0,
       })
       localStorage.setItem('trans-info', true)

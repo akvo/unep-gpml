@@ -197,7 +197,7 @@ msgstr ""
 msgid "Add An Event"
 msgstr ""
 
-#: src/layouts/new-layout.js:236
+#: src/layouts/new-layout.js:246
 #: src/modules/workspace/view.jsx:79
 msgid "Add Content"
 msgstr ""
@@ -395,6 +395,10 @@ msgstr ""
 
 #: src/modules/workspace/ps/setup-team-table.jsx:62
 msgid "Assigned to"
+msgstr ""
+
+#: src/modules/community-hub/detail-view.jsx:316
+msgid "Associated content"
 msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:1053
@@ -2070,6 +2074,10 @@ msgstr ""
 msgid "Individual connection"
 msgstr ""
 
+#: src/modules/community-hub/detail-view.jsx:351
+msgid "Individual members"
+msgstr ""
+
 #: src/modules/map/map-chart.jsx:592
 #: src/modules/map/map-chart.jsx:640
 msgid "Individuals"
@@ -2456,7 +2464,7 @@ msgid "Location and Geo-coverage"
 msgstr ""
 
 #: src/components/nav/nav-mobile.jsx:121
-#: src/layouts/new-layout.js:215
+#: src/layouts/new-layout.js:225
 msgid "Login"
 msgstr ""
 
@@ -2473,7 +2481,7 @@ msgstr ""
 msgid "LOGIN WITH EMAIL"
 msgstr ""
 
-#: src/layouts/new-layout.js:251
+#: src/layouts/new-layout.js:261
 msgid "Logout"
 msgstr ""
 
@@ -2563,6 +2571,14 @@ msgstr ""
 
 #: src/store.js:605
 msgid "Meetings, often lasting a few days, organized on a particular subject or to bring together people who have a common interest to exchange ideas and discuss issues, especially important public issues."
+msgstr ""
+
+#: src/modules/community-hub/detail-view.jsx:150
+msgid "member individual"
+msgstr ""
+
+#: src/modules/community-hub/detail-view.jsx:243
+msgid "member organisation"
 msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:864
@@ -3227,7 +3243,7 @@ msgstr ""
 msgid "Professional skills training"
 msgstr ""
 
-#: src/layouts/new-layout.js:248
+#: src/layouts/new-layout.js:258
 msgid "Profile"
 msgstr ""
 
@@ -3668,6 +3684,10 @@ msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:818
 msgid "Social impacts will be evaluated"
+msgstr ""
+
+#: src/layouts/new-layout.js:104
+msgid "Some translations on this website are generated with the use of AI for informational purposes only. While reasonable efforts are made to increase accuracy, the United Nations Environment Programme (UNEP) does not warrant the accuracy, completeness, or reliability of the translations. For official purposes, please refer to content in the original language."
 msgstr ""
 
 #: src/modules/profile/admin.jsx:523
@@ -4376,6 +4396,7 @@ msgid "View"
 msgstr ""
 
 #: src/components/resource-cards/resource-cards.jsx:58
+#: src/modules/community-hub/detail-view.jsx:381
 #: src/modules/workspace/view.jsx:329
 msgid "View All"
 msgstr ""
@@ -4590,7 +4611,7 @@ msgstr ""
 msgid "workspace"
 msgstr ""
 
-#: src/layouts/new-layout.js:226
+#: src/layouts/new-layout.js:236
 #: src/pages/landing/index.jsx:220
 #: src/pages/landing/index.jsx:429
 msgid "Workspace"

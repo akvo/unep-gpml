@@ -197,7 +197,7 @@ msgstr "Add a New Member"
 msgid "Add An Event"
 msgstr "Add An Event"
 
-#: src/layouts/new-layout.js:236
+#: src/layouts/new-layout.js:246
 #: src/modules/workspace/view.jsx:79
 msgid "Add Content"
 msgstr "Add Content"
@@ -396,6 +396,10 @@ msgstr "Assign to"
 #: src/modules/workspace/ps/setup-team-table.jsx:62
 msgid "Assigned to"
 msgstr "Assigned to"
+
+#: src/modules/community-hub/detail-view.jsx:316
+msgid "Associated content"
+msgstr "Associated content"
 
 #: src/modules/flexible-forms/form-schema.js:1053
 msgid "Automotive"
@@ -2080,6 +2084,10 @@ msgstr "Individual"
 msgid "Individual connection"
 msgstr "Individual connection"
 
+#: src/modules/community-hub/detail-view.jsx:351
+msgid "Individual members"
+msgstr "Individual members"
+
 #: src/modules/map/map-chart.jsx:592
 #: src/modules/map/map-chart.jsx:640
 msgid "Individuals"
@@ -2466,7 +2474,7 @@ msgid "Location and Geo-coverage"
 msgstr "Location and Geo-coverage"
 
 #: src/components/nav/nav-mobile.jsx:121
-#: src/layouts/new-layout.js:215
+#: src/layouts/new-layout.js:225
 msgid "Login"
 msgstr "Login"
 
@@ -2483,7 +2491,7 @@ msgstr "Login to proceed..."
 msgid "LOGIN WITH EMAIL"
 msgstr "LOGIN WITH EMAIL"
 
-#: src/layouts/new-layout.js:251
+#: src/layouts/new-layout.js:261
 msgid "Logout"
 msgstr "Logout"
 
@@ -2574,6 +2582,14 @@ msgstr "Medical"
 #: src/store.js:605
 msgid "Meetings, often lasting a few days, organized on a particular subject or to bring together people who have a common interest to exchange ideas and discuss issues, especially important public issues."
 msgstr "Meetings, often lasting a few days, organized on a particular subject or to bring together people who have a common interest to exchange ideas and discuss issues, especially important public issues."
+
+#: src/modules/community-hub/detail-view.jsx:150
+msgid "member individual"
+msgstr "member individual"
+
+#: src/modules/community-hub/detail-view.jsx:243
+msgid "member organisation"
+msgstr "member organisation"
 
 #: src/modules/flexible-forms/form-schema.js:864
 msgid "Members of the public have actively complained / asked for change"
@@ -3237,7 +3253,7 @@ msgstr "Production / manufacture"
 msgid "Professional skills training"
 msgstr "Professional skills training"
 
-#: src/layouts/new-layout.js:248
+#: src/layouts/new-layout.js:258
 msgid "Profile"
 msgstr "Profile"
 
@@ -3679,6 +3695,10 @@ msgstr "So-called 'perverse incentives' (e.g.,subsidies and taxes) that encourag
 #: src/modules/flexible-forms/form-schema.js:818
 msgid "Social impacts will be evaluated"
 msgstr "Social impacts will be evaluated"
+
+#: src/layouts/new-layout.js:104
+msgid "Some translations on this website are generated with the use of AI for informational purposes only. While reasonable efforts are made to increase accuracy, the United Nations Environment Programme (UNEP) does not warrant the accuracy, completeness, or reliability of the translations. For official purposes, please refer to content in the original language."
+msgstr "Some translations on this website are generated with the use of AI for informational purposes only. While reasonable efforts are made to increase accuracy, the United Nations Environment Programme (UNEP) does not warrant the accuracy, completeness, or reliability of the translations. For official purposes, please refer to content in the original language."
 
 #: src/modules/profile/admin.jsx:523
 #: src/modules/profile/admin.jsx:592
@@ -4391,6 +4411,7 @@ msgid "View"
 msgstr "View"
 
 #: src/components/resource-cards/resource-cards.jsx:58
+#: src/modules/community-hub/detail-view.jsx:381
 #: src/modules/workspace/view.jsx:329
 msgid "View All"
 msgstr "View All"
@@ -4605,7 +4626,7 @@ msgstr "Workshops"
 msgid "workspace"
 msgstr "workspace"
 
-#: src/layouts/new-layout.js:226
+#: src/layouts/new-layout.js:236
 #: src/pages/landing/index.jsx:220
 #: src/pages/landing/index.jsx:429
 msgid "Workspace"
