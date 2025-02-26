@@ -238,7 +238,7 @@ const CountryOverview = () => {
                 marginRight: '5px',
               }}
             ></span>
-            Data last updated: 02-20-22
+            {t`Request Data Update`} 02-20-22
           </span>
           <Tooltip title="Update country data by sending a request to the GPML Data Hub team.">
             <Button
