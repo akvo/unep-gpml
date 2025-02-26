@@ -82,9 +82,9 @@ const PlasticImportExportChart = ({ layers, loading }) => {
       },
     },
     grid: {
-      left: '20%',
+      left: '6%',
       right: '4%',
-      top:'20%',
+      top: '20%',
       textStyle: { color: '#020A5B' },
     },
     tooltip: {
