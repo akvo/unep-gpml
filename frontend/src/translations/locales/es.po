@@ -831,7 +831,7 @@ msgid "Constitution"
 msgstr "Constitución"
 
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:56
-#: src/utils/misc.js:340
+#: src/utils/misc.js:341
 msgid "Consumption"
 msgstr "Consumo"
 
@@ -1701,7 +1701,7 @@ msgstr "Fragmentación"
 msgid "Frequently Asked Questions"
 msgstr "Preguntas frecuentes"
 
-#: src/utils/misc.js:343
+#: src/utils/misc.js:344
 msgid "Full Life Cycle"
 msgstr "Ciclo de vida completo"
 
@@ -2361,7 +2361,7 @@ msgstr "Dejar"
 msgid "Leave Channel"
 msgstr "Salir del canal"
 
-#: src/utils/misc.js:342
+#: src/utils/misc.js:343
 msgid "Legacy Plastics"
 msgstr "Plásticos heredados"
 
@@ -2756,6 +2756,10 @@ msgstr "Planes de acción nacionales"
 #: src/pages/landing/index.jsx:592
 msgid "National Dashboard"
 msgstr "Tablero Nacional"
+
+#: src/components/map-and-layers/sidebar/partials/CategoriesNestedDashboard.jsx:89
+msgid "National data"
+msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:871
 msgid "National or organisational values"
@@ -3268,7 +3272,7 @@ msgstr "Problemas con materiales y suministros alternativos."
 msgid "Process of checking, verifying, and attaining general information about the abilityl to comply with the standard."
 msgstr "Proceso de comprobar, verificar y obtener información general sobre la capacidad para cumplir con la norma."
 
-#: src/utils/misc.js:339
+#: src/utils/misc.js:340
 msgid "Production"
 msgstr "Producción"
 
@@ -3458,6 +3462,11 @@ msgstr "Grupo representativo"
 #: src/modules/flexible-forms/form-schema.js:867
 msgid "Reputation / image of the member state or organisation"
 msgstr "Reputación/imagen del estado u organización miembro"
+
+#: src/pages/countryOverview/index.jsx:241
+#: src/pages/countryOverview/index.jsx:258
+msgid "Request Data Update"
+msgstr ""
 
 #: src/modules/signup/view.jsx:36
 #: src/store.js:154
@@ -4458,6 +4467,10 @@ msgstr "Ver todos los foros"
 msgid "View Details"
 msgstr "Ver detalles"
 
+#: src/components/map-and-layers/sidebar/partials/CategoriesNestedDashboard.jsx:120
+msgid "View Global Data"
+msgstr ""
+
 #: src/modules/details-page/header.jsx:272
 msgid "View Source"
 msgstr "Ver fuente"
@@ -4504,7 +4517,7 @@ msgstr "Océanos libres de residuos"
 msgid "Waste management"
 msgstr "Gestión de residuos"
 
-#: src/utils/misc.js:341
+#: src/utils/misc.js:342
 msgid "Waste Management"
 msgstr "Gestión de residuos"
 
