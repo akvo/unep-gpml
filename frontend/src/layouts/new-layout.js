@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { isEmpty } from 'lodash'
-import { Avatar, Button, Dropdown, Menu } from 'antd'
+import { Avatar, Button, Dropdown, Menu, notification } from 'antd'
 import localFont from 'next/font/local'
 import { DM_Sans } from 'next/font/google'
 import { UIStore } from '../store'
@@ -97,6 +97,16 @@ const NewLayout = ({
       returnTo: window.location.origin,
     })
   }
+
+  useEffect(() => {
+    if (router.locale !== 'en' && !localStorage.getItem('trans-info')) {
+      notification.info({
+        description: t`Some translations on this website are generated with the use of AI for informational purposes only. While reasonable efforts are made to increase accuracy, the United Nations Environment Programme (UNEP) does not warrant the accuracy, completeness, or reliability of the translations. For official purposes, please refer to content in the original language.`,
+        duration: 0,
+      })
+      localStorage.setItem('trans-info', true)
+    }
+  }, [router.locale])
 
   return (
     <>
