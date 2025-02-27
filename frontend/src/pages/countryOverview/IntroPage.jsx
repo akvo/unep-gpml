@@ -18,8 +18,6 @@ const DashboardLanding = () => {
 
   const [isMobile, setIsMobile] = useState(false)
 
-  console.log('xxx')
-
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768)
