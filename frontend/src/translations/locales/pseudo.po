@@ -835,7 +835,7 @@ msgid "Constitution"
 msgstr ""
 
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:56
-#: src/utils/misc.js:340
+#: src/utils/misc.js:341
 msgid "Consumption"
 msgstr ""
 
@@ -1676,7 +1676,7 @@ msgstr ""
 msgid "Frequently Asked Questions"
 msgstr ""
 
-#: src/utils/misc.js:343
+#: src/utils/misc.js:344
 msgid "Full Life Cycle"
 msgstr ""
 
@@ -2328,7 +2328,7 @@ msgstr ""
 msgid "Leave Channel"
 msgstr ""
 
-#: src/utils/misc.js:342
+#: src/utils/misc.js:343
 msgid "Legacy Plastics"
 msgstr ""
 
@@ -2718,6 +2718,10 @@ msgstr ""
 
 #: src/pages/landing/index.jsx:592
 msgid "National Dashboard"
+msgstr ""
+
+#: src/components/map-and-layers/sidebar/partials/CategoriesNestedDashboard.jsx:89
+msgid "National data"
 msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:871
@@ -3231,7 +3235,7 @@ msgstr ""
 msgid "Process of checking, verifying, and attaining general information about the abilityl to comply with the standard."
 msgstr ""
 
-#: src/utils/misc.js:339
+#: src/utils/misc.js:340
 msgid "Production"
 msgstr ""
 
@@ -3416,6 +3420,11 @@ msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:867
 msgid "Reputation / image of the member state or organisation"
+msgstr ""
+
+#: src/pages/countryOverview/index.jsx:241
+#: src/pages/countryOverview/index.jsx:258
+msgid "Request Data Update"
 msgstr ""
 
 #: src/modules/signup/view.jsx:36
@@ -4410,6 +4419,10 @@ msgstr ""
 msgid "View Details"
 msgstr ""
 
+#: src/components/map-and-layers/sidebar/partials/CategoriesNestedDashboard.jsx:120
+msgid "View Global Data"
+msgstr ""
+
 #: src/modules/details-page/header.jsx:272
 msgid "View Source"
 msgstr ""
@@ -4452,7 +4465,7 @@ msgstr ""
 msgid "Waste management"
 msgstr ""
 
-#: src/utils/misc.js:341
+#: src/utils/misc.js:342
 msgid "Waste Management"
 msgstr ""
 
