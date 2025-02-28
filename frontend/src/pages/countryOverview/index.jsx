@@ -16,6 +16,8 @@ import parse from 'html-react-parser'
 import { Tooltip } from 'antd'
 import useLayerInfo from '../../hooks/useLayerInfo'
 import styles from './index.module.scss'
+import { t } from '@lingui/macro'
+import { loadCatalog } from '../../translations/utils'
 
 const splitTextInHalf = (text) => {
   const exportsIndex = text.indexOf(
@@ -237,7 +239,7 @@ const CountryOverview = () => {
                 marginRight: '5px',
               }}
             ></span>
-            Data last updated: 02-20-22
+            {t`Request Data Update`} 02-20-22
           </span>
           <Tooltip title="Update country data by sending a request to the GPML Data Hub team.">
             <Button
@@ -254,7 +256,7 @@ const CountryOverview = () => {
                 alignItems: 'center',
               }}
             >
-              Request Data Update
+              {t`Request Data Update`}             
             </Button>
             <RequestDataUpdateModal
               visible={isModalVisible}
@@ -412,4 +414,11 @@ const CountryOverview = () => {
   )
 }
 
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
+}
 export default CountryOverview
