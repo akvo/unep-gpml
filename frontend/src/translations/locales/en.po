@@ -835,7 +835,7 @@ msgid "Constitution"
 msgstr "Constitution"
 
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:56
-#: src/utils/misc.js:340
+#: src/utils/misc.js:341
 msgid "Consumption"
 msgstr "Consumption"
 
@@ -1686,7 +1686,7 @@ msgstr "Fragmentation"
 msgid "Frequently Asked Questions"
 msgstr "Frequently Asked Questions"
 
-#: src/utils/misc.js:343
+#: src/utils/misc.js:344
 msgid "Full Life Cycle"
 msgstr "Full Life Cycle"
 
@@ -2338,7 +2338,7 @@ msgstr "Leave"
 msgid "Leave Channel"
 msgstr "Leave Channel"
 
-#: src/utils/misc.js:342
+#: src/utils/misc.js:343
 msgid "Legacy Plastics"
 msgstr "Legacy Plastics"
 
@@ -2729,6 +2729,10 @@ msgstr "National action plans"
 #: src/pages/landing/index.jsx:592
 msgid "National Dashboard"
 msgstr "National Dashboard"
+
+#: src/components/map-and-layers/sidebar/partials/CategoriesNestedDashboard.jsx:89
+msgid "National data"
+msgstr "National data"
 
 #: src/modules/flexible-forms/form-schema.js:871
 msgid "National or organisational values"
@@ -3241,7 +3245,7 @@ msgstr "Problems with alternative materials and supplies"
 msgid "Process of checking, verifying, and attaining general information about the abilityl to comply with the standard."
 msgstr "Process of checking, verifying, and attaining general information about the abilityl to comply with the standard."
 
-#: src/utils/misc.js:339
+#: src/utils/misc.js:340
 msgid "Production"
 msgstr "Production"
 
@@ -3427,6 +3431,11 @@ msgstr "Representative group"
 #: src/modules/flexible-forms/form-schema.js:867
 msgid "Reputation / image of the member state or organisation"
 msgstr "Reputation / image of the member state or organisation"
+
+#: src/pages/countryOverview/index.jsx:241
+#: src/pages/countryOverview/index.jsx:258
+msgid "Request Data Update"
+msgstr "Request Data Update"
 
 #: src/modules/signup/view.jsx:36
 #: src/store.js:154
@@ -4425,6 +4434,10 @@ msgstr "View All Forums"
 msgid "View Details"
 msgstr "View Details"
 
+#: src/components/map-and-layers/sidebar/partials/CategoriesNestedDashboard.jsx:120
+msgid "View Global Data"
+msgstr "View Global Data"
+
 #: src/modules/details-page/header.jsx:272
 msgid "View Source"
 msgstr "View Source"
@@ -4467,7 +4480,7 @@ msgstr "Waste Free Oceans"
 msgid "Waste management"
 msgstr "Waste management"
 
-#: src/utils/misc.js:341
+#: src/utils/misc.js:342
 msgid "Waste Management"
 msgstr "Waste Management"
 
