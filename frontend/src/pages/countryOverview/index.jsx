@@ -17,6 +17,7 @@ import { Tooltip } from 'antd'
 import useLayerInfo from '../../hooks/useLayerInfo'
 import styles from './index.module.scss'
 import { t } from '@lingui/macro'
+import { loadCatalog } from '../../translations/utils'
 
 const splitTextInHalf = (text) => {
   const exportsIndex = text.indexOf(
