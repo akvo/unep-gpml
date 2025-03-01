@@ -104,10 +104,24 @@ strapi_build () {
 }
 
 
+resource_check () {
+  docker ps -a
+  free -h
+}
+
+resource_check
 backend_build
+
+resource_check
 frontend_build
+
+resource_check
 frontend_build_staging
+
+resource_check
 strapi_build
+
+resource_check
 nginx_build
 
 if ! dci run --no-TTY ci ./basic.sh; then
