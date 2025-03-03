@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { Layout, Typography, Menu, Tag } from 'antd'
 import { CloseCircleFilled } from '@ant-design/icons'
 import useQueryParameters from '../../../../hooks/useQueryParameters'
-import useIndicators from '../../../../hooks/useIndicators'
 import Subcategories from './../partials/subcategories'
 import useSubcategories from '../../../../hooks/useSubcategories'
 import { useRouter } from 'next/router'
@@ -64,20 +63,9 @@ const CategoriesNested = ({ categories, layers }) => {
       collapsed={isCollapsed}
       trigger={null}
       onCollapse={(collapsed) => setIsCollapsed(collapsed)}
-      style={{
-        position: isMobile ? 'sticky' : 'relative',
-        top: isMobile ? 0 : 'auto',
-        zIndex: isMobile ? 1000 : 'auto',
-        overflow: 'auto',
-        backgroundColor: 'white',
-        paddingTop: '0px',
-      }}
+      className="sidebar"
     >
-      <Menu
-        defaultSelectedKeys={['1']}
-        mode={isMobile ? 'vertical' : 'inline'}
-        style={{ maxHeight: '100%' }}
-      >
+      <Menu defaultSelectedKeys={['1']} mode={isMobile ? 'vertical' : 'inline'}>
         {categories.map((category) => (
           <div key={category.attributes.categoryId}>
             <Menu.Item
@@ -94,9 +82,7 @@ const CategoriesNested = ({ categories, layers }) => {
                 }
                 style={{ marginRight: '10px' }}
               />
-              <span style={{ font: 'inter', fontSize: '14px' }}>
-                {category.attributes.name}
-              </span>
+              <span>{category.attributes.name}</span>
             </Menu.Item>
             {isCategorySelected(category) && (
               <Subcategories
@@ -110,49 +96,14 @@ const CategoriesNested = ({ categories, layers }) => {
                   (layer) => layer.categoryId === category.attributes.categoryId
                 )
                 .map((layer) => (
-                  <Tag
-                    style={{
-                      borderRadius: '40px',
-                      width: '65%',
-                      height: '32px',
-                      marginLeft: '25px',
-                      backgroundColor: '#2D3648',
-                      display: 'flex',
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      gap: '20px',
-                      overflow: 'hidden',
-                      padding: '0 10px',
-                    }}
-                  >
-                    <div
-                      style={{
-                        maxWidth: 'calc(100% - 40px)',
-                        overflow: 'hidden',
-                      }}
-                      title={layer.name}
-                    >
-                      <Typography.Text
-                        style={{
-                          color: 'white',
-                          fontSize: '12px',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          paddingLeft: '20px',
-                          variant: 'typography/body2',
-                        }}
-                      >
+                  <Tag className="layer-tag">
+                    <div title={layer.name}>
+                      <Typography.Text className="layer-tag-text">
                         {layer.name}
                       </Typography.Text>
                     </div>
                     <CloseCircleFilled
                       onClick={() => handleCloseLayer(layer.id)}
-                      style={{
-                        color: 'gray',
-                        width: '20px',
-                        height: '20px',
-                        paddingLeft: '10px',
-                      }}
                     />
                   </Tag>
                 ))}
