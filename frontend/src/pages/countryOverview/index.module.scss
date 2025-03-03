@@ -6,12 +6,45 @@
   max-width: 100%;
   margin: 0 auto;
 }
-.header-row {
+.text {
+  max-width: 70%;
+  margin: 0 auto;
+  padding: 16px;
+
+  @media (max-width: 768px) {
+    max-width: 90%;
+  }
+}
+.titleCountryText {
+  color: #6236ff;
+  line-height: 14px;
+  font-size: 12px;
+  font-weight: bold;
+}
+.titleCountry {
+  color: #6236ff;
+  line-height: 14px;
+  font-size: 16px;
+  font-weight: bold;
+}
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+}
+.titleCategoryText {
+  color: #000647;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.headerRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
-  padding: 0 10px;
 }
 .tooltip {
   position: relative;
@@ -19,13 +52,54 @@
   text-decoration: underline dotted;
   background-color: #fff;
 }
+.containerButton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
 
-.spinner {
+.textButton {
+  color: #7c7c7c;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+.dot {
+  background-color: #8e44ad;
+  border-radius: 50%;
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+}
+
+.buttonStyle {
+  background-color: #00f1bf !important;
+  text-align: center;
+  height: 34px;
+  width: 237px;
+  border: none;
+  color: #020a5b !important;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  width: 100%;
+  cursor: pointer;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    background-color: #00f1bf !important;
+    margin-top: 10px;
+    color: #020a5b !important;
+  }
 }
 
 .tooltip:hover::after {
@@ -35,7 +109,7 @@
   color: #fff;
   padding: 5px 10px;
   border-radius: 5px;
-  top: 100%; 
+  top: 100%;
   left: 50%;
   transform: translateX(-50%);
   white-space: nowrap;
@@ -83,6 +157,19 @@
   border-radius: 25px;
   padding: 8px 16px;
 }
+.globalButton {
+  margin-top: 20px;
+  width: 100%;
+  height: 45px;
+  font-size: 16px;
+  background-color: #ffffff !important;
+  color: #1b2738 !important;
+  border: 1px solid #1b2738;
+  border-radius: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .update-button:hover {
   background-color: #00bfa5;
 }
@@ -94,4 +181,10 @@
 }
 .trade-text-container {
   padding: 0 10px;
+}
+.plasticImportChart {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 }
