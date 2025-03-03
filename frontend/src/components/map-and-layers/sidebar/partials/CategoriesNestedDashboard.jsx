@@ -18,7 +18,7 @@ const CategoriesNestedDashboard = ({ categories }) => {
   const baseURL = getBaseUrl()
   const [isMobile, setIsMobile] = useState(false)
 
-  const { countries, transnationalOptions } = UIStore.useState((s) => ({
+  const { countries } = UIStore.useState((s) => ({
     countries: s.countries,
     transnationalOptions: s.transnationalOptions,
     landing: s.landing,

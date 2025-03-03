@@ -158,10 +158,26 @@
       .ant-switch {
         margin-right: 10px;
         transform: translateY(2px);
+        @media (max-width: 768px) {
+          margin-right: 5px;
+        }
       }
       .anticon-info-circle {
         margin-left: auto;
         transform: translateY(4px);
+      }
+      @media (max-width: 768px) {
+        padding: 3px 0;
+      }
+    }
+    .layer-name {
+      font-size:  14px;
+      text-align: left;
+      font: Inter;
+      @media (max-width: 768px) {
+        font-size:  12px;
+        text-align: left;
+        font: Inter;
       }
     }
     .caps-heading-s {
@@ -207,6 +223,9 @@
       .ant-collapse {
         .ant-collapse-item {
           padding-left: 15px;
+          @media (max-width: 768px) {
+            padding-left: 5px;
+          }
         }
         .ant-collapse-header {
           font-size: 14px;
