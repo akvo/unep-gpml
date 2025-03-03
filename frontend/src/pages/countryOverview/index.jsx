@@ -394,7 +394,11 @@ const CountryOverview = () => {
       )}
 
       {queryParameters.categoryId && queryParameters.country && isMobile && (
-        <Button type="primary" onClick={handleViewGlobalDataClick}>
+        <Button
+          type="primary"
+          className={styles.globalButton}
+          onClick={handleViewGlobalDataClick}
+        >
           View Global Data →
         </Button>
       )}
@@ -409,4 +413,5 @@ export const getStaticProps = async (ctx) => {
     },
   }
 }
+
 export default CountryOverview
