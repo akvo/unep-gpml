@@ -199,6 +199,11 @@
         padding-bottom: 0px;
       }
 
+      .ant-menu-item::after {
+        display: none !important;
+        content: none !important;
+      }
+
       .ant-collapse {
         .ant-collapse-item {
           padding-left: 15px;
