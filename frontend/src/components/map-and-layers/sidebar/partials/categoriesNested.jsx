@@ -73,16 +73,9 @@ const CategoriesNested = ({ categories, layers }) => {
               onClick={() => handleCategoryClick(category)}
               className={isCategorySelected(category) ? 'selected' : ''}
             >
-              <img
-                className="ant-menu-item-icon"
-                src={
-                  category.attributes.categoryIcon
-                    ? `https://unep-gpml.akvotest.org${category.attributes.categoryIcon[0].url}`
-                    : ''
-                }
-                style={{ marginRight: '10px' }}
-              />
-              <span>{category.attributes.name}</span>
+              <span style={{ marginLeft: '15px' }}>
+                {category.attributes.name}
+              </span>
             </Menu.Item>
             {isCategorySelected(category) && (
               <Subcategories
