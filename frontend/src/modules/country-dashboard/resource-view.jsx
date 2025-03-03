@@ -29,13 +29,6 @@ function ResourceView() {
         alignItems: 'center',
       }}
     >
-      <div style={{ width: '90%', maxWidth: '1200px', paddingTop: '20px' }}>
-        {country && router.query.categoryId ? (
-          <CountryOverview country={country} />
-        ) : (
-          <DashboardLanding />
-        )}
-      </div>
       <div
         style={{
           width: '100%',
@@ -44,7 +37,7 @@ function ResourceView() {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          position: 'sticky',
+          // position: 'sticky',
           top: 0,
           zIndex: 1000,
         }}
@@ -56,6 +49,13 @@ function ResourceView() {
           style={{ width: '100%' }}
         />
       </div>
+      <div style={{ width: '100%', maxWidth: '1200px', paddingTop: '20px' }}>
+        {country && router.query.categoryId ? (
+          <CountryOverview country={country} />
+        ) : (
+          <DashboardLanding />
+        )}
+      </div>
     </div>
   ) : (
     <Fragment>
@@ -64,10 +64,8 @@ function ResourceView() {
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'space-between',
-          // maxHeight: '1000px',
           width: '100%',
           overflow: 'visible',
-          // paddingBottom: '70px',
         }}
       >
         {country && router.query.categoryId && (

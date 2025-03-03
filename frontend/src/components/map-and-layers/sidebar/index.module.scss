@@ -48,10 +48,12 @@
   :global {
     .ant-layout-sider {
       background-color: #fff;
-      padding: 25px;
       width: 360px !important;
       height: 100vh;
       padding-bottom: 115px;
+      padding-left: 0;
+      padding-right: 0;
+      padding-top: 20px;
 
       @media (max-width: 768px) {
         padding-top: 0px;
@@ -66,11 +68,12 @@
         margin-bottom: 15px;
       }
       .ant-select {
-        width: 100%;
+        width: 307px;
         border: 1px solid #e8e8ed;
         border-radius: 8px;
         background: #f5f7ff;
         height: 50px;
+        margin-left: 25px;
         padding: 5px 0 5px 3px;
         .ant-select-selection-item,
         input {
@@ -81,12 +84,51 @@
           line-height: 28px;
         }
       }
+
+      .layer-tag {
+        border-radius: 40px;
+        width: 65%;
+        height: 32px;
+        margin-left: 25px;
+        background-color: #2d3648;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 20px;
+        overflow: hidden;
+        padding: 0 10px;
+      }
+
+      .layer-tag-text {
+        color: white;
+        font-size: 12px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding-left: 20px;
+      }
+
+      .layer-tag-close-icon {
+        color: gray;
+        width: 20px;
+        height: 20px;
+        padding-left: 10px;
+        cursor: pointer;
+      }
+
+      .layer-tag-text {
+        color: white;
+        font-size: 12px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding-left: 20px;
+        white-space: nowrap;
+      }
+
       .nav {
-        margin-left: -25px;
-        margin-right: -25px;
+        margin-left: 0;
+        margin-right: 0;
         .nav-item {
           color: #000;
-
           font-feature-settings: 'liga' off, 'clig' off;
           font-family: $ff1;
           font-size: 18px;
@@ -123,8 +165,8 @@
       }
     }
     .caps-heading-s {
+      margin-left: 30px;
       padding: 8px 15px;
-
       @media (max-width: 768px) {
         position: sticky;
         top: 0;
@@ -133,7 +175,7 @@
       }
     }
     .ant-menu {
-      margin-top: 10px;
+      width: 360px;
       .ant-menu-item {
         border-top: none !important;
         background-color: transparent;
