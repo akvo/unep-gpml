@@ -231,11 +231,13 @@ const CountryOverview = () => {
   return (
     <div className={styles.text}>
       <Row className={styles.headerRow}>
-        {isMobile && (
+        <Col xs={24} md={18}>
           <div>
-            <span className={styles.titleCountryText}>NATIONAL DATA</span>
+            <span className={styles.titleCountry}>
+              {decodeURIComponent(router.query.country)?.toUpperCase()}
+            </span>
           </div>
-        )}
+        </Col>
 
         {!isMobile && (
           <Col xs={24} md={6} className={styles.containerButton}>

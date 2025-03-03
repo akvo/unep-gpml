@@ -21,6 +21,12 @@
   font-size: 12px;
   font-weight: bold;
 }
+.titleCountry {
+  color: #6236ff;
+  line-height: 14px;
+  font-size: 16px;
+  font-weight: bold;
+}
 .spinner {
   display: flex;
   justify-content: center;
@@ -79,11 +85,10 @@
 .buttonStyle {
   background-color: #00f1bf !important;
   text-align: center;
-  margin-top: 10px;
   height: 34px;
   width: 237px;
   border: none;
-  color: #00f1bf;
+  color: #020a5b !important;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -92,6 +97,7 @@
   @media (max-width: 768px) {
     width: 100%;
     background-color: #00f1bf !important;
+    margin-top: 10px;
     color: #020a5b !important;
   }
 }
