@@ -231,28 +231,29 @@ const CountryOverview = () => {
   return (
     <div className={styles.text}>
       <Row className={styles.headerRow}>
-        <Col xs={24} md={18}>
+        {isMobile && (
           <div>
-            <span className={styles.titleCountryText}>
-              {decodeURIComponent(router.query.country)?.toUpperCase()}
-            </span>
+            <span className={styles.titleCountryText}>NATIONAL DATA</span>
           </div>
-        </Col>
-        <Col xs={24} md={6} className={styles.containerButton}>
-          <span className={styles.textButton}>
-            <span className={styles.dot}></span>
-            Page last updated: 02-20-22
-          </span>
-          <Tooltip title="Update country data by sending a request to the GPML Data Hub team.">
-            <Button className={styles.buttonStyle} onClick={showModal}>
-              {t`Request Data Update`}
-            </Button>
-            <RequestDataUpdateModal
-              visible={isModalVisible}
-              onClose={handleClose}
-            />
-          </Tooltip>
-        </Col>
+        )}
+
+        {!isMobile && (
+          <Col xs={24} md={6} className={styles.containerButton}>
+            <span className={styles.textButton}>
+              <span className={styles.dot}></span>
+              Page last updated: 02-20-22
+            </span>
+            <Tooltip title="Update country data by sending a request to the GPML Data Hub team.">
+              <Button className={styles.buttonStyle} onClick={showModal}>
+                {t`Request Data Update`}
+              </Button>
+              <RequestDataUpdateModal
+                visible={isModalVisible}
+                onClose={handleClose}
+              />
+            </Tooltip>
+          </Col>
+        )}
       </Row>
 
       {router.query.categoryId !== 'overview' &&
@@ -392,15 +393,23 @@ const CountryOverview = () => {
           <PlasticOceanBeachChart layers={layers} layerLoading={layerLoading} />
         </div>
       )}
+      {isMobile && (
+        <div className={styles.mobileButtonsContainer}>
+          <Button className={styles.buttonStyle} onClick={showModal}>
+            {t`Request Data Update`}
+          </Button>
+        </div>
+      )}
 
       {queryParameters.categoryId && queryParameters.country && isMobile && (
-        <Button
-          type="primary"
-          className={styles.globalButton}
-          onClick={handleViewGlobalDataClick}
-        >
-          View Global Data →
-        </Button>
+        <div>
+          <Button
+            className={styles.globalButton}
+            onClick={handleViewGlobalDataClick}
+          >
+            View Global Data →
+          </Button>
+        </div>
       )}
     </div>
   )

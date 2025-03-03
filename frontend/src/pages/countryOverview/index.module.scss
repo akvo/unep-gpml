@@ -17,7 +17,8 @@
 }
 .titleCountryText {
   color: #6236ff;
-  font-size: 16px;
+  line-height: 14px;
+  font-size: 12px;
   font-weight: bold;
 }
 .spinner {
@@ -76,8 +77,9 @@
 }
 
 .buttonStyle {
-  background-color: #00f1bf;
+  background-color: #00f1bf !important;
   text-align: center;
+  margin-top: 10px;
   height: 34px;
   width: 237px;
   border: none;
@@ -89,6 +91,8 @@
 
   @media (max-width: 768px) {
     width: 100%;
+    background-color: #00f1bf !important;
+    color: #020a5b !important;
   }
 }
 
@@ -152,7 +156,8 @@
   width: 100%;
   height: 45px;
   font-size: 16px;
-  background-color: #ffffff;
+  background-color: #ffffff !important;
+  color: #1b2738 !important;
   border: 1px solid #1b2738;
   border-radius: 35px;
   display: flex;
