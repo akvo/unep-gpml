@@ -86,7 +86,7 @@ const CategoriesNestedDashboard = ({ categories }) => {
   return (
     <Sider breakpoint="lg" collapsedWidth="100%" width={360}>
       <div className="caps-heading-s" onClick={handleBackToHomePage}>
-        <span style={{ fontSize: '14px' }}>←</span> {t`National data`}
+        <span>←</span> {t`National data`}
       </div>
       <Select
         showSearch
@@ -98,6 +98,7 @@ const CategoriesNestedDashboard = ({ categories }) => {
         filterOption={(input, option) =>
           option?.label?.toLowerCase().includes(input.toLowerCase())
         }
+        className="ant-select"
         onChange={handleChangeCountry}
       />
 

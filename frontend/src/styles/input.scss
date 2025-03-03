@@ -8,7 +8,7 @@
   font-family: var(--font-dm-sans), sans-serif;
   &:focus,
   &.ant-input-affix-wrapper-focused {
-    box-shadow: 0px 0px 0px 2px #1d90f5;
+    box-shadow: none;
   }
   &:hover {
     .ant-input {
