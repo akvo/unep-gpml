@@ -5,7 +5,7 @@ import useCategories from '../../../hooks/useCategories'
 import useSubcategories from '../../../hooks/useSubcategories'
 import styles from './index.module.scss'
 
-const Sidebar = ({ alt, countryDashboard, layers }) => {
+const Sidebar = ({ countryDashboard, layers }) => {
   const [isMobile, setIsMobile] = useState(false)
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false)
 
