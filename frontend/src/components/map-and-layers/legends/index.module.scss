@@ -1,0 +1,61 @@
+.card {
+  width: 100%;
+  border-radius: 8px;
+  border: none;
+}
+
+.title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.unit {
+  font-size: 14px;
+  padding-bottom: 5px;
+}
+
+.infoIcon {
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.description {
+  font-size: 12px;
+  word-wrap: break-word;
+  width: 80%;
+  color: #09334b;
+  padding-bottom: 3px;
+}
+
+.headerRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.legendGrid {
+  display: grid;
+  gap: 2px;
+
+  @media (max-width: 768px) {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+}
+
+.legendColor {
+  width: 10px;
+  height: 10px;
+  border: 1px solid gray;
+  margin-right: 6px;
+  border-radius: 2px;
+}
+
+.legendText {
+  color: #09334b;
+}

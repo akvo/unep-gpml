@@ -9,6 +9,7 @@ import useIndicators from '../../../hooks/useIndicators'
 import useLoadMap from '../../../hooks/useLoadMap'
 import useLegends from '../../../hooks/useLegends'
 import { transformObjectToArray } from '../../../utils/form-utils'
+import styles from './index.module.scss'
 
 const LegendCard = ({
   layerId,
@@ -74,13 +75,7 @@ const LegendCard = ({
       : []
 
     return (
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: isMobile ? '1fr 1fr' : '1fr',
-          gap: '6px',
-        }}
-      >
+      <div className={styles.legendGrid}>
         {allLegendItems?.map(({ label, symbol }) => {
           let colorStyle
           if (Array.isArray(symbol?.color) && !symbol?.data?.symbol) {
@@ -98,28 +93,12 @@ const LegendCard = ({
           }
 
           return (
-            <div
-              key={label}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
+            <div key={label} className={styles.legendItem}>
               <div
-                style={{
-                  width: '10px',
-                  height: '10px',
-                  backgroundColor: colorStyle,
-                  border: '1px solid gray',
-                  marginRight: '6px',
-                  borderRadius: '2px',
-                }}
+                className={styles.legendColor}
+                style={{ backgroundColor: colorStyle }}
               ></div>
-              <Typography
-                style={{ color: '#09334B', variant: 'typography/body2' }}
-              >
-                {label}
-              </Typography>
+              <Typography className={styles.legendText}>{label}</Typography>
             </div>
           )
         })}
@@ -128,35 +107,10 @@ const LegendCard = ({
   }
 
   return (
-    <Card
-      bordered={false}
-      style={{
-        width: '100%',
-        borderRadius: '8px',
-        border: 'none',
-      }}
-    >
-      <Typography
-        level={5}
-        style={{
-          margin: 0,
-          color: isMobile ? '#000647' : 'black',
-          fontSize: isMobile ? '20px' : '16px',
-          fontWeight: 'bold',
-        }}
-      >
-        {title}
-      </Typography>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-        }}
-      >
-        <Typography style={{ fontSize: '14px',color: isMobile ? '#000647' : 'black', paddingBottom: '5px' }}>
-          Unit: [{unit}]
-        </Typography>
+    <Card bordered={false} className={styles.card}>
+      <Typography className={styles.title}>{title}</Typography>
+      <div className={styles.headerRow}>
+        <Typography className={styles.unit}>Unit: [{unit}]</Typography>
         {layerId && (
           <Tooltip
             placement={tooltipPlacement}
@@ -175,23 +129,11 @@ const LegendCard = ({
               height: 'auto',
             }}
           >
-            <InfoCircleFilled
-              style={{ color: 'rgba(0, 0, 0, 0.45)' }}
-              onClick={() => null}
-            />
+            <InfoCircleFilled className={styles.infoIcon} />
           </Tooltip>
         )}
       </div>
-      <Typography
-        style={{
-          fontSize: '12px',
-          wordWrap: 'break-word',
-          width: '80%',
-          color: '#09334B',
-          variant: 'typography/body2',
-          paddingBottom: '3px',
-        }}
-      >
+      <Typography className={styles.description}>
         {layerShortDescription}
       </Typography>
       {arcgisMapId && layerMappingId !== null
@@ -217,7 +159,6 @@ const LegendCard = ({
 
 const Legends = () => {
   const { queryParameters } = useQueryParameters()
-
   const allLayers = useIndicators()
 
   const layers = queryParameters?.layer
