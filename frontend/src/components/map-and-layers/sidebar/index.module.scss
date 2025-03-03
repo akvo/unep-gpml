@@ -246,7 +246,10 @@
         }
         .ant-collapse-item-active {
           background-color: #fafbff;
-          border-top: 1px solid rgba(204, 208, 219, 0.3);
+          @media (max-width: 768px) {
+            padding-left: 5px;
+            border-top: 1px solid rgba(204, 208, 219, 0.3);
+          }
           .ant-collapse-header {
             font-weight: bold;
           }
