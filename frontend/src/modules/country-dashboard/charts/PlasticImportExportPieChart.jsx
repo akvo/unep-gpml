@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { useRouter } from 'next/router'
+import { t, Trans } from '@lingui/macro'
 
 const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
   const router = useRouter()
@@ -16,12 +17,11 @@ const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
   ]
 
   const categoriesTitle = [
-    { plasticinPrimaryForm: 'Plastic in primary form' },
-    { intermediateFormsOfPlastic: 'Intermediate forms of plastic' },
-    { finalManufacturedPlasticGoods: 'Final manufactured plastic goods' },
+    { plasticinPrimaryForm: t`Plastic in primary form` },
+    { intermediateFormsOfPlastic: t`Intermediate forms of plastic` },
+    { finalManufacturedPlasticGoods: t`Final manufactured plastic goods` },
     {
-      intermediateManufacturedPlasticGoods:
-        'Intermediate manufactured plastic goods',
+      intermediateManufacturedPlasticGoods: t`Intermediate manufactured plastic goods`,
     },
 
     { plasticWaste: 'Plastic waste' },
@@ -110,13 +110,13 @@ const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
     title: {
       text:
         window.innerWidth < 768
-          ? `Plastic ${
+          ? t`Plastic ${
               chartType === 'import' ? 'import' : 'export'
             } by type for\n${decodeURIComponent(country)}`
-          : `Plastic ${
+          : t`Plastic ${
               chartType === 'import' ? 'import' : 'export'
             } by type for ${decodeURIComponent(country)}`,
-      subtext: `In 1000 metric tons for year ${2021 || 'N/A'}`,
+      subtext: t`In 1000 metric tons for year ${2021 || 'N/A'}`,
       left: 'center',
       textStyle: {
         fontSize: window.innerWidth < 768 ? 14 : 18,
@@ -192,14 +192,14 @@ const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
           fontSize: '12px',
         }}
       >
-        Data source:{' '}
+        <Trans> Data source: </Trans>
         <a
           href={`https://unctad.org/publication/global-trade-plastics-insights-first-life-cycle-trade-database`}
           target="_blank"
           rel="noopener noreferrer"
           style={{ color: '#020A5B', fontWeight: 'bold' }}
         >
-          UNCTAD 2021
+          <Trans> UNCTAD 2021</Trans>
         </a>{' '}
       </div>
     </div>
