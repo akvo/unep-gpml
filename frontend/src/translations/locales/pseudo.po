@@ -1037,6 +1037,12 @@ msgstr ""
 msgid "Data Source"
 msgstr ""
 
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:161
+#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:195
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:214
+msgid "Data source:"
+msgstr ""
+
 #: src/modules/workspace/view.jsx:67
 msgid "Data tools"
 msgstr ""
@@ -1520,6 +1526,7 @@ msgstr ""
 msgid "Explore the resources"
 msgstr ""
 
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:186
 #: src/modules/profile/admin.jsx:887
 msgid "Export"
 msgstr ""
@@ -1559,6 +1566,10 @@ msgstr ""
 
 #: src/modules/knowledge-lib/filter-modal.jsx:182
 msgid "Filters"
+msgstr ""
+
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:25
+msgid "Final manufactured plastic goods"
 msgstr ""
 
 #: src/pages/workspace/[slug]/7-final-review/index.js:20
@@ -2029,6 +2040,14 @@ msgstr ""
 msgid "Implementing MEA"
 msgstr ""
 
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:186
+msgid "Import"
+msgstr ""
+
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:31
+msgid "Import or export layer not found."
+msgstr ""
+
 #: src/modules/flexible-forms/form-schema.js:794
 msgid "In 1 to 3 years"
 msgstr ""
@@ -2156,6 +2175,14 @@ msgstr ""
 
 #: src/pages/workspace/[slug]/layout.js:24
 msgid "Instructions"
+msgstr ""
+
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:24
+msgid "Intermediate forms of plastic"
+msgstr ""
+
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:27
+msgid "Intermediate manufactured plastic goods"
 msgstr ""
 
 #: src/modules/signup/view.jsx:48
@@ -2593,6 +2620,11 @@ msgstr ""
 #: src/modules/signup/view.jsx:46
 #: src/store.js:164
 msgid "Microplastics"
+msgstr ""
+
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:119
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:176
+msgid "million US dollars"
 msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:1962
@@ -3119,6 +3151,20 @@ msgstr ""
 msgid "Pinned Documents"
 msgstr ""
 
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:75
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:134
+msgid "Plastic import & export value for {0}"
+msgstr ""
+
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:74
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:133
+msgid "Plastic import & export value\\nfor {0}"
+msgstr ""
+
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:23
+msgid "Plastic in primary form"
+msgstr ""
+
 #: src/store.js:645
 msgid "Plastic Odyssey: The Expedition Around The World To Fight Against Plastic Pollution"
 msgstr ""
@@ -3422,8 +3468,8 @@ msgstr ""
 msgid "Reputation / image of the member state or organisation"
 msgstr ""
 
-#: src/pages/countryOverview/index.jsx:241
-#: src/pages/countryOverview/index.jsx:258
+#: src/pages/countryOverview/index.jsx:248
+#: src/pages/countryOverview/index.jsx:399
 msgid "Request Data Update"
 msgstr ""
 
@@ -4171,6 +4217,16 @@ msgstr ""
 msgid "Total experts per country"
 msgstr ""
 
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:98
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:127
+msgid "Total exports"
+msgstr ""
+
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:98
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:136
+msgid "Total imports"
+msgstr ""
+
 #: src/modules/map/vertical-legend.jsx:660
 msgid "Total resources"
 msgstr ""
@@ -4261,6 +4317,11 @@ msgstr ""
 
 #: src/modules/flexible-forms/entity-modal/form-schema.js:32
 msgid "Type of the entity"
+msgstr ""
+
+#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:202
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:221
+msgid "UNCTAD 2021"
 msgstr ""
 
 #: src/modules/entity-detail/view.jsx:103
@@ -4419,7 +4480,7 @@ msgstr ""
 msgid "View Details"
 msgstr ""
 
-#: src/components/map-and-layers/sidebar/partials/CategoriesNestedDashboard.jsx:120
+#: src/components/map-and-layers/sidebar/partials/CategoriesNestedDashboard.jsx:121
 msgid "View Global Data"
 msgstr ""
 

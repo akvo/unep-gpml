@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { useRouter } from 'next/router'
 import { getBaseUrl } from '../../../utils/misc'
+import { t, Trans } from '@lingui/macro'
 
 const PlasticImportExportChart = ({ layers, loading }) => {
   const router = useRouter()
@@ -27,7 +28,7 @@ const PlasticImportExportChart = ({ layers, loading }) => {
       )
 
       if (!importLayer || !exportLayer) {
-        console.warn('Import or export layer not found.')
+        console.warn(t`Import or export layer not found.`)
         return
       }
 
@@ -70,8 +71,8 @@ const PlasticImportExportChart = ({ layers, loading }) => {
     title: {
       text:
         window.innerWidth < 768
-          ? `Plastic import & export value\nfor ${decodeURIComponent(country)}`
-          : `Plastic import & export value for ${decodeURIComponent(country)}`,
+          ? t`Plastic import & export value\nfor ${decodeURIComponent(country)}`
+          : t`Plastic import & export value for ${decodeURIComponent(country)}`,
       left: 'center',
       textStyle: {
         fontSize: window.innerWidth < 768 ? 14 : 18,
@@ -94,7 +95,7 @@ const PlasticImportExportChart = ({ layers, loading }) => {
       },
     },
     legend: {
-      data: ['Total exports', 'Total imports'],
+      data: [t`Total exports`, t`Total imports`],
       textStyle: { color: '#020A5B' },
       bottom: 0,
     },
@@ -115,7 +116,7 @@ const PlasticImportExportChart = ({ layers, loading }) => {
         fontSize: 12,
         color: '#020A5B',
       },
-      name: 'million US dollars',
+      name: t`million US dollars`,
       nameTextStyle: {
         color: '#020A5B',
         fontSize: 12,
@@ -123,7 +124,7 @@ const PlasticImportExportChart = ({ layers, loading }) => {
     },
     series: [
       {
-        name: 'Total exports',
+        name: t`Total exports`,
         type: 'line',
         data: totalExports,
         symbol: 'circle',
@@ -132,7 +133,7 @@ const PlasticImportExportChart = ({ layers, loading }) => {
         },
       },
       {
-        name: 'Total imports',
+        name: t`Total imports`,
         type: 'line',
         data: totalImports,
         symbol: 'circle',
@@ -157,7 +158,7 @@ const PlasticImportExportChart = ({ layers, loading }) => {
           fontSize: '12px',
         }}
       >
-        Data source:{' '}
+        <Trans>Data source:</Trans>{' '}
         <a
           href={`${baseURL}/data/maps?categoryId=industry-and-trade&subcategoryId=Import&layer=Plastic_waste___value__import__WFL1`}
           style={{ color: '#020A5B', fontWeight: 'bold' }}
@@ -165,7 +166,7 @@ const PlasticImportExportChart = ({ layers, loading }) => {
           rel="noopener noreferrer"
         >
           UNCTAD 2021
-        </a>{' '}
+        </a>
       </div>
     </div>
   )
