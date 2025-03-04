@@ -31,6 +31,10 @@ msgstr "(OPTIONAL)"
 msgid "{0}"
 msgstr "{0}"
 
+#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:77
+msgid "{0} estimate"
+msgstr "{0} estimate"
+
 #: src/pages/workspace/[slug]/7-final-review/index.js:30
 msgid "{incompleteAmount} items are not completed"
 msgstr "{incompleteAmount} items are not completed"
@@ -1037,9 +1041,11 @@ msgstr "Data Portal"
 msgid "Data Source"
 msgstr "Data Source"
 
+#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:207
 #: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:161
 #: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:195
 #: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:214
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:220
 msgid "Data source:"
 msgstr "Data source:"
 
@@ -1365,6 +1371,16 @@ msgstr "End Date"
 msgid "End of Life"
 msgstr "End of Life"
 
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:124
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:167
+msgid "Ends up in the ocean"
+msgstr "Ends up in the ocean"
+
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:124
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:162
+msgid "Ends up on the coasts"
+msgstr "Ends up on the coasts"
+
 #: src/modules/onboarding/form-one.jsx:51
 msgid "Enter job title"
 msgstr "Enter job title"
@@ -1464,6 +1480,14 @@ msgstr "Environmentally Sound Management and Destruction of PCBs"
 msgid "Equity Investment"
 msgstr "Equity Investment"
 
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:98
+msgid "Escaped plastic reaching \\noceans and coasts"
+msgstr "Escaped plastic reaching \\noceans and coasts"
+
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:99
+msgid "Escaped plastic reaching oceans and coasts​"
+msgstr "Escaped plastic reaching oceans and coasts​"
+
 #: src/pages/workspace/[slug]/1-project-team/setup-team.js:24
 msgid "Establish a National Steering Committee (NSC) with representation from relevant government agencies as well as relevant non-governmental organisations. The NSC will aim to meet 2-4 times per year to assist with and drive the roadmap/strategy/plan. Establish a project team consisting of consultants to lead the implementation of the project with the guidance of the NSC and UNEP."
 msgstr ""
@@ -1471,6 +1495,10 @@ msgstr ""
 "\n"
 "You can use the search function to include new individuals who are already registered on the platform. If you are unable to find the name of the individual you wish to add, you will find an option to 'Add a New Member' within the search results.\n"
 ""
+
+#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:154
+msgid "Estimates"
+msgstr "Estimates"
 
 #: src/components/event-calendar/view.jsx:220
 msgid "event"
@@ -1578,6 +1606,7 @@ msgstr "Filtering by:"
 msgid "Filters"
 msgstr "Filters"
 
+#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:22
 #: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:25
 msgid "Final manufactured plastic goods"
 msgstr "Final manufactured plastic goods"
@@ -1627,6 +1656,10 @@ msgstr "Fisheries"
 #: src/store.js:641
 msgid "Fishing for Litter: Ocean cleaning project that involves fishermen who collect debris during fishing activities"
 msgstr "Fishing for Litter: Ocean cleaning project that involves fishermen who collect debris during fishing activities"
+
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:227
+msgid "​​Florida State University and UNEP, 2021"
+msgstr "​​Florida State University and UNEP, 2021"
 
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:119
 msgid "Focal Point"
@@ -2062,6 +2095,10 @@ msgstr "Import or export layer not found."
 msgid "In 1 to 3 years"
 msgstr "In 1 to 3 years"
 
+#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:119
+msgid "In 1000 metric tons for year {0}"
+msgstr "In 1000 metric tons for year {0}"
+
 #: src/modules/about/about-us.jsx:427
 msgid "In 2019, the United Nations Environment Assembly (UNEA) decided in resolution UNEP/EA.4/Res.6 operative paragraph 3: “to strengthen coordination and cooperation by establishing, subject to the availability of resources and building on existing initiatives, a multi-stakeholder platform within the United Nations Environment Programme to take immediate action towards the long-term elimination, through a lifecycle approach, of discharges of litter and microplastics into the oceans”. The GPML Digital Platform was developed in 2021 in response to this and seeks to support transformative, multi-stakeholder actions that target the causes of pollution towards a pollution-free planet, where pollution is prevented and controlled and good environmental quality and improved health and well-being are ensured for all. Overall, the work of the GPML will support UNEP’s Medium-Term Strategy by supporting countries to deliver on their environmental commitments under international agreements."
 msgstr "In 2019, the United Nations Environment Assembly (UNEA) decided in resolution UNEP/EA.4/Res.6 operative paragraph 3: “to strengthen coordination and cooperation by establishing, subject to the availability of resources and building on existing initiatives, a multi-stakeholder platform within the United Nations Environment Programme to take immediate action towards the long-term elimination, through a lifecycle approach, of discharges of litter and microplastics into the oceans”. The GPML Digital Platform was developed in 2021 in response to this and seeks to support transformative, multi-stakeholder actions that target the causes of pollution towards a pollution-free planet, where pollution is prevented and controlled and good environmental quality and improved health and well-being are ensured for all. Overall, the work of the GPML will support UNEP’s Medium-Term Strategy by supporting countries to deliver on their environmental commitments under international agreements."
@@ -2187,10 +2224,12 @@ msgstr "Institutional development"
 msgid "Instructions"
 msgstr "Instructions"
 
+#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:21
 #: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:24
 msgid "Intermediate forms of plastic"
 msgstr "Intermediate forms of plastic"
 
+#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:24
 #: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:27
 msgid "Intermediate manufactured plastic goods"
 msgstr "Intermediate manufactured plastic goods"
@@ -2766,6 +2805,10 @@ msgstr "National Dashboard"
 msgid "National data"
 msgstr "National data"
 
+#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:72
+msgid "National estimate"
+msgstr "National estimate"
+
 #: src/modules/flexible-forms/form-schema.js:871
 msgid "National or organisational values"
 msgstr "National or organisational values"
@@ -3125,6 +3168,14 @@ msgstr "Peer pressure from similar actors"
 msgid "People like plastics (convenience, hygiene etc.)"
 msgstr "People like plastics (convenience, hygiene etc.)"
 
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:103
+msgid "Percentage of the escaped waste between years 2010-2019"
+msgstr "Percentage of the escaped waste between years 2010-2019"
+
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:102
+msgid "Percentage of the escaped waste\\n between years 2010-2019"
+msgstr "Percentage of the escaped waste\\n between years 2010-2019"
+
 #: src/modules/signup-old/signup-form.jsx:343
 msgid "Personal details"
 msgstr "Personal details"
@@ -3161,6 +3212,26 @@ msgstr "Pilot"
 msgid "Pinned Documents"
 msgstr "Pinned Documents"
 
+#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:116
+msgid "Plastic {0} by type for {1}"
+msgstr "Plastic {0} by type for {1}"
+
+#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:113
+msgid "Plastic {0} by type for\\n{1}"
+msgstr "Plastic {0} by type for\\n{1}"
+
+#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:88
+msgid "Plastic composition in the MSW for {0}"
+msgstr "Plastic composition in the MSW for {0}"
+
+#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:85
+msgid "Plastic composition in the MSW\\nfor {0}"
+msgstr "Plastic composition in the MSW\\nfor {0}"
+
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:132
+msgid "Plastic distribution"
+msgstr "Plastic distribution"
+
 #: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:75
 #: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:134
 msgid "Plastic import & export value for {0}"
@@ -3171,6 +3242,7 @@ msgstr "Plastic import & export value for {0}"
 msgid "Plastic import & export value\\nfor {0}"
 msgstr "Plastic import & export value\\nfor {0}"
 
+#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:20
 #: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:23
 msgid "Plastic in primary form"
 msgstr "Plastic in primary form"
@@ -3423,6 +3495,10 @@ msgstr "Reef Futures Symposium"
 #: src/modules/flexible-forms/form-schema.js:700
 msgid "Regional Sustainable Development Goals (SDGs)"
 msgstr "Regional Sustainable Development Goals (SDGs)"
+
+#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:172
+msgid "Regional\\n Average\\n ({0})"
+msgstr "Regional\\n Average\\n ({0})"
 
 #: src/modules/flexible-forms/form-schema.js:1964
 msgid "Regulation"
@@ -4705,6 +4781,10 @@ msgstr "workspace"
 #: src/pages/landing/index.jsx:429
 msgid "Workspace"
 msgstr "Workspace"
+
+#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:212
+msgid "World Bank"
+msgstr "World Bank"
 
 #: src/store.js:320
 msgid "Worldwide Coverage"
