@@ -1037,6 +1037,10 @@ msgstr "Portal de datos"
 msgid "Data Source"
 msgstr "Fuente de datos"
 
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:161
+msgid "Data source:"
+msgstr ""
+
 #: src/modules/workspace/view.jsx:67
 msgid "Data tools"
 msgstr "Herramientas de datos"
@@ -2062,6 +2066,10 @@ msgstr "Impacto. ¿Con qué impactos o daños se relaciona la iniciativa? (Por f
 msgid "Implementing MEA"
 msgstr "Implementación de AAM"
 
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:31
+msgid "Import or export layer not found."
+msgstr ""
+
 #: src/modules/flexible-forms/form-schema.js:794
 msgid "In 1 to 3 years"
 msgstr "En 1 a 3 años"
@@ -2628,6 +2636,10 @@ msgstr "Microfibras"
 msgid "Microplastics"
 msgstr "Microplásticos"
 
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:119
+msgid "million US dollars"
+msgstr ""
+
 #: src/modules/flexible-forms/form-schema.js:1962
 msgid "Miscellaneous"
 msgstr "Misceláneas"
@@ -3156,6 +3168,14 @@ msgstr "Piloto"
 msgid "Pinned Documents"
 msgstr "Documentos fijados"
 
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:75
+msgid "Plastic import & export value for {0}"
+msgstr ""
+
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:74
+msgid "Plastic import & export value\\nfor {0}"
+msgstr ""
+
 #: src/store.js:645
 msgid "Plastic Odyssey: The Expedition Around The World To Fight Against Plastic Pollution"
 msgstr "Plastic Odyssey: La expedición alrededor del mundo para luchar contra la contaminación plástica"
@@ -3463,8 +3483,8 @@ msgstr "Grupo representativo"
 msgid "Reputation / image of the member state or organisation"
 msgstr "Reputación/imagen del estado u organización miembro"
 
-#: src/pages/countryOverview/index.jsx:241
-#: src/pages/countryOverview/index.jsx:258
+#: src/pages/countryOverview/index.jsx:248
+#: src/pages/countryOverview/index.jsx:399
 msgid "Request Data Update"
 msgstr ""
 
@@ -4215,6 +4235,16 @@ msgstr "Total"
 msgid "Total experts per country"
 msgstr "Total de expertos por país"
 
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:98
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:127
+msgid "Total exports"
+msgstr ""
+
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:98
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:136
+msgid "Total imports"
+msgstr ""
+
 #: src/modules/map/vertical-legend.jsx:660
 msgid "Total resources"
 msgstr "Recursos totales"
@@ -4467,7 +4497,7 @@ msgstr "Ver todos los foros"
 msgid "View Details"
 msgstr "Ver detalles"
 
-#: src/components/map-and-layers/sidebar/partials/CategoriesNestedDashboard.jsx:120
+#: src/components/map-and-layers/sidebar/partials/CategoriesNestedDashboard.jsx:121
 msgid "View Global Data"
 msgstr ""
 

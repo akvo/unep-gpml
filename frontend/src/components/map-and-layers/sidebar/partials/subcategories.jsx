@@ -37,14 +37,17 @@ const Subcategories = ({ subcategories, layers, loading }) => {
     })
   }
   const handleLayerClick = (layer) => {
+    const selectedLayers = queryParameters.layers || []
+
     const isLayerSelected =
-      queryParameters.layers && queryParameters.layers.id === layer.id
+      selectedLayers.length > 0 && selectedLayers[0].id === layer.id
 
     if (isLayerSelected) {
       setQueryParameters({
         categoryId: router.query.categoryId,
         subcategoryId: router.query.subcategoryId,
-        layers: undefined,
+        layers: [],
+        layer: undefined,
       })
     } else {
       setQueryParameters({
@@ -88,11 +91,8 @@ const Subcategories = ({ subcategories, layers, loading }) => {
                   size="small"
                   onChange={() => handleLayerClick(layer)}
                   checked={
-                    (queryParameters.layers &&
-                      !queryParameters.layer &&
-                      queryParameters.layers[0]?.id === layer.id) ||
-                    (queryParameters.layer &&
-                      queryParameters.layer === layer.attributes.arcgislayerId)
+                    queryParameters.layers?.length > 0 &&
+                    queryParameters.layers[0].id === layer.id
                   }
                 />
 
