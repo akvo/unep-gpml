@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { useRouter } from 'next/router'
 import { getBaseUrl } from '../../../utils/misc'
+import { t, Trans } from '@lingui/macro'
 
 const PlasticOceanBeachChart = ({ layers, loading }) => {
   const router = useRouter()
@@ -94,12 +95,12 @@ const PlasticOceanBeachChart = ({ layers, loading }) => {
       title: {
         text:
           window.innerWidth < 768
-            ? 'Escaped plastic reaching \noceans and coasts​'
-            : 'Escaped plastic reaching oceans and coasts​',
+            ? t`Escaped plastic reaching \noceans and coasts`
+            : t`Escaped plastic reaching oceans and coasts​`,
         subtext:
           window.innerWidth < 768
-            ? `Percentage of the escaped waste\n between years 2010-2019`
-            : `Percentage of the escaped waste between years 2010-2019`,
+            ? t`Percentage of the escaped waste\n between years 2010-2019`
+            : t`Percentage of the escaped waste between years 2010-2019`,
         left: 'center',
         textStyle: {
           fontSize: window.innerWidth < 768 ? 14 : 16,
@@ -120,7 +121,7 @@ const PlasticOceanBeachChart = ({ layers, loading }) => {
       legend: {
         orient: 'horizontal',
         bottom: 10,
-        data: ['Ends up in the ocean', 'Ends up on the coasts'],
+        data: [t`Ends up in the ocean`, t`Ends up on the coasts`],
         textStyle: {
           fontSize: 12,
           color: '#020A5B',
@@ -128,7 +129,7 @@ const PlasticOceanBeachChart = ({ layers, loading }) => {
       },
       series: [
         {
-          name: 'Plastic distribution',
+          name: t`Plastic distribution`,
           type: 'pie',
           top: '15%',
           radius: ['40%', '80%'],
@@ -158,12 +159,12 @@ const PlasticOceanBeachChart = ({ layers, loading }) => {
           data: [
             {
               value: beachPercentage,
-              name: 'Ends up on the coasts',
+              name: t`Ends up on the coasts`,
               itemStyle: { color: '#ffc107' },
             },
             {
               value: oceanPercentage,
-              name: 'Ends up in the ocean',
+              name: t`Ends up in the ocean`,
               itemStyle: { color: '#007bff' },
             },
           ],
@@ -216,14 +217,14 @@ const PlasticOceanBeachChart = ({ layers, loading }) => {
           fontSize: '12px',
         }}
       >
-        Data source:{' '}
+        <Trans> Data source: </Trans>
         <a
           href={`${baseURL}/data/maps?categoryId=environmental-impact&subcategoryId=ocean-and-coast&layer=Mismanaged_plastic_waste_escaping_to_oceans_and_coasts_V3_WFL1`}
           target="_blank"
           rel="noopener noreferrer"
           style={{ color: '#020A5B', fontWeight: 'bold' }}
         >
-          ​​Florida State University and UNEP, 2021
+          <Trans> ​​Florida State University and UNEP, 2021</Trans>
         </a>{' '}
       </div>
     </div>

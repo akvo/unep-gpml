@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { useRouter } from 'next/router'
+import { t, Trans } from '@lingui/macro'
+import { loadCatalog } from '../../../translations/utils'
 
 const PlasticImportExportChart = ({ layers, loading }) => {
   const router = useRouter()
@@ -18,12 +20,11 @@ const PlasticImportExportChart = ({ layers, loading }) => {
   ]
 
   const categoriesTitle = [
-    { plasticinPrimaryForm: 'Plastic in primary form' },
-    { intermediateFormsOfPlastic: 'Intermediate forms of plastic' },
-    { finalManufacturedPlasticGoods: 'Final manufactured plastic goods' },
+    { plasticinPrimaryForm: t`Plastic in primary form` },
+    { intermediateFormsOfPlastic: t`Intermediate forms of plastic` },
+    { finalManufacturedPlasticGoods: t`Final manufactured plastic goods` },
     {
-      intermediateManufacturedPlasticGoods:
-        'Intermediate manufactured plastic goods',
+      intermediateManufacturedPlasticGoods: t`Intermediate manufactured plastic goods`,
     },
     { plasticWaste: 'Plastic waste' },
   ]
@@ -129,8 +130,8 @@ const PlasticImportExportChart = ({ layers, loading }) => {
     title: {
       text:
         window.innerWidth < 768
-          ? `Plastic import & export value\nfor ${decodeURIComponent(country)}`
-          : `Plastic import & export value for ${decodeURIComponent(country)}`,
+          ? t`Plastic import & export value\nfor ${decodeURIComponent(country)}`
+          : t`Plastic import & export value for ${decodeURIComponent(country)}`,
       textStyle: {
         fontSize: window.innerWidth < 768 ? 14 : 18,
         fontWeight: 'bold',
@@ -172,7 +173,7 @@ const PlasticImportExportChart = ({ layers, loading }) => {
     },
     yAxis: {
       type: 'category',
-      name: 'million US dollars',
+      name: t`million US dollars`,
       axisLabel: {
         formatter: '{value} ',
         fontSize: 12,
@@ -182,7 +183,7 @@ const PlasticImportExportChart = ({ layers, loading }) => {
         color: '#020A5B',
         fontSize: 12,
       },
-      data: ['Import', 'Export'],
+      data: [t`Import`, t`Export`],
     },
     series: categories.map((category, index) => ({
       name: Object.values(categoriesTitle[index])[0],
@@ -210,18 +211,26 @@ const PlasticImportExportChart = ({ layers, loading }) => {
           fontSize: '12px',
         }}
       >
-        Data source:{' '}
+        <Trans>Data source: </Trans>
         <a
           href={`https://unctad.org/publication/global-trade-plastics-insights-first-life-cycle-trade-database`}
           target="_blank"
           rel="noopener noreferrer"
           style={{ color: '#020A5B', fontWeight: 'bold' }}
         >
-          UNCTAD 2021
+          <Trans> UNCTAD 2021</Trans>
         </a>{' '}
       </div>
     </div>
   )
+}
+
+export const getStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: await loadCatalog(ctx.locale),
+    },
+  }
 }
 
 export default PlasticImportExportChart

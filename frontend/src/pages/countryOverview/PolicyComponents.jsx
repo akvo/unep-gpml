@@ -55,9 +55,9 @@ const PolicyComponent = ({ layers, layerLoading: loading }) => {
         const filteredData = layer.attributes.ValuePerCountry.filter(
           (item) => item.CountryName === country
         ).sort((a, b) => b.Year - a.Year)
-        return filteredData.length ? filteredData[0].Value : 0
+        return filteredData.length ? filteredData[0].Value : null
       }
-      return 0
+      return null
     }
 
     setPolicyData({

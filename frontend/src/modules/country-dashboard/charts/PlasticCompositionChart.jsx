@@ -3,6 +3,7 @@ import ReactEcharts from 'echarts-for-react'
 import { useRouter } from 'next/router'
 import useRegions from '../../../hooks/useRegions'
 import { getBaseUrl } from '../../../utils/misc'
+import { t, Trans } from '@lingui/macro'
 
 const PlasticCompositionChart = ({ layers, layerLoading }) => {
   const router = useRouter()
@@ -68,12 +69,12 @@ const PlasticCompositionChart = ({ layers, layerLoading }) => {
       {
         value: nationalEstimate,
         itemStyle: { color: '#00A4EC' },
-        name: 'National estimate',
+        name: t`National estimate`,
       },
       ...cityEstimates.map((estimate, index) => ({
         value: estimate,
         itemStyle: { color: index === 0 ? '#FF6F00' : '#FF5733' },
-        name: `${cities[index]} estimate`,
+        name: t`${cities[index]} estimate`,
       })),
     ]
 
@@ -81,10 +82,10 @@ const PlasticCompositionChart = ({ layers, layerLoading }) => {
       title: {
         text:
           window.innerWidth < 768
-            ? `Plastic composition in the MSW\nfor ${decodeURIComponent(
+            ? t`Plastic composition in the MSW\nfor ${decodeURIComponent(
                 country
               )}`
-            : `Plastic composition in the MSW for ${decodeURIComponent(
+            : t`Plastic composition in the MSW for ${decodeURIComponent(
                 country
               )}`,
         left: 'center',
@@ -150,7 +151,7 @@ const PlasticCompositionChart = ({ layers, layerLoading }) => {
       },
       series: [
         {
-          name: 'Estimates',
+          name: t`Estimates`,
           type: 'bar',
           barWidth: '40%',
           data: dataValues,
@@ -168,7 +169,7 @@ const PlasticCompositionChart = ({ layers, layerLoading }) => {
                 yAxis: regionPlasticComposition || 0.78,
                 label: {
                   formatter: () =>
-                    `Regional\n Average\n (${
+                    t`Regional\n Average\n (${
                       regionPlasticComposition + '%' || 0.78 + '%'
                     })`,
                   position: 'middle',
@@ -203,12 +204,12 @@ const PlasticCompositionChart = ({ layers, layerLoading }) => {
           fontSize: '12px',
         }}
       >
-        Data source:{' '}
+        <Trans>Data source: </Trans>
         <a
           href={`${baseURL}/data/maps?categoryId=waste-management&subcategoryId=generation&layer=Proportion_of_plastic_waste_generated_WFL1`}
           style={{ color: '#020A5B', fontWeight: 'bold' }}
         >
-          World Bank
+          <Trans> World Bank</Trans>
         </a>{' '}
       </div>
     </div>

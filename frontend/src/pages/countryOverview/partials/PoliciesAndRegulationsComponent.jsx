@@ -2,6 +2,7 @@ import React from 'react'
 import { Card, Typography, Tooltip } from 'antd'
 import { InfoCircleOutlined } from '@ant-design/icons'
 import { getBaseUrl } from '../../../utils/misc'
+import { t, Trans } from '@lingui/macro'
 
 const { Title, Text } = Typography
 
@@ -30,9 +31,15 @@ const PoliciesAndRegulationsComponent = ({
           fontWeight: '500',
         }}
       >
-        <strong style={{ color: '#020A5B' }}>{decodeURIComponent(country)}</strong> has implemented
-        the following affirmative regulatory policy instruments on plastics:
-        <Tooltip title="See the global dataset">
+        <strong style={{ color: '#020A5B' }}>
+          {decodeURIComponent(country)}
+        </strong>{' '}
+        <Trans>
+          {' '}
+          has implemented the following affirmative regulatory policy
+          instruments on plastics:
+        </Trans>
+        <Tooltip title={t`See the global dataset`}>
           <a
             href={`${baseUrl}/data/maps?categoryId=governance-and-regulations&subcategoryId=policies-and-plans`}
             target="_blank"
@@ -52,20 +59,19 @@ const PoliciesAndRegulationsComponent = ({
         {[
           {
             count: 12,
-            text:
-              'Regulatory instruments on development of plans to address plastic pollution and management',
+            text: t`Regulatory instruments on development of plans to address plastic pollution and management`,
           },
           {
             count: plasticLeakage,
-            text: 'Regulatory instruments to capture plastic post-leakage',
+            text: t`Regulatory instruments to capture plastic post-leakage`,
           },
           {
             count: irresponsibleHandling,
-            text: 'Regulatory instruments on responsible handling of plastics',
+            text: t`Regulatory instruments on responsible handling of plastics`,
           },
           {
             count: regulatoryInstrumentsOnInnovation,
-            text: 'Regulatory instruments on innovation',
+            text: t`Regulatory instruments on innovation`,
           },
         ].map((item, index) => (
           <div
@@ -86,7 +92,7 @@ const PoliciesAndRegulationsComponent = ({
                 marginRight: '3%',
               }}
             >
-              {item.count}
+              {item.count ? item.count : '-'}
             </Title>
             <div
               style={{
