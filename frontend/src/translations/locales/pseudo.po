@@ -1037,6 +1037,10 @@ msgstr ""
 msgid "Data Source"
 msgstr ""
 
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:161
+msgid "Data source:"
+msgstr ""
+
 #: src/modules/workspace/view.jsx:67
 msgid "Data tools"
 msgstr ""
@@ -2029,6 +2033,10 @@ msgstr ""
 msgid "Implementing MEA"
 msgstr ""
 
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:31
+msgid "Import or export layer not found."
+msgstr ""
+
 #: src/modules/flexible-forms/form-schema.js:794
 msgid "In 1 to 3 years"
 msgstr ""
@@ -2595,6 +2603,10 @@ msgstr ""
 msgid "Microplastics"
 msgstr ""
 
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:119
+msgid "million US dollars"
+msgstr ""
+
 #: src/modules/flexible-forms/form-schema.js:1962
 msgid "Miscellaneous"
 msgstr ""
@@ -3119,6 +3131,14 @@ msgstr ""
 msgid "Pinned Documents"
 msgstr ""
 
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:75
+msgid "Plastic import & export value for {0}"
+msgstr ""
+
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:74
+msgid "Plastic import & export value\\nfor {0}"
+msgstr ""
+
 #: src/store.js:645
 msgid "Plastic Odyssey: The Expedition Around The World To Fight Against Plastic Pollution"
 msgstr ""
@@ -3422,8 +3442,8 @@ msgstr ""
 msgid "Reputation / image of the member state or organisation"
 msgstr ""
 
-#: src/pages/countryOverview/index.jsx:241
-#: src/pages/countryOverview/index.jsx:258
+#: src/pages/countryOverview/index.jsx:248
+#: src/pages/countryOverview/index.jsx:399
 msgid "Request Data Update"
 msgstr ""
 
@@ -4171,6 +4191,16 @@ msgstr ""
 msgid "Total experts per country"
 msgstr ""
 
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:98
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:127
+msgid "Total exports"
+msgstr ""
+
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:98
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:136
+msgid "Total imports"
+msgstr ""
+
 #: src/modules/map/vertical-legend.jsx:660
 msgid "Total resources"
 msgstr ""
@@ -4419,7 +4449,7 @@ msgstr ""
 msgid "View Details"
 msgstr ""
 
-#: src/components/map-and-layers/sidebar/partials/CategoriesNestedDashboard.jsx:120
+#: src/components/map-and-layers/sidebar/partials/CategoriesNestedDashboard.jsx:121
 msgid "View Global Data"
 msgstr ""
 
