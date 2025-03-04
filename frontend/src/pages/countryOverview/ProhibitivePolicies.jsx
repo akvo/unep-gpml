@@ -2,6 +2,7 @@ import React from 'react'
 import { Card, Typography, Tooltip } from 'antd'
 import { InfoCircleOutlined } from '@ant-design/icons'
 import { getBaseUrl } from '../../utils/misc'
+import { t, Trans } from '@lingui/macro'
 
 const { Title, Text } = Typography
 
@@ -25,9 +26,15 @@ const ProhibitivePolicies = ({ bansOnPlastic, limitsPlastic, country }) => {
           fontWeight: '500',
         }}
       >
-        <strong style={{ color: '#020A5B' }}>{decodeURIComponent(country)}</strong> has implemented
-        the following prohibitive regulatory policy instruments on plastics:
-        <Tooltip title="See the global dataset">
+        <strong style={{ color: '#020A5B' }}>
+          {decodeURIComponent(country)}
+        </strong>{' '}
+        <Trans>
+          {' '}
+          has implemented the following prohibitive regulatory policy
+          instruments on plastics:
+        </Trans>
+        <Tooltip title={t`See the global dataset`}>
           <a
             href={`${baseUrl}/data/maps?categoryId=governance-and-regulations&subcategoryId=prohibitive-regulatory-instruments`}
             target="_blank"
@@ -47,16 +54,16 @@ const ProhibitivePolicies = ({ bansOnPlastic, limitsPlastic, country }) => {
         {[
           {
             count: limitsPlastic,
-            text: 'Regulatory instruments on limiting plastics use',
+            text: t`Regulatory instruments on limiting plastics use`,
           },
           {
             count: bansOnPlastic,
-            text: 'Regulatory instruments on plastics bans',
+            text: t`Regulatory instruments on plastics bans`,
           },
           {
             count: 2,
             text:
-              'Regulatory instruments on irresponsible handling of plastics',
+              t`Regulatory instruments on irresponsible handling of plastics`,
           },
         ].map((item, index) => (
           <div

@@ -606,6 +606,10 @@ msgstr "Études de cas"
 msgid "Case Study"
 msgstr "Étude de cas"
 
+#: src/pages/countryOverview/partials/EconomicInstrumentsComponent.jsx:20
+msgid "Cash for return schemes"
+msgstr ""
+
 #: src/modules/knowledge-lib/resource-view.jsx:514
 msgid "category"
 msgstr "catégorie"
@@ -1235,6 +1239,10 @@ msgstr "Discussion"
 #: src/pages/forum/[forum]/index.jsx:631
 msgid "Discussions"
 msgstr "Discussions"
+
+#: src/pages/countryOverview/partials/EconomicInstrumentsComponent.jsx:27
+msgid "Disincentives to irresponsible plastic stewardship​"
+msgstr ""
 
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:51
 msgid "Distribution"
@@ -1992,6 +2000,18 @@ msgstr "Harmonisation des méthodologies de surveillance des microplastiques dan
 #: src/pages/landing/index.jsx:369
 msgid "Harnessing the expertise of <0>{0}</0> Communities of Practice (CoPs) comprised of leading experts and scientists to bridge critical knowledge and data gaps."
 msgstr "Exploiter l'expertise des communautés de pratique (CoP) composées d'experts et de scientifiques de premier plan pour combler les lacunes critiques en matière de connaissances et de données."
+
+#: src/pages/countryOverview/partials/PoliciesAndRegulationsComponent.jsx:37
+msgid "has implemented the following affirmative regulatory policy instruments on plastics:"
+msgstr ""
+
+#: src/pages/countryOverview/partials/EconomicInstrumentsComponent.jsx:116
+msgid "has implemented the following economic and information policy instruments on plastics:"
+msgstr ""
+
+#: src/pages/countryOverview/ProhibitivePolicies.jsx:32
+msgid "has implemented the following prohibitive regulatory policy instruments on plastics:"
+msgstr ""
 
 #: src/pages/partnership/index.jsx:1023
 msgid "Headquarters"
@@ -3540,6 +3560,46 @@ msgstr ""
 msgid "Regulation"
 msgstr "Régulation"
 
+#: src/pages/countryOverview/partials/PoliciesAndRegulationsComponent.jsx:62
+msgid "Regulatory instruments on development of plans to address plastic pollution and management"
+msgstr ""
+
+#: src/pages/countryOverview/partials/EconomicInstrumentsComponent.jsx:31
+msgid "Regulatory instruments on education and outreach"
+msgstr ""
+
+#: src/pages/countryOverview/partials/PoliciesAndRegulationsComponent.jsx:74
+msgid "Regulatory instruments on innovation"
+msgstr ""
+
+#: src/pages/countryOverview/ProhibitivePolicies.jsx:66
+msgid "Regulatory instruments on irresponsible handling of plastics"
+msgstr ""
+
+#: src/pages/countryOverview/ProhibitivePolicies.jsx:57
+msgid "Regulatory instruments on limiting plastics use"
+msgstr ""
+
+#: src/pages/countryOverview/ProhibitivePolicies.jsx:61
+msgid "Regulatory instruments on plastics bans"
+msgstr ""
+
+#: src/pages/countryOverview/partials/EconomicInstrumentsComponent.jsx:35
+msgid "Regulatory instruments on plastics data collection"
+msgstr ""
+
+#: src/pages/countryOverview/partials/EconomicInstrumentsComponent.jsx:39
+msgid "Regulatory instruments on plastics labelling​"
+msgstr ""
+
+#: src/pages/countryOverview/partials/PoliciesAndRegulationsComponent.jsx:70
+msgid "Regulatory instruments on responsible handling of plastics"
+msgstr ""
+
+#: src/pages/countryOverview/partials/PoliciesAndRegulationsComponent.jsx:66
+msgid "Regulatory instruments to capture plastic post-leakage"
+msgstr ""
+
 #: src/modules/details-page/view.jsx:618
 msgid "Related content"
 msgstr "Contenu associé"
@@ -3750,6 +3810,12 @@ msgstr "Secteur. Votre initiative cible-t-elle un secteur spécifique ? (Veuille
 #: src/modules/knowledge-lib/resource-view.jsx:426
 msgid "See all"
 msgstr "Voir tout"
+
+#: src/pages/countryOverview/partials/EconomicInstrumentsComponent.jsx:121
+#: src/pages/countryOverview/partials/PoliciesAndRegulationsComponent.jsx:42
+#: src/pages/countryOverview/ProhibitivePolicies.jsx:37
+msgid "See the global dataset"
+msgstr ""
 
 #: src/modules/signup-old/signup-form.jsx:75
 #: src/modules/stakeholder-detail/view.jsx:620
@@ -4004,6 +4070,10 @@ msgstr "Présenter une demande"
 #: src/modules/flexible-forms/form-schema.js:2578
 msgid "Subnational"
 msgstr "Infranational"
+
+#: src/pages/countryOverview/partials/EconomicInstrumentsComponent.jsx:23
+msgid "Subsidies supporting plastic pollution reduction"
+msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:403
 msgid "Subsidy/financial incentives"
