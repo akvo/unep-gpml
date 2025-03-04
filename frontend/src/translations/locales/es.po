@@ -1038,6 +1038,7 @@ msgid "Data Source"
 msgstr "Fuente de datos"
 
 #: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:161
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:213
 msgid "Data source:"
 msgstr ""
 
@@ -4340,6 +4341,10 @@ msgstr "Tipo de ley"
 #: src/modules/flexible-forms/entity-modal/form-schema.js:32
 msgid "Type of the entity"
 msgstr "Tipo de entidad"
+
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:220
+msgid "UNCTAD 2021"
+msgstr ""
 
 #: src/modules/entity-detail/view.jsx:103
 #: src/modules/stakeholder-detail/view.jsx:136
