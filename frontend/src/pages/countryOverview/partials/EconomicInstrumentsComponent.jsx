@@ -71,7 +71,7 @@ const EconomicInstrumentsComponent = ({
               textAlign: 'center',
             }}
           >
-            {item.count}
+            {item.count ? item.count : '-'}
           </Title>
         </div>
         <div

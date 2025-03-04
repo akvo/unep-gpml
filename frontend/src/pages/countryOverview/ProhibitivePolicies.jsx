@@ -62,8 +62,7 @@ const ProhibitivePolicies = ({ bansOnPlastic, limitsPlastic, country }) => {
           },
           {
             count: 2,
-            text:
-              t`Regulatory instruments on irresponsible handling of plastics`,
+            text: t`Regulatory instruments on irresponsible handling of plastics`,
           },
         ].map((item, index) => (
           <div
@@ -84,7 +83,7 @@ const ProhibitivePolicies = ({ bansOnPlastic, limitsPlastic, country }) => {
                 marginRight: '3%',
               }}
             >
-              {item.count}
+              {item.count ? item.count : '-'}
             </Title>
             <div
               style={{

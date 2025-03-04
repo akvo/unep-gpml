@@ -92,7 +92,7 @@ const PoliciesAndRegulationsComponent = ({
                 marginRight: '3%',
               }}
             >
-              {item.count}
+              {item.count ? item.count : '-'}
             </Title>
             <div
               style={{
