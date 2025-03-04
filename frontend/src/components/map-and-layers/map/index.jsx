@@ -10,30 +10,13 @@ import Details from '../details'
 import useLoadMap from '../../../hooks/useLoadMap'
 import Basemap from '@arcgis/core/Basemap'
 import TileLayer from '@arcgis/core/layers/TileLayer.js'
-
 const isMobile = () => {
   return window.innerWidth <= 768
-}
-
-const adjustPopupForMobile = (popupContainer) => {
-  if (!popupContainer) return
-
-  const screenWidth = window.innerWidth
-  const screenHeight = window.innerHeight
-
-  if (screenWidth <= 768) {
-    popupContainer.style.left = `${screenWidth / 2}px`
-    popupContainer.style.top = `${screenHeight / 2}px`
-    popupContainer.style.transform = 'translate(-50%, -50%)'
-    popupContainer.style.width = '90vw'
-    popupContainer.style.maxWidth = '400px'
-  }
 }
 
 const makePopupDraggable = (popupContainer, view) => {
   if (!popupContainer) return
 
-  adjustPopupForMobile(popupContainer)
   popupContainer.style.position = 'absolute'
   popupContainer.style.cursor = 'move'
   popupContainer.style.zIndex = '300'
@@ -65,7 +48,7 @@ const makePopupDraggable = (popupContainer, view) => {
     popupContainer.style.transition = ''
   }
 
-  view.popup.watch('visible', (isVisible) => {
+  view.watch('popup.visible', (isVisible) => {
     if (isVisible && lastPosition.left !== null && lastPosition.top !== null) {
       popupContainer.style.left = `${lastPosition.left}px`
       popupContainer.style.top = `${lastPosition.top}px`
@@ -83,6 +66,39 @@ const makePopupDraggable = (popupContainer, view) => {
   }
 }
 
+const adjustPopupPosition = (view) => {
+  if (view.popup.visible && view.popup.selectedFeature) {
+    const feature = view.popup.selectedFeature
+    view.whenLayerView(feature.layer).then(() => {
+      const screenPoint = view.toScreen(feature.geometry)
+      const popupContainer = document.querySelector('.esri-popup')
+
+      if (popupContainer) {
+        let offsetX = screenPoint.x < window.innerWidth / 2 ? 120 : -280
+        let offsetY = screenPoint.y < window.innerHeight / 2 ? 100 : -250
+
+        let newLeft = screenPoint.x + offsetX
+        let newTop = screenPoint.y + offsetY
+
+        const padding = 20
+        const maxLeft = window.innerWidth - popupContainer.clientWidth - padding
+        const maxTop =
+          window.innerHeight - popupContainer.clientHeight - padding
+
+        if (newLeft < padding) newLeft = padding
+        if (newTop < padding) newTop = padding
+        if (newLeft > maxLeft) newLeft = maxLeft
+        if (newTop > maxTop) newTop = maxTop
+
+        console.log('maxTopmaxTop', popupContainer.style.top)
+
+        popupContainer.style.left = `${newLeft}px`
+        popupContainer.style.top = `${newTop}px`
+      }
+    })
+  }
+}
+
 const Map = ({ initialViewProperties }) => {
   const mapDiv = useRef(null)
   const viewRef = useRef(null)
@@ -93,8 +109,7 @@ const Map = ({ initialViewProperties }) => {
   const layerstoset = useLayers(renderer.renderers)
 
   useEffect(() => {
-    if (!mapDiv.current || viewRef.current || mapDiv.current.offsetHeight === 0)
-      return
+    if (!mapDiv.current || viewRef.current) return
 
     const customBasemapLayer = new TileLayer({
       url:
@@ -126,7 +141,7 @@ const Map = ({ initialViewProperties }) => {
               ymin: -20037508.34,
               xmax: 20037508.34,
               ymax: 20037508.34,
-              spatialReference: { wkid: 102100 }, // Web Mercator Projection
+              spatialReference: { wkid: 102100 },
             },
           },
           popup: {
@@ -143,36 +158,44 @@ const Map = ({ initialViewProperties }) => {
           container: mapDiv.current,
           map: webMap,
           constraints: {
-            rotationEnabled: false,
             minZoom: 3,
             maxZoom: 18,
           },
           popup: {
-            popupEnabled: true,
             dockEnabled: false,
-            dockOptions: {
-              buttonEnabled: false,
-              breakpoint: false,
-            },
+            collapseEnabled: false,
           },
           ...initialViewProperties,
         })
-
-    view.navigation = {
-      browserTouchPanEnabled: true,
-      mouseWheelZoomEnabled: true,
-      multiTouchZoomEnabled: true,
-    }
 
     viewRef.current = view
 
     let cleanupDraggable = null
 
+    view.when(() => {
+      view.watch('popup.visible', (isVisible) => {
+        if (isVisible) {
+          console.log('Popup opened')
+          adjustPopupPosition(view)
+        }
+      })
+
+      view.on('click', async (event) => {
+        const response = await view.hitTest(event)
+        if (response.results.length > 0) {
+          view.popup.open({
+            location: event.mapPoint,
+            features: [response.results[0].graphic],
+          })
+          setTimeout(() => adjustPopupPosition(view), 100)
+        }
+      })
+    })
+
     const interval = setInterval(() => {
       const popupContainer = document.querySelector('.esri-popup')
       if (popupContainer && !cleanupDraggable) {
-        cleanupDraggable = makePopupDraggable(popupContainer)
-        adjustPopupForMobile(popupContainer)
+        cleanupDraggable = makePopupDraggable(popupContainer, view)
       } else if (!popupContainer && cleanupDraggable) {
         cleanupDraggable()
         cleanupDraggable = null
@@ -246,39 +269,33 @@ const Map = ({ initialViewProperties }) => {
     return () => {
       clearInterval(interval)
       if (viewRef.current) {
-        viewRef.current
-          .when(() => {
-            viewRef.current.destroy()
-            viewRef.current = null
-          })
-          .catch((error) => {
-            console.error('Error when closing the view:', error)
-          })
+        viewRef.current.destroy()
+        viewRef.current = null
       }
       if (cleanupDraggable) {
         cleanupDraggable()
       }
     }
-  }, [isMobile()])
+  }, [isMobile(), viewRef])
 
   useEffect(() => {
     const webMap = viewRef.current?.map
-    if (!webMap || layerstoset?.length === 0) return
+    if (!webMap || !layerstoset) return
 
-    const newLayer = layerstoset ? layerstoset[0] : ''
-    const existingLayer = webMap.findLayerById(newLayer.id)
+    const newLayer = layerstoset.length > 0 ? layerstoset[0] : null
 
-    if (!existingLayer) {
-      if (currentLayerRef.current) {
-        webMap.remove(currentLayerRef.current)
-      }
-      if (viewRef.current.popup.visible) {
-        viewRef.current.popup.close()
-      }
-      if (viewRef.current) {
-        webMap.add(newLayer)
-        currentLayerRef.current = newLayer
-      }
+    if (currentLayerRef.current) {
+      webMap.remove(currentLayerRef.current)
+      currentLayerRef.current = null
+    }
+
+    if (newLayer) {
+      webMap.add(newLayer)
+      currentLayerRef.current = newLayer
+    }
+
+    if (viewRef.current && viewRef.current.popup.visible) {
+      viewRef.current.popup.close()
     }
   }, [layerstoset])
 
@@ -296,9 +313,8 @@ const Map = ({ initialViewProperties }) => {
           position: 'relative',
         }}
       />
-
       {layerstoset && layerstoset.length > 0 && (
-        <Details layerId={queryParameters?.layer}></Details>
+        <Details layerId={queryParameters?.layer} />
       )}
     </div>
   )

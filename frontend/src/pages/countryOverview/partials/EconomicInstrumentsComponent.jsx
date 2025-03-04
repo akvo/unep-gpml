@@ -2,6 +2,7 @@ import React from 'react'
 import { Card, Row, Col, Typography, Tooltip } from 'antd'
 import { InfoCircleOutlined } from '@ant-design/icons'
 import { getBaseUrl } from '../../../utils/misc'
+import { t, Trans } from '@lingui/macro'
 
 const { Title, Text } = Typography
 
@@ -16,27 +17,26 @@ const EconomicInstrumentsComponent = ({
 }) => {
   const baseUrl = getBaseUrl()
   const economicPolicyData = [
-    { count: cashReturn, text: 'Cash for return schemes' },
+    { count: cashReturn, text: t`Cash for return schemes` },
     {
       count: subsidies,
-      text: 'Subsidies supporting plastic pollution reduction',
+      text: t`Subsidies supporting plastic pollution reduction`,
     },
     {
       count: disincentives,
-      text:
-        'Disincentives to irresponsible plastic stewardship​',
+      text: t`Disincentives to irresponsible plastic stewardship​`,
     },
     {
       count: education,
-      text: 'Regulatory instruments on education and outreach​',
+      text: t`Regulatory instruments on education and outreach`,
     },
     {
       count: dataCollection,
-      text: 'Regulatory instruments on plastics data collection​',
+      text: t`Regulatory instruments on plastics data collection`,
     },
     {
       count: labeling,
-      text: 'Regulatory instruments on plastics labelling​',
+      text: t`Regulatory instruments on plastics labelling​`,
     },
   ]
 
@@ -110,9 +110,15 @@ const EconomicInstrumentsComponent = ({
           fontWeight: '500',
         }}
       >
-        <strong style={{ color: '#020A5B' }}>{decodeURIComponent(country)}</strong> has implemented
-        the following economic and information policy instruments on plastics:
-        <Tooltip title="See the global dataset">
+        <strong style={{ color: '#020A5B' }}>
+          {decodeURIComponent(country)}
+        </strong>{' '}
+        <Trans>
+          {' '}
+          has implemented the following economic and information policy
+          instruments on plastics:
+        </Trans>
+        <Tooltip title={t`See the global dataset`}>
           <a
             href={`${baseUrl}/data/maps?categoryId=governance-and-regulations&subcategoryId=Economic-instruments`}
             target="_blank"
