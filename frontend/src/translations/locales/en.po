@@ -1038,7 +1038,8 @@ msgid "Data Source"
 msgstr "Data Source"
 
 #: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:161
-#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:213
+#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:195
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:214
 msgid "Data source:"
 msgstr "Data source:"
 
@@ -1535,6 +1536,7 @@ msgstr "Explore the data layers"
 msgid "Explore the resources"
 msgstr "Explore the resources"
 
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:186
 #: src/modules/profile/admin.jsx:887
 msgid "Export"
 msgstr "Export"
@@ -1575,6 +1577,10 @@ msgstr "Filtering by:"
 #: src/modules/knowledge-lib/filter-modal.jsx:182
 msgid "Filters"
 msgstr "Filters"
+
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:25
+msgid "Final manufactured plastic goods"
+msgstr "Final manufactured plastic goods"
 
 #: src/pages/workspace/[slug]/7-final-review/index.js:20
 #: src/pages/workspace/[slug]/layout.js:51
@@ -2044,6 +2050,10 @@ msgstr "Impact. What impacts or harms does the initiative relate to? (Please tic
 msgid "Implementing MEA"
 msgstr "Implementing MEA"
 
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:186
+msgid "Import"
+msgstr "Import"
+
 #: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:31
 msgid "Import or export layer not found."
 msgstr "Import or export layer not found."
@@ -2176,6 +2186,14 @@ msgstr "Institutional development"
 #: src/pages/workspace/[slug]/layout.js:24
 msgid "Instructions"
 msgstr "Instructions"
+
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:24
+msgid "Intermediate forms of plastic"
+msgstr "Intermediate forms of plastic"
+
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:27
+msgid "Intermediate manufactured plastic goods"
+msgstr "Intermediate manufactured plastic goods"
 
 #: src/modules/signup/view.jsx:48
 #: src/store.js:166
@@ -2615,6 +2633,7 @@ msgid "Microplastics"
 msgstr "Microplastics"
 
 #: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:119
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:176
 msgid "million US dollars"
 msgstr "million US dollars"
 
@@ -3143,12 +3162,18 @@ msgid "Pinned Documents"
 msgstr "Pinned Documents"
 
 #: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:75
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:134
 msgid "Plastic import & export value for {0}"
 msgstr "Plastic import & export value for {0}"
 
 #: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:74
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:133
 msgid "Plastic import & export value\\nfor {0}"
 msgstr "Plastic import & export value\\nfor {0}"
+
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:23
+msgid "Plastic in primary form"
+msgstr "Plastic in primary form"
 
 #: src/store.js:645
 msgid "Plastic Odyssey: The Expedition Around The World To Fight Against Plastic Pollution"
@@ -4309,7 +4334,8 @@ msgstr "Type Of Law"
 msgid "Type of the entity"
 msgstr "Type of the entity"
 
-#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:220
+#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:202
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:221
 msgid "UNCTAD 2021"
 msgstr "UNCTAD 2021"
 

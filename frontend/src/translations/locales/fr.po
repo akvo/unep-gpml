@@ -1038,7 +1038,8 @@ msgid "Data Source"
 msgstr "Source de l'information"
 
 #: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:161
-#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:213
+#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:195
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:214
 msgid "Data source:"
 msgstr ""
 
@@ -1551,6 +1552,7 @@ msgstr "Explorez les couches de données"
 msgid "Explore the resources"
 msgstr "Explorez les ressources"
 
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:186
 #: src/modules/profile/admin.jsx:887
 msgid "Export"
 msgstr "Exporter"
@@ -1591,6 +1593,10 @@ msgstr "Filtrage par :"
 #: src/modules/knowledge-lib/filter-modal.jsx:182
 msgid "Filters"
 msgstr "Filtres"
+
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:25
+msgid "Final manufactured plastic goods"
+msgstr ""
 
 #: src/pages/workspace/[slug]/7-final-review/index.js:20
 #: src/pages/workspace/[slug]/layout.js:51
@@ -2072,6 +2078,10 @@ msgstr "Impact. À quels impacts ou préjudices l’initiative est-elle liée ?
 msgid "Implementing MEA"
 msgstr "Mise en œuvre du MEA"
 
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:186
+msgid "Import"
+msgstr ""
+
 #: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:31
 msgid "Import or export layer not found."
 msgstr ""
@@ -2204,6 +2214,14 @@ msgstr "Développement institutionnel"
 #: src/pages/workspace/[slug]/layout.js:24
 msgid "Instructions"
 msgstr "Instructions"
+
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:24
+msgid "Intermediate forms of plastic"
+msgstr ""
+
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:27
+msgid "Intermediate manufactured plastic goods"
+msgstr ""
 
 #: src/modules/signup/view.jsx:48
 #: src/store.js:166
@@ -2643,6 +2661,7 @@ msgid "Microplastics"
 msgstr "Microplastiques"
 
 #: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:119
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:176
 msgid "million US dollars"
 msgstr ""
 
@@ -3175,11 +3194,17 @@ msgid "Pinned Documents"
 msgstr "Documents épinglés"
 
 #: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:75
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:134
 msgid "Plastic import & export value for {0}"
 msgstr ""
 
 #: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:74
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:133
 msgid "Plastic import & export value\\nfor {0}"
+msgstr ""
+
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:23
+msgid "Plastic in primary form"
 msgstr ""
 
 #: src/store.js:645
@@ -4347,7 +4372,8 @@ msgstr "Type de loi"
 msgid "Type of the entity"
 msgstr "Type de l'entité"
 
-#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:220
+#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:202
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:221
 msgid "UNCTAD 2021"
 msgstr ""
 
