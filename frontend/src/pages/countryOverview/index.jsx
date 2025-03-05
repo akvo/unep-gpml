@@ -172,6 +172,16 @@ const CountryOverview = () => {
     placeholders['exportIncreasePercentage'] > 0 ? 'increased' : 'decreased'
   placeholders['exportTrend'] = exportTrend
 
+  const importIncreaseValue = placeholders['importIncreasePercentage']
+  const exportIncreaseValue = placeholders['exportIncreasePercentage']
+
+  placeholders['importIncreasePercentage'] = Math.abs(
+    importIncreaseValue
+  ).toFixed(1)
+  placeholders['exportIncreasePercentage'] = Math.abs(
+    exportIncreaseValue
+  ).toFixed(1)
+
   const wrapPlaceholders = (template) => {
     return template.replace(/{{(.*?)}}/g, (match, placeholder) => {
       const nonBreakingPlaceholder =
