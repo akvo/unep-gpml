@@ -81,6 +81,8 @@ const addTooltipsToPlaceholders = (htmlString, placeholders, tooltips) => {
   return parse(htmlString, options)
 }
 const CountryOverview = () => {
+  console.log('Trigger build')
+
   const router = useRouter()
   const { queryParameters, setQueryParameters } = useQueryParameters()
   const [isMobile, setIsMobile] = useState(false)
