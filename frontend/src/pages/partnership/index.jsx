@@ -59,31 +59,6 @@ function Partnership({ isAuthenticated }) {
   const containerRef = useRef(null)
 
   const onSubmit = async (values) => {
-    const tagsArray = values.tags.map((tag) => tag.toLowerCase())
-    const matchedTags = tagsArray.map((tagValue) => {
-      const lowerCaseTagValue = tagValue.toLowerCase()
-
-      let foundTagCategory = null
-      let foundTag = null
-
-      Object.keys(tags).forEach((tagCategory) => {
-        if (!foundTag) {
-          foundTag = tags[tagCategory].find(
-            (o) => o.tag.toLowerCase() === lowerCaseTagValue
-          )
-          if (foundTag) {
-            foundTagCategory = tagCategory
-          }
-        }
-      })
-
-      if (foundTag) {
-        return { ...foundTag, tag_category: foundTagCategory }
-      } else {
-        return { tag: tagValue, tag_category: 'general' }
-      }
-    })
-
     const data = {
       name: values.orgName,
       url: ensureHttps(values.url),
