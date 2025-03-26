@@ -119,7 +119,6 @@ const formConfigs = {
           name: 'videos',
           label: 'Videos',
           span: 12,
-          required: true,
           initialValue: [''],
         },
       ],
@@ -144,7 +143,7 @@ const formConfigs = {
         { name: 'purpose', span: 12, required: true },
       ],
       [{ name: 'highlights', span: 24, initialValue: [{ text: '', url: '' }] }],
-      [{ name: 'outcomes', span: 24, required: true, initialValue: [''] }],
+      [{ name: 'outcomes', span: 24, initialValue: [''] }],
       [
         { name: 'relatedContent', span: 12 },
         { name: 'infoDocs', span: 12 },

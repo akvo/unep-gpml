@@ -16,8 +16,10 @@ import { lifecycleStageTags, resourceTypeToTopicType } from '../../utils/misc'
 import { useEffect, useState } from 'react'
 import api from '../../utils/api'
 import classNames from 'classnames'
-import { Button, notification, Popover, Row, Skeleton } from 'antd'
+import { Button, Modal, notification, Popover, Row, Skeleton } from 'antd'
 import { MoreOutlined } from '@ant-design/icons'
+import ResourceCards from '../../components/resource-cards/resource-cards'
+import { Trans } from '@lingui/macro'
 
 const ProjectDetail = ({ data: inData, isModal, setVisible }) => {
   const [data, setData] = useState(inData)
@@ -252,6 +254,28 @@ const ProjectDetail = ({ data: inData, isModal, setVisible }) => {
                 </div>
               </div>
             </div>
+            {data?.relatedContent &&
+              data?.relatedContent?.length > 0 &&
+              data?.relatedContent.length > 0 && (
+                <div className="cols">
+                  <div className="col" style={{ marginTop: '20px' }}>
+                    <h3 className="h-m w-bold">
+                      <Trans>Related content</Trans>
+                    </h3>
+                    <div className="section section-related-content">
+                      <div className="resource-cards-wrapper">
+                        <div className="related-content-container">
+                          <ResourceCards
+                            items={data?.relatedContent}
+                            showMoreCardAfter={20}
+                            showMoreCardHref={'/knowledge/library'}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
           </>
         )}
       </div>
