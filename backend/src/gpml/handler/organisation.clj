@@ -200,7 +200,7 @@
          [:name string?]
          [:url string?]
          [:is_member boolean?]
-         [:country int?]
+         [:country {:optional true} int?]
          [:geo_coverage_type geo/coverage_type]
          [:tags {:optional true}
           [:vector {:optional true}
