@@ -116,7 +116,7 @@ const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
           : t`Plastic ${
               chartType === 'import' ? 'import' : 'export'
             } by type for ${decodeURIComponent(country)}`,
-      subtext: t`In 1000 metric tons for year ${2021 || 'N/A'}`,
+      subtext: t`In 1000 metric tons for year ${2022 || 'N/A'}`,
       left: 'center',
       textStyle: {
         fontSize: window.innerWidth < 768 ? 14 : 18,
@@ -199,7 +199,7 @@ const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
           rel="noopener noreferrer"
           style={{ color: '#020A5B', fontWeight: 'bold' }}
         >
-          <Trans> UNCTAD 2021</Trans>
+          <Trans> UNCTAD 2022</Trans>
         </a>{' '}
       </div>
     </div>

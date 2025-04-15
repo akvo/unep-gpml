@@ -218,7 +218,7 @@ const PlasticImportExportChart = ({ layers, loading }) => {
           rel="noopener noreferrer"
           style={{ color: '#020A5B', fontWeight: 'bold' }}
         >
-          <Trans> UNCTAD 2021</Trans>
+          <Trans> UNCTAD 2022</Trans>
         </a>{' '}
       </div>
     </div>
