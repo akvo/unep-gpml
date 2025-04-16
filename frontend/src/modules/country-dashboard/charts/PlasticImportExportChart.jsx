@@ -165,7 +165,7 @@ const PlasticImportExportChart = ({ layers, loading }) => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          UNCTAD 2021
+          UNCTAD 2022
         </a>
       </div>
     </div>
