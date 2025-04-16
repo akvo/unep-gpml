@@ -40,6 +40,9 @@ backend_build () {
          --tag "${image_prefix}/backend:${CI_COMMIT}-staging" \
          --tag "${image_prefix}/backend:${CI_COMMIT}-prod" \
 	       --tag "${image_prefix}/backend:${CI_COMMIT}" backend
+
+  #Stop unused container to save memory
+  docker stop unep-gpml-db-1
 }
 
 frontend_build () {
