@@ -112,7 +112,6 @@ frontend_build_staging
 strapi_build
 nginx_build
 
-docker start unep-gpml-db-1
 if ! dci run --no-TTY ci ./basic.sh; then
   echo "Build failed when running basic.sh. Logs:"
   dci logs
