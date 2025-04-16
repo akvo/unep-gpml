@@ -3,7 +3,7 @@
 
 set -euo pipefail
 
-export NODE_OPTIONS="--max-old-space-size=3072"
+export NODE_OPTIONS="--max-old-space-size=2800"
 
 yarn install --no-progress --frozen-lock
 #yarn eslint src/
