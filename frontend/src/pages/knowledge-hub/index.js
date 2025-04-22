@@ -18,6 +18,7 @@ import { DownOutlined, LoadingOutlined } from '@ant-design/icons'
 import { loadCatalog } from '../../translations/utils'
 import Link from 'next/link'
 import { useLifecycleStageTags } from '../../utils/misc'
+import Head from 'next/head'
 // import { lifecycleStageTags } from '../../utils/misc'
 
 export const getCountryIdsFromGeoGroups = (
@@ -349,12 +350,15 @@ const KnowledgeHub = ({
   }
   return (
     <div className={styles.knowledgeHub}>
+      <Head>
+        <title>Knowledge Library | Global Plastics Hub</title>
+      </Head>
       <aside className="filter-sidebar">
         <div className="sticky">
           <Input
             className="src"
             allowClear
-            placeholder={t`Search Resources`}
+            placeholder={t`Search The Knowledge Hub`}
             value={searchInput}
             onChange={handleSearchChange}
           />

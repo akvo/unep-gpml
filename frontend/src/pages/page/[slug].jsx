@@ -47,7 +47,7 @@ const StrapiPage = ({ pageData }) => {
   return (
     <div className={styles.page}>
       <Head>
-        <title>{pageData.attributes.title}</title>
+        <title>{pageData.attributes.title} | Global Plastics Hub</title>
       </Head>
       <div className="container">
         <h1 className="h-l">{pageData.attributes.title}</h1>

@@ -29,7 +29,6 @@ const Page = ({ isAuthenticated, setLoginVisible, profile, setShouldJoin }) => {
     nonMemberOrganisations: s.nonMemberOrganisations,
   }))
 
-
   useEffect(() => {
     fetch(`${strapiUrl}/api/cops?locale=en&populate=attachments`)
       .then((d) => d.json())
@@ -65,7 +64,7 @@ const Page = ({ isAuthenticated, setLoginVisible, profile, setShouldJoin }) => {
   return (
     <>
       <Head>
-        <title>Communities of Practice | UNEP GPML Digital Platform</title>
+        <title>Communities of Practice | Global Plastics Hub</title>
       </Head>
       <div className={styles.page}>
         <div className="container">
@@ -100,11 +99,17 @@ const Page = ({ isAuthenticated, setLoginVisible, profile, setShouldJoin }) => {
                 </div>
                 <div className="col">
                   <div className="label">Lead</div>
-                  <LinkTag id={cop.lead} orgs={[...organisations, ...nonMemberOrganisations]} />
+                  <LinkTag
+                    id={cop.lead}
+                    orgs={[...organisations, ...nonMemberOrganisations]}
+                  />
                   <div className="label">Members</div>
                   <div className="members">
                     {cop.members?.split(',').map((member) => (
-                      <LinkTag id={member} orgs={[...organisations, ...nonMemberOrganisations]} />
+                      <LinkTag
+                        id={member}
+                        orgs={[...organisations, ...nonMemberOrganisations]}
+                      />
                     ))}
                   </div>
                   {allForums?.length > 0 && cop.forumId && (

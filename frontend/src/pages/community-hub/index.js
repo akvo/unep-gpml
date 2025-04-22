@@ -13,6 +13,7 @@ import api from '../../utils/api'
 import StakeholderCard from '../../components/stakeholder-card/stakeholder-card'
 import Link from 'next/link'
 import DetailModal from '../../modules/community-hub/modal'
+import Head from 'next/head'
 
 const itemsPerPage = 30
 
@@ -146,20 +147,29 @@ const CommunityHub = ({ setLoginVisible, isAuthenticated, profile }) => {
   }
   return (
     <div className={kbStyles.knowledgeHub}>
+      <Head>
+        <title>Partner Network | Global Plastics Hub</title>
+      </Head>
       <aside className="filter-sidebar">
         <div className="sticky">
           <Input
             className="src"
             allowClear
-            placeholder="Search Community"
+            placeholder={t`Search The Partner Network`}
             // value={searchInput}
             onChange={handleSearchChange}
           />
-          <div className="caps-heading-xs">browse the community by</div>
+          <div className="caps-heading-xs">
+            <Trans>browse the community by</Trans>
+          </div>
           <Collapse activeKey={collapseKeys} onChange={handleCollapseChange}>
             <Collapse.Panel
               key="p1"
-              header={<h4 className="h-xs w-semi">Resource Type</h4>}
+              header={
+                <h4 className="h-xs w-semi">
+                  <Trans>Resource Type</Trans>
+                </h4>
+              }
             >
               <div className="filters">
                 {types.map((type) => (
@@ -175,7 +185,11 @@ const CommunityHub = ({ setLoginVisible, isAuthenticated, profile }) => {
             </Collapse.Panel>
             <Collapse.Panel
               key="p2"
-              header={<h4 className="h-xs w-semi">Geography</h4>}
+              header={
+                <h4 className="h-xs w-semi">
+                  <Trans>Geography</Trans>
+                </h4>
+              }
             >
               <div className="filters">
                 {featuredOptions.map((type) => (
@@ -237,7 +251,9 @@ const CommunityHub = ({ setLoginVisible, isAuthenticated, profile }) => {
           {results?.length === 0 && !loading && (
             <>
               <div className="no-results">
-                <h4 className="caps-heading-s">No results</h4>
+                <h4 className="caps-heading-s">
+                  <Trans>No results</Trans>
+                </h4>
               </div>
             </>
           )}
