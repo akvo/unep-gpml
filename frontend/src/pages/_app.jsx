@@ -278,9 +278,12 @@ function MyApp({ Component, pageProps }) {
     <div id="root">
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#000000" />
-        <meta name="description" content="GPML Digital Platform" />
-        <title>UNEP GPML Digital Platform</title>
+        <meta name="theme-color" content="#020A5C" />
+        <meta
+          name="description"
+          content="The central platform for global efforts to end plastic pollution and marine litter. It supports the Global Plastics Treaty and the 2030 Agenda by raising awareness, enabling inclusive access to data and resources, and fostering collaboration across all stakeholders."
+        />
+        <title>Global Plastics Hub</title>
       </Head>
       <Auth0Provider
         domain={domain}
