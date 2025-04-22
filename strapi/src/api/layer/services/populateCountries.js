@@ -9,7 +9,6 @@ function parseNumber(value) {
 
 module.exports = {
     async populateCountriesForLayers(arcgislayerId, outFields) {
-
         try {
             const layer = await strapi.entityService.findMany('api::layer.layer', {
                 filters: { arcgislayerId },
@@ -58,8 +57,9 @@ module.exports = {
                 return;
             }     
             const valuePerCountryData = countries.flatMap((country) => {
-                const countryRows = groupedData[country['CountryCode']] || [];
-              
+                const key = country['CountryName']; //country['CountryCode'] ||
+                const countryRows = groupedData[key] || [];
+           
                 return countryRows?.map((row) => ({
                     Value: parseNumber(Math.round(row[outFields[1]]).toFixed(2)), 
                     City: outFields[3] && row[outFields[3]] ? row[outFields[3]] : "",
@@ -70,12 +70,12 @@ module.exports = {
             });
 
             const batchSize = 20;
-
+            const baseUrl = process.env.STRAPI_URL || 'http://localhost:1337';
             for (let i = 0; i < valuePerCountryData.length; i += batchSize) {
                 const batch = valuePerCountryData.slice(i, i + batchSize);
 
-              await axios.post(`https://unep-gpml.akvotest.org/strapi/api/countries/${layerId}/append-value-per-country`, batch);
-
+              await axios.post(`${baseUrl}/api/countries/${layerId}/append-value-per-country`, batch);
+                // await appendValuePerCountryDirect(layerId, batch);
                 console.log(`Uploaded batch of ${batch.length} records.`);
             }
 
@@ -85,3 +85,28 @@ module.exports = {
         }
     },
 };
+
+async function appendValuePerCountryDirect(layerId, entries) {
+    try {
+        const layer = await strapi.entityService.findOne(
+            "api::layer.layer",
+            layerId,
+            {
+                populate: { ValuePerCountry: true },
+            }
+        );
+
+        const updatedValuePerCountry = [...layer.ValuePerCountry, ...entries];
+        
+        await strapi.entityService.update("api::layer.layer", layerId, {
+            data: {
+                ValuePerCountry: updatedValuePerCountry,
+            },
+        });
+        
+        return { success: true };
+    } catch (error) {
+        console.error("Failed to append entries:", error);
+        throw error;
+    }
+}
