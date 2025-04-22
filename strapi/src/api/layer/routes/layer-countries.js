@@ -34,5 +34,13 @@ module.exports = {
                 auth: false,
             },
         },
+        {
+            method: 'POST',
+            path: '/countries/populate-countries-layer',
+            handler: 'layer-countries-controller.populateCountriesLayer',
+            config: {
+                auth: false,
+            },
+        },
     ],
 };
