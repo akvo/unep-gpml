@@ -289,6 +289,12 @@ const ShowcasingAndStats = (props) => {
               width={146}
               height={146}
             />
+            <Image
+              src="/powered-by-gpml.svg"
+              alt="UNEP"
+              width={146}
+              height={146}
+            />
           </div>
         </div>
       </div>
