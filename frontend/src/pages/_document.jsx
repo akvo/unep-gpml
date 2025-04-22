@@ -20,7 +20,8 @@ class MyDocument extends Document {
             name="google-site-verification"
             content="RXyUT_0q_mUGWf-PPJlArc9gPyo_axbLOI446F7o0z0"
           />
-          <link rel="apple-touch-icon" href="/logo192.png" />
+          <meta name="og:image" content="/apple-touch-icon.png" />
+          <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
           <link
             href="https://fonts.googleapis.com/css2?family=Jost:wght@200..900&display=swap"
             rel="stylesheet"
