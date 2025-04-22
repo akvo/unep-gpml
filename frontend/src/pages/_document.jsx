@@ -11,10 +11,10 @@ class MyDocument extends Document {
       <Html>
         <Head>
           <meta charSet="utf-8" />
-          <link rel="icon" href="/favicon.ico" />
+          <link rel="icon" href="/favicon.ico?v=2" />
           <meta
-            name="abstract"
-            content="A multi-stakeholder partnership which brings together all the actors working on marine litter prevention and reduction."
+            name="description"
+            content="The central platform for global efforts to end plastic pollution and marine litter. It supports the Global Plastics Treaty and the 2030 Agenda by raising awareness, enabling inclusive access to data and resources, and fostering collaboration across all stakeholders."
           />
           <meta
             name="google-site-verification"
