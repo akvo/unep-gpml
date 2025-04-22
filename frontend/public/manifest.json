@@ -1,9 +1,9 @@
 {
   "short_name": "UNEP GPML",
-  "name": "UNEP GPML Digital Platform",
+  "name": "Global Plastics Hub",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "favicon.ico?v=2",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
