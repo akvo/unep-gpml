@@ -128,8 +128,14 @@ const NewLayout = ({
             <div className="container-fluid">
               <Link href="/">
                 <div className="logo-container">
-                  <div className="circle">
-                    {/* <GpmlCircle /> */}
+                  <div className="combined">
+                    <Image
+                      src="/combined-logo.png?v=2"
+                      width={190}
+                      height={64}
+                    />
+                  </div>
+                  {/* <div className="circle">
                     <Image src="/Logo-white.png" width={81} height={74} />
                   </div>
                   <h5>
@@ -138,7 +144,7 @@ const NewLayout = ({
                     on Plastic Pollution
                     <br />
                     and Marine Litter
-                  </h5>
+                  </h5> */}
                 </div>
               </Link>
               {width >= 768 && (
