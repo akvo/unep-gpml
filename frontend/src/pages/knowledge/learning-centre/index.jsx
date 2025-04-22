@@ -76,7 +76,7 @@ function CapacityBuilding({ initialItems }) {
   return (
     <>
       <Head>
-        <title>Learning Centre | UNEP GPML Digital Platform</title>
+        <title>Learning Centre | Global Plastics Hub</title>
       </Head>
       <div className={`${styles.learningCentre} container`}>
         <h1>

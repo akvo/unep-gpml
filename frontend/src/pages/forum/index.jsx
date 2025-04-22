@@ -115,7 +115,7 @@ const Forum = ({
     <>
       <Head>
         {/* HTML Meta Tags */}
-        <title>Forums | UNEP GPML Digital Platform</title>
+        <title>Forums | Global Plastics Hub</title>
       </Head>
       <div className="container">
         <div className={styles.forumHome}>

@@ -28,6 +28,7 @@ const { Option } = Select
 import { useRouter } from 'next/router'
 import { auth0Client } from '../../utils/misc'
 import { loadCatalog } from '../../translations/utils'
+import Head from 'next/head'
 
 function Partnership({ isAuthenticated }) {
   const router = useRouter()
@@ -299,6 +300,9 @@ function Partnership({ isAuthenticated }) {
 
   return (
     <div className={styles.partnership}>
+      <Head>
+        <title>Join The Partnership | Global Plastics Hub</title>
+      </Head>
       <div className="hero">
         <div className="container">
           <Row align="middle" gutter={[24, 16]}>
