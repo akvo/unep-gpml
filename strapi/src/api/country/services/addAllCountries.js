@@ -3,7 +3,7 @@ const fetch = require('node-fetch');
 module.exports = {
     async addAllCountries(ctx) {
         try {
-            const response = await fetch('https://digital.gpmarinelitter.org/api/country');
+            const response = await fetch('https://globalplasticshub.org/api/country');
             const countries = await response.json();
 
             for (const country of countries) {

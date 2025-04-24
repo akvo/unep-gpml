@@ -232,27 +232,27 @@ const mainContentType = [
     examples: [
       {
         title: msg`Sustainable Industrial Zone Development`,
-        link: 'https://digital.gpmarinelitter.org/initiative/10031',
+        link: 'https://globalplasticshub.org/initiative/10031',
       },
       {
         title: msg`Environmentally Sound Management and Destruction of PCBs`,
-        link: 'https://digital.gpmarinelitter.org/initiative/10033',
+        link: 'https://globalplasticshub.org/initiative/10033',
       },
       {
         title: msg`Plastic Waste Management`,
-        link: 'https://digital.gpmarinelitter.org/initiative/10078',
+        link: 'https://globalplasticshub.org/initiative/10078',
       },
       {
         title: msg`Make Lome Plastic Free`,
-        link: 'https://digital.gpmarinelitter.org/initiative/10149',
+        link: 'https://globalplasticshub.org/initiative/10149',
       },
       {
         title: msg`SB 270: Statewide Bag Ban`,
-        link: 'https://digital.gpmarinelitter.org/initiative/10145',
+        link: 'https://globalplasticshub.org/initiative/10145',
       },
       {
         title: msg`California Ocean Litter Prevention Strategy`,
-        link: 'https://digital.gpmarinelitter.org/initiative/10177',
+        link: 'https://globalplasticshub.org/initiative/10177',
       },
     ],
     childs: [
@@ -289,27 +289,27 @@ const mainContentType = [
     examples: [
       {
         title: msg`PAME, Regional Action Plan on Marine Litter in the Arctic (May 2021)`,
-        link: 'https://digital.gpmarinelitter.org/action-plan/10017',
+        link: 'https://globalplasticshub.org/action-plan/10017',
       },
       {
         title: msg`HELCOM Regional action plan on marine litter`,
-        link: 'https://digital.gpmarinelitter.org/action-plan/122',
+        link: 'https://globalplasticshub.org/action-plan/122',
       },
       {
         title: msg`Gulf of Mexico Alliance Regional Action Plan`,
-        link: 'https://digital.gpmarinelitter.org/action-plan/260',
+        link: 'https://globalplasticshub.org/action-plan/260',
       },
       {
         title: msg`ASEAN Regional Action Plan for Combating Marine Debris in the ASEAN Member States (2021 – 2025)`,
-        link: 'https://digital.gpmarinelitter.org/action-plan/10008',
+        link: 'https://globalplasticshub.org/action-plan/10008',
       },
       {
         title: msg`COBSEA Regional Action Plan on Marine Litter 2019`,
-        link: 'https://digital.gpmarinelitter.org/action-plan/196',
+        link: 'https://globalplasticshub.org/action-plan/196',
       },
       {
         title: msg`Marine Litter in the Black Sea Region`,
-        link: 'https://digital.gpmarinelitter.org/action-plan/194',
+        link: 'https://globalplasticshub.org/action-plan/194',
       },
     ],
     childs: [
@@ -346,15 +346,15 @@ const mainContentType = [
     examples: [
       {
         title: msg`The National Environmental Act - Order No. 2034/33`,
-        link: 'https://digital.gpmarinelitter.org/policy/10539',
+        link: 'https://globalplasticshub.org/policy/10539',
       },
       {
         title: msg`The Act to Prevent Pollution from Ships`,
-        link: 'https://digital.gpmarinelitter.org/policy/10531',
+        link: 'https://globalplasticshub.org/policy/10531',
       },
       {
         title: msg`Sub-Decree No. 168 on the management of plastic bags`,
-        link: 'https://digital.gpmarinelitter.org/policy/10524',
+        link: 'https://globalplasticshub.org/policy/10524',
       },
     ],
     childs: [
@@ -403,27 +403,27 @@ const mainContentType = [
     examples: [
       {
         title: msg`Sustainable Development Bond on Sustainable Use of Oceans and Coastal Areas (“Blue Economy”)`,
-        link: 'https://digital.gpmarinelitter.org/financing-resource/50',
+        link: 'https://globalplasticshub.org/financing-resource/50',
       },
       {
         title: msg`Project to tackle marine litter and plastic pollution in Southeast Asia (SEA)`,
-        link: 'https://digital.gpmarinelitter.org/financing-resource/56',
+        link: 'https://globalplasticshub.org/financing-resource/56',
       },
       {
         title: msg`Global Partnership on Marine Litter`,
-        link: 'https://digital.gpmarinelitter.org/financing-resource/58',
+        link: 'https://globalplasticshub.org/financing-resource/58',
       },
       {
         title: msg`AI for Earth Grant`,
-        link: 'https://digital.gpmarinelitter.org/financing-resource/71',
+        link: 'https://globalplasticshub.org/financing-resource/71',
       },
       {
         title: msg`Norwegian Development Programme to Combat Marine Litter and Microplastics`,
-        link: 'https://digital.gpmarinelitter.org/financing-resource/248',
+        link: 'https://globalplasticshub.org/financing-resource/248',
       },
       {
         title: msg`Global Plastics Action Partnership (GPAP)`,
-        link: 'https://digital.gpmarinelitter.org/financing-resource/37',
+        link: 'https://globalplasticshub.org/financing-resource/37',
       },
     ],
     childs: [
@@ -481,27 +481,27 @@ const mainContentType = [
     examples: [
       {
         title: msg`Plastic Pollution Calculator`,
-        link: 'https://digital.gpmarinelitter.org/technical-resource/138',
+        link: 'https://globalplasticshub.org/technical-resource/138',
       },
       {
         title: msg`Harmonization of Microplastics Monitoring Methodologies in the Ocean`,
-        link: 'https://digital.gpmarinelitter.org/technical-resource/10007',
+        link: 'https://globalplasticshub.org/technical-resource/10007',
       },
       {
         title: msg`Guidelines For The Monitoring And Assessment Of Plastic Litter In The Ocean`,
-        link: 'https://digital.gpmarinelitter.org/technical-resource/10024',
+        link: 'https://globalplasticshub.org/technical-resource/10024',
       },
       {
         title: msg`Marine Litter Vital Graphics`,
-        link: 'https://digital.gpmarinelitter.org/technical-resource/109',
+        link: 'https://globalplasticshub.org/technical-resource/109',
       },
       {
         title: msg`Study on industry involvement in the integrated approach to financing the sound management of chemicals and waste, prepared by the SAICM Secretariat`,
-        link: 'https://digital.gpmarinelitter.org/technical-resource/10033',
+        link: 'https://globalplasticshub.org/technical-resource/10033',
       },
       {
         title: msg`Harm caused by Marine Litter`,
-        link: 'https://digital.gpmarinelitter.org/technical-resource/250',
+        link: 'https://globalplasticshub.org/technical-resource/250',
       },
     ],
     childs: [
@@ -562,27 +562,27 @@ const mainContentType = [
     examples: [
       {
         title: msg`SEA of Solutions 2021`,
-        link: 'https://digital.gpmarinelitter.org/event/10028',
+        link: 'https://globalplasticshub.org/event/10028',
       },
       {
         title: msg`Glasgow Climate Change Conference`,
-        link: 'https://digital.gpmarinelitter.org/event/28',
+        link: 'https://globalplasticshub.org/event/28',
       },
       {
         title: msg`G-STIC Conference Second Edition`,
-        link: 'https://digital.gpmarinelitter.org/event/33',
+        link: 'https://globalplasticshub.org/event/33',
       },
       {
         title: msg`Reef Futures Symposium`,
-        link: 'https://digital.gpmarinelitter.org/event/30',
+        link: 'https://globalplasticshub.org/event/30',
       },
       {
         title: msg`Unleashing marine robots for good`,
-        link: 'https://digital.gpmarinelitter.org/event/10040',
+        link: 'https://globalplasticshub.org/event/10040',
       },
       {
         title: msg`Action for the Oceans – Youth leaders raising awareness for the Oceans, together!`,
-        link: 'https://digital.gpmarinelitter.org/event/36',
+        link: 'https://globalplasticshub.org/event/36',
       },
     ],
     childs: [
@@ -631,27 +631,27 @@ const mainContentType = [
     examples: [
       {
         title: msg`Waste Free Oceans`,
-        link: 'https://digital.gpmarinelitter.org/technology/56',
+        link: 'https://globalplasticshub.org/technology/56',
       },
       {
         title: msg`Ellipsis: Machine learning and aerial imagery to identify, map, and track plastic waste`,
-        link: 'https://digital.gpmarinelitter.org/technology/58',
+        link: 'https://globalplasticshub.org/technology/58',
       },
       {
         title: msg`Fishing for Litter: Ocean cleaning project that involves fishermen who collect debris during fishing activities`,
-        link: 'https://digital.gpmarinelitter.org/technology/59',
+        link: 'https://globalplasticshub.org/technology/59',
       },
       {
         title: msg`Plastic Odyssey: The Expedition Around The World To Fight Against Plastic Pollution`,
-        link: 'https://digital.gpmarinelitter.org/technology/64',
+        link: 'https://globalplasticshub.org/technology/64',
       },
       {
         title: msg`SeaChange: Converting ocean plastics to inert, non-toxic glass safe for marine life`,
-        link: 'https://digital.gpmarinelitter.org/technology/66',
+        link: 'https://globalplasticshub.org/technology/66',
       },
       {
         title: msg`The 3R Initiative: Credit-based market system to encourage plastic recycling and recovery`,
-        link: 'https://digital.gpmarinelitter.org/technology/75',
+        link: 'https://globalplasticshub.org/technology/75',
       },
     ],
     childs: [
@@ -700,27 +700,27 @@ const mainContentType = [
     examples: [
       {
         title: msg`Our Coast is Dying`,
-        link: 'https://digital.gpmarinelitter.org/initiative/10150',
+        link: 'https://globalplasticshub.org/initiative/10150',
       },
       {
         title: msg`Massive Open Online Course (MOOC) on Marine Litter`,
-        link: 'https://digital.gpmarinelitter.org/technical-resource/149',
+        link: 'https://globalplasticshub.org/technical-resource/149',
       },
       {
         title: msg`Raising Awareness Amongst Students`,
-        link: 'https://digital.gpmarinelitter.org/initiative/10151',
+        link: 'https://globalplasticshub.org/initiative/10151',
       },
       {
         title: msg`Ocean Innovation Challenge`,
-        link: 'https://digital.gpmarinelitter.org/initiative/10063',
+        link: 'https://globalplasticshub.org/initiative/10063',
       },
       {
         title: msg`Action for the Oceans – Youth leaders raising awareness for the Oceans, together!`,
-        link: 'https://digital.gpmarinelitter.org/event/36',
+        link: 'https://globalplasticshub.org/event/36',
       },
       {
         title: msg`Preparing a Waste Management Plan - A Methodological Guidance Note`,
-        link: 'https://digital.gpmarinelitter.org/technical-resource/84',
+        link: 'https://globalplasticshub.org/technical-resource/84',
       },
     ],
     childs: [

@@ -6,13 +6,13 @@ website, through an API client.
 
 Detailed documentation for the API is available through a Swagger
 powered page at
-[https://digital.gpmarinelitter.org/api/docs/index.html](https://digital.gpmarinelitter.org/api/docs/index.html).
+[https://globalplasticshub.org/api/docs/index.html](https://globalplasticshub.org/api/docs/index.html).
 
 ## Fetching Data
 
 You can fetch the data for all the resources, visible on the Browse
 page, via the [browse
-endpoint](https://digital.gpmarinelitter.org/api/docs/index.html#/browse). All
+endpoint](https://globalplasticshub.org/api/docs/index.html#/browse). All
 the publicly available information can be fetched without
 authenticating your requests. To fetch information about organisations
 or individuals, the API requests would need to be authenticated.

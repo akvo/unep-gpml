@@ -1,4 +1,4 @@
-const EXTERNAL_DATA_URL = 'https://digital.gpmarinelitter.org/'
+const EXTERNAL_DATA_URL = 'https://globalplasticshub.org/'
 
 const dynamicRoutes = []
 

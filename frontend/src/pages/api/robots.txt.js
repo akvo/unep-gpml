@@ -22,7 +22,7 @@ export default function handler(req, res) {
       Allow: /financing-resource/
       Allow: /technology/
   
-      Sitemap: https://digital.gpmarinelitter.org/sitemap.xml
+      Sitemap: https://globalplasticshub.org/sitemap.xml
     `
 
   // Send robots.txt content as response
