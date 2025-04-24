@@ -29,7 +29,7 @@ export async function getServerSideProps(ctx) {
   const strapiUrl = getStrapiUrl()
   try {
     const urls = [
-      'https://digital.gpmarinelitter.org/api/browse?limit=1',
+      'https://globalplasticshub.org/api/browse?limit=1',
       `${strapiUrl}/api/cops?locale=en&populate=attachments`,
       `${strapiUrl}/api/layers?locale=en`,
     ]

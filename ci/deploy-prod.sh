@@ -28,7 +28,7 @@ prepare_deployment () {
     if [[ "${CI_TAG:=}" =~ promote.* ]]; then
 	cluster="production"
         APP_NAME="UNEP GPML"
-        APP_DOMAIN="digital.gpmarinelitter.org"
+        APP_DOMAIN="globalplasticshub.org"
         gcloud container clusters get-credentials "${cluster}"
 
         sed -e "s/\${CI_COMMIT}/${CI_COMMIT}-prod/g; s/\${APP_NAME}/${APP_NAME}/g; s/\${APP_DOMAIN}/${APP_DOMAIN}/g" \

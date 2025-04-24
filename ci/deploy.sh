@@ -35,7 +35,7 @@ prepare_deployment () {
     if [[ "${CI_TAG:=}" =~ promote.* ]]; then
 	cluster="production"
         APP_NAME="UNEP GPML"
-        APP_DOMAIN="digital.gpmarinelitter.org"
+        APP_DOMAIN="globalplasticshub.org"
     fi
 
     gcloud container clusters get-credentials "${cluster}"
