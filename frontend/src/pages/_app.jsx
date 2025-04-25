@@ -166,28 +166,28 @@ function MyApp({ Component, pageProps }) {
         if (resp.data && Object.keys(resp.data).length === 0) {
           const formData = {
             firstName: authResult.idTokenPayload[
-              'https://digital.gpmarinelitter.org/user_metadata'
+              'https://globalplasticshub.org/user_metadata'
             ]
               ? authResult.idTokenPayload[
-                  'https://digital.gpmarinelitter.org/user_metadata'
+                  'https://globalplasticshub.org/user_metadata'
                 ].firstName
               : authResult.idTokenPayload['given_name']
               ? authResult.idTokenPayload['given_name']
               : '',
             lastName: authResult.idTokenPayload[
-              'https://digital.gpmarinelitter.org/user_metadata'
+              'https://globalplasticshub.org/user_metadata'
             ]
               ? authResult.idTokenPayload[
-                  'https://digital.gpmarinelitter.org/user_metadata'
+                  'https://globalplasticshub.org/user_metadata'
                 ].lastName
               : authResult.idTokenPayload['family_name']
               ? authResult.idTokenPayload['family_name']
               : '',
             title: authResult.idTokenPayload[
-              'https://digital.gpmarinelitter.org/user_metadata'
+              'https://globalplasticshub.org/user_metadata'
             ]
               ? authResult.idTokenPayload[
-                  'https://digital.gpmarinelitter.org/user_metadata'
+                  'https://globalplasticshub.org/user_metadata'
                 ].title
               : '',
             publicEmail: false,
@@ -224,7 +224,7 @@ function MyApp({ Component, pageProps }) {
 
   useEffect(() => {
     const host = window?.location?.hostname
-    if (host === 'digital.gpmarinelitter.org') {
+    if (host === 'globalplasticshub.org') {
       setLoadScript(true)
     }
   }, [])

@@ -47,7 +47,7 @@ exports.onExecutePostLogin = async (event, api) => {
             });
 
             if (apiResponse.data.stakeholders && apiResponse.data.stakeholders[0] && apiResponse.data.stakeholders[0].role) {
-                api.idToken.setCustomClaim('https://digital.gpmarinelitter.org/role', apiResponse.data.stakeholders[0].role);
+                api.idToken.setCustomClaim('https://globalplasticshub.org/role', apiResponse.data.stakeholders[0].role);
             }
         } catch (err) {
             console.log(err);

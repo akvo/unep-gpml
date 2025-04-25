@@ -14,7 +14,7 @@ data:
               return 200 'OK';
           }
           location / {
-              return 301 https://digital.gpmarinelitter.org;
+              return 301 https://globalplasticshub.org;
           }
       }
 ---

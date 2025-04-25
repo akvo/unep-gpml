@@ -276,12 +276,12 @@ const Root = () => {
         api.setToken(authResult.idToken);
         if (
           authResult?.idTokenPayload?.hasOwnProperty(
-            "https://digital.gpmarinelitter.org/is_new"
+            "https://globalplasticshub.org/is_new"
           )
         ) {
           if (
             authResult?.idTokenPayload?.[
-              "https://digital.gpmarinelitter.org/is_new"
+              "https://globalplasticshub.org/is_new"
             ]
           ) {
             UIStore.update((e) => {
@@ -342,7 +342,7 @@ const Root = () => {
   }, [idToken, authResult]);
 
   useEffect(() => {
-    if (window.location.host === "digital.gpmarinelitter.org") {
+    if (window.location.host === "globalplasticshub.org") {
       ReactGA.initialize(TRACKING_ID);
     }
   }, []);

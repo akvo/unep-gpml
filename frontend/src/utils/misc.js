@@ -268,7 +268,7 @@ export function getStrapiUrl() {
   const domains = {
     test: 'unep-gpml.akvotest.org',
     staging: 'unep-gpml.akvotest.org',
-    prod: 'digital.gpmarinelitter.org',
+    prod: 'globalplasticshub.org',
   }
   return `https://${domains[$env]}/strapi`
 }
@@ -277,8 +277,8 @@ export function getBaseUrl() {
   let $env = process.env.NEXT_PUBLIC_ENV
   const domains = {
     test: 'unep-gpml.akvotest.org',
-    staging: 'digital.gpmarinelitter.org',
-    prod: 'digital.gpmarinelitter.org',
+    staging: 'globalplasticshub.org',
+    prod: 'globalplasticshub.org',
   }
   return `https://${domains[$env]}`
 }

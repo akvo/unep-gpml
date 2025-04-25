@@ -21,7 +21,7 @@ export async function getServerSideProps({ res }) {
     Allow: /financing-resource/
     Allow: /technology/
 
-    Sitemap: https://digital.gpmarinelitter.org/sitemap.xml
+    Sitemap: https://globalplasticshub.org/sitemap.xml
     `
 
   res.write(robotsTxt)
