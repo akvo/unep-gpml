@@ -58,6 +58,7 @@ const contentTypes = [
   'Technology',
   'Event',
   'Dataset',
+  'Case Study',
 ]
 
 const contentTypeMap = {
@@ -67,6 +68,7 @@ const contentTypeMap = {
   policy: 'Legislation',
   financing_resource: 'Financing Resource',
   technical_resource: 'Technical Resource',
+  case_study: 'Case Study',
   technology: 'Technology',
   event: 'Event',
   data_catalog: 'Dataset',
@@ -561,6 +563,58 @@ const formConfigs = {
       [
         { name: 'owner', span: 12 },
         { name: 'partners', span: 12 },
+      ],
+      [
+        { name: 'relatedContent', span: 12 },
+        { name: 'infoDocs', span: 12 },
+      ],
+    ],
+  },
+  'Case Study': {
+    rows: [
+      [{ name: 'url', span: 24, required: true }],
+      [{ name: 'title', span: 24, required: true }],
+      [{ name: 'summary', span: 24, required: true, label: 'Description' }],
+      [
+        { name: 'geoCoverageType', span: 12, required: true },
+        {
+          name: 'geoCoverageCountryGroups',
+          span: 12,
+          required: true,
+          dependsOn: {
+            field: 'geoCoverageType',
+            value: 'transnational',
+          },
+        },
+        {
+          name: 'geoCoverageCountries',
+          span: 12,
+          required: true,
+          dependsOn: {
+            field: 'geoCoverageType',
+            value: 'national',
+          },
+        },
+      ],
+      [
+        { name: 'lifecycleStage', span: 12, required: true },
+        { name: 'tags', span: 12, required: true },
+      ],
+      [
+        { name: 'image', span: 12, required: true },
+        { name: 'thumbnail', span: 12 },
+      ],
+      [
+        { name: 'owner', span: 12, required: true },
+        { name: 'partners', span: 12 },
+      ],
+      [
+        {
+          name: 'publishYear',
+          span: 12,
+          label: 'Publication Year',
+          required: true,
+        },
       ],
       [
         { name: 'relatedContent', span: 12 },
@@ -1389,7 +1443,7 @@ const FormField = React.memo(
                 input={input}
                 meta={meta}
                 fieldConfig={fieldConfig}
-                placeholder={`Select ${name}`}
+                placeholder={`Select Related Content`}
                 getSearchResults={(queryString) =>
                   api.get(`/list?${String(queryString)}`)
                 }
@@ -1833,6 +1887,7 @@ const DynamicContentForm = () => {
         Project: handleOnSubmitProject,
         Event: handleOnSubmitEvent,
         Initiative: handleOnSubmitInitiative,
+        'Case Study': handleOnSubmitCaseStudy,
         default: (data) => api[method](endpoint, data),
       }
 
@@ -1906,6 +1961,24 @@ const DynamicContentForm = () => {
       const response = await api.post('/technology', data)
       if (!response.data || response.error) {
         throw new Error(response.error || 'Failed to create technology')
+      }
+      return response
+    } catch (error) {
+      throw error
+    }
+  }
+
+  const handleOnSubmitCaseStudy = async (data) => {
+    delete data.resourceType
+    delete data.image
+    data.version = 2
+    data.subContentType = ''
+    data.individualConnections = []
+
+    try {
+      const response = await api.post('/case-study', data)
+      if (!response.data || response.error) {
+        throw new Error(response.error || 'Failed to create case study')
       }
       return response
     } catch (error) {
