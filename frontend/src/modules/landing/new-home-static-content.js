@@ -553,7 +553,7 @@ export const ourCommunity = [
     type: "stakeholder",
     about:
       "This is a fantastic resource for knowledge management, networking, accessing and managing data.",
-    image: "https://digital.gpmarinelitter.org/image/profile/27",
+    image: "https://globalplasticshub.org/image/profile/27",
     name: "Marvin Burman",
     role:
       "Assistant Executive Director - Gulf and Caribbean Fisheries Institute",
@@ -563,7 +563,7 @@ export const ourCommunity = [
     type: "stakeholder",
     about:
       "The platform makes it easier to discover stakeholders, events and experts in specific regions and fields.",
-    image: "https://digital.gpmarinelitter.org/image/profile/30",
+    image: "https://globalplasticshub.org/image/profile/30",
     name: "Fadilah Ali",
     role:
       "Assistant Executive Director - Gulf and Caribbean Fisheries Institute",

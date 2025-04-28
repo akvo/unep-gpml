@@ -55,7 +55,7 @@ module.exports = {
       },
       {
         protocol: 'https',
-        hostname: 'digital.gpmarinelitter.org',
+        hostname: 'globalplasticshub.org',
         port: '',
         pathname: '/**',
       },
@@ -74,7 +74,7 @@ module.exports = {
       domain = 'https://unep-gpml-staging.akvotest.org'
     }
     if (process.env.REACT_APP_FEENV_PROD) {
-      domain = 'https://digital.gpmarinelitter.org'
+      domain = 'https://globalplasticshub.org'
     }
     return [
       {

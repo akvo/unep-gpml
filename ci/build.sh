@@ -108,6 +108,8 @@ strapi_build () {
 
 
 backend_build
+docker stop unep-gpml-db-1
+
 frontend_build
 frontend_build_staging
 strapi_build

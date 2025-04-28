@@ -94,9 +94,9 @@ function Authentication() {
       ...(query && !query?.hasOwnProperty('exp') && query?.data),
       ...(query &&
         query?.hasOwnProperty(
-          'https://digital.gpmarinelitter.org/user_metadata'
+          'https://globalplasticshub.org/user_metadata'
         ) &&
-        query?.['https://digital.gpmarinelitter.org/user_metadata']),
+        query?.['https://globalplasticshub.org/user_metadata']),
     }
 
     data.offering = [

@@ -274,11 +274,7 @@ const Workspace = ({
                         <ForumCard.Title {...item} />
                       </ForumCard.HStack>
                       <ForumCard.HStack>
-                        {item?.isView ? (
-                          <ForumMembers forum={item} />
-                        ) : (
-                          <ForumCard.LastMessage lm={item?.lm} />
-                        )}
+                        <ForumMembers forum={item} />
                         <div>
                           {item?.isView ? (
                             <Button
