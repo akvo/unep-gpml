@@ -126,12 +126,16 @@ const PlasticImportExportChart = ({ layers, loading }) => {
     fetchData()
   }, [country, layers, loading])
 
+  const textTitle =  window.innerWidth < 768
+  ? t`Plastic import & export value\nfor ${decodeURIComponent(country)}`
+  : t`Plastic import & export value for ${decodeURIComponent(country)}`;
+
+  const subTitle =  t`in million US dollars for year ${2022 || 'N/A'}`;
+
   const getOption = () => ({
     title: {
-      text:
-        window.innerWidth < 768
-          ? t`Plastic import & export value\nfor ${decodeURIComponent(country)}`
-          : t`Plastic import & export value for ${decodeURIComponent(country)}`,
+      text:textTitle,
+      subtext: subTitle,
       textStyle: {
         fontSize: window.innerWidth < 768 ? 14 : 18,
         fontWeight: 'bold',
@@ -156,6 +160,7 @@ const PlasticImportExportChart = ({ layers, loading }) => {
       itemGap: window.innerWidth < 768 ? 5 : 10,
     },
     grid: {
+      top:80,
       left: '3%',
       right: '4%',
       textStyle: { color: '#020A5B' },
@@ -192,7 +197,7 @@ const PlasticImportExportChart = ({ layers, loading }) => {
       data: [importData[index], exportData[index]],
       barWidth: window.innerWidth < 768 ? 50 : 90,
       itemStyle: {
-        color: ['#384E85', '#FFB800', '#f56a00', '#A7AD3E', '#FFA424'][index],
+        color: ['#384E85', '#FFB800', '#f56a00', '#A7AD3E', '#3498db'][index],
       },
     })),
   })
@@ -211,14 +216,14 @@ const PlasticImportExportChart = ({ layers, loading }) => {
           fontSize: '12px',
         }}
       >
-        <Trans>Data source: </Trans>
+        <Trans>Data source: </Trans>{' '}
         <a
           href={`https://unctad.org/publication/global-trade-plastics-insights-first-life-cycle-trade-database`}
           target="_blank"
           rel="noopener noreferrer"
           style={{ color: '#020A5B', fontWeight: 'bold' }}
         >
-          <Trans> UNCTAD 2021</Trans>
+          <Trans> UNCTAD 2022</Trans>
         </a>{' '}
       </div>
     </div>

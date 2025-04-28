@@ -1,35 +1,65 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { getStrapiUrl } from "../utils/misc";
-import { useRouter } from "next/router";
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+import { getStrapiUrl } from '../utils/misc'
+import { useRouter } from 'next/router'
 
 const useLayerInfo = () => {
-    const [layers, setLayers] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const strapiURL = getStrapiUrl();
-    const router = useRouter();
+  const [layers, setLayers] = useState([])
+  const [loading, setLoading] = useState(true)
+  const strapiURL = getStrapiUrl()
+  const router = useRouter()
 
-    useEffect(() => {
+  useEffect(() => {
+    const fetchLayers = async () => {
+      try {
+        // const allLocales = ['fr', 'en', 'es']
 
-        const fetchLayers = async () => {
-            try {
-                const response = await axios.get(
-                    `${strapiURL}/api/layers?locale=${router.locale}&pagination[pageSize]=150&sort[order]=asc&populate=ValuePerCountry`
-                );
+        const currentLocale = router.locale
 
-                setLayers(response.data.data || []);
-                setLoading(false);
-            } catch (error) {
-                console.error("Error fetching Layers:", error);
-                setLoading(false);
+        // const locales = allLocales.filter((locale) => locale !== currentLocale)
+        const response = await axios.get(
+          `${strapiURL}/api/layers?locale=${router.locale}&pagination[pageSize]=150&sort[order]=asc&populate=ValuePerCountry`
+        )
+
+        const updateLayer = await Promise.all(
+          response.data.data.map(async (d) => {
+            if (
+              (d.attributes.arcgislayerId ===
+                'Final_manufactured_plastic_goods___value__export__V2_WFL1' 
+                || d.attributes.arcgislayerId === 'Total_plastic___value__export__V2_WFL1' 
+                || d.attributes.arcgislayerId === 'Plastic_waste_weigth____export__WFL1'
+              ) &&
+                currentLocale === 'en'
+            ) {
+              const getValues = await axios.get(
+                `${strapiURL}/api/data-layers?filters[argislayerid]=${d.attributes.arcgislayerId}&pagination[page]=1&pagination[pageSize]=2000&publicationState=preview` //&filters[CountryName]=${router.query.country}
+              )
+
+              return {
+                ...d,
+                attributes: {
+                  ...d.attributes,
+                  ValuePerCountry: getValues.data.data.map((v) => v.attributes),
+                },
+              }
             }
-        };
 
+            return d
+          })
+        )
 
-        fetchLayers();
-    }, [router.locale]);
+        setLayers(updateLayer || [])
+        setLoading(false)
+      } catch (error) {
+        console.error('Error fetching Layers:', error)
+        setLoading(false)
+      }
+    }
 
-    return { layers, loading };
-};
+    fetchLayers()
+  }, [router.locale])
 
-export default useLayerInfo;
+  return { layers, loading }
+}
+
+export default useLayerInfo

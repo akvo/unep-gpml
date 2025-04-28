@@ -24,7 +24,7 @@ const useReplacedText = (country, countryCode, categoryId, placeholders, layerJs
                 );
 
                 if (response?.data) {
-                    console.log('API response:', response.data);
+                    // console.log('API response:', response.data);
                     setPlaceholdersData(response.data.placeholders || {});
                     setTooltips(response.data.tooltips || {});
                 } else {

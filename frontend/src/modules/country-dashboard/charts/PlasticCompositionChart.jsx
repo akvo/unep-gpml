@@ -204,7 +204,7 @@ const PlasticCompositionChart = ({ layers, layerLoading }) => {
           fontSize: '12px',
         }}
       >
-        <Trans>Data source: </Trans>
+        <Trans>Data source: </Trans>{' '}
         <a
           href={`${baseURL}/data/maps?categoryId=waste-management&subcategoryId=generation&layer=Proportion_of_plastic_waste_generated_WFL1`}
           style={{ color: '#020A5B', fontWeight: 'bold' }}
