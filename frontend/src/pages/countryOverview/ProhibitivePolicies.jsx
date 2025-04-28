@@ -78,7 +78,7 @@ const ProhibitivePolicies = ({ bansOnPlastic, limitsPlastic, country }) => {
               level={2}
               style={{
                 color: '#020A5B',
-                minWidth: '5%',
+                minWidth: '36px',
                 textAlign: 'right',
                 marginRight: '3%',
               }}

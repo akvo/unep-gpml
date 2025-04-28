@@ -22,6 +22,23 @@ import useQueryParameters from '../../hooks/useQueryParameters'
 import { getBaseUrl } from '../../utils/misc'
 import { loadCatalog } from '../../translations/utils'
 
+function cleanArcGisFields(fields) {
+  // Filter out fields containing "="
+  let cleanedFields = fields.filter(field => !field.includes('='));
+  
+  // Filter out specific unwanted values
+  const unwantedValues = ["importTrend", "country"];
+  cleanedFields = cleanedFields.filter(field => !unwantedValues.includes(field.trim()));
+  
+  // Trim any whitespace
+  cleanedFields = cleanedFields.map(field => field.replace(/(_year|_total|_last|_first|_city)$/, '').trim());
+  
+  // Filter out empty strings
+  cleanedFields = cleanedFields.filter(field => field !== "");
+  
+  return cleanedFields;
+}
+
 const splitTextInHalf = (text) => {
   const exportsIndex = text.indexOf(
     "<strong style='font-size: 20px; color: #6236FF;'>Plastic exports</strong>"
@@ -81,7 +98,6 @@ const addTooltipsToPlaceholders = (htmlString, placeholders, tooltips) => {
   return parse(htmlString, options)
 }
 const CountryOverview = () => {
-  console.log('Trigger build')
 
   const router = useRouter()
   const { queryParameters, setQueryParameters } = useQueryParameters()
@@ -150,6 +166,9 @@ const CountryOverview = () => {
     )
   )
   const layerJson = JSON.stringify(filteredByCountry)
+  
+// const cleanedFields = cleanArcGisFields(selectedCategoryObject?.attributes?.textTemplate?.placeholders);
+// console.log(JSON.stringify(cleanedFields));
 
   const { placeholders, tooltips, loading } = useReplacedText(
     router.query.country,

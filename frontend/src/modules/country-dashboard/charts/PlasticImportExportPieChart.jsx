@@ -116,7 +116,7 @@ const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
           : t`Plastic ${
               chartType === 'import' ? 'import' : 'export'
             } by type for ${decodeURIComponent(country)}`,
-      subtext: t`In 1000 metric tons for year ${2021 || 'N/A'}`,
+      subtext: t`In 1000 metric tons for year ${2022 || 'N/A'}`,
       left: 'center',
       textStyle: {
         fontSize: window.innerWidth < 768 ? 14 : 18,
@@ -154,7 +154,7 @@ const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
       top: '30%',
       containLabel: true,
     },
-    color: ['#384E85', '#FFB800', '#f56a00', '#A7AD3E', '#FFA424'],
+    color: ['#384E85', '#FFB800', '#f56a00', '#A7AD3E', '#3498db'],
     series: [
       {
         name: chartType === 'import' ? 'Import' : 'Export',
@@ -192,14 +192,14 @@ const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
           fontSize: '12px',
         }}
       >
-        <Trans> Data source: </Trans>
+        <Trans> Data source: </Trans>{' '}
         <a
           href={`https://unctad.org/publication/global-trade-plastics-insights-first-life-cycle-trade-database`}
           target="_blank"
           rel="noopener noreferrer"
           style={{ color: '#020A5B', fontWeight: 'bold' }}
         >
-          <Trans> UNCTAD 2021</Trans>
+          <Trans> UNCTAD 2022</Trans>
         </a>{' '}
       </div>
     </div>

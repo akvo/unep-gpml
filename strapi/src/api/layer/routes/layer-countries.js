@@ -42,5 +42,14 @@ module.exports = {
                 auth: false,
             },
         },
+        {
+            method: 'POST',
+            path: '/countries/populate-data-layers/:arcgislayerId',
+            handler: 'layer-countries-controller.postGisDataLayers',
+            config: {
+                auth: false,
+            },
+        },
+        
     ],
 };
