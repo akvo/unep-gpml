@@ -72,11 +72,11 @@ const PlasticOceanBeachChart = ({ layers, loading }) => {
       const calculatedOceanPercentage = (
         (oceanValue * 100) /
         coastValue
-      ).toFixed(2)
+      ).toFixed(1)
       const calculatedBeachPercentage = (
         (beachValue * 100) /
         coastValue
-      ).toFixed(2)
+      ).toFixed(1)
 
       setOceanPercentage(calculatedOceanPercentage)
       setBeachPercentage(calculatedBeachPercentage)
@@ -217,7 +217,7 @@ const PlasticOceanBeachChart = ({ layers, loading }) => {
           fontSize: '12px',
         }}
       >
-        <Trans> Data source: </Trans>
+        <Trans> Data source: </Trans>{' '}
         <a
           href={`${baseURL}/data/maps?categoryId=environmental-impact&subcategoryId=ocean-and-coast&layer=Mismanaged_plastic_waste_escaping_to_oceans_and_coasts_V3_WFL1`}
           target="_blank"

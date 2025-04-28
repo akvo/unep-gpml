@@ -32,19 +32,25 @@ const PlasticImportExportChart = ({ layers, loading }) => {
         return
       }
 
-      const filteredImports = importLayer.attributes.ValuePerCountry?.filter(
-        (item) =>
-          item.CountryCode
-            ? item.CountryCode === countryCode
-            : item.CountryName === decodeURIComponent(country)
-      )
+      const filteredImports = [...new Map(
+        importLayer.attributes.ValuePerCountry
+          ?.filter(item => 
+            item.CountryCode
+              ? item.CountryCode === countryCode
+              : item.CountryName === decodeURIComponent(country)
+          )
+          .map(item => [`${item.CountryCode}-${item.Year}`, item])
+      ).values()];
 
-      const filteredExports = exportLayer.attributes.ValuePerCountry?.filter(
-        (item) =>
-          item.CountryCode
-            ? item.CountryCode === countryCode
-            : item.CountryName === decodeURIComponent(country)
-      )
+      const filteredExports = [...new Map(
+        exportLayer.attributes.ValuePerCountry
+          ?.filter(item => 
+            item.CountryCode
+              ? item.CountryCode === countryCode
+              : item.CountryName === decodeURIComponent(country)
+          )
+          .map(item => [`${item.CountryCode}-${item.Year}`, item])
+      ).values()];
 
       const yearsSet = new Set()
       const importValues = []
@@ -67,12 +73,13 @@ const PlasticImportExportChart = ({ layers, loading }) => {
     fetchData()
   }, [country, layers, loading])
 
+  const plasticText = window.innerWidth < 768
+  ? t`Plastic import & export value\nfor ${decodeURIComponent(country)}`
+  : t`Plastic import & export value for ${decodeURIComponent(country)}`
+  
   const getOption = () => ({
     title: {
-      text:
-        window.innerWidth < 768
-          ? t`Plastic import & export value\nfor ${decodeURIComponent(country)}`
-          : t`Plastic import & export value for ${decodeURIComponent(country)}`,
+      text:plasticText,
       left: 'center',
       textStyle: {
         fontSize: window.innerWidth < 768 ? 14 : 18,
@@ -158,14 +165,14 @@ const PlasticImportExportChart = ({ layers, loading }) => {
           fontSize: '12px',
         }}
       >
-        <Trans>Data source:</Trans>{' '}
+        <Trans>Data source: </Trans>{' '}
         <a
           href={`${baseURL}/data/maps?categoryId=industry-and-trade&subcategoryId=Import&layer=Plastic_waste___value__import__WFL1`}
           style={{ color: '#020A5B', fontWeight: 'bold' }}
           target="_blank"
           rel="noopener noreferrer"
         >
-          UNCTAD 2021
+          UNCTAD 2022
         </a>
       </div>
     </div>
