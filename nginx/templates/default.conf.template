@@ -19,9 +19,18 @@ gzip_types
     text/css
     text/plain;
 
+
 server {
-    listen       80;
-    server_name  _;
+    listen 80;
+    server_name digital.gpmarinelitter.org;
+
+    # Redirect all requests to globalplasticshub.org
+    return 301 https://globalplasticshub.org$request_uri;
+}
+
+server {
+    listen       80 default_server;
+    server_name  "";
     server_tokens off;
 
     client_max_body_size 10M;
