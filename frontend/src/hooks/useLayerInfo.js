@@ -61,7 +61,7 @@ const useLayerInfo = () => {
 
     fetchLayers()
   }, [router.locale])
-console.log(layers)
+
   return { layers, loading }
 }
 
