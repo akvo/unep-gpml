@@ -28,7 +28,7 @@ const RequestDataUpdateModal = ({ visible, onClose }) => {
 
   return (
     <Modal
-      title="Submit Data Update"
+      title={t`Request Data Update`}
       visible={visible}
       onCancel={onClose}
       footer={null}
