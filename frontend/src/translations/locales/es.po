@@ -48,7 +48,7 @@ msgid "{value} Initiatives"
 msgstr "{value} iniciativas"
 
 #: src/pages/countryOverview/IntroPage.jsx:162
-msgid "* You are currently viewing the beta version of the Country Dashboard, and we welcome your feedback on its usability and content. We particularly welcome suggestions for updated and improved data sources for your country. To request a data update, please use the \"Request Data Update\" button within your Country Dashboard section."
+msgid "* You are currently viewing the beta version of the Country Dashboard, and we welcome your feedback on its usability and content. We particularly welcome suggestions for updated and improved data sources for your country. To request a data update, please use the \"Submit Data Update\" button within your Country Dashboard section."
 msgstr "* Actualmente estás viendo la versión beta del Panel de país y agradecemos tus comentarios sobre su usabilidad y contenido. Agradecemos especialmente tus sugerencias para actualizar y mejorar las fuentes de datos de tu país. Para solicitar una actualización de datos, utiliza el botón \"Solicitar actualización de datos\" dentro de la sección Panel de país."
 
 #: src/pages/partnership/index.jsx:364
@@ -3647,7 +3647,7 @@ msgstr "Reputación/imagen del estado u organización miembro"
 
 #: src/pages/countryOverview/index.jsx:248
 #: src/pages/countryOverview/index.jsx:399
-msgid "Request Data Update"
+msgid "Submit Data Update"
 msgstr ""
 
 #: src/modules/signup/view.jsx:36

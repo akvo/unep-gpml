@@ -164,7 +164,7 @@ const DashboardLanding = () => {
             Dashboard, and we welcome your feedback on its usability and
             content. We particularly welcome suggestions for updated and
             improved data sources for your country. To request a data update,
-            please use the "Request Data Update" button within your Country
+            please use the "Submit Data Update" button within your Country
             Dashboard section.
           </Trans>
         </p>
