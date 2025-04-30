@@ -23,6 +23,7 @@ import { getBaseUrl } from '../../utils/misc'
 import { loadCatalog } from '../../translations/utils'
 
 function cleanArcGisFields(fields) {
+  if(!fields) return
   // Filter out fields containing "="
   let cleanedFields = fields.filter(field => !field.includes('='));
   
@@ -276,7 +277,7 @@ const CountryOverview = () => {
             </span>
             <Tooltip title="Update country data by sending a request to the GPML Data Hub team.">
               <Button className={styles.buttonStyle} onClick={showModal}>
-                {t`Request Data Update`}
+                {t`Submit Data Update`}
               </Button>
               <RequestDataUpdateModal
                 visible={isModalVisible}
@@ -427,7 +428,7 @@ const CountryOverview = () => {
       {isMobile && (
         <div className={styles.mobileButtonsContainer}>
           <Button className={styles.buttonStyle} onClick={showModal}>
-            {t`Request Data Update`}
+            {t`Submit Data Update`}
           </Button>
         </div>
       )}
