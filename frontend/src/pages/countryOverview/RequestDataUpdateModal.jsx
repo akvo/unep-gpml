@@ -3,7 +3,7 @@ import { Modal, Form, Input, Button, Select, Checkbox, Upload } from 'antd'
 import { UploadOutlined } from '@ant-design/icons'
 import { isEmpty } from 'lodash'
 import { UIStore } from '../../store'
-
+import { t } from '@lingui/macro'
 const { Option } = Select
 
 const RequestDataUpdateModal = ({ visible, onClose }) => {
