@@ -4162,8 +4162,9 @@ msgid "Submit Application"
 msgstr "Présenter une demande"
 
 #: src/pages/countryOverview/index.jsx:498
+#: src/pages/countryOverview/RequestDataUpdateModal.jsx:157
 msgid "Submit Data Update"
-msgstr ""
+msgstr "Demander la mise à jour des données"
 
 #: src/modules/flexible-forms/form-schema.js:1261
 #: src/modules/flexible-forms/form-schema.js:1517
