@@ -191,7 +191,7 @@ module.exports = {
           const countryRows = groupedData[key] || [];
 
           return countryRows?.map((row) => ({
-            Value: parseNumber(Math.round(row[outFields[1]]).toFixed(2)),
+            Value: parseNumber(parseFloat(row[outFields[1]]).toFixed(2)),
             City: outFields[3] && row[outFields[3]] ? row[outFields[3]] : "",
             Year: row[outFields[0]]?.toString(),
             CountryName: country["CountryName"],

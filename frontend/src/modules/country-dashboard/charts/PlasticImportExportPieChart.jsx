@@ -16,15 +16,17 @@ const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
     'plasticWaste',
   ]
 
+  const plasticinPrimaryForm = t`Plastic in primary form`
+  const intermediateFormsOfPlastic = t`Intermediate forms of plastic`
+  const finalManufacturedPlasticGoods = t`Final manufactured plastic goods`
+  const intermediateManufacturedPlasticGoods = t`Intermediate manufactured plastic goods`
+  const plasticWaste = t`Plastic waste`
   const categoriesTitle = [
-    { plasticinPrimaryForm: t`Plastic in primary form` },
-    { intermediateFormsOfPlastic: t`Intermediate forms of plastic` },
-    { finalManufacturedPlasticGoods: t`Final manufactured plastic goods` },
-    {
-      intermediateManufacturedPlasticGoods: t`Intermediate manufactured plastic goods`,
-    },
-
-    { plasticWaste: 'Plastic waste' },
+    { plasticinPrimaryForm },
+    { intermediateFormsOfPlastic },
+    { finalManufacturedPlasticGoods },
+    { intermediateManufacturedPlasticGoods },
+    { plasticWaste },
   ]
 
   useEffect(() => {
@@ -105,17 +107,20 @@ const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
   }
 
   const pieData = generatePieData(data)
+  const countryName = decodeURIComponent(country)
+
+  const tTextTitle =
+    window.innerWidth < 768
+      ? chartType === 'import'
+        ? t`Plastic import by type for\n${countryName}`
+        : t`Plastic export by type for\n${countryName}`
+      : chartType === 'import'
+      ? t`Plastic import by type for ${countryName}`
+      : t`Plastic export by type for ${countryName}`
 
   const getPieOption = () => ({
     title: {
-      text:
-        window.innerWidth < 768
-          ? t`Plastic ${
-              chartType === 'import' ? 'import' : 'export'
-            } by type for\n${decodeURIComponent(country)}`
-          : t`Plastic ${
-              chartType === 'import' ? 'import' : 'export'
-            } by type for ${decodeURIComponent(country)}`,
+      text: tTextTitle,
       subtext: t`In 1000 metric tons for year ${2022 || 'N/A'}`,
       left: 'center',
       textStyle: {

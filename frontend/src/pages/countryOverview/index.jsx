@@ -15,28 +15,36 @@ import useCategories from '../../hooks/useCategories'
 import parse from 'html-react-parser'
 import styles from './index.module.scss'
 import { t } from '@lingui/macro'
+import axios from 'axios'
 
 import useLayerInfo from '../../hooks/useLayerInfo'
 import { UIStore } from '../../store'
 import useQueryParameters from '../../hooks/useQueryParameters'
-import { getBaseUrl } from '../../utils/misc'
+import { getBaseUrl, getStrapiUrl } from '../../utils/misc'
 import { loadCatalog } from '../../translations/utils'
 
-function cleanArcGisFields(fields) {
-  // Filter out fields containing "="
-  let cleanedFields = fields.filter(field => !field.includes('='));
-  
-  // Filter out specific unwanted values
-  const unwantedValues = ["importTrend", "country"];
-  cleanedFields = cleanedFields.filter(field => !unwantedValues.includes(field.trim()));
-  
-  // Trim any whitespace
-  cleanedFields = cleanedFields.map(field => field.replace(/(_year|_total|_last|_first|_city)$/, '').trim());
-  
-  // Filter out empty strings
-  cleanedFields = cleanedFields.filter(field => field !== "");
-  
-  return cleanedFields;
+export function cleanArcGisFields(fields) {
+  if (!fields) return []
+
+  let cleanedFields = fields.filter((field) => !field.includes('='))
+
+  const unwantedValues = ['importTrend', 'country']
+  cleanedFields = cleanedFields.filter(
+    (field) => !unwantedValues.includes(field.trim())
+  )
+
+  cleanedFields = cleanedFields.map((field) =>
+    field
+      .replace(/(_total|_last|_first|_city)$/, '')
+      .replace(/_year_first$/, '')
+      .replace(/_year_last$/, '')
+      .replace(/_year$/, '')
+      .trim()
+  )
+
+  cleanedFields = cleanedFields.filter((field) => field !== '')
+
+  return [...new Set(cleanedFields)]
 }
 
 const splitTextInHalf = (text) => {
@@ -98,7 +106,6 @@ const addTooltipsToPlaceholders = (htmlString, placeholders, tooltips) => {
   return parse(htmlString, options)
 }
 const CountryOverview = () => {
-
   const router = useRouter()
   const { queryParameters, setQueryParameters } = useQueryParameters()
   const [isMobile, setIsMobile] = useState(false)
@@ -107,7 +114,7 @@ const CountryOverview = () => {
   const { categories } = useCategories()
   const { layers, loading: layerLoading } = useLayerInfo()
   const baseURL = getBaseUrl()
-
+  const strapiURL = getStrapiUrl()
   const { countries } = UIStore.useState((s) => ({
     countries: s.countries,
   }))
@@ -122,6 +129,54 @@ const CountryOverview = () => {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
+  const postDataLayers = async (layers) => {
+    console.log(layers)
+    if (!layers || layers.length === 0) return
+    try {
+      const weightPayload = {
+        outFields: ['Year', 'Value', 'Country'],
+      }
+      const valuePayload = {
+        outFields: ['Time', 'Value', 'Country'],
+      }
+      const obsPayload = {
+        outFields: ['Time_Perio', 'OBS_Value', 'Country'],
+      }
+
+      for (let index = 0; index < layers.length; index++) {
+        if ('Plastic_packaging___weight__import__WFL1' === layers[index]) {
+          await axios.post(
+            `${strapiURL}/api/countries/populate-data-layers/${layers[index]}`,
+            obsPayload
+          )
+        } else if (
+          layers[index].toLowerCase().includes('value') ||
+          layers[index].toLowerCase().includes('total')
+        ) {
+          // console.log(
+          //   `${strapiURL}/api/countries/populate-data-layers/${layers[index]}`,
+          //   valuePayload
+          // )
+          await axios.post(
+            `${strapiURL}/api/countries/populate-data-layers/${layers[index]}`,
+            valuePayload
+          )
+        } else {
+          // console.log(
+          //   `${strapiURL}/api/countries/populate-data-layers/${layers[index]}`,
+          //   weightPayload)
+
+          await axios.post(
+            `${strapiURL}/api/countries/populate-data-layers/${layers[index]}`,
+            weightPayload
+          )
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching Layers:', error)
+    }
+  }
+
   useEffect(() => {
     if (queryParameters.country) {
       setSelectedCountry(queryParameters.country)
@@ -131,6 +186,18 @@ const CountryOverview = () => {
   const selectedCategoryObject = categories.find(
     (c) => c.attributes.categoryId == router.query.categoryId
   )
+  const cleanedFields = cleanArcGisFields(
+    selectedCategoryObject?.attributes?.textTemplate?.placeholders
+  )
+  console.log(cleanedFields)
+  useEffect(() => {
+    if (queryParameters.addData) {
+      const cleanedFields = cleanArcGisFields(
+        selectedCategoryObject?.attributes?.textTemplate?.placeholders
+      )
+      postDataLayers(cleanedFields)
+    }
+  }, [queryParameters, selectedCategoryObject])
 
   const [isModalVisible, setModalVisible] = useState(false)
 
@@ -166,9 +233,6 @@ const CountryOverview = () => {
     )
   )
   const layerJson = JSON.stringify(filteredByCountry)
-  
-// const cleanedFields = cleanArcGisFields(selectedCategoryObject?.attributes?.textTemplate?.placeholders);
-// console.log(JSON.stringify(cleanedFields));
 
   const { placeholders, tooltips, loading } = useReplacedText(
     router.query.country,
@@ -275,7 +339,11 @@ const CountryOverview = () => {
               Page last updated: 02-20-22
             </span>
             <Tooltip title="Update country data by sending a request to the GPML Data Hub team.">
-              <Button className={styles.buttonStyle} onClick={showModal}>
+              <Button
+                className={styles.buttonStyle}
+                onClick={showModal}
+                style={{ width: '100%' }}
+              >
                 {t`Request Data Update`}
               </Button>
               <RequestDataUpdateModal
