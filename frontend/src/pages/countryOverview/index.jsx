@@ -495,7 +495,7 @@ const CountryOverview = () => {
       {isMobile && (
         <div className={styles.mobileButtonsContainer}>
           <Button className={styles.buttonStyle} onClick={showModal}>
-            {t`Request Data Update`}
+            {t`Submit Data Update`}
           </Button>
         </div>
       )}

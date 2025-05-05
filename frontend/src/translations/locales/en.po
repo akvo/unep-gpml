@@ -57,8 +57,12 @@ msgid "{value} Initiatives"
 msgstr "{value} Initiatives"
 
 #: src/pages/countryOverview/IntroPage.jsx:162
-msgid "* You are currently viewing the beta version of the Country Dashboard, and we welcome your feedback on its usability and content. We particularly welcome suggestions for updated and improved data sources for your country. To request a data update, please use the \"Request Data Update\" button within your Country Dashboard section."
-msgstr "* You are currently viewing the beta version of the Country Dashboard, and we welcome your feedback on its usability and content. We particularly welcome suggestions for updated and improved data sources for your country. To request a data update, please use the \"Request Data Update\" button within your Country Dashboard section."
+#~ msgid "* You are currently viewing the beta version of the Country Dashboard, and we welcome your feedback on its usability and content. We particularly welcome suggestions for updated and improved data sources for your country. To request a data update, please use the \"Request Data Update\" button within your Country Dashboard section."
+#~ msgstr "* You are currently viewing the beta version of the Country Dashboard, and we welcome your feedback on its usability and content. We particularly welcome suggestions for updated and improved data sources for your country. To request a data update, please use the \"Request Data Update\" button within your Country Dashboard section."
+
+#: src/pages/countryOverview/IntroPage.jsx:162
+msgid "* You are currently viewing the beta version of the Country Dashboard, and we welcome your feedback on its usability and content. We particularly welcome suggestions for updated and improved data sources for your country. To request a data update, please use the \"Submit Data Update\" button within your Country Dashboard section."
+msgstr "* You are currently viewing the beta version of the Country Dashboard, and we welcome your feedback on its usability and content. We particularly welcome suggestions for updated and improved data sources for your country. To request a data update, please use the \"Submit Data Update\" button within your Country Dashboard section."
 
 #: src/pages/partnership/index.jsx:343
 msgid "<0>Be approved</0>and certified by the GPML as a member of the partnership."
@@ -3691,8 +3695,8 @@ msgstr "Representative group"
 msgid "Reputation / image of the member state or organisation"
 msgstr "Reputation / image of the member state or organisation"
 
-#: src/pages/countryOverview/index.jsx:344
-#: src/pages/countryOverview/index.jsx:495
+#: src/pages/countryOverview/index.jsx:347
+#: src/pages/countryOverview/RequestDataUpdateModal.jsx:31
 msgid "Request Data Update"
 msgstr "Request Data Update"
 
@@ -4111,6 +4115,10 @@ msgstr "Submit an application for your organisation - <0>{0}</0> - to become par
 #: src/pages/partnership/index.jsx:1139
 msgid "Submit Application"
 msgstr "Submit Application"
+
+#: src/pages/countryOverview/index.jsx:498
+msgid "Submit Data Update"
+msgstr "Submit Data Update"
 
 #: src/modules/flexible-forms/form-schema.js:1261
 #: src/modules/flexible-forms/form-schema.js:1517

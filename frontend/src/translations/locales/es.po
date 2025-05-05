@@ -57,8 +57,12 @@ msgid "{value} Initiatives"
 msgstr "{value} iniciativas"
 
 #: src/pages/countryOverview/IntroPage.jsx:162
-msgid "* You are currently viewing the beta version of the Country Dashboard, and we welcome your feedback on its usability and content. We particularly welcome suggestions for updated and improved data sources for your country. To request a data update, please use the \"Request Data Update\" button within your Country Dashboard section."
-msgstr "* Actualmente estás viendo la versión beta del Panel de país y agradecemos tus comentarios sobre su usabilidad y contenido. Agradecemos especialmente tus sugerencias para actualizar y mejorar las fuentes de datos de tu país. Para solicitar una actualización de datos, utiliza el botón \"Solicitar actualización de datos\" dentro de la sección Panel de país."
+#~ msgid "* You are currently viewing the beta version of the Country Dashboard, and we welcome your feedback on its usability and content. We particularly welcome suggestions for updated and improved data sources for your country. To request a data update, please use the \"Request Data Update\" button within your Country Dashboard section."
+#~ msgstr "* Actualmente estás viendo la versión beta del Panel de país y agradecemos tus comentarios sobre su usabilidad y contenido. Agradecemos especialmente tus sugerencias para actualizar y mejorar las fuentes de datos de tu país. Para solicitar una actualización de datos, utiliza el botón \"Solicitar actualización de datos\" dentro de la sección Panel de país."
+
+#: src/pages/countryOverview/IntroPage.jsx:162
+msgid "* You are currently viewing the beta version of the Country Dashboard, and we welcome your feedback on its usability and content. We particularly welcome suggestions for updated and improved data sources for your country. To request a data update, please use the \"Submit Data Update\" button within your Country Dashboard section."
+msgstr ""
 
 #: src/pages/partnership/index.jsx:343
 msgid "<0>Be approved</0>and certified by the GPML as a member of the partnership."
@@ -3722,8 +3726,8 @@ msgstr "Grupo representativo"
 msgid "Reputation / image of the member state or organisation"
 msgstr "Reputación/imagen del estado u organización miembro"
 
-#: src/pages/countryOverview/index.jsx:344
-#: src/pages/countryOverview/index.jsx:495
+#: src/pages/countryOverview/index.jsx:347
+#: src/pages/countryOverview/RequestDataUpdateModal.jsx:31
 msgid "Request Data Update"
 msgstr "Solicitar actualización de datos"
 
@@ -4142,6 +4146,10 @@ msgstr "Envíe una solicitud para que su organización, <0>{0}</0>, forme parte 
 #: src/pages/partnership/index.jsx:1139
 msgid "Submit Application"
 msgstr "Presentar la solicitud"
+
+#: src/pages/countryOverview/index.jsx:498
+msgid "Submit Data Update"
+msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:1261
 #: src/modules/flexible-forms/form-schema.js:1517
