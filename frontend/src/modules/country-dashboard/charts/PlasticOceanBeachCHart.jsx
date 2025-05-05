@@ -191,7 +191,7 @@ const PlasticOceanBeachChart = ({ layers, loading }) => {
             left: 'center',
             top: 25,
             style: {
-              text: 'tonnes',
+              text: t`tonnes`,
               fontSize: 14,
               fontWeight: 'normal',
               fill: '#020A5B',

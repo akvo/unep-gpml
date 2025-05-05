@@ -19,14 +19,18 @@ const PlasticImportExportChart = ({ layers, loading }) => {
     'plasticWaste',
   ]
 
+  const plasticinPrimaryForm = t`Plastic in primary form`
+  const intermediateFormsOfPlastic = t`Intermediate forms of plastic`
+  const finalManufacturedPlasticGoods = t`Final manufactured plastic goods`
+  const intermediateManufacturedPlasticGoods = t`Intermediate manufactured plastic goods`
+  const plasticWaste = t`Plastic waste`
+
   const categoriesTitle = [
-    { plasticinPrimaryForm: t`Plastic in primary form` },
-    { intermediateFormsOfPlastic: t`Intermediate forms of plastic` },
-    { finalManufacturedPlasticGoods: t`Final manufactured plastic goods` },
-    {
-      intermediateManufacturedPlasticGoods: t`Intermediate manufactured plastic goods`,
-    },
-    { plasticWaste: 'Plastic waste' },
+    { plasticinPrimaryForm },
+    { intermediateFormsOfPlastic },
+    { finalManufacturedPlasticGoods },
+    { intermediateManufacturedPlasticGoods },
+    { plasticWaste },
   ]
 
   useEffect(() => {
@@ -126,15 +130,16 @@ const PlasticImportExportChart = ({ layers, loading }) => {
     fetchData()
   }, [country, layers, loading])
 
-  const textTitle =  window.innerWidth < 768
-  ? t`Plastic import & export value\nfor ${decodeURIComponent(country)}`
-  : t`Plastic import & export value for ${decodeURIComponent(country)}`;
+  const textTitle =
+    window.innerWidth < 768
+      ? t`Plastic import & export value\nfor ${decodeURIComponent(country)}`
+      : t`Plastic import & export value for ${decodeURIComponent(country)}`
 
-  const subTitle =  t`in million US dollars for year ${2022 || 'N/A'}`;
+  const subTitle = t`in million US dollars for year ${2022 || 'N/A'}`
 
   const getOption = () => ({
     title: {
-      text:textTitle,
+      text: textTitle,
       subtext: subTitle,
       textStyle: {
         fontSize: window.innerWidth < 768 ? 14 : 18,
@@ -160,7 +165,7 @@ const PlasticImportExportChart = ({ layers, loading }) => {
       itemGap: window.innerWidth < 768 ? 5 : 10,
     },
     grid: {
-      top:80,
+      top: 80,
       left: '3%',
       right: '4%',
       textStyle: { color: '#020A5B' },

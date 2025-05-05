@@ -76,7 +76,7 @@ const PlasticImportExportChart = ({ layers, loading }) => {
   const plasticText = window.innerWidth < 768
   ? t`Plastic import & export value\nfor ${decodeURIComponent(country)}`
   : t`Plastic import & export value for ${decodeURIComponent(country)}`
-  
+   
   const getOption = () => ({
     title: {
       text:plasticText,
