@@ -84,8 +84,8 @@ module.exports = {
                     const datasource = "Calculated from formula";
                     const replaceComma = parseFloat(result.replace(",", "."));
                     calculatedValues[varName] = !isNaN(Number(result))
-                      ? Number(result).toFixed(1)
-                      : Number(replaceComma).toFixed(1);
+                      ? Number(result).toFixed(2)
+                      : Number(replaceComma).toFixed(2);
                     tooltips[varName] = `${datasource}`;
                 } else {
                     const arcgislayerId = placeholder.split(/(_year|_total|_last|_first|_city|_city_1_value|_city_2_value|_city_1|_city_2)/)[0].trim();
