@@ -2184,7 +2184,7 @@ msgstr "En el mercado"
 
 #: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:138
 msgid "in million US dollars for year {0}"
-msgstr ""
+msgstr "en millones de dólares estadounidenses para el año {0}"
 
 #: src/modules/flexible-forms/form-schema.js:796
 msgid "In more than 10 years"
@@ -2749,7 +2749,7 @@ msgstr "Microplásticos"
 #: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:126
 #: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:186
 msgid "million US dollars"
-msgstr "millones de dólares estadounidenses"
+msgstr "millones de dólares\n estadounidenses"
 
 #: src/modules/flexible-forms/form-schema.js:1962
 msgid "Miscellaneous"
