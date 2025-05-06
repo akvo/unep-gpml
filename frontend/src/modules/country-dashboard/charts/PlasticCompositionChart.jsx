@@ -63,13 +63,16 @@ const PlasticCompositionChart = ({ layers, layerLoading }) => {
     fetchData()
   }, [country, layers, layerLoading, countriesWithRegions, regionLoading])
 
+  const tNatEstimate = t`National estimate`;
+    const tRegionalAvg = t`Regional Average`.replace(' ', '\n')
+
   const getOption = () => {
-    const categories = ['National estimate', ...cities]
+    const categories = [tNatEstimate, ...cities]
     const dataValues = [
       {
         value: nationalEstimate,
         itemStyle: { color: '#00A4EC' },
-        name: t`National estimate`,
+        name: tNatEstimate,
       },
       ...cityEstimates.map((estimate, index) => ({
         value: estimate,
@@ -77,17 +80,17 @@ const PlasticCompositionChart = ({ layers, layerLoading }) => {
         name: t`${cities[index]} estimate`,
       })),
     ]
-
+const tTitle = 
+window.innerWidth < 768
+  ? t`Plastic composition in the MSW\nfor ${decodeURIComponent(
+      country
+    )}`
+  : t`Plastic composition in the MSW for ${decodeURIComponent(
+      country
+    )}`
     return {
       title: {
-        text:
-          window.innerWidth < 768
-            ? t`Plastic composition in the MSW\nfor ${decodeURIComponent(
-                country
-              )}`
-            : t`Plastic composition in the MSW for ${decodeURIComponent(
-                country
-              )}`,
+        text:tTitle,
         left: 'center',
         textStyle: {
           fontSize: window.innerWidth < 768 ? 14 : 18,
@@ -106,14 +109,18 @@ const PlasticCompositionChart = ({ layers, layerLoading }) => {
             }%<br/>`
           })
           if (regionPlasticComposition) {
-            content += `<br/><span style="color: #020A5B; font-weight: bold;">Estimated Regional Average:</span> ${regionPlasticComposition} %`
+            content += `<br/><span style="color: #020A5B; font-weight: bold;">${t`Estimated Regional Average`}:</span> ${regionPlasticComposition} %`
           }
           return content
         },
       },
+      grid:{
+        right:70,
+        top:80
+      },
       legend: {
         data: [
-          'National estimate',
+          tNatEstimate,
           ...cities.map((city) => `${city} estimate`),
         ],
         bottom: 0,
@@ -169,7 +176,7 @@ const PlasticCompositionChart = ({ layers, layerLoading }) => {
                 yAxis: regionPlasticComposition || 0.78,
                 label: {
                   formatter: () =>
-                    t`Regional\n Average\n (${
+                    `${tRegionalAvg} \n(${
                       regionPlasticComposition + '%' || 0.78 + '%'
                     })`,
                   position: 'middle',

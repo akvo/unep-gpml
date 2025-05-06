@@ -3,7 +3,7 @@ import ReactEcharts from 'echarts-for-react'
 import { useRouter } from 'next/router'
 import useRegions from '../../../hooks/useRegions'
 import { getBaseUrl } from '../../../utils/misc'
-
+import { t } from '@lingui/macro'
 const MSWGenerationChart = ({ layers, layerLoading }) => {
   const router = useRouter()
   const baseURL = getBaseUrl()
@@ -62,14 +62,27 @@ const MSWGenerationChart = ({ layers, layerLoading }) => {
 
     fetchData()
   }, [country, layers, layerLoading, countriesWithRegions, regionLoading])
+    
+  const tNatEstimate = t`National estimate`;
+  const tRegionalAvg = t`Regional Average`.replace(' ', '\n')
+
+  const textTitle =
+  window.innerWidth < 768
+    ? t`Per capita MSW generation for\n${decodeURIComponent(
+        country?.toString()
+      )}`
+    : t`Per capita MSW generation for ${decodeURIComponent(
+        country?.toString()
+      )}`
+  const tKgPersonDay = t`Kg/person/day`;
 
   const getOption = () => {
-    const categories = ['National estimate', ...cities]
+    const categories = [tNatEstimate, ...cities]
     const dataValues = [
       {
         value: nationalEstimate,
         itemStyle: { color: '#00A4EC' },
-        name: 'National estimate',
+        name: tNatEstimate,
       },
       ...cityEstimates.map((estimate, index) => ({
         value: estimate,
@@ -77,17 +90,9 @@ const MSWGenerationChart = ({ layers, layerLoading }) => {
         name: `${cities[index]} estimate`,
       })),
     ]
-
     return {
       title: {
-        text:
-          window.innerWidth < 768
-            ? `Per capita MSW generation for\n${decodeURIComponent(
-                country?.toString()
-              )}`
-            : `Per capita MSW generation for  ${decodeURIComponent(
-                country?.toString()
-              )}`,
+        text: textTitle,
         left: 'center',
         textStyle: {
           fontSize: window.innerWidth < 768 ? 14 : 18,
@@ -103,18 +108,18 @@ const MSWGenerationChart = ({ layers, layerLoading }) => {
           params.forEach((item) => {
             content += `${item.marker} ${item.seriesName}: ${
               item.value || '-'
-            } kg/person/day<br/>`
+            } ${tKgPersonDay}<br/>`
           })
           if (regionMswValue) {
-            content += `<br/><span style="color: #020A5B; font-weight: bold;">Estimated Regional Average:</span> ${regionMswValue} kg/person/day`
+            content += `<br/><span style="color: #020A5B; font-weight: bold;">${t`Estimated Regional Average`}:</span> ${regionMswValue} ${tKgPersonDay}`
           }
           return content
         },
       },
       legend: {
         data: [
-          'National estimate',
-          ...cities.map((city) => `${city} estimate`),
+          tNatEstimate,
+          ...cities.map((city) => t`${city} estimate`),
         ],
         bottom: 0,
         itemGap: 20,
@@ -131,7 +136,7 @@ const MSWGenerationChart = ({ layers, layerLoading }) => {
       },
       yAxis: {
         type: 'value',
-        name: 'kg/person/day',
+        name: tKgPersonDay,
         min: 0,
         max: 2,
         interval: 0.5,
@@ -146,6 +151,10 @@ const MSWGenerationChart = ({ layers, layerLoading }) => {
           color: '#020A5B',
         },
         splitLine: { show: true },
+      },
+      grid:{
+        right:70,
+        top:80,
       },
       series: [
         {
@@ -167,7 +176,7 @@ const MSWGenerationChart = ({ layers, layerLoading }) => {
                 yAxis: regionMswValue || 0.78,
                 label: {
                   formatter: () =>
-                    `Regional\n Average\n(${regionMswValue || 0.78} kg)`,
+                    `${tRegionalAvg} \n(${regionMswValue || 0.78} kg)`,                  
                   position: 'middle',
                   offset: [240, -5],
                   color: '#020A5B',
@@ -200,7 +209,7 @@ const MSWGenerationChart = ({ layers, layerLoading }) => {
           fontSize: '12px',
         }}
       >
-        Data source:{' '}
+        {t`Data source:`}{' '}
         <a
           href={`${baseURL}/data/maps?categoryId=waste-management&subcategoryId=generation&layer=Municipal_solid_waste_generated_daily_per_capita_V3_WFL1`}
           style={{ color: '#020A5B', fontWeight: 'bold' }}

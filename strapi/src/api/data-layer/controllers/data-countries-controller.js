@@ -19,7 +19,7 @@ module.exports = {
 
     for (const item of body) {
 
-      const { CountryName, Value, Year, CountryCode } = item;
+      const { CountryName, Value, OBS_Value_, OBS_Valu_1, Median, Mean, Esc_to_oce,Total_Tons,Esc_to_o_c, Esc_to_coa, Year, Time, Time_Perio, CountryCode, City } = item;
       if (!CountryName) {
         continue; // Skip invalid entries
       }
@@ -28,13 +28,16 @@ module.exports = {
         where: {
           argislayerid,
           CountryName,
-          Year
+          Year : Year ?? Time ?? Time_Perio
         },
       });
+      
+      const dataUpdated = Value ?? OBS_Value_ ?? OBS_Valu_1 ?? Median ?? Mean ?? Esc_to_oce ?? Esc_to_o_c ?? Total_Tons ?? Esc_to_coa;
+      // console.log('dataUpdated', dataUpdated, CountryName);
       if (existing) {
         const updated = await strapi.entityService.update('api::data-layer.data-layer', existing.id, {
           data: {
-            Value,
+           Value: dataUpdated,
           },
         });
         results.push(updated);
@@ -45,7 +48,8 @@ module.exports = {
             CountryName,
             Year,
             CountryCode,
-            Value
+            Value :dataUpdated,
+            City
           },
         });
         results.push(created);
