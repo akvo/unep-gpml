@@ -213,7 +213,7 @@ msgstr "Agregar un evento"
 #: src/layouts/new-layout.js:252
 #: src/modules/workspace/view.jsx:79
 msgid "Add Content"
-msgstr "Agregar contenido<<<<<<< Updated upstream"
+msgstr "Agregar contenido"
 
 #: src/modules/onboarding/form-one.jsx:99
 msgid "Add new entity"
@@ -883,7 +883,7 @@ msgstr "Contenido"
 
 #: src/modules/entity-detail/view.jsx:537
 msgid "Content on the platform"
-msgstr "Contenido en la plataforma<<<<<<< Updated upstream"
+msgstr "Contenido en la plataforma"
 
 #: src/modules/flexible-forms/common.js:335
 msgid "Content type"
@@ -1229,7 +1229,7 @@ msgstr "Diferente gestión ambiental de los medios acuáticos."
 
 #: src/modules/flexible-forms/form-schema.js:531
 msgid "Different environmental management of land-based environments"
-msgstr "Diferente gestión ambiental de los entornos terrestres.<<<<<<< Updated upstream"
+msgstr "Diferente gestión ambiental de los entornos terrestres."
 
 #: src/store.js:102
 msgid "Digital Platform"
@@ -1986,7 +1986,7 @@ msgstr "Orientación sobre cómo agregar recursos en la plataforma digital GPML"
 
 #: src/modules/help-center/view.jsx:62
 msgid "Guidance on how to sign up on the GPML Digital Platform"
-msgstr "Orientación sobre cómo registrarse en la plataforma digital GPML<<<<<<< Updated upstream"
+msgstr "Orientación sobre cómo registrarse en la plataforma digital GPML"
 
 #: src/store.js:491
 msgid "Guidelines For The Monitoring And Assessment Of Plastic Litter In The Ocean"
@@ -2350,7 +2350,7 @@ msgstr "¿Existe actualmente alguna legislación vigente en materia de gestión 
 
 #: src/modules/flexible-forms/form-schema.js:1147
 msgid "Is your initiative a one-off activity or ongoing?"
-msgstr "¿Su iniciativa es una actividad puntual o está en curso?<<<<<<< Updated upstream"
+msgstr "¿Su iniciativa es una actividad puntual o está en curso?"
 
 #: src/modules/signup-old/signup-form.jsx:70
 msgid "Job Tilte"
@@ -2862,7 +2862,7 @@ msgstr "Nombre de la organización"
 #: src/pages/add-content/index.jsx:593
 #: src/pages/partnership/index.jsx:835
 msgid "National"
-msgstr "Nacional<<<<<<< Updated upstream"
+msgstr "Nacional"
 
 #: src/store.js:329
 msgid "National Action Plan"
@@ -2896,7 +2896,7 @@ msgstr "Valores nacionales u organizacionales"
 #: src/pages/workspace/[slug]/6-national-plastic-strategy/index.js:24
 #: src/pages/workspace/[slug]/layout.js:49
 msgid "National Plastic Strategy"
-msgstr "Estrategia Nacional del Plástico<<<<<<< Updated upstream"
+msgstr "Estrategia Nacional del Plástico"
 
 #: src/modules/workspace/view.jsx:320
 #: src/pages/workspace/plastic-strategies/index.js:41
@@ -3166,7 +3166,7 @@ msgstr "Otro"
 
 #: src/modules/flexible-forms/form-schema.js:466
 msgid "Other training programmes"
-msgstr "Otros programas de formación<<<<<<< Updated upstream"
+msgstr "Otros programas de formación"
 
 #: src/store.js:702
 msgid "Our Coast is Dying"
@@ -3824,7 +3824,7 @@ msgstr "Reglas de Procedimiento y Mecanismo"
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:330
 #: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:440
 msgid "Save to Library"
-msgstr "Guardar en la biblioteca<<<<<<< Updated upstream"
+msgstr "Guardar en la biblioteca"
 
 #: src/store.js:250
 msgid "SB 270: Statewide Bag Ban"
@@ -4184,7 +4184,7 @@ msgstr "Sugerencias"
 #: src/pages/workspace/[slug]/[step]/summary.js:233
 #: src/pages/workspace/[slug]/layout.js:34
 msgid "Summary & Report"
-msgstr "Informe resumido<<<<<<< Updated upstream"
+msgstr "Informe resumido"
 
 #: src/pages/workspace/[slug]/[step]/summary.js:221
 msgid "summary-description-2-stakeholder-consultation"
@@ -4305,7 +4305,7 @@ msgstr "Educación superior terciaria"
 
 #: src/modules/flexible-forms/form-schema.js:1050
 msgid "Textiles"
-msgstr "Textiles<<<<<<< Updated upstream"
+msgstr "Textiles"
 
 #: src/store.js:653
 msgid "The 3R Initiative: Credit-based market system to encourage plastic recycling and recovery"
@@ -4361,7 +4361,7 @@ msgstr "La Plataforma Digital GPML impulsa la transformación y respalda el trab
 
 #: src/pages/landing/index.jsx:79
 msgid "The GPML digital platform empowers all countries to create and implement successful plastic strategies to end plastic pollution including in the marine environment."
-msgstr "La plataforma digital GPML permite a todos los países crear e implementar estrategias plásticas exitosas para poner fin a la contaminación plástica, incluso en el medio marino.<<<<<<< Updated upstream"
+msgstr "La plataforma digital GPML permite a todos los países crear e implementar estrategias plásticas exitosas para poner fin a la contaminación plástica, incluso en el medio marino."
 
 #: src/pages/landing/index.jsx:86
 msgid "The GPML digital platform fosters public-private partnerships, offers clarity on circular economy practices, and provides guidance on Extended Producer Responsibilities (EPRs) and sustainable business models."
@@ -4784,7 +4784,7 @@ msgstr "Ver datos globales"
 
 #: src/modules/details-page/header.jsx:272
 msgid "View Source"
-msgstr "Ver fuente<<<<<<< Updated upstream"
+msgstr "Ver fuente"
 
 #: src/modules/workspace/ps/config.js:207
 msgid "Viewer"
@@ -4886,7 +4886,7 @@ msgstr "¿Qué conocimientos especializados buscan?"
 
 #: src/modules/flexible-forms/form-schema.js:1090
 msgid "What funding sources did you use?"
-msgstr "¿Qué fuentes de financiación utilizó?<<<<<<< Updated upstream"
+msgstr "¿Qué fuentes de financiación utilizó?"
 
 #: src/pages/search/index.js:214
 msgid "What initiatives is UNEP a partner of"
@@ -4902,7 +4902,7 @@ msgstr "¿CUÁL ES EL ENFOQUE DE GPML?"
 
 #: src/modules/flexible-forms/form-schema.js:331
 msgid "What is the MAIN focus of the initiative? (Please tick ALL that apply)."
-msgstr "¿Cuál es el enfoque PRINCIPAL de la iniciativa? (Por favor marque todo lo que corresponda).<<<<<<< Updated upstream"
+msgstr "¿Cuál es el enfoque PRINCIPAL de la iniciativa? (Por favor marque todo lo que corresponda)."
 
 #: src/pages/search/index.js:215
 msgid "What technical resources are funded by UNEP"
@@ -4940,7 +4940,7 @@ msgstr "¿A qué Objetivos de Desarrollo Sostenible (ODS) se aplica su iniciativ
 
 #: src/pages/landing/index.jsx:478
 msgid "Who are we?"
-msgstr "¿Quienes somos?<<<<<<< Updated upstream"
+msgstr "¿Quienes somos?"
 
 #: src/store.js:97
 msgid "Who we are"
@@ -4981,7 +4981,7 @@ msgstr "Trabajando con gente. Ha elegido trabajar con personas como tipo de inic
 #: src/modules/flexible-forms/form-schema.js:457
 #: src/store.js:596
 msgid "Workshops"
-msgstr "Talleres de trabajo<<<<<<< Updated upstream"
+msgstr "Talleres de trabajo"
 
 #: src/modules/workspace/view.jsx:251
 msgid "workspace"

@@ -54,7 +54,7 @@ msgstr "{progress} % terminé"
 
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:414
 msgid "{value} Initiatives"
-msgstr "{value} Initiatives<<<<<<< Updated upstream"
+msgstr "{value} Initiatives"
 
 #: src/pages/countryOverview/IntroPage.jsx:162
 #~ msgid "* You are currently viewing the beta version of the Country Dashboard, and we welcome your feedback on its usability and content. We particularly welcome suggestions for updated and improved data sources for your country. To request a data update, please use the \"Request Data Update\" button within your Country Dashboard section."
@@ -213,7 +213,7 @@ msgstr "Ajouter un événement"
 #: src/layouts/new-layout.js:252
 #: src/modules/workspace/view.jsx:79
 msgid "Add Content"
-msgstr "Ajouter du contenu<<<<<<< Updated upstream"
+msgstr "Ajouter du contenu"
 
 #: src/modules/onboarding/form-one.jsx:99
 msgid "Add new entity"
@@ -883,7 +883,7 @@ msgstr "Contenu"
 
 #: src/modules/entity-detail/view.jsx:537
 msgid "Content on the platform"
-msgstr "Contenu sur la plateforme<<<<<<< Updated upstream"
+msgstr "Contenu sur la plateforme"
 
 #: src/modules/flexible-forms/common.js:335
 msgid "Content type"
@@ -1233,7 +1233,7 @@ msgstr "Une gestion environnementale différente des milieux aquatiques"
 
 #: src/modules/flexible-forms/form-schema.js:531
 msgid "Different environmental management of land-based environments"
-msgstr "Une gestion environnementale différente des milieux terrestres<<<<<<< Updated upstream"
+msgstr "Une gestion environnementale différente des milieux terrestres"
 
 #: src/store.js:102
 msgid "Digital Platform"
@@ -1512,7 +1512,7 @@ msgstr "Les impacts environnementaux seront évalués"
 
 #: src/modules/flexible-forms/form-schema.js:527
 msgid "Environmental social planning"
-msgstr "Planification sociale environnementale<<<<<<< Updated upstream"
+msgstr "Planification sociale environnementale"
 
 #: src/store.js:238
 msgid "Environmentally Sound Management and Destruction of PCBs"
@@ -1991,7 +1991,7 @@ msgstr "Conseils sur la façon d'ajouter des ressources sur la plateforme numér
 
 #: src/modules/help-center/view.jsx:62
 msgid "Guidance on how to sign up on the GPML Digital Platform"
-msgstr "Conseils sur la façon de s'inscrire sur la plateforme numérique GPML<<<<<<< Updated upstream"
+msgstr "Conseils sur la façon de s'inscrire sur la plateforme numérique GPML"
 
 #: src/store.js:491
 msgid "Guidelines For The Monitoring And Assessment Of Plastic Litter In The Ocean"
@@ -2355,7 +2355,7 @@ msgstr "Existe-t-il actuellement une législation en vigueur concernant la gesti
 
 #: src/modules/flexible-forms/form-schema.js:1147
 msgid "Is your initiative a one-off activity or ongoing?"
-msgstr "Votre initiative est-elle une activité ponctuelle ou continue ?<<<<<<< Updated upstream"
+msgstr "Votre initiative est-elle une activité ponctuelle ou continue ?"
 
 #: src/modules/signup-old/signup-form.jsx:70
 msgid "Job Tilte"
@@ -2867,7 +2867,7 @@ msgstr "Nom de l'organisation"
 #: src/pages/add-content/index.jsx:593
 #: src/pages/partnership/index.jsx:835
 msgid "National"
-msgstr "National<<<<<<< Updated upstream"
+msgstr "National"
 
 #: src/store.js:329
 msgid "National Action Plan"
@@ -2901,7 +2901,7 @@ msgstr "Valeurs nationales ou organisationnelles"
 #: src/pages/workspace/[slug]/6-national-plastic-strategy/index.js:24
 #: src/pages/workspace/[slug]/layout.js:49
 msgid "National Plastic Strategy"
-msgstr "Stratégie nationale sur le plastique<<<<<<< Updated upstream"
+msgstr "Stratégie nationale sur le plastique"
 
 #: src/modules/workspace/view.jsx:320
 #: src/pages/workspace/plastic-strategies/index.js:41
@@ -3171,7 +3171,7 @@ msgstr "Autre"
 
 #: src/modules/flexible-forms/form-schema.js:466
 msgid "Other training programmes"
-msgstr "Autres programmes de formation<<<<<<< Updated upstream"
+msgstr "Autres programmes de formation"
 
 #: src/store.js:702
 msgid "Our Coast is Dying"
@@ -3833,7 +3833,7 @@ msgstr "Règlement intérieur et mécanisme"
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:330
 #: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:440
 msgid "Save to Library"
-msgstr "Enregistrer dans la bibliothèque<<<<<<< Updated upstream"
+msgstr "Enregistrer dans la bibliothèque"
 
 #: src/store.js:250
 msgid "SB 270: Statewide Bag Ban"
@@ -4193,7 +4193,7 @@ msgstr "suggestions"
 #: src/pages/workspace/[slug]/[step]/summary.js:233
 #: src/pages/workspace/[slug]/layout.js:34
 msgid "Summary & Report"
-msgstr "Rapport sommaire<<<<<<< Updated upstream"
+msgstr "Rapport sommaire"
 
 #: src/pages/workspace/[slug]/[step]/summary.js:221
 msgid "summary-description-2-stakeholder-consultation"
@@ -4314,7 +4314,7 @@ msgstr "Enseignement supérieur supérieur"
 
 #: src/modules/flexible-forms/form-schema.js:1050
 msgid "Textiles"
-msgstr "Textiles<<<<<<< Updated upstream"
+msgstr "Textiles"
 
 #: src/store.js:653
 msgid "The 3R Initiative: Credit-based market system to encourage plastic recycling and recovery"
@@ -4370,7 +4370,7 @@ msgstr "La plateforme numérique GPML stimule la transformation et soutient le t
 
 #: src/pages/landing/index.jsx:79
 msgid "The GPML digital platform empowers all countries to create and implement successful plastic strategies to end plastic pollution including in the marine environment."
-msgstr "La plateforme numérique de la GPML permet à tous les pays de créer et de mettre en œuvre des stratégies efficaces en matière de plastique pour mettre fin à la pollution plastique, y compris dans l'environnement marin.<<<<<<< Updated upstream"
+msgstr "La plateforme numérique de la GPML permet à tous les pays de créer et de mettre en œuvre des stratégies efficaces en matière de plastique pour mettre fin à la pollution plastique, y compris dans l'environnement marin."
 
 #: src/pages/landing/index.jsx:86
 msgid "The GPML digital platform fosters public-private partnerships, offers clarity on circular economy practices, and provides guidance on Extended Producer Responsibilities (EPRs) and sustainable business models."
@@ -4793,7 +4793,7 @@ msgstr "Afficher les données mondiales"
 
 #: src/modules/details-page/header.jsx:272
 msgid "View Source"
-msgstr "Voir la source<<<<<<< Updated upstream"
+msgstr "Voir la source"
 
 #: src/modules/workspace/ps/config.js:207
 msgid "Viewer"
@@ -4895,7 +4895,7 @@ msgstr "Quelles expertises recherchent-ils ?"
 
 #: src/modules/flexible-forms/form-schema.js:1090
 msgid "What funding sources did you use?"
-msgstr "Quelles sources de financement avez-vous utilisées ?<<<<<<< Updated upstream"
+msgstr "Quelles sources de financement avez-vous utilisées ?"
 
 #: src/pages/search/index.js:214
 msgid "What initiatives is UNEP a partner of"
@@ -4911,7 +4911,7 @@ msgstr "QUEL EST L'OBJECTIF DE GPML ?"
 
 #: src/modules/flexible-forms/form-schema.js:331
 msgid "What is the MAIN focus of the initiative? (Please tick ALL that apply)."
-msgstr "Quel est l’objectif PRINCIPAL de l’initiative ? (Veuillez cocher TOUTES les réponses applicables).<<<<<<< Updated upstream"
+msgstr "Quel est l’objectif PRINCIPAL de l’initiative ? (Veuillez cocher TOUTES les réponses applicables)."
 
 #: src/pages/search/index.js:215
 msgid "What technical resources are funded by UNEP"
@@ -4949,7 +4949,7 @@ msgstr "À quels objectifs de développement durable (ODD) votre initiative s’
 
 #: src/pages/landing/index.jsx:478
 msgid "Who are we?"
-msgstr "Qui sommes nous?<<<<<<< Updated upstream"
+msgstr "Qui sommes nous?"
 
 #: src/store.js:97
 msgid "Who we are"
@@ -4990,7 +4990,7 @@ msgstr "Travailler avec les gens. Vous avez choisi le travail avec les gens comm
 #: src/modules/flexible-forms/form-schema.js:457
 #: src/store.js:596
 msgid "Workshops"
-msgstr "Ateliers<<<<<<< Updated upstream"
+msgstr "Ateliers"
 
 #: src/modules/workspace/view.jsx:251
 msgid "workspace"
