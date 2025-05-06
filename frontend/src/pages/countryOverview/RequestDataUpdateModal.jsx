@@ -154,7 +154,7 @@ const RequestDataUpdateModal = ({ visible, onClose }) => {
               border: 'none',
             }}
           >
-            Submit Data Update
+            {t`Submit Data Update`}
           </Button>
         </Form.Item>
       </Form>
