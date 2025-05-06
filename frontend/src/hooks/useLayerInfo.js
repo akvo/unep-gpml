@@ -37,7 +37,14 @@ const useLayerInfo = () => {
                   `Error fetching values for layer ${d.attributes.arcgislayerId}:`,
                   valueError
                 )
-                return d
+               
+                return {
+                  ...d,
+                  attributes: {
+                    ...d.attributes,
+                    ValuePerCountry: []
+                  },
+                }
               }
             })
           ).catch((err) => {
