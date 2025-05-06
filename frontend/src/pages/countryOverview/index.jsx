@@ -47,7 +47,11 @@ export function cleanArcGisFields(fields) {
   return [...new Set(cleanedFields)]
 }
 
-const splitTextInHalf = (text) => {
+const splitTextInHalf = (text, splitMarker = '') => {
+  if (splitMarker && text.includes(splitMarker)) {
+    const parts = text.split(splitMarker)
+    return [parts[0].trim(), parts.slice(1).join(splitMarker).trim()]
+  }
   const exportsIndex = text.indexOf(
     "<strong style='font-size: 20px; color: #6236FF;'>Plastic exports</strong>"
   )
@@ -293,7 +297,7 @@ const CountryOverview = () => {
     selectedCategoryObject?.attributes?.categoryId === 'environmental-impact' ||
     selectedCategoryObject?.attributes?.categoryId === 'waste-management'
       ? splitTextByMarker(categoryText, '<!--NEW_COLUMN-->')
-      : splitTextInHalf(categoryText || '')
+      : splitTextInHalf(categoryText || '','<!--NEW_COLUMN-->')
 
   const textWithTooltipsfirstHalfText = addTooltipsToPlaceholders(
     firstHalfText,
@@ -344,7 +348,7 @@ const CountryOverview = () => {
                 onClick={showModal}
                 style={{ width: '100%' }}
               >
-                {t`Request Data Update`}
+                {t`Submit Data Update`}
               </Button>
               <RequestDataUpdateModal
                 visible={isModalVisible}
