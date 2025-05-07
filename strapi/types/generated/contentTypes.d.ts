@@ -894,42 +894,6 @@ export interface ApiCountryCountry extends Schema.CollectionType {
   };
 }
 
-export interface ApiDataLayerDataLayer extends Schema.CollectionType {
-  collectionName: 'data_layers';
-  info: {
-    singularName: 'data-layer';
-    pluralName: 'data-layers';
-    displayName: 'Data Layer';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    argislayerid: Attribute.String;
-    CountryName: Attribute.String;
-    Value: Attribute.Decimal;
-    Year: Attribute.String;
-    City: Attribute.String;
-    CountryCode: Attribute.String;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::data-layer.data-layer',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::data-layer.data-layer',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
 export interface ApiLayerLayer extends Schema.CollectionType {
   collectionName: 'layers';
   info: {
@@ -1115,6 +1079,42 @@ export interface ApiLayerLayer extends Schema.CollectionType {
       'api::layer.layer'
     >;
     locale: Attribute.String;
+  };
+}
+
+export interface ApiLayerCollectionLayerCollection
+  extends Schema.CollectionType {
+  collectionName: 'layer_collections';
+  info: {
+    singularName: 'layer-collection';
+    pluralName: 'layer-collections';
+    displayName: 'Layer Collection';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    argislayerid: Attribute.String;
+    CountryName: Attribute.String;
+    Value: Attribute.Decimal;
+    Year: Attribute.String;
+    City: Attribute.String;
+    CountryCode: Attribute.String;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::layer-collection.layer-collection',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::layer-collection.layer-collection',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
   };
 }
 
@@ -1463,8 +1463,8 @@ declare module '@strapi/types' {
       'api::category.category': ApiCategoryCategory;
       'api::cop.cop': ApiCopCop;
       'api::country.country': ApiCountryCountry;
-      'api::data-layer.data-layer': ApiDataLayerDataLayer;
       'api::layer.layer': ApiLayerLayer;
+      'api::layer-collection.layer-collection': ApiLayerCollectionLayerCollection;
       'api::learning-centre.learning-centre': ApiLearningCentreLearningCentre;
       'api::learning-centre-tag.learning-centre-tag': ApiLearningCentreTagLearningCentreTag;
       'api::page.page': ApiPagePage;
