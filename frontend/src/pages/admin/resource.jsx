@@ -1,27 +1,14 @@
 import React, { useEffect, useState, useCallback } from 'react'
-import {
-  Card,
-  Button,
-  Row,
-  Col,
-  Select,
-  Spin,
-  Modal,
-  message,
-  notification,
-} from 'antd'
+import { Button, Select, Spin, Modal, message, notification, Input } from 'antd'
 import { fetchSubmissionData } from '../../modules/profile/utils'
 import { t, Trans } from '@lingui/macro'
 import api from '../../utils/api'
 import DetailModal from '../../modules/details-page/modal'
 import bodyScrollLock from '../../modules/details-page/scroll-utils'
-import { useRouter } from 'next/router'
 const { Option } = Select
-
 const { confirm } = Modal
 
 const Resource = ({ isAuthenticated, setLoginVisible }) => {
-  const router = useRouter()
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
   const [page, setPage] = useState(1)
@@ -30,23 +17,31 @@ const Resource = ({ isAuthenticated, setLoginVisible }) => {
   const [hasMore, setHasMore] = useState(true)
   const [params, setParams] = useState(null)
   const [modalVisible, setModalVisible] = useState(false)
+  const [searchTitle, setSearchTitle] = useState('')
+  const [searchTimeout, setSearchTimeout] = useState(null)
 
   const fetchData = useCallback(
-    async (currentPage, currentLimit, currentStatus, append = false) => {
+    async (
+      currentPage,
+      currentLimit,
+      currentStatus,
+      append = false,
+      titleSearch = ''
+    ) => {
       setLoading(true)
       try {
         const result = await fetchSubmissionData(
           currentPage,
           currentLimit,
           'resources',
-          currentStatus
+          currentStatus,
+          titleSearch
         )
 
         setData((prevData) =>
           append ? [...prevData, ...result.data] : result.data
         )
 
-        // Calculate if there are more pages based on total count
         const hasMorePages = currentPage * currentLimit < result.count
         setHasMore(hasMorePages)
       } catch (error) {
@@ -59,20 +54,35 @@ const Resource = ({ isAuthenticated, setLoginVisible }) => {
   )
 
   useEffect(() => {
-    setPage(1) // Reset page when status changes
-    fetchData(1, limit, status, false) // false ensures data isn't appended
-  }, [status, limit, fetchData])
+    setPage(1)
+    fetchData(1, limit, status, false, searchTitle)
+  }, [status, limit, fetchData, searchTitle])
 
   const handleLoadMore = () => {
     const nextPage = page + 1
     setPage(nextPage)
-    fetchData(nextPage, limit, status, true)
+    fetchData(nextPage, limit, status, true, searchTitle)
   }
 
   const handleStatusChange = (value) => {
     setStatus(value)
-    setData([]) // Clear existing data when status changes
-    setHasMore(true) // Reset hasMore state
+    setData([])
+    setHasMore(true)
+  }
+
+  const handleSearch = (value) => {
+    if (searchTimeout) {
+      clearTimeout(searchTimeout)
+    }
+
+    const timeout = setTimeout(() => {
+      setSearchTitle(value)
+      setData([])
+      setPage(1)
+      setHasMore(true)
+    }, 500)
+
+    setSearchTimeout(timeout)
   }
 
   const showDeleteConfirm = (record) => {
@@ -150,62 +160,77 @@ const Resource = ({ isAuthenticated, setLoginVisible }) => {
             ? 'Pending approval'
             : status === 'APPROVED'
             ? 'Approved Resources'
-            : 'Declined Resources'}
+            : status === 'REJECTED'
+            ? 'Declined Resources'
+            : 'All Resources'}
         </p>
-        <Select
-          size="small"
-          showSearch
-          placeholder="Filter by Status"
-          allowClear
-          showArrow
-          value={status}
-          onChange={handleStatusChange}
-          style={{ width: 300 }}
-        >
-          <Option value="APPROVED">Published</Option>
-          <Option value="SUBMITTED">Pending</Option>
-          <Option value="REJECTED">Declined</Option>
-        </Select>
+
+        <div className="filter-controls">
+          <Input
+            placeholder="Search for a resource"
+            onSearch={handleSearch}
+            onChange={(e) => handleSearch(e.target.value)}
+            style={{ width: 300, marginRight: 10 }}
+            allowClear
+            size="small"
+          />
+          <Select
+            size="small"
+            showSearch
+            placeholder="Filter by Status"
+            allowClear
+            showArrow
+            value={status}
+            onChange={handleStatusChange}
+            style={{ width: 300 }}
+          >
+            <Option value="APPROVED">Published</Option>
+            <Option value="SUBMITTED">Pending</Option>
+            <Option value="REJECTED">Declined</Option>
+          </Select>
+        </div>
       </div>
       <Spin spinning={loading && page === 1}>
         <div className="card-container">
-          {data?.map((item) => (
-            <div
-              className="card-wrapper"
-              key={item.id}
-              onClick={(e) => showModal({ e, item })}
-            >
-              <div className="resource-card">
-                <p>{item.title}</p>
-                <span className="badge">{item.type.replace('_', ' ')}</span>
-              </div>
-              {status === 'SUBMITTED' && (
-                <div className="card-actions">
-                  <Button
-                    size="small"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      approveResource(item)
-                    }}
-                  >
-                    <Trans>Approve</Trans>
-                  </Button>
-                  <Button
-                    size="small"
-                    danger
-                    ghost
-                    className="decline-button"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      showDeleteConfirm(item)
-                    }}
-                  >
-                    <Trans>Decline</Trans>
-                  </Button>
+          {data?.length > 0
+            ? data.map((item) => (
+                <div
+                  className="card-wrapper"
+                  key={item.id}
+                  onClick={(e) => showModal({ e, item })}
+                >
+                  <div className="resource-card">
+                    <p>{item.title}</p>
+                    <span className="badge">{item.type.replace('_', ' ')}</span>
+                  </div>
+                  {status === 'SUBMITTED' && (
+                    <div className="card-actions">
+                      <Button
+                        size="small"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          approveResource(item)
+                        }}
+                      >
+                        <Trans>Approve</Trans>
+                      </Button>
+                      <Button
+                        size="small"
+                        danger
+                        ghost
+                        className="decline-button"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          showDeleteConfirm(item)
+                        }}
+                      >
+                        <Trans>Decline</Trans>
+                      </Button>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-          ))}
+              ))
+            : !loading && <p className="no-results">No resources found</p>}
         </div>
       </Spin>
       <div>

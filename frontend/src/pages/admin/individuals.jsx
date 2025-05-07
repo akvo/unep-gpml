@@ -1,15 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react'
-import {
-  Card,
-  Button,
-  Row,
-  Col,
-  Select,
-  Spin,
-  Modal,
-  message,
-  notification,
-} from 'antd'
+import { Button, Select, Spin, Modal, message, notification, Input } from 'antd'
 import Image from 'next/image'
 import { fetchSubmissionData } from '../../modules/profile/utils'
 import { t, Trans } from '@lingui/macro'
@@ -28,16 +18,25 @@ const Individuals = ({ isAuthenticated, setLoginVisible, profile }) => {
   const [hasMore, setHasMore] = useState(true)
   const [openItem, setOpenItem] = useState(null)
   const [modalVisible, setModalVisible] = useState(false)
+  const [searchTitle, setSearchTitle] = useState('')
+  const [searchTimeout, setSearchTimeout] = useState(null)
 
   const fetchData = useCallback(
-    async (currentPage, currentLimit, currentStatus, append = false) => {
+    async (
+      currentPage,
+      currentLimit,
+      currentStatus,
+      append = false,
+      titleSearch = ''
+    ) => {
       setLoading(true)
       try {
         const result = await fetchSubmissionData(
           currentPage,
           currentLimit,
           'stakeholders',
-          currentStatus
+          currentStatus,
+          titleSearch
         )
 
         setData((prevData) =>
@@ -56,19 +55,34 @@ const Individuals = ({ isAuthenticated, setLoginVisible, profile }) => {
 
   useEffect(() => {
     setPage(1) // Reset page when status changes
-    fetchData(1, limit, status, false) // false ensures data isn't appended
-  }, [status, limit])
+    fetchData(1, limit, status, false, searchTitle)
+  }, [status, limit, fetchData, searchTitle])
 
   const handleLoadMore = () => {
     const nextPage = page + 1
     setPage(nextPage)
-    fetchData(nextPage, limit, status, true)
+    fetchData(nextPage, limit, status, true, searchTitle)
   }
 
   const handleStatusChange = (value) => {
     setStatus(value)
     setData([]) // Clear existing data when status changes
     setHasMore(true) // Reset hasMore state
+  }
+
+  const handleSearch = (value) => {
+    if (searchTimeout) {
+      clearTimeout(searchTimeout)
+    }
+
+    const timeout = setTimeout(() => {
+      setSearchTitle(value)
+      setData([])
+      setPage(1)
+      setHasMore(true)
+    }, 500)
+
+    setSearchTimeout(timeout)
   }
 
   const showDeleteConfirm = (record) => {
@@ -144,22 +158,34 @@ const Individuals = ({ isAuthenticated, setLoginVisible, profile }) => {
             ? 'Pending approval'
             : status === 'APPROVED'
             ? 'Approved Individuals'
-            : 'Declined Individuals'}
+            : status === 'REJECTED'
+            ? 'Declined Individuals'
+            : 'All Individuals'}
         </p>
-        <Select
-          size="small"
-          showSearch
-          placeholder="Filter by Status"
-          allowClear
-          showArrow
-          value={status}
-          onChange={handleStatusChange}
-          style={{ width: 300 }}
-        >
-          <Option value="APPROVED">Published</Option>
-          <Option value="SUBMITTED">Pending</Option>
-          <Option value="REJECTED">Declined</Option>
-        </Select>
+        <div className="filter-controls">
+          <Input
+            placeholder="Search for a individual"
+            onSearch={handleSearch}
+            onChange={(e) => handleSearch(e.target.value)}
+            style={{ width: 300, marginRight: 10 }}
+            allowClear
+            size="small"
+          />
+          <Select
+            size="small"
+            showSearch
+            placeholder="Filter by Status"
+            allowClear
+            showArrow
+            value={status}
+            onChange={handleStatusChange}
+            style={{ width: 300 }}
+          >
+            <Option value="APPROVED">Published</Option>
+            <Option value="SUBMITTED">Pending</Option>
+            <Option value="REJECTED">Declined</Option>
+          </Select>
+        </div>
       </div>
       <Spin spinning={loading && page === 1}>
         <div className="card-container">
