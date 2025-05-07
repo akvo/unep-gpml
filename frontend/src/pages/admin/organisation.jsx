@@ -157,7 +157,9 @@ const Organisation = ({ isAuthenticated, setLoginVisible, profile }) => {
             ? 'Pending approval'
             : status === 'APPROVED'
             ? 'Approved Organisations'
-            : 'Declined Organisations'}
+            : status === 'REJECTED'
+            ? 'Declined Organisations'
+            : 'All Organisations'}
         </p>
         <div className="filter-controls">
           <Input

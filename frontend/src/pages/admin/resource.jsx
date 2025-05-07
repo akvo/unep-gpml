@@ -160,7 +160,9 @@ const Resource = ({ isAuthenticated, setLoginVisible }) => {
             ? 'Pending approval'
             : status === 'APPROVED'
             ? 'Approved Resources'
-            : 'Declined Resources'}
+            : status === 'REJECTED'
+            ? 'Declined Resources'
+            : 'All Resources'}
         </p>
 
         <div className="filter-controls">

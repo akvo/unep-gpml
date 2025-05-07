@@ -158,7 +158,9 @@ const Individuals = ({ isAuthenticated, setLoginVisible, profile }) => {
             ? 'Pending approval'
             : status === 'APPROVED'
             ? 'Approved Individuals'
-            : 'Declined Individuals'}
+            : status === 'REJECTED'
+            ? 'Declined Individuals'
+            : 'All Individuals'}
         </p>
         <div className="filter-controls">
           <Input
