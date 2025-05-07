@@ -1,8 +1,6 @@
 "use strict";
 
 
-// src/api/datalayer/controllers/datalayer.js
-
 module.exports = {
   async bulkUpsert(ctx) {
     const { argislayerid } = ctx.params;
@@ -24,7 +22,7 @@ module.exports = {
         continue; // Skip invalid entries
       }
 
-      const existing = await strapi.db.query('api::data-layer.data-layer').findOne({
+      const existing = await strapi.db.query('api::layer-collection.layer-collection').findOne({
         where: {
           argislayerid,
           CountryName,
@@ -33,16 +31,16 @@ module.exports = {
       });
       
       const dataUpdated = Value ?? OBS_Value_ ?? OBS_Valu_1 ?? Median ?? Mean ?? Esc_to_oce ?? Esc_to_o_c ?? Total_Tons ?? Esc_to_coa;
-      // console.log('dataUpdated', dataUpdated, CountryName);
+      console.log('dataUpdated', dataUpdated, CountryName);
       if (existing) {
-        const updated = await strapi.entityService.update('api::data-layer.data-layer', existing.id, {
+        const updated = await strapi.entityService.update('api::layer-collection.layer-collection', existing.id, {
           data: {
            Value: dataUpdated,
           },
         });
         results.push(updated);
       } else {
-        const created = await strapi.entityService.create('api::data-layer.data-layer', {
+        const created = await strapi.entityService.create('api::layer-collection.layer-collection', {
           data: {
             argislayerid,
             CountryName,

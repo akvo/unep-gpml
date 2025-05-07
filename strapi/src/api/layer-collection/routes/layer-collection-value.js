@@ -4,8 +4,8 @@ module.exports = {
     routes: [
       {
         method: 'POST',
-        path: '/datalayers/:argislayerid/bulk-upsert',
-        handler: 'data-countries-controller.bulkUpsert',
+        path: '/layercollections/:argislayerid/bulk-upsert',
+        handler: 'layer-collection-controller.bulkUpsert',
         config: {
           auth: false, // or true, depending if you want protected
         },

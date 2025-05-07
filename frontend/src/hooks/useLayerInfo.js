@@ -22,7 +22,7 @@ const useLayerInfo = () => {
             response.data.data.map(async (d) => {
               try {
                 const getValues = await axios.get(
-                  `${strapiURL}/api/data-layers?filters[argislayerid]=${d.attributes.arcgislayerId}&pagination[page]=1&pagination[pageSize]=2000&publicationState=preview`
+                  `${strapiURL}/api/layer-collections?filters[argislayerid]=${d.attributes.arcgislayerId}&pagination[page]=1&pagination[pageSize]=2000&publicationState=preview`
                 )
 
                 return {
@@ -78,7 +78,7 @@ const useLayerInfo = () => {
               ) {
                 try {
                   const getValues = await axios.get(
-                    `${strapiURL}/api/data-layers?filters[argislayerid]=${d.attributes.arcgislayerId}&pagination[page]=1&pagination[pageSize]=2000&publicationState=preview`
+                    `${strapiURL}/api/layer-collections?filters[argislayerid]=${d.attributes.arcgislayerId}&pagination[page]=1&pagination[pageSize]=2000&publicationState=preview`
                   )
 
                   return {
