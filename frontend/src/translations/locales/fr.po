@@ -2189,7 +2189,7 @@ msgstr "Dans le marché"
 
 #: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:138
 msgid "in million US dollars for year {0}"
-msgstr ""
+msgstr "en millions de dollars américains pour l'année {0}"
 
 #: src/modules/flexible-forms/form-schema.js:796
 msgid "In more than 10 years"
@@ -2754,7 +2754,7 @@ msgstr "Microplastiques"
 #: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:126
 #: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:186
 msgid "million US dollars"
-msgstr "millions de dollars américains"
+msgstr "millions de dollars\n américains"
 
 #: src/modules/flexible-forms/form-schema.js:1962
 msgid "Miscellaneous"
@@ -3328,7 +3328,7 @@ msgstr "Documents épinglés"
 
 #: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:88
 msgid "Plastic composition in the MSW for {0}"
-msgstr "Composition plastique dans les déchets solides municipaux pour {0}"
+msgstr "Composition plastique dans les\n déchets solides municipaux pour {0}"
 
 #: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:85
 msgid "Plastic composition in the MSW\\nfor {0}"
