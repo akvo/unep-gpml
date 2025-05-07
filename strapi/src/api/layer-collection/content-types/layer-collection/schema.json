@@ -1,11 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "data_layers",
+  "collectionName": "layer_collections",
   "info": {
-    "singularName": "data-layer",
-    "pluralName": "data-layers",
-    "displayName": "Data Layer",
-    "description": ""
+    "singularName": "layer-collection",
+    "pluralName": "layer-collections",
+    "displayName": "Layer Collection"
   },
   "options": {
     "draftAndPublish": true

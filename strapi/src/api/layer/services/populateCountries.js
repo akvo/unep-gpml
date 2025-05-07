@@ -213,7 +213,7 @@ module.exports = {
         if (batch.length > 0) {
           try {
             await axios.post(
-              `${baseUrl}/api/datalayers/${arcgislayerId}/bulk-upsert`,
+              `${baseUrl}/api/layercollections/${arcgislayerId}/bulk-upsert`,
               batch
             );
             console.log(
