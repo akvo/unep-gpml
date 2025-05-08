@@ -43,8 +43,20 @@ export function cleanArcGisFields(fields) {
   )
 
   cleanedFields = cleanedFields.filter((field) => field !== '')
+  const otherLayer = [
+    'Plastics_in_primary_forms___weight__import__WFL1',
+    'Intermediate_forms_of_plastic_weight____import__WFL1',
+    'Final_manufactured_plastics_goods___weight__import__WFL1',
+    'Intermediate___weight__import__WFL1',
+    'Plastic_waste_weigth____import__WFL1',
+    'Plastics_in_primary_forms___weight__export__WFL1',
+    'Intermediate_forms_of_plastic_weight____export__WFL1',
+    'Final_manufactured_plastics_goods_weight____export__WFL1',
+    'Intermediate___weight__export__WFL1',
+    'Plastic_waste_weigth____export__WFL1',
+  ]
 
-  return [...new Set(cleanedFields)]
+  return [...new Set(cleanedFields, otherLayer)]
 }
 
 const splitTextInHalf = (text, splitMarker = '') => {
@@ -148,7 +160,10 @@ const CountryOverview = () => {
       }
 
       for (let index = 0; index < layers.length; index++) {
-        if ('Plastic_packaging___weight__import__WFL1' === layers[index]) {
+        if (
+          'Plastic_packaging___weight__import__WFL1' === layers[index] ||
+          'Plastic_packaging___weight__export__WFL1' === layers[index]
+        ) {
           await axios.post(
             `${strapiURL}/api/countries/populate-data-layers/${layers[index]}`,
             obsPayload
@@ -181,6 +196,64 @@ const CountryOverview = () => {
     }
   }
 
+  const runChunkedPopulation = async (layers) => {
+    if (!layers || layers.length === 0) return;
+  
+    const strapiURL = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
+    const limit = 100;
+    // const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  
+    const getPayload = (layerName) => {
+      if (
+        layerName === 'Plastic_packaging___weight__import__WFL1' ||
+        layerName === 'Plastic_packaging___weight__export__WFL1'
+      ) {
+        return { outFields: ['Time_Perio', 'OBS_Value', 'Country'] };
+      } else if (
+        layerName.toLowerCase().includes('value') ||
+        layerName.toLowerCase().includes('total')
+      ) {
+        return { outFields: ['Time', 'Value', 'Country'] };
+      } else {
+        return { outFields: ['Year', 'Value', 'Country'] };
+      }
+    };
+  
+    for (const layerName of layers) {
+      const { outFields } = getPayload(layerName);
+      let offset = 0;
+      let done = false;
+  
+      while (!done) {
+        const payload = { outFields };
+  
+        try {
+          const response = await axios.post(
+            `${strapiURL}/api/countries/populate-layer-chunk/${layerName}?offset=${offset}`,
+            payload
+          );
+  
+          console.log(`✅ Posted offset ${offset} for ${layerName}`);
+  
+          if (response.data?.done) {
+            done = true;
+          } else {
+            offset += limit;
+            // await delay(200);
+          }
+  
+        } catch (err) {
+          console.error(`❌ Error at offset ${offset} for ${layerName}:`, err.message);
+          break;
+        }
+      }
+  
+      console.log(`🎉 Done for layer ${layerName}`);
+    }
+  };
+  
+  
+
   useEffect(() => {
     if (queryParameters.country) {
       setSelectedCountry(queryParameters.country)
@@ -200,6 +273,15 @@ const CountryOverview = () => {
         selectedCategoryObject?.attributes?.textTemplate?.placeholders
       )
       postDataLayers(cleanedFields)
+    }
+  }, [queryParameters, selectedCategoryObject])
+
+  useEffect(() => {
+    if (queryParameters.addDataChunk) {
+      const cleanedFields = cleanArcGisFields(
+        selectedCategoryObject?.attributes?.textTemplate?.placeholders
+      )
+      runChunkedPopulation(cleanedFields)
     }
   }, [queryParameters, selectedCategoryObject])
 
@@ -297,7 +379,7 @@ const CountryOverview = () => {
     selectedCategoryObject?.attributes?.categoryId === 'environmental-impact' ||
     selectedCategoryObject?.attributes?.categoryId === 'waste-management'
       ? splitTextByMarker(categoryText, '<!--NEW_COLUMN-->')
-      : splitTextInHalf(categoryText || '','<!--NEW_COLUMN-->')
+      : splitTextInHalf(categoryText || '', '<!--NEW_COLUMN-->')
 
   const textWithTooltipsfirstHalfText = addTooltipsToPlaceholders(
     firstHalfText,
@@ -496,15 +578,15 @@ const CountryOverview = () => {
           <PlasticOceanBeachChart layers={layers} layerLoading={layerLoading} />
         </div>
       )}
-      {isMobile && (
+       {isMobile && (
         <div className={styles.mobileButtonsContainer}>
           <Button className={styles.buttonStyle} onClick={showModal}>
             {t`Submit Data Update`}
           </Button>
         </div>
-      )}
+      )} 
 
-      {queryParameters.categoryId && queryParameters.country && isMobile && (
+       {queryParameters.categoryId && queryParameters.country && isMobile && (
         <div>
           <Button
             className={styles.globalButton}
@@ -513,7 +595,7 @@ const CountryOverview = () => {
             View Global Data →
           </Button>
         </div>
-      )}
+      )} 
     </div>
   )
 }
