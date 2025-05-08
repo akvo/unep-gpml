@@ -56,4 +56,24 @@ module.exports = {
 
     return results;
   },
+  async findArgisDataCollections(ctx) {
+    const { argislayerid } = ctx.params;
+
+    if (!argislayerid) {
+      return ctx.badRequest('Missing argislayerid');
+    }
+
+    const data = await strapi.entityService.findMany('api::layer-collection.layer-collection', {
+      filters: {
+        argislayerid: argislayerid,
+      },
+      pagination: {
+        page: 1,
+        pageSize: 2000,
+      },
+      publicationState: 'preview',
+    });
+
+    return data;
+  },
 };
