@@ -238,6 +238,62 @@ module.exports = {
       throw err; // Re-throw to allow caller to handle if needed
     }
   },
+  async populateDataLayerChunk(arcgislayerId, outFields, offset, limit = 100) {
+    const arcgisUrl = `https://services3.arcgis.com/pI4ewELlDKS2OpCN/arcgis/rest/services/${arcgislayerId}/FeatureServer/0/query`;
+    const baseUrl = process.env.STRAPI_URL || "http://localhost:1337";
+  
+    const urlWithPagination = `${arcgisUrl}?where=1=1&outFields=${outFields.join(
+      ","
+    )}&f=json&resultRecordCount=${limit}&resultOffset=${offset}`;
+  
+    console.log("Fetching from:", urlWithPagination);
+    const response = await axios.get(urlWithPagination);
+    const features = response.data.features?.map((f) => f.attributes);
+  
+    if (!features || features.length === 0) {
+      console.log("No more data at offset:", offset);
+      return { done: true };
+    }
+  
+    const groupedData = features.reduce((acc, current) => {
+      const country = current[outFields[2]];
+      if (!acc[country]) acc[country] = [];
+      acc[country].push(current);
+      return acc;
+    });
+  
+    const countries = await strapi.entityService.findMany("api::country.country", {
+      fields: ["id", "CountryName", "CountryCode"],
+    });
+  
+    const valuePerCountryData = countries
+      .flatMap((country) => {
+        const key = country["CountryName"];
+        const countryRows = groupedData[key] || [];
+  
+        return countryRows.map((row) => ({
+          Value: parseNumber(parseFloat(row[outFields[1]]).toFixed(2)),
+          City: outFields[3] && row[outFields[3]] ? row[outFields[3]] : "",
+          Year: row[outFields[0]]?.toString(),
+          CountryName: country["CountryName"],
+          CountryCode: country["CountryCode"],
+        }));
+      })
+      .filter(Boolean);
+  
+    const batchSize = 20;
+    for (let i = 0; i < valuePerCountryData.length; i += batchSize) {
+      const batch = valuePerCountryData.slice(i, i + batchSize);
+      await axios.post(
+        `${baseUrl}/api/layercollections/${arcgislayerId}/bulk-upsert`,
+        batch
+      );
+    }
+  
+    console.log(`Processed offset ${offset}, fetched ${features.length} features`);
+    return { done: features.length < limit }; // If less than limit, it's the last page
+  }
+  
 };
 
 async function appendValuePerCountryDirect(layerId, entries) {
