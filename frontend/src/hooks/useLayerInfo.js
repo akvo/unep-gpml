@@ -21,15 +21,18 @@ const useLayerInfo = () => {
           const updateLayer = await Promise.all(
             response.data.data.map(async (d) => {
               try {
+                // const getValues = await axios.get(
+                //   `${strapiURL}/api/layer-collections?filters[argislayerid]=${d.attributes.arcgislayerId}&pagination[page]=1&pagination[pageSize]=2000&publicationState=preview`
+                // )
                 const getValues = await axios.get(
-                  `${strapiURL}/api/layer-collections?filters[argislayerid]=${d.attributes.arcgislayerId}&pagination[page]=1&pagination[pageSize]=2000&publicationState=preview`
+                  `${strapiURL}/api/layercollections/${d.attributes.arcgislayerId}`
                 )
-
                 return {
                   ...d,
                   attributes: {
                     ...d.attributes,
-                    ValuePerCountry: getValues.data.data.map((v) => v.attributes) ?? []
+                    // ValuePerCountry: getValues.data.data.map((v) => v.attributes) ?? []
+                    ValuePerCountry: getValues.data ?? []
                   },
                 }
               } catch (valueError) {
@@ -77,16 +80,18 @@ const useLayerInfo = () => {
                 currentLocale === 'en'
               ) {
                 try {
+                  // const getValues = await axios.get(
+                  //   `${strapiURL}/api/layer-collections?filters[argislayerid]=${d.attributes.arcgislayerId}&pagination[page]=1&pagination[pageSize]=2000&publicationState=preview`
+                  // )
                   const getValues = await axios.get(
-                    `${strapiURL}/api/layer-collections?filters[argislayerid]=${d.attributes.arcgislayerId}&pagination[page]=1&pagination[pageSize]=2000&publicationState=preview`
+                    `${strapiURL}/api/layercollections/${d.attributes.arcgislayerId}`
                   )
-
                   return {
                     ...d,
                     attributes: {
                       ...d.attributes,
-                      ValuePerCountry:
-                        getValues?.data?.data.map((v) => v.attributes) || [],
+                      // ValuePerCountry: getValues?.data?.data.map((v) => v.attributes) || [],
+                      ValuePerCountry: getValues.data ?? []
                     },
                   }
                 } catch (valueError) {

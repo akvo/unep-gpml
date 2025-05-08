@@ -7,7 +7,15 @@ module.exports = {
         path: '/layercollections/:argislayerid/bulk-upsert',
         handler: 'layer-collection-controller.bulkUpsert',
         config: {
-          auth: false, // or true, depending if you want protected
+          auth: false, 
+        },
+      },
+      {
+        method: 'GET',
+        path: '/layercollections/:argislayerid',
+        handler: 'layer-collection-controller.findArgisDataCollections',
+        config: {
+          auth: false, 
         },
       },
     ],
