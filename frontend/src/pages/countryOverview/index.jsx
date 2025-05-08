@@ -199,7 +199,7 @@ const CountryOverview = () => {
   const runChunkedPopulation = async (layers) => {
     if (!layers || layers.length === 0) return;
   
-    const strapiURL = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
+    const strapiURL = strapiURL || "http://localhost:1337";
     const limit = 100;
     // const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   
