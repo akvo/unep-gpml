@@ -243,7 +243,6 @@ const CountryOverview = () => {
   
         } catch (err) {
           console.error(`❌ Error at offset ${offset} for ${layerName}:`, err.message);
-          break;
         }
       }
   
