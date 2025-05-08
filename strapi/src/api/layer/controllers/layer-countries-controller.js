@@ -3,12 +3,30 @@
 const {
   populateCountriesForLayers,
   populateDataLayers,
+  populateDataLayerChunk,
 } = require("../services/populateCountries");
 
 const {
   assignCountriesToLayers,
 } = require("../services/assignCountriesToLayers");
 module.exports = {
+  async triggerChunk(ctx) {
+    const { arcgislayerId } = ctx.params;
+    const { offset } = ctx.query;
+    const { outFields } = ctx.request.body;
+  
+    if (!arcgislayerId || typeof offset === "undefined" || !Array.isArray(outFields)) {
+      return ctx.badRequest("Missing required parameters: arcgislayerId, offset, or outFields");
+    }
+  
+    try {
+      const result = await populateDataLayerChunk(arcgislayerId, outFields, offset);
+  
+      ctx.send(result);
+    } catch (e) {
+      ctx.throw(500, "Error processing chunk: " + e.message);
+    }
+  },  
   async postGisDataLayers(ctx) {
     const { arcgislayerId } = ctx.params;
     const { outFields } = ctx.request.body;

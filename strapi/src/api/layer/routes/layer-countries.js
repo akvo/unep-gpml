@@ -50,6 +50,13 @@ module.exports = {
                 auth: false,
             },
         },
-        
+        {
+            method: 'POST',
+            path: '/countries/populate-layer-chunk/:arcgislayerId',
+            handler: 'layer-countries-controller.triggerChunk',
+            config: {
+              auth: false,
+            },
+        },
     ],
 };
