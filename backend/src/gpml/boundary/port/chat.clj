@@ -110,10 +110,23 @@
    [:count :int]
    [:skip :int]])
 
+(def Discussion
+  [:map {:closed true}
+   [:id :string]
+   [:channel-id :string]
+   [:notify-all-users :boolean]
+   [:name :string]
+   [:enabled :boolean]])
+
+(def ExtendedDiscussion
+  (-> Discussion
+      (mu/assoc :messages [:vector {} Message])))
+
 (def ExtendedChannel
   (-> Channel
       (mu/assoc :members Members)
-      (mu/assoc :messages Messages)))
+      (mu/assoc :messages Messages)
+      (mu/assoc :discussions [:vector {} ExtendedDiscussion])))
 
 (def ChannelSnakeCase (map->snake Channel))
 
@@ -191,14 +204,6 @@
   [:map
    {:closed true}
    [:name :string]])
-
-(def Discussion
-  [:map {:closed true}
-   [:id :string]
-   [:channel-id :string]
-   [:notify-all-users :boolean]
-   [:name :string]
-   [:enabled :boolean]])
 
 (def DiscussionSnakeCase
   (map->snake Discussion))
