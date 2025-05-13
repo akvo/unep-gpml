@@ -15,7 +15,6 @@
    [gpml.util.result :refer [failure]]
    [gpml.util.thread-transactions :refer [saga]]
    [integrant.core :as ig]
-   [java-time.api :as jt]
    [taoensso.timbre :as timbre]))
 
 (def NewUser
@@ -381,28 +380,21 @@
                                                                d))))
                                (assoc :messages (update (cske/transform-keys ->kebab-case messages)
                                                         :messages
-                                                        present-messages)))]
+                                                        present-messages))
+                               (assoc :discussions (vector)))]
                 (if-not include-discussion-messages?
                   {:success? true
                    :channel result}
                   (let [{:keys [success? discussions]} (get-channel-discussions* this channel-id)]
                     (if-not success?
                       {:success? false}
-                      (reduce (fn [acc {discussion-id :id}]
-                                {:pre [discussion-id]}
-                                (let [{:keys [success? messages]} (get-discussion-messages* this channel-id discussion-id)]
+                      (reduce (fn [acc discussion]
+                                {:pre [(:id discussion)]}
+                                (let [{:keys [success? messages]} (get-discussion-messages* this channel-id (:id discussion))]
                                   (if-not success?
                                     (reduced {:success? false})
                                     (-> acc
-                                        (update-in [:channel :messages :messages] into messages)
-                                        (update-in [:channel :messages :messages]
-                                                   (fn [xs]
-                                                     (vec (sort-by (fn [{:keys [created]}]
-                                                                     (or (jt/instant created)
-                                                                         (jt/instant)))
-                                                                   (fn reverse-cmp [a b]
-                                                                     (compare b a))
-                                                                   xs))))))))
+                                        (update-in [:channel :discussions] conj (assoc discussion :messages messages))))))
                               {:success? true
                                :channel result}
                               discussions))))))))))))
