@@ -67,14 +67,14 @@
 ;; FIXME: this shouldn't be hardcoded here. We'll be moving to
 ;; mailchimp soon so we'll refactor everything here.
 (def unep-sender
-  {:Name "UNEP GPML Digital Platform" :Email "no-reply@gpmarinelitter.org"})
+  {:Name "GlobalPlasticsHub" :Email "no-reply@gpmarinelitter.org"})
 
 (def notify-admins-pending-approval-text
   "Dear %s,
 
 A new %s (%s) is awaiting your approval. Please visit %s/profile to approve or decline the request.
 
-- UNEP GPML Digital Platform
+- GlobalPlasticsHub
 ")
 
 (def notify-secretariat-new-subscription-text
@@ -82,7 +82,7 @@ A new %s (%s) is awaiting your approval. Please visit %s/profile to approve or d
 
 A new subscription request has arrived from %s.
 
-- UNEP GPML Digital Platform
+- GlobalPlasticsHub
 ")
 
 (defn new-resource-comment-text [resource-owner comment-author resource-title app-domain]
@@ -90,14 +90,14 @@ A new subscription request has arrived from %s.
 
 %s commented on your resource %s. For more details visit your resource's detail page %s.
 
-- UNEP GPML Digital Platform" resource-owner comment-author resource-title app-domain))
+- GlobalPlasticsHub" resource-owner comment-author resource-title app-domain))
 
 (defn notify-expert-invitation-text [first-name last-name invitation-id app-domain]
   (let [platform-link (str app-domain "/login?invite=" invitation-id)
         user-full-name (get-user-full-name {:first_name first-name :last_name last-name})]
     (format "Dear %s,
 
-You have been invited to join the UNEP GPML Digital Platform as an expert.
+You have been invited to join the GlobalPlasticsHub as an expert.
 
 Please, click on the link to accept the invitation: %s" user-full-name platform-link)))
 
@@ -106,7 +106,7 @@ Please, click on the link to accept the invitation: %s" user-full-name platform-
 
 A new %s (%s) is awaiting your review. Please visit %s/profile to review the resource.
 
-- UNEP GPML Digital Platform
+- GlobalPlasticsHub
 " reviewer-name topic-type topic-title app-domain))
 
 (defn notify-review-submitted-text [admin-name app-domain topic-type topic-title review-status review-comment]
@@ -119,7 +119,7 @@ Comment: %s
 
 Please visit %s/profile to publish or reject the resource.
 
-- UNEP GPML Digital Platform
+- GlobalPlasticsHub
 " admin-name topic-type topic-title review-status review-comment app-domain))
 
 (defn notify-user-review-approved-text [mailjet-config topic-type topic-item]
@@ -127,7 +127,7 @@ Please visit %s/profile to publish or reject the resource.
 
 Your submission has been published to %s/%s/%s.
 
-- UNEP GPML Digital Platform
+- GlobalPlasticsHub
 "
           (:app-domain mailjet-config)
           (h.util/get-api-topic-type topic-type topic-item)
@@ -141,7 +141,7 @@ Your submission (%s) has been rejected.
 If you'd like to edit the submission and get the admins to review it
 again, please visit this URL: %s/edit-%s/%s
 
-- UNEP GPML Digital Platform
+- GlobalPlasticsHub
 "
           (h.util/get-title topic-type topic-item)
           (:app-domain mailjet-config)
@@ -168,7 +168,7 @@ Visit the link below to review the request:
 
 %s
 
-- UNEP GPML Digital Platform"
+- GlobalPlasticsHub"
           user-name
           channel-name
           review-request-link))
@@ -180,7 +180,7 @@ View the forums in your GPML workspace:
 
 %s/forum
 
-- UNEP GPML Digital Platform"
+- GlobalPlasticsHub"
           channel-name
           base-url))
 
@@ -189,11 +189,11 @@ View the forums in your GPML workspace:
 
 %s has invited you to join %s as part of entity %s. Please visit %s/stakeholder-signup and follow instructions to signup.
 
-- UNEP GPML Digital Platform
+- GlobalPlasticsHub
 " inviter-name app-domain entity-name app-domain))
 
 (defn notify-user-invitation-subject [inviter-name]
-  (format "%s has invited you to join UNEP GPML Digital Platform" inviter-name))
+  (format "%s has invited you to join GlobalPlasticsHub" inviter-name))
 
 (defn new-resource-comment-subject [comment-author]
   (format "%s commented on your resource" comment-author))
@@ -208,7 +208,7 @@ You have been invited to participate in the Plastic Strategy for %s country.
 
 To accept this invitation please visit %s and sign up to GPML Platform.
 
-- UNEP GPML Digital Platform"
+- GlobalPlasticsHub"
           user-full-name
           country-name
           app-domain))
@@ -381,7 +381,7 @@ You now have access to Plastic Strategy %s in the GPML Digital Platform.
 It is now accessible through your workspace below
 %s/workspace
 
-- UNEP GPML Digital Platform" user-full-name country-name app-domain))
+- GlobalPlasticsHub" user-full-name country-name app-domain))
 
 (defn notify-user-added-to-plastic-strategy-team [mailjet-config user plastic-strategy]
   (let [sender unep-sender
