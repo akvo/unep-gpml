@@ -54,6 +54,7 @@ const ForumView = ({
   const [sdk, setSDK] = useState(null)
   const [discussion, setDiscussion] = useState(null)
   const [userJoined, setUserJoined] = useState(false)
+
   const [viewModal, setViewModal] = useState({
     open: false,
     data: {},
@@ -61,17 +62,17 @@ const ForumView = ({
   const { chatAccountAuthToken: accessToken } = profile || {}
 
   const iframeURL = useMemo(() => {
-    if (!router.query?.forum) {
+    if (!router.query?.params?.[0]) {
       return null
     }
-    return `${process.env.NEXT_PUBLIC_DSC_URL}/${router.query.forum}?accessToken=${accessToken}`
-  }, [router.query?.forum, accessToken])
+    return `${process.env.NEXT_PUBLIC_DSC_URL}/${router.query.params?.[0]}?accessToken=${accessToken}`
+  }, [router.query?.params?.[0], accessToken])
 
   const fetchData = useCallback(async () => {
     try {
-      if (profile?.id && isAuthenticated && router.query?.forum) {
+      if (profile?.id && isAuthenticated && router.query?.params?.[0]) {
         const { data: apiData } = await api.get(
-          `/chat/channel/details/${router.query.forum}`
+          `/chat/channel/details/${router.query.params?.[0]}`
         )
         const { channel: _activeForum } = apiData || {}
         setUserJoined(
@@ -82,7 +83,7 @@ const ForumView = ({
     } catch (error) {
       console.error(error)
     }
-  }, [isAuthenticated, profile, router.query?.forum])
+  }, [isAuthenticated, profile, router.query?.params?.[0]])
 
   useEffect(() => {
     fetchData()
@@ -107,7 +108,7 @@ const ForumView = ({
   const handleSDKLoaded = async () => {
     if (window?.DSChatSDK && !sdk) {
       const _sdk = new window.DSChatSDK(
-        router.query.forum,
+        router.query.params?.[0],
         'chat-frame',
         process.env.NEXT_PUBLIC_DSC_PUBLIC_KEY
       )
@@ -196,7 +197,8 @@ const ForumView = ({
             {activeForum != null && (
               <Discussions
                 discussions={activeForum.discussions}
-                channelId={router.query.forum}
+                channelId={router.query.params?.[0]}
+                subchannelId={router.query.params?.[1]}
                 {...{ discussion, setDiscussion, sdk, profile, setActiveForum }}
               />
             )}
@@ -574,6 +576,7 @@ const Discussions = ({
   setDiscussion,
   sdk,
   channelId,
+  subchannelId,
   profile,
   setActiveForum,
 }) => {
@@ -612,8 +615,18 @@ const Discussions = ({
       })
   }
   useEffect(() => {
+    if (subchannelId != null) {
+      sdk?.selectChannel(subchannelId)
+    }
     api.get(`/chat/channel/discussions/${channelId}`).then((d) => {
       setDiscussions(d.data.discussions)
+      if (subchannelId != null) {
+        const item = d.data.discussions.find((it) => it.id === subchannelId)
+        setDiscussion(item)
+        setTimeout(() => {
+          sdk?.selectChannel(subchannelId)
+        }, 500)
+      }
     })
     // if (sdk) {
     // const { channels } = await _sdk.getActiveChannels()
