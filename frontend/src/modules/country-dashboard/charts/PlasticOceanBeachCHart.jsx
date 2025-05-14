@@ -72,11 +72,11 @@ const PlasticOceanBeachChart = ({ layers, loading }) => {
       const calculatedOceanPercentage = (
         (oceanValue * 100) /
         coastValue
-      ).toFixed(1)
+      ).toFixed(2)
       const calculatedBeachPercentage = (
         (beachValue * 100) /
         coastValue
-      ).toFixed(1)
+      ).toFixed(2)
 
       setOceanPercentage(calculatedOceanPercentage)
       setBeachPercentage(calculatedBeachPercentage)
