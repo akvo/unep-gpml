@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { useRouter } from 'next/router'
 import { t, Trans } from '@lingui/macro'
+import { splitIntoTwoLines} from './PlasticImportExportChart'
 
 const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
   const router = useRouter()
@@ -109,14 +110,9 @@ const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
   const pieData = generatePieData(data)
   const countryName = decodeURIComponent(country)
 
-  const tTextTitle =
-    window.innerWidth < 768
-      ? chartType === 'import'
-        ? t`Plastic import by type for\n${countryName}`
-        : t`Plastic export by type for\n${countryName}`
-      : chartType === 'import'
-      ? t`Plastic import by type for ${countryName}`
-      : t`Plastic export by type for ${countryName}`
+  const tTextTitle = chartType === 'import'
+      ?  splitIntoTwoLines(t`Plastic import by type for ${countryName}`, true)
+      :  splitIntoTwoLines(t`Plastic export by type for ${countryName}`, true)
 
   const getPieOption = () => ({
     title: {
@@ -144,6 +140,10 @@ const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
     },
     legend: {
       orient: 'horizontal',
+      type: 'scroll',
+      tooltip: {
+        show: true,
+      },
       left: 'center',
       textStyle: {
         color: '#020A5B',
