@@ -3,7 +3,7 @@ import ReactEcharts from 'echarts-for-react'
 import { useRouter } from 'next/router'
 import { t, Trans } from '@lingui/macro'
 import { loadCatalog } from '../../../translations/utils'
-
+import { splitIntoTwoLines} from './PlasticImportExportChart'
 const PlasticImportExportChart = ({ layers, loading }) => {
   const router = useRouter()
   const { country, countryCode } = router.query
@@ -130,13 +130,11 @@ const PlasticImportExportChart = ({ layers, loading }) => {
     fetchData()
   }, [country, layers, loading])
 
-  const textTitle =
-    window.innerWidth < 768
-      ? t`Plastic import & export value\nfor ${decodeURIComponent(country)}`
-      : t`Plastic import & export value for ${decodeURIComponent(country)}`
+  const textTitle = splitIntoTwoLines(t`Plastic import & export value for ${decodeURIComponent(country)}`)
 
-  const subTitle = t`in million US dollars for year ${2022 || 'N/A'}`
-
+  const subTitle = splitIntoTwoLines(t`in million US dollars for year ${2022 || 'N/A'}`)
+  const units = t`million  US  dollars`
+  const fUnits = units.replace(/  /, '\n')
   const getOption = () => ({
     title: {
       text: textTitle,
@@ -183,7 +181,7 @@ const PlasticImportExportChart = ({ layers, loading }) => {
     },
     yAxis: {
       type: 'category',
-      name: t`million US dollars`,
+      name: fUnits,
       axisLabel: {
         formatter: '{value} ',
         fontSize: 12,

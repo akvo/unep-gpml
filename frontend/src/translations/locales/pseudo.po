@@ -32,7 +32,7 @@ msgid "(OPTIONAL)"
 msgstr ""
 
 #: src/modules/details-page/stakeholder-carousel.jsx:94
-#: src/pages/add-content/index.jsx:880
+#: src/pages/add-content/index.jsx:934
 msgid "{0}"
 msgstr ""
 
@@ -339,9 +339,9 @@ msgstr ""
 msgid "Apply Filters"
 msgstr ""
 
-#: src/pages/admin/individuals.jsx:187
-#: src/pages/admin/organisation.jsx:188
-#: src/pages/admin/resource.jsx:191
+#: src/pages/admin/individuals.jsx:213
+#: src/pages/admin/organisation.jsx:212
+#: src/pages/admin/resource.jsx:215
 msgid "Approve"
 msgstr ""
 
@@ -860,7 +860,7 @@ msgid "Constitution"
 msgstr ""
 
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:56
-#: src/utils/misc.js:343
+#: src/utils/misc.js:344
 msgid "Consumption"
 msgstr ""
 
@@ -1064,9 +1064,9 @@ msgstr ""
 
 #: src/modules/country-dashboard/charts/MSWGeneration.tsx:212
 #: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:214
-#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:168
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:184
 #: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:200
-#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:224
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:222
 #: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:220
 msgid "Data source:"
 msgstr ""
@@ -1087,9 +1087,9 @@ msgstr ""
 msgid "Decisions designed to create favorable impact on key factors to create a desired outcome."
 msgstr ""
 
-#: src/pages/admin/individuals.jsx:199
-#: src/pages/admin/organisation.jsx:200
-#: src/pages/admin/resource.jsx:203
+#: src/pages/admin/individuals.jsx:225
+#: src/pages/admin/organisation.jsx:224
+#: src/pages/admin/resource.jsx:227
 msgid "Decline"
 msgstr ""
 
@@ -1585,7 +1585,7 @@ msgstr ""
 msgid "Explore the resources"
 msgstr ""
 
-#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:196
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:194
 #: src/modules/profile/admin.jsx:887
 msgid "Export"
 msgstr ""
@@ -1627,7 +1627,7 @@ msgstr ""
 msgid "Filters"
 msgstr ""
 
-#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:21
+#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:22
 #: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:24
 msgid "Final manufactured plastic goods"
 msgstr ""
@@ -1751,7 +1751,7 @@ msgstr ""
 msgid "Frequently Asked Questions"
 msgstr ""
 
-#: src/utils/misc.js:346
+#: src/utils/misc.js:347
 msgid "Full Life Cycle"
 msgstr ""
 
@@ -1863,7 +1863,7 @@ msgstr ""
 #: src/modules/flexible-forms/form-schema.js:2071
 #: src/modules/flexible-forms/form-schema.js:2336
 #: src/modules/flexible-forms/form-schema.js:2575
-#: src/pages/add-content/index.jsx:591
+#: src/pages/add-content/index.jsx:645
 #: src/pages/partnership/index.jsx:829
 msgid "Global"
 msgstr ""
@@ -2117,11 +2117,11 @@ msgstr ""
 msgid "Implementing MEA"
 msgstr ""
 
-#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:196
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:194
 msgid "Import"
 msgstr ""
 
-#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:31
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:45
 msgid "Import or export layer not found."
 msgstr ""
 
@@ -2129,7 +2129,7 @@ msgstr ""
 msgid "In 1 to 3 years"
 msgstr ""
 
-#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:124
+#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:120
 msgid "In 1000 metric tons for year {0}"
 msgstr ""
 
@@ -2149,7 +2149,7 @@ msgstr ""
 msgid "In market"
 msgstr ""
 
-#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:138
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:135
 msgid "in million US dollars for year {0}"
 msgstr ""
 
@@ -2262,12 +2262,12 @@ msgstr ""
 msgid "Instructions"
 msgstr ""
 
-#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:20
+#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:21
 #: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:23
 msgid "Intermediate forms of plastic"
 msgstr ""
 
-#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:22
+#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:23
 #: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:25
 msgid "Intermediate manufactured plastic goods"
 msgstr ""
@@ -2446,7 +2446,7 @@ msgstr ""
 msgid "Leave Channel"
 msgstr ""
 
-#: src/utils/misc.js:345
+#: src/utils/misc.js:346
 msgid "Legacy Plastics"
 msgstr ""
 
@@ -2713,10 +2713,15 @@ msgstr ""
 msgid "Microplastics"
 msgstr ""
 
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:93
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:136
+msgid "million  US  dollars"
+msgstr ""
+
 #: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:126
 #: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:186
-msgid "million US dollars"
-msgstr ""
+#~ msgid "million US dollars"
+#~ msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:1962
 msgid "Miscellaneous"
@@ -2826,7 +2831,7 @@ msgstr ""
 #: src/modules/flexible-forms/form-schema.js:2338
 #: src/modules/flexible-forms/form-schema.js:2577
 #: src/modules/map/map-chart.jsx:714
-#: src/pages/add-content/index.jsx:593
+#: src/pages/add-content/index.jsx:647
 #: src/pages/partnership/index.jsx:835
 msgid "National"
 msgstr ""
@@ -3296,33 +3301,33 @@ msgstr ""
 msgid "Plastic distribution"
 msgstr ""
 
-#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:119
+#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:115
 msgid "Plastic export by type for {countryName}"
 msgstr ""
 
 #: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:116
-msgid "Plastic export by type for\\n{countryName}"
-msgstr ""
+#~ msgid "Plastic export by type for\\n{countryName}"
+#~ msgstr ""
 
-#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:78
-#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:136
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:90
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:133
 msgid "Plastic import & export value for {0}"
 msgstr ""
 
 #: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:77
 #: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:135
-msgid "Plastic import & export value\\nfor {0}"
-msgstr ""
+#~ msgid "Plastic import & export value\\nfor {0}"
+#~ msgstr ""
 
-#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:118
+#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:114
 msgid "Plastic import by type for {countryName}"
 msgstr ""
 
 #: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:115
-msgid "Plastic import by type for\\n{countryName}"
-msgstr ""
+#~ msgid "Plastic import by type for\\n{countryName}"
+#~ msgstr ""
 
-#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:19
+#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:20
 #: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:22
 msgid "Plastic in primary form"
 msgstr ""
@@ -3335,7 +3340,7 @@ msgstr ""
 msgid "Plastic Pollution Calculator"
 msgstr ""
 
-#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:23
+#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:24
 #: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:26
 msgid "Plastic waste"
 msgstr ""
@@ -3448,7 +3453,7 @@ msgstr ""
 msgid "Process of checking, verifying, and attaining general information about the abilityl to comply with the standard."
 msgstr ""
 
-#: src/utils/misc.js:342
+#: src/utils/misc.js:343
 msgid "Production"
 msgstr ""
 
@@ -3691,8 +3696,8 @@ msgstr ""
 
 #: src/pages/countryOverview/index.jsx:347
 #: src/pages/countryOverview/RequestDataUpdateModal.jsx:31
-msgid "Request Data Update"
-msgstr ""
+#~ msgid "Request Data Update"
+#~ msgstr ""
 
 #: src/modules/signup/view.jsx:36
 #: src/store.js:154
@@ -4110,7 +4115,9 @@ msgstr ""
 msgid "Submit Application"
 msgstr ""
 
-#: src/pages/countryOverview/index.jsx:498
+#: src/pages/countryOverview/index.jsx:436
+#: src/pages/countryOverview/index.jsx:587
+#: src/pages/countryOverview/RequestDataUpdateModal.jsx:31
 #: src/pages/countryOverview/RequestDataUpdateModal.jsx:157
 msgid "Submit Data Update"
 msgstr ""
@@ -4466,13 +4473,13 @@ msgstr ""
 msgid "Total experts per country"
 msgstr ""
 
-#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:105
-#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:134
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:121
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:150
 msgid "Total exports"
 msgstr ""
 
-#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:105
-#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:143
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:121
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:159
 msgid "Total imports"
 msgstr ""
 
@@ -4523,7 +4530,7 @@ msgstr ""
 #: src/modules/flexible-forms/form-schema.js:2337
 #: src/modules/flexible-forms/form-schema.js:2576
 #: src/modules/map/map-chart.jsx:717
-#: src/pages/add-content/index.jsx:592
+#: src/pages/add-content/index.jsx:646
 #: src/pages/partnership/index.jsx:832
 msgid "Transnational"
 msgstr ""
@@ -4574,7 +4581,7 @@ msgstr ""
 #~ msgstr ""
 
 #: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:207
-#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:231
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:229
 msgid "UNCTAD 2022"
 msgstr ""
 
@@ -4735,6 +4742,7 @@ msgid "View Details"
 msgstr ""
 
 #: src/components/map-and-layers/sidebar/partials/CategoriesNestedDashboard.jsx:121
+#: src/pages/countryOverview/index.jsx:598
 msgid "View Global Data"
 msgstr ""
 
@@ -4780,7 +4788,7 @@ msgstr ""
 msgid "Waste management"
 msgstr ""
 
-#: src/utils/misc.js:344
+#: src/utils/misc.js:345
 msgid "Waste Management"
 msgstr ""
 

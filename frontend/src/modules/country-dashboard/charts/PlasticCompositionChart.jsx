@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import useRegions from '../../../hooks/useRegions'
 import { getBaseUrl } from '../../../utils/misc'
 import { t, Trans } from '@lingui/macro'
+import { splitIntoTwoLines} from './PlasticImportExportChart'
 
 const PlasticCompositionChart = ({ layers, layerLoading }) => {
   const router = useRouter()
@@ -80,14 +81,7 @@ const PlasticCompositionChart = ({ layers, layerLoading }) => {
         name: t`${cities[index]} estimate`,
       })),
     ]
-const tTitle = 
-window.innerWidth < 768
-  ? t`Plastic composition in the MSW\nfor ${decodeURIComponent(
-      country
-    )}`
-  : t`Plastic composition in the MSW for ${decodeURIComponent(
-      country
-    )}`
+const tTitle = splitIntoTwoLines(t`Plastic composition in the MSW for ${decodeURIComponent(country)}`, true)
     return {
       title: {
         text:tTitle,
@@ -180,7 +174,7 @@ window.innerWidth < 768
                       regionPlasticComposition + '%' || 0.78 + '%'
                     })`,
                   position: 'middle',
-                  offset: [240, -5],
+                  offset: [180, -5],
                   color: '#020A5B',
                   fontSize: 12,
                 },

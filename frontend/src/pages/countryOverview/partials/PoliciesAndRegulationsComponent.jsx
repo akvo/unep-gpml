@@ -87,7 +87,7 @@ const PoliciesAndRegulationsComponent = ({
               level={2}
               style={{
                 color: '#020A5B',
-                minWidth: '10%',
+                minWidth: '36px',
                 textAlign: 'right',
                 marginRight: '3%',
               }}

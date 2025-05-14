@@ -4,6 +4,20 @@ import { useRouter } from 'next/router'
 import { getBaseUrl } from '../../../utils/misc'
 import { t, Trans } from '@lingui/macro'
 
+export function splitIntoTwoLines(text, split = false) {
+  if(window.innerWidth < 768 || split === true) {
+  const words = text.split(' ');
+  const mid = Math.floor(words.length / 2);
+
+  const firstLine = words.slice(0, mid).join(' ');
+  const secondLine = words.slice(mid).join(' ');
+
+  return `${firstLine}\n${secondLine}`;
+  } else {
+    return text
+  }
+}
+
 const PlasticImportExportChart = ({ layers, loading }) => {
   const router = useRouter()
   const baseURL = getBaseUrl()
@@ -32,25 +46,25 @@ const PlasticImportExportChart = ({ layers, loading }) => {
         return
       }
 
-      const filteredImports = [...new Map(
-        importLayer.attributes.ValuePerCountry
-          ?.filter(item => 
+      const filteredImports = [
+        ...new Map(
+          importLayer.attributes.ValuePerCountry?.filter((item) =>
             item.CountryCode
               ? item.CountryCode === countryCode
               : item.CountryName === decodeURIComponent(country)
-          )
-          .map(item => [`${item.CountryCode}-${item.Year}`, item])
-      ).values()];
+          ).map((item) => [`${item.CountryCode}-${item.Year}`, item])
+        ).values(),
+      ]
 
-      const filteredExports = [...new Map(
-        exportLayer.attributes.ValuePerCountry
-          ?.filter(item => 
+      const filteredExports = [
+        ...new Map(
+          exportLayer.attributes.ValuePerCountry?.filter((item) =>
             item.CountryCode
               ? item.CountryCode === countryCode
               : item.CountryName === decodeURIComponent(country)
-          )
-          .map(item => [`${item.CountryCode}-${item.Year}`, item])
-      ).values()];
+          ).map((item) => [`${item.CountryCode}-${item.Year}`, item])
+        ).values(),
+      ]
 
       const yearsSet = new Set()
       const importValues = []
@@ -73,13 +87,15 @@ const PlasticImportExportChart = ({ layers, loading }) => {
     fetchData()
   }, [country, layers, loading])
 
-  const plasticText = window.innerWidth < 768
-  ? t`Plastic import & export value\nfor ${decodeURIComponent(country)}`
-  : t`Plastic import & export value for ${decodeURIComponent(country)}`
-   
+  const plasticText = splitIntoTwoLines(t`Plastic import & export value for ${decodeURIComponent(
+    country
+  )}`)
+  const units = t`million  US  dollars`
+  const fUnits = units.replace(/  /, '\n')
+
   const getOption = () => ({
     title: {
-      text:plasticText,
+      text: plasticText,
       left: 'center',
       textStyle: {
         fontSize: window.innerWidth < 768 ? 14 : 18,
@@ -90,7 +106,7 @@ const PlasticImportExportChart = ({ layers, loading }) => {
       },
     },
     grid: {
-      left: '6%',
+      left: window.innerWidth < 768 ? '12%' : '7%',
       right: '4%',
       top: '20%',
       textStyle: { color: '#020A5B' },
@@ -123,7 +139,7 @@ const PlasticImportExportChart = ({ layers, loading }) => {
         fontSize: 12,
         color: '#020A5B',
       },
-      name: t`million US dollars`,
+      name: fUnits,
       nameTextStyle: {
         color: '#020A5B',
         fontSize: 12,

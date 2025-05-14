@@ -4,6 +4,8 @@ import { useRouter } from 'next/router'
 import useRegions from '../../../hooks/useRegions'
 import { getBaseUrl } from '../../../utils/misc'
 import { t } from '@lingui/macro'
+import { splitIntoTwoLines} from './PlasticImportExportChart'
+
 const MSWGenerationChart = ({ layers, layerLoading }) => {
   const router = useRouter()
   const baseURL = getBaseUrl()
@@ -66,14 +68,7 @@ const MSWGenerationChart = ({ layers, layerLoading }) => {
   const tNatEstimate = t`National estimate`;
   const tRegionalAvg = t`Regional Average`.replace(' ', '\n')
 
-  const textTitle =
-  window.innerWidth < 768
-    ? t`Per capita MSW generation for\n${decodeURIComponent(
-        country?.toString()
-      )}`
-    : t`Per capita MSW generation for ${decodeURIComponent(
-        country?.toString()
-      )}`
+  const textTitle = splitIntoTwoLines(t`Per capita MSW generation for ${decodeURIComponent(country?.toString())}`)
   const tKgPersonDay = t`Kg/person/day`;
 
   const getOption = () => {
@@ -153,6 +148,7 @@ const MSWGenerationChart = ({ layers, layerLoading }) => {
         splitLine: { show: true },
       },
       grid:{
+        left:60,
         right:70,
         top:80,
       },
@@ -178,7 +174,7 @@ const MSWGenerationChart = ({ layers, layerLoading }) => {
                   formatter: () =>
                     `${tRegionalAvg} \n(${regionMswValue || 0.78} kg)`,                  
                   position: 'middle',
-                  offset: [240, -5],
+                  offset: [180, -5],
                   color: '#020A5B',
                   fontSize: 12,
                 },
