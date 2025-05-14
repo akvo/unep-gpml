@@ -53,6 +53,7 @@ const Landing = (props) => {
   return (
     <div id="landing" className={styles.landing}>
       <HeroPlasticTap {...props} />
+      <FeatureCards />
       <LatestNews />
     </div>
   )
@@ -270,6 +271,52 @@ const HeroPlasticTap = ({ isAuthenticated, setLoginVisible }) => {
       </div>
       <div className="attribution hide-mobile">
         #TurnOffThePlasticTap by <a href="#">Benjamin Von Wong</a>
+      </div>
+    </div>
+  )
+}
+
+const FeatureCards = () => {
+  return (
+    <div className="feature-cards">
+      <h3>Explore The Platform</h3>
+      <div className="container">
+        <Link href="/knowledge-hub" className="feature-card">
+          <Image
+            src="/iconxl-knowledge-hub.svg"
+            width={265}
+            height={136}
+            alt="knowledge hub"
+          />
+          <h5>Knowledge Hub</h5>
+          <h2>2800+</h2>
+          <p>Knowledge resources shared in the Knowledge Library</p>
+          <span>Explore The Resources</span>
+        </Link>
+        <Link href="/data-hub" className="feature-card">
+          <Image
+            src="/iconxl-data-hub.svg"
+            width={320}
+            height={160}
+            alt="data hub"
+          />
+          <h5>Data Hub</h5>
+          <h2>80+</h2>
+          <p>Plastic Lifecycle Indicators showcase in the Data Hub.</p>
+          <span>Explore The Data</span>
+        </Link>
+        <Link href="/community-hub" className="feature-card">
+          <Image
+            src="/iconxl-community.svg"
+            width={321}
+            height={204}
+            alt="community"
+          />
+          <h5>Community Hub</h5>
+          <h2>2000+</h2>
+          <p>Members connected through Community Hub.</p>
+          <span>Explore The Community</span>
+        </Link>
       </div>
     </div>
   )

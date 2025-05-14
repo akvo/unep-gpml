@@ -21,7 +21,6 @@
       // overflow: hidden;
       display: flex;
       flex-direction: column;
-      margin-bottom: 180px;
       .content {
         max-width: 620px;
       }
@@ -96,10 +95,11 @@
         background-repeat: no-repeat;
         display: flex;
         justify-content: center;
+        margin-bottom: 180px;
         .attribution {
           width: 120px;
           position: absolute;
-          top: 10px;
+          top: 90px;
           right: 10px;
           font-size: 10px;
           a {
@@ -415,6 +415,69 @@
       .page-sub-heading {
         color: #7468ff;
         text-transform: uppercase;
+      }
+    }
+    .feature-cards {
+      h3 {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 40px;
+      }
+      .container {
+        display: flex;
+        .feature-card {
+          background-color: #f9f8ff;
+          border-radius: 15px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          height: 520px;
+          transition: all 0.2s ease-out;
+          &:hover {
+            background-color: #ebe9ff;
+            transform: scale(1.03);
+          }
+          h5 {
+            font-size: 16px;
+            text-transform: uppercase;
+            color: $primaryViolet;
+            font-weight: bold;
+            margin-bottom: -10px;
+            margin-top: 40px;
+          }
+          h2 {
+            font-size: 36px;
+            // font-family: $ff2;
+            font-weight: 900;
+          }
+          p {
+            font-size: 18px;
+            line-height: 32px;
+            text-align: center;
+            padding: 0 60px;
+            color: #000;
+          }
+          p + span {
+            margin-top: 20px;
+            font-family: $ff2;
+            font-size: 16px;
+            text-decoration: underline;
+            color: $primaryDarkBlueText;
+          }
+        }
+        @media screen and (min-width: $bpMobile) {
+          justify-content: space-between;
+          .feature-card {
+            width: 370px;
+          }
+        }
+        @media screen and (max-width: $bpMobile) {
+          flex-direction: column;
+          .feature-card {
+            margin-top: 15px;
+          }
+        }
       }
     }
   }
