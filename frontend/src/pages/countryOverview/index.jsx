@@ -23,6 +23,11 @@ import useQueryParameters from '../../hooks/useQueryParameters'
 import { getBaseUrl, getStrapiUrl } from '../../utils/misc'
 import { loadCatalog } from '../../translations/utils'
 
+function getUniqueValues(array) {
+  const uniqueValues = new Set(array);
+  return Array.from(uniqueValues);
+}
+
 export function cleanArcGisFields(fields) {
   if (!fields) return []
 
@@ -56,7 +61,7 @@ export function cleanArcGisFields(fields) {
     'Plastic_waste_weigth____export__WFL1',
   ]
 
-  return [...new Set(cleanedFields, otherLayer)]
+  return getUniqueValues([...otherLayer, ...cleanedFields])
 }
 
 const splitTextInHalf = (text, splitMarker = '') => {
@@ -265,23 +270,6 @@ const CountryOverview = () => {
   //   selectedCategoryObject?.attributes?.textTemplate?.placeholders
   // )
   // console.log(cleanedFields)
-  useEffect(() => {
-    if (queryParameters.addData) {
-      const cleanedFields = cleanArcGisFields(
-        selectedCategoryObject?.attributes?.textTemplate?.placeholders
-      )
-      postDataLayers(cleanedFields)
-    }
-  }, [queryParameters, selectedCategoryObject])
-
-  useEffect(() => {
-    if (queryParameters.addDataChunk) {
-      const cleanedFields = cleanArcGisFields(
-        selectedCategoryObject?.attributes?.textTemplate?.placeholders
-      )
-      runChunkedPopulation(cleanedFields)
-    }
-  }, [queryParameters, selectedCategoryObject])
 
   const [isModalVisible, setModalVisible] = useState(false)
 
@@ -408,7 +396,7 @@ const CountryOverview = () => {
   return (
     <div className={styles.text}>
       <Row className={styles.headerRow}>
-        <Col xs={24} md={18}>
+        <Col>
           <div>
             <span className={styles.titleCountry}>
               {decodeURIComponent(router.query.country)?.toUpperCase()}
@@ -417,7 +405,7 @@ const CountryOverview = () => {
         </Col>
 
         {!isMobile && (
-          <Col xs={24} md={6} className={styles.containerButton}>
+          <Col lassName={styles.containerButton}>
             <span className={styles.textButton}>
               <span className={styles.dot}></span>
               Page last updated: 02-20-22
@@ -477,7 +465,7 @@ const CountryOverview = () => {
                 style={{
                   backgroundColor: '#FFFFFF',
                   borderRadius: '12px',
-                  padding: '20px',
+                   padding: '20px 15px',
                   boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
                 }}
               >
@@ -495,7 +483,7 @@ const CountryOverview = () => {
                 style={{
                   backgroundColor: '#FFFFFF',
                   borderRadius: '12px',
-                  padding: '20px',
+              padding: '20px 15px',
                   boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
                 }}
               >
@@ -511,7 +499,7 @@ const CountryOverview = () => {
                 style={{
                   backgroundColor: '#FFFFFF',
                   borderRadius: '12px',
-                  padding: '20px',
+                  padding: '20px 15px',
                   boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
                 }}
               >
@@ -533,7 +521,7 @@ const CountryOverview = () => {
               style={{
                 backgroundColor: '#FFFFFF',
                 borderRadius: '12px',
-                padding: '20px',
+                 padding: '20px 15px',
                 boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
               }}
             >
@@ -545,7 +533,7 @@ const CountryOverview = () => {
               style={{
                 backgroundColor: '#FFFFFF',
                 borderRadius: '12px',
-                padding: '20px',
+                padding: '20px 15px',
                 boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
               }}
             >
@@ -590,7 +578,7 @@ const CountryOverview = () => {
             className={styles.globalButton}
             onClick={handleViewGlobalDataClick}
           >
-            View Global Data →
+            {t`View Global Data `} →
           </Button>
         </div>
       )} 
