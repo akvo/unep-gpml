@@ -54,6 +54,34 @@ const Landing = (props) => {
     <div id="landing" className={styles.landing}>
       <HeroPlasticTap {...props} />
       <FeatureCards />
+      <div className="container wed-container">
+        <div className="wed">
+          <h1 className="hide-mobile">#WorldEnvironmentDay</h1>
+          <h1 className="hide-desktop">
+            #World
+            <br />
+            Environment
+            <br />
+            Day
+          </h1>
+          <p>
+            5th June 2025, Jeju Island, Republic of Korea hosts world
+            celebration of World Environment Day with the theme of plastic
+            pollution.
+          </p>
+          <a href="https://www.worldenvironmentday.global/" target="_blank">
+            <Button withArrow type="ghost">
+              Visit Site
+            </Button>
+          </a>
+          <Image
+            className="wed-logos"
+            src="/wed-logos.svg"
+            width={640}
+            height={50}
+          />
+        </div>
+      </div>
       <LatestNews />
     </div>
   )
