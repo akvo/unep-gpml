@@ -355,6 +355,12 @@ const LatestNews = () => {
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
   const strapiUrl = getStrapiUrl()
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    if (window.innerWidth < 768) {
+      setIsMobile(true)
+    }
+  }, [])
   useEffect(() => {
     fetch(`${strapiUrl}/api/posts?locale=${router.locale}&populate=cover`)
       .then((d) => d.json())
@@ -366,52 +372,66 @@ const LatestNews = () => {
   return (
     <div className={styles.latestNews}>
       <div className="container">
-        <div className="news-wrapper hide-sm">
+        <div className="news-wrapper">
           <strong className="caps-heading-1">
             <Trans>HIGHLIGHTS</Trans>
           </strong>
           <h2>
             <strong>
-              <Trans>Latest news:</Trans>
+              <Trans>Latest news</Trans>
             </strong>
             <br />
           </h2>
         </div>
-        <div className="news-wrapper news-items">
+        <Swiper
+          slidesPerView={isMobile ? 1 : 4}
+          spaceBetween={20}
+          modules={[Pagination]}
+          pagination={{
+            clickable: true,
+          }}
+        >
           {items.map((item, dx) => {
             return (
-              <Card
-                bordered={false}
-                cover={
-                  <div className="cover-image-container">
-                    <div className="cover-image-overlay"></div>
-                    <Link href={`/post/${item.id}-${item.slug}`}>
-                      <Image
-                        alt={item.title}
-                        src={item.cover.data?.attributes?.formats?.medium?.url}
-                        width={366}
-                        height={220}
-                      />
-                    </Link>
-                  </div>
-                }
-                key={dx}
-              >
-                <Link href={`/post/${item.id}-${item.slug}`}>
-                  <h5 className="bold">{item.title}</h5>
-                </Link>
-                <p className="p-m">
-                  {stripHtml(item.content)?.substring(0, 100)}...
-                </p>
-                <Link href={`/post/${item.id}-${item.slug}`}>
-                  <Button type="link" withArrow>
-                    <Trans>Read More</Trans>
-                  </Button>
-                </Link>
-              </Card>
+              <SwiperSlide>
+                <Card
+                  bordered={false}
+                  cover={
+                    <div className="cover-image-container">
+                      <div className="cover-image-overlay"></div>
+                      <Link href={`/post/${item.id}-${item.slug}`}>
+                        <Image
+                          alt={item.title}
+                          src={
+                            item.cover.data?.attributes?.formats?.medium?.url
+                          }
+                          width={366}
+                          height={220}
+                        />
+                      </Link>
+                    </div>
+                  }
+                  key={dx}
+                >
+                  <Link href={`/post/${item.id}-${item.slug}`}>
+                    <h5 className="bold">{item.title}</h5>
+                  </Link>
+                  <p className="p-m">
+                    {stripHtml(item.content)?.substring(0, 150)}...
+                  </p>
+                  <Link href={`/post/${item.id}-${item.slug}`}>
+                    <Button type="link" withArrow>
+                      <Trans>Read More</Trans>
+                    </Button>
+                  </Link>
+                </Card>
+              </SwiperSlide>
             )
           })}
-        </div>
+        </Swiper>
+        {/* <div className="news-wrapper news-items">
+          
+        </div> */}
       </div>
     </div>
   )

@@ -626,46 +626,57 @@
 
     h2 {
       font-weight: 500;
-      margin-block-start: 12px;
+      margin-block-start: 0px;
       margin-block-end: 0;
     }
 
     h2 strong {
       font-weight: 700;
     }
+    .ant-card {
+      .ant-card-body {
+        padding: 24px 0;
+      }
+      .ant-card-cover img {
+        width: 100%;
+        border-radius: 16px;
+      }
+      h5 {
+        margin-block-start: 18px;
+        margin-block-end: 8px;
+        margin-top: 0;
+        font-size: 24px;
+        line-height: 30px;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3; /* Number of lines */
+        line-clamp: 3;
+        overflow: hidden;
+      }
+      p {
+        margin-block-start: 0;
+        margin-block-end: 15px;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 4; /* Number of lines */
+        line-clamp: 4;
+        overflow: hidden;
+      }
 
-    .ant-card-body {
-      padding: 24px 0;
+      .read-more {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
+        color: $primaryDarkBlue;
+        font-size: $fzXS;
+        line-height: $lhXS;
+        font-weight: 500;
+        margin-bottom: 16px;
+      }
     }
 
-    .ant-card-body h5 {
-      margin-block-start: 18px;
-      margin-block-end: 8px;
-    }
-
-    .ant-card-body p {
-      margin-block-start: 0;
-      margin-block-end: 15px;
-    }
-
-    .ant-card-body .read-more {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      gap: 8px;
-      color: $primaryDarkBlue;
-      font-size: $fzXS;
-      line-height: $lhXS;
-      font-weight: 500;
-      margin-bottom: 16px;
-    }
-
-    .news-items .ant-card .ant-card-cover img {
-      width: 100%;
-      border-radius: 16px;
-    }
-
-    .news-items .ant-card .ant-card-cover .cover-image-container {
+    .ant-card .ant-card-cover .cover-image-container {
       position: relative;
       padding: 0px;
 
@@ -732,21 +743,6 @@
         font-size: 12px;
         line-height: 14px;
         font-weight: 700;
-      }
-    }
-
-    .news-items {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      column-gap: 24px;
-      row-gap: 24px;
-
-      @media only screen and (min-device-width: $bpMobile) and (max-device-width: 1024px) {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      @media only screen and (max-width: 640px) {
-        grid-template-columns: 1fr;
       }
     }
   }
