@@ -552,6 +552,47 @@
         }
       }
     }
+
+    .workflow {
+      background-color: $primaryBlue2;
+      padding: 100px 0;
+      .text {
+        max-width: 370px;
+        .caps-heading-1 {
+          color: $primaryPurple;
+        }
+        h3 {
+          font-weight: 600;
+          // margin-top: 20px;
+        }
+        p {
+          margin-top: 20px;
+          line-height: 34px;
+          margin-bottom: 20px;
+        }
+      }
+      .screenshot {
+        margin-left: auto;
+      }
+      @media screen and (min-width: $bpMobile) {
+        .container {
+          display: flex;
+          .text {
+            margin-right: 50px;
+          }
+        }
+      }
+      @media screen and (max-width: $bpMobile) {
+        padding: 50px 0;
+        .screenshot {
+          margin-top: 25px;
+          img {
+            width: 100%;
+            height: auto;
+          }
+        }
+      }
+    }
   }
 
   :global(.title-wrapper) {

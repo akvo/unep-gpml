@@ -83,6 +83,28 @@ const Landing = (props) => {
         </div>
       </div>
       <LatestNews />
+      <div className="workflow">
+        <div className="container">
+          <div className="text">
+            {/* <h3>Country Dedicated Workflow</h3> */}
+            <strong className="caps-heading-1">Country Dedicated</strong>
+            <h2>
+              <strong>Workflow</strong>
+              <br />
+            </h2>
+            <p className="p-m">
+              The Country Dedicated Workflow is a digital tool to help countries
+              in developing national plastic source inventories and plastic
+              strategies, supported by step-by-step guidance and inspiring case
+              studies. Create your account and explore.
+            </p>
+            <JoinBtn {...props} />
+          </div>
+          <div className="screenshot">
+            <Image src="/workflow-screenshot.jpg" width={710} height={423} />
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
@@ -229,22 +251,7 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
                 </AnimatePresence>
               ))}
             </div>
-            {!isAuthenticated ? (
-              <Button
-                onClick={() => setLoginVisible(true)}
-                type="primary"
-                size="large"
-                withArrow
-              >
-                <Trans>Join Now</Trans>
-              </Button>
-            ) : (
-              <Link href="/workspace">
-                <Button type="primary" size="large" withArrow>
-                  <Trans>Workspace</Trans>
-                </Button>
-              </Link>
-            )}
+            <JoinBtn {...{ isAuthenticated, setLoginVisible }} />
           </div>
         </div>
       </div>
@@ -255,6 +262,29 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
           }}
         />
       </div>
+    </>
+  )
+}
+
+const JoinBtn = ({ isAuthenticated, setLoginVisible }) => {
+  return (
+    <>
+      {!isAuthenticated ? (
+        <Button
+          onClick={() => setLoginVisible(true)}
+          type="primary"
+          size="large"
+          withArrow
+        >
+          <Trans>Join Now</Trans>
+        </Button>
+      ) : (
+        <Link href="/workspace">
+          <Button type="primary" size="large" withArrow>
+            <Trans>Workspace</Trans>
+          </Button>
+        </Link>
+      )}
     </>
   )
 }
@@ -270,22 +300,7 @@ const HeroPlasticTap = ({ isAuthenticated, setLoginVisible }) => {
             The one-stop platform for data, knowledge, and collaboration to end
             plastic pollution.
           </h1>
-          {!isAuthenticated ? (
-            <Button
-              onClick={() => setLoginVisible(true)}
-              type="primary"
-              size="large"
-              withArrow
-            >
-              <Trans>Join Now</Trans>
-            </Button>
-          ) : (
-            <Link href="/workspace">
-              <Button type="primary" size="large" withArrow>
-                <Trans>Workspace</Trans>
-              </Button>
-            </Link>
-          )}
+          <JoinBtn {...{ isAuthenticated, setLoginVisible }} />
         </div>
       </div>
       <div className="search-bar-bottom">
