@@ -11,6 +11,7 @@ import {
   Dropdown,
   Menu,
   notification,
+  List,
 } from 'antd'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -41,6 +42,8 @@ import {
 } from '../../utils/misc'
 import api from '../../utils/api'
 import { SearchBar } from '../search'
+import { ChannelCard } from '../forum'
+import dynamic from 'next/dynamic'
 
 const pagination = {
   clickable: true,
@@ -105,6 +108,7 @@ const Landing = (props) => {
           </div>
         </div>
       </div>
+      <Forums {...props} />
       <div className="info-box">
         <div className="container">
           <p>
@@ -463,6 +467,85 @@ const LatestNews = () => {
     </div>
   )
 }
+
+const Forums = ({
+  setLoginVisible,
+  isAuthenticated,
+  profile,
+  setShouldJoin,
+}) => {
+  const [forums, setForums] = useState([])
+  const [viewModal, setViewModal] = useState({
+    open: false,
+    data: {},
+  })
+  const handleOnView = (data) => {
+    setViewModal({
+      open: true,
+      data,
+    })
+  }
+  useEffect(() => {
+    api.get('/chat/channel/all').then((d) => {
+      setForums(d.data.channels)
+    })
+  }, [])
+  return (
+    <div className="forums">
+      <div className="container">
+        <div className="title-wrapper">
+          <div className="title-holder">
+            <strong className="caps-heading-1">Workspace</strong>
+            <h2>
+              <strong>Forums</strong>
+            </h2>
+          </div>
+          {/* <Button type="ghost" withArrow ghost size="large">
+            All Forums
+          </Button> */}
+        </div>
+        <List
+          grid={{ lg: 3, column: 3, gutter: 20, md: 2, sm: 1, xs: 1 }}
+          dataSource={forums
+            .sort((a, b) => {
+              if (b.privacy === 'public' && a.privacy !== 'public') return 1
+              else return -1
+            })
+            .slice(0, 3)}
+          renderItem={(item) => (
+            <List.Item key={item.id}>
+              <ChannelCard
+                {...{
+                  item,
+                  handleOnView,
+                  profile,
+                  // ChatStore,
+                  // handleEditItem,
+                }}
+              />
+            </List.Item>
+          )}
+        />
+      </div>
+      <DynamicForumModal
+        {...{
+          viewModal,
+          setViewModal,
+          setLoginVisible,
+          isAuthenticated,
+          profile,
+          setShouldJoin,
+        }}
+      />
+    </div>
+  )
+}
+const DynamicForumModal = dynamic(
+  () => import('../../modules/forum/forum-modal'),
+  {
+    ssr: false, // modal has window object that should be run in client side
+  }
+)
 
 export const getStaticProps = async (ctx) => {
   return {

@@ -593,7 +593,24 @@
         }
       }
     }
-
+    .forums {
+      margin: 50px 0;
+      .caps-heading-1 {
+        color: $primaryPurple;
+      }
+      h2 {
+        margin-bottom: 30px;
+      }
+      .ant-card {
+        border-radius: 12px;
+      }
+      .title-wrapper {
+        display: flex;
+        .ant-btn {
+          margin-left: auto;
+        }
+      }
+    }
     .info-box {
       background-color: #f5f7ff;
       font-size: 18px;
