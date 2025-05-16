@@ -105,6 +105,18 @@ const Landing = (props) => {
           </div>
         </div>
       </div>
+      <div className="info-box">
+        <div className="container">
+          <p>
+            Global Plastics Hub is developed through various stakeholders
+            consultations, engagement and contributions from members and
+            partners under the Global Partnership on Plastic Pollution and
+            Marine Litter. We appreciate generous contributions from donor
+            communities including Government of Japan, Norway and the United
+            States.
+          </p>
+        </div>
+      </div>
     </div>
   )
 }

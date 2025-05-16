@@ -593,6 +593,25 @@
         }
       }
     }
+
+    .info-box {
+      background-color: #f5f7ff;
+      font-size: 18px;
+      line-height: 24px;
+      font-weight: 600;
+      text-align: center;
+      padding: 50px 0;
+      .container {
+        display: flex;
+        justify-content: center;
+      }
+      p {
+        max-width: 800px;
+      }
+      @media screen and (max-width: $bpMobile) {
+        font-size: 16px;
+      }
+    }
   }
 
   :global(.title-wrapper) {
