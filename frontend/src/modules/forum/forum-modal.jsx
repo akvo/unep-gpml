@@ -21,14 +21,14 @@ const ForumModal = ({
   const [joins, setJoins] = useLocalStorage('joins', [])
   const isNotAMember =
     viewModal?.data?.privacy === 'private' &&
-    viewModal?.data?.users.findIndex((it) => it.id === profile.id) === -1
+    viewModal?.data?.users.findIndex((it) => it.id === profile?.id) === -1
   const joinDisabled = requesting || joins?.includes(viewModal?.data?.id)
   const participants = viewModal?.data?.users
 
   const router = useRouter()
 
   const handleOnClose = () => {
-    setShouldJoin(false)
+    setShouldJoin && setShouldJoin(false)
     localStorage.removeItem('channelInfo')
     setViewModal({
       open: false,
@@ -70,7 +70,7 @@ const ForumModal = ({
           notification.success({
             message: `Your request to join the channel has been sent!`,
           })
-          setShouldJoin(false)
+          setShouldJoin && setShouldJoin(false)
           localStorage.removeItem('channelInfo')
         } catch (error) {
           console.error('Error joining channel:', error)
@@ -118,7 +118,7 @@ const ForumModal = ({
                   const serializedData = JSON.stringify(channelData)
                   localStorage.setItem('channelInfo', serializedData)
                   setLoginVisible(true)
-                  setShouldJoin(true)
+                  setShouldJoin && setShouldJoin(true)
                 }
               }}
               loading={requesting}

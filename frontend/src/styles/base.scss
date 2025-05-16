@@ -233,6 +233,14 @@ h6 {
   a {
     color: white;
   }
+  &.isLanding {
+    position: fixed !important;
+    width: 100%;
+    top: 0;
+    &:not(.scrolled) {
+      background-color: transparent;
+    }
+  }
   .container {
     .logo-container {
       margin-left: -15px;
