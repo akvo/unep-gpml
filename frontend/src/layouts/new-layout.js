@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
 import { isEmpty } from 'lodash'
 import { Avatar, Button, Dropdown, Menu, notification } from 'antd'
@@ -75,6 +75,18 @@ const NewLayout = ({
   const [width] = useDeviceSize()
   const [isOpen, toggleOpen] = useCycle(false, true)
 
+  const topbarRef = useRef()
+  let scrolled = false
+  const scrollListener = () => {
+    if (!scrolled && window.scrollY > 50) {
+      topbarRef.current.classList.add('scrolled')
+      scrolled = true
+    } else if (scrolled && window.scrollY < 50) {
+      topbarRef.current.classList.remove('scrolled')
+      scrolled = false
+    }
+  }
+
   const handleOnLogoutRC = () => {
     try {
       const iFrame = document.querySelector('iframe')
@@ -97,6 +109,7 @@ const NewLayout = ({
       returnTo: window.location.origin,
     })
   }
+  const isLanding = router.pathname === '/'
 
   useEffect(() => {
     if (router.locale !== 'en' && !localStorage.getItem('trans-info')) {
@@ -107,6 +120,12 @@ const NewLayout = ({
       localStorage.setItem('trans-info', true)
     }
   }, [router.locale])
+  useEffect(() => {
+    document.addEventListener('scroll', scrollListener)
+    return () => {
+      document.removeEventListener('scroll', scrollListener)
+    }
+  }, [])
 
   return (
     <>
@@ -119,7 +138,11 @@ const NewLayout = ({
       <div>
         {!router.query.iframed && (
           <div
-            className={classNames('top-bar', { opened: openedItemKey != null })}
+            ref={topbarRef}
+            className={classNames('top-bar', {
+              opened: openedItemKey != null,
+              isLanding,
+            })}
             style={{
               zIndex: isOpen ? 9 : 99,
               position: openedItemKey ? 'sticky' : 'relative',

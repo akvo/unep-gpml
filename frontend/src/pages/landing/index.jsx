@@ -11,6 +11,7 @@ import {
   Dropdown,
   Menu,
   notification,
+  List,
 } from 'antd'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -41,6 +42,8 @@ import {
 } from '../../utils/misc'
 import api from '../../utils/api'
 import { SearchBar } from '../search'
+import { ChannelCard } from '../forum'
+import dynamic from 'next/dynamic'
 
 const pagination = {
   clickable: true,
@@ -52,13 +55,72 @@ const pagination = {
 const Landing = (props) => {
   return (
     <div id="landing" className={styles.landing}>
-      <Hero {...props} />
-      <ShowcasingAndStats {...props} />
-      <WhoAreWe />
-      <ActNow />
+      <HeroPlasticTap {...props} />
+      <FeatureCards />
+      <div className="container wed-container">
+        <div className="wed">
+          <h1 className="hide-mobile">#WorldEnvironmentDay</h1>
+          <h1 className="hide-desktop">
+            #World
+            <br />
+            Environment
+            <br />
+            Day
+          </h1>
+          <p>
+            5th June 2025, Jeju Island, Republic of Korea hosts world
+            celebration of World Environment Day with the theme of plastic
+            pollution.
+          </p>
+          <a href="https://www.worldenvironmentday.global/" target="_blank">
+            <Button withArrow type="ghost">
+              Visit Site
+            </Button>
+          </a>
+          <Image
+            className="wed-logos"
+            src="/wed-logos.svg"
+            width={640}
+            height={50}
+          />
+        </div>
+      </div>
       <LatestNews />
-      <Activities />
-      <Partners />
+      <div className="workflow">
+        <div className="container">
+          <div className="text">
+            {/* <h3>Country Dedicated Workflow</h3> */}
+            <strong className="caps-heading-1">Country Dedicated</strong>
+            <h2>
+              <strong>Workflow</strong>
+              <br />
+            </h2>
+            <p className="p-m">
+              The Country Dedicated Workflow is a digital tool to help countries
+              in developing national plastic source inventories and plastic
+              strategies, supported by step-by-step guidance and inspiring case
+              studies. Create your account and explore.
+            </p>
+            <JoinBtn {...props} />
+          </div>
+          <div className="screenshot">
+            <Image src="/workflow-screenshot.jpg" width={710} height={423} />
+          </div>
+        </div>
+      </div>
+      <Forums {...props} />
+      <div className="info-box">
+        <div className="container">
+          <p>
+            Global Plastics Hub is developed through various stakeholders
+            consultations, engagement and contributions from members and
+            partners under the Global Partnership on Plastic Pollution and
+            Marine Litter. We appreciate generous contributions from donor
+            communities including Government of Japan, Norway and the United
+            States.
+          </p>
+        </div>
+      </div>
     </div>
   )
 }
@@ -205,22 +267,7 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
                 </AnimatePresence>
               ))}
             </div>
-            {!isAuthenticated ? (
-              <Button
-                onClick={() => setLoginVisible(true)}
-                type="primary"
-                size="large"
-                withArrow
-              >
-                <Trans>Join Now</Trans>
-              </Button>
-            ) : (
-              <Link href="/workspace">
-                <Button type="primary" size="large" withArrow>
-                  <Trans>Workspace</Trans>
-                </Button>
-              </Link>
-            )}
+            <JoinBtn {...{ isAuthenticated, setLoginVisible }} />
           </div>
         </div>
       </div>
@@ -235,440 +282,116 @@ const Hero = ({ setLoginVisible, isAuthenticated }) => {
   )
 }
 
-const ShowcasingAndStats = (props) => {
-  const { i18n } = useLingui()
-  const { isAuthenticated, setLoginVisible } = props
-  const { stakeholders, organisations } = UIStore.useState((s) => ({
-    stakeholders: s.stakeholders,
-    organisations: s.organisations,
-  }))
-
-  const [expertsCount, setExpertsCount] = useState(0)
-  const { _locale } = i18n
-  const totalCount = props?.data?.reduce((sum, item) => {
-    if (item.topic !== '[]') {
-      return sum + item.count
-    }
-    return sum
-  }, 0)
-
-  useEffect(() => {
-    const url = `/stakeholder/expert/list`
-    api
-      .get(url, { page_size: 100, page_n: 0 })
-      .then((resp) => {
-        const data = resp?.data
-        setExpertsCount(data.count)
-      })
-      .catch((err) => {
-        console.error(err)
-      })
-  }, [])
-
+const JoinBtn = ({ isAuthenticated, setLoginVisible }) => {
   return (
-    <div className="container">
-      <div className={styles.showCasingSection}>
-        <div className="caption-container">
-          <div className="caps-heading-1 page-sub-heading">
-            <Trans>FEATURES</Trans>
-          </div>
-          <h2>
-            <Trans>Browse the platform content</Trans>
-          </h2>
-        </div>
-        <div className="powered-by-container">
-          <div className="caps-heading-1 page-sub-heading">
-            <Trans>POWERED BY:</Trans>
-          </div>
-          <div className="powered-by-images">
-            <Image
-              src={`/powered-by-unep${
-                _locale === 'en' ? '' : `-${_locale}`
-              }.svg`}
-              alt="UNEP"
-              width={146}
-              height={146}
-            />
-            <Image
-              src="/powered-by-gpml.svg"
-              alt="UNEP"
-              width={146}
-              height={146}
-            />
-          </div>
-        </div>
-      </div>
-      <div className={styles.newFeaturesSection}>
-        <div className="feature">
-          <div className="icon">
-            <Image
-              src="/iconxl-knowledge-hub.svg"
-              width={265}
-              height={136}
-              alt="knowledge hub"
-            />
-          </div>
-          <p>
-            <div>
-              <h3>
-                <Trans>Knowledge Hub</Trans>
-              </h3>
-              <span>
-                <Trans>
-                  Crowdsourcing a vast repository/library of <b>{totalCount}</b>{' '}
-                  curated knowledge products and materials.
-                </Trans>
-              </span>
-              <Link href="/knowledge/library">
-                <Button type="link">
-                  <Trans>Explore the resources</Trans>{' '}
-                  <div className="icn">
-                    <Pointer />
-                  </div>
-                </Button>
-              </Link>
-            </div>
-          </p>
-        </div>
-        <div className="feature">
-          <div className="icon">
-            <Image
-              src="/iconxl-data-hub.svg"
-              width={320}
-              height={160}
-              alt="data hub"
-            />
-          </div>
-          <p>
-            <div>
-              <h3>
-                <Trans>Data Hub</Trans>
-              </h3>
-              <span>
-                <Trans>
-                  Visualizing an extensive array of <b>{props?.layers}</b> data
-                  layers across the plastic lifecycle, providing in-depth
-                  insights.
-                </Trans>
-              </span>
-              <Link href="/data/maps">
-                <Button type="link">
-                  <Trans>Explore the data layers</Trans>{' '}
-                  <div className="icn">
-                    <Pointer />
-                  </div>
-                </Button>
-              </Link>
-            </div>
-          </p>
-        </div>
-        <div className="feature">
-          <div className="icon">
-            <Image src="/iconxl-cop.svg" width={321} height={191} alt="cop" />
-          </div>
-          <p>
-            <div>
-              <h3>
-                <Trans>Communities of Practice</Trans>
-              </h3>
-              <span>
-                <Trans>
-                  Harnessing the expertise of <b>{props?.cop}</b> Communities of
-                  Practice (CoPs) comprised of leading experts and scientists to
-                  bridge critical knowledge and data gaps.
-                </Trans>
-              </span>
-              <Link href="/cop">
-                <Button type="link">
-                  <Trans>Explore the CoPs</Trans>{' '}
-                  <div className="icn">
-                    <Pointer />
-                  </div>
-                </Button>
-              </Link>
-            </div>
-          </p>
-        </div>
-        <div className="feature">
-          <div className="icon">
-            <Image
-              src="/iconxl-community.svg"
-              width={321}
-              height={204}
-              alt="community"
-            />
-          </div>
-          <p>
-            <div>
-              <h3>Community</h3>
-              <span>
-                <Trans>
-                  Fostering a dynamic network of <b>{expertsCount}</b> experts,{' '}
-                  <b>{stakeholders?.stakeholders?.length}</b> stakeholders and{' '}
-                  <b>{organisations.length}</b> member organisations, enhancing
-                  collaboration and shared innovation.
-                </Trans>
-              </span>
-              <Link href="/community">
-                <Button type="link">
-                  <Trans>Explore the community</Trans>{' '}
-                  <div className="icn">
-                    <Pointer />
-                  </div>
-                </Button>
-              </Link>
-            </div>
-          </p>
-        </div>
-        <div className="feature">
-          <div className="icon">
-            <Image
-              src="/iconxl-workspace.svg"
-              width={321}
-              height={166}
-              alt="workspace"
-            />
-          </div>
-          <p>
-            <div>
-              <h3>
-                <Trans>Workspace</Trans>
-              </h3>
-              <span>
-                <Trans>
-                  Empowering <b>18</b> countries in crafting comprehensive
-                  national source inventories, which facilitates the development
-                  of a National Roadmap/Strategy/Plan through evidence-based
-                  approach. Additionally, forums can be accessed from the
-                  workspace, promoting collaboration and sharing of information.
-                </Trans>
-              </span>
-              {!isAuthenticated ? (
-                <Button type="link" onClick={() => setLoginVisible(true)}>
-                  <Trans>Access the workspace</Trans>
-                  <div className="icn">
-                    <Pointer />
-                  </div>
-                </Button>
-              ) : (
-                <Link href="/workspace">
-                  <Button type="link">
-                    <Trans>Access the workspace</Trans>
-                    <div className="icn">
-                      <Pointer />
-                    </div>
-                  </Button>
-                </Link>
-              )}
-            </div>
-          </p>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-const WhoAreWe = () => {
-  const [activeTab, setActiveTab] = useState('1')
-  const [activeAccordion, setActiveAccordion] = useState('1')
-
-  const items = [
-    {
-      id: 1,
-      title: t`Who are we?`,
-      description: t`The Global Partnership on Plastic Pollution and Marine Litter (GPML) Digital Platform is a multi-stakeholder, knowledge sharing and networking tool which aims to facilitate action on plastic pollution and marine litter reduction and prevention.`,
-    },
-    {
-      id: 2,
-      title: t`What we do?`,
-      description: t`The Global Partnership on Plastic Pollution and Marine Litter (GPML) Digital Platform brings decision making power to multiple stakeholders by integrating data, crowd sourced knowledge, and fostering collaborations to co-create and advance solutions to end plastic pollution including in the marine environment.`,
-    },
-    {
-      id: 3,
-      title: t`What is the connection between this platform and GPML?`,
-      description: t`The GPML Digital Platform functions as the digital arm of the GPML, a multi-stakeholder partnership that brings together all actors working to prevent plastic pollution and marine litter.`,
-    },
-    {
-      id: 4,
-      title: t`Why join the GPML?`,
-      description: (
-        <>
-          <Trans>
-            Benefits of joining:
-            <ul>
-              <li>Access to a global network of members​</li>
-              <li>
-                Opportunities to showcase your work in our newsletter, online
-                and at events
-              </li>
-              <li>A Data Hub to guide efforts towards SDGs and more​</li>
-              <li>Thousands of resources at your fingertips</li>
-              <li>Networking with other stakeholders​</li>
-              <li>Access to financing opportunities, and more!</li>
-            </ul>
-          </Trans>
-        </>
-      ),
-    },
-  ]
-  return (
-    <div className={styles.about}>
-      <div className="container">
-        <div className="who-are-we-lg-md">
-          <Tabs
-            tabPosition="left"
-            activeKey={activeTab}
-            onChange={(key) => setActiveTab(key)}
-          >
-            {items.map((item) => {
-              return (
-                <Tabs.TabPane
-                  tab={
-                    <span className="tab-label">
-                      <span className="h6 bold">{item.title}</span>
-                      <CirclePointer />
-                    </span>
-                  }
-                  key={item.id}
-                >
-                  <strong className="caps-heading-1">{item.title}</strong>
-                  <br />
-                  <br />
-                  <p className="p-l">{item.description}</p>
-                </Tabs.TabPane>
-              )
-            })}
-          </Tabs>
-        </div>
-        <div className="who-are-we-mobile">
-          <Collapse
-            bordered={false}
-            activeKey={activeAccordion}
-            onChange={setActiveAccordion}
-            expandIcon={() => <CirclePointer />}
-            accordion
-          >
-            {items.map((item) => (
-              <Collapse.Panel
-                header={<strong className="h6 bold">{item.title}</strong>}
-                key={`${item.id}`}
-              >
-                <p className="p-s">{item.description}</p>
-              </Collapse.Panel>
-            ))}
-          </Collapse>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-const ActNow = () => {
-  const [width] = useDeviceSize()
-  const items = [
-    {
-      content: t`Visit Library and get informed by new reports, inspiring case studies, technical resources and on-going projects.`,
-      bgColor: 'purple',
-      title: (
-        <>
-          <Trans>Library</Trans>
-        </>
-      ),
-      links: [
-        {
-          label: t`Discover`,
-          url: '/knowledge-hub',
-        },
-      ],
-    },
-    {
-      bgColor: 'green',
-      content: t`Explore global plastic lifecycle datasets to deepen your understanding on the global trend of plastic pollution.`,
-      title: t`Data Maps`,
-      links: [
-        {
-          label: t`Discover`,
-          url: '/data/maps',
-        },
-      ],
-    },
-    {
-      bgColor: 'violet',
-      content: t`Discover national plastic material flow and data narratives in countries to get inspired for necessary policies and actions.`,
-      title: t`National Dashboard`,
-      links: [{ label: t`Discover`, url: '/country-dashboard' }],
-    },
-    {
-      bgColor: 'blue',
-      content: t`Join others in coordinating efforts in monitoring harmonization and action planning.`,
-      title: t`Communities of Practice`,
-      links: [
-        { label: t`Discover`, url: '/partnership' },
-        // { label: t`Track action`, url: '#' },
-      ],
-    },
-  ]
-  return (
-    <div className={styles.actNow}>
-      <div className="container act-now-container">
-        <div className="wrapper">
-          <div className="caps-heading-1 page-sub-heading">
-            <Trans>Why us?</Trans>
-          </div>
-          <h3 className="h-xxl">
-            <Trans>Get Inspired:</Trans>
-          </h3>
-          <p className="p-l">
-            <Trans>
-              Data and information is a key for successful policy and action
-              design to end plastic pollution. Immerse yourself in the rich
-              resources in the platform.
-            </Trans>
-          </p>
-        </div>
-      </div>
-      <div className="container slider-container">
-        <div className="slider-wrapper">
-          <Swiper
-            spaceBetween={20}
-            slidesPerView={width <= 1024 ? 'auto' : 4}
-            pagination={pagination}
-            modules={[Pagination]}
-          >
-            {items.map((item, index) => (
-              <SwiperSlide key={index}>
-                <ActNowCard item={item} />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-const ActNowCard = ({ item }) => (
-  <div className={`card card--${item?.bgColor}`}>
-    {item?.label && <span className="card-label">{item?.label}</span>}
-    <h2 className="h-m">{item?.title}</h2>
-    <p className="p-s">{item?.content}</p>
-    <div className={item.links.lenght === 1 ? 'monolink' : 'multilink'}>
-      {item.links.map((link, index) => (
-        <Link href={link.url} key={index}>
-          <Button type="link" withArrow>
-            {link.label}
+    <>
+      {!isAuthenticated ? (
+        <Button
+          onClick={() => setLoginVisible(true)}
+          type="primary"
+          size="large"
+          withArrow
+        >
+          <Trans>Join Now</Trans>
+        </Button>
+      ) : (
+        <Link href="/workspace">
+          <Button type="primary" size="large" withArrow>
+            <Trans>Workspace</Trans>
           </Button>
         </Link>
-      ))}
+      )}
+    </>
+  )
+}
+
+const HeroPlasticTap = ({ isAuthenticated, setLoginVisible }) => {
+  const router = useRouter()
+  return (
+    <div className="hero">
+      <div className="container">
+        <div className="content">
+          <h5 className="hide-mobile">the global plastics hub</h5>
+          <h1>
+            The one-stop platform for data, knowledge, and collaboration to end
+            plastic pollution.
+          </h1>
+          <JoinBtn {...{ isAuthenticated, setLoginVisible }} />
+        </div>
+      </div>
+      <div className="search-bar-bottom">
+        <div className="container">
+          <SearchBar
+            onSearch={(val) => {
+              router.push(`/search?q=${val.replace(/ /g, '+')}`)
+            }}
+          />
+        </div>
+      </div>
+      <div className="attribution hide-mobile">
+        #TurnOffThePlasticTap by <a href="#">Benjamin Von Wong</a>
+      </div>
     </div>
-  </div>
-)
+  )
+}
+
+const FeatureCards = () => {
+  return (
+    <div className="feature-cards">
+      <h3>Explore The Platform</h3>
+      <div className="container">
+        <Link href="/knowledge-hub" className="feature-card">
+          <Image
+            src="/iconxl-knowledge-hub.svg"
+            width={265}
+            height={136}
+            alt="knowledge hub"
+          />
+          <h5>Knowledge Hub</h5>
+          <h2>2800+</h2>
+          <p>Knowledge resources shared in the Knowledge Library</p>
+          <span>Explore The Resources</span>
+        </Link>
+        <Link href="/data-hub" className="feature-card">
+          <Image
+            src="/iconxl-data-hub.svg"
+            width={320}
+            height={160}
+            alt="data hub"
+          />
+          <h5>Data Hub</h5>
+          <h2>80+</h2>
+          <p>Plastic Lifecycle Indicators showcase in the Data Hub.</p>
+          <span>Explore The Data</span>
+        </Link>
+        <Link href="/community-hub" className="feature-card">
+          <Image
+            src="/iconxl-community.svg"
+            width={321}
+            height={204}
+            alt="community"
+          />
+          <h5>Community Hub</h5>
+          <h2>2000+</h2>
+          <p>Members connected through Community Hub.</p>
+          <span>Explore The Community</span>
+        </Link>
+      </div>
+    </div>
+  )
+}
 
 const LatestNews = () => {
   const router = useRouter()
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
   const strapiUrl = getStrapiUrl()
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    if (window.innerWidth < 768) {
+      setIsMobile(true)
+    }
+  }, [])
   useEffect(() => {
     fetch(`${strapiUrl}/api/posts?locale=${router.locale}&populate=cover`)
       .then((d) => d.json())
@@ -680,194 +403,149 @@ const LatestNews = () => {
   return (
     <div className={styles.latestNews}>
       <div className="container">
-        <div className="news-wrapper hide-sm">
+        <div className="news-wrapper">
           <strong className="caps-heading-1">
             <Trans>HIGHLIGHTS</Trans>
           </strong>
           <h2>
             <strong>
-              <Trans>Latest news:</Trans>
+              <Trans>Latest news</Trans>
             </strong>
             <br />
           </h2>
         </div>
-        <div className="news-wrapper news-items">
+        <Swiper
+          slidesPerView={isMobile ? 1 : 4}
+          spaceBetween={20}
+          modules={[Pagination]}
+          pagination={{
+            clickable: true,
+          }}
+        >
           {items.map((item, dx) => {
             return (
-              <Card
-                bordered={false}
-                cover={
-                  <div className="cover-image-container">
-                    <div className="cover-image-overlay"></div>
-                    <Link href={`/post/${item.id}-${item.slug}`}>
-                      <Image
-                        alt={item.title}
-                        src={item.cover.data?.attributes?.formats?.medium?.url}
-                        width={366}
-                        height={220}
-                      />
-                    </Link>
-                  </div>
-                }
-                key={dx}
-              >
-                <Link href={`/post/${item.id}-${item.slug}`}>
-                  <h5 className="bold">{item.title}</h5>
-                </Link>
-                <p className="p-m">
-                  {stripHtml(item.content)?.substring(0, 100)}...
-                </p>
-                <Link href={`/post/${item.id}-${item.slug}`}>
-                  <Button type="link" withArrow>
-                    <Trans>Read More</Trans>
-                  </Button>
-                </Link>
-              </Card>
+              <SwiperSlide>
+                <Card
+                  bordered={false}
+                  cover={
+                    <div className="cover-image-container">
+                      <div className="cover-image-overlay"></div>
+                      <Link href={`/post/${item.id}-${item.slug}`}>
+                        <Image
+                          alt={item.title}
+                          src={
+                            item.cover.data?.attributes?.formats?.medium?.url
+                          }
+                          width={366}
+                          height={220}
+                        />
+                      </Link>
+                    </div>
+                  }
+                  key={dx}
+                >
+                  <Link href={`/post/${item.id}-${item.slug}`}>
+                    <h5 className="bold">{item.title}</h5>
+                  </Link>
+                  <p className="p-m">
+                    {stripHtml(item.content)?.substring(0, 150)}...
+                  </p>
+                  <Link href={`/post/${item.id}-${item.slug}`}>
+                    <Button type="link" withArrow>
+                      <Trans>Read More</Trans>
+                    </Button>
+                  </Link>
+                </Card>
+              </SwiperSlide>
             )
           })}
-        </div>
+        </Swiper>
+        {/* <div className="news-wrapper news-items">
+          
+        </div> */}
       </div>
     </div>
   )
 }
 
-const Activities = () => {
+const Forums = ({
+  setLoginVisible,
+  isAuthenticated,
+  profile,
+  setShouldJoin,
+}) => {
+  const [forums, setForums] = useState([])
+  const [viewModal, setViewModal] = useState({
+    open: false,
+    data: {},
+  })
+  const handleOnView = (data) => {
+    setViewModal({
+      open: true,
+      data,
+    })
+  }
+  useEffect(() => {
+    api.get('/chat/channel/all').then((d) => {
+      setForums(d.data.channels)
+    })
+  }, [])
   return (
-    <section className={styles.activities}>
+    <div className="forums">
       <div className="container">
         <div className="title-wrapper">
           <div className="title-holder">
-            <div className="caps-heading-1 page-sub-heading">
-              <Trans>WHAT IS THE FOCUS OF GPML?</Trans>
-            </div>
-            <h2 className="h-xxl">
-              <Trans>
-                <span>GPML’s</span> Action Tracks
-              </Trans>
+            <strong className="caps-heading-1">Workspace</strong>
+            <h2>
+              <strong>Forums</strong>
             </h2>
-            <p className="p-l">
-              <Trans>
-                The current core work of the GPML is organized through the
-                following five Action Tracks, with the aim of advancing priority
-                issues by connecting key stakeholders and facilitating
-                collaboration and coordination. The platform offers a wide range
-                of tools to facilitate this work.
-              </Trans>
-            </p>
           </div>
-          <div>
-            <a href="https://www.gpmarinelitter.org/" target="_blank">
-              <Button size="large" ghost withArrow={<LongArrowRight />}>
-                <Trans>Visit the website</Trans>
-              </Button>
-            </a>
-          </div>
+          {/* <Button type="ghost" withArrow ghost size="large">
+            All Forums
+          </Button> */}
         </div>
-        <div className="activity-box-wrapper">
-          <ul>
-            <li>
-              <div className="icon">
-                <img src="/activity-policy.svg" />
-              </div>
-              <p className="h-m">
-                <Trans>
-                  Science
-                  <br />
-                  policy
-                </Trans>
-              </p>
-            </li>
-            <li>
-              <div className="icon">
-                <img src="/activity-bookmark.svg" />
-              </div>
-              <p className="h-m">
-                <Trans>Guidelines standards & harmonization</Trans>
-              </p>
-            </li>
-            <li>
-              <div className="icon">
-                <img src="/activity-money.svg" />
-              </div>
-              <p className="h-m">
-                <Trans>Sustainable & innovative financing</Trans>
-              </p>
-            </li>
-            <li>
-              <div className="icon">
-                <img src="/activity-plans.svg" />
-              </div>
-              <p className="h-m">
-                <Trans>National action plans</Trans>
-              </p>
-            </li>
-            <li>
-              <div className="icon">
-                <img src="/activity-access.svg" />
-              </div>
-              <p className="h-m">
-                <Trans>Access for All</Trans>
-              </p>
-            </li>
-          </ul>
-        </div>
+        <List
+          grid={{ lg: 3, column: 3, gutter: 20, md: 2, sm: 1, xs: 1 }}
+          dataSource={forums
+            .sort((a, b) => {
+              if (b.privacy === 'public' && a.privacy !== 'public') return 1
+              else return -1
+            })
+            .slice(0, 3)}
+          renderItem={(item) => (
+            <List.Item key={item.id}>
+              <ChannelCard
+                {...{
+                  item,
+                  handleOnView,
+                  profile,
+                  // ChatStore,
+                  // handleEditItem,
+                }}
+              />
+            </List.Item>
+          )}
+        />
       </div>
-    </section>
-  )
-}
-
-const Partners = () => {
-  const [items, setItems] = useState([])
-  const [width] = useDeviceSize()
-  const strapiUrl = getStrapiUrl()
-  useEffect(() => {
-    fetch(`${strapiUrl}/api/partners?populate=*`)
-      .then((d) => d.json())
-      .then((d) => {
-        const simplifiedItems = d.data.map((item) => {
-          const { title, url, image } = item.attributes
-          return {
-            title,
-            url,
-            image: image.data.attributes.url,
-          }
-        })
-        setItems(simplifiedItems)
-      })
-  }, [])
-
-  return (
-    <div className={styles.partnerSection}>
-      <div className="container">
-        <h2 className="semibold">
-          <Trans>Our partners</Trans>
-        </h2>
-      </div>
-      <div className="partner-container">
-        <ul className="partner-items">
-          <Swiper
-            spaceBetween={width <= 1024 ? 20 : 40}
-            slidesPerView={width <= 1024 ? 2 : 5}
-            pagination={pagination}
-            modules={[Pagination]}
-          >
-            {items.map((item, ix) => (
-              <SwiperSlide key={ix}>
-                {item.url ? (
-                  <a href={item.url} target="_blank" rel="noopener noreferrer">
-                    <img alt={item.name} src={item.image} />
-                  </a>
-                ) : (
-                  <img alt={item.name} src={item.image} />
-                )}
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </ul>
-      </div>
+      <DynamicForumModal
+        {...{
+          viewModal,
+          setViewModal,
+          setLoginVisible,
+          isAuthenticated,
+          profile,
+          setShouldJoin,
+        }}
+      />
     </div>
   )
 }
+const DynamicForumModal = dynamic(
+  () => import('../../modules/forum/forum-modal'),
+  {
+    ssr: false, // modal has window object that should be run in client side
+  }
+)
 
 export const getStaticProps = async (ctx) => {
   return {
