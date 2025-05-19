@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import useRegions from '../../../hooks/useRegions'
 import { getBaseUrl } from '../../../utils/misc'
 import { t } from '@lingui/macro'
-import { splitIntoTwoLines} from './PlasticImportExportChart'
+import { splitIntoTwoLines } from './PlasticImportExportChart'
 
 const MSWGenerationChart = ({ layers, layerLoading }) => {
   const router = useRouter()
@@ -64,12 +64,14 @@ const MSWGenerationChart = ({ layers, layerLoading }) => {
 
     fetchData()
   }, [country, layers, layerLoading, countriesWithRegions, regionLoading])
-    
-  const tNatEstimate = t`National estimate`;
+
+  const tNatEstimate = t`National estimate`
   const tRegionalAvg = t`Regional Average`.replace(' ', '\n')
 
-  const textTitle = splitIntoTwoLines(t`Per capita MSW generation for ${decodeURIComponent(country?.toString())}`)
-  const tKgPersonDay = t`Kg/person/day`;
+  const textTitle = splitIntoTwoLines(
+    t`Per capita MSW generation for ${decodeURIComponent(country?.toString())}`
+  )
+  const tKgPersonDay = t`Kg/person/day`
 
   const getOption = () => {
     const categories = [tNatEstimate, ...cities]
@@ -112,10 +114,7 @@ const MSWGenerationChart = ({ layers, layerLoading }) => {
         },
       },
       legend: {
-        data: [
-          tNatEstimate,
-          ...cities.map((city) => t`${city} estimate`),
-        ],
+        data: [tNatEstimate, ...cities.map((city) => t`${city} estimate`)],
         bottom: 0,
         itemGap: 20,
         textStyle: { fontSize: 12, color: '#020A5B' },
@@ -125,8 +124,15 @@ const MSWGenerationChart = ({ layers, layerLoading }) => {
         data: categories,
         axisLabel: {
           color: '#020A5B',
-          fontSize: 12,
-          fontWeight: 'bold',
+          fontSize: 10,
+          ...(window.innerWidth < 768
+            ? {}
+            : {
+                fontWeight: 'bold',
+                width: 70,
+                overflow: 'break',
+                interval: 0,
+              }),
         },
       },
       yAxis: {
@@ -141,22 +147,23 @@ const MSWGenerationChart = ({ layers, layerLoading }) => {
           fontWeight: 'bold',
         },
         axisLabel: {
-          formatter: '{value} ',
-          fontSize: 12,
           color: '#020A5B',
+          fontSize: 11,
+          fontWeight: 'bold',
         },
         splitLine: { show: true },
       },
-      grid:{
-        left:60,
-        right:70,
-        top:80,
+      grid: {
+        left: 40,
+        right: 60,
+        top: 80,
+        containLabel: true,
       },
       series: [
         {
           name: 'Estimates',
           type: 'bar',
-          barWidth: '40%',
+          // barWidth: '40%',
           data: dataValues,
           label: {
             show: true,
@@ -169,14 +176,13 @@ const MSWGenerationChart = ({ layers, layerLoading }) => {
           markLine: {
             data: [
               {
+                name: tRegionalAvg,
                 yAxis: regionMswValue || 0.78,
                 label: {
                   formatter: () =>
-                    `${tRegionalAvg} \n(${regionMswValue || 0.78} kg)`,                  
-                  position: 'middle',
-                  offset: [180, -5],
-                  color: '#020A5B',
-                  fontSize: 12,
+                    `${tRegionalAvg} \n(${regionMswValue || 0.78} kg)`,
+                  position: 'end',
+                  fontSize: 11,
                 },
                 lineStyle: {
                   type: 'dashed',

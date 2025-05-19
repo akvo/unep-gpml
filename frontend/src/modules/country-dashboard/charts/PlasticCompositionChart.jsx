@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import useRegions from '../../../hooks/useRegions'
 import { getBaseUrl } from '../../../utils/misc'
 import { t, Trans } from '@lingui/macro'
-import { splitIntoTwoLines} from './PlasticImportExportChart'
+import { splitIntoTwoLines } from './PlasticImportExportChart'
 
 const PlasticCompositionChart = ({ layers, layerLoading }) => {
   const router = useRouter()
@@ -64,8 +64,8 @@ const PlasticCompositionChart = ({ layers, layerLoading }) => {
     fetchData()
   }, [country, layers, layerLoading, countriesWithRegions, regionLoading])
 
-  const tNatEstimate = t`National estimate`;
-    const tRegionalAvg = t`Regional Average`.replace(' ', '\n')
+  const tNatEstimate = t`National estimate`
+  const tRegionalAvg = t`Regional Average`.replace(' ', '\n')
 
   const getOption = () => {
     const categories = [tNatEstimate, ...cities]
@@ -81,13 +81,16 @@ const PlasticCompositionChart = ({ layers, layerLoading }) => {
         name: t`${cities[index]} estimate`,
       })),
     ]
-const tTitle = splitIntoTwoLines(t`Plastic composition in the MSW for ${decodeURIComponent(country)}`, true)
+    const tTitle = splitIntoTwoLines(
+      t`Plastic composition in the MSW for ${decodeURIComponent(country)}`,
+      true
+    )
     return {
       title: {
-        text:tTitle,
+        text: tTitle,
         left: 'center',
         textStyle: {
-          fontSize: window.innerWidth < 768 ? 14 : 18,
+          fontSize: window.innerWidth < 768 ? 13 : 18,
           fontWeight: 'bold',
           color: '#020A5B',
         },
@@ -108,15 +111,13 @@ const tTitle = splitIntoTwoLines(t`Plastic composition in the MSW for ${decodeUR
           return content
         },
       },
-      grid:{
-        right:70,
-        top:80
+      grid: {
+        right: 70,
+        top: 80,
+        containLabel: true,
       },
       legend: {
-        data: [
-          tNatEstimate,
-          ...cities.map((city) => `${city} estimate`),
-        ],
+        data: [tNatEstimate, ...cities.map((city) => `${city} estimate`)],
         bottom: 0,
         itemGap: 20,
         textStyle: {
@@ -129,8 +130,15 @@ const tTitle = splitIntoTwoLines(t`Plastic composition in the MSW for ${decodeUR
         data: categories,
         axisLabel: {
           color: '#020A5B',
-          fontSize: 12,
-          fontWeight: 'bold',
+          fontSize: 10,
+          ...(window.innerWidth < 768
+            ? {}
+            : {
+                fontWeight: 'bold',
+                width: 70,
+                overflow: 'break',
+                interval: 0,
+              }),
         },
       },
       yAxis: {
@@ -167,24 +175,44 @@ const tTitle = splitIntoTwoLines(t`Plastic composition in the MSW for ${decodeUR
           markLine: {
             data: [
               {
+                name: tRegionalAvg,
                 yAxis: regionPlasticComposition || 0.78,
                 label: {
                   formatter: () =>
                     `${tRegionalAvg} \n(${
                       regionPlasticComposition + '%' || 0.78 + '%'
                     })`,
-                  position: 'middle',
-                  offset: [180, -5],
-                  color: '#020A5B',
-                  fontSize: 12,
+                  position: 'end',
+                  fontSize: 11,
                 },
                 lineStyle: {
                   type: 'dashed',
-                  color: '#020A5B',
+                  color: '#FF0000',
                 },
               },
             ],
           },
+          // markLine: {
+          //   data: [
+          //     {
+          //       yAxis: regionPlasticComposition || 0.78,
+          //       label: {
+          //         formatter: () =>
+          //           `${tRegionalAvg} \n(${
+          //             regionPlasticComposition + '%' || 0.78 + '%'
+          //           })`,
+          //         position: 'middle',
+          //         offset: [window.innerWidth < 768 ? 170 : 220, -5],
+          //         color: '#020A5B',
+          //         fontSize: 12,
+          //       },
+          //       lineStyle: {
+          //         type: 'dashed',
+          //         color: '#020A5B',
+          //       },
+          //     },
+          //   ],
+          // },
         },
       ],
       barCategoryGap: '50%',

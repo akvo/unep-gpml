@@ -3,6 +3,7 @@ import ReactEcharts from 'echarts-for-react'
 import { useRouter } from 'next/router'
 import { getBaseUrl } from '../../../utils/misc'
 import { t, Trans } from '@lingui/macro'
+import { splitIntoTwoLines} from './PlasticImportExportChart'
 
 const PlasticOceanBeachChart = ({ layers, loading }) => {
   const router = useRouter()
@@ -72,11 +73,11 @@ const PlasticOceanBeachChart = ({ layers, loading }) => {
       const calculatedOceanPercentage = (
         (oceanValue * 100) /
         coastValue
-      ).toFixed(1)
+      ).toFixed(2)
       const calculatedBeachPercentage = (
         (beachValue * 100) /
         coastValue
-      ).toFixed(1)
+      ).toFixed(2)
 
       setOceanPercentage(calculatedOceanPercentage)
       setBeachPercentage(calculatedBeachPercentage)
@@ -93,14 +94,8 @@ const PlasticOceanBeachChart = ({ layers, loading }) => {
 
     return {
       title: {
-        text:
-          window.innerWidth < 768
-            ? t`Escaped plastic reaching \noceans and coasts`
-            : t`Escaped plastic reaching oceans and coasts​`,
-        subtext:
-          window.innerWidth < 768
-            ? t`Percentage of the escaped waste\n between years 2010-2019`
-            : t`Percentage of the escaped waste between years 2010-2019`,
+        text:splitIntoTwoLines(t`Escaped plastic reaching oceans and coasts​`, true),
+        subtext:splitIntoTwoLines(t`Percentage of the escaped waste between years 2010-2019`, true),
         left: 'center',
         textStyle: {
           fontSize: window.innerWidth < 768 ? 14 : 16,

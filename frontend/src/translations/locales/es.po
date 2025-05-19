@@ -37,11 +37,11 @@ msgstr "(OPCIONAL)"
 msgid "{0}"
 msgstr "{0}"
 
-#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:80
+#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:81
 msgid "{0} estimate"
 msgstr "{0} estimación"
 
-#: src/modules/country-dashboard/charts/MSWGeneration.tsx:122
+#: src/modules/country-dashboard/charts/MSWGeneration.tsx:117
 msgid "{city} estimate"
 msgstr ""
 
@@ -470,7 +470,7 @@ msgstr "Atrás"
 msgid "Back Home"
 msgstr "De vuelta a casa"
 
-#: src/pages/forum/[forum]/index.jsx:163
+#: src/pages/forum/[...params]/index.jsx:164
 msgid "Back to all Forums"
 msgstr "Volver a todos los foros"
 
@@ -478,7 +478,7 @@ msgstr "Volver a todos los foros"
 msgid "Back to categories"
 msgstr "Volver a categorías"
 
-#: src/pages/forum/[forum]/index.jsx:221
+#: src/pages/forum/[...params]/index.jsx:223
 msgid "Back to Channel"
 msgstr "Volver al canal"
 
@@ -1063,9 +1063,9 @@ msgstr "Portal de datos"
 msgid "Data Source"
 msgstr "Fuente de datos"
 
-#: src/modules/country-dashboard/charts/MSWGeneration.tsx:212
-#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:214
-#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:184
+#: src/modules/country-dashboard/charts/MSWGeneration.tsx:208
+#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:208
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:194
 #: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:200
 #: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:222
 #: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:220
@@ -1104,8 +1104,8 @@ msgstr "Rechazar"
 #: src/modules/stakeholder-detail/view.jsx:191
 #: src/modules/workspace/ps/setup-team-table.jsx:206
 #: src/modules/workspace/view.jsx:519
-#: src/pages/forum/[forum]/index.jsx:340
-#: src/pages/forum/[forum]/index.jsx:749
+#: src/pages/forum/[...params]/index.jsx:342
+#: src/pages/forum/[...params]/index.jsx:762
 #: src/pages/forum/index.jsx:256
 msgid "Delete"
 msgstr "Borrar"
@@ -1251,7 +1251,7 @@ msgstr "Descubra el flujo de materiales plásticos a nivel nacional y las narrat
 msgid "Discussion"
 msgstr "Discusión"
 
-#: src/pages/forum/[forum]/index.jsx:631
+#: src/pages/forum/[...params]/index.jsx:644
 msgid "Discussions"
 msgstr "Discusiones"
 
@@ -1534,12 +1534,12 @@ msgstr ""
 "\n"
 "Puede utilizar la función de búsqueda para incluir a nuevas personas que ya estén registradas en la plataforma. Si no encuentra el nombre de la persona que desee agregar, encontrará una opción para 'Agregar un Nuevo Miembro' en los resultados de la búsqueda."
 
-#: src/modules/country-dashboard/charts/MSWGeneration.tsx:114
-#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:112
+#: src/modules/country-dashboard/charts/MSWGeneration.tsx:109
+#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:106
 msgid "Estimated Regional Average"
 msgstr "Estimación Promedio regional"
 
-#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:161
+#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:155
 msgid "Estimates"
 msgstr "Estimaciones"
 
@@ -2389,7 +2389,7 @@ msgstr "Características y componentes clave"
 msgid "Keywords"
 msgstr "Palabras clave"
 
-#: src/modules/country-dashboard/charts/MSWGeneration.tsx:77
+#: src/modules/country-dashboard/charts/MSWGeneration.tsx:72
 msgid "Kg/person/day"
 msgstr "Kg/persona/día"
 
@@ -2476,7 +2476,7 @@ msgstr "Centro de aprendizaje"
 msgid "Leave"
 msgstr "Dejar"
 
-#: src/pages/forum/[forum]/index.jsx:180
+#: src/pages/forum/[...params]/index.jsx:181
 msgid "Leave Channel"
 msgstr "Salir del canal"
 
@@ -2886,12 +2886,13 @@ msgstr "Planes de acción nacionales"
 msgid "National Dashboard"
 msgstr "Tablero Nacional"
 
-#: src/components/map-and-layers/sidebar/partials/CategoriesNestedDashboard.jsx:89
+#: src/components/map-and-layers/sidebar/index.jsx:96
+#: src/components/map-and-layers/sidebar/partials/CategoriesNestedDashboard.jsx:77
 msgid "National data"
 msgstr "Datos nacionales"
 
-#: src/modules/country-dashboard/charts/MSWGeneration.tsx:66
-#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:66
+#: src/modules/country-dashboard/charts/MSWGeneration.tsx:68
+#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:67
 msgid "National estimate"
 msgstr "Estimación nacional"
 
@@ -3226,7 +3227,7 @@ msgstr "embalaje"
 msgid "PAME, Regional Action Plan on Marine Litter in the Arctic (May 2021)"
 msgstr "PAME, Plan de acción regional sobre basura marina en el Ártico (mayo de 2021)"
 
-#: src/pages/forum/[forum]/index.jsx:499
+#: src/pages/forum/[...params]/index.jsx:501
 msgid "Participants"
 msgstr "Participantes"
 
@@ -3255,13 +3256,13 @@ msgstr "Presión de grupo de actores similares"
 msgid "People like plastics (convenience, hygiene etc.)"
 msgstr "A la gente le gustan los plásticos (comodidad, higiene, etc.)"
 
-#: src/modules/country-dashboard/charts/MSWGeneration.tsx:74
+#: src/modules/country-dashboard/charts/MSWGeneration.tsx:71
 msgid "Per capita MSW generation for {0}"
 msgstr "Generación de RSU per cápita para {0}"
 
 #: src/modules/country-dashboard/charts/MSWGeneration.tsx:71
-msgid "Per capita MSW generation for\\n{0}"
-msgstr "Generación de RSU per cápita para\\n{0}"
+#~ msgid "Per capita MSW generation for\\n{0}"
+#~ msgstr "Generación de RSU per cápita para\\n{0}"
 
 #: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:103
 msgid "Percentage of the escaped waste between years 2010-2019"
@@ -3303,7 +3304,7 @@ msgstr "Elija el tipo de subcontenido"
 msgid "Pilot"
 msgstr "Piloto"
 
-#: src/pages/forum/[forum]/index.jsx:313
+#: src/pages/forum/[...params]/index.jsx:315
 msgid "Pinned Documents"
 msgstr "Documentos fijados"
 
@@ -3315,13 +3316,13 @@ msgstr "Documentos fijados"
 #~ msgid "Plastic {0} by type for\\n{1}"
 #~ msgstr "Plástico {0} por tipo para\\n{1}"
 
-#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:88
+#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:84
 msgid "Plastic composition in the MSW for {0}"
 msgstr "Composición plástica en los RSU para {0}"
 
 #: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:85
-msgid "Plastic composition in the MSW\\nfor {0}"
-msgstr "Composición plástica en los RSU\\npara {0}"
+#~ msgid "Plastic composition in the MSW\\nfor {0}"
+#~ msgstr "Composición plástica en los RSU\\npara {0}"
 
 #: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:132
 msgid "Plastic distribution"
@@ -3335,7 +3336,7 @@ msgstr "Exportación de plástico por tipo para {countryName}"
 #~ msgid "Plastic export by type for\\n{countryName}"
 #~ msgstr "Exportación de plástico por tipo para\\n{countryName}"
 
-#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:90
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:91
 #: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:133
 msgid "Plastic import & export value for {0}"
 msgstr "Valor de importación y exportación de plástico para {0}"
@@ -3608,8 +3609,8 @@ msgstr "Reducir el impacto ambiental"
 msgid "Reef Futures Symposium"
 msgstr "Simposio de futuros de arrecifes"
 
-#: src/modules/country-dashboard/charts/MSWGeneration.tsx:67
-#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:67
+#: src/modules/country-dashboard/charts/MSWGeneration.tsx:69
+#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:68
 msgid "Regional Average"
 msgstr "Promedio regional"
 
@@ -4141,8 +4142,8 @@ msgstr "Envíe una solicitud para que su organización, <0>{0}</0>, forme parte 
 msgid "Submit Application"
 msgstr "Presentar la solicitud"
 
-#: src/pages/countryOverview/index.jsx:436
-#: src/pages/countryOverview/index.jsx:587
+#: src/pages/countryOverview/index.jsx:312
+#: src/pages/countryOverview/index.jsx:463
 #: src/pages/countryOverview/RequestDataUpdateModal.jsx:31
 #: src/pages/countryOverview/RequestDataUpdateModal.jsx:157
 msgid "Submit Data Update"
@@ -4502,13 +4503,15 @@ msgstr "Total"
 msgid "Total experts per country"
 msgstr "Total de expertos por país"
 
-#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:121
-#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:150
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:123
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:130
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:160
 msgid "Total exports"
 msgstr "Exportaciones totales"
 
-#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:121
-#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:159
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:123
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:130
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:169
 msgid "Total imports"
 msgstr "Importaciones totales"
 
@@ -4774,8 +4777,8 @@ msgstr "Ver todos los foros"
 msgid "View Details"
 msgstr "Ver detalles"
 
-#: src/components/map-and-layers/sidebar/partials/CategoriesNestedDashboard.jsx:121
-#: src/pages/countryOverview/index.jsx:598
+#: src/components/map-and-layers/sidebar/partials/CategoriesNestedDashboard.jsx:109
+#: src/pages/countryOverview/index.jsx:474
 msgid "View Global Data"
 msgstr "Ver datos globales"
 
@@ -4990,7 +4993,7 @@ msgstr "espacio de trabajo"
 msgid "Workspace"
 msgstr "Espacio de trabajo"
 
-#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:219
+#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:213
 msgid "World Bank"
 msgstr "Banco mundial"
 

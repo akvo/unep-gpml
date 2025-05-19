@@ -5,14 +5,14 @@ import { getBaseUrl } from '../../../utils/misc'
 import { t, Trans } from '@lingui/macro'
 
 export function splitIntoTwoLines(text, split = false) {
-  if(window.innerWidth < 768 || split === true) {
-  const words = text.split(' ');
-  const mid = Math.floor(words.length / 2);
+  if (window.innerWidth < 768 || split === true) {
+    const words = text.split(' ')
+    const mid = Math.floor(words.length / 2)
 
-  const firstLine = words.slice(0, mid).join(' ');
-  const secondLine = words.slice(mid).join(' ');
+    const firstLine = words.slice(0, mid).join(' ')
+    const secondLine = words.slice(mid).join(' ')
 
-  return `${firstLine}\n${secondLine}`;
+    return `${firstLine}\n${secondLine}`
   } else {
     return text
   }
@@ -87,9 +87,9 @@ const PlasticImportExportChart = ({ layers, loading }) => {
     fetchData()
   }, [country, layers, loading])
 
-  const plasticText = splitIntoTwoLines(t`Plastic import & export value for ${decodeURIComponent(
-    country
-  )}`)
+  const plasticText = splitIntoTwoLines(
+    t`Plastic import & export value for ${decodeURIComponent(country)}`
+  )
   const units = t`million  US  dollars`
   const fUnits = units.replace(/  /, '\n')
 
@@ -106,9 +106,9 @@ const PlasticImportExportChart = ({ layers, loading }) => {
       },
     },
     grid: {
-      left: window.innerWidth < 768 ? '12%' : '7%',
+      left: window.innerWidth < 768 ? '20%' : '10%',
       right: '4%',
-      top: '20%',
+      top: window.innerWidth < 768 ? '30%' : '20%',
       textStyle: { color: '#020A5B' },
     },
     tooltip: {
@@ -117,11 +117,21 @@ const PlasticImportExportChart = ({ layers, loading }) => {
         type: 'shadow',
       },
     },
-    legend: {
-      data: [t`Total exports`, t`Total imports`],
-      textStyle: { color: '#020A5B' },
-      bottom: 0,
-    },
+    ...(window.innerWidth < 768
+      ? {
+          legend: {
+            data: [t`Total exports`, t`Total imports`],
+            textStyle: { color: '#020A5B' },
+            top: 50,
+          },
+        }
+      : {
+          legend: {
+            data: [t`Total exports`, t`Total imports`],
+            textStyle: { color: '#020A5B' },
+            bottom: 0,
+          },
+      }),
     xAxis: {
       type: 'category',
       textStyle: { color: '#020A5B' },
