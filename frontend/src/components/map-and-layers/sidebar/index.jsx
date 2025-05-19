@@ -13,24 +13,26 @@ import { t } from '@lingui/macro'
 
 const { Sider } = Layout
 
-
 const Sidebar = ({ countryDashboard, layers }) => {
   const [isMobile, setIsMobile] = useState(false)
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false)
   const { loading } = useCategories()
-  const catsData  = useCategories()?.categories
-  const categories  = countryDashboard ? catsData.filter(d => d.attributes.categoryId !== 'governance-and-regulations') :catsData
+  const catsData = useCategories()?.categories
+  const categories = countryDashboard
+    ? catsData.filter(
+        (d) => d.attributes.categoryId !== 'governance-and-regulations'
+      )
+    : catsData
   const subcategories = useSubcategories()
 
-  
   const { queryParameters, setQueryParameters } = useQueryParameters()
   const [selectedCategory, setSelectedCategory] = useState(null)
-    const { countries } = UIStore.useState((s) => ({
+  const { countries } = UIStore.useState((s) => ({
     countries: s.countries,
     transnationalOptions: s.transnationalOptions,
     landing: s.landing,
   }))
-  
+
   const isLoaded = () => !isEmpty(countries)
 
   const countryOpts = isLoaded()
@@ -76,6 +78,9 @@ const Sidebar = ({ countryDashboard, layers }) => {
   }
 
   useEffect(() => {
+    if (selectedCategory === null) {
+      setSelectedCategory(queryParameters.categoryId)
+    }
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768)
     }
