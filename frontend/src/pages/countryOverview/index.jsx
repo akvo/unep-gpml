@@ -150,113 +150,6 @@ const CountryOverview = () => {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  const postDataLayers = async (layers) => {
-    console.log(layers)
-    if (!layers || layers.length === 0) return
-    try {
-      const weightPayload = {
-        outFields: ['Year', 'Value', 'Country'],
-      }
-      const valuePayload = {
-        outFields: ['Time', 'Value', 'Country'],
-      }
-      const obsPayload = {
-        outFields: ['Time_Perio', 'OBS_Value', 'Country'],
-      }
-
-      for (let index = 0; index < layers.length; index++) {
-        if (
-          'Plastic_packaging___weight__import__WFL1' === layers[index] ||
-          'Plastic_packaging___weight__export__WFL1' === layers[index]
-        ) {
-          await axios.post(
-            `${strapiURL}/api/countries/populate-data-layers/${layers[index]}`,
-            obsPayload
-          )
-        } else if (
-          layers[index].toLowerCase().includes('value') ||
-          layers[index].toLowerCase().includes('total')
-        ) {
-          // console.log(
-          //   `${strapiURL}/api/countries/populate-data-layers/${layers[index]}`,
-          //   valuePayload
-          // )
-          await axios.post(
-            `${strapiURL}/api/countries/populate-data-layers/${layers[index]}`,
-            valuePayload
-          )
-        } else {
-          // console.log(
-          //   `${strapiURL}/api/countries/populate-data-layers/${layers[index]}`,
-          //   weightPayload)
-
-          await axios.post(
-            `${strapiURL}/api/countries/populate-data-layers/${layers[index]}`,
-            weightPayload
-          )
-        }
-      }
-    } catch (error) {
-      console.error('Error fetching Layers:', error)
-    }
-  }
-
-  const runChunkedPopulation = async (layers) => {
-    if (!layers || layers.length === 0) return;
-  
-    const limit = 100;
-    // const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-  
-    const getPayload = (layerName) => {
-      if (
-        layerName === 'Plastic_packaging___weight__import__WFL1' ||
-        layerName === 'Plastic_packaging___weight__export__WFL1'
-      ) {
-        return { outFields: ['Time_Perio', 'OBS_Value', 'Country'] };
-      } else if (
-        layerName.toLowerCase().includes('value') ||
-        layerName.toLowerCase().includes('total')
-      ) {
-        return { outFields: ['Time', 'Value', 'Country'] };
-      } else {
-        return { outFields: ['Year', 'Value', 'Country'] };
-      }
-    };
-  
-    for (const layerName of layers) {
-      const { outFields } = getPayload(layerName);
-      let offset = 0;
-      let done = false;
-  
-      while (!done) {
-        const payload = { outFields };
-  
-        try {
-          const response = await axios.post(
-            `${strapiURL}/api/countries/populate-layer-chunk/${layerName}?offset=${offset}`,
-            payload
-          );
-  
-          console.log(`✅ Posted offset ${offset} for ${layerName}`);
-  
-          if (response.data?.done) {
-            done = true;
-          } else {
-            offset += limit;
-            // await delay(200);
-          }
-  
-        } catch (err) {
-          console.error(`❌ Error at offset ${offset} for ${layerName}:`, err.message);
-        }
-      }
-  
-      console.log(`🎉 Done for layer ${layerName}`);
-    }
-  };
-  
-  
-
   useEffect(() => {
     if (queryParameters.country) {
       setSelectedCountry(queryParameters.country)
@@ -405,7 +298,7 @@ const CountryOverview = () => {
         </Col>
 
         {!isMobile && (
-          <Col lassName={styles.containerButton}>
+          <Col className={styles.containerButton}>
             <span className={styles.textButton}>
               <span className={styles.dot}></span>
               Page last updated: 02-20-22

@@ -139,29 +139,29 @@ const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
       },
     },
     legend: {
+         left: 'left',
       orient: 'horizontal',
-      type: 'scroll',
-      tooltip: {
-        show: true,
-      },
-      left: 'center',
+      top: window.innerWidth < 768 ? 60 : 'bottom',
+      height: 60,
+      itemGap: 10,
+      padding: [10, 10, 10, 10],
       textStyle: {
         color: '#020A5B',
       },
-      top: 'bottom',
-      itemGap: 10,
-      padding: [20, 30, 5, 10],
       data: categoriesTitle.map((category) => Object.values(category)[0]),
     },
+    
+
     grid: {
       left: '3%',
       right: '4%',
-      top: '30%',
+      ...(window.innerWidth < 768) ? { bottom: 0} : {top:'30%'},
       containLabel: true,
     },
     color: ['#384E85', '#FFB800', '#f56a00', '#A7AD3E', '#3498db'],
     series: [
       {
+        ...(window.innerWidth < 768) ? { top: 150} : {top:0},
         name: chartType === 'import' ? 'Import' : 'Export',
         type: 'pie',
         radius: '50%',

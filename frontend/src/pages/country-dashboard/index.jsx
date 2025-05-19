@@ -7,6 +7,13 @@ function CountryView({ isAuthenticated }) {
   return (
     <>
       <Head>
+        <style>{`
+          body {
+              @media (max-width: 768px) {
+              overflow-x: hidden;
+            }
+          }
+        `}</style>
         <title>Country Dashboard | UNEP GPML Digital Platform</title>
       </Head>
       <CountryLib isAuthenticated={isAuthenticated} />
