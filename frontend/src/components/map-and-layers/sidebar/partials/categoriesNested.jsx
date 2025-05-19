@@ -8,7 +8,7 @@ import { useRouter } from 'next/router'
 
 const { Sider } = Layout
 
-const CategoriesNested = ({ categories, layers }) => {
+const CategoriesNested = ({ categories, layers, handleCategoryParentClick }) => {
   const { queryParameters, setQueryParameters } = useQueryParameters()
   const [selectedCategory, setSelectedCategory] = useState(null)
   const [isCollapsed, setIsCollapsed] = useState(false)
@@ -36,6 +36,7 @@ const CategoriesNested = ({ categories, layers }) => {
 
     setQueryParameters(newParams)
     setSelectedCategory(category.attributes.categoryId)
+    handleCategoryParentClick(category)
   }
   const subcategories = useSubcategories(categoryId)
 
