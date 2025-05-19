@@ -78,9 +78,7 @@ const Sidebar = ({ countryDashboard, layers }) => {
   }
 
   useEffect(() => {
-    if (selectedCategory === null) {
-      setSelectedCategory(queryParameters.categoryId)
-    }
+
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768)
     }
@@ -90,6 +88,12 @@ const Sidebar = ({ countryDashboard, layers }) => {
 
     return () => window.removeEventListener('resize', handleResize)
   }, [])
+
+    useEffect(() => {
+    if (selectedCategory === null ||selectedCategory === undefined && queryParameters?.categoryId) {
+      setSelectedCategory(queryParameters.categoryId)
+    }
+  }, [queryParameters?.categoryId])
 
   if (loading) {
     return <div>Loading...</div>
