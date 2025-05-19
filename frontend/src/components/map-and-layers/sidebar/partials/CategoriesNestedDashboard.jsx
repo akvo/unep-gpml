@@ -6,8 +6,8 @@ import { isEmpty } from 'lodash'
 import { getBaseUrl } from '../../../../utils/misc'
 import classNames from 'classnames'
 import { loadCatalog } from '../../../../translations/utils'
-import { useLingui } from '@lingui/react'
 import { t } from '@lingui/macro'
+import styled from 'styled-components'
 
 const { Sider } = Layout
 
@@ -16,7 +16,6 @@ const CategoriesNestedDashboard = ({ categories }) => {
   const [selectedCategory, setSelectedCategory] = useState(null)
   const [selectedCountry, setSelectedCountry] = useState(null)
   const baseURL = getBaseUrl()
-  const [isMobile, setIsMobile] = useState(false)
 
   const { countries } = UIStore.useState((s) => ({
     countries: s.countries,
@@ -25,17 +24,6 @@ const CategoriesNestedDashboard = ({ categories }) => {
   }))
 
   const isLoaded = () => !isEmpty(countries)
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768)
-    }
-
-    handleResize()
-    window.addEventListener('resize', handleResize)
-
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
 
   const countryOpts = isLoaded()
     ? countries
@@ -65,7 +53,7 @@ const CategoriesNestedDashboard = ({ categories }) => {
     setQueryParameters(newParams)
     setSelectedCategory(category.attributes.categoryId)
   }
-  console.log('Trigger build')
+
   const isCategorySelected = (category) => {
     return queryParameters.categoryId === category.attributes.categoryId
   }
@@ -102,7 +90,7 @@ const CategoriesNestedDashboard = ({ categories }) => {
         onChange={handleChangeCountry}
       />
 
-      <div style={{ marginTop: isMobile ? '0px' : '20px' }} className="nav">
+      <div style={{ marginTop:'20px' }} className="nav">
         {categories.map((category) => (
           <div
             key={category.attributes.categoryId}
@@ -116,11 +104,11 @@ const CategoriesNestedDashboard = ({ categories }) => {
         ))}
       </div>
 
-      {queryParameters.categoryId && queryParameters.country && !isMobile && (
-        <Button type="ghost" style={{}} onClick={handleViewGlobalDataClick}>
+
+        <ButtonStyled type="ghost" style={{}} onClick={handleViewGlobalDataClick}>
           {t`View Global Data `} →
-        </Button>
-      )}
+        </ButtonStyled>
+
     </Sider>
   )
 }
@@ -144,5 +132,11 @@ export const getStaticProps = async (ctx) => {
     },
   }
 }
+
+const ButtonStyled = styled(Button)`
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
 
 export default CategoriesNestedDashboard

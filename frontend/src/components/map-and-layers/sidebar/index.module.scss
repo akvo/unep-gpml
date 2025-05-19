@@ -9,6 +9,7 @@
 
   @media (max-width: 768px) {
     flex-direction: column;
+    z-index: 1;
   }
 
   .mobileHeader {

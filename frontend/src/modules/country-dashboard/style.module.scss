@@ -1,6 +1,16 @@
 @import '../../styles/vars.scss';
 .knowledgeLib {
   position: relative;
+  .resource {
+      display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  overflow: visible;
+  @media (max-width: 768px) {
+     flex-direction: column;
+  }
+  }
   :global {
     .map-landing {
       height: 550px;
