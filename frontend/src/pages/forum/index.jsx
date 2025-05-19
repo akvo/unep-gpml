@@ -208,7 +208,12 @@ const Forum = ({
   )
 }
 
-const ChannelCard = ({ item, handleOnView, profile, handleEditItem }) => {
+export const ChannelCard = ({
+  item,
+  handleOnView,
+  profile,
+  handleEditItem,
+}) => {
   const isAdmin = profile?.role === 'ADMIN'
   const [showPopover, setShowPopover] = useState(false)
 

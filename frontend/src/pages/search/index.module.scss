@@ -149,10 +149,23 @@
           font-size: 16px;
           line-height: 27px;
           font-weight: 500;
+          color: #000;
           cursor: pointer;
           &:hover {
             background-color: rgba(0, 0, 0, 0.02);
           }
+        }
+      }
+    }
+    @media screen and (max-width: $bpMobile) {
+      .suggestions {
+        .holder {
+          margin-left: -12px;
+          padding-left: 12px;
+          margin-right: -12px;
+        }
+        .more-btn {
+          width: 26px;
         }
       }
     }
