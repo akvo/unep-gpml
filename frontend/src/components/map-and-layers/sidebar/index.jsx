@@ -60,6 +60,10 @@ const Sidebar = ({ countryDashboard, layers }) => {
     setSelectedCountry(selectedCountry?.name)
   }
 
+  const handleCategoryClick = (category) => {
+    setSelectedCategory(category.attributes.categoryDescription)
+  }
+
   const handleCategory = (category) => {
     const selected = categories?.find((x) => x.id === category)
     if (selected.attributes.categoryDescription === selectedCategory) return
@@ -152,6 +156,7 @@ const Sidebar = ({ countryDashboard, layers }) => {
             categories={categories}
             subcategories={subcategories}
             countryDashboard={countryDashboard}
+            handleCategoryParentClick={handleCategoryClick}
           />
         )}
         {!countryDashboard && (

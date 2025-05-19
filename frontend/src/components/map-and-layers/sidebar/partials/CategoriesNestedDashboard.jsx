@@ -11,7 +11,7 @@ import styled from 'styled-components'
 
 const { Sider } = Layout
 
-const CategoriesNestedDashboard = ({ categories }) => {
+const CategoriesNestedDashboard = ({ categories, handleCategoryParentClick }) => {
   const { queryParameters, setQueryParameters } = useQueryParameters()
   const [selectedCategory, setSelectedCategory] = useState(null)
   const [selectedCountry, setSelectedCountry] = useState(null)
@@ -52,6 +52,7 @@ const CategoriesNestedDashboard = ({ categories }) => {
 
     setQueryParameters(newParams)
     setSelectedCategory(category.attributes.categoryId)
+    handleCategoryParentClick(category)
   }
 
   const isCategorySelected = (category) => {
