@@ -5,6 +5,7 @@
    [gpml.db :as db]
    [gpml.util.email :as email]
    [gpml.util.malli :refer [check!]]
+   [gpml.util.postgresql :as pg-util]
    [gpml.util.thread-transactions :refer [saga]]
    [integrant.core :as ig]
    [java-time.api :as jt]
@@ -275,6 +276,13 @@ You can read them here: %s"
                                                                                         ;; XXX format as "ago" - the simplest thing we can do to avoid timezones
                                                                                          :time (some-> recent-message :created (format-date-time logger))})
                                                                                       (reverse (take 5 recent-messages)))})]]
+                (db/execute-one! hikari {:insert-into :notification
+                                         :values [{:stakeholder (:stakeholder-id membership)
+                                                   :type "forum"
+                                                   :sub_type "channel"
+                                                   :context_id chat-channel-id
+                                                   :title channel-name
+                                                   :content [:lift (pg-util/val->jsonb recent-messages)]}]})
                 (email/send-email mailjet-config
                                   email/unep-sender
                                   (format "New messages in chat channel: %s" channel-name)
@@ -314,6 +322,14 @@ You can read them here: %s"
                                                                                            ;; XXX format as "ago" - the simplest thing we can do to avoid timezones
                                                                                            :time (some-> recent-message :created (format-date-time logger))})
                                                                                         (reverse (take 5 discussion-messages)))})]]
+                  (db/execute-one! hikari {:insert-into :notification
+                                           :values [{:stakeholder (:stakeholder-id membership)
+                                                     :type "forum"
+                                                     :sub_type "sub-channel"
+                                                     :context_id chat-channel-id
+                                                     :sub_context_id (:id discussion)
+                                                     :title (:name discussion)
+                                                     :content [:lift (pg-util/val->jsonb discussion-messages)]}]})
                   (email/send-email mailjet-config
                                     email/unep-sender
                                     (format "New messages in chat channel: %s" discussion-name)

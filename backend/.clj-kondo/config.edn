@@ -23,6 +23,7 @@
                      :unresolved-var                        {:exclude [gpml.handler.responses
                                                                        gpml.db.organisation/organisation-by-name
                                                                        gpml.db.organisation/organisation-by-names
-                                                                       java-time.pre-java8/sql-timestamp]}
+                                                                       java-time.pre-java8/sql-timestamp
+                                                                       next.jdbc.types/as-other]}
                      :unsorted-required-namespaces          {:level :warning}
                      :used-underscored-binding              {:level :warning}}}

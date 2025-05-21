@@ -284,6 +284,23 @@
                                                 :security [{:id_token []}]}
                                    :parameters #ig/ref :gpml.handler.stakeholder/suggested-profiles-params
                                    :handler    #ig/ref :gpml.handler.stakeholder/suggested-profiles}}]]
+                          ["/notifications" {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                          #ig/ref :gpml.auth/auth-required]}
+                           [""
+                            {:get {:summary "Get platform notification for the authenticated Stakeholder"
+                                   :swagger {:tags       ["notifications"]
+                                             :security   [{:id_token []}]}
+                                   :parameters {:query [:map
+                                                        [:status {:optional true :default "unread"} [:enum "unread" "read" "all"]]]}
+                                   :handler #ig/ref :gpml.handler.notification/get}}]
+                           ["/status"
+                            {:post {:summary "Update notificatin status"
+                                    :swagger {:tags     ["notifications"]
+                                              :security [{:id_token []}]}
+                                    :parameters {:body [:map
+                                                         [:ids [:vector pos-int?]]
+                                                         [:status [:enum "read" "unread"]]]}
+                                    :handler    #ig/ref :gpml.handler.notification/post-status}}]]
                           ["/currency"
                            {:get {:summary "List of currency"
                                   :swagger {:tags ["currency"]}
@@ -879,6 +896,8 @@
  :gpml.handler.initiative/get                                       {:db #ig/ref :duct.database.sql.hikaricp/read-write}
  :gpml.handler.initiative/post                                      #ig/ref :gpml.config/common
  :gpml.handler.initiative/post-params                               {}
+ :gpml.handler.notification/get                                     #ig/ref :gpml.config/common
+ :gpml.handler.notification/post-status                             #ig/ref :gpml.config/common
  :gpml.handler.stakeholder/get-params                               {}
  :gpml.handler.stakeholder/patch                                    #ig/ref :gpml.config/common
  :gpml.handler.stakeholder/patch-params                             {}
