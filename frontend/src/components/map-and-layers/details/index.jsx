@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Card, Button } from 'antd'
 import { DownOutlined, UpOutlined } from '@ant-design/icons'
 import Draggable from 'react-draggable'
@@ -7,7 +7,7 @@ import Legends from '../legends'
 const Details = ({ title, layerId }) => {
   const [position, setPosition] = useState({ x: 1, y: 1 })
   const [showLegend, setShowLegend] = useState(true)
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
+  const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth <= 768 : false)
 
   useEffect(() => {
     const handleResize = () => {

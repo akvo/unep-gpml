@@ -157,16 +157,11 @@ const LegendCard = ({
   )
 }
 
-const Legends = () => {
-  const { queryParameters } = useQueryParameters()
+const Legends = ({layerId}) => {
   const allLayers = useIndicators()
-
-  const layers = queryParameters?.layer
-    ? allLayers?.layers?.filter(
-        (layer) => layer.attributes.arcgislayerId == queryParameters.layer
+  const layers = allLayers?.layers?.filter(
+        (layer) => layer.attributes.arcgislayerId == layerId
       )
-    : queryParameters?.layers
-
   return layers?.map((layer, index) => (
     <LegendCard
       key={index}

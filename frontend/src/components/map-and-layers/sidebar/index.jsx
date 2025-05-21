@@ -10,11 +10,16 @@ import { isEmpty } from 'lodash'
 import { Layout, Select } from 'antd'
 import useQueryParameters from '../../../hooks/useQueryParameters'
 import { t } from '@lingui/macro'
+import { useRouter } from 'next/router'
 
 const { Sider } = Layout
 
 const Sidebar = ({ countryDashboard, layers }) => {
+  const router = useRouter()
+  const { pathname, query } = router
+
   const [isMobile, setIsMobile] = useState(false)
+  const { queryParameters, setQueryParameters } = useQueryParameters()
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false)
   const { loading } = useCategories()
   const catsData = useCategories()?.categories
@@ -25,8 +30,9 @@ const Sidebar = ({ countryDashboard, layers }) => {
     : catsData
   const subcategories = useSubcategories()
 
-  const { queryParameters, setQueryParameters } = useQueryParameters()
+  const [selectedCountry, setSelectedCountry] = useState(null)
   const [selectedCategory, setSelectedCategory] = useState(null)
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null)
   const { countries } = UIStore.useState((s) => ({
     countries: s.countries,
     transnationalOptions: s.transnationalOptions,
@@ -50,30 +56,41 @@ const Sidebar = ({ countryDashboard, layers }) => {
     : []
 
   const handleChangeCountry = (val) => {
-    const selected = countries?.find((x) => x.id === val)
+    const selected = countries.find((d) => d.id === val)
+    setSelectedCountry(selected?.name)
+    if (countryDashboard) {
+      const newParams = {
+        country: selected?.name,
+        countryCode: selected?.isoCodeA3,
+      }
 
-    const newParams = {
-      country: selected?.name,
-      countryCode: selected?.isoCodeA3,
+      setQueryParameters(newParams)
     }
-
-    setQueryParameters(newParams)
-
-    setSelectedCountry(selectedCountry?.name)
   }
 
   const handleCategoryClick = (category) => {
-    setSelectedCategory(category.attributes.categoryDescription)
+    if(selectedCategory === category.attributes.categoryDescription.trim()) {
+    setSelectedCategory('')
+    setSelectedCategoryId('')
+    } else {
+    setSelectedCategory(category.attributes.categoryDescription.trim())
+    setSelectedCategoryId(category.attributes.categoryId)
+    }
+
   }
 
   const handleCategory = (category) => {
     const selected = categories?.find((x) => x.id === category)
+
     if (selected.attributes.categoryDescription === selectedCategory) return
-    const newParams = {
-      categoryId: selected.attributes.categoryId,
+    if (countryDashboard) {
+      const newParams = {
+        categoryId: selected.attributes.categoryId,
+      }
+      setQueryParameters(newParams)
     }
 
-    setQueryParameters(newParams)
+    setSelectedCategoryId(selected.attributes.categoryId)
     setSelectedCategory(selected.attributes.categoryDescription)
   }
 
@@ -91,15 +108,26 @@ const Sidebar = ({ countryDashboard, layers }) => {
   useEffect(() => {
     if (
       (selectedCategory === null || selectedCategory === undefined) &&
-      queryParameters?.categoryId &&
+      query?.categoryId &&
       categories.length > 0
     ) {
       const selected = categories?.find(
-        (x) => x.attributes.categoryId === queryParameters?.categoryId
+        (x) => x.attributes.categoryId === query?.categoryId
       )
       setSelectedCategory(selected.attributes.categoryDescription)
+      setSelectedCategoryId(query?.categoryId)
     }
-  }, [queryParameters?.categoryId, categories])
+  }, [query?.categoryId, categories])
+
+  useEffect(() => {
+    if (
+      (selectedCountry === null || selectedCountry === undefined) &&
+      query?.country &&
+      categories.length > 0
+    ) {
+      setSelectedCountry(query?.country)
+    }
+  }, [query?.country, categories])
 
   if (loading) {
     return <div>Loading...</div>
@@ -127,6 +155,8 @@ const Sidebar = ({ countryDashboard, layers }) => {
               subcategories={subcategories}
               layers={layers}
               countryDashboard={countryDashboard}
+              selectedCategoryId={selectedCategoryId}
+              handleCategoryParentClick={handleCategoryClick}
             />
           )}
         </>
@@ -139,7 +169,7 @@ const Sidebar = ({ countryDashboard, layers }) => {
             <CustomSelect
               showSearch
               size="large"
-              value={queryParameters.country ? queryParameters.country : ''}
+              value={selectedCountry ? selectedCountry : ''}
               placeholder="Search Country"
               options={countryOpts}
               suffixIcon={<DropdownSvg />}
@@ -180,6 +210,7 @@ const Sidebar = ({ countryDashboard, layers }) => {
             layers={layers}
             subcategories={subcategories}
             countryDashboard={countryDashboard}
+            selectedCategoryId={selectedCategoryId}
             handleCategoryParentClick={handleCategoryClick}
           />
         )}
