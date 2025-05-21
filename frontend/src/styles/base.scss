@@ -328,6 +328,8 @@ h6 {
   @media screen and (max-width: $bpMobile) {
     height: 70px;
     padding: 12px 0;
+    // position: fixed;
+    // width: 100%;
     .logo-container {
       margin-left: -5px;
       img {

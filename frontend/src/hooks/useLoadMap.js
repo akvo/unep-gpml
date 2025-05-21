@@ -5,8 +5,6 @@ import { isEqual } from "lodash";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 
 const useLoadMap = (layers) => {
-  const { queryParameters } = useQueryParameters();
-  const { layers: layersFromQuery } = queryParameters;
 
   const [renderers, setRenderers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -45,7 +43,7 @@ const useLoadMap = (layers) => {
       setIsLoading(true);
       try {
         const renderersList = [];
-        const selectedLayers = Array.isArray(layers) ? layers : Array.isArray(layersFromQuery) ? layersFromQuery : [];
+        const selectedLayers = Array.isArray(layers) ? layers : Array.isArray(layers) ? layers : [];
 
         for (const layer of selectedLayers) {
           const loadedRenderer = await loadWebMapLayer(layer);
@@ -64,9 +62,9 @@ const useLoadMap = (layers) => {
       }
     };
 
-    if (!isEqual(layersFromQuery, prevLayersFromQuery)) {
+    if (!isEqual(layers, prevLayersFromQuery)) {
       loadWebMapLayers();
-      setPrevLayersFromQuery(layersFromQuery);
+      setPrevLayersFromQuery(layers);
     }
 
 
@@ -74,7 +72,7 @@ const useLoadMap = (layers) => {
       isCancelled = true;
     };
 
-  }, [layersFromQuery]);
+  }, [layers]);
 
 
   return { renderers, isLoading };

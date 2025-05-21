@@ -19,7 +19,7 @@ import axios from 'axios'
 
 import useLayerInfo from '../../hooks/useLayerInfo'
 import { UIStore } from '../../store'
-import useQueryParameters from '../../hooks/useQueryParameters'
+// import useQueryParameters from '../../hooks/useQueryParameters'
 import { getBaseUrl, getStrapiUrl } from '../../utils/misc'
 import { loadCatalog } from '../../translations/utils'
 
@@ -128,7 +128,8 @@ const addTooltipsToPlaceholders = (htmlString, placeholders, tooltips) => {
 }
 const CountryOverview = () => {
   const router = useRouter()
-  const { queryParameters, setQueryParameters } = useQueryParameters()
+   const { query } = router
+  // const { queryParameters, setQueryParameters } = useQueryParameters()
   const [isMobile, setIsMobile] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState(null)
   const [selectedCountry, setSelectedCountry] = useState(null)
@@ -151,10 +152,10 @@ const CountryOverview = () => {
   }, [])
 
   useEffect(() => {
-    if (queryParameters.country) {
-      setSelectedCountry(queryParameters.country)
+    if (query?.country) {
+      setSelectedCountry(query?.country)
     }
-  }, [queryParameters])
+  }, [query?.country])
 
   const selectedCategoryObject = categories.find(
     (c) => c.attributes.categoryId == router.query.categoryId
@@ -278,7 +279,7 @@ const CountryOverview = () => {
   )
 
   const handleViewGlobalDataClick = () => {
-    const categoryId = selectedCategory || queryParameters.categoryId
+    const categoryId = selectedCategory || router?.query?.categoryId
     if (categoryId) {
       window.location.href = `${baseURL}/data/maps?categoryId=${categoryId}`
     } else {
@@ -465,7 +466,7 @@ const CountryOverview = () => {
         </div>
       )} 
 
-       {queryParameters.categoryId && queryParameters.country && isMobile && (
+       {router?.query?.categoryId && router?.query?.country && isMobile && (
         <div>
           <Button
             className={styles.globalButton}

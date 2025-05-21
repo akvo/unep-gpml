@@ -8,7 +8,7 @@ const useSubcategories = () => {
   const [loading, setLoading] = useState(true);
   const strapiURL = getStrapiUrl();
   const router = useRouter();
-  console.log('trigger build')
+
   useEffect(() => {
     const fetchSubategories = async () => {
       try {
