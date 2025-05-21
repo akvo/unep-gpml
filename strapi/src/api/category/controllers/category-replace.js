@@ -62,6 +62,8 @@ module.exports = {
                 });
 
                 try {
+                    console.log("formula", formula);
+                    console.log("Evaluated Formula:", evaluatedFormula);
                     return new Intl.NumberFormat(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(eval(evaluatedFormula));
                 } catch (error) {
                     console.error('Error evaluating formula:', formula, error);
@@ -83,9 +85,14 @@ module.exports = {
                     const result = evaluateFormula(formula);
                     const datasource = "Calculated from formula";
                     const replaceComma = parseFloat(result.replace(",", "."));
+                    // calculatedValues[varName] = !isNaN(Number(result))
+                    //   ? Number(result).toFixed(2)
+                    //   : Number(replaceComma).toFixed(2);
+
                     calculatedValues[varName] = !isNaN(Number(result))
-                      ? Number(result).toFixed(2)
-                      : Number(replaceComma).toFixed(2);
+                       ? Math.round(Number(result))
+                       : Math.round(Number(replaceComma));
+
                     tooltips[varName] = `${datasource}`;
                 } else {
                     const arcgislayerId = placeholder.split(/(_year|_total|_last|_first|_city|_city_1_value|_city_2_value|_city_1|_city_2)/)[0].trim();
