@@ -4,13 +4,9 @@ import FeatureLayer from "@arcgis/core/layers/FeatureLayer.js";
 import LabelClass from "@arcgis/core/layers/support/LabelClass.js";
 import useLayerInfo from "./useLayerInfo";
 
-const useLayers = (renderers) => {
-  const { queryParameters } = useQueryParameters();
-  let { layers: layersFromQuery } = queryParameters;
-  const { layer: layerFromQuery } = queryParameters;
-
+const useLayers = (renderers, layerFromQuery) => {
   const allLayers = useLayerInfo()
-
+  let layersFromQuery
   if (layerFromQuery) {
     layersFromQuery = allLayers?.layers.filter(lay => lay.attributes.arcgislayerId === layerFromQuery)
   }

@@ -1,26 +1,22 @@
 import { Typography, Collapse, Switch } from 'antd'
 import React, { useState, useEffect } from 'react'
-import useQueryParameters from '../../../../hooks/useQueryParameters'
+// import useQueryParameters from '../../../../hooks/useQueryParameters'
+import {
+  useGlobalLayer,
+  setGlobalLayer,
+} from '../../../../hooks/useGlobalLayer'
+
 import { Tooltip } from 'antd'
 
 import { InfoCircleFilled } from '@ant-design/icons'
 import LayerInfo from './layerInfo'
 import { useRouter } from 'next/router'
 const { Panel } = Collapse
-const Subcategories = ({ subcategories, layers, loading }) => {
-  const { queryParameters, setQueryParameters } = useQueryParameters()
+const Subcategories = ({ subcategories, layers, loading, categoryId }) => {
+  const selectedLayer = useGlobalLayer()
   const [expandedSubcategory, setExpandedSubcategory] = useState(null)
   const router = useRouter()
-  useEffect(() => {
-    const layersParam = queryParameters.layers
-    if (layersParam) {
-      const selectedLayers = Array.isArray(layersParam)
-        ? layersParam
-        : layersParam.split(',')
-      setQueryParameters({ layers: selectedLayers })
-    }
-  }, [])
-  console.log('xx')
+
 
   useEffect(() => {
     if (router.query.subcategoryId !== expandedSubcategory) {
@@ -30,32 +26,40 @@ const Subcategories = ({ subcategories, layers, loading }) => {
 
   const handleSubcategoryChange = (key) => {
     setExpandedSubcategory(key)
-
-    setQueryParameters({
-      categoryId: router.query.categoryId,
-      subcategoryId: key,
-    })
-  }
-  const handleLayerClick = (layer) => {
-    const selectedLayers = queryParameters.layers || []
-
-    const isLayerSelected =
-      selectedLayers.length > 0 && selectedLayers[0].id === layer.id
-
-    if (isLayerSelected) {
-      setQueryParameters({
-        categoryId: router.query.categoryId,
-        subcategoryId: router.query.subcategoryId,
-        layers: [],
-        layer: undefined,
-      })
-    } else {
-      setQueryParameters({
-        categoryId: router.query.categoryId,
-        subcategoryId: router.query.subcategoryId,
-        layers: [layer],
-      })
+    const dRoute = {
+      pathname: router.pathname,
+      query: {
+        ...router.query,
+        categoryId: categoryId ?? '',
+        subcategoryId: key ?? '',
+        layer: selectedLayer?.attributes?.arcgislayerId ?? '',
+      },
     }
+
+    const newUrl = `${dRoute.pathname}?categoryId=${dRoute.query.categoryId}&subcategoryId=${dRoute.query.subcategoryId}&layer=${dRoute.query.layer}`
+    window.history.replaceState(null, '', newUrl)
+
+  }
+
+  const handleLayerClick = (layer) => {
+    if (layer === selectedLayer) {
+      setGlobalLayer(null)
+    } else {
+      setGlobalLayer(layer)
+    }
+
+    const dRoute = {
+      pathname: router.pathname,
+      query: {
+        ...router.query,
+        categoryId: categoryId ?? '',
+        subcategoryId: expandedSubcategory ?? '',
+        layer: layer === selectedLayer ? '' : layer.attributes.arcgislayerId,
+      },
+    }
+
+    const newUrl = `${dRoute.pathname}?categoryId=${dRoute.query.categoryId}&subcategoryId=${dRoute.query.subcategoryId}&layer=${dRoute.query.layer}`
+    window.history.replaceState(null, '', newUrl)
   }
 
   if (loading) {
@@ -90,10 +94,7 @@ const Subcategories = ({ subcategories, layers, loading }) => {
                 <Switch
                   size="small"
                   onChange={() => handleLayerClick(layer)}
-                  checked={
-                    queryParameters.layers?.length > 0 &&
-                    queryParameters.layers[0].id === layer.id
-                  }
+                  checked={selectedLayer && selectedLayer.id === layer.id}
                 />
 
                 <Typography className="layer-name">

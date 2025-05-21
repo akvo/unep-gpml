@@ -132,7 +132,13 @@ const PlasticCompositionChart = ({ layers, layerLoading }) => {
           color: '#020A5B',
           fontSize: 10,
           ...(window.innerWidth < 768
-            ? {}
+            ?  {
+                width: 50,
+                overflow: 'break',
+                interval: 0,
+                fontSize: 9,
+                rotate: 30
+            }
             : {
                 fontWeight: 'bold',
                 width: 70,

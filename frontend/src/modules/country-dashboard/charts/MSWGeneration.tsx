@@ -121,17 +121,25 @@ const MSWGenerationChart = ({ layers, layerLoading }) => {
       },
       xAxis: {
         type: 'category',
-        data: categories,
+        data: categories.map(function (str) {
+          return str.replace(' ', '\n')
+        }),
         axisLabel: {
           color: '#020A5B',
-          fontSize: 10,
           ...(window.innerWidth < 768
-            ? {}
+            ? {
+                width: 50,
+                overflow: 'break',
+                interval: 0,
+                fontSize: 9,
+                rotate: 30
+            }
             : {
                 fontWeight: 'bold',
                 width: 70,
                 overflow: 'break',
                 interval: 0,
+                fontSize: 10,
               }),
         },
       },
@@ -154,7 +162,7 @@ const MSWGenerationChart = ({ layers, layerLoading }) => {
         splitLine: { show: true },
       },
       grid: {
-        left: 40,
+        left: 30,
         right: 60,
         top: 80,
         containLabel: true,

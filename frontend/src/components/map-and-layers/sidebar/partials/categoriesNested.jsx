@@ -5,12 +5,20 @@ import useQueryParameters from '../../../../hooks/useQueryParameters'
 import Subcategories from './../partials/subcategories'
 import useSubcategories from '../../../../hooks/useSubcategories'
 import { useRouter } from 'next/router'
-
+import {
+  useGlobalLayer,
+  setGlobalLayer,
+} from '../../../../hooks/useGlobalLayer'
 const { Sider } = Layout
 
-const CategoriesNested = ({ categories, layers, handleCategoryParentClick }) => {
+const CategoriesNested = ({
+  categories,
+  layers,
+  handleCategoryParentClick,
+  selectedCategoryId,
+}) => {
+  const selectedLayer = useGlobalLayer()
   const { queryParameters, setQueryParameters } = useQueryParameters()
-  const [selectedCategory, setSelectedCategory] = useState(null)
   const [isCollapsed, setIsCollapsed] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
 
@@ -30,29 +38,34 @@ const CategoriesNested = ({ categories, layers, handleCategoryParentClick }) => 
   const categoryId = router.isReady ? router.query.categoryId : undefined
 
   const handleCategoryClick = (category) => {
-    const newParams = {
-      categoryId: category.attributes.categoryId,
+    const dRoute = {
+      pathname: router.pathname,
+      query: {
+        ...router.query,
+        categoryId: category.attributes.categoryId,
+        subcategoryId: '',
+        layer: selectedLayer?.attributes?.arcgislayerId ?? '',
+      },
     }
 
-    setQueryParameters(newParams)
-    setSelectedCategory(category.attributes.categoryId)
+    const newUrl = `${dRoute.pathname}?categoryId=${category.attributes.categoryId}&subcategoryId=${dRoute.query.subcategoryId}&layer=${dRoute.query.layer}`
+    window.history.replaceState(null, '', newUrl)
     handleCategoryParentClick(category)
   }
   const subcategories = useSubcategories(categoryId)
 
   const subcategoriesByCategory = subcategories?.subcategories?.data?.filter(
-    (subcategory) =>
-      subcategory.attributes.categoryId === queryParameters.categoryId
+    (subcategory) => subcategory.attributes.categoryId === selectedCategoryId
   )
 
   const handleCloseLayer = (layerId) => {
     const updatedLayers = queryParameters.layers?.filter(
       (layer) => layer.id !== layerId
     )
-    setQueryParameters({ layers: updatedLayers })
+    setQueryParameters({ layers: updatedLayers ?? '' })
   }
   const isCategorySelected = (category) => {
-    return queryParameters.categoryId === category.attributes.categoryId
+    return selectedCategoryId === category.attributes.categoryId
   }
 
   return (
@@ -80,6 +93,7 @@ const CategoriesNested = ({ categories, layers, handleCategoryParentClick }) => 
             </Menu.Item>
             {isCategorySelected(category) && (
               <Subcategories
+                categoryId={category.attributes.categoryId}
                 subcategories={subcategoriesByCategory}
                 layers={layers}
               />
