@@ -68,13 +68,15 @@ const Landing = (props) => {
             Day
           </h1>
           <p>
-            5th June 2025, Jeju Island, Republic of Korea hosts world
-            celebration of World Environment Day with the theme of plastic
-            pollution.
+            <Trans>
+              5th June 2025, Jeju Island, Republic of Korea hosts world
+              celebration of World Environment Day with the theme of plastic
+              pollution.
+            </Trans>
           </p>
           <a href="https://www.worldenvironmentday.global/" target="_blank">
             <Button withArrow type="ghost">
-              Visit Site
+              <Trans>Visit Site</Trans>
             </Button>
           </a>
           <Image
@@ -112,12 +114,14 @@ const Landing = (props) => {
       <div className="info-box">
         <div className="container">
           <p>
-            Global Plastics Hub is developed through various stakeholders
-            consultations, engagement and contributions from members and
-            partners under the Global Partnership on Plastic Pollution and
-            Marine Litter. We appreciate generous contributions from donor
-            communities including Government of Japan, Norway and the United
-            States.
+            <Trans>
+              Global Plastics Hub is developed through various stakeholders
+              consultations, engagement and contributions from members and
+              partners under the Global Partnership on Plastic Pollution and
+              Marine Litter. We appreciate generous contributions from donor
+              communities including Government of Japan, Norway and the United
+              States.
+            </Trans>
           </p>
         </div>
       </div>
@@ -313,8 +317,10 @@ const HeroPlasticTap = ({ isAuthenticated, setLoginVisible }) => {
         <div className="content">
           <h5 className="hide-mobile">the global plastics hub</h5>
           <h1>
-            The one-stop platform for data, knowledge, and collaboration to end
-            plastic pollution.
+            <Trans>
+              The one-stop platform for data, knowledge, and collaboration to
+              end plastic pollution.
+            </Trans>
           </h1>
           <JoinBtn {...{ isAuthenticated, setLoginVisible }} />
         </div>
@@ -338,7 +344,9 @@ const HeroPlasticTap = ({ isAuthenticated, setLoginVisible }) => {
 const FeatureCards = () => {
   return (
     <div className="feature-cards">
-      <h3>Explore The Platform</h3>
+      <h3>
+        <Trans>Explore The Platform</Trans>
+      </h3>
       <div className="container">
         <Link href="/knowledge-hub" className="feature-card">
           <Image
@@ -347,10 +355,16 @@ const FeatureCards = () => {
             height={136}
             alt="knowledge hub"
           />
-          <h5>Knowledge Hub</h5>
+          <h5>
+            <Trans>Knowledge Hub</Trans>
+          </h5>
           <h2>2800+</h2>
-          <p>Knowledge resources shared in the Knowledge Library</p>
-          <span>Explore The Resources</span>
+          <p>
+            <Trans>Knowledge resources shared in the Knowledge Library</Trans>
+          </p>
+          <span>
+            <Trans>Explore the resources</Trans>
+          </span>
         </Link>
         <Link href="/data-hub" className="feature-card">
           <Image
@@ -359,10 +373,18 @@ const FeatureCards = () => {
             height={160}
             alt="data hub"
           />
-          <h5>Data Hub</h5>
+          <h5>
+            <Trans>Data Hub</Trans>
+          </h5>
           <h2>80+</h2>
-          <p>Plastic Lifecycle Indicators showcase in the Data Hub.</p>
-          <span>Explore The Data</span>
+          <p>
+            <Trans>
+              Plastic Lifecycle Indicators showcase in the Data Hub.
+            </Trans>
+          </p>
+          <span>
+            <Trans>Explore the data</Trans>
+          </span>
         </Link>
         <Link href="/community-hub" className="feature-card">
           <Image
@@ -371,10 +393,16 @@ const FeatureCards = () => {
             height={204}
             alt="community"
           />
-          <h5>Community Hub</h5>
+          <h5>
+            <Trans>Community Hub</Trans>
+          </h5>
           <h2>2000+</h2>
-          <p>Members connected through Community Hub.</p>
-          <span>Explore The Community</span>
+          <p>
+            <Trans>Members connected through Community Hub.</Trans>
+          </p>
+          <span>
+            <Trans>Explore the community</Trans>
+          </span>
         </Link>
       </div>
     </div>
@@ -409,7 +437,7 @@ const LatestNews = () => {
           </strong>
           <h2>
             <strong>
-              <Trans>Latest news</Trans>
+              <Trans>Latest news:</Trans>
             </strong>
             <br />
           </h2>
@@ -495,9 +523,13 @@ const Forums = ({
       <div className="container">
         <div className="title-wrapper">
           <div className="title-holder">
-            <strong className="caps-heading-1">Workspace</strong>
+            <strong className="caps-heading-1">
+              <Trans>Workspace</Trans>
+            </strong>
             <h2>
-              <strong>Forums</strong>
+              <strong>
+                <Trans>Forums</Trans>
+              </strong>
             </h2>
           </div>
           {/* <Button type="ghost" withArrow ghost size="large">
