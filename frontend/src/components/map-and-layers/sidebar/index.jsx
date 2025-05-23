@@ -263,21 +263,6 @@ const StyledSider = styled(Sider)`
   }
 `
 
-const StyledSiderMap = styled(Sider)`
-  height: auto !important;
-  overflow: hidden;
-  width: 100% !important;
-  padding-bottom: 10px !important;
-  .ant-layout-sider {
-    padding-bottom: 0px !important;
-  }
-  .ant-layout-sider-children {
-    height: auto !important;
-    width: 100% !important;
-    overflow: hidden;
-  }
-`
-
 const Title = styled.h1`
   color: #6236ff;
   line-height: 14px;

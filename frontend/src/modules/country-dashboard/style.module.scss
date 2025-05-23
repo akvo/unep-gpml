@@ -2,14 +2,31 @@
 .knowledgeLib {
   position: relative;
   .resource {
-      display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 100%;
-  overflow: visible;
-  @media (max-width: 768px) {
-     flex-direction: column;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    overflow: visible;
+    // margin: auto;
+    // background: #F5F7FF;
+    // max-width: 1000px;
+    @media (max-width: 768px) {
+      flex-direction: column;
+    }
   }
+   .resourceLand {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 80%;
+    overflow: visible;
+    margin: auto;
+    background: #F5F7FF;
+    max-width: 1000px;
+    @media (max-width: 768px) {
+      flex-direction: column;
+      width: 100%;
+    }
   }
   :global {
     .map-landing {
