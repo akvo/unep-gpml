@@ -1,3 +1,36 @@
+.contentAntLayout {
+  padding:  60px 40px; 
+  background: #FFF;
+  color: #000000;
+  margin: 30px 0px;
+    @media (max-width: 768px) {
+    padding: 20px 20px;
+    margin: 0px 0px;
+  }
+}
+
+.selectCountry {
+    width: 100%;
+    margin-bottom: 30px;
+    max-width: 365px;
+    border: 1px solid #e8e8ed;
+    border-radius: 8px;
+    background: #f5f7ff;
+    height: 50px;
+    padding: 5px 0 5px 3px;
+    
+    .ant-select-selector {
+      height: auto !important;
+    }
+}
+
+.headerLanding {
+    font-weight: 600;
+  font-size: 32px;
+  line-height: 36px;
+  letter-spacing: 0px;
+}
+
 .trade-info-container {
   padding: 20px 40px;
   background-color: #f9f9f9;

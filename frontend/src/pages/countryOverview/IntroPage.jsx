@@ -5,7 +5,7 @@ import { isEmpty } from 'lodash'
 import { getBaseUrl } from '../../utils/misc'
 import { loadCatalog } from '../../translations/utils'
 import { t, Trans } from '@lingui/macro'
-
+import styles from './index.module.scss'
 const { Content } = Layout
 
 const DashboardLanding = () => {
@@ -71,10 +71,7 @@ const DashboardLanding = () => {
 
   const handleCountryChange = (value) => {
     setSelectedCountry(value)
-  }
-
-  const handleSelect = () => {
-    const country = countries.find((country) => country.id === selectedCountry)
+    const country = countries.find((country) => country.id === value)
 
     if (country) {
       router.push(
@@ -93,16 +90,55 @@ const DashboardLanding = () => {
     }
   }
 
+  // const handleSelect = () => {
+  //   const country = countries.find((country) => country.id === selectedCountry)
+
+  //   if (country) {
+  //     router.push(
+  //       {
+  //         pathname: router.pathname,
+  //         query: {
+  //           ...router.query,
+  //           country: country.name,
+  //           countryCode: country.iso_code_a3,
+  //           categoryId: router.query.categoryId || 'industry-and-trade',
+  //         },
+  //       },
+  //       undefined,
+  //       { shallow: true }
+  //     )
+  //   }
+  // }
+
   return (
-    <Layout style={{ height: isMobile ? '100%' : '100vh', width: 'auto' }}>
-      <Content
-        style={{
-          padding: windowWidth < 768 ? '20px 20px' : '60px 40px',
-          background: '#0A1F44',
-          color: '#fff',
-        }}
+    <Layout
+      style={{
+        height: isMobile ? '100%' : '100vh',
+        width: 'auto',
+        background: '#F5F7FF',
+      }}
+    >
+      <Content className={styles.contentAntLayout}
       >
-        <h1
+        <div className={styles.headerLanding} >
+          <Trans>Explore </Trans> <Trans> Country Dashboard</Trans>
+        </div>
+        <br />
+        <Select
+          placeholder={t`Select a Country to Get Started`}
+          size="large"
+          value={router.query.country}
+          showSearch
+          options={countryOpts}
+          suffixIcon={<DropdownSvg />}
+          filterOption={(input, option) =>
+            option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          onChange={handleCountryChange}
+           className={styles.selectCountry}
+        />
+        <br />
+        {/* <h1
           style={{
             fontSize: windowWidth < 768 ? '20px' : '48px',
             lineHeight: '56px',
@@ -115,7 +151,7 @@ const DashboardLanding = () => {
             {' '}
             <Trans> Country Dashboard</Trans>
           </span>
-        </h1>
+        </h1> */}
 
         <p
           style={{
@@ -157,6 +193,7 @@ const DashboardLanding = () => {
             fontSize: windowWidth < 768 ? '14px' : '18px',
             fontStyle: 'italic',
             marginBottom: '20px',
+            color: '#00000080',
           }}
         >
           <Trans>
@@ -169,7 +206,7 @@ const DashboardLanding = () => {
           </Trans>
         </p>
 
-        <div
+        {/* <div
           style={{ display: 'flex', alignItems: 'center', marginTop: '40px' }}
         >
           <Select
@@ -205,7 +242,7 @@ const DashboardLanding = () => {
           >
             <Trans>Select</Trans>
           </Button>
-        </div>
+        </div> */}
       </Content>
     </Layout>
   )
@@ -220,3 +257,17 @@ export const getStaticProps = async (ctx) => {
 }
 
 export default DashboardLanding
+
+const DropdownSvg = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="14"
+    height="9"
+    viewBox="0 0 14 9"
+    fill="none"
+  >
+    <path d="M1 1L7 7L13 1" stroke="#020A5B" strokeWidth="2" />
+  </svg>
+)
+
+
