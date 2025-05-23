@@ -9,19 +9,20 @@ function ResourceView() {
   const { query } = router
   const { country } = query
 
-  
   return (
-      <div className={styles.resource}>
-        {country && router.query.categoryId && (
+    <>
+      {country && router.query.categoryId ? (
+        <div className={styles.resource}>
           <Sidebar alt={false} countryDashboard={true} />
-        )}
 
-        {country && router.query.categoryId ? (
           <CountryOverview country={country} />
-        ) : (
-          <DashboardLanding />
-        )}
-      </div>
+        </div>
+      ) : (
+        <div className={styles.resourceLand}>
+        <DashboardLanding />
+        </div>
+      )}
+    </>
   )
 }
 

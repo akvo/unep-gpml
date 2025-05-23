@@ -37,11 +37,11 @@ msgstr "(OPTIONAL)"
 msgid "{0}"
 msgstr "{0}"
 
-#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:80
+#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:81
 msgid "{0} estimate"
 msgstr "{0} estimate"
 
-#: src/modules/country-dashboard/charts/MSWGeneration.tsx:122
+#: src/modules/country-dashboard/charts/MSWGeneration.tsx:117
 msgid "{city} estimate"
 msgstr "{city} estimate"
 
@@ -61,7 +61,7 @@ msgstr "{value} Initiatives"
 #~ msgid "* You are currently viewing the beta version of the Country Dashboard, and we welcome your feedback on its usability and content. We particularly welcome suggestions for updated and improved data sources for your country. To request a data update, please use the \"Request Data Update\" button within your Country Dashboard section."
 #~ msgstr "* You are currently viewing the beta version of the Country Dashboard, and we welcome your feedback on its usability and content. We particularly welcome suggestions for updated and improved data sources for your country. To request a data update, please use the \"Request Data Update\" button within your Country Dashboard section."
 
-#: src/pages/countryOverview/IntroPage.jsx:162
+#: src/pages/countryOverview/IntroPage.jsx:204
 msgid "* You are currently viewing the beta version of the Country Dashboard, and we welcome your feedback on its usability and content. We particularly welcome suggestions for updated and improved data sources for your country. To request a data update, please use the \"Submit Data Update\" button within your Country Dashboard section."
 msgstr "* You are currently viewing the beta version of the Country Dashboard, and we welcome your feedback on its usability and content. We particularly welcome suggestions for updated and improved data sources for your country. To request a data update, please use the \"Submit Data Update\" button within your Country Dashboard section."
 
@@ -76,22 +76,6 @@ msgstr "<0>Fill in the form.</0><1/>Tell us about your organisation's work in pr
 #: src/pages/landing/index.jsx:744
 #~ msgid "<0>GPML’s</0> Action Tracks"
 #~ msgstr "<0>GPML’s</0> Action Tracks"
-
-#: src/pages/workspace/[slug]/index.js:59
-msgid "<0>Instructions</0><1>This workflow tool has been created to assist your team with the development of a plastics strategy for your country. Some key steps are suggested for consideration while in the ‘create’ phase. The workflow will be further developed to assist with the phase of ‘implement’, ‘report’, and ‘review.’ <2/><3/>The workflow and resources associated with each suggested step are designed to facilitate and accelerate the activities of the ‘create’ phase of your plastic strategy. Such resources include data, documents, templates, case studies, relevant organizations (governmental and non governmental) as well as individuals active in the space.</1>{0}<4>Step 1: National Steering Committee & Project Team</4><5>This step assists in the establishment of a National Steering Committee (NSC) with representation from necessary government agencies as well as relevant non-governmental organizations. The NSC should aim to meet 2-4 times per year to assist with and drive the roadmap/strategy/plan. A project team should be established to assist the NSC, consisting of consultants and focal points, to lead the implementation of the project with the guidance of the NSC and UNEP.</5><6>Step 2: Stakeholder consultations</6><7>Consultation should aim to understand the current issues faced by various stakeholders, as well as their role in solving the problem (actors) and how proposed activities of the national plastics strategy may affect them positively or negatively. Different stakeholders may also have access to important data. This step of the workflow provides guidance on organizing a comprehensive stakeholder consultation process to ensure all relevant sectors and stakeholders are consulted.</7><8>Step 3: State of Knowledge on Plastic Data</8><9>Data is at the core of understanding the issues and current state of play, as well as the tracking of trends to determine effectiveness of the national plastics strategy. This step will help in compiling existing data and information into a State of Knowledge Report. This could include identification of areas in need of additional data collection, leading to additional secondary data collection.</9><10>Step 4: Legislation & Policy Review</10><11>An analysis of the legal and policy framework in your country can help identify current goals and targets that the national plastics strategy should aim to achieve, as well as gaps in this framework that the strategy could help close. This allows for the identification of priority areas to track and the type of data needed to do so. In this stage, together with UNEP’s guidance, a review and analysis of the legislative and policy landscape as it pertains to marine litter and plastic pollution would be conducted.</11><12>Step 5: National Source Inventory</12><13>National plastics strategies should be underpinned by a National Source Inventory (NSI). This step will help in analysing the data available and collected into a National Source Inventory Report on plastic pollution and marine litter that can inform discussions on possible actions to be included in the national plastics strategy.</13><14>Final Step: National Roadmap/Strategy/Plan</14><15>This step facilitates the development of a National Roadmap/Strategy/Plan based on the evidence and information gathered in the NSI Report. The roadmap should be time bound, measurable and include provisions of periodic revisions. The strategy can be formally adopted through parliament or act as a voluntary guideline for action.</15>"
-msgstr "<0>Instructions</0><1>This workflow tool has been created to assist your team with the development of a plastics strategy for your country. Some key steps are suggested for consideration while in the ‘create’ phase. The workflow will be further developed to assist with the phase of ‘implement’, ‘report’, and ‘review.’ <2/><3/>The workflow and resources associated with each suggested step are designed to facilitate and accelerate the activities of the ‘create’ phase of your plastic strategy. Such resources include data, documents, templates, case studies, relevant organizations (governmental and non governmental) as well as individuals active in the space.</1>{0}<4>Step 1: National Steering Committee & Project Team</4><5>This step assists in the establishment of a National Steering Committee (NSC) with representation from necessary government agencies as well as relevant non-governmental organizations. The NSC should aim to meet 2-4 times per year to assist with and drive the roadmap/strategy/plan. A project team should be established to assist the NSC, consisting of consultants and focal points, to lead the implementation of the project with the guidance of the NSC and UNEP.</5><6>Step 2: Stakeholder consultations</6><7>Consultation should aim to understand the current issues faced by various stakeholders, as well as their role in solving the problem (actors) and how proposed activities of the national plastics strategy may affect them positively or negatively. Different stakeholders may also have access to important data. This step of the workflow provides guidance on organizing a comprehensive stakeholder consultation process to ensure all relevant sectors and stakeholders are consulted.</7><8>Step 3: State of Knowledge on Plastic Data</8><9>Data is at the core of understanding the issues and current state of play, as well as the tracking of trends to determine effectiveness of the national plastics strategy. This step will help in compiling existing data and information into a State of Knowledge Report. This could include identification of areas in need of additional data collection, leading to additional secondary data collection.</9><10>Step 4: Legislation & Policy Review</10><11>An analysis of the legal and policy framework in your country can help identify current goals and targets that the national plastics strategy should aim to achieve, as well as gaps in this framework that the strategy could help close. This allows for the identification of priority areas to track and the type of data needed to do so. In this stage, together with UNEP’s guidance, a review and analysis of the legislative and policy landscape as it pertains to marine litter and plastic pollution would be conducted.</11><12>Step 5: National Source Inventory</12><13>National plastics strategies should be underpinned by a National Source Inventory (NSI). This step will help in analysing the data available and collected into a National Source Inventory Report on plastic pollution and marine litter that can inform discussions on possible actions to be included in the national plastics strategy.</13><14>Final Step: National Roadmap/Strategy/Plan</14><15>This step facilitates the development of a National Roadmap/Strategy/Plan based on the evidence and information gathered in the NSI Report. The roadmap should be time bound, measurable and include provisions of periodic revisions. The strategy can be formally adopted through parliament or act as a voluntary guideline for action.</15>"
-
-#: src/pages/partnership/index.jsx:312
-msgid "<0>Join the multi-stakeholder partnership</0> which brings together all the actors working on plastic pollution and marine litter prevention and reduction."
-msgstr "<0>Join the multi-stakeholder partnership</0> which brings together all the actors working on plastic pollution and marine litter prevention and reduction."
-
-#: src/pages/partnership/index.jsx:352
-msgid "<0>Receive</0> an entity profile and focal point profile on the GPML Digital Platform."
-msgstr "<0>Receive</0> an entity profile and focal point profile on the GPML Digital Platform."
-
-#: src/components/footer/Footer.jsx:156
-msgid "<0>We use cookies for better service.</0><1><2>Learn More</2></1><3>Accept</3>"
-msgstr "<0>We use cookies for better service.</0><1><2>Learn More</2></1><3>Accept</3>"
 
 #: src/pages/workspace/[slug]/index.js:59
 msgid "<0>Instructions</0><1>This workflow tool has been created to assist your team with the development of a plastics strategy for your country. Some key steps are suggested for consideration while in the ‘create’ phase. The workflow will be further developed to assist with the phase of ‘implement’, ‘report’, and ‘review.’ <2/><3/>The workflow and resources associated with each suggested step are designed to facilitate and accelerate the activities of the ‘create’ phase of your plastic strategy. Such resources include data, documents, templates, case studies, relevant organizations (governmental and non governmental) as well as individuals active in the space.</1>{0}<4>Step 1: National Steering Committee & Project Team</4><5>This step assists in the establishment of a National Steering Committee (NSC) with representation from necessary government agencies as well as relevant non-governmental organizations. The NSC should aim to meet 2-4 times per year to assist with and drive the roadmap/strategy/plan. A project team should be established to assist the NSC, consisting of consultants and focal points, to lead the implementation of the project with the guidance of the NSC and UNEP.</5><6>Step 2: Stakeholder consultations</6><7>Consultation should aim to understand the current issues faced by various stakeholders, as well as their role in solving the problem (actors) and how proposed activities of the national plastics strategy may affect them positively or negatively. Different stakeholders may also have access to important data. This step of the workflow provides guidance on organizing a comprehensive stakeholder consultation process to ensure all relevant sectors and stakeholders are consulted.</7><8>Step 3: State of Knowledge on Plastic Data</8><9>Data is at the core of understanding the issues and current state of play, as well as the tracking of trends to determine effectiveness of the national plastics strategy. This step will help in compiling existing data and information into a State of Knowledge Report. This could include identification of areas in need of additional data collection, leading to additional secondary data collection.</9><10>Step 4: Legislation & Policy Review</10><11>An analysis of the legal and policy framework in your country can help identify current goals and targets that the national plastics strategy should aim to achieve, as well as gaps in this framework that the strategy could help close. This allows for the identification of priority areas to track and the type of data needed to do so. In this stage, together with UNEP’s guidance, a review and analysis of the legislative and policy landscape as it pertains to marine litter and plastic pollution would be conducted.</11><12>Step 5: National Source Inventory</12><13>National plastics strategies should be underpinned by a National Source Inventory (NSI). This step will help in analysing the data available and collected into a National Source Inventory Report on plastic pollution and marine litter that can inform discussions on possible actions to be included in the national plastics strategy.</13><14>Final Step: National Roadmap/Strategy/Plan</14><15>This step facilitates the development of a National Roadmap/Strategy/Plan based on the evidence and information gathered in the NSI Report. The roadmap should be time bound, measurable and include provisions of periodic revisions. The strategy can be formally adopted through parliament or act as a voluntary guideline for action.</15>"
@@ -490,7 +474,7 @@ msgstr "Back"
 msgid "Back Home"
 msgstr "Back Home"
 
-#: src/pages/forum/[forum]/index.jsx:163
+#: src/pages/forum/[...params]/index.jsx:164
 msgid "Back to all Forums"
 msgstr "Back to all Forums"
 
@@ -498,7 +482,7 @@ msgstr "Back to all Forums"
 msgid "Back to categories"
 msgstr "Back to categories"
 
-#: src/pages/forum/[forum]/index.jsx:221
+#: src/pages/forum/[...params]/index.jsx:223
 msgid "Back to Channel"
 msgstr "Back to Channel"
 
@@ -536,10 +520,6 @@ msgstr "Behaviour change campaign/programme"
 #: src/pages/landing/index.jsx:496
 #~ msgid "Benefits of joining:<0><1>Access to a global network of members​</1><2>Opportunities to showcase your work in our newsletter, online and at events</2><3>A Data Hub to guide efforts towards SDGs and more​</3><4>Thousands of resources at your fingertips</4><5>Networking with other stakeholders​</5><6>Access to financing opportunities, and more!</6></0>"
 #~ msgstr "Benefits of joining:<0><1>Access to a global network of members​</1><2>Opportunities to showcase your work in our newsletter, online and at events</2><3>A Data Hub to guide efforts towards SDGs and more​</3><4>Thousands of resources at your fingertips</4><5>Networking with other stakeholders​</5><6>Access to financing opportunities, and more!</6></0>"
-
-#: src/modules/stakeholder-detail/view.jsx:594
-msgid "Bio"
-msgstr "Bio"
 
 #: src/modules/stakeholder-detail/view.jsx:594
 msgid "Bio"
@@ -880,7 +860,7 @@ msgid "Constitution"
 msgstr "Constitution"
 
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:56
-#: src/utils/misc.js:340
+#: src/utils/misc.js:344
 msgid "Consumption"
 msgstr "Consumption"
 
@@ -962,7 +942,7 @@ msgstr "Country"
 msgid "Country dashboard"
 msgstr "Country dashboard"
 
-#: src/pages/countryOverview/IntroPage.jsx:116
+#: src/pages/countryOverview/IntroPage.jsx:130
 msgid "Country Dashboard"
 msgstr "Country Dashboard"
 
@@ -1086,12 +1066,12 @@ msgstr "Data Portal"
 msgid "Data Source"
 msgstr "Data Source"
 
-#: src/modules/country-dashboard/charts/MSWGeneration.tsx:212
-#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:214
-#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:168
+#: src/modules/country-dashboard/charts/MSWGeneration.tsx:222
+#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:242
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:194
 #: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:200
-#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:224
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:220
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:222
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:215
 msgid "Data source:"
 msgstr "Data source:"
 
@@ -1117,16 +1097,6 @@ msgstr "Decisions designed to create favorable impact on key factors to create a
 msgid "Decline"
 msgstr "Decline"
 
-#: src/store.js:377
-msgid "Decisions designed to create favorable impact on key factors to create a desired outcome."
-msgstr "Decisions designed to create favorable impact on key factors to create a desired outcome."
-
-#: src/pages/admin/individuals.jsx:225
-#: src/pages/admin/organisation.jsx:224
-#: src/pages/admin/resource.jsx:227
-msgid "Decline"
-msgstr "Decline"
-
 #: src/modules/details-page/comment.jsx:95
 #: src/modules/details-page/comment.jsx:115
 #: src/modules/details-page/header.jsx:154
@@ -1137,8 +1107,8 @@ msgstr "Decline"
 #: src/modules/stakeholder-detail/view.jsx:191
 #: src/modules/workspace/ps/setup-team-table.jsx:206
 #: src/modules/workspace/view.jsx:519
-#: src/pages/forum/[forum]/index.jsx:340
-#: src/pages/forum/[forum]/index.jsx:749
+#: src/pages/forum/[...params]/index.jsx:342
+#: src/pages/forum/[...params]/index.jsx:762
 #: src/pages/forum/index.jsx:261
 msgid "Delete"
 msgstr "Delete"
@@ -1280,15 +1250,11 @@ msgstr "Digital Platform"
 #~ msgid "Discover national plastic material flow and data narratives in countries to get inspired for necessary policies and actions."
 #~ msgstr "Discover national plastic material flow and data narratives in countries to get inspired for necessary policies and actions."
 
-#: src/pages/landing/index.jsx:597
-msgid "Discover national plastic material flow and data narratives in countries to get inspired for necessary policies and actions."
-msgstr "Discover national plastic material flow and data narratives in countries to get inspired for necessary policies and actions."
-
 #: src/modules/details-page/comment.jsx:285
 msgid "Discussion"
 msgstr "Discussion"
 
-#: src/pages/forum/[forum]/index.jsx:631
+#: src/pages/forum/[...params]/index.jsx:644
 msgid "Discussions"
 msgstr "Discussions"
 
@@ -1447,13 +1413,13 @@ msgstr "End Date"
 msgid "End of Life"
 msgstr "End of Life"
 
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:124
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:167
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:119
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:162
 msgid "Ends up in the ocean"
 msgstr "Ends up in the ocean"
 
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:124
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:162
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:119
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:157
 msgid "Ends up on the coasts"
 msgstr "Ends up on the coasts"
 
@@ -1557,10 +1523,10 @@ msgid "Equity Investment"
 msgstr "Equity Investment"
 
 #: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:98
-msgid "Escaped plastic reaching \\noceans and coasts"
-msgstr "Escaped plastic reaching \\noceans and coasts"
+#~ msgid "Escaped plastic reaching \\noceans and coasts"
+#~ msgstr "Escaped plastic reaching \\noceans and coasts"
 
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:99
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:97
 msgid "Escaped plastic reaching oceans and coasts​"
 msgstr "Escaped plastic reaching oceans and coasts​"
 
@@ -1572,12 +1538,12 @@ msgstr ""
 "You can use the search function to include new individuals who are already registered on the platform. If you are unable to find the name of the individual you wish to add, you will find an option to 'Add a New Member' within the search results.\n"
 ""
 
-#: src/modules/country-dashboard/charts/MSWGeneration.tsx:114
-#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:112
+#: src/modules/country-dashboard/charts/MSWGeneration.tsx:111
+#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:109
 msgid "Estimated Regional Average"
 msgstr "Estimated Regional Average"
 
-#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:161
+#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:169
 msgid "Estimates"
 msgstr "Estimates"
 
@@ -1621,7 +1587,7 @@ msgstr "Existing regulation is not enforced"
 msgid "Experts"
 msgstr "Experts"
 
-#: src/pages/countryOverview/IntroPage.jsx:113
+#: src/pages/countryOverview/IntroPage.jsx:130
 msgid "Explore"
 msgstr "Explore"
 
@@ -1653,7 +1619,7 @@ msgstr "Explore The Platform"
 msgid "Explore the resources"
 msgstr "Explore the resources"
 
-#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:196
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:194
 #: src/modules/profile/admin.jsx:887
 msgid "Export"
 msgstr "Export"
@@ -1695,7 +1661,7 @@ msgstr "Filtering by:"
 msgid "Filters"
 msgstr "Filters"
 
-#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:21
+#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:22
 #: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:24
 msgid "Final manufactured plastic goods"
 msgstr "Final manufactured plastic goods"
@@ -1746,7 +1712,7 @@ msgstr "Fisheries"
 msgid "Fishing for Litter: Ocean cleaning project that involves fishermen who collect debris during fishing activities"
 msgstr "Fishing for Litter: Ocean cleaning project that involves fishermen who collect debris during fishing activities"
 
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:227
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:222
 msgid "​​Florida State University and UNEP, 2021"
 msgstr "​​Florida State University and UNEP, 2021"
 
@@ -1824,7 +1790,7 @@ msgstr "Fragmentation"
 msgid "Frequently Asked Questions"
 msgstr "Frequently Asked Questions"
 
-#: src/utils/misc.js:343
+#: src/utils/misc.js:347
 msgid "Full Life Cycle"
 msgstr "Full Life Cycle"
 
@@ -2052,10 +2018,6 @@ msgstr "Guidelines For The Monitoring And Assessment Of Plastic Litter In The Oc
 msgid "Gulf of Mexico Alliance Regional Action Plan"
 msgstr "Gulf of Mexico Alliance Regional Action Plan"
 
-#: src/store.js:299
-msgid "Gulf of Mexico Alliance Regional Action Plan"
-msgstr "Gulf of Mexico Alliance Regional Action Plan"
-
 #: src/modules/flexible-forms/form-schema.js:927
 msgid "Habits in society too slow to change"
 msgstr "Habits in society too slow to change"
@@ -2206,11 +2168,11 @@ msgstr "Impact. What impacts or harms does the initiative relate to? (Please tic
 msgid "Implementing MEA"
 msgstr "Implementing MEA"
 
-#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:196
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:194
 msgid "Import"
 msgstr "Import"
 
-#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:31
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:45
 msgid "Import or export layer not found."
 msgstr "Import or export layer not found."
 
@@ -2218,7 +2180,7 @@ msgstr "Import or export layer not found."
 msgid "In 1 to 3 years"
 msgstr "In 1 to 3 years"
 
-#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:124
+#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:120
 msgid "In 1000 metric tons for year {0}"
 msgstr "In 1000 metric tons for year {0}"
 
@@ -2238,7 +2200,7 @@ msgstr "In force"
 msgid "In market"
 msgstr "In market"
 
-#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:138
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:135
 msgid "in million US dollars for year {0}"
 msgstr "in million US dollars for year {0}"
 
@@ -2351,12 +2313,12 @@ msgstr "Institutional development"
 msgid "Instructions"
 msgstr "Instructions"
 
-#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:20
+#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:21
 #: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:23
 msgid "Intermediate forms of plastic"
 msgstr "Intermediate forms of plastic"
 
-#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:22
+#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:23
 #: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:25
 msgid "Intermediate manufactured plastic goods"
 msgstr "Intermediate manufactured plastic goods"
@@ -2444,7 +2406,7 @@ msgstr "Key Features & Components"
 msgid "Keywords"
 msgstr "Keywords"
 
-#: src/modules/country-dashboard/charts/MSWGeneration.tsx:77
+#: src/modules/country-dashboard/charts/MSWGeneration.tsx:74
 msgid "Kg/person/day"
 msgstr "Kg/person/day"
 
@@ -2535,11 +2497,11 @@ msgstr "Learning Centre"
 msgid "Leave"
 msgstr "Leave"
 
-#: src/pages/forum/[forum]/index.jsx:180
+#: src/pages/forum/[...params]/index.jsx:181
 msgid "Leave Channel"
 msgstr "Leave Channel"
 
-#: src/utils/misc.js:342
+#: src/utils/misc.js:346
 msgid "Legacy Plastics"
 msgstr "Legacy Plastics"
 
@@ -2809,10 +2771,15 @@ msgstr "Microfibers"
 msgid "Microplastics"
 msgstr "Microplastics"
 
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:93
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:136
+msgid "million  US  dollars"
+msgstr "million  US  dollars"
+
 #: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:126
 #: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:186
-msgid "million US dollars"
-msgstr "million US dollars"
+#~ msgid "million US dollars"
+#~ msgstr "million US dollars"
 
 #: src/modules/flexible-forms/form-schema.js:1962
 msgid "Miscellaneous"
@@ -2943,25 +2910,8 @@ msgstr "National Action Plan"
 #~ msgid "National Dashboard"
 #~ msgstr "National Dashboard"
 
-#: src/components/map-and-layers/sidebar/partials/CategoriesNestedDashboard.jsx:89
-msgid "National data"
-msgstr "National data"
-
-#: src/modules/country-dashboard/charts/MSWGeneration.tsx:66
-#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:66
-msgid "National estimate"
-msgstr "National estimate"
-
-#: src/pages/landing/index.jsx:860
-#~ msgid "National Action Plans"
-#~ msgstr "National Action Plans"
-
-#: src/pages/landing/index.jsx:598
-msgid "National Dashboard"
-msgstr "National Dashboard"
-
-#: src/components/map-and-layers/sidebar/index.jsx:96
-#: src/components/map-and-layers/sidebar/partials/CategoriesNestedDashboard.jsx:77
+#: src/components/map-and-layers/sidebar/index.jsx:168
+#: src/components/map-and-layers/sidebar/partials/CategoriesNestedDashboard.jsx:78
 msgid "National data"
 msgstr "National data"
 
@@ -3265,10 +3215,6 @@ msgstr "Our community"
 msgid "Our platform-wide search is powered by OpenAI in order to translate human-language questions into queries to our database. This feature is experimental and does not support broad conversation-like interaction similar to ChatGPT. You may ask questions following a pattern similar to the suggestions provided."
 msgstr "Our platform-wide search is powered by OpenAI in order to translate human-language questions into queries to our database. This feature is experimental and does not support broad conversation-like interaction similar to ChatGPT. You may ask questions following a pattern similar to the suggestions provided."
 
-#: src/pages/search/index.js:281
-msgid "Our platform-wide search is powered by OpenAI in order to translate human-language questions into queries to our database. This feature is experimental and does not support broad conversation-like interaction similar to ChatGPT. You may ask questions following a pattern similar to the suggestions provided."
-msgstr "Our platform-wide search is powered by OpenAI in order to translate human-language questions into queries to our database. This feature is experimental and does not support broad conversation-like interaction similar to ChatGPT. You may ask questions following a pattern similar to the suggestions provided."
-
 #: src/modules/flexible-forms/form-schema.js:814
 msgid "Outcomes are being assessed at regular intervals"
 msgstr "Outcomes are being assessed at regular intervals"
@@ -3305,7 +3251,7 @@ msgstr "Packaging"
 msgid "PAME, Regional Action Plan on Marine Litter in the Arctic (May 2021)"
 msgstr "PAME, Regional Action Plan on Marine Litter in the Arctic (May 2021)"
 
-#: src/pages/forum/[forum]/index.jsx:499
+#: src/pages/forum/[...params]/index.jsx:501
 msgid "Participants"
 msgstr "Participants"
 
@@ -3334,21 +3280,21 @@ msgstr "Peer pressure from similar actors"
 msgid "People like plastics (convenience, hygiene etc.)"
 msgstr "People like plastics (convenience, hygiene etc.)"
 
-#: src/modules/country-dashboard/charts/MSWGeneration.tsx:74
+#: src/modules/country-dashboard/charts/MSWGeneration.tsx:72
 msgid "Per capita MSW generation for {0}"
 msgstr "Per capita MSW generation for {0}"
 
 #: src/modules/country-dashboard/charts/MSWGeneration.tsx:71
-msgid "Per capita MSW generation for\\n{0}"
-msgstr "Per capita MSW generation for\\n{0}"
+#~ msgid "Per capita MSW generation for\\n{0}"
+#~ msgstr "Per capita MSW generation for\\n{0}"
 
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:103
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:98
 msgid "Percentage of the escaped waste between years 2010-2019"
 msgstr "Percentage of the escaped waste between years 2010-2019"
 
 #: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:102
-msgid "Percentage of the escaped waste\\n between years 2010-2019"
-msgstr "Percentage of the escaped waste\\n between years 2010-2019"
+#~ msgid "Percentage of the escaped waste\\n between years 2010-2019"
+#~ msgstr "Percentage of the escaped waste\\n between years 2010-2019"
 
 #: src/modules/signup-old/signup-form.jsx:343
 msgid "Personal details"
@@ -3382,7 +3328,7 @@ msgstr "Pick the sub-content type"
 msgid "Pilot"
 msgstr "Pilot"
 
-#: src/pages/forum/[forum]/index.jsx:313
+#: src/pages/forum/[...params]/index.jsx:315
 msgid "Pinned Documents"
 msgstr "Pinned Documents"
 
@@ -3394,45 +3340,45 @@ msgstr "Pinned Documents"
 #~ msgid "Plastic {0} by type for\\n{1}"
 #~ msgstr ""
 
-#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:88
+#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:85
 msgid "Plastic composition in the MSW for {0}"
 msgstr "Plastic composition in the MSW for {0}"
 
 #: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:85
-msgid "Plastic composition in the MSW\\nfor {0}"
-msgstr "Plastic composition in the MSW\\nfor {0}"
+#~ msgid "Plastic composition in the MSW\\nfor {0}"
+#~ msgstr "Plastic composition in the MSW\\nfor {0}"
 
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:132
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:127
 msgid "Plastic distribution"
 msgstr "Plastic distribution"
 
-#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:119
+#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:115
 msgid "Plastic export by type for {countryName}"
 msgstr "Plastic export by type for {countryName}"
 
 #: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:116
-msgid "Plastic export by type for\\n{countryName}"
-msgstr "Plastic export by type for\\n{countryName}"
+#~ msgid "Plastic export by type for\\n{countryName}"
+#~ msgstr "Plastic export by type for\\n{countryName}"
 
-#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:78
-#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:136
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:91
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:133
 msgid "Plastic import & export value for {0}"
 msgstr "Plastic import & export value for {0}"
 
 #: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:77
 #: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:135
-msgid "Plastic import & export value\\nfor {0}"
-msgstr "Plastic import & export value\\nfor {0}"
+#~ msgid "Plastic import & export value\\nfor {0}"
+#~ msgstr "Plastic import & export value\\nfor {0}"
 
-#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:118
+#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:114
 msgid "Plastic import by type for {countryName}"
 msgstr "Plastic import by type for {countryName}"
 
 #: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:115
-msgid "Plastic import by type for\\n{countryName}"
-msgstr "Plastic import by type for\\n{countryName}"
+#~ msgid "Plastic import by type for\\n{countryName}"
+#~ msgstr "Plastic import by type for\\n{countryName}"
 
-#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:19
+#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:20
 #: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:22
 msgid "Plastic in primary form"
 msgstr "Plastic in primary form"
@@ -3449,7 +3395,7 @@ msgstr "Plastic Odyssey: The Expedition Around The World To Fight Against Plasti
 msgid "Plastic Pollution Calculator"
 msgstr "Plastic Pollution Calculator"
 
-#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:23
+#: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:24
 #: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:26
 msgid "Plastic waste"
 msgstr "Plastic waste"
@@ -3535,10 +3481,6 @@ msgstr "Powered by OpenAI"
 msgid "Preparing a Waste Management Plan - A Methodological Guidance Note"
 msgstr "Preparing a Waste Management Plan - A Methodological Guidance Note"
 
-#: src/store.js:722
-msgid "Preparing a Waste Management Plan - A Methodological Guidance Note"
-msgstr "Preparing a Waste Management Plan - A Methodological Guidance Note"
-
 #: src/modules/flexible-forms/form-schema.js:469
 msgid "Primary school"
 msgstr "Primary school"
@@ -3566,7 +3508,7 @@ msgstr "Problems with alternative materials and supplies"
 msgid "Process of checking, verifying, and attaining general information about the abilityl to comply with the standard."
 msgstr "Process of checking, verifying, and attaining general information about the abilityl to comply with the standard."
 
-#: src/utils/misc.js:339
+#: src/utils/misc.js:343
 msgid "Production"
 msgstr "Production"
 
@@ -3695,8 +3637,8 @@ msgstr "Reducing the environmental impact"
 msgid "Reef Futures Symposium"
 msgstr "Reef Futures Symposium"
 
-#: src/modules/country-dashboard/charts/MSWGeneration.tsx:67
-#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:67
+#: src/modules/country-dashboard/charts/MSWGeneration.tsx:69
+#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:68
 msgid "Regional Average"
 msgstr "Regional Average"
 
@@ -3993,8 +3935,8 @@ msgid "Seeking:"
 msgstr "Seeking:"
 
 #: src/pages/countryOverview/IntroPage.jsx:206
-msgid "Select"
-msgstr "Select"
+#~ msgid "Select"
+#~ msgstr "Select"
 
 #: src/modules/flexible-forms/form-schema.js:182
 #: src/modules/flexible-forms/form-schema.js:1282
@@ -4005,6 +3947,10 @@ msgstr "Select"
 #: src/modules/flexible-forms/form-schema.js:2598
 msgid "Select a country"
 msgstr "Select a country"
+
+#: src/pages/countryOverview/IntroPage.jsx:134
+msgid "Select a Country to Get Started"
+msgstr "Select a Country to Get Started"
 
 #: src/modules/flexible-forms/view.jsx:1453
 msgid "Select a Main Content Type above to see sub-content type options"
@@ -4026,8 +3972,8 @@ msgid "Select Geo-Coverage Type"
 msgstr "Select Geo-Coverage Type"
 
 #: src/pages/countryOverview/IntroPage.jsx:176
-msgid "Select the country"
-msgstr "Select the country"
+#~ msgid "Select the country"
+#~ msgstr "Select the country"
 
 #: src/modules/workspace/ps/setup-team-form.jsx:210
 msgid "Send Invite"
@@ -4228,8 +4174,8 @@ msgstr "Submit an application for your organisation - <0>{0}</0> - to become par
 msgid "Submit Application"
 msgstr "Submit Application"
 
-#: src/pages/countryOverview/index.jsx:431
-#: src/pages/countryOverview/index.jsx:582
+#: src/pages/countryOverview/index.jsx:313
+#: src/pages/countryOverview/index.jsx:464
 #: src/pages/countryOverview/RequestDataUpdateModal.jsx:31
 #: src/pages/countryOverview/RequestDataUpdateModal.jsx:157
 msgid "Submit Data Update"
@@ -4402,7 +4348,7 @@ msgstr "The Act to Prevent Pollution from Ships"
 #~ msgid "The current core work of the GPML is organized through the following five Action Tracks, with the aim of advancing priority issues by connecting key stakeholders and facilitating collaboration and coordination. The platform offers a wide range of tools to facilitate this work."
 #~ msgstr "The current core work of the GPML is organized through the following five Action Tracks, with the aim of advancing priority issues by connecting key stakeholders and facilitating collaboration and coordination. The platform offers a wide range of tools to facilitate this work."
 
-#: src/pages/countryOverview/IntroPage.jsx:143
+#: src/pages/countryOverview/IntroPage.jsx:184
 msgid "The data featured on the Country Dashboard comes from reliable sources, including country reports on the Sustainable Development Goals, as well as modeled global estimates from UN agencies, academic institutions, and recognized research organizations. All data sources are clearly indicated, including links to the original methodologies and any information regarding uncertainties related to the modeling outputs."
 msgstr "The data featured on the Country Dashboard comes from reliable sources, including country reports on the Sustainable Development Goals, as well as modeled global estimates from UN agencies, academic institutions, and recognized research organizations. All data sources are clearly indicated, including links to the original methodologies and any information regarding uncertainties related to the modeling outputs."
 
@@ -4426,7 +4372,7 @@ msgstr "The Digital Platform"
 msgid "The Global Partnership on Plastic Pollution and Marine Litter Digital Platform"
 msgstr "The Global Partnership on Plastic Pollution and Marine Litter Digital Platform"
 
-#: src/pages/countryOverview/IntroPage.jsx:126
+#: src/pages/countryOverview/IntroPage.jsx:167
 msgid "The GPML Country Dashboard provides a comprehensive snapshot of plastic flows in both the economy and the environment for each country. It consolidates data from best available global datasets into one accessible platform, aiming to support evidence-based policymaking and action planning. Additionally, it helps identify data gaps that require further collection efforts in specific countries."
 msgstr "The GPML Country Dashboard provides a comprehensive snapshot of plastic flows in both the economy and the environment for each country. It consolidates data from best available global datasets into one accessible platform, aiming to support evidence-based policymaking and action planning. Additionally, it helps identify data gaps that require further collection efforts in specific countries."
 
@@ -4572,7 +4518,7 @@ msgstr "Title:"
 msgid "to address plastic pollution"
 msgstr "to address plastic pollution"
 
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:194
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:189
 msgid "tonnes"
 msgstr "tonnes"
 
@@ -4595,13 +4541,15 @@ msgstr "Total"
 msgid "Total experts per country"
 msgstr "Total experts per country"
 
-#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:105
-#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:134
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:123
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:130
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:160
 msgid "Total exports"
 msgstr "Total exports"
 
-#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:105
-#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:143
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:123
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:130
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:169
 msgid "Total imports"
 msgstr "Total imports"
 
@@ -4708,8 +4656,8 @@ msgstr "Type of the entity"
 
 #: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:207
 #: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:231
-msgid "UNCTAD 2022"
-msgstr "UNCTAD 2022"
+#~ msgid "UNCTAD 2022"
+#~ msgstr "UNCTAD 2022"
 
 #: src/modules/entity-detail/view.jsx:103
 #: src/modules/stakeholder-detail/view.jsx:136
@@ -4867,7 +4815,8 @@ msgstr "View All Forums"
 msgid "View Details"
 msgstr "View Details"
 
-#: src/components/map-and-layers/sidebar/partials/CategoriesNestedDashboard.jsx:121
+#: src/components/map-and-layers/sidebar/partials/CategoriesNestedDashboard.jsx:110
+#: src/pages/countryOverview/index.jsx:475
 msgid "View Global Data"
 msgstr "View Global Data"
 
@@ -4903,14 +4852,6 @@ msgstr "Visit Site"
 #~ msgid "Visualizing an extensive array of <0>{0}</0> data layers across the plastic lifecycle, providing in-depth insights."
 #~ msgstr "Visualizing an extensive array of <0>{0}</0> data layers across the plastic lifecycle, providing in-depth insights."
 
-#: src/pages/landing/index.jsx:589
-#~ msgid "Visualizing an extensive array of {0} data layers across the plastic lifecycle, providing in-depth insights."
-#~ msgstr "Visualizing an extensive array of {0} data layers across the plastic lifecycle, providing in-depth insights."
-
-#: src/pages/landing/index.jsx:348
-msgid "Visualizing an extensive array of <0>{0}</0> data layers across the plastic lifecycle, providing in-depth insights."
-msgstr "Visualizing an extensive array of <0>{0}</0> data layers across the plastic lifecycle, providing in-depth insights."
-
 #: src/modules/flexible-forms/form-schema.js:400
 msgid "Voluntary commitments"
 msgstr "Voluntary commitments"
@@ -4929,7 +4870,7 @@ msgstr "Waste Free Oceans"
 msgid "Waste management"
 msgstr "Waste management"
 
-#: src/utils/misc.js:341
+#: src/utils/misc.js:345
 msgid "Waste Management"
 msgstr "Waste Management"
 
@@ -5051,14 +4992,6 @@ msgstr "Who we are"
 msgid "Why become a certified GPML member?"
 msgstr "Why become a certified GPML member?"
 
-#: src/store.js:97
-msgid "Who we are"
-msgstr "Who we are"
-
-#: src/pages/partnership/index.jsx:366
-msgid "Why become a certified GPML member?"
-msgstr "Why become a certified GPML member?"
-
 #: src/pages/landing/index.jsx:493
 #~ msgid "Why join the GPML?"
 #~ msgstr "Why join the GPML?"
@@ -5066,22 +4999,6 @@ msgstr "Why become a certified GPML member?"
 #: src/pages/landing/index.jsx:616
 #~ msgid "Why us?"
 #~ msgstr "Why us?"
-
-#: src/store.js:662
-msgid "Within the geographical area that the provider offers the service"
-msgstr "Within the geographical area that the provider offers the service"
-
-#: src/store.js:533
-msgid "Working Document"
-msgstr "Working Document"
-
-#: src/store.js:266
-msgid "Working with people"
-msgstr "Working with people"
-
-#: src/pages/landing/index.jsx:616
-msgid "Why us?"
-msgstr "Why us?"
 
 #: src/store.js:662
 msgid "Within the geographical area that the provider offers the service"
@@ -5118,7 +5035,7 @@ msgstr "workspace"
 msgid "Workspace"
 msgstr "Workspace"
 
-#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:219
+#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:247
 msgid "World Bank"
 msgstr "World Bank"
 

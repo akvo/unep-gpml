@@ -60,7 +60,7 @@ msgstr ""
 #~ msgid "* You are currently viewing the beta version of the Country Dashboard, and we welcome your feedback on its usability and content. We particularly welcome suggestions for updated and improved data sources for your country. To request a data update, please use the \"Request Data Update\" button within your Country Dashboard section."
 #~ msgstr ""
 
-#: src/pages/countryOverview/IntroPage.jsx:162
+#: src/pages/countryOverview/IntroPage.jsx:204
 msgid "* You are currently viewing the beta version of the Country Dashboard, and we welcome your feedback on its usability and content. We particularly welcome suggestions for updated and improved data sources for your country. To request a data update, please use the \"Submit Data Update\" button within your Country Dashboard section."
 msgstr ""
 
@@ -863,7 +863,7 @@ msgid "Constitution"
 msgstr ""
 
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:56
-#: src/utils/misc.js:340
+#: src/utils/misc.js:344
 msgid "Consumption"
 msgstr ""
 
@@ -945,7 +945,7 @@ msgstr ""
 msgid "Country dashboard"
 msgstr ""
 
-#: src/pages/countryOverview/IntroPage.jsx:116
+#: src/pages/countryOverview/IntroPage.jsx:130
 msgid "Country Dashboard"
 msgstr ""
 
@@ -1065,12 +1065,12 @@ msgstr ""
 msgid "Data Source"
 msgstr ""
 
-#: src/modules/country-dashboard/charts/MSWGeneration.tsx:208
-#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:208
+#: src/modules/country-dashboard/charts/MSWGeneration.tsx:222
+#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:242
 #: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:194
 #: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:200
 #: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:222
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:220
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:215
 msgid "Data source:"
 msgstr ""
 
@@ -1106,8 +1106,8 @@ msgstr ""
 #: src/modules/stakeholder-detail/view.jsx:191
 #: src/modules/workspace/ps/setup-team-table.jsx:206
 #: src/modules/workspace/view.jsx:519
-#: src/pages/forum/[forum]/index.jsx:340
-#: src/pages/forum/[forum]/index.jsx:749
+#: src/pages/forum/[...params]/index.jsx:342
+#: src/pages/forum/[...params]/index.jsx:762
 #: src/pages/forum/index.jsx:261
 msgid "Delete"
 msgstr ""
@@ -1394,13 +1394,13 @@ msgstr ""
 msgid "End of Life"
 msgstr ""
 
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:124
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:167
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:119
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:162
 msgid "Ends up in the ocean"
 msgstr ""
 
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:124
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:162
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:119
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:157
 msgid "Ends up on the coasts"
 msgstr ""
 
@@ -1504,10 +1504,10 @@ msgid "Equity Investment"
 msgstr ""
 
 #: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:98
-msgid "Escaped plastic reaching \\noceans and coasts"
-msgstr ""
+#~ msgid "Escaped plastic reaching \\noceans and coasts"
+#~ msgstr ""
 
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:99
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:97
 msgid "Escaped plastic reaching oceans and coasts​"
 msgstr ""
 
@@ -1515,12 +1515,12 @@ msgstr ""
 msgid "Establish a National Steering Committee (NSC) with representation from relevant government agencies as well as relevant non-governmental organisations. The NSC will aim to meet 2-4 times per year to assist with and drive the roadmap/strategy/plan. Establish a project team consisting of consultants to lead the implementation of the project with the guidance of the NSC and UNEP."
 msgstr ""
 
-#: src/modules/country-dashboard/charts/MSWGeneration.tsx:109
-#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:106
+#: src/modules/country-dashboard/charts/MSWGeneration.tsx:111
+#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:109
 msgid "Estimated Regional Average"
 msgstr ""
 
-#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:155
+#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:169
 msgid "Estimates"
 msgstr ""
 
@@ -1564,7 +1564,7 @@ msgstr ""
 msgid "Experts"
 msgstr ""
 
-#: src/pages/countryOverview/IntroPage.jsx:113
+#: src/pages/countryOverview/IntroPage.jsx:130
 msgid "Explore"
 msgstr ""
 
@@ -1689,7 +1689,7 @@ msgstr ""
 msgid "Fishing for Litter: Ocean cleaning project that involves fishermen who collect debris during fishing activities"
 msgstr ""
 
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:227
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:222
 msgid "​​Florida State University and UNEP, 2021"
 msgstr ""
 
@@ -1763,7 +1763,7 @@ msgstr ""
 msgid "Frequently Asked Questions"
 msgstr ""
 
-#: src/utils/misc.js:343
+#: src/utils/misc.js:347
 msgid "Full Life Cycle"
 msgstr ""
 
@@ -2371,7 +2371,7 @@ msgstr ""
 msgid "Keywords"
 msgstr ""
 
-#: src/modules/country-dashboard/charts/MSWGeneration.tsx:72
+#: src/modules/country-dashboard/charts/MSWGeneration.tsx:74
 msgid "Kg/person/day"
 msgstr ""
 
@@ -2466,7 +2466,7 @@ msgstr ""
 msgid "Leave Channel"
 msgstr ""
 
-#: src/utils/misc.js:342
+#: src/utils/misc.js:346
 msgid "Legacy Plastics"
 msgstr ""
 
@@ -2871,8 +2871,8 @@ msgstr ""
 #~ msgid "National Dashboard"
 #~ msgstr ""
 
-#: src/components/map-and-layers/sidebar/index.jsx:96
-#: src/components/map-and-layers/sidebar/partials/CategoriesNestedDashboard.jsx:77
+#: src/components/map-and-layers/sidebar/index.jsx:168
+#: src/components/map-and-layers/sidebar/partials/CategoriesNestedDashboard.jsx:78
 msgid "National data"
 msgstr ""
 
@@ -3245,7 +3245,7 @@ msgstr ""
 #~ msgid "Per capita MSW generation for  {0}"
 #~ msgstr ""
 
-#: src/modules/country-dashboard/charts/MSWGeneration.tsx:71
+#: src/modules/country-dashboard/charts/MSWGeneration.tsx:72
 msgid "Per capita MSW generation for {0}"
 msgstr ""
 
@@ -3253,13 +3253,13 @@ msgstr ""
 #~ msgid "Per capita MSW generation for\\n{0}"
 #~ msgstr ""
 
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:103
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:98
 msgid "Percentage of the escaped waste between years 2010-2019"
 msgstr ""
 
 #: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:102
-msgid "Percentage of the escaped waste\\n between years 2010-2019"
-msgstr ""
+#~ msgid "Percentage of the escaped waste\\n between years 2010-2019"
+#~ msgstr ""
 
 #: src/modules/signup-old/signup-form.jsx:343
 msgid "Personal details"
@@ -3313,7 +3313,7 @@ msgstr ""
 #~ msgid "Plastic {type} by type for\\n{countryName}"
 #~ msgstr ""
 
-#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:84
+#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:85
 msgid "Plastic composition in the MSW for {0}"
 msgstr ""
 
@@ -3321,7 +3321,7 @@ msgstr ""
 #~ msgid "Plastic composition in the MSW\\nfor {0}"
 #~ msgstr ""
 
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:132
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:127
 msgid "Plastic distribution"
 msgstr ""
 
@@ -3481,7 +3481,7 @@ msgstr ""
 msgid "Process of checking, verifying, and attaining general information about the abilityl to comply with the standard."
 msgstr ""
 
-#: src/utils/misc.js:339
+#: src/utils/misc.js:343
 msgid "Production"
 msgstr ""
 
@@ -3908,8 +3908,8 @@ msgid "Seeking:"
 msgstr ""
 
 #: src/pages/countryOverview/IntroPage.jsx:206
-msgid "Select"
-msgstr ""
+#~ msgid "Select"
+#~ msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:182
 #: src/modules/flexible-forms/form-schema.js:1282
@@ -3919,6 +3919,10 @@ msgstr ""
 #: src/modules/flexible-forms/form-schema.js:2359
 #: src/modules/flexible-forms/form-schema.js:2598
 msgid "Select a country"
+msgstr ""
+
+#: src/pages/countryOverview/IntroPage.jsx:134
+msgid "Select a Country to Get Started"
 msgstr ""
 
 #: src/modules/flexible-forms/view.jsx:1453
@@ -3941,8 +3945,8 @@ msgid "Select Geo-Coverage Type"
 msgstr ""
 
 #: src/pages/countryOverview/IntroPage.jsx:176
-msgid "Select the country"
-msgstr ""
+#~ msgid "Select the country"
+#~ msgstr ""
 
 #: src/modules/workspace/ps/setup-team-form.jsx:210
 msgid "Send Invite"
@@ -4143,8 +4147,8 @@ msgstr ""
 msgid "Submit Application"
 msgstr ""
 
-#: src/pages/countryOverview/index.jsx:431
-#: src/pages/countryOverview/index.jsx:582
+#: src/pages/countryOverview/index.jsx:313
+#: src/pages/countryOverview/index.jsx:464
 #: src/pages/countryOverview/RequestDataUpdateModal.jsx:31
 #: src/pages/countryOverview/RequestDataUpdateModal.jsx:157
 msgid "Submit Data Update"
@@ -4314,7 +4318,7 @@ msgstr ""
 #~ msgid "The current core work of the GPML is organized through the following five Action Tracks, with the aim of advancing priority issues by connecting key stakeholders and facilitating collaboration and coordination. The platform offers a wide range of tools to facilitate this work."
 #~ msgstr ""
 
-#: src/pages/countryOverview/IntroPage.jsx:143
+#: src/pages/countryOverview/IntroPage.jsx:184
 msgid "The data featured on the Country Dashboard comes from reliable sources, including country reports on the Sustainable Development Goals, as well as modeled global estimates from UN agencies, academic institutions, and recognized research organizations. All data sources are clearly indicated, including links to the original methodologies and any information regarding uncertainties related to the modeling outputs."
 msgstr ""
 
@@ -4338,7 +4342,7 @@ msgstr ""
 msgid "The Global Partnership on Plastic Pollution and Marine Litter Digital Platform"
 msgstr ""
 
-#: src/pages/countryOverview/IntroPage.jsx:126
+#: src/pages/countryOverview/IntroPage.jsx:167
 msgid "The GPML Country Dashboard provides a comprehensive snapshot of plastic flows in both the economy and the environment for each country. It consolidates data from best available global datasets into one accessible platform, aiming to support evidence-based policymaking and action planning. Additionally, it helps identify data gaps that require further collection efforts in specific countries."
 msgstr ""
 
@@ -4482,7 +4486,7 @@ msgstr ""
 msgid "to address plastic pollution"
 msgstr ""
 
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:194
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:189
 msgid "tonnes"
 msgstr ""
 
@@ -4616,8 +4620,8 @@ msgstr ""
 
 #: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:207
 #: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:229
-msgid "UNCTAD 2022"
-msgstr ""
+#~ msgid "UNCTAD 2022"
+#~ msgstr ""
 
 #: src/modules/entity-detail/view.jsx:103
 #: src/modules/stakeholder-detail/view.jsx:136
@@ -4775,8 +4779,8 @@ msgstr ""
 msgid "View Details"
 msgstr ""
 
-#: src/components/map-and-layers/sidebar/partials/CategoriesNestedDashboard.jsx:109
-#: src/pages/countryOverview/index.jsx:474
+#: src/components/map-and-layers/sidebar/partials/CategoriesNestedDashboard.jsx:110
+#: src/pages/countryOverview/index.jsx:475
 msgid "View Global Data"
 msgstr ""
 
@@ -4826,7 +4830,7 @@ msgstr ""
 msgid "Waste management"
 msgstr ""
 
-#: src/utils/misc.js:341
+#: src/utils/misc.js:345
 msgid "Waste Management"
 msgstr ""
 
@@ -4991,7 +4995,7 @@ msgstr ""
 msgid "Workspace"
 msgstr ""
 
-#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:213
+#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:247
 msgid "World Bank"
 msgstr ""
 
