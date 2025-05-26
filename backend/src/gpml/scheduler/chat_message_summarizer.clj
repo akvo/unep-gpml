@@ -248,6 +248,11 @@
             (assert chat-channel-id "chat-channel-id")
             (assert channel-name "channel-name")
 
+            (timbre/with-context+ {:channel-name channel-name
+                                   :chat-channel-id chat-channel-id}
+              (log logger :warn :chat-notification {:email email
+                                                    :recent-messages recent-messages
+                                                    :recent-discussions recent-discussions}))
             (when (seq recent-messages)
               (let [channel-url (format "%s/forum/%s" app-domain chat-channel-id)
                     message-count-humanized (format "%s New %s"
