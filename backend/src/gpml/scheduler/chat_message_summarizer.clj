@@ -62,21 +62,32 @@
                  port.chat/Message message
                  Membership membership
                  :int frequency-in-minutes)]}
-  (and (logging-if-false logger :chat-account-id
+  (and (logging-if-false logger {:type :chat-account-id
+                                 :chat-account-id chat-account-id}
          chat-account-id)
-       (logging-if-false logger :no-recent-messages
+       (logging-if-false logger {:type :no-recent-messages
+                                 :message message}
          message)
-       (logging-if-false logger :latest-message-author-equals-membership-member
+       (logging-if-false logger {:type :latest-message-author-equals-membership-member
+                                 :chat-account-id chat-account-id
+                                 :message message}
          (not= (-> message
                    :unique-user-identifier
                    (doto (assert ":unique-user-identifier")))
                chat-account-id))
        ;; recent-messages :- gpml.boundary.port.chat/Message
-       (logging-if-false logger :message-was-already-notified
+       (logging-if-false logger {:type :message-was-already-notified
+                                 :message message
+                                 :created (:created message)
+                                 :last-digest-sent-at (:last-digest-sent-at membership)}
          (jt/> (-> message :created jt/instant)
                (or (some-> membership ^java.sql.Timestamp (:last-digest-sent-at) .toInstant)
                    genesis)))
-       (logging-if-false logger :message-was-notified-too-recently
+       (logging-if-false logger {:type :message-was-notified-too-recently
+                                 :message message
+                                 :last-digest-sent-at (:last-digest-sent-at membership)
+                                 :instant (jt/instant)
+                                 :frequency-in-minutes frequency-in-minutes}
          (>= (time-difference-in-minutes (or (some-> membership ^java.sql.Timestamp (:last-digest-sent-at) .toInstant)
                                              genesis)
                                          (jt/instant))
