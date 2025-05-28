@@ -170,6 +170,11 @@
           white-space: nowrap;
         }
       }
+      .powered-by {
+        img {
+          height: 100px !important;
+        }
+      }
       @media only screen and (min-device-width: $bpMobile) and (max-device-width: 1024px) {
         grid-template-columns: repeat(2, 1fr);
       }
@@ -182,7 +187,7 @@
         .powered-by {
           img {
             max-width: calc(70vw);
-            height: auto;
+            height: auto !important;
           }
           display: flex;
           flex-direction: column;

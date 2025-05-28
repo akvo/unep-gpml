@@ -349,60 +349,72 @@ const FeatureCards = () => {
       </h3>
       <div className="container">
         <Link href="/knowledge-hub" className="feature-card">
-          <Image
-            src="/iconxl-knowledge-hub.svg"
-            width={265}
-            height={136}
-            alt="knowledge hub"
-          />
-          <h5>
-            <Trans>Knowledge Hub</Trans>
-          </h5>
-          <h2>2800+</h2>
-          <p>
-            <Trans>Knowledge resources shared in the Knowledge Library</Trans>
-          </p>
-          <span>
-            <Trans>Explore the resources</Trans>
-          </span>
+          <div className="img">
+            <Image
+              src="/iconxl-knowledge-hub.svg"
+              width={265}
+              height={136}
+              alt="knowledge hub"
+            />
+          </div>
+          <div className="cnt">
+            <h5>
+              <Trans>Knowledge Hub</Trans>
+            </h5>
+            <h2>2800+</h2>
+            <p>
+              <Trans>Knowledge resources shared in the Knowledge Library</Trans>
+            </p>
+            <span>
+              <Trans>Explore the resources</Trans>
+            </span>
+          </div>
         </Link>
         <Link href="/data-hub" className="feature-card">
-          <Image
-            src="/iconxl-data-hub.svg"
-            width={320}
-            height={160}
-            alt="data hub"
-          />
-          <h5>
-            <Trans>Data Hub</Trans>
-          </h5>
-          <h2>80+</h2>
-          <p>
-            <Trans>
-              Plastic Lifecycle Indicators showcase in the Data Hub.
-            </Trans>
-          </p>
-          <span>
-            <Trans>Explore the data</Trans>
-          </span>
+          <div className="img">
+            <Image
+              src="/iconxl-data-hub.svg"
+              width={320}
+              height={160}
+              alt="data hub"
+            />
+          </div>
+          <div className="cnt">
+            <h5>
+              <Trans>Data Hub</Trans>
+            </h5>
+            <h2>80+</h2>
+            <p>
+              <Trans>
+                Plastic Lifecycle Indicators showcase in the Data Hub.
+              </Trans>
+            </p>
+            <span>
+              <Trans>Explore the data</Trans>
+            </span>
+          </div>
         </Link>
         <Link href="/community-hub" className="feature-card">
-          <Image
-            src="/iconxl-community.svg"
-            width={321}
-            height={204}
-            alt="community"
-          />
-          <h5>
-            <Trans>Community Hub</Trans>
-          </h5>
-          <h2>2000+</h2>
-          <p>
-            <Trans>Members connected through Community Hub.</Trans>
-          </p>
-          <span>
-            <Trans>Explore the community</Trans>
-          </span>
+          <div className="img">
+            <Image
+              src="/iconxl-community.svg"
+              width={321}
+              height={204}
+              alt="community"
+            />
+          </div>
+          <div className="cnt">
+            <h5>
+              <Trans>Community Hub</Trans>
+            </h5>
+            <h2>2000+</h2>
+            <p>
+              <Trans>Members connected through Community Hub.</Trans>
+            </p>
+            <span>
+              <Trans>Explore the community</Trans>
+            </span>
+          </div>
         </Link>
       </div>
     </div>

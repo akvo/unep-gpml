@@ -276,11 +276,11 @@ export const ChannelCard = ({
       </div>
       <div className="flex">
         <ForumMembers forum={item} />
-        <div>
-          <Button size="small" onClick={() => handleOnView(item)} ghost>
-            <Trans>View</Trans>
-          </Button>
-        </div>
+      </div>
+      <div className="btn-container">
+        <Button size="small" onClick={() => handleOnView(item)} ghost>
+          <Trans>View</Trans>
+        </Button>
       </div>
     </Card>
   )

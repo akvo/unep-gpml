@@ -423,6 +423,9 @@
         width: 100%;
         text-align: center;
         margin-bottom: 40px;
+        @media screen and (max-width: $bpMobile) {
+          margin-top: 40px;
+        }
       }
       .container {
         display: flex;
@@ -438,6 +441,22 @@
           &:hover {
             background-color: #ebe9ff;
             transform: scale(1.03);
+          }
+          .img {
+            height: 60%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            img {
+              margin-top: 40px;
+            }
+          }
+          .cnt {
+            display: flex;
+            flex-direction: column;
+            margin-top: auto;
+            align-items: center;
+            margin-bottom: 50px;
           }
           h5 {
             font-size: 16px;
@@ -601,8 +620,38 @@
       h2 {
         margin-bottom: 30px;
       }
+      @media screen and (min-width: $bpMobile) {
+        .ant-col {
+          height: 100%;
+          .ant-list-item {
+            height: 100%;
+            .ant-card {
+              height: 100%;
+              .ant-card-body {
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+              }
+              .btn-container {
+                margin-top: auto;
+              }
+            }
+          }
+        }
+      }
       .ant-card {
         border-radius: 12px;
+        p {
+          margin: 10px 0;
+        }
+        @media screen and (max-width: $bpMobile) {
+          .ant-btn {
+            margin-top: 10px;
+            width: 100%;
+            text-align: center;
+            justify-content: center;
+          }
+        }
       }
       .title-wrapper {
         display: flex;

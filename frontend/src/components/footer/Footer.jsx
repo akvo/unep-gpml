@@ -55,7 +55,7 @@ const Footer = ({ showTools }) => {
       <div className="container">
         <div className="footer-items">
           <div className="footer-item">
-            <strong className="p-l">GPML Digital Platform</strong>
+            <strong className="p-l">The Global Plastics Hub</strong>
             <div className="contact-us">
               <p className="p-m">
                 <Trans>Contact Us</Trans>
