@@ -433,7 +433,9 @@ const LatestNews = () => {
     }
   }, [])
   useEffect(() => {
-    fetch(`${strapiUrl}/api/posts?locale=${router.locale}&populate=cover`)
+    fetch(
+      `${strapiUrl}/api/posts?locale=${router.locale}&populate=cover&sort=id:desc`
+    )
       .then((d) => d.json())
       .then((d) => {
         setItems(transformStrapiResponse(d.data))
