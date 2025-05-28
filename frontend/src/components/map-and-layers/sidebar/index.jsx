@@ -20,7 +20,7 @@ const Sidebar = ({ countryDashboard, layers }) => {
 
   const [isMobile, setIsMobile] = useState(false)
   const { queryParameters, setQueryParameters } = useQueryParameters()
-  const [isSidebarExpanded, setIsSidebarExpanded] = useState(false)
+
   const { loading } = useCategories()
   const catsData = useCategories()?.categories
   const categories = countryDashboard
@@ -69,14 +69,13 @@ const Sidebar = ({ countryDashboard, layers }) => {
   }
 
   const handleCategoryClick = (category) => {
-    if(selectedCategory === category.attributes.categoryDescription.trim()) {
-    setSelectedCategory('')
-    setSelectedCategoryId('')
+    if (selectedCategory === category.attributes.categoryDescription.trim()) {
+      setSelectedCategory('')
+      setSelectedCategoryId('')
     } else {
-    setSelectedCategory(category.attributes.categoryDescription.trim())
-    setSelectedCategoryId(category.attributes.categoryId)
+      setSelectedCategory(category.attributes.categoryDescription.trim())
+      setSelectedCategoryId(category.attributes.categoryId)
     }
-
   }
 
   const handleCategory = (category) => {
@@ -137,15 +136,22 @@ const Sidebar = ({ countryDashboard, layers }) => {
     return <div>No categories available.</div>
   }
 
-  const handleToggleSidebar = () => {
-    setIsSidebarExpanded((prevState) => !prevState)
-  }
-
   return (
-    <div className={styles.container}>
-      {isMobile && !countryDashboard && (
-        <>
-          <div className={styles.mobileHeader} onClick={handleToggleSidebar}>
+    <>
+      <div className={styles.container}>
+        {!countryDashboard && (
+          <CategoriesNested
+            categories={categories}
+            layers={layers}
+            subcategories={subcategories}
+            countryDashboard={countryDashboard}
+            selectedCategoryId={selectedCategoryId}
+            handleCategoryParentClick={handleCategoryClick}
+          />
+        )}
+        {/* {isMobile && !countryDashboard && (
+          <>
+            <div className={styles.mobileHeader} onClick={handleToggleSidebar}>
             <span>Topics</span>
             <span>{isSidebarExpanded ? '▲' : '▼'}</span>
           </div>
@@ -159,63 +165,54 @@ const Sidebar = ({ countryDashboard, layers }) => {
               handleCategoryParentClick={handleCategoryClick}
             />
           )}
-        </>
-      )}
+          </>
+        )} */}
 
-      {countryDashboard && (
-        <CustomSiderWrapper>
-          <StyledSider breakpoint="lg">
-            <Title>{t`National data`}</Title>
-            <CustomSelect
-              showSearch
-              size="large"
-              value={selectedCountry ? selectedCountry : ''}
-              placeholder="Search Country"
-              options={countryOpts}
-              suffixIcon={<DropdownSvg />}
-              filterOption={(input, option) =>
-                option?.label?.toLowerCase().includes(input.toLowerCase())
-              }
-              onChange={handleChangeCountry}
-            />
-
-            <CustomSelect
-              showSearch
-              size="large"
-              value={selectedCategory}
-              placeholder="Select Category"
-              options={categoriesOpts}
-              suffixIcon={<DropdownSvg />}
-              filterOption={(input, option) =>
-                option?.label?.toLowerCase().includes(input.toLowerCase())
-              }
-              onChange={handleCategory}
-            />
-          </StyledSider>
-        </CustomSiderWrapper>
-      )}
-
-      <Container>
         {countryDashboard && (
-          <CategoriesNestedDashboard
-            categories={categories}
-            subcategories={subcategories}
-            countryDashboard={countryDashboard}
-            handleCategoryParentClick={handleCategoryClick}
-          />
+          <CustomSiderWrapper>
+            <StyledSider breakpoint="lg">
+              <Title>{t`National data`}</Title>
+              <CustomSelect
+                showSearch
+                size="large"
+                value={selectedCountry ? selectedCountry : ''}
+                placeholder="Search Country"
+                options={countryOpts}
+                suffixIcon={<DropdownSvg />}
+                filterOption={(input, option) =>
+                  option?.label?.toLowerCase().includes(input.toLowerCase())
+                }
+                onChange={handleChangeCountry}
+              />
+
+              <CustomSelect
+                showSearch
+                size="large"
+                value={selectedCategory}
+                placeholder="Select Category"
+                options={categoriesOpts}
+                suffixIcon={<DropdownSvg />}
+                filterOption={(input, option) =>
+                  option?.label?.toLowerCase().includes(input.toLowerCase())
+                }
+                onChange={handleCategory}
+              />
+            </StyledSider>
+          </CustomSiderWrapper>
         )}
-        {!countryDashboard && (
-          <CategoriesNested
-            categories={categories}
-            layers={layers}
-            subcategories={subcategories}
-            countryDashboard={countryDashboard}
-            selectedCategoryId={selectedCategoryId}
-            handleCategoryParentClick={handleCategoryClick}
-          />
-        )}
-      </Container>
-    </div>
+
+        <Container>
+          {countryDashboard && (
+            <CategoriesNestedDashboard
+              categories={categories}
+              subcategories={subcategories}
+              countryDashboard={countryDashboard}
+              handleCategoryParentClick={handleCategoryClick}
+            />
+          )}
+        </Container>
+      </div>
+    </>
   )
 }
 
