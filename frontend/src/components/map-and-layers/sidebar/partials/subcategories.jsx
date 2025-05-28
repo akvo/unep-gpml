@@ -1,6 +1,6 @@
 import { Typography, Collapse, Switch } from 'antd'
 import React, { useState, useEffect } from 'react'
-// import useQueryParameters from '../../../../hooks/useQueryParameters'
+import { RightOutlined } from '@ant-design/icons'
 import {
   useGlobalLayer,
   setGlobalLayer,
@@ -16,7 +16,6 @@ const Subcategories = ({ subcategories, layers, loading, categoryId }) => {
   const selectedLayer = useGlobalLayer()
   const [expandedSubcategory, setExpandedSubcategory] = useState(null)
   const router = useRouter()
-
 
   useEffect(() => {
     if (router.query.subcategoryId !== expandedSubcategory) {
@@ -38,7 +37,6 @@ const Subcategories = ({ subcategories, layers, loading, categoryId }) => {
 
     const newUrl = `${dRoute.pathname}?categoryId=${dRoute.query.categoryId}&subcategoryId=${dRoute.query.subcategoryId}&layer=${dRoute.query.layer}`
     window.history.replaceState(null, '', newUrl)
-
   }
 
   const handleLayerClick = (layer) => {
@@ -79,6 +77,9 @@ const Subcategories = ({ subcategories, layers, loading, categoryId }) => {
         destroyInactivePanel
         onChange={handleSubcategoryChange}
         activeKey={expandedSubcategory}
+        expandIcon={({ isActive }) => (
+          <RightOutlined rotate={isActive ? 90 : 0} style={{ fontSize: 16 }} />
+        )}
       >
         {subcategories?.map((subcategory, index) => (
           <Panel
