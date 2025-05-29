@@ -128,6 +128,27 @@
           font-size: 29px;
           line-height: 39px;
         }
+        .content {
+          position: relative;
+        }
+        .credit {
+          position: absolute;
+          display: flex;
+          right: -15px;
+          top: -15px;
+          font-size: 10px;
+          text-transform: uppercase;
+          text-decoration: underline;
+          z-index: 111;
+          a {
+            color: white;
+            display: flex;
+            padding: 5px;
+          }
+          img {
+            margin-right: 3px;
+          }
+        }
 
         .text {
           max-width: auto;

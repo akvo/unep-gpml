@@ -99,6 +99,9 @@ const ForumModal = ({
       }
       width={702}
       visible={viewModal.open}
+      onCancel={() => {
+        setViewModal(false)
+      }}
       className={styles.forumDetailsView}
       footer={
         <>

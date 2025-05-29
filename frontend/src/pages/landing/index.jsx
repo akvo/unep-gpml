@@ -91,17 +91,22 @@ const Landing = (props) => {
       <div className="workflow">
         <div className="container">
           <div className="text">
-            {/* <h3>Country Dedicated Workflow</h3> */}
-            <strong className="caps-heading-1">Country Dedicated</strong>
+            <strong className="caps-heading-1">
+              <Trans>Country Dedicated</Trans>
+            </strong>
             <h2>
-              <strong>Workflow</strong>
+              <strong>
+                <Trans>Workflow</Trans>
+              </strong>
               <br />
             </h2>
             <p className="p-m">
-              The Country Dedicated Workflow is a digital tool to help countries
-              in developing national plastic source inventories and plastic
-              strategies, supported by step-by-step guidance and inspiring case
-              studies. Create your account and explore.
+              <Trans>
+                The Country Dedicated Workflow is a digital tool to help
+                countries in developing national plastic source inventories and
+                plastic strategies, supported by step-by-step guidance and
+                inspiring case studies. Create your account and explore.
+              </Trans>
             </p>
             <JoinBtn {...props} />
           </div>
@@ -315,6 +320,12 @@ const HeroPlasticTap = ({ isAuthenticated, setLoginVisible }) => {
     <div className="hero">
       <div className="container">
         <div className="content">
+          <div className="hide-desktop credit">
+            <a href="https://turnofftheplastictap.com/" target="_blank">
+              <Image src="/photo-credit.svg" width={16} height={16} />
+              Credit
+            </a>
+          </div>
           <h5 className="hide-mobile">the global plastics hub</h5>
           <h1>
             <Trans>
@@ -335,7 +346,10 @@ const HeroPlasticTap = ({ isAuthenticated, setLoginVisible }) => {
         </div>
       </div>
       <div className="attribution hide-mobile">
-        #TurnOffThePlasticTap by <a href="#">Benjamin Von Wong</a>
+        #TurnOffThePlasticTap by{' '}
+        <a href="https://turnofftheplastictap.com/" target="_blank">
+          Benjamin Von Wong
+        </a>
       </div>
     </div>
   )
