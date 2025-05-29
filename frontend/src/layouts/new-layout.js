@@ -19,6 +19,8 @@ import { MenuToggle, NavMobile, NavDesktop } from '../components/nav'
 import GpmlCircle from '../components/gpml-circle'
 import { changeLanguage } from '../translations/utils'
 import Image from 'next/image'
+import api from '../utils/api'
+import NotificationPanel from '../components/notification-panel'
 
 const archia = localFont({
   src: [
@@ -75,6 +77,47 @@ const NewLayout = ({
   const [width] = useDeviceSize()
   const [isOpen, toggleOpen] = useCycle(false, true)
 
+  const [notifications, setNotifications] = useState([
+    {
+      id: 1,
+      sender: 'GEOFFREY NGENGA',
+      type: 'CHANNEL 1',
+      message: 'Hello world message, what does t...',
+      time: '2:10 PM Today',
+    },
+    {
+      id: 2,
+      sender: 'NAO TAKEUCHI',
+      type: 'GENERAL DISCUSSION',
+      message: 'Hello world message, what does t...',
+      time: '2:10 PM Today',
+    },
+    {
+      id: 3,
+      sender: 'GEOFFREY NGENGA',
+      type: 'PRIVATE MESSAGE',
+      message: 'Hello there. I wanted to reach out ...',
+      time: '2:10 PM Today',
+    },
+    {
+      id: 4,
+      sender: 'GEOFFREY NGENGA',
+      type: 'PRIVATE MESSAGE',
+      message: 'Hello there. I wanted to reach out ...',
+      time: '2:10 PM Today',
+    },
+    {
+      id: 5,
+      sender: 'GEOFFREY NGENGA',
+      type: 'PRIVATE MESSAGE',
+      message: 'Hello there. I wanted to reach out ...',
+      time: '2:10 PM Today',
+    },
+  ])
+  const [unreadCount, setUnreadCount] = useState(0)
+  const [notificationLoading, setNotificationLoading] = useState(false)
+  const [currentPage, setCurrentPage] = useState(0)
+
   const topbarRef = useRef()
   let scrolled = false
   const scrollListener = () => {
@@ -86,6 +129,40 @@ const NewLayout = ({
       scrolled = false
     }
   }
+
+  const fetchNotifications = async (status = 'unread', page = 0) => {
+    if (!isAuthenticated) return
+
+    try {
+      setNotificationLoading(true)
+      const params = new URLSearchParams({
+        status: 'all',
+      })
+      const response = await api.get(`/notifications?${params.toString()}`)
+
+      if (page === 0) {
+        // setNotifications(response.data)
+        if (status === 'unread') {
+          setUnreadCount(response.data.length)
+        }
+      } else {
+        setNotifications((prev) => [...prev, ...response.data])
+      }
+
+      setCurrentPage(page)
+    } catch (error) {
+      console.error('Error fetching notifications:', error)
+    } finally {
+      setNotificationLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      console.log('Fetching notifications for authenticated user')
+      fetchNotifications('all')
+    }
+  }, [isAuthenticated])
 
   const handleOnLogoutRC = () => {
     try {
@@ -127,6 +204,10 @@ const NewLayout = ({
     }
   }, [])
 
+  const handleViewMore = () => {
+    fetchNotifications('unread', currentPage + 1)
+  }
+
   return (
     <>
       <style jsx global>{`
@@ -158,22 +239,13 @@ const NewLayout = ({
                       height={64}
                     />
                   </div>
-                  {/* <div className="circle">
-                    <Image src="/Logo-white.png" width={81} height={74} />
-                  </div>
-                  <h5>
-                    Global Partnership
-                    <br />
-                    on Plastic Pollution
-                    <br />
-                    and Marine Litter
-                  </h5> */}
                 </div>
               </Link>
               {width >= 768 && (
                 <ul className="ant-menu">
                   {menuList.map((item) => (
                     <Dropdown
+                      key={item.id}
                       placement="bottom"
                       overlayClassName="nav-menu-item"
                       overlay={
@@ -244,6 +316,7 @@ const NewLayout = ({
                     <span>{router.locale}</span>
                   </div>
                 </Dropdown>
+
                 {!isAuthenticated && (
                   <Button
                     type="ghost"
@@ -265,44 +338,89 @@ const NewLayout = ({
                         <Trans>Workspace</Trans>
                       </Button>
                     </Link>
-                    <Dropdown
-                      overlayClassName="user-btn-dropdown-wrapper"
-                      overlay={
-                        <Menu className="user-btn-dropdown">
-                          <Menu.Item key="add-content">
-                            <Link href="/add-content">
-                              <span>
-                                <Trans>Add Content</Trans>
-                              </span>
-                            </Link>
-                          </Menu.Item>
-                          <Menu.Item
-                            key="profile"
-                            onClick={() => {
-                              router.push({
-                                pathname: `/${'profile'}`,
-                              })
-                            }}
+
+                    {width >= 768 && (
+                      <div
+                        className="user-avatar-container"
+                        style={{
+                          position: 'relative',
+                          display: 'inline-block',
+                        }}
+                      >
+                        <Dropdown
+                          overlayClassName="user-btn-dropdown-wrapper"
+                          overlay={
+                            <Menu className="user-btn-dropdown">
+                              <Menu.Item key="add-content">
+                                <Link href="/add-content">
+                                  <span>
+                                    <Trans>Add Content</Trans>
+                                  </span>
+                                </Link>
+                              </Menu.Item>
+                              <Menu.Item
+                                key="profile"
+                                onClick={() =>
+                                  router.push({ pathname: `/profile` })
+                                }
+                              >
+                                <Trans>Profile</Trans>
+                              </Menu.Item>
+                              <Menu.Item key="logout" onClick={handleOnLogout}>
+                                <Trans>Logout</Trans>
+                              </Menu.Item>
+                            </Menu>
+                          }
+                          trigger={['click']}
+                          placement="bottomRight"
+                        >
+                          <div
+                            style={{ position: 'relative', cursor: 'pointer' }}
                           >
-                            <Trans>Profile</Trans>
-                          </Menu.Item>
-                          <Menu.Item key="logout" onClick={handleOnLogout}>
-                            <Trans>Logout</Trans>
-                          </Menu.Item>
-                        </Menu>
-                      }
-                      trigger={['click']}
-                      placement="bottomRight"
-                    >
-                      <Avatar size="large" src={profile.picture}>
-                        {profile?.firstName?.charAt(0)}
-                        {profile?.lastName?.charAt(0)}
-                      </Avatar>
-                    </Dropdown>
+                            <Avatar size="large" src={profile.picture}>
+                              {profile?.firstName?.charAt(0)}
+                              {profile?.lastName?.charAt(0)}
+                            </Avatar>
+                          </div>
+                        </Dropdown>
+
+                        {unreadCount > 0 && (
+                          <Dropdown
+                            overlayClassName="notification-dropdown-wrapper"
+                            overlay={
+                              <NotificationPanel
+                                notifications={notifications}
+                                onViewMore={handleViewMore}
+                                loading={notificationLoading}
+                                isMobile={width < 768}
+                                onClose={() => {}}
+                              />
+                            }
+                            trigger={['click']}
+                            placement="bottomRight"
+                          >
+                            <span
+                              className="notification-badge"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              {unreadCount}
+                            </span>
+                          </Dropdown>
+                        )}
+                      </div>
+                    )}
                   </>
                 )}
                 <div className="toggle-button">
                   <MenuToggle toggle={() => toggleOpen()} isOpen={isOpen} />
+                  {width < 768 && unreadCount > 1 && (
+                    <span
+                      className="notification-badge"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {unreadCount}
+                    </span>
+                  )}
                 </div>
               </nav>
             </div>
@@ -310,17 +428,19 @@ const NewLayout = ({
         )}
         <div className="navigation">
           <NavMobile
-            {...{ isOpen, toggleOpen, isAuthenticated, setLoginVisible }}
-          />
-
-          {/* <NavDesktop
-            isOpen={showMenu}
-            contentKey={openedItemKey}
-            toggle={() => {
-              setShowMenu(false)
-              setOpenedItemKey(null)
+            {...{
+              isOpen,
+              toggleOpen,
+              isAuthenticated,
+              setLoginVisible,
+              profile,
+              unreadCount,
+              handleOnLogout,
+              notifications,
+              notificationLoading,
+              handleViewMore,
             }}
-          /> */}
+          />
         </div>
         {children}
         {!router.pathname.includes('/workspace/[slug]') &&
