@@ -10,18 +10,15 @@ import Footer from '../components/footer/Footer'
 import Login from '../modules/login/view'
 import { Check, DownArrow, World, flags } from '../components/icons'
 import Link from 'next/link'
-import { Trans, t, msg } from '@lingui/macro'
+import { Trans, t } from '@lingui/macro'
 import { useCycle } from 'framer-motion'
 import { useDeviceSize } from '../modules/landing/landing'
-import { isRegistered } from '../utils/profile'
 import { i18n } from '@lingui/core'
-import { MenuToggle, NavMobile, NavDesktop } from '../components/nav'
-import GpmlCircle from '../components/gpml-circle'
+import { MenuToggle, NavMobile } from '../components/nav'
 import { changeLanguage } from '../translations/utils'
 import Image from 'next/image'
-import api from '../utils/api'
 import NotificationPanel from '../components/notification-panel'
-import { formatTime } from '../utils/misc'
+import useNotifications from '../hooks/useNotifications'
 
 const archia = localFont({
   src: [
@@ -78,13 +75,6 @@ const NewLayout = ({
   const [width] = useDeviceSize()
   const [isOpen, toggleOpen] = useCycle(false, true)
 
-  const [allNotifications, setAllNotifications] = useState([])
-  const [unreadCount, setUnreadCount] = useState(0)
-  const [notificationLoading, setNotificationLoading] = useState(false)
-
-  const [displayCount, setDisplayCount] = useState(5)
-  const [displayedNotifications, setDisplayedNotifications] = useState([])
-
   const topbarRef = useRef()
   let scrolled = false
   const scrollListener = () => {
@@ -97,69 +87,18 @@ const NewLayout = ({
     }
   }
 
-  const fetchNotifications = async () => {
-    if (!isAuthenticated) return
-
-    try {
-      setNotificationLoading(true)
-      const params = new URLSearchParams({
-        status: 'all',
-      })
-      const response = await api.get(`/notifications?${params.toString()}`)
-
-      const transformedNotifications = []
-
-      response.data.forEach((item) => {
-        console.log(item)
-        if (item.content && item.content.length > 0) {
-          item.content.forEach((message, index) => {
-            transformedNotifications.push({
-              id: `${item.id}-${index}`,
-              sender: message.username || 'Unknown User',
-              type: item.title || 'Unknown Channel',
-              message: message.message || 'No message',
-              time: message.created
-                ? formatTime(message.created)
-                : 'Unknown time',
-              contextId: item['contextId'],
-              notificationType: item.type,
-              status: item.status,
-              subType: item['subType'],
-              parentId: item.id,
-              chatAccountId: message['chatAccountId'],
-              uniqueUserIdentifier: message['uniqueUserIdentifier'],
-            })
-          })
-        }
-      })
-
-      setAllNotifications(transformedNotifications)
-
-      setDisplayedNotifications(transformedNotifications.slice(0, 5))
-      setDisplayCount(5)
-
-      const unreadNotifications = transformedNotifications.filter(
-        (notif) => notif.status === 'unread'
-      )
-      setUnreadCount(unreadNotifications.length)
-    } catch (error) {
-      console.error('Error fetching notifications:', error)
-    } finally {
-      setNotificationLoading(false)
-    }
-  }
+  const {
+    displayedNotifications,
+    unreadCount,
+    loading: notificationLoading,
+    hasMoreNotifications,
+    handleViewMore,
+  } = useNotifications(isAuthenticated)
 
   const handleNotificationClick = (notification) => {
     const url = `/${notification.notificationType}/${notification.contextId}`
     router.push(url)
   }
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      console.log('Fetching notifications for authenticated user')
-      fetchNotifications('all')
-    }
-  }, [isAuthenticated])
 
   const handleOnLogoutRC = () => {
     try {
@@ -200,15 +139,6 @@ const NewLayout = ({
       document.removeEventListener('scroll', scrollListener)
     }
   }, [])
-
-  const handleViewMore = () => {
-    const newDisplayCount = displayCount + 5
-    const newDisplayedNotifications = allNotifications.slice(0, newDisplayCount)
-    setDisplayedNotifications(newDisplayedNotifications)
-    setDisplayCount(newDisplayCount)
-  }
-
-  const hasMoreNotifications = displayCount < allNotifications.length
 
   return (
     <>
