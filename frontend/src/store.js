@@ -785,6 +785,7 @@ const UIStore = new Store({
   countryGroup: [],
   nonMemberOrganisations: [],
   community: [],
+  notifications: [],
   languages: languages,
   geoCoverageTypeOptions: geoCoverageTypeOptions,
   entityRoleOptions: entityRole,

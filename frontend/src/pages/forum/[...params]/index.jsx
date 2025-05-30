@@ -33,6 +33,8 @@ import { MoreOutlined } from '@ant-design/icons'
 import { loadCatalog } from '../../../translations/utils'
 import Script from 'next/script'
 import dynamic from 'next/dynamic'
+import { UIStore } from '../../../store'
+import useNotifications from '../../../hooks/useNotifications'
 
 const DynamicForumModal = dynamic(
   () => import('../../../modules/forum/forum-modal'),
@@ -59,7 +61,14 @@ const ForumView = ({
     open: false,
     data: {},
   })
+
+  const { notifications } = UIStore.useState((s) => ({
+    notifications: s.notifications || [],
+  }))
+
   const { chatAccountAuthToken: accessToken } = profile || {}
+
+  const { markNotificationsAsRead } = useNotifications(isAuthenticated)
 
   const iframeURL = useMemo(() => {
     if (!router.query?.params?.[0]) {
@@ -79,6 +88,7 @@ const ForumView = ({
           _activeForum.users.findIndex((it) => it.id === profile.id) !== -1
         )
         setActiveForum(_activeForum)
+        await markNotificationsAsRead(router.query.params?.[0])
       }
     } catch (error) {
       console.error(error)
@@ -88,6 +98,13 @@ const ForumView = ({
   useEffect(() => {
     fetchData()
   }, [fetchData])
+
+  // Mark as read when route changes (if user navigates between forums)
+  useEffect(() => {
+    if (router.query?.params?.[0] && notifications.length > 0) {
+      markNotificationsAsRead()
+    }
+  }, [router.query?.params?.[0], markNotificationsAsRead])
 
   useEffect(() => {
     if (!loadingProfile && !isAuthenticated) {
@@ -585,6 +602,7 @@ const Discussions = ({
   const [creating, setCreating] = useState(false)
   const [discussions, setDiscussions] = useState([])
   const isAdmin = profile?.role === 'ADMIN'
+
   const handleCreateDiscussion = () => {
     setCreating(true)
     api
@@ -637,6 +655,7 @@ const Discussions = ({
     // })
     // }
   }, [])
+
   if (discussions?.length === 0 && !isAdmin) return
   return (
     <>
@@ -730,7 +749,27 @@ const DiscussionItem = ({
   handleDeleteDiscussion,
   setDiscussion,
 }) => {
+  const { rawNotifications } = useNotifications(true)
+  const getNotificationCount = () => {
+    if (!rawNotifications || !discuss?.id) return 0
+
+    const matchingNotifications = rawNotifications.filter(
+      (notification) =>
+        notification['sub-context-id'] === discuss.id &&
+        notification.status === 'unread'
+    )
+
+    const totalCount = matchingNotifications.reduce((total, notification) => {
+      return total + (notification.content?.length || 0)
+    }, 0)
+
+    return totalCount
+  }
+
   const active = discussion?.dx === dx
+
+  const notificationCount = getNotificationCount()
+
   return (
     <li className={classNames({ active })} key={dx}>
       <Button
@@ -746,6 +785,9 @@ const DiscussionItem = ({
       >
         {discuss?.name}
       </Button>
+      {notificationCount > 0 && (
+        <span className="notifcation-badge">{notificationCount}</span>
+      )}
       {isAdmin && (
         <div className="popover-container">
           <Popover
