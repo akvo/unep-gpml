@@ -10,15 +10,15 @@ import Footer from '../components/footer/Footer'
 import Login from '../modules/login/view'
 import { Check, DownArrow, World, flags } from '../components/icons'
 import Link from 'next/link'
-import { Trans, t, msg } from '@lingui/macro'
+import { Trans, t } from '@lingui/macro'
 import { useCycle } from 'framer-motion'
 import { useDeviceSize } from '../modules/landing/landing'
-import { isRegistered } from '../utils/profile'
 import { i18n } from '@lingui/core'
-import { MenuToggle, NavMobile, NavDesktop } from '../components/nav'
-import GpmlCircle from '../components/gpml-circle'
+import { MenuToggle, NavMobile } from '../components/nav'
 import { changeLanguage } from '../translations/utils'
 import Image from 'next/image'
+import NotificationPanel from '../components/notification-panel'
+import useNotifications from '../hooks/useNotifications'
 
 const archia = localFont({
   src: [
@@ -85,6 +85,19 @@ const NewLayout = ({
       topbarRef.current.classList.remove('scrolled')
       scrolled = false
     }
+  }
+
+  const {
+    displayedNotifications,
+    unreadCount,
+    loading: notificationLoading,
+    hasMoreNotifications,
+    handleViewMore,
+  } = useNotifications(isAuthenticated)
+
+  const handleNotificationClick = (notification) => {
+    const url = `/${notification.notificationType}/${notification.contextId}`
+    router.push(url)
   }
 
   const handleOnLogoutRC = () => {
@@ -158,22 +171,13 @@ const NewLayout = ({
                       height={64}
                     />
                   </div>
-                  {/* <div className="circle">
-                    <Image src="/Logo-white.png" width={81} height={74} />
-                  </div>
-                  <h5>
-                    Global Partnership
-                    <br />
-                    on Plastic Pollution
-                    <br />
-                    and Marine Litter
-                  </h5> */}
                 </div>
               </Link>
               {width >= 768 && (
                 <ul className="ant-menu">
                   {menuList.map((item) => (
                     <Dropdown
+                      key={item.id}
                       placement="bottom"
                       overlayClassName="nav-menu-item"
                       overlay={
@@ -244,6 +248,7 @@ const NewLayout = ({
                     <span>{router.locale}</span>
                   </div>
                 </Dropdown>
+
                 {!isAuthenticated && (
                   <Button
                     type="ghost"
@@ -265,44 +270,91 @@ const NewLayout = ({
                         <Trans>Workspace</Trans>
                       </Button>
                     </Link>
-                    <Dropdown
-                      overlayClassName="user-btn-dropdown-wrapper"
-                      overlay={
-                        <Menu className="user-btn-dropdown">
-                          <Menu.Item key="add-content">
-                            <Link href="/add-content">
-                              <span>
-                                <Trans>Add Content</Trans>
-                              </span>
-                            </Link>
-                          </Menu.Item>
-                          <Menu.Item
-                            key="profile"
-                            onClick={() => {
-                              router.push({
-                                pathname: `/${'profile'}`,
-                              })
-                            }}
+
+                    {width >= 768 && (
+                      <div
+                        className="user-avatar-container"
+                        style={{
+                          position: 'relative',
+                          display: 'inline-block',
+                        }}
+                      >
+                        <Dropdown
+                          overlayClassName="user-btn-dropdown-wrapper"
+                          overlay={
+                            <Menu className="user-btn-dropdown">
+                              <Menu.Item key="add-content">
+                                <Link href="/add-content">
+                                  <span>
+                                    <Trans>Add Content</Trans>
+                                  </span>
+                                </Link>
+                              </Menu.Item>
+                              <Menu.Item
+                                key="profile"
+                                onClick={() =>
+                                  router.push({ pathname: `/profile` })
+                                }
+                              >
+                                <Trans>Profile</Trans>
+                              </Menu.Item>
+                              <Menu.Item key="logout" onClick={handleOnLogout}>
+                                <Trans>Logout</Trans>
+                              </Menu.Item>
+                            </Menu>
+                          }
+                          trigger={['click']}
+                          placement="bottomRight"
+                        >
+                          <div
+                            style={{ position: 'relative', cursor: 'pointer' }}
                           >
-                            <Trans>Profile</Trans>
-                          </Menu.Item>
-                          <Menu.Item key="logout" onClick={handleOnLogout}>
-                            <Trans>Logout</Trans>
-                          </Menu.Item>
-                        </Menu>
-                      }
-                      trigger={['click']}
-                      placement="bottomRight"
-                    >
-                      <Avatar size="large" src={profile.picture}>
-                        {profile?.firstName?.charAt(0)}
-                        {profile?.lastName?.charAt(0)}
-                      </Avatar>
-                    </Dropdown>
+                            <Avatar size="large" src={profile.picture}>
+                              {profile?.firstName?.charAt(0)}
+                              {profile?.lastName?.charAt(0)}
+                            </Avatar>
+                          </div>
+                        </Dropdown>
+
+                        {unreadCount > 0 && (
+                          <Dropdown
+                            overlayClassName="notification-dropdown-wrapper"
+                            overlay={
+                              <NotificationPanel
+                                notifications={displayedNotifications}
+                                onViewMore={handleViewMore}
+                                loading={notificationLoading}
+                                isMobile={width < 768}
+                                onClose={() => {}}
+                                onNotificationClick={handleNotificationClick}
+                                hasMoreNotifications={hasMoreNotifications}
+                              />
+                            }
+                            trigger={['click']}
+                            placement="bottomRight"
+                          >
+                            <span
+                              className="notification-badge"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              {unreadCount}
+                            </span>
+                          </Dropdown>
+                        )}
+                      </div>
+                    )}
                   </>
                 )}
                 <div className="toggle-button">
                   <MenuToggle toggle={() => toggleOpen()} isOpen={isOpen} />
+                  {width < 768 && unreadCount > 0 && (
+                    <span
+                      className="notification-badge"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {unreadCount}
+                    </span>
+                  )}
                 </div>
               </nav>
             </div>
@@ -310,17 +362,21 @@ const NewLayout = ({
         )}
         <div className="navigation">
           <NavMobile
-            {...{ isOpen, toggleOpen, isAuthenticated, setLoginVisible }}
-          />
-
-          {/* <NavDesktop
-            isOpen={showMenu}
-            contentKey={openedItemKey}
-            toggle={() => {
-              setShowMenu(false)
-              setOpenedItemKey(null)
+            {...{
+              isOpen,
+              toggleOpen,
+              isAuthenticated,
+              setLoginVisible,
+              profile,
+              unreadCount,
+              handleOnLogout,
+              notifications: displayedNotifications,
+              notificationLoading,
+              handleViewMore,
+              hasMoreNotifications,
+              handleNotificationClick,
             }}
-          /> */}
+          />
         </div>
         {children}
         {!router.pathname.includes('/workspace/[slug]') &&
