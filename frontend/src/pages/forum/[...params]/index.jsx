@@ -88,7 +88,7 @@ const ForumView = ({
           _activeForum.users.findIndex((it) => it.id === profile.id) !== -1
         )
         setActiveForum(_activeForum)
-        await markNotificationsAsRead(router.query.params?.[0])
+        await markNotificationsAsRead(router.query.params?.[0], 'channel')
       }
     } catch (error) {
       console.error(error)
@@ -98,13 +98,6 @@ const ForumView = ({
   useEffect(() => {
     fetchData()
   }, [fetchData])
-
-  // Mark as read when route changes (if user navigates between forums)
-  useEffect(() => {
-    if (router.query?.params?.[0] && notifications.length > 0) {
-      markNotificationsAsRead()
-    }
-  }, [router.query?.params?.[0], markNotificationsAsRead])
 
   useEffect(() => {
     if (!loadingProfile && !isAuthenticated) {
@@ -216,7 +209,14 @@ const ForumView = ({
                 discussions={activeForum.discussions}
                 channelId={router.query.params?.[0]}
                 subchannelId={router.query.params?.[1]}
-                {...{ discussion, setDiscussion, sdk, profile, setActiveForum }}
+                {...{
+                  discussion,
+                  setDiscussion,
+                  sdk,
+                  profile,
+                  setActiveForum,
+                  markNotificationsAsRead,
+                }}
               />
             )}
             {activeForum?.users?.length > 0 && (
@@ -596,6 +596,7 @@ const Discussions = ({
   subchannelId,
   profile,
   setActiveForum,
+  markNotificationsAsRead,
 }) => {
   const [showAddDiscussionModal, setShowAddDiscussionModal] = useState(false)
   const [newDiscussionName, setNewDiscussionName] = useState('')
@@ -675,6 +676,7 @@ const Discussions = ({
                 setDiscussion,
                 discussion,
                 setDiscussions,
+                markNotificationsAsRead,
               }}
             />
           ))}
@@ -748,14 +750,16 @@ const DiscussionItem = ({
   isAdmin,
   handleDeleteDiscussion,
   setDiscussion,
+  markNotificationsAsRead,
 }) => {
   const { rawNotifications } = useNotifications(true)
+
   const getNotificationCount = () => {
     if (!rawNotifications || !discuss?.id) return 0
 
     const matchingNotifications = rawNotifications.filter(
       (notification) =>
-        notification['sub-context-id'] === discuss.id &&
+        notification['subContextId'] === discuss.id &&
         notification.status === 'unread'
     )
 
@@ -774,6 +778,14 @@ const DiscussionItem = ({
     <li className={classNames({ active })} key={dx}>
       <Button
         onClick={async () => {
+          if (notificationCount > 0) {
+            await markNotificationsAsRead(
+              discuss?.channelId,
+              'sub-channel',
+              discuss?.id
+            )
+          }
+
           setDiscussion({
             ...discuss,
             dx,

@@ -347,7 +347,7 @@ const NewLayout = ({
                 )}
                 <div className="toggle-button">
                   <MenuToggle toggle={() => toggleOpen()} isOpen={isOpen} />
-                  {width < 768 && unreadCount > 1 && (
+                  {width < 768 && unreadCount > 0 && (
                     <span
                       className="notification-badge"
                       onClick={(e) => e.stopPropagation()}

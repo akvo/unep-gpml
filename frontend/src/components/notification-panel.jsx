@@ -78,15 +78,15 @@ const NotificationPanel = ({
             </>
           )}
         </Menu>
-      </div>
 
-      {!loading && hasMoreNotifications && (
-        <div className="view-more-container">
-          <Button type="ghost" onClick={onViewMore}>
-            <Trans>VIEW MORE</Trans>
-          </Button>
-        </div>
-      )}
+        {!loading && hasMoreNotifications && (
+          <div className="view-more-container">
+            <Button type="ghost" onClick={onViewMore}>
+              <Trans>VIEW MORE</Trans>
+            </Button>
+          </div>
+        )}
+      </div>
     </div>
   )
 }
