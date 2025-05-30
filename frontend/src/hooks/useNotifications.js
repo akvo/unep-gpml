@@ -23,12 +23,20 @@ const transformNotificationsForDisplay = (rawNotifications) => {
           chatAccountId: message['chatAccountId'],
           uniqueUserIdentifier: message['uniqueUserIdentifier'],
           subContextId: item['subContextId'] || null,
+          created: message.created,
         })
       })
     }
   })
 
-  return transformedNotifications
+  return transformedNotifications.sort((a, b) => {
+    if (a.status === 'unread' && b.status !== 'unread') return -1
+    if (a.status !== 'unread' && b.status === 'unread') return 1
+
+    const dateA = new Date(a.created)
+    const dateB = new Date(b.created)
+    return dateB - dateA
+  })
 }
 
 const useNotifications = (isAuthenticated) => {
@@ -83,7 +91,7 @@ const useNotifications = (isAuthenticated) => {
       )
 
       try {
-        await api.post('/api/notifications/status', {
+        await api.post('/notifications/status', {
           ids: notificationIds,
           status: 'read',
         })

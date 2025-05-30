@@ -94,6 +94,7 @@ const NavMobile = ({
   const router = useRouter()
   const [selectedMenuItem, setSelectedMenuItem] = useState(null)
   const { menuList } = UIStore.useState((s) => ({ menuList: s.menuList }))
+  const [dropdownVisible, setDropdownVisible] = useState(false)
 
   const menu = deepTranslate(menuList)
 
@@ -252,13 +253,15 @@ const NavMobile = ({
                   onViewMore={handleViewMore}
                   loading={notificationLoading}
                   isMobile={width < 768}
-                  onClose={() => {}}
+                  onClose={() => setDropdownVisible(false)}
                   hasMoreNotifications={hasMoreNotifications}
                   onNotificationClick={handleNotificationClick}
                 />
               }
               trigger={['click']}
               placement="bottomRight"
+              visible={dropdownVisible}
+              onVisibleChange={setDropdownVisible}
             >
               <span
                 className="notification-badge"

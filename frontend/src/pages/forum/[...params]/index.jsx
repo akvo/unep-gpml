@@ -88,7 +88,7 @@ const ForumView = ({
           _activeForum.users.findIndex((it) => it.id === profile.id) !== -1
         )
         setActiveForum(_activeForum)
-        await markNotificationsAsRead()
+        await markNotificationsAsRead(router.query.params?.[0])
       }
     } catch (error) {
       console.error(error)
