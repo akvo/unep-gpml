@@ -9,6 +9,8 @@ const NotificationPanel = ({
   loading,
   isMobile = false,
   onClose,
+  onNotificationClick,
+  hasMoreNotifications,
 }) => {
   return (
     <div className="notification-dropdown">
@@ -47,7 +49,10 @@ const NotificationPanel = ({
           ) : (
             <>
               {notifications.map((notif, index) => (
-                <Menu.Item key={notif.id || index}>
+                <Menu.Item
+                  key={notif.id || index}
+                  onClick={() => onNotificationClick(notif)}
+                >
                   <div className="notification-item">
                     <div className="notification-sender">
                       {notif.sender}{' '}
@@ -58,7 +63,14 @@ const NotificationPanel = ({
                         </>
                       )}
                     </div>
-                    <div className="notification-message">{notif.message}</div>
+                    <div
+                      className="notification-message"
+                      style={{
+                        fontWeight: notif.status === 'unread' ? 'bold' : '500',
+                      }}
+                    >
+                      {notif.message}
+                    </div>
                     <div className="notification-time">{notif.time}</div>
                   </div>
                 </Menu.Item>
@@ -68,7 +80,7 @@ const NotificationPanel = ({
         </Menu>
       </div>
 
-      {!loading && notifications.length > 0 && (
+      {!loading && hasMoreNotifications && (
         <div className="view-more-container">
           <Button type="ghost" onClick={onViewMore}>
             <Trans>VIEW MORE</Trans>

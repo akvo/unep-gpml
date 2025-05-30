@@ -87,6 +87,8 @@ const NavMobile = ({
   notifications,
   notificationLoading,
   handleViewMore,
+  hasMoreNotifications,
+  handleNotificationClick,
 }) => {
   const [width] = useDeviceSize()
   const router = useRouter()
@@ -251,6 +253,8 @@ const NavMobile = ({
                   loading={notificationLoading}
                   isMobile={width < 768}
                   onClose={() => {}}
+                  hasMoreNotifications={hasMoreNotifications}
+                  onNotificationClick={handleNotificationClick}
                 />
               }
               trigger={['click']}

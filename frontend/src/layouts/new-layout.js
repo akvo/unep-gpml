@@ -21,6 +21,7 @@ import { changeLanguage } from '../translations/utils'
 import Image from 'next/image'
 import api from '../utils/api'
 import NotificationPanel from '../components/notification-panel'
+import { formatTime } from '../utils/misc'
 
 const archia = localFont({
   src: [
@@ -77,46 +78,12 @@ const NewLayout = ({
   const [width] = useDeviceSize()
   const [isOpen, toggleOpen] = useCycle(false, true)
 
-  const [notifications, setNotifications] = useState([
-    {
-      id: 1,
-      sender: 'GEOFFREY NGENGA',
-      type: 'CHANNEL 1',
-      message: 'Hello world message, what does t...',
-      time: '2:10 PM Today',
-    },
-    {
-      id: 2,
-      sender: 'NAO TAKEUCHI',
-      type: 'GENERAL DISCUSSION',
-      message: 'Hello world message, what does t...',
-      time: '2:10 PM Today',
-    },
-    {
-      id: 3,
-      sender: 'GEOFFREY NGENGA',
-      type: 'PRIVATE MESSAGE',
-      message: 'Hello there. I wanted to reach out ...',
-      time: '2:10 PM Today',
-    },
-    {
-      id: 4,
-      sender: 'GEOFFREY NGENGA',
-      type: 'PRIVATE MESSAGE',
-      message: 'Hello there. I wanted to reach out ...',
-      time: '2:10 PM Today',
-    },
-    {
-      id: 5,
-      sender: 'GEOFFREY NGENGA',
-      type: 'PRIVATE MESSAGE',
-      message: 'Hello there. I wanted to reach out ...',
-      time: '2:10 PM Today',
-    },
-  ])
+  const [allNotifications, setAllNotifications] = useState([])
   const [unreadCount, setUnreadCount] = useState(0)
   const [notificationLoading, setNotificationLoading] = useState(false)
-  const [currentPage, setCurrentPage] = useState(0)
+
+  const [displayCount, setDisplayCount] = useState(5)
+  const [displayedNotifications, setDisplayedNotifications] = useState([])
 
   const topbarRef = useRef()
   let scrolled = false
@@ -130,7 +97,7 @@ const NewLayout = ({
     }
   }
 
-  const fetchNotifications = async (status = 'unread', page = 0) => {
+  const fetchNotifications = async () => {
     if (!isAuthenticated) return
 
     try {
@@ -140,21 +107,51 @@ const NewLayout = ({
       })
       const response = await api.get(`/notifications?${params.toString()}`)
 
-      if (page === 0) {
-        // setNotifications(response.data)
-        if (status === 'unread') {
-          setUnreadCount(response.data.length)
-        }
-      } else {
-        setNotifications((prev) => [...prev, ...response.data])
-      }
+      const transformedNotifications = []
 
-      setCurrentPage(page)
+      response.data.forEach((item) => {
+        console.log(item)
+        if (item.content && item.content.length > 0) {
+          item.content.forEach((message, index) => {
+            transformedNotifications.push({
+              id: `${item.id}-${index}`,
+              sender: message.username || 'Unknown User',
+              type: item.title || 'Unknown Channel',
+              message: message.message || 'No message',
+              time: message.created
+                ? formatTime(message.created)
+                : 'Unknown time',
+              contextId: item['contextId'],
+              notificationType: item.type,
+              status: item.status,
+              subType: item['subType'],
+              parentId: item.id,
+              chatAccountId: message['chatAccountId'],
+              uniqueUserIdentifier: message['uniqueUserIdentifier'],
+            })
+          })
+        }
+      })
+
+      setAllNotifications(transformedNotifications)
+
+      setDisplayedNotifications(transformedNotifications.slice(0, 5))
+      setDisplayCount(5)
+
+      const unreadNotifications = transformedNotifications.filter(
+        (notif) => notif.status === 'unread'
+      )
+      setUnreadCount(unreadNotifications.length)
     } catch (error) {
       console.error('Error fetching notifications:', error)
     } finally {
       setNotificationLoading(false)
     }
+  }
+
+  const handleNotificationClick = (notification) => {
+    const url = `/${notification.notificationType}/${notification.contextId}`
+    router.push(url)
   }
 
   useEffect(() => {
@@ -205,8 +202,13 @@ const NewLayout = ({
   }, [])
 
   const handleViewMore = () => {
-    fetchNotifications('unread', currentPage + 1)
+    const newDisplayCount = displayCount + 5
+    const newDisplayedNotifications = allNotifications.slice(0, newDisplayCount)
+    setDisplayedNotifications(newDisplayedNotifications)
+    setDisplayCount(newDisplayCount)
   }
+
+  const hasMoreNotifications = displayCount < allNotifications.length
 
   return (
     <>
@@ -389,11 +391,13 @@ const NewLayout = ({
                             overlayClassName="notification-dropdown-wrapper"
                             overlay={
                               <NotificationPanel
-                                notifications={notifications}
+                                notifications={displayedNotifications}
                                 onViewMore={handleViewMore}
                                 loading={notificationLoading}
                                 isMobile={width < 768}
                                 onClose={() => {}}
+                                onNotificationClick={handleNotificationClick}
+                                hasMoreNotifications={hasMoreNotifications}
                               />
                             }
                             trigger={['click']}
@@ -436,9 +440,11 @@ const NewLayout = ({
               profile,
               unreadCount,
               handleOnLogout,
-              notifications,
+              notifications: displayedNotifications,
               notificationLoading,
               handleViewMore,
+              hasMoreNotifications,
+              handleNotificationClick,
             }}
           />
         </div>
