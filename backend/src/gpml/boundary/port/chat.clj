@@ -191,7 +191,8 @@
    [:org Org]
    [:id any?]
    [:picture any?]
-   [:last_name any?]])
+   [:last_name any?]
+   [:chat_user_id {:optional true} any?]])
 
 (def PresentedUserSnakeCase (map->snake PresentedUser))
 

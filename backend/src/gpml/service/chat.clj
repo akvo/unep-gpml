@@ -185,8 +185,18 @@
 (defn present-user [user]
   {:post [(check! port.chat/PresentedUser %)]}
   (-> user
-      (select-keys [:picture_file :first_name :picture_id :org :id :picture :last_name])
+      (select-keys [:picture_file :first_name :picture_id :org :id :picture :last_name :chat_user_id])
       (update :org select-keys [:name])))
+
+(defn enrich-db-users-with-dsc-id [dsc-members db-users]
+  (let [dsc-id-lookup (into {}
+                            (map (juxt :unique-user-identifier :id) dsc-members))]
+    (map
+     (fn [db-user]
+       (if-let [chat-user-id (get dsc-id-lookup (:chat_account_id db-user))]
+         (assoc db-user :chat_user_id chat-user-id)
+         db-user)) ; If no corresponding dsc user id is found, return the original user map
+     db-users)))
 
 (defn- tx-get-channel-users [{:keys [db hikari chat-adapter logger] :as config}
                              {:keys [channel] :as context}]
@@ -224,6 +234,7 @@
                              :error-details {:msg (ex-message t)}})))]
     (-> (if (:success? result)
           (assoc-in context [:channel :users] (->> (:stakeholders result)
+                                                   (enrich-db-users-with-dsc-id (get-in context [:channel :members :data]))
                                                    (add-users-pictures-urls config)
                                                    (mapv present-user)))
           (failure context
