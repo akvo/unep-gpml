@@ -350,7 +350,7 @@ const NewLayout = ({
                   {width < 768 && unreadCount > 0 && (
                     <span
                       className="notification-badge"
-                      onClick={(e) => e.stopPropagation()}
+                      style={{ pointerEvents: 'none' }}
                     >
                       {unreadCount}
                     </span>
