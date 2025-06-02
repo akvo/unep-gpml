@@ -8,7 +8,13 @@ import { UIStore } from '../store'
 import classNames from 'classnames'
 import Footer from '../components/footer/Footer'
 import Login from '../modules/login/view'
-import { Check, DownArrow, World, flags } from '../components/icons'
+import {
+  Check,
+  DownArrow,
+  NotificationIcon,
+  World,
+  flags,
+} from '../components/icons'
 import Link from 'next/link'
 import { Trans, t } from '@lingui/macro'
 import { useCycle } from 'framer-motion'
@@ -261,61 +267,8 @@ const NewLayout = ({
                 )}
                 {isAuthenticated && (
                   <>
-                    <Link href="/workspace">
-                      <Button
-                        type="primary"
-                        size="small"
-                        className="noicon hide-mobile"
-                      >
-                        <Trans>Workspace</Trans>
-                      </Button>
-                    </Link>
-
                     {width >= 768 && (
-                      <div
-                        className="user-avatar-container"
-                        style={{
-                          position: 'relative',
-                          display: 'inline-block',
-                        }}
-                      >
-                        <Dropdown
-                          overlayClassName="user-btn-dropdown-wrapper"
-                          overlay={
-                            <Menu className="user-btn-dropdown">
-                              <Menu.Item key="add-content">
-                                <Link href="/add-content">
-                                  <span>
-                                    <Trans>Add Content</Trans>
-                                  </span>
-                                </Link>
-                              </Menu.Item>
-                              <Menu.Item
-                                key="profile"
-                                onClick={() =>
-                                  router.push({ pathname: `/profile` })
-                                }
-                              >
-                                <Trans>Profile</Trans>
-                              </Menu.Item>
-                              <Menu.Item key="logout" onClick={handleOnLogout}>
-                                <Trans>Logout</Trans>
-                              </Menu.Item>
-                            </Menu>
-                          }
-                          trigger={['click']}
-                          placement="bottomRight"
-                        >
-                          <div
-                            style={{ position: 'relative', cursor: 'pointer' }}
-                          >
-                            <Avatar size="large" src={profile.picture}>
-                              {profile?.firstName?.charAt(0)}
-                              {profile?.lastName?.charAt(0)}
-                            </Avatar>
-                          </div>
-                        </Dropdown>
-
+                      <>
                         {unreadCount > 0 && (
                           <Dropdown
                             overlayClassName="notification-dropdown-wrapper"
@@ -333,15 +286,76 @@ const NewLayout = ({
                             trigger={['click']}
                             placement="bottomRight"
                           >
-                            <span
-                              className="notification-badge"
-                              onClick={(e) => e.stopPropagation()}
+                            <div
+                              className="notification-container"
+                              style={{ marginRight: '15px' }}
                             >
-                              {unreadCount}
-                            </span>
+                              <NotificationIcon />
+                              <span className="notification-badge">
+                                {unreadCount}
+                              </span>
+                            </div>
                           </Dropdown>
                         )}
-                      </div>
+                        <div
+                          className="user-avatar-container"
+                          style={{
+                            position: 'relative',
+                            display: 'inline-block',
+                          }}
+                        >
+                          <Dropdown
+                            overlayClassName="user-btn-dropdown-wrapper"
+                            overlay={
+                              <Menu className="user-btn-dropdown">
+                                <Menu.Item key="add-content">
+                                  <Link href="/add-content">
+                                    <span>
+                                      <Trans>Add Content</Trans>
+                                    </span>
+                                  </Link>
+                                </Menu.Item>
+                                <Menu.Item
+                                  key="profile"
+                                  onClick={() =>
+                                    router.push({ pathname: `/profile` })
+                                  }
+                                >
+                                  <Trans>Profile</Trans>
+                                </Menu.Item>
+                                <Menu.Item
+                                  key="workspace"
+                                  onClick={() =>
+                                    router.push({ pathname: `/workspace` })
+                                  }
+                                >
+                                  <Trans>Workspace</Trans>
+                                </Menu.Item>
+                                <Menu.Item
+                                  key="logout"
+                                  onClick={handleOnLogout}
+                                >
+                                  <Trans>Logout</Trans>
+                                </Menu.Item>
+                              </Menu>
+                            }
+                            trigger={['click']}
+                            placement="bottomRight"
+                          >
+                            <div
+                              style={{
+                                position: 'relative',
+                                cursor: 'pointer',
+                              }}
+                            >
+                              <Avatar size="large" src={profile.picture}>
+                                {profile?.firstName?.charAt(0)}
+                                {profile?.lastName?.charAt(0)}
+                              </Avatar>
+                            </div>
+                          </Dropdown>
+                        </div>
+                      </>
                     )}
                   </>
                 )}

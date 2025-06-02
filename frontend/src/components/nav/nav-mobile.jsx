@@ -6,6 +6,7 @@ import {
   CirclePointer,
   DownArrow,
   LinkedinIcon,
+  NotificationIcon,
   World,
   YoutubeIcon,
   flags,
@@ -204,46 +205,53 @@ const NavMobile = ({
           </Button>
         )}
 
-        <div
-          className="user-avatar-container"
-          style={{
-            position: 'relative',
-            display: 'inline-block',
-          }}
-        >
-          <Dropdown
-            overlayClassName="user-btn-dropdown-wrapper"
-            overlay={
-              <Menu className="user-btn-dropdown">
-                <Menu.Item key="add-content">
-                  <Link href="/add-content">
-                    <span>
-                      <Trans>Add Content</Trans>
-                    </span>
-                  </Link>
-                </Menu.Item>
-                <Menu.Item
-                  key="profile"
-                  onClick={() => router.push({ pathname: `/profile` })}
-                >
-                  <Trans>Profile</Trans>
-                </Menu.Item>
-                <Menu.Item key="logout" onClick={handleOnLogout}>
-                  <Trans>Logout</Trans>
-                </Menu.Item>
-              </Menu>
-            }
-            trigger={['click']}
-            placement="bottomRight"
+        <div className="user-notification-container">
+          <div
+            className="user-avatar-container"
+            style={{
+              position: 'relative',
+              display: 'inline-block',
+            }}
           >
-            <div style={{ position: 'relative', cursor: 'pointer' }}>
-              <Avatar size="large" src={profile.picture}>
-                {profile?.firstName?.charAt(0)}
-                {profile?.lastName?.charAt(0)}
-              </Avatar>
-            </div>
-          </Dropdown>
-
+            <Dropdown
+              overlayClassName="user-btn-dropdown-wrapper"
+              overlay={
+                <Menu className="user-btn-dropdown">
+                  <Menu.Item key="add-content">
+                    <Link href="/add-content">
+                      <span>
+                        <Trans>Add Content</Trans>
+                      </span>
+                    </Link>
+                  </Menu.Item>
+                  <Menu.Item
+                    key="profile"
+                    onClick={() => router.push({ pathname: `/profile` })}
+                  >
+                    <Trans>Profile</Trans>
+                  </Menu.Item>
+                  <Menu.Item
+                    key="workspace"
+                    onClick={() => router.push({ pathname: `/workspace` })}
+                  >
+                    <Trans>Workspace</Trans>
+                  </Menu.Item>
+                  <Menu.Item key="logout" onClick={handleOnLogout}>
+                    <Trans>Logout</Trans>
+                  </Menu.Item>
+                </Menu>
+              }
+              trigger={['click']}
+              placement="bottomRight"
+            >
+              <div style={{ position: 'relative', cursor: 'pointer' }}>
+                <Avatar size="large" src={profile.picture}>
+                  {profile?.firstName?.charAt(0)}
+                  {profile?.lastName?.charAt(0)}
+                </Avatar>
+              </div>
+            </Dropdown>
+          </div>
           {unreadCount > 0 && (
             <Dropdown
               overlayClassName="notification-dropdown-wrapper"
@@ -260,15 +268,11 @@ const NavMobile = ({
               }
               trigger={['click']}
               placement="bottomRight"
-              visible={dropdownVisible}
-              onVisibleChange={setDropdownVisible}
             >
-              <span
-                className="notification-badge"
-                onClick={(e) => e.stopPropagation()}
-              >
-                {unreadCount}
-              </span>
+              <div className="notification-container">
+                <NotificationIcon />
+                <span className="notification-badge">{unreadCount}</span>
+              </div>
             </Dropdown>
           )}
         </div>

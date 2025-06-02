@@ -370,7 +370,6 @@ h6 {
   }
 
   .ant-avatar {
-    margin-left: 7px;
     width: 44px;
     height: 44px;
     line-height: 44px;
@@ -1332,6 +1331,29 @@ ul {
         background-color: #444444;
       }
     }
+  }
+}
+
+.user-notification-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.notification-container {
+  width: 44px;
+  height: 44px;
+  position: relative;
+  border: 2px solid white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  @media screen and (max-width: $bpMobile) {
+    width: 40px;
+    height: 40px;
   }
 }
 
