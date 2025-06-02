@@ -276,16 +276,18 @@
                                                  privacy))
                                             channels)))))))
 
-(defn present-messages [messages & [discussion-id]]
-  (mapv (fn [{:keys [message created user]}]
-          (cond-> {:message message
-                   :created created
+(defn present-messages [messages & {:keys [discussion-id conversation-id]}]
+  (mapv (fn [{:keys [message messages created user]}]
+          (let [msg (or message messages)]
+            (cond-> {:message msg
+                     :created created
                    ;; We pass :chat-account-id for the service to retrieve users from the DB later.
                    ;; Note that this is a sensitive field that is removed from HTTP responses.
-                   :chat-account-id (:unique-user-identifier user)
-                   :username (:username user)
-                   :unique-user-identifier (:unique-user-identifier user)}
-            discussion-id (assoc :discussion-id discussion-id)))
+                     :chat-account-id (:unique-user-identifier user)
+                     :username (:username user)
+                     :unique-user-identifier (:unique-user-identifier user)}
+              discussion-id (assoc :discussion-id discussion-id)
+              conversation-id (assoc :conversation-id conversation-id))))
         messages))
 
 (defn get-discussion-messages* [{:keys [logger api-key]} channel-id discussion-id]
@@ -302,7 +304,7 @@
     (if (<= 200 status 299)
       {:success? true
        :messages (present-messages (cske/transform-keys ->kebab-case messages)
-                                   discussion-id)}
+                                   :discussion-id discussion-id)}
       (failure {:reason :failed-to-get-channel-discussions
                 :error-details body
                 :status status}))))
@@ -329,75 +331,139 @@
                 :error-details body
                 :status status}))))
 
-(defn get-channel* [{:keys [logger api-key] :as this} channel-id include-discussion-messages?]
-  {:pre  [(check! RoomId channel-id)]
-   :post [(check! #'port.chat/get-channel %)]}
-  (let [{:keys [status]
-         channel :body}
+(defn get-channel-conversations [{:keys [logger api-key]} channel-id]
+  (let [{:keys [status body]}
+        (http-client/request logger {:url (build-api-endpoint-url "/api/v2/room/" channel-id "/conversations")
+                                     :method :get
+                                     :query-params {:auth api-key}
+                                     :as :json-keyword-keys})
+        member-keys [:id :email :username :unique-user-identifier]]
+    (if (<= 200 status 299)
+      {:success? true
+       :conversations (mapv (fn [conversation]
+                              (-> conversation
+                                  (set/rename-keys {:room-id :channel-id})
+                                  (update :member-one #(select-keys % member-keys))
+                                  (update :member-two #(select-keys % member-keys))))
+                            (cske/transform-keys ->kebab-case body))}
+      (failure {:reason :failed-to-get-channel-conversations
+                :error-detail body
+                :status status}))))
+
+(defn get-conversation-messages [{:keys [logger api-key]} channel-id conversation-id]
+  (let [{:keys [status] messages :body}
         (http-client/request logger
-                             {:url (build-api-endpoint-url "/api/v1/chatroom/" channel-id)
+                             {:url (build-api-endpoint-url "/api/v2/room/" channel-id "/conversation/" conversation-id "/messages")
                               :method :get
                               :query-params {:auth api-key}
                               :as :json-keyword-keys})]
+    (if (<= 200 status 299)
+      {:success? true
+       :messages (present-messages (cske/transform-keys ->kebab-case messages) :conversation-id conversation-id)}
+      (failure {:reason :failed-to-get-channel-conversations
+                :error-details {:result messages}
+                :status status}))))
+
+(defn get-conversations-with-messages [{:keys [logger] :as this} channel-id]
+  (let [conversations-response (get-channel-conversations this channel-id)]
+    (if-not (:success? conversations-response)
+      (do
+        (log logger :error conversations-response)
+        [])
+      (let [conversations (or (:conversations conversations-response) [])]
+        (reduce
+         (fn [acc conversation]
+           (let [conversation-id (:conversation-id conversation)]
+             (if-not conversation-id
+               (do
+                 (log logger :error {:channel-id channel-id :conversation conversation})
+                 acc)
+               (let [messages-response (get-conversation-messages this channel-id conversation-id)]
+                 (if-not (:success? messages-response)
+                   (do
+                     (log logger :error messages-response)
+                     (conj acc (assoc conversation :messages [])))
+                   (conj acc (assoc conversation :messages (:messages messages-response))))))))
+         []
+         conversations)))))
+
+(defn get-discussions-with-messages [{:keys [logger] :as this} channel-id]
+  (let [discussions-response (get-channel-discussions* this channel-id)]
+    (if-not (:success? discussions-response)
+      (do
+        (log logger :error discussions-response)
+        [])
+      (let [discussions (or (:discussions discussions-response) [])]
+        (reduce
+         (fn [acc discussion]
+           (let [discussion-id (:id discussion)]
+             (if-not discussion-id
+               (do
+                 (log logger :error {:channel-id channel-id :discussion discussion})
+                 acc)
+               (let [messages-response (get-discussion-messages* this channel-id discussion-id)]
+                 (if-not (:success? messages-response)
+                   (do
+                     (log logger :error messages-response)
+                     (conj acc (assoc discussion :messages [])))
+                   (conj acc (assoc discussion :messages (:messages messages-response))))))))
+         []
+         discussions)))))
+
+(defn get-channel-details [{:keys [logger api-key]} channel-id]
+  (let [{:keys [status body]}
+        (http-client/request logger {:url (build-api-endpoint-url "/api/v1/chatroom/" channel-id)
+                                     :method :get
+                                     :query-params {:auth api-key}
+                                     :as :json-keyword-keys})]
     (if-not (<= 200 status 299)
-      (failure {:reason :failed-to-get-channel
-                :error-details {:result channel}
-                :status status})
-      (let [{:keys [status]
-             members :body}
-            (http-client/request logger
-                                 {:url (build-api-endpoint-url "/api/v2/room/" channel-id "/members")
-                                  :method :get
-                                  :query-params {:auth api-key
-                                                 :limit "200"}
-                                  :as :json-keyword-keys})]
+      (failure {:reason :failed-to-get-channel :error-details {:result body} :status status})
+      (let [channel-base (cske/transform-keys ->kebab-case body)
+            {:keys [status body]}
+            (http-client/request logger {:url (build-api-endpoint-url "/api/v2/room/" channel-id "/members")
+                                         :method :get
+                                         :query-params {:auth api-key :limit "200"}
+                                         :as :json-keyword-keys})]
         (if-not (<= 200 status 299)
-          (failure {:reason :failed-to-get-members
-                    :error-details {:result members}
-                    :status status})
-          (let [{:keys [status]
-                 messages :body}
-                (http-client/request logger
-                                     {:url (build-api-endpoint-url "/api/v1/chatRoom/" channel-id "/messages")
-                                      :method :get
-                                      :query-params {:auth api-key
-                                                     ;; NOTE: this used to be "1", but gpml.scheduler.chat-message-summarizer
-                                                     ;; needs something more generous.
-                                                     :limit "20"}
-                                      :as :json-keyword-keys})]
+          (failure {:reason :failed-to-get-members :error-details {:result body} :status status})
+          (let [members (cske/transform-keys ->kebab-case body)
+                {:keys [status body]}
+                (http-client/request logger {:url (build-api-endpoint-url "/api/v1/chatRoom/" channel-id "/messages")
+                                             :method :get
+                                             :query-params {:auth api-key :limit "20"}
+                                             :as :json-keyword-keys})]
             (if-not (<= 200 status 299)
-              (failure {:reason :failed-to-get-messages
-                        :error-details {:result messages}
-                        :status status})
-              (let [result (-> (cske/transform-keys ->kebab-case channel)
-                               (present-channel)
-                               (assoc :members (update (cske/transform-keys ->kebab-case members)
-                                                       :data
-                                                       (fn [d]
-                                                         (into []
-                                                               (comp (map :user)
-                                                                     (map #(select-keys % user-info-keys)))
-                                                               d))))
-                               (assoc :messages (update (cske/transform-keys ->kebab-case messages)
-                                                        :messages
-                                                        present-messages))
-                               (assoc :discussions (vector)))]
-                (if-not include-discussion-messages?
-                  {:success? true
-                   :channel result}
-                  (let [{:keys [success? discussions]} (get-channel-discussions* this channel-id)]
-                    (if-not success?
-                      {:success? false}
-                      (reduce (fn [acc discussion]
-                                {:pre [(:id discussion)]}
-                                (let [{:keys [success? messages]} (get-discussion-messages* this channel-id (:id discussion))]
-                                  (if-not success?
-                                    (reduced {:success? false})
-                                    (-> acc
-                                        (update-in [:channel :discussions] conj (assoc discussion :messages messages))))))
-                              {:success? true
-                               :channel result}
-                              discussions))))))))))))
+              (failure {:reason :failed-to-get-messages :error-details {:result body} :status status})
+              (let [messages (cske/transform-keys ->kebab-case body)]
+                {:success? true
+                 :channel (-> channel-base
+                              (present-channel)
+                              (assoc :members (update members
+                                                      :data
+                                                      (fn [d] (into []
+                                                                    (comp (map :user)
+                                                                          (map #(select-keys % user-info-keys)))
+                                                                    d))))
+                              (assoc :messages (update messages :messages present-messages)))}))))))))
+
+(defn get-channel* [this channel-id include-discussion-messages?]
+  {:pre  [(check! RoomId channel-id)]
+   :post [(check! #'port.chat/get-channel %)]}
+  (let [details-response (get-channel-details this channel-id)]
+    (if-not (:success? details-response)
+      details-response ; Propagate failure from fetching channel details
+      (let [result (-> details-response
+                       :channel
+                       (assoc :discussions [])
+                       (assoc :conversations []))]
+        (if include-discussion-messages?
+          (let [discussions   (get-discussions-with-messages this channel-id)
+                conversations (get-conversations-with-messages this channel-id)]
+            {:success? true
+             :channel   (-> result
+                            (assoc :discussions discussions)
+                            (assoc :conversations conversations))})
+          {:success? true :channel result})))))
 
 (defn get-user-joined-channels* [{:keys [logger api-key] :as chat-adapter} user-id extra-channel-ids]
   {:pre  [(check! port.chat/UniqueUserIdentifier user-id)]
@@ -569,6 +635,7 @@
       (if (<= 200 status 299)
         (do
           (log logger :info :successfully-created-discussion)
+          (prn :discussion-body body)
           {:success? true
            :discussion (extract-discussion body)})
         (do

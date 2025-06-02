@@ -95,6 +95,31 @@
        ;; XXX :last-active-at logic...
        ))
 
+(defn filter-notifiable-messages [logger frequency-in-minutes membership messages]
+  (filterv #(notifiable-message? logger (:chat-account-id membership) % membership frequency-in-minutes) messages))
+
+(defn filter-member-conversations [member conversations]
+  (let [member-chat-id (:chat-account-id member)]
+    (filter
+     (fn [conversation]
+       (let [member-one-id (get-in conversation [:member-one :unique-user-identifier])
+             member-two-id (get-in conversation [:member-two :unique-user-identifier])]
+         (or (= member-chat-id member-one-id)
+             (= member-chat-id member-two-id))))
+     conversations)))
+
+(defn sort-by-created-in-reversed-order [data]
+  (sort-by (fn [{:keys [created]}] (or (jt/instant created) (jt/instant)))
+           (fn reverse-cmp [a b] (compare b a))
+           data))
+
+(defn get-conversation-partner [member conversation]
+  (let [member-chat-id (:chat-account-id member)
+        member-one-id (get-in conversation [:member-one :unique-user-identifier])]
+    (if (= member-chat-id member-one-id)
+      (:member-two conversation)
+      (:member-one conversation))))
+
 (defn summarize-chat-messages [{:keys [logger hikari mailjet-config app-domain]
                                 chat :chat-adapter}
                                frequency-in-minutes]
@@ -162,54 +187,68 @@
 
     (fn persist-changes [context]
       (let [updates (into []
-                          (comp (keep (fn [[chat-channel-id {{discussions :discussions {room-messages :messages} :messages} :channel
+                          (comp (keep (fn [[chat-channel-id {{conversations :conversations
+                                                              discussions :discussions
+                                                              {room-messages :messages} :messages} :channel
                                                              :keys [memberships]}]]
                                         {:pre [(check! some? chat-channel-id
                                                        some? room-messages
                                                        some? memberships
-                                                       some? discussions)]}
-                                        (let [recent-messages (vec (sort-by (fn [{:keys [created]}] (or (jt/instant created) (jt/instant)))
-                                                                            (fn reverse-cmp [a b] (compare b a))
-                                                                            (concat room-messages (mapcat :messages discussions))))]
+                                                       some? discussions
+                                                       some? conversations)]}
+                                        (let [most-messages (sort-by-created-in-reversed-order
+                                                             (concat room-messages (mapcat :messages discussions)))]
                                           (keep (fn [membership]
                                                   {:pre [(check! Membership membership)]}
-                                                  (timbre/with-context+ {:membership membership
-                                                                         :recent-messages recent-messages
-                                                                         :frequency-in-minutes frequency-in-minutes}
-                                                    (let [chat-account-id (:chat-account-id membership)
-                                                          should-notify-about-recent-messages?
-                                                          (notifiable-message? logger
-                                                                               chat-account-id
-                                                                               (first recent-messages)
+                                                  (let [member-conversations (filter-member-conversations membership conversations)
+                                                        recent-messages (sort-by-created-in-reversed-order
+                                                                         (concat most-messages (mapcat :messages member-conversations)))]
+                                                    (timbre/with-context+ {:membership membership
+                                                                           :recent-messages recent-messages
+                                                                           :frequency-in-minutes frequency-in-minutes}
+                                                      (let [chat-account-id (:chat-account-id membership)
+                                                            should-notify-about-recent-messages?
+                                                            (notifiable-message? logger
+                                                                                 chat-account-id
+                                                                                 (first recent-messages)
+                                                                                 membership
+                                                                                 frequency-in-minutes)]
+                                                        (when should-notify-about-recent-messages?
+                                                          (with-meta [:%now,
+                                                                      (:stakeholder-id membership),
+                                                                      chat-channel-id]
+                                                            {:membership membership
+                                                             :recent-messages (filter-notifiable-messages
+                                                                               logger
+                                                                               frequency-in-minutes
                                                                                membership
-                                                                               frequency-in-minutes)]
-                                                      (when should-notify-about-recent-messages?
-                                                        (with-meta [:%now,
-                                                                    (:stakeholder-id membership),
-                                                                    chat-channel-id]
-                                                          {:membership membership
-                                                           :recent-messages (filterv (fn [message]
-                                                                                       (notifiable-message? logger
-                                                                                                            chat-account-id
-                                                                                                            message
-                                                                                                            membership
-                                                                                                            frequency-in-minutes))
-                                                                                     room-messages)
-                                                           :recent-discussions (->> discussions
-                                                                                    (map (fn [discussion]
-                                                                                           (update
-                                                                                            discussion
-                                                                                            :messages
-                                                                                            (fn [messages]
-                                                                                              (filterv (fn [message]
-                                                                                                         (notifiable-message? logger
-                                                                                                                              chat-account-id
-                                                                                                                              message
-                                                                                                                              membership
-                                                                                                                              frequency-in-minutes))
-                                                                                                       messages)))))
-                                                                                    (filter (fn [discussion] (seq (:messages discussion))))
-                                                                                    vec)})))))
+                                                                               room-messages)
+                                                             :recent-discussions (->> discussions
+                                                                                      (map (fn [discussion]
+                                                                                             (update
+                                                                                              discussion
+                                                                                              :messages
+                                                                                              (fn [messages]
+                                                                                                (filter-notifiable-messages
+                                                                                                 logger
+                                                                                                 frequency-in-minutes
+                                                                                                 membership
+                                                                                                 messages)))))
+                                                                                      (filter (fn [discussion] (seq (:messages discussion))))
+                                                                                      vec)
+                                                             :recent-conversations (->> member-conversations
+                                                                                        (map (fn [conversation]
+                                                                                               (update
+                                                                                                conversation
+                                                                                                :messages
+                                                                                                (fn [messages]
+                                                                                                  (filter-notifiable-messages
+                                                                                                   logger
+                                                                                                   frequency-in-minutes
+                                                                                                   membership
+                                                                                                   messages)))))
+                                                                                        (filter (fn [it] (seq (:messages it))))
+                                                                                        vec)}))))))
                                                 memberships))))
                                 cat)
                           (:extended-channels context))]
@@ -246,6 +285,7 @@
                   :let [membership (-> db-update meta :membership (doto (assert ":membership")))
                         recent-messages (-> db-update meta :recent-messages (doto (assert ":recent-messages")))
                         recent-discussions (-> db-update meta :recent-discussions (doto (assert ":recent-discussions")))
+                        recent-conversations (-> db-update meta :recent-conversations (doto (assert ":recent-conversations")))
                         {:keys [email first-name last-name]} membership
                         ;; _extended-channel :- gpml.boundary.port.chat/ExtendedChannel
                         {channel-name :name :as _extended-channel} (get-in context [:extended-channels chat-channel-id :channel])
@@ -263,7 +303,8 @@
                                    :chat-channel-id chat-channel-id}
               (log logger :warn :chat-notification {:email email
                                                     :recent-messages recent-messages
-                                                    :recent-discussions recent-discussions}))
+                                                    :recent-discussions recent-discussions
+                                                    :recent-conversations recent-conversations}))
             (when (seq recent-messages)
               (let [channel-url (format "%s/forum/%s" app-domain chat-channel-id)
                     message-count-humanized (format "%s New %s"
@@ -285,12 +326,14 @@ You can read them here: %s"
                                                                       :channelURL channel-url
                                                                       :channelName channel-name
                                                                       :baseUrl app-domain
-                                                                      :messages (mapv (fn [recent-message]
-                                                                                        {:pre [(check! port.chat/Message recent-message)]}
-                                                                                        {:userName (:username recent-message)
-                                                                                         :message (:message recent-message)
+                                                                      :messages (mapv (fn [message]
+                                                                                        {:pre [(check! port.chat/Message message)]}
+                                                                                        {:userName (:username message)
+                                                                                         :message (:message message)
                                                                                         ;; XXX format as "ago" - the simplest thing we can do to avoid timezones
-                                                                                         :time (some-> recent-message :created (format-date-time logger))})
+                                                                                         :time (some-> message
+                                                                                                       :created
+                                                                                                       (format-date-time logger))})
                                                                                       (reverse (take 5 recent-messages)))})]]
                 (db/execute-one! hikari {:insert-into :notification
                                          :values [{:stakeholder (:stakeholder-id membership)
@@ -331,12 +374,14 @@ You can read them here: %s"
                                                                         :channelURL discussion-url
                                                                         :channelName discussion-name
                                                                         :baseUrl app-domain
-                                                                        :messages (mapv (fn [recent-message]
-                                                                                          {:pre [(check! port.chat/Message recent-message)]}
-                                                                                          {:userName (:username recent-message)
-                                                                                           :message (:message recent-message)
+                                                                        :messages (mapv (fn [message]
+                                                                                          {:pre [(check! port.chat/Message message)]}
+                                                                                          {:userName (:username message)
+                                                                                           :message (:message message)
                                                                                            ;; XXX format as "ago" - the simplest thing we can do to avoid timezones
-                                                                                           :time (some-> recent-message :created (format-date-time logger))})
+                                                                                           :time (some-> message
+                                                                                                         :created
+                                                                                                         (format-date-time logger))})
                                                                                         (reverse (take 5 discussion-messages)))})]]
                   (db/execute-one! hikari {:insert-into :notification
                                            :values [{:stakeholder (:stakeholder-id membership)
@@ -352,7 +397,58 @@ You can read them here: %s"
                                     [{:Name full-name
                                       :Email email}]
                                     texts
+                                    texts-html))))
+
+            (when (seq recent-conversations)
+              (doseq [conversation recent-conversations]
+                (let [partner (get-conversation-partner membership conversation)
+                      conversation-url (format "%s/forum/%s/dm/%s" app-domain chat-channel-id (:conversation-id conversation))
+                      conversation-name (format "New message from %s in %s" (:username partner) channel-name)
+                      conversation-messages (:messages conversation)
+                      message-count-humanized (format "%s New %s"
+                                                      (count conversation-messages)
+                                                      (if (> (count conversation-messages)
+                                                             1)
+                                                        "Messages"
+                                                        "Message"))
+                      texts [(format "Hello %s,
+
+there are %s new messages from '%s'.
+
+You can read them here: %s"
+                                     full-name
+                                     (count conversation-messages)
+                                     (:username partner)
+                                     conversation-url)]
+                      texts-html [(pogonos/render @email-html-template {:messageCount message-count-humanized
+                                                                        :channelURL conversation-url
+                                                                        :channelName conversation-name
+                                                                        :baseUrl app-domain
+                                                                        :messages (mapv (fn [message]
+                                                                                          {:pre [(check! port.chat/Message message)]}
+                                                                                          {:userName (:username message)
+                                                                                           :message (:message message)
+                                                                                           ;; XXX format as "ago" - the simplest thing we can do to avoid timezones
+                                                                                           :time (some-> message
+                                                                                                         :created
+                                                                                                         (format-date-time logger))})
+                                                                                        (reverse (take 5 conversation-messages)))})]]
+                  (db/execute-one! hikari {:insert-into :notification
+                                           :values [{:stakeholder (:stakeholder-id membership)
+                                                     :type "forum"
+                                                     :sub_type "conversation"
+                                                     :context_id chat-channel-id
+                                                     :sub_context_id (:conversation-id conversation)
+                                                     :title channel-name
+                                                     :content [:lift (pg-util/val->jsonb conversation-messages)]}]})
+                  (email/send-email mailjet-config
+                                    email/unep-sender
+                                    conversation-name
+                                    [{:Name full-name
+                                      :Email email}]
+                                    texts
                                     texts-html)))))
+
           (let [affected (count updates)]
             (log logger :info :success {:affected affected})
             (assoc context :affected affected)))))))

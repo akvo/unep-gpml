@@ -97,6 +97,7 @@
           (catch Exception _
             false)))]]]
    [:discussion-id {:optional true} :string]
+   [:conversation-id {:optional true} :string]
    [:chat-account-id :string]
    [:username :string]
    [:unique-user-identifier UniqueUserIdentifier]])
@@ -122,11 +123,28 @@
   (-> Discussion
       (mu/assoc :messages [:vector {} Message])))
 
+(def ConversationMember
+  [:map
+   {}
+   [:id :string]
+   [:email :string]
+   [:username :string]
+   [:unique-user-identifier UniqueUserIdentifier]])
+
+(def Conversation
+  [:map {:closed true}
+   [:conversation-id :string]
+   [:channel-id :string]
+   [:member-one ConversationMember]
+   [:member-two ConversationMember]
+   [:messages [:vector {} Message]]])
+
 (def ExtendedChannel
   (-> Channel
       (mu/assoc :members Members)
       (mu/assoc :messages Messages)
-      (mu/assoc :discussions [:vector {} ExtendedDiscussion])))
+      (mu/assoc :discussions [:vector {} ExtendedDiscussion])
+      (mu/assoc :conversations [:vector {} Conversation])))
 
 (def ChannelSnakeCase (map->snake Channel))
 
