@@ -6,6 +6,7 @@ import {
   CirclePointer,
   DownArrow,
   LinkedinIcon,
+  NotificationIcon,
   World,
   YoutubeIcon,
   flags,
@@ -13,13 +14,15 @@ import {
 import { UIStore } from '../../store'
 import { deepTranslate } from '../../utils/misc'
 import Button from '../button'
-import { Dropdown, Menu } from 'antd'
+import { Avatar, Dropdown, Menu } from 'antd'
 import { i18n } from '@lingui/core'
 import Link from 'next/link'
 import { Trans } from '@lingui/macro'
 import classNames from 'classnames'
 import { useRouter } from 'next/router'
 import { changeLanguage } from '../../translations/utils'
+import NotificationPanel from '../notification-panel'
+import { useDeviceSize } from '../../modules/landing/landing'
 
 const SOCIAL_LINKS = [
   {
@@ -79,10 +82,20 @@ const NavMobile = ({
   toggleOpen,
   isAuthenticated,
   setLoginVisible,
+  profile,
+  unreadCount,
+  handleOnLogout,
+  notifications,
+  notificationLoading,
+  handleViewMore,
+  hasMoreNotifications,
+  handleNotificationClick,
 }) => {
+  const [width] = useDeviceSize()
   const router = useRouter()
   const [selectedMenuItem, setSelectedMenuItem] = useState(null)
   const { menuList } = UIStore.useState((s) => ({ menuList: s.menuList }))
+  const [dropdownVisible, setDropdownVisible] = useState(false)
 
   const menu = deepTranslate(menuList)
 
@@ -184,16 +197,85 @@ const NavMobile = ({
 
   function MenuHeader() {
     return (
-      <div
-        className="toggle-button"
-        style={selectedMenuItem ? {} : { justifyContent: 'flex-end' }}
-      >
+      <div className="toggle-button" style={selectedMenuItem ? {} : {}}>
         {selectedMenuItem && (
           <Button onClick={() => setSelectedMenuItem(null)}>
             <CirclePointer />
             Back
           </Button>
         )}
+
+        <div className="user-notification-container">
+          <div
+            className="user-avatar-container"
+            style={{
+              position: 'relative',
+              display: 'inline-block',
+            }}
+          >
+            <Dropdown
+              overlayClassName="user-btn-dropdown-wrapper"
+              overlay={
+                <Menu className="user-btn-dropdown">
+                  <Menu.Item key="add-content">
+                    <Link href="/add-content">
+                      <span>
+                        <Trans>Add Content</Trans>
+                      </span>
+                    </Link>
+                  </Menu.Item>
+                  <Menu.Item
+                    key="profile"
+                    onClick={() => router.push({ pathname: `/profile` })}
+                  >
+                    <Trans>Profile</Trans>
+                  </Menu.Item>
+                  <Menu.Item
+                    key="workspace"
+                    onClick={() => router.push({ pathname: `/workspace` })}
+                  >
+                    <Trans>Workspace</Trans>
+                  </Menu.Item>
+                  <Menu.Item key="logout" onClick={handleOnLogout}>
+                    <Trans>Logout</Trans>
+                  </Menu.Item>
+                </Menu>
+              }
+              trigger={['click']}
+              placement="bottomRight"
+            >
+              <div style={{ position: 'relative', cursor: 'pointer' }}>
+                <Avatar size="large" src={profile.picture}>
+                  {profile?.firstName?.charAt(0)}
+                  {profile?.lastName?.charAt(0)}
+                </Avatar>
+              </div>
+            </Dropdown>
+          </div>
+          {unreadCount > 0 && (
+            <Dropdown
+              overlayClassName="notification-dropdown-wrapper"
+              overlay={
+                <NotificationPanel
+                  notifications={notifications}
+                  onViewMore={handleViewMore}
+                  loading={notificationLoading}
+                  isMobile={width < 768}
+                  onClose={() => setDropdownVisible(false)}
+                  hasMoreNotifications={hasMoreNotifications}
+                  onNotificationClick={handleNotificationClick}
+                />
+              }
+              trigger={['click']}
+              placement="bottomRight"
+            >
+              <div className="notification-container">
+                <NotificationIcon />
+                <span className="notification-badge">{unreadCount}</span>
+              </div>
+            </Dropdown>
+          )}
+        </div>
         <MenuToggle toggle={handleToggle} isOpen={isOpen} />
       </div>
     )
