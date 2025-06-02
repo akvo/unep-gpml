@@ -308,6 +308,14 @@ const NewLayout = ({
                             overlayClassName="user-btn-dropdown-wrapper"
                             overlay={
                               <Menu className="user-btn-dropdown">
+                                <Menu.Item
+                                  key="workspace"
+                                  onClick={() =>
+                                    router.push({ pathname: `/workspace` })
+                                  }
+                                >
+                                  <Trans>Workspace</Trans>
+                                </Menu.Item>
                                 <Menu.Item key="add-content">
                                   <Link href="/add-content">
                                     <span>
@@ -322,14 +330,6 @@ const NewLayout = ({
                                   }
                                 >
                                   <Trans>Profile</Trans>
-                                </Menu.Item>
-                                <Menu.Item
-                                  key="workspace"
-                                  onClick={() =>
-                                    router.push({ pathname: `/workspace` })
-                                  }
-                                >
-                                  <Trans>Workspace</Trans>
                                 </Menu.Item>
                                 <Menu.Item
                                   key="logout"
