@@ -268,6 +268,8 @@ const NavMobile = ({
               }
               trigger={['click']}
               placement="bottomRight"
+              visible={dropdownVisible}
+              onVisibleChange={setDropdownVisible}
             >
               <div className="notification-container">
                 <NotificationIcon />
