@@ -7,34 +7,43 @@
       overflow: scroll;
       background-color: $primaryGrey !important;
       z-index: 2;
+
       &.psview {
         height: 100vh;
       }
+
       @media screen and (min-width: $bpMobile) {
         min-width: 300px;
         max-width: 450px;
       }
+
       h3 {
         margin: 12px 0 12px 0;
         font-weight: 600;
       }
+
       .title-container {
         margin-top: 15px;
         display: flex;
+
         .popover-container {
           margin-left: auto;
           font-size: 18px;
         }
       }
+
       .description {
         padding: 20px 20px 10px;
+
         h5 {
           margin-left: 0;
         }
+
         p {
           margin: 10px 0 0;
         }
       }
+
       strong {
         color: $primaryDarkBlue;
         font-family: var(--font-archia);
@@ -49,13 +58,16 @@
         margin-top: 28px;
         padding-left: 21px;
       }
+
       .button-container {
         padding: 22px 16px;
+
         .ant-btn {
           width: 100%;
           justify-content: center;
         }
       }
+
       .ant-skeleton {
         padding: 8px 23px;
       }
@@ -63,14 +75,17 @@
       .discussions {
         margin-top: 8px;
         margin-bottom: 36px;
+
         li {
           // padding: 7px 0;
           padding: 11px 21px;
           border-bottom: none;
           display: flex;
-          justify-content: space-between;
+          // justify-content: space-between;
+
           &.active {
             background-color: $primaryViolet2;
+
             .ant-btn-link {
               text-decoration: none;
             }
@@ -81,28 +96,52 @@
           white-space: normal;
           text-align: left;
         }
+
+        .notifcation-badge {
+          margin-left: 10px;
+          background: $systemWarning5;
+          color: black;
+          border-radius: 50%;
+          padding: 4px;
+          font-size: 12px;
+          font-weight: 700;
+          min-width: 20px;
+          height: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          cursor: pointer;
+        }
       }
+
       .members {
         margin-left: 21px;
         margin-top: 21px;
+
         .ant-list-item {
           padding: 0 0 13px;
           border-bottom: none;
+
           .ant-list-item-meta-avatar {
             margin-right: 13px;
+
             .ant-avatar {
               width: 40px;
               height: 40px;
               line-height: 40px;
+
               .ant-avatar-string {
                 font-family: var(--font-archia);
                 font-size: $fzXXS;
                 font-weight: 600;
                 text-transform: uppercase;
               }
+
               background-color: $primaryGreen;
             }
           }
+
           .ant-list-item-meta-content {
             .ant-list-item-meta-title,
             .ant-list-item-meta-description {
@@ -111,6 +150,7 @@
               font-size: $fzXXS;
               line-height: $lhXXS;
             }
+
             .ant-list-item-meta-title {
               font-weight: 600;
               margin-bottom: 0;
@@ -118,57 +158,73 @@
           }
         }
       }
+
       .pinned-links {
         margin-top: 8px;
+
         li {
           display: flex;
           padding: 3px 20px;
           width: 100%;
+
           a {
             line-height: 20px;
+
             .icon {
               margin-right: 7px;
             }
+
             font-size: 16px;
             display: flex;
             color: $primaryDarkBlue;
             font-weight: 500;
             text-decoration: underline;
+
             span {
               max-width: 340px;
             }
+
             &:hover {
               color: $primaryPurple;
             }
           }
+
           .popover-container {
             margin-left: auto;
           }
         }
+
         .add-new-topic {
           margin-top: 5px;
         }
+
         @media screen and (max-width: 768px) {
           display: flex;
+
           li {
             width: auto;
             white-space: nowrap;
+
             span {
               overflow: hidden;
               text-overflow: ellipsis;
               white-space: nowrap;
             }
+
             .popover-container {
               display: none;
             }
           }
         }
       }
+
       .add-user {
         margin: 10px 20px;
       }
+
       .ant-menu {
         background-color: $primaryGrey;
+
         .ant-menu-item {
           display: flex;
           flex-direction: row-reverse;
@@ -184,71 +240,91 @@
           background-color: $primaryPurple2;
           text-transform: capitalize;
           height: auto;
+
           span {
             width: 300px;
             white-space: break-spaces;
           }
+
           svg {
             transform: rotate(270deg);
+
             path {
               stroke: $primaryDarkBlue;
             }
           }
+
           &.ant-menu-item-selected,
           &:hover {
             color: $primaryWhite;
             background-color: $primaryPurple;
+
             svg path {
               stroke: $primaryWhite;
             }
           }
+
           &:not(:last-child) {
             margin-bottom: 0;
           }
         }
       }
+
       @media screen and (max-width: $bpMobile) {
         height: auto;
+
         .description {
           padding: 10px 17px;
         }
+
         h5 {
           margin-top: 5px !important;
         }
+
         h6 {
           margin-top: 10px;
         }
+
         .mobile-scroller-horiz {
           overflow-x: scroll;
+
           .discussions {
             flex-direction: row;
             display: flex;
             margin-bottom: 10px;
             padding-left: 15px;
+
             li {
               padding: 5px 5px;
               margin-right: 20px;
             }
+
             .ant-btn {
               white-space: nowrap;
             }
+
             .popover-container {
               display: none;
             }
+
             .add-new-topic {
               // display: none;
             }
           }
+
           .members {
             margin-top: 10px;
             display: flex;
             flex-direction: row;
+
             .ant-list-items {
               display: flex;
+
               .ant-list-item-meta-avatar {
                 margin-right: 6px;
               }
             }
+
             .ant-list-item-meta-content {
               display: none;
             }
@@ -256,38 +332,48 @@
         }
       }
     }
+
     .content {
       iframe {
         border: none;
         height: calc(100vh - 180px) !important;
+
         &.discussion {
           height: calc(100vh - 300px) !important;
         }
+
         &.joined {
           height: calc(100vh - 90px) !important;
+
           &.discussion {
             height: calc(100vh - 187px) !important;
           }
         }
       }
+
       &.psview {
         iframe {
           height: 100vh !important;
+
           &.discussion {
             height: calc(100vh - 113px) !important;
           }
         }
+
         .join-container {
           display: none;
         }
       }
+
       .join-container {
         padding: 20px;
         // background-color: #fff;
       }
+
       .ant-spin-blur iframe {
         opacity: 0;
       }
+
       .header-discussion {
         display: flex;
         flex-direction: column;
@@ -297,18 +383,22 @@
         box-shadow: 0px 4px 25px 0px rgba(0, 0, 0, 0.2);
         position: relative;
         z-index: 1;
+
         h3 {
           font-weight: 600;
         }
       }
+
       @media screen and (max-width: $bpMobile) {
         .join-container {
           display: flex;
+
           .ant-btn {
             flex: 1;
           }
         }
       }
+
       :global {
       }
     }
@@ -330,18 +420,22 @@
   text-transform: uppercase;
   text-decoration: none !important;
   margin-left: -6px !important;
+
   :global {
     svg {
       padding-left: 0 !important;
       transform: rotate(90deg);
+
       path {
         stroke: $primaryPurple !important;
       }
     }
+
     span {
       padding-left: 4px;
     }
   }
+
   &:global(:hover) {
     svg {
       path {
@@ -356,6 +450,7 @@
 
 .container {
   display: flex;
+
   @media screen and (max-width: $bpMobile) {
     flex-direction: column;
   }
@@ -369,19 +464,23 @@
       border: none;
       margin: 20px 0;
     }
+
     .ant-radio-group {
       display: flex;
+
       .ant-radio-button-wrapper {
         padding: 0 10px;
 
         & > span {
           display: flex;
         }
+
         .icon {
           display: flex;
           margin-right: 6px;
           align-items: center;
         }
+
         svg {
           // transform: translateY(2px);
         }
