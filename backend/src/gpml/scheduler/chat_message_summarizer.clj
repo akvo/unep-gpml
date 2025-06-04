@@ -161,16 +161,15 @@
                                                     :stakeholder.email
                                                     :stakeholder.first_name
                                                     :stakeholder.last_name
-                                                    :stakeholder.chat_account_id]
+                                                    :stakeholder.chat_account_id
+                                                    :stakeholder.chat_email_notifications]
                                            :from :chat_channel_membership
                                            :join [:stakeholder [:=
                                                                 :chat_channel_membership.stakeholder_id
                                                                 :stakeholder.id]]
-                                           :where [:and
-                                                   [:in
-                                                    :chat_channel_membership.chat_channel_id
-                                                    channel-ids]
-                                                   [:= true :stakeholder.chat_email_notifications]]})]
+                                           :where [:in
+                                                   :chat_channel_membership.chat_channel_id
+                                                   channel-ids]})]
             (if-not success?
               result
               (let [draft (reduce (fn [new-context {:keys [chat-channel-id] :as membership}]
@@ -302,6 +301,7 @@
             (timbre/with-context+ {:channel-name channel-name
                                    :chat-channel-id chat-channel-id}
               (log logger :warn :chat-notification {:email email
+                                                    :membership membership
                                                     :recent-messages recent-messages
                                                     :recent-discussions recent-discussions
                                                     :recent-conversations recent-conversations}))
@@ -342,13 +342,14 @@ You can read them here: %s"
                                                    :context_id chat-channel-id
                                                    :title channel-name
                                                    :content [:lift (pg-util/val->jsonb recent-messages)]}]})
-                (email/send-email mailjet-config
-                                  email/unep-sender
-                                  (format "New messages in chat channel: %s" channel-name)
-                                  [{:Name full-name
-                                    :Email email}]
-                                  texts
-                                  texts-html)))
+                (when (:chat-email-notifications membership)
+                  (email/send-email mailjet-config
+                                    email/unep-sender
+                                    (format "New messages in chat channel: %s" channel-name)
+                                    [{:Name full-name
+                                      :Email email}]
+                                    texts
+                                    texts-html))))
 
             (when (seq recent-discussions)
               (doseq [discussion recent-discussions]
@@ -391,13 +392,14 @@ You can read them here: %s"
                                                      :sub_context_id (:id discussion)
                                                      :title (:name discussion)
                                                      :content [:lift (pg-util/val->jsonb discussion-messages)]}]})
-                  (email/send-email mailjet-config
-                                    email/unep-sender
-                                    (format "New messages in chat channel: %s" discussion-name)
-                                    [{:Name full-name
-                                      :Email email}]
-                                    texts
-                                    texts-html))))
+                  (when (:chat-email-notifications membership)
+                    (email/send-email mailjet-config
+                                      email/unep-sender
+                                      (format "New messages in chat channel: %s" discussion-name)
+                                      [{:Name full-name
+                                        :Email email}]
+                                      texts
+                                      texts-html)))))
 
             (when (seq recent-conversations)
               (doseq [conversation recent-conversations]
@@ -441,13 +443,14 @@ You can read them here: %s"
                                                      :sub_context_id (:conversation-id conversation)
                                                      :title channel-name
                                                      :content [:lift (pg-util/val->jsonb conversation-messages)]}]})
-                  (email/send-email mailjet-config
-                                    email/unep-sender
-                                    conversation-name
-                                    [{:Name full-name
-                                      :Email email}]
-                                    texts
-                                    texts-html)))))
+                  (when (:chat-email-notifications membership)
+                    (email/send-email mailjet-config
+                                      email/unep-sender
+                                      conversation-name
+                                      [{:Name full-name
+                                        :Email email}]
+                                      texts
+                                      texts-html))))))
 
           (let [affected (count updates)]
             (log logger :info :success {:affected affected})
