@@ -56,11 +56,15 @@ const NotificationPanel = ({
                   <div className="notification-item">
                     <div className="notification-sender">
                       {notif.sender}{' '}
-                      {notif.type && (
-                        <>
-                          <span>IN</span>{' '}
-                          <span className="channel-name">{notif.type}</span>
-                        </>
+                      {notif.subType === 'conversation' ? (
+                        <span>Private message</span>
+                      ) : (
+                        notif.type && (
+                          <>
+                            <span>IN</span>{' '}
+                            <span className="channel-name">{notif.type}</span>
+                          </>
+                        )
                       )}
                     </div>
                     <div

@@ -102,8 +102,13 @@ const NewLayout = ({
   } = useNotifications(isAuthenticated)
 
   const handleNotificationClick = (notification) => {
-    const url = `/${notification.notificationType}/${notification.contextId}`
-    router.push(url)
+    if (notification.subType === 'conversation') {
+      router.push(
+        `/${notification.notificationType}/${notification.contextId}?conversation=${notification.conversationId}`
+      )
+    } else {
+      router.push(`/${notification.notificationType}/${notification.contextId}`)
+    }
   }
 
   const handleOnLogoutRC = () => {
