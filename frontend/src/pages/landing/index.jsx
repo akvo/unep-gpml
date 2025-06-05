@@ -384,7 +384,7 @@ const FeatureCards = () => {
             </span>
           </div>
         </Link>
-        <Link href="/data-hub" className="feature-card">
+        <Link href="/data/maps" className="feature-card">
           <div className="img">
             <Image
               src="/iconxl-data-hub.svg"
