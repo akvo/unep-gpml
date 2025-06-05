@@ -21,6 +21,7 @@ const transformNotificationsForDisplay = (rawNotifications) => {
           subType: item['subType'],
           parentId: item.id,
           chatAccountId: message['chatAccountId'],
+          conversationId: message['conversationId'],
           uniqueUserIdentifier: message['uniqueUserIdentifier'],
           subContextId: item['subContextId'] || null,
           created: message.created,
@@ -153,7 +154,7 @@ const useNotifications = (isAuthenticated) => {
     if (isAuthenticated) {
       fetchNotifications()
     }
-  }, [isAuthenticated, fetchNotifications])
+  }, [isAuthenticated])
 
   const hasMoreNotifications = displayCount < allNotifications.length
 
