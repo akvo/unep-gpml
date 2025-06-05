@@ -56,6 +56,7 @@ const ForumView = ({
   const [sdk, setSDK] = useState(null)
   const [discussion, setDiscussion] = useState(null)
   const [userJoined, setUserJoined] = useState(false)
+  const [conversationToOpen, setConversationToOpen] = useState(null)
 
   const [viewModal, setViewModal] = useState({
     open: false,
@@ -133,10 +134,19 @@ const ForumView = ({
   }, [activeForum, sdk])
 
   useEffect(() => {
-    if (sdk && activeForum && router.query.conversation) {
-      sdk.openConversation(router.query.conversation)
+    if (router.query.conversation) {
+      setConversationToOpen(router.query.conversation)
     }
-  }, [sdk, activeForum, router.query.conversation])
+  }, [router.query.conversation])
+
+  useEffect(() => {
+    if (sdk && activeForum && conversationToOpen) {
+      setTimeout(() => {
+        sdk.openConversation(conversationToOpen)
+      }, 3000)
+      setConversationToOpen(null)
+    }
+  }, [sdk, activeForum, conversationToOpen])
 
   useEffect(() => {
     if (sdk != null) {
@@ -160,7 +170,6 @@ const ForumView = ({
   const channelId = activeForum?.id
 
   const { psview } = router.query
-
   return (
     <>
       <Script
