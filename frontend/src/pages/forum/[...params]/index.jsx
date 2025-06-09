@@ -563,6 +563,7 @@ const Participants = ({ isAdmin, activeForum, channelId, sdk, profile }) => {
             return (
               <List.Item
                 style={{ cursor: 'pointer' }}
+                className={user.id !== profile.id ? '' : 'self'}
                 onClick={() => {
                   if (sdk && user?.id && user.id !== profile.id) {
                     sdk.createConversation(user.chatUserId)
@@ -845,10 +846,10 @@ const DiscussionItem = ({
         // disabled={!discuss?.id}
       >
         {discuss?.name}
+        {notificationCount > 0 && (
+          <span className="notifcation-badge">{notificationCount}</span>
+        )}
       </Button>
-      {notificationCount > 0 && (
-        <span className="notifcation-badge">{notificationCount}</span>
-      )}
       {isAdmin && (
         <div className="popover-container">
           <Popover
