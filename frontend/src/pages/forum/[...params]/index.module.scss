@@ -17,13 +17,30 @@
         max-width: 450px;
       }
 
+      .notifcation-badge {
+        margin-left: 10px;
+        background: $systemWarning5;
+        color: black;
+        border-radius: 50%;
+        padding: 4px;
+        font-size: 12px;
+        font-weight: 700;
+        min-width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        cursor: pointer;
+      }
+
       h3 {
         margin: 12px 0 12px 0;
         font-weight: 600;
       }
 
       .title-container {
-        margin-top: 15px;
+        margin-top: 5px;
         display: flex;
 
         .popover-container {
@@ -82,7 +99,16 @@
           border-bottom: none;
           display: flex;
           // justify-content: space-between;
-
+          span {
+            display: inline;
+          }
+          .notifcation-badge {
+            display: inline-block;
+            line-height: 12px;
+          }
+          .popover-container {
+            margin-left: auto;
+          }
           &.active {
             background-color: $primaryViolet2;
 
@@ -96,23 +122,6 @@
           white-space: normal;
           text-align: left;
         }
-
-        .notifcation-badge {
-          margin-left: 10px;
-          background: $systemWarning5;
-          color: black;
-          border-radius: 50%;
-          padding: 4px;
-          font-size: 12px;
-          font-weight: 700;
-          min-width: 20px;
-          height: 20px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          text-align: center;
-          cursor: pointer;
-        }
       }
 
       .members {
@@ -120,8 +129,25 @@
         margin-top: 21px;
 
         .ant-list-item {
-          padding: 0 0 13px;
+          padding: 7px 10px 7px 0;
           border-bottom: none;
+          cursor: default !important;
+          position: relative;
+          &:not(.self) {
+            cursor: pointer;
+            &:hover {
+              background-color: $primaryBlue2;
+              &:before {
+                content: ' ';
+                background-color: $primaryBlue2;
+                height: 100%;
+                width: 20px;
+                left: -20px;
+                top: 0;
+                position: absolute;
+              }
+            }
+          }
 
           .ant-list-item-meta-avatar {
             margin-right: 13px;
@@ -387,6 +413,9 @@
         h3 {
           font-weight: 600;
         }
+        .ant-btn {
+          display: flex;
+        }
       }
 
       @media screen and (max-width: $bpMobile) {
@@ -420,6 +449,7 @@
   text-transform: uppercase;
   text-decoration: none !important;
   margin-left: -6px !important;
+  display: flex !important;
 
   :global {
     svg {

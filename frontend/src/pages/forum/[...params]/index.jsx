@@ -56,6 +56,7 @@ const ForumView = ({
   const [sdk, setSDK] = useState(null)
   const [discussion, setDiscussion] = useState(null)
   const [userJoined, setUserJoined] = useState(false)
+  const [conversationToOpen, setConversationToOpen] = useState(null)
 
   const [viewModal, setViewModal] = useState({
     open: false,
@@ -131,6 +132,21 @@ const ForumView = ({
   useEffect(() => {
     handleSDKLoaded()
   }, [activeForum, sdk])
+
+  useEffect(() => {
+    if (router.query.conversation) {
+      setConversationToOpen(router.query.conversation)
+    }
+  }, [router.query.conversation])
+
+  useEffect(() => {
+    if (sdk && activeForum && conversationToOpen) {
+      setTimeout(() => {
+        sdk.openConversation(conversationToOpen)
+      }, 3000)
+      setConversationToOpen(null)
+    }
+  }, [sdk, activeForum, conversationToOpen])
 
   useEffect(() => {
     if (sdk != null) {
@@ -220,7 +236,9 @@ const ForumView = ({
               />
             )}
             {activeForum?.users?.length > 0 && (
-              <Participants {...{ isAdmin, activeForum, channelId }} />
+              <Participants
+                {...{ isAdmin, activeForum, channelId, sdk, profile }}
+              />
             )}
           </div>
 
@@ -469,12 +487,13 @@ const PinnedLinks = ({ isAdmin, channelId }) => {
   )
 }
 
-const Participants = ({ isAdmin, activeForum, channelId }) => {
+const Participants = ({ isAdmin, activeForum, channelId, sdk, profile }) => {
   const [showAddUserModal, setShowAddUserModal] = useState(false)
   const [loading, setLoading] = useState(false)
   const [options, setOptions] = useState([])
   const [selectedUser, setSelectedUser] = useState(null)
   const [selectedUserLabel, setSelectedUserLabel] = useState('')
+  const { rawNotifications } = useNotifications(true)
 
   const handleSubmit = async () => {
     setLoading(true)
@@ -512,6 +531,24 @@ const Participants = ({ isAdmin, activeForum, channelId }) => {
     setSelectedUserLabel(option.label)
   }
 
+  const getUserNotificationCount = (userId) => {
+    if (!rawNotifications || !userId) return 0
+
+    const userNotifications = rawNotifications.filter(
+      (notification) =>
+        notification['subType'] === 'conversation' &&
+        notification['stakeholder'] === userId &&
+        notification.status === 'unread'
+    )
+
+    const totalCount = userNotifications.reduce(
+      (sum, n) => sum + (n.content?.length || 0),
+      0
+    )
+
+    return totalCount
+  }
+
   return (
     <>
       <h6 className="w-bold h-caps-xs">
@@ -524,7 +561,15 @@ const Participants = ({ isAdmin, activeForum, channelId }) => {
           renderItem={(user) => {
             const fullName = `${user?.firstName} ${user?.lastName || ''}`
             return (
-              <List.Item>
+              <List.Item
+                style={{ cursor: 'pointer' }}
+                className={user.id !== profile.id ? '' : 'self'}
+                onClick={() => {
+                  if (sdk && user?.id && user.id !== profile.id) {
+                    sdk.createConversation(user.chatUserId)
+                  }
+                }}
+              >
                 <List.Item.Meta
                   avatar={
                     <Avatar src={user?.picture}>
@@ -537,6 +582,11 @@ const Participants = ({ isAdmin, activeForum, channelId }) => {
                   title={fullName}
                   description={user?.org?.name}
                 />
+                {getUserNotificationCount(user.id) > 0 && (
+                  <span className="notifcation-badge">
+                    {getUserNotificationCount(user.id)}
+                  </span>
+                )}
               </List.Item>
             )
           }}
@@ -796,10 +846,10 @@ const DiscussionItem = ({
         // disabled={!discuss?.id}
       >
         {discuss?.name}
+        {notificationCount > 0 && (
+          <span className="notifcation-badge">{notificationCount}</span>
+        )}
       </Button>
-      {notificationCount > 0 && (
-        <span className="notifcation-badge">{notificationCount}</span>
-      )}
       {isAdmin && (
         <div className="popover-container">
           <Popover
