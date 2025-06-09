@@ -241,7 +241,38 @@ Edit `backend/dev/resources/local.edn` and add the following lines
 
 ### Local Development Notes and Considerations
 
-#### Frontend - Backend E2E Integration
+Currently, our local development setup doesn't fully support integrated frontend and backend services. This is because our frontend and backend teams work independently, communicating their needs and changes without directly interacting with each other's codebases. As a result, seamless local integration hasn't been a high priority.
 
-TODO
+Typically, the backend team tests their APIs locally using dummy data to ensure they meet requirements. Meanwhile, the frontend team develops by connecting to the API deployed on the testing server, utilizing the data already present there.
 
+#### Potential Local Development Issues
+
+You might encounter a couple of issues when trying to integrate locally:
+
+**1. API Proxy Configuration:**
+
+- The frontend's default backend target is http://backend:3000 (found in `frontend/next.config.js:65`).
+- This won't resolve correctly due to how our Docker Compose networking is set up.
+
+**2. Missing Auth0 Credentials:**
+
+- While some Auth0 environment variables are in place, they may lack actual values for complete functionality.
+- We don't currently have a dedicated Auth0 account for local development.
+- We also don't use a local Auth0 mock service, so local development doesn't inherently require connecting to Auth0.
+
+#### Workarounds for Local Development
+To overcome these challenges, here are some workarounds:
+
+**Frontend Development**
+- Set `REACT_APP_FEENV=true`: This environment variable configures your local frontend to connect directly to the backend running on the test server.
+
+**Backend Development**
+- Bypass Authentication (Recommended for local dev): You can bypass Auth0 authentication by modifying your `backend/dev/resources/local.edn` file.
+- Use Auth0 Authentication (Optional): If you need to test with Auth0, you'll have to:
+  * Create a user in your local Auth0 with the exact same email as a user on the test server.
+  * Obtain an Auth0 token from the test server. The easiest way to get this token is to:
+    - Log in to the test server.
+    - Go to your user profile page.
+    - Open your browser's network traffic inspection tools.
+    - Refresh the profile page.
+    - Find the /profile endpoint request and copy the value from its Authorization header.
