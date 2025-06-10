@@ -285,6 +285,7 @@
                    ;; Note that this is a sensitive field that is removed from HTTP responses.
                      :chat-account-id (:unique-user-identifier user)
                      :username (:username user)
+                     :chat-user-id (:id user)
                      :unique-user-identifier (:unique-user-identifier user)}
               discussion-id (assoc :discussion-id discussion-id)
               conversation-id (assoc :conversation-id conversation-id))))
@@ -331,7 +332,9 @@
                 :error-details body
                 :status status}))))
 
-(defn get-channel-conversations [{:keys [logger api-key]} channel-id]
+(defn get-channel-conversations* [{:keys [logger api-key]} channel-id]
+  {:pre  [channel-id]
+   :post [(check! #'port.chat/get-channel-conversations %)]}
   (let [{:keys [status body]}
         (http-client/request logger {:url (build-api-endpoint-url "/api/v2/room/" channel-id "/conversations")
                                      :method :get
@@ -339,13 +342,14 @@
                                      :as :json-keyword-keys})
         member-keys [:id :email :username :unique-user-identifier]]
     (if (<= 200 status 299)
-      {:success? true
-       :conversations (mapv (fn [conversation]
-                              (-> conversation
-                                  (set/rename-keys {:room-id :channel-id})
-                                  (update :member-one #(select-keys % member-keys))
-                                  (update :member-two #(select-keys % member-keys))))
-                            (cske/transform-keys ->kebab-case body))}
+      (let [conversations (mapv (fn [conversation]
+                                  (-> conversation
+                                      (set/rename-keys {:room-id :channel-id})
+                                      (update :member-one #(select-keys % member-keys))
+                                      (update :member-two #(select-keys % member-keys))))
+                                (cske/transform-keys ->kebab-case body))]
+        {:success? true
+         :conversations conversations})
       (failure {:reason :failed-to-get-channel-conversations
                 :error-detail body
                 :status status}))))
@@ -365,7 +369,7 @@
                 :status status}))))
 
 (defn get-conversations-with-messages [{:keys [logger] :as this} channel-id]
-  (let [conversations-response (get-channel-conversations this channel-id)]
+  (let [conversations-response (get-channel-conversations* this channel-id)]
     (if-not (:success? conversations-response)
       (do
         (log logger :error conversations-response)
@@ -635,7 +639,6 @@
       (if (<= 200 status 299)
         (do
           (log logger :info :successfully-created-discussion)
-          (prn :discussion-body body)
           {:success? true
            :discussion (extract-discussion body)})
         (do
@@ -773,6 +776,7 @@
      `port.chat/get-private-channels              (get-all-channels-fn "private")
      `port.chat/get-public-channels               (get-all-channels-fn "public")
      `port.chat/get-channel-discussions           get-channel-discussions*
+     `port.chat/get-channel-conversations         get-channel-conversations*
      `port.chat/get-discussion-messages           get-discussion-messages*
      `port.chat/get-channel-present-users         get-channel-present-users*
      `port.chat/get-user-info                     get-user-info*

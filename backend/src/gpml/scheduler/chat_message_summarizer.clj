@@ -404,7 +404,7 @@ You can read them here: %s"
             (when (seq recent-conversations)
               (doseq [conversation recent-conversations]
                 (let [partner (get-conversation-partner membership conversation)
-                      conversation-url (format "%s/forum/%s/dm/%s" app-domain chat-channel-id (:conversation-id conversation))
+                      conversation-url (format "%s/forum/%s?conversation=%s" app-domain chat-channel-id (:conversation-id conversation))
                       conversation-name (format "New message from %s in %s" (:username partner) channel-name)
                       conversation-messages (:messages conversation)
                       message-count-humanized (format "%s New %s"
