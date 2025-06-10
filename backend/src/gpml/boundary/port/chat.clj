@@ -98,8 +98,9 @@
             false)))]]]
    [:discussion-id {:optional true} :string]
    [:conversation-id {:optional true} :string]
-   [:chat-account-id :string]
+   [:chat-user-id {:optional true} :string]
    [:username :string]
+   [:chat-account-id :string]
    [:unique-user-identifier UniqueUserIdentifier]])
 
 (def Messages
@@ -136,15 +137,20 @@
    [:conversation-id :string]
    [:channel-id :string]
    [:member-one ConversationMember]
-   [:member-two ConversationMember]
-   [:messages [:vector {} Message]]])
+   [:member-two ConversationMember]])
+
+(def ConversationWithMessages
+  (-> Conversation
+      (mu/assoc :messages [:vector {} Message])))
+
+(def ConversationSnakeCase (map->snake Conversation))
 
 (def ExtendedChannel
   (-> Channel
       (mu/assoc :members Members)
       (mu/assoc :messages Messages)
       (mu/assoc :discussions [:vector {} ExtendedDiscussion])
-      (mu/assoc :conversations [:vector {} Conversation])))
+      (mu/assoc :conversations [:vector {} ConversationWithMessages])))
 
 (def ChannelSnakeCase (map->snake Channel))
 
@@ -203,6 +209,7 @@
 (def ExtendedChannelSnakeCase
   (-> ChannelSnakeCase
       (mu/assoc :users [:vector {} PresentedUserSnakeCase])
+      (mu/assoc :conversations [:vector {} ConversationSnakeCase])
       (mu/assoc :messages MessagesSnakeCase)))
 
 (def Channels
@@ -312,6 +319,11 @@
               (success-with :discussions [:sequential Discussion])
               (failure-with :error-details any?)]}
     get-channel-discussions [this channel-id])
+
+  (^{:schema [:or
+              (success-with :conversations [:sequential Conversation])
+              (failure-with :error-details any?)]}
+    get-channel-conversations [this channel-id])
 
   (^{:schema [:or
               (success-with :user-ids [:sequential any? #_UniqueUserIdentifier]) ;; XXX I'm assuming it returns such ids. Can be requested.

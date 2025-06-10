@@ -254,12 +254,21 @@
           (failure context
                    :reason :failed-to-get-channel
                    :error-details {:result result}))))
-    (fn tx-get-channel-discussions [context]
-      (let [result (port.chat/get-channel-discussions chat-adapter channel-id)]
+    ;; Disable get channel discussions as it is not included in the response schema.
+    ;; Reduce unnecessary API calls.
+    ; (fn tx-get-channel-discussions [context]
+    ;   (let [result (port.chat/get-channel-discussions chat-adapter channel-id)]
+    ;     (if (:success? result)
+    ;       (assoc-in context [:channel :discussions] (:discussions result))
+    ;       (failure context
+    ;                :reason :failed-to-get-channel-discussions
+    ;                :error-details {:result result}))))
+    (fn tx-get-channel-conversations [context]
+      (let [result (port.chat/get-channel-conversations chat-adapter channel-id)]
         (if (:success? result)
-          (assoc-in context [:channel :discussions] (:discussions result))
+          (assoc-in context [:channel :conversations] (:conversations result))
           (failure context
-                   :reason :failed-to-get-channel-discussions
+                   :reason :failed-to-get-channel-conversations
                    :error-details {:result result}))))
     (partial tx-get-channel-users config)
     (fn enrich-messages-users [context]
