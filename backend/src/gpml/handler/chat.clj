@@ -282,8 +282,9 @@
             :middleware middleware
             :swagger    {:tags ["chat"] :security [{:id_token []}]}
             :handler    (fn get-channel-details [{{:keys [path]} :parameters
-                                                  {user-id :id} :user}]
-                          (let [result (svc.chat/get-channel-details config (:id path))]
+                                                  user :user}]
+                          (let [user-id (:id user)
+                                result (svc.chat/get-channel-details config (:id path))]
                             (if (:success? result)
                               (let [allowed? (or (-> result :channel (find :privacy) (doto (assert "Should contain `:privacy` field")) val (= port.chat/public))
                                                  (some (fn [{other-id :id :as other-user}]
@@ -294,7 +295,16 @@
                                                  (h.r.permission/super-admin? config user-id))]
                                 (if-not allowed?
                                   (r/forbidden {:message "Unauthorized"})
-                                  (r/ok (cske/transform-keys ->snake_case result))))
+                                  (r/ok (cske/transform-keys ->snake_case
+                                                             (update-in result
+                                                                        [:channel :conversations]
+                                                                        (fn [conversations]
+                                                                          (let [chat-id (:chat_account_id user)]
+                                                                            (filter
+                                                                             (fn [it]
+                                                                               (or (= chat-id (get-in it [:member-one :unique-user-identifier]))
+                                                                                   (= chat-id (get-in it [:member-two :unique-user-identifier]))))
+                                                                             conversations))))))))
                               (-> result present-error r/server-error))))
             :parameters ChannelIdPath
             :responses {200 {:body (success-with :channel port.chat/ExtendedChannelSnakeCase)}
