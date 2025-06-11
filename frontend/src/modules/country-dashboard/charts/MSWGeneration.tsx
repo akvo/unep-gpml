@@ -87,6 +87,8 @@ const MSWGenerationChart = ({ layers, layerLoading }) => {
         name: `${cities[index]} estimate`,
       })),
     ]
+    const maxValue = Math.max(...dataValues.map((d) => d.value)) 
+    const dynamicMax =  Math.ceil(maxValue + maxValue * 0.3)
     return {
       title: {
         text: textTitle,
@@ -132,8 +134,8 @@ const MSWGenerationChart = ({ layers, layerLoading }) => {
                 overflow: 'break',
                 interval: 0,
                 fontSize: 9,
-                rotate: 30
-            }
+                rotate: 30,
+              }
             : {
                 fontWeight: 'bold',
                 width: 70,
@@ -147,7 +149,7 @@ const MSWGenerationChart = ({ layers, layerLoading }) => {
         type: 'value',
         name: tKgPersonDay,
         min: 0,
-        max: 2,
+        max: dynamicMax,
         interval: 0.5,
         nameTextStyle: {
           fontSize: 12,

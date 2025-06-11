@@ -4790,7 +4790,7 @@ msgstr "Programmes de remboursement contre remboursement"
 #: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:222
 #: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:215
 msgid "Data source:"
-msgstr "Source des données :"
+msgstr "Source des données:"
 
 #: src/pages/countryOverview/partials/EconomicInstrumentsComponent.jsx:27
 msgid "Disincentives to irresponsible plastic stewardship​"
@@ -5168,7 +5168,7 @@ msgstr ""
 
 #: src/pages/countryOverview/IntroPage.jsx:128
 msgid "Select a Country to Get Started"
-msgstr ""
+msgstr "Sélectionnez un pays"
 
 #: src/pages/landing/index.jsx:105
 msgid "The Country Dedicated Workflow is a digital tool to help countries in developing national plastic source inventories and plastic strategies, supported by step-by-step guidance and inspiring case studies. Create your account and explore."

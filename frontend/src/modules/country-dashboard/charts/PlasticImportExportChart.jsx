@@ -90,7 +90,7 @@ const PlasticImportExportChart = ({ layers, loading }) => {
   const plasticText = splitIntoTwoLines(
     t`Plastic import & export value for ${decodeURIComponent(country)}`
   )
-  const units = t`million  US  dollars`
+  const units = t`million US dollars`
   const fUnits = units.replace(/  /, '\n')
 
   const getOption = () => ({
