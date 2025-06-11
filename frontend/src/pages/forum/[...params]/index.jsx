@@ -35,6 +35,7 @@ import Script from 'next/script'
 import dynamic from 'next/dynamic'
 import { UIStore } from '../../../store'
 import useNotifications from '../../../hooks/useNotifications'
+import ChatSvg from '../../../images/chat.svg'
 
 const DynamicForumModal = dynamic(
   () => import('../../../modules/forum/forum-modal'),
@@ -582,9 +583,13 @@ const Participants = ({ isAdmin, activeForum, channelId, sdk, profile }) => {
                   title={fullName}
                   description={user?.org?.name}
                 />
-                {getUserNotificationCount(user.id) > 0 && (
+                {getUserNotificationCount(user.id) > 0 ? (
                   <span className="notifcation-badge">
                     {getUserNotificationCount(user.id)}
+                  </span>
+                ) : (
+                  <span className="chat-icon">
+                    <ChatSvg />
                   </span>
                 )}
               </List.Item>
@@ -846,34 +851,35 @@ const DiscussionItem = ({
         // disabled={!discuss?.id}
       >
         {discuss?.name}
+
+        {isAdmin && (
+          <div className="popover-container">
+            <Popover
+              placement="bottomLeft"
+              overlayClassName={styles.forumOptions}
+              content={
+                <ul>
+                  <li>
+                    <Button
+                      size="small"
+                      type="link"
+                      onClick={handleDeleteDiscussion(discuss)}
+                    >
+                      <Trans>Delete</Trans>
+                    </Button>
+                  </li>
+                </ul>
+              }
+              trigger="click"
+            >
+              <MoreOutlined rotate={90} />
+            </Popover>
+          </div>
+        )}
         {notificationCount > 0 && (
           <span className="notifcation-badge">{notificationCount}</span>
         )}
       </Button>
-      {isAdmin && (
-        <div className="popover-container">
-          <Popover
-            placement="bottomLeft"
-            overlayClassName={styles.forumOptions}
-            content={
-              <ul>
-                <li>
-                  <Button
-                    size="small"
-                    type="link"
-                    onClick={handleDeleteDiscussion(discuss)}
-                  >
-                    <Trans>Delete</Trans>
-                  </Button>
-                </li>
-              </ul>
-            }
-            trigger="click"
-          >
-            <MoreOutlined rotate={90} />
-          </Popover>
-        </div>
-      )}
     </li>
   )
 }
