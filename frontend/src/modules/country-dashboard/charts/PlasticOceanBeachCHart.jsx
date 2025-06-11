@@ -3,7 +3,7 @@ import ReactEcharts from 'echarts-for-react'
 import { useRouter } from 'next/router'
 import { getBaseUrl } from '../../../utils/misc'
 import { t, Trans } from '@lingui/macro'
-import { splitIntoTwoLines} from './PlasticImportExportChart'
+import { splitIntoTwoLines } from './PlasticImportExportChart'
 
 const PlasticOceanBeachChart = ({ layers, loading }) => {
   const router = useRouter()
@@ -12,7 +12,7 @@ const PlasticOceanBeachChart = ({ layers, loading }) => {
   const [oceanPercentage, setOceanPercentage] = useState(0)
   const [beachPercentage, setBeachPercentage] = useState(0)
   const [totalWeight, setTotalWeight] = useState(0)
-
+  console.log(beachPercentage)
   useEffect(() => {
     const fetchData = () => {
       if (loading || !country || !layers.length) return
@@ -94,8 +94,10 @@ const PlasticOceanBeachChart = ({ layers, loading }) => {
 
     return {
       title: {
-        text:splitIntoTwoLines(t`Escaped plastic reaching oceans and coasts​`, true),
-        subtext:splitIntoTwoLines(t`Percentage of the escaped waste between years 2010-2019`, true),
+        text: splitIntoTwoLines(t`Escaped plastic reaching oceans and coasts​`),
+        subtext: splitIntoTwoLines(
+          t`Percentage of the escaped plastic waste between years 2010-2019`
+        ),
         left: 'center',
         textStyle: {
           fontSize: window.innerWidth < 768 ? 14 : 16,
@@ -104,9 +106,9 @@ const PlasticOceanBeachChart = ({ layers, loading }) => {
         },
         subtextStyle: {
           fontSize: window.innerWidth < 768 ? 11 : 12,
-          color: '#020A5B',
+          // color: '#020A5B',
           fontFamily: 'Roboto, Helvetica Neue, sans-serif',
-          fontWeight: 'bold',
+          // fontWeight: 'bold',
         },
       },
       tooltip: {
@@ -151,18 +153,31 @@ const PlasticOceanBeachChart = ({ layers, loading }) => {
           labelLine: {
             show: false,
           },
-          data: [
-            {
-              value: beachPercentage,
-              name: t`Ends up on the coasts`,
-              itemStyle: { color: '#ffc107' },
-            },
-            {
-              value: oceanPercentage,
-              name: t`Ends up in the ocean`,
-              itemStyle: { color: '#007bff' },
-            },
-          ],
+          data:
+            parseInt(beachPercentage) === 0 && parseInt(oceanPercentage) === 0
+              ? [
+                  {
+                    value: 0,
+                    name: t`No Data`,
+                    itemStyle: '#bdc3c7',
+                  },
+                ]
+              : [
+                  {
+                    value: beachPercentage,
+                    name: t`Ends up on the coasts`,
+                    itemStyle: {
+                      color: '#ffc107',
+                    },
+                  },
+                  {
+                    value: oceanPercentage,
+                    name: t`Ends up in the ocean`,
+                    itemStyle: {
+                      color: '#007bff',
+                    },
+                  },
+                ],
         },
       ],
       graphic: {
