@@ -74,6 +74,91 @@ graph TD
    style secret fill:#f8cecc,stroke:#b85450
 ```
 
+### Technical Architecture Overview
+
+#### Core Application Components
+
+**Nginx (Reverse Proxy)**
+- **Technology**: Nginx web server
+- **Purpose**: Routes incoming requests to appropriate services, serves static assets, handles SSL termination
+- **Location**: `/nginx/` directory with configuration templates
+- **Responsibilities**: Load balancing, request routing, static file serving
+
+**Frontend Container**
+- **Technology**: Next.js 13+ with React 18
+- **Purpose**: User interface for the UNEP GPML platform providing interactive web experience
+- **Location**: `/frontend/` directory
+- **Responsibilities**: 
+  - User authentication and authorization flows
+  - Resource browsing and management (policies, technologies, initiatives)
+  - Stakeholder networking and profile management
+  - Interactive maps and data visualization
+  - Multilingual content support (English, French, Spanish)
+
+**Backend Container**
+- **Technology**: Clojure with Duct framework, Ring middleware
+- **Purpose**: REST API server handling business logic and data operations
+- **Location**: `/backend/` directory
+- **Responsibilities**:
+  - API endpoints for all platform features
+  - Authentication and RBAC (Role-Based Access Control)
+  - Database operations and data validation
+  - Integration with external services (Auth0, cloud storage, email)
+  - Background job processing and notifications
+
+**Strapi CMS Container**
+- **Technology**: Strapi 4.14+ (Node.js-based headless CMS)
+- **Purpose**: Content management system for editorial content
+- **Location**: `/strapi/` directory
+- **Responsibilities**:
+  - Managing static content, news articles, and documentation
+  - Content localization and translation workflows
+  - Media asset management
+  - Admin interface for content editors
+
+**Cloud SQL Proxy (Sidecar)**
+- **Technology**: Google Cloud SQL Proxy
+- **Purpose**: Secure connection to Google Cloud SQL database
+- **Responsibilities**:
+  - Encrypted connection to production database
+  - Connection pooling and authentication
+  - Network security for database access
+
+#### Kubernetes Configuration Components
+
+**ConfigMap**
+- **Purpose**: Stores non-sensitive configuration data as key-value pairs
+- **Contains**: Database connection info, service URLs, feature flags, environment-specific settings
+- **Benefits**: Separates configuration from application code, enables easy environment-specific deployments
+
+**Secrets**
+- **Purpose**: Stores sensitive data like passwords, API keys, and certificates
+- **Contains**: Database credentials, API keys for external services, authentication tokens
+- **Security**: Encrypted at rest, access-controlled, separate from application code
+
+**Service (NodePort)**
+- **Purpose**: Exposes the application pod to external traffic
+- **Type**: NodePort allows external access through a specific port on each cluster node
+- **Routing**: Directs traffic to the Nginx container which then routes to appropriate services
+
+#### External Service Integrations
+
+**Google Cloud Platform**
+- **Cloud SQL**: PostgreSQL database with 234+ migrations for comprehensive data model
+- **Cloud Storage**: File storage for user uploads, documents, images, and media assets
+
+**Authentication & Security**
+- **Auth0/OIDC**: Identity provider for user authentication and authorization
+- **Sentry.io**: Error tracking and performance monitoring
+
+**Communication & Data**
+- **Mailjet**: Transactional email service for notifications and user communications
+- **Dead Simple Chat**: Real-time chat integration for community features
+- **BRS/LEAP APIs**: External data sources for environmental policy and legal frameworks
+- **OpenAI API**: AI-powered features for content processing and recommendations
+
+This architecture supports the UNEP GPML mission of combating marine litter through a scalable, secure, and internationally accessible platform that connects stakeholders, resources, and knowledge worldwide.
+
 ## Development
 
 ### Requirements
