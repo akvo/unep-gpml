@@ -5,8 +5,12 @@ import useRegions from '../../../hooks/useRegions'
 import { getBaseUrl } from '../../../utils/misc'
 import { t, Trans } from '@lingui/macro'
 import { splitIntoTwoLines } from './PlasticImportExportChart'
+import { useLingui } from '@lingui/react'
 
 const PlasticCompositionChart = ({ layers, layerLoading }) => {
+    const { i18n } = useLingui()
+
+  const { _locale } = i18n
   const router = useRouter()
   const { country, countryCode } = router.query
   const [nationalEstimate, setNationalEstimate] = useState(0)
@@ -83,7 +87,7 @@ const PlasticCompositionChart = ({ layers, layerLoading }) => {
     ]
     const tTitle = splitIntoTwoLines(
       t`Plastic composition in the MSW for ${decodeURIComponent(country)}`,
-      true
+      _locale === "fr" ? true: false
     )
     return {
       title: {

@@ -135,6 +135,7 @@ export const getStaticProps = async (ctx) => {
 }
 
 const ButtonStyled = styled(Button)`
+  margin: 5px 20px;
   @media (max-width: 768px) {
     display: none;
   }

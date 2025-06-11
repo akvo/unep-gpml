@@ -133,7 +133,7 @@ const PlasticImportExportChart = ({ layers, loading }) => {
   const textTitle = splitIntoTwoLines(t`Plastic import & export value for ${decodeURIComponent(country)}`)
 
   const subTitle = splitIntoTwoLines(t`in million US dollars for year ${2022 || 'N/A'}`)
-  const units = t`million  US  dollars`
+  const units = t`million US dollars`
   const fUnits = units.replace(/  /, '\n')
   const getOption = () => ({
     title: {

@@ -37,12 +37,14 @@ const RequestDataUpdateModal = ({ visible, onClose }) => {
       <Form layout="vertical" form={form} onFinish={handleSubmit}>
         <Form.Item label="Select category" name="category" required>
           <Checkbox.Group>
-            <Checkbox value="Waste Management">Waste Management</Checkbox>
+            
             <Checkbox value="Plastic Trade">Trade</Checkbox>
-            <Checkbox value="Plastic Governance">Governance</Checkbox>
+            <Checkbox value="Waste Management">Waste Management</Checkbox>
+            
             <Checkbox value="Plastic in the Environment">
               Legacy Plastics
             </Checkbox>
+            {/* <Checkbox value="Plastic Governance">Governance</Checkbox> */}
           </Checkbox.Group>
         </Form.Item>
 
