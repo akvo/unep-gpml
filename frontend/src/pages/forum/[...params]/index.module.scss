@@ -17,13 +17,31 @@
         max-width: 450px;
       }
 
+      .notifcation-badge {
+        margin-left: 10px;
+        background: $systemWarning5;
+        color: black;
+        border-radius: 10px;
+        padding: 4px;
+        font-size: 12px;
+        font-weight: 700;
+        min-width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        text-decoration: none !important;
+        cursor: pointer;
+      }
+
       h3 {
         margin: 12px 0 12px 0;
         font-weight: 600;
       }
 
       .title-container {
-        margin-top: 15px;
+        margin-top: 5px;
         display: flex;
 
         .popover-container {
@@ -81,8 +99,44 @@
           padding: 11px 21px;
           border-bottom: none;
           display: flex;
+          position: relative;
           // justify-content: space-between;
-
+          .ant-btn {
+            display: inline;
+            position: static;
+            padding-right: 30px;
+            // width: 100%;
+            // position: relative;
+          }
+          span {
+            display: inline;
+          }
+          .notifcation-badge {
+            // display: inline-block;
+            line-height: 12px;
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            display: block;
+          }
+          @media screen and (max-width: $bpMobile) {
+            .notifcation-badge {
+              position: static;
+            }
+            .ant-btn {
+              text-decoration: none;
+              display: flex;
+              & > span:first-child {
+                text-decoration: underline;
+              }
+            }
+          }
+          .popover-container {
+            // margin-left: auto;
+            display: inline-block;
+            margin-left: 10px;
+            transform: translateY(-2px);
+          }
           &.active {
             background-color: $primaryViolet2;
 
@@ -96,23 +150,6 @@
           white-space: normal;
           text-align: left;
         }
-
-        .notifcation-badge {
-          margin-left: 10px;
-          background: $systemWarning5;
-          color: black;
-          border-radius: 50%;
-          padding: 4px;
-          font-size: 12px;
-          font-weight: 700;
-          min-width: 20px;
-          height: 20px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          text-align: center;
-          cursor: pointer;
-        }
       }
 
       .members {
@@ -120,8 +157,39 @@
         margin-top: 21px;
 
         .ant-list-item {
-          padding: 0 0 13px;
+          padding: 7px 10px 7px 0;
           border-bottom: none;
+          cursor: default !important;
+          position: relative;
+          &.self .chat-icon {
+            display: none;
+          }
+          &:not(.self) {
+            .chat-icon {
+              display: flex;
+            }
+            cursor: pointer;
+            &:hover {
+              background-color: $primaryBlue2;
+              .chat-icon {
+                svg {
+                  path {
+                    fill: $primaryBlue5;
+                    stroke: $primaryBlue5;
+                  }
+                }
+              }
+              &:before {
+                content: ' ';
+                background-color: $primaryBlue2;
+                height: 100%;
+                width: 20px;
+                left: -20px;
+                top: 0;
+                position: absolute;
+              }
+            }
+          }
 
           .ant-list-item-meta-avatar {
             margin-right: 13px;
@@ -313,12 +381,27 @@
           }
 
           .members {
-            margin-top: 10px;
+            margin-top: 5px;
+            margin-bottom: 5px;
             display: flex;
             flex-direction: row;
 
             .ant-list-items {
               display: flex;
+              .ant-list-item {
+                padding-right: 7px;
+                .chat-icon {
+                  position: absolute;
+                  right: 4px;
+                  bottom: 4px;
+                  transform: rotateY(180deg);
+                  svg {
+                    path {
+                      stroke: #f5f7ff;
+                    }
+                  }
+                }
+              }
 
               .ant-list-item-meta-avatar {
                 margin-right: 6px;
@@ -387,6 +470,9 @@
         h3 {
           font-weight: 600;
         }
+        .ant-btn {
+          display: flex;
+        }
       }
 
       @media screen and (max-width: $bpMobile) {
@@ -420,6 +506,7 @@
   text-transform: uppercase;
   text-decoration: none !important;
   margin-left: -6px !important;
+  display: flex !important;
 
   :global {
     svg {
