@@ -36,11 +36,11 @@ msgstr ""
 msgid "{0}"
 msgstr ""
 
-#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:81
+#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:85
 msgid "{0} estimate"
 msgstr ""
 
-#: src/modules/country-dashboard/charts/MSWGeneration.tsx:117
+#: src/modules/country-dashboard/charts/MSWGeneration.tsx:119
 msgid "{city} estimate"
 msgstr ""
 
@@ -218,7 +218,8 @@ msgstr ""
 msgid "Add An Event"
 msgstr ""
 
-#: src/layouts/new-layout.js:275
+#: src/components/nav/nav-mobile.jsx:223
+#: src/layouts/new-layout.js:322
 #: src/modules/workspace/view.jsx:79
 msgid "Add Content"
 msgstr ""
@@ -477,7 +478,7 @@ msgstr ""
 msgid "Back Home"
 msgstr ""
 
-#: src/pages/forum/[...params]/index.jsx:164
+#: src/pages/forum/[...params]/index.jsx:174
 msgid "Back to all Forums"
 msgstr ""
 
@@ -485,7 +486,7 @@ msgstr ""
 msgid "Back to categories"
 msgstr ""
 
-#: src/pages/forum/[...params]/index.jsx:223
+#: src/pages/forum/[...params]/index.jsx:240
 msgid "Back to Channel"
 msgstr ""
 
@@ -726,7 +727,7 @@ msgstr ""
 msgid "Citizen science"
 msgstr ""
 
-#: src/pages/landing/index.jsx:183
+#: src/pages/landing/index.jsx:182
 msgid "Civil Society"
 msgstr ""
 
@@ -815,7 +816,7 @@ msgstr ""
 msgid "Community engagement"
 msgstr ""
 
-#: src/pages/landing/index.jsx:414
+#: src/pages/landing/index.jsx:422
 #: src/store.js:67
 msgid "Community Hub"
 msgstr ""
@@ -863,7 +864,7 @@ msgid "Constitution"
 msgstr ""
 
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:56
-#: src/utils/misc.js:340
+#: src/utils/misc.js:344
 msgid "Consumption"
 msgstr ""
 
@@ -949,7 +950,7 @@ msgstr ""
 msgid "Country Dashboard"
 msgstr ""
 
-#: src/pages/landing/index.jsx:96
+#: src/pages/landing/index.jsx:95
 msgid "Country Dedicated"
 msgstr ""
 
@@ -1042,7 +1043,7 @@ msgstr ""
 msgid "data hub"
 msgstr ""
 
-#: src/pages/landing/index.jsx:390
+#: src/pages/landing/index.jsx:398
 #: src/store.js:46
 msgid "Data Hub"
 msgstr ""
@@ -1069,12 +1070,12 @@ msgstr ""
 msgid "Data Source"
 msgstr ""
 
-#: src/modules/country-dashboard/charts/MSWGeneration.tsx:222
-#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:242
+#: src/modules/country-dashboard/charts/MSWGeneration.tsx:224
+#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:246
 #: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:194
 #: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:200
 #: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:222
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:215
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:230
 msgid "Data source:"
 msgstr ""
 
@@ -1110,8 +1111,8 @@ msgstr ""
 #: src/modules/stakeholder-detail/view.jsx:191
 #: src/modules/workspace/ps/setup-team-table.jsx:206
 #: src/modules/workspace/view.jsx:519
-#: src/pages/forum/[...params]/index.jsx:342
-#: src/pages/forum/[...params]/index.jsx:762
+#: src/pages/forum/[...params]/index.jsx:359
+#: src/pages/forum/[...params]/index.jsx:816
 #: src/pages/forum/index.jsx:261
 msgid "Delete"
 msgstr ""
@@ -1251,7 +1252,7 @@ msgstr ""
 msgid "Discussion"
 msgstr ""
 
-#: src/pages/forum/[...params]/index.jsx:644
+#: src/pages/forum/[...params]/index.jsx:664
 msgid "Discussions"
 msgstr ""
 
@@ -1378,7 +1379,7 @@ msgstr ""
 msgid "Email Notifications"
 msgstr ""
 
-#: src/pages/landing/index.jsx:250
+#: src/pages/landing/index.jsx:249
 msgid "Empowering"
 msgstr ""
 
@@ -1398,13 +1399,13 @@ msgstr ""
 msgid "End of Life"
 msgstr ""
 
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:119
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:162
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:121
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:175
 msgid "Ends up in the ocean"
 msgstr ""
 
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:119
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:157
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:121
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:168
 msgid "Ends up on the coasts"
 msgstr ""
 
@@ -1519,12 +1520,12 @@ msgstr ""
 msgid "Establish a National Steering Committee (NSC) with representation from relevant government agencies as well as relevant non-governmental organisations. The NSC will aim to meet 2-4 times per year to assist with and drive the roadmap/strategy/plan. Establish a project team consisting of consultants to lead the implementation of the project with the guidance of the NSC and UNEP."
 msgstr ""
 
-#: src/modules/country-dashboard/charts/MSWGeneration.tsx:111
-#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:109
+#: src/modules/country-dashboard/charts/MSWGeneration.tsx:113
+#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:113
 msgid "Estimated Regional Average"
 msgstr ""
 
-#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:169
+#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:173
 msgid "Estimates"
 msgstr ""
 
@@ -1576,7 +1577,7 @@ msgstr ""
 #~ msgid "Explore global plastic lifecycle datasets to deepen your understanding on the global trend of plastic pollution."
 #~ msgstr ""
 
-#: src/pages/landing/index.jsx:421
+#: src/pages/landing/index.jsx:429
 msgid "Explore the community"
 msgstr ""
 
@@ -1584,7 +1585,7 @@ msgstr ""
 #~ msgid "Explore the CoPs"
 #~ msgstr ""
 
-#: src/pages/landing/index.jsx:399
+#: src/pages/landing/index.jsx:407
 msgid "Explore the data"
 msgstr ""
 
@@ -1592,11 +1593,11 @@ msgstr ""
 #~ msgid "Explore the data layers"
 #~ msgstr ""
 
-#: src/pages/landing/index.jsx:354
+#: src/pages/landing/index.jsx:362
 msgid "Explore The Platform"
 msgstr ""
 
-#: src/pages/landing/index.jsx:375
+#: src/pages/landing/index.jsx:383
 msgid "Explore the resources"
 msgstr ""
 
@@ -1693,7 +1694,7 @@ msgstr ""
 msgid "Fishing for Litter: Ocean cleaning project that involves fishermen who collect debris during fishing activities"
 msgstr ""
 
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:222
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:237
 msgid "​​Florida State University and UNEP, 2021"
 msgstr ""
 
@@ -1750,7 +1751,7 @@ msgstr ""
 
 #: src/modules/workspace/view.jsx:258
 #: src/pages/forum/index.jsx:123
-#: src/pages/landing/index.jsx:551
+#: src/pages/landing/index.jsx:559
 #: src/store.js:86
 msgid "Forums"
 msgstr ""
@@ -1767,7 +1768,7 @@ msgstr ""
 msgid "Frequently Asked Questions"
 msgstr ""
 
-#: src/utils/misc.js:343
+#: src/utils/misc.js:347
 msgid "Full Life Cycle"
 msgstr ""
 
@@ -1904,7 +1905,7 @@ msgstr ""
 msgid "Global Plastics Action Partnership (GPAP)"
 msgstr ""
 
-#: src/pages/landing/index.jsx:123
+#: src/pages/landing/index.jsx:122
 msgid "Global Plastics Hub is developed through various stakeholders consultations, engagement and contributions from members and partners under the Global Partnership on Plastic Pollution and Marine Litter. We appreciate generous contributions from donor communities including Government of Japan, Norway and the United States."
 msgstr ""
 
@@ -1924,7 +1925,7 @@ msgstr ""
 msgid "Government Verified"
 msgstr ""
 
-#: src/pages/landing/index.jsx:148
+#: src/pages/landing/index.jsx:147
 msgid "Governments"
 msgstr ""
 
@@ -2043,7 +2044,7 @@ msgstr ""
 msgid "High-level strategy"
 msgstr ""
 
-#: src/pages/landing/index.jsx:456
+#: src/pages/landing/index.jsx:464
 msgid "HIGHLIGHTS"
 msgstr ""
 
@@ -2112,7 +2113,7 @@ msgstr ""
 msgid "If you selected \"Other\", please specify."
 msgstr ""
 
-#: src/pages/landing/index.jsx:176
+#: src/pages/landing/index.jsx:175
 msgid "IGOs"
 msgstr ""
 
@@ -2344,7 +2345,7 @@ msgid "Job Tilte"
 msgstr ""
 
 #: src/modules/workspace/view.jsx:378
-#: src/pages/landing/index.jsx:305
+#: src/pages/landing/index.jsx:304
 msgid "Join Now"
 msgstr ""
 
@@ -2387,7 +2388,7 @@ msgstr ""
 msgid "knowledge hub"
 msgstr ""
 
-#: src/pages/landing/index.jsx:368
+#: src/pages/landing/index.jsx:376
 #: src/store.js:15
 msgid "Knowledge Hub"
 msgstr ""
@@ -2396,7 +2397,7 @@ msgstr ""
 msgid "Knowledge Library"
 msgstr ""
 
-#: src/pages/landing/index.jsx:372
+#: src/pages/landing/index.jsx:380
 msgid "Knowledge resources shared in the Knowledge Library"
 msgstr ""
 
@@ -2426,7 +2427,7 @@ msgstr ""
 msgid "Last Name"
 msgstr ""
 
-#: src/pages/landing/index.jsx:460
+#: src/pages/landing/index.jsx:468
 msgid "Latest news:"
 msgstr ""
 
@@ -2466,11 +2467,11 @@ msgstr ""
 msgid "Leave"
 msgstr ""
 
-#: src/pages/forum/[...params]/index.jsx:181
+#: src/pages/forum/[...params]/index.jsx:191
 msgid "Leave Channel"
 msgstr ""
 
-#: src/utils/misc.js:342
+#: src/utils/misc.js:346
 msgid "Legacy Plastics"
 msgstr ""
 
@@ -2604,8 +2605,8 @@ msgstr ""
 msgid "Location and Geo-coverage"
 msgstr ""
 
-#: src/components/nav/nav-mobile.jsx:121
-#: src/layouts/new-layout.js:254
+#: src/components/nav/nav-mobile.jsx:134
+#: src/layouts/new-layout.js:265
 msgid "Login"
 msgstr ""
 
@@ -2622,7 +2623,8 @@ msgstr ""
 msgid "LOGIN WITH EMAIL"
 msgstr ""
 
-#: src/layouts/new-layout.js:290
+#: src/components/nav/nav-mobile.jsx:240
+#: src/layouts/new-layout.js:338
 msgid "Logout"
 msgstr ""
 
@@ -2722,7 +2724,7 @@ msgstr ""
 msgid "member organisation"
 msgstr ""
 
-#: src/pages/landing/index.jsx:418
+#: src/pages/landing/index.jsx:426
 msgid "Members connected through Community Hub."
 msgstr ""
 
@@ -2742,13 +2744,13 @@ msgstr ""
 
 #: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:93
 #: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:136
-msgid "million  US  dollars"
-msgstr ""
-
-#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:126
-#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:186
-#~ msgid "million US dollars"
+#~ msgid "million  US  dollars"
 #~ msgstr ""
+
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:93
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:136
+msgid "million US dollars"
+msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:1962
 msgid "Miscellaneous"
@@ -2881,7 +2883,7 @@ msgid "National data"
 msgstr ""
 
 #: src/modules/country-dashboard/charts/MSWGeneration.tsx:68
-#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:67
+#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:71
 msgid "National estimate"
 msgstr ""
 
@@ -2948,13 +2950,17 @@ msgstr ""
 msgid "Next"
 msgstr ""
 
-#: src/pages/landing/index.jsx:169
+#: src/pages/landing/index.jsx:168
 msgid "NGOs"
 msgstr ""
 
 #: src/modules/onboarding/affiliation-option.jsx:34
 #: src/modules/profile/admin.jsx:64
 msgid "No"
+msgstr ""
+
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:161
+msgid "No Data"
 msgstr ""
 
 #: src/components/map-and-layers/sidebar/partials/layerInfo.jsx:17
@@ -3216,7 +3222,7 @@ msgstr ""
 msgid "PAME, Regional Action Plan on Marine Litter in the Arctic (May 2021)"
 msgstr ""
 
-#: src/pages/forum/[...params]/index.jsx:501
+#: src/pages/forum/[...params]/index.jsx:518
 msgid "Participants"
 msgstr ""
 
@@ -3257,9 +3263,13 @@ msgstr ""
 #~ msgid "Per capita MSW generation for\\n{0}"
 #~ msgstr ""
 
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:98
-msgid "Percentage of the escaped waste between years 2010-2019"
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:99
+msgid "Percentage of the escaped plastic waste between years 2010-2019"
 msgstr ""
+
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:98
+#~ msgid "Percentage of the escaped waste between years 2010-2019"
+#~ msgstr ""
 
 #: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:102
 #~ msgid "Percentage of the escaped waste\\n between years 2010-2019"
@@ -3297,7 +3307,7 @@ msgstr ""
 msgid "Pilot"
 msgstr ""
 
-#: src/pages/forum/[...params]/index.jsx:315
+#: src/pages/forum/[...params]/index.jsx:332
 msgid "Pinned Documents"
 msgstr ""
 
@@ -3317,7 +3327,7 @@ msgstr ""
 #~ msgid "Plastic {type} by type for\\n{countryName}"
 #~ msgstr ""
 
-#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:85
+#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:89
 msgid "Plastic composition in the MSW for {0}"
 msgstr ""
 
@@ -3325,7 +3335,7 @@ msgstr ""
 #~ msgid "Plastic composition in the MSW\\nfor {0}"
 #~ msgstr ""
 
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:127
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:129
 msgid "Plastic distribution"
 msgstr ""
 
@@ -3360,7 +3370,7 @@ msgstr ""
 msgid "Plastic in primary form"
 msgstr ""
 
-#: src/pages/landing/index.jsx:394
+#: src/pages/landing/index.jsx:402
 msgid "Plastic Lifecycle Indicators showcase in the Data Hub."
 msgstr ""
 
@@ -3473,7 +3483,7 @@ msgid "private"
 msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:1111
-#: src/pages/landing/index.jsx:155
+#: src/pages/landing/index.jsx:154
 msgid "Private Sector"
 msgstr ""
 
@@ -3485,7 +3495,7 @@ msgstr ""
 msgid "Process of checking, verifying, and attaining general information about the abilityl to comply with the standard."
 msgstr ""
 
-#: src/utils/misc.js:339
+#: src/utils/misc.js:343
 msgid "Production"
 msgstr ""
 
@@ -3497,7 +3507,8 @@ msgstr ""
 msgid "Professional skills training"
 msgstr ""
 
-#: src/layouts/new-layout.js:287
+#: src/components/nav/nav-mobile.jsx:231
+#: src/layouts/new-layout.js:332
 msgid "Profile"
 msgstr ""
 
@@ -3581,7 +3592,7 @@ msgid "Read more"
 msgstr ""
 
 #: src/components/map-and-layers/sidebar/partials/layerInfo.jsx:54
-#: src/pages/landing/index.jsx:503
+#: src/pages/landing/index.jsx:511
 msgid "Read More"
 msgstr ""
 
@@ -3615,7 +3626,7 @@ msgid "Reef Futures Symposium"
 msgstr ""
 
 #: src/modules/country-dashboard/charts/MSWGeneration.tsx:69
-#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:68
+#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:72
 msgid "Regional Average"
 msgstr ""
 
@@ -3838,7 +3849,7 @@ msgstr ""
 #~ msgid "Science<0/>policy"
 #~ msgstr ""
 
-#: src/pages/landing/index.jsx:162
+#: src/pages/landing/index.jsx:161
 msgid "Scientific Communities"
 msgstr ""
 
@@ -4018,7 +4029,7 @@ msgstr ""
 msgid "Social impacts will be evaluated"
 msgstr ""
 
-#: src/layouts/new-layout.js:117
+#: src/layouts/new-layout.js:136
 msgid "Some translations on this website are generated with the use of AI for informational purposes only. While reasonable efforts are made to increase accuracy, the United Nations Environment Programme (UNEP) does not warrant the accuracy, completeness, or reliability of the translations. For official purposes, please refer to content in the original language."
 msgstr ""
 
@@ -4154,7 +4165,7 @@ msgstr ""
 #: src/pages/countryOverview/index.jsx:313
 #: src/pages/countryOverview/index.jsx:464
 #: src/pages/countryOverview/RequestDataUpdateModal.jsx:31
-#: src/pages/countryOverview/RequestDataUpdateModal.jsx:157
+#: src/pages/countryOverview/RequestDataUpdateModal.jsx:159
 msgid "Submit Data Update"
 msgstr ""
 
@@ -4318,7 +4329,7 @@ msgstr ""
 msgid "The Act to Prevent Pollution from Ships"
 msgstr ""
 
-#: src/pages/landing/index.jsx:105
+#: src/pages/landing/index.jsx:104
 msgid "The Country Dedicated Workflow is a digital tool to help countries in developing national plastic source inventories and plastic strategies, supported by step-by-step guidance and inspiring case studies. Create your account and explore."
 msgstr ""
 
@@ -4354,11 +4365,11 @@ msgstr ""
 msgid "The GPML Country Dashboard provides a comprehensive snapshot of plastic flows in both the economy and the environment for each country. It consolidates data from best available global datasets into one accessible platform, aiming to support evidence-based policymaking and action planning. Additionally, it helps identify data gaps that require further collection efforts in specific countries."
 msgstr ""
 
-#: src/pages/landing/index.jsx:186
+#: src/pages/landing/index.jsx:185
 msgid "The GPML digital platform allows NGOs and civil society to connect with likeminded organizations, discover financing resources and funding opportunities, and showcase their work in the fight against plastic pollution and marine litter."
 msgstr ""
 
-#: src/pages/landing/index.jsx:172
+#: src/pages/landing/index.jsx:171
 msgid "The GPML Digital Platform allows NGOs and civil society to connect with likeminded organizations, discover financing resources and funding opportunities, and showcase their work in the fight against plastic pollution and marine litter."
 msgstr ""
 
@@ -4366,11 +4377,11 @@ msgstr ""
 msgid "The GPML Digital Platform drives transformation and supports the work of the GPML Action Tracks. The Digital Platform is multi-stakeholder and partly open source, compiling and crowdsourcing different resources, integrating data and connecting stakeholders to guide action on addressing the global problem of marine litter and plastic pollution."
 msgstr ""
 
-#: src/pages/landing/index.jsx:151
+#: src/pages/landing/index.jsx:150
 msgid "The GPML digital platform empowers all countries to create and implement successful plastic strategies to end plastic pollution including in the marine environment."
 msgstr ""
 
-#: src/pages/landing/index.jsx:158
+#: src/pages/landing/index.jsx:157
 msgid "The GPML digital platform fosters public-private partnerships, offers clarity on circular economy practices, and provides guidance on Extended Producer Responsibilities (EPRs) and sustainable business models."
 msgstr ""
 
@@ -4378,11 +4389,11 @@ msgstr ""
 #~ msgid "The GPML Digital Platform functions as the digital arm of the GPML, a multi-stakeholder partnership that brings together all actors working to prevent plastic pollution and marine litter."
 #~ msgstr ""
 
-#: src/pages/landing/index.jsx:165
+#: src/pages/landing/index.jsx:164
 msgid "The GPML digital platform helps academia and the scientific community to ensure their research becomes actionable by offering the opportunity to share resources and collaborate with policy makers."
 msgstr ""
 
-#: src/pages/landing/index.jsx:179
+#: src/pages/landing/index.jsx:178
 msgid "The GPML digital platform offers the opportunity to forge collaborative partnerships with diverse stakeholders, share and find resources on plastic pollution, and amplify advocacy."
 msgstr ""
 
@@ -4406,7 +4417,7 @@ msgstr ""
 msgid "The National Environmental Act - Order No. 2034/33"
 msgstr ""
 
-#: src/pages/landing/index.jsx:326
+#: src/pages/landing/index.jsx:331
 msgid "The one-stop platform for data, knowledge, and collaboration to end plastic pollution."
 msgstr ""
 
@@ -4490,11 +4501,11 @@ msgstr ""
 msgid "Title:"
 msgstr ""
 
-#: src/pages/landing/index.jsx:256
+#: src/pages/landing/index.jsx:255
 msgid "to address plastic pollution"
 msgstr ""
 
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:189
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:204
 msgid "tonnes"
 msgstr ""
 
@@ -4792,6 +4803,10 @@ msgstr ""
 msgid "View Global Data"
 msgstr ""
 
+#: src/components/notification-panel.jsx:85
+msgid "VIEW MORE"
+msgstr ""
+
 #: src/modules/details-page/header.jsx:272
 msgid "View Source"
 msgstr ""
@@ -4838,7 +4853,7 @@ msgstr ""
 msgid "Waste management"
 msgstr ""
 
-#: src/utils/misc.js:341
+#: src/utils/misc.js:345
 msgid "Waste Management"
 msgstr ""
 
@@ -4972,7 +4987,7 @@ msgstr ""
 msgid "Within the geographical area that the provider offers the service"
 msgstr ""
 
-#: src/pages/landing/index.jsx:100
+#: src/pages/landing/index.jsx:99
 msgid "Workflow"
 msgstr ""
 
@@ -5001,13 +5016,14 @@ msgstr ""
 msgid "workspace"
 msgstr ""
 
-#: src/layouts/new-layout.js:265
-#: src/pages/landing/index.jsx:310
-#: src/pages/landing/index.jsx:547
+#: src/components/nav/nav-mobile.jsx:237
+#: src/layouts/new-layout.js:317
+#: src/pages/landing/index.jsx:309
+#: src/pages/landing/index.jsx:555
 msgid "Workspace"
 msgstr ""
 
-#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:247
+#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:251
 msgid "World Bank"
 msgstr ""
 
