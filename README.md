@@ -159,6 +159,275 @@ graph TD
 
 This architecture supports the UNEP GPML mission of combating marine litter through a scalable, secure, and internationally accessible platform that connects stakeholders, resources, and knowledge worldwide.
 
+## Backend Architecture Deep Dive
+
+### Duct Framework & Architecture Pattern
+
+The backend uses the **Duct framework**, which implements **Hexagonal Architecture** (Ports & Adapters) with **Component-based Dependency Injection**. Duct is **not an MVC framework** - instead, it provides:
+
+- **Configuration-driven development** using EDN files
+- **Integrant-based dependency injection** for managing components
+- **Environment-specific profiles** (dev, test, prod)
+- **Hot-reloading capabilities** via REPL integration
+
+### Request Processing Flow
+
+```mermaid
+graph TD
+    A[HTTP Request] --> B[Reitit Router]
+    B --> C[Middleware Pipeline]
+    C --> D[Handler Function]
+    D --> E[Service Layer]
+    E --> F[Database Abstraction Layer]
+    F --> G[PostgreSQL]
+
+    D --> H[External Services]
+    H --> I[Boundary Adapters]
+
+    D --> J[Response]
+```
+
+#### **Layer Breakdown**
+
+1. **Router Layer**: Reitit matches URLs to handler functions
+2. **Middleware Pipeline**: CORS, authentication, validation, exception handling
+3. **Handler Layer**: HTTP request/response handling with parameter extraction
+4. **Service Layer**: Business logic, transactions, and complex operations
+5. **Database Abstraction Layer**: Unified interface supporting both query approaches
+   - **HugSQL**: Template-based queries from `.sql` files (90% of queries)
+   - **HoneySQL**: Programmatic query building (complex dynamic queries)
+   - **gpml.db/execute!**: Single function that handles both formats
+6. **External Services**: Auth0, cloud storage, email, chat via boundary adapters
+
+### Codebase Organization by Functionality
+
+#### **Core Application Structure (`/backend/src/gpml/`)**
+
+```
+backend/src/gpml/
+├── main.clj                    # Application entry point & bootstrap
+├── handler/                    # HTTP request handlers (Controllers)
+│   ├── stakeholder.clj         # User management endpoints
+│   ├── policy.clj             # Policy resource endpoints
+│   ├── initiative.clj         # Initiative resource endpoints
+│   ├── resource/              # Nested resource handlers
+│   └── plastic_strategy/      # Plastic strategy feature
+├── domain/                     # Business logic & data models
+│   ├── stakeholder.clj         # User entity definitions
+│   ├── policy.clj             # Policy entity schemas
+│   └── types.clj              # Common type definitions
+├── db/                        # Database access layer
+│   ├── stakeholder.clj + .sql  # User data operations
+│   ├── policy.clj + .sql      # Policy data operations
+│   └── resource/              # Resource-specific queries
+├── service/                   # Business logic orchestration
+│   ├── stakeholder.clj        # User management services
+│   ├── permissions.clj        # RBAC authorization
+│   └── file.clj              # File handling logic
+├── boundary/                  # External system integration
+│   ├── port/                 # Interface definitions (protocols)
+│   └── adapter/              # Concrete implementations
+├── scheduler/                 # Background jobs & tasks
+├── util/                     # Cross-cutting utilities
+└── auth.clj                  # Authentication utilities
+```
+
+### Where to Find Functionality
+
+#### **🔍 Adding New API Endpoints**
+1. **Create Handler**: `/handler/your-feature.clj`
+   ```clojure
+   (defmethod ig/init-key :gpml.handler.your-feature/list [_ {:keys [db]}]
+     (fn [{:keys [parameters]}]
+       (response (db.your-feature/list-items (:spec db) parameters))))
+   ```
+
+2. **Register Routes**: Add to `/resources/gpml/duct.base.edn`
+   ```clojure
+   [:duct.router/reitit :gpml.main/router]
+   {:routes ["/api"
+             ["/your-feature" {:handler #ig/ref :gpml.handler.your-feature/list}]]}
+   ```
+
+#### **🗄️ Database Operations**
+1. **SQL Queries**: `/db/your-feature.sql`
+   ```sql
+   -- :name list-items :? :*
+   SELECT * FROM your_table WHERE status = :status
+   ```
+
+2. **Clojure Functions**: `/db/your-feature.clj`
+   ```clojure
+   (ns gpml.db.your-feature
+     (:require [hugsql.core :as hugsql]))
+
+   (hugsql/def-db-fns "gpml/db/your-feature.sql")
+   ```
+
+#### **🔐 Authentication & Authorization**
+- **Auth Logic**: `/util/auth0.clj` - JWT token handling
+- **RBAC**: `/service/permissions.clj` - Role-based access control
+- **Middleware**: Declarative auth in route definitions
+
+#### **📊 Business Logic**
+- **Domain Models**: `/domain/` - Entity schemas and validation
+- **Services**: `/service/` - Complex operations and transactions
+- **Utilities**: `/util/` - Reusable helper functions
+
+#### **🔌 External Service Integration**
+1. **Define Interface**: `/boundary/port/your-service.clj`
+   ```clojure
+   (defprotocol YourService
+     :extend-via-metadata true
+     (^{:schema [:or (success-with :data any?) (failure-with :error any?)]}
+       do-something [this params]))
+   ```
+
+2. **Implement Adapter**: `/boundary/adapter/your-service/implementation.clj`
+   ```clojure
+   (defn map->YourServiceAdapter [config]
+     {:pre [(check! [:map [:api-key string?]] config)]}
+     (with-meta config
+       {`port.your-service/do-something do-something*}))
+
+   (defmethod ig/init-key :gpml.boundary.adapter.your-service/impl
+     [_ config]
+     (map->YourServiceAdapter config))
+   ```
+
+3. **Implementation Function**:
+   ```clojure
+   (defn do-something* [{:keys [api-key logger]} params]
+     (try
+       {:success? true :data (call-external-api api-key params)}
+       (catch Exception e
+         {:success? false :error-details (ex-message e)})))
+   ```
+
+#### **⚙️ Configuration Management**
+- **Base Config**: `/resources/gpml/duct.base.edn`
+- **Environment Profiles**: `/resources/gpml/duct.edn` (dev), `/resources/gpml/duct.prod.edn`
+- **Local Overrides**: `/dev/resources/local.edn`
+
+#### **🔄 Background Jobs**
+- **Schedulers**: `/scheduler/` - Periodic tasks and background processing
+- **Examples**: BRS API import, chat processing, file reconciliation
+
+### Key Development Patterns
+
+#### **Component Lifecycle**
+```clojure
+(defmethod ig/init-key :your.component/name [_ config]
+  (-> config
+      (setup-component)
+      (start-component)))
+
+(defmethod ig/halt-key! :your.component/name [_ component]
+  (stop-component component))
+```
+
+#### **Database Transaction Pattern**
+```clojure
+(defn create-stakeholder! [db stakeholder-data]
+  (jdbc/with-transaction [tx (:spec db)]
+    (let [stakeholder-id (db.stakeholder/new-stakeholder tx stakeholder-data)]
+      (db.rbac/assign-default-permissions tx stakeholder-id)
+      stakeholder-id)))
+```
+
+#### **Malli Schema Validation**
+```clojure
+(def CreateStakeholderRequest
+  [:map
+   [:email [:string {:min 1}]]
+   [:first_name [:string {:min 1}]]
+   [:country [:int {:min 1}]]])
+```
+
+This architecture provides strong separation of concerns, making it easy to locate and modify functionality while maintaining system integrity and testability.
+
+### HugSQL vs HoneySQL: Two Query Approaches
+
+The backend uses both **HugSQL** (primary) and **HoneySQL** (selective) for different query complexity needs.
+
+#### **HugSQL - Template-Based Queries**
+```clojure
+-- SQL file: /db/stakeholder.sql
+-- :name get-stakeholder-by-id :? :1
+SELECT * FROM stakeholder WHERE id = :id
+
+-- Clojure file: /db/stakeholder.clj
+(hugsql/def-db-fns "gpml/db/stakeholder.sql")
+(get-stakeholder-by-id db {:id 123})
+```
+
+#### **HoneySQL - Programmatic Queries**
+```clojure
+(def query
+  {:select [:*]
+   :from [:stakeholder]
+   :where [:and
+           [:= :status "APPROVED"]
+           (when country [:= :country country])]})
+```
+
+#### **When Each Is Used**
+
+| Use Case | HugSQL | HoneySQL |
+|----------|--------|----------|
+| **Simple CRUD** | ✅ Direct SQL, fast execution | ❌ Overhead for simple queries |
+| **Static Reports** | ✅ Clear SQL structure | ❌ Unnecessary complexity |
+| **Dynamic Queries** | ❌ String concatenation pain | ✅ Clean programmatic building |
+| **Complex Conditions** | ❌ Hard to maintain | ✅ Composable logic |
+
+#### **Current Usage in Codebase**
+
+**HugSQL (90% of queries)**:
+- `/backend/src/gpml/db/stakeholder.sql` - User CRUD operations
+- `/backend/src/gpml/db/policy.sql` - Resource management
+- Most static queries with known structure
+
+**HoneySQL (10% of queries)**:
+- `/backend/src/gpml/db/topic.clj:270-305` - Complex dynamic filtering
+- Infrastructure in `/backend/src/gpml/db.clj` - Supports both formats
+
+#### **Example: Complex Query Challenge**
+
+**HugSQL Approach (Current Pain Point)**:
+```clojure
+(str "SELECT * FROM " table
+     " WHERE 1=1"
+     (when id " AND id = :id")
+     (when status " AND status = :status")
+     (when country " AND country = :country"))
+```
+
+**HoneySQL Alternative**:
+```clojure
+{:select [:*]
+ :from [table]
+ :where (cond-> [:= 1 1]
+          id (conj [:= :id :id])
+          status (conj [:= :status :status])
+          country (conj [:= :country :country]))}
+```
+
+#### **Development Guidelines**
+
+**Choose HugSQL for**:
+- Simple CRUD operations
+- Static queries with fixed structure
+- PostgreSQL-specific features
+- When SQL readability is priority
+
+**Choose HoneySQL for**:
+- Dynamic query construction
+- Complex conditional logic
+- Queries built from user input
+- When composability is needed
+
+The hybrid approach allows using the most appropriate tool for each query type while maintaining a unified database interface through `gpml.db/execute!`.
+
 ## Development
 
 ### Requirements
