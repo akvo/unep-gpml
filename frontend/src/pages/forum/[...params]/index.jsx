@@ -142,16 +142,15 @@ const ForumView = ({
 
   useEffect(() => {
     if (sdk && activeForum && conversationToOpen) {
+      setTimeout(() => {
+        sdk.openConversation(conversationToOpen)
+      }, 3000)
+      setConversationToOpen(null)
       markNotificationsAsRead(
         activeForum.id,
         'conversation',
         conversationToOpen
-      ).finally(() => {
-        setTimeout(() => {
-          sdk.openConversation(conversationToOpen)
-          setConversationToOpen(null)
-        }, 300)
-      })
+      )
     }
   }, [sdk, activeForum, conversationToOpen, markNotificationsAsRead])
 
