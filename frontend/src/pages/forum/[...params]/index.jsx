@@ -146,8 +146,13 @@ const ForumView = ({
         sdk.openConversation(conversationToOpen)
       }, 3000)
       setConversationToOpen(null)
+      markNotificationsAsRead(
+        activeForum.id,
+        'conversation',
+        conversationToOpen
+      )
     }
-  }, [sdk, activeForum, conversationToOpen])
+  }, [sdk, activeForum, conversationToOpen, markNotificationsAsRead])
 
   useEffect(() => {
     if (sdk != null) {
@@ -238,7 +243,14 @@ const ForumView = ({
             )}
             {activeForum?.users?.length > 0 && (
               <Participants
-                {...{ isAdmin, activeForum, channelId, sdk, profile }}
+                {...{
+                  isAdmin,
+                  activeForum,
+                  channelId,
+                  sdk,
+                  profile,
+                  markNotificationsAsRead,
+                }}
               />
             )}
           </div>
@@ -488,7 +500,14 @@ const PinnedLinks = ({ isAdmin, channelId }) => {
   )
 }
 
-const Participants = ({ isAdmin, activeForum, channelId, sdk, profile }) => {
+const Participants = ({
+  isAdmin,
+  activeForum,
+  channelId,
+  sdk,
+  profile,
+  markNotificationsAsRead,
+}) => {
   const [showAddUserModal, setShowAddUserModal] = useState(false)
   const [loading, setLoading] = useState(false)
   const [options, setOptions] = useState([])
@@ -502,7 +521,6 @@ const Participants = ({ isAdmin, activeForum, channelId, sdk, profile }) => {
       await api.post(
         `/chat/admin/channel/${channelId}/add-user/${selectedUser}`
       )
-
       notification.success({ message: 'User added to channel' })
     } catch (error) {
       notification.error({
@@ -532,13 +550,29 @@ const Participants = ({ isAdmin, activeForum, channelId, sdk, profile }) => {
     setSelectedUserLabel(option.label)
   }
 
-  const getUserNotificationCount = (userId) => {
-    if (!rawNotifications || !userId) return 0
+  const getUserNotificationCount = (otherUserChatId, otherUserId) => {
+    if (
+      !rawNotifications ||
+      !otherUserChatId ||
+      !activeForum?.conversations ||
+      otherUserId === profile.id
+    )
+      return 0
+
+    const userConversationIds = activeForum.conversations
+      .filter(
+        (c) =>
+          c.memberOne?.id === otherUserChatId ||
+          c.memberTwo?.id === otherUserChatId
+      )
+      .map((c) => c.conversationId)
+
+    if (userConversationIds.length === 0) return 0
 
     const userNotifications = rawNotifications.filter(
       (notification) =>
         notification['subType'] === 'conversation' &&
-        notification['stakeholder'] === userId &&
+        userConversationIds.includes(notification['subContextId']) &&
         notification.status === 'unread'
     )
 
@@ -548,6 +582,30 @@ const Participants = ({ isAdmin, activeForum, channelId, sdk, profile }) => {
     )
 
     return totalCount
+  }
+
+  const handleParticipantClick = async (user) => {
+    if (sdk && user?.id && user.id !== profile.id) {
+      const count = getUserNotificationCount(user.chatUserId, user.id)
+      if (count > 0) {
+        const userConversationIds = activeForum.conversations
+          .filter(
+            (c) =>
+              c.memberOne?.id === user.chatUserId ||
+              c.memberTwo?.id === user.chatUserId
+          )
+          .map((c) => c.conversationId)
+
+        for (const conversationId of userConversationIds) {
+          await markNotificationsAsRead(
+            channelId,
+            'conversation',
+            conversationId
+          )
+        }
+      }
+      sdk.createConversation(user.chatUserId)
+    }
   }
 
   return (
@@ -561,15 +619,17 @@ const Participants = ({ isAdmin, activeForum, channelId, sdk, profile }) => {
           dataSource={activeForum.users}
           renderItem={(user) => {
             const fullName = `${user?.firstName} ${user?.lastName || ''}`
+            const notificationCount = getUserNotificationCount(
+              user.chatUserId,
+              user.id
+            )
             return (
               <List.Item
-                style={{ cursor: 'pointer' }}
-                className={user.id !== profile.id ? '' : 'self'}
-                onClick={() => {
-                  if (sdk && user?.id && user.id !== profile.id) {
-                    sdk.createConversation(user.chatUserId)
-                  }
+                style={{
+                  cursor: user.id !== profile.id ? 'pointer' : 'default',
                 }}
+                className={user.id !== profile.id ? '' : 'self'}
+                onClick={() => handleParticipantClick(user)}
               >
                 <List.Item.Meta
                   avatar={
@@ -583,19 +643,16 @@ const Participants = ({ isAdmin, activeForum, channelId, sdk, profile }) => {
                   title={fullName}
                   description={user?.org?.name}
                 />
-                {getUserNotificationCount(user.id) > 0 ? (
-                  <span className="notifcation-badge">
-                    {getUserNotificationCount(user.id)}
-                  </span>
-                ) : (
+                {user.id !== profile.id && notificationCount > 0 ? (
+                  <span className="notifcation-badge">{notificationCount}</span>
+                ) : user.id !== profile.id ? (
                   <span className="chat-icon">
                     <ChatSvg />
                   </span>
-                )}
+                ) : null}
               </List.Item>
             )
           }}
-          z
         />
         {isAdmin && (
           <div className="add-user hide-mobile">

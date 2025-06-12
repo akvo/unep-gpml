@@ -81,21 +81,30 @@ const useNotifications = (isAuthenticated) => {
 
       let matchingNotifications
 
-      if (subType === 'sub-channel' && subContextId) {
+      if (subType === 'conversation' && subContextId) {
         matchingNotifications = rawNotifications.filter(
           (notification) =>
             notification['subContextId'] === subContextId &&
-            notification['subType'] === subType
+            notification['subType'] === subType &&
+            notification['status'] === 'unread'
+        )
+      } else if (subType === 'sub-channel' && subContextId) {
+        matchingNotifications = rawNotifications.filter(
+          (notification) =>
+            notification['subContextId'] === subContextId &&
+            notification['subType'] === subType &&
+            notification['status'] === 'unread'
         )
       } else {
         matchingNotifications = rawNotifications.filter(
           (notification) =>
             notification['contextId'] === contextId &&
-            notification['subType'] === subType
+            notification['subType'] === subType &&
+            notification['status'] === 'unread'
         )
       }
 
-      if (matchingNotifications.length === 0) {
+      if (!matchingNotifications.length) {
         return
       }
 
@@ -120,12 +129,17 @@ const useNotifications = (isAuthenticated) => {
           }
         })
 
-        const identifier = subType === 'sub-channel' ? subContextId : contextId
+        const identifier =
+          subType === 'conversation' || subType === 'sub-channel'
+            ? subContextId
+            : contextId
         console.log(
           `Marked ${
             notificationIds.length
-          } ${subType} notifications as read for ${
-            subType === 'sub-channel' ? 'subContext' : 'context'
+          } '${subType}' notifications as read for ${
+            subType === 'conversation' || subType === 'sub-channel'
+              ? 'subContext'
+              : 'context'
           }: ${identifier}`
         )
       } catch (error) {
