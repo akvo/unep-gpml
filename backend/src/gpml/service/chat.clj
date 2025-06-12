@@ -235,6 +235,7 @@
     (-> (if (:success? result)
           (assoc-in context [:channel :users] (->> (:stakeholders result)
                                                    (enrich-db-users-with-dsc-id (get-in context [:channel :members :data]))
+                                                   (filter :chat_user_id) ; Exclude users without chat_user_id
                                                    (add-users-pictures-urls config)
                                                    (mapv present-user)))
           (failure context
