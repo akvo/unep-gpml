@@ -19,6 +19,7 @@
      display: none;
      @media (max-width: 768px) {
       display: block;
+      background: #FFF;
     }
   }
 
@@ -31,8 +32,9 @@
 
   .mobileMenu {
   background: #f9f9f9;
-  position: absolute;
+  position: relative;
   width: 100%;
+  overflow: auto;
 
   .menuHeader {
   background: #5c6690;
@@ -66,6 +68,77 @@
     margin-left: 8px;
   }
   }
+
+  .menuSmSubHeader {
+    text-transform: uppercase;
+    color: #8A6ACC;
+    font-weight: bold;
+       font-size: 13px;
+        padding: 6px 16px 6px 20px;
+  }
+
+.menuSmBtnContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.menuItem {
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center;
+  width: 100%;
+  padding: 6px 16px 6px 20px; 
+  transition: background-color 0.3s;
+  cursor: pointer; 
+  // border-bottom: 1px solid #f0f0f0;
+  
+}
+.menuItem.active {
+  background-color: #f5f5f5; 
+}
+.menuItem:last-child {
+  border-bottom: none; 
+}
+
+.menuItemText {
+  flex-grow: 1; 
+  margin-right: 16px; 
+  white-space: normal; 
+  color: #000647;
+  font-weight: 500;
+}
+
+
+.menuIcons .anticon {
+  font-size: 14px; 
+  color: rgba(0, 0, 0, 0.45); 
+}
+
+    .mbtnSmNav {
+      text-align: left;
+      border: none;
+      font-size: 12px; 
+      padding: 8px 16px; 
+      height: auto;
+      cursor: pointer;
+      white-space: normal;
+      word-break: break-word;
+      max-width: 100%; 
+      flex-grow: 0; 
+      flex-shrink: 1; 
+      font-weight: 500;
+}
+
+.mbtnSmNav:hover {
+  background-color: #d1d5db;
+  border-color: #9ca3af;
+}
+
+.mbtnSmNav:active {
+  background-color: #9ca3af;
+  border-color: #6b7280;
+  color: #fff;
+}
 
   .menuCollapse {
     background: #fff;
