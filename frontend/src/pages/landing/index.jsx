@@ -58,7 +58,16 @@ const Landing = (props) => {
       <HeroPlasticTap {...props} />
       <FeatureCards />
       <div className="container wed-container">
-        <div className="wed">
+        <iframe
+          width="100%"
+          height="600"
+          src="https://www.youtube.com/embed/yq2IpKOpehI?si=ALQ2kn2e6iFp7gzc;controls=0"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen
+        ></iframe>
+        {/* <div className="wed">
           <h1 className="hide-mobile">#WorldEnvironmentDay</h1>
           <h1 className="hide-desktop">
             #World
@@ -85,7 +94,7 @@ const Landing = (props) => {
             width={640}
             height={50}
           />
-        </div>
+        </div> */}
       </div>
       <LatestNews />
       <div className="workflow">

@@ -18,7 +18,7 @@ class MyDocument extends Document {
           />
           <meta
             name="google-site-verification"
-            content="RXyUT_0q_mUGWf-PPJlArc9gPyo_axbLOI446F7o0z0"
+            content="XxQZUvt514ZZramOg-RgwEV3Qa2qrUV04qMUSC-quz8"
           />
           <meta name="og:image" content="/apple-touch-icon.png" />
           <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
