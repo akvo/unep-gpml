@@ -445,7 +445,7 @@ const Workspace = ({
               <iframe
                 width="100%"
                 height="640px"
-                src="https://www.youtube.com/embed/xSYkLgoHqVQ"
+                src="https://www.youtube.com/embed/yq2IpKOpehI?si=ALQ2kn2e6iFp7gzc;controls=0"
                 title="YouTube video player"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
