@@ -230,7 +230,7 @@ h6 {
 .nav-menu-item {
   .ant-dropdown-menu-item {
     padding: 10px 24px;
-
+    text-transform: capitalize;
     &:hover {
       background-color: #ccd0db;
     }
