@@ -596,6 +596,7 @@
       iframe {
         // width: 100% !important;
         // height: 600px !important;
+        border-radius: 30px;
         margin-bottom: 50px;
         @media screen and (max-width: $bpMobile) {
           margin-left: -25px;
