@@ -1605,6 +1605,12 @@ const FlexibleForm = ({
 
     data.geoCoverageType = Object.keys(data.geoCoverageType)[0]
 
+    // Transform Case Study summary field to description field to match database schema
+    if (data?.summary) {
+      data.description = data.summary
+      delete data.summary
+    }
+
     delete data.orgName
 
     data.tags =
