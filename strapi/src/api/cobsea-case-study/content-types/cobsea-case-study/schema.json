@@ -1,0 +1,46 @@
+{
+  "kind": "collectionType",
+  "collectionName": "cobsea_case_studies",
+  "info": {
+    "singularName": "cobsea-case-study",
+    "pluralName": "cobsea-case-studies",
+    "displayName": "Cobsea Case Study",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "cobsea_case_study_tag": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::cobsea-case-study-tag.cobsea-case-study-tag",
+      "inversedBy": "cobsea_case_study"
+    },
+    "url": {
+      "type": "string"
+    },
+    "pdf": {
+      "allowedTypes": [
+        "files"
+      ],
+      "type": "media",
+      "multiple": false
+    }
+  }
+}
