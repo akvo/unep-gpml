@@ -1,0 +1,39 @@
+{
+  "kind": "collectionType",
+  "collectionName": "cobsea_research_networks",
+  "info": {
+    "singularName": "cobsea-research-network",
+    "pluralName": "cobsea-research-networks",
+    "displayName": "Cobsea Research Network"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Country": {
+      "type": "string"
+    },
+    "Sub_National": {
+      "type": "string"
+    },
+    "Institution": {
+      "type": "string"
+    },
+    "Instn": {
+      "type": "string"
+    },
+    "Type": {
+      "type": "string"
+    },
+    "Name": {
+      "type": "string"
+    },
+    "Contact": {
+      "type": "string"
+    },
+    "Area_of_expertise": {
+      "type": "text"
+    }
+  }
+}
