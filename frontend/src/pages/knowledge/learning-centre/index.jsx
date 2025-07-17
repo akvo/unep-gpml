@@ -175,7 +175,7 @@ export async function getServerSideProps(ctx) {
 
   const fetchLearningCentres = async () => {
     const response = await axios.get(
-      `${strapiURL}/api/learning-centres?populate=learning_centre_tags,image&locale=${ctx.locale}`
+      `${strapiURL}/api/learning-centres?populate=learning_centre_tags,image&pagination[pageSize]=40&locale=${ctx.locale}`
     )
     const simplifiedItems = response.data.data.map((item) => {
       const {
