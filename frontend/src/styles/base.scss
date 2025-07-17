@@ -565,6 +565,21 @@ h6 {
     }
   }
 }
+.user-btn-dropdown {
+  li {
+    font-weight: 500;
+    // font-family: $ff1;
+    font-size: 16px;
+    color: $primaryDarkBlueText;
+    padding: 7px 22px;
+    &:hover {
+      // background-color: $primaryDarkBlue;
+    }
+    b {
+      color: $primaryGreen7;
+    }
+  }
+}
 
 .notification-badge {
   position: absolute;

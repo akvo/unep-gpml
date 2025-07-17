@@ -319,7 +319,9 @@ const NewLayout = ({
                                     router.push({ pathname: `/workspace` })
                                   }
                                 >
-                                  <Trans>Workspace</Trans>
+                                  <b>
+                                    <Trans>Workspace</Trans>
+                                  </b>
                                 </Menu.Item>
                                 <Menu.Item key="add-content">
                                   <Link href="/add-content">

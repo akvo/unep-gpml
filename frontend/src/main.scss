@@ -555,59 +555,67 @@ button.ant-btn.ant-btn-link.ant-dropdown-trigger.menu-btn.nav-link {
 .menu-dropdown .ant-btn-link {
 }
 
-.add-dropdown-wrapper,
-.user-btn-dropdown-wrapper,
-.menu-dropdown-wrapper {
-  .add-dropdown,
-  .user-btn-dropdown,
-  .menu-dropdown {
-    min-width: 200px;
-    text-align: left;
-    padding: 0px;
+// .add-dropdown-wrapper,
+// .user-btn-dropdown-wrapper,
+// .menu-dropdown-wrapper {
+//   .add-dropdown,
+//   .user-btn-dropdown,
+//   .menu-dropdown {
+//     min-width: 200px;
+//     text-align: left;
+//     padding: 0px;
 
-    .indent-right {
-      padding-left: 25px;
-    }
+//     .indent-right {
+//       padding-left: 25px;
+//     }
 
-    .badge-count {
-      border: 1px solid $blue06;
-      color: #2d6796;
-      font-size: 0.7rem;
-      display: inline-block;
-      padding: 2px;
-      text-align: center;
-      line-height: 1;
-      box-sizing: content-box;
-      white-space: nowrap;
-      &:before {
-        content: '';
-        display: inline-block;
-        vertical-align: middle;
-        padding-top: 100%;
-        height: 0;
-      }
-      &:nth-child(1) {
-        display: inline-block;
-        vertical-align: middle;
-      }
-    }
+//     .badge-count {
+//       border: 1px solid $blue06;
+//       color: #2d6796;
+//       font-size: 0.7rem;
+//       display: inline-block;
+//       padding: 2px;
+//       text-align: center;
+//       line-height: 1;
+//       box-sizing: content-box;
+//       white-space: nowrap;
+//       &:before {
+//         content: '';
+//         display: inline-block;
+//         vertical-align: middle;
+//         padding-top: 100%;
+//         height: 0;
+//       }
+//       &:nth-child(1) {
+//         display: inline-block;
+//         vertical-align: middle;
+//       }
+//     }
 
-    :not(:last-child) {
-      border-bottom: 1px solid $primaryColor;
-    }
+//     :not(:last-child) {
+//       border-bottom: 1px solid $primaryColor;
+//     }
 
-    li {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-weight: 500;
-      font-size: 0.88rem;
-      color: #2d6796;
-      height: 40px;
+//     li {
+//       display: flex;
+//       justify-content: space-between;
+//       align-items: center;
+//       font-weight: 500;
+//       font-size: 0.88rem;
+//       color: #2d6796;
+//       height: 40px;
 
-      // :last-child {
-      //   margin-left: 15px;
-      // }
+//       // :last-child {
+//       //   margin-left: 15px;
+//       // }
+//     }
+//   }
+// }
+
+.user-btn-dropdown {
+  li {
+    b {
+      color: $primaryGreen;
     }
   }
 }
