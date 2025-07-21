@@ -803,7 +803,7 @@ msgstr "Comment deleted successfully"
 
 #: src/store.js:81
 msgid "Communities of Practice"
-msgstr "Collaborate"
+msgstr "Communities of Practice"
 
 #: src/pages/search/index.js:119
 msgid "community"
