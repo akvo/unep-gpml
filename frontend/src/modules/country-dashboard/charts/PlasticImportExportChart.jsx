@@ -120,14 +120,14 @@ const PlasticImportExportChart = ({ layers, loading }) => {
     ...(window.innerWidth < 768
       ? {
           legend: {
-            data: [t`Total exports`, t`Total imports`],
+            data: [t`Total imports`,t`Total exports`],
             textStyle: { color: '#020A5B' },
             top: 50,
           },
         }
       : {
           legend: {
-            data: [t`Total exports`, t`Total imports`],
+            data: [t`Total imports`,t`Total exports`],
             textStyle: { color: '#020A5B' },
             bottom: 0,
           },
@@ -157,21 +157,21 @@ const PlasticImportExportChart = ({ layers, loading }) => {
     },
     series: [
       {
-        name: t`Total exports`,
-        type: 'line',
-        data: totalExports,
-        symbol: 'circle',
-        itemStyle: {
-          color: '#020A5B',
-        },
-      },
-      {
         name: t`Total imports`,
         type: 'line',
         data: totalImports,
         symbol: 'circle',
         itemStyle: {
           color: '#FFB800',
+        },
+      },
+      {
+        name: t`Total exports`,
+        type: 'line',
+        data: totalExports,
+        symbol: 'circle',
+        itemStyle: {
+          color: '#020A5B',
         },
       },
     ],
