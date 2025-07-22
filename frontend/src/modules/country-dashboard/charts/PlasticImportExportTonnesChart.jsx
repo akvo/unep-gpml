@@ -191,13 +191,13 @@ const PlasticImportExportChart = ({ layers, loading }) => {
         color: '#020A5B',
         fontSize: 12,
       },
-      data: [t`Import`, t`Export`],
+      data: [t`Export`,t`Import`],
     },
     series: categories.map((category, index) => ({
       name: Object.values(categoriesTitle[index])[0],
       type: 'bar',
       stack: 'ImportExport',
-      data: [importData[index], exportData[index]],
+      data: [exportData[index],importData[index]],
       barWidth: window.innerWidth < 768 ? 50 : 90,
       itemStyle: {
         color: ['#384E85', '#FFB800', '#f56a00', '#A7AD3E', '#3498db'][index],
