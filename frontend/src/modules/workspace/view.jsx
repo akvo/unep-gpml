@@ -317,7 +317,7 @@ const Workspace = ({
               {psAll.length > 0 && (
                 <div className="heading-container">
                   <h2 className="h-xxl w-bold">
-                    <Trans>National Source Inventories</Trans>
+                    <Trans>Country Dedicated Workflows</Trans>
                   </h2>
                   {psAll?.length > 3 && (
                     <Link href="/workspace/plastic-strategies">
@@ -483,7 +483,7 @@ export const PSCard = ({ item, key, isAdmin }) => {
     <li key={key}>
       <Link href={`/workspace/${PREFIX_SLUG}-${countryName}`}>
         <div className="caps-heading-s">
-          <Trans>National Source Inventory</Trans>
+          <Trans>Country Dedicated Workflow</Trans>
         </div>
         <h4 className="w-semi">{item?.country?.name}</h4>
         {/* <div className="compl">{`${progressValue}%`}</div> */}
