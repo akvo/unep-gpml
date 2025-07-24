@@ -72,7 +72,7 @@ const NestedLayout = ({ children }) => {
   const psSteps = useMemo(() => {
     if (!psItem?.steps) return stepsState
 
-    const mappedSteps = psItem.steps.map((step) => {
+    return psItem.steps.map((step) => {
       const findStep = stepsState.find(
         (s) =>
           s.slug === step.slug ||
@@ -88,6 +88,7 @@ const NestedLayout = ({ children }) => {
             const findSubStep = findStep.substeps?.find(
               (s) => s.slug === subItem.slug || s.label === subItem.label
             )
+
             if (findSubStep) {
               return {
                 ...subItem,
@@ -101,16 +102,6 @@ const NestedLayout = ({ children }) => {
       }
       return step
     })
-
-    return [
-      ...mappedSteps.filter((step) => !step.slug),
-      ...mappedSteps
-        .filter((step) => step.slug)
-        .sort((a, b) => {
-          const getNum = (s) => parseInt(s.slug.split('-')[0], 10)
-          return getNum(a) - getNum(b)
-        }),
-    ]
   }, [psItem, stepsState])
 
   /**
