@@ -89,7 +89,7 @@ export const stepsState = [
   },
   {
     label: 'State of Knowledge on Plastic Data',
-    slug: '4-data-analysis',
+    slug: '3-data-analysis',
     substeps: [
       { label: 'Intro', slug: '', checked: false },
       // {
@@ -137,7 +137,7 @@ export const stepsState = [
   },
   {
     label: 'Legislation & Policy Review',
-    slug: '3-legislation-policy',
+    slug: '4-legislation-policy',
     substeps: [
       { label: 'Intro', slug: '', checked: false },
       {

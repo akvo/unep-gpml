@@ -59,7 +59,9 @@ const View = () => {
 }
 
 const AddModal = ({ showAddModal, setShowAddModal }) => {
-  const { countries } = UIStore.currentState
+  const { countries } = UIStore.useState((s) => ({
+    countries: s.countries,
+  }))
   const [value, setValue] = useState(null)
   const handleSubmit = () => {
     const country = countries.find((it) => it.id === value)
