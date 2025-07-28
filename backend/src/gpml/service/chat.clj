@@ -198,6 +198,40 @@
          db-user)) ; If no corresponding dsc user id is found, return the original user map
      db-users)))
 
+(defn- tx-get-channel-users-in-db [{:keys [db hikari logger] :as config}
+                             {:keys [channel] :as context}]
+  (let [chat-account-ids (mapv :chat-account-id
+                                       (:result (db/execute! hikari {:select :stakeholder.chat_account_id
+                                                                     :from :stakeholder
+                                                                     :join [:chat_channel_membership
+                                                                            [:=
+                                                                             :stakeholder.id
+                                                                             :chat_channel_membership.stakeholder_id]]
+                                                                     :where [:= :chat_channel_id (:id channel)]})))
+        result (try
+                 (if (seq chat-account-ids)
+                   {:success? true
+                    :stakeholders (find-users-by-chat-account-id db chat-account-ids)}
+                   (do
+                     (timbre/with-context+ {:channel channel}
+                       (log logger :warn :empty-chat-account-ids))
+                     {:success? true
+                      :stakeholders []}))
+                 (catch Exception t
+                   (timbre/with-context+ {:chat-account-ids chat-account-ids}
+                     (log logger :error :could-not-get-stakeholders t))
+                   (failure {:reason :exception
+                             :error-details {:msg (ex-message t)}})))]
+    (-> (if (:success? result)
+          (assoc-in context [:channel :users] (->> (:stakeholders result)
+                                                   (add-users-pictures-urls config)
+                                                   (mapv present-user)))
+          (failure context
+                   :reason :failed-to-get-channel-users
+                   :error-details {:result result}))
+        ;; No longer needed / can be confusing to include it:
+        (update :channel dissoc :members :stakeholders))))
+
 (defn- tx-get-channel-users [{:keys [db hikari chat-adapter logger] :as config}
                              {:keys [channel] :as context}]
   {:pre [db hikari chat-adapter logger channel
@@ -378,7 +412,7 @@
         (update context :channels (fn [channels]
                                     (mapv (fn [{:keys [id] :as channel}]
                                             {:pre [id]}
-                                            (let [{:keys [success? channel]} (tx-get-channel-users config {:channel channel})]
+                                            (let [{:keys [success? channel]} (tx-get-channel-users-in-db config {:channel channel})]
                                               (if (false? success?)
                                                 (throw (ex-info "Abort" {}))
                                                 channel)))
