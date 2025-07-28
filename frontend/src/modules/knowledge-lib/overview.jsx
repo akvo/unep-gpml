@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
-import humps from "humps";
-import api from "../../utils/api";
-import { resourceTypes } from "./filter-bar";
-import ResourceCards from "../../components/resource-cards/resource-cards";
+import React, { useEffect, useState } from 'react'
+import humps from 'humps'
+import api from '../../utils/api'
+import { useResourceTypes } from './filter-bar'
+import ResourceCards from '../../components/resource-cards/resource-cards'
 // import { Icon } from "../../components/svg-icon/svg-icon";
-import Maps from "../map/map";
-import TopicView from "./topic-view";
-import { Card, Col, Row } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import Maps from '../map/map'
+import TopicView from './topic-view'
+import { Card, Col, Row } from 'antd'
+import { LoadingOutlined } from '@ant-design/icons'
+import { Link } from 'react-router-dom'
 
 const Overview = ({
   summaryData,
@@ -23,16 +23,17 @@ const Overview = ({
   setLoginVisible,
   isAuthenticated,
 }) => {
+  const resourceTypes = useResourceTypes()
   const allResources = countData
     ?.filter((array) =>
       resourceTypes.some(
         (filter) =>
-          array.topic === filter.title && filter.title !== "capacity building"
+          array.topic === filter.title && filter.title !== 'capacity building'
       )
     )
     ?.reduce(function (acc, obj) {
-      return acc + obj.count;
-    }, 0);
+      return acc + obj.count
+    }, 0)
 
   if (loading) {
     return (
@@ -41,14 +42,14 @@ const Overview = ({
           <LoadingOutlined spin />
         </div>
       </div>
-    );
+    )
   }
 
   const handleClickCategory = (key) => () => {
     history.push({
       pathname: `/knowledge/library/resource/map/${key}`,
-    });
-  };
+    })
+  }
 
   return (
     <div className="overview">
@@ -57,7 +58,7 @@ const Overview = ({
           onClick={() => {
             history.push({
               pathname: `/knowledge/library/resource/category`,
-            });
+            })
           }}
         >
           <div>
@@ -72,7 +73,7 @@ const Overview = ({
               {/* <Icon name={`resource-types/${type.key}`} fill="#000" /> */}
               <b>
                 {countData.find((item) => type.title === item.topic)?.count ||
-                  "XX"}
+                  'XX'}
               </b>
             </div>
             <span>{type.label}</span>
@@ -94,7 +95,7 @@ const Overview = ({
               onClick={() => {
                 history.push({
                   pathname: `/knowledge/library/resource/map`,
-                });
+                })
               }}
             >
               <Maps
@@ -111,18 +112,18 @@ const Overview = ({
         </Row>
       </section>
     </div>
-  );
-};
+  )
+}
 
 const Featured = ({ showModal, isAuthenticated, setLoginVisible, history }) => {
-  const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [results, setResults] = useState([])
+  const [loading, setLoading] = useState(true)
   useEffect(() => {
-    api.get("/browse?featured=true").then(({ data }) => {
-      setResults(data.results);
-      setLoading(false);
-    });
-  }, []);
+    api.get('/browse?featured=true').then(({ data }) => {
+      setResults(data.results)
+      setLoading(false)
+    })
+  }, [])
   return (
     <>
       <h3>Featured resources</h3>
@@ -132,7 +133,7 @@ const Featured = ({ showModal, isAuthenticated, setLoginVisible, history }) => {
         showMoreCardClick={() => {
           history.push({
             pathname: `/flexible-forms`,
-          });
+          })
         }}
         showModal={(e) =>
           showModal({
@@ -144,12 +145,12 @@ const Featured = ({ showModal, isAuthenticated, setLoginVisible, history }) => {
         firstCard={
           <Link
             onClick={(e) => {
-              e.preventDefault();
+              e.preventDefault()
               if (isAuthenticated)
                 history.push({
                   pathname: `/flexible-forms`,
-                });
-              else setLoginVisible(true);
+                })
+              else setLoginVisible(true)
             }}
           >
             <div className="add-resource-card">
@@ -161,7 +162,7 @@ const Featured = ({ showModal, isAuthenticated, setLoginVisible, history }) => {
         }
       />
     </>
-  );
-};
+  )
+}
 
-export default Overview;
+export default Overview
