@@ -16,7 +16,9 @@
    [gpml.util.image :as util.image]
    [gpml.util.result :refer [failure]]
    [gpml.util.thread-transactions :as tht]
+   [honey.sql :as sql]
    [medley.core :as medley]
+   [next.jdbc :as jdbc]
    [taoensso.timbre :as timbre]))
 
 (defn create-stakeholder [{:keys [db logger mailjet-config] :as config} stakeholder]
@@ -172,7 +174,8 @@
             (dissoc context :stakeholder-rbac-context))}
          {:txn-fn
           (fn assign-role [{:keys [stakeholder] :as context}]
-            (let [role-assignments [{:role-name :unapproved-user
+            ;; New requirement - anyone is automatically approved now.
+            (let [role-assignments [{:role-name :approved-user
                                      :context-type :application
                                      :resource-id srv.permissions/root-app-resource-id
                                      :user-id (:id stakeholder)}]
@@ -188,7 +191,7 @@
           :rollback-fn
           (fn rollback-assign-role
             [{:keys [stakeholder] :as context}]
-            (let [role-unassignments [{:role-name :unapproved-user
+            (let [role-unassignments [{:role-name :approved-user
                                        :context-type :application
                                        :resource-id srv.permissions/root-app-resource-id
                                        :user-id (:id stakeholder)}]
@@ -545,3 +548,57 @@
                            :reason :failed-to-get-stakeholder-org
                            :error-details {:result result})))))}]]
     (tht/thread-transactions logger transactions context)))
+
+(defn get-approved-stakeholders-with-unapproved-role
+  "Query stakeholders whose RBAC role is 'unapproved-user' but their review_status is APPROVED"
+  [{:keys [db logger]}]
+  (try
+    (let [conn (:spec db)
+          query (sql/format {:select [:s.*]
+                             :from [[:stakeholder :s]]
+                             :join [[:rbac_role_assignment :rra] [:= :s.id :rra.user_id]
+                                    [:rbac_role :rr] [:= :rr.id :rra.role_id]]
+                             :where [:and
+                                     [:= :rr.name "unapproved-user"]
+                                     [:= :s.review_status [:cast "APPROVED" :review_status]]]})
+          result (jdbc/execute! conn query)]
+      {:success? true
+       :stakeholders result})
+    (catch Exception t
+      (log logger :error :could-not-get-approved-stakeholders-with-unapproved-role t)
+      (failure {:reason :exception
+                :error-details {:exception-message (ex-message t)
+                                :exception-class (class t)}}))))
+
+(defn fix-approved-stakeholders-with-unapproved-role
+  "Fix stakeholders who have APPROVED review_status but still have unapproved-user role"
+  [{:keys [db logger] :as config}]
+  (try
+    (let [conn (:spec db)
+          stakeholders-result (get-approved-stakeholders-with-unapproved-role config)]
+      (if-not (:success? stakeholders-result)
+        stakeholders-result
+        (let [stakeholders (:stakeholders stakeholders-result)]
+          (doseq [stakeholder stakeholders]
+            (let [stakeholder-id (:stakeholder/id stakeholder)]
+              ;; Unassign unapproved-user role
+              (srv.permissions/unassign-roles-from-users
+               {:conn conn :logger logger}
+               [{:role-name :unapproved-user
+                 :context-type :application
+                 :resource-id srv.permissions/root-app-resource-id
+                 :user-id stakeholder-id}])
+              ;; Assign approved-user role
+              (srv.permissions/assign-roles-to-users
+               {:conn conn :logger logger}
+               [{:role-name :approved-user
+                 :context-type :application
+                 :resource-id srv.permissions/root-app-resource-id
+                 :user-id stakeholder-id}])))
+          {:success? true
+           :fixed-count (count stakeholders)})))
+    (catch Exception t
+      (log logger :error :could-not-fix-approved-stakeholders-with-unapproved-role t)
+      (failure {:reason :exception
+                :error-details {:exception-message (ex-message t)
+                                :exception-class (class t)}}))))
