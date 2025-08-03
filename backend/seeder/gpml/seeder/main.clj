@@ -18,6 +18,7 @@
    [gpml.db.tag :as db.tag]
    [gpml.db.technology :as db.technology]
    [gpml.seeder.util :as db.util]
+   [gpml.service.stakeholder :as svc.stakeholder]
    [integrant.core :as ig]
    [jsonista.core :as j]))
 
@@ -450,6 +451,19 @@
     (seed-countries db {:old? (not old-data?)})
     (db.util/update-initiative-country db mapping-file json-file)
     (db.util/revert-constraint db cache-id)))
+
+(defn fix-stakeholder-roles [db]
+  (let [system (-> (dev-system)
+                   (ig/init [:duct/logger]))
+        logger (:duct/logger system)
+        config {:db {:spec db}
+                :logger logger}
+        result (svc.stakeholder/fix-approved-stakeholders-with-unapproved-role config)]
+    (if (:success? result)
+      (println (str "✅ Successfully fixed " (:fixed-count result) " stakeholders"))
+      (println (str "❌ Failed to fix stakeholders: " result)))
+    (ig/halt! system)
+    result))
 
 (defn seed
   ([db {:keys [country? currency?
