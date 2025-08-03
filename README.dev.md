@@ -13,6 +13,7 @@ Check the code in [ci/k8s/seeder.yaml] and modify the option you want to execute
 
 * `set-admin` (this one requires an email address to be approved and set as admin)
 * `run-seeder`
+* `fix-stakeholder-roles` (fixes stakeholders with APPROVED review_status but incorrect RBAC roles)
 
 See the code at [backend/dev/seeder.clj]
 
@@ -193,3 +194,13 @@ kubectl apply -f "/tmp/update-country-${ts}.yml"
 ```
 
 For further detail, please check: [updater_test.clj](https://github.com/akvo/unep-gpml/blob/main/backend/test/gpml/db/updater_test.clj)
+
+## Fix Stakeholder RBAC Roles
+
+To fix stakeholders who have APPROVED review_status but still have incorrect RBAC roles, run the stakeholder role fix job:
+
+```bash
+export ts="$(date +%s)"
+sed "s/\${TIMESTAMP}/${ts}/" ci/k8s/fix-stakeholder-roles.yaml > "/tmp/fix-stakeholder-roles-${ts}.yml";
+kubectl apply -f "/tmp/fix-stakeholder-roles-${ts}.yml"
+```
