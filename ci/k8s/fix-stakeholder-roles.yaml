@@ -18,7 +18,7 @@ spec:
             git clone https://github.com/akvo/unep-gpml.git;
             cd unep-gpml/backend;
             echo Downloading dependencies with retry;
-            for i in {1..3}; do echo "Attempt $i/3"; lein deps && break || sleep 30; done;
+            for i in {1..3}; do echo "Attempt $i/3"; lein with-profile seeder deps && break || sleep 30; done;
             echo Fixing stakeholder roles;
             lein with-profile seeder run fix-stakeholder-roles
         env:
