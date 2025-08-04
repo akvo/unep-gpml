@@ -11,6 +11,8 @@ spec:
         command: ["/bin/bash", "-c"]
         args:
           - echo Installing git;
+            echo "deb http://archive.debian.org/debian buster main" > /etc/apt/sources.list;
+            echo "deb http://archive.debian.org/debian-security buster/updates main" >> /etc/apt/sources.list;
             apt-get update && apt-get -qq install -y --no-install-recommends --no-install-suggests git;
             echo Cloning repo;
             git clone https://github.com/akvo/unep-gpml.git;
