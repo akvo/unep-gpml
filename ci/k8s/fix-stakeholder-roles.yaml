@@ -6,6 +6,36 @@ spec:
   template:
     spec:
       containers:
+      - name: cloud-sql-proxy
+        image: eu.gcr.io/cloudsql-docker/gce-proxy:1.30.1
+        command:
+          - "/cloud_sql_proxy"
+          - "-log_debug_stdout"
+          - "-instances=$(GOOGLE_PROJECT):$(GOOGLE_SQL_COMPUTE_ZONE):$(GOOGLE_SQL_DB_INSTANCE)=tcp:5432"
+          - "-credential_file=/secrets/cloudsql/credentials.json"
+        securityContext:
+          runAsNonRoot: true
+        env:
+          - name: GOOGLE_SQL_COMPUTE_ZONE
+            valueFrom:
+              configMapKeyRef:
+                name: unep-gpml
+                key: google-sql-compute-zone
+          - name: GOOGLE_SQL_DB_INSTANCE
+            valueFrom:
+              configMapKeyRef:
+                name: unep-gpml
+                key: google-sql-db-instance
+          - name: GOOGLE_PROJECT
+            valueFrom:
+              configMapKeyRef:
+                name: unep-gpml
+                key: google-project
+        volumeMounts:
+          - name: unep-gpml-secrets
+            mountPath: "/secrets/cloudsql/credentials.json"
+            subPath: "cloud-database-service-account.json"
+            readOnly: true
       - name: unep-gpml-fix-stakeholder-roles
         image: akvo/akvo-clojure-lein:20210124.114043.4437caf
         command: ["/bin/bash", "-c"]
@@ -27,6 +57,16 @@ spec:
             secretKeyRef:
               name: unep-gpml
               key: database-url
+        - name: OIDC_ISSUER
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: oidc-issuer
+        - name: OIDC_AUDIENCE
+          valueFrom:
+            secretKeyRef:
+              name: unep-gpml
+              key: oidc-audience
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: "/secrets/cloudsql/credentials.json"
         volumeMounts:
