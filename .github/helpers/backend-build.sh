@@ -11,13 +11,16 @@ backend_build () {
 
   # Clean any existing target directory to avoid permission issues
   rm -rf backend/target
-  
+
+  # Create cache directories if they don't exist
+  mkdir -p "$HOME/.m2" "$HOME/.lein"
+
   docker run \
      --rm \
      --env-file .env \
      -v "$(pwd)/backend:/app" \
-     -v ~/.m2:/home/akvo/.m2 \
-     -v ~/.lein:/home/akvo/.lein \
+     -v "$HOME/.m2:/root/.m2" \
+     -v "$HOME/.lein:/root/.lein" \
      -w /app \
      akvo/akvo-clojure-lein:20210124.114043.4437caf \
      bash release-ci.sh
