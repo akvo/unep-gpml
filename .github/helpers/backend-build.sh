@@ -12,10 +12,15 @@ backend_build () {
   # Clean any existing target directory to avoid permission issues
   rm -rf backend/target
   
-  docker compose --ansi never run \
+  docker run \
      --rm \
-     backend \
-     bash release.sh
+     --env-file .env \
+     -v "$(pwd)/backend:/app" \
+     -v ~/.m2:/home/akvo/.m2 \
+     -v ~/.lein:/home/akvo/.lein \
+     -w /app \
+     akvo/akvo-clojure-lein:20210124.114043.4437caf \
+     bash release-ci.sh
 
   cd backend
 
@@ -26,7 +31,6 @@ backend_build () {
          --tag "${image_prefix}/backend:${image_version}" \
          -f Dockerfile-hpa .
 
-  docker compose down
 }
 
 backend_build

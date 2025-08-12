@@ -18,10 +18,11 @@ frontend_build () {
   echo 'NEXT_PUBLIC_DSC_API_URL="https://api.deadsimplechat.com"' >> frontend/.env
   echo 'NEXT_PUBLIC_DSC_PUBLIC_KEY="pub_42747a344c7475336e2d4f46624c3333494d68745a784c316d4150626c4c32714a5146494c6b4d44764a4556456f5847"' >> frontend/.env
 
-  docker compose --ansi never run \
+  docker run \
      --rm \
-     --no-deps \
-     frontend \
+     -v "$(pwd)/frontend:/app:delegated" \
+     -w /app \
+     akvo/akvo-node-18-alpine:20220923.084347.0558ee6 \
      bash release.sh
 
   docker build \
@@ -29,7 +30,6 @@ frontend_build () {
          --tag "${image_prefix}/frontend:latest-${cluster_name}" \
          --tag "${image_prefix}/frontend:${image_version}" frontend
 
-  docker compose down
 }
 
 frontend_build
