@@ -1,0 +1,140 @@
+name: Deploy to Test Cluster
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-push:
+    name: Build and Push to Registry
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: src
+
+      - name: Checkout Akvo composite actions
+        uses: actions/checkout@v4
+        with:
+          repository: akvo/composite-actions
+          token: ${{ secrets.GH_PAT }}
+          path: composite-actions
+          ref: 0.0.7
+
+      - name: Docker Build Nginx
+        uses: ./composite-actions/.github/actions/docker-build
+        with:
+          app-name: "unep-gpml-hpa"
+          service-name: "nginx"
+          dockerfile-location: "nginx/Dockerfile-hpa"
+          cluster-name: "test"
+
+      - name: Docker Build Frontend
+        shell: bash
+        run: ./.github/helpers/frontend-build.sh "$GITHUB_SHA" "test"
+
+      - name: Docker Build Backend
+        shell: bash
+        run: ./.github/helpers/backend_build.sh "$GITHUB_SHA" "test"
+
+      - name: Docker Build Strapi
+        uses: ./composite-actions/.github/actions/docker-build
+        with:
+          app-name: "unep-gpml-hpa"
+          service-name: "strapi"
+          dockerfile-location: "strapi/Dockerfile.prod"
+          cluster-name: "test"
+
+      - name: Docker Push Nginx
+        uses: ./composite-actions/.github/actions/docker-push
+        with:
+          app-name: "unep-gpml-hpa"
+          service-name: "nginx"
+          gcloud-sa:  ${{ secrets.GCLOUD_SERVICE_ACCOUNT_REGISTRY }}
+          cluster-name: "test"
+
+      - name: Docker Push Frontend
+        uses: ./composite-actions/.github/actions/docker-push
+        with:
+          app-name: "unep-gpml-hpa"
+          service-name: "frontend"
+          gcloud-sa:  ${{ secrets.GCLOUD_SERVICE_ACCOUNT_REGISTRY }}
+          cluster-name: "test"
+
+      - name: Docker Push Backend
+        uses: ./composite-actions/.github/actions/docker-push
+        with:
+          app-name: "unep-gpml-hpa"
+          service-name: "backend"
+          gcloud-sa:  ${{ secrets.GCLOUD_SERVICE_ACCOUNT_REGISTRY }}
+          cluster-name: "test"
+
+      - name: Docker Push Strapi
+        uses: ./composite-actions/.github/actions/docker-push
+        with:
+          app-name: "unep-gpml-hpa"
+          service-name: "strapi"
+          gcloud-sa:  ${{ secrets.GCLOUD_SERVICE_ACCOUNT_REGISTRY }}
+          cluster-name: "test"
+
+
+  rollout:
+    name: Rollout to the server
+    needs: build-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: src
+
+      - name: Checkout Akvo composite actions
+        uses: actions/checkout@v4
+        with:
+          repository: akvo/composite-actions
+          token: ${{ secrets.GH_PAT }}
+          path: composite-actions
+          ref: 0.0.7
+
+      - name: Rollout Nginx
+        uses: ./composite-actions/.github/actions/k8s-rollout
+        with:
+          app-name: "unep-gpml-hpa"
+          deployment-name: "nginx-deployment"
+          container-name: "nginx"
+          cluster-name: "test"
+          namespace-name: "unep-gpml-hpa-namespace"
+          gcloud-sa:  ${{ secrets.GCLOUD_SERVICE_ACCOUNT_K8S }}
+
+
+      - name: Rollout Frontend
+        uses: ./composite-actions/.github/actions/k8s-rollout
+        with:
+          app-name: "unep-gpml-hpa"
+          deployment-name: "frontend-deployment"
+          container-name: "frontend"
+          cluster-name: "test"
+          namespace-name: "unep-gpml-hpa-namespace"
+          gcloud-sa:  ${{ secrets.GCLOUD_SERVICE_ACCOUNT_K8S }}
+
+      - name: Rollout Backend
+        uses: ./composite-actions/.github/actions/k8s-rollout
+        with:
+          app-name: "unep-gpml-hpa"
+          deployment-name: "backend-deployment"
+          container-name: "backend"
+          cluster-name: "test"
+          namespace-name: "unep-gpml-hpa-namespace"
+          gcloud-sa:  ${{ secrets.GCLOUD_SERVICE_ACCOUNT_K8S }}
+
+      - name: Rollout Strapi
+        uses: ./composite-actions/.github/actions/k8s-rollout
+        with:
+          app-name: "unep-gpml-hpa"
+          deployment-name: "backend-deployment"
+          container-name: "strapi"
+          cluster-name: "test"
+          namespace-name: "unep-gpml-hpa-namespace"
+          gcloud-sa:  ${{ secrets.GCLOUD_SERVICE_ACCOUNT_K8S }}
