@@ -33,11 +33,13 @@ jobs:
 
       - name: Docker Build Frontend
         shell: bash
+        working-directory: src
         run: ./.github/helpers/frontend-build.sh "$GITHUB_SHA" "test"
 
       - name: Docker Build Backend
         shell: bash
-        run: ./.github/helpers/backend_build.sh "$GITHUB_SHA" "test"
+        working-directory: src
+        run: ./.github/helpers/backend-build.sh "$GITHUB_SHA" "test"
 
       - name: Docker Build Strapi
         uses: ./composite-actions/.github/actions/docker-build
