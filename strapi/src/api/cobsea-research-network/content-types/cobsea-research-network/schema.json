@@ -4,7 +4,8 @@
   "info": {
     "singularName": "cobsea-research-network",
     "pluralName": "cobsea-research-networks",
-    "displayName": "Cobsea Research Network"
+    "displayName": "Cobsea Research Network",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -18,12 +19,6 @@
       "type": "string"
     },
     "Institution": {
-      "type": "string"
-    },
-    "Instn": {
-      "type": "string"
-    },
-    "Type": {
       "type": "string"
     },
     "Name": {
