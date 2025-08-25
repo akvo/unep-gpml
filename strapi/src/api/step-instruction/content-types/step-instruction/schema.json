@@ -1,0 +1,26 @@
+{
+  "kind": "collectionType",
+  "collectionName": "step_instructions",
+  "info": {
+    "singularName": "step-instruction",
+    "pluralName": "step-instructions",
+    "displayName": "Step Instructions"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "step_slug": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "content": {
+      "type": "richtext"
+    }
+  }
+}
