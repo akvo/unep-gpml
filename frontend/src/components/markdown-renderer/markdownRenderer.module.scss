@@ -9,6 +9,7 @@
 
         &:hover {
             color: $primaryPurple;
+            text-decoration: none;
         }
     }
 
@@ -35,7 +36,6 @@
         width: 100%;
         height: 100%;
         border: none;
-        border-radius: 8px;
     }
 
     @media (max-width: 768px) {
