@@ -55,17 +55,6 @@ export const stepsState = [
     substeps: [
       { label: 'Intro', slug: '', checked: false },
       {
-        label: 'Stakeholder Map',
-        slug: 'stakeholder-map',
-        checked: false,
-        apiParams: {
-          basePath: 'organisations',
-          tag: 'stakeholder-{country}',
-          ps_bookmark_sections_keys: 'stakeholder-map',
-          ps_bookmarked: true,
-        },
-      },
-      {
         label: 'Case Studies',
         slug: 'case-studies',
         checked: false,
@@ -88,56 +77,8 @@ export const stepsState = [
     ],
   },
   {
-    label: 'State of Knowledge on Plastic Data',
-    slug: '3-data-analysis',
-    substeps: [
-      { label: 'Intro', slug: '', checked: false },
-      // {
-      //   label: 'Available Tools',
-      //   slug: 'available-tools',
-      //   checked: false,
-      //   apiParams: {
-      //     tag: 'data analysis - available tools',
-      //     ps_bookmark_sections_keys: 'data-available-tools',
-      //   },
-      // },
-      {
-        label: 'Available Data & Statistics',
-        slug: 'available-data',
-        checked: false,
-      },
-      {
-        label: 'Available Information',
-        slug: 'available-information',
-        checked: false,
-        apiParams: {
-          country: '{countryID}',
-          topic: 'technology,event,financing_resource,technical_resource',
-          capacity_building: true,
-          ps_bookmark_sections_keys: 'data-collection',
-        },
-      },
-      {
-        label: 'Data Collection Tools',
-        slug: 'data-collection',
-        checked: false,
-        apiParams: {
-          tag: 'data analysis - data collection',
-          ps_bookmark_sections_keys: 'data-collection',
-        },
-      },
-      // {
-      //   label: 'Calculation of Indicators',
-      //   slug: 'calculation',
-      //   checked: false,
-      // },
-
-      { label: 'Summary & Report', slug: 'summary', checked: false },
-    ],
-  },
-  {
     label: 'Legislation & Policy Review',
-    slug: '4-legislation-policy',
+    slug: '3-legislation-policy',
     substeps: [
       { label: 'Intro', slug: '', checked: false },
       {
@@ -149,11 +90,6 @@ export const stepsState = [
           country: '{countryID}',
           ps_bookmark_sections_keys: 'country-policy',
         },
-      },
-      {
-        label: 'Legislative Development Guide',
-        slug: 'legislative-development',
-        checked: false,
       },
       {
         label: 'Case Studies',
@@ -169,21 +105,52 @@ export const stepsState = [
   },
   {
     label: 'National Source Inventory',
-    slug: '5-national-source',
+    slug: '4-national-source',
+    substeps: [
+      { label: 'Intro', slug: '', checked: false },
+      {
+        label: 'Plastics in Economy',
+        slug: 'plastics-in-economy',
+        checked: false,
+        strapiParams: {
+          slug: 'plastics-in-economy',
+        },
+      },
+      {
+        label: 'Plastic Waste Management',
+        slug: 'plastic-waste-management',
+        checked: false,
+        strapiParams: {
+          slug: 'plastic-waste-management',
+        },
+      },
+      {
+        label: 'Plastics in the Environment',
+        slug: 'plastics-in-environment',
+        checked: false,
+        strapiParams: {
+          slug: 'plastics-in-environment',
+        },
+      },
+      {
+        label: 'National Source Inventory Data Mapping',
+        slug: 'data-mapping',
+        checked: false,
+        strapiParams: {
+          slug: 'data-mapping',
+        },
+      },
+      { label: 'Summary & Report', slug: 'summary', checked: false },
+    ],
+  },
+  {
+    label: 'National Action Plan',
+    slug: '5-national-action-plan',
     substeps: [
       { label: 'Intro', slug: '', checked: false },
       { label: 'Summary & Report', slug: 'summary', checked: false },
     ],
   },
-  {
-    label: 'National Plastic Strategy',
-    slug: '6-national-plastic-strategy',
-    substeps: [
-      { label: 'Intro', slug: '', checked: false },
-      { label: 'Upload', slug: 'summary', checked: false },
-    ],
-  },
-  { label: 'Final Review', slug: '7-final-review', checked: false },
 ]
 
 export const getParentChecked = (step) =>
