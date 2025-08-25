@@ -260,8 +260,6 @@ const NestedLayout = ({ children }) => {
   }, [])
   const psCountryName = psItem?.country?.name
 
-  console.log('psSteps', psSteps, allSteps, currentStep, psItem)
-
   return (
     <div className={styles.plasticStrategyView}>
       <div className={styles.sidebar}>
