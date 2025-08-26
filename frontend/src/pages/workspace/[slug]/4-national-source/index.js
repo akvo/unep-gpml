@@ -4,6 +4,8 @@ import { Trans, t } from '@lingui/macro'
 import { loadCatalog } from '../../../../translations/utils'
 import Button from '../../../../components/button'
 import { PREFIX_SLUG, isoA2 } from '../../../../modules/workspace/ps/config'
+import { useStepInstructions } from '../../../../hooks/useStepInstructions'
+import { MarkdownRenderer } from '../../../../components/markdown-renderer/MarkdownRenderer'
 
 const slides = {
   en:
@@ -56,6 +58,7 @@ const links = {
 const View = () => {
   const router = useRouter()
   const slideURL = slides[router.locale]
+  const { data } = useStepInstructions('4-national-source')
 
   const { slug } = router.query
 
@@ -70,56 +73,8 @@ const View = () => {
       <h4 className="caps-heading-m">
         <Trans>National Source Inventory Report</Trans>
       </h4>
-      <h2 className="h-xxl w-bold">
-        <Trans>Introduction</Trans>
-      </h2>
-      <p>
-        <Trans>description-intro-5-national-source</Trans>
-      </p>
-      <ul>
-        <li>
-          <a
-            href={
-              'https://docs.google.com/document/d/1GLFfCrvY_-9Kr1-ZM0bjFmXt1_Ejo3nG/edit?usp=sharing&ouid=105922766546831874317&rtpof=true&sd=true'
-            }
-            target="_blank"
-          >
-            <Button size="small" type="link">
-              Potential elements of a national source inventory for plastics
-            </Button>
-          </a>
-        </li>
-        <li>
-          {links[countryISOA2] && (
-            <a href={links[countryISOA2]} target="_blank">
-              <Button size="small" type="link">
-                Simple Excel Tool for Indicator Mapping
-              </Button>
-            </a>
-          )}
-        </li>
-        <li>
-          <a
-            href={`https://docs.google.com/presentation/d/${match[1]}/export/pptx`}
-            target="_blank"
-          >
-            <Button size="small" type="link">
-              Download Slides
-            </Button>
-          </a>
-        </li>
-      </ul>
-
-      <iframe
-        src={slideURL}
-        frameborder="0"
-        width="900"
-        height="542"
-        allowfullscreen="true"
-        mozallowfullscreen="true"
-        webkitallowfullscreen="true"
-        style={{ marginTop: 30 }}
-      ></iframe>
+      <h2 className="h-xxl w-bold">{data?.title}</h2>
+      <MarkdownRenderer content={data?.content} allowSlides={true} />
     </>
   )
 }
