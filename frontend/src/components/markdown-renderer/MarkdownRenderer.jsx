@@ -84,21 +84,154 @@ export const MarkdownRenderer = ({
     defaultConfig.ALLOWED_URI_REGEXP = /^https:\/\/(docs\.google\.com\/presentation|drive\.google\.com)/
   }
 
+  const processVideoShortcodes = (content) => {
+    return content.replace(
+      /\[SECTION type="(.*?)" title="(.*?)" description="(.*?)"\]([\s\S]*?)\[\/SECTION\]/g,
+      (match, type, title, description, innerContent) => {
+        const cleanInner = innerContent
+          .replace(/<p>/g, '')
+          .replace(/<\/p>/g, '\n')
+          .replace(/<br\s*\/?>/g, '\n')
+          .replace(/<span>/g, '')
+          .replace(/<\/span>/g, '')
+          .replace(/&amp;/g, '&')
+
+        if (type === 'video-row') {
+          const videos = []
+          const videoRegex = /\[VIDEO title="(.*?)" url="(.*?)"\]/g
+          let videoMatch
+          while ((videoMatch = videoRegex.exec(cleanInner))) {
+            videos.push({ title: videoMatch[1], url: videoMatch[2] })
+          }
+
+          const videoCards = videos
+            .map((v) => {
+              const videoId = v.url.match(
+                /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/
+              )?.[1]
+
+              if (!videoId) {
+                return `<div class="${styles.videoCard}">
+                        <h4>${v.title}</h4>
+                        <div class="${styles.videoWrapper}">
+                          <p>Invalid video URL</p>
+                        </div>
+                      </div>`
+              }
+
+              return `
+              <div class="${styles.videoCard}">
+                <h4>${v.title}</h4>
+                <div class="${styles.videoWrapper}">
+                  <iframe 
+                    src="https://www.youtube.com/embed/${videoId}" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen="true">
+                  </iframe>
+                </div>
+              </div>
+            `
+            })
+            .join('')
+
+          return `
+          <div class="${styles.videoSection}">
+            <h2>${title}</h2>
+            <p>${description}</p>
+            <div class="${styles.videoRow}">
+              ${videoCards}
+            </div>
+          </div>
+        `
+        }
+
+        if (type === 'video-links') {
+          const videoMatch = innerContent.match(
+            /\[VIDEO title="(.*?)" url="(.*?)"\]/
+          )
+          const video = videoMatch
+            ? { title: videoMatch[1], url: videoMatch[2] }
+            : null
+
+          const links = []
+          const linkRegex = /\[LINK text="(.*?)" url="(.*?)"\]/g
+          let linkMatch
+          while ((linkMatch = linkRegex.exec(innerContent))) {
+            links.push({ text: linkMatch[1], url: linkMatch[2] })
+          }
+
+          const videoId = video?.url.match(
+            /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/
+          )?.[1]
+
+          return `
+          <div class="${styles.videoLinksSection}">
+            <h2>${title}</h2>
+            <p>${description}</p>
+            <div class="${styles.videoLinksGrid}">
+              <div class="${styles.videoColumn}">
+                <h4>${video?.title}</h4>
+                <div class="${styles.videoWrapper}">
+                  <iframe src="https://www.youtube.com/embed/${videoId}" 
+                    frameborder="0" allowfullscreen></iframe>
+                </div>
+              </div>
+              <div class="${styles.linksColumn}">
+                ${links
+                  .map(
+                    (link) => `
+                  <a href="${link.url}" target="_blank" class="${styles.dataLink}">
+                    ${link.text}
+                  </a>
+                `
+                  )
+                  .join('')}
+              </div>
+            </div>
+          </div>
+        `
+        }
+
+        return match
+      }
+    )
+  }
+
   let processedContent = content
+  processedContent = processVideoShortcodes(processedContent)
   if (allowSlides) {
-    processedContent = content.replace(/\[SLIDES:(.*?)\]/g, (match, url) => {
-      const id = url.match(/\/d\/(.*?)(\/|$)/)?.[1]
-      if (!id) return ''
-      return `<div class="slides-wrapper">
+    processedContent = processedContent.replace(
+      /\[SLIDES:(.*?)\]/g,
+      (match, url) => {
+        const id = url.match(/\/d\/(.*?)(\/|$)/)?.[1]
+        if (!id) return ''
+        return `<div class="slides-wrapper">
           <iframe src="https://docs.google.com/presentation/d/${id}/embed?start=false&loop=false&delayms=3000" 
             frameborder="0" width="960" height="569" 
             allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true">
           </iframe>
         </div>`
-    })
+      }
+    )
   }
 
-  const sanitizedHtml = DOMPurify.sanitize(processedContent, defaultConfig)
+  const sections = processedContent.split(
+    /(<div class="[^"]*videoSection[^"]*">[\s\S]*?<\/div>\s*<\/div>\s*<\/div>|<div class="[^"]*videoLinksSection[^"]*">[\s\S]*?<\/div>\s*<\/div>\s*<\/div>\s*<\/div>)/
+  )
+
+  const sanitizedHtml = sections
+    .map((section) => {
+      if (
+        section.includes('videoSection') ||
+        section.includes('videoLinksSection')
+      ) {
+        return section
+      } else {
+        return DOMPurify.sanitize(section, defaultConfig)
+      }
+    })
+    .join('')
 
   const processHtml = (html) => {
     const parser = new DOMParser()
@@ -130,44 +263,6 @@ export const MarkdownRenderer = ({
         }
       })
     }
-
-    const elements = {
-      h1: styles.h1,
-      h2: styles.h2,
-      h3: styles.h3,
-      h4: styles.h4,
-      h5: styles.h5,
-      h6: styles.h6,
-      p: styles.paragraph,
-      ul: styles.unorderedList,
-      ol: styles.orderedList,
-      li: styles.listItem,
-      blockquote: styles.blockquote,
-      code: styles.inlineCode,
-      pre: styles.pre,
-      table: styles.table,
-      thead: styles.thead,
-      tbody: styles.tbody,
-      tr: styles.tr,
-      th: styles.th,
-      td: styles.td,
-      hr: styles.hr,
-      img: styles.image,
-      strong: styles.strong,
-      em: styles.emphasis,
-      del: styles.strikethrough,
-    }
-
-    Object.entries(elements).forEach(([tagName, className]) => {
-      const tagElements = temp.querySelectorAll(tagName)
-      tagElements.forEach((el) => {
-        if (tagName === 'code' && el.parentElement?.tagName === 'PRE') {
-          el.classList.add(styles.codeBlock)
-        } else {
-          el.classList.add(className)
-        }
-      })
-    })
 
     const tables = temp.querySelectorAll('table')
     tables.forEach((table) => {
