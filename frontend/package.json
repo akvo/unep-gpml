@@ -34,6 +34,7 @@
     "final-form-arrays": "^3.0.2",
     "framer-motion": "^10.16.1",
     "handlebars": "^4.7.8",
+    "html-react-parser": "^5.1.18",
     "humps": "^2.0.1",
     "isomorphic-dompurify": "^2.26.0",
     "lodash": "^4.17.20",
