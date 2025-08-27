@@ -4,6 +4,7 @@
   display: flex;
   background: rgba(245, 247, 255, 0.48);
 }
+
 .sidebar {
   width: 330px;
   min-height: calc(100vh - 90px);
@@ -13,6 +14,7 @@
   box-shadow: 0px 4px 20px 0px rgba(173, 186, 240, 0.31);
   top: 0;
   z-index: 100;
+
   :global {
     .sticky {
       position: sticky;
@@ -21,16 +23,20 @@
       height: calc(100vh - 90px);
       overflow: scroll;
     }
+
     .head {
       padding: 18px 10px;
       color: $primaryDarkBlueText;
+
       .caps-heading-s {
         color: $primaryDarkBlueText;
       }
     }
+
     .progress-bar {
       margin: 10px 0;
     }
+
     .progress-text {
       text-transform: uppercase;
       font-size: 12px;
@@ -38,6 +44,7 @@
       color: $primaryDarkBlueText;
       font-family: $ff1;
     }
+
     .steps {
       .step {
         .stephead {
@@ -47,44 +54,59 @@
           align-items: center;
           transition: background 0.4s ease-out;
         }
+
         .substeps {
           transition: height 0.3s ease-out;
           overflow: hidden;
+          display: grid;
+          grid-auto-rows: minmax(55px, auto);
+          gap: 0;
         }
+
         &:not(.opened) {
           .substeps {
             height: 0 !important;
           }
         }
+
         transition: background 0.4s ease-out;
+
         .topsection {
           transition: background 0.4s ease-out;
         }
+
         &.opened {
           background-color: #fafbff;
+
           .topsection {
             background-color: #f5f7ff;
           }
-          & > a > .stephead {
+
+          &>a>.stephead {
             border-bottom: 1px solid #fff;
           }
+
           .stephead {
             .pointer {
               transform: rotate(180deg);
             }
           }
+
           .topsection .label {
             font-weight: bold;
           }
         }
+
         &.selected {
           .stephead {
             background-color: $primaryPurple2;
           }
         }
+
         a {
           color: $primaryDarkBlueText;
         }
+
         .check {
           width: 19px;
           height: 19px;
@@ -94,14 +116,17 @@
           margin-right: 15px;
           margin-left: 5px;
           color: #fff;
+
           &.checked {
             background-color: $primaryPurple;
             display: flex;
             align-items: center;
             justify-content: center;
+
             svg {
               fill: $primaryWhite;
             }
+
             &.substep {
               svg {
                 font-size: 10px;
@@ -109,6 +134,7 @@
             }
           }
         }
+
         .label {
           min-width: 190px;
           font-size: 14px;
@@ -116,10 +142,12 @@
           font-weight: 500;
           line-height: 22px;
         }
+
         .topsection .label {
           font-family: $ff1;
           font-weight: 600;
         }
+
         .status {
           font-family: $ff1;
           margin-left: auto;
@@ -130,16 +158,19 @@
           margin-right: 5px;
           margin-left: 20px;
         }
+
         .pointer {
           margin-left: 10px;
           color: $primaryDarkBlue3;
           transition: all 0.3s ease-out;
         }
       }
+
       .substep {
         .stephead {
           border-top: none;
         }
+
         .check {
           width: 17px;
           height: 17px;
@@ -147,6 +178,7 @@
           margin-left: 8px;
           margin-right: 18px;
           position: relative;
+
           &:after {
             content: ' ';
             width: 1px;
@@ -157,16 +189,19 @@
             top: 16px;
           }
         }
+
         &:last-child {
           .check:after {
             display: none;
           }
         }
       }
+
       .step.forum {
         &:not(.selected) {
           background-color: #e7f3ff;
         }
+
         svg {
           margin-right: 12px;
           margin-left: 3px;
@@ -175,16 +210,20 @@
     }
   }
 }
+
 .view {
   width: 100%;
   padding: 30px 50px 140px;
   width: 100%;
+
   &.forumView {
     padding: 0;
   }
+
   p {
     padding: 25px 0;
   }
+
   :global {
     ul {
       li {
@@ -192,8 +231,10 @@
         line-height: 30px;
       }
     }
+
     .iframe-container {
       position: absolute;
+
       .ant-btn {
         position: absolute;
         right: 0;
@@ -201,6 +242,7 @@
     }
   }
 }
+
 .bottomBar {
   position: fixed;
   bottom: 0;
@@ -211,17 +253,21 @@
   padding: 10px;
   padding-right: 30px;
   padding-left: 370px;
+
   :global {
     .ant-btn {
       margin-left: 10px;
+
       &.ant-btn-default {
         &:hover {
           margin-right: -8px;
         }
       }
+
       &.mark-completed {
         color: $primaryDarkBlueText;
         border-color: $primaryDarkBlueText;
+
         svg {
           position: static;
           width: 0;
@@ -230,6 +276,7 @@
           transform: translateY(0px);
           margin-right: 0px;
         }
+
         &:hover,
         &.completed {
           svg {
@@ -239,11 +286,13 @@
             margin-right: 5px;
           }
         }
+
         &:active,
         &.completed {
           border-color: $primaryPurple3;
           background-color: $primaryPurple3;
         }
+
         &:disabled {
           border-color: $primaryDarkBlue2;
           color: $primaryDarkBlue2;
@@ -256,7 +305,8 @@
 .cardsList {
   display: flex;
   flex-wrap: wrap;
-  & > div {
+
+  &>div {
     margin-right: 15px;
     margin-bottom: 15px;
   }
