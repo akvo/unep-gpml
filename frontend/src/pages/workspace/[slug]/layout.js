@@ -314,7 +314,7 @@ const NestedLayout = ({ children }) => {
                 {step?.substeps?.length > 0 && (
                   <div
                     className="substeps"
-                    style={{ height: 60 * step.substeps.length }}
+                    style={{ height: 55 * step.substeps.length }}
                   >
                     {step.substeps.map((substep) => (
                       <Link
