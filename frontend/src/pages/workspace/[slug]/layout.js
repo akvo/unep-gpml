@@ -46,8 +46,14 @@ export const useStepsDict = () => {
     'Calculation of Indicators': i18n._(t`Calculation of Indicators`),
     'Available Information': i18n._(t`Available Information`),
     'National Source Inventory': i18n._(t`National Source Inventory`),
-    'National Plastic Strategy': i18n._(t`National Plastic Strategy`),
+    'National Action Plan': i18n._(t`National Action Plan`),
     Upload: i18n._(t`Upload`),
+    'Plastics in Economy': i18n._(t`Plastics in Economy`),
+    'Plastic Waste Management': i18n._(t`Plastic Waste Management`),
+    'Plastics in the Environment': i18n._(t`Plastics in the Environment`),
+    'National Source Inventory Data Mapping': i18n._(
+      t`National Source Inventory Data Mapping`
+    ),
     'Final Review': i18n._(t`Final Review`),
   }
 
@@ -271,20 +277,6 @@ const NestedLayout = ({ children }) => {
             </div>
           </div>
           <div className="steps">
-            <div
-              className={classNames('step forum', {
-                selected: router.pathname === '/workspace/[slug]/forum',
-              })}
-            >
-              <Link href={`/workspace/${router.query?.slug}/forum`}>
-                <div className="stephead topsection">
-                  <Forum />
-                  <div className="label">
-                    <Trans>Forum</Trans>
-                  </div>
-                </div>
-              </Link>
-            </div>
             {psSteps.map((step) => (
               <div
                 className={classNames('step', {
@@ -322,7 +314,7 @@ const NestedLayout = ({ children }) => {
                 {step?.substeps?.length > 0 && (
                   <div
                     className="substeps"
-                    style={{ height: 52 * step.substeps.length }}
+                    style={{ height: 55 * step.substeps.length }}
                   >
                     {step.substeps.map((substep) => (
                       <Link
