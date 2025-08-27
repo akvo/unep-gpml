@@ -312,10 +312,7 @@ const NestedLayout = ({ children }) => {
                   </div>
                 </ConditionalLink>
                 {step?.substeps?.length > 0 && (
-                  <div
-                    className="substeps"
-                    style={{ height: 55 * step.substeps.length }}
-                  >
+                  <div className="substeps">
                     {step.substeps.map((substep) => (
                       <Link
                         className={classNames('step substep', {
