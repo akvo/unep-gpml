@@ -58,7 +58,7 @@ const links = {
 const View = () => {
   const router = useRouter()
   const slideURL = slides[router.locale]
-  const { data } = useStepInstructions('4-national-source')
+  const { data } = useStepInstructions('4-national-source', router.locale)
 
   const { slug } = router.query
 

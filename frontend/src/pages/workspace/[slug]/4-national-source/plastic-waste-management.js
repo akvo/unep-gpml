@@ -1,27 +1,23 @@
-import { useEffect, useState } from 'react'
 import { PageLayout } from '..'
-import api from '../../../../utils/api'
-import ResourceCards from '../../../../modules/workspace/ps/resource-cards'
 import { useRouter } from 'next/router'
-import { isoA2 } from '../../../../modules/workspace/ps/config'
 import { Trans, t } from '@lingui/macro'
 import { loadCatalog } from '../../../../translations/utils'
 import { useStepInstructions } from '../../../../hooks/useStepInstructions'
 import { MarkdownRenderer } from '../../../../components/markdown-renderer/MarkdownRenderer'
 
-const sectionKey = 'stakeholder-case-studies'
-
 const View = () => {
   const router = useRouter()
-  const [items, setItems] = useState([])
-  const [loading, setLoading] = useState(true)
-  const { data } = useStepInstructions('plastic-waste-management')
+  const { data } = useStepInstructions(
+    'plastic-waste-management',
+    router.locale
+  )
 
   return (
     <>
       <h4 className="caps-heading-m">
         <Trans>Plastic Waste Management</Trans>
       </h4>
+      <h2 className="h-xxl w-bold">{data?.title}</h2>
       <MarkdownRenderer content={data?.content} allowSlides={true} />
     </>
   )
