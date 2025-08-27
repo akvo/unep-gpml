@@ -85,17 +85,21 @@ export const MarkdownRenderer = ({
   }
 
   let processedContent = content
+
   if (allowSlides) {
-    processedContent = content.replace(/\[SLIDES:(.*?)\]/g, (match, url) => {
-      const id = url.match(/\/d\/(.*?)(\/|$)/)?.[1]
-      if (!id) return ''
-      return `<div class="slides-wrapper">
+    processedContent = processedContent.replace(
+      /\[SLIDES:(.*?)\]/g,
+      (match, url) => {
+        const id = url.match(/\/d\/(.*?)(\/|$)/)?.[1]
+        if (!id) return ''
+        return `<div class="slides-wrapper">
           <iframe src="https://docs.google.com/presentation/d/${id}/embed?start=false&loop=false&delayms=3000" 
             frameborder="0" width="960" height="569" 
             allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true">
           </iframe>
         </div>`
-    })
+      }
+    )
   }
 
   const sanitizedHtml = DOMPurify.sanitize(processedContent, defaultConfig)

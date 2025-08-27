@@ -15,6 +15,21 @@
 
     p {
         padding: 10px 0px;
+        color: $primaryDarkBlue;
+        text-transform: none;
+        font-weight: normal;
+    }
+
+    h2 {
+
+        font-size: $fzXXL;
+        line-height: $lhXXL;
+        font-weight: 700;
+
+        @media screen and (max-width: $bpMobile) {
+            font-size: $fzL;
+            line-height: $lhL;
+        }
     }
 
     .slidesContainer {
@@ -43,4 +58,5 @@
             margin: 1rem 0;
         }
     }
+
 }
