@@ -5,7 +5,6 @@ import { loadCatalog } from '../../../../translations/utils'
 import Button from '../../../../components/button'
 import { PREFIX_SLUG, isoA2 } from '../../../../modules/workspace/ps/config'
 import { useStepInstructions } from '../../../../hooks/useStepInstructions'
-import { MarkdownRenderer } from '../../../../components/markdown-renderer/MarkdownRenderer'
 
 const slides = {
   en:
@@ -74,7 +73,10 @@ const View = () => {
         <Trans>National Source Inventory Report</Trans>
       </h4>
       <h2 className="h-xxl w-bold">{data?.title}</h2>
-      <MarkdownRenderer content={data?.content} allowSlides={true} />
+      <div
+        className="strapi-workflow-page"
+        dangerouslySetInnerHTML={{ __html: data?.content }}
+      ></div>
     </>
   )
 }
