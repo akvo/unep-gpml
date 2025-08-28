@@ -240,6 +240,70 @@
         right: 0;
       }
     }
+
+    .strapi-workflow-page {
+      a {
+        color: $primaryDarkBlue;
+        text-decoration: underline;
+        font-family: var(--font-archia), sans-serif;
+        font-weight: 600;
+        font-size: 18px;
+
+        &:hover {
+          color: $primaryPurple;
+          text-decoration: none;
+        }
+      }
+
+      p {
+        padding: 10px 0px;
+        color: $primaryDarkBlue;
+        text-transform: none;
+        font-weight: normal;
+      }
+
+      h2 {
+        font-size: $fzXXL;
+        line-height: $lhXXL;
+        font-weight: 700;
+
+        @media screen and (max-width: $bpMobile) {
+          font-size: $fzL;
+          line-height: $lhL;
+        }
+      }
+
+      iframe {
+        position: relative;
+        max-width: 960px;
+        min-height: 542px;
+        width: 100%;
+
+        &::before {
+          content: '';
+          display: block;
+          padding-top: 56.25%;
+        }
+      }
+
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 20px;
+
+        .col {
+          iframe {
+            width: 560px;
+            height: 315px;
+            min-height: auto;
+            padding-right: 30px;
+            padding-bottom: 30px;
+          }
+
+          display: block;
+        }
+      }
+    }
   }
 }
 
