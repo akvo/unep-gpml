@@ -2,7 +2,6 @@ import { PageLayout } from '..'
 import { Trans, t } from '@lingui/macro'
 import { loadCatalog } from '../../../../translations/utils'
 import { useStepInstructions } from '../../../../hooks/useStepInstructions'
-import { MarkdownRenderer } from '../../../../components/markdown-renderer/MarkdownRenderer'
 import { useRouter } from 'next/router'
 
 const View = () => {
@@ -15,7 +14,10 @@ const View = () => {
         <Trans>Plastics in the Environment</Trans>
       </h4>
       <h2 className="h-xxl w-bold">{data?.title}</h2>
-      <MarkdownRenderer content={data?.content} allowSlides={true} />
+      <div
+        className="strapi-workflow-page"
+        dangerouslySetInnerHTML={{ __html: data?.content }}
+      ></div>
     </>
   )
 }

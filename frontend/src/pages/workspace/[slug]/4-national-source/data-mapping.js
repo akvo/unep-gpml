@@ -2,7 +2,6 @@ import { PageLayout } from '..'
 import { Trans, t } from '@lingui/macro'
 import { loadCatalog } from '../../../../translations/utils'
 import { useStepInstructions } from '../../../../hooks/useStepInstructions'
-import { MarkdownRenderer } from '../../../../components/markdown-renderer/MarkdownRenderer'
 import { useRouter } from 'next/router'
 
 const View = () => {
