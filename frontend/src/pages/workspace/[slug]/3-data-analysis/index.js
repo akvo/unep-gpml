@@ -3,6 +3,8 @@ import { PageLayout } from '..'
 import { Trans, t } from '@lingui/macro'
 import { loadCatalog } from '../../../../translations/utils'
 import Button from '../../../../components/button'
+import { MarkdownRenderer } from '../../../../components/markdown-renderer/MarkdownRenderer'
+import { useStepInstructions } from '../../../../hooks/useStepInstructions'
 
 const slides = {
   en:
@@ -25,6 +27,7 @@ const template = {
 const View = () => {
   const router = useRouter()
   const slideURL = slides[router.locale]
+  const { data } = useStepInstructions('3-legislation-policy', router.locale)
 
   const match = slideURL.match(/\/d\/(.+?)\//)
   return (
@@ -32,42 +35,9 @@ const View = () => {
       <h4 className="caps-heading-m">
         <Trans>Data Analysis</Trans>
       </h4>
-      <h2 className="h-xxl w-bold">
-        <Trans>Introduction</Trans>
-      </h2>
-      <p>
-        <Trans>description-intro-4-data-analysis</Trans>
-      </p>
-      <ul>
-        <li>
-          <a href={template?.[router.locale]} target="_blank">
-            <Button size="small" type="link">
-              Download State of Knowledge Report Template
-            </Button>
-          </a>
-        </li>
-        <li style={{ margin: '10px 0' }}>
-          <a
-            href={`https://docs.google.com/presentation/d/${match[1]}/export/pptx`}
-            target="_blank"
-          >
-            <Button size="small" type="link">
-              Download Slides
-            </Button>
-          </a>
-        </li>
-      </ul>
 
-      <iframe
-        src={slideURL}
-        frameborder="0"
-        width="900"
-        height="542"
-        allowfullscreen="true"
-        mozallowfullscreen="true"
-        webkitallowfullscreen="true"
-        style={{ marginTop: 30 }}
-      ></iframe>
+      <h2 className="h-xxl w-bold">{data?.title}</h2>
+      <MarkdownRenderer content={data?.content} allowSlides={true} />
     </>
   )
 }

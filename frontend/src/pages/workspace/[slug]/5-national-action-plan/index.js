@@ -3,6 +3,8 @@ import { PageLayout } from '..'
 import { Trans, t } from '@lingui/macro'
 import { loadCatalog } from '../../../../translations/utils'
 import Button from '../../../../components/button'
+import { useStepInstructions } from '../../../../hooks/useStepInstructions'
+import { MarkdownRenderer } from '../../../../components/markdown-renderer/MarkdownRenderer'
 
 const slides = {
   en:
@@ -18,50 +20,14 @@ const View = () => {
   const slideURL = slides[router.locale]
 
   const match = slideURL.match(/\/d\/(.+?)\//)
+  const { data } = useStepInstructions('5-national-action-plan', router.locale)
   return (
     <>
       <h4 className="caps-heading-m">
         <Trans>National Plastic Strategy</Trans>
       </h4>
-      <h2 className="h-xxl w-bold">
-        <Trans>Introduction</Trans>
-      </h2>
-      <p>
-        <Trans>description-intro-6-national-plastic-strategy</Trans>
-      </p>
-      <ul>
-        <li>
-          <a
-            href="https://docs.google.com/document/d/1y37NoY4c51ztstQeOzHCvS8hIkVY698i/edit"
-            target="_blank"
-          >
-            <Button size="small" type="link">
-              Potential elements of a National Plastics Strategy
-            </Button>
-          </a>
-        </li>
-        <li>
-          <a
-            href={`https://docs.google.com/presentation/d/${match[1]}/export/pptx`}
-            target="_blank"
-          >
-            <Button size="small" type="link">
-              Download Slides
-            </Button>
-          </a>
-        </li>
-      </ul>
-
-      <iframe
-        src={slideURL}
-        frameborder="0"
-        width="900"
-        height="542"
-        allowfullscreen="true"
-        mozallowfullscreen="true"
-        webkitallowfullscreen="true"
-        style={{ marginTop: 30 }}
-      ></iframe>
+      <h2 className="h-xxl w-bold">{data?.title}</h2>
+      <MarkdownRenderer content={data?.content} allowSlides={true} />
     </>
   )
 }

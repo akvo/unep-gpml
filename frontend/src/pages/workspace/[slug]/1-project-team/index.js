@@ -18,7 +18,7 @@ const slides = {
 const View = () => {
   const router = useRouter()
   const slideURL = slides[router.locale]
-  const { data } = useStepInstructions('1-project-team')
+  const { data } = useStepInstructions('1-project-team', router.locale)
 
   const match = slideURL?.match(/\/d\/(.+?)\//)
 
