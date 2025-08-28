@@ -58,6 +58,9 @@
         .substeps {
           transition: height 0.3s ease-out;
           overflow: hidden;
+          display: grid;
+          grid-auto-rows: minmax(50px, auto);
+          gap: 0;
         }
 
         &:not(.opened) {
@@ -79,7 +82,7 @@
             background-color: #f5f7ff;
           }
 
-          & > a > .stephead {
+          &>a>.stephead {
             border-bottom: 1px solid #fff;
           }
 
@@ -367,7 +370,7 @@
   display: flex;
   flex-wrap: wrap;
 
-  & > div {
+  &>div {
     margin-right: 15px;
     margin-bottom: 15px;
   }
