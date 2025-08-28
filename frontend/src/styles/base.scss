@@ -231,6 +231,7 @@ h6 {
   .ant-dropdown-menu-item {
     padding: 10px 24px;
     text-transform: capitalize;
+
     &:hover {
       background-color: #ccd0db;
     }
@@ -351,14 +352,14 @@ h6 {
       display: none;
     }
 
-    & > span {
+    &>span {
       margin-left: -5px;
       text-transform: uppercase;
       margin-right: 5px;
       font-weight: 500;
     }
 
-    & > *:first-child {
+    &>*:first-child {
       margin-right: 10px;
     }
   }
@@ -565,6 +566,7 @@ h6 {
     }
   }
 }
+
 .user-btn-dropdown {
   li {
     font-weight: 500;
@@ -572,9 +574,11 @@ h6 {
     font-size: 16px;
     color: $primaryDarkBlueText;
     padding: 7px 22px;
+
     &:hover {
       // background-color: $primaryDarkBlue;
     }
+
     b {
       color: $primaryGreen7;
     }
@@ -833,14 +837,14 @@ h6 {
       margin: 20px auto;
       color: white;
 
-      & > span {
+      &>span {
         margin-left: -5px;
         text-transform: uppercase;
         margin-right: 5px;
         font-weight: 500;
       }
 
-      & > *:first-child {
+      &>*:first-child {
         margin-right: 10px;
       }
     }
@@ -918,6 +922,7 @@ h6 {
 
   ul {
     li {
+
       // list-style: none;
       // margin-bottom: 20px;
       // display: flex;
@@ -1181,8 +1186,8 @@ ul {
   width: 100%;
 
   .ant-table-thead {
-    & > tr {
-      & > th {
+    &>tr {
+      &>th {
         background-color: $primaryPurple;
         color: $primaryWhite;
 
@@ -1260,11 +1265,9 @@ ul {
   }
 
   .ant-tooltip-arrow-content {
-    --antd-arrow-background-color: linear-gradient(
-      to right bottom,
-      rgba(2, 10, 91, 1),
-      rgba(2, 10, 91, 1)
-    );
+    --antd-arrow-background-color: linear-gradient(to right bottom,
+        rgba(2, 10, 91, 1),
+        rgba(2, 10, 91, 1));
   }
 }
 
@@ -1462,32 +1465,6 @@ ul {
       color: $systemInfo5;
       font-weight: 600;
       font-size: 12px;
-    }
-  }
-}
-
-.strapi-workflow-page {
-  .row {
-    display: flex;
-    margin-top: 20px;
-    .col {
-      // max-width: 500px;
-      iframe {
-        width: 560px;
-        height: 315px;
-        padding-right: 30px;
-        padding-bottom: 30px;
-      }
-      display: block;
-      p {
-        display: block;
-        padding: 15px 0;
-      }
-      a {
-        color: $primaryDarkBlueText;
-        text-decoration: underline;
-        font-size: 18px;
-      }
     }
   }
 }

@@ -244,6 +244,7 @@
         text-decoration: underline;
         font-family: var(--font-archia), sans-serif;
         font-weight: 600;
+        font-size: 18px;
 
         &:hover {
           color: $primaryPurple;
@@ -280,6 +281,23 @@
           content: '';
           display: block;
           padding-top: 56.25%;
+        }
+      }
+
+      .row {
+        display: flex;
+        margin-top: 20px;
+
+        .col {
+          iframe {
+            width: 560px;
+            height: 315px;
+            min-height: auto;
+            padding-right: 30px;
+            padding-bottom: 30px;
+          }
+
+          display: block;
         }
       }
     }
