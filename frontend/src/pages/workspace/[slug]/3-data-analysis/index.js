@@ -3,7 +3,6 @@ import { PageLayout } from '..'
 import { Trans, t } from '@lingui/macro'
 import { loadCatalog } from '../../../../translations/utils'
 import Button from '../../../../components/button'
-import { MarkdownRenderer } from '../../../../components/markdown-renderer/MarkdownRenderer'
 import { useStepInstructions } from '../../../../hooks/useStepInstructions'
 
 const slides = {
@@ -37,7 +36,10 @@ const View = () => {
       </h4>
 
       <h2 className="h-xxl w-bold">{data?.title}</h2>
-      <MarkdownRenderer content={data?.content} allowSlides={true} />
+      <div
+        className="strapi-workflow-page"
+        dangerouslySetInnerHTML={{ __html: data?.content }}
+      ></div>
     </>
   )
 }
