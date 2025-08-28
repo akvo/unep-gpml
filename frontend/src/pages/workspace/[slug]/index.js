@@ -52,7 +52,7 @@ const Page = () => {
   const router = useRouter()
   const { slug } = router.query
   const strapiSlug = 'instructions'
-  const { data } = useStepInstructions(strapiSlug)
+  const { data } = useStepInstructions(strapiSlug, router.locale)
 
   const [_, countrySlug] = slug?.split(`${PREFIX_SLUG}-`)
   const countryISOA2 =

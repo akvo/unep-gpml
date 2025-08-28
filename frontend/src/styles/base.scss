@@ -1465,3 +1465,29 @@ ul {
     }
   }
 }
+
+.strapi-workflow-page {
+  .row {
+    display: flex;
+    margin-top: 20px;
+    .col {
+      // max-width: 500px;
+      iframe {
+        width: 560px;
+        height: 315px;
+        padding-right: 30px;
+        padding-bottom: 30px;
+      }
+      display: block;
+      p {
+        display: block;
+        padding: 15px 0;
+      }
+      a {
+        color: $primaryDarkBlueText;
+        text-decoration: underline;
+        font-size: 18px;
+      }
+    }
+  }
+}
