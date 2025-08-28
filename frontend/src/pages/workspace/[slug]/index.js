@@ -7,7 +7,6 @@ import { loadCatalog } from '../../../translations/utils'
 import { useRouter } from 'next/router'
 import { PREFIX_SLUG, isoA2 } from '../../../modules/workspace/ps/config'
 import { useStepInstructions } from '../../../hooks/useStepInstructions'
-import { MarkdownRenderer } from '../../../components/markdown-renderer/MarkdownRenderer'
 
 const links = {
   PG:
@@ -52,7 +51,7 @@ const Page = () => {
   const router = useRouter()
   const { slug } = router.query
   const strapiSlug = 'instructions'
-  const { data } = useStepInstructions(strapiSlug)
+  const { data } = useStepInstructions(strapiSlug, router.locale)
 
   const [_, countrySlug] = slug?.split(`${PREFIX_SLUG}-`)
   const countryISOA2 =
@@ -61,7 +60,10 @@ const Page = () => {
   return (
     <div className={style.view}>
       <h2 className="w-bold">{data?.title}</h2>
-      <MarkdownRenderer content={data?.content} />
+      <div
+        className="strapi-workflow-page"
+        dangerouslySetInnerHTML={{ __html: data?.content }}
+      ></div>
     </div>
   )
 }
