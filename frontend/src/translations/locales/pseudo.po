@@ -43,7 +43,7 @@ msgstr ""
 msgid "{incompleteAmount} items are not completed"
 msgstr ""
 
-#: src/pages/workspace/[slug]/layout.js:270
+#: src/pages/workspace/[slug]/layout.js:276
 msgid "{progress}% complete"
 msgstr ""
 
@@ -61,10 +61,6 @@ msgstr ""
 
 #: src/pages/partnership/index.jsx:332
 msgid "<0>Fill in the form.</0><1/>Tell us about your organisation's work in preventing and reducing plastic pollution and marine litter."
-msgstr ""
-
-#: src/pages/workspace/[slug]/index.js:59
-msgid "<0>Instructions</0><1>This workflow tool has been created to assist your team with the development of a plastics strategy for your country. Some key steps are suggested for consideration while in the ‘create’ phase. The workflow will be further developed to assist with the phase of ‘implement’, ‘report’, and ‘review.’ <2/><3/>The workflow and resources associated with each suggested step are designed to facilitate and accelerate the activities of the ‘create’ phase of your plastic strategy. Such resources include data, documents, templates, case studies, relevant organizations (governmental and non governmental) as well as individuals active in the space.</1>{0}<4>Step 1: National Steering Committee & Project Team</4><5>This step assists in the establishment of a National Steering Committee (NSC) with representation from necessary government agencies as well as relevant non-governmental organizations. The NSC should aim to meet 2-4 times per year to assist with and drive the roadmap/strategy/plan. A project team should be established to assist the NSC, consisting of consultants and focal points, to lead the implementation of the project with the guidance of the NSC and UNEP.</5><6>Step 2: Stakeholder consultations</6><7>Consultation should aim to understand the current issues faced by various stakeholders, as well as their role in solving the problem (actors) and how proposed activities of the national plastics strategy may affect them positively or negatively. Different stakeholders may also have access to important data. This step of the workflow provides guidance on organizing a comprehensive stakeholder consultation process to ensure all relevant sectors and stakeholders are consulted.</7><8>Step 3: State of Knowledge on Plastic Data</8><9>Data is at the core of understanding the issues and current state of play, as well as the tracking of trends to determine effectiveness of the national plastics strategy. This step will help in compiling existing data and information into a State of Knowledge Report. This could include identification of areas in need of additional data collection, leading to additional secondary data collection.</9><10>Step 4: Legislation & Policy Review</10><11>An analysis of the legal and policy framework in your country can help identify current goals and targets that the national plastics strategy should aim to achieve, as well as gaps in this framework that the strategy could help close. This allows for the identification of priority areas to track and the type of data needed to do so. In this stage, together with UNEP’s guidance, a review and analysis of the legislative and policy landscape as it pertains to marine litter and plastic pollution would be conducted.</11><12>Step 5: National Source Inventory</12><13>National plastics strategies should be underpinned by a National Source Inventory (NSI). This step will help in analysing the data available and collected into a National Source Inventory Report on plastic pollution and marine litter that can inform discussions on possible actions to be included in the national plastics strategy.</13><14>Final Step: National Roadmap/Strategy/Plan</14><15>This step facilitates the development of a National Roadmap/Strategy/Plan based on the evidence and information gathered in the NSI Report. The roadmap should be time bound, measurable and include provisions of periodic revisions. The strategy can be formally adopted through parliament or act as a voluntary guideline for action.</15>"
 msgstr ""
 
 #: src/pages/partnership/index.jsx:312
@@ -202,7 +198,7 @@ msgstr ""
 msgid "Add translation"
 msgstr ""
 
-#: src/modules/workspace/ps/config.js:197
+#: src/modules/workspace/ps/config.js:164
 msgid "Admin"
 msgstr ""
 
@@ -210,7 +206,7 @@ msgstr ""
 msgid "Admin Section"
 msgstr ""
 
-#: src/modules/workspace/ps/config.js:198
+#: src/modules/workspace/ps/config.js:165
 msgid "Admins can edit all content and manage the team"
 msgstr ""
 
@@ -393,7 +389,7 @@ msgstr ""
 msgid "Automotive"
 msgstr ""
 
-#: src/pages/workspace/[slug]/4-data-analysis/available-data.js:12
+#: src/pages/workspace/[slug]/3-data-analysis/available-data.js:12
 msgid "Available Data"
 msgstr ""
 
@@ -401,12 +397,12 @@ msgstr ""
 msgid "Available Data & Statistics"
 msgstr ""
 
-#: src/pages/workspace/[slug]/4-data-analysis/available-information.js:46
+#: src/pages/workspace/[slug]/3-data-analysis/available-information.js:46
 #: src/pages/workspace/[slug]/layout.js:47
 msgid "Available Information"
 msgstr ""
 
-#: src/pages/workspace/[slug]/4-data-analysis/available-tools.js:46
+#: src/pages/workspace/[slug]/3-data-analysis/available-tools.js:46
 #: src/pages/workspace/[slug]/layout.js:42
 msgid "Available Tools"
 msgstr ""
@@ -537,7 +533,7 @@ msgstr ""
 msgid "By submitting this form, I will be included in the public database of GPML Digital Platform members and acknowledge that the provided information will be made public and used to find and connect via smart-matchmaking functionalities with other stakeholders and resources."
 msgstr ""
 
-#: src/pages/workspace/[slug]/4-data-analysis/calculation.js:45
+#: src/pages/workspace/[slug]/3-data-analysis/calculation.js:45
 #: src/pages/workspace/[slug]/layout.js:46
 msgid "Calculation of Indicators"
 msgstr ""
@@ -779,7 +775,7 @@ msgstr ""
 msgid "Community Hub"
 msgstr ""
 
-#: src/pages/workspace/[slug]/layout.js:376
+#: src/pages/workspace/[slug]/layout.js:365
 msgid "Completed"
 msgstr ""
 
@@ -912,6 +908,15 @@ msgstr ""
 msgid "Country Dedicated"
 msgstr ""
 
+#: src/modules/workspace/view.jsx:486
+#: src/pages/workspace/[slug]/layout.js:269
+msgid "Country Dedicated Workflow"
+msgstr ""
+
+#: src/modules/workspace/view.jsx:320
+msgid "Country Dedicated Workflows"
+msgstr ""
+
 #: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:560
 #: src/pages/workspace/[slug]/layout.js:36
 msgid "Country Policy Framework"
@@ -965,12 +970,12 @@ msgstr ""
 msgid "CV / Portfolio"
 msgstr ""
 
-#: src/pages/workspace/[slug]/4-data-analysis/available-data.js:9
-#: src/pages/workspace/[slug]/4-data-analysis/available-information.js:43
-#: src/pages/workspace/[slug]/4-data-analysis/available-tools.js:43
-#: src/pages/workspace/[slug]/4-data-analysis/calculation.js:42
-#: src/pages/workspace/[slug]/4-data-analysis/data-collection.js:43
-#: src/pages/workspace/[slug]/4-data-analysis/index.js:33
+#: src/pages/workspace/[slug]/3-data-analysis/available-data.js:9
+#: src/pages/workspace/[slug]/3-data-analysis/available-information.js:43
+#: src/pages/workspace/[slug]/3-data-analysis/available-tools.js:43
+#: src/pages/workspace/[slug]/3-data-analysis/calculation.js:42
+#: src/pages/workspace/[slug]/3-data-analysis/data-collection.js:43
+#: src/pages/workspace/[slug]/3-data-analysis/index.js:35
 #: src/pages/workspace/[slug]/layout.js:38
 msgid "Data Analysis"
 msgstr ""
@@ -984,7 +989,7 @@ msgstr ""
 msgid "Data Collection"
 msgstr ""
 
-#: src/pages/workspace/[slug]/4-data-analysis/data-collection.js:46
+#: src/pages/workspace/[slug]/3-data-analysis/data-collection.js:46
 #: src/pages/workspace/[slug]/layout.js:43
 msgid "Data Collection Tools"
 msgstr ""
@@ -996,6 +1001,10 @@ msgstr ""
 #: src/pages/landing/index.jsx:407
 #: src/store.js:46
 msgid "Data Hub"
+msgstr ""
+
+#: src/pages/workspace/[slug]/4-national-source/data-mapping.js:13
+msgid "Data Mapping"
 msgstr ""
 
 #: src/pages/search/index.js:210
@@ -1094,24 +1103,24 @@ msgstr ""
 msgid "Description - Section 3 - Legislative Development Guide"
 msgstr ""
 
-#: src/pages/workspace/[slug]/4-data-analysis/available-information.js:49
+#: src/pages/workspace/[slug]/3-data-analysis/available-information.js:49
 msgid "Description - Section 4 - Available Information"
 msgstr ""
 
-#: src/pages/workspace/[slug]/4-data-analysis/available-tools.js:49
+#: src/pages/workspace/[slug]/3-data-analysis/available-tools.js:49
 msgid "Description - Section 4 - Available Tools"
 msgstr ""
 
-#: src/pages/workspace/[slug]/4-data-analysis/calculation.js:48
+#: src/pages/workspace/[slug]/3-data-analysis/calculation.js:48
 msgid "Description - Section 4 - Calculation of Indicators"
 msgstr ""
 
-#: src/pages/workspace/[slug]/4-data-analysis/data-collection.js:49
+#: src/pages/workspace/[slug]/3-data-analysis/data-collection.js:49
 msgid "Description - Section 4 - Data Collection"
 msgstr ""
 
-#: src/modules/workspace/ps/config.js:215
-#: src/modules/workspace/ps/config.js:220
+#: src/modules/workspace/ps/config.js:182
+#: src/modules/workspace/ps/config.js:187
 msgid "Description text for what this is"
 msgstr ""
 
@@ -1119,32 +1128,8 @@ msgstr ""
 msgid "description-7-final-review"
 msgstr ""
 
-#: src/pages/workspace/[slug]/4-data-analysis/available-data.js:15
+#: src/pages/workspace/[slug]/3-data-analysis/available-data.js:15
 msgid "description-available-data-4-data-analysis"
-msgstr ""
-
-#: src/pages/workspace/[slug]/1-project-team/index.js:31
-msgid "description-intro-1-project-team"
-msgstr ""
-
-#: src/pages/workspace/[slug]/2-stakeholder-consultation/index.js:30
-msgid "description-intro-2-stakeholder-consultation"
-msgstr ""
-
-#: src/pages/workspace/[slug]/3-legislation-policy/index.js:40
-msgid "description-intro-3-legislation-policy"
-msgstr ""
-
-#: src/pages/workspace/[slug]/4-data-analysis/index.js:39
-msgid "description-intro-4-data-analysis"
-msgstr ""
-
-#: src/pages/workspace/[slug]/5-national-source/index.js:77
-msgid "description-intro-5-national-source"
-msgstr ""
-
-#: src/pages/workspace/[slug]/6-national-plastic-strategy/index.js:30
-msgid "description-intro-6-national-plastic-strategy"
 msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:956
@@ -1266,11 +1251,11 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-#: src/modules/workspace/ps/config.js:202
+#: src/modules/workspace/ps/config.js:169
 msgid "Editor"
 msgstr ""
 
-#: src/modules/workspace/ps/config.js:203
+#: src/modules/workspace/ps/config.js:170
 msgid "Editors can edit all content, but cannot manage the team"
 msgstr ""
 
@@ -1556,7 +1541,7 @@ msgid "Final manufactured plastic goods"
 msgstr ""
 
 #: src/pages/workspace/[slug]/7-final-review/index.js:20
-#: src/pages/workspace/[slug]/layout.js:51
+#: src/pages/workspace/[slug]/layout.js:57
 msgid "Final Review"
 msgstr ""
 
@@ -1650,10 +1635,6 @@ msgstr ""
 #: src/modules/login/login-view.jsx:272
 #: src/modules/login/view.jsx:343
 msgid "Forgot password?"
-msgstr ""
-
-#: src/pages/workspace/[slug]/layout.js:283
-msgid "Forum"
 msgstr ""
 
 #: src/modules/workspace/view.jsx:258
@@ -2193,15 +2174,6 @@ msgstr ""
 msgid "Intro"
 msgstr ""
 
-#: src/pages/workspace/[slug]/1-project-team/index.js:28
-#: src/pages/workspace/[slug]/2-stakeholder-consultation/index.js:27
-#: src/pages/workspace/[slug]/3-legislation-policy/index.js:37
-#: src/pages/workspace/[slug]/4-data-analysis/index.js:36
-#: src/pages/workspace/[slug]/5-national-source/index.js:74
-#: src/pages/workspace/[slug]/6-national-plastic-strategy/index.js:27
-msgid "Introduction"
-msgstr ""
-
 #: src/modules/workspace/ps/setup-team-form.jsx:235
 msgid "Invalid Email address"
 msgstr ""
@@ -2375,7 +2347,7 @@ msgid "Legislation & Policy Review"
 msgstr ""
 
 #: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:557
-#: src/pages/workspace/[slug]/3-legislation-policy/index.js:34
+#: src/pages/workspace/[slug]/3-legislation-policy/index.js:36
 #: src/pages/workspace/[slug]/3-legislation-policy/legislative-development.js:11
 msgid "Legislation & Policy Review Report"
 msgstr ""
@@ -2467,7 +2439,7 @@ msgstr ""
 #: src/components/event-calendar/view.jsx:181
 #: src/modules/entity-detail/view.jsx:349
 #: src/modules/stakeholder-detail/view.jsx:377
-#: src/pages/workspace/[slug]/layout.js:265
+#: src/pages/workspace/[slug]/layout.js:271
 msgid "Loading..."
 msgstr ""
 
@@ -2563,7 +2535,7 @@ msgstr ""
 msgid "Marine organisms"
 msgstr ""
 
-#: src/pages/workspace/[slug]/layout.js:376
+#: src/pages/workspace/[slug]/layout.js:365
 msgid "Mark as Completed"
 msgstr ""
 
@@ -2747,6 +2719,7 @@ msgstr ""
 msgid "National"
 msgstr ""
 
+#: src/pages/workspace/[slug]/layout.js:49
 #: src/store.js:329
 msgid "National Action Plan"
 msgstr ""
@@ -2765,27 +2738,27 @@ msgstr ""
 msgid "National or organisational values"
 msgstr ""
 
-#: src/pages/workspace/[slug]/6-national-plastic-strategy/index.js:24
-#: src/pages/workspace/[slug]/layout.js:49
+#: src/pages/workspace/[slug]/5-national-action-plan/index.js:26
 msgid "National Plastic Strategy"
 msgstr ""
 
-#: src/modules/workspace/view.jsx:320
 #: src/pages/workspace/plastic-strategies/index.js:41
 msgid "National Source Inventories"
 msgstr ""
 
-#: src/modules/workspace/view.jsx:486
 #: src/pages/workspace/[slug]/layout.js:48
-#: src/pages/workspace/[slug]/layout.js:263
 msgid "National Source Inventory"
 msgstr ""
 
-#: src/pages/workspace/[slug]/5-national-source/index.js:71
+#: src/pages/workspace/[slug]/layout.js:55
+msgid "National Source Inventory Data Mapping"
+msgstr ""
+
+#: src/pages/workspace/[slug]/4-national-source/index.js:73
 msgid "National Source Inventory Report"
 msgstr ""
 
-#: src/pages/workspace/[slug]/1-project-team/index.js:25
+#: src/pages/workspace/[slug]/1-project-team/index.js:27
 #: src/pages/workspace/[slug]/1-project-team/setup-team.js:16
 #: src/pages/workspace/[slug]/layout.js:26
 msgid "National Steering Committee & Project Team"
@@ -2820,7 +2793,7 @@ msgstr ""
 #: src/modules/flexible-forms/view.jsx:1638
 #: src/modules/onboarding/view.jsx:288
 #: src/modules/onboarding/view.jsx:351
-#: src/pages/workspace/[slug]/layout.js:380
+#: src/pages/workspace/[slug]/layout.js:369
 msgid "Next"
 msgstr ""
 
@@ -3208,8 +3181,20 @@ msgstr ""
 msgid "Plastic waste"
 msgstr ""
 
+#: src/pages/workspace/[slug]/4-national-source/plastic-waste-management.js:17
+#: src/pages/workspace/[slug]/layout.js:52
 #: src/store.js:242
 msgid "Plastic Waste Management"
+msgstr ""
+
+#: src/pages/workspace/[slug]/4-national-source/plastics-in-economy.js:14
+#: src/pages/workspace/[slug]/layout.js:51
+msgid "Plastics in Economy"
+msgstr ""
+
+#: src/pages/workspace/[slug]/4-national-source/plastics-in-environment.js:14
+#: src/pages/workspace/[slug]/layout.js:53
+msgid "Plastics in the Environment"
 msgstr ""
 
 #: src/modules/details-page/comment.jsx:94
@@ -3351,7 +3336,7 @@ msgstr ""
 msgid "Project development"
 msgstr ""
 
-#: src/modules/workspace/ps/config.js:218
+#: src/modules/workspace/ps/config.js:185
 msgid "Project Team"
 msgstr ""
 
@@ -3845,7 +3830,7 @@ msgid "stakeholder consultation process"
 msgstr ""
 
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/case-studies.js:33
-#: src/pages/workspace/[slug]/2-stakeholder-consultation/index.js:24
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/index.js:31
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/initiatives.js:139
 msgid "Stakeholder Consultation Process"
 msgstr ""
@@ -3903,7 +3888,7 @@ msgstr ""
 msgid "Status of the review:"
 msgstr ""
 
-#: src/modules/workspace/ps/config.js:213
+#: src/modules/workspace/ps/config.js:180
 msgid "Steering Committee"
 msgstr ""
 
@@ -4298,13 +4283,13 @@ msgstr ""
 
 #: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:123
 #: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:130
-#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:160
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:169
 msgid "Total exports"
 msgstr ""
 
 #: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:123
 #: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:130
-#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:169
+#: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:160
 msgid "Total imports"
 msgstr ""
 
@@ -4569,11 +4554,11 @@ msgstr ""
 msgid "View Source"
 msgstr ""
 
-#: src/modules/workspace/ps/config.js:207
+#: src/modules/workspace/ps/config.js:174
 msgid "Viewer"
 msgstr ""
 
-#: src/modules/workspace/ps/config.js:208
+#: src/modules/workspace/ps/config.js:175
 msgid "Viewers cannot edit all content"
 msgstr ""
 
