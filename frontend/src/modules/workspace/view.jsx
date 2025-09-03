@@ -68,20 +68,19 @@ const Workspace = ({
       key: 'data-tool',
       content: t`Contribute to the DataHub Maps & Dashboard`,
       buttonText: t`Upload your data`,
-      href:
-        'https://unep-gpml.eu.auth0.com/authorize?response_type=code&client_id=lmdxuDGdQjUsbLbMFpjDCulTP1w5Z4Gi&redirect_uri=https%3A//apps.unep.org/data-catalog/oauth2/callback&scope=openid+profile+email&state=eyJjYW1lX2Zyb20iOiAiL2Rhc2hib2FyZCJ9',
+      link: '/data/maps',
     },
     {
       title: t`Knowledge Library`,
       key: 'knowledge-library',
       content: t`Share Your Knowledge`,
-      link: '/flexible-forms',
+      link: '/add-content',
       buttonText: t`Add Content`,
     },
     {
       title: t`Match-making`,
       key: 'match-making',
-      link: '/community',
+      link: '/community-hub',
       content: t`Match with opportunities`,
       buttonText: t`Connect`,
     },
