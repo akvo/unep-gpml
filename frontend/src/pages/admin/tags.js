@@ -1,4 +1,13 @@
-import { Table, Space, Modal, message, notification, Input, Select } from 'antd'
+import {
+  Table,
+  Space,
+  Modal,
+  message,
+  notification,
+  Input,
+  Select,
+  Button,
+} from 'antd'
 import { useEffect, useState } from 'react'
 import api from '../../utils/api'
 import { SearchIcon } from '../../components/icons'
@@ -164,6 +173,24 @@ const TagView = () => {
       },
     })
   }
+  const [newTag, setNewTag] = useState('')
+  const handleAddTag = (e) => {
+    e.preventDefault()
+    const data = {
+      tagCategory: 'general',
+      tag: newTag,
+      private: false,
+      reviewStatus: 'APPROVED',
+    }
+    api.post('/tag', data).then((d) => {
+      notification.info({ message: 'New Tag Added' })
+      setDataSource([
+        ...dataSource,
+        { ...data, id: d.data.id, category: 'general' },
+      ])
+    })
+    setNewTag('')
+  }
 
   const uniqueCategories = [...new Set(dataSource.map((item) => item.category))]
 
@@ -192,6 +219,18 @@ const TagView = () => {
             </Option>
           ))}
         </Select>
+        <form onSubmit={handleAddTag} style={{ display: 'flex' }}>
+          <Input
+            placeholder="New Tag"
+            value={newTag}
+            onChange={(e) => {
+              setNewTag(e.target.value)
+            }}
+          />
+          <Button type="link" style={{ marginLeft: 10 }} onClick={handleAddTag}>
+            Add
+          </Button>
+        </form>
       </Space>
       <Table columns={columns} dataSource={filteredData} rowKey="id" />
       {isModalVisible && (
