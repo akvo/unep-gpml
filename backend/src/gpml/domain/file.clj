@@ -56,7 +56,8 @@
   the ones used in GPML and omiting those that can be inferred from
   the mime-type directly."
   {"application/vnd.oasis.opendocument.text" "odt"
-   "application/vnd.openxmlformats-officedocument.wordprocessingml.document" "docx"})
+   "application/vnd.openxmlformats-officedocument.wordprocessingml.document" "docx"
+    "application/pdf" "pdf" })
 
 (defn create-file-object-key [entity-key file-key file-id]
   (-> object-key-pattern
@@ -68,8 +69,20 @@
   (m/decode file-schema file mt/string-transformer))
 
 (defn base64->file [payload entity-key file-key visibility]
-  (let [[_ ^String mime-type ^String content] (re-find #"^data:(\S+);base64,(.*)$" payload)
-        [_ mime-type-suffix] (str/split mime-type #"\/")
+  (let [
+        [mime-type content] (if (str/starts-with? payload "data:")
+                              (let [[_ mime-type content] (re-find #"^data:([^;]+);base64,(.*)$" payload)]
+                                [mime-type content])
+                              (let [detected-type (try
+                                                    (let [bytes (.decode (java.util.Base64/getDecoder) payload)
+                                                          header (String. (java.util.Arrays/copyOf bytes (min 8 (alength bytes))))]
+                                                      (cond
+                                                        (str/starts-with? header "%PDF") "application/pdf"
+                                                        (str/starts-with? header "PK") "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                                                        :else "application/octet-stream"))
+                                                    (catch Exception _ "application/octet-stream"))]
+                                [detected-type payload]))
+        [_ mime-type-suffix] (when mime-type (str/split mime-type #"\/"))
         extension (get mime-types->common-extensions-mapping mime-type mime-type-suffix)
         file-id (util/uuid)]
     {:id file-id
