@@ -27,9 +27,37 @@ msgid "(OPTIONAL)"
 msgstr "(OPTIONAL)"
 
 #: src/modules/details-page/stakeholder-carousel.jsx:94
-#: src/pages/add-content/index.jsx:934
+#: src/pages/add-content/index.jsx:728
+#: src/pages/add-content/index.jsx:768
+#: src/pages/add-content/index.jsx:800
+#: src/pages/add-content/index.jsx:832
+#: src/pages/add-content/index.jsx:845
+#: src/pages/add-content/index.jsx:871
+#: src/pages/add-content/index.jsx:884
+#: src/pages/add-content/index.jsx:911
+#: src/pages/add-content/index.jsx:924
+#: src/pages/add-content/index.jsx:952
+#: src/pages/add-content/index.jsx:965
+#: src/pages/add-content/index.jsx:993
+#: src/pages/add-content/index.jsx:1006
+#: src/pages/add-content/index.jsx:1034
+#: src/pages/add-content/index.jsx:1047
+#: src/pages/add-content/index.jsx:1081
+#: src/pages/add-content/index.jsx:1094
+#: src/pages/add-content/index.jsx:1138
+#: src/pages/add-content/index.jsx:1185
+#: src/pages/add-content/index.jsx:1249
+#: src/pages/add-content/index.jsx:1304
+#: src/pages/add-content/index.jsx:1359
+#: src/pages/add-content/index.jsx:1421
+#: src/pages/add-content/index.jsx:1433
+#: src/pages/add-content/index.jsx:1460
 msgid "{0}"
 msgstr "{0}"
+
+#: src/pages/add-content/index.jsx:2149
+msgid "{0} Content"
+msgstr "{0} Content"
 
 #: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:85
 msgid "{0} estimate"
@@ -42,6 +70,17 @@ msgstr "{city} estimate"
 #: src/pages/workspace/[slug]/7-final-review/index.js:30
 msgid "{incompleteAmount} items are not completed"
 msgstr "{incompleteAmount} items are not completed"
+
+#: src/pages/add-content/index.jsx:727
+#: src/pages/add-content/index.jsx:1395
+#: src/pages/add-content/index.jsx:1446
+msgid "{label}"
+msgstr "{label}"
+
+#: src/pages/add-content/index.jsx:1395
+#: src/pages/add-content/index.jsx:1446
+msgid "{name}"
+msgstr "{name}"
 
 #: src/pages/workspace/[slug]/layout.js:276
 msgid "{progress}% complete"
@@ -133,6 +172,10 @@ msgstr "A type of technical report that is a work in progress, a preliminary for
 msgid "A wide range of resources can be submitted, and these include Action Plans, Initiatives, Technical resources, Financing resources, Policies, Events, and Technologies. Learn more about each category and sub-categories definitions in the “Content Type” section of this form. A quick summary sheet with categories and sub-categories can be downloaded"
 msgstr "A wide range of resources can be submitted, and these include Action Plans, Initiatives, Technical resources, Financing resources, Policies, Events, and Technologies. Learn more about each category and sub-categories definitions in the “Content Type” section of this form. A quick summary sheet with categories and sub-categories can be downloaded"
 
+#: src/pages/add-content/index.jsx:2203
+msgid "A wide range of resources can be submitted, and these include Action Plans, Initiatives, Technical resources, Financing resources, Policies, Events, and Technologies. Learn more about each category and sub-categories definitions in the \"Content Type\" section of this form. A quick summary sheet with categories and sub-categories can be downloaded here."
+msgstr "A wide range of resources can be submitted, and these include Action Plans, Initiatives, Technical resources, Financing resources, Policies, Events, and Technologies. Learn more about each category and sub-categories definitions in the \"Content Type\" section of this form. A quick summary sheet with categories and sub-categories can be downloaded here."
+
 #: src/store.js:93
 msgid "About"
 msgstr "About"
@@ -141,6 +184,9 @@ msgstr "About"
 msgid "About yourself"
 msgstr "About yourself"
 
+#: src/pages/add-content/index.jsx:1173
+#: src/pages/add-content/index.jsx:1237
+#: src/pages/add-content/index.jsx:1284
 #: src/pages/partnership/index.jsx:710
 msgid "Accepts .jpg and .png"
 msgstr "Accepts .jpg and .png"
@@ -159,6 +205,7 @@ msgid "Action for the Oceans – Youth leaders raising awareness for the Oceans,
 msgstr "Action for the Oceans – Youth leaders raising awareness for the Oceans, together!"
 
 #: src/components/resource-card/resource-card.jsx:17
+#: src/pages/add-content/index.jsx:55
 #: src/pages/knowledge-hub/index.js:191
 #: src/store.js:288
 msgid "Action Plan"
@@ -172,6 +219,9 @@ msgstr "Action Plans"
 msgid "Add"
 msgstr "Add"
 
+#: src/pages/add-content/index.jsx:1174
+#: src/pages/add-content/index.jsx:1238
+#: src/pages/add-content/index.jsx:1285
 #: src/pages/partnership/index.jsx:713
 msgid "Add a File"
 msgstr "Add a File"
@@ -184,13 +234,19 @@ msgstr "Add a New Member"
 msgid "Add An Event"
 msgstr "Add An Event"
 
+#: src/pages/add-content/index.jsx:1572
+#: src/pages/add-content/index.jsx:1631
+msgid "Add Another"
+msgstr "Add Another"
+
 #: src/components/nav/nav-mobile.jsx:223
 #: src/layouts/new-layout.js:329
-#: src/modules/workspace/view.jsx:79
+#: src/modules/workspace/view.jsx:78
 msgid "Add Content"
 msgstr "Add Content"
 
 #: src/modules/onboarding/form-one.jsx:99
+#: src/pages/add-content/index.jsx:1340
 msgid "Add new entity"
 msgstr "Add new entity"
 
@@ -247,6 +303,10 @@ msgstr "all"
 #: src/modules/stakeholder-overview/filter-drawer.jsx:160
 msgid "All (default)"
 msgstr "All (default)"
+
+#: src/pages/add-content/index.jsx:2268
+msgid "All details of the {0}"
+msgstr "All details of the {0}"
 
 #: src/pages/workspace/[slug]/7-final-review/index.js:71
 msgid "All done!"
@@ -503,7 +563,7 @@ msgstr "Biological diversity"
 msgid "Blended finance"
 msgstr "Blended finance"
 
-#: src/pages/workspace/[slug]/[step]/summary.js:164
+#: src/pages/workspace/[slug]/[step]/summary.js:184
 msgid "Browse"
 msgstr "Browse"
 
@@ -519,7 +579,7 @@ msgstr "browse the community by"
 msgid "Building, construction, demolition,industrial machinery"
 msgstr "Building, construction, demolition,industrial machinery"
 
-#: src/modules/workspace/view.jsx:356
+#: src/modules/workspace/view.jsx:355
 msgid "By proceeding to join the Global Partnership on Plastic Pollution & Marine Litter, you are confirming that you have the authorisation to submit this application on behalf of your organisation."
 msgstr "By proceeding to join the Global Partnership on Plastic Pollution & Marine Litter, you are confirming that you have the authorisation to submit this application on behalf of your organisation."
 
@@ -545,6 +605,10 @@ msgstr "California Ocean Litter Prevention Strategy"
 #: src/modules/flexible-forms/form-schema.js:866
 msgid "Campaigning with or through NGOs"
 msgstr "Campaigning with or through NGOs"
+
+#: src/pages/add-content/index.jsx:664
+msgid "Campaigns/Awareness Raising"
+msgstr "Campaigns/Awareness Raising"
 
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:530
 msgid "Can't find who you're looking for?"
@@ -582,6 +646,7 @@ msgid "Case Studies"
 msgstr "Case Studies"
 
 #: src/components/resource-card/resource-card.jsx:20
+#: src/pages/add-content/index.jsx:62
 #: src/pages/knowledge-hub/index.js:194
 msgid "Case Study"
 msgstr "Case Study"
@@ -633,7 +698,7 @@ msgid "channel"
 msgstr "channel"
 
 #: src/modules/forum/my-forums.jsx:186
-#: src/modules/workspace/view.jsx:293
+#: src/modules/workspace/view.jsx:292
 msgid "Chat"
 msgstr "Chat"
 
@@ -792,6 +857,7 @@ msgid "Concern about potential human health impacts"
 msgstr "Concern about potential human health impacts"
 
 #: src/modules/flexible-forms/form-schema.js:458
+#: src/pages/add-content/index.jsx:662
 #: src/store.js:602
 msgid "Conferences"
 msgstr "Conferences"
@@ -804,7 +870,7 @@ msgstr "Conflicting goals/other priorities more urgent"
 msgid "Conflicting regulation"
 msgstr "Conflicting regulation"
 
-#: src/modules/workspace/view.jsx:86
+#: src/modules/workspace/view.jsx:85
 msgid "Connect"
 msgstr "Connect"
 
@@ -908,12 +974,12 @@ msgstr "Country Dashboard"
 msgid "Country Dedicated"
 msgstr "Country Dedicated"
 
-#: src/modules/workspace/view.jsx:486
+#: src/modules/workspace/view.jsx:485
 #: src/pages/workspace/[slug]/layout.js:269
 msgid "Country Dedicated Workflow"
 msgstr "Country Dedicated Workflow"
 
-#: src/modules/workspace/view.jsx:320
+#: src/modules/workspace/view.jsx:319
 msgid "Country Dedicated Workflows"
 msgstr "Country Dedicated Workflows"
 
@@ -927,6 +993,14 @@ msgstr "Identification of Existing Instruments"
 #: src/store.js:738
 msgid "Courses & Trainings"
 msgstr "Courses & Trainings"
+
+#: src/pages/add-content/index.jsx:663
+msgid "Courses/Training"
+msgstr "Courses/Training"
+
+#: src/pages/add-content/index.jsx:1258
+msgid "Cover Thumbnail - portrait format 300x400"
+msgstr "Cover Thumbnail - portrait format 300x400"
 
 #: src/store.js:332
 msgid "Covers an entire country"
@@ -1038,6 +1112,10 @@ msgstr "Data source:"
 msgid "Data tools"
 msgstr "Data tools"
 
+#: src/pages/add-content/index.jsx:61
+msgid "Dataset"
+msgstr "Dataset"
+
 #: src/store.js:473
 msgid "Debt securities issued by private or public entities to finance activities or projects linked to sustainable development, green goals, or ocean goals."
 msgstr "Debt securities issued by private or public entities to finance activities or projects linked to sustainable development, green goals, or ocean goals."
@@ -1065,7 +1143,7 @@ msgstr "Decline"
 #: src/modules/stakeholder-detail/view.jsx:165
 #: src/modules/stakeholder-detail/view.jsx:191
 #: src/modules/workspace/ps/setup-team-table.jsx:206
-#: src/modules/workspace/view.jsx:519
+#: src/modules/workspace/view.jsx:518
 #: src/pages/forum/[...params]/index.jsx:390
 #: src/pages/forum/[...params]/index.jsx:925
 #: src/pages/forum/index.jsx:261
@@ -1223,11 +1301,12 @@ msgstr "Download Summary (1 Page)"
 msgid "Drivers and Barriers"
 msgstr "Drivers and Barriers"
 
-#: src/pages/workspace/[slug]/[step]/summary.js:159
+#: src/pages/workspace/[slug]/[step]/summary.js:179
 msgid "Drop a file here"
 msgstr "Drop a file here"
 
 #: src/modules/flexible-forms/form-schema.js:1146
+#: src/pages/add-content/index.jsx:1015
 msgid "Duration"
 msgstr "Duration"
 
@@ -1331,6 +1410,14 @@ msgstr "Ends up in the ocean"
 msgid "Ends up on the coasts"
 msgstr "Ends up on the coasts"
 
+#: src/pages/add-content/index.jsx:1604
+msgid "Enter expected outcome"
+msgstr "Enter expected outcome"
+
+#: src/pages/add-content/index.jsx:1533
+msgid "Enter highlight text"
+msgstr "Enter highlight text"
+
 #: src/modules/onboarding/form-one.jsx:51
 msgid "Enter job title"
 msgstr "Enter job title"
@@ -1410,6 +1497,10 @@ msgstr "Entity role"
 msgid "Entity URL"
 msgstr "Entity URL"
 
+#: src/pages/add-content/index.jsx:657
+msgid "Environment"
+msgstr "Environment"
+
 #: src/modules/flexible-forms/form-schema.js:2006
 msgid "Environmental Governance"
 msgstr "Environmental Governance"
@@ -1456,6 +1547,7 @@ msgid "event"
 msgstr "event"
 
 #: src/components/resource-card/resource-card.jsx:22
+#: src/pages/add-content/index.jsx:60
 #: src/pages/knowledge-hub/index.js:196
 #: src/store.js:561
 msgid "Event"
@@ -1464,6 +1556,10 @@ msgstr "Event"
 #: src/components/event-calendar/view.jsx:314
 msgid "Event Recording"
 msgstr "Event Recording"
+
+#: src/pages/add-content/index.jsx:974
+msgid "Event Type"
+msgstr "Event Type"
 
 #: src/modules/knowledge-lib/filter-bar.jsx:20
 #: src/store.js:753
@@ -1481,6 +1577,10 @@ msgstr "Existing policy or recent policy change"
 #: src/modules/flexible-forms/form-schema.js:912
 msgid "Existing regulation is not enforced"
 msgstr "Existing regulation is not enforced"
+
+#: src/pages/add-content/index.jsx:1584
+msgid "Expected outcomes"
+msgstr "Expected outcomes"
 
 #: src/modules/map/map-chart.jsx:803
 #: src/modules/profile/admin.jsx:1216
@@ -1561,6 +1661,7 @@ msgid "Financing"
 msgstr "Financing"
 
 #: src/components/resource-card/resource-card.jsx:19
+#: src/pages/add-content/index.jsx:57
 #: src/pages/knowledge-hub/index.js:193
 #: src/store.js:402
 msgid "Financing Resource"
@@ -1647,7 +1748,7 @@ msgstr "FORGOT PASSWORD"
 msgid "Forgot password?"
 msgstr "Forgot password?"
 
-#: src/modules/workspace/view.jsx:258
+#: src/modules/workspace/view.jsx:257
 #: src/pages/forum/index.jsx:123
 #: src/pages/landing/index.jsx:568
 #: src/store.js:86
@@ -1677,6 +1778,10 @@ msgstr "Funds on plastic pollution in Asia"
 #: src/store.js:572
 msgid "G-STIC Conference Second Edition"
 msgstr "G-STIC Conference Second Edition"
+
+#: src/pages/add-content/index.jsx:1205
+msgid "Gallery"
+msgstr "Gallery"
 
 #: src/modules/flexible-forms/form-schema.js:921
 msgid "Gaps in expertise in member state/organisation"
@@ -1710,6 +1815,7 @@ msgstr "Geo Coverage (countries)"
 #: src/modules/flexible-forms/form-schema.js:2086
 #: src/modules/flexible-forms/form-schema.js:2351
 #: src/modules/flexible-forms/form-schema.js:2590
+#: src/pages/add-content/index.jsx:893
 msgid "GEO COVERAGE (Countries)"
 msgstr "GEO COVERAGE (Countries)"
 
@@ -1724,6 +1830,7 @@ msgstr "Geo Coverage (Transnational)"
 #: src/modules/flexible-forms/form-schema.js:2078
 #: src/modules/flexible-forms/form-schema.js:2343
 #: src/modules/flexible-forms/form-schema.js:2582
+#: src/pages/add-content/index.jsx:854
 msgid "GEO COVERAGE (Transnational)"
 msgstr "GEO COVERAGE (Transnational)"
 
@@ -1742,6 +1849,7 @@ msgstr "Geo coverage type"
 msgid "Geo-coverage"
 msgstr "Geo-coverage"
 
+#: src/pages/add-content/index.jsx:809
 #: src/pages/partnership/index.jsx:809
 msgid "Geo-coverage type"
 msgstr "Geo-coverage type"
@@ -1770,7 +1878,7 @@ msgstr "Glasgow Climate Change Conference"
 #: src/modules/flexible-forms/form-schema.js:2071
 #: src/modules/flexible-forms/form-schema.js:2336
 #: src/modules/flexible-forms/form-schema.js:2575
-#: src/pages/add-content/index.jsx:645
+#: src/pages/add-content/index.jsx:650
 #: src/pages/partnership/index.jsx:829
 msgid "Global"
 msgstr "Global"
@@ -1837,7 +1945,7 @@ msgstr "GPML Members"
 msgid "GPML Non-Members"
 msgstr "GPML Non-Members"
 
-#: src/modules/workspace/view.jsx:346
+#: src/modules/workspace/view.jsx:345
 msgid "GPML Partnership"
 msgstr "GPML Partnership"
 
@@ -1906,6 +2014,10 @@ msgstr "has implemented the following prohibitive regulatory policy instruments 
 msgid "Headquarters"
 msgstr "Headquarters"
 
+#: src/pages/add-content/index.jsx:657
+msgid "Health"
+msgstr "Health"
+
 #: src/store.js:295
 msgid "HELCOM Regional action plan on marine litter"
 msgstr "HELCOM Regional action plan on marine litter"
@@ -1958,7 +2070,7 @@ msgstr "Human health and wellbeing"
 msgid "I am a private citizen"
 msgstr "I am a private citizen"
 
-#: src/modules/workspace/view.jsx:385
+#: src/modules/workspace/view.jsx:384
 msgid "I AM NOT THE FOCAL POINT"
 msgstr "I AM NOT THE FOCAL POINT"
 
@@ -2115,6 +2227,7 @@ msgstr "Indvidual"
 #: src/modules/flexible-forms/form-schema.js:2217
 #: src/modules/flexible-forms/form-schema.js:2482
 #: src/modules/flexible-forms/form-schema.js:2721
+#: src/pages/add-content/index.jsx:1490
 msgid "Info And Docs"
 msgstr "Info And Docs"
 
@@ -2127,6 +2240,7 @@ msgid "Informs and connects all actors working to address this urgent issue acro
 msgstr "Informs and connects all actors working to address this urgent issue across the life cycle and from source to sea."
 
 #: src/components/resource-card/resource-card.jsx:21
+#: src/pages/add-content/index.jsx:54
 #: src/pages/knowledge-hub/index.js:195
 #: src/store.js:230
 msgid "Initiative"
@@ -2217,7 +2331,7 @@ msgstr "Is your initiative a one-off activity or ongoing?"
 msgid "Job Tilte"
 msgstr "Job Tilte"
 
-#: src/modules/workspace/view.jsx:378
+#: src/modules/workspace/view.jsx:377
 #: src/pages/landing/index.jsx:313
 msgid "Join Now"
 msgstr "Join Now"
@@ -2239,6 +2353,10 @@ msgstr "JOIN WITH EMAIL"
 #: src/modules/about/about-us.jsx:347
 msgid "Key Features & Components"
 msgstr "Key Features & Components"
+
+#: src/pages/add-content/index.jsx:1513
+msgid "Key highlights"
+msgstr "Key highlights"
 
 #: src/pages/knowledge-hub/index.js:459
 #: src/pages/knowledge-hub/index.js:472
@@ -2262,7 +2380,7 @@ msgstr "knowledge hub"
 msgid "Knowledge Hub"
 msgstr "Knowledge Hub"
 
-#: src/modules/workspace/view.jsx:75
+#: src/modules/workspace/view.jsx:74
 msgid "Knowledge Library"
 msgstr "Knowledge Library"
 
@@ -2347,6 +2465,7 @@ msgstr "Legacy Plastics"
 #: src/components/resource-card/resource-card.jsx:18
 #: src/modules/flexible-forms/form-schema.js:1963
 #: src/modules/signup/view.jsx:42
+#: src/pages/add-content/index.jsx:56
 #: src/pages/knowledge-hub/index.js:192
 #: src/store.js:160
 msgid "Legislation"
@@ -2401,6 +2520,7 @@ msgid "Life Below Water"
 msgstr "Life Below Water"
 
 #: src/modules/details-page/view.jsx:507
+#: src/pages/add-content/index.jsx:1105
 #: src/pages/knowledge-hub/index.js:373
 msgid "Life Cycle Stage"
 msgstr "Life Cycle Stage"
@@ -2420,6 +2540,10 @@ msgstr "Lifecycle Stage"
 #: src/modules/flexible-forms/form-schema.js:935
 msgid "Lifecycle. Which specific part of the lifecycle/plastic supply chain is your initiative targeting? (Please tick ALL that apply)."
 msgstr "Lifecycle. Which specific part of the lifecycle/plastic supply chain is your initiative targeting? (Please tick ALL that apply)."
+
+#: src/pages/add-content/index.jsx:1545
+msgid "Link to PDF, document, video, etc"
+msgstr "Link to PDF, document, video, etc"
 
 #: src/modules/onboarding/form-four.jsx:147
 #: src/modules/stakeholder-overview/card.jsx:169
@@ -2557,11 +2681,11 @@ msgstr "Massive Open Online Course (MOOC) on Marine Litter"
 msgid "Masterclass"
 msgstr "Masterclass"
 
-#: src/modules/workspace/view.jsx:85
+#: src/modules/workspace/view.jsx:84
 msgid "Match with opportunities"
 msgstr "Match with opportunities"
 
-#: src/modules/workspace/view.jsx:82
+#: src/modules/workspace/view.jsx:81
 msgid "Match-making"
 msgstr "Match-making"
 
@@ -2724,7 +2848,7 @@ msgstr "Name of Organisation"
 #: src/modules/flexible-forms/form-schema.js:2338
 #: src/modules/flexible-forms/form-schema.js:2577
 #: src/modules/map/map-chart.jsx:714
-#: src/pages/add-content/index.jsx:647
+#: src/pages/add-content/index.jsx:652
 #: src/pages/partnership/index.jsx:835
 msgid "National"
 msgstr "National"
@@ -2875,6 +2999,7 @@ msgstr "Norwegian Development Programme to Combat Marine Litter and Microplastic
 #: src/modules/flexible-forms/form-schema.js:1065
 #: src/modules/flexible-forms/form-schema.js:1113
 #: src/modules/flexible-forms/form-schema.js:1161
+#: src/pages/add-content/index.jsx:672
 msgid "Not applicable"
 msgstr "Not applicable"
 
@@ -2940,14 +3065,17 @@ msgid "Once you have an account you can register your organisation and apply for
 msgstr "Once you have an account you can register your organisation and apply for GPML membership"
 
 #: src/modules/flexible-forms/form-schema.js:1159
+#: src/pages/add-content/index.jsx:670
 msgid "Ongoing activity 1-3 years"
 msgstr "Ongoing activity 1-3 years"
 
 #: src/modules/flexible-forms/form-schema.js:1158
+#: src/pages/add-content/index.jsx:669
 msgid "Ongoing activity less than one year"
 msgstr "Ongoing activity less than one year"
 
 #: src/modules/flexible-forms/form-schema.js:1160
+#: src/pages/add-content/index.jsx:671
 msgid "Ongoing activity more than 3 years long"
 msgstr "Ongoing activity more than 3 years long"
 
@@ -3019,6 +3147,7 @@ msgstr "Original Title"
 #: src/modules/flexible-forms/form-schema.js:1114
 #: src/modules/flexible-forms/form-schema.js:1162
 #: src/modules/flexible-forms/form-schema.js:1184
+#: src/pages/add-content/index.jsx:673
 #: src/pages/knowledge/learning-centre/index.jsx:26
 msgid "Other"
 msgstr "Other"
@@ -3129,6 +3258,7 @@ msgid "Petrochemical Extraction"
 msgstr "Petrochemical Extraction"
 
 #: src/modules/signup-old/signup-form.jsx:51
+#: src/pages/add-content/index.jsx:1147
 msgid "Photo"
 msgstr "Photo"
 
@@ -3280,6 +3410,11 @@ msgstr "Powered by OpenAI"
 msgid "Preparing a Waste Management Plan - A Methodological Guidance Note"
 msgstr "Preparing a Waste Management Plan - A Methodological Guidance Note"
 
+#: src/pages/add-content/index.jsx:1191
+#: src/pages/add-content/index.jsx:1290
+msgid "Preview"
+msgstr "Preview"
+
 #: src/modules/flexible-forms/form-schema.js:469
 msgid "Primary school"
 msgstr "Primary school"
@@ -3337,6 +3472,7 @@ msgid "Prohibitive Regulations, Bans & Restrictions"
 msgstr "Prohibitive Regulations, Bans & Restrictions"
 
 #: src/components/resource-card/resource-card.jsx:14
+#: src/pages/add-content/index.jsx:53
 #: src/pages/knowledge-hub/index.js:188
 msgid "Project"
 msgstr "Project"
@@ -3495,6 +3631,10 @@ msgstr "Regulatory instruments to capture plastic post-leakage"
 msgid "Related content"
 msgstr "Related content"
 
+#: src/pages/add-content/index.jsx:1469
+msgid "Related Content"
+msgstr "Related Content"
+
 #: src/modules/flexible-forms/common.js:384
 msgid "Related Content, Documents & Info"
 msgstr "Related Content, Documents & Info"
@@ -3629,6 +3769,10 @@ msgstr "Rules of an obligatory nature that are negative, disallowing certain phe
 msgid "Rules of Procedure and Mechanism"
 msgstr "Rules of Procedure and Mechanism"
 
+#: src/pages/add-content/index.jsx:2285
+msgid "Save & Publish"
+msgstr "Save & Publish"
+
 #: src/components/resource-card/resource-card.jsx:109
 #: src/modules/details-page/header.jsx:235
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:330
@@ -3713,6 +3857,11 @@ msgstr "Seeking"
 msgid "Seeking:"
 msgstr "Seeking:"
 
+#: src/pages/add-content/index.jsx:1322
+#: src/pages/add-content/index.jsx:1377
+msgid "Select {name}"
+msgstr "Select {name}"
+
 #: src/modules/flexible-forms/form-schema.js:182
 #: src/modules/flexible-forms/form-schema.js:1282
 #: src/modules/flexible-forms/form-schema.js:1538
@@ -3736,6 +3885,27 @@ msgstr "Select a Main Content Type above to see sub-content type options"
 msgid "Select a State"
 msgstr "Select a State"
 
+#: src/pages/add-content/index.jsx:1069
+#: src/pages/add-content/index.jsx:1116
+msgid "Select at least one"
+msgstr "Select at least one"
+
+#: src/pages/add-content/index.jsx:904
+msgid "Select countries"
+msgstr "Select countries"
+
+#: src/pages/add-content/index.jsx:1027
+msgid "Select duration"
+msgstr "Select duration"
+
+#: src/pages/add-content/index.jsx:986
+msgid "Select event type"
+msgstr "Select event type"
+
+#: src/pages/add-content/index.jsx:825
+msgid "Select Geo-coverage type"
+msgstr "Select Geo-coverage type"
+
 #: src/modules/flexible-forms/form-schema.js:141
 #: src/modules/flexible-forms/form-schema.js:1254
 #: src/modules/flexible-forms/form-schema.js:1510
@@ -3745,6 +3915,22 @@ msgstr "Select a State"
 #: src/modules/flexible-forms/form-schema.js:2571
 msgid "Select Geo-Coverage Type"
 msgstr "Select Geo-Coverage Type"
+
+#: src/pages/add-content/index.jsx:1479
+msgid "Select Related Content"
+msgstr "Select Related Content"
+
+#: src/pages/add-content/index.jsx:864
+msgid "Select transnational"
+msgstr "Select transnational"
+
+#: src/pages/add-content/index.jsx:945
+msgid "Select value currency"
+msgstr "Select value currency"
+
+#: src/pages/add-content/index.jsx:1407
+msgid "Select year"
+msgstr "Select year"
 
 #: src/modules/workspace/ps/setup-team-form.jsx:210
 msgid "Send Invite"
@@ -3767,7 +3953,7 @@ msgstr "Setup your team"
 msgid "Share"
 msgstr "Share"
 
-#: src/modules/workspace/view.jsx:77
+#: src/modules/workspace/view.jsx:76
 msgid "Share Your Knowledge"
 msgstr "Share Your Knowledge"
 
@@ -3801,6 +3987,7 @@ msgid "Sign up to find out more"
 msgstr "Sign up to find out more"
 
 #: src/modules/flexible-forms/form-schema.js:1157
+#: src/pages/add-content/index.jsx:668
 msgid "Single event"
 msgstr "Single event"
 
@@ -3937,7 +4124,7 @@ msgstr "Sub-topics"
 msgid "Submit"
 msgstr "Submit"
 
-#: src/modules/workspace/view.jsx:349
+#: src/modules/workspace/view.jsx:348
 msgid "Submit an application for your organisation - <0>{0}</0> - to become part of the GPML."
 msgstr "Submit an application for your organisation - <0>{0}</0> - to become part of the GPML."
 
@@ -3951,6 +4138,10 @@ msgstr "Submit Application"
 #: src/pages/countryOverview/RequestDataUpdateModal.jsx:159
 msgid "Submit Data Update"
 msgstr "Submit Data Update"
+
+#: src/pages/add-content/index.jsx:2161
+msgid "Submitted Successfully!"
+msgstr "Submitted Successfully!"
 
 #: src/modules/flexible-forms/form-schema.js:1261
 #: src/modules/flexible-forms/form-schema.js:1517
@@ -3981,31 +4172,31 @@ msgstr "Suggested profiles"
 msgid "suggestions"
 msgstr "suggestions"
 
-#: src/pages/workspace/[slug]/[step]/summary.js:233
+#: src/pages/workspace/[slug]/[step]/summary.js:253
 #: src/pages/workspace/[slug]/layout.js:34
 msgid "Summary & Report"
 msgstr "Summary & Report"
 
-#: src/pages/workspace/[slug]/[step]/summary.js:221
+#: src/pages/workspace/[slug]/[step]/summary.js:241
 msgid "summary-description-2-stakeholder-consultation"
 msgstr "Summarise the insights from the comprehensive stakeholder consultation process to ensure all relevant sectors and stakeholders are consulted. Gather all available data and information already available in your country and ensure that different perspectives and ideas are heard from across the national community working on plastic pollution."
 
-#: src/pages/workspace/[slug]/[step]/summary.js:222
+#: src/pages/workspace/[slug]/[step]/summary.js:242
 msgid "summary-description-3-legislation-policy"
 msgstr "Summarise the insights from the comprehensive legal analysis to identify the preferred regulatory approach and draft legal considerations. The outcomes of this analysis should be included as a chapter in the National Source Inventory Report."
 
-#: src/pages/workspace/[slug]/[step]/summary.js:223
+#: src/pages/workspace/[slug]/[step]/summary.js:243
 msgid "summary-description-4-data-analysis"
 msgstr ""
 "Based on the data and information gathered during the stakeholder consultation process conduct a gap analysis to identify missing information and weaknesses in the existing data sources and databases.  Compile existing data and information into a State of Knowledge report including areas in need of additional data collection. Based on this, conduct additional primary or secondary data collection, as appropriate, using established methodologies, to fill these data gaps. All data collected within this project should be made publicly available. \n"
 "\n"
 "Download the summary of the bookmarked content in this section and upload your final State of Knowledge Report."
 
-#: src/pages/workspace/[slug]/[step]/summary.js:224
+#: src/pages/workspace/[slug]/[step]/summary.js:244
 msgid "summary-description-5-national-source"
 msgstr "Download the summary of the bookmarked content in this section and submit your final National Source Inventory report."
 
-#: src/pages/workspace/[slug]/[step]/summary.js:225
+#: src/pages/workspace/[slug]/[step]/summary.js:245
 msgid "summary-description-6-national-plastic-strategy"
 msgstr "Upload the officially approved Plastic Strategy."
 
@@ -4044,6 +4235,7 @@ msgstr "Switch to"
 #: src/modules/flexible-forms/form-schema.js:2386
 #: src/modules/flexible-forms/form-schema.js:2625
 #: src/modules/knowledge-lib/filter-modal.jsx:264
+#: src/pages/add-content/index.jsx:1056
 #: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:229
 msgid "Tags"
 msgstr "Tags"
@@ -4053,6 +4245,7 @@ msgid "Team members"
 msgstr "Team members"
 
 #: src/components/resource-card/resource-card.jsx:15
+#: src/pages/add-content/index.jsx:58
 #: src/pages/knowledge-hub/index.js:189
 #: src/store.js:480
 msgid "Technical Resource"
@@ -4072,6 +4265,8 @@ msgstr "Technologies"
 
 #: src/components/resource-card/resource-card.jsx:16
 #: src/modules/signup/view.jsx:39
+#: src/pages/add-content/index.jsx:59
+#: src/pages/add-content/index.jsx:657
 #: src/pages/knowledge-hub/index.js:190
 #: src/store.js:157
 #: src/store.js:630
@@ -4160,6 +4355,10 @@ msgstr ""
 #: src/pages/landing/index.jsx:173
 msgid "The GPML digital platform helps academia and the scientific community to ensure their research becomes actionable by offering the opportunity to share resources and collaborate with policy makers."
 msgstr "The Global Plastics Hub helps academia and the scientific community to ensure their research becomes actionable by offering the opportunity to share resources and collaborate with policymakers."
+
+#: src/pages/add-content/index.jsx:2196
+msgid "The GPML Digital Platform is crowdsourced and allows everyone to submit new content via this form."
+msgstr "The GPML Digital Platform is crowdsourced and allows everyone to submit new content via this form."
 
 #: src/pages/landing/index.jsx:187
 msgid "The GPML digital platform offers the opportunity to forge collaborative partnerships with diverse stakeholders, share and find resources on plastic pollution, and amplify advocacy."
@@ -4355,7 +4554,7 @@ msgstr "Translation"
 #: src/modules/flexible-forms/form-schema.js:2337
 #: src/modules/flexible-forms/form-schema.js:2576
 #: src/modules/map/map-chart.jsx:717
-#: src/pages/add-content/index.jsx:646
+#: src/pages/add-content/index.jsx:651
 #: src/pages/partnership/index.jsx:832
 msgid "Transnational"
 msgstr "Transnational"
@@ -4444,7 +4643,7 @@ msgstr "Upload"
 msgid "Upload your data"
 msgstr "Upload your data"
 
-#: src/pages/workspace/[slug]/[step]/summary.js:111
+#: src/pages/workspace/[slug]/[step]/summary.js:130
 msgid "Upload Your Report"
 msgstr "Upload Your Report"
 
@@ -4511,10 +4710,12 @@ msgid "Validation Mechanism"
 msgstr "Validation Mechanism"
 
 #: src/modules/flexible-forms/form-schema.js:2244
+#: src/pages/add-content/index.jsx:777
 msgid "Value Amount"
 msgstr "Value Amount"
 
 #: src/modules/flexible-forms/form-schema.js:2248
+#: src/pages/add-content/index.jsx:933
 msgid "Value Currency"
 msgstr "Value Currency"
 
@@ -4530,24 +4731,28 @@ msgstr "Venture Capital"
 msgid "Video Tutorials"
 msgstr "Video Tutorials"
 
+#: src/pages/add-content/index.jsx:1584
+msgid "Videos"
+msgstr "Videos"
+
 #: src/modules/experts/view.jsx:148
 #: src/modules/knowledge-lib/resource-view.jsx:527
 #: src/modules/knowledge-lib/resource-view.jsx:557
 msgid "view"
 msgstr "view"
 
-#: src/modules/workspace/view.jsx:285
+#: src/modules/workspace/view.jsx:284
 #: src/pages/forum/index.jsx:282
 msgid "View"
 msgstr "View"
 
 #: src/components/resource-cards/resource-cards.jsx:58
 #: src/modules/community-hub/detail-view.jsx:381
-#: src/modules/workspace/view.jsx:325
+#: src/modules/workspace/view.jsx:324
 msgid "View All"
 msgstr "View All"
 
-#: src/modules/workspace/view.jsx:262
+#: src/modules/workspace/view.jsx:261
 msgid "View All Forums"
 msgstr "View All Forums"
 
@@ -4603,7 +4808,7 @@ msgstr "Waste Management"
 msgid "Wastewater/Sewage management"
 msgstr "Wastewater/Sewage management"
 
-#: src/modules/workspace/view.jsx:443
+#: src/modules/workspace/view.jsx:442
 msgid "Watch this video to get started"
 msgstr "Watch this video to get started"
 
@@ -4611,7 +4816,7 @@ msgstr "Watch this video to get started"
 msgid "We are excited to hear from the members of our community. The GPML Digital Platform is crowdsourced and allows everyone to submit new content via this form."
 msgstr "We are excited to hear from the members of our community. The Global Plastics Hub is crowdsourced and allows everyone to submit new content via this form."
 
-#: src/modules/workspace/view.jsx:242
+#: src/modules/workspace/view.jsx:241
 msgid "We sent you a confirmation email, Please take a moment and validate your address to confirm your account."
 msgstr "We sent you a confirmation email, Please take a moment and validate your address to confirm your account."
 
@@ -4626,6 +4831,10 @@ msgstr "Webinar"
 #: src/store.js:590
 msgid "Webinars & Seminars"
 msgstr "Webinars & Seminars"
+
+#: src/pages/add-content/index.jsx:660
+msgid "Webinars/Seminars"
+msgstr "Webinars/Seminars"
 
 #: src/pages/forum/index.jsx:133
 msgid "Welcome to the Global Partnership on Plastic Pollution and Marine Litter (GPML) Digital Platform forums page. A space where you can interact, network, and share insights and information with other like-minded advocates on issues related to plastic pollution and marine litter strategies, models and methodologies, data harmonization, innovative financing, and Capacity Building. Your voice matters, join now and be part of the wave for change."
@@ -4667,9 +4876,13 @@ msgstr "What is the MAIN focus of the initiative? (Please tick ALL that apply)."
 msgid "What technical resources are funded by UNEP"
 msgstr "What technical resources are funded by UNEP"
 
-#: src/modules/workspace/view.jsx:398
+#: src/modules/workspace/view.jsx:397
 msgid "What to do next?"
 msgstr "What to do next?"
+
+#: src/pages/add-content/index.jsx:2233
+msgid "What type of content is this?"
+msgstr "What type of content is this?"
 
 #: src/modules/flexible-forms/form-schema.js:789
 msgid "When do you expect the impact of the initiative to be evident?"
@@ -4726,11 +4939,12 @@ msgid "Working with People. You have chosen working with people as the type of i
 msgstr "Working with People. You have chosen working with people as the type of initiative. What did the initiative specifically involve? (Please tick ALL that apply):"
 
 #: src/modules/flexible-forms/form-schema.js:457
+#: src/pages/add-content/index.jsx:661
 #: src/store.js:596
 msgid "Workshops"
 msgstr "Workshops"
 
-#: src/modules/workspace/view.jsx:251
+#: src/modules/workspace/view.jsx:250
 msgid "workspace"
 msgstr "workspace"
 
@@ -4770,6 +4984,10 @@ msgstr "Yes, reporting is voluntary"
 msgid "You can access existing content via the"
 msgstr "You can access existing content via the"
 
+#: src/pages/add-content/index.jsx:2216
+msgid "You can access existing content via the Knowledge Exchange Library. Make sure to browse around and leave a review under the resources you enjoy the most!"
+msgstr "You can access existing content via the Knowledge Exchange Library. Make sure to browse around and leave a review under the resources you enjoy the most!"
+
 #: src/modules/stakeholder-overview/unathenticated-page.jsx:33
 msgid "You need to have an account and be signed in to see this page"
 msgstr "You need to have an account and be signed in to see this page"
@@ -4782,7 +5000,7 @@ msgstr "You will no longer receive email notifications for forum activity. You c
 msgid "You’re almost set! <0/> We need to ask a few more questions to make the platform relevant to you."
 msgstr "You’re almost set! <0/> We need to ask a few more questions to make the platform relevant to you."
 
-#: src/modules/workspace/view.jsx:232
+#: src/modules/workspace/view.jsx:231
 msgid "Your account is pending reviewal. You can still explore the platform."
 msgstr "Your account is pending reviewal. You can still explore the platform."
 
@@ -4794,9 +5012,17 @@ msgstr "Your application is received."
 msgid "Your message has been sent!"
 msgstr "Your message has been sent!"
 
+#: src/pages/add-content/index.jsx:2164
+msgid "Your newly added resource will be reviewed shortly."
+msgstr "Your newly added resource will be reviewed shortly."
+
 #: src/pages/partnership/index.jsx:437
 msgid "Your organisation will receive a certificate, which officially acknowledges its GPML membership."
 msgstr "Your organisation will receive a certificate, which officially acknowledges its GPML membership."
+
+#: src/pages/add-content/index.jsx:1603
+msgid "YouTube URL"
+msgstr "YouTube URL"
 
 #: src/modules/knowledge-lib/filter-modal.jsx:400
 msgid "YYYY"

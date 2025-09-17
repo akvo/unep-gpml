@@ -24,13 +24,14 @@ import DatePicker from 'antd/lib/date-picker'
 import moment, { duration } from 'moment'
 import api from '../../utils/api'
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
-import { lifecycleStageTags } from '../../utils/misc'
+import { lifecycleStageTags, useLifecycleStageTags } from '../../utils/misc'
 import { useRouter } from 'next/router'
 import { loadCatalog } from '../../translations/utils'
 import withAuth from '../../components/withAuth'
 import ModalAddEntity from '../../modules/flexible-forms/entity-modal/add-entity-modal'
 import debounce from 'lodash/debounce'
 import dynamic from 'next/dynamic'
+import { useLingui } from '@lingui/react'
 const RichTextEditor = dynamic(() => import('react-rte'), {
   ssr: false, // Disable server-side rendering for the editor
 })
@@ -49,16 +50,16 @@ const unmountedStyle = {
 
 // Content Types
 const contentTypes = [
-  'Project',
-  'Initiative',
-  'Action Plan',
-  'Legislation',
-  'Financing Resource',
-  'Technical Resource',
-  'Technology',
-  'Event',
-  'Dataset',
-  'Case Study',
+  t`Project`,
+  t`Initiative`,
+  t`Action Plan`,
+  t`Legislation`,
+  t`Financing Resource`,
+  t`Technical Resource`,
+  t`Technology`,
+  t`Event`,
+  t`Dataset`,
+  t`Case Study`,
 ]
 
 const contentTypeMap = {
@@ -640,29 +641,38 @@ const defaultConfig = {
 }
 
 // Select options
-const selectOptions = {
-  geoCoverageType: [
-    { key: t`Global`, value: 'global' },
-    { key: t`Transnational`, value: 'transnational' },
-    { key: t`National`, value: 'national' },
-  ],
-  lifecycleStage: lifecycleStageTags,
-  tags: ['Health', 'Technology', 'Environment'],
-  eventType: [
-    'webinars/seminars',
-    'workshops',
-    'conferences',
-    'courses/training',
-    'campaigns/awareness raising',
-  ],
-  duration: [
-    `Single event`,
-    `Ongoing activity less than one year`,
-    `Ongoing activity 1-3 years`,
-    `Ongoing activity more than 3 years long`,
-    `Not applicable`,
-    `Other`,
-  ],
+export const useSelectOptions = () => {
+  const { i18n } = useLingui()
+  const lifecycleStageTags = useLifecycleStageTags()
+
+  return {
+    geoCoverageType: [
+      { key: i18n._(t`Global`), value: 'global' },
+      { key: i18n._(t`Transnational`), value: 'transnational' },
+      { key: i18n._(t`National`), value: 'national' },
+    ],
+
+    lifecycleStage: lifecycleStageTags,
+
+    tags: [i18n._(t`Health`), i18n._(t`Technology`), i18n._(t`Environment`)],
+
+    eventType: [
+      i18n._(t`Webinars/Seminars`),
+      i18n._(t`Workshops`),
+      i18n._(t`Conferences`),
+      i18n._(t`Courses/Training`),
+      i18n._(t`Campaigns/Awareness Raising`),
+    ],
+
+    duration: [
+      i18n._(t`Single event`),
+      i18n._(t`Ongoing activity less than one year`),
+      i18n._(t`Ongoing activity 1-3 years`),
+      i18n._(t`Ongoing activity more than 3 years long`),
+      i18n._(t`Not applicable`),
+      i18n._(t`Other`),
+    ],
+  }
 }
 
 const getSelectOptions = (storeData) => ({
@@ -697,6 +707,7 @@ const FormField = React.memo(
       .find((field) => field.name === name)
 
     const renderFieldContent = () => {
+      const selectOptions = useSelectOptions()
       switch (name) {
         case 'title':
         case 'name':
@@ -712,7 +723,9 @@ const FormField = React.memo(
           return (
             <FormLabel
               label={
-                label ? label : name.charAt(0).toUpperCase() + name.slice(1)
+                label
+                  ? t`${label}`
+                  : t`${name.charAt(0).toUpperCase() + name.slice(1)}`
               }
               htmlFor={name}
               meta={meta}
@@ -742,7 +755,8 @@ const FormField = React.memo(
                       : ''
                   }`}
                 />
-              )}{' '}
+              )}
+
               {meta.touched && meta.error && (
                 <p
                   color="error"
@@ -751,7 +765,7 @@ const FormField = React.memo(
                     meta.touched && meta.error ? mountedStyle : unmountedStyle
                   }
                 >
-                  {meta.error}
+                  {t`${meta.error}`}
                 </p>
               )}
             </FormLabel>
@@ -760,7 +774,7 @@ const FormField = React.memo(
         case 'value':
           return (
             <FormLabel
-              label="Value Amount"
+              label={t`Value Amount`}
               htmlFor="value"
               isOptional={!fieldConfig?.required}
               meta={meta}
@@ -774,6 +788,7 @@ const FormField = React.memo(
                     : ''
                 }`}
               />
+
               {meta.touched && meta.error && (
                 <p
                   color="error"
@@ -782,7 +797,7 @@ const FormField = React.memo(
                     meta.touched && meta.error ? mountedStyle : unmountedStyle
                   }
                 >
-                  {meta.error}
+                  {t`${meta.error}`}
                 </p>
               )}
             </FormLabel>
@@ -791,7 +806,7 @@ const FormField = React.memo(
         case 'geoCoverageType':
           return (
             <FormLabel
-              label="Geo-coverage type"
+              label={t`Geo-coverage type`}
               htmlFor="geoCoverageType"
               meta={meta}
               isOptional={!fieldConfig?.required}
@@ -807,17 +822,18 @@ const FormField = React.memo(
                   form.change('geoCoverageCountries', undefined)
                 }}
                 onBlur={input.onBlur}
-                placeholder="Select Geo-coverage type"
+                placeholder={t`Select Geo-coverage type`}
                 className={
                   meta.touched && !meta.valid ? 'ant-input-status-error' : ''
                 }
               >
                 {selectOptions.geoCoverageType.map((opt) => (
                   <Option key={opt.value} value={opt.value}>
-                    {opt.key}
+                    <Trans>{opt.key}</Trans>
                   </Option>
                 ))}
               </Select>
+
               {meta.touched && meta.error && (
                 <p
                   color="error"
@@ -826,7 +842,7 @@ const FormField = React.memo(
                     meta.touched && meta.error ? mountedStyle : unmountedStyle
                   }
                 >
-                  {meta.error}
+                  {t`${meta.error}`}
                 </p>
               )}
             </FormLabel>
@@ -835,7 +851,7 @@ const FormField = React.memo(
         case 'geoCoverageCountryGroups':
           return (
             <FormLabel
-              label="GEO COVERAGE (Transnational)"
+              label={t`GEO COVERAGE (Transnational)`}
               htmlFor="geoCoverageCountryGroups"
               meta={meta}
               isOptional={!fieldConfig?.required}
@@ -845,17 +861,18 @@ const FormField = React.memo(
                 size="small"
                 value={input.value || undefined}
                 allowClear
-                placeholder="Select transnational "
+                placeholder={t`Select transnational`}
                 className={
                   meta.touched && !meta.valid ? 'ant-input-status-error' : ''
                 }
               >
                 {storeData.transnationalOptions.map((opt) => (
                   <Option key={opt.id} value={opt.id}>
-                    {opt.name}
+                    <Trans>{opt.name}</Trans>
                   </Option>
                 ))}
-              </Select>{' '}
+              </Select>
+
               {meta.touched && meta.error && (
                 <p
                   color="error"
@@ -864,7 +881,7 @@ const FormField = React.memo(
                     meta.touched && meta.error ? mountedStyle : unmountedStyle
                   }
                 >
-                  {meta.error}
+                  {t`${meta.error}`}
                 </p>
               )}
             </FormLabel>
@@ -873,7 +890,7 @@ const FormField = React.memo(
         case 'geoCoverageCountries':
           return (
             <FormLabel
-              label="GEO COVERAGE (Countries)"
+              label={t`GEO COVERAGE (Countries)`}
               htmlFor="geoCoverageCountries"
               meta={meta}
               isOptional={!fieldConfig?.required}
@@ -884,17 +901,18 @@ const FormField = React.memo(
                 mode="multiple"
                 value={input.value || []}
                 allowClear
-                placeholder="Select countries"
+                placeholder={t`Select countries`}
                 className={
                   meta.touched && !meta.valid ? 'ant-input-status-error' : ''
                 }
               >
                 {storeData.countries.map((country) => (
                   <Option key={country.id} value={country.id}>
-                    {country.name}
+                    <Trans>{country.name}</Trans>
                   </Option>
                 ))}
-              </Select>{' '}
+              </Select>
+
               {meta.touched && meta.error && (
                 <p
                   color="error"
@@ -903,7 +921,7 @@ const FormField = React.memo(
                     meta.touched && meta.error ? mountedStyle : unmountedStyle
                   }
                 >
-                  {meta.error}
+                  {t`${meta.error}`}
                 </p>
               )}
             </FormLabel>
@@ -912,7 +930,7 @@ const FormField = React.memo(
         case 'valueCurrency':
           return (
             <FormLabel
-              label="Value Currency"
+              label={t`Value Currency`}
               htmlFor="valueCurrency"
               meta={meta}
               isOptional={!fieldConfig?.required}
@@ -924,7 +942,7 @@ const FormField = React.memo(
                 allowClear
                 onChange={input.onChange}
                 onBlur={input.onBlur}
-                placeholder="Select value currency"
+                placeholder={t`Select value currency`}
                 className={
                   meta.touched && !meta.valid ? 'ant-input-status-error' : ''
                 }
@@ -934,7 +952,8 @@ const FormField = React.memo(
                     <Trans>{opt.label}</Trans>
                   </Option>
                 ))}
-              </Select>{' '}
+              </Select>
+
               {meta.touched && meta.error && (
                 <p
                   color="error"
@@ -943,7 +962,7 @@ const FormField = React.memo(
                     meta.touched && meta.error ? mountedStyle : unmountedStyle
                   }
                 >
-                  {meta.error}
+                  {t`${meta.error}`}
                 </p>
               )}
             </FormLabel>
@@ -952,7 +971,7 @@ const FormField = React.memo(
         case 'eventType':
           return (
             <FormLabel
-              label="Event Type"
+              label={t`Event Type`}
               htmlFor="eventType"
               isOptional={!fieldConfig?.required}
               meta={meta}
@@ -964,17 +983,18 @@ const FormField = React.memo(
                 allowClear
                 onChange={input.onChange}
                 onBlur={input.onBlur}
-                placeholder="Select event type"
+                placeholder={t`Select event type`}
                 className={
                   meta.touched && !meta.valid ? 'ant-input-status-error' : ''
                 }
               >
                 {selectOptions.eventType.map((type) => (
                   <Option key={type} value={type}>
-                    {type.charAt(0).toUpperCase() + type.slice(1)}
+                    {t`${type.charAt(0).toUpperCase() + type.slice(1)}`}
                   </Option>
                 ))}
               </Select>
+
               {meta.touched && meta.error && (
                 <p
                   color="error"
@@ -983,7 +1003,7 @@ const FormField = React.memo(
                     meta.touched && meta.error ? mountedStyle : unmountedStyle
                   }
                 >
-                  {meta.error}
+                  {t`${meta.error}`}
                 </p>
               )}
             </FormLabel>
@@ -992,7 +1012,7 @@ const FormField = React.memo(
         case 'duration':
           return (
             <FormLabel
-              label="Duration"
+              label={t`Duration`}
               htmlFor="duration"
               isOptional={!fieldConfig?.required}
               meta={meta}
@@ -1004,17 +1024,18 @@ const FormField = React.memo(
                 allowClear
                 onChange={input.onChange}
                 onBlur={input.onBlur}
-                placeholder="Select duration"
+                placeholder={t`Select duration`}
                 className={
                   meta.touched && !meta.valid ? 'ant-input-status-error' : ''
                 }
               >
                 {selectOptions.duration.map((type) => (
                   <Option key={type} value={type}>
-                    {type.charAt(0).toUpperCase() + type.slice(1)}
+                    {t`${type.charAt(0).toUpperCase() + type.slice(1)}`}
                   </Option>
                 ))}
               </Select>
+
               {meta.touched && meta.error && (
                 <p
                   color="error"
@@ -1023,15 +1044,16 @@ const FormField = React.memo(
                     meta.touched && meta.error ? mountedStyle : unmountedStyle
                   }
                 >
-                  {meta.error}
+                  {t`${meta.error}`}
                 </p>
               )}
             </FormLabel>
           )
+
         case 'tags':
           return (
             <FormLabel
-              label="Tags"
+              label={t`Tags`}
               htmlFor="tags"
               isOptional={!fieldConfig?.required}
               meta={meta}
@@ -1044,11 +1066,11 @@ const FormField = React.memo(
                 allowClear
                 onChange={input.onChange}
                 onBlur={input.onBlur}
-                placeholder="Select at least one"
-                filterOption={(input, option) =>
+                placeholder={t`Select at least one`}
+                filterOption={(inputValue, option) =>
                   (option?.children?.toString() ?? '')
                     .toLowerCase()
-                    .includes(input.toLowerCase())
+                    .includes(inputValue.toLowerCase())
                 }
                 className={
                   meta.touched && !meta.valid ? 'ant-input-status-error' : ''
@@ -1056,10 +1078,11 @@ const FormField = React.memo(
               >
                 {tags.map((opt) => (
                   <Option key={opt.id} value={opt.id}>
-                    {opt.tag}
+                    {t`${opt.tag}`}
                   </Option>
                 ))}
-              </Select>{' '}
+              </Select>
+
               {meta.touched && meta.error && (
                 <p
                   color="error"
@@ -1068,16 +1091,18 @@ const FormField = React.memo(
                     meta.touched && meta.error ? mountedStyle : unmountedStyle
                   }
                 >
-                  {meta.error}
+                  {t`${meta.error}`}
                 </p>
               )}
             </FormLabel>
           )
 
         case 'lifecycleStage':
+          const lifecycleStageTags = useLifecycleStageTags()
+
           return (
             <FormLabel
-              label="Life Cycle Stage"
+              label={t`Life Cycle Stage`}
               htmlFor="lifecycleStage"
               meta={meta}
               isOptional={!fieldConfig?.required}
@@ -1088,7 +1113,7 @@ const FormField = React.memo(
                 value={input.value ? input.value : []}
                 allowClear
                 mode="multiple"
-                placeholder="Select at least one"
+                placeholder={t`Select at least one`}
                 onChange={input.onChange}
                 onBlur={input.onBlur}
                 className={
@@ -1100,7 +1125,8 @@ const FormField = React.memo(
                     {opt}
                   </Option>
                 ))}
-              </Select>{' '}
+              </Select>
+
               {meta.touched && meta.error && (
                 <p
                   color="error"
@@ -1109,7 +1135,7 @@ const FormField = React.memo(
                     meta.touched && meta.error ? mountedStyle : unmountedStyle
                   }
                 >
-                  {meta.error}
+                  {t`${meta.error}`}
                 </p>
               )}
             </FormLabel>
@@ -1118,7 +1144,7 @@ const FormField = React.memo(
         case 'image':
           return (
             <FormLabel
-              label="Photo"
+              label={t`Photo`}
               htmlFor="image"
               meta={meta}
               isOptional={!fieldConfig?.required}
@@ -1144,9 +1170,10 @@ const FormField = React.memo(
                 <p className="ant-upload-drag-icon">
                   <UploadFileIcon />
                 </p>
-                <p className="ant-upload-text">Accepts .jpg and .png</p>
-                <p className="add-btn">Add a File</p>
+                <p className="ant-upload-text">{t`Accepts .jpg and .png`}</p>
+                <p className="add-btn">{t`Add a File`}</p>
               </Dragger>
+
               {meta.touched && meta.error && (
                 <p
                   color="error"
@@ -1155,12 +1182,13 @@ const FormField = React.memo(
                     meta.touched && meta.error ? mountedStyle : unmountedStyle
                   }
                 >
-                  {meta.error}
+                  {t`${meta.error}`}
                 </p>
               )}
+
               {input.value && (
                 <div className="preview-img">
-                  {input.value && <img src={input.value} alt="Preview" />}{' '}
+                  {input.value && <img src={input.value} alt={t`Preview`} />}
                   <Button
                     danger
                     icon={<DeleteOutlined />}
@@ -1174,7 +1202,7 @@ const FormField = React.memo(
         case 'gallery':
           return (
             <FormLabel
-              label="Gallery"
+              label={t`Gallery`}
               htmlFor="gallery"
               meta={meta}
               isOptional={!fieldConfig?.required}
@@ -1206,9 +1234,10 @@ const FormField = React.memo(
                 <p className="ant-upload-drag-icon">
                   <UploadFileIcon />
                 </p>
-                <p className="ant-upload-text">Accepts .jpg and .png</p>
-                <p className="add-btn">Add a File</p>
-              </Dragger>{' '}
+                <p className="ant-upload-text">{t`Accepts .jpg and .png`}</p>
+                <p className="add-btn">{t`Add a File`}</p>
+              </Dragger>
+
               {meta.touched && meta.error && (
                 <p
                   color="error"
@@ -1217,7 +1246,7 @@ const FormField = React.memo(
                     meta.touched && meta.error ? mountedStyle : unmountedStyle
                   }
                 >
-                  {meta.error}
+                  {t`${meta.error}`}
                 </p>
               )}
             </FormLabel>
@@ -1226,7 +1255,7 @@ const FormField = React.memo(
         case 'thumbnail':
           return (
             <FormLabel
-              label="Cover Thumbnail -  portrait format 300x400"
+              label={t`Cover Thumbnail - portrait format 300x400`}
               htmlFor="thumbnail"
               meta={meta}
               isOptional={!fieldConfig?.required}
@@ -1252,12 +1281,13 @@ const FormField = React.memo(
                 <p className="ant-upload-drag-icon">
                   <UploadFileIcon />
                 </p>
-                <p className="ant-upload-text">Accepts .jpg and .png</p>
-                <p className="add-btn">Add a File</p>
+                <p className="ant-upload-text">{t`Accepts .jpg and .png`}</p>
+                <p className="add-btn">{t`Add a File`}</p>
               </Dragger>
+
               {input.value && (
                 <div className="preview-img">
-                  {input.value && <img src={input.value} alt="Preview" />}{' '}
+                  {input.value && <img src={input.value} alt={t`Preview`} />}
                   <Button
                     danger
                     icon={<DeleteOutlined />}
@@ -1267,10 +1297,11 @@ const FormField = React.memo(
               )}
             </FormLabel>
           )
+
         case 'owner':
           return (
             <FormLabel
-              label={name.charAt(0).toUpperCase() + name.slice(1)}
+              label={t`${name.charAt(0).toUpperCase() + name.slice(1)}`}
               htmlFor={name}
               meta={meta}
               isOptional={!fieldConfig?.required}
@@ -1280,15 +1311,15 @@ const FormField = React.memo(
                 size="small"
                 mode="multiple"
                 value={input.value ? input.value : []}
-                filterOption={(input, option) =>
+                filterOption={(inputValue, option) =>
                   (option?.children?.toString() ?? '')
                     .toLowerCase()
-                    .includes(input.toLowerCase())
+                    .includes(inputValue.toLowerCase())
                 }
                 allowClear
                 onChange={input.onChange}
                 onBlur={input.onBlur}
-                placeholder={`Select ${name}`}
+                placeholder={t`Select ${name}`}
                 className={
                   meta.touched && !meta.valid ? 'ant-input-status-error' : ''
                 }
@@ -1306,7 +1337,7 @@ const FormField = React.memo(
                       icon={<PlusOutlined />}
                       style={{ padding: '4px 8px' }}
                     >
-                      Add new entity
+                      {t`Add new entity`}
                     </Button>
                   </>
                 )}
@@ -1325,7 +1356,7 @@ const FormField = React.memo(
         case 'implementors':
           return (
             <FormLabel
-              label={name.charAt(0).toUpperCase() + name.slice(1)}
+              label={t`${name.charAt(0).toUpperCase() + name.slice(1)}`}
               htmlFor={name}
               isOptional={!fieldConfig?.required}
               meta={meta}
@@ -1335,15 +1366,15 @@ const FormField = React.memo(
                 size="small"
                 mode="multiple"
                 value={input.value ? input.value : []}
-                filterOption={(input, option) =>
+                filterOption={(inputValue, option) =>
                   (option?.children?.toString() ?? '')
                     .toLowerCase()
-                    .includes(input.toLowerCase())
+                    .includes(inputValue.toLowerCase())
                 }
                 allowClear
                 onChange={input.onChange}
                 onBlur={input.onBlur}
-                placeholder={`Select ${name}`}
+                placeholder={t`Select ${name}`}
                 className={
                   meta.touched && !meta.valid ? 'ant-input-status-error' : ''
                 }
@@ -1361,7 +1392,7 @@ const FormField = React.memo(
         case 'yearFounded':
           return (
             <FormLabel
-              label={label ? label : name}
+              label={label ? t`${label}` : t`${name}`}
               htmlFor={name}
               isOptional={!fieldConfig?.required}
               meta={meta}
@@ -1373,12 +1404,13 @@ const FormField = React.memo(
                 className={
                   meta.touched && !meta.valid ? 'ant-input-status-error' : ''
                 }
-                placeholder="Select year"
+                placeholder={t`Select year`}
                 value={input.value ? moment(input.value) : undefined}
                 onChange={(date) =>
                   input.onChange(date ? date.format('YYYY') : null)
                 }
               />
+
               {meta.touched && meta.error && (
                 <p
                   className="error transitionDiv"
@@ -1386,7 +1418,7 @@ const FormField = React.memo(
                     meta.touched && meta.error ? mountedStyle : unmountedStyle
                   }
                 >
-                  {meta.error}
+                  {t`${meta.error}`}
                 </p>
               )}
             </FormLabel>
@@ -1398,9 +1430,9 @@ const FormField = React.memo(
         case 'endDate':
           return (
             <FormLabel
-              label={name
+              label={t`${name
                 .replace(/([A-Z])/g, ' $1')
-                .replace(/^./, (str) => str.toUpperCase())}
+                .replace(/^./, (str) => str.toUpperCase())}`}
               htmlFor={name}
               meta={meta}
               isOptional={!fieldConfig?.required}
@@ -1411,12 +1443,13 @@ const FormField = React.memo(
                 className={
                   meta.touched && !meta.valid ? 'ant-input-status-error' : ''
                 }
-                placeholder={label ? label : name}
+                placeholder={label ? t`${label}` : t`${name}`}
                 value={input.value ? moment(input.value) : undefined}
                 onChange={(date) =>
                   input.onChange(date ? date.format('YYYY-MM-DD') : null)
                 }
               />
+
               {meta.touched && meta.error && (
                 <p
                   className="error transitionDiv"
@@ -1424,7 +1457,7 @@ const FormField = React.memo(
                     meta.touched && meta.error ? mountedStyle : unmountedStyle
                   }
                 >
-                  {meta.error}
+                  {t`${meta.error}`}
                 </p>
               )}
             </FormLabel>
@@ -1433,7 +1466,7 @@ const FormField = React.memo(
         case 'relatedContent':
           return (
             <FormLabel
-              label="Related Content"
+              label={t`Related Content`}
               htmlFor={name}
               isOptional={!fieldConfig?.required}
               meta={meta}
@@ -1443,17 +1476,18 @@ const FormField = React.memo(
                 input={input}
                 meta={meta}
                 fieldConfig={fieldConfig}
-                placeholder={`Select Related Content`}
+                placeholder={t`Select Related Content`}
                 getSearchResults={(queryString) =>
                   api.get(`/list?${String(queryString)}`)
                 }
               />
             </FormLabel>
           )
+
         case 'infoDocs':
           return (
             <FormLabel
-              label="Info And Docs"
+              label={t`Info And Docs`}
               htmlFor={name}
               isOptional={!fieldConfig?.required}
               meta={meta}
@@ -1476,7 +1510,7 @@ const FormField = React.memo(
         case 'highlights':
           return (
             <FormLabel
-              label="Key highlights"
+              label={t`Key highlights`}
               htmlFor="keyHighlights"
               meta={meta}
               isOptional={!fieldConfig?.required}
@@ -1496,7 +1530,7 @@ const FormField = React.memo(
                             }
                             onChange(newValue)
                           }}
-                          placeholder="Enter highlight text"
+                          placeholder={t`Enter highlight text`}
                         />
                         <Input
                           value={item.url || ''}
@@ -1508,7 +1542,7 @@ const FormField = React.memo(
                             }
                             onChange(newValue)
                           }}
-                          placeholder="Link to PDF, document, video, etc"
+                          placeholder={t`Link to PDF, document, video, etc`}
                         />
                         {index !== 0 && (
                           <Button
@@ -1535,7 +1569,7 @@ const FormField = React.memo(
                       <div className="icn">
                         <PlusIcon />
                       </div>
-                      Add Another
+                      {t`Add Another`}
                     </Button>
                   </div>
                 )}
@@ -1547,7 +1581,7 @@ const FormField = React.memo(
         case 'videos':
           return (
             <FormLabel
-              label={name === 'videos' ? 'Videos' : 'Expected outcomes'}
+              label={name === 'videos' ? t`Videos` : t`Expected outcomes`}
               htmlFor={name}
               meta={meta}
               isOptional={!fieldConfig?.required}
@@ -1566,8 +1600,8 @@ const FormField = React.memo(
                           }}
                           placeholder={
                             name === 'videos'
-                              ? 'YouTube URL'
-                              : 'Enter expected outcome'
+                              ? t`YouTube URL`
+                              : t`Enter expected outcome`
                           }
                         />
 
@@ -1594,7 +1628,7 @@ const FormField = React.memo(
                       <div className="icn">
                         <PlusIcon />
                       </div>
-                      Add Another
+                      {t`Add Another`}
                     </Button>
                   </div>
                 )}
@@ -2112,17 +2146,25 @@ const DynamicContentForm = () => {
     },
   }
 
+  const title = t`${id && type ? 'Edit' : 'Add'} Content`
+
   return (
     <div className={styles.addContentForm}>
       <div className="container">
         <div className="ant-form ant-form-vertical">
           <Title className="title" level={3}>
-            {id && type ? 'Edit' : 'Add'} Content
+            {title}
           </Title>
           {showSuccess ? (
             <div className="success-block">
-              <h4>Submitted Successfully!</h4>
-              <p>Your newly added resource will be reviewed shortly.</p>
+              <h4>
+                <Trans>Submitted Successfully!</Trans>
+              </h4>
+              <p>
+                <Trans>
+                  Your newly added resource will be reviewed shortly.
+                </Trans>
+              </p>
             </div>
           ) : (
             <Form
@@ -2151,25 +2193,32 @@ const DynamicContentForm = () => {
                           {!selectedType && (
                             <div className="form-description">
                               <p>
-                                The GPML Digital Platform is crowdsourced and
-                                allows everyone to submit new content via this
-                                form.
+                                <Trans>
+                                  The GPML Digital Platform is crowdsourced and
+                                  allows everyone to submit new content via this
+                                  form.
+                                </Trans>
                               </p>
                               <p>
-                                A wide range of resources can be submitted, and
-                                these include Action Plans, Initiatives,
-                                Technical resources, Financing resources,
-                                Policies, Events, and Technologies. Learn more
-                                about each category and sub-categories
-                                definitions in the "Content Type" section of
-                                this form. A quick summary sheet with categories
-                                and sub-categories can be downloaded here.
+                                <Trans>
+                                  A wide range of resources can be submitted,
+                                  and these include Action Plans, Initiatives,
+                                  Technical resources, Financing resources,
+                                  Policies, Events, and Technologies. Learn more
+                                  about each category and sub-categories
+                                  definitions in the "Content Type" section of
+                                  this form. A quick summary sheet with
+                                  categories and sub-categories can be
+                                  downloaded here.
+                                </Trans>
                               </p>
                               <p>
-                                You can access existing content via the
-                                Knowledge Exchange Library. Make sure to browse
-                                around and leave a review under the resources
-                                you enjoy the most!
+                                <Trans>
+                                  You can access existing content via the
+                                  Knowledge Exchange Library. Make sure to
+                                  browse around and leave a review under the
+                                  resources you enjoy the most!
+                                </Trans>
                               </p>
                             </div>
                           )}
@@ -2181,7 +2230,7 @@ const DynamicContentForm = () => {
                           >
                             <div className="form-container">
                               <Title level={4}>
-                                What type of content is this?
+                                <Trans> What type of content is this?</Trans>
                               </Title>
                               <div
                                 style={{
@@ -2190,9 +2239,9 @@ const DynamicContentForm = () => {
                                   flexWrap: 'wrap',
                                 }}
                               >
-                                {contentTypes.map((type) => (
+                                {contentTypes.map((type, index) => (
                                   <Button
-                                    key={type}
+                                    key={index}
                                     className={`content-type-btn ${
                                       selectedType === type ? 'selected' : ''
                                     }`}
@@ -2216,8 +2265,10 @@ const DynamicContentForm = () => {
                               <>
                                 <Card className="mt-8">
                                   <Title className="form-title" level={4}>
-                                    All details of the{' '}
-                                    {selectedType.toLowerCase()}
+                                    <Trans>
+                                      All details of the{' '}
+                                      {selectedType.toLowerCase()}
+                                    </Trans>
                                   </Title>
                                   <FormFields
                                     selectedType={selectedType}
@@ -2231,7 +2282,7 @@ const DynamicContentForm = () => {
                                     disabled={loading}
                                     className="submit-btn"
                                   >
-                                    Save & Publish
+                                    <Trans> Save & Publish</Trans>
                                   </Button>
                                 </Card>
                               </>
