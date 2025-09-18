@@ -23,8 +23,6 @@ const StakeholderCarousel = ({ stakeholders }) => {
     landing: s.landing,
   }))
 
-  console.log(stakeholders)
-
   return (
     <div className={`${styles.connectionWrapper} connection-wrapper`}>
       <Swiper
