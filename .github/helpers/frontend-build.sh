@@ -22,7 +22,7 @@ frontend_build () {
      --rm \
      -v "$(pwd)/frontend:/app:delegated" \
      -w /app \
-     akvo/akvo-node-18-alpine:20220923.084347.0558ee6 \
+     akvo/akvo-node-20-alphine:20250918.091904.5ddec6f \
      bash release.sh
 
   docker build \

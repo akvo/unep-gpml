@@ -39,7 +39,7 @@ services:
       - ~/.lein:/root/.lein:delegated
     network_mode: service:mainnetwork
   frontend:
-    image: akvo/akvo-node-18-alpine:20220923.084347.0558ee6
+    image: akvo/akvo-node-20-alphine:20250918.091904.5ddec6f
     command: ["./start.sh"]
     restart: unless-stopped
     network_mode: service:mainnetwork
