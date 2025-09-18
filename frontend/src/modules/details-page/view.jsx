@@ -245,7 +245,7 @@ const DetailsView = ({
       setData(match.params.item)
       setLoading(true)
     }
-  }, [visible, match])
+  }, [visible, match?.params?.type, match?.params?.id, match?.params?.item])
 
   const description = data?.description ? data?.description : data?.summary
 

@@ -38,6 +38,9 @@ function MyApp({ Component, pageProps }) {
   const { authResult } = state
 
   const [loadScript, setLoadScript] = useState(false)
+  const [authStateVersion, setAuthStateVersion] = useState(0)
+  const tokenRenewalTimeoutRef = useRef(null)
+  const isRenewingRef = useRef(false)
 
   const {
     _expiresAt,
@@ -51,6 +54,11 @@ function MyApp({ Component, pageProps }) {
 
   const setSession = useCallback((authResult) => {
     const expiresAt = authResult.expiresIn * 1000 + new Date().getTime()
+
+    if (tokenRenewalTimeoutRef.current) {
+      clearTimeout(tokenRenewalTimeoutRef.current)
+    }
+
     localStorage.setItem('idToken', authResult.idToken)
     localStorage.setItem('expiresAt', expiresAt.toString())
     localStorage.setItem(
@@ -64,163 +72,234 @@ function MyApp({ Component, pageProps }) {
       idToken: authResult.idToken,
       authResult,
     }))
-    scheduleTokenRenewal()
+
+    setAuthStateVersion((prev) => prev + 1)
+    scheduleTokenRenewal(expiresAt)
   }, [])
 
-  const renewToken = useCallback((cb) => {
-    auth0Client.checkSession({}, (err, result) => {
-      if (err) {
-        setState((prevState) => ({
-          ...prevState,
-          loadingProfile: false,
-          isAuthenticated: false,
-        }))
-      } else {
-        setSession(result)
+  const renewToken = useCallback(
+    (cb) => {
+      if (isRenewingRef.current) {
+        if (cb) cb(new Error('Token renewal already in progress'), null)
+        return
       }
 
-      if (cb) {
-        cb(err, result)
-      }
-    })
-  }, [])
+      isRenewingRef.current = true
 
-  const scheduleTokenRenewal = useCallback(() => {
-    const delay = _expiresAt - Date.now()
-    if (delay > 0) {
-      setTimeout(() => renewToken(), delay)
-    }
-  }, [])
+      auth0Client.checkSession({}, (err, result) => {
+        isRenewingRef.current = false
 
-  useEffect(() => {
-    auth0Client.parseHash((err, authResult) => {
-      if (err) {
-        return console.log(err)
-      }
-      if (authResult) {
-        api.setToken(authResult.idToken)
-        setSession(authResult)
-      }
-    })
-  }, [])
-
-  const isTokenNearlyExpired = (expiresAt, threshold = 300000) => {
-    const now = new Date().getTime()
-    return expiresAt - now < threshold
-  }
-
-  useEffect(() => {
-    const checkToken = () => {
-      const storedIdToken = localStorage.getItem('idToken')
-      const storedIdTokenPayload = localStorage.getItem('idTokenPayload')
-      const storedExpiresAt = parseInt(localStorage.getItem('expiresAt'), 10)
-      const now = new Date().getTime()
-
-      if (storedIdToken && now < storedExpiresAt) {
-        const authResult = {
-          idToken: storedIdToken,
-          idTokenPayload: JSON.parse(storedIdTokenPayload),
-        }
-        api.setToken(storedIdToken)
-        setSession({ ...authResult, expiresIn: (storedExpiresAt - now) / 1000 })
-
-        if (isTokenNearlyExpired(storedExpiresAt)) {
-          renewToken()
-        }
-      } else if (storedIdToken) {
-        renewToken((err, renewedAuthResult) => {
-          if (err) {
+        if (err) {
+          console.error('Token renewal failed:', err)
+          if (
+            err.error === 'login_required' ||
+            err.error === 'consent_required'
+          ) {
             localStorage.removeItem('idToken')
             localStorage.removeItem('expiresAt')
+            localStorage.removeItem('idTokenPayload')
             setState((prevState) => ({
               ...prevState,
+              _expiresAt: null,
+              idToken: null,
+              authResult: null,
               loadingProfile: false,
-              isAuthenticated: false,
             }))
-          } else {
-            api.setToken(renewedAuthResult.idToken)
+            setAuthStateVersion((prev) => prev + 1)
           }
-        })
-      } else {
-        renewToken((err, renewedAuthResult) => {
-          if (renewedAuthResult) {
-            api.setToken(renewedAuthResult.idToken)
-          }
-        })
+        } else if (result) {
+          api.setToken(result.idToken)
+          setSession(result)
+        }
+
+        if (cb) cb(err, result)
+      })
+    },
+    [setSession]
+  )
+
+  const scheduleTokenRenewal = useCallback(
+    (expiresAt) => {
+      const now = Date.now()
+      const timeUntilRenewal = expiresAt - now - 300000
+
+      if (timeUntilRenewal > 0) {
+        tokenRenewalTimeoutRef.current = setTimeout(() => {
+          renewToken()
+        }, timeUntilRenewal)
       }
-    }
-
-    checkToken()
-    const intervalId = setInterval(checkToken, 5 * 60 * 1000)
-
-    return () => clearInterval(intervalId)
-  }, [setSession, renewToken])
+    },
+    [renewToken]
+  )
 
   useEffect(() => {
-    ;(async function fetchData() {
-      const idToken = localStorage.getItem('idToken')
-      if (isAuthenticated && idToken && authResult) {
-        setState((prevState) => ({ ...prevState, loadingProfile: true }))
-        let resp = await api.get('/profile')
-        setState((prevState) => ({ ...prevState, loadingProfile: false }))
+    const initializeAuth = () => {
+      auth0Client.parseHash((err, authResult) => {
+        if (err) {
+          console.error('Auth hash parse error:', err)
+          return
+        }
+
+        if (authResult) {
+          api.setToken(authResult.idToken)
+          setSession(authResult)
+          return
+        }
+
+        const storedIdToken = localStorage.getItem('idToken')
+        const storedIdTokenPayload = localStorage.getItem('idTokenPayload')
+        const storedExpiresAt = parseInt(localStorage.getItem('expiresAt'), 10)
+        const now = Date.now()
+
+        if (storedIdToken && storedExpiresAt && now < storedExpiresAt) {
+          const authResult = {
+            idToken: storedIdToken,
+            idTokenPayload: JSON.parse(storedIdTokenPayload || '{}'),
+            expiresIn: (storedExpiresAt - now) / 1000,
+          }
+
+          api.setToken(storedIdToken)
+          setState((prevState) => ({
+            ...prevState,
+            _expiresAt: storedExpiresAt,
+            idToken: storedIdToken,
+            authResult,
+          }))
+
+          scheduleTokenRenewal(storedExpiresAt)
+
+          if (storedExpiresAt - now < 300000) {
+            renewToken()
+          }
+        } else {
+          renewToken((err, result) => {
+            if (!err && result) {
+              api.setToken(result.idToken)
+            } else {
+              setState((prevState) => ({
+                ...prevState,
+                loadingProfile: false,
+              }))
+            }
+          })
+        }
+      })
+    }
+
+    initializeAuth()
+
+    return () => {
+      if (tokenRenewalTimeoutRef.current) {
+        clearTimeout(tokenRenewalTimeoutRef.current)
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    const loadProfile = async () => {
+      if (!isAuthenticated || !authResult || loadingProfile === false) {
+        return
+      }
+
+      setState((prevState) => ({ ...prevState, loadingProfile: true }))
+
+      try {
+        const resp = await api.get('/profile')
+
         if (resp.data && Object.keys(resp.data).length === 0) {
           const formData = {
-            firstName: authResult.idTokenPayload[
-              'https://globalplasticshub.org/user_metadata'
-            ]
-              ? authResult.idTokenPayload[
-                  'https://globalplasticshub.org/user_metadata'
-                ].firstName
-              : authResult.idTokenPayload['given_name']
-              ? authResult.idTokenPayload['given_name']
-              : '',
-            lastName: authResult.idTokenPayload[
-              'https://globalplasticshub.org/user_metadata'
-            ]
-              ? authResult.idTokenPayload[
-                  'https://globalplasticshub.org/user_metadata'
-                ].lastName
-              : authResult.idTokenPayload['family_name']
-              ? authResult.idTokenPayload['family_name']
-              : '',
-            title: authResult.idTokenPayload[
-              'https://globalplasticshub.org/user_metadata'
-            ]
-              ? authResult.idTokenPayload[
-                  'https://globalplasticshub.org/user_metadata'
-                ].title
-              : '',
+            firstName:
+              authResult.idTokenPayload?.[
+                'https://globalplasticshub.org/user_metadata'
+              ]?.firstName ||
+              authResult.idTokenPayload?.['given_name'] ||
+              '',
+            lastName:
+              authResult.idTokenPayload?.[
+                'https://globalplasticshub.org/user_metadata'
+              ]?.lastName ||
+              authResult.idTokenPayload?.['family_name'] ||
+              '',
+            title:
+              authResult.idTokenPayload?.[
+                'https://globalplasticshub.org/user_metadata'
+              ]?.title || '',
             publicEmail: false,
             publicDatabase: true,
           }
-          api.post('/profile', formData).then((res) => {
-            UIStore.update((e) => {
-              e.profile = {
-                ...res.data,
-                email: authResult?.idTokenPayload?.email,
-                emailVerified: authResult?.idTokenPayload?.email_verified,
-              }
-            })
+
+          const newProfileResp = await api.post('/profile', formData)
+          UIStore.update((e) => {
+            e.profile = {
+              ...newProfileResp.data,
+              email: authResult?.idTokenPayload?.email,
+              emailVerified: authResult?.idTokenPayload?.email_verified,
+            }
+          })
+        } else {
+          UIStore.update((e) => {
+            e.profile = {
+              ...resp.data,
+              email: authResult?.idTokenPayload?.email,
+              emailVerified: authResult?.idTokenPayload?.email_verified,
+            }
           })
         }
-        const redirectLocation = localStorage.getItem('redirect_on_login')
-          ? JSON.parse(localStorage.getItem('redirect_on_login'))
-          : null
-        if (redirectLocation) {
-          router.push(redirectLocation)
-        }
-        localStorage.removeItem('redirect_on_login')
-        UIStore.update((e) => {
-          e.profile = {
-            ...resp.data,
-            email: authResult?.idTokenPayload?.email,
-            emailVerified: authResult?.idTokenPayload?.email_verified,
-          }
-        })
+
         updateStatusProfile(resp.data)
+
+        const redirectLocation = localStorage.getItem('redirect_on_login')
+        if (redirectLocation) {
+          try {
+            const parsedLocation = JSON.parse(redirectLocation)
+            router.push(parsedLocation)
+          } catch (e) {
+            console.error('Invalid redirect location:', e)
+          }
+          localStorage.removeItem('redirect_on_login')
+        }
+      } catch (error) {
+        console.error('Profile loading failed:', error)
+      } finally {
+        setState((prevState) => ({ ...prevState, loadingProfile: false }))
       }
-    })()
-  }, [authResult])
+    }
+
+    loadProfile()
+  }, [authResult, isAuthenticated])
+
+  useEffect(() => {
+    const syncCheck = setInterval(() => {
+      const storedExpiresAt = parseInt(localStorage.getItem('expiresAt'), 10)
+      const currentlyAuthenticated = new Date().getTime() < storedExpiresAt
+
+      if (currentlyAuthenticated !== isAuthenticated) {
+        console.log('Auth state mismatch detected, forcing sync')
+        setAuthStateVersion((prev) => prev + 1)
+
+        if (currentlyAuthenticated && storedExpiresAt) {
+          const storedIdToken = localStorage.getItem('idToken')
+          const storedIdTokenPayload = localStorage.getItem('idTokenPayload')
+
+          if (storedIdToken) {
+            setState((prevState) => ({
+              ...prevState,
+              _expiresAt: storedExpiresAt,
+              idToken: storedIdToken,
+              authResult: {
+                idToken: storedIdToken,
+                idTokenPayload: JSON.parse(storedIdTokenPayload || '{}'),
+                expiresIn: (storedExpiresAt - Date.now()) / 1000,
+              },
+            }))
+            api.setToken(storedIdToken)
+          }
+        }
+      }
+    }, 10000)
+
+    return () => clearInterval(syncCheck)
+  }, [isAuthenticated])
 
   useEffect(() => {
     const host = window?.location?.hostname
@@ -259,7 +338,14 @@ function MyApp({ Component, pageProps }) {
         })),
       loadingProfile,
     }),
-    [isAuthenticated, auth0Client, profile, loginVisible, loadingProfile]
+    [
+      isAuthenticated,
+      auth0Client,
+      profile,
+      loginVisible,
+      loadingProfile,
+      authStateVersion,
+    ]
   )
 
   const DefaultLayout = useMemo(() => {
