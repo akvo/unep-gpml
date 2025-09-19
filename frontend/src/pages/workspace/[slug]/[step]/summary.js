@@ -104,6 +104,25 @@ const UploadFile = ({ psItem, step }) => {
     getFiles()
   }, [getFiles])
 
+  const handleDownload = async (item) => {
+    try {
+      const response = await fetch(item.url)
+      const blob = await response.blob()
+      const link = document.createElement('a')
+      link.href = window.URL.createObjectURL(blob)
+
+      link.download = `${item.name}.${item.extension}`
+
+      document.body.appendChild(link)
+      link.click()
+
+      link.remove()
+      window.URL.revokeObjectURL(link.href)
+    } catch (error) {
+      console.error('Error downloading file:', error)
+    }
+  }
+
   return (
     <Skeleton loading={!psItem?.id} paragraph={{ rows: 3 }} active>
       <div className="upload-section">
@@ -128,11 +147,12 @@ const UploadFile = ({ psItem, step }) => {
               >
                 <List.Item.Meta
                   avatar={
-                    <Link href={item?.url} passHref legacyBehavior>
-                      <div>
-                        <DownloadFileIcon />
-                      </div>
-                    </Link>
+                    <div
+                      onClick={() => handleDownload(item)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <DownloadFileIcon />
+                    </div>
                   }
                   title={`${item?.name}.${item?.extension}`}
                 />
