@@ -88,21 +88,21 @@ ALTER TABLE topic_translation ADD CONSTRAINT unique_topic_translation
 
 ### 3. Database Layer Implementation
 
-#### File: `backend/resources/gpml/db/topic/translation.sql`
+#### File: `backend/src/gpml/db/topic/translation.sql`
 
 ```sql
 -- :name get-bulk-topic-translations :? :*
 -- Get translations for multiple topics in a single language
-SELECT topic_type, topic_id, content
+SELECT topic_type, topic_id, language, content
 FROM topic_translation
-WHERE (topic_type, topic_id) IN (:v*:topic-filters)
+WHERE (topic_type, topic_id) IN (:t*:topic-filters)
 AND language = :language
 ORDER BY topic_type, topic_id;
 
 -- :name upsert-bulk-topic-translations :! :n
 -- Upsert translations for multiple topics in a single language
 INSERT INTO topic_translation (topic_type, topic_id, language, content)
-VALUES :v*:translations
+VALUES :t*:translations
 ON CONFLICT (topic_type, topic_id, language)
 DO UPDATE SET
     content = EXCLUDED.content,
@@ -263,11 +263,25 @@ ORDER BY language;
 - ✅ Constraints tested: foreign key to language table, unique constraint, NOT NULL enforcement
 - ✅ Database ready for Phase 2 implementation
 
-### Phase 2: Database Layer
-- [ ] **Step 2.1**: Create directory `backend/resources/gpml/db/topic/`
-- [ ] **Step 2.2**: Implement `translation.sql` with HugSQL queries
-- [ ] **Step 2.3**: Create `backend/src/gpml/db/topic/translation.clj` namespace
-- [ ] **Step 2.4**: Test database layer functions
+### Phase 2: Database Layer ✅ COMPLETED
+- [x] **Step 2.1**: Create directory `backend/src/gpml/db/topic/` (corrected location)
+- [x] **Step 2.2**: Implement `translation.sql` with HugSQL queries
+- [x] **Step 2.3**: Create `backend/src/gpml/db/topic/translation.clj` namespace
+- [x] **Step 2.4**: Test database layer functions with comprehensive test suite
+
+**Phase 2 Results:**
+- ✅ Database layer implemented using Test-Driven Development (TDD) methodology
+- ✅ HugSQL queries created: `get-bulk-topic-translations` and `upsert-bulk-topic-translations`
+- ✅ Clojure namespace with proper HugSQL integration and function declarations
+- ✅ Comprehensive test suite covering all upsert scenarios:
+  - All new translations (insert operations only)
+  - All existing translations (update operations only)
+  - Mixed insert/update operations
+  - Bulk retrieval functionality
+- ✅ SQL parameter expansion issues resolved (`:t*` for tuple expansion)
+- ✅ Keyword mapping verified (SQL `topic_type` → Clojure `:topic_type`)
+- ✅ All 4 tests passing with 15 assertions
+- ✅ Database layer ready for service layer integration
 
 ### Phase 3: Service Layer
 - [ ] **Step 3.1**: Implement core service functions
