@@ -14,3 +14,8 @@ ON CONFLICT (topic_type, topic_id, language)
 DO UPDATE SET
     content = EXCLUDED.content,
     updated_at = now();
+
+-- :name delete-bulk-topic-translations :! :n
+-- Delete all translations for multiple topics (all languages)
+DELETE FROM topic_translation
+WHERE (topic_type, topic_id) IN (:t*:topic-filters);
