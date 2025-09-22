@@ -1,5 +1,6 @@
 (ns gpml.db.topic.translation-test
   (:require
+   [clojure.java.jdbc :as jdbc]
    [clojure.test :refer [deftest is testing use-fixtures]]
    [gpml.db.topic.translation :as sut]
    [gpml.fixtures :as fixtures]
@@ -11,8 +12,8 @@
   (let [db (test-util/db-test-conn)]
     (testing "Can upsert bulk topic translations for multiple topics in a single language"
       (let [translations [["event" 1 "en" {:title "Test Event Title" :description "Test Event Description"}]
-                         ["policy" 1 "en" {:title "Test Policy Title" :abstract "Test Policy Abstract"}]
-                         ["resource" 1 "en" {:title "Test Resource Title" :summary "Test Resource Summary"}]]
+                          ["policy" 1 "en" {:title "Test Policy Title" :abstract "Test Policy Abstract"}]
+                          ["resource" 1 "en" {:title "Test Resource Title" :summary "Test Resource Summary"}]]
             result (sut/upsert-bulk-topic-translations db {:translations translations})]
         (is (= 3 result))))))
 
@@ -21,13 +22,13 @@
     (testing "Can update existing bulk topic translations"
       ;; First insert some initial data
       (let [initial-translations [["event" 1 "en" {:title "Original Event Title" :description "Original Event Description"}]
-                                 ["policy" 1 "en" {:title "Original Policy Title" :abstract "Original Policy Abstract"}]
-                                 ["resource" 1 "en" {:title "Original Resource Title" :summary "Original Resource Summary"}]]
+                                  ["policy" 1 "en" {:title "Original Policy Title" :abstract "Original Policy Abstract"}]
+                                  ["resource" 1 "en" {:title "Original Resource Title" :summary "Original Resource Summary"}]]
             _ (sut/upsert-bulk-topic-translations db {:translations initial-translations})
             ;; Now update with new content
             updated-translations [["event" 1 "en" {:title "Updated Event Title" :description "Updated Event Description"}]
-                                 ["policy" 1 "en" {:title "Updated Policy Title" :abstract "Updated Policy Abstract"}]
-                                 ["resource" 1 "en" {:title "Updated Resource Title" :summary "Updated Resource Summary"}]]
+                                  ["policy" 1 "en" {:title "Updated Policy Title" :abstract "Updated Policy Abstract"}]
+                                  ["resource" 1 "en" {:title "Updated Resource Title" :summary "Updated Resource Summary"}]]
             result (sut/upsert-bulk-topic-translations db {:translations updated-translations})]
         (is (= 3 result))
         ;; Verify the content was actually updated
@@ -41,12 +42,12 @@
     (testing "Can handle mixed insert and update operations in bulk"
       ;; First insert some initial data (only event and policy)
       (let [initial-translations [["event" 1 "en" {:title "Original Event Title" :description "Original Event Description"}]
-                                 ["policy" 1 "en" {:title "Original Policy Title" :abstract "Original Policy Abstract"}]]
+                                  ["policy" 1 "en" {:title "Original Policy Title" :abstract "Original Policy Abstract"}]]
             _ (sut/upsert-bulk-topic-translations db {:translations initial-translations})
             ;; Now do mixed operation: update event, update policy, insert new resource
             mixed-translations [["event" 1 "en" {:title "Updated Event Title" :description "Updated Event Description"}]
-                               ["policy" 1 "en" {:title "Updated Policy Title" :abstract "Updated Policy Abstract"}]
-                               ["resource" 1 "en" {:title "New Resource Title" :summary "New Resource Summary"}]]
+                                ["policy" 1 "en" {:title "Updated Policy Title" :abstract "Updated Policy Abstract"}]
+                                ["resource" 1 "en" {:title "New Resource Title" :summary "New Resource Summary"}]]
             result (sut/upsert-bulk-topic-translations db {:translations mixed-translations})]
         (is (= 3 result))
         ;; Verify all records exist with correct content
@@ -61,8 +62,8 @@
     (testing "Can retrieve bulk topic translations for multiple topics in a single language"
       ;; First insert some test data
       (let [translations [["event" 1 "en" {:title "Test Event Title" :description "Test Event Description"}]
-                         ["policy" 1 "en" {:title "Test Policy Title" :abstract "Test Policy Abstract"}]
-                         ["resource" 1 "en" {:title "Test Resource Title" :summary "Test Resource Summary"}]]
+                          ["policy" 1 "en" {:title "Test Policy Title" :abstract "Test Policy Abstract"}]
+                          ["resource" 1 "en" {:title "Test Resource Title" :summary "Test Resource Summary"}]]
             _ (sut/upsert-bulk-topic-translations db {:translations translations})
             ;; Now retrieve them
             topic-filters [["event" 1] ["policy" 1] ["resource" 1]]
@@ -72,3 +73,28 @@
         (is (every? #(= "en" (:language %)) result))
         (is (every? #(= 1 (:topic_id %)) result))
         (is (every? #(map? (:content %)) result))))))
+
+(deftest delete-bulk-topic-translations-test
+  (let [db (test-util/db-test-conn)]
+    (testing "Can delete bulk topic translations for multiple topics (all languages)"
+      ;; Setup: Add French language for multi-language testing
+      (jdbc/execute! db ["INSERT INTO language (english_name, native_name, iso_code) VALUES ('French', 'Français', 'fr') ON CONFLICT (iso_code) DO NOTHING"])
+
+      ;; Setup: Insert translations in English and French
+      (let [translations [["event" 1 "en" {:title "Event 1"}]
+                          ["event" 1 "fr" {:title "Événement 1"}]
+                          ["policy" 1 "en" {:title "Policy 1"}]
+                          ["policy" 1 "fr" {:title "Politique 1"}]
+                          ["resource" 1 "en" {:title "Resource 1"}]] ; Only in English
+            _ (sut/upsert-bulk-topic-translations db {:translations translations})
+
+            ;; Delete event 1 and policy 1 (should remove all languages)
+            result (sut/delete-bulk-topic-translations db {:topic-filters [["event" 1] ["policy" 1]]})]
+
+        ;; Should delete 4 records (event 1: 2 langs + policy 1: 2 langs)
+        (is (= 4 result))
+
+        ;; Only resource 1 should remain
+        (let [remaining (sut/get-bulk-topic-translations db {:topic-filters [["event" 1] ["policy" 1] ["resource" 1]] :language "en"})]
+          (is (= 1 (count remaining)))
+          (is (= "resource" (:topic_type (first remaining)))))))))
