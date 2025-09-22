@@ -108,6 +108,11 @@ DO UPDATE SET
     content = EXCLUDED.content,
     updated_at = now();
 
+-- :name delete-bulk-topic-translations :! :n
+-- Delete all translations for multiple topics (all languages)
+DELETE FROM topic_translation
+WHERE (topic_type, topic_id) IN (:t*:topic-filters);
+
 -- :name get-topic-translation :? :1
 -- Get translation for a single topic
 SELECT content
@@ -121,11 +126,6 @@ AND language = :language;
 DELETE FROM topic_translation
 WHERE topic_type = :topic-type
 AND topic_id = :topic-id;
-
--- :name delete-bulk-topic-translations :! :n
--- Delete all translations for multiple topics (all languages)
-DELETE FROM topic_translation
-WHERE (topic_type, topic_id) IN (:v*:topic-filters);
 
 -- :name get-topic-translation-languages :? :*
 -- Get available languages for a topic
@@ -236,10 +236,16 @@ ORDER BY language;
 
 #### Bulk Deletion Use Case
 ```clojure
-;; Delete all translations for topics being removed from system
-(delete-bulk-translations
+;; Delete all translations for topics being removed from system (all languages)
+(delete-bulk-topic-translations
   db
-  [["event" 1] ["event" 2] ["policy" 5] ["initiative" 3]])
+  {:topic-filters [["event" 1] ["event" 2] ["policy" 5] ["initiative" 3]]})
+
+;; This will remove all language versions of these topics:
+;; - event 1 (English, French, Spanish, etc.)
+;; - event 2 (all languages)
+;; - policy 5 (all languages)
+;; - initiative 3 (all languages)
 ```
 
 #### Bulk Operation Constraints
@@ -271,16 +277,28 @@ ORDER BY language;
 
 **Phase 2 Results:**
 - ✅ Database layer implemented using Test-Driven Development (TDD) methodology
-- ✅ HugSQL queries created: `get-bulk-topic-translations` and `upsert-bulk-topic-translations`
+- ✅ Complete CRUD operations with HugSQL queries:
+  - `get-bulk-topic-translations` - Bulk retrieval for multiple topics/languages
+  - `upsert-bulk-topic-translations` - Bulk insert/update operations
+  - `delete-bulk-topic-translations` - Bulk deletion across all languages
 - ✅ Clojure namespace with proper HugSQL integration and function declarations
-- ✅ Comprehensive test suite covering all upsert scenarios:
+- ✅ Comprehensive test suite covering all scenarios:
   - All new translations (insert operations only)
   - All existing translations (update operations only)
   - Mixed insert/update operations
   - Bulk retrieval functionality
+  - Multi-language bulk deletion
+- ✅ Advanced testing features:
+  - Dynamic language insertion for multi-language testing
+  - Test isolation with proper cleanup
+  - Simplified and readable test structure
 - ✅ SQL parameter expansion issues resolved (`:t*` for tuple expansion)
 - ✅ Keyword mapping verified (SQL `topic_type` → Clojure `:topic_type`)
-- ✅ All 4 tests passing with 15 assertions
+- ✅ Code quality compliance:
+  - All linting checks pass (clj-kondo, cljfmt, eastwood)
+  - Namespace imports properly sorted
+  - Code formatting standardized
+- ✅ All 5 tests passing with 18 assertions
 - ✅ Database layer ready for service layer integration
 
 ### Phase 3: Service Layer
