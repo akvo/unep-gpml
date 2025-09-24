@@ -156,102 +156,146 @@ ORDER BY language;
 
 ### 4. Service Layer Implementation
 
-#### Core Functions
+#### File: `backend/src/gpml/service/topic/translation.clj`
+
+#### Core Functions (As Implemented)
 ```clojure
-(defn get-bulk-translations
-  "Retrieve translations for multiple topics in a single language.
-   topic-filters: [[\"event\" 1] [\"event\" 2] [\"initiative\" 3] ...]
-   language: \"eng\", \"fra\", etc."
-  [db topic-filters language]
-  (get-bulk-topic-translations db {:topic-filters topic-filters
-                                   :language language}))
+(defn upsert-bulk-topic-translations
+  "Upserts multiple topic translations in bulk"
+  [config translations-data]
+  (try
+    (if (empty? translations-data)
+      {:success? true :upserted-count 0}
+      (let [conn (:spec (:db config))
+            db-translations (mapv (fn [{:keys [topic-type topic-id language content]}]
+                                    [topic-type topic-id language content])
+                                  translations-data)
+            result (db.topic.translation/upsert-bulk-topic-translations conn {:translations db-translations})]
+        {:success? true :upserted-count result}))
+    (catch Exception e
+      (failure {:reason :unexpected-error
+                :error-details {:message (.getMessage e)}}))))
 
-(defn upsert-bulk-translations
-  "Create/update translations for multiple topics in a single language.
-   language: \"eng\", \"fra\", etc.
-   translations: [{:topic-type \"event\" :topic-id 1 :content {...}} ...]"
-  [db language translations]
-  (let [translations-with-lang
-        (map #(assoc % :language language) translations)]
-    (upsert-bulk-topic-translations db {:translations translations-with-lang})))
+(defn get-bulk-topic-translations
+  "Gets bulk topic translations for multiple topics in a single language"
+  [config topic-filters language]
+  (try
+    (let [conn (:spec (:db config))
+          ;; Convert from service layer format to database layer format
+          db-topic-filters (mapv (fn [{:keys [topic-type topic-id]}]
+                                   [topic-type topic-id])
+                                 topic-filters)
+          result (db.topic.translation/get-bulk-topic-translations conn {:topic-filters db-topic-filters :language language})]
+      {:success? true :translations result})
+    (catch Exception e
+      (failure {:reason :unexpected-error
+                :error-details {:message (.getMessage e)}}))))
 
-(defn get-translation
-  "Get translation for a single topic"
-  [db topic-type topic-id language]
-  (get-topic-translation db {:topic-type topic-type
-                             :topic-id topic-id
-                             :language language}))
-
-(defn delete-translations
-  "Delete all translations for a topic"
-  [db topic-type topic-id]
-  (delete-topic-translations db {:topic-type topic-type
-                                 :topic-id topic-id}))
-
-(defn delete-bulk-translations
-  "Delete all translations for multiple topics (all languages).
-   topic-filters: [[\"event\" 1] [\"event\" 2] [\"initiative\" 3] ...]"
-  [db topic-filters]
-  (delete-bulk-topic-translations db {:topic-filters topic-filters}))
-
-(defn get-available-languages
-  "Get available translation languages for a topic"
-  [db topic-type topic-id]
-  (get-topic-translation-languages db {:topic-type topic-type
-                                        :topic-id topic-id}))
+(defn delete-bulk-topic-translations
+  "Deletes all translations for multiple topics (all languages)"
+  [config topic-filters]
+  (try
+    (let [conn (:spec (:db config))
+          ;; Convert from service layer format to database layer format
+          db-topic-filters (mapv (fn [{:keys [topic-type topic-id]}]
+                                   [topic-type topic-id])
+                                 topic-filters)
+          result (db.topic.translation/delete-bulk-topic-translations conn {:topic-filters db-topic-filters})]
+      {:success? true :deleted-count result})
+    (catch Exception e
+      (failure {:reason :unexpected-error
+                :error-details {:message (.getMessage e)}}))))
 ```
 
-### 5. Bulk Operation Examples
+### 5. HTTP API Examples (As Implemented)
 
-#### Bulk Retrieval Use Case
-```clojure
-;; Get English translations for mixed topic types
-(get-bulk-translations
-  db
-  [["event" 1] ["event" 2] ["event" 5] ["event" 17]
-   ["initiative" 3] ["initiative" 4] ["initiative" 6]
-   ["policy" 1]]
-  "eng")
-
-;; Returns:
-;; [{:topic-type "event" :topic-id 1 :content {...}}
-;;  {:topic-type "event" :topic-id 2 :content {...}}
-;;  ...]
+#### Bulk Upsert (PUT /bulk-translations)
+```bash
+# Create/update translations for multiple topics and languages
+curl -X PUT http://localhost:3000/bulk-translations \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <JWT_TOKEN>" \
+  -d '[
+    {
+      "topic-type": "policy",
+      "topic-id": 1,
+      "language": "en",
+      "content": {"title": "Policy Title", "summary": "Policy Summary"}
+    },
+    {
+      "topic-type": "event",
+      "topic-id": 2,
+      "language": "es",
+      "content": {"title": "Título del Evento", "description": "Descripción del evento"}
+    }
+  ]'
 ```
 
-#### Bulk Upsert Use Case
-```clojure
-;; Create/update English translations for mixed operations
-(upsert-bulk-translations
-  db
-  "eng"
-  [{:topic-type "event" :topic-id 1 :content {:title "Updated Event Title" :description "Updated description"}}
-   {:topic-type "event" :topic-id 5 :content {:title "Another Event" :summary "Event summary"}}
-   {:topic-type "policy" :topic-id 1 :content {:title "Policy Title" :abstract "Policy abstract"}}
-   {:topic-type "policy" :topic-id 2 :content {:title "New Policy" :info_docs "Documentation"}}
-   ;; New topics after creation
-   {:topic-type "event" :topic-id 100 :content {:title "New Event" :description "Brand new event"}}
-   {:topic-type "event" :topic-id 101 :content {:title "Another New Event"}}])
+#### Bulk Retrieval (GET /bulk-translations)
+```bash
+# Get translations for multiple topics in a single language (no auth required)
+# Topics format: comma-separated "topic-type:id" pairs
+curl -X GET "http://localhost:3000/bulk-translations?topics=policy:1,event:2,initiative:3&language=en"
+
+# Returns:
+# {
+#   "success?": true,
+#   "translations": [
+#     {
+#       "topic_type": "event",
+#       "topic_id": 2,
+#       "language": "en",
+#       "content": {"title": "Event Title", "description": "Event Description"}
+#     },
+#     {
+#       "topic_type": "initiative",
+#       "topic_id": 3,
+#       "language": "en",
+#       "content": {"title": "Initiative Title", "summary": "Initiative Summary"}
+#     },
+#     {
+#       "topic_type": "policy",
+#       "topic_id": 1,
+#       "language": "en",
+#       "content": {"title": "Policy Title", "summary": "Policy Summary"}
+#     }
+#   ]
+# }
 ```
 
-#### Bulk Deletion Use Case
-```clojure
-;; Delete all translations for topics being removed from system (all languages)
-(delete-bulk-topic-translations
-  db
-  {:topic-filters [["event" 1] ["event" 2] ["policy" 5] ["initiative" 3]]})
+#### Query Parameters Schema
+- **topics**: String in format `"topic-type:id,topic-type:id,..."` (e.g., `"policy:1,event:2,initiative:3"`)
+- **language**: String with 2-3 character language code (e.g., `"en"`, `"es"`, `"fra"`)
 
-;; This will remove all language versions of these topics:
-;; - event 1 (English, French, Spanish, etc.)
-;; - event 2 (all languages)
-;; - policy 5 (all languages)
-;; - initiative 3 (all languages)
+#### Service Layer Usage Examples
+```clojure
+;; Service layer - Upsert bulk translations
+(svc.topic.translation/upsert-bulk-topic-translations
+  config
+  [{:topic-type "event" :topic-id 1 :language "en" :content {:title "Event Title"}}
+   {:topic-type "policy" :topic-id 1 :language "es" :content {:title "Título de Política"}}])
+
+;; Service layer - Get bulk translations
+(svc.topic.translation/get-bulk-topic-translations
+  config
+  [{:topic-type "event" :topic-id 1} {:topic-type "policy" :topic-id 1}]
+  "en")
+
+;; Service layer - Delete bulk translations (for data management scripts only)
+;; Note: No HTTP endpoint exposed - available only through service layer
+(svc.topic.translation/delete-bulk-topic-translations
+  config
+  [{:topic-type "event" :topic-id 1} {:topic-type "policy" :topic-id 1}])
 ```
 
-#### Bulk Operation Constraints
-- **Single Language**: All bulk operations work on one language at a time (except deletion)
-- **Mixed Topic Types**: Can handle multiple topic types in single operation
+#### API Operation Constraints
+- **Authentication**: Upsert operations require JWT authentication, GET operations are public
+- **Multiple Languages**: Upsert supports multiple languages in single request, GET operates on single language
+- **Mixed Topic Types**: All operations can handle multiple topic types in single request
 - **Atomic Operations**: All bulk operations are transactional
+- **Flexible Content**: JSONB content can contain any structure, no field validation
+- **User Operations**: Only GET and PUT endpoints exposed - no DELETE endpoint for user operations
+- **Data Management**: Bulk deletion available only through service layer for administrative scripts
 
 ## Implementation Steps
 
@@ -334,17 +378,62 @@ ORDER BY language;
 - ✅ All 3 tests passing with 10 assertions
 - ✅ Service layer ready for handler layer integration
 
-### Phase 4: Data Migration
-- [ ] **Step 4.1**: Create data migration script to transform existing translations
-- [ ] **Step 4.2**: Map field-based translations to JSONB structure
-- [ ] **Step 4.3**: Verify data integrity after migration
-- [ ] **Step 4.4**: Create rollback procedure
+### Phase 4: Data Migration ⏭️ SKIPPED
+- [~] **Step 4.1**: Create data migration script to transform existing translations
+- [~] **Step 4.2**: Map field-based translations to JSONB structure
+- [~] **Step 4.3**: Verify data integrity after migration
+- [~] **Step 4.4**: Create rollback procedure
 
-### Phase 5: Handler Updates
-- [ ] **Step 5.1**: Update existing handlers to use new translation system
-- [ ] **Step 5.2**: Modify API endpoints to support bulk operations
-- [ ] **Step 5.3**: Update validation logic (remove field constraints)
-- [ ] **Step 5.4**: Test API functionality
+**Phase 4 Status:**
+- ⏭️ **SKIPPED** - Data migration is not necessary as existing translations are not being used yet
+- ✅ New unified translation system can be implemented directly without migrating legacy data
+- ✅ Clean implementation path without legacy data transformation complexity
+
+### Phase 5: Handler Updates ✅ COMPLETED
+- [x] **Step 5.1**: Implement bulk topic translation handler (upsert) with TDD
+- [x] **Step 5.2**: Implement bulk topic translation handler (get) with TDD
+- [~] **Step 5.3**: ~~Implement bulk topic translation handler (delete)~~ SKIPPED - Not needed for user operations
+- [x] **Step 5.4**: Add HTTP route configuration and validation schemas
+- [x] **Step 5.5**: Integration with Integrant system configuration
+
+**Phase 5 Results:**
+- ✅ Handler layer implemented using Test-Driven Development (TDD) methodology
+- ✅ Complete bulk translation handlers for user operations:
+  - `upsert` (PUT) - Creates/updates multiple translations with authentication required ✅
+  - `get` (GET) - Retrieves translations for multiple topics (no authentication required) ✅
+  - `delete` endpoint - ⏭️ **SKIPPED** - Not exposed to users, bulk deletion reserved for data management scripts only
+- ✅ Handler namespace: `backend/src/gpml/handler/topic/translation.clj`
+- ✅ HTTP Route Configuration in `duct.base.edn`:
+  - PUT `/bulk-translations` with auth middleware and validation
+  - GET `/bulk-translations` with query parameter validation (no auth required)
+  - Component definitions for handlers and validation schemas
+- ✅ Malli validation schemas:
+  - Upsert input validation with comprehensive error handling
+  - GET query parameter validation with string decoder for CSV format
+  - Support for multiple topics and multiple languages in single request
+  - Flexible content validation (any JSONB structure allowed)
+- ✅ Data format transformations:
+  - Upsert input: `[{:topic-type "policy" :topic-id 1 :language "en" :content {...}} ...]`
+  - GET query: `?topics=policy:1,event:2&language=en` → internally converts to service format
+  - Service layer uses maps with `:topic-type` and `:topic-id`
+  - Database layer uses tuples `["policy" 1 "en" {...}]`
+- ✅ Comprehensive test suite with TDD approach:
+  - Upsert handler: 4 tests with 12 assertions (success, auth, empty input, invalid data)
+  - Get handler: 2 tests with 8 assertions (bulk retrieval, empty topics)
+  - Full request/response cycle testing with mock requests
+  - Authentication testing and error handling
+- ✅ Advanced error handling:
+  - 400 Bad Request for invalid input data (client errors)
+  - 403 Forbidden for unauthenticated upsert requests
+  - 500 Internal Server Error for unexpected server errors
+  - Foreign key constraint violation handling
+- ✅ Integration features:
+  - Proper Integrant component initialization with dependencies
+  - Database connection management through system config
+  - Follows established handler patterns in codebase
+- ✅ All handler tests passing (upsert and get operations)
+- ✅ Phase 5 complete - user-facing API endpoints implemented
+- 📝 **Note**: Bulk deletion functionality remains available through service layer for data management scripts
 
 ### Phase 6: Cleanup
 - [ ] **Step 6.1**: Create migration `236-drop-old-translation-tables.up.sql`
