@@ -1,5 +1,6 @@
 (ns gpml.service.topic.translation
   (:require
+   [clojure.set]
    [gpml.db.topic.translation :as db.topic.translation]
    [gpml.util.result :refer [failure]]))
 
@@ -42,17 +43,33 @@
       (failure {:reason :unexpected-error
                 :error-details {:message (.getMessage e)}}))))
 
+(defn- filter-content-fields
+  "Filter content fields to intersection of available and requested fields, or return full content if no intersection"
+  [translation fields]
+  (let [content (:content translation)
+        content-keys (set (map name (keys content)))
+        requested-fields (set fields)
+        available-requested-fields (clojure.set/intersection content-keys requested-fields)]
+    (if (seq available-requested-fields)
+      ;; Some requested fields exist - filter to intersection
+      (update translation :content #(select-keys % (map keyword available-requested-fields)))
+      ;; No requested fields exist - return full content
+      translation)))
+
 (defn get-bulk-topic-translations
-  "Gets bulk topic translations for multiple topics in a single language"
-  [config topic-filters language]
+  "Gets bulk topic translations for multiple topics in a single language with optional field filtering"
+  [config topic-filters language fields]
   (try
     (let [conn (:spec (:db config))
           ;; Convert from service layer format to database layer format
           db-topic-filters (mapv (fn [{:keys [topic-type topic-id]}]
                                    [topic-type topic-id])
                                  topic-filters)
-          result (db.topic.translation/get-bulk-topic-translations conn {:topic-filters db-topic-filters :language language})]
-      {:success? true :translations result})
+          result (db.topic.translation/get-bulk-topic-translations conn {:topic-filters db-topic-filters :language language})
+          filtered-result (if (and fields (seq fields))
+                            (mapv #(filter-content-fields % fields) result)
+                            result)]
+      {:success? true :translations filtered-result})
     (catch Exception e
       (failure {:reason :unexpected-error
                 :error-details {:message (.getMessage e)}}))))

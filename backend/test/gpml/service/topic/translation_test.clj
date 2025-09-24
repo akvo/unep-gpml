@@ -37,7 +37,7 @@
                                {:topic-type "event" :topic-id 2 :language "en" :content {:title "Event Title" :description "Event Description"}}]
             _ (svc.topic.translation/upsert-bulk-topic-translations config translations-data)
             topic-filters [{:topic-type "policy" :topic-id 1} {:topic-type "event" :topic-id 2}]
-            result (svc.topic.translation/get-bulk-topic-translations config topic-filters "en")]
+            result (svc.topic.translation/get-bulk-topic-translations config topic-filters "en" nil)]
         (is (:success? result))
         (is (= 2 (count (:translations result))))
         (is (every? #(= "en" (:language %)) (:translations result)))
@@ -63,6 +63,6 @@
         (is (:success? result))
         (is (= 4 (:deleted-count result))) ; Should delete 4 records (policy: 2 languages + event: 2 languages)
         ;; Verify that only resource 3 remains
-        (let [remaining (svc.topic.translation/get-bulk-topic-translations config [{:topic-type "resource" :topic-id 3}] "en")]
+        (let [remaining (svc.topic.translation/get-bulk-topic-translations config [{:topic-type "resource" :topic-id 3}] "en" nil)]
           (is (= 1 (count (:translations remaining))))
           (is (= "resource" (:topic_type (first (:translations remaining))))))))))
