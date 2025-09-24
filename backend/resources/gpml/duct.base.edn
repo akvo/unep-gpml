@@ -506,7 +506,11 @@
                                                    :body #ig/ref :gpml.handler.resource.translation/put-params}
                                       :handler    #ig/ref :gpml.handler.resource.translation/put}}]]
                           ["/bulk-translations"
-                           {:put {:middleware [#ig/ref :gpml.auth/auth-middleware
+                           {:get {:summary    "Get bulk topic translations"
+                                  :swagger    {:tags ["get bulk translations"]}
+                                  :parameters {:query #ig/ref :gpml.handler.topic.translation/get-params}
+                                  :handler    #ig/ref :gpml.handler.topic.translation/get}
+                            :put {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                #ig/ref :gpml.auth/auth-required]
                                   :summary    "Create or edit bulk topic translations"
                                   :swagger    {:tags     ["create bulk translations"
@@ -998,8 +1002,10 @@
  :gpml.handler.resource.translation/query-params                    {}
  :gpml.handler.resource.translation/delete-params                   {}
  :gpml.handler.resource.translation/put-params                      {}
- :gpml.handler.topic.translation/upsert                            #ig/ref :gpml.config/common
- :gpml.handler.topic.translation/upsert-params                     {}
+ :gpml.handler.topic.translation/get                                #ig/ref :gpml.config/common
+ :gpml.handler.topic.translation/get-params                         {}
+ :gpml.handler.topic.translation/upsert                             #ig/ref :gpml.config/common
+ :gpml.handler.topic.translation/upsert-params                      {}
  :gpml.handler.list/get                                             {:db #ig/ref :duct.database.sql.hikaricp/read-write}
  :gpml.handler.list/get-params                                      {}
  :gpml.handler.list/get-response                                    {}

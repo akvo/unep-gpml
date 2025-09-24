@@ -71,6 +71,42 @@
         (is (= 500 (:status response)))
         (is (not (:success? (:body response)))))))) ; Note: Full validation will be tested at route level
 
+(deftest get-bulk-topic-translations-test
+  (let [system (ig/init fixtures/*system* [::sut/get [:duct/const :gpml.config/common]])
+        conn (test-util/db-test-conn)
+        handler (::sut/get system)]
+    ;; Ensure we have required languages in test database
+    (jdbc/execute! conn ["INSERT INTO language (iso_code, english_name, native_name) VALUES ('en', 'English', 'English'), ('es', 'Spanish', 'Español') ON CONFLICT (iso_code) DO NOTHING"])
+
+    ;; Set up test data
+    (jdbc/execute! conn ["INSERT INTO topic_translation (topic_type, topic_id, language, content) VALUES ('policy', 1, 'en', '{\"title\": \"Policy Title\", \"summary\": \"Policy Summary\"}'), ('policy', 1, 'es', '{\"title\": \"Título de Política\", \"summary\": \"Resumen de Política\"}'), ('event', 2, 'en', '{\"title\": \"Event Title\", \"description\": \"Event Description\"}') ON CONFLICT (topic_type, topic_id, language) DO UPDATE SET content = EXCLUDED.content"])
+
+    (testing "get bulk translations for multiple topics in single language"
+      (let [query-params {:topics [{:topic-type "policy" :topic-id 1}
+                                   {:topic-type "event" :topic-id 2}]
+                          :language "en"}
+            request (-> (mock/request :get "/bulk-translations")
+                        (assoc :parameters {:query query-params}))
+            response (handler request)
+            translations (:translations (:body response))
+            first-trans (first translations)
+            second-trans (second translations)]
+        (is (= 200 (:status response)))
+        (is (:success? (:body response)))
+        (is (= 2 (count translations)))
+          ;; Results are ordered by topic_type, topic_id - so "event" comes before "policy"
+        (is (= "Event Title" (:title (:content first-trans))))
+        (is (= "Policy Title" (:title (:content second-trans))))))
+
+    (testing "empty topics should return empty results"
+      (let [query-params {:topics [] :language "en"}
+            request (-> (mock/request :get "/bulk-translations")
+                        (assoc :parameters {:query query-params}))
+            response (handler request)]
+        (is (= 200 (:status response)))
+        (is (:success? (:body response)))
+        (is (= 0 (count (:translations (:body response)))))))))
+
 (deftest validation-schema-test
   (let [system (ig/init fixtures/*system* [::sut/upsert-params])
         schema (::sut/upsert-params system)]
