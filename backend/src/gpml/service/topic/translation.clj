@@ -18,7 +18,20 @@
         {:success? true :upserted-count result}))
     (catch org.postgresql.util.PSQLException e
       (cond
-        (re-find #"violates foreign key constraint.*language" (.getMessage e))
+        (re-find #"violates foreign key constraint" (.getMessage e))
+        (failure {:reason :foreign-key-constraint-violation
+                  :error-details {:message "Invalid language code"}})
+
+        (re-find #"value too long for type character varying\(3\)" (.getMessage e))
+        (failure {:reason :invalid-language-format
+                  :error-details {:message "Language code must be 3 characters or less"}})
+
+        :else
+        (failure {:reason :database-error
+                  :error-details {:message (.getMessage e)}})))
+    (catch java.sql.BatchUpdateException e
+      (cond
+        (re-find #"violates foreign key constraint" (.getMessage e))
         (failure {:reason :foreign-key-constraint-violation
                   :error-details {:message "Invalid language code"}})
 

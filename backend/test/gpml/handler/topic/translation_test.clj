@@ -1,0 +1,97 @@
+(ns gpml.handler.topic.translation-test
+  (:require
+   [clojure.java.jdbc :as jdbc]
+   [clojure.test :refer [deftest is testing use-fixtures]]
+   [gpml.fixtures :as fixtures]
+   [gpml.handler.topic.translation :as sut]
+   [gpml.test-util :as test-util]
+   [integrant.core :as ig]
+   [malli.core :as m]
+   [ring.mock.request :as mock]))
+
+(use-fixtures :each fixtures/with-test-system)
+
+(deftest upsert-bulk-topic-translations-test
+  (let [system (ig/init fixtures/*system* [::sut/upsert])
+        config (get system [:duct/const :gpml.config/common])
+        conn (test-util/db-test-conn)
+        handler (::sut/upsert system)
+        ;; Create a test user
+        user-id (test-util/create-test-stakeholder config "translator@test.com" "APPROVED" "USER")]
+    ;; Ensure we have required languages in test database
+    (jdbc/execute! conn ["INSERT INTO language (iso_code, english_name, native_name) VALUES ('en', 'English', 'English'), ('es', 'Spanish', 'Español') ON CONFLICT (iso_code) DO NOTHING"])
+
+    (testing "upsert bulk topic translations with multiple languages"
+      (let [translations-data [{:topic-type "policy" :topic-id 1 :language "en" :content {:title "Policy Title" :summary "Policy Summary"}}
+                               {:topic-type "policy" :topic-id 1 :language "es" :content {:title "Título de Política" :summary "Resumen de Política"}}
+                               {:topic-type "event" :topic-id 2 :language "en" :content {:title "Event Title" :description "Event Description"}}
+                               {:topic-type "event" :topic-id 2 :language "es" :content {:title "Título del Evento" :description "Descripción del Evento"}}]
+            request (-> (mock/request :put "/bulk-translations")
+                        (assoc :parameters {:body translations-data}
+                               :user {:id user-id}))
+            response (handler request)]
+        (is (= 200 (:status response)))
+        (is (:success? (:body response)))
+        (is (= 4 (:upserted-count (:body response))))))
+
+    (testing "unauthenticated request should return 403"
+      (let [translations-data [{:topic-type "policy" :topic-id 1 :language "en" :content {:title "Policy Title"}}]
+            request (-> (mock/request :put "/bulk-translations")
+                        (assoc :parameters {:body translations-data}))
+            response (handler request)]
+        (is (= 403 (:status response)))
+        (is (= "Authentication required" (get-in response [:body :message])))))
+
+    (testing "empty request body should return success with zero count"
+      (let [translations-data []
+            request (-> (mock/request :put "/bulk-translations")
+                        (assoc :parameters {:body translations-data}
+                               :user {:id user-id}))
+            response (handler request)]
+        (is (= 200 (:status response)))
+        (is (:success? (:body response)))
+        (is (= 0 (:upserted-count (:body response))))))
+
+    (testing "invalid language code should return bad request"
+      (let [translations-data [{:topic-type "policy" :topic-id 1 :language "xyz" :content {:title "Policy Title"}}]
+            request (-> (mock/request :put "/bulk-translations")
+                        (assoc :parameters {:body translations-data}
+                               :user {:id user-id}))
+            response (handler request)]
+        (is (= 400 (:status response)))
+        (is (not (:success? (:body response))))
+        (is (= :foreign-key-constraint-violation (get-in response [:body :reason])))))
+
+    (testing "missing required fields should return server error (handler unit test)"
+      (let [translations-data [{:topic-type "policy" :content {:title "Policy Title"}}] ; missing topic-id and language
+            request (-> (mock/request :put "/bulk-translations")
+                        (assoc :parameters {:body translations-data}
+                               :user {:id user-id}))
+            response (handler request)]
+        (is (= 500 (:status response)))
+        (is (not (:success? (:body response)))))))) ; Note: Full validation will be tested at route level
+
+(deftest validation-schema-test
+  (let [system (ig/init fixtures/*system* [::sut/upsert-params])
+        schema (::sut/upsert-params system)]
+
+    (testing "valid input passes validation"
+      (let [valid-data [{:topic-type "policy" :topic-id 1 :language "en" :content {:title "Title"}}
+                        {:topic-type "event" :topic-id 2 :language "es" :content {:description "Desc"}}]]
+        (is (m/validate schema valid-data))))
+
+    (testing "missing topic-id fails validation"
+      (let [invalid-data [{:topic-type "policy" :language "en" :content {:title "Title"}}]]
+        (is (not (m/validate schema invalid-data)))))
+
+    (testing "missing language fails validation"
+      (let [invalid-data [{:topic-type "policy" :topic-id 1 :content {:title "Title"}}]]
+        (is (not (m/validate schema invalid-data)))))
+
+    (testing "invalid language length fails validation"
+      (let [invalid-data [{:topic-type "policy" :topic-id 1 :language "x" :content {:title "Title"}}]]
+        (is (not (m/validate schema invalid-data)))))
+
+    (testing "empty array fails validation"
+      (let [invalid-data []]
+        (is (not (m/validate schema invalid-data)))))))
