@@ -107,6 +107,110 @@
         (is (:success? (:body response)))
         (is (= 0 (count (:translations (:body response)))))))))
 
+(deftest get-bulk-topic-translations-with-fields-test
+  (let [system (ig/init fixtures/*system* [::sut/get [:duct/const :gpml.config/common]])
+        conn (test-util/db-test-conn)
+        handler (::sut/get system)]
+    ;; Ensure we have required languages in test database
+    (jdbc/execute! conn ["INSERT INTO language (iso_code, english_name, native_name) VALUES ('en', 'English', 'English') ON CONFLICT (iso_code) DO NOTHING"])
+
+    ;; Set up test data with multiple content fields
+    (jdbc/execute! conn ["INSERT INTO topic_translation (topic_type, topic_id, language, content) VALUES ('policy', 1, 'en', '{\"title\": \"Policy Title\", \"summary\": \"Policy Summary\", \"description\": \"Full Description\"}'), ('event', 2, 'en', '{\"title\": \"Event Title\", \"description\": \"Event Description\", \"location\": \"Event Location\"}') ON CONFLICT (topic_type, topic_id, language) DO UPDATE SET content = EXCLUDED.content"])
+
+    (testing "fields parameter filters content when all requested fields exist"
+      (let [query-params {:topics [{:topic-type "policy" :topic-id 1}
+                                   {:topic-type "event" :topic-id 2}]
+                          :language "en"
+                          :fields ["title" "description"]}
+            request (-> (mock/request :get "/bulk-translations")
+                        (assoc :parameters {:query query-params}))
+            response (handler request)
+            translations (:translations (:body response))
+            event-trans (first translations)  ; event comes first alphabetically
+            policy-trans (second translations)]
+        (is (= 200 (:status response)))
+        (is (:success? (:body response)))
+        (is (= 2 (count translations)))
+        ;; Event translation should only have title and description (filtered)
+        (is (= "Event Title" (:title (:content event-trans))))
+        (is (= "Event Description" (:description (:content event-trans))))
+        (is (nil? (:location (:content event-trans))))  ; location should be filtered out
+        ;; Policy translation should only have title and description (filtered)
+        (is (= "Policy Title" (:title (:content policy-trans))))
+        (is (= "Full Description" (:description (:content policy-trans))))
+        (is (nil? (:summary (:content policy-trans))))))  ; summary should be filtered out
+
+    (testing "fields parameter applies filtering per translation item individually"
+      (let [query-params {:topics [{:topic-type "policy" :topic-id 1}
+                                   {:topic-type "event" :topic-id 2}]
+                          :language "en"
+                          :fields ["summary"]}  ; policy has "summary", event doesn't
+            request (-> (mock/request :get "/bulk-translations")
+                        (assoc :parameters {:query query-params}))
+            response (handler request)
+            translations (:translations (:body response))
+            event-trans (first translations)  ; event comes first alphabetically
+            policy-trans (second translations)]
+        (is (= 200 (:status response)))
+        (is (:success? (:body response)))
+        (is (= 2 (count translations)))
+        ;; Policy has "summary" field → should return only "summary"
+        (is (= "Policy Summary" (:summary (:content policy-trans))))
+        (is (nil? (:title (:content policy-trans))))      ; title should be filtered out
+        (is (nil? (:description (:content policy-trans)))) ; description should be filtered out
+        ;; Event does NOT have "summary" field → should return ALL fields (fallback)
+        (is (= "Event Title" (:title (:content event-trans))))
+        (is (= "Event Description" (:description (:content event-trans))))
+        (is (= "Event Location" (:location (:content event-trans))))))
+
+    (testing "fields parameter with multiple fields filters available fields per item"
+      (let [query-params {:topics [{:topic-type "policy" :topic-id 1}
+                                   {:topic-type "event" :topic-id 2}]
+                          :language "en"
+                          :fields ["summary" "location"]}  ; policy has "summary", event has "location"
+            request (-> (mock/request :get "/bulk-translations")
+                        (assoc :parameters {:query query-params}))
+            response (handler request)
+            translations (:translations (:body response))
+            event-trans (first translations)  ; event comes first alphabetically
+            policy-trans (second translations)]
+        (is (= 200 (:status response)))
+        (is (:success? (:body response)))
+        (is (= 2 (count translations)))
+        ;; Policy has "summary" but not "location" → should return only "summary"
+        (is (= "Policy Summary" (:summary (:content policy-trans))))
+        (is (nil? (:title (:content policy-trans))))      ; should be filtered out
+        (is (nil? (:description (:content policy-trans)))) ; should be filtered out
+        (is (nil? (:location (:content policy-trans))))   ; doesn't exist anyway
+        ;; Event has "location" but not "summary" → should return only "location"
+        (is (= "Event Location" (:location (:content event-trans))))
+        (is (nil? (:title (:content event-trans))))       ; should be filtered out
+        (is (nil? (:description (:content event-trans)))) ; should be filtered out
+        (is (nil? (:summary (:content event-trans))))))   ; doesn't exist anyway
+
+    (testing "empty fields parameter returns all content"
+      (let [query-params {:topics [{:topic-type "policy" :topic-id 1}
+                                   {:topic-type "event" :topic-id 2}]
+                          :language "en"
+                          :fields []}  ; empty fields array
+            request (-> (mock/request :get "/bulk-translations")
+                        (assoc :parameters {:query query-params}))
+            response (handler request)
+            translations (:translations (:body response))
+            event-trans (first translations)  ; event comes first alphabetically
+            policy-trans (second translations)]
+        (is (= 200 (:status response)))
+        (is (:success? (:body response)))
+        (is (= 2 (count translations)))
+        ;; Policy should have ALL its fields (no filtering when fields is empty)
+        (is (= "Policy Title" (:title (:content policy-trans))))
+        (is (= "Policy Summary" (:summary (:content policy-trans))))
+        (is (= "Full Description" (:description (:content policy-trans))))
+        ;; Event should have ALL its fields (no filtering when fields is empty)
+        (is (= "Event Title" (:title (:content event-trans))))
+        (is (= "Event Description" (:description (:content event-trans))))
+        (is (= "Event Location" (:location (:content event-trans))))))))
+
 (deftest validation-schema-test
   (let [system (ig/init fixtures/*system* [::sut/upsert-params])
         schema (::sut/upsert-params system)]

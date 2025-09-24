@@ -36,7 +36,24 @@
       [:topic-id int?]]]]
    [:language {:description "Language code (2-3 characters, e.g. 'en', 'es', 'fra')"
                :example "en"}
-    [:string {:min 2 :max 3}]]])
+    [:string {:min 2 :max 3}]]
+   [:fields {:description "Comma-separated content fields to include (e.g. 'title,summary,description')"
+             :example "title,summary"
+             :swagger {:type "string"
+                       :collectionFormat "csv"
+                       :allowEmptyValue true}
+             :optional true}
+    [:maybe
+     [:vector
+      {:decode/string
+       (fn [s]
+         (if (or (nil? s) (empty? s))
+           nil
+           (->> (str/split s #",")
+                (map str/trim)
+                (remove empty?)
+                vec)))}
+      string?]]]])
 
 (defmethod ig/init-key ::upsert-params [_ _]
   upsert-params)
@@ -49,7 +66,7 @@
   (fn [{{:keys [query]} :parameters}]
     (if (empty? (:topics query))
       (resp/response {:success? true :translations []})
-      (let [result (svc.topic.translation/get-bulk-topic-translations config (:topics query) (:language query))]
+      (let [result (svc.topic.translation/get-bulk-topic-translations config (:topics query) (:language query) (:fields query))]
         (if (:success? result)
           (resp/response {:success? true :translations (:translations result)})
           (r/server-error result))))))
