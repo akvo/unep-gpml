@@ -135,7 +135,7 @@ jobs:
         uses: ./composite-actions/.github/actions/k8s-rollout
         with:
           app-name: "unep-gpml-hpa"
-          deployment-name: "backend-deployment"
+          deployment-name: "strapi-deployment"
           container-name: "strapi"
           cluster-name: "test"
           namespace-name: "unep-gpml-hpa-namespace"
