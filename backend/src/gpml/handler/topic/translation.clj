@@ -12,7 +12,7 @@
     [:topic-type [:string {:min 1}]]
     [:topic-id [:int {:min 1}]]
     [:language [:string {:min 2 :max 3}]]
-    [:content [:map]]]])
+    [:content map?]]])
 
 (def ^:private get-params
   [:map
