@@ -199,15 +199,15 @@
      db-users)))
 
 (defn- tx-get-channel-users-in-db [{:keys [db hikari logger] :as config}
-                             {:keys [channel] :as context}]
+                                   {:keys [channel] :as context}]
   (let [chat-account-ids (mapv :chat-account-id
-                                       (:result (db/execute! hikari {:select :stakeholder.chat_account_id
-                                                                     :from :stakeholder
-                                                                     :join [:chat_channel_membership
-                                                                            [:=
-                                                                             :stakeholder.id
-                                                                             :chat_channel_membership.stakeholder_id]]
-                                                                     :where [:= :chat_channel_id (:id channel)]})))
+                               (:result (db/execute! hikari {:select :stakeholder.chat_account_id
+                                                             :from :stakeholder
+                                                             :join [:chat_channel_membership
+                                                                    [:=
+                                                                     :stakeholder.id
+                                                                     :chat_channel_membership.stakeholder_id]]
+                                                             :where [:= :chat_channel_id (:id channel)]})))
         result (try
                  (if (seq chat-account-ids)
                    {:success? true
