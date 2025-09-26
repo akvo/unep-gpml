@@ -219,7 +219,9 @@ const DetailView = ({ item, profile, setLoginVisible, isAuthenticated }) => {
                     <span>{data.linkedin}</span>
                   </div>
                 )}
-                {profile?.role === 'ADMIN' && <AdminDropdown {...{ data }} />}
+                {profile?.role === 'ADMIN' && (
+                  <AdminDropdown {...{ data, setData }} />
+                )}
                 {/* {profile.role === 'ADMIN' && (
                   <Link href={`/edit/entity/${data.id}?formType=stakeholder`}>
                     <Button size="small" type="link">
@@ -280,7 +282,9 @@ const DetailView = ({ item, profile, setLoginVisible, isAuthenticated }) => {
               <LinkedinOutlined />
               <span>http...</span>
             </div> */}
-            {profile?.role === 'ADMIN' && <AdminDropdown {...{ data }} />}
+            {profile?.role === 'ADMIN' && (
+              <AdminDropdown {...{ data, setData }} />
+            )}
           </div>
         </div>
         <div className="content">
@@ -403,11 +407,42 @@ const DetailView = ({ item, profile, setLoginVisible, isAuthenticated }) => {
   )
 }
 
-const AdminDropdown = ({ data }) => {
+const AdminDropdown = ({ data, setData }) => {
+  const [isUpdatingRole, setIsUpdatingRole] = useState(false)
+  const handleRoleToggle = async () => {
+    setIsUpdatingRole(true)
+
+    try {
+      const newRole = data.role === 'ADMIN' ? 'USER' : 'ADMIN'
+
+      const response = await api.patch(`/stakeholder/${data.id}`, {
+        role: newRole,
+      })
+
+      if (response.status === 200) {
+        setData((prevData) => ({
+          ...prevData,
+          role: newRole,
+        }))
+        notification.success({
+          message: `Successfully ${
+            newRole === 'ADMIN' ? 'promoted to' : 'removed from'
+          } admin`,
+        })
+      }
+    } catch (error) {
+      console.error('Error updating role:', error)
+      notification.error({
+        message: 'Failed to update role. Please try again',
+      })
+    } finally {
+      setIsUpdatingRole(false)
+    }
+  }
+
   return (
     <Popover
       placement="bottomLeft"
-      // overlayClassName={styles.forumOptions}
       content={
         <ul>
           <li>
@@ -449,6 +484,17 @@ const AdminDropdown = ({ data }) => {
               }}
             >
               Delete
+            </Button>
+          </li>
+          <li>
+            <Button
+              size="small"
+              type="link"
+              onClick={handleRoleToggle}
+              disabled={isUpdatingRole}
+              loading={isUpdatingRole}
+            >
+              {data.role === 'ADMIN' ? 'Remove Admin' : 'Promote to Admin'}
             </Button>
           </li>
         </ul>
