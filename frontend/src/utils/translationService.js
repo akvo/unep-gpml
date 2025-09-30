@@ -96,10 +96,7 @@ class TranslationService {
       })
 
       if (typeof window === 'undefined') {
-        const baseUrl = this.getServerBaseUrl()
-        const response = await fetch(
-          `${baseUrl}/bulk-translations?${params.toString()}`
-        )
+        const response = await fetch(`/bulk-translations?${params.toString()}`)
         const data = await response.json()
         return data.translations || []
       } else {
@@ -218,8 +215,7 @@ class TranslationService {
       }))
 
       if (typeof window === 'undefined') {
-        const baseUrl = this.getServerBaseUrl()
-        const response = await fetch(`${baseUrl}/bulk-translations`, {
+        const response = await fetch(`/bulk-translations`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -264,28 +260,6 @@ class TranslationService {
   clearCache() {
     this.cache.clear()
     this.pendingTranslations.clear()
-  }
-
-  setServerContext(req) {
-    this.serverRequest = req
-  }
-
-  getServerBaseUrl() {
-    if (!this.serverRequest) {
-      return process.env.REACT_APP_FEENV
-        ? 'https://unep-gpml.akvotest.org/api'
-        : 'http://localhost:3001/api'
-    }
-
-    const forwardedProtos = (
-      this.serverRequest.headers['x-forwarded-proto'] || ''
-    ).split(',')
-    const protocol = forwardedProtos[0] || 'http'
-    const baseUrl = `${protocol}://${this.serverRequest.headers.host}`
-
-    return process.env.REACT_APP_FEENV
-      ? 'https://unep-gpml.akvotest.org/api'
-      : `${baseUrl}/api`
   }
 }
 

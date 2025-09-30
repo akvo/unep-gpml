@@ -1,5 +1,5 @@
 export const googleTranslateConfig = {
-  apiKey: 'api-key-here',
+  apiKey: process.env.NEXT_PUBLIC_TRANSLATE_KEY || '',
   apiUrl: 'https://translation.googleapis.com/language/translate/v2',
 
   limits: {
