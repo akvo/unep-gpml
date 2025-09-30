@@ -20,8 +20,11 @@ import { Button, Modal, notification, Popover, Row, Skeleton } from 'antd'
 import { MoreOutlined } from '@ant-design/icons'
 import ResourceCards from '../../components/resource-cards/resource-cards'
 import { Trans } from '@lingui/macro'
+import translationService from '../../utils/translationService'
+import { useRouter } from 'next/router'
 
 const ProjectDetail = ({ data: inData, isModal, setVisible }) => {
+  const router = useRouter()
   const [data, setData] = useState(inData)
   const [loading, setLoading] = useState(isModal)
   const groupedConnections = {}
@@ -29,14 +32,51 @@ const ProjectDetail = ({ data: inData, isModal, setVisible }) => {
     if (!groupedConnections[it.role]) groupedConnections[it.role] = []
     groupedConnections[it.role].push(it)
   })
+
   useEffect(() => {
-    if (isModal) {
-      api.get(`/detail/project/${inData.id}`).then((d) => {
-        setData(d.data)
-        setLoading(false)
-      })
+    const fetchProjectDetails = async () => {
+      if (isModal) {
+        try {
+          const d = await api.get(`/detail/project/${inData.id}`)
+
+          let detailData = {
+            ...d.data,
+            summary:
+              d.data.summary ||
+              d.data.abstract ||
+              d.data.remarks ||
+              d.data.description,
+          }
+
+          if (router.locale !== 'en') {
+            try {
+              const translated = await translationService.getTranslatedResources(
+                [detailData],
+                router.locale,
+                ['title', 'summary']
+              )
+
+              detailData = {
+                ...detailData,
+                title: translated[0].title,
+                summary: translated[0].summary || detailData.summary,
+              }
+            } catch (error) {
+              console.error('Translation error:', error)
+            }
+          }
+
+          setData(detailData)
+          setLoading(false)
+        } catch (error) {
+          console.error('Error fetching project details:', error)
+        }
+      }
     }
-  }, [])
+
+    fetchProjectDetails()
+  }, [isModal, inData?.id, router.locale])
+
   const connectionLabels = {
     donor: 'Donors',
     implementor: 'Implementing Partners',

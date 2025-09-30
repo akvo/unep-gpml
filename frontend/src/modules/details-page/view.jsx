@@ -39,6 +39,7 @@ import { Trans, t } from '@lingui/macro'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import StakeholderCard from '../../components/stakeholder-card/stakeholder-card'
 import Link from 'next/link'
+import translationService from '../../utils/translationService'
 
 const currencyFormat = (curr) => Intl.NumberFormat().format(curr)
 
@@ -160,65 +161,73 @@ const DetailsView = ({
   }
 
   useEffect(() => {
-    if (type && id && !isServer) {
-      api
-        .get(`/detail/${type.replace('-', '_')}/${id}`)
-        .then((d) => {
-          api
-            .get(
-              `/translations/${
-                getTypeByResource(type.replace('-', '_')).translations
-              }/${id}`
-            )
-            .then((resp) => {
-              setTranslations({
-                ...resp.data,
-                summary: resp.data.abstract
-                  ? resp.data.abstract
-                  : resp.data.remarks
-                  ? resp.data.remarks
-                  : resp.data.description
-                  ? resp.data.description
-                  : resp.data.summary,
-              })
-            })
-            .catch((e) => console.log(e))
-          setData(d.data)
-          setLikes(d.data.likes)
+    const fetchDetails = async () => {
+      if (type && id && !isServer) {
+        try {
+          const d = await api.get(`/detail/${type.replace('-', '_')}/${id}`)
+          let detailData = {
+            ...d.data,
+            summary:
+              d.data.summary ||
+              d.data.abstract ||
+              d.data.remarks ||
+              d.data.description,
+          }
+
+          setLikes(detailData.likes)
           getComment(id, type.replace('-', '_'))
+
+          if (router.locale !== 'en') {
+            try {
+              const translated = await translationService.getTranslatedResources(
+                [detailData],
+                router.locale,
+                ['title', 'summary']
+              )
+
+              detailData = {
+                ...detailData,
+                title: translated[0].title,
+                summary: translated[0].summary || detailData.summary,
+              }
+            } catch (error) {
+              console.error('Translation error:', error)
+            }
+          }
+
+          setData(detailData)
           setLoading(false)
-        })
-        .catch((err) => {
+        } catch (err) {
           console.error(err)
-          // redirectError(err, history);
+        }
+      } else {
+        setData({
+          ...serverData,
+          summary:
+            serverTranslations.summary ||
+            serverTranslations.abstract ||
+            serverTranslations.remarks ||
+            serverTranslations.description,
         })
-    } else {
-      setData(serverData)
-      setTranslations({
-        ...serverTranslations,
-        summary: serverTranslations.abstract
-          ? serverTranslations.abstract
-          : serverTranslations.remarks
-          ? serverTranslations.remarks
-          : serverTranslations.description
-          ? serverTranslations.description
-          : serverTranslations.summary,
+        getComment(id, type.replace('-', '_'))
+      }
+
+      if (profile.reviewStatus === 'APPROVED') {
+        setTimeout(() => {
+          api.get(`/favorite/${type?.replace('-', '_')}/${id}`).then((resp) => {
+            setRelations(resp.data)
+          })
+        }, 100)
+      }
+
+      UIStore.update((e) => {
+        e.disclaimer = null
       })
-      getComment(id, type.replace('-', '_'))
+      window.scrollTo({ top: 0 })
     }
 
-    if (profile.reviewStatus === 'APPROVED') {
-      setTimeout(() => {
-        api.get(`/favorite/${type?.replace('-', '_')}/${id}`).then((resp) => {
-          setRelations(resp.data)
-        })
-      }, 100)
-    }
-    UIStore.update((e) => {
-      e.disclaimer = null
-    })
-    window.scrollTo({ top: 0 })
-  }, [router])
+    fetchDetails()
+  }, [router, type, id, isServer, profile.reviewStatus])
 
   useEffect(() => {
     if (updateData && Object.keys(updateData).length > 0) {
