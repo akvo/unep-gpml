@@ -8,7 +8,6 @@
 
 * [docker-compose](https://docs.docker.com/compose/)
 
-
 ### Usual commands
 
 * Start the development environment: `docker-compose up -d`
