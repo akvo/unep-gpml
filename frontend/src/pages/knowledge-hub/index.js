@@ -19,6 +19,7 @@ import { loadCatalog } from '../../translations/utils'
 import Link from 'next/link'
 import { useLifecycleStageTags } from '../../utils/misc'
 import Head from 'next/head'
+import translationService from '../../utils/translationService'
 // import { lifecycleStageTags } from '../../utils/misc'
 
 export const getCountryIdsFromGeoGroups = (
@@ -48,6 +49,8 @@ const KnowledgeHub = ({
 }) => {
   const router = useRouter()
   const [results, setResults] = useState(newResults)
+  const [isTranslating, setIsTranslating] = useState(false)
+  const originalResults = useRef(newResults)
   const [collapseKeys, setCollapseKeys] = useState(['p1', 'p2', 'p3', 'p4'])
   const [loading, setLoading] = useState(false)
   const selectedTypes = router.query.topic ? router.query.topic.split(',') : []
@@ -103,6 +106,32 @@ const KnowledgeHub = ({
 
   const [displayedOptions, setDisplayedOptions] = useState([])
   const OPTION_PAGE_SIZE = 100
+
+  useEffect(() => {
+    const translateResults = async () => {
+      const resultsToTranslate = originalResults.current
+      if (router.locale !== 'en' && resultsToTranslate.length > 0) {
+        setIsTranslating(true)
+        try {
+          const translated = await translationService.getTranslatedResources(
+            resultsToTranslate,
+            router.locale,
+            ['title']
+          )
+          setResults(translated)
+        } catch (error) {
+          console.error('Translation error:', error)
+          setResults(resultsToTranslate)
+        } finally {
+          setIsTranslating(false)
+        }
+      } else {
+        setResults(resultsToTranslate)
+      }
+    }
+
+    translateResults()
+  }, [newResults, router.locale])
 
   useEffect(() => {
     setDisplayedOptions(tagOpts.slice(0, OPTION_PAGE_SIZE))
@@ -278,9 +307,19 @@ const KnowledgeHub = ({
         })
 
         const response = await api.get(`/resources?${params.toString()}`)
+        let moreResults = response.data.results
 
-        const newResults = response.data.results
-        setResults((prevResults) => [...prevResults, ...newResults])
+        originalResults.current = [...originalResults.current, ...moreResults]
+
+        if (router.locale !== 'en' && moreResults.length > 0) {
+          moreResults = await translationService.getTranslatedResources(
+            moreResults,
+            router.locale,
+            ['title']
+          )
+        }
+
+        setResults((prevResults) => [...prevResults, ...moreResults])
       } catch (error) {
         console.error('Error loading more data:', error)
       } finally {
