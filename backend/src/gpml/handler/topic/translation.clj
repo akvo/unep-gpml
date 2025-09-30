@@ -73,12 +73,10 @@
 
 (defmethod ig/init-key ::upsert
   [_ config]
-  (fn [{{:keys [body]} :parameters user :user}]
-    (if user
-      (let [result (svc.topic.translation/upsert-bulk-topic-translations config body)]
-        (if (:success? result)
-          (resp/response {:success? true :upserted-count (:upserted-count result)})
-          (if (= :foreign-key-constraint-violation (:reason result))
-            (r/bad-request result)
-            (r/server-error result))))
-      (r/forbidden {:message "Authentication required"}))))
+  (fn [{{:keys [body]} :parameters}]
+    (let [result (svc.topic.translation/upsert-bulk-topic-translations config body)]
+      (if (:success? result)
+        (resp/response {:success? true :upserted-count (:upserted-count result)})
+        (if (= :foreign-key-constraint-violation (:reason result))
+          (r/bad-request result)
+          (r/server-error result))))))
