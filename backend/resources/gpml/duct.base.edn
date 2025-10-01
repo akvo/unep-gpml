@@ -510,12 +510,9 @@
                                   :swagger    {:tags ["get bulk translations"]}
                                   :parameters {:query #ig/ref :gpml.handler.topic.translation/get-params}
                                   :handler    #ig/ref :gpml.handler.topic.translation/get}
-                            :put {:middleware [#ig/ref :gpml.auth/auth-middleware
-                                               #ig/ref :gpml.auth/auth-required]
-                                  :summary    "Create or edit bulk topic translations"
-                                  :swagger    {:tags     ["create bulk translations"
-                                                          "edit bulk translations"]
-                                               :security [{:id_token []}]}
+                            :put {:summary    "Create or edit bulk topic translations"
+                                  :swagger    {:tags ["create bulk translations"
+                                                      "edit bulk translations"]}
                                   :parameters {:body #ig/ref :gpml.handler.topic.translation/upsert-params}
                                   :handler    #ig/ref :gpml.handler.topic.translation/upsert}}]
                           ["/list"
