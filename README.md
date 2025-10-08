@@ -143,12 +143,13 @@ The workflow consists of three jobs:
    - Tests authentication flows
    - Validates HTTP endpoints
 
-#### Deployment Workflow (`.github/workflows/deploy-hpa.yml`)
+#### Deploy to Test Workflow (`.github/workflows/deploy-test.yml`)
 
-Handles deployment to Kubernetes:
-- Builds production Docker images (nginx, frontend, backend, strapi)
+Automatically deploys to test cluster after QA passes on main branch:
+- Triggers after "Quality Assurance" workflow completes successfully
+- Builds Docker images (nginx, frontend, backend, strapi)
 - Pushes images to container registry
-- Performs Kubernetes rollout
+- Performs Kubernetes rollout to test environment
 
 ### Migration from Semaphore CI
 
