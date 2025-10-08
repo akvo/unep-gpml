@@ -1,6 +1,7 @@
 # UNEP - GPML Digital Platform
 
 [![Build Status](https://akvo.semaphoreci.com/badges/unep-gpml/branches/main.svg?style=shields)](https://akvo.semaphoreci.com/projects/unep-gpml)
+[![QA](https://github.com/akvo/unep-gpml/actions/workflows/qa.yml/badge.svg?branch=main)](https://github.com/akvo/unep-gpml/actions/workflows/qa.yml)
 
 ## Development
 
@@ -107,3 +108,52 @@ Edit `backend/dev/resources/local.edn` and add the following lines
   ;; ...
 }
 ```
+
+## CI/CD
+
+### GitHub Actions
+
+The project uses GitHub Actions for continuous integration and deployment:
+
+#### QA Workflow (`.github/workflows/qa.yml`)
+
+Runs on:
+- All pull requests
+- Pushes to `main` branch
+
+The workflow consists of three jobs:
+
+1. **Backend QA** - Runs in parallel
+   - Migration validation
+   - clj-kondo linting
+   - Eastwood linting
+   - Unit tests (eftest)
+   - Uberjar build verification
+   - Caches Maven dependencies (`~/.m2`) and Lein dependencies (`~/.lein`)
+
+2. **Frontend QA** - Runs in parallel
+   - Node modules installation
+   - ESLint linting
+   - Next.js build
+   - Caches node_modules
+
+3. **Integration Tests** - Runs after both QA jobs complete
+   - Builds all Docker images
+   - Runs end-to-end API tests
+   - Tests authentication flows
+   - Validates HTTP endpoints
+
+#### Deployment Workflow (`.github/workflows/deploy-hpa.yml`)
+
+Handles deployment to Kubernetes:
+- Builds production Docker images (nginx, frontend, backend, strapi)
+- Pushes images to container registry
+- Performs Kubernetes rollout
+
+### Migration from Semaphore CI
+
+The project is in the process of migrating from Semaphore CI to GitHub Actions. Currently both systems are running:
+- **Semaphore CI**: Legacy build system (to be deprecated)
+- **GitHub Actions**: New QA and deployment workflows
+
+Once GitHub Actions is fully validated, Semaphore CI will be deprecated and the `ci/` folder will be removed.
