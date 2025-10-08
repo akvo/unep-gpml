@@ -1,0 +1,91 @@
+name: Quality Assurance
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  backend-qa:
+    name: Backend QA
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache Maven dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.m2
+            ~/.lein
+          key: m2-${{ hashFiles('backend/project.clj') }}
+          restore-keys: |
+            m2-
+
+      - name: Run Backend QA
+        shell: bash
+        run: ./.github/helpers/backend-qa.sh
+
+  frontend-qa:
+    name: Frontend QA
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache Node modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            frontend/node_modules
+            ~/.npm
+          key: node-modules-${{ hashFiles('frontend/package.json') }}
+          restore-keys: |
+            node-modules-
+
+      - name: Run Frontend QA
+        shell: bash
+        run: ./.github/helpers/frontend-qa.sh
+
+  integration-tests:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    needs: [backend-qa, frontend-qa]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache Maven dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.m2
+            ~/.lein
+          key: m2-${{ hashFiles('backend/project.clj') }}
+          restore-keys: |
+            m2-
+
+      - name: Cache Node modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            frontend/node_modules
+            ~/.npm
+          key: node-modules-${{ hashFiles('frontend/package.json') }}
+          restore-keys: |
+            node-modules-
+
+      - name: Run Integration Tests
+        shell: bash
+        env:
+          GPML_AUTH0_USER: ${{ secrets.GPML_AUTH0_USER }}
+          GPML_AUTH0_PASSWORD: ${{ secrets.GPML_AUTH0_PASSWORD }}
+        run: |
+          bash ./.github/helpers/integration-test.sh
+
+      - name: Cleanup
+        if: always()
+        run: |
+          docker compose -f docker-compose.yml -f docker-compose.ci.yml down -v || true
