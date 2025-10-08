@@ -3,6 +3,14 @@
 set -Eeuxo pipefail
 
 backend_qa() {
+  # Create Maven and Lein directories to avoid permission issues
+  mkdir -p "${HOME}/.m2"
+  mkdir -p "${HOME}/.lein"
+
+  # Clean up any stale lock files from cached dependencies
+  find "${HOME}/.m2" -name "*.part.lock" -delete 2>/dev/null || true
+  find "${HOME}/.lein" -name "*.part.lock" -delete 2>/dev/null || true
+
   # Clean any existing build artifacts to avoid permission issues
   rm -rf backend/target
   rm -f backend/.eastwood
