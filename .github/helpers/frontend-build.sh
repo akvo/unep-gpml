@@ -6,29 +6,40 @@ image_prefix="eu.gcr.io/akvo-lumen/unep-gpml-hpa"
 image_version="${1}"
 cluster_name="${2}"
 
-
-frontend_build () {
+frontend_build() {
 
   rm -rf frontend/.env
-  echo 'REACT_APP_AUTH0_CLIENT_ID="dxfYNPO4D9ovQr5NHFkOU3jwJzXhcq5J"' >> frontend/.env
-  echo 'REACT_APP_AUTH0_DOMAIN="unep-gpml-test.eu.auth0.com"' >> frontend/.env
-  echo 'NEXT_PUBLIC_CHAT_API_DOMAIN_URL="https://rocket-chat.akvotest.org"' >> frontend/.env
-  echo 'NEXT_PUBLIC_ENV=test' >> frontend/.env
-  echo 'NEXT_PUBLIC_DSC_URL="https://deadsimplechat.com"' >> frontend/.env
-  echo 'NEXT_PUBLIC_DSC_API_URL="https://api.deadsimplechat.com"' >> frontend/.env
-  echo 'NEXT_PUBLIC_DSC_PUBLIC_KEY="pub_42747a344c7475336e2d4f46624c3333494d68745a784c316d4150626c4c32714a5146494c6b4d44764a4556456f5847"' >> frontend/.env
+
+  if [[ "${cluster_name}" == "production" ]]; then
+    # Production environment configuration
+    echo 'REACT_APP_AUTH0_CLIENT_ID="mSuWoeUEN3Z8XWZMbUqiOIOHwdk0R6dm"' >>frontend/.env
+    echo 'REACT_APP_AUTH0_DOMAIN="auth.globalplasticshub.org"' >>frontend/.env
+    echo 'NEXT_PUBLIC_CHAT_API_DOMAIN_URL="https://rocket-chat-unep.akvo.org"' >>frontend/.env
+    echo 'NEXT_PUBLIC_ENV=prod' >>frontend/.env
+  else
+    # Test/Staging environment configuration
+    echo 'REACT_APP_AUTH0_CLIENT_ID="dxfYNPO4D9ovQr5NHFkOU3jwJzXhcq5J"' >>frontend/.env
+    echo 'REACT_APP_AUTH0_DOMAIN="unep-gpml-test.eu.auth0.com"' >>frontend/.env
+    echo 'NEXT_PUBLIC_CHAT_API_DOMAIN_URL="https://rocket-chat.akvotest.org"' >>frontend/.env
+    echo 'NEXT_PUBLIC_ENV=test' >>frontend/.env
+  fi
+
+  # Common configuration for all environments
+  echo 'NEXT_PUBLIC_DSC_URL="https://deadsimplechat.com"' >>frontend/.env
+  echo 'NEXT_PUBLIC_DSC_API_URL="https://api.deadsimplechat.com"' >>frontend/.env
+  echo 'NEXT_PUBLIC_DSC_PUBLIC_KEY="pub_42747a344c7475336e2d4f46624c3333494d68745a784c316d4150626c4c32714a5146494c6b4d44764a4556456f5847"' >>frontend/.env
 
   docker run \
-     --rm \
-     -v "$(pwd)/frontend:/app:delegated" \
-     -w /app \
-     akvo/akvo-node-20-alphine:20250918.091904.5ddec6f \
-     bash release.sh
+    --rm \
+    -v "$(pwd)/frontend:/app:delegated" \
+    -w /app \
+    akvo/akvo-node-20-alphine:20250918.091904.5ddec6f \
+    bash release.sh
 
   docker build \
-         --quiet \
-         --tag "${image_prefix}/frontend:latest-${cluster_name}" \
-         --tag "${image_prefix}/frontend:${image_version}" frontend
+    --quiet \
+    --tag "${image_prefix}/frontend:latest-${cluster_name}" \
+    --tag "${image_prefix}/frontend:${image_version}" frontend
 
 }
 
