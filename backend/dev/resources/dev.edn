@@ -14,4 +14,12 @@
  ;; [:duct/const :gpml.config/common]
  ;; {:storage-client-adapter #ig/ref :mocks.boundary.adapter.storage-client/local-file-system
  ;;  :storage-bucket-name #duct/env ["LOCAL_FS_STORAGE_BUCKET_NAME" Str]}
+
+ ;; NOTE: uncomment this if you want to use the mock Google Translate adapter
+ ;; during local development (no API key required).
+ ;; :mocks.boundary.adapter.translate/google
+ ;; {}
+ ;;
+ ;; [:duct/const :gpml.config/common]
+ ;; {:translate-adapter #ig/ref :mocks.boundary.adapter.translate/google}
  }
