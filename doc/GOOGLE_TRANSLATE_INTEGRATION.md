@@ -626,6 +626,55 @@ Step 7: Return filtered by fields parameter
 - [x] Add retry logic for rate limits (uses existing http-client)
 - [x] Error handling (API key invalid, network errors, etc.)
 - [x] Manual REPL-driven tests (automated tests removed due to CI compatibility)
+- [x] Add Integrant configuration to `duct.base.edn`
+- [x] Wire adapter into system config (`:translate-adapter` in `:gpml.config/common`)
+- [x] Fix HTTP request format (use `:form-params` instead of `:body`)
+
+**Implementation Details**:
+
+**File**: `backend/src/gpml/boundary/adapter/translate/google.clj`
+- Protocol-based design using `defrecord GoogleTranslateAdapter`
+- Implements `gpml.boundary.port.translate/TranslationService` protocol
+- Smart batching respects all Google Translate API limits
+- Uses existing `gpml.util.http-client` for retry logic and error handling
+- Integrant initialization via `ig/init-key ::adapter`
+
+**File**: `backend/src/gpml/boundary/port/translate.clj`
+```clojure
+(ns gpml.boundary.port.translate)
+
+(defprotocol TranslationService
+  (translate-texts [this texts target-language source-language]
+    "Translate multiple texts to target language.
+
+    Parameters:
+    - texts: Vector of strings to translate
+    - target-language: ISO 639-1 language code (e.g., 'es', 'fr')
+    - source-language: ISO 639-1 language code (e.g., 'en')
+
+    Returns:
+    Vector of translated strings in same order as input."))
+```
+
+**Configuration** (`backend/resources/gpml/duct.base.edn`):
+```clojure
+;; Adapter initialization
+:gpml.boundary.adapter.translate.google/adapter
+{:api-key #duct/env ["GOOGLE_TRANSLATE_API_KEY" Str]
+ :logger  #ig/ref :duct/logger}
+
+;; Wire into common config
+[:duct/const :gpml.config/common]
+{...
+ :translate-adapter #ig/ref :gpml.boundary.adapter.translate.google/adapter
+ ...}
+```
+
+**Environment Variable**:
+```bash
+# Required for production adapter
+GOOGLE_TRANSLATE_API_KEY=your-api-key-here
+```
 
 **Testing Approach**:
 Manual REPL-driven tests are used instead of automated tests due to:
@@ -635,19 +684,70 @@ Manual REPL-driven tests are used instead of automated tests due to:
 
 **Test Location**: See comment block at end of `backend/src/gpml/boundary/adapter/translate/google.clj` for comprehensive manual test cases.
 
+**REPL Test Example**:
+```clojure
+;; Connect to REPL
+;; docker compose exec backend lein repl :connect localhost:47480
+
+;; Load the namespace
+(require '[gpml.boundary.port.translate :as port])
+
+;; Get adapter from system (Option 1 - via common config, recommended)
+(def adapter (:translate-adapter (dev/component [:duct/const :gpml.config/common])))
+
+;; Or get directly by Integrant key (Option 2)
+(def adapter (dev/component :gpml.boundary.adapter.translate.google/adapter))
+
+;; Verify adapter loaded
+adapter
+;; => #gpml.boundary.adapter.translate.google.GoogleTranslateAdapter{...}
+
+;; Test translation
+(port/translate-texts adapter ["Hello, world!"] "es" "en")
+;; => ["¡Hola Mundo!"]
+```
+
 **Mock Adapter for Local Development**:
-Created mock Google Translate adapter (`test/mocks/boundary/adapter/translate/google.clj`) that allows developers to work without a real API key:
+
+**File**: `backend/test/mocks/boundary/adapter/translate/google.clj`
 - Simple prefix-based translation (e.g., "Hello" → "[ES] Hello")
 - Configured in `test.edn` for automated testing
 - Can be enabled in `dev.edn` for local development (commented out by default)
 - Implements same `TranslationService` protocol as real adapter
 
+**Mock Configuration** (`backend/test-resources/test.edn`):
+```clojure
+:mocks.boundary.adapter.translate/google
+{}
+
+[:duct/const :gpml.config/common]
+{...
+ :translate-adapter #ig/ref :mocks.boundary.adapter.translate/google
+ ...}
+```
+
+**Dev Configuration** (`backend/dev/resources/dev.edn` - optional, commented out):
+```clojure
+;; NOTE: uncomment this if you want to use the mock Google Translate adapter
+;; during local development (no API key required).
+;; :mocks.boundary.adapter.translate/google
+;; {}
+;;
+;; [:duct/const :gpml.config/common]
+;; {:translate-adapter #ig/ref :mocks.boundary.adapter.translate/google}
+```
+
+**Key Implementation Fix**:
+The initial implementation had an HTTP request issue where `:body` was used instead of `:form-params`. The `gpml.util.http-client` sets `:content-type :json`, which tells clj-http to JSON-encode `:form-params` automatically, but not `:body`. This was fixed in commit `54e4b65a1`.
+
 **Deliverables**:
 - ✅ Working Google Translate adapter
 - ✅ Mock adapter for local development
+- ✅ System configuration (Integrant + environment variables)
 - ✅ Test and dev configuration updated
 - ✅ Comprehensive manual tests in source file
 - ✅ Documentation with usage examples
+- ✅ HTTP request format fixed (`:form-params`)
 
 **Acceptance Criteria**:
 - ✅ Can translate single text
@@ -655,6 +755,9 @@ Created mock Google Translate adapter (`test/mocks/boundary/adapter/translate/go
 - ✅ Handles rate limits gracefully (via http-client retry logic)
 - ✅ Returns error details on failure
 - ✅ Smart batching respects all API limits (128 texts, 30k chars, 5k per text)
+- ✅ Successfully tested in REPL with real API key
+- ✅ Properly integrated into Integrant system
+- ✅ Mock adapter available for development/testing
 
 ---
 

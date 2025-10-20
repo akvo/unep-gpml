@@ -850,6 +850,7 @@
   :storage-client-adapter              #ig/ref :gpml.boundary.adapter.storage-client.gcs/client
   :brs-ds-adapter                      #ig/ref :gpml.boundary.adapter.datasource/brs
   :chat-adapter                        #ig/ref :gpml.boundary.adapter.chat/ds-chat
+  :translate-adapter                   #ig/ref :gpml.boundary.adapter.translate.google/adapter
   :auth0                               #ig/ref :gpml.config/auth0
   :mailjet-config                      #ig/ref :gpml.config/mailjet
   :app-name                            #duct/env ["APP_NAME" Str]
@@ -1112,6 +1113,8 @@
  :gpml.boundary.adapter.chat/ds-chat          {:api-key #duct/env ["DEAD_SIMPLE_CHAT_API_KEY" Str]
                                                :logger  #ig/ref :duct/logger
                                                :profile #gpml/profile []}
+ :gpml.boundary.adapter.translate.google/adapter {:api-key #duct/env ["GOOGLE_TRANSLATE_API_KEY" Str]
+                                                  :logger  #ig/ref :duct/logger}
  :duct.migrator/ragtime                       {:migrations #ig/ref :duct.migrator.ragtime/resources
                                                :database   #ig/ref :duct.database.sql.hikaricp/read-write
                                                :logger     #ig/ref :duct/logger

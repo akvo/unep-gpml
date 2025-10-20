@@ -171,11 +171,11 @@
         url (str api-url "?key=" api-key)
         request {:url url
                  :method :post
-                 :body request-body
+                 :form-params request-body
                  :as :json-keyword-keys}]
     (log logger :info :google-translate-request
          {:text-count (count texts)
-           :char-count (count-characters texts)
+          :char-count (count-characters texts)
           :target-language target-language
           :source-language source-language})
     (try
@@ -267,10 +267,18 @@
   ;; 2. Start REPL: make lein-repl
   ;; 3. Evaluate expressions below
 
-  ;; Get the adapter from the running system
-  @(def adapter (dev/component ::adapter))
+  ;; Get the adapter from the running system (Option 1 - via common config, recommended)
+  @(def adapter (:translate-adapter (dev/component [:duct/const :gpml.config/common])))
+
+  ;; Or get it directly by its Integrant key (Option 2)
+  @(def adapter (dev/component :gpml.boundary.adapter.translate.google/adapter))
+
+  ;; Verify the adapter is loaded
+  adapter
+  ;; Should show: #gpml.boundary.adapter.translate.google.GoogleTranslateAdapter{...}
 
   ;; Test 1: Translate single text
+  ;; (require '[gpml.boundary.port.translate :as port])
   (port/translate-texts adapter
                         ["Hello, world!"]
                         "es"  ;; target: Spanish
