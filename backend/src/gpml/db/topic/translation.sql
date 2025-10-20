@@ -20,6 +20,13 @@ DO UPDATE SET
 DELETE FROM topic_translation
 WHERE (topic_type, topic_id) IN (:t*:topic-filters);
 
+-- :name delete-topic-translations :! :n
+-- Delete all translations for a specific topic (all languages)
+-- Used for cache invalidation when source content is updated
+DELETE FROM topic_translation
+WHERE topic_type = :topic-type
+  AND topic_id = :topic-id;
+
 -- Source data fetching queries (for auto-translation)
 -- Each resource type has its own query due to different table structures
 

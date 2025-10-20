@@ -6,6 +6,7 @@
 (declare get-bulk-topic-translations
          upsert-bulk-topic-translations
          delete-bulk-topic-translations
+         delete-topic-translations
          get-policy-source-data
          get-event-source-data
          get-resource-source-data
