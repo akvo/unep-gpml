@@ -156,12 +156,23 @@
           (map vector translated-texts index-map)))
 
 (defn- build-translation-records
-  "Build translation records from mapped translations.
-   Returns vector of {:topic-type :topic-id :language :content} maps."
+  "Build translation records from mapped translations for service layer.
+   Returns vector of {:topic-type :topic-id :language :content} maps for upserting."
   [translations-map language]
   (mapv (fn [[[topic-type topic-id] data]]
           {:topic-type topic-type
            :topic-id topic-id
+           :language language
+           :content (:content data)})
+        translations-map))
+
+(defn- build-translation-response-records
+  "Build translation records for response (matches DB format with underscored keys).
+   Returns vector of {:topic_type :topic_id :language :content} maps."
+  [translations-map language]
+  (mapv (fn [[[topic-type topic-id] data]]
+          {:topic_type topic-type
+           :topic_id topic-id
            :language language
            :content (:content data)})
         translations-map))
@@ -244,15 +255,18 @@
                       ;; Step 3d: Map translated texts back to resources (ALL fields)
                       translations-map (map-translations-back translated-texts index-map)
 
-                      ;; Step 3e: Build translation records
-                      new-translation-records (build-translation-records translations-map language)
+                      ;; Step 3e: Build translation records for DB upsert
+                      upsert-records (build-translation-records translations-map language)
 
                       ;; Step 3f: Save ALL translated fields to DB
-                      _ (when (seq new-translation-records)
-                          (upsert-bulk-topic-translations config new-translation-records))
+                      _ (when (seq upsert-records)
+                          (upsert-bulk-topic-translations config upsert-records))
+
+                      ;; Step 3g: Build translation records for response (underscored keys)
+                      response-records (build-translation-response-records translations-map language)
 
                       ;; Step 4: Combine DB results with newly translated results
-                      all-translations (concat existing-translations new-translation-records)
+                      all-translations (concat existing-translations response-records)
 
                       ;; Step 5: Filter response by fields parameter
                       filtered-result (if (and fields (seq fields))
