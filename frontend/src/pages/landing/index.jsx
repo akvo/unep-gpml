@@ -59,14 +59,15 @@ const Landing = (props) => {
       <FeatureCards />
       <div className="container wed-container">
         <iframe
+          title="Introduction to the Global Plastics Hub"
           width="100%"
           height="600"
-          src="https://www.youtube.com/embed/yq2IpKOpehI?si=ALQ2kn2e6iFp7gzc;controls=0"
-          frameborder="0"
+          src="https://www.youtube.com/embed/yq2IpKOpehI?si=ALQ2kn2e6iFp7gzc&controls=0"
+          frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen
+          allowFullScreen
         ></iframe>
+
         {/* <div className="wed">
           <h1 className="hide-mobile">#WorldEnvironmentDay</h1>
           <h1 className="hide-desktop">
@@ -120,7 +121,12 @@ const Landing = (props) => {
             <JoinBtn {...props} />
           </div>
           <div className="screenshot">
-            <Image src="/workflow-screenshot.jpg" width={710} height={423} />
+            <Image
+              src="/workflow-screenshot.jpg"
+              width={710}
+              height={423}
+              alt="Workflow screenshot"
+            />
           </div>
         </div>
       </div>
@@ -309,6 +315,7 @@ const JoinBtn = ({ isAuthenticated, setLoginVisible }) => {
           type="primary"
           size="large"
           withArrow
+          aria-label="Join now"
         >
           <Trans>Join Now</Trans>
         </Button>
@@ -331,7 +338,12 @@ const HeroPlasticTap = ({ isAuthenticated, setLoginVisible }) => {
         <div className="content">
           <div className="hide-desktop credit">
             <a href="https://turnofftheplastictap.com/" target="_blank">
-              <Image src="/photo-credit.svg" width={16} height={16} />
+              <Image
+                src="/photo-credit.svg"
+                width={16}
+                height={16}
+                alt="Photo by"
+              />
               Credit
             </a>
           </div>
@@ -366,81 +378,107 @@ const HeroPlasticTap = ({ isAuthenticated, setLoginVisible }) => {
 
 const FeatureCards = () => {
   return (
-    <div className="feature-cards">
-      <h3>
+    <section
+      className="feature-cards"
+      aria-labelledby="explore-platform-heading"
+    >
+      <h3 id="explore-platform-heading">
         <Trans>Explore The Platform</Trans>
       </h3>
-      <div className="container">
-        <Link href="/knowledge-hub" className="feature-card">
-          <div className="img">
-            <Image
-              src="/iconxl-knowledge-hub.svg"
-              width={265}
-              height={136}
-              alt="knowledge hub"
-            />
-          </div>
-          <div className="cnt">
-            <h5>
-              <Trans>Knowledge Hub</Trans>
-            </h5>
-            <h2>2800+</h2>
-            <p>
-              <Trans>Knowledge resources shared in the Knowledge Library</Trans>
-            </p>
-            <span>
-              <Trans>Explore the resources</Trans>
-            </span>
-          </div>
-        </Link>
-        <Link href="/data/maps" className="feature-card">
-          <div className="img">
-            <Image
-              src="/iconxl-data-hub.svg"
-              width={320}
-              height={160}
-              alt="data hub"
-            />
-          </div>
-          <div className="cnt">
-            <h5>
-              <Trans>Data Hub</Trans>
-            </h5>
-            <h2>80+</h2>
-            <p>
-              <Trans>
-                Plastic Lifecycle Indicators showcase in the Data Hub.
-              </Trans>
-            </p>
-            <span>
-              <Trans>Explore the data</Trans>
-            </span>
-          </div>
-        </Link>
-        <Link href="/community-hub" className="feature-card">
-          <div className="img">
-            <Image
-              src="/iconxl-community.svg"
-              width={321}
-              height={204}
-              alt="community"
-            />
-          </div>
-          <div className="cnt">
-            <h5>
-              <Trans>Community Hub</Trans>
-            </h5>
-            <h2>2000+</h2>
-            <p>
-              <Trans>Members connected through Community Hub.</Trans>
-            </p>
-            <span>
-              <Trans>Explore the community</Trans>
-            </span>
-          </div>
-        </Link>
-      </div>
-    </div>
+
+      <ul className="container" role="list">
+        <li role="listitem">
+          <Link
+            href="/knowledge-hub"
+            aria-label="Explore the Knowledge Hub section"
+            className="feature-card"
+          >
+            <div className="img">
+              <Image
+                src="/iconxl-knowledge-hub.svg"
+                width={265}
+                height={136}
+                alt="Knowledge Hub icon"
+              />
+            </div>
+            <div className="cnt">
+              <h5>
+                <Trans>Knowledge Hub</Trans>
+              </h5>
+              <h2>2800+</h2>
+              <p>
+                <Trans>
+                  Knowledge resources shared in the Knowledge Library.
+                </Trans>
+              </p>
+              <span aria-hidden="true">
+                <Trans>Explore the resources</Trans>
+              </span>
+            </div>
+          </Link>
+        </li>
+
+        <li role="listitem">
+          <Link
+            href="/data/maps"
+            aria-label="Explore the Data Hub section"
+            className="feature-card"
+          >
+            <div className="img">
+              <Image
+                src="/iconxl-data-hub.svg"
+                width={320}
+                height={160}
+                alt="Data Hub icon"
+              />
+            </div>
+            <div className="cnt">
+              <h5>
+                <Trans>Data Hub</Trans>
+              </h5>
+              <h2>80+</h2>
+              <p>
+                <Trans>
+                  Plastic Lifecycle Indicators showcased in the Data Hub.
+                </Trans>
+              </p>
+              <span aria-hidden="true">
+                <Trans>Explore the data</Trans>
+              </span>
+            </div>
+          </Link>
+        </li>
+
+        <li role="listitem">
+          <Link
+            href="/community-hub"
+            aria-label="Explore the Community Hub section"
+            className="feature-card"
+          >
+            <div className="img">
+              <Image
+                src="/iconxl-community.svg"
+                width={321}
+                height={204}
+                alt="Community Hub icon"
+              />
+            </div>
+            <div className="cnt">
+              <h5>
+                <Trans>Community Hub</Trans>
+              </h5>
+              <h2>2000+</h2>
+              <p>
+                <Trans>Members connected through the Community Hub.</Trans>
+              </p>
+              <span aria-hidden="true">
+                <Trans>Explore the community</Trans>
+              </span>
+            </div>
+          </Link>
+        </li>
+      </ul>
+    </section>
   )
 }
 
@@ -515,7 +553,10 @@ const LatestNews = () => {
                   <p className="p-m">
                     {stripHtml(item.content)?.substring(0, 150)}...
                   </p>
-                  <Link href={`/post/${item.id}-${item.slug}`}>
+                  <Link
+                    href={`/post/${item.id}-${item.slug}`}
+                    aria-label={`Read more about ${item.title}`}
+                  >
                     <Button type="link" withArrow>
                       <Trans>Read More</Trans>
                     </Button>

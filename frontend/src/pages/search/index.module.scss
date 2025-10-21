@@ -1,30 +1,36 @@
 @import '../../styles/vars.scss';
+
 .search {
   :global {
     .caps-heading-1 {
       margin: 35px 0 10px;
     }
+
     .results {
       display: flex;
       flex-wrap: wrap;
       margin-bottom: 40px;
       min-height: 300px;
 
-      & > * {
+      &>* {
         margin: 15px 15px 0 0;
       }
     }
+
     .content {
       position: relative;
     }
+
     .loading {
       position: absolute;
       top: 5px;
       right: 5px;
+
       .anticon {
         color: $primaryGreen;
       }
     }
+
     .no-results {
       min-height: 300px;
       width: 100%;
@@ -44,6 +50,7 @@
   /* shadow */
   box-shadow: 0px 20px 20px rgba(40, 44, 217, 0.12);
   border-radius: 20px;
+
   :global {
     form {
       display: flex;
@@ -52,6 +59,7 @@
       padding-bottom: 10px;
       margin-bottom: 15px;
       min-height: 57px;
+
       .ant-input {
         background-color: transparent;
         outline: none !important;
@@ -60,16 +68,19 @@
         font-family: $ff1;
         padding-top: 4px;
         padding-bottom: 4px;
+
         &:focus {
           outline: none;
           box-shadow: none;
         }
       }
     }
+
     .ant-btn-primary {
       // padding: 4px 15px;
       height: 46px;
     }
+
     .suggestions {
       .caption {
         color: #666666;
@@ -77,11 +88,13 @@
         text-transform: uppercase;
         font-size: 14px;
         line-height: 12px;
+
         .icon {
           display: inline-block;
           height: 14px;
           width: 33px;
           position: relative;
+
           svg {
             position: absolute;
             top: -5px;
@@ -90,6 +103,7 @@
           }
         }
       }
+
       .powered {
         position: absolute;
         right: 0;
@@ -99,10 +113,13 @@
         font-weight: 500;
         cursor: pointer;
       }
+
       .holder {
         overflow: scroll;
       }
+
       position: relative;
+
       .more-btn {
         position: absolute;
         right: -18px;
@@ -118,28 +135,29 @@
 
         /* Rectangle 34624208 */
 
-        background: linear-gradient(
-          90deg,
-          rgba(255, 255, 255, 0) 0%,
-          rgba(255, 255, 255, 1) 40%,
-          rgba(255, 255, 255, 1) 100%
-        );
+        background: linear-gradient(90deg,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 1) 40%,
+            rgba(255, 255, 255, 1) 100%);
 
         svg {
           margin-left: 20px;
           height: 17px;
           width: 40px;
           transform: rotate(-90deg);
+
           path {
             stroke-width: 1;
           }
         }
       }
+
       ul {
         width: 1600px;
         display: flex;
         flex-wrap: wrap;
         margin-top: 12px;
+
         li {
           border: 1px solid rgba(0, 0, 0, 0.1);
           border-radius: 7px;
@@ -151,12 +169,14 @@
           font-weight: 500;
           color: #000;
           cursor: pointer;
+
           &:hover {
             background-color: rgba(0, 0, 0, 0.02);
           }
         }
       }
     }
+
     @media screen and (max-width: $bpMobile) {
       .suggestions {
         .holder {
@@ -164,10 +184,22 @@
           padding-left: 12px;
           margin-right: -12px;
         }
+
         .more-btn {
           width: 26px;
         }
       }
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
     }
   }
 }

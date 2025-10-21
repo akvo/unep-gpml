@@ -180,43 +180,51 @@ const NewLayout = ({
                       src="/combined-logo.png?v=2"
                       width={190}
                       height={64}
+                      alt="GPML Logo"
                     />
                   </div>
                 </div>
               </Link>
               {width >= 768 && (
-                <ul className="ant-menu">
+                <ul className="ant-menu" role="menubar">
                   {menuList.map((item) => (
-                    <Dropdown
-                      key={item.id}
-                      placement="bottom"
-                      overlayClassName="nav-menu-item"
-                      overlay={
-                        <Menu>
-                          {item.children.map((child) => (
-                            <Menu.Item key={child.id}>
-                              {child.to ? (
-                                <Link href={child.to} legacyBehavior>
-                                  <a>{i18n._(child.key)}</a>
-                                </Link>
-                              ) : (
-                                <a href={child.href}>{i18n._(child.key)}</a>
-                              )}
-                            </Menu.Item>
-                          ))}
-                        </Menu>
-                      }
-                    >
-                      <a
-                        className="ant-dropdown-link"
-                        onClick={(e) => e.preventDefault()}
+                    <li key={item.id} className="ant-menu-item" role="none">
+                      <Dropdown
+                        placement="bottom"
+                        overlayClassName="nav-menu-item"
+                        overlay={
+                          <Menu role="menu">
+                            {item.children.map((child) => (
+                              <Menu.Item key={child.id} role="none">
+                                {child.to ? (
+                                  <Link href={child.to} legacyBehavior>
+                                    <a role="menuitem">{i18n._(child.key)}</a>
+                                  </Link>
+                                ) : (
+                                  <a href={child.href} role="menuitem">
+                                    {i18n._(child.key)}
+                                  </a>
+                                )}
+                              </Menu.Item>
+                            ))}
+                          </Menu>
+                        }
                       >
-                        {i18n._(item.key)} <DownArrow />
-                      </a>
-                    </Dropdown>
+                        <a
+                          className="ant-dropdown-link"
+                          onClick={(e) => e.preventDefault()}
+                          role="menuitem"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                        >
+                          {i18n._(item.key)} <DownArrow />
+                        </a>
+                      </Dropdown>
+                    </li>
                   ))}
                 </ul>
               )}
+
               <nav>
                 <Dropdown
                   overlayClassName="lang-dropdown-wrapper"
