@@ -125,6 +125,24 @@
          (remove existing-set)
          (mapv (fn [[topic-type topic-id]] {:topic-type topic-type :topic-id topic-id})))))
 
+(defn- filter-same-language-records
+  "Filter out records where source language equals target language.
+   Returns map with :to-translate and :skip-translation keys."
+  [source-data target-language]
+  (let [grouped (group-by (fn [record]
+                            (if (= (:language record) target-language)
+                              :skip-translation
+                              :to-translate))
+                          source-data)]
+    {:to-translate (get grouped :to-translate [])
+     :skip-translation (get grouped :skip-translation [])}))
+
+(defn- group-by-source-language
+  "Group source records by language for efficient batching.
+   Returns map of {language [records]}."
+  [records]
+  (group-by :language records))
+
 (defn- extract-translatable-texts
   "Extract all translatable text fields from source data.
    Returns {:texts [vector of text strings]
@@ -177,6 +195,20 @@
            :content (:content data)})
         translations-map))
 
+(defn- build-same-language-records
+  "Build translation records for same-language sources (copy source content as-is).
+   Returns map of {[topic-type topic-id] {:content {field value}}}."
+  [source-records]
+  (reduce (fn [acc record]
+            (let [topic-type (:topic_type record)
+                  topic-id (:topic_id record)
+                  topic-key [topic-type topic-id]
+                  translatable-fields (get dom.translation/translatable-fields-by-topic topic-type #{})
+                  content (select-keys record translatable-fields)]
+              (assoc acc topic-key {:content content})))
+          {}
+          source-records))
+
 (defn get-bulk-translations-with-auto-translate
   "Gets bulk topic translations with automatic translation of missing content.
 
@@ -184,13 +216,21 @@
    1. Checks DB for existing translations (complete translations only)
    2. Identifies missing translations
    3. If missing translations exist and auto-translate is enabled:
-      a. Fetches source data for missing topics (ALL translatable fields)
-      b. Extracts ALL translatable text fields (ignores fields parameter)
-      c. Translates all extracted texts via Google Translate
-      d. Maps translated texts back to resources
-      e. Saves ALL translated fields to DB (complete translations)
+      a. Fetches source data for missing topics (ALL translatable fields, including language column)
+      b. Filters same-language records (skip translation if source language == target language)
+      c. Groups remaining records by source language for efficient batching
+      d. Translates each source language group separately (passes correct source language to Google)
+      e. Builds records for same-language sources (copies source content as-is)
+      f. Maps translated texts back to resources
+      g. Saves ALL translated fields to DB (complete translations, including same-language copies)
    4. Filters response by fields parameter
-   5. Returns combined results (DB + newly translated, filtered by fields)
+   5. Returns combined results (DB + newly translated + same-language, filtered by fields)
+
+   Source Language Detection:
+   - Each topic record has exactly ONE language in its source table (policy, event, etc.)
+   - If source language == target language (e.g., Spanish→Spanish), skips translation and copies content
+   - If source language != target language, translates with correct source language passed to Google
+   - Multiple source languages in single request are handled efficiently (grouped batches)
 
    Parameters:
    - config: Configuration map with :db, :translate-adapter, :auto-translate keys
@@ -206,8 +246,6 @@
   (try
     (let [conn (:spec (:db config))
           translate-adapter (:translate-adapter config)
-          auto-translate-config (:auto-translate config)
-          source-language (get auto-translate-config :source-language "en")
 
           ;; Step 1: Get existing translations from DB
           db-topic-filters (mapv (fn [{:keys [topic-type topic-id]}] [topic-type topic-id]) topic-filters)
@@ -235,35 +273,50 @@
 
           ;; Auto-translate is available - proceed with translation
           (try
-            (let [;; Step 3a: Fetch source data for missing topics (ALL translatable fields)
+            (let [;; Step 3a: Fetch source data for missing topics (ALL translatable fields, includes language column)
                   missing-db-filters (mapv (fn [{:keys [topic-type topic-id]}] [topic-type topic-id]) missing-filters)
                   source-data (db.topic.translation/get-bulk-source-data conn missing-db-filters)
 
-                  ;; Step 3b: Extract ALL translatable text fields (ignore fields parameter)
-                  {:keys [texts index-map]} (extract-translatable-texts source-data)]
+                  ;; Step 3b: Filter same-language records (skip translation if source == target)
+                  {:keys [to-translate skip-translation]} (filter-same-language-records source-data language)
 
-              (if (empty? texts)
-                ;; No translatable text found in source data - return only DB results
+                  ;; Step 3c: Group records by source language for efficient batching
+                  grouped-by-language (group-by-source-language to-translate)]
+
+              (if (and (empty? to-translate) (empty? skip-translation))
+                ;; No source data found - return only DB results
                 (let [filtered-result (if (and fields (seq fields))
                                         (mapv #(filter-content-fields % fields) existing-translations)
                                         existing-translations)]
                   {:success? true :translations filtered-result})
 
-                ;; Step 3c: Translate all extracted texts
-                (let [translated-texts (port.translate/translate-texts translate-adapter texts language source-language)
+                ;; Step 3d: Translate records grouped by source language
+                (let [;; Translate each source language group separately
+                      translated-maps
+                      (reduce (fn [acc [source-lang records]]
+                                (let [{:keys [texts index-map]} (extract-translatable-texts records)
+                                      translated-texts (port.translate/translate-texts
+                                                         translate-adapter texts language source-lang)
+                                      mapped (map-translations-back translated-texts index-map)]
+                                  (merge acc mapped)))
+                              {}
+                              grouped-by-language)
 
-                      ;; Step 3d: Map translated texts back to resources (ALL fields)
-                      translations-map (map-translations-back translated-texts index-map)
+                      ;; Step 3e: Build records for same-language sources (copy source content)
+                      same-lang-map (build-same-language-records skip-translation)
 
-                      ;; Step 3e: Build translation records for DB upsert
-                      upsert-records (build-translation-records translations-map language)
+                      ;; Step 3f: Combine translated and same-language results
+                      all-translations-map (merge translated-maps same-lang-map)
 
-                      ;; Step 3f: Save ALL translated fields to DB
+                      ;; Step 3g: Build translation records for DB upsert
+                      upsert-records (build-translation-records all-translations-map language)
+
+                      ;; Step 3h: Save ALL translated fields to DB
                       _ (when (seq upsert-records)
                           (upsert-bulk-topic-translations config upsert-records))
 
-                      ;; Step 3g: Build translation records for response (underscored keys)
-                      response-records (build-translation-response-records translations-map language)
+                      ;; Step 3i: Build translation records for response (underscored keys)
+                      response-records (build-translation-response-records all-translations-map language)
 
                       ;; Step 4: Combine DB results with newly translated results
                       all-translations (concat existing-translations response-records)

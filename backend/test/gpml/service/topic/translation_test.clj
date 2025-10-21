@@ -240,3 +240,79 @@
             result (svc.topic.translation/get-bulk-translations-with-auto-translate config topic-filters "es" nil)]
         (is (:success? result))
         (is (= 0 (count (:translations result))))))))
+
+;; Source language detection tests
+
+(deftest get-bulk-translations-with-auto-translate-same-language-skip-test
+  (let [system (ig/init fixtures/*system* [:duct.database.sql/hikaricp :duct/const])
+        config (get system [:duct/const :gpml.config/common])
+        conn (test-util/db-test-conn)]
+    ;; Setup: Insert test data
+    (jdbc/execute! conn ["INSERT INTO language (iso_code, english_name, native_name) VALUES ('en', 'English', 'English'), ('es', 'Spanish', 'Español') ON CONFLICT (iso_code) DO NOTHING"])
+    (jdbc/execute! conn ["INSERT INTO policy (id, language, title, abstract, remarks, info_docs) VALUES (99920, 'es', 'Política de Plástico', 'Reducir emisiones', 'Política importante', 'Ver sitio web') ON CONFLICT (id) DO UPDATE SET language = EXCLUDED.language, title = EXCLUDED.title, abstract = EXCLUDED.abstract, remarks = EXCLUDED.remarks, info_docs = EXCLUDED.info_docs"])
+
+    (testing "Requesting Spanish translation for Spanish source should skip translation"
+      (let [topic-filters [{:topic-type "policy" :topic-id 99920}]
+            result (svc.topic.translation/get-bulk-translations-with-auto-translate config topic-filters "es" nil)]
+        (is (:success? result))
+        (is (= 1 (count (:translations result))))
+        (let [translation (first (:translations result))]
+          (is (= "policy" (:topic_type translation)))
+          (is (= 99920 (:topic_id translation)))
+          (is (= "es" (:language translation)))
+          ;; Content should match source exactly (not translated, copied)
+          (is (= "Política de Plástico" (get-in translation [:content :title])))
+          (is (= "Reducir emisiones" (get-in translation [:content :abstract])))
+          ;; Mock adapter would have added [ES] prefix if translated
+          (is (not (clojure.string/starts-with? (get-in translation [:content :title]) "[ES]"))))))))
+
+(deftest get-bulk-translations-with-auto-translate-multi-language-sources-test
+  (let [system (ig/init fixtures/*system* [:duct.database.sql/hikaricp :duct/const])
+        config (get system [:duct/const :gpml.config/common])
+        conn (test-util/db-test-conn)]
+    ;; Setup: Insert test data with different source languages
+    (jdbc/execute! conn ["INSERT INTO language (iso_code, english_name, native_name) VALUES ('en', 'English', 'English'), ('es', 'Spanish', 'Español'), ('fr', 'French', 'Français') ON CONFLICT (iso_code) DO NOTHING"])
+    (jdbc/execute! conn ["INSERT INTO policy (id, language, title, abstract) VALUES (99921, 'en', 'Climate Policy', 'Reduce emissions'), (99922, 'fr', 'Politique Climatique', 'Réduire les émissions'), (99923, 'es', 'Política Climática', 'Reducir emisiones') ON CONFLICT (id) DO UPDATE SET language = EXCLUDED.language, title = EXCLUDED.title, abstract = EXCLUDED.abstract"])
+
+    (testing "Requesting Spanish translation for mixed sources (en, fr, es)"
+      (let [topic-filters [{:topic-type "policy" :topic-id 99921}  ; English source
+                           {:topic-type "policy" :topic-id 99922}  ; French source
+                           {:topic-type "policy" :topic-id 99923}] ; Spanish source (same as target)
+            result (svc.topic.translation/get-bulk-translations-with-auto-translate config topic-filters "es" nil)]
+        (is (:success? result))
+        (is (= 3 (count (:translations result))))
+
+        ;; Find each translation
+        (let [translations-by-id (group-by :topic_id (:translations result))
+              policy-99921 (first (get translations-by-id 99921))
+              policy-99922 (first (get translations-by-id 99922))
+              policy-99923 (first (get translations-by-id 99923))]
+
+          ;; English → Spanish: should be translated (mock adds [ES] prefix)
+          (is (clojure.string/starts-with? (get-in policy-99921 [:content :title]) "[ES]"))
+
+          ;; French → Spanish: should be translated (mock adds [ES] prefix)
+          (is (clojure.string/starts-with? (get-in policy-99922 [:content :title]) "[ES]"))
+
+          ;; Spanish → Spanish: should be copied without translation
+          (is (= "Política Climática" (get-in policy-99923 [:content :title])))
+          (is (not (clojure.string/starts-with? (get-in policy-99923 [:content :title]) "[ES]"))))))))
+
+(deftest get-bulk-translations-with-auto-translate-correct-source-language-test
+  (let [system (ig/init fixtures/*system* [:duct.database.sql/hikaricp :duct/const])
+        config (get system [:duct/const :gpml.config/common])
+        conn (test-util/db-test-conn)]
+    ;; Setup: Insert French source data
+    (jdbc/execute! conn ["INSERT INTO language (iso_code, english_name, native_name) VALUES ('en', 'English', 'English'), ('es', 'Spanish', 'Español'), ('fr', 'French', 'Français') ON CONFLICT (iso_code) DO NOTHING"])
+    (jdbc/execute! conn ["INSERT INTO event (id, language, title, description) VALUES (99924, 'fr', 'Nettoyage de Plage', 'Événement annuel de nettoyage') ON CONFLICT (id) DO UPDATE SET language = EXCLUDED.language, title = EXCLUDED.title, description = EXCLUDED.description"])
+
+    (testing "French source should pass 'fr' as source language"
+      (let [topic-filters [{:topic-type "event" :topic-id 99924}]
+            result (svc.topic.translation/get-bulk-translations-with-auto-translate config topic-filters "es" nil)]
+        (is (:success? result))
+        (is (= 1 (count (:translations result))))
+        (let [translation (first (:translations result))]
+          ;; Mock adapter adds [ES] prefix when translating to Spanish
+          (is (clojure.string/starts-with? (get-in translation [:content :title]) "[ES]"))
+          ;; Verify translation was created (not skipped)
+          (is (= "es" (:language translation))))))))

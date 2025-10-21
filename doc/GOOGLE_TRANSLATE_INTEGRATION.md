@@ -936,10 +936,222 @@ FROM technology WHERE id IN (:v*:topic-ids);
 
 ---
 
+## Source Language Detection Strategy
+
+### Schema Constraint: One Language Per Topic Record
+
+**Critical Understanding**: Each topic record (policy, event, resource, etc.) has **exactly ONE language** stored in the `language` column. This is a NOT NULL column with foreign key constraint to the `language` table.
+
+**Example**:
+```
+policy table:
+  id=123, language='en', title='Plastic Ban Policy'
+  id=456, language='es', title='Política de Residuos'
+  id=789, language='fr', title='Politique de Recyclage'
+
+topic_translation table:
+  topic_type='policy', topic_id=123, language='es', content={...}  -- English→Spanish
+  topic_type='policy', topic_id=123, language='fr', content={...}  -- English→French
+  topic_type='policy', topic_id=456, language='en', content={...}  -- Spanish→English
+```
+
+Each topic ID has **ONE row** in its topic table with **ONE language**. All translations go in `topic_translation` table.
+
+### Current Implementation Limitation
+
+**Problem**: The current implementation hardcodes the source language assumption:
+
+```clojure
+;; In get-bulk-translations-with-auto-translate
+(let [source-language (get auto-translate-config :source-language "en")]
+  ;; Always assumes source is English!
+  (port/translate-texts translate-adapter texts language source-language))
+```
+
+**SQL Queries Missing Language Column**:
+```sql
+-- Current queries DO NOT include language column
+SELECT 'policy' AS topic_type, id AS topic_id,
+       title, abstract, remarks, info_docs
+FROM policy WHERE id IN (:v*:topic-ids);
+-- Missing: language column!
+```
+
+### Problem Scenarios
+
+**Scenario 1: Source Already in Target Language** (Wasteful)
+```
+Source: policy:456 (language='es')
+Request: Translate to Spanish
+Current behavior: Sends Spanish text to Google, asks for Spanish→Spanish translation
+Cost: $0.06 (wasteful)
+Correct behavior: Skip translation, return source content as-is
+```
+
+**Scenario 2: Source in Different Language** (Broken)
+```
+Source: policy:789 (language='fr')
+Request: Translate to Spanish
+Current behavior: Tells Google "this is English" but sends French text
+Result: Poor translation quality (Google thinks French is English)
+Correct behavior: Tell Google source is French, get accurate French→Spanish translation
+```
+
+### Proposed Solution
+
+**1. Add `language` Column to Source Data Queries**
+
+Update all 7 source data SQL queries to include language:
+
+```sql
+-- Before
+SELECT 'policy' AS topic_type, id AS topic_id,
+       title, abstract, remarks, info_docs
+FROM policy WHERE id IN (:v*:topic-ids);
+
+-- After
+SELECT 'policy' AS topic_type, id AS topic_id, language,
+       title, abstract, remarks, info_docs
+FROM policy WHERE id IN (:v*:topic-ids);
+```
+
+Apply to all queries:
+- `get-policy-source-data`
+- `get-event-source-data`
+- `get-resource-source-data`
+- `get-technology-source-data`
+- `get-initiative-source-data`
+- `get-case-study-source-data`
+- `get-project-source-data`
+
+**2. Implement Same-Language Detection**
+
+Skip translation when source language equals target language:
+
+```clojure
+(defn- filter-translatable-records
+  "Filter out records where source language equals target language.
+   Returns {:to-translate [...] :skip-translation [...]}"
+  [source-data target-language]
+  (group-by (fn [record]
+              (if (= (:language record) target-language)
+                :skip-translation
+                :to-translate))
+            source-data))
+```
+
+**3. Group by Source Language Before Translation**
+
+Batch records by source language for efficient translation:
+
+```clojure
+(defn- group-by-source-language
+  "Group source records by language for efficient batching."
+  [source-data]
+  (group-by :language source-data))
+
+;; In auto-translate function:
+(let [grouped (group-by-source-language source-data)]
+  (doseq [[source-lang records] grouped]
+    ;; Translate all records with same source language together
+    (port/translate-texts adapter texts target-language source-lang)))
+```
+
+**4. Updated Auto-Translation Flow**
+
+```
+Step 1: Fetch source data (now includes language column)
+  [{:topic_type "policy" :topic_id 123 :language "en" :title "..."}
+   {:topic_type "policy" :topic_id 456 :language "es" :title "..."}
+   {:topic_type "event" :topic_id 789 :language "fr" :title "..."}]
+
+Step 2: Filter out same-language records
+  Target: "es"
+  To translate: [policy:123 (en→es), event:789 (fr→es)]
+  Skip: [policy:456 (es→es, already in target language)]
+
+Step 3: Group by source language
+  English sources: [policy:123]
+  French sources: [event:789]
+
+Step 4: Translate each language group
+  Batch 1: Translate English texts → Spanish
+  Batch 2: Translate French texts → Spanish
+
+Step 5: Combine results
+  - policy:123 → translated content (en→es)
+  - policy:456 → original content (es, no translation needed)
+  - event:789 → translated content (fr→es)
+```
+
+### Implementation Checklist
+
+**SQL Queries** (7 queries):
+- [ ] Add `language` column to `get-policy-source-data`
+- [ ] Add `language` column to `get-event-source-data`
+- [ ] Add `language` column to `get-resource-source-data`
+- [ ] Add `language` column to `get-technology-source-data`
+- [ ] Add `language` column to `get-initiative-source-data`
+- [ ] Add `language` column to `get-case-study-source-data`
+- [ ] Add `language` column to `get-project-source-data`
+
+**Service Layer Functions**:
+- [ ] Implement `filter-same-language-records` helper
+- [ ] Implement `group-by-source-language` helper
+- [ ] Update `extract-translatable-texts` to preserve language metadata
+- [ ] Update `get-bulk-translations-with-auto-translate` to use source language grouping
+- [ ] Remove hardcoded `source-language` default
+
+**Testing**:
+- [ ] Test same-language optimization (es→es should skip translation)
+- [ ] Test multi-language sources (en→es, fr→es in same request)
+- [ ] Test all language combinations with real data
+- [ ] Verify translation quality improves with correct source language
+- [ ] Performance test: verify same-language skip is fast (< 100ms)
+
+### Benefits
+
+**Cost Savings**:
+- Skip translation when source already in target language (saves ~10-20% of API calls)
+- More accurate translations (correct source language detection)
+
+**Quality Improvements**:
+- Google Translate receives correct source language
+- Better translation quality for non-English sources
+
+**User Experience**:
+- Faster responses when source already in target language
+- More accurate translations
+
+### Trade-offs
+
+**Complexity**: Medium
+- Additional SQL query changes (7 queries)
+- Grouping logic in service layer
+- More test scenarios
+
+**Performance**: Negligible impact
+- Same-language check is fast (simple equality)
+- Grouping adds minimal overhead
+
+**Risk**: Low
+- Backward compatible (no breaking changes)
+- Easy to test (language column already exists)
+
+---
+
 ### Phase 3: Translation Service Integration (2-3 days)
-**Goal**: Orchestrate auto-translation flow
+**Goal**: Orchestrate auto-translation flow with source language detection
 
 **Tasks**:
+- [ ] **Update source data SQL queries to include language column** (7 queries)
+  - [ ] Add `language` column to `get-policy-source-data`
+  - [ ] Add `language` column to `get-event-source-data`
+  - [ ] Add `language` column to `get-resource-source-data`
+  - [ ] Add `language` column to `get-technology-source-data`
+  - [ ] Add `language` column to `get-initiative-source-data`
+  - [ ] Add `language` column to `get-case-study-source-data`
+  - [ ] Add `language` column to `get-project-source-data`
 - [ ] Create `get-bulk-translations-with-auto-translate` function
 - [ ] Implement missing translation detection logic
   - [ ] Check for **complete** translations only (all fields must exist)
@@ -947,20 +1159,31 @@ FROM technology WHERE id IN (:v*:topic-ids);
   - [ ] Missing resource = translate ALL fields, not just requested ones
 - [ ] Integrate source data fetching
   - [ ] Always fetch ALL translatable fields (ignore `fields` parameter)
+  - [ ] Verify `language` column is included in results
+- [ ] **Implement source language detection logic**
+  - [ ] Implement `filter-same-language-records` helper function
+  - [ ] Implement `group-by-source-language` helper function
+  - [ ] Filter out records where source language equals target language
+  - [ ] Group remaining records by source language for efficient batching
 - [ ] Implement field extraction logic
   - [ ] Use `gpml.domain.translation/translatable-fields-by-topic` (new mapping with string keys)
   - [ ] Extract ALL translatable fields for each resource
+  - [ ] Preserve language metadata during extraction (for grouping)
   - [ ] Filter to only fields present in source data
   - [ ] Handle nil/missing fields gracefully
   - [ ] Handle resource sub-types (use same fields as resource type)
 - [ ] Integrate Google Translate adapter
   - [ ] Translate ALL extracted fields (ignore `fields` parameter)
+  - [ ] **Pass correct source language** for each batch (from record metadata)
+  - [ ] Handle multiple source languages in single request (separate batches)
 - [ ] Implement result mapping logic
   - [ ] Map translated texts back to correct resource/field
   - [ ] Store ALL translated fields (complete translations)
   - [ ] Handle translation failures per-item
+  - [ ] **Combine translated records with same-language skipped records**
 - [ ] Integrate bulk upsert to save translations
   - [ ] Save ALL translated fields to DB (complete translations only)
+  - [ ] **Save same-language records as-is** (copy source content to translation table)
 - [ ] Implement response filtering
   - [ ] Apply `fields` parameter AFTER translation and save
   - [ ] Filter response to only requested fields
@@ -984,16 +1207,42 @@ FROM technology WHERE id IN (:v*:topic-ids);
 - [ ] Unit tests with mocked dependencies
   - [ ] Test that ALL fields are translated even when `fields` parameter set
   - [ ] Test that response is correctly filtered by `fields` parameter
+  - [ ] **Test same-language optimization** (es→es should skip translation)
+  - [ ] **Test multi-language sources** (en→es, fr→es in same request)
+  - [ ] **Test source language passed correctly** to Google Translate
 - [ ] Integration tests with test database
+  - [ ] **Test with multi-language source data** (policies in en, es, fr)
 
-**Complex Logic**: Text-to-Resource Mapping
+**Complex Logic**: Text-to-Resource Mapping with Source Language Detection
 ```clojure
-;; Problem: After translating 10 texts, map back to 3 resources
-;; texts: ["Title1", "Desc1", "Summary1", "Title2", "Desc2", "Title3", "Desc3", "Info3"]
-;; resources: [policy:1, event:2, resource:3]
+;; Problem: After translating 10 texts from multiple languages, map back to 3 resources
+;; Source data:
+;; [{:topic_type "policy" :topic_id 1 :language "en" :title "Title1" :abstract "Desc1"}
+;;  {:topic_type "event" :topic_id 2 :language "fr" :title "Title2" :description "Desc2"}
+;;  {:topic_type "policy" :topic_id 3 :language "es" :title "Title3"}]  ; same as target!
 
-;; Solution: Create index mapping during extraction
-(defn extract-translatable-texts [resources]
+;; Step 1: Filter same-language records
+(defn- filter-same-language-records
+  "Split records into those needing translation vs. those already in target language"
+  [source-data target-language]
+  (let [{skip :skip-translation
+         translate :to-translate}
+        (group-by (fn [record]
+                    (if (= (:language record) target-language)
+                      :skip-translation
+                      :to-translate))
+                  source-data)]
+    {:to-translate (or translate [])
+     :skip-translation (or skip [])}))
+
+;; Step 2: Group by source language for efficient batching
+(defn- group-by-source-language
+  "Group records by source language for efficient translation batching"
+  [records]
+  (group-by :language records))
+
+;; Step 3: Extract texts with language metadata preserved
+(defn extract-translatable-texts [resources source-language]
   (let [texts (atom [])
         index-map (atom [])]
     (doseq [resource resources
@@ -1001,14 +1250,59 @@ FROM technology WHERE id IN (:v*:topic-ids);
       (when-let [text (get-in resource [field])]
         (swap! texts conj text)
         (swap! index-map conj {:resource-key [(:topic-type resource) (:topic-id resource)]
-                               :field field})))
+                               :field field
+                               :source-language source-language})))
     {:texts @texts :index-map @index-map}))
 
+;; Step 4: Map translations back to resources
 (defn map-translations-back [translated-texts index-map]
   (reduce (fn [acc [text {:keys [resource-key field]}]]
             (assoc-in acc [resource-key :content field] text))
           {}
           (map vector translated-texts index-map)))
+
+;; Full orchestration example
+(let [target-language "es"
+      source-data [{:topic_type "policy" :topic_id 1 :language "en" :title "Climate" :abstract "Reduce"}
+                   {:topic_type "event" :topic_id 2 :language "fr" :title "Nettoyage" :description "Annuel"}
+                   {:topic_type "policy" :topic_id 3 :language "es" :title "Plástico"}]
+
+      ;; Step 1: Filter same-language
+      {:keys [to-translate skip-translation]} (filter-same-language-records source-data target-language)
+      ;; to-translate: [policy:1(en), event:2(fr)]
+      ;; skip-translation: [policy:3(es)]
+
+      ;; Step 2: Group by source language
+      grouped (group-by-source-language to-translate)
+      ;; {"en" [policy:1], "fr" [event:2]}
+
+      ;; Step 3: Translate each language group
+      translated-results
+      (reduce (fn [acc [source-lang records]]
+                (let [{:keys [texts index-map]} (extract-translatable-texts records source-lang)
+                      translated (port/translate-texts adapter texts target-language source-lang)
+                      mapped (map-translations-back translated index-map)]
+                  (merge acc mapped)))
+              {}
+              grouped)
+
+      ;; Step 4: Build records for same-language resources (copy source content)
+      same-lang-results
+      (reduce (fn [acc record]
+                (let [topic-key [(:topic_type record) (:topic_id record)]
+                      translatable-fields (get translatable-fields-by-topic (:topic_type record))
+                      content (select-keys record translatable-fields)]
+                  (assoc acc topic-key {:content content})))
+              {}
+              skip-translation)
+
+      ;; Step 5: Combine all results
+      all-results (merge translated-results same-lang-results)]
+  all-results)
+;; Result:
+;; {["policy" 1] {:content {:title "Clima" :abstract "Reducir"}}           ; en→es translated
+;;  ["event" 2]  {:content {:title "Limpieza" :description "Anual"}}       ; fr→es translated
+;;  ["policy" 3] {:content {:title "Plástico"}}}                          ; es→es copied (no translation)
 ```
 
 **Deliverables**:
@@ -1028,6 +1322,12 @@ FROM technology WHERE id IN (:v*:topic-ids);
   - Saves ALL translated fields to database
   - Returns only requested fields in response
   - Subsequent requests with different fields return instantly from cache
+- **Source language detection**:
+  - Correctly identifies source language from database records
+  - Skips translation when source language equals target language (es→es)
+  - Passes correct source language to Google Translate API
+  - Handles multiple source languages in single request (en→es, fr→es)
+  - Same-language records returned instantly (< 100ms, no API call)
 
 ---
 
@@ -1772,12 +2072,13 @@ The existing translation infrastructure is well-designed and requires minimal ch
 
 ---
 
-**Document Version**: 1.5
-**Last Updated**: 2025-10-14
+**Document Version**: 1.6
+**Last Updated**: 2025-10-21
 **Author**: Claude Code
 **Status**: Under Review
 
 **Changelog**:
+- v1.6 (2025-10-21): **Added source language detection strategy** - Documents critical schema constraint (one language per topic record), current limitation (hardcoded English assumption), problem scenarios (wasteful same-language translation, incorrect source language), and proposed solution (add language column to queries, filter same-language records, group by source language for efficient batching). Includes implementation checklist, benefits analysis, and updated Phase 3 tasks with source language handling requirements.
 - v1.5 (2025-10-14): **Added translation cache invalidation strategy** - Strategy 1 (Immediate Deletion): Delete all translations when source content is updated to prevent stale translations. Includes implementation details, trade-offs analysis, and future optimization path (Strategy 2: Smart Field-Level Invalidation).
 - v1.4 (2025-10-14): **Clarified `fields` parameter behavior** - Backend always translates ALL fields regardless of `fields` param; `fields` only filters response, not translation scope
 - v1.3 (2025-10-14): **Corrected integration strategy** - Auto-translation only in `gpml.handler.topic.translation/get`, NO changes to detail/browse handlers

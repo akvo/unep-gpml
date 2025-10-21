@@ -35,6 +35,7 @@ WHERE topic_type = :topic-type
 SELECT
   'policy' AS topic_type,
   id AS topic_id,
+  language,
   title,
   abstract,
   remarks,
@@ -47,6 +48,7 @@ WHERE id IN (:v*:topic-ids);
 SELECT
   'event' AS topic_type,
   id AS topic_id,
+  language,
   title,
   description,
   remarks,
@@ -59,6 +61,7 @@ WHERE id IN (:v*:topic-ids);
 SELECT
   :topic-type AS topic_type,
   id AS topic_id,
+  language,
   title,
   summary,
   remarks,
@@ -73,6 +76,7 @@ WHERE id IN (:v*:topic-ids);
 SELECT
   'technology' AS topic_type,
   id AS topic_id,
+  language,
   name,
   remarks,
   info_docs
@@ -84,6 +88,7 @@ WHERE id IN (:v*:topic-ids);
 SELECT
   'initiative' AS topic_type,
   id AS topic_id,
+  language,
   q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14,
   q15, q16, q17, q18, q19, q20, q21, q22, q23, q24,
   title,
@@ -97,6 +102,7 @@ WHERE id IN (:v*:topic-ids);
 SELECT
   'case_study' AS topic_type,
   id AS topic_id,
+  language,
   title,
   description
 FROM case_study
@@ -107,6 +113,7 @@ WHERE id IN (:v*:topic-ids);
 SELECT
   'project' AS topic_type,
   id AS topic_id,
+  language,
   title,
   description,
   summary
