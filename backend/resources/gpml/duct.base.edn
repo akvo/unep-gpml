@@ -851,6 +851,7 @@
   :brs-ds-adapter                      #ig/ref :gpml.boundary.adapter.datasource/brs
   :chat-adapter                        #ig/ref :gpml.boundary.adapter.chat/ds-chat
   :translate-adapter                   #ig/ref :gpml.boundary.adapter.translate.google/adapter
+  :auto-translate                      {:enabled #duct/env ["AUTO_TRANSLATE_ENABLED" Bool :or false]}
   :auth0                               #ig/ref :gpml.config/auth0
   :mailjet-config                      #ig/ref :gpml.config/mailjet
   :app-name                            #duct/env ["APP_NAME" Str]

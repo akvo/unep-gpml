@@ -1,8 +1,8 @@
 (ns gpml.service.topic.translation-test
   (:require
    [clojure.java.jdbc :as jdbc]
+   [clojure.string]
    [clojure.test :refer [deftest is testing use-fixtures]]
-   [gpml.boundary.port.translate :as port.translate]
    [gpml.fixtures :as fixtures]
    [gpml.service.topic.translation :as svc.topic.translation]
    [gpml.test-util :as test-util]

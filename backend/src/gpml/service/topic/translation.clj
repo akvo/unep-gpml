@@ -1,6 +1,7 @@
 (ns gpml.service.topic.translation
   (:require
    [clojure.set]
+   [clojure.string]
    [gpml.boundary.port.translate :as port.translate]
    [gpml.db.topic.translation :as db.topic.translation]
    [gpml.domain.translation :as dom.translation]
@@ -328,7 +329,7 @@
 
                   {:success? true :translations filtered-result})))
 
-            (catch Exception e
+            (catch Exception _e
               ;; Translation failed - return what we have from DB
               (let [filtered-result (if (and fields (seq fields))
                                       (mapv #(filter-content-fields % fields) existing-translations)

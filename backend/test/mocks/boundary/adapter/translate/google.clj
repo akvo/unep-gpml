@@ -2,6 +2,7 @@
   "Mock Google Translate adapter for local development.
    Returns prefixed text instead of actually translating."
   (:require
+   [clojure.string]
    [gpml.boundary.port.translate :as port]
    [integrant.core :as ig]))
 
