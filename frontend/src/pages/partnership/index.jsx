@@ -304,7 +304,7 @@ function Partnership({ isAuthenticated }) {
         <title>Join The Partnership | Global Plastics Hub</title>
       </Head>
       <div className="hero">
-        <div className="container">
+        <div className="container" id="main-content">
           <Row align="middle" gutter={[24, 16]}>
             <Col xs={24} sm={24} lg={15} xl={15}>
               <div class="header">

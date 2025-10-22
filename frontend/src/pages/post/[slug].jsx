@@ -12,7 +12,7 @@ const StrapiPage = ({ pageData }) => {
       <Head>
         <title>{pageData.title}</title>
       </Head>
-      <div className="container">
+      <div className="container" id="main-content">
         <div className="cover">
           <Image
             src={pageData.cover.data.attributes.url}

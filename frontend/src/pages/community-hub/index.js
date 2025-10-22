@@ -146,7 +146,7 @@ const CommunityHub = ({ setLoginVisible, isAuthenticated, profile }) => {
     }
   }
   return (
-    <div className={kbStyles.knowledgeHub}>
+    <div className={kbStyles.knowledgeHub} id="main-content">
       <Head>
         <title>Partner Network | Global Plastics Hub</title>
       </Head>

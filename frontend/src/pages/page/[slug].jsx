@@ -49,7 +49,7 @@ const StrapiPage = ({ pageData }) => {
       <Head>
         <title>{pageData.attributes.title} | Global Plastics Hub</title>
       </Head>
-      <div className="container">
+      <div className="container" id="main-content">
         <h1 className="h-l">{pageData.attributes.title}</h1>
         <div
           className="content"
