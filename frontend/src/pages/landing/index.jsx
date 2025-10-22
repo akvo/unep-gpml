@@ -57,7 +57,7 @@ const Landing = (props) => {
     <div id="landing" className={styles.landing}>
       <HeroPlasticTap {...props} />
       <FeatureCards />
-      <div className="container wed-container">
+      <div className="container wed-container" id="main-content">
         <iframe
           title="Introduction to the Global Plastics Hub"
           width="100%"

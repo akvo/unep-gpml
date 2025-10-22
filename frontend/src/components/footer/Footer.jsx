@@ -140,6 +140,7 @@ const Footer = ({ showTools }) => {
               height={0} // Set height to 0
               sizes="100vw" // Optional: Specify responsive sizes
               style={{ height: '143px', width: 'auto' }}
+              alt="powered by unep"
             />
           </div>
         </div>

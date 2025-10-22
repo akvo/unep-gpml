@@ -371,7 +371,7 @@ function MyApp({ Component, pageProps }) {
         />
         <title>Global Plastics Hub</title>
       </Head>
-      <a href="#landing" className="skip-link">
+      <a href="#main-content" className="skip-link">
         Skip to main content
       </a>
       <style jsx>{`
