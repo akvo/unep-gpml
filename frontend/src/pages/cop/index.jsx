@@ -67,7 +67,7 @@ const Page = ({ isAuthenticated, setLoginVisible, profile, setShouldJoin }) => {
         <title>Communities of Practice | Global Plastics Hub</title>
       </Head>
       <div className={styles.page}>
-        <div className="container">
+        <div className="container" id="main-content">
           <div className="hero">
             <h1>Communities of Practice</h1>
             <p>

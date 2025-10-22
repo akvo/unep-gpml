@@ -78,7 +78,7 @@ function CapacityBuilding({ initialItems }) {
       <Head>
         <title>Learning Centre | Global Plastics Hub</title>
       </Head>
-      <div className={`${styles.learningCentre} container`}>
+      <div className={`${styles.learningCentre} container`} id="main-content">
         <h1>
           <Trans>Learning Centre</Trans>
         </h1>
@@ -151,7 +151,7 @@ const LearningCentreCard = ({ data, loading }) => {
               key={item.title}
               target="_blank"
             >
-              <img src={item.image} />
+              <img src={item.image} alt={item.title} />
               <div className="content">
                 <p className="category">{item.category}</p>
                 <h2>{item.title}</h2>

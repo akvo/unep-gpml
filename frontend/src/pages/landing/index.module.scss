@@ -480,11 +480,11 @@
             margin-bottom: 50px;
           }
           h5 {
-            font-size: 16px;
+            font-size: 19px;
             text-transform: uppercase;
-            color: $primaryViolet;
+            color: $primaryViolet7;
             font-weight: bold;
-            margin-bottom: -10px;
+            margin-bottom: -5px;
             margin-top: 40px;
           }
           h2 {
@@ -613,7 +613,7 @@
       .text {
         max-width: 370px;
         .caps-heading-1 {
-          color: $primaryPurple;
+          color: $primaryPurple7;
         }
         h3 {
           font-weight: 600;
@@ -650,7 +650,7 @@
     .forums {
       margin: 50px 0;
       .caps-heading-1 {
-        color: $primaryPurple;
+        color: $primaryPurple7;
       }
       h2 {
         margin-bottom: 30px;
@@ -782,7 +782,7 @@
 
     .caps-heading-1 {
       font-family: var(--font-archia), sans-serif;
-      color: $primaryPurple;
+      color: $primaryPurple7;
     }
 
     h2 {

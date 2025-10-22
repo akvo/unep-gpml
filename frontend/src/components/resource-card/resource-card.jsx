@@ -41,7 +41,9 @@ const ResourceCard = ({ item, bookmarked, onBookmark, onClick }) => {
       {onBookmark != null && (
         <BookmarkBtn {...{ bookmarked, onBookmark, item }} />
       )}
-      <h4 className={classNames('h-xs', { hasMeta })}>{item.title}</h4>
+      {item.title && (
+        <h4 className={classNames('h-xs', { hasMeta })}>{item.title}</h4>
+      )}
       {hasMeta && (
         <div className="meta">
           {item.likes > 0 && (
@@ -59,6 +61,7 @@ const ResourceCard = ({ item, bookmarked, onBookmark, onClick }) => {
           src={`${baseUrl}/img400/${item?.images?.[0].objectKey}`}
           width={195}
           height={175}
+          alt="thumbnail"
         />
       )}
       {item?.images?.thumbnail && (
@@ -66,6 +69,7 @@ const ResourceCard = ({ item, bookmarked, onBookmark, onClick }) => {
           src={item?.images?.medium?.url || item?.images?.thumbnail.url}
           width={195}
           height={175}
+          alt="thumbnail"
         />
       )}
     </div>

@@ -228,24 +228,26 @@ export const SearchBar = ({ onSearch, loading }) => {
         onFinish={() => {
           router.push(`/search?q=${val.replace(/ /g, '+')}`)
         }}
+        role="search"
       >
-        <Input
-          placeholder={t`Search all platform content...`}
-          value={val}
-          onChange={(e) => {
-            setVal(e.target.value)
-          }}
-        />
+        <Form.Item name="search" style={{ marginBottom: 0, width: '100%' }}>
+          <label htmlFor="global-search" className="sr-only">
+            {t`Search all platform content`}
+          </label>
+          <Input
+            id="global-search"
+            type="search"
+            placeholder={t`Search all platform content...`}
+            aria-label={t`Search all platform content`}
+            value={val}
+            onChange={(e) => setVal(e.target.value)}
+            className="search-input"
+          />
+        </Form.Item>
         {!loading && (
-          <Button
-            type="primary"
-            size="small"
-            onClick={() => {
-              router.push(`/search?q=${val.replace(/ /g, '+')}`)
-            }}
-          >
+          <Button type="primary" size="small" htmlType="submit">
             <span className="hide-desktop">
-              <Pointer />
+              <Pointer aria-hidden="true" />
             </span>
             <span className="hide-mobile">
               <Trans>Search</Trans>

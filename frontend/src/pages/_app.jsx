@@ -371,6 +371,25 @@ function MyApp({ Component, pageProps }) {
         />
         <title>Global Plastics Hub</title>
       </Head>
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
+      <style jsx>{`
+        .skip-link {
+          position: absolute;
+          left: -999px;
+          top: auto;
+          width: 1px;
+          height: 1px;
+          overflow: hidden;
+        }
+        .skip-link:focus {
+          position: static;
+          width: auto;
+          height: auto;
+        }
+      `}</style>
+
       <Auth0Provider
         domain={domain}
         clientId={

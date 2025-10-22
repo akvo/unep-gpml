@@ -400,6 +400,7 @@ const KnowledgeHub = ({
             placeholder={t`Search The Knowledge Hub`}
             value={searchInput}
             onChange={handleSearchChange}
+            aria-label={t`Search The Knowledge Hub`}
           />
           <div className="caps-heading-xs">
             <Trans>browse resources by</Trans>
@@ -559,7 +560,7 @@ const KnowledgeHub = ({
             />
           </div>
         )}
-        <div className="results">
+        <div className="results" id="main-content">
           {results?.map((result) => (
             <Link
               href={`/${result.type.replace(/_/g, '-')}/${result.id}`}

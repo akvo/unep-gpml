@@ -77,6 +77,7 @@ const Footer = ({ showTools }) => {
                     href="https://ke.linkedin.com/company/global-partnership-on-marine-litter"
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label="Visit Global Partnership on Marine Litter on LinkedIn"
                   >
                     <LinkedinIcon />
                   </a>
@@ -86,6 +87,7 @@ const Footer = ({ showTools }) => {
                     href="https://www.youtube.com/channel/UCoWXFwDeoD4c9GoXzFdm9Bg"
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label="Visit Global Partnership on Marine Litter on YouTube"
                   >
                     <YoutubeIcon />
                   </a>
@@ -138,6 +140,7 @@ const Footer = ({ showTools }) => {
               height={0} // Set height to 0
               sizes="100vw" // Optional: Specify responsive sizes
               style={{ height: '143px', width: 'auto' }}
+              alt="powered by unep"
             />
           </div>
         </div>
