@@ -12,7 +12,7 @@
       margin-bottom: 40px;
       min-height: 300px;
 
-      &>* {
+      & > * {
         margin: 15px 15px 0 0;
       }
     }
@@ -135,10 +135,12 @@
 
         /* Rectangle 34624208 */
 
-        background: linear-gradient(90deg,
-            rgba(255, 255, 255, 0) 0%,
-            rgba(255, 255, 255, 1) 40%,
-            rgba(255, 255, 255, 1) 100%);
+        background: linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0) 0%,
+          rgba(255, 255, 255, 1) 40%,
+          rgba(255, 255, 255, 1) 100%
+        );
 
         svg {
           margin-left: 20px;
