@@ -48,6 +48,8 @@ services:
       - CHAT_API_KEY
       - CHAT_API_USER_ID
       - OPENAI_API_KEY
+      - GOOGLE_TRANSLATE_API_KEY
+      - AUTO_TRANSLATE_ENABLED
   frontend:
     environment:
       - PORT=3001
