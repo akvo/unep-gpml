@@ -12,11 +12,15 @@
  :mocks.boundary.adapter.chat/ds-chat
  {}
 
+ :mocks.boundary.adapter.translate/google
+ {}
+
  :gpml/scheduler #ig/ref :gpml/noop-scheduler ;; Disabled until this thread leak is fixed https://github.com/akvo/unep-gpml/issues/1779
  :gpml/twarc-scheduler {:disabled true}
  :gpml/noop-scheduler {:logger #ig/ref :duct/logger}
 
  [:duct/const :gpml.config/common]
  {:chat-adapter           #ig/ref :mocks.boundary.adapter.chat/ds-chat
+  :translate-adapter      #ig/ref :mocks.boundary.adapter.translate/google
   :storage-client-adapter #ig/ref :mocks.boundary.adapter.storage-client/local-file-system
   :storage-bucket-name #duct/env ["LOCAL_FS_STORAGE_BUCKET_NAME" Str]}}

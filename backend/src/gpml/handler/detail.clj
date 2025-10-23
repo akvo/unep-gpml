@@ -37,6 +37,7 @@
    [gpml.service.association :as srv.association]
    [gpml.service.chat :as svc.chat]
    [gpml.service.file :as srv.file]
+   [gpml.service.topic.translation :as svc.topic.translation]
    [gpml.util :as util]
    [gpml.util.malli :as util.malli]
    [gpml.util.postgresql :as pg-util]
@@ -509,7 +510,13 @@
                 (assoc context
                        :success? false
                        :reason :failed-to-delete-resource
-                       :error-details {:result result}))))}]
+                       :error-details {:result result}))))}
+         {:txn-fn
+          (fn tx-invalidate-translation-cache
+            [{:keys [resource-id resource-type] :as context}]
+            ;; Invalidate translation cache when resource is deleted
+            (svc.topic.translation/delete-topic-translations config resource-type resource-id)
+            context)}]
         context {:success? true
                  :resource-id resource-id
                  :resource-type resource-type
@@ -817,6 +824,8 @@
                                         :sth-associations sth-associations
                                         :resource-type table
                                         :resource-id id})
+    ;; Invalidate translation cache when resource is updated
+    (svc.topic.translation/delete-topic-translations config topic-type id)
     status))
 
 (defn- update-initiative [{:keys [logger mailjet-config] :as config}
@@ -857,6 +866,8 @@
                                         :sth-associations sth-associations
                                         :resource-type "initiative"
                                         :resource-id id})
+    ;; Invalidate translation cache when initiative is updated
+    (svc.topic.translation/delete-topic-translations config "initiative" id)
     status))
 
 (defmethod ig/init-key :gpml.handler.detail/put

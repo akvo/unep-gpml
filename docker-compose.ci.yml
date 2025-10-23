@@ -13,6 +13,8 @@ services:
       - POD_NAME=ci
       - ENV_NAME=ci
       - APP_USER_ADMIN=deden@akvo.org
+      - GOOGLE_TRANSLATE_API_KEY=dummy-key-for-ci
+      - AUTO_TRANSLATE_ENABLED=false
   frontend:
     network_mode: service:mainnetwork
     image: eu.gcr.io/akvo-lumen/unep-gpml/frontend:latest

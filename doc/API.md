@@ -17,6 +17,22 @@ the publicly available information can be fetched without
 authenticating your requests. To fetch information about organisations
 or individuals, the API requests would need to be authenticated.
 
+## Translations
+
+The platform supports automatic translation of resources into multiple languages
+using the bulk translations endpoint. When auto-translation is enabled,
+translations are automatically generated using Google Translate API and cached
+for future requests.
+
+**See:** [Auto-Translation API Documentation](./API_AUTO_TRANSLATION.md) for
+detailed information on:
+- How to request translations for multiple resources
+- Automatic translation behavior
+- Source language detection
+- Performance characteristics
+- Cost estimation
+- Supported languages
+
 ## Creating and Updating Data
 
 All requests for updating existing resources, or creating new ones,

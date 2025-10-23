@@ -66,7 +66,12 @@
   (fn [{{:keys [query]} :parameters}]
     (if (empty? (:topics query))
       (resp/response {:success? true :translations []})
-      (let [result (svc.topic.translation/get-bulk-topic-translations config (:topics query) (:language query) (:fields query))]
+      (let [auto-translate-enabled? (get-in config [:auto-translate :enabled] false)
+            result (if auto-translate-enabled?
+                     (svc.topic.translation/get-bulk-translations-with-auto-translate
+                      config (:topics query) (:language query) (:fields query))
+                     (svc.topic.translation/get-bulk-topic-translations
+                      config (:topics query) (:language query) (:fields query)))]
         (if (:success? result)
           (resp/response {:success? true :translations (:translations result)})
           (r/server-error result))))))

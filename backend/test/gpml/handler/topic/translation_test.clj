@@ -235,3 +235,38 @@
     (testing "empty array fails validation"
       (let [invalid-data []]
         (is (not (m/validate schema invalid-data)))))))
+
+(deftest get-with-auto-translate-feature-flag-test
+  (let [system (ig/init fixtures/*system* [::sut/get [:duct/const :gpml.config/common]])
+        conn (test-util/db-test-conn)
+        handler (::sut/get system)]
+    ;; Ensure we have required languages in test database
+    (jdbc/execute! conn ["INSERT INTO language (iso_code, english_name, native_name) VALUES ('en', 'English', 'English'), ('es', 'Spanish', 'Español'), ('fr', 'French', 'Français') ON CONFLICT (iso_code) DO NOTHING"])
+
+    ;; Set up test data - only English exists in DB
+    (jdbc/execute! conn ["INSERT INTO topic_translation (topic_type, topic_id, language, content) VALUES ('policy', 1, 'en', '{\"title\": \"Policy Title\", \"summary\": \"Policy Summary\"}') ON CONFLICT (topic_type, topic_id, language) DO UPDATE SET content = EXCLUDED.content"])
+
+    (testing "when auto-translate is disabled, returns only existing translations"
+      ;; Note: The system config has auto-translate disabled by default (or via env var)
+      ;; Since we can't easily modify the config in this test, we verify the current behavior
+      (let [query-params {:topics [{:topic-type "policy" :topic-id 1}]
+                          :language "fr"}  ; French translation doesn't exist in DB
+            request (-> (mock/request :get "/bulk-translations")
+                        (assoc :parameters {:query query-params}))
+            response (handler request)]
+        (is (= 200 (:status response)))
+        (is (:success? (:body response)))
+        ;; Should return empty results since French translation doesn't exist and auto-translate is disabled
+        (is (= 0 (count (:translations (:body response)))))))
+
+    (testing "when language matches existing translation, returns it regardless of flag"
+      (let [query-params {:topics [{:topic-type "policy" :topic-id 1}]
+                          :language "en"}  ; English translation exists in DB
+            request (-> (mock/request :get "/bulk-translations")
+                        (assoc :parameters {:query query-params}))
+            response (handler request)]
+        (is (= 200 (:status response)))
+        (is (:success? (:body response)))
+        ;; Should return existing English translation
+        (is (= 1 (count (:translations (:body response)))))
+        (is (= "Policy Title" (get-in (first (:translations (:body response))) [:content :title])))))))
