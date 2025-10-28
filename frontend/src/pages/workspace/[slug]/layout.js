@@ -63,6 +63,7 @@ export const useStepsDict = () => {
 const NestedLayout = ({ children }) => {
   const [psItem, setPSItem] = useState({})
   const [marking, setMarking] = useState(false)
+  const [collapsed, setCollapsed] = useState(true) // mobile only
   const router = useRouter()
   const pathSlugs = [...router.route.substring(1).split('/'), '']
   const { slug, step: stepURL } = router.query
@@ -250,16 +251,21 @@ const NestedLayout = ({ children }) => {
   }, [getPlasticStrategy])
 
   useEffect(() => {
+    setCollapsed(true)
+  }, [router.query])
+
+  useEffect(() => {
     document.addEventListener('scroll', () => {
       let diffY = 90 - window.scrollY
-      if (diffY < 0) diffY = 0
-      if (domRef.current) {
-        domRef.current.style.height = `calc(100vh - ${diffY}px)`
+      if (window.innerWidth > 768) {
+        if (diffY < 0) diffY = 0
+        if (domRef.current) {
+          domRef.current.style.height = `calc(100vh - ${diffY}px)`
+        }
       }
     })
   }, [])
   const psCountryName = psItem?.country?.name
-
   return (
     <div className={styles.plasticStrategyView}>
       <div className={styles.sidebar}>
@@ -276,7 +282,20 @@ const NestedLayout = ({ children }) => {
               <Trans>{progress}% complete</Trans>
             </div>
           </div>
-          <div className="steps">
+          <div
+            className={classNames('mobile-collapsed hide-desktop', {
+              collapsed,
+            })}
+            onClick={() => {
+              setCollapsed(false)
+            }}
+          >
+            Expand Steps
+            <div className="pointer">
+              <Pointer />
+            </div>
+          </div>
+          <div className={classNames('steps', { collapsed })}>
             {psSteps.map((step) => (
               <div
                 className={classNames('step', {

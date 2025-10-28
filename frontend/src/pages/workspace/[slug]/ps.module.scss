@@ -3,25 +3,24 @@
 .plasticStrategyView {
   display: flex;
   background: rgba(245, 247, 255, 0.48);
+  @media screen and (max-width: $bpMobile) {
+    flex-direction: column;
+  }
 }
 
 .sidebar {
-  width: 330px;
-  min-height: calc(100vh - 90px);
-
-  min-width: 330px;
   background-color: #fff;
   box-shadow: 0px 4px 20px 0px rgba(173, 186, 240, 0.31);
-  top: 0;
-  z-index: 100;
 
   :global {
     .sticky {
-      position: sticky;
-      // position: static;
-      top: 0;
-      height: calc(100vh - 90px);
-      overflow: scroll;
+      @media screen and (min-width: $bpMobile) {
+        position: sticky;
+        // position: static;
+        top: 0;
+        height: calc(100vh - 90px);
+        overflow: scroll;
+      }
     }
 
     .head {
@@ -30,6 +29,9 @@
 
       .caps-heading-s {
         color: $primaryDarkBlueText;
+      }
+      @media screen and (max-width: $bpMobile) {
+        padding: 20px 25px 15px;
       }
     }
 
@@ -82,7 +84,7 @@
             background-color: #f5f7ff;
           }
 
-          &>a>.stephead {
+          & > a > .stephead {
             border-bottom: 1px solid #fff;
           }
 
@@ -150,13 +152,15 @@
 
         .status {
           font-family: $ff1;
-          margin-left: auto;
           font-size: 14px;
           color: rgba(0, 0, 0, 0.48);
           font-weight: 600;
           line-height: 24px;
           margin-right: 5px;
           margin-left: 20px;
+          @media screen and (max-width: $bpMobile) {
+            margin-left: auto;
+          }
         }
 
         .pointer {
@@ -209,12 +213,48 @@
       }
     }
   }
+
+  @media screen and (min-width: $bpMobile) {
+    width: 330px;
+    min-height: calc(100vh - 90px);
+
+    min-width: 330px;
+    top: 0;
+    z-index: 100;
+  }
+  @media screen and (max-width: $bpMobile) {
+    width: 100%;
+    :global {
+      .mobile-collapsed {
+        display: none;
+        padding: 15px 25px 15px 25px;
+        font-weight: 600;
+        font-size: 16px;
+        font-family: $ff1;
+        background-color: $primaryBlue2;
+        .pointer {
+          margin-left: auto;
+        }
+        &.collapsed {
+          display: flex;
+        }
+      }
+      .steps {
+        &.collapsed {
+          display: none;
+        }
+      }
+    }
+  }
 }
 
 .view {
   width: 100%;
   padding: 30px 50px 140px;
   width: 100%;
+  @media screen and (max-width: $bpMobile) {
+    padding: 30px 25px 40px;
+  }
 
   &.forumView {
     padding: 0;
@@ -364,13 +404,16 @@
       }
     }
   }
+  @media screen and (max-width: $bpMobile) {
+    padding-left: 10px;
+  }
 }
 
 .cardsList {
   display: flex;
   flex-wrap: wrap;
 
-  &>div {
+  & > div {
     margin-right: 15px;
     margin-bottom: 15px;
   }
