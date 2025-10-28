@@ -184,12 +184,7 @@ const DetailsView = ({
                 router.locale,
                 ['title', 'summary']
               )
-
-              detailData = {
-                ...detailData,
-                title: translated[0].title,
-                summary: translated[0].summary || detailData.summary,
-              }
+              detailData = translated[0]
             } catch (error) {
               console.error('Translation error:', error)
             }
