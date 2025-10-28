@@ -312,6 +312,14 @@
           line-height: $lhL;
         }
       }
+      h3 {
+        font-size: $fzL;
+        line-height: $lhL;
+        @media screen and (max-width: $bpMobile) {
+          font-size: $fzM;
+          line-height: $lhM;
+        }
+      }
 
       iframe {
         position: relative;
