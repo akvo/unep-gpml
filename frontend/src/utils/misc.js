@@ -63,6 +63,28 @@ export const topicNames = (topic) => {
   return names[humps.camelize(topic)]
 }
 
+export const useTopicNames = () => {
+  const { i18n } = useLingui()
+
+  return (topic) => {
+    const names = {
+      initiative: i18n._(t`Initiative`),
+      actionPlan: i18n._(t`Action Plan`),
+      policy: i18n._(t`Legislation`),
+      technicalResource: i18n._(t`Technical Resource`),
+      financingResource: i18n._(t`Financing Resource`),
+      event: i18n._(t`Event`),
+      technology: i18n._(t`Technology`),
+      organisation: i18n._(t`Entity`),
+      stakeholder: i18n._(t`Individual`),
+      capacityBuilding: i18n._(t`Capacity Building`),
+      caseStudy: i18n._(t`Case Study`),
+      dataCatalog: i18n._(t`Data Portal`),
+    }
+    return names[humps.camelize(topic)]
+  }
+}
+
 export const resourceSubTypes = new Set([
   'financing_resource',
   'technical_resource',
