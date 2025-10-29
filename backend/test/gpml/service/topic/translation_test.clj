@@ -207,8 +207,8 @@
 
       ;; Insert existing translation for policy only
       (let [_ (svc.topic.translation/upsert-bulk-topic-translations
-                config
-                [{:topic-type "policy" :topic-id 99904 :language "es" :content {:title "Política 1" :abstract "Resumen 1"}}])
+               config
+               [{:topic-type "policy" :topic-id 99904 :language "es" :content {:title "Política 1" :abstract "Resumen 1"}}])
 
             topic-filters [{:topic-type "policy" :topic-id 99904}
                            {:topic-type "event" :topic-id 99904}]

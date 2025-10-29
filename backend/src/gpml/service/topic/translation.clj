@@ -1,5 +1,6 @@
 (ns gpml.service.topic.translation
   (:require
+   [clojure.java.jdbc]
    [clojure.set]
    [clojure.string]
    [gpml.boundary.port.translate :as port.translate]
@@ -306,8 +307,8 @@
           ;; Step 1: Get existing translations from DB
           db-topic-filters (mapv (fn [{:keys [topic-type topic-id]}] [topic-type topic-id]) topic-filters)
           existing-translations (db.topic.translation/get-bulk-topic-translations
-                                  conn
-                                  {:topic-filters db-topic-filters :language language})
+                                 conn
+                                 {:topic-filters db-topic-filters :language language})
 
           ;; Step 2: Identify missing translations
           missing-filters (missing-topic-filters topic-filters existing-translations)]
@@ -352,7 +353,7 @@
                       (reduce (fn [acc [source-lang records]]
                                 (let [{:keys [texts index-map]} (extract-translatable-texts records)
                                       translated-texts (port.translate/translate-texts
-                                                         translate-adapter texts language source-lang)
+                                                        translate-adapter texts language source-lang)
                                       mapped (map-translations-back translated-texts index-map)]
                                   (merge acc mapped)))
                               {}

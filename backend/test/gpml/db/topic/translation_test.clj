@@ -182,8 +182,8 @@
       (jdbc/execute! db ["INSERT INTO resource (id, language, title, summary) VALUES (99003, 'en', 'Resource Title', 'Resource Summary') ON CONFLICT (id) DO UPDATE SET title = EXCLUDED.title, summary = EXCLUDED.summary"])
 
       (let [result (sut/get-bulk-source-data db [["policy" 99003]
-                                                  ["event" 99003]
-                                                  ["resource" 99003]])]
+                                                 ["event" 99003]
+                                                 ["resource" 99003]])]
         (is (= 3 (count result)))
         (is (= #{"policy" "event" "resource"} (set (map :topic_type result))))
         ;; Verify each has correct fields
@@ -219,8 +219,8 @@
 
       ;; Request in mixed order: policy, event, policy
       (let [result (sut/get-bulk-source-data db [["policy" 99004]
-                                                  ["event" 99004]
-                                                  ["policy" 99005]])]
+                                                 ["event" 99004]
+                                                 ["policy" 99005]])]
         ;; Should get all 3 results (grouping is internal optimization)
         (is (= 3 (count result)))
         (is (= 2 (count (filter #(= "policy" (:topic_type %)) result))))

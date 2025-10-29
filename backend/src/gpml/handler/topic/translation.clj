@@ -149,7 +149,7 @@
                      (svc.topic.translation/delete-bulk-topic-translations config topics)
 
                      ;; Strategy 2: Delete all of a specific type (requires confirmation)
-                     (and topic-type (not (empty? topic-type)))
+                     (and topic-type (seq topic-type))
                      (if (true? confirm?)
                        (svc.topic.translation/delete-topic-translations-by-type config topic-type)
                        {:success? false
