@@ -1004,9 +1004,9 @@
  :gpml.handler.resource.translation/query-params                    {}
  :gpml.handler.resource.translation/delete-params                   {}
  :gpml.handler.resource.translation/put-params                      {}
- :gpml.handler.topic.translation/get                                #ig/ref :gpml.config/common
+ :gpml.handler.topic.translation/get                                #ig/ref [:duct/const :gpml.config/common]
  :gpml.handler.topic.translation/get-params                         {}
- :gpml.handler.topic.translation/upsert                             #ig/ref :gpml.config/common
+ :gpml.handler.topic.translation/upsert                             #ig/ref [:duct/const :gpml.config/common]
  :gpml.handler.topic.translation/upsert-params                      {}
  :gpml.handler.list/get                                             {:db #ig/ref :duct.database.sql.hikaricp/read-write}
  :gpml.handler.list/get-params                                      {}
