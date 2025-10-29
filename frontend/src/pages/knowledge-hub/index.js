@@ -108,6 +108,10 @@ const KnowledgeHub = ({
   const OPTION_PAGE_SIZE = 100
 
   useEffect(() => {
+    if (!isLoadMore) {
+      originalResults.current = newResults
+    }
+
     const translateResults = async () => {
       const resultsToTranslate = originalResults.current
       if (router.locale !== 'en' && resultsToTranslate.length > 0) {
@@ -131,7 +135,7 @@ const KnowledgeHub = ({
     }
 
     translateResults()
-  }, [newResults, router.locale])
+  }, [newResults, router.locale, isLoadMore])
 
   useEffect(() => {
     setDisplayedOptions(tagOpts.slice(0, OPTION_PAGE_SIZE))

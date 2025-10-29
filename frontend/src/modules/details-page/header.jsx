@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import './style.module.scss'
 import { Col, Popover, Input, Select, Tooltip, Modal, notification } from 'antd'
 const { Option } = Select
-import { eventTrack } from '../../utils/misc'
+import { eventTrack, useTopicNames } from '../../utils/misc'
 import { PlayCircleTwoTone } from '@ant-design/icons'
-import { resourceTypeToTopicType, topicNames } from '../../utils/misc'
+import { resourceTypeToTopicType } from '../../utils/misc'
 import { languageOptions } from '../flexible-forms/view'
 import classNames from 'classnames'
 import Button from '../../components/button'
@@ -40,6 +40,8 @@ const Header = ({
   setLikes,
 }) => {
   const router = useRouter()
+  const topicNames = useTopicNames()
+
   const bookmarked =
     relation &&
     relation.association &&
