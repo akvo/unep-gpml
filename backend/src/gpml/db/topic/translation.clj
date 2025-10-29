@@ -7,6 +7,7 @@
          upsert-bulk-topic-translations
          delete-bulk-topic-translations
          delete-topic-translations
+         delete-topic-translations-by-type
          get-policy-source-data
          get-event-source-data
          get-resource-source-data

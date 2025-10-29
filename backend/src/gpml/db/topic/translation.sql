@@ -27,6 +27,12 @@ DELETE FROM topic_translation
 WHERE topic_type = :topic-type
   AND topic_id = :topic-id;
 
+-- :name delete-topic-translations-by-type :! :n
+-- Delete all translations for a specific topic type (all topics, all languages)
+-- Admin only - use with caution - requires confirmation parameter
+DELETE FROM topic_translation
+WHERE topic_type = :topic-type;
+
 -- Source data fetching queries (for auto-translation)
 -- Each resource type has its own query due to different table structures
 

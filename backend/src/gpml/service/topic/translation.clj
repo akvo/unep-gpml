@@ -86,8 +86,10 @@
           db-topic-filters (mapv (fn [{:keys [topic-type topic-id]}]
                                    [topic-type topic-id])
                                  topic-filters)
+          ;; Calculate breakdown by type for response
+          by-type (frequencies (map :topic-type topic-filters))
           result (db.topic.translation/delete-bulk-topic-translations conn {:topic-filters db-topic-filters})]
-      {:success? true :deleted-count result})
+      {:success? true :deleted-count result :by-type by-type})
     (catch Exception e
       (failure {:reason :unexpected-error
                 :error-details {:message (.getMessage e)}}))))
@@ -110,6 +112,59 @@
     (let [conn (:spec (:db config))
           result (db.topic.translation/delete-topic-translations conn {:topic-type topic-type :topic-id topic-id})]
       {:success? true :deleted-count result})
+    (catch Exception e
+      (failure {:reason :unexpected-error
+                :error-details {:message (.getMessage e)}}))))
+
+(defn delete-topic-translations-by-type
+  "Deletes all translations for a specific topic type (all topics, all languages).
+   Admin only - use with caution - requires confirmation parameter.
+
+   Parameters:
+   - config: Configuration map with :db key
+   - topic-type: Topic type string (e.g., 'policy', 'event')
+
+   Returns:
+   {:success? true :deleted-count N :by-type {topic-type N}}
+   OR
+   {:success? false :reason :error-key :error-details {...}}"
+  [config topic-type]
+  (try
+    (let [conn (:spec (:db config))
+          result (db.topic.translation/delete-topic-translations-by-type conn {:topic-type topic-type})]
+      {:success? true :deleted-count result :by-type {topic-type result}})
+    (catch Exception e
+      (failure {:reason :unexpected-error
+                :error-details {:message (.getMessage e)}}))))
+
+(defn delete-all-topic-translations
+  "Deletes ALL topic translations from the database.
+   DANGEROUS OPERATION - Admin only - requires confirmation parameter.
+
+   Parameters:
+   - config: Configuration map with :db key
+
+   Returns:
+   {:success? true :deleted-count N :by-type {topic-type count}}
+   OR
+   {:success? false :reason :error-key :error-details {...}}"
+  [config]
+  (try
+    (let [conn (:spec (:db config))
+          ;; First, get counts by type for detailed response
+          count-query "SELECT topic_type, COUNT(*) as count
+                       FROM topic_translation
+                       GROUP BY topic_type"
+          counts (clojure.java.jdbc/query conn [count-query])
+          by-type (into {} (map (fn [row] [(:topic_type row) (:count row)]) counts))
+          total-count (reduce + 0 (vals by-type))
+
+          ;; Then delete all
+          delete-query "DELETE FROM topic_translation"
+          _ (clojure.java.jdbc/execute! conn [delete-query])]
+      {:success? true
+       :deleted-count total-count
+       :by-type by-type})
     (catch Exception e
       (failure {:reason :unexpected-error
                 :error-details {:message (.getMessage e)}}))))
