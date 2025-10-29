@@ -270,3 +270,116 @@
         ;; Should return existing English translation
         (is (= 1 (count (:translations (:body response)))))
         (is (= "Policy Title" (get-in (first (:translations (:body response))) [:content :title])))))))
+
+(deftest delete-bulk-topic-translations-test
+  (let [system (ig/init fixtures/*system* [::sut/delete])
+        config (get system [:duct/const :gpml.config/common])
+        conn (test-util/db-test-conn)
+        handler (::sut/delete system)
+        ;; Create test admin user
+        admin-id (test-util/create-test-stakeholder config "admin@test.com" "APPROVED" "ADMIN")]
+    ;; Ensure languages exist
+    (jdbc/execute! conn ["INSERT INTO language (iso_code, english_name, native_name) VALUES ('en', 'English', 'English'), ('es', 'Spanish', 'Español'), ('fr', 'French', 'Français') ON CONFLICT (iso_code) DO NOTHING"])
+
+    (testing "delete specific topics (no confirmation needed) with breakdown"
+      ;; Insert test translations
+      (jdbc/execute! conn ["INSERT INTO topic_translation (topic_type, topic_id, language, content) VALUES
+                            ('policy', 99001, 'en', '{\"title\": \"Policy 1\"}'::jsonb),
+                            ('policy', 99001, 'es', '{\"title\": \"Política 1\"}'::jsonb),
+                            ('event', 99002, 'en', '{\"title\": \"Event 2\"}'::jsonb),
+                            ('event', 99002, 'es', '{\"title\": \"Evento 2\"}'::jsonb),
+                            ('initiative', 99003, 'fr', '{\"title\": \"Initiative 3\"}'::jsonb)
+                            ON CONFLICT (topic_type, topic_id, language) DO NOTHING"])
+
+      (let [query-params {:topics [{:topic-type "policy" :topic-id 99001}
+                                   {:topic-type "event" :topic-id 99002}]}
+            request (-> (mock/request :delete "/bulk-translations")
+                        (assoc :parameters {:query query-params}
+                               :user {:id admin-id}))
+            response (handler request)]
+        (is (= 200 (:status response)))
+        (is (:success? (:body response)))
+        (is (= 4 (:deleted-count (:body response))))
+        (is (= {"policy" 1 "event" 1} (:by-type (:body response))))
+
+        ;; Verify deletion in DB
+        (let [remaining (jdbc/query conn ["SELECT COUNT(*) as count FROM topic_translation WHERE (topic_type, topic_id) IN (('policy', 99001), ('event', 99002))"])]
+          (is (= 0 (:count (first remaining)))))
+
+        ;; Verify other translations still exist
+        (let [remaining (jdbc/query conn ["SELECT COUNT(*) as count FROM topic_translation WHERE topic_type = 'initiative' AND topic_id = 99003"])]
+          (is (= 1 (:count (first remaining)))))))
+
+    (testing "delete by topic-type WITH confirmation"
+      ;; Insert test translations
+      (jdbc/execute! conn ["INSERT INTO topic_translation (topic_type, topic_id, language, content) VALUES
+                            ('policy', 99010, 'en', '{\"title\": \"Policy 10\"}'::jsonb),
+                            ('policy', 99011, 'es', '{\"title\": \"Política 11\"}'::jsonb),
+                            ('policy', 99012, 'fr', '{\"title\": \"Politique 12\"}'::jsonb),
+                            ('event', 99013, 'en', '{\"title\": \"Event 13\"}'::jsonb)
+                            ON CONFLICT (topic_type, topic_id, language) DO NOTHING"])
+
+      (let [query-params {:topic-type "policy" :confirm true}
+            request (-> (mock/request :delete "/bulk-translations")
+                        (assoc :parameters {:query query-params}
+                               :user {:id admin-id}))
+            response (handler request)]
+        (is (= 200 (:status response)))
+        (is (:success? (:body response)))
+        (is (>= (:deleted-count (:body response)) 3))
+        (is (map? (:by-type (:body response))))
+
+        ;; Verify all policy translations deleted
+        (let [remaining (jdbc/query conn ["SELECT COUNT(*) as count FROM topic_translation WHERE topic_type = 'policy' AND topic_id IN (99010, 99011, 99012)"])]
+          (is (= 0 (:count (first remaining)))))
+
+        ;; Verify event translations still exist
+        (let [remaining (jdbc/query conn ["SELECT COUNT(*) as count FROM topic_translation WHERE topic_type = 'event' AND topic_id = 99013"])]
+          (is (= 1 (:count (first remaining)))))))
+
+    (testing "delete by topic-type WITHOUT confirmation returns 400"
+      (let [query-params {:topic-type "event"}
+            request (-> (mock/request :delete "/bulk-translations")
+                        (assoc :parameters {:query query-params}
+                               :user {:id admin-id}))
+            response (handler request)]
+        (is (= 400 (:status response)))
+        (is (not (:success? (:body response))))
+        (is (= :confirmation-required (:reason (:body response))))
+        (is (= "Deleting all translations of a type requires confirm=true parameter" (:message (:body response))))))
+
+    (testing "delete all translations WITH confirmation"
+      ;; Insert fresh test translations
+      (jdbc/execute! conn ["INSERT INTO topic_translation (topic_type, topic_id, language, content) VALUES
+                            ('policy', 99020, 'en', '{\"title\": \"Policy 20\"}'::jsonb),
+                            ('event', 99021, 'es', '{\"title\": \"Evento 21\"}'::jsonb)
+                            ON CONFLICT (topic_type, topic_id, language) DO NOTHING"])
+
+      (let [query-params {:confirm true}
+            request (-> (mock/request :delete "/bulk-translations")
+                        (assoc :parameters {:query query-params}
+                               :user {:id admin-id}))
+            response (handler request)]
+        (is (= 200 (:status response)))
+        (is (:success? (:body response)))
+        (is (>= (:deleted-count (:body response)) 0))
+        (is (map? (:by-type (:body response))))))
+
+    (testing "delete all translations WITHOUT confirmation returns 400"
+      (let [query-params {}
+            request (-> (mock/request :delete "/bulk-translations")
+                        (assoc :parameters {:query query-params}
+                               :user {:id admin-id}))
+            response (handler request)]
+        (is (= 400 (:status response)))
+        (is (not (:success? (:body response))))
+        (is (= :confirmation-required (:reason (:body response))))
+        (is (= "Deleting all translations requires confirm=true parameter" (:message (:body response))))))
+
+    (testing "unauthenticated delete request returns 403"
+      (let [query-params {:topics [{:topic-type "policy" :topic-id 1}]}
+            request (-> (mock/request :delete "/bulk-translations")
+                        (assoc :parameters {:query query-params}))
+            response (handler request)]
+        (is (= 403 (:status response)))
+        (is (= "Authentication required" (get-in response [:body :message])))))))

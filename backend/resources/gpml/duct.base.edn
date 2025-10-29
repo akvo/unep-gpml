@@ -517,7 +517,15 @@
                                                           "edit bulk translations"]
                                                :security [{:id_token []}]}
                                   :parameters {:body #ig/ref :gpml.handler.topic.translation/upsert-params}
-                                  :handler    #ig/ref :gpml.handler.topic.translation/upsert}}]
+                                  :handler    #ig/ref :gpml.handler.topic.translation/upsert}
+                            :delete {:middleware [#ig/ref :gpml.auth/auth-middleware
+                                                  #ig/ref :gpml.auth/auth-required
+                                                  #ig/ref :gpml.auth/admin-auth-required]
+                                     :summary    "Delete bulk topic translations (Admin only)"
+                                     :swagger    {:tags     ["delete bulk translations"]
+                                                  :security [{:id_token []}]}
+                                     :parameters {:query #ig/ref :gpml.handler.topic.translation/delete-params}
+                                     :handler    #ig/ref :gpml.handler.topic.translation/delete}}]
                           ["/list"
                            {:get {:middleware [#ig/ref :gpml.auth/auth-middleware
                                                #ig/ref :gpml.auth/auth-required]
@@ -1004,10 +1012,12 @@
  :gpml.handler.resource.translation/query-params                    {}
  :gpml.handler.resource.translation/delete-params                   {}
  :gpml.handler.resource.translation/put-params                      {}
- :gpml.handler.topic.translation/get                                #ig/ref :gpml.config/common
+ :gpml.handler.topic.translation/get                                #ig/ref [:duct/const :gpml.config/common]
  :gpml.handler.topic.translation/get-params                         {}
- :gpml.handler.topic.translation/upsert                             #ig/ref :gpml.config/common
+ :gpml.handler.topic.translation/upsert                             #ig/ref [:duct/const :gpml.config/common]
  :gpml.handler.topic.translation/upsert-params                      {}
+ :gpml.handler.topic.translation/delete                             #ig/ref [:duct/const :gpml.config/common]
+ :gpml.handler.topic.translation/delete-params                      {}
  :gpml.handler.list/get                                             {:db #ig/ref :duct.database.sql.hikaricp/read-write}
  :gpml.handler.list/get-params                                      {}
  :gpml.handler.list/get-response                                    {}

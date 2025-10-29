@@ -124,30 +124,35 @@ CREATE TABLE topic_translation (
 3. **Missing Resource Sub-types**: `financing_resource`, `technical_resource`, `action_plan`, `data_catalog` not mapped (all use `resource` table)
 4. **Missing Project Type**: `project` type added in migration 223 but not in translatable fields
 5. **Technology Field**: Database uses `name` column, not `title`
+6. **Schema Mismatch with Detail API**: Fields use database column names instead of normalized names from detail API (e.g., `abstract` vs `summary`, `description` vs `summary`, `name` vs `title`)
 
-**Proposed Solution**: Create new mapping specifically for bulk translation system to avoid breaking changes to legacy system.
+**Solution Implemented** (Phase 2 Completion): Created new mapping with schema alignment to match detail API response format.
 
-### New Translatable Fields Mapping (Proposed)
+### New Translatable Fields Mapping (IMPLEMENTED ✅)
 
-**`translatable-fields-by-topic`** - String-based keys matching `topic-types`:
+**`translatable-fields-by-topic`** - String-based keys matching `topic-types` with normalized field names:
 
 ```clojure
 (def translatable-fields-by-topic
   "Translatable fields for each topic type (for bulk translation system).
-   Uses string keys to match gpml.domain.types/topic-types."
-  {"policy"               #{:title :abstract :remarks :info_docs}
-   "event"                #{:title :description :remarks :info_docs}
+   Uses string keys to match gpml.domain.types/topic-types.
+
+   IMPORTANT: Uses NORMALIZED field names that match the detail API response schema.
+   - All types consistently use :title and :summary
+   - Normalization happens via SQL aliases in translation SQL queries"
+  {"policy"               #{:title :summary :remarks :info_docs}  ; summary from abstract
+   "event"                #{:title :summary :remarks :info_docs}  ; summary from description
    "resource"             #{:title :summary :remarks :value_remarks :info_docs}
-   "financing_resource"   #{:title :summary :remarks :value_remarks :info_docs}  ; maps to resource table
-   "technical_resource"   #{:title :summary :remarks :value_remarks :info_docs}  ; maps to resource table
-   "action_plan"          #{:title :summary :remarks :value_remarks :info_docs}  ; maps to resource table
-   "data_catalog"         #{:title :summary :remarks :value_remarks :info_docs}  ; maps to resource table
-   "technology"           #{:name :remarks :info_docs}  ; note: uses :name not :title
+   "financing_resource"   #{:title :summary :remarks :value_remarks :info_docs}
+   "technical_resource"   #{:title :summary :remarks :value_remarks :info_docs}
+   "action_plan"          #{:title :summary :remarks :value_remarks :info_docs}
+   "data_catalog"         #{:title :summary :remarks :value_remarks :info_docs}
+   "technology"           #{:title :summary :info_docs}  ; title from name, summary from remarks
    "initiative"           #{:q2 :q3 :q4 :q5 :q6 :q7 :q8 :q9 :q10 :q11 :q12 :q13 :q14
                             :q15 :q16 :q17 :q18 :q19 :q20 :q21 :q22 :q23 :q24
-                            :title :summary :info_docs}
-   "case_study"           #{:title :description}
-   "project"              #{:title :description :summary}})
+                            :title :summary :info_docs}  ; title from q2, summary from q3
+   "case_study"           #{:title :summary :challenge_and_solution}  ; summary from description
+   "project"              #{:title :summary :background :purpose :info_docs}})
 
 (def topic-type->table
   "Maps topic types to their database table names.
@@ -761,28 +766,37 @@ The initial implementation had an HTTP request issue where `:body` was used inst
 
 ---
 
-### Phase 2: Source Data Fetching (COMPLETED ✅)
-**Goal**: Query source language data for resources
+### Phase 2: Source Data Fetching & Schema Alignment (COMPLETED ✅)
+**Goal**: Query source language data for resources with schema alignment to detail API
 
 **Tasks**:
+- [x] **Schema Alignment**: Normalize field names to match detail API response
+  - [x] Policy: `abstract` → `summary`
+  - [x] Event: `description` → `summary`
+  - [x] Technology: `name` → `title`, `remarks` → `summary`
+  - [x] Initiative: `q2` → `title`, `q3` → `summary` (JSONB casting)
+  - [x] Case Study: `description` → `summary`, added `challenge_and_solution`
+  - [x] Project: Fixed bug (removed non-existent `description`), added `background`, `purpose`
 - [x] Create new mapping in `gpml.domain.translation`:
-  - [x] Add `translatable-fields-by-topic` with string keys
+  - [x] Add `translatable-fields-by-topic` with string keys and normalized field names
+  - [x] Add `normalized-field->db-column` mapping infrastructure
   - [x] Add `topic-type->table` helper mapping
   - [x] Document differences from `translatable-fields-by-entity`
   - [x] Keep existing `translatable-fields-by-entity` unchanged (no breaking changes)
 - [x] Design query approach for multiple resource types (chose Option 1: separate queries)
-- [x] Add HugSQL queries for each resource type:
-  - [x] policy (title, abstract, remarks, info_docs)
-  - [x] event (title, description, remarks, info_docs)
-  - [x] resource + sub-types (title, summary, remarks, value_remarks, info_docs)
-  - [x] technology (name, remarks, info_docs) - note: `name` not `title`
-  - [x] initiative (20+ fields: q2-q24, title, summary, info_docs)
-  - [x] case_study (title, description)
-  - [x] project (title, description, summary)
+- [x] Add HugSQL queries with SQL aliases for normalization:
+  - [x] policy: `abstract AS summary`
+  - [x] event: `description AS summary`
+  - [x] resource + sub-types: no changes needed (already normalized)
+  - [x] technology: `name AS title`, `remarks AS summary`
+  - [x] initiative: `btrim((q2)::text, '"') AS title`, `btrim((q3)::text, '"') AS summary`
+  - [x] case_study: `description AS summary` + added `challenge_and_solution`
+  - [x] project: Fixed SQL (removed `description`, added `background`, `purpose`, `info_docs`)
 - [x] Implement `get-bulk-source-data` function
 - [x] Handle resource sub-types (all map to resource table)
 - [x] Handle missing resources gracefully
-- [x] Add tests for each resource type
+- [x] Update all tests to expect normalized field names
+- [x] All 91 tests passing (0 failures, 0 errors)
 
 **Technical Decision**: Selected **Option 1** (Separate query per type)
 - Simpler and more maintainable than dynamic query generation
@@ -827,29 +841,63 @@ The initial implementation had an HTTP request issue where `:body` was used inst
    "project"              "project"})
 ```
 
-**HugSQL Queries** (`gpml/db/topic/translation.sql`):
+**HugSQL Queries with Schema Normalization** (`gpml/db/topic/translation.sql`):
 ```sql
 -- :name get-policy-source-data :? :*
-SELECT 'policy' AS topic_type, id AS topic_id,
-       title, abstract, remarks, info_docs
+-- Returns normalized field names to match detail API schema
+SELECT 'policy' AS topic_type, id AS topic_id, language,
+       title,
+       abstract AS summary,  -- Normalize to match detail API
+       remarks, info_docs
 FROM policy WHERE id IN (:v*:topic-ids);
 
 -- :name get-event-source-data :? :*
-SELECT 'event' AS topic_type, id AS topic_id,
-       title, description, remarks, info_docs
+-- Returns normalized field names to match detail API schema
+SELECT 'event' AS topic_type, id AS topic_id, language,
+       title,
+       description AS summary,  -- Normalize to match detail API
+       remarks, info_docs
 FROM event WHERE id IN (:v*:topic-ids);
 
 -- :name get-resource-source-data :? :*
-SELECT :topic-type AS topic_type, id AS topic_id,
+SELECT :topic-type AS topic_type, id AS topic_id, language,
        title, summary, remarks, value_remarks, info_docs
 FROM resource WHERE id IN (:v*:topic-ids);
 
 -- :name get-technology-source-data :? :*
-SELECT 'technology' AS topic_type, id AS topic_id,
-       name, remarks, info_docs
+-- Returns normalized field names to match detail API schema
+SELECT 'technology' AS topic_type, id AS topic_id, language,
+       name AS title,      -- Normalize to match detail API
+       remarks AS summary, -- Normalize to match detail API
+       info_docs
 FROM technology WHERE id IN (:v*:topic-ids);
 
--- Plus queries for: initiative, case_study, project
+-- :name get-initiative-source-data :? :*
+-- Returns normalized field names to match detail API schema
+-- Note: q2 and q3 are JSONB, cast to text and trim quotes to normalize
+SELECT 'initiative' AS topic_type, id AS topic_id, language,
+       btrim((q2)::text, '"') AS title,    -- Normalize JSONB q2 to title
+       btrim((q3)::text, '"') AS summary,  -- Normalize JSONB q3 to summary
+       q2, q3, q4, q5, q6, ..., q24,  -- Keep all q fields
+       info_docs
+FROM initiative WHERE id IN (:v*:topic-ids);
+
+-- :name get-case-study-source-data :? :*
+-- Returns normalized field names to match detail API schema
+SELECT 'case_study' AS topic_type, id AS topic_id, language,
+       title,
+       description AS summary,  -- Normalize to match detail API
+       challenge_and_solution   -- Add missing translatable field
+FROM case_study WHERE id IN (:v*:topic-ids);
+
+-- :name get-project-source-data :? :*
+-- FIXED: Removed non-existent 'description' column, added missing text fields
+SELECT 'project' AS topic_type, id AS topic_id, language,
+       title, summary,
+       background,  -- Add missing translatable text field
+       purpose,     -- Add missing translatable text field
+       info_docs    -- Add missing translatable field
+FROM project WHERE id IN (:v*:topic-ids);
 ```
 
 **Clojure Functions** (`gpml/db/topic/translation.clj`):
@@ -2072,12 +2120,13 @@ The existing translation infrastructure is well-designed and requires minimal ch
 
 ---
 
-**Document Version**: 1.6
-**Last Updated**: 2025-10-21
+**Document Version**: 1.7
+**Last Updated**: 2025-10-29
 **Author**: Claude Code
-**Status**: Under Review
+**Status**: Phase 2 Complete
 
 **Changelog**:
+- v1.7 (2025-10-29): **Phase 2 Complete - Schema Alignment Implemented** - Normalized all field names to match detail API response schema. Policy: `abstract` → `summary`, Event: `description` → `summary`, Technology: `name` → `title` + `remarks` → `summary`, Initiative: JSONB casting `q2` → `title` + `q3` → `summary`, Case Study: `description` → `summary` + added `challenge_and_solution`, Project: Fixed critical bug (removed non-existent `description` field, added `background` and `purpose`). All SQL queries updated with aliases, all 91 tests passing. API now consistently uses `title` and `summary` across all topic types.
 - v1.6 (2025-10-21): **Added source language detection strategy** - Documents critical schema constraint (one language per topic record), current limitation (hardcoded English assumption), problem scenarios (wasteful same-language translation, incorrect source language), and proposed solution (add language column to queries, filter same-language records, group by source language for efficient batching). Includes implementation checklist, benefits analysis, and updated Phase 3 tasks with source language handling requirements.
 - v1.5 (2025-10-14): **Added translation cache invalidation strategy** - Strategy 1 (Immediate Deletion): Delete all translations when source content is updated to prevent stale translations. Includes implementation details, trade-offs analysis, and future optimization path (Strategy 2: Smart Field-Level Invalidation).
 - v1.4 (2025-10-14): **Clarified `fields` parameter behavior** - Backend always translates ALL fields regardless of `fields` param; `fields` only filters response, not translation scope
