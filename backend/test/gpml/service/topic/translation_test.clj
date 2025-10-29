@@ -151,7 +151,7 @@
           (is (= "es" (:language translation)))
           ;; Mock adapter adds [ES] prefix
           (is (clojure.string/starts-with? (get-in translation [:content :title]) "[ES]"))
-          (is (clojure.string/starts-with? (get-in translation [:content :abstract]) "[ES]"))
+          (is (clojure.string/starts-with? (get-in translation [:content :summary]) "[ES]"))  ; Normalized from :abstract
           (is (clojure.string/starts-with? (get-in translation [:content :remarks]) "[ES]"))
           (is (clojure.string/starts-with? (get-in translation [:content :info_docs]) "[ES]")))
 
@@ -188,7 +188,7 @@
           (let [db-translation (first (:translations db-result))]
             ;; All fields should be in DB
             (is (contains? (:content db-translation) :title))
-            (is (contains? (:content db-translation) :abstract))
+            (is (contains? (:content db-translation) :summary))  ; Normalized from :abstract
             (is (contains? (:content db-translation) :remarks))
             (is (contains? (:content db-translation) :info_docs))
             (is (= 4 (count (:content db-translation))))))))))
@@ -262,7 +262,7 @@
           (is (= "es" (:language translation)))
           ;; Content should match source exactly (not translated, copied)
           (is (= "Política de Plástico" (get-in translation [:content :title])))
-          (is (= "Reducir emisiones" (get-in translation [:content :abstract])))
+          (is (= "Reducir emisiones" (get-in translation [:content :summary])))  ; Normalized from :abstract
           ;; Mock adapter would have added [ES] prefix if translated
           (is (not (clojure.string/starts-with? (get-in translation [:content :title]) "[ES]"))))))))
 

@@ -32,12 +32,13 @@ WHERE topic_type = :topic-type
 
 -- :name get-policy-source-data :? :*
 -- Get source language content for policies
+-- Returns normalized field names to match detail API schema
 SELECT
   'policy' AS topic_type,
   id AS topic_id,
   language,
   title,
-  abstract,
+  abstract AS summary,  -- Normalize to match detail API
   remarks,
   info_docs
 FROM policy
@@ -45,12 +46,13 @@ WHERE id IN (:v*:topic-ids);
 
 -- :name get-event-source-data :? :*
 -- Get source language content for events
+-- Returns normalized field names to match detail API schema
 SELECT
   'event' AS topic_type,
   id AS topic_id,
   language,
   title,
-  description,
+  description AS summary,  -- Normalize to match detail API
   remarks,
   info_docs
 FROM event
@@ -72,50 +74,57 @@ WHERE id IN (:v*:topic-ids);
 
 -- :name get-technology-source-data :? :*
 -- Get source language content for technologies
--- Note: uses 'name' column, not 'title'
+-- Returns normalized field names to match detail API schema
 SELECT
   'technology' AS topic_type,
   id AS topic_id,
   language,
-  name,
-  remarks,
+  name AS title,      -- Normalize to match detail API
+  remarks AS summary, -- Normalize to match detail API
   info_docs
 FROM technology
 WHERE id IN (:v*:topic-ids);
 
 -- :name get-initiative-source-data :? :*
 -- Get source language content for initiatives
+-- Returns normalized field names to match detail API schema
+-- Note: q2 and q3 are JSONB, cast to text and trim quotes to normalize
 SELECT
   'initiative' AS topic_type,
   id AS topic_id,
   language,
+  btrim((q2)::text, '"') AS title,    -- Normalize JSONB q2 to title (matches detail API)
+  btrim((q3)::text, '"') AS summary,  -- Normalize JSONB q3 to summary (matches detail API)
   q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14,
   q15, q16, q17, q18, q19, q20, q21, q22, q23, q24,
-  title,
-  summary,
   info_docs
 FROM initiative
 WHERE id IN (:v*:topic-ids);
 
 -- :name get-case-study-source-data :? :*
 -- Get source language content for case studies
+-- Returns normalized field names to match detail API schema
 SELECT
   'case_study' AS topic_type,
   id AS topic_id,
   language,
   title,
-  description
+  description AS summary,  -- Normalize to match detail API
+  challenge_and_solution   -- Add missing translatable field
 FROM case_study
 WHERE id IN (:v*:topic-ids);
 
 -- :name get-project-source-data :? :*
 -- Get source language content for projects
+-- FIXED: Removed non-existent 'description' column, added missing text fields
 SELECT
   'project' AS topic_type,
   id AS topic_id,
   language,
   title,
-  description,
-  summary
+  summary,
+  background,  -- Add missing translatable text field
+  purpose,     -- Add missing translatable text field
+  info_docs    -- Add missing translatable field
 FROM project
 WHERE id IN (:v*:topic-ids);

@@ -112,7 +112,7 @@
         (is (= "policy" (:topic_type (first result))))
         (is (= 99001 (:topic_id (first result))))
         (is (= "Test Policy" (:title (first result))))
-        (is (= "Test Abstract" (:abstract (first result))))
+        (is (= "Test Abstract" (:summary (first result))))  ; Normalized from :abstract
         (is (= "Test Remarks" (:remarks (first result))))
         (is (= "Test Info" (:info_docs (first result))))))))
 
@@ -127,7 +127,7 @@
         (is (= "event" (:topic_type (first result))))
         (is (= 99001 (:topic_id (first result))))
         (is (= "Test Event" (:title (first result))))
-        (is (= "Test Description" (:description (first result))))
+        (is (= "Test Description" (:summary (first result))))  ; Normalized from :description
         (is (= "Test Remarks" (:remarks (first result))))
         (is (= "Test Info" (:info_docs (first result))))))))
 
@@ -169,9 +169,8 @@
         (is (= 1 (count result)))
         (is (= "technology" (:topic_type (first result))))
         (is (= 99001 (:topic_id (first result))))
-        (is (= "Test Technology" (:name (first result))))
-        (is (nil? (:title (first result)))) ; Should not have :title
-        (is (= "Test Remarks" (:remarks (first result))))
+        (is (= "Test Technology" (:title (first result))))  ; Normalized from :name
+        (is (= "Test Remarks" (:summary (first result))))  ; Normalized from :remarks
         (is (= "Test Info" (:info_docs (first result))))))))
 
 (deftest get-bulk-source-data-mixed-types-test
@@ -192,9 +191,9 @@
               event (first (filter #(= "event" (:topic_type %)) result))
               resource (first (filter #(= "resource" (:topic_type %)) result))]
           (is (= "Policy Title" (:title policy)))
-          (is (= "Policy Abstract" (:abstract policy)))
+          (is (= "Policy Abstract" (:summary policy)))  ; Normalized from :abstract
           (is (= "Event Title" (:title event)))
-          (is (= "Event Description" (:description event)))
+          (is (= "Event Description" (:summary event)))  ; Normalized from :description
           (is (= "Resource Title" (:title resource)))
           (is (= "Resource Summary" (:summary resource))))))))
 
