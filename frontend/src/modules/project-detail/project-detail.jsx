@@ -53,13 +53,15 @@ const ProjectDetail = ({ data: inData, isModal, setVisible }) => {
               const translated = await translationService.getTranslatedResources(
                 [detailData],
                 router.locale,
-                ['title', 'summary']
+                ['title', 'summary', 'background', 'purpose']
               )
 
               detailData = {
                 ...detailData,
                 title: translated[0].title,
                 summary: translated[0].summary || detailData.summary,
+                background: translated[0].background || detailData.background,
+                purpose: translated[0].purpose || detailData.purpose,
               }
             } catch (error) {
               console.error('Translation error:', error)
