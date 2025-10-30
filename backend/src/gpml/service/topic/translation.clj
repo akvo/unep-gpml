@@ -201,32 +201,110 @@
   (group-by :language records))
 
 (defn- extract-translatable-texts
-  "Extract all translatable text fields from source data.
+  "Extract all translatable text fields from source data, including JSONB arrays.
    Returns {:texts [vector of text strings]
-            :index-map [vector of {:topic-key [type id] :field field-keyword}]}
+            :index-map [vector of {:topic-key [type id] :field field-keyword
+                                   :array-index idx :object-key key}]}
 
-   The index-map allows mapping translated texts back to their source resource/field."
+   The index-map allows mapping translated texts back to their source resource/field.
+   For JSONB arrays:
+   - :array-index tracks position in array (nil for non-array fields)
+   - :object-key tracks property name in object (e.g., :text for highlights, nil for simple arrays)"
   [source-data-records]
   (let [texts (atom [])
         index-map (atom [])]
     (doseq [record source-data-records]
       (let [topic-type (:topic_type record)
             topic-id (:topic_id record)
+            topic-key [topic-type topic-id]
             translatable-fields (get dom.translation/translatable-fields-by-topic topic-type #{})]
         (doseq [field translatable-fields]
-          (when-let [text (get record field)]
-            (when (and (string? text) (not (clojure.string/blank? text)))
-              (swap! texts conj text)
-              (swap! index-map conj {:topic-key [topic-type topic-id]
-                                     :field field}))))))
+          (let [value (get record field)]
+            (cond
+              ;; Case 1: Regular text field (string)
+              (and (string? value) (not (clojure.string/blank? value)))
+              (do
+                (swap! texts conj value)
+                (swap! index-map conj {:topic-key topic-key
+                                       :field field
+                                       :array-index nil
+                                       :object-key nil}))
+
+              ;; Case 2: JSONB array field (vector)
+              (sequential? value)
+              (doseq [[idx item] (map-indexed vector value)]
+                (cond
+                  ;; Simple string in array (e.g., outcomes)
+                  (and (string? item) (not (clojure.string/blank? item)))
+                  (do
+                    (swap! texts conj item)
+                    (swap! index-map conj {:topic-key topic-key
+                                           :field field
+                                           :array-index idx
+                                           :object-key nil}))
+
+                  ;; Object with :text property (e.g., highlights: [{:url "..." :text "..."}])
+                  (and (map? item) (:text item) (string? (:text item)) (not (clojure.string/blank? (:text item))))
+                  (do
+                    (swap! texts conj (:text item))
+                    (swap! index-map conj {:topic-key topic-key
+                                           :field field
+                                           :array-index idx
+                                           :object-key :text}))
+
+                  ;; Skip nil, numbers, or objects without text property
+                  :else nil))
+
+              ;; Case 3: Nil or unsupported type - skip
+              :else nil)))))
     {:texts @texts :index-map @index-map}))
 
+(defn- build-source-data-map
+  "Build a map of source data indexed by [topic-type topic-id] for efficient lookup.
+   Used to preserve non-translated properties in JSONB object arrays (e.g., :url in highlights).
+   Returns map of {[topic-type topic-id] {field value}}."
+  [source-data-records]
+  (reduce (fn [acc record]
+            (let [topic-key [(:topic_type record) (:topic_id record)]]
+              (assoc acc topic-key (dissoc record :topic_type :topic_id :language))))
+          {}
+          source-data-records))
+
 (defn- map-translations-back
-  "Map translated texts back to their original resource/field locations.
-   Returns map of {[topic-type topic-id] {:content {field translated-text}}}}"
-  [translated-texts index-map]
-  (reduce (fn [acc [text {:keys [topic-key field]}]]
-            (assoc-in acc [topic-key :content field] text))
+  "Map translated texts back to their original resource/field locations, reconstructing JSONB arrays.
+   Returns map of {[topic-type topic-id] {:content {field translated-text-or-array}}}
+
+   For JSONB arrays:
+   - Simple arrays (outcomes): Reconstructs as vector of strings
+   - Object arrays (highlights): Reconstructs as vector of maps with translated :text property
+
+   Note: For object arrays, we need source data to preserve non-translated properties (e.g., :url)"
+  [translated-texts index-map source-data-map]
+  (reduce (fn [acc [text {:keys [topic-key field array-index object-key]}]]
+            (cond
+              ;; Regular field (no array)
+              (and (nil? array-index) (nil? object-key))
+              (assoc-in acc [topic-key :content field] text)
+
+              ;; Simple array item (e.g., outcomes: ["text1", "text2"])
+              (and array-index (nil? object-key))
+              (update-in acc [topic-key :content field]
+                         (fn [arr]
+                           (let [v (or arr [])]
+                             (assoc v array-index text))))
+
+              ;; Object array item with :text property (e.g., highlights: [{:url "..." :text "..."}])
+              (and array-index object-key)
+              (update-in acc [topic-key :content field]
+                         (fn [arr]
+                           (let [v (or arr [])
+                                 ;; Get original object from source data to preserve other properties (e.g., :url)
+                                 source-obj (get-in source-data-map [topic-key field array-index])
+                                 ;; Merge translated text with original object structure
+                                 updated-obj (assoc source-obj object-key text)]
+                             (assoc v array-index updated-obj))))
+
+              :else acc))
           {}
           (map vector translated-texts index-map)))
 
@@ -254,13 +332,16 @@
 
 (defn- build-same-language-records
   "Build translation records for same-language sources (copy source content as-is).
-   Returns map of {[topic-type topic-id] {:content {field value}}}."
+   Returns map of {[topic-type topic-id] {:content {field value}}}.
+
+   JSONB arrays are preserved as-is (no translation needed when source == target language)."
   [source-records]
   (reduce (fn [acc record]
             (let [topic-type (:topic_type record)
                   topic-id (:topic_id record)
                   topic-key [topic-type topic-id]
                   translatable-fields (get dom.translation/translatable-fields-by-topic topic-type #{})
+                  ;; Select only translatable fields, excluding metadata fields (topic_type, topic_id, language)
                   content (select-keys record translatable-fields)]
               (assoc acc topic-key {:content content})))
           {}
@@ -348,13 +429,16 @@
                   {:success? true :translations filtered-result})
 
                 ;; Step 3d: Translate records grouped by source language
-                (let [;; Translate each source language group separately
+                (let [;; Build source data map for preserving JSONB object properties (e.g., :url in highlights)
+                      source-data-map (build-source-data-map source-data)
+
+                      ;; Translate each source language group separately
                       translated-maps
                       (reduce (fn [acc [source-lang records]]
                                 (let [{:keys [texts index-map]} (extract-translatable-texts records)
                                       translated-texts (port.translate/translate-texts
                                                         translate-adapter texts language source-lang)
-                                      mapped (map-translations-back translated-texts index-map)]
+                                      mapped (map-translations-back translated-texts index-map source-data-map)]
                                   (merge acc mapped)))
                               {}
                               grouped-by-language)

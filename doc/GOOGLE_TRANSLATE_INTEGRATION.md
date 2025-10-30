@@ -2106,6 +2106,283 @@ curl "http://localhost:3000/api/bulk-translations?topics=policy:1,event:2&langua
 
 ---
 
+## JSONB Array Field Translation Strategy
+
+### Overview
+
+The `project` topic type contains two JSONB array fields that require translation:
+
+1. **`outcomes`**: Simple JSONB array of text strings
+   - Schema: `["text1", "text2", "text3", ...]`
+   - Translation: Translate each string directly
+
+2. **`highlights`**: JSONB array of objects with `url` and `text` properties
+   - Schema: `[{url: "https://...", text: "Highlight text"}, ...]`
+   - Translation: Only translate the `text` property, preserve `url` as-is
+
+### Data Structures
+
+**Example Source Data (English)**:
+```json
+{
+  "topic_type": "project",
+  "topic_id": 123,
+  "language": "en",
+  "title": "Climate Initiative",
+  "outcomes": [
+    "10,000 tons of plastic removed",
+    "50 communities engaged",
+    "3 recycling centers established"
+  ],
+  "highlights": [
+    {"url": "https://example.com/report", "text": "Annual impact report published"},
+    {"url": "", "text": "Award-winning innovation"},
+    {"url": "https://news.com/article", "text": "Featured in international media"}
+  ]
+}
+```
+
+**Example Translated Data (Spanish)**:
+```json
+{
+  "topic_type": "project",
+  "topic_id": 123,
+  "language": "es",
+  "content": {
+    "title": "Iniciativa Climática",
+    "outcomes": [
+      "10,000 toneladas de plástico eliminadas",
+      "50 comunidades involucradas",
+      "3 centros de reciclaje establecidos"
+    ],
+    "highlights": [
+      {"url": "https://example.com/report", "text": "Informe de impacto anual publicado"},
+      {"url": "", "text": "Innovación galardonada"},
+      {"url": "https://news.com/article", "text": "Destacado en medios internacionales"}
+    ]
+  }
+}
+```
+
+### Implementation Approach
+
+#### Step 1: Field Extraction with Index Tracking
+
+Extract translatable texts from JSONB arrays while tracking their position and structure:
+
+```clojure
+(defn extract-translatable-texts-from-resource
+  "Extract translatable texts from a resource, handling JSONB arrays.
+   Returns {:texts [...] :index-map [...]}"
+  [resource translatable-fields]
+  (let [texts (atom [])
+        index-map (atom [])
+        resource-key [(:topic_type resource) (:topic_id resource)]]
+
+    (doseq [field translatable-fields]
+      (let [value (get resource field)]
+        (cond
+          ;; Case 1: Regular text field (string)
+          (string? value)
+          (do
+            (swap! texts conj value)
+            (swap! index-map conj {:resource-key resource-key
+                                   :field field
+                                   :array-index nil
+                                   :object-key nil}))
+
+          ;; Case 2: JSONB array field
+          (sequential? value)
+          (doseq [[idx item] (map-indexed vector value)]
+            (cond
+              ;; Simple string in array (e.g., outcomes)
+              (string? item)
+              (do
+                (swap! texts conj item)
+                (swap! index-map conj {:resource-key resource-key
+                                       :field field
+                                       :array-index idx
+                                       :object-key nil}))
+
+              ;; Object with text property (e.g., highlights)
+              (and (map? item) (:text item) (string? (:text item)))
+              (do
+                (swap! texts conj (:text item))
+                (swap! index-map conj {:resource-key resource-key
+                                       :field field
+                                       :array-index idx
+                                       :object-key :text}))
+
+              ;; Skip nil, numbers, or objects without text property
+              :else nil))
+
+          ;; Case 3: Nil or unsupported type - skip
+          :else nil)))
+
+    {:texts @texts :index-map @index-map}))
+```
+
+**Example Extraction Result**:
+```clojure
+;; Input: project with outcomes and highlights
+{:topic_type "project" :topic_id 123
+ :outcomes ["10,000 tons removed", "50 communities engaged"]
+ :highlights [{:url "http://..." :text "Report published"}
+              {:url "" :text "Award-winning"}]}
+
+;; Output:
+{:texts ["10,000 tons removed"
+         "50 communities engaged"
+         "Report published"
+         "Award-winning"]
+
+ :index-map [{:resource-key ["project" 123] :field :outcomes :array-index 0 :object-key nil}
+             {:resource-key ["project" 123] :field :outcomes :array-index 1 :object-key nil}
+             {:resource-key ["project" 123] :field :highlights :array-index 0 :object-key :text}
+             {:resource-key ["project" 123] :field :highlights :array-index 1 :object-key :text}]}
+```
+
+#### Step 2: Translation
+
+Translate all extracted texts in a single batch:
+
+```clojure
+;; All texts from extraction sent to Google Translate in one API call
+(port/translate-texts adapter
+  ["10,000 tons removed" "50 communities engaged" "Report published" "Award-winning"]
+  "es"  ;; target language
+  "en") ;; source language
+
+;; Result:
+["10,000 toneladas eliminadas" "50 comunidades involucradas"
+ "Informe publicado" "Galardonado"]
+```
+
+#### Step 3: Reconstruction with Structure Preservation
+
+Map translated texts back to their original structure:
+
+```clojure
+(defn map-translations-back-to-resources
+  "Map translated texts back to resources, preserving JSONB array structure."
+  [translated-texts index-map source-data-map]
+  (reduce
+    (fn [acc [text {:keys [resource-key field array-index object-key]}]]
+      (cond
+        ;; Regular field (no array)
+        (and (nil? array-index) (nil? object-key))
+        (assoc-in acc [resource-key :content field] text)
+
+        ;; Simple array item (e.g., outcomes)
+        (and array-index (nil? object-key))
+        (update-in acc [resource-key :content field]
+                   (fn [arr]
+                     (let [v (or arr [])]
+                       (assoc v array-index text))))
+
+        ;; Object array item with text property (e.g., highlights)
+        (and array-index object-key)
+        (update-in acc [resource-key :content field]
+                   (fn [arr]
+                     (let [v (or arr [])
+                           ;; Get original object from source data to preserve other properties (url)
+                           source-obj (get-in source-data-map [resource-key field array-index])
+                           ;; Merge translated text with original object structure
+                           updated-obj (assoc source-obj object-key text)]
+                       (assoc v array-index updated-obj))))
+
+        :else acc))
+    {}
+    (map vector translated-texts index-map)))
+```
+
+**Example Reconstruction Result**:
+```clojure
+;; Input:
+;; - Translated texts: ["10,000 toneladas eliminadas" "50 comunidades involucradas"
+;;                      "Informe publicado" "Galardonado"]
+;; - Index map from Step 1
+;; - Source data (for preserving url fields)
+
+;; Output:
+{["project" 123]
+ {:content
+  {:outcomes ["10,000 toneladas eliminadas"
+              "50 comunidades involucradas"]
+   :highlights [{:url "http://..." :text "Informe publicado"}
+                {:url "" :text "Galardonado"}]}}}
+```
+
+### Key Design Decisions
+
+1. **URL Preservation**: For `highlights`, the `url` property is never translated, only `text`
+2. **Array Order**: Index tracking ensures translated texts map back to correct array positions
+3. **Batch Efficiency**: All array items translated in single Google Translate API call
+4. **Type Safety**: Non-string elements (nil, numbers, objects without `text` property) are skipped
+5. **Structure Preservation**: Original JSONB structure (arrays, objects) maintained after translation
+6. **Storage Format**: Translated arrays stored as JSONB in same format as source
+
+### Database Storage
+
+**Before (Source Data in `project` table)**:
+```sql
+-- project table (id=123, language='en')
+highlights: [
+  {"url": "https://example.com/report", "text": "Annual impact report published"},
+  {"url": "", "text": "Award-winning innovation"}
+]
+outcomes: ["10,000 tons removed", "50 communities engaged"]
+```
+
+**After (Translated Data in `topic_translation` table)**:
+```sql
+-- topic_translation table (topic_type='project', topic_id=123, language='es')
+content: {
+  "title": "Iniciativa Climática",
+  "highlights": [
+    {"url": "https://example.com/report", "text": "Informe de impacto anual publicado"},
+    {"url": "", "text": "Innovación galardonada"}
+  ],
+  "outcomes": ["10,000 toneladas eliminadas", "50 comunidades involucradas"]
+}
+```
+
+### Implementation Checklist for Phase 3
+
+When implementing the auto-translation service (`get-bulk-translations-with-auto-translate`), ensure:
+
+- [ ] **Extraction Logic**: Detect JSONB arrays vs strings when extracting translatable fields
+- [ ] **Index Tracking**: Track `array-index` and `object-key` for each extracted text
+- [ ] **Source Data Preservation**: Keep original source data accessible for merging during reconstruction
+- [ ] **Object Property Filtering**: For object arrays, only extract string values from `text` property
+- [ ] **Reconstruction Logic**: Rebuild JSONB arrays with correct structure (simple arrays vs object arrays)
+- [ ] **URL Preservation**: Ensure `url` properties in highlights are never modified
+- [ ] **Type Validation**: Handle edge cases (nil items, empty arrays, objects without `text` property)
+
+### Testing Scenarios
+
+1. **Simple Array Translation** (outcomes):
+   - Source: `["English text 1", "English text 2"]`
+   - Expected: `["Texto en español 1", "Texto en español 2"]`
+
+2. **Object Array Translation** (highlights):
+   - Source: `[{url: "http://...", text: "English"}, {url: "", text: "Text"}]`
+   - Expected: `[{url: "http://...", text: "Español"}, {url: "", text: "Texto"}]`
+
+3. **Mixed Content**:
+   - Arrays with nil items, empty strings, objects with missing `text` property
+   - Should skip invalid items gracefully
+
+4. **Empty Arrays**:
+   - Source: `{outcomes: [], highlights: []}`
+   - Expected: `{outcomes: [], highlights: []}` (preserved, no translation)
+
+5. **Null Fields**:
+   - Source: `{outcomes: null, highlights: null}`
+   - Expected: Fields not included in translation (only translate non-null fields)
+
+---
+
 ## Conclusion
 
 This implementation plan provides a comprehensive, production-ready approach to integrating Google Translate API into the backend translation system. The design prioritizes:
@@ -2120,12 +2397,13 @@ The existing translation infrastructure is well-designed and requires minimal ch
 
 ---
 
-**Document Version**: 1.7
-**Last Updated**: 2025-10-29
+**Document Version**: 1.8
+**Last Updated**: 2025-10-30
 **Author**: Claude Code
-**Status**: Phase 2 Complete
+**Status**: Phase 2 Complete + JSONB Array Translation Strategy Added
 
 **Changelog**:
+- v1.8 (2025-10-30): **Added JSONB Array Translation Strategy** - Documented comprehensive approach for translating project `outcomes` (simple string arrays) and `highlights` (object arrays with url+text). Updated `translatable-fields-by-topic` and `normalized-field->db-column` mappings to include these fields. Updated SQL query `get-project-source-data` to fetch JSONB columns. Provided detailed implementation guidance with extraction, translation, and reconstruction logic. Includes code examples, testing scenarios, and Phase 3 implementation checklist.
 - v1.7 (2025-10-29): **Phase 2 Complete - Schema Alignment Implemented** - Normalized all field names to match detail API response schema. Policy: `abstract` → `summary`, Event: `description` → `summary`, Technology: `name` → `title` + `remarks` → `summary`, Initiative: JSONB casting `q2` → `title` + `q3` → `summary`, Case Study: `description` → `summary` + added `challenge_and_solution`, Project: Fixed critical bug (removed non-existent `description` field, added `background` and `purpose`). All SQL queries updated with aliases, all 91 tests passing. API now consistently uses `title` and `summary` across all topic types.
 - v1.6 (2025-10-21): **Added source language detection strategy** - Documents critical schema constraint (one language per topic record), current limitation (hardcoded English assumption), problem scenarios (wasteful same-language translation, incorrect source language), and proposed solution (add language column to queries, filter same-language records, group by source language for efficient batching). Includes implementation checklist, benefits analysis, and updated Phase 3 tasks with source language handling requirements.
 - v1.5 (2025-10-14): **Added translation cache invalidation strategy** - Strategy 1 (Immediate Deletion): Delete all translations when source content is updated to prevent stale translations. Includes implementation details, trade-offs analysis, and future optimization path (Strategy 2: Smart Field-Level Invalidation).
