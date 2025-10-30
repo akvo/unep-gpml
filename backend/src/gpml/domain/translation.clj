@@ -48,7 +48,7 @@
                             :q15 :q16 :q17 :q18 :q19 :q20 :q21 :q22 :q23 :q24
                             :title :summary :info_docs}
    "case_study"           #{:title :summary :challenge_and_solution}
-   "project"              #{:title :summary :background :purpose :info_docs}})
+   "project"              #{:title :summary :background :purpose :info_docs :highlights :outcomes}})
 
 (def topic-type->table
   "Maps topic types to their database table names.
@@ -116,7 +116,9 @@
                            :summary :summary
                            :background :background
                            :purpose :purpose
-                           :info_docs :info_docs}
+                           :info_docs :info_docs
+                           :highlights :highlights
+                           :outcomes :outcomes}
    "initiative"           {:title :q2
                            :summary :q3
                            :info_docs :info_docs

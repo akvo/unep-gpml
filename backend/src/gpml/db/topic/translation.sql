@@ -123,6 +123,7 @@ WHERE id IN (:v*:topic-ids);
 -- :name get-project-source-data :? :*
 -- Get source language content for projects
 -- FIXED: Removed non-existent 'description' column, added missing text fields
+-- Includes JSONB array fields (highlights, outcomes) for translation
 SELECT
   'project' AS topic_type,
   id AS topic_id,
@@ -131,6 +132,8 @@ SELECT
   summary,
   background,  -- Add missing translatable text field
   purpose,     -- Add missing translatable text field
-  info_docs    -- Add missing translatable field
+  info_docs,   -- Add missing translatable field
+  highlights,  -- JSONB array field (list of text items)
+  outcomes     -- JSONB array field (list of text items)
 FROM project
 WHERE id IN (:v*:topic-ids);
