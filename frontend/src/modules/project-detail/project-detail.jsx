@@ -113,7 +113,9 @@ const ProjectDetail = ({ data: inData, isModal, setVisible }) => {
     <div className={styles.detailView}>
       <div className={classNames('container', { isModal })}>
         <div className="head">
-          <h5 className="h-caps-m">project</h5>
+          <h5 className="h-caps-m">
+            <Trans>Project</Trans>
+          </h5>
           {data?.reviewStatus === 'SUBMITTED' && (
             <div className="pending">
               <h5>Pending Approval</h5>
@@ -205,13 +207,19 @@ const ProjectDetail = ({ data: inData, isModal, setVisible }) => {
                   </SwiperSlide>
                 ))}
             </Swiper>
-            <h3 className="h-m w-bold">Background</h3>
+            <h3 className="h-m w-bold">
+              <Trans>Background</Trans>
+            </h3>
             <p className="two-cols">{data?.background}</p>
-            <h3 className="h-m w-bold">Purpose</h3>
+            <h3 className="h-m w-bold">
+              <Trans>Purpose</Trans>
+            </h3>
             <p className="two-cols">{data?.purpose}</p>
             <div className="cols">
               <div className="col outcomes">
-                <h3 className="h-m w-bold">Expected Outcomes</h3>
+                <h3 className="h-m w-bold">
+                  <Trans>Expected Outcomes</Trans>
+                </h3>
                 <ul>
                   {data?.outcomes?.map((it) => (
                     <li>{it}</li>
@@ -219,7 +227,9 @@ const ProjectDetail = ({ data: inData, isModal, setVisible }) => {
                 </ul>
               </div>
               <div className="col highlights">
-                <h3 className="h-m w-bold">Key Highlights</h3>
+                <h3 className="h-m w-bold">
+                  <Trans>Key Highlights</Trans>
+                </h3>
                 <ul>
                   {data?.highlights?.map((it) => {
                     if (it.url && it.url !== '') {
@@ -263,7 +273,9 @@ const ProjectDetail = ({ data: inData, isModal, setVisible }) => {
             </div>
             <div className="cols">
               <div className="col">
-                <h3 className="h-m w-bold">Life Cycle Stage</h3>
+                <h3 className="h-m w-bold">
+                  <Trans>Life Cycle Stage</Trans>
+                </h3>
                 <div className="tag-list">
                   {lifecycleTagsToShow?.map((tag) => (
                     <div className="tag-item" key={tag?.tag}>
@@ -280,7 +292,9 @@ const ProjectDetail = ({ data: inData, isModal, setVisible }) => {
                 </div>
               </div>
               <div className="col">
-                <h3 className="h-m w-bold">Tags</h3>
+                <h3 className="h-m w-bold">
+                  <Trans>Tags</Trans>
+                </h3>
                 <div className="tag-list">
                   {tagsToShow?.map((tag) => (
                     <div className="tag-item" key={tag?.tag}>
