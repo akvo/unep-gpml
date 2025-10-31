@@ -34,8 +34,17 @@ class TranslationService {
         if (translation) {
           const translatedFields = {}
           fields.forEach((field) => {
-            if (translation[field] && translation[field].trim() !== '') {
-              translatedFields[field] = translation[field]
+            if (translation[field]) {
+              if (Array.isArray(translation[field])) {
+                if (translation[field].length > 0) {
+                  translatedFields[field] = translation[field]
+                }
+              } else if (
+                typeof translation[field] === 'string' &&
+                translation[field].trim() !== ''
+              ) {
+                translatedFields[field] = translation[field]
+              }
             }
           })
           return {
