@@ -43,7 +43,7 @@ msgstr ""
 msgid "{incompleteAmount} items are not completed"
 msgstr ""
 
-#: src/pages/workspace/[slug]/layout.js:282
+#: src/pages/workspace/[slug]/layout.js:289
 msgid "{progress}% complete"
 msgstr ""
 
@@ -199,7 +199,7 @@ msgstr ""
 msgid "Add translation"
 msgstr ""
 
-#: src/modules/workspace/ps/config.js:164
+#: src/modules/workspace/ps/config.js:204
 msgid "Admin"
 msgstr ""
 
@@ -207,7 +207,7 @@ msgstr ""
 msgid "Admin Section"
 msgstr ""
 
-#: src/modules/workspace/ps/config.js:165
+#: src/modules/workspace/ps/config.js:205
 msgid "Admins can edit all content and manage the team"
 msgstr ""
 
@@ -785,7 +785,7 @@ msgstr ""
 msgid "Community Hub"
 msgstr ""
 
-#: src/pages/workspace/[slug]/layout.js:384
+#: src/pages/workspace/[slug]/layout.js:391
 msgid "Completed"
 msgstr ""
 
@@ -919,7 +919,7 @@ msgid "Country Dedicated"
 msgstr ""
 
 #: src/modules/workspace/view.jsx:485
-#: src/pages/workspace/[slug]/layout.js:275
+#: src/pages/workspace/[slug]/layout.js:282
 msgid "Country Dedicated Workflow"
 msgstr ""
 
@@ -1130,8 +1130,8 @@ msgstr ""
 msgid "Description - Section 4 - Data Collection"
 msgstr ""
 
-#: src/modules/workspace/ps/config.js:182
-#: src/modules/workspace/ps/config.js:187
+#: src/modules/workspace/ps/config.js:222
+#: src/modules/workspace/ps/config.js:227
 msgid "Description text for what this is"
 msgstr ""
 
@@ -1262,11 +1262,11 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-#: src/modules/workspace/ps/config.js:169
+#: src/modules/workspace/ps/config.js:209
 msgid "Editor"
 msgstr ""
 
-#: src/modules/workspace/ps/config.js:170
+#: src/modules/workspace/ps/config.js:210
 msgid "Editors can edit all content, but cannot manage the team"
 msgstr ""
 
@@ -1817,6 +1817,11 @@ msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:24
 msgid "Good Health and Well-being"
+msgstr ""
+
+#: src/pages/workspace/[slug]/5-national-action-plan/governance-enforcement.js:14
+#: src/pages/workspace/[slug]/layout.js:63
+msgid "Governance & Enforcement"
 msgstr ""
 
 #: src/components/resource-card/resource-card.jsx:100
@@ -2465,7 +2470,8 @@ msgstr ""
 #: src/components/event-calendar/view.jsx:181
 #: src/modules/entity-detail/view.jsx:349
 #: src/modules/stakeholder-detail/view.jsx:377
-#: src/pages/workspace/[slug]/layout.js:277
+#: src/pages/[type]/[id].jsx:88
+#: src/pages/workspace/[slug]/layout.js:284
 msgid "Loading..."
 msgstr ""
 
@@ -2561,7 +2567,7 @@ msgstr ""
 msgid "Marine organisms"
 msgstr ""
 
-#: src/pages/workspace/[slug]/layout.js:384
+#: src/pages/workspace/[slug]/layout.js:391
 msgid "Mark as Completed"
 msgstr ""
 
@@ -2651,6 +2657,11 @@ msgstr ""
 #: src/modules/signup/view.jsx:35
 #: src/store.js:153
 msgid "Monitoring"
+msgstr ""
+
+#: src/pages/workspace/[slug]/5-national-action-plan/monitoring-implementation.js:17
+#: src/pages/workspace/[slug]/layout.js:64
+msgid "Monitoring & Implementation"
 msgstr ""
 
 #: src/store.js:278
@@ -2819,7 +2830,7 @@ msgstr ""
 #: src/modules/flexible-forms/view.jsx:1638
 #: src/modules/onboarding/view.jsx:288
 #: src/modules/onboarding/view.jsx:351
-#: src/pages/workspace/[slug]/layout.js:388
+#: src/pages/workspace/[slug]/layout.js:395
 msgid "Next"
 msgstr ""
 
@@ -3363,7 +3374,7 @@ msgstr ""
 msgid "Project development"
 msgstr ""
 
-#: src/modules/workspace/ps/config.js:185
+#: src/modules/workspace/ps/config.js:225
 msgid "Project Team"
 msgstr ""
 
@@ -3720,6 +3731,11 @@ msgstr ""
 msgid "Sector. Does your initiative target a specific sector? (Please tick ALL that apply)."
 msgstr ""
 
+#: src/pages/workspace/[slug]/5-national-action-plan/sectoral-interventions-legacy-plastics.js:17
+#: src/pages/workspace/[slug]/layout.js:61
+msgid "Sectoral Interventions & Legacy Plastics"
+msgstr ""
+
 #: src/components/event-calendar/view.jsx:148
 #: src/modules/knowledge-lib/resource-view.jsx:426
 msgid "See all"
@@ -3925,7 +3941,7 @@ msgstr ""
 msgid "Status of the review:"
 msgstr ""
 
-#: src/modules/workspace/ps/config.js:180
+#: src/modules/workspace/ps/config.js:220
 msgid "Steering Committee"
 msgstr ""
 
@@ -4473,6 +4489,11 @@ msgstr ""
 msgid "Upload Your Report"
 msgstr ""
 
+#: src/pages/workspace/[slug]/5-national-action-plan/upstream-measures.js:14
+#: src/pages/workspace/[slug]/layout.js:58
+msgid "Upstream Measures"
+msgstr ""
+
 #: src/components/map-and-layers/sidebar/partials/layerInfo.jsx:66
 #: src/modules/flexible-forms/form-schema.js:119
 #: src/modules/flexible-forms/form-schema.js:1233
@@ -4594,11 +4615,11 @@ msgstr ""
 msgid "View Source"
 msgstr ""
 
-#: src/modules/workspace/ps/config.js:174
+#: src/modules/workspace/ps/config.js:214
 msgid "Viewer"
 msgstr ""
 
-#: src/modules/workspace/ps/config.js:175
+#: src/modules/workspace/ps/config.js:215
 msgid "Viewers cannot edit all content"
 msgstr ""
 
@@ -4622,6 +4643,11 @@ msgstr ""
 
 #: src/utils/misc.js:363
 msgid "Waste Management"
+msgstr ""
+
+#: src/pages/workspace/[slug]/5-national-action-plan/waste-management-circularity.js:17
+#: src/pages/workspace/[slug]/layout.js:59
+msgid "Waste Management & Circularity"
 msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:1063

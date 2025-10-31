@@ -43,7 +43,7 @@ msgstr "{city} estimate"
 msgid "{incompleteAmount} items are not completed"
 msgstr "{incompleteAmount} items are not completed"
 
-#: src/pages/workspace/[slug]/layout.js:282
+#: src/pages/workspace/[slug]/layout.js:289
 msgid "{progress}% complete"
 msgstr "{progress}% complete"
 
@@ -199,7 +199,7 @@ msgstr "Add new entity"
 msgid "Add translation"
 msgstr "Add translation"
 
-#: src/modules/workspace/ps/config.js:164
+#: src/modules/workspace/ps/config.js:204
 msgid "Admin"
 msgstr "Admin"
 
@@ -207,7 +207,7 @@ msgstr "Admin"
 msgid "Admin Section"
 msgstr "Admin Section"
 
-#: src/modules/workspace/ps/config.js:165
+#: src/modules/workspace/ps/config.js:205
 msgid "Admins can edit all content and manage the team"
 msgstr "Admins can edit all content and manage the team"
 
@@ -785,7 +785,7 @@ msgstr "Community engagement"
 msgid "Community Hub"
 msgstr "Community Hub"
 
-#: src/pages/workspace/[slug]/layout.js:384
+#: src/pages/workspace/[slug]/layout.js:391
 msgid "Completed"
 msgstr "Completed"
 
@@ -919,7 +919,7 @@ msgid "Country Dedicated"
 msgstr "Country Dedicated"
 
 #: src/modules/workspace/view.jsx:485
-#: src/pages/workspace/[slug]/layout.js:275
+#: src/pages/workspace/[slug]/layout.js:282
 msgid "Country Dedicated Workflow"
 msgstr "Country Dedicated Workflow"
 
@@ -1136,8 +1136,8 @@ msgstr ""
 msgid "Description - Section 4 - Data Collection"
 msgstr "Several valuable tools and resources have been developed to aid governments and organizations in comprehensively assessing and monitoring the various aspects of plastic pollution and its impact on the environment. These tools serve as essential guides and frameworks for collecting data, implementing monitoring programs, and measuring progress related to plastic."
 
-#: src/modules/workspace/ps/config.js:182
-#: src/modules/workspace/ps/config.js:187
+#: src/modules/workspace/ps/config.js:222
+#: src/modules/workspace/ps/config.js:227
 msgid "Description text for what this is"
 msgstr "Description text for what this is"
 
@@ -1268,11 +1268,11 @@ msgstr "Ecosystem Services"
 msgid "Edit"
 msgstr "Edit"
 
-#: src/modules/workspace/ps/config.js:169
+#: src/modules/workspace/ps/config.js:209
 msgid "Editor"
 msgstr "Editor"
 
-#: src/modules/workspace/ps/config.js:170
+#: src/modules/workspace/ps/config.js:210
 msgid "Editors can edit all content, but cannot manage the team"
 msgstr "Editors can edit all content, but cannot manage the team"
 
@@ -1828,6 +1828,11 @@ msgstr "Go to the partnership"
 #: src/modules/flexible-forms/form-schema.js:24
 msgid "Good Health and Well-being"
 msgstr "Good Health and Well-being"
+
+#: src/pages/workspace/[slug]/5-national-action-plan/governance-enforcement.js:14
+#: src/pages/workspace/[slug]/layout.js:63
+msgid "Governance & Enforcement"
+msgstr "Governance & Enforcement"
 
 #: src/components/resource-card/resource-card.jsx:100
 msgid "Government Verified"
@@ -2475,7 +2480,8 @@ msgstr "Loading"
 #: src/components/event-calendar/view.jsx:181
 #: src/modules/entity-detail/view.jsx:349
 #: src/modules/stakeholder-detail/view.jsx:377
-#: src/pages/workspace/[slug]/layout.js:277
+#: src/pages/[type]/[id].jsx:88
+#: src/pages/workspace/[slug]/layout.js:284
 msgid "Loading..."
 msgstr "Loading..."
 
@@ -2571,7 +2577,7 @@ msgstr "Marine Litter Vital Graphics"
 msgid "Marine organisms"
 msgstr "Marine organisms"
 
-#: src/pages/workspace/[slug]/layout.js:384
+#: src/pages/workspace/[slug]/layout.js:391
 msgid "Mark as Completed"
 msgstr "Mark as Completed"
 
@@ -2662,6 +2668,11 @@ msgstr "Money that is invested or is available for investment in a new company, 
 #: src/store.js:153
 msgid "Monitoring"
 msgstr "Monitoring"
+
+#: src/pages/workspace/[slug]/5-national-action-plan/monitoring-implementation.js:17
+#: src/pages/workspace/[slug]/layout.js:64
+msgid "Monitoring & Implementation"
+msgstr "Monitoring & Implementation"
 
 #: src/store.js:278
 msgid "Monitoring and Analysis"
@@ -2829,7 +2840,7 @@ msgstr "New technical developments/innovation, e.g., research and development, n
 #: src/modules/flexible-forms/view.jsx:1638
 #: src/modules/onboarding/view.jsx:288
 #: src/modules/onboarding/view.jsx:351
-#: src/pages/workspace/[slug]/layout.js:388
+#: src/pages/workspace/[slug]/layout.js:395
 msgid "Next"
 msgstr "Next"
 
@@ -3373,7 +3384,7 @@ msgstr "Project"
 msgid "Project development"
 msgstr "Project development"
 
-#: src/modules/workspace/ps/config.js:185
+#: src/modules/workspace/ps/config.js:225
 msgid "Project Team"
 msgstr "Project Team"
 
@@ -3730,6 +3741,11 @@ msgstr "Secondary school"
 msgid "Sector. Does your initiative target a specific sector? (Please tick ALL that apply)."
 msgstr "Sector. Does your initiative target a specific sector? (Please tick ALL that apply)."
 
+#: src/pages/workspace/[slug]/5-national-action-plan/sectoral-interventions-legacy-plastics.js:17
+#: src/pages/workspace/[slug]/layout.js:61
+msgid "Sectoral Interventions & Legacy Plastics"
+msgstr "Sectoral Interventions & Legacy Plastics"
+
 #: src/components/event-calendar/view.jsx:148
 #: src/modules/knowledge-lib/resource-view.jsx:426
 msgid "See all"
@@ -3935,7 +3951,7 @@ msgstr "Status"
 msgid "Status of the review:"
 msgstr "Status of the review:"
 
-#: src/modules/workspace/ps/config.js:180
+#: src/modules/workspace/ps/config.js:220
 msgid "Steering Committee"
 msgstr "Steering Committee"
 
@@ -4488,6 +4504,11 @@ msgstr "Upload your data"
 msgid "Upload Your Report"
 msgstr "Upload Your Report"
 
+#: src/pages/workspace/[slug]/5-national-action-plan/upstream-measures.js:14
+#: src/pages/workspace/[slug]/layout.js:58
+msgid "Upstream Measures"
+msgstr "Upstream Measures"
+
 #: src/components/map-and-layers/sidebar/partials/layerInfo.jsx:66
 #: src/modules/flexible-forms/form-schema.js:119
 #: src/modules/flexible-forms/form-schema.js:1233
@@ -4609,11 +4630,11 @@ msgstr "VIEW MORE"
 msgid "View Source"
 msgstr "View Source"
 
-#: src/modules/workspace/ps/config.js:174
+#: src/modules/workspace/ps/config.js:214
 msgid "Viewer"
 msgstr "Viewer"
 
-#: src/modules/workspace/ps/config.js:175
+#: src/modules/workspace/ps/config.js:215
 msgid "Viewers cannot edit all content"
 msgstr "Viewers cannot edit all content"
 
@@ -4638,6 +4659,11 @@ msgstr "Waste management"
 #: src/utils/misc.js:363
 msgid "Waste Management"
 msgstr "Waste Management"
+
+#: src/pages/workspace/[slug]/5-national-action-plan/waste-management-circularity.js:17
+#: src/pages/workspace/[slug]/layout.js:59
+msgid "Waste Management & Circularity"
+msgstr "Waste Management & Circularity"
 
 #: src/modules/flexible-forms/form-schema.js:1063
 msgid "Wastewater/Sewage management"
