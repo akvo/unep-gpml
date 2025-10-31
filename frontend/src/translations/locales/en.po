@@ -43,7 +43,7 @@ msgstr "{city} estimate"
 msgid "{incompleteAmount} items are not completed"
 msgstr "{incompleteAmount} items are not completed"
 
-#: src/pages/workspace/[slug]/layout.js:289
+#: src/pages/workspace/[slug]/layout.js:282
 msgid "{progress}% complete"
 msgstr "{progress}% complete"
 
@@ -462,6 +462,10 @@ msgstr "Back to Channel"
 msgid "Back to connect options"
 msgstr "Back to connect options"
 
+#: src/modules/project-detail/project-detail.jsx:211
+msgid "Background"
+msgstr "Background"
+
 #: src/modules/flexible-forms/form-schema.js:404
 msgid "Ban(s)"
 msgstr "Ban(s)"
@@ -781,7 +785,7 @@ msgstr "Community engagement"
 msgid "Community Hub"
 msgstr "Community Hub"
 
-#: src/pages/workspace/[slug]/layout.js:391
+#: src/pages/workspace/[slug]/layout.js:384
 msgid "Completed"
 msgstr "Completed"
 
@@ -915,7 +919,7 @@ msgid "Country Dedicated"
 msgstr "Country Dedicated"
 
 #: src/modules/workspace/view.jsx:485
-#: src/pages/workspace/[slug]/layout.js:282
+#: src/pages/workspace/[slug]/layout.js:275
 msgid "Country Dedicated Workflow"
 msgstr "Country Dedicated Workflow"
 
@@ -1491,6 +1495,10 @@ msgstr "Existing policy or recent policy change"
 msgid "Existing regulation is not enforced"
 msgstr "Existing regulation is not enforced"
 
+#: src/modules/project-detail/project-detail.jsx:221
+msgid "Expected Outcomes"
+msgstr "Expected Outcomes"
+
 #: src/modules/map/map-chart.jsx:803
 #: src/modules/profile/admin.jsx:1216
 msgid "Experts"
@@ -1820,11 +1828,6 @@ msgstr "Go to the partnership"
 #: src/modules/flexible-forms/form-schema.js:24
 msgid "Good Health and Well-being"
 msgstr "Good Health and Well-being"
-
-#: src/pages/workspace/[slug]/5-national-action-plan/governance-enforcement.js:14
-#: src/pages/workspace/[slug]/layout.js:63
-msgid "Governance & Enforcement"
-msgstr "Governance & Enforcement"
 
 #: src/components/resource-card/resource-card.jsx:100
 msgid "Government Verified"
@@ -2257,6 +2260,10 @@ msgstr "JOIN WITH EMAIL"
 msgid "Key Features & Components"
 msgstr "Key Features & Components"
 
+#: src/modules/project-detail/project-detail.jsx:231
+msgid "Key Highlights"
+msgstr "Key Highlights"
+
 #: src/pages/knowledge-hub/index.js:503
 #: src/pages/knowledge-hub/index.js:516
 msgid "Keywords"
@@ -2419,6 +2426,7 @@ msgid "Life Below Water"
 msgstr "Life Below Water"
 
 #: src/modules/details-page/view.jsx:511
+#: src/modules/project-detail/project-detail.jsx:277
 #: src/pages/knowledge-hub/index.js:417
 msgid "Life Cycle Stage"
 msgstr "Life Cycle Stage"
@@ -2467,7 +2475,7 @@ msgstr "Loading"
 #: src/components/event-calendar/view.jsx:181
 #: src/modules/entity-detail/view.jsx:349
 #: src/modules/stakeholder-detail/view.jsx:377
-#: src/pages/workspace/[slug]/layout.js:284
+#: src/pages/workspace/[slug]/layout.js:277
 msgid "Loading..."
 msgstr "Loading..."
 
@@ -2563,7 +2571,7 @@ msgstr "Marine Litter Vital Graphics"
 msgid "Marine organisms"
 msgstr "Marine organisms"
 
-#: src/pages/workspace/[slug]/layout.js:391
+#: src/pages/workspace/[slug]/layout.js:384
 msgid "Mark as Completed"
 msgstr "Mark as Completed"
 
@@ -2826,7 +2834,7 @@ msgstr "New technical developments/innovation, e.g., research and development, n
 #: src/modules/flexible-forms/view.jsx:1638
 #: src/modules/onboarding/view.jsx:288
 #: src/modules/onboarding/view.jsx:351
-#: src/pages/workspace/[slug]/layout.js:395
+#: src/pages/workspace/[slug]/layout.js:388
 msgid "Next"
 msgstr "Next"
 
@@ -3360,6 +3368,7 @@ msgid "Prohibitive Regulations, Bans & Restrictions"
 msgstr "Prohibitive Regulations, Bans & Restrictions"
 
 #: src/components/resource-card/resource-card.jsx:14
+#: src/modules/project-detail/project-detail.jsx:117
 #: src/pages/knowledge-hub/index.js:221
 msgid "Project"
 msgstr "Project"
@@ -3405,6 +3414,10 @@ msgstr "Public Financing"
 #: src/modules/flexible-forms/form-schema.js:2747
 msgid "Publication Year"
 msgstr "Publication Year"
+
+#: src/modules/project-detail/project-detail.jsx:215
+msgid "Purpose"
+msgstr "Purpose"
 
 #: src/modules/flexible-forms/form-schema.js:28
 msgid "Quality Education"
@@ -3514,7 +3527,7 @@ msgid "Regulatory instruments to capture plastic post-leakage"
 msgstr "Regulatory instruments to capture plastic post-leakage"
 
 #: src/modules/details-page/view.jsx:622
-#: src/modules/project-detail/project-detail.jsx:306
+#: src/modules/project-detail/project-detail.jsx:320
 msgid "Related content"
 msgstr "Related content"
 
@@ -4078,6 +4091,7 @@ msgstr "Switch to"
 #: src/modules/flexible-forms/form-schema.js:2386
 #: src/modules/flexible-forms/form-schema.js:2625
 #: src/modules/knowledge-lib/filter-modal.jsx:264
+#: src/modules/project-detail/project-detail.jsx:296
 #: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:229
 msgid "Tags"
 msgstr "Tags"
