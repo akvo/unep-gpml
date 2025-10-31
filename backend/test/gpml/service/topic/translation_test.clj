@@ -316,3 +316,152 @@
           (is (clojure.string/starts-with? (get-in translation [:content :title]) "[ES]"))
           ;; Verify translation was created (not skipped)
           (is (= "es" (:language translation))))))))
+;; JSONB Array Translation Tests
+
+(deftest get-bulk-translations-with-auto-translate-project-outcomes-array-test
+  (let [system (ig/init fixtures/*system* [:duct.database.sql/hikaricp :duct/const])
+        config (get system [:duct/const :gpml.config/common])
+        conn (test-util/db-test-conn)]
+    ;; Setup: Insert project with outcomes array (simple string array)
+    (jdbc/execute! conn ["INSERT INTO language (iso_code, english_name, native_name) VALUES ('en', 'English', 'English'), ('es', 'Spanish', 'Español') ON CONFLICT (iso_code) DO NOTHING"])
+    (jdbc/execute! conn ["INSERT INTO project (id, language, title, summary, outcomes)
+                         VALUES (99930, 'en', 'Climate Project', 'Climate initiative',
+                                 '[\"10,000 tons plastic removed\", \"50 communities engaged\", \"3 recycling centers\"]'::jsonb)
+                         ON CONFLICT (id) DO UPDATE SET language = EXCLUDED.language, title = EXCLUDED.title,
+                                                        summary = EXCLUDED.summary, outcomes = EXCLUDED.outcomes"])
+
+    (testing "Project outcomes array should be translated"
+      (let [topic-filters [{:topic-type "project" :topic-id 99930}]
+            result (svc.topic.translation/get-bulk-translations-with-auto-translate config topic-filters "es" nil)]
+        (is (:success? result))
+        (is (= 1 (count (:translations result))))
+        (let [translation (first (:translations result))
+              outcomes (get-in translation [:content :outcomes])]
+          ;; Verify outcomes is an array
+          (is (sequential? outcomes))
+          ;; Verify all 3 items were translated
+          (is (= 3 (count outcomes)))
+          ;; Mock adapter adds [ES] prefix to each translated string
+          (is (every? #(clojure.string/starts-with? % "[ES]") outcomes)))))))
+
+(deftest get-bulk-translations-with-auto-translate-project-highlights-object-array-test
+  (let [system (ig/init fixtures/*system* [:duct.database.sql/hikaricp :duct/const])
+        config (get system [:duct/const :gpml.config/common])
+        conn (test-util/db-test-conn)]
+    ;; Setup: Insert project with highlights array (array of objects with url + text)
+    (jdbc/execute! conn ["INSERT INTO language (iso_code, english_name, native_name) VALUES ('en', 'English', 'English'), ('es', 'Spanish', 'Español') ON CONFLICT (iso_code) DO NOTHING"])
+    (jdbc/execute! conn ["INSERT INTO project (id, language, title, summary, highlights)
+                         VALUES (99931, 'en', 'Ocean Project', 'Ocean conservation',
+                                 '[{\"url\": \"https://example.com/report\", \"text\": \"Annual impact report published\"},
+                                   {\"url\": \"\", \"text\": \"Award-winning innovation\"},
+                                   {\"url\": \"https://news.com/article\", \"text\": \"Featured in media\"}]'::jsonb)
+                         ON CONFLICT (id) DO UPDATE SET language = EXCLUDED.language, title = EXCLUDED.title,
+                                                        summary = EXCLUDED.summary, highlights = EXCLUDED.highlights"])
+
+    (testing "Project highlights object array should translate text property and preserve url"
+      (let [topic-filters [{:topic-type "project" :topic-id 99931}]
+            result (svc.topic.translation/get-bulk-translations-with-auto-translate config topic-filters "es" nil)]
+        (is (:success? result))
+        (is (= 1 (count (:translations result))))
+        (let [translation (first (:translations result))
+              highlights (get-in translation [:content :highlights])]
+          ;; Verify highlights is an array
+          (is (sequential? highlights))
+          ;; Verify all 3 items exist
+          (is (= 3 (count highlights)))
+          ;; Verify each item is a map with :url and :text properties
+          (is (every? map? highlights))
+          (is (every? #(contains? % :url) highlights))
+          (is (every? #(contains? % :text) highlights))
+          ;; Verify URLs are preserved exactly (not translated)
+          (is (= "https://example.com/report" (:url (nth highlights 0))))
+          (is (= "" (:url (nth highlights 1))))
+          (is (= "https://news.com/article" (:url (nth highlights 2))))
+          ;; Verify text properties were translated (mock adapter adds [ES] prefix)
+          (is (every? #(clojure.string/starts-with? (:text %) "[ES]") highlights)))))))
+
+(deftest get-bulk-translations-with-auto-translate-project-both-arrays-test
+  (let [system (ig/init fixtures/*system* [:duct.database.sql/hikaricp :duct/const])
+        config (get system [:duct/const :gpml.config/common])
+        conn (test-util/db-test-conn)]
+    ;; Setup: Insert project with both outcomes and highlights arrays
+    (jdbc/execute! conn ["INSERT INTO language (iso_code, english_name, native_name) VALUES ('en', 'English', 'English'), ('es', 'Spanish', 'Español') ON CONFLICT (iso_code) DO NOTHING"])
+    (jdbc/execute! conn ["INSERT INTO project (id, language, title, summary, outcomes, highlights)
+                         VALUES (99932, 'en', 'Full Project', 'Complete project',
+                                 '[\"Outcome 1\", \"Outcome 2\"]'::jsonb,
+                                 '[{\"url\": \"http://test.com\", \"text\": \"Highlight 1\"}, {\"url\": \"\", \"text\": \"Highlight 2\"}]'::jsonb)
+                         ON CONFLICT (id) DO UPDATE SET language = EXCLUDED.language, title = EXCLUDED.title,
+                                                        summary = EXCLUDED.summary, outcomes = EXCLUDED.outcomes,
+                                                        highlights = EXCLUDED.highlights"])
+
+    (testing "Project with both outcomes and highlights arrays"
+      (let [topic-filters [{:topic-type "project" :topic-id 99932}]
+            result (svc.topic.translation/get-bulk-translations-with-auto-translate config topic-filters "es" nil)]
+        (is (:success? result))
+        (is (= 1 (count (:translations result))))
+        (let [translation (first (:translations result))
+              outcomes (get-in translation [:content :outcomes])
+              highlights (get-in translation [:content :highlights])]
+          ;; Verify both arrays exist and are correct type
+          (is (sequential? outcomes))
+          (is (sequential? highlights))
+          ;; Verify outcomes array structure (simple strings)
+          (is (= 2 (count outcomes)))
+          (is (every? string? outcomes))
+          (is (every? #(clojure.string/starts-with? % "[ES]") outcomes))
+          ;; Verify highlights array structure (objects with url + text)
+          (is (= 2 (count highlights)))
+          (is (every? map? highlights))
+          (is (= "http://test.com" (:url (first highlights))))
+          (is (every? #(clojure.string/starts-with? (:text %) "[ES]") highlights)))))))
+
+(deftest get-bulk-translations-with-auto-translate-project-empty-arrays-test
+  (let [system (ig/init fixtures/*system* [:duct.database.sql/hikaricp :duct/const])
+        config (get system [:duct/const :gpml.config/common])
+        conn (test-util/db-test-conn)]
+    ;; Setup: Insert project with empty arrays
+    (jdbc/execute! conn ["INSERT INTO language (iso_code, english_name, native_name) VALUES ('en', 'English', 'English'), ('es', 'Spanish', 'Español') ON CONFLICT (iso_code) DO NOTHING"])
+    (jdbc/execute! conn ["INSERT INTO project (id, language, title, summary, outcomes, highlights)
+                         VALUES (99933, 'en', 'Empty Arrays Project', 'Project with empty arrays',
+                                 '[]'::jsonb, '[]'::jsonb)
+                         ON CONFLICT (id) DO UPDATE SET language = EXCLUDED.language, title = EXCLUDED.title,
+                                                        summary = EXCLUDED.summary, outcomes = EXCLUDED.outcomes,
+                                                        highlights = EXCLUDED.highlights"])
+
+    (testing "Project with empty arrays should handle gracefully"
+      (let [topic-filters [{:topic-type "project" :topic-id 99933}]
+            result (svc.topic.translation/get-bulk-translations-with-auto-translate config topic-filters "es" nil)]
+        (is (:success? result))
+        (is (= 1 (count (:translations result))))
+        (let [translation (first (:translations result))]
+          ;; Empty arrays are not included in translation (no translatable content)
+          ;; This is correct behavior - we only translate fields with content
+          (is (nil? (get-in translation [:content :outcomes])))
+          (is (nil? (get-in translation [:content :highlights])))
+          ;; Verify other fields were still translated
+          (is (clojure.string/starts-with? (get-in translation [:content :title]) "[ES]")))))))
+
+(deftest get-bulk-translations-with-auto-translate-project-null-arrays-test
+  (let [system (ig/init fixtures/*system* [:duct.database.sql/hikaricp :duct/const])
+        config (get system [:duct/const :gpml.config/common])
+        conn (test-util/db-test-conn)]
+    ;; Setup: Insert project with null arrays
+    (jdbc/execute! conn ["INSERT INTO language (iso_code, english_name, native_name) VALUES ('en', 'English', 'English'), ('es', 'Spanish', 'Español') ON CONFLICT (iso_code) DO NOTHING"])
+    (jdbc/execute! conn ["INSERT INTO project (id, language, title, summary, outcomes, highlights)
+                         VALUES (99934, 'en', 'Null Arrays Project', 'Project with null arrays',
+                                 NULL, NULL)
+                         ON CONFLICT (id) DO UPDATE SET language = EXCLUDED.language, title = EXCLUDED.title,
+                                                        summary = EXCLUDED.summary, outcomes = EXCLUDED.outcomes,
+                                                        highlights = EXCLUDED.highlights"])
+
+    (testing "Project with null arrays should handle gracefully"
+      (let [topic-filters [{:topic-type "project" :topic-id 99934}]
+            result (svc.topic.translation/get-bulk-translations-with-auto-translate config topic-filters "es" nil)]
+        (is (:success? result))
+        (is (= 1 (count (:translations result))))
+        (let [translation (first (:translations result))]
+          ;; Verify null fields are not included in translation
+          (is (nil? (get-in translation [:content :outcomes])))
+          (is (nil? (get-in translation [:content :highlights])))
+          ;; Verify other fields were still translated
+          (is (clojure.string/starts-with? (get-in translation [:content :title]) "[ES]")))))))
