@@ -40,7 +40,7 @@ export const iso2id = {
 export const PREFIX_SLUG = 'plastic-strategy'
 
 export const stepsState = [
-  { label: 'Instructions', slug: '', checked: false },
+  { label: 'Introduction', slug: '', checked: false },
   {
     label: 'National Steering Committee & Project Team',
     slug: '1-project-team',

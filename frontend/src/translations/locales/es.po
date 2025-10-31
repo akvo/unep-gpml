@@ -920,6 +920,10 @@ msgstr "Panel de control del país"
 msgid "Country Dedicated"
 msgstr "Para cada país"
 
+#: src/pages/landing/index.jsx:105
+msgid "Action Planning"
+msgstr "Planificación de Acciones"
+
 #: src/modules/workspace/view.jsx:485
 #: src/pages/workspace/[slug]/layout.js:282
 msgid "Country Dedicated Workflow"
@@ -928,6 +932,23 @@ msgstr "Flujo de trabajo dedicado a cada país"
 #: src/modules/workspace/view.jsx:319
 msgid "Country Dedicated Workflows"
 msgstr "Flujos de trabajo dedicados a cada país"
+
+#: src/modules/workspace/view.jsx:485
+#: src/pages/workspace/[slug]/layout.js:282
+msgid "Action Planning Tool"
+msgstr "Herramienta de Planificación de Acciones"
+
+#: src/modules/workspace/view.jsx:319
+msgid "Action Planning Tools"
+msgstr "Herramientas de Planificación de Acciones"
+
+#: src/modules/workspace/view.jsx:319
+msgid "Action Planning Tools"
+msgstr "Herramientas de Planificación de Acciones"
+
+#: src/modules/workspace/view.jsx:319
+msgid "Introduction"
+msgstr "Introducción"
 
 #: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:560
 #: src/pages/workspace/[slug]/layout.js:36
