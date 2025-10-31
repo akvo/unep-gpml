@@ -43,7 +43,7 @@ msgstr "{city} estimation"
 msgid "{incompleteAmount} items are not completed"
 msgstr "{incompleteAmount} éléments ne sont pas terminés"
 
-#: src/pages/workspace/[slug]/layout.js:282
+#: src/pages/workspace/[slug]/layout.js:289
 msgid "{progress}% complete"
 msgstr "{progress} % terminé"
 
@@ -785,7 +785,7 @@ msgstr "Engagement communautaire"
 msgid "Community Hub"
 msgstr "Centre communautaire"
 
-#: src/pages/workspace/[slug]/layout.js:384
+#: src/pages/workspace/[slug]/layout.js:391
 msgid "Completed"
 msgstr "Complété"
 
@@ -919,7 +919,7 @@ msgid "Country Dedicated"
 msgstr "Pour chaque pays"
 
 #: src/modules/workspace/view.jsx:485
-#: src/pages/workspace/[slug]/layout.js:275
+#: src/pages/workspace/[slug]/layout.js:282
 msgid "Country Dedicated Workflow"
 msgstr "Flux de travail dédiés par pays"
 
@@ -1833,6 +1833,11 @@ msgstr "Accédez au partenariat"
 msgid "Good Health and Well-being"
 msgstr "Bonne santé et bien-être"
 
+#: src/pages/workspace/[slug]/5-national-action-plan/governance-enforcement.js:14
+#: src/pages/workspace/[slug]/layout.js:63
+msgid "Governance & Enforcement"
+msgstr ""
+
 #: src/components/resource-card/resource-card.jsx:100
 msgid "Government Verified"
 msgstr "Vérifié par le gouvernement"
@@ -2479,7 +2484,8 @@ msgstr "Chargement"
 #: src/components/event-calendar/view.jsx:181
 #: src/modules/entity-detail/view.jsx:349
 #: src/modules/stakeholder-detail/view.jsx:377
-#: src/pages/workspace/[slug]/layout.js:277
+#: src/pages/[type]/[id].jsx:88
+#: src/pages/workspace/[slug]/layout.js:284
 msgid "Loading..."
 msgstr "Chargement..."
 
@@ -2575,7 +2581,7 @@ msgstr "Graphiques vitaux des déchets marins"
 msgid "Marine organisms"
 msgstr "les organismes marins"
 
-#: src/pages/workspace/[slug]/layout.js:384
+#: src/pages/workspace/[slug]/layout.js:391
 msgid "Mark as Completed"
 msgstr "Marquer comme terminé"
 
@@ -2838,7 +2844,7 @@ msgstr "Nouveaux développements/innovations techniques, par exemple recherche e
 #: src/modules/flexible-forms/view.jsx:1638
 #: src/modules/onboarding/view.jsx:288
 #: src/modules/onboarding/view.jsx:351
-#: src/pages/workspace/[slug]/layout.js:388
+#: src/pages/workspace/[slug]/layout.js:395
 msgid "Next"
 msgstr "Suivant"
 
