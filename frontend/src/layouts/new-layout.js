@@ -3,7 +3,6 @@ import { useRouter } from 'next/router'
 import { isEmpty } from 'lodash'
 import { Avatar, Button, Dropdown, Menu, notification } from 'antd'
 import localFont from 'next/font/local'
-import { DM_Sans } from 'next/font/google'
 import { UIStore } from '../store'
 import classNames from 'classnames'
 import Footer from '../components/footer/Footer'
@@ -54,10 +53,22 @@ const archia = localFont({
     },
   ],
 })
-const dmSans = DM_Sans({
-  subsets: ['latin'],
+const dmSans = localFont({
+  src: [
+    {
+      path: '../../public/fonts/dmsans-regular-webfont.woff2',
+      weight: '400',
+    },
+    {
+      path: '../../public/fonts/dmsans-medium-webfont.woff2',
+      weight: '500',
+    },
+    {
+      path: '../../public/fonts/dmsans-bold-webfont.woff2',
+      weight: '700',
+    },
+  ],
   variable: '--font-dm-sans',
-  weight: ['400', '500', '700'],
 })
 
 const NewLayout = ({
