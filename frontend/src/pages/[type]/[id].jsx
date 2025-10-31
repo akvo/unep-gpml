@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import React, { memo, useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import NewDetailsView from '../../modules/details-page/view'
 import api from '../../utils/api'
@@ -6,6 +6,10 @@ import { getTypeByResource } from '../../modules/flexible-forms/view'
 import { loadCatalog } from '../../translations/utils'
 import Head from 'next/head'
 import ProjectDetail from '../../modules/project-detail/project-detail'
+import translationService from '../../utils/translationService'
+import { LoadingOutlined } from '@ant-design/icons'
+import { Trans } from '@lingui/macro'
+import styles from './index.module.scss'
 
 const VALID_TYPES = [
   'initiative',
@@ -21,7 +25,7 @@ const VALID_TYPES = [
 ]
 
 const Details = ({
-  data,
+  data: initialData,
   translations,
   setLoginVisible,
   isAuthenticated,
@@ -29,6 +33,8 @@ const Details = ({
 }) => {
   const router = useRouter()
   const { type, id } = router.query
+  const [data, setData] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
   if (!VALID_TYPES.includes(type)) {
     return <p>Invalid type!</p>
   }
@@ -43,6 +49,45 @@ const Details = ({
       slicedWords = slicedWords?.slice(0, lastSpaceIndex)
     }
     return slicedWords
+  }
+
+  useEffect(() => {
+    const translateData = async () => {
+      setIsLoading(true)
+      if (router.locale !== 'en' && initialData) {
+        try {
+          const dataWithType = {
+            ...initialData,
+            type: type?.replace('-', '_'),
+            id: initialData.id || id,
+          }
+
+          const translated = await translationService.getTranslatedResources(
+            [dataWithType],
+            router.locale,
+            ['title', 'summary', 'background', 'purpose', 'highlights']
+          )
+
+          setData(translated[0])
+        } catch (error) {
+          console.error('Translation error:', error)
+          setData(initialData)
+        }
+      } else {
+        setData(initialData)
+      }
+      setIsLoading(false)
+    }
+
+    translateData()
+  }, [router.locale, initialData, type, id])
+
+  if (isLoading || !data) {
+    return (
+      <div className={styles.loadingContainer}>
+        <LoadingOutlined spin /> <Trans>Loading...</Trans>
+      </div>
+    )
   }
 
   return (
