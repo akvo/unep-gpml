@@ -148,6 +148,46 @@ export const stepsState = [
     slug: '5-national-action-plan',
     substeps: [
       { label: 'Intro', slug: '', checked: false },
+      {
+        label: 'Upstream Measures',
+        slug: 'upstream-measures',
+        checked: false,
+        strapiParams: {
+          slug: 'upstream-measures',
+        },
+      },
+      {
+        label: 'Waste Management & Circularity',
+        slug: 'waste-management-circularity',
+        checked: false,
+        strapiParams: {
+          slug: 'waste-management-circularity',
+        },
+      },
+      {
+        label: 'Sectoral Interventions & Legacy Plastics',
+        slug: 'sectoral-interventions-legacy-plastics',
+        checked: false,
+        strapiParams: {
+          slug: 'sectoral-interventions-legacy-plastics',
+        },
+      },
+      {
+        label: 'Governance & Enforcement',
+        slug: 'governance-enforcement',
+        checked: false,
+        strapiParams: {
+          slug: 'governance-enforcement',
+        },
+      },
+      {
+        label: 'Monitoring & Implementation',
+        slug: 'monitoring-implementation',
+        checked: false,
+        strapiParams: {
+          slug: 'monitoring-implementation',
+        },
+      },
       { label: 'Summary & Report', slug: 'summary', checked: false },
     ],
   },

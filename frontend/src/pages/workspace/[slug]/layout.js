@@ -55,6 +55,13 @@ export const useStepsDict = () => {
       t`National Source Inventory Data Mapping`
     ),
     'Final Review': i18n._(t`Final Review`),
+    'Upstream Measures': i18n._(t`Upstream Measures`),
+    'Waste Management & Circularity': i18n._(t`Waste Management & Circularity`),
+    'Sectoral Interventions & Legacy Plastics': i18n._(
+      t`Sectoral Interventions & Legacy Plastics`
+    ),
+    'Governance & Enforcement': i18n._(t`Governance & Enforcement`),
+    'Monitoring & Implementation': i18n._(t`Monitoring & Implementation`),
   }
 
   return stepsDict
