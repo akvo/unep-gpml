@@ -21,10 +21,11 @@ export const useStepsDict = () => {
   const { i18n } = useLingui()
 
   const stepsDict = {
-    Instructions: i18n._(t`Instructions`),
+    Instructions: i18n._(t`Intro`),
     'National Steering Committee & Project Team': i18n._(
       t`National Steering Committee & Project Team`
     ),
+    Introduction: t`Introduction`,
     Intro: t`Intro`,
     'Setup your team': i18n._(t`Setup your team`),
     'Stakeholder Consultations': i18n._(t`Stakeholder Consultations`),
@@ -279,7 +280,7 @@ const NestedLayout = ({ children }) => {
         <div className="sticky" ref={domRef}>
           <div className="head">
             <div className="caps-heading-s">
-              <Trans>Country Dedicated Workflow</Trans>
+              <Trans>Action Planning Tool</Trans>
             </div>
             <h5 className="h-m m-semi">{psCountryName || t`Loading...`}</h5>
             <div className="progress-bar">

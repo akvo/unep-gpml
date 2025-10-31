@@ -102,7 +102,7 @@ const Landing = (props) => {
         <div className="container">
           <div className="text">
             <strong className="caps-heading-1">
-              <Trans>Country Dedicated</Trans>
+              <Trans>Action Planning</Trans>
             </strong>
             <h2>
               <strong>
@@ -112,10 +112,10 @@ const Landing = (props) => {
             </h2>
             <p className="p-m">
               <Trans>
-                The Country Dedicated Workflow is a digital tool to help
-                countries in developing national plastic source inventories and
-                plastic strategies, supported by step-by-step guidance and
-                inspiring case studies. Create your account and explore.
+                The Action Planning Tool is a digital workflow to help countries
+                in developing national plastic source inventories and plastic
+                strategies, supported by step-by-step guidance and inspiring
+                case studies. Create your account and explore.
               </Trans>
             </p>
             <JoinBtn {...props} />
