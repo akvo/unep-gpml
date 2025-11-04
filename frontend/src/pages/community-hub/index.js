@@ -139,8 +139,21 @@ const CommunityHub = ({ setLoginVisible, isAuthenticated, profile }) => {
   const handleClick = (result) => (e) => {
     e.preventDefault()
     if (isAuthenticated) {
-      setModalVisible(true)
-      setOpenItem(result)
+      const { type, id } = result
+      if (type && id) {
+        const urlType = type.replace(/_/g, '-')
+        const detailUrl = `/${urlType}/${id}`
+
+        console.log('type,id', detailUrl)
+        window.history.pushState(
+          { type: urlType, id, item: result },
+          '',
+          detailUrl
+        )
+
+        setOpenItem(result)
+        setModalVisible(true)
+      }
     } else {
       setLoginVisible(true)
     }

@@ -499,10 +499,6 @@ const SignUpForm = ({
               ...e.data.S3,
               required: groupRequiredFields['S3'].required,
             },
-            S4: {
-              ...e.data.S4,
-              required: groupRequiredFields['S4'].required,
-            },
             S5: {
               ...e.data.S5,
               required: groupRequiredFields['S5'].required,

@@ -167,32 +167,11 @@ export const schema = {
         id: 'tabs',
         value: ['S3'],
       },
-      required: ['seeking', 'offering', 'about', 'publicDatabase'],
+      required: ['about', 'publicDatabase'],
       properties: {
-        seeking: {
-          title: 'Seeking',
-          enum: [],
-        },
-        seekingSuggestedTags: {
-          title: 'Suggested Tags Seeking',
-          enum: [],
-        },
-        offering: {
-          title: 'Offering',
-          enum: [],
-        },
-        offeringSuggestedTags: {
-          title: 'Offering Tags Seeking',
-          enum: [],
-        },
         about: {
           title: 'About yourself (Bio) (max 100 words)',
           type: 'string',
-        },
-        cv: {
-          title: 'CV / Portfolio',
-          type: 'string',
-          format: 'data-url',
         },
         publicDatabase: {
           title:
