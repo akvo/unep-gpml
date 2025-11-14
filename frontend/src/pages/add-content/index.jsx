@@ -2151,7 +2151,7 @@ const DynamicContentForm = () => {
                           {!selectedType && (
                             <div className="form-description">
                               <p>
-                                The GPML Digital Platform is crowdsourced and
+                                The Global Plastics Hub is crowdsourced and
                                 allows everyone to submit new content via this
                                 form.
                               </p>

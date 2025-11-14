@@ -1206,7 +1206,7 @@ msgstr "Diferente gestión ambiental de los entornos terrestres."
 
 #: src/store.js:102
 msgid "Digital Platform"
-msgstr "Centro mundial de plásticos"
+msgstr "Acerca del Hub"
 
 #: src/modules/details-page/comment.jsx:285
 msgid "Discussion"

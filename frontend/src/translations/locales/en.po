@@ -1200,7 +1200,7 @@ msgstr "Different environmental management of land-based environments"
 
 #: src/store.js:102
 msgid "Digital Platform"
-msgstr "Digital Platform"
+msgstr "About The Hub"
 
 #: src/modules/details-page/comment.jsx:285
 msgid "Discussion"
