@@ -24,8 +24,8 @@ import { getBaseUrl, getStrapiUrl } from '../../utils/misc'
 import { loadCatalog } from '../../translations/utils'
 
 function getUniqueValues(array) {
-  const uniqueValues = new Set(array);
-  return Array.from(uniqueValues);
+  const uniqueValues = new Set(array)
+  return Array.from(uniqueValues)
 }
 
 export function cleanArcGisFields(fields) {
@@ -128,7 +128,7 @@ const addTooltipsToPlaceholders = (htmlString, placeholders, tooltips) => {
 }
 const CountryOverview = () => {
   const router = useRouter()
-   const { query } = router
+  const { query } = router
   // const { queryParameters, setQueryParameters } = useQueryParameters()
   const [isMobile, setIsMobile] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState(null)
@@ -300,10 +300,10 @@ const CountryOverview = () => {
 
         {!isMobile && (
           <Col className={styles.containerButton}>
-            <span className={styles.textButton}>
+            {/* <span className={styles.textButton}>
               <span className={styles.dot}></span>
               Page last updated: 02-20-22
-            </span>
+            </span> */}
             <Tooltip title="Update country data by sending a request to the GPML Data Hub team.">
               <Button
                 className={styles.buttonStyle}
@@ -359,7 +359,7 @@ const CountryOverview = () => {
                 style={{
                   backgroundColor: '#FFFFFF',
                   borderRadius: '12px',
-                   padding: '20px 15px',
+                  padding: '20px 15px',
                   boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
                 }}
               >
@@ -377,7 +377,7 @@ const CountryOverview = () => {
                 style={{
                   backgroundColor: '#FFFFFF',
                   borderRadius: '12px',
-              padding: '20px 15px',
+                  padding: '20px 15px',
                   boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
                 }}
               >
@@ -415,7 +415,7 @@ const CountryOverview = () => {
               style={{
                 backgroundColor: '#FFFFFF',
                 borderRadius: '12px',
-                 padding: '20px 15px',
+                padding: '20px 15px',
                 boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
               }}
             >
@@ -458,15 +458,15 @@ const CountryOverview = () => {
           <PlasticOceanBeachChart layers={layers} layerLoading={layerLoading} />
         </div>
       )}
-       {isMobile && (
+      {isMobile && (
         <div className={styles.mobileButtonsContainer}>
           <Button className={styles.buttonStyle} onClick={showModal}>
             {t`Submit Data Update`}
           </Button>
         </div>
-      )} 
+      )}
 
-       {router?.query?.categoryId && router?.query?.country && isMobile && (
+      {router?.query?.categoryId && router?.query?.country && isMobile && (
         <div>
           <Button
             className={styles.globalButton}
@@ -475,7 +475,7 @@ const CountryOverview = () => {
             {t`View Global Data `} →
           </Button>
         </div>
-      )} 
+      )}
     </div>
   )
 }

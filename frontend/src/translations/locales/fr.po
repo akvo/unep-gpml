@@ -1204,7 +1204,7 @@ msgstr "Une gestion environnementale différente des milieux terrestres"
 
 #: src/store.js:102
 msgid "Digital Platform"
-msgstr "Plateforme numérique"
+msgstr "À propos du Hub"
 
 #: src/modules/details-page/comment.jsx:285
 msgid "Discussion"
