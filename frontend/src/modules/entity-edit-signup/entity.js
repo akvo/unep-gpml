@@ -103,18 +103,6 @@ const getSchema = (
     'org.representativeGroupCivilSociety'
   ].enum = representativeGroup.find((x) => x.code === 'civil-society')?.childs
 
-  const array = Object.keys(tags)
-    .map((k) => tags[k])
-    .flat()
-
-  prop.S4.properties['orgExpertise'].enum = array?.map((it) => String(it.id))
-  prop.S4.properties['orgExpertise'].enumNames = array?.map((it) => it.tag)
-  prop.S4.properties['privateTag'].enum = array
-    ?.filter((item) => item.private)
-    ?.map((it) => String(it.id))
-  prop.S4.properties['privateTag'].enumNames = array
-    ?.filter((item) => item.private)
-    ?.map((it) => it.tag)
   prop.S5.properties['orgHeadquarter'].enum = countries
     .filter((country) => country.description.toLowerCase() === 'member state')
     .map((it) => it.id)
@@ -197,12 +185,6 @@ const tabs = [
   {
     key: 'S3',
     title: 'Entity Details',
-    desc: '',
-    steps: [],
-  },
-  {
-    key: 'S4',
-    title: 'Area of Expertise',
     desc: '',
     steps: [],
   },

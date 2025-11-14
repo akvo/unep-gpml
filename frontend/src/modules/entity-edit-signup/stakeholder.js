@@ -57,22 +57,6 @@ const getSchema = ({
     .map((k) => tags[k])
     .flat()
 
-  prop.S3.properties['seeking'].enum = array?.map((it) => String(it.id))
-  prop.S3.properties['seeking'].enumNames = array?.map((it) => it.tag)
-
-  prop.S3.properties['seekingSuggestedTags'].enum = stakeholderSuggestedTags
-  prop.S3.properties[
-    'seekingSuggestedTags'
-  ].enumNames = stakeholderSuggestedTags
-
-  prop.S3.properties['offeringSuggestedTags'].enum = stakeholderSuggestedTags
-  prop.S3.properties[
-    'offeringSuggestedTags'
-  ].enumNames = stakeholderSuggestedTags
-
-  prop.S3.properties['offering'].enum = array?.map((it) => String(it.id))
-  prop.S3.properties['offering'].enumNames = array?.map((it) => it.tag)
-
   // New Entity S2
   // prop.S2.properties["companyName"].enum = [-1].concat(
   //   nonMemberOrganisations.map((x) => x.id)
@@ -120,7 +104,7 @@ const tabs = [
   },
   {
     key: 'S3',
-    title: 'Expertise & Activities',
+    title: 'About',
     desc: '',
     steps: [],
   },

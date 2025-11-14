@@ -51,30 +51,12 @@
     },
     "S1_ExpertisesAndActivities": {
       "classNames": "list-group-item",
-      "seeking": {
-        "ui:widget": "select",
-        "ui:placeholder": "Search",
-        "ui:mode": "multiple",
-        "ui:showSearch": true
-      },
-      "offering": {
-        "ui:widget": "select",
-        "ui:placeholder": "Search",
-        "ui:mode": "multiple",
-        "ui:showSearch": true
-      },
       "about": {
         "ui:placeholder": "",
         "ui:widget": "textarea",
         "ui:maxWord": 100
       },
-      "cv": {
-        "ui:widget": "file",
-        "ui:options": {
-          "accept": ".doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.pdf,application/pdf"
-        }
-      },
-      "ui:order": ["seeking", "offering", "about", "cv"]
+      "ui:order": ["about"]
     },
     "ui:order": [
       "title",

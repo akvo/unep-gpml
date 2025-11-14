@@ -109,17 +109,6 @@ const DetailView = ({ item, profile, setLoginVisible, isAuthenticated }) => {
       })
   }, [])
 
-  useEffect(() => {
-    if (!modalVisible) {
-      const previousHref = router.asPath
-      window.history.pushState(
-        { urlPath: `/${previousHref}` },
-        '',
-        `${previousHref}`
-      )
-    }
-  }, [modalVisible])
-
   const assignedBadges = (
     <span className="badges">
       {data?.assignedBadges?.map((it) => (

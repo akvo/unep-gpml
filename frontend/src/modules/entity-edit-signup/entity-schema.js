@@ -85,14 +85,6 @@ export const schema = {
           title: 'Expertises and activities',
           type: 'object',
           properties: {
-            seeking: {
-              title: 'Seeking',
-              enum: [],
-            },
-            offering: {
-              title: 'Offering',
-              enum: [],
-            },
             about: {
               title: 'About yourself (Bio) (max 100 words)',
               type: 'string',
@@ -103,7 +95,7 @@ export const schema = {
               format: 'data-url',
             },
           },
-          required: ['seeking', 'offering', 'about'],
+          required: ['about'],
         },
       },
     },
@@ -192,26 +184,6 @@ export const schema = {
           title: 'Upload your Entity’s logo',
           type: 'string',
           format: 'data-url',
-        },
-      },
-    },
-    S4: {
-      title: '',
-      type: 'object',
-      depend: {
-        id: 'tabs',
-        value: ['S4'],
-      },
-      required: ['orgExpertise'],
-      properties: {
-        orgExpertise: {
-          title:
-            'What areas of interest or expertise does your entity have or offer?',
-          enum: [],
-        },
-        privateTag: {
-          title: 'Select private tag',
-          enum: [],
         },
       },
     },
