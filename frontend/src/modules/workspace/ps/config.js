@@ -63,16 +63,6 @@ export const stepsState = [
           ps_bookmark_sections_keys: 'stakeholder-case-studies',
         },
       },
-      {
-        label: 'Initiatives',
-        slug: 'initiatives',
-        checked: false,
-        apiParams: {
-          topic: 'initiative',
-          country: '{countryID}',
-          ps_bookmark_sections_keys: 'stakeholder-initiatives',
-        },
-      },
       { label: 'Summary & Report', slug: 'summary', checked: false },
     ],
   },

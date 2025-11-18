@@ -118,9 +118,8 @@ const DashboardLanding = () => {
         background: '#F5F7FF',
       }}
     >
-      <Content className={styles.contentAntLayout}
-      >
-        <div className={styles.headerLanding} >
+      <Content className={styles.contentAntLayout}>
+        <div className={styles.headerLanding}>
           <Trans>Explore </Trans> <Trans> Country Dashboard</Trans>
         </div>
         <br />
@@ -135,7 +134,7 @@ const DashboardLanding = () => {
             option?.label?.toLowerCase().indexOf(input.toLowerCase()) >= 0
           }
           onChange={handleCountryChange}
-           className={styles.selectCountry}
+          className={styles.selectCountry}
         />
         <br />
         {/* <h1
@@ -159,7 +158,7 @@ const DashboardLanding = () => {
             marginBottom: windowWidth < 768 ? '10px' : '20px',
           }}
         >
-          <Trans>
+          {/* <Trans>
             The GPML Country Dashboard provides a comprehensive snapshot of
             plastic flows in both the economy and the environment for each
             country. It consolidates data from best available global datasets
@@ -167,6 +166,16 @@ const DashboardLanding = () => {
             policymaking and action planning. Additionally, it helps identify
             data gaps that require further collection efforts in specific
             countries.
+          </Trans> */}
+          <Trans>
+            The Country Dashboard provides a comprehensive snapshot of plastic
+            flows in both the economy and the environment for each country. It
+            consolidates data from best available global datasets from
+            peer-reviewed scientific studies and global monitoring initiatives
+            by international organizations into one accessible platform, aiming
+            to support evidence-based policymaking and action planning.
+            Additionally, it helps identify data gaps that require further
+            collection efforts in specific countries.
           </Trans>
         </p>
 
@@ -176,7 +185,7 @@ const DashboardLanding = () => {
             marginBottom: '20px',
           }}
         >
-          <Trans>
+          {/* <Trans>
             {' '}
             The data featured on the Country Dashboard comes from reliable
             sources, including country reports on the Sustainable Development
@@ -185,6 +194,11 @@ const DashboardLanding = () => {
             data sources are clearly indicated, including links to the original
             methodologies and any information regarding uncertainties related to
             the modeling outputs.{' '}
+          </Trans> */}
+          <Trans>
+            All data sources are clearly indicated, including links to the
+            original methodologies and any information regarding uncertainties
+            related to the modelling outputs.
           </Trans>
         </p>
 
@@ -269,5 +283,3 @@ const DropdownSvg = () => (
     <path d="M1 1L7 7L13 1" stroke="#020A5B" strokeWidth="2" />
   </svg>
 )
-
-
