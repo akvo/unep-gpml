@@ -39,8 +39,25 @@
   of a more generic approach for all resources. This also should be in
   the domain layer."
   [params]
-  {:geo_coverage_country_groups (mapv (comp #(Integer/parseInt %) name ffirst) (:q24_4 params))
-   :geo_coverage_countries (mapv (comp #(Integer/parseInt %) name ffirst) (:q24_2 params))})
+  (let [extract-ids (fn [geo-data]
+                      (cond
+                        (nil? geo-data)
+                        []
+
+                        (map? geo-data)
+                        ;; Map with one or more countries: {:32 "Argentina", :578 "Norway"}
+                        ;; Extract all keys and convert to integers
+                        (mapv (comp #(Integer/parseInt %) name) (keys geo-data))
+
+                        (sequential? geo-data)
+                        ;; Array of single-key maps: [{:32 "Argentina"} {:578 "Norway"}]
+                        ;; Extract first key from each map
+                        (mapv (comp #(Integer/parseInt %) name ffirst) geo-data)
+
+                        :else
+                        []))]
+    {:geo_coverage_country_groups (extract-ids (:q24_4 params))
+     :geo_coverage_countries (extract-ids (:q24_2 params))}))
 
 (defn- create-initiative [{:keys [logger mailjet-config] :as config}
                           conn
