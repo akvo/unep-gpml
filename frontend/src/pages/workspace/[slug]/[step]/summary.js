@@ -207,26 +207,27 @@ const SummaryFiles = ({ psItem, step, slug }) => {
   if (!hasBookmarkSteps) {
     return null
   }
+  return null
 
-  return (
-    <Skeleton loading={!psItem?.id} paragraph={{ rows: 3 }} active>
-      <div className="summary-section">
-        <h5>Section Summary</h5>
-        <div>
-          <Button
-            icon={<PDFIcon />}
-            href={`/workspace/${slug}/${step}/report`}
-            shape="download"
-            target="_blank"
-            ghost
-            size="small"
-          >
-            Download PDF
-          </Button>
-        </div>
-      </div>
-    </Skeleton>
-  )
+  // return (
+  //   <Skeleton loading={!psItem?.id} paragraph={{ rows: 3 }} active>
+  //     <div className="summary-section">
+  //       <h5>Section Summary</h5>
+  //       <div>
+  //         <Button
+  //           icon={<PDFIcon />}
+  //           href={`/workspace/${slug}/${step}/report`}
+  //           shape="download"
+  //           target="_blank"
+  //           ghost
+  //           size="small"
+  //         >
+  //           Download PDF
+  //         </Button>
+  //       </div>
+  //     </div>
+  //   </Skeleton>
+  // )
 }
 
 const View = ({ psItem }) => {

@@ -102,11 +102,11 @@ const Landing = (props) => {
         <div className="container">
           <div className="text">
             <strong className="caps-heading-1">
-              <Trans>Action Planning</Trans>
+              <Trans>Workflow</Trans>
             </strong>
             <h2>
               <strong>
-                <Trans>Workflow</Trans>
+                <Trans>Action Planning Tool</Trans>
               </strong>
               <br />
             </h2>
@@ -407,8 +407,12 @@ const FeatureCards = () => {
               </h5>
               <h2>2800+</h2>
               <p>
-                <Trans>
+                {/* <Trans>
                   Knowledge resources shared in the Knowledge Library.
+                </Trans> */}
+                <Trans>
+                  Knowledge materials and case studies shared and accessible in
+                  the Knowledge Library
                 </Trans>
               </p>
               <span aria-hidden="true">
@@ -438,8 +442,12 @@ const FeatureCards = () => {
               </h5>
               <h2>80+</h2>
               <p>
-                <Trans>
+                {/* <Trans>
                   Plastic Lifecycle Indicators showcased in the Data Hub.
+                </Trans> */}
+                <Trans>
+                  Plastic lifecycle indicators' data from studies and global
+                  monitoring initiatives showcased
                 </Trans>
               </p>
               <span aria-hidden="true">
@@ -469,7 +477,11 @@ const FeatureCards = () => {
               </h5>
               <h2>2000+</h2>
               <p>
-                <Trans>Members connected through the Community Hub.</Trans>
+                {/* <Trans>Members connected through the Community Hub.</Trans> */}
+                <Trans>
+                  Registered users and GPML members connected through Community
+                  Hub
+                </Trans>
               </p>
               <span aria-hidden="true">
                 <Trans>Explore the community</Trans>

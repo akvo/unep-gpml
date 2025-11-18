@@ -43,7 +43,7 @@ msgstr ""
 msgid "{incompleteAmount} items are not completed"
 msgstr ""
 
-#: src/pages/workspace/[slug]/layout.js:289
+#: src/pages/workspace/[slug]/layout.js:290
 msgid "{progress}% complete"
 msgstr ""
 
@@ -51,7 +51,7 @@ msgstr ""
 msgid "{value} Initiatives"
 msgstr ""
 
-#: src/pages/countryOverview/IntroPage.jsx:199
+#: src/pages/countryOverview/IntroPage.jsx:213
 msgid "* You are currently viewing the beta version of the Country Dashboard, and we welcome your feedback on its usability and content. We particularly welcome suggestions for updated and improved data sources for your country. To request a data update, please use the \"Submit Data Update\" button within your Country Dashboard section."
 msgstr ""
 
@@ -165,6 +165,16 @@ msgstr ""
 msgid "Action Plan"
 msgstr ""
 
+#: src/modules/workspace/view.jsx:485
+#: src/pages/landing/index.jsx:109
+#: src/pages/workspace/[slug]/layout.js:283
+msgid "Action Planning Tool"
+msgstr ""
+
+#: src/modules/workspace/view.jsx:319
+msgid "Action Planning Tools"
+msgstr ""
+
 #: src/modules/knowledge-lib/filter-bar.jsx:30
 msgid "Action Plans"
 msgstr ""
@@ -186,7 +196,7 @@ msgid "Add An Event"
 msgstr ""
 
 #: src/components/nav/nav-mobile.jsx:223
-#: src/layouts/new-layout.js:337
+#: src/layouts/new-layout.js:348
 #: src/modules/workspace/view.jsx:78
 msgid "Add Content"
 msgstr ""
@@ -247,6 +257,10 @@ msgstr ""
 #: src/components/select/multiple-select-filter.jsx:42
 #: src/modules/stakeholder-overview/filter-drawer.jsx:160
 msgid "All (default)"
+msgstr ""
+
+#: src/pages/countryOverview/IntroPage.jsx:198
+msgid "All data sources are clearly indicated, including links to the original methodologies and any information regarding uncertainties related to the modelling outputs."
 msgstr ""
 
 #: src/pages/workspace/[slug]/7-final-review/index.js:71
@@ -382,7 +396,7 @@ msgstr ""
 msgid "Assigned to"
 msgstr ""
 
-#: src/modules/community-hub/detail-view.jsx:320
+#: src/modules/community-hub/detail-view.jsx:309
 msgid "Associated content"
 msgstr ""
 
@@ -394,17 +408,17 @@ msgstr ""
 msgid "Available Data"
 msgstr ""
 
-#: src/pages/workspace/[slug]/layout.js:44
+#: src/pages/workspace/[slug]/layout.js:45
 msgid "Available Data & Statistics"
 msgstr ""
 
 #: src/pages/workspace/[slug]/3-data-analysis/available-information.js:46
-#: src/pages/workspace/[slug]/layout.js:47
+#: src/pages/workspace/[slug]/layout.js:48
 msgid "Available Information"
 msgstr ""
 
 #: src/pages/workspace/[slug]/3-data-analysis/available-tools.js:46
-#: src/pages/workspace/[slug]/layout.js:42
+#: src/pages/workspace/[slug]/layout.js:43
 msgid "Available Tools"
 msgstr ""
 
@@ -516,7 +530,7 @@ msgstr ""
 msgid "browse resources by"
 msgstr ""
 
-#: src/pages/community-hub/index.js:163
+#: src/pages/community-hub/index.js:176
 msgid "browse the community by"
 msgstr ""
 
@@ -539,7 +553,7 @@ msgid "By submitting this form, I will be included in the public database of GPM
 msgstr ""
 
 #: src/pages/workspace/[slug]/3-data-analysis/calculation.js:45
-#: src/pages/workspace/[slug]/layout.js:46
+#: src/pages/workspace/[slug]/layout.js:47
 msgid "Calculation of Indicators"
 msgstr ""
 
@@ -586,7 +600,7 @@ msgstr ""
 
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/case-studies.js:36
 #: src/pages/workspace/[slug]/3-legislation-policy/case-studies.js:47
-#: src/pages/workspace/[slug]/layout.js:32
+#: src/pages/workspace/[slug]/layout.js:33
 msgid "Case Studies"
 msgstr ""
 
@@ -780,12 +794,12 @@ msgstr ""
 msgid "Community engagement"
 msgstr ""
 
-#: src/pages/landing/index.jsx:468
+#: src/pages/landing/index.jsx:476
 #: src/store.js:67
 msgid "Community Hub"
 msgstr ""
 
-#: src/pages/workspace/[slug]/layout.js:391
+#: src/pages/workspace/[slug]/layout.js:392
 msgid "Completed"
 msgstr ""
 
@@ -896,7 +910,7 @@ msgstr ""
 
 #: src/components/select/country-transnational-filter.jsx:139
 #: src/components/select/country-transnational-filter.jsx:151
-#: src/pages/community-hub/index.js:213
+#: src/pages/community-hub/index.js:226
 #: src/pages/knowledge-hub/index.js:488
 msgid "Countries"
 msgstr ""
@@ -910,25 +924,25 @@ msgstr ""
 msgid "Country dashboard"
 msgstr ""
 
-#: src/pages/countryOverview/IntroPage.jsx:124
+#: src/pages/countryOverview/IntroPage.jsx:123
 msgid "Country Dashboard"
 msgstr ""
 
 #: src/pages/landing/index.jsx:105
-msgid "Country Dedicated"
-msgstr ""
+#~ msgid "Country Dedicated"
+#~ msgstr ""
 
 #: src/modules/workspace/view.jsx:485
 #: src/pages/workspace/[slug]/layout.js:282
-msgid "Country Dedicated Workflow"
-msgstr ""
+#~ msgid "Country Dedicated Workflow"
+#~ msgstr ""
 
 #: src/modules/workspace/view.jsx:319
-msgid "Country Dedicated Workflows"
-msgstr ""
+#~ msgid "Country Dedicated Workflows"
+#~ msgstr ""
 
 #: src/pages/workspace/[slug]/3-legislation-policy/country-policy.js:560
-#: src/pages/workspace/[slug]/layout.js:36
+#: src/pages/workspace/[slug]/layout.js:37
 msgid "Country Policy Framework"
 msgstr ""
 
@@ -986,7 +1000,7 @@ msgstr ""
 #: src/pages/workspace/[slug]/3-data-analysis/calculation.js:42
 #: src/pages/workspace/[slug]/3-data-analysis/data-collection.js:43
 #: src/pages/workspace/[slug]/3-data-analysis/index.js:35
-#: src/pages/workspace/[slug]/layout.js:38
+#: src/pages/workspace/[slug]/layout.js:39
 msgid "Data Analysis"
 msgstr ""
 
@@ -995,12 +1009,12 @@ msgstr ""
 msgid "Data Catalog"
 msgstr ""
 
-#: src/pages/workspace/[slug]/layout.js:45
+#: src/pages/workspace/[slug]/layout.js:46
 msgid "Data Collection"
 msgstr ""
 
 #: src/pages/workspace/[slug]/3-data-analysis/data-collection.js:46
-#: src/pages/workspace/[slug]/layout.js:43
+#: src/pages/workspace/[slug]/layout.js:44
 msgid "Data Collection Tools"
 msgstr ""
 
@@ -1008,7 +1022,7 @@ msgstr ""
 msgid "data hub"
 msgstr ""
 
-#: src/pages/landing/index.jsx:437
+#: src/pages/landing/index.jsx:441
 #: src/store.js:46
 msgid "Data Hub"
 msgstr ""
@@ -1494,15 +1508,15 @@ msgstr ""
 msgid "Experts"
 msgstr ""
 
-#: src/pages/countryOverview/IntroPage.jsx:124
+#: src/pages/countryOverview/IntroPage.jsx:123
 msgid "Explore"
 msgstr ""
 
-#: src/pages/landing/index.jsx:475
+#: src/pages/landing/index.jsx:487
 msgid "Explore the community"
 msgstr ""
 
-#: src/pages/landing/index.jsx:446
+#: src/pages/landing/index.jsx:454
 msgid "Explore the data"
 msgstr ""
 
@@ -1510,7 +1524,7 @@ msgstr ""
 msgid "Explore The Platform"
 msgstr ""
 
-#: src/pages/landing/index.jsx:415
+#: src/pages/landing/index.jsx:419
 msgid "Explore the resources"
 msgstr ""
 
@@ -1558,7 +1572,7 @@ msgid "Final manufactured plastic goods"
 msgstr ""
 
 #: src/pages/workspace/[slug]/7-final-review/index.js:20
-#: src/pages/workspace/[slug]/layout.js:57
+#: src/pages/workspace/[slug]/layout.js:58
 msgid "Final Review"
 msgstr ""
 
@@ -1657,7 +1671,7 @@ msgstr ""
 
 #: src/modules/workspace/view.jsx:257
 #: src/pages/forum/index.jsx:123
-#: src/pages/landing/index.jsx:609
+#: src/pages/landing/index.jsx:621
 #: src/store.js:86
 msgid "Forums"
 msgstr ""
@@ -1754,7 +1768,7 @@ msgstr ""
 msgid "Geo-coverage type"
 msgstr ""
 
-#: src/pages/community-hub/index.js:190
+#: src/pages/community-hub/index.js:203
 #: src/pages/knowledge-hub/index.js:464
 msgid "Geography"
 msgstr ""
@@ -1820,7 +1834,7 @@ msgid "Good Health and Well-being"
 msgstr ""
 
 #: src/pages/workspace/[slug]/5-national-action-plan/governance-enforcement.js:14
-#: src/pages/workspace/[slug]/layout.js:63
+#: src/pages/workspace/[slug]/layout.js:64
 msgid "Governance & Enforcement"
 msgstr ""
 
@@ -1939,7 +1953,7 @@ msgstr ""
 msgid "High-level strategy"
 msgstr ""
 
-#: src/pages/landing/index.jsx:511
+#: src/pages/landing/index.jsx:523
 msgid "HIGHLIGHTS"
 msgstr ""
 
@@ -2095,7 +2109,7 @@ msgstr ""
 msgid "Individual connection"
 msgstr ""
 
-#: src/modules/community-hub/detail-view.jsx:355
+#: src/modules/community-hub/detail-view.jsx:344
 msgid "Individual members"
 msgstr ""
 
@@ -2158,7 +2172,7 @@ msgstr ""
 #: src/modules/knowledge-lib/filter-bar.jsx:27
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/initiatives.js:142
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:123
-#: src/pages/workspace/[slug]/layout.js:33
+#: src/pages/workspace/[slug]/layout.js:34
 #: src/store.js:748
 msgid "Initiatives"
 msgstr ""
@@ -2177,8 +2191,8 @@ msgid "Institutional development"
 msgstr ""
 
 #: src/pages/workspace/[slug]/layout.js:24
-msgid "Instructions"
-msgstr ""
+#~ msgid "Instructions"
+#~ msgstr ""
 
 #: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:21
 #: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:23
@@ -2195,8 +2209,13 @@ msgstr ""
 msgid "International Cooperation"
 msgstr ""
 
-#: src/pages/workspace/[slug]/layout.js:28
+#: src/pages/workspace/[slug]/layout.js:24
+#: src/pages/workspace/[slug]/layout.js:29
 msgid "Intro"
+msgstr ""
+
+#: src/pages/workspace/[slug]/layout.js:28
+msgid "Introduction"
 msgstr ""
 
 #: src/modules/workspace/ps/setup-team-form.jsx:235
@@ -2285,9 +2304,13 @@ msgstr ""
 msgid "Knowledge Library"
 msgstr ""
 
-#: src/pages/landing/index.jsx:410
-msgid "Knowledge resources shared in the Knowledge Library."
+#: src/pages/landing/index.jsx:413
+msgid "Knowledge materials and case studies shared and accessible in the Knowledge Library"
 msgstr ""
+
+#: src/pages/landing/index.jsx:410
+#~ msgid "Knowledge resources shared in the Knowledge Library."
+#~ msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:2005
 msgid "Land and Agriculture"
@@ -2315,7 +2338,7 @@ msgstr ""
 msgid "Last Name"
 msgstr ""
 
-#: src/pages/landing/index.jsx:515
+#: src/pages/landing/index.jsx:527
 msgid "Latest news:"
 msgstr ""
 
@@ -2372,7 +2395,7 @@ msgstr ""
 msgid "Legislation"
 msgstr ""
 
-#: src/pages/workspace/[slug]/layout.js:35
+#: src/pages/workspace/[slug]/layout.js:36
 msgid "Legislation & Policy Review"
 msgstr ""
 
@@ -2407,7 +2430,7 @@ msgid "Legislations, Regulations & Standards"
 msgstr ""
 
 #: src/pages/workspace/[slug]/3-legislation-policy/legislative-development.js:14
-#: src/pages/workspace/[slug]/layout.js:37
+#: src/pages/workspace/[slug]/layout.js:38
 msgid "Legislative Development Guide"
 msgstr ""
 
@@ -2453,7 +2476,7 @@ msgid "LinkedIn"
 msgstr ""
 
 #: src/modules/knowledge-lib/resource-view.jsx:506
-#: src/pages/community-hub/index.js:263
+#: src/pages/community-hub/index.js:276
 #: src/pages/knowledge-hub/index.js:594
 msgid "Load More"
 msgstr ""
@@ -2471,7 +2494,7 @@ msgstr ""
 #: src/modules/entity-detail/view.jsx:349
 #: src/modules/stakeholder-detail/view.jsx:377
 #: src/pages/[type]/[id].jsx:88
-#: src/pages/workspace/[slug]/layout.js:284
+#: src/pages/workspace/[slug]/layout.js:285
 msgid "Loading..."
 msgstr ""
 
@@ -2497,7 +2520,7 @@ msgid "Location and Geo-coverage"
 msgstr ""
 
 #: src/components/nav/nav-mobile.jsx:134
-#: src/layouts/new-layout.js:278
+#: src/layouts/new-layout.js:289
 msgid "Login"
 msgstr ""
 
@@ -2515,7 +2538,7 @@ msgid "LOGIN WITH EMAIL"
 msgstr ""
 
 #: src/components/nav/nav-mobile.jsx:240
-#: src/layouts/new-layout.js:353
+#: src/layouts/new-layout.js:364
 msgid "Logout"
 msgstr ""
 
@@ -2567,7 +2590,7 @@ msgstr ""
 msgid "Marine organisms"
 msgstr ""
 
-#: src/pages/workspace/[slug]/layout.js:391
+#: src/pages/workspace/[slug]/layout.js:392
 msgid "Mark as Completed"
 msgstr ""
 
@@ -2607,17 +2630,17 @@ msgstr ""
 msgid "Meetings, often lasting a few days, organized on a particular subject or to bring together people who have a common interest to exchange ideas and discuss issues, especially important public issues."
 msgstr ""
 
-#: src/modules/community-hub/detail-view.jsx:150
+#: src/modules/community-hub/detail-view.jsx:139
 msgid "member individual"
 msgstr ""
 
-#: src/modules/community-hub/detail-view.jsx:245
+#: src/modules/community-hub/detail-view.jsx:234
 msgid "member organisation"
 msgstr ""
 
 #: src/pages/landing/index.jsx:472
-msgid "Members connected through the Community Hub."
-msgstr ""
+#~ msgid "Members connected through the Community Hub."
+#~ msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:864
 msgid "Members of the public have actively complained / asked for change"
@@ -2660,7 +2683,7 @@ msgid "Monitoring"
 msgstr ""
 
 #: src/pages/workspace/[slug]/5-national-action-plan/monitoring-implementation.js:17
-#: src/pages/workspace/[slug]/layout.js:64
+#: src/pages/workspace/[slug]/layout.js:65
 msgid "Monitoring & Implementation"
 msgstr ""
 
@@ -2756,7 +2779,7 @@ msgstr ""
 msgid "National"
 msgstr ""
 
-#: src/pages/workspace/[slug]/layout.js:49
+#: src/pages/workspace/[slug]/layout.js:50
 #: src/store.js:329
 msgid "National Action Plan"
 msgstr ""
@@ -2783,11 +2806,11 @@ msgstr ""
 msgid "National Source Inventories"
 msgstr ""
 
-#: src/pages/workspace/[slug]/layout.js:48
+#: src/pages/workspace/[slug]/layout.js:49
 msgid "National Source Inventory"
 msgstr ""
 
-#: src/pages/workspace/[slug]/layout.js:55
+#: src/pages/workspace/[slug]/layout.js:56
 msgid "National Source Inventory Data Mapping"
 msgstr ""
 
@@ -2830,7 +2853,7 @@ msgstr ""
 #: src/modules/flexible-forms/view.jsx:1638
 #: src/modules/onboarding/view.jsx:288
 #: src/modules/onboarding/view.jsx:351
-#: src/pages/workspace/[slug]/layout.js:395
+#: src/pages/workspace/[slug]/layout.js:396
 msgid "Next"
 msgstr ""
 
@@ -2869,7 +2892,7 @@ msgstr ""
 msgid "No Poverty"
 msgstr ""
 
-#: src/pages/community-hub/index.js:255
+#: src/pages/community-hub/index.js:268
 #: src/pages/knowledge-hub/index.js:586
 msgid "No results"
 msgstr ""
@@ -3202,7 +3225,11 @@ msgid "Plastic in primary form"
 msgstr ""
 
 #: src/pages/landing/index.jsx:441
-msgid "Plastic Lifecycle Indicators showcased in the Data Hub."
+#~ msgid "Plastic Lifecycle Indicators showcased in the Data Hub."
+#~ msgstr ""
+
+#: src/pages/landing/index.jsx:448
+msgid "Plastic lifecycle indicators' data from studies and global monitoring initiatives showcased"
 msgstr ""
 
 #: src/store.js:645
@@ -3219,18 +3246,18 @@ msgid "Plastic waste"
 msgstr ""
 
 #: src/pages/workspace/[slug]/4-national-source/plastic-waste-management.js:17
-#: src/pages/workspace/[slug]/layout.js:52
+#: src/pages/workspace/[slug]/layout.js:53
 #: src/store.js:242
 msgid "Plastic Waste Management"
 msgstr ""
 
 #: src/pages/workspace/[slug]/4-national-source/plastics-in-economy.js:14
-#: src/pages/workspace/[slug]/layout.js:51
+#: src/pages/workspace/[slug]/layout.js:52
 msgid "Plastics in Economy"
 msgstr ""
 
 #: src/pages/workspace/[slug]/4-national-source/plastics-in-environment.js:14
-#: src/pages/workspace/[slug]/layout.js:53
+#: src/pages/workspace/[slug]/layout.js:54
 msgid "Plastics in the Environment"
 msgstr ""
 
@@ -3347,7 +3374,7 @@ msgid "Professional skills training"
 msgstr ""
 
 #: src/components/nav/nav-mobile.jsx:231
-#: src/layouts/new-layout.js:347
+#: src/layouts/new-layout.js:358
 msgid "Profile"
 msgstr ""
 
@@ -3436,7 +3463,7 @@ msgid "Read more"
 msgstr ""
 
 #: src/components/map-and-layers/sidebar/partials/layerInfo.jsx:54
-#: src/pages/landing/index.jsx:561
+#: src/pages/landing/index.jsx:573
 msgid "Read More"
 msgstr ""
 
@@ -3476,6 +3503,10 @@ msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:700
 msgid "Regional Sustainable Development Goals (SDGs)"
+msgstr ""
+
+#: src/pages/landing/index.jsx:481
+msgid "Registered users and GPML members connected through Community Hub"
 msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:1964
@@ -3595,7 +3626,7 @@ msgstr ""
 msgid "Resource deleted successfully"
 msgstr ""
 
-#: src/pages/community-hub/index.js:170
+#: src/pages/community-hub/index.js:183
 #: src/pages/knowledge-hub/index.js:443
 msgid "Resource Type"
 msgstr ""
@@ -3719,7 +3750,7 @@ msgstr ""
 msgid "Search The Knowledge Hub"
 msgstr ""
 
-#: src/pages/community-hub/index.js:158
+#: src/pages/community-hub/index.js:171
 msgid "Search The Partner Network"
 msgstr ""
 
@@ -3732,7 +3763,7 @@ msgid "Sector. Does your initiative target a specific sector? (Please tick ALL t
 msgstr ""
 
 #: src/pages/workspace/[slug]/5-national-action-plan/sectoral-interventions-legacy-plastics.js:17
-#: src/pages/workspace/[slug]/layout.js:61
+#: src/pages/workspace/[slug]/layout.js:62
 msgid "Sectoral Interventions & Legacy Plastics"
 msgstr ""
 
@@ -3766,7 +3797,7 @@ msgstr ""
 msgid "Select a country"
 msgstr ""
 
-#: src/pages/countryOverview/IntroPage.jsx:128
+#: src/pages/countryOverview/IntroPage.jsx:127
 msgid "Select a Country to Get Started"
 msgstr ""
 
@@ -3801,7 +3832,7 @@ msgstr ""
 msgid "Sending..."
 msgstr ""
 
-#: src/pages/workspace/[slug]/layout.js:29
+#: src/pages/workspace/[slug]/layout.js:30
 msgid "Setup your team"
 msgstr ""
 
@@ -3855,7 +3886,7 @@ msgstr ""
 msgid "Social impacts will be evaluated"
 msgstr ""
 
-#: src/layouts/new-layout.js:141
+#: src/layouts/new-layout.js:152
 msgid "Some translations on this website are generated with the use of AI for informational purposes only. While reasonable efforts are made to increase accuracy, the United Nations Environment Programme (UNEP) does not warrant the accuracy, completeness, or reliability of the translations. For official purposes, please refer to content in the original language."
 msgstr ""
 
@@ -3888,7 +3919,7 @@ msgstr ""
 msgid "Stakeholder Consultation Process"
 msgstr ""
 
-#: src/pages/workspace/[slug]/layout.js:30
+#: src/pages/workspace/[slug]/layout.js:31
 msgid "Stakeholder Consultations"
 msgstr ""
 
@@ -3897,7 +3928,7 @@ msgid "Stakeholder engagement"
 msgstr ""
 
 #: src/pages/workspace/[slug]/2-stakeholder-consultation/stakeholder-map.js:591
-#: src/pages/workspace/[slug]/layout.js:31
+#: src/pages/workspace/[slug]/layout.js:32
 msgid "Stakeholder Map"
 msgstr ""
 
@@ -3928,7 +3959,7 @@ msgstr ""
 msgid "State"
 msgstr ""
 
-#: src/pages/workspace/[slug]/layout.js:40
+#: src/pages/workspace/[slug]/layout.js:41
 msgid "State of Knowledge on Plastic Data"
 msgstr ""
 
@@ -4025,7 +4056,7 @@ msgid "suggestions"
 msgstr ""
 
 #: src/pages/workspace/[slug]/[step]/summary.js:253
-#: src/pages/workspace/[slug]/layout.js:34
+#: src/pages/workspace/[slug]/layout.js:35
 msgid "Summary & Report"
 msgstr ""
 
@@ -4155,12 +4186,20 @@ msgid "The Act to Prevent Pollution from Ships"
 msgstr ""
 
 #: src/pages/landing/index.jsx:114
-msgid "The Country Dedicated Workflow is a digital tool to help countries in developing national plastic source inventories and plastic strategies, supported by step-by-step guidance and inspiring case studies. Create your account and explore."
+msgid "The Action Planning Tool is a digital workflow to help countries in developing national plastic source inventories and plastic strategies, supported by step-by-step guidance and inspiring case studies. Create your account and explore."
 msgstr ""
 
-#: src/pages/countryOverview/IntroPage.jsx:179
-msgid "The data featured on the Country Dashboard comes from reliable sources, including country reports on the Sustainable Development Goals, as well as modeled global estimates from UN agencies, academic institutions, and recognized research organizations. All data sources are clearly indicated, including links to the original methodologies and any information regarding uncertainties related to the modeling outputs."
+#: src/pages/countryOverview/IntroPage.jsx:170
+msgid "The Country Dashboard provides a comprehensive snapshot of plastic flows in both the economy and the environment for each country. It consolidates data from best available global datasets from peer-reviewed scientific studies and global monitoring initiatives by international organizations into one accessible platform, aiming to support evidence-based policymaking and action planning. Additionally, it helps identify data gaps that require further collection efforts in specific countries."
 msgstr ""
+
+#: src/pages/landing/index.jsx:114
+#~ msgid "The Country Dedicated Workflow is a digital tool to help countries in developing national plastic source inventories and plastic strategies, supported by step-by-step guidance and inspiring case studies. Create your account and explore."
+#~ msgstr ""
+
+#: src/pages/countryOverview/IntroPage.jsx:179
+#~ msgid "The data featured on the Country Dashboard comes from reliable sources, including country reports on the Sustainable Development Goals, as well as modeled global estimates from UN agencies, academic institutions, and recognized research organizations. All data sources are clearly indicated, including links to the original methodologies and any information regarding uncertainties related to the modeling outputs."
+#~ msgstr ""
 
 #: src/store.js:767
 msgid "The definition of capacity development is broad. It is a holistic enterprise, encompassing a multitude of activities. It means building abilities, relationships and values that will enable organisations, groups and individuals to improve their performance and achieve their development objectives. It includes strengthening the processes, systems and rules that influence collective and individual behaviour and performance in all development endeavours. And it means enhancing people’s technical ability and willingness to play new developmental roles and adapt to new demands and situations."
@@ -4175,8 +4214,8 @@ msgid "The Global Partnership on Plastic Pollution and Marine Litter Digital Pla
 msgstr ""
 
 #: src/pages/countryOverview/IntroPage.jsx:162
-msgid "The GPML Country Dashboard provides a comprehensive snapshot of plastic flows in both the economy and the environment for each country. It consolidates data from best available global datasets into one accessible platform, aiming to support evidence-based policymaking and action planning. Additionally, it helps identify data gaps that require further collection efforts in specific countries."
-msgstr ""
+#~ msgid "The GPML Country Dashboard provides a comprehensive snapshot of plastic flows in both the economy and the environment for each country. It consolidates data from best available global datasets into one accessible platform, aiming to support evidence-based policymaking and action planning. Additionally, it helps identify data gaps that require further collection efforts in specific countries."
+#~ msgstr ""
 
 #: src/pages/landing/index.jsx:200
 msgid "The GPML digital platform allows NGOs and civil society to connect with likeminded organizations, discover financing resources and funding opportunities, and showcase their work in the fight against plastic pollution and marine litter."
@@ -4477,7 +4516,7 @@ msgstr ""
 msgid "Update"
 msgstr ""
 
-#: src/pages/workspace/[slug]/layout.js:50
+#: src/pages/workspace/[slug]/layout.js:51
 msgid "Upload"
 msgstr ""
 
@@ -4490,7 +4529,7 @@ msgid "Upload Your Report"
 msgstr ""
 
 #: src/pages/workspace/[slug]/5-national-action-plan/upstream-measures.js:14
-#: src/pages/workspace/[slug]/layout.js:58
+#: src/pages/workspace/[slug]/layout.js:59
 msgid "Upstream Measures"
 msgstr ""
 
@@ -4588,7 +4627,7 @@ msgid "View"
 msgstr ""
 
 #: src/components/resource-cards/resource-cards.jsx:58
-#: src/modules/community-hub/detail-view.jsx:385
+#: src/modules/community-hub/detail-view.jsx:374
 #: src/modules/workspace/view.jsx:324
 msgid "View All"
 msgstr ""
@@ -4646,7 +4685,7 @@ msgid "Waste Management"
 msgstr ""
 
 #: src/pages/workspace/[slug]/5-national-action-plan/waste-management-circularity.js:17
-#: src/pages/workspace/[slug]/layout.js:59
+#: src/pages/workspace/[slug]/layout.js:60
 msgid "Waste Management & Circularity"
 msgstr ""
 
@@ -4756,7 +4795,7 @@ msgstr ""
 msgid "Within the geographical area that the provider offers the service"
 msgstr ""
 
-#: src/pages/landing/index.jsx:109
+#: src/pages/landing/index.jsx:105
 msgid "Workflow"
 msgstr ""
 
@@ -4786,9 +4825,9 @@ msgid "workspace"
 msgstr ""
 
 #: src/components/nav/nav-mobile.jsx:237
-#: src/layouts/new-layout.js:331
+#: src/layouts/new-layout.js:342
 #: src/pages/landing/index.jsx:325
-#: src/pages/landing/index.jsx:605
+#: src/pages/landing/index.jsx:617
 msgid "Workspace"
 msgstr ""
 

@@ -60,8 +60,8 @@ const Footer = ({ showTools }) => {
               <p className="p-m">
                 <Trans>Contact Us</Trans>
               </p>
-              <a href="mailto:unep-gpmarinelitter@un.org" className="p-m">
-                unep-gpmarinelitter@un.org
+              <a href="mailto:unep-gpml@un.org" className="p-m">
+                unep-gpml@un.org
               </a>
               <Link href="/privacy-policy-and-terms-of-use.pdf">
                 <Trans>Privacy Policy & Terms of Use</Trans>

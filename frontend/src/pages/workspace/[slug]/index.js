@@ -20,6 +20,9 @@ const Page = () => {
 
   return (
     <div className={style.view}>
+      <h4 className="caps-heading-m">
+        <Trans>Introduction</Trans>
+      </h4>
       <h2 className="w-bold">{data?.title}</h2>
       <div
         className="strapi-workflow-page"
