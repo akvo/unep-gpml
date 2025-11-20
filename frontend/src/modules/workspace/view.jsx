@@ -497,7 +497,7 @@ export const PSCard = ({ item, key, isAdmin }) => {
                 checked: getParentChecked(s),
               })}
             >
-              {stepsState[sx]?.label}
+              {stepsState[sx]?.label || s.label}
             </li>
           ))}
         </ul>
