@@ -56,6 +56,7 @@ export const useStepsDict = () => {
       t`National Source Inventory Data Mapping`
     ),
     'Final Review': i18n._(t`Final Review`),
+    'National Plastic Strategy': i18n._(t`National Plastic Strategy`),
     'Upstream Measures': i18n._(t`Upstream Measures`),
     'Waste Management & Circularity': i18n._(t`Waste Management & Circularity`),
     'Sectoral Interventions & Legacy Plastics': i18n._(
