@@ -283,6 +283,10 @@
     }
 
     .strapi-workflow-page {
+      h2,
+      h3 {
+        margin-top: 20px;
+      }
       a {
         color: $primaryDarkBlue;
         text-decoration: underline;
@@ -324,8 +328,8 @@
 
       iframe {
         position: relative;
-        max-width: 960px;
-        min-height: 542px;
+        max-width: 780px;
+        min-height: 440px;
         width: 100%;
 
         &::before {
@@ -341,10 +345,13 @@
         margin-top: 20px;
 
         .col {
+          display: flex;
+
           iframe {
-            width: 560px;
-            height: 315px;
-            min-height: auto;
+            // width: 780px;
+            // width: 560px;
+            // height: 315px;
+            // min-height: auto;
             padding-right: 30px;
             padding-bottom: 30px;
           }
