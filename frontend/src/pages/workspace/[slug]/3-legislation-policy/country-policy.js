@@ -323,8 +323,8 @@ const CountryPolicyTable = ({ psItem, setLoginVisible, isAuthenticated }) => {
   }
 
   const mapFilter = (row, field) => ({
-    text: row[field],
-    value: row[field],
+    text: row?.[field],
+    value: row?.[field],
   })
 
   const getAllPolicies = useCallback(async () => {
@@ -490,10 +490,10 @@ const CountryPolicyTable = ({ psItem, setLoginVisible, isAuthenticated }) => {
                   const threshold = 3
                   return (
                     <div className="tag-list">
-                      {values.slice(0, threshold).map((tag) => (
+                      {values?.slice(0, threshold).map((tag) => (
                         <span className="tag">{tag.tag}</span>
                       ))}
-                      {values.length > threshold && (
+                      {values?.length > threshold && (
                         <Tooltip
                           title={values
                             .slice(threshold)
