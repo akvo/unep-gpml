@@ -97,15 +97,11 @@ const AddModal = ({ showAddModal, setShowAddModal }) => {
         allowClear
         showSearch
       >
-        {countries
-          .filter(
-            (country) => country.description.toLowerCase() === 'member state'
-          )
-          .map((it) => (
-            <Option key={it.id} value={it.id}>
-              {it.name}
-            </Option>
-          ))}
+        {countries.map((it) => (
+          <Option key={it.id} value={it.id}>
+            {it.name}
+          </Option>
+        ))}
       </Select>
       <Button style={{ marginTop: 30 }} onClick={handleSubmit}>
         Submit
