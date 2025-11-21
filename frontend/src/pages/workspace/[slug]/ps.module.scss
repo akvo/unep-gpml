@@ -331,6 +331,10 @@
         max-width: 780px;
         min-height: 440px;
         width: 100%;
+        @media screen and (max-width: $bpMobile) {
+          min-height: 0;
+          height: calc(57vw - 30px);
+        }
 
         &::before {
           content: '';
