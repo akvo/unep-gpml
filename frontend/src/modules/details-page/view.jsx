@@ -199,10 +199,10 @@ const DetailsView = ({
         setData({
           ...serverData,
           summary:
-            serverTranslations.summary ||
-            serverTranslations.abstract ||
-            serverTranslations.remarks ||
-            serverTranslations.description,
+            serverData?.summary ||
+            serverData?.abstract ||
+            serverData?.remarks ||
+            serverData?.description,
         })
         getComment(id, type.replace('-', '_'))
       }
