@@ -1914,15 +1914,40 @@ const DynamicContentForm = () => {
         return response
       }
     } catch (error) {
-      const errorMessage =
-        error.response?.data?.message ||
-        error.message ||
-        'Failed to create resource'
+      const status = error.response?.status
+      const errorData = error.response?.data
 
-      notification.error({
-        message: 'An error occurred',
-        description: errorMessage,
-      })
+      if (status === 400) {
+        const errorMessage =
+          errorData?.reason?.replace(/-/g, ' ') ||
+          errorData?.message ||
+          errorData?.errorDetails ||
+          'Invalid request. Please check your input.'
+
+        const errorDescription = errorData?.errorDetails
+          ? errorData.errorDetails
+          : errorData?.errors
+          ? Object.entries(errorData.errors)
+              .map(([field, messages]) => `${field}: ${messages}`)
+              .join(', ')
+          : 'Please review the form fields and try again.'
+
+        notification.error({
+          message: 'Validation Error',
+          description: errorDescription !== errorMessage ? errorDescription : errorMessage,
+        })
+      } else {
+        const errorMessage =
+          errorData?.message ||
+          errorData?.reason?.replace(/-/g, ' ') ||
+          error.message ||
+          'Failed to create resource'
+
+        notification.error({
+          message: 'An error occurred',
+          description: errorMessage,
+        })
+      }
     } finally {
       setLoading(false)
     }
