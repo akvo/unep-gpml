@@ -1934,7 +1934,8 @@ const DynamicContentForm = () => {
 
         notification.error({
           message: 'Validation Error',
-          description: errorDescription !== errorMessage ? errorDescription : errorMessage,
+          description:
+            errorDescription !== errorMessage ? errorDescription : errorMessage,
         })
       } else {
         const errorMessage =
@@ -1998,11 +1999,9 @@ const DynamicContentForm = () => {
 
   const handleOnSubmitCaseStudy = async (data) => {
     delete data.resourceType
-    delete data.image
     data.version = 2
     data.subContentType = ''
     data.individualConnections = []
-
     try {
       const response = await api.post('/case-study', data)
       if (!response.data || response.error) {
