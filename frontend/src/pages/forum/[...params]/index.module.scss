@@ -64,10 +64,21 @@
       .attachment-cols {
         display: flex;
         margin: 0 25px;
+        @media screen and (max-width: $bpMobile) {
+          flex-direction: column;
+          .col {
+            ul {
+              display: flex;
+              flex-direction: column;
+            }
+          }
+        }
         .col {
           flex: 1;
           &:nth-child(2) {
-            margin-left: 20px;
+            @media screen and (min-width: $bpMobile) {
+              margin-left: 20px;
+            }
           }
           h6 {
             padding-left: 0;
@@ -426,6 +437,15 @@
             margin-bottom: 5px;
             display: flex;
             flex-direction: row;
+
+            .ant-row {
+              flex-wrap: nowrap;
+            }
+
+            .ant-col {
+              max-width: none;
+              flex: none;
+            }
 
             .ant-list-items {
               display: flex;
