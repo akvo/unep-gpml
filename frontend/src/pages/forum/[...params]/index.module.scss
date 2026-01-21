@@ -13,8 +13,7 @@
       }
 
       @media screen and (min-width: $bpMobile) {
-        min-width: 300px;
-        max-width: 450px;
+        width: calc(60vw);
       }
 
       .notifcation-badge {
@@ -59,6 +58,24 @@
 
         p {
           margin: 10px 0 0;
+        }
+      }
+
+      .attachment-cols {
+        display: flex;
+        margin: 0 25px;
+        .col {
+          flex: 1;
+          &:nth-child(2) {
+            margin-left: 20px;
+          }
+          h6 {
+            padding-left: 0;
+            margin-bottom: 20px;
+          }
+          ul li {
+            padding: 5px 0;
+          }
         }
       }
 

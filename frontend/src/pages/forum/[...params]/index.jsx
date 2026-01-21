@@ -226,7 +226,8 @@ const ForumView = ({
               </div>
             )}
             <PinnedLinks {...{ isAdmin, channelId }} />
-            {activeForum != null && (
+
+            {/* {activeForum != null && (
               <Discussions
                 discussions={activeForum.discussions}
                 channelId={router.query.params?.[0]}
@@ -240,7 +241,7 @@ const ForumView = ({
                   markNotificationsAsRead,
                 }}
               />
-            )}
+            )} */}
             {activeForum?.users?.length > 0 && (
               <Participants
                 {...{
@@ -322,7 +323,7 @@ const PinnedLinks = ({ isAdmin, channelId }) => {
   }
   const [items, setItems] = useState([])
   const [form, setForm] = useState({ ...initialState })
-  const [showModal, setShowModal] = useState(false)
+  const [showModal, setShowModal] = useState({ open: false, mode: null })
   const [sending, setSending] = useState(false)
   const handleOnChange = (field) => (e) => {
     setForm({ ...form, [field]: e.target.value })
@@ -334,7 +335,7 @@ const PinnedLinks = ({ isAdmin, channelId }) => {
         return [..._items, d.data.pinnedLink]
       })
       setSending(false)
-      setShowModal(false)
+      setShowModal({ open: false, mode: null })
       setForm(initialState)
     })
   }
@@ -355,76 +356,150 @@ const PinnedLinks = ({ isAdmin, channelId }) => {
     pdf: PinPdf,
     form: PinForm,
     doc: PinDoc,
+    calendar: PinCalendar,
   }
   if (items.length === 0 && !isAdmin) return
   return (
     <>
-      <h6 className="w-bold h-caps-xs">
-        <Trans>Pinned Documents</Trans>
-      </h6>
-      <div className="mobile-scroller-horiz">
-        <ul className="pinned-links">
-          {items.map((item) => {
-            const Icon = type2iconMap[item.type]
-            return (
-              <li key={item.id}>
-                <a href={item.url} target="_blank">
-                  <div className="icon">
-                    <Icon />
-                  </div>
-                  <span>{item.title}</span>
-                </a>
-                {isAdmin && (
-                  <div className="popover-container">
-                    <Popover
-                      placement="bottomLeft"
-                      overlayClassName={styles.forumOptions}
-                      content={
-                        <ul>
-                          <li>
-                            <Button
-                              size="small"
-                              type="link"
-                              onClick={handleDelete(item)}
-                            >
-                              <Trans>Delete</Trans>
-                            </Button>
-                          </li>
-                        </ul>
-                      }
-                      trigger="click"
-                    >
-                      <MoreOutlined rotate={90} />
-                    </Popover>
-                  </div>
-                )}
-              </li>
-            )
-          })}
+      <div className="attachment-cols">
+        <div className="col">
+          <h6 className="w-bold h-caps-xs">
+            <Trans>Shared Documents</Trans>
+          </h6>
+          {/* <div className="mobile-scroller-horiz"> */}
+          <ul className="pinned-links">
+            {items
+              .filter((item) => item.type !== 'calendar')
+              .map((item) => {
+                const Icon = type2iconMap[item.type]
+                return (
+                  <li key={item.id}>
+                    <a href={item.url} target="_blank">
+                      <div className="icon">
+                        <Icon />
+                      </div>
+                      <span>{item.title}</span>
+                    </a>
+                    {isAdmin && (
+                      <div className="popover-container">
+                        <Popover
+                          placement="bottomLeft"
+                          overlayClassName={styles.forumOptions}
+                          content={
+                            <ul>
+                              <li>
+                                <Button
+                                  size="small"
+                                  type="link"
+                                  onClick={handleDelete(item)}
+                                >
+                                  <Trans>Delete</Trans>
+                                </Button>
+                              </li>
+                            </ul>
+                          }
+                          trigger="click"
+                        >
+                          <MoreOutlined rotate={90} />
+                        </Popover>
+                      </div>
+                    )}
+                  </li>
+                )
+              })}
 
-          {isAdmin && (
-            <li className="add-new-topic hide-mobile">
-              <Button
-                type="link"
-                className="caps-btn"
-                size="small"
-                onClick={() => {
-                  setShowModal(true)
-                }}
-              >
-                + Add New Document Link
-              </Button>
-            </li>
-          )}
-        </ul>
+            {isAdmin && (
+              <li className="add-new-topic hide-mobile">
+                <Button
+                  type="link"
+                  className="caps-btn"
+                  size="small"
+                  onClick={() => {
+                    setForm({ ...initialState })
+                    setShowModal({ open: true, mode: 'doc' })
+                  }}
+                >
+                  + Add New Document Link
+                </Button>
+              </li>
+            )}
+          </ul>
+        </div>
+        <div className="col">
+          <h6 className="w-bold h-caps-xs">
+            <Trans>Meetings</Trans>
+          </h6>
+          <ul className="pinned-links">
+            {items
+              .filter((item) => item.type === 'calendar')
+              .map((item) => {
+                const Icon = type2iconMap[item.type]
+                return (
+                  <li key={item.id}>
+                    <a href={item.url} target="_blank">
+                      <div className="icon">
+                        <Icon />
+                      </div>
+                      <span>{item.title}</span>
+                    </a>
+                    {isAdmin && (
+                      <div className="popover-container">
+                        <Popover
+                          placement="bottomLeft"
+                          overlayClassName={styles.forumOptions}
+                          content={
+                            <ul>
+                              <li>
+                                <Button
+                                  size="small"
+                                  type="link"
+                                  onClick={handleDelete(item)}
+                                >
+                                  <Trans>Delete</Trans>
+                                </Button>
+                              </li>
+                            </ul>
+                          }
+                          trigger="click"
+                        >
+                          <MoreOutlined rotate={90} />
+                        </Popover>
+                      </div>
+                    )}
+                  </li>
+                )
+              })}
+
+            {isAdmin && (
+              <li className="add-new-topic hide-mobile">
+                <Button
+                  type="link"
+                  className="caps-btn"
+                  size="small"
+                  onClick={() => {
+                    setForm({ ...initialState, type: 'calendar' })
+                    setShowModal({ open: true, mode: 'meeting' })
+                  }}
+                >
+                  + Add New Meeting
+                </Button>
+              </li>
+            )}
+          </ul>
+        </div>
       </div>
+      {/* </div> */}
       <Modal
-        visible={showModal}
+        visible={showModal.open}
         onCancel={() => {
-          setShowModal(false)
+          setShowModal({ open: false, mode: null })
         }}
         footer={null}
-        title="Add New Pinned Document"
+        title={
+          showModal.mode === 'meeting'
+            ? 'Add New Meeting'
+            : 'Add New Pinned Document'
+        }
         className={styles.addPinnedModal}
       >
         <div>
@@ -435,44 +510,46 @@ const PinnedLinks = ({ isAdmin, channelId }) => {
             <Form.Item label="URL">
               <Input value={form.url} onChange={handleOnChange('url')} />
             </Form.Item>
-            <Form.Item label="Type">
-              <Radio.Group
-                buttonStyle="solid"
-                value={form.type}
-                onChange={handleOnChange('type')}
-              >
-                <Radio.Button value="video">
-                  <div className="icon">
-                    <PinVideo />
-                  </div>
-                  Video
-                </Radio.Button>
-                <Radio.Button value="pdf">
-                  <div className="icon">
-                    <PinPdf />
-                  </div>
-                  PDF
-                </Radio.Button>
-                <Radio.Button value="doc">
-                  <div className="icon">
-                    <PinDoc />
-                  </div>
-                  Doc
-                </Radio.Button>
-                <Radio.Button value="form">
-                  <div className="icon">
-                    <PinForm />
-                  </div>
-                  Form
-                </Radio.Button>
-                <Radio.Button value="event">
-                  <div className="icon">
-                    <PinCalendar />
-                  </div>
-                  Invite
-                </Radio.Button>
-              </Radio.Group>
-            </Form.Item>
+            {showModal.mode !== 'meeting' && (
+              <Form.Item label="Type">
+                <Radio.Group
+                  buttonStyle="solid"
+                  value={form.type}
+                  onChange={handleOnChange('type')}
+                >
+                  <Radio.Button value="video">
+                    <div className="icon">
+                      <PinVideo />
+                    </div>
+                    Video
+                  </Radio.Button>
+                  <Radio.Button value="pdf">
+                    <div className="icon">
+                      <PinPdf />
+                    </div>
+                    PDF
+                  </Radio.Button>
+                  <Radio.Button value="doc">
+                    <div className="icon">
+                      <PinDoc />
+                    </div>
+                    Doc
+                  </Radio.Button>
+                  <Radio.Button value="form">
+                    <div className="icon">
+                      <PinForm />
+                    </div>
+                    Form
+                  </Radio.Button>
+                  {/* <Radio.Button value="event">
+                    <div className="icon">
+                      <PinCalendar />
+                    </div>
+                    Invite
+                  </Radio.Button> */}
+                </Radio.Group>
+              </Form.Item>
+            )}
             <hr />
             <div>
               <Button
@@ -481,13 +558,15 @@ const PinnedLinks = ({ isAdmin, channelId }) => {
                 onClick={handleSubmit}
                 loading={sending}
               >
-                Add New Pinned Document
+                {showModal.mode === 'meeting'
+                  ? 'Add New Meeting'
+                  : 'Add New Pinned Document'}
               </Button>
               <Button
                 type="ghost"
                 className="noborder"
                 onClick={() => {
-                  setShowModal(false)
+                  setShowModal({ open: false, mode: null })
                 }}
               >
                 Cancel
