@@ -695,6 +695,7 @@ const Participants = ({
       <div className="mobile-scroller-horiz">
         <List
           className="members"
+          grid={{ column: 2 }}
           dataSource={activeForum.users}
           renderItem={(user) => {
             const fullName = `${user?.firstName} ${user?.lastName || ''}`
@@ -712,19 +713,24 @@ const Participants = ({
               >
                 <List.Item.Meta
                   avatar={
-                    <Avatar src={user?.picture}>
-                      {fullName
-                        .split(' ')
-                        .map((it) => it[0])
-                        .join('')}
-                    </Avatar>
+                    <div className="avatar-wrapper">
+                      <Avatar src={user?.picture}>
+                        {fullName
+                          .split(' ')
+                          .map((it) => it[0])
+                          .join('')}
+                      </Avatar>
+                      {notificationCount > 0 && (
+                        <span className="notifcation-badge">
+                          {notificationCount}
+                        </span>
+                      )}
+                    </div>
                   }
                   title={fullName}
                   description={user?.org?.name}
                 />
-                {user.id !== profile.id && notificationCount > 0 ? (
-                  <span className="notifcation-badge">{notificationCount}</span>
-                ) : user.id !== profile.id ? (
+                {user.id !== profile.id ? (
                   <span className="chat-icon">
                     <ChatSvg />
                   </span>

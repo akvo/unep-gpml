@@ -176,6 +176,8 @@
         .ant-list-item {
           padding: 7px 10px 7px 0;
           border-bottom: none;
+          display: flex;
+          margin-bottom: 0;
           cursor: default !important;
           position: relative;
           &.self .chat-icon {
@@ -186,9 +188,15 @@
               display: flex;
             }
             cursor: pointer;
+            .chat-icon {
+              opacity: 0;
+            }
             &:hover {
               background-color: $primaryBlue2;
               .chat-icon {
+                // position: absolute;
+                // right: 0;top: 0;
+                opacity: 1;
                 svg {
                   path {
                     fill: $primaryBlue5;
@@ -210,6 +218,22 @@
 
           .ant-list-item-meta-avatar {
             margin-right: 13px;
+
+            .avatar-wrapper {
+              position: relative;
+              display: inline-block;
+
+              .notifcation-badge {
+                position: absolute;
+                top: -4px;
+                right: -4px;
+                margin-left: 0;
+                min-width: 18px;
+                height: 18px;
+                font-size: 10px;
+                padding: 2px;
+              }
+            }
 
             .ant-avatar {
               width: 40px;
