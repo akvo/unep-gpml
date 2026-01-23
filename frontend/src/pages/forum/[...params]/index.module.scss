@@ -13,8 +13,7 @@
       }
 
       @media screen and (min-width: $bpMobile) {
-        min-width: 300px;
-        max-width: 450px;
+        width: calc(60vw);
       }
 
       .notifcation-badge {
@@ -59,6 +58,35 @@
 
         p {
           margin: 10px 0 0;
+        }
+      }
+
+      .attachment-cols {
+        display: flex;
+        margin: 0 25px;
+        @media screen and (max-width: $bpMobile) {
+          flex-direction: column;
+          .col {
+            ul {
+              display: flex;
+              flex-direction: column;
+            }
+          }
+        }
+        .col {
+          flex: 1;
+          &:nth-child(2) {
+            @media screen and (min-width: $bpMobile) {
+              margin-left: 20px;
+            }
+          }
+          h6 {
+            padding-left: 0;
+            margin-bottom: 20px;
+          }
+          ul li {
+            padding: 5px 0;
+          }
         }
       }
 
@@ -159,6 +187,8 @@
         .ant-list-item {
           padding: 7px 10px 7px 0;
           border-bottom: none;
+          display: flex;
+          margin-bottom: 0;
           cursor: default !important;
           position: relative;
           &.self .chat-icon {
@@ -169,9 +199,15 @@
               display: flex;
             }
             cursor: pointer;
+            .chat-icon {
+              opacity: 0;
+            }
             &:hover {
               background-color: $primaryBlue2;
               .chat-icon {
+                // position: absolute;
+                // right: 0;top: 0;
+                opacity: 1;
                 svg {
                   path {
                     fill: $primaryBlue5;
@@ -193,6 +229,22 @@
 
           .ant-list-item-meta-avatar {
             margin-right: 13px;
+
+            .avatar-wrapper {
+              position: relative;
+              display: inline-block;
+
+              .notifcation-badge {
+                position: absolute;
+                top: -4px;
+                right: -4px;
+                margin-left: 0;
+                min-width: 18px;
+                height: 18px;
+                font-size: 10px;
+                padding: 2px;
+              }
+            }
 
             .ant-avatar {
               width: 40px;
@@ -385,6 +437,15 @@
             margin-bottom: 5px;
             display: flex;
             flex-direction: row;
+
+            .ant-row {
+              flex-wrap: nowrap;
+            }
+
+            .ant-col {
+              max-width: none;
+              flex: none;
+            }
 
             .ant-list-items {
               display: flex;
