@@ -66,6 +66,7 @@
         margin: 0 25px;
         @media screen and (max-width: $bpMobile) {
           flex-direction: column;
+          margin: 0 20px;
           .col {
             ul {
               display: flex;
@@ -229,6 +230,9 @@
 
           .ant-list-item-meta-avatar {
             margin-right: 13px;
+            @media screen and (max-width: $bpMobile) {
+              margin-right: 0px;
+            }
 
             .avatar-wrapper {
               position: relative;
@@ -395,7 +399,7 @@
         height: auto;
 
         .description {
-          padding: 10px 17px;
+          padding: 10px 20px;
         }
 
         h5 {
