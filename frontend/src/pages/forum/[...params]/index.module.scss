@@ -82,7 +82,7 @@
           }
           h6 {
             padding-left: 0;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
           }
           ul li {
             padding: 5px 0;
@@ -320,15 +320,16 @@
 
         @media screen and (max-width: 768px) {
           display: flex;
+          margin-bottom: 10px;
 
           li {
             width: auto;
-            white-space: nowrap;
+            white-space: wrap;
 
             span {
               overflow: hidden;
               text-overflow: ellipsis;
-              white-space: nowrap;
+              white-space: wrap;
             }
 
             .popover-container {
