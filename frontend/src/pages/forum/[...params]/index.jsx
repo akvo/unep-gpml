@@ -196,7 +196,7 @@ const ForumView = ({
                   <Trans>Back to all Forums</Trans>
                 </Button>
                 <div className="title-container">
-                  <h5>{activeForum?.name}</h5>
+                  <h3>{activeForum?.name}</h3>
                   {userJoined && (
                     <div className="popover-container">
                       <Popover

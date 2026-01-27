@@ -55,9 +55,14 @@
         h5 {
           margin-left: 0;
         }
+        h3 {
+          margin-left: 0;
+          margin-top: 0px;
+        }
 
         p {
           margin: 10px 0 0;
+          font-size: 16px;
         }
       }
 
@@ -402,7 +407,8 @@
           padding: 10px 20px;
         }
 
-        h5 {
+        h5,
+        h3 {
           margin-top: 5px !important;
         }
 
