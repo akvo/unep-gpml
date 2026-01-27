@@ -66,6 +66,7 @@
         margin: 0 25px;
         @media screen and (max-width: $bpMobile) {
           flex-direction: column;
+          margin: 0 20px;
           .col {
             ul {
               display: flex;
@@ -82,7 +83,7 @@
           }
           h6 {
             padding-left: 0;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
           }
           ul li {
             padding: 5px 0;
@@ -229,6 +230,9 @@
 
           .ant-list-item-meta-avatar {
             margin-right: 13px;
+            @media screen and (max-width: $bpMobile) {
+              margin-right: 0px;
+            }
 
             .avatar-wrapper {
               position: relative;
@@ -320,15 +324,16 @@
 
         @media screen and (max-width: 768px) {
           display: flex;
+          margin-bottom: 10px;
 
           li {
             width: auto;
-            white-space: nowrap;
+            white-space: wrap;
 
             span {
               overflow: hidden;
               text-overflow: ellipsis;
-              white-space: nowrap;
+              white-space: wrap;
             }
 
             .popover-container {
@@ -394,7 +399,7 @@
         height: auto;
 
         .description {
-          padding: 10px 17px;
+          padding: 10px 20px;
         }
 
         h5 {

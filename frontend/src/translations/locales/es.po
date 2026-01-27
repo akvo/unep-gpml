@@ -5247,3 +5247,8 @@ msgstr "Medidas ascendentes"
 msgid "Waste Management & Circularity"
 msgstr "Gestión de residuos y circularidad"
 
+msgid "Shared Documents"
+msgstr "Documentos compartidos"
+
+msgid "Meetings"
+msgstr "Reuniones"

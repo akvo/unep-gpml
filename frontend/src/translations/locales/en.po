@@ -5248,3 +5248,8 @@ msgstr ""
 msgid "Waste Management & Circularity"
 msgstr ""
 
+msgid "Shared Documents"
+msgstr "Shared Documents"
+
+msgid "Meetings"
+msgstr "Meetings"

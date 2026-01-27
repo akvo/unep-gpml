@@ -5251,3 +5251,8 @@ msgstr "Mesures en amont"
 msgid "Waste Management & Circularity"
 msgstr "Gestion des déchets et économie circulaire"
 
+msgid "Shared Documents"
+msgstr "Documents partagés"
+
+msgid "Meetings"
+msgstr "Réunions"

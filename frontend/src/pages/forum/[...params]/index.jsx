@@ -362,131 +362,137 @@ const PinnedLinks = ({ isAdmin, channelId }) => {
   return (
     <>
       <div className="attachment-cols">
-        <div className="col">
-          <h6 className="w-bold h-caps-xs">
-            <Trans>Shared Documents</Trans>
-          </h6>
-          {/* <div className="mobile-scroller-horiz"> */}
-          <ul className="pinned-links">
-            {items
-              .filter((item) => item.type !== 'calendar')
-              .map((item) => {
-                const Icon = type2iconMap[item.type]
-                return (
-                  <li key={item.id}>
-                    <a href={item.url} target="_blank">
-                      <div className="icon">
-                        <Icon />
-                      </div>
-                      <span>{item.title}</span>
-                    </a>
-                    {isAdmin && (
-                      <div className="popover-container">
-                        <Popover
-                          placement="bottomLeft"
-                          overlayClassName={styles.forumOptions}
-                          content={
-                            <ul>
-                              <li>
-                                <Button
-                                  size="small"
-                                  type="link"
-                                  onClick={handleDelete(item)}
-                                >
-                                  <Trans>Delete</Trans>
-                                </Button>
-                              </li>
-                            </ul>
-                          }
-                          trigger="click"
-                        >
-                          <MoreOutlined rotate={90} />
-                        </Popover>
-                      </div>
-                    )}
-                  </li>
-                )
-              })}
+        {(items.filter((item) => item.type !== 'calendar').length > 0 ||
+          isAdmin) && (
+          <div className="col">
+            <h6 className="w-bold h-caps-xs">
+              <Trans>Shared Documents</Trans>
+            </h6>
+            {/* <div className="mobile-scroller-horiz"> */}
+            <ul className="pinned-links">
+              {items
+                .filter((item) => item.type !== 'calendar')
+                .map((item) => {
+                  const Icon = type2iconMap[item.type]
+                  return (
+                    <li key={item.id}>
+                      <a href={item.url} target="_blank">
+                        <div className="icon">
+                          <Icon />
+                        </div>
+                        <span>{item.title}</span>
+                      </a>
+                      {isAdmin && (
+                        <div className="popover-container">
+                          <Popover
+                            placement="bottomLeft"
+                            overlayClassName={styles.forumOptions}
+                            content={
+                              <ul>
+                                <li>
+                                  <Button
+                                    size="small"
+                                    type="link"
+                                    onClick={handleDelete(item)}
+                                  >
+                                    <Trans>Delete</Trans>
+                                  </Button>
+                                </li>
+                              </ul>
+                            }
+                            trigger="click"
+                          >
+                            <MoreOutlined rotate={90} />
+                          </Popover>
+                        </div>
+                      )}
+                    </li>
+                  )
+                })}
 
-            {isAdmin && (
-              <li className="add-new-topic hide-mobile">
-                <Button
-                  type="link"
-                  className="caps-btn"
-                  size="small"
-                  onClick={() => {
-                    setForm({ ...initialState })
-                    setShowModal({ open: true, mode: 'doc' })
-                  }}
-                >
-                  + Add New Document Link
-                </Button>
-              </li>
-            )}
-          </ul>
-        </div>
-        <div className="col">
-          <h6 className="w-bold h-caps-xs">
-            <Trans>Meetings</Trans>
-          </h6>
-          <ul className="pinned-links">
-            {items
-              .filter((item) => item.type === 'calendar')
-              .map((item) => {
-                const Icon = type2iconMap[item.type]
-                return (
-                  <li key={item.id}>
-                    <a href={item.url} target="_blank">
-                      <div className="icon">
-                        <Icon />
-                      </div>
-                      <span>{item.title}</span>
-                    </a>
-                    {isAdmin && (
-                      <div className="popover-container">
-                        <Popover
-                          placement="bottomLeft"
-                          overlayClassName={styles.forumOptions}
-                          content={
-                            <ul>
-                              <li>
-                                <Button
-                                  size="small"
-                                  type="link"
-                                  onClick={handleDelete(item)}
-                                >
-                                  <Trans>Delete</Trans>
-                                </Button>
-                              </li>
-                            </ul>
-                          }
-                          trigger="click"
-                        >
-                          <MoreOutlined rotate={90} />
-                        </Popover>
-                      </div>
-                    )}
-                  </li>
-                )
-              })}
+              {isAdmin && (
+                <li className="add-new-topic hide-mobile">
+                  <Button
+                    type="link"
+                    className="caps-btn"
+                    size="small"
+                    onClick={() => {
+                      setForm({ ...initialState })
+                      setShowModal({ open: true, mode: 'doc' })
+                    }}
+                  >
+                    + Add New Document Link
+                  </Button>
+                </li>
+              )}
+            </ul>
+          </div>
+        )}
+        {(items.filter((item) => item.type === 'calendar').length > 0 ||
+          isAdmin) && (
+          <div className="col">
+            <h6 className="w-bold h-caps-xs">
+              <Trans>Meetings</Trans>
+            </h6>
+            <ul className="pinned-links">
+              {items
+                .filter((item) => item.type === 'calendar')
+                .map((item) => {
+                  const Icon = type2iconMap[item.type]
+                  return (
+                    <li key={item.id}>
+                      <a href={item.url} target="_blank">
+                        <div className="icon">
+                          <Icon />
+                        </div>
+                        <span>{item.title}</span>
+                      </a>
+                      {isAdmin && (
+                        <div className="popover-container">
+                          <Popover
+                            placement="bottomLeft"
+                            overlayClassName={styles.forumOptions}
+                            content={
+                              <ul>
+                                <li>
+                                  <Button
+                                    size="small"
+                                    type="link"
+                                    onClick={handleDelete(item)}
+                                  >
+                                    <Trans>Delete</Trans>
+                                  </Button>
+                                </li>
+                              </ul>
+                            }
+                            trigger="click"
+                          >
+                            <MoreOutlined rotate={90} />
+                          </Popover>
+                        </div>
+                      )}
+                    </li>
+                  )
+                })}
 
-            {isAdmin && (
-              <li className="add-new-topic hide-mobile">
-                <Button
-                  type="link"
-                  className="caps-btn"
-                  size="small"
-                  onClick={() => {
-                    setForm({ ...initialState, type: 'calendar' })
-                    setShowModal({ open: true, mode: 'meeting' })
-                  }}
-                >
-                  + Add New Meeting
-                </Button>
-              </li>
-            )}
-          </ul>
-        </div>
+              {isAdmin && (
+                <li className="add-new-topic hide-mobile">
+                  <Button
+                    type="link"
+                    className="caps-btn"
+                    size="small"
+                    onClick={() => {
+                      setForm({ ...initialState, type: 'calendar' })
+                      setShowModal({ open: true, mode: 'meeting' })
+                    }}
+                  >
+                    + Add New Meeting
+                  </Button>
+                </li>
+              )}
+            </ul>
+          </div>
+        )}
       </div>
       {/* </div> */}
       <Modal
