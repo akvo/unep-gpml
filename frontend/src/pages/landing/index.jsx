@@ -121,11 +121,11 @@ const Landing = (props) => {
             <JoinBtn {...props} />
           </div>
           <div className="screenshot">
-            <Image
-              src="/workflow-screenshot.jpg"
+            <img
+              src="/workflow-screenshot.png"
               width={710}
-              height={423}
               alt="Workflow screenshot"
+              style={{ borderRadius: '6px', width: '100%', height: 'auto' }}
             />
           </div>
         </div>
@@ -440,7 +440,7 @@ const FeatureCards = () => {
               <h5>
                 <Trans>Data Hub</Trans>
               </h5>
-              <h2>80+</h2>
+              <h2>70+</h2>
               <p>
                 {/* <Trans>
                   Plastic Lifecycle Indicators showcased in the Data Hub.
