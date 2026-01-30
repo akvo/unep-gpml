@@ -16,6 +16,11 @@ const menuList = [
     id: 'Knowledge Hub',
     children: [
       {
+        key: msg`Introduction`,
+        id: 'Knowledge Hub Introduction',
+        to: '/page/knowledge-hub-introduction',
+      },
+      {
         to: '/knowledge-hub',
         title: msg`Library`,
         key: msg`Library`,
@@ -60,6 +65,11 @@ const menuList = [
         key: msg`Country dashboard`,
         id: 'Country dashboard',
         to: '/country-dashboard',
+      },
+      {
+        key: msg`Data Sources`,
+        id: 'Data Sources',
+        to: '/page/data-sources',
       },
     ],
   },
