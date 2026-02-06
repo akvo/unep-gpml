@@ -1,0 +1,55 @@
+ALTER TABLE public.plastic_strategy_resource_bookmark
+DROP CONSTRAINT plastic_strategy_resource_bookmark_resource_id_fkey;
+
+ALTER TABLE public.plastic_strategy_event_bookmark
+DROP CONSTRAINT plastic_strategy_event_bookmark_event_id_fkey;
+
+ALTER TABLE public.plastic_strategy_policy_bookmark
+DROP CONSTRAINT plastic_strategy_policy_bookmark_policy_id_fkey;
+
+ALTER TABLE public.plastic_strategy_technology_bookmark
+DROP CONSTRAINT plastic_strategy_technology_bookmark_technology_id_fkey;
+
+ALTER TABLE public.plastic_strategy_initiative_bookmark
+DROP CONSTRAINT plastic_strategy_initiative_bookmark_initiative_id_fkey;
+
+ALTER TABLE public.plastic_strategy_case_study_bookmark
+DROP CONSTRAINT plastic_strategy_case_study_bookmark_case_study_id_fkey;
+
+ALTER TABLE public.plastic_strategy_organisation_bookmark
+DROP CONSTRAINT plastic_strategy_organisation_bookmark_organisation_id_fkey;
+
+ALTER TABLE public.plastic_strategy_resource_bookmark
+ADD CONSTRAINT plastic_strategy_resource_bookmark_resource_id_fkey
+FOREIGN KEY (resource_id)
+REFERENCES public.resource(id);
+
+ALTER TABLE public.plastic_strategy_event_bookmark
+ADD CONSTRAINT plastic_strategy_event_bookmark_event_id_fkey
+FOREIGN KEY (event_id)
+REFERENCES public.event(id);
+
+ALTER TABLE public.plastic_strategy_policy_bookmark
+ADD CONSTRAINT plastic_strategy_policy_bookmark_policy_id_fkey
+FOREIGN KEY (policy_id)
+REFERENCES public.policy(id);
+
+ALTER TABLE public.plastic_strategy_technology_bookmark
+ADD CONSTRAINT plastic_strategy_technology_bookmark_technology_id_fkey
+FOREIGN KEY (technology_id)
+REFERENCES public.technology(id);
+
+ALTER TABLE public.plastic_strategy_initiative_bookmark
+ADD CONSTRAINT plastic_strategy_initiative_bookmark_initiative_id_fkey
+FOREIGN KEY (initiative_id)
+REFERENCES public.initiative(id);
+
+ALTER TABLE public.plastic_strategy_case_study_bookmark
+ADD CONSTRAINT plastic_strategy_case_study_bookmark_case_study_id_fkey
+FOREIGN KEY (case_study_id)
+REFERENCES public.case_study(id);
+
+ALTER TABLE public.plastic_strategy_organisation_bookmark
+ADD CONSTRAINT plastic_strategy_organisation_bookmark_organisation_id_fkey
+FOREIGN KEY (organisation_id)
+REFERENCES public.organisation(id);
