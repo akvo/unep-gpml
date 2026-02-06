@@ -732,8 +732,7 @@
                                      :responses  #ig/ref :gpml.handler.plastic-strategy/admin-ensure-chat-responses}}]
                             [""
                              {:get {:summary    "Get a plastic strategy"
-                                    :middleware [#ig/ref :gpml.auth/auth-middleware
-                                                 #ig/ref :gpml.auth/auth-required]
+                                    :middleware [#ig/ref :gpml.auth/auth-middleware]
                                     :swagger    {:tags ["plastic-strategy"]}
                                     :handler    #ig/ref :gpml.handler.plastic-strategy/get
                                     :parameters #ig/ref :gpml.handler.plastic-strategy/get-params}
@@ -755,9 +754,8 @@
                              ["/member"
                               [""
                                {:get    {:summary    "Get all team members"
-                                         :middleware [#ig/ref :gpml.auth/auth-middleware
-                                                      #ig/ref :gpml.auth/auth-required]
-                                         :swagger    {:tags ["plastic-strategy"] :security [{:id_token []}]}
+                                         :middleware [#ig/ref :gpml.auth/auth-middleware]
+                                         :swagger    {:tags ["plastic-strategy"]}
                                          :handler    #ig/ref :gpml.handler.plastic-strategy.team/get-members
                                          :parameters #ig/ref :gpml.handler.plastic-strategy.team/get-members-params}
                                 :post   {:summary    "Add a team member"
@@ -809,9 +807,8 @@
                                         :handler    #ig/ref :gpml.handler.plastic-strategy.file/delete
                                         :parameters #ig/ref :gpml.handler.plastic-strategy.file/delete-params}
                                :get    {:summary    "Gets a plastic strategy files"
-                                        :middleware [#ig/ref :gpml.auth/auth-middleware
-                                                     #ig/ref :gpml.auth/auth-required]
-                                        :swagger    {:tags ["plastic-strategy"] :security [{:id_token []}]}
+                                        :middleware [#ig/ref :gpml.auth/auth-middleware]
+                                        :swagger    {:tags ["plastic-strategy"]}
                                         :handler    #ig/ref :gpml.handler.plastic-strategy.file/get
                                         :parameters #ig/ref :gpml.handler.plastic-strategy.file/get-params}}]]]]
                           ["/badge"

@@ -98,6 +98,8 @@ const FileWidget = (props) => {
 
   const { required } = props
   const highlight = UIStore.useState((s) => s.highlight)
+  const profile = UIStore.useState((s) => s.profile)
+  const isDisabled = !profile?.id
   const border =
     required && highlight ? '2px #22ba9a solid' : '2px dotted lightgray'
 
@@ -114,6 +116,8 @@ const FileWidget = (props) => {
           flexDirection: 'column',
           alignItems: 'center',
           marginBottom: '5px',
+          opacity: isDisabled ? 0.5 : 1,
+          pointerEvents: isDisabled ? 'none' : 'auto',
         }}
       >
         <FileOutlined style={{ fontSize: '40px', color: 'lightgray' }} />
@@ -128,6 +132,7 @@ const FileWidget = (props) => {
           }}
           className="upload-btn"
           size="small"
+          disabled={isDisabled}
         >
           Choose File
         </Button>{' '}
@@ -138,6 +143,7 @@ const FileWidget = (props) => {
           }
           ref={inputFile}
           accept={accepts}
+          disabled={isDisabled}
           style={{
             display: 'block',
             width: '100%',
@@ -164,7 +170,7 @@ const FileWidget = (props) => {
       {(output || props?.value) && props?.name !== 'cv' && (
         <img src={props?.value || output} alt="upload" />
       )}
-      {props?.value || output ? (
+      {(props?.value || output) && !isDisabled ? (
         <Button
           onClick={(e) =>
             removeFile(inputFile, setFile, setOutput, props.onChange)

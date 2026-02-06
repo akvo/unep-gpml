@@ -113,15 +113,19 @@
             (r/ok {})
             (r/server-error (dissoc result :success?))))))))
 
-(defn- get-ps-team-members [config req]
-  (let [country-iso-code-a2 (get-in req [:parameters :path :iso_code_a2])
-        result (svc.ps.team/get-ps-team-members config
-                                                country-iso-code-a2)]
-    (if (:success? result)
-      (r/ok (cske/transform-keys ->snake_case (:ps-team-members result)))
-      (if (= (:reason result) :not-found)
-        (r/not-found {})
-        (r/server-error (dissoc result :success?))))))
+(def ^:private public-country-iso-code "0A")
+
+(defn- get-ps-team-members [config {:keys [user] :as req}]
+  (let [country-iso-code-a2 (get-in req [:parameters :path :iso_code_a2])]
+    (if (and (nil? user) (not= country-iso-code-a2 public-country-iso-code))
+      (r/forbidden {:message "Unauthorized"})
+      (let [result (svc.ps.team/get-ps-team-members config
+                                                     country-iso-code-a2)]
+        (if (:success? result)
+          (r/ok (cske/transform-keys ->snake_case (:ps-team-members result)))
+          (if (= (:reason result) :not-found)
+            (r/not-found {})
+            (r/server-error (dissoc result :success?))))))))
 
 (defn- invite-user-to-ps-team [config {{:keys [path body]} :parameters}]
   (let [country-iso-code-a2 (:iso_code_a2 path)

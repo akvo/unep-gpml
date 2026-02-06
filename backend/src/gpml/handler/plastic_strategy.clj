@@ -63,18 +63,21 @@
       (get-plastic-strategies* config search-opts)
       (get-plastic-strategies* config (assoc-in search-opts [:filters :rbac-user-id] (:id user))))))
 
+(def ^:private public-country-iso-code "0A")
+
 (defn- get-plastic-strategy [config {:keys [user] :as req}]
   (let [country-iso-code-a2 (get-in req [:parameters :path :iso_code_a2])
         search-opts {:filters {:countries-iso-codes-a2 [country-iso-code-a2]}}
         {:keys [success? plastic-strategy reason] :as result}
         (svc.ps/get-plastic-strategy config search-opts)]
     (if success?
-      (if (h.r.permission/operation-allowed? config
-                                             {:user-id (:id user)
-                                              :entity-type :plastic-strategy
-                                              :entity-id (:id plastic-strategy)
-                                              :operation-type :read
-                                              :root-context? false})
+      (if (or (and (nil? user) (= country-iso-code-a2 public-country-iso-code))
+              (and user (h.r.permission/operation-allowed? config
+                                                           {:user-id (:id user)
+                                                            :entity-type :plastic-strategy
+                                                            :entity-id (:id plastic-strategy)
+                                                            :operation-type :read
+                                                            :root-context? false})))
         (r/ok plastic-strategy)
         (r/forbidden {:message "Unauthorized"}))
       (if (= reason :not-found)

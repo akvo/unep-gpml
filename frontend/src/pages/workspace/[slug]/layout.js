@@ -243,12 +243,14 @@ const NestedLayout = ({ children }) => {
        * Make sure isoA2 code is valid and profile id is exists
        * @var profile?.id = if profile id is exist then the API token should be present and valid for auth purpose.
        */
-      if (countryISOA2 && profile?.id) {
+      if (countryISOA2) {
         const { data: psData } = await api.get(
           `/plastic-strategy/${countryISOA2}`
         )
         setPSItem(psData)
-        api.post(`/plastic-strategy/${countryISOA2}/ensure-chat`)
+        if (profile?.id) {
+          api.post(`/plastic-strategy/${countryISOA2}/ensure-chat`)
+        }
       }
     } catch (error) {
       console.error('Unable to fetch all PS:', error)
@@ -383,15 +385,19 @@ const NestedLayout = ({ children }) => {
       </div>
       {router.pathname !== '/workspace/[slug]/forum' && (
         <div className={styles.bottomBar}>
-          <Button
-            type="ghost"
-            onClick={handleOnMarkAsComplete(!isCompleted)}
-            loading={marking}
-            className={classNames('mark-completed', { completed: isCompleted })}
-          >
-            <Check />
-            {isCompleted ? t`Completed` : t`Mark as Completed`}
-          </Button>
+          {profile?.id && (
+            <Button
+              type="ghost"
+              onClick={handleOnMarkAsComplete(!isCompleted)}
+              loading={marking}
+              className={classNames('mark-completed', {
+                completed: isCompleted,
+              })}
+            >
+              <Check />
+              {isCompleted ? t`Completed` : t`Mark as Completed`}
+            </Button>
+          )}
           {!router.pathname.includes('7-final-review') && (
             <Button onClick={handleOnNext} withArrow>
               <Trans>Next</Trans>

@@ -150,9 +150,10 @@ const SetupTeamTable = ({ psItem, members, setMembers, reload, setReload }) => {
 
   const getTeamMembers = useCallback(async () => {
     try {
+      console.log('fetching team members...', psItem?.country?.isoCodeA2)
       if (
-        (profile?.id && psItem?.country?.isoCodeA2) ||
-        (reload && profile?.id)
+        psItem?.country?.isoCodeA2 ||
+        (reload && psItem?.country?.isoCodeA2)
       ) {
         setReload(false)
         const { data } = await api.get(
@@ -186,7 +187,7 @@ const SetupTeamTable = ({ psItem, members, setMembers, reload, setReload }) => {
               {...col}
               key={cx}
               render={(data, record) => {
-                return (
+                return profile?.id ? (
                   <Dropdown
                     overlay={
                       <Menu>
@@ -214,6 +215,8 @@ const SetupTeamTable = ({ psItem, members, setMembers, reload, setReload }) => {
                       {data}
                     </Button>
                   </Dropdown>
+                ) : (
+                  <span>{data}</span>
                 )
               }}
             />
@@ -228,7 +231,7 @@ const SetupTeamTable = ({ psItem, members, setMembers, reload, setReload }) => {
                 const teamsValue = data?.length
                   ? data.map((d) => d?.replace(/-/g, ' ')).join(' & ')
                   : t`Not Assigned`
-                return (
+                return profile?.id ? (
                   <Dropdown
                     overlay={
                       <Checkbox.Group
@@ -262,6 +265,8 @@ const SetupTeamTable = ({ psItem, members, setMembers, reload, setReload }) => {
                       {teamsValue}
                     </Button>
                   </Dropdown>
+                ) : (
+                  <span>{teamsValue}</span>
                 )
               }}
             />

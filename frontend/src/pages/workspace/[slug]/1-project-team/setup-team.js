@@ -5,10 +5,12 @@ import SetupTeamTable from '../../../../modules/workspace/ps/setup-team-table'
 import styles from './setup-team.module.scss'
 import { Trans, t } from '@lingui/macro'
 import { loadCatalog } from '../../../../translations/utils'
+import { UIStore } from '../../../../store'
 
 const View = ({ psItem }) => {
   const [members, setMembers] = useState([])
   const [reload, setReload] = useState(false)
+  const profile = UIStore.useState((s) => s.profile)
   return (
     <div className={styles.setupTeamView}>
       <div className="title-section">
@@ -39,12 +41,14 @@ const View = ({ psItem }) => {
           {...{ psItem, members, setMembers, reload, setReload }}
         />
       </div>
-      <div className="add-member-section">
-        <h5>
-          <Trans>Add a New Member</Trans>
-        </h5>
-        <SetupTeamForm {...{ psItem, members, setReload }} />
-      </div>
+      {profile?.id && (
+        <div className="add-member-section">
+          <h5>
+            <Trans>Add a New Member</Trans>
+          </h5>
+          <SetupTeamForm {...{ psItem, members, setReload }} />
+        </div>
+      )}
     </div>
   )
 }

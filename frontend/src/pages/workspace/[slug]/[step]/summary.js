@@ -16,6 +16,7 @@ import { LoadingOutlined } from '@ant-design/icons'
 import { stepsState } from '../../../../modules/workspace/ps/config'
 import { loadCatalog } from '../../../../translations/utils'
 import { Trans, t } from '@lingui/macro'
+import { UIStore } from '../../../../store'
 
 const { Dragger } = Upload
 
@@ -47,6 +48,7 @@ const UploadFile = ({ psItem, step }) => {
   const [files, setFiles] = useState([])
   const [uploading, setUploading] = useState(false)
   const [preload, setPreload] = useState(true)
+  const profile = UIStore.useState((s) => s.profile)
 
   const handleFileChange = async ({ file }) => {
     setUploading(true)
@@ -135,15 +137,19 @@ const UploadFile = ({ psItem, step }) => {
             dataSource={files}
             renderItem={(item) => (
               <List.Item
-                actions={[
-                  <Button
-                    size="small"
-                    type="link"
-                    onClick={() => handleDeleteFile(item)}
-                  >
-                    <TrashIcon />
-                  </Button>,
-                ]}
+                actions={
+                  profile?.id
+                    ? [
+                        <Button
+                          size="small"
+                          type="link"
+                          onClick={() => handleDeleteFile(item)}
+                        >
+                          <TrashIcon />
+                        </Button>,
+                      ]
+                    : []
+                }
               >
                 <List.Item.Meta
                   avatar={
@@ -167,6 +173,7 @@ const UploadFile = ({ psItem, step }) => {
             maxCount={1}
             showUploadList={false}
             className={classNames({ uploading })}
+            disabled={!profile?.id}
           >
             <Spin
               indicator={<LoadingOutlined size={64} />}
@@ -180,7 +187,7 @@ const UploadFile = ({ psItem, step }) => {
                 <br />
                 <small>(pdf, excel, word or powerpoint)</small>
               </p>
-              <Button size="small" shape="upload">
+              <Button size="small" shape="upload" disabled={!profile?.id}>
                 <Trans>Browse</Trans>
               </Button>
             </Spin>

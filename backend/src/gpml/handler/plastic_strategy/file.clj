@@ -93,6 +93,8 @@
             (r/ok {})
             (r/server-error (dissoc result :success?))))))))
 
+(def ^:private public-country-iso-code "0A")
+
 (defn- get-ps-files [config {:keys [user] {:keys [path query]} :parameters :as _req}]
   (let [country-iso-code-a2 (:iso_code_a2 path)
         search-opts {:filters {:countries-iso-codes-a2 [country-iso-code-a2]}}
@@ -102,12 +104,13 @@
       (if (= reason :not-found)
         (r/not-found {})
         (r/server-error (dissoc get-ps-result :success?)))
-      (if-not (h.r.permission/operation-allowed? config
-                                                 {:user-id (:id user)
-                                                  :entity-type :plastic-strategy
-                                                  :entity-id (:id plastic-strategy)
-                                                  :custom-permission :list-files
-                                                  :root-context? false})
+      (if-not (or (and (nil? user) (= country-iso-code-a2 public-country-iso-code))
+                  (and user (h.r.permission/operation-allowed? config
+                                                               {:user-id (:id user)
+                                                                :entity-type :plastic-strategy
+                                                                :entity-id (:id plastic-strategy)
+                                                                :custom-permission :list-files
+                                                                :root-context? false})))
         (r/forbidden {:message "Unauthorized"})
         (let [search-opts {:filters (cond-> {:plastic-strategies-ids [(:id plastic-strategy)]}
                                       (:section_key query)
