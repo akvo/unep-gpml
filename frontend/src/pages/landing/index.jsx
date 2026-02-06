@@ -121,12 +121,19 @@ const Landing = (props) => {
             <JoinBtn {...props} />
           </div>
           <div className="screenshot">
-            <img
-              src="/workflow-screenshot.png"
-              width={710}
-              alt="Workflow screenshot"
-              style={{ borderRadius: '6px', width: '100%', height: 'auto' }}
-            />
+            <Link href="/workspace/plastic-strategy-country-a">
+              <img
+                src="/workflow-screenshot.png"
+                width={710}
+                alt="Workflow screenshot"
+                style={{
+                  borderRadius: '6px',
+                  width: '100%',
+                  height: 'auto',
+                  cursor: 'pointer',
+                }}
+              />
+            </Link>
           </div>
         </div>
       </div>
