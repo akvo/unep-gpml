@@ -1,8 +1,8 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import { useRouter } from 'next/router'
 import Sidebar from '../../components/map-and-layers/sidebar'
-import CountryOverview from '../../pages/countryOverview'
-import DashboardLanding from '../../pages/countryOverview/IntroPage'
+import CountryOverview from './CountryOverview'
+import DashboardLanding from './DashboardLanding'
 import styles from './style.module.scss'
 function ResourceView() {
   const router = useRouter()

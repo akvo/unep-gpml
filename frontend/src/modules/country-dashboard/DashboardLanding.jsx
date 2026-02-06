@@ -3,9 +3,8 @@ import { Layout, Button, Select } from 'antd'
 import { useRouter } from 'next/router'
 import { isEmpty } from 'lodash'
 import { getBaseUrl } from '../../utils/misc'
-import { loadCatalog } from '../../translations/utils'
 import { t, Trans } from '@lingui/macro'
-import styles from './index.module.scss'
+import styles from './CountryOverview.module.scss'
 const { Content } = Layout
 
 const DashboardLanding = () => {
@@ -260,14 +259,6 @@ const DashboardLanding = () => {
       </Content>
     </Layout>
   )
-}
-
-export const getStaticProps = async (ctx) => {
-  return {
-    props: {
-      i18n: await loadCatalog(ctx.locale),
-    },
-  }
 }
 
 export default DashboardLanding

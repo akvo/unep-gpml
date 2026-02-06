@@ -1,27 +1,46 @@
 import React, { useEffect, useState } from 'react'
 import { Row, Col, Button, Spin, Tooltip } from 'antd'
 import { useRouter } from 'next/router'
+import dynamic from 'next/dynamic'
 import useReplacedText from '../../hooks/useReplacePlaceholders'
-import PlasticImportExportChart from '../../modules/country-dashboard/charts/PlasticImportExportChart'
-import PlasticImportExportTonnesChart from '../../modules/country-dashboard/charts/PlasticImportExportTonnesChart'
-import PlasticImportExportPieCharts from '../../modules/country-dashboard/charts/PlasticImportExportPieChart'
-import MSWGenerationChart from '../../modules/country-dashboard/charts/MSWGeneration'
-import PlasticOceanBeachChart from '../../modules/country-dashboard/charts/PlasticOceanBeachCHart'
 import PolicyComponent from './PolicyComponents'
 import RequestDataUpdateModal from './RequestDataUpdateModal'
-import PlasticCompositionChart from '../../modules/country-dashboard/charts/PlasticCompositionChart'
+
+// Dynamic imports for chart components (echarts requires window)
+const PlasticImportExportChart = dynamic(
+  () => import('./charts/PlasticImportExportChart'),
+  { ssr: false }
+)
+const PlasticImportExportTonnesChart = dynamic(
+  () => import('./charts/PlasticImportExportTonnesChart'),
+  { ssr: false }
+)
+const PlasticImportExportPieCharts = dynamic(
+  () => import('./charts/PlasticImportExportPieChart'),
+  { ssr: false }
+)
+const MSWGenerationChart = dynamic(
+  () => import('./charts/MSWGeneration'),
+  { ssr: false }
+)
+const PlasticOceanBeachChart = dynamic(
+  () => import('./charts/PlasticOceanBeachCHart'),
+  { ssr: false }
+)
+const PlasticCompositionChart = dynamic(
+  () => import('./charts/PlasticCompositionChart'),
+  { ssr: false }
+)
 import Handlebars from 'handlebars'
 import useCategories from '../../hooks/useCategories'
 import parse from 'html-react-parser'
-import styles from './index.module.scss'
+import styles from './CountryOverview.module.scss'
 import { t } from '@lingui/macro'
-import axios from 'axios'
 
 import useLayerInfo from '../../hooks/useLayerInfo'
 import { UIStore } from '../../store'
 // import useQueryParameters from '../../hooks/useQueryParameters'
 import { getBaseUrl, getStrapiUrl } from '../../utils/misc'
-import { loadCatalog } from '../../translations/utils'
 
 function getUniqueValues(array) {
   const uniqueValues = new Set(array)
@@ -478,14 +497,6 @@ const CountryOverview = () => {
       )}
     </div>
   )
-}
-
-export const getStaticProps = async (ctx) => {
-  return {
-    props: {
-      i18n: await loadCatalog(ctx.locale),
-    },
-  }
 }
 
 export default CountryOverview

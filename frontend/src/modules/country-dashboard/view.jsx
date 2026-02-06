@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import ResourceView from './resource-view'
 import styles from './style.module.scss'
 
