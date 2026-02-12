@@ -570,10 +570,7 @@ const DetailsView = ({
         )}
 
         {/* CONNECTION */}
-        {(data?.entityConnections?.length > 0 ||
-          data?.stakeholderConnections?.filter(
-            (x) => x.stakeholderRole !== 'ADMIN' || x.role === 'interested in'
-          )?.length > 0) && (
+        {data?.entityConnections?.length > 0 && (
           <Col className="section section-connection-stakeholder">
             <div className="extra-wrapper">
               <h3 className="content-heading">
@@ -581,7 +578,7 @@ const DetailsView = ({
               </h3>
 
               <StakeholderCarousel
-                stakeholders={[...entityConnections, ...stakeholderConnections]}
+                stakeholders={[...entityConnections]}
               />
             </div>
           </Col>
