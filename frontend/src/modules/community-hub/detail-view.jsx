@@ -91,7 +91,7 @@ const DetailView = ({ item, profile, setLoginVisible, isAuthenticated }) => {
     if (data.type)
       api.get(`/detail/${data.type}/${data.id}`).then((d) => {
         setData((_data) => {
-          return { ..._data, ...d.data }
+          return { ..._data, ...d.data, name: d.data.firstName? `${d.data.firstName} ${d.data.lastName}` : d.data.name }
         })
         setLoading(false)
         if (data.type === 'organisation') {
