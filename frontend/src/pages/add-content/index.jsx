@@ -845,6 +845,12 @@ const FormField = React.memo(
                 size="small"
                 value={input.value || undefined}
                 allowClear
+                showSearch
+                filterOption={(input, option) =>
+                  (option?.children?.toString() ?? '')
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
+                }
                 placeholder="Select transnational "
                 className={
                   meta.touched && !meta.valid ? 'ant-input-status-error' : ''
@@ -884,6 +890,12 @@ const FormField = React.memo(
                 mode="multiple"
                 value={input.value || []}
                 allowClear
+                showSearch
+                filterOption={(input, option) =>
+                  (option?.children?.toString() ?? '')
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
+                }
                 placeholder="Select countries"
                 className={
                   meta.touched && !meta.valid ? 'ant-input-status-error' : ''
