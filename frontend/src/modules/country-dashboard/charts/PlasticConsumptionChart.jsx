@@ -73,7 +73,7 @@ const PlasticConsumptionChart = ({ countryData }) => {
         name: t`Apparent consumption`,
         type: 'bar',
         data: values,
-        itemStyle: { color: '#6236FF' },
+        itemStyle: { color: '#4DB8A4' },
         barMaxWidth: 40,
       },
     ],
