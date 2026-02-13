@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import { isEmpty } from 'lodash'
 import { getBaseUrl } from '../../utils/misc'
 import { t, Trans } from '@lingui/macro'
+import { EXCEL_COUNTRY_CODES } from './constants'
 import styles from './CountryOverview.module.scss'
 const { Content } = Layout
 
@@ -57,16 +58,18 @@ const DashboardLanding = () => {
     const country = countries.find((country) => country.id === value)
 
     if (country) {
+      const isExcel = EXCEL_COUNTRY_CODES.includes(country.iso_code_a3)
+      const newQuery = {
+        ...router.query,
+        country: country.name,
+        countryCode: country.iso_code_a3,
+      }
+      // Excel countries use the one-pager (no categoryId needed)
+      if (!isExcel) {
+        newQuery.categoryId = router.query.categoryId || 'industry-and-trade'
+      }
       router.push(
-        {
-          pathname: router.pathname,
-          query: {
-            ...router.query,
-            country: country.name,
-            countryCode: country.iso_code_a3,
-            categoryId: router.query.categoryId || 'industry-and-trade',
-          },
-        },
+        { pathname: router.pathname, query: newQuery },
         undefined,
         { shallow: true }
       )

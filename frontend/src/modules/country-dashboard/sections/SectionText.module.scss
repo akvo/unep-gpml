@@ -1,0 +1,29 @@
+.container {
+  margin-bottom: 24px;
+}
+
+.content {
+  font-size: 16px;
+  color: #1B2738;
+  line-height: 1.7;
+
+  p {
+    margin-bottom: 16px;
+  }
+
+  ul {
+    padding-left: 24px;
+    list-style-type: disc;
+    margin-bottom: 16px;
+  }
+
+  li {
+    display: list-item;
+    margin-bottom: 8px;
+  }
+
+  h4 {
+    margin-top: 24px;
+    margin-bottom: 12px;
+  }
+}

@@ -97,3 +97,89 @@ export const MOBILE_BREAKPOINT = 768
 
 // Column split marker used in Handlebars templates
 export const COLUMN_SPLIT_MARKER = '<!--NEW_COLUMN-->'
+
+// Section registry – drives TOC sidebar + section rendering for Excel countries
+export const SECTION_REGISTRY = [
+  { key: 'production', title: 'Production', textKey: 'production' },
+  { key: 'trade', title: 'Trade', textKey: 'trade' },
+  { key: 'consumption', title: 'Consumption', textKey: 'consumption' },
+  {
+    key: 'waste-management',
+    title: 'Waste Management',
+    textKey: 'wasteManagement',
+  },
+  {
+    key: 'environment',
+    title: 'Plastics in the Environment',
+    textKey: 'environment',
+  },
+  {
+    key: 'life-cycle-insights',
+    title: 'Life Cycle Insights',
+    textKey: 'lifeCycleInsights',
+  },
+]
+
+// Countries that use Excel/JSON data instead of Strapi
+export const EXCEL_COUNTRY_CODES = ['KHM']
+
+// Excel-based category definitions (sidebar items for Excel countries)
+export const EXCEL_CATEGORY_IDS = {
+  PRODUCTION: 'production',
+  TRADE: 'trade',
+  CONSUMPTION: 'consumption',
+  WASTE_MANAGEMENT: 'waste-management-xl',
+  ENVIRONMENT: 'environment',
+  LIFE_CYCLE_INSIGHTS: 'life-cycle-insights',
+}
+
+export const EXCEL_CATEGORIES = [
+  {
+    id: EXCEL_CATEGORY_IDS.PRODUCTION,
+    attributes: {
+      categoryId: EXCEL_CATEGORY_IDS.PRODUCTION,
+      name: 'Production',
+      categoryDescription: 'Production',
+    },
+  },
+  {
+    id: EXCEL_CATEGORY_IDS.TRADE,
+    attributes: {
+      categoryId: EXCEL_CATEGORY_IDS.TRADE,
+      name: 'Trade',
+      categoryDescription: 'Trade',
+    },
+  },
+  {
+    id: EXCEL_CATEGORY_IDS.CONSUMPTION,
+    attributes: {
+      categoryId: EXCEL_CATEGORY_IDS.CONSUMPTION,
+      name: 'Consumption',
+      categoryDescription: 'Consumption',
+    },
+  },
+  {
+    id: EXCEL_CATEGORY_IDS.WASTE_MANAGEMENT,
+    attributes: {
+      categoryId: EXCEL_CATEGORY_IDS.WASTE_MANAGEMENT,
+      name: 'Waste Management',
+      categoryDescription: 'Waste Management',
+    },
+  },
+  {
+    id: EXCEL_CATEGORY_IDS.ENVIRONMENT,
+    attributes: {
+      categoryId: EXCEL_CATEGORY_IDS.ENVIRONMENT,
+      name: 'Plastics in the Environment',
+      categoryDescription: 'Plastics in the Environment',
+    },
+  },
+  {
+    id: EXCEL_CATEGORY_IDS.LIFE_CYCLE_INSIGHTS,
+    attributes: {
+      categoryId: EXCEL_CATEGORY_IDS.LIFE_CYCLE_INSIGHTS,
+      name: 'Life Cycle Insights',
+      categoryDescription: 'Life Cycle Insights',
+    },
+  },
+]

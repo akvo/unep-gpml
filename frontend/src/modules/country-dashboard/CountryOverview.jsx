@@ -6,7 +6,13 @@ import useReplacedText from '../../hooks/useReplacePlaceholders'
 import PolicyComponent from './PolicyComponents'
 import RequestDataUpdateModal from './RequestDataUpdateModal'
 import ChartCard from './ChartCard'
-import { CATEGORY_IDS, WEIGHT_LAYER_IDS, COLUMN_SPLIT_MARKER } from './constants'
+import {
+  CATEGORY_IDS,
+  WEIGHT_LAYER_IDS,
+  COLUMN_SPLIT_MARKER,
+  EXCEL_COUNTRY_CODES,
+  SECTION_REGISTRY,
+} from './constants'
 
 const PlasticImportExportChart = dynamic(
   () => import('./charts/PlasticImportExportChart'),
@@ -32,14 +38,62 @@ const PlasticCompositionChart = dynamic(
   () => import('./charts/PlasticCompositionChart'),
   { ssr: false }
 )
+const PlasticConsumptionChart = dynamic(
+  () => import('./charts/PlasticConsumptionChart'),
+  { ssr: false }
+)
+const TradingPartnersPieChart = dynamic(
+  () => import('./charts/TradingPartnersPieChart'),
+  { ssr: false }
+)
+const ProductCategoriesChart = dynamic(
+  () => import('./charts/ProductCategoriesChart'),
+  { ssr: false }
+)
+const TradeCompositionPieChart = dynamic(
+  () => import('./charts/TradeCompositionPieChart'),
+  { ssr: false }
+)
+const TopProductsTable = dynamic(
+  () => import('./charts/TopProductsTable'),
+  { ssr: false }
+)
+const TotalPlasticsTradeChart = dynamic(
+  () => import('./charts/TotalPlasticsTradeChart'),
+  { ssr: false }
+)
+const TradingPartnersBarChart = dynamic(
+  () => import('./charts/TradingPartnersBarChart'),
+  { ssr: false }
+)
 import Handlebars from 'handlebars'
 import useCategories from '../../hooks/useCategories'
+import SectionText from './sections/SectionText'
+import KeyTrends from './sections/KeyTrends'
+import LifeCycleInsights from './sections/LifeCycleInsights'
 import parse from 'html-react-parser'
 import styles from './CountryOverview.module.scss'
 import { t } from '@lingui/macro'
 
 import useLayerInfo from '../../hooks/useLayerInfo'
 import { getBaseUrl } from '../../utils/misc'
+
+// Section components for the one-pager
+import ProductionSection from './sections/ProductionSection'
+import TradeSection from './sections/TradeSection'
+import ConsumptionSection from './sections/ConsumptionSection'
+import WasteManagementSection from './sections/WasteManagementSection'
+import EnvironmentSection from './sections/EnvironmentSection'
+import LifeCycleInsightsSection from './sections/LifeCycleInsightsSection'
+
+const SECTION_COMPONENTS = {
+  production: ProductionSection,
+  trade: TradeSection,
+  consumption: ConsumptionSection,
+  'waste-management': WasteManagementSection,
+  environment: EnvironmentSection,
+  'life-cycle-insights': LifeCycleInsightsSection,
+}
 
 export function cleanArcGisFields(fields) {
   if (!fields) return []
@@ -127,7 +181,13 @@ const addTooltipsToPlaceholders = (htmlString, placeholders, tooltips) => {
 
   return parse(htmlString, options)
 }
-const CountryOverview = () => {
+
+const CountryOverview = ({
+  countryFileData,
+  countryDataLoading,
+  availableSections,
+  registerRef,
+}) => {
   const router = useRouter()
   const { query } = router
   const [isMobile, setIsMobile] = useState(false)
@@ -146,6 +206,11 @@ const CountryOverview = () => {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
+  const countryData = countryFileData?.sheets || null
+  const textContent = countryFileData?.text || null
+
+  const isExcelCountry = EXCEL_COUNTRY_CODES.includes(router.query.countryCode)
+
   const selectedCategoryObject = categories.find(
     (c) => c.attributes.categoryId == router.query.categoryId
   )
@@ -160,17 +225,19 @@ const CountryOverview = () => {
     setModalVisible(false)
   }
 
-  const uniqueLayerIds = [
-    ...new Set(
-      selectedCategoryObject?.attributes?.textTemplate?.placeholders.map(
-        (placeholder) =>
-          placeholder
-            .split('=')[0]
-            .split(/(_year|_total|_last|_first|_city|\*|\/|\+|\-)/)[0]
-            .trim()
-      )
-    ),
-  ]
+  const uniqueLayerIds = isExcelCountry
+    ? []
+    : [
+        ...new Set(
+          selectedCategoryObject?.attributes?.textTemplate?.placeholders.map(
+            (placeholder) =>
+              placeholder
+                .split('=')[0]
+                .split(/(_year|_total|_last|_first|_city|\*|\/|\+|\-)/)[0]
+                .trim()
+          )
+        ),
+      ]
 
   const filteredLayers = layers.filter((layer) =>
     uniqueLayerIds.includes(layer.attributes.arcgislayerId)
@@ -188,11 +255,80 @@ const CountryOverview = () => {
   const { placeholders, tooltips, loading } = useReplacedText(
     router.query.country,
     router.query.countryCode,
-    router.query.categoryId,
-    selectedCategoryObject?.attributes?.textTemplate?.placeholders,
+    isExcelCountry ? null : router.query.categoryId,
+    isExcelCountry ? [] : selectedCategoryObject?.attributes?.textTemplate?.placeholders,
     layerJson
   )
 
+  // Excel countries: one-pager with all sections
+  if (isExcelCountry) {
+    if (countryDataLoading) {
+      return (
+        <div className={styles.spinner}>
+          <Spin tip="Loading data..." size="large" />
+        </div>
+      )
+    }
+
+    const countryName = decodeURIComponent(router.query.country || '')
+
+    const headerRow = (
+      <Row className={styles.headerRow}>
+        <Col>
+          <div>
+            <span className={styles.titleCategory}>{countryName}</span>
+          </div>
+        </Col>
+        {!isMobile && (
+          <Col className={styles.containerButton}>
+            <Tooltip title="Update country data by sending a request to the GPML Data Hub team.">
+              <Button
+                className={styles.buttonStyle}
+                onClick={showModal}
+                style={{ width: '100%' }}
+              >
+                {t`Submit Data Update`}
+              </Button>
+              <RequestDataUpdateModal
+                visible={isModalVisible}
+                onClose={handleClose}
+              />
+            </Tooltip>
+          </Col>
+        )}
+      </Row>
+    )
+
+    return (
+      <div className={styles.text}>
+        {headerRow}
+
+        {(availableSections || []).map((section) => {
+          const Component = SECTION_COMPONENTS[section.key]
+          if (!Component) return null
+          return (
+            <Component
+              key={section.key}
+              ref={(el) => registerRef && registerRef(section.key, el)}
+              textContent={textContent}
+              countryData={countryData}
+              countryName={countryName}
+            />
+          )
+        })}
+
+        {isMobile && (
+          <div className={styles.mobileButtonsContainer}>
+            <Button className={styles.buttonStyle} onClick={showModal}>
+              {t`Submit Data Update`}
+            </Button>
+          </div>
+        )}
+      </div>
+    )
+  }
+
+  // Non-Excel (Strapi) countries: original categoryId-based rendering
   if (loading || layerLoading || !selectedCategoryObject) {
     return (
       <div className={styles.spinner}>
@@ -277,8 +413,8 @@ const CountryOverview = () => {
       <Row className={styles.headerRow}>
         <Col>
           <div>
-            <span className={styles.titleCountry}>
-              {decodeURIComponent(router.query.country)?.toUpperCase()}
+            <span className={styles.titleCategory}>
+              {selectedCategoryObject?.attributes?.name || ''}
             </span>
           </div>
         </Col>
@@ -304,27 +440,27 @@ const CountryOverview = () => {
 
       {router.query.categoryId !== CATEGORY_IDS.OVERVIEW &&
       router.query.categoryId !== CATEGORY_IDS.GOVERNANCE_AND_REGULATIONS ? (
-        <Row gutter={[16, 16]} style={{ marginBottom: '40px' }}>
+        <Row gutter={[16, 16]} className={styles.chartRow}>
           <Col xs={24} md={12}>
-            <div style={{ fontSize: '16px', color: '#1B2738' }}>
+            <div className={styles.textColumn}>
               {textWithTooltipsfirstHalfText}
             </div>
           </Col>
           <Col xs={24} md={12}>
-            <div style={{ fontSize: '16px', color: '#1B2738' }}>
+            <div className={styles.textColumn}>
               {textWithTooltipsfirstSecondText}
             </div>
           </Col>
         </Row>
       ) : (
-        <Row style={{ marginBottom: '40px' }}>
-          <p style={{ fontSize: '16px', color: '#1B2738' }}>{governanceText}</p>
+        <Row className={styles.chartRow}>
+          <p className={styles.governanceText}>{governanceText}</p>
         </Row>
       )}
 
       {router.query.categoryId === CATEGORY_IDS.INDUSTRY_AND_TRADE && (
         <>
-          <Row style={{ marginBottom: '40px' }}>
+          <Row className={styles.chartRow}>
             <Col span={24}>
               <div className={styles.plasticImportChart}>
                 <PlasticImportExportChart
@@ -334,7 +470,7 @@ const CountryOverview = () => {
               </div>
             </Col>
           </Row>
-          <Row style={{ marginBottom: '40px' }}>
+          <Row className={styles.chartRow}>
             <Col span={24}>
               <ChartCard>
                 <PlasticImportExportTonnesChart
@@ -365,25 +501,125 @@ const CountryOverview = () => {
               </ChartCard>
             </Col>
           </Row>
+
+          {countryData && (
+            <>
+              {textContent?.trade?.summary && (
+                <Row className={styles.sectionRowTop}>
+                  <Col span={24}>
+                    <SectionText
+                      template={textContent.trade.summary}
+                      placeholders={placeholders}
+                    />
+                  </Col>
+                </Row>
+              )}
+
+              <Row className={styles.chartRow}>
+                <Col span={24}>
+                  <ChartCard>
+                    <PlasticConsumptionChart countryData={countryData} />
+                  </ChartCard>
+                </Col>
+              </Row>
+
+              <Row gutter={[16, 16]} className={styles.chartRow}>
+                <Col xs={24} md={12}>
+                  <ChartCard>
+                    <TradingPartnersPieChart
+                      countryData={countryData}
+                      type="import"
+                    />
+                  </ChartCard>
+                </Col>
+                <Col xs={24} md={12}>
+                  <ChartCard>
+                    <TradingPartnersPieChart
+                      countryData={countryData}
+                      type="export"
+                    />
+                  </ChartCard>
+                </Col>
+              </Row>
+
+              <Row className={styles.chartRow}>
+                <Col span={24}>
+                  <ChartCard>
+                    <ProductCategoriesChart countryData={countryData} />
+                  </ChartCard>
+                </Col>
+              </Row>
+
+              <Row gutter={[16, 16]} className={styles.chartRow}>
+                <Col xs={24} md={12}>
+                  <ChartCard>
+                    <TradeCompositionPieChart
+                      countryData={countryData}
+                      type="import"
+                    />
+                  </ChartCard>
+                </Col>
+                <Col xs={24} md={12}>
+                  <ChartCard>
+                    <TradeCompositionPieChart
+                      countryData={countryData}
+                      type="export"
+                    />
+                  </ChartCard>
+                </Col>
+              </Row>
+
+              <Row gutter={[16, 16]} className={styles.chartRow}>
+                <Col xs={24} md={12}>
+                  <ChartCard>
+                    <TopProductsTable
+                      countryData={countryData}
+                      type="import"
+                    />
+                  </ChartCard>
+                </Col>
+                <Col xs={24} md={12}>
+                  <ChartCard>
+                    <TopProductsTable
+                      countryData={countryData}
+                      type="export"
+                    />
+                  </ChartCard>
+                </Col>
+              </Row>
+            </>
+          )}
         </>
       )}
 
       {router.query.categoryId === CATEGORY_IDS.WASTE_MANAGEMENT && (
-        <Row gutter={[16, 16]}>
-          <Col xs={24} md={12}>
-            <ChartCard>
-              <MSWGenerationChart layers={layers} layerLoading={layerLoading} />
-            </ChartCard>
-          </Col>
-          <Col xs={24} md={12}>
-            <ChartCard>
-              <PlasticCompositionChart
-                layers={layers}
-                layerLoading={layerLoading}
-              />
-            </ChartCard>
-          </Col>
-        </Row>
+        <>
+          <Row gutter={[16, 16]}>
+            <Col xs={24} md={12}>
+              <ChartCard>
+                <MSWGenerationChart layers={layers} layerLoading={layerLoading} />
+              </ChartCard>
+            </Col>
+            <Col xs={24} md={12}>
+              <ChartCard>
+                <PlasticCompositionChart
+                  layers={layers}
+                  layerLoading={layerLoading}
+                />
+              </ChartCard>
+            </Col>
+          </Row>
+          {textContent?.wasteManagement?.content && (
+            <Row className={styles.sectionRowTop}>
+              <Col span={24}>
+                <SectionText
+                  template={textContent.wasteManagement.content}
+                  placeholders={placeholders}
+                />
+              </Col>
+            </Row>
+          )}
+        </>
       )}
 
       {router.query.categoryId === CATEGORY_IDS.GOVERNANCE_AND_REGULATIONS && (
@@ -393,10 +629,23 @@ const CountryOverview = () => {
       )}
 
       {router.query.categoryId === CATEGORY_IDS.ENVIRONMENTAL_IMPACT && (
-        <ChartCard style={{ padding: '20px' }}>
-          <PlasticOceanBeachChart layers={layers} layerLoading={layerLoading} />
-        </ChartCard>
+        <>
+          <ChartCard className={styles.chartCardPadded}>
+            <PlasticOceanBeachChart layers={layers} layerLoading={layerLoading} />
+          </ChartCard>
+          {textContent?.environment?.content && (
+            <Row className={styles.sectionRowTop}>
+              <Col span={24}>
+                <SectionText
+                  template={textContent.environment.content}
+                  placeholders={placeholders}
+                />
+              </Col>
+            </Row>
+          )}
+        </>
       )}
+
       {isMobile && (
         <div className={styles.mobileButtonsContainer}>
           <Button className={styles.buttonStyle} onClick={showModal}>
