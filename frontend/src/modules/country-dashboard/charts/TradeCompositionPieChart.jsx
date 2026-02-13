@@ -5,7 +5,7 @@ import { t, Trans } from '@lingui/macro'
 import { splitIntoTwoLines } from '../utils'
 import { COLORS } from '../constants'
 
-const GROUP_COLORS = ['#384E85', '#FFB800', '#f56a00']
+const GROUP_COLORS = ['#1B3A5C', '#4DB8A4', '#5C8099']
 
 const TradeCompositionPieChart = ({ countryData, type }) => {
   const router = useRouter()

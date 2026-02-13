@@ -6,11 +6,11 @@ import { splitIntoTwoLines } from '../utils'
 import { COLORS } from '../constants'
 
 const REGION_COLORS = {
-  Africa: '#FF6B6B',
-  Americas: '#4ECDC4',
-  Asia: '#FFB800',
-  Europe: '#384E85',
-  Oceania: '#A7AD3E',
+  Africa: '#A3D5CE',
+  Americas: '#4DB8A4',
+  Asia: '#020A5B',
+  Europe: '#2E4A7A',
+  Oceania: '#7ECBC2',
 }
 
 const TradingPartnersPieChart = ({ countryData, type }) => {
