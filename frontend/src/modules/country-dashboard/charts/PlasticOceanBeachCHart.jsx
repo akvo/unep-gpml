@@ -12,7 +12,6 @@ const PlasticOceanBeachChart = ({ layers, loading }) => {
   const [oceanPercentage, setOceanPercentage] = useState(0)
   const [beachPercentage, setBeachPercentage] = useState(0)
   const [totalWeight, setTotalWeight] = useState(0)
-  console.log(beachPercentage)
   useEffect(() => {
     const fetchData = () => {
       if (loading || !country || !layers.length) return
@@ -106,9 +105,7 @@ const PlasticOceanBeachChart = ({ layers, loading }) => {
         },
         subtextStyle: {
           fontSize: window.innerWidth < 768 ? 11 : 12,
-          // color: '#020A5B',
           fontFamily: 'Roboto, Helvetica Neue, sans-serif',
-          // fontWeight: 'bold',
         },
       },
       tooltip: {

@@ -5,8 +5,9 @@ import dynamic from 'next/dynamic'
 import useReplacedText from '../../hooks/useReplacePlaceholders'
 import PolicyComponent from './PolicyComponents'
 import RequestDataUpdateModal from './RequestDataUpdateModal'
+import ChartCard from './ChartCard'
+import { CATEGORY_IDS, WEIGHT_LAYER_IDS, COLUMN_SPLIT_MARKER } from './constants'
 
-// Dynamic imports for chart components (echarts requires window)
 const PlasticImportExportChart = dynamic(
   () => import('./charts/PlasticImportExportChart'),
   { ssr: false }
@@ -38,14 +39,7 @@ import styles from './CountryOverview.module.scss'
 import { t } from '@lingui/macro'
 
 import useLayerInfo from '../../hooks/useLayerInfo'
-import { UIStore } from '../../store'
-// import useQueryParameters from '../../hooks/useQueryParameters'
-import { getBaseUrl, getStrapiUrl } from '../../utils/misc'
-
-function getUniqueValues(array) {
-  const uniqueValues = new Set(array)
-  return Array.from(uniqueValues)
-}
+import { getBaseUrl } from '../../utils/misc'
 
 export function cleanArcGisFields(fields) {
   if (!fields) return []
@@ -67,20 +61,8 @@ export function cleanArcGisFields(fields) {
   )
 
   cleanedFields = cleanedFields.filter((field) => field !== '')
-  const otherLayer = [
-    'Plastics_in_primary_forms___weight__import__WFL1',
-    'Intermediate_forms_of_plastic_weight____import__WFL1',
-    'Final_manufactured_plastics_goods___weight__import__WFL1',
-    'Intermediate___weight__import__WFL1',
-    'Plastic_waste_weigth____import__WFL1',
-    'Plastics_in_primary_forms___weight__export__WFL1',
-    'Intermediate_forms_of_plastic_weight____export__WFL1',
-    'Final_manufactured_plastics_goods_weight____export__WFL1',
-    'Intermediate___weight__export__WFL1',
-    'Plastic_waste_weigth____export__WFL1',
-  ]
 
-  return getUniqueValues([...otherLayer, ...cleanedFields])
+  return [...new Set([...WEIGHT_LAYER_IDS, ...cleanedFields])]
 }
 
 const splitTextInHalf = (text, splitMarker = '') => {
@@ -148,17 +130,11 @@ const addTooltipsToPlaceholders = (htmlString, placeholders, tooltips) => {
 const CountryOverview = () => {
   const router = useRouter()
   const { query } = router
-  // const { queryParameters, setQueryParameters } = useQueryParameters()
   const [isMobile, setIsMobile] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState(null)
-  const [selectedCountry, setSelectedCountry] = useState(null)
   const { categories } = useCategories()
   const { layers, loading: layerLoading } = useLayerInfo()
   const baseURL = getBaseUrl()
-  const strapiURL = getStrapiUrl()
-  const { countries } = UIStore.useState((s) => ({
-    countries: s.countries,
-  }))
 
   useEffect(() => {
     const handleResize = () => {
@@ -170,19 +146,9 @@ const CountryOverview = () => {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  useEffect(() => {
-    if (query?.country) {
-      setSelectedCountry(query?.country)
-    }
-  }, [query?.country])
-
   const selectedCategoryObject = categories.find(
     (c) => c.attributes.categoryId == router.query.categoryId
   )
-  // const cleanedFields = cleanArcGisFields(
-  //   selectedCategoryObject?.attributes?.textTemplate?.placeholders
-  // )
-  // console.log(cleanedFields)
 
   const [isModalVisible, setModalVisible] = useState(false)
 
@@ -211,7 +177,7 @@ const CountryOverview = () => {
   )
 
   const filteredByCountry = filteredLayers.filter((l) =>
-    l.attributes.ValuePerCountry.filter(
+    l.attributes.ValuePerCountry.some(
       (vpc) =>
         vpc.CountryCode === router.query.countryCode ||
         vpc.CountryName === router.query.country
@@ -275,10 +241,10 @@ const CountryOverview = () => {
   })
 
   const [firstHalfText, secondHalfText] =
-    selectedCategoryObject?.attributes?.categoryId === 'environmental-impact' ||
-    selectedCategoryObject?.attributes?.categoryId === 'waste-management'
-      ? splitTextByMarker(categoryText, '<!--NEW_COLUMN-->')
-      : splitTextInHalf(categoryText || '', '<!--NEW_COLUMN-->')
+    selectedCategoryObject?.attributes?.categoryId === CATEGORY_IDS.ENVIRONMENTAL_IMPACT ||
+    selectedCategoryObject?.attributes?.categoryId === CATEGORY_IDS.WASTE_MANAGEMENT
+      ? splitTextByMarker(categoryText, COLUMN_SPLIT_MARKER)
+      : splitTextInHalf(categoryText || '', COLUMN_SPLIT_MARKER)
 
   const textWithTooltipsfirstHalfText = addTooltipsToPlaceholders(
     firstHalfText,
@@ -319,10 +285,6 @@ const CountryOverview = () => {
 
         {!isMobile && (
           <Col className={styles.containerButton}>
-            {/* <span className={styles.textButton}>
-              <span className={styles.dot}></span>
-              Page last updated: 02-20-22
-            </span> */}
             <Tooltip title="Update country data by sending a request to the GPML Data Hub team.">
               <Button
                 className={styles.buttonStyle}
@@ -340,8 +302,8 @@ const CountryOverview = () => {
         )}
       </Row>
 
-      {router.query.categoryId !== 'overview' &&
-      router.query.categoryId !== 'governance-and-regulations' ? (
+      {router.query.categoryId !== CATEGORY_IDS.OVERVIEW &&
+      router.query.categoryId !== CATEGORY_IDS.GOVERNANCE_AND_REGULATIONS ? (
         <Row gutter={[16, 16]} style={{ marginBottom: '40px' }}>
           <Col xs={24} md={12}>
             <div style={{ fontSize: '16px', color: '#1B2738' }}>
@@ -360,7 +322,7 @@ const CountryOverview = () => {
         </Row>
       )}
 
-      {router.query.categoryId === 'industry-and-trade' && (
+      {router.query.categoryId === CATEGORY_IDS.INDUSTRY_AND_TRADE && (
         <>
           <Row style={{ marginBottom: '40px' }}>
             <Col span={24}>
@@ -374,108 +336,66 @@ const CountryOverview = () => {
           </Row>
           <Row style={{ marginBottom: '40px' }}>
             <Col span={24}>
-              <div
-                style={{
-                  backgroundColor: '#FFFFFF',
-                  borderRadius: '12px',
-                  padding: '20px 15px',
-                  boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
-                }}
-              >
+              <ChartCard>
                 <PlasticImportExportTonnesChart
                   layers={layers}
                   loading={layerLoading}
                 />
-              </div>
+              </ChartCard>
             </Col>
           </Row>
 
           <Row gutter={[16, 16]}>
             <Col xs={24} md={12}>
-              <div
-                style={{
-                  backgroundColor: '#FFFFFF',
-                  borderRadius: '12px',
-                  padding: '20px 15px',
-                  boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
-                }}
-              >
+              <ChartCard>
                 <PlasticImportExportPieCharts
                   chartType="import"
                   layers={layers}
                   loading={layerLoading}
                 />
-              </div>
+              </ChartCard>
             </Col>
             <Col xs={24} md={12}>
-              <div
-                style={{
-                  backgroundColor: '#FFFFFF',
-                  borderRadius: '12px',
-                  padding: '20px 15px',
-                  boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
-                }}
-              >
+              <ChartCard>
                 <PlasticImportExportPieCharts
                   chartType="export"
                   layers={layers}
                   loading={layerLoading}
                 />
-              </div>
+              </ChartCard>
             </Col>
           </Row>
         </>
       )}
 
-      {router.query.categoryId === 'waste-management' && (
+      {router.query.categoryId === CATEGORY_IDS.WASTE_MANAGEMENT && (
         <Row gutter={[16, 16]}>
           <Col xs={24} md={12}>
-            <div
-              style={{
-                backgroundColor: '#FFFFFF',
-                borderRadius: '12px',
-                padding: '20px 15px',
-                boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
-              }}
-            >
+            <ChartCard>
               <MSWGenerationChart layers={layers} layerLoading={layerLoading} />
-            </div>
+            </ChartCard>
           </Col>
           <Col xs={24} md={12}>
-            <div
-              style={{
-                backgroundColor: '#FFFFFF',
-                borderRadius: '12px',
-                padding: '20px 15px',
-                boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
-              }}
-            >
+            <ChartCard>
               <PlasticCompositionChart
                 layers={layers}
                 layerLoading={layerLoading}
               />
-            </div>
+            </ChartCard>
           </Col>
         </Row>
       )}
 
-      {router.query.categoryId === 'governance-and-regulations' && (
+      {router.query.categoryId === CATEGORY_IDS.GOVERNANCE_AND_REGULATIONS && (
         <Col span={24}>
           <PolicyComponent layers={layers} layerLoading={layerLoading} />
         </Col>
       )}
 
-      {router.query.categoryId === 'environmental-impact' && (
-        <div
-          style={{
-            backgroundColor: '#FFFFFF',
-            borderRadius: '12px',
-            padding: '20px',
-            boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
-          }}
-        >
+      {router.query.categoryId === CATEGORY_IDS.ENVIRONMENTAL_IMPACT && (
+        <ChartCard style={{ padding: '20px' }}>
           <PlasticOceanBeachChart layers={layers} layerLoading={layerLoading} />
-        </div>
+        </ChartCard>
       )}
       {isMobile && (
         <div className={styles.mobileButtonsContainer}>

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { useRouter } from 'next/router'
 import { t, Trans } from '@lingui/macro'
-import { loadCatalog } from '../../../translations/utils'
 import { splitIntoTwoLines} from './PlasticImportExportChart'
 const PlasticImportExportChart = ({ layers, loading }) => {
   const router = useRouter()
@@ -231,14 +230,6 @@ const PlasticImportExportChart = ({ layers, loading }) => {
       </div>
     </div>
   )
-}
-
-export const getStaticProps = async (ctx) => {
-  return {
-    props: {
-      i18n: await loadCatalog(ctx.locale),
-    },
-  }
 }
 
 export default PlasticImportExportChart

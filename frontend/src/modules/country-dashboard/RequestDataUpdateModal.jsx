@@ -21,7 +21,6 @@ const RequestDataUpdateModal = ({ visible, onClose }) => {
     : []
 
   const handleSubmit = (values) => {
-    console.log('Form values: ', values)
     form.resetFields()
     onClose()
   }
@@ -44,7 +43,6 @@ const RequestDataUpdateModal = ({ visible, onClose }) => {
             <Checkbox value="Plastic in the Environment">
               Legacy Plastics
             </Checkbox>
-            {/* <Checkbox value="Plastic Governance">Governance</Checkbox> */}
           </Checkbox.Group>
         </Form.Item>
 
