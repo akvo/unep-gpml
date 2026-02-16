@@ -298,53 +298,63 @@
   margin-bottom: 40px;
 }
 
-// Mobile TOC pill bar
+// Mobile TOC – country name + section dropdown
 .mobileToc {
   display: none;
 
   @media (max-width: 768px) {
     display: flex;
+    flex-direction: column;
     position: sticky;
     top: 0;
     z-index: 10;
     background: #fff;
-    padding: 10px 16px;
-    overflow-x: auto;
-    gap: 8px;
+    padding: 16px 20px;
     border-bottom: 1px solid #E8E8ED;
-    -webkit-overflow-scrolling: touch;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
+    transition: padding 0.25s ease;
   }
 }
 
-.tocPill {
-  flex-shrink: 0;
-  padding: 6px 14px;
-  border-radius: 20px;
-  border: 1px solid #E8E8ED;
-  background: #f5f7ff;
-  color: #000647;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background: #eef0ff;
+.mobileTocCollapsed {
+  @media (max-width: 768px) {
+    padding: 8px 20px;
   }
 }
 
-.tocPillActive {
-  composes: tocPill;
-  background: #6236FF;
-  color: #fff;
-  border-color: #6236FF;
+.mobileTocCountry {
+  color: #6236FF;
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  max-height: 30px;
+  overflow: hidden;
+  opacity: 1;
+  transition: max-height 0.25s ease, opacity 0.2s ease, margin-bottom 0.25s ease;
+}
 
-  &:hover {
-    background: #5028e6;
+.mobileTocCountryHidden {
+  max-height: 0;
+  opacity: 0;
+  margin-bottom: 0;
+}
+
+.mobileTocSelect {
+  width: 100%;
+
+  :global(.ant-select-selector) {
+    height: 50px !important;
+    border: 1px solid #E8E8ED !important;
+    border-radius: 8px !important;
+    background: #f5f7ff !important;
+    padding: 5px 12px !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  :global(.ant-select-selection-item) {
+    font-size: 18px;
+    font-weight: 500;
+    color: #000647;
   }
 }

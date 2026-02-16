@@ -181,7 +181,7 @@ const Sidebar = ({
           </>
         )} */}
 
-        {countryDashboard && (
+        {countryDashboard && !isExcelCountryProp && (
           <CustomSiderWrapper>
             <StyledSider breakpoint="lg">
               <Title>{t`National data`}</Title>
