@@ -71,26 +71,21 @@ const TradeSection = React.forwardRef(
               </Col>
             </Row>
 
-            <Row gutter={[16, 16]} className={styles.chartRow}>
-              <Col xs={24} md={12}>
-                <ChartCard>
-                  <TopProductsTable
-                    countryData={countryData}
-                    type="import"
-                    countryName={countryName}
-                  />
-                </ChartCard>
-              </Col>
-              <Col xs={24} md={12}>
-                <ChartCard>
-                  <TopProductsTable
-                    countryData={countryData}
-                    type="export"
-                    countryName={countryName}
-                  />
-                </ChartCard>
-              </Col>
-            </Row>
+            <div className={styles.chartRow}>
+              <TopProductsTable
+                countryData={countryData}
+                type="import"
+                countryName={countryName}
+              />
+            </div>
+
+            <div className={styles.chartRow}>
+              <TopProductsTable
+                countryData={countryData}
+                type="export"
+                countryName={countryName}
+              />
+            </div>
           </>
         )}
       </div>

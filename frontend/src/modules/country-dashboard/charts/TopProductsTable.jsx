@@ -90,10 +90,12 @@ const TopProductsTable = ({ countryData, type, countryName }) => {
   return (
     <div>
       <Title
-        level={5}
+        level={4}
         style={{
-          color: COLORS.PRIMARY_DARK_BLUE,
-          marginBottom: 16,
+          color: '#6236FF',
+          marginBottom: 20,
+          fontSize: '22px',
+          fontWeight: 600,
         }}
       >
         {titleText}
