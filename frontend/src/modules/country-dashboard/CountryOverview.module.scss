@@ -240,6 +240,11 @@
   font-size: 24px;
   font-weight: 700;
   line-height: 30px;
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+    line-height: 26px;
+  }
   letter-spacing: 0;
   margin: 32px 0 16px 0;
 }
@@ -301,8 +306,8 @@
   border-bottom: 1px solid #E8E8ED;
 
   @media (max-width: 768px) {
-    font-size: 22px;
-    line-height: 30px;
+    font-size: 24px;
+    line-height: 32px;
     margin-bottom: 16px;
   }
 }
