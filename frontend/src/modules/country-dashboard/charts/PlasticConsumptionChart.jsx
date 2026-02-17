@@ -30,7 +30,7 @@ const PlasticConsumptionChart = ({ countryData }) => {
   const getOption = () => ({
     title: {
       text: splitIntoTwoLines(
-        t`Apparent plastic consumption for ${countryName}`
+        'Apparent plastic consumption (imports-exports) for ${countryName}'
       ),
       left: 'center',
       textStyle: {
@@ -43,7 +43,9 @@ const PlasticConsumptionChart = ({ countryData }) => {
       trigger: 'axis',
       formatter: (params) => {
         const p = params[0]
-        return `${p.name}<br/>${p.marker} ${p.seriesName}: ${p.value?.toFixed(1)} ${t`million USD`}`
+        return `${p.name}<br/>${p.marker} ${p.seriesName}: ${p.value?.toFixed(
+          1
+        )} ${t`million USD`}`
       },
     },
     grid: {
