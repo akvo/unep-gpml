@@ -1,31 +1,31 @@
 .contentAntLayout {
-  padding:  60px 40px; 
-  background: #FFF;
+  padding: 60px 40px;
+  background: #fff;
   color: #000000;
   margin: 30px 0px;
-    @media (max-width: 768px) {
+  @media (max-width: 768px) {
     padding: 20px 20px;
     margin: 0px 0px;
   }
 }
 
 .selectCountry {
-    width: 100%;
-    margin-bottom: 30px;
-    max-width: 365px;
-    border: 1px solid #e8e8ed;
-    border-radius: 8px;
-    background: #f5f7ff;
-    height: 50px;
-    padding: 5px 0 5px 3px;
-    
-    .ant-select-selector {
-      height: auto !important;
-    }
+  width: 100%;
+  margin-bottom: 30px;
+  max-width: 365px;
+  border: 1px solid #e8e8ed;
+  border-radius: 8px;
+  background: #f5f7ff;
+  height: 50px;
+  padding: 5px 0 5px 3px;
+
+  .ant-select-selector {
+    height: auto !important;
+  }
 }
 
 .headerLanding {
-    font-weight: 600;
+  font-weight: 600;
   font-size: 32px;
   line-height: 36px;
   letter-spacing: 0px;
@@ -87,7 +87,7 @@
   align-items: center;
   padding-bottom: 16px;
   margin-bottom: 20px;
-  border-bottom: 1px solid #E8E8ED;
+  border-bottom: 1px solid #e8e8ed;
 }
 .tooltip {
   position: relative;
@@ -234,9 +234,20 @@
 .chartRow {
   margin-bottom: 40px;
 }
+.fullWidthMobile {
+  @media (max-width: 768px) {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+
+    h4 {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+  }
+}
 .sectionHeading {
   font-family: 'DM Sans', sans-serif;
-  color: #7468FF;
+  color: #7468ff;
   font-size: 24px;
   font-weight: 700;
   line-height: 30px;
@@ -287,7 +298,7 @@
   align-items: center;
   margin: 0 0 24px 0;
   padding-bottom: 12px;
-  border-bottom: 1px solid #E8E8ED;
+  border-bottom: 1px solid #e8e8ed;
 
   @media (max-width: 768px) {
     margin-bottom: 16px;
@@ -309,7 +320,7 @@
   letter-spacing: -1.5px;
   margin: 0 0 24px 0;
   padding-bottom: 12px;
-  border-bottom: 1px solid #E8E8ED;
+  border-bottom: 1px solid #e8e8ed;
 
   @media (max-width: 768px) {
     font-size: 24px;
@@ -340,7 +351,7 @@
     z-index: 10;
     background: #fff;
     padding: 16px 20px;
-    border-bottom: 1px solid #E8E8ED;
+    border-bottom: 1px solid #e8e8ed;
     transition: padding 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
   }
 }
@@ -376,14 +387,14 @@
 }
 
 .mobileTocLabel {
-  color: #6236FF;
+  color: #6236ff;
   font-size: 16px;
   font-weight: 700;
   margin-bottom: 10px;
 }
 
 .mobileTocCountryName {
-  color: #6236FF;
+  color: #6236ff;
   font-size: 16px;
   font-weight: 700;
   text-transform: uppercase;
@@ -395,7 +406,7 @@
 
   :global(.ant-select-selector) {
     height: 50px !important;
-    border: 1px solid #E8E8ED !important;
+    border: 1px solid #e8e8ed !important;
     border-radius: 8px !important;
     background: #f5f7ff !important;
     padding: 5px 12px !important;
@@ -415,7 +426,7 @@
 
   :global(.ant-select-selector) {
     height: 50px !important;
-    border: 1px solid #E8E8ED !important;
+    border: 1px solid #e8e8ed !important;
     border-radius: 8px !important;
     background: #f5f7ff !important;
     padding: 5px 12px !important;

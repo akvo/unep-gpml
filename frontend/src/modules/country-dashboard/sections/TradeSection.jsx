@@ -79,7 +79,7 @@ const TradeSection = React.forwardRef(
               </Col>
             </Row>
 
-            <div className={styles.chartRow}>
+            <div className={`${styles.chartRow} ${styles.fullWidthMobile}`}>
               <TopProductsTable
                 countryData={countryData}
                 type="import"
@@ -87,7 +87,7 @@ const TradeSection = React.forwardRef(
               />
             </div>
 
-            <div className={styles.chartRow}>
+            <div className={`${styles.chartRow} ${styles.fullWidthMobile}`}>
               <TopProductsTable
                 countryData={countryData}
                 type="export"

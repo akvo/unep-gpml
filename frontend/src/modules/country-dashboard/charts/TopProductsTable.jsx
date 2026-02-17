@@ -69,7 +69,8 @@ const TopProductsTable = ({ countryData, type, countryName }) => {
       title: t`Value (Million USD)`,
       dataIndex: '__EMPTY_1',
       key: 'value',
-      width: 150,
+      width:
+        typeof window !== 'undefined' && window.innerWidth <= 768 ? 99 : 150,
       render: (val, row) => {
         if (row._isGroup) return { children: null, props: { colSpan: 0 } }
         return val
