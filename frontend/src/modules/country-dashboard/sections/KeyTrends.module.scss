@@ -24,6 +24,11 @@
   color: #000647;
   line-height: 1.8;
   list-style-type: disc;
+
+  @media (min-width: 769px) {
+    columns: 2;
+    column-gap: 32px;
+  }
 }
 
 .listItem {
