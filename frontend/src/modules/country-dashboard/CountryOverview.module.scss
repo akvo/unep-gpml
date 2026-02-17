@@ -270,10 +270,29 @@
   }
 }
 
+.sectionTitleRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 0 24px 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #E8E8ED;
+
+  @media (max-width: 768px) {
+    margin-bottom: 16px;
+  }
+
+  .sectionTitle {
+    margin: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+}
+
 .sectionTitle {
   font-family: 'Archia', sans-serif;
   color: #000647;
-  font-size: 28px;
+  font-size: 34px;
   font-weight: 500;
   line-height: 38px;
   letter-spacing: -1.5px;
@@ -311,13 +330,22 @@
     background: #fff;
     padding: 16px 20px;
     border-bottom: 1px solid #E8E8ED;
-    transition: padding 0.25s ease;
+    transition: padding 0.25s ease, transform 0.25s ease, opacity 0.2s ease;
+  }
+}
+
+.mobileTocHidden {
+  @media (max-width: 768px) {
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.25s ease, opacity 0.2s ease;
   }
 }
 
 .mobileTocCollapsed {
   @media (max-width: 768px) {
-    padding: 8px 20px;
+    padding: 16px 20px;
   }
 }
 
@@ -355,7 +383,7 @@
   width: 100%;
 
   :global(.ant-select-selector) {
-    height: 44px !important;
+    height: 50px !important;
     border: 1px solid #E8E8ED !important;
     border-radius: 8px !important;
     background: #f5f7ff !important;
@@ -365,7 +393,7 @@
   }
 
   :global(.ant-select-selection-item) {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 500;
     color: #000647;
   }

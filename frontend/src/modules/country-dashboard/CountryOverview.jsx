@@ -272,40 +272,29 @@ const CountryOverview = ({
 
     const countryName = decodeURIComponent(router.query.country || '')
 
-    const headerRow = (
-      <Row className={styles.headerRow}>
-        <Col>
-          <div>
-            <span className={styles.titleCategory}>{countryName}</span>
-          </div>
-        </Col>
-        {!isMobile && (
-          <Col className={styles.containerButton}>
-            <Tooltip title="Update country data by sending a request to the GPML Data Hub team.">
-              <Button
-                className={styles.buttonStyle}
-                onClick={showModal}
-                style={{ width: '100%' }}
-              >
-                {t`Submit Data Update`}
-              </Button>
-              <RequestDataUpdateModal
-                visible={isModalVisible}
-                onClose={handleClose}
-              />
-            </Tooltip>
-          </Col>
-        )}
-      </Row>
-    )
+    const submitButton = !isMobile ? (
+      <Tooltip title="Update country data by sending a request to the GPML Data Hub team.">
+        <Button
+          className={styles.buttonStyle}
+          onClick={showModal}
+        >
+          {t`Submit Data Update`}
+        </Button>
+        <RequestDataUpdateModal
+          visible={isModalVisible}
+          onClose={handleClose}
+        />
+      </Tooltip>
+    ) : null
+
+    const firstSectionKey = availableSections?.[0]?.key
 
     return (
       <div className={styles.text}>
-        {headerRow}
-
         {(availableSections || []).map((section) => {
           const Component = SECTION_COMPONENTS[section.key]
           if (!Component) return null
+          const isFirst = section.key === firstSectionKey
           return (
             <Component
               key={section.key}
@@ -315,6 +304,7 @@ const CountryOverview = ({
               countryName={countryName}
               layers={layers}
               layerLoading={layerLoading}
+              {...(isFirst ? { headerExtra: submitButton } : {})}
             />
           )
         })}
