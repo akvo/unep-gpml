@@ -298,7 +298,7 @@
   margin-bottom: 40px;
 }
 
-// Mobile TOC – country name + section dropdown
+// Mobile TOC – "NATIONAL DATA" label + country dropdown + section dropdown
 .mobileToc {
   display: none;
 
@@ -321,22 +321,54 @@
   }
 }
 
-.mobileTocCountry {
+// Wrapper for label + country selector (collapses on scroll)
+.mobileTocHeader {
+  overflow: hidden;
+  opacity: 1;
+  max-height: 120px;
+  transition: max-height 0.25s ease, opacity 0.2s ease, margin-bottom 0.25s ease;
+  margin-bottom: 12px;
+}
+
+.mobileTocHeaderHidden {
+  max-height: 0;
+  opacity: 0;
+  margin-bottom: 0;
+}
+
+.mobileTocLabel {
+  color: #6236FF;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.mobileTocCountryName {
   color: #6236FF;
   font-size: 16px;
   font-weight: 700;
   text-transform: uppercase;
-  margin-bottom: 12px;
-  max-height: 30px;
-  overflow: hidden;
-  opacity: 1;
-  transition: max-height 0.25s ease, opacity 0.2s ease, margin-bottom 0.25s ease;
+  margin-bottom: 8px;
 }
 
-.mobileTocCountryHidden {
-  max-height: 0;
-  opacity: 0;
-  margin-bottom: 0;
+.mobileTocCountrySelect {
+  width: 100%;
+
+  :global(.ant-select-selector) {
+    height: 44px !important;
+    border: 1px solid #E8E8ED !important;
+    border-radius: 8px !important;
+    background: #f5f7ff !important;
+    padding: 5px 12px !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  :global(.ant-select-selection-item) {
+    font-size: 16px;
+    font-weight: 500;
+    color: #000647;
+  }
 }
 
 .mobileTocSelect {
