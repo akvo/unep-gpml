@@ -1,4 +1,5 @@
 import React from 'react'
+import { Row, Col } from 'antd'
 import { t } from '@lingui/macro'
 import SectionText from './SectionText'
 import KeyTrends from './KeyTrends'
@@ -22,7 +23,16 @@ const WasteManagementSection = React.forwardRef(
         />
 
         {textContent.wasteManagement.content && (
-          <SectionText template={textContent.wasteManagement.content} />
+          <Row gutter={[24, 16]}>
+            <Col xs={24} md={12}>
+              <SectionText template={textContent.wasteManagement.content} />
+            </Col>
+            {textContent.wasteManagement.contentRight && (
+              <Col xs={24} md={12}>
+                <SectionText template={textContent.wasteManagement.contentRight} />
+              </Col>
+            )}
+          </Row>
         )}
       </div>
     )

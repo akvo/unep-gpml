@@ -28,23 +28,31 @@ const TradeSection = React.forwardRef(
       <div ref={ref} data-section="trade" className={styles.dashboardSection}>
         <h2 className={styles.sectionTitle}>Trade</h2>
 
-        <KeyTrends items={textContent.trade.keyTrends} title={t`Key trends`} />
+        <KeyTrends items={textContent.trade.keyTrends} title={t`Key Trade Trends`} />
 
-        {textContent.trade.summary && (
-          <SectionText template={textContent.trade.summary} />
-        )}
+        <Row gutter={[24, 16]}>
+          {textContent.trade.summaryLeft && (
+            <Col xs={24} md={12}>
+              <SectionText template={textContent.trade.summaryLeft} />
+            </Col>
+          )}
+          {textContent.trade.summary && (
+            <Col xs={24} md={textContent.trade.summaryLeft ? 12 : 24}>
+              <SectionText template={textContent.trade.summary} />
+            </Col>
+          )}
+        </Row>
 
         {countryData && (
           <>
-            {textContent.trade.tradingPartners && (
-              <>
-                <h3 className={styles.sectionHeading}>{t`Top Trading Partners`}</h3>
-                <SectionText template={textContent.trade.tradingPartners} />
-              </>
-            )}
-
-            <Row className={styles.chartRow}>
-              <Col span={24}>
+            <h3 className={styles.sectionHeading}>{t`Top Trading Partners`}</h3>
+            <Row gutter={[24, 16]} className={styles.chartRow}>
+              {textContent.trade.tradingPartners && (
+                <Col xs={24} md={10}>
+                  <SectionText template={textContent.trade.tradingPartners} />
+                </Col>
+              )}
+              <Col xs={24} md={textContent.trade.tradingPartners ? 14 : 24}>
                 <ChartCard>
                   <TradingPartnersBarChart countryData={countryData} />
                 </ChartCard>

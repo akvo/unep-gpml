@@ -313,6 +313,8 @@ const CountryOverview = ({
               textContent={textContent}
               countryData={countryData}
               countryName={countryName}
+              layers={layers}
+              layerLoading={layerLoading}
             />
           )
         })}
