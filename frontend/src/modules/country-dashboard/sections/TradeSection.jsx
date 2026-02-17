@@ -15,10 +15,9 @@ const TradeCompositionPieChart = dynamic(
   () => import('../charts/TradeCompositionPieChart'),
   { ssr: false }
 )
-const TopProductsTable = dynamic(
-  () => import('../charts/TopProductsTable'),
-  { ssr: false }
-)
+const TopProductsTable = dynamic(() => import('../charts/TopProductsTable'), {
+  ssr: false,
+})
 
 const TradeSection = React.forwardRef(
   ({ textContent, countryData, countryName }, ref) => {
@@ -28,7 +27,10 @@ const TradeSection = React.forwardRef(
       <div ref={ref} data-section="trade" className={styles.dashboardSection}>
         <h2 className={styles.sectionTitle}>Trade</h2>
 
-        <KeyTrends items={textContent.trade.keyTrends} title={t`Key Trade Trends`} />
+        <KeyTrends
+          items={textContent.trade.keyTrends}
+          title={t`Key Trade Trends`}
+        />
 
         <Row gutter={[24, 16]}>
           {textContent.trade.summaryLeft && (
@@ -61,7 +63,9 @@ const TradeSection = React.forwardRef(
 
             {textContent.trade.productCategories && (
               <>
-                <h3 className={styles.sectionHeading}>{t`Top Product Categories`}</h3>
+                <h3
+                  className={styles.sectionHeading}
+                >{t`Top Product Categories`}</h3>
                 <SectionText template={textContent.trade.productCategories} />
               </>
             )}
@@ -69,12 +73,18 @@ const TradeSection = React.forwardRef(
             <Row gutter={[16, 16]} className={styles.chartRow}>
               <Col xs={24} md={12}>
                 <ChartCard>
-                  <TradeCompositionPieChart countryData={countryData} type="import" />
+                  <TradeCompositionPieChart
+                    countryData={countryData}
+                    type="import"
+                  />
                 </ChartCard>
               </Col>
               <Col xs={24} md={12}>
                 <ChartCard>
-                  <TradeCompositionPieChart countryData={countryData} type="export" />
+                  <TradeCompositionPieChart
+                    countryData={countryData}
+                    type="export"
+                  />
                 </ChartCard>
               </Col>
             </Row>

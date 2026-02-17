@@ -111,7 +111,7 @@ const TradeCompositionPieChart = ({ countryData, type }) => {
     <div style={{ position: 'relative' }}>
       <ReactEcharts
         option={getOption()}
-        style={{ height: '400px', width: '100%' }}
+        style={{ height: typeof window !== 'undefined' && window.innerWidth < 768 ? '500px' : '400px', width: '100%' }}
       />
       <div
         style={{
