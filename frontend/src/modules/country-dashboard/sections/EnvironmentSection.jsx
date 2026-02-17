@@ -22,7 +22,9 @@ const EnvironmentSection = React.forwardRef(
         />
 
         {textContent.environment.content && (
-          <SectionText template={textContent.environment.content} />
+          <div className={styles.twoColumnText}>
+            <SectionText template={textContent.environment.content} />
+          </div>
         )}
       </div>
     )

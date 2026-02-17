@@ -39,3 +39,15 @@
 .policyContainer {
   margin-top: 12px;
 }
+
+.twoColumnLayout {
+  @media (min-width: 769px) {
+    columns: 2;
+    column-gap: 48px;
+  }
+}
+
+.columnItem {
+  break-inside: avoid;
+  margin-bottom: 32px;
+}

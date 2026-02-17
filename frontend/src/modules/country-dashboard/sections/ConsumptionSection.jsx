@@ -19,7 +19,9 @@ const ConsumptionSection = React.forwardRef(
         <h2 className={styles.sectionTitle}>Consumption</h2>
 
         {textContent.consumption.content && (
-          <SectionText template={textContent.consumption.content} />
+          <div className={styles.twoColumnText}>
+            <SectionText template={textContent.consumption.content} />
+          </div>
         )}
 
         {countryData && (
