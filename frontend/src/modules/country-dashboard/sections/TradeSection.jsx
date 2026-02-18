@@ -7,6 +7,18 @@ import KeyTrends from './KeyTrends'
 import ChartCard from '../ChartCard'
 import styles from '../CountryOverview.module.scss'
 
+const PlasticImportExportChart = dynamic(
+  () => import('../charts/PlasticImportExportChart'),
+  { ssr: false }
+)
+const PlasticImportExportTonnesChart = dynamic(
+  () => import('../charts/PlasticImportExportTonnesChart'),
+  { ssr: false }
+)
+const PlasticImportExportPieCharts = dynamic(
+  () => import('../charts/PlasticImportExportPieChart'),
+  { ssr: false }
+)
 const TradingPartnersBarChart = dynamic(
   () => import('../charts/TradingPartnersBarChart'),
   { ssr: false }
@@ -20,7 +32,7 @@ const TopProductsTable = dynamic(() => import('../charts/TopProductsTable'), {
 })
 
 const TradeSection = React.forwardRef(
-  ({ textContent, countryData, countryName }, ref) => {
+  ({ textContent, countryData, countryName, layers, layerLoading }, ref) => {
     if (!textContent?.trade) return null
 
     return (
@@ -43,6 +55,50 @@ const TradeSection = React.forwardRef(
               <SectionText template={textContent.trade.summary} />
             </Col>
           )}
+        </Row>
+
+        {/* ArcGIS layer-based charts */}
+        <Row className={styles.chartRow}>
+          <Col span={24}>
+            <ChartCard>
+              <PlasticImportExportChart
+                layers={layers}
+                loading={layerLoading}
+              />
+            </ChartCard>
+          </Col>
+        </Row>
+
+        <Row className={styles.chartRow}>
+          <Col span={24}>
+            <ChartCard>
+              <PlasticImportExportTonnesChart
+                layers={layers}
+                loading={layerLoading}
+              />
+            </ChartCard>
+          </Col>
+        </Row>
+
+        <Row gutter={[16, 16]} className={styles.chartRow}>
+          <Col xs={24} md={12}>
+            <ChartCard>
+              <PlasticImportExportPieCharts
+                chartType="import"
+                layers={layers}
+                loading={layerLoading}
+              />
+            </ChartCard>
+          </Col>
+          <Col xs={24} md={12}>
+            <ChartCard>
+              <PlasticImportExportPieCharts
+                chartType="export"
+                layers={layers}
+                loading={layerLoading}
+              />
+            </ChartCard>
+          </Col>
         </Row>
 
         {countryData && (
