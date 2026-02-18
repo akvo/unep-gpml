@@ -1,5 +1,4 @@
 import React from 'react'
-import { Trans } from '@lingui/macro'
 import styles from './LifeCycleInsights.module.scss'
 
 const LifeCycleInsights = ({ data }) => {
@@ -23,7 +22,7 @@ const LifeCycleInsights = ({ data }) => {
             section.policyOpportunities.length > 0 && (
               <div className={styles.policyContainer}>
                 <p className={styles.policyLabel}>
-                  <Trans>Policy opportunities:</Trans>
+                  Policy opportunities:
                 </p>
                 <ul className={styles.policyList}>
                   {section.policyOpportunities.map((item, i) => (

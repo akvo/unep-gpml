@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react'
 import { Select } from 'antd'
 import { useRouter } from 'next/router'
-import { t } from '@lingui/macro'
 import { UIStore } from '../../store'
 import { EXCEL_COUNTRY_CODES } from './constants'
 import styles from './CountryOverview.module.scss'
@@ -104,12 +103,12 @@ const MobileTOC = ({ availableSections, activeSection, scrollToSection }) => {
           collapsed ? styles.mobileTocHeaderHidden : ''
         }`}
       >
-        <div className={styles.mobileTocLabel}>{t`National data`}</div>
+        <div className={styles.mobileTocLabel}>National data</div>
         <Select
           showSearch
           size="large"
           value={selectedCountryId}
-          placeholder={t`Search Country`}
+          placeholder="Search Country"
           options={countryOpts}
           suffixIcon={<DropdownSvg />}
           filterOption={(input, option) =>

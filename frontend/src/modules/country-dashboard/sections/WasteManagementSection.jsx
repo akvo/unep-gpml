@@ -1,7 +1,6 @@
 import React from 'react'
 import { Row, Col } from 'antd'
 import dynamic from 'next/dynamic'
-import { t } from '@lingui/macro'
 import SectionText from './SectionText'
 import KeyTrends from './KeyTrends'
 import ChartCard from '../ChartCard'
@@ -30,7 +29,7 @@ const WasteManagementSection = React.forwardRef(
 
         <KeyTrends
           items={textContent.wasteManagement.keyTrends}
-          title={t`Key trends`}
+          title="Key trends"
         />
 
         <Row gutter={[16, 16]} className={styles.chartRow}>
