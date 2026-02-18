@@ -11,7 +11,14 @@ import styled from 'styled-components'
 
 const { Sider } = Layout
 
-const CategoriesNestedDashboard = ({ categories, handleCategoryParentClick }) => {
+const CategoriesNestedDashboard = ({
+  categories,
+  handleCategoryParentClick,
+  isExcelCountry,
+  availableSections,
+  activeSection,
+  scrollToSection,
+}) => {
   const { queryParameters, setQueryParameters } = useQueryParameters()
   const [selectedCategory, setSelectedCategory] = useState(null)
   const [selectedCountry, setSelectedCountry] = useState(null)
@@ -91,25 +98,42 @@ const CategoriesNestedDashboard = ({ categories, handleCategoryParentClick }) =>
         onChange={handleChangeCountry}
       />
 
-      <div style={{ marginTop:'20px' }} className="nav">
-        {categories.map((category) => (
-          <div
-            key={category.attributes.categoryId}
-            onClick={() => handleCategoryClick(category)}
-            className={classNames('nav-item', {
-              selected: isCategorySelected(category),
-            })}
-          >
-            {category.attributes.name}
-          </div>
-        ))}
-      </div>
+      {isExcelCountry && availableSections ? (
+        /* TOC nav for Excel countries – scroll-based section navigation */
+        <div style={{ marginTop: '20px' }} className="nav">
+          {availableSections.map((section) => (
+            <TocItem
+              key={section.key}
+              onClick={() => scrollToSection(section.key)}
+              $active={activeSection === section.key}
+              className={classNames('nav-item', {
+                selected: activeSection === section.key,
+              })}
+            >
+              {section.title}
+            </TocItem>
+          ))}
+        </div>
+      ) : (
+        /* Category nav for non-Excel countries */
+        <div style={{ marginTop: '20px' }} className="nav">
+          {categories.map((category) => (
+            <div
+              key={category.attributes.categoryId}
+              onClick={() => handleCategoryClick(category)}
+              className={classNames('nav-item', {
+                selected: isCategorySelected(category),
+              })}
+            >
+              {category.attributes.name}
+            </div>
+          ))}
+        </div>
+      )}
 
-
-        <ButtonStyled type="ghost" style={{}} onClick={handleViewGlobalDataClick}>
-          {t`View Global Data `} →
-        </ButtonStyled>
-
+      <ButtonStyled type="ghost" onClick={handleViewGlobalDataClick}>
+        {t`View Global Data `} →
+      </ButtonStyled>
     </Sider>
   )
 }
@@ -134,11 +158,18 @@ export const getStaticProps = async (ctx) => {
   }
 }
 
+const TocItem = styled.div`
+  cursor: pointer;
+  border-left: 3px solid
+    ${(props) => (props.$active ? '#6236FF' : 'transparent')};
+  transition: border-color 0.2s ease, background 0.15s ease;
+`
+
 const ButtonStyled = styled(Button)`
   margin: 5px 20px;
   @media (max-width: 768px) {
     display: none;
   }
-`;
+`
 
 export default CategoriesNestedDashboard

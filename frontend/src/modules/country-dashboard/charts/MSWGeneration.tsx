@@ -173,7 +173,6 @@ const MSWGenerationChart = ({ layers, layerLoading }) => {
         {
           name: 'Estimates',
           type: 'bar',
-          // barWidth: '40%',
           data: dataValues,
           label: {
             show: true,

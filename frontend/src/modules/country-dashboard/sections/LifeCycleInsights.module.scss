@@ -1,0 +1,53 @@
+.sectionHeading {
+  font-family: 'DM Sans', sans-serif;
+  color: #7468FF;
+  font-weight: 700;
+  line-height: 30px;
+  letter-spacing: 0;
+  margin: 0 0 16px 0;
+  font-size: 24px;
+}
+
+.paragraph {
+  font-size: 16px;
+  color: #000647;
+  line-height: 1.75;
+  margin-bottom: 12px;
+}
+
+.policyLabel {
+  font-size: 16px;
+  color: #000647;
+  font-style: italic;
+  margin-bottom: 8px;
+}
+
+.policyList {
+  padding-left: 24px;
+  margin: 0;
+  font-size: 16px;
+  color: #000647;
+  line-height: 1.75;
+  list-style-type: disc;
+}
+
+.policyListItem {
+  margin-bottom: 8px;
+  display: list-item;
+}
+
+.policyContainer {
+  margin-top: 12px;
+}
+
+.twoColumnLayout {
+  @media (min-width: 769px) {
+    columns: 2;
+    column-gap: 48px;
+  }
+}
+
+.columnItem {
+  break-inside: avoid;
+  margin-bottom: 32px;
+}

@@ -202,27 +202,6 @@ const PlasticCompositionChart = ({ layers, layerLoading }) => {
               },
             ],
           },
-          // markLine: {
-          //   data: [
-          //     {
-          //       yAxis: regionPlasticComposition || 0.78,
-          //       label: {
-          //         formatter: () =>
-          //           `${tRegionalAvg} \n(${
-          //             regionPlasticComposition + '%' || 0.78 + '%'
-          //           })`,
-          //         position: 'middle',
-          //         offset: [window.innerWidth < 768 ? 170 : 220, -5],
-          //         color: '#020A5B',
-          //         fontSize: 12,
-          //       },
-          //       lineStyle: {
-          //         type: 'dashed',
-          //         color: '#020A5B',
-          //       },
-          //     },
-          //   ],
-          // },
         },
       ],
       barCategoryGap: '50%',

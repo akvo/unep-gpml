@@ -11,10 +11,18 @@ import { Layout, Select } from 'antd'
 import useQueryParameters from '../../../hooks/useQueryParameters'
 import { t } from '@lingui/macro'
 import { useRouter } from 'next/router'
+import { EXCEL_COUNTRY_CODES, EXCEL_CATEGORIES } from '../../../modules/country-dashboard/constants'
 
 const { Sider } = Layout
 
-const Sidebar = ({ countryDashboard, layers }) => {
+const Sidebar = ({
+  countryDashboard,
+  layers,
+  isExcelCountry: isExcelCountryProp,
+  availableSections,
+  activeSection,
+  scrollToSection,
+}) => {
   const router = useRouter()
   const { pathname, query } = router
 
@@ -23,10 +31,14 @@ const Sidebar = ({ countryDashboard, layers }) => {
 
   const { loading } = useCategories()
   const catsData = useCategories()?.categories
+  const isExcelCountry = countryDashboard && EXCEL_COUNTRY_CODES.includes(query?.countryCode)
+
   const categories = countryDashboard
-    ? catsData.filter(
-        (d) => d.attributes.categoryId !== 'governance-and-regulations'
-      )
+    ? isExcelCountry
+      ? EXCEL_CATEGORIES
+      : catsData.filter(
+          (d) => d.attributes.categoryId !== 'governance-and-regulations'
+        )
     : catsData
   const subcategories = useSubcategories()
 
@@ -80,7 +92,7 @@ const Sidebar = ({ countryDashboard, layers }) => {
 
   const handleCategory = (category) => {
     const selected = categories?.find((x) => x.id === category)
-
+    if (!selected) return
     if (selected.attributes.categoryDescription === selectedCategory) return
     if (countryDashboard) {
       const newParams = {
@@ -113,6 +125,7 @@ const Sidebar = ({ countryDashboard, layers }) => {
       const selected = categories?.find(
         (x) => x.attributes.categoryId === query?.categoryId
       )
+      if (!selected) return
       setSelectedCategory(selected.attributes.categoryDescription)
       setSelectedCategoryId(query?.categoryId)
     }
@@ -168,7 +181,7 @@ const Sidebar = ({ countryDashboard, layers }) => {
           </>
         )} */}
 
-        {countryDashboard && (
+        {countryDashboard && !isExcelCountryProp && (
           <CustomSiderWrapper>
             <StyledSider breakpoint="lg">
               <Title>{t`National data`}</Title>
@@ -208,6 +221,10 @@ const Sidebar = ({ countryDashboard, layers }) => {
               subcategories={subcategories}
               countryDashboard={countryDashboard}
               handleCategoryParentClick={handleCategoryClick}
+              isExcelCountry={isExcelCountryProp}
+              availableSections={availableSections}
+              activeSection={activeSection}
+              scrollToSection={scrollToSection}
             />
           )}
         </Container>
