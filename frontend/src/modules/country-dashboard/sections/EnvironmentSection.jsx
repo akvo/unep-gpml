@@ -1,5 +1,4 @@
 import React from 'react'
-import { t } from '@lingui/macro'
 import SectionText from './SectionText'
 import KeyTrends from './KeyTrends'
 import styles from '../CountryOverview.module.scss'
@@ -18,7 +17,7 @@ const EnvironmentSection = React.forwardRef(
 
         <KeyTrends
           items={textContent.environment.keyTrends}
-          title={t`Key trends`}
+          title="Key trends"
         />
 
         {textContent.environment.content && (

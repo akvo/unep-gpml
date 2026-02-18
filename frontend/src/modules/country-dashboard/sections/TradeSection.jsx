@@ -1,7 +1,6 @@
 import React from 'react'
 import { Row, Col } from 'antd'
 import dynamic from 'next/dynamic'
-import { t } from '@lingui/macro'
 import SectionText from './SectionText'
 import KeyTrends from './KeyTrends'
 import ChartCard from '../ChartCard'
@@ -41,7 +40,7 @@ const TradeSection = React.forwardRef(
 
         <KeyTrends
           items={textContent.trade.keyTrends}
-          title={t`Key Trade Trends`}
+          title="Key Trade Trends"
         />
 
         <Row gutter={[24, 16]}>
@@ -103,7 +102,7 @@ const TradeSection = React.forwardRef(
 
         {countryData && (
           <>
-            <h3 className={styles.sectionHeading}>{t`Top Trading Partners`}</h3>
+            <h3 className={styles.sectionHeading}>Top Trading Partners</h3>
             <Row gutter={[24, 16]} className={styles.chartRow}>
               {textContent.trade.tradingPartners && (
                 <Col xs={24} md={10}>
@@ -121,7 +120,7 @@ const TradeSection = React.forwardRef(
               <>
                 <h3
                   className={styles.sectionHeading}
-                >{t`Top Product Categories`}</h3>
+                >Top Product Categories</h3>
                 <SectionText template={textContent.trade.productCategories} />
               </>
             )}
