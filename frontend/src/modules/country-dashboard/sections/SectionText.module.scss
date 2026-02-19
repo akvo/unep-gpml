@@ -1,5 +1,7 @@
 .container {
   margin-bottom: 24px;
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
 }
 
 .content {
