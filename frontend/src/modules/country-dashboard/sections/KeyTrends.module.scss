@@ -34,4 +34,6 @@
 .listItem {
   margin-bottom: 8px;
   display: list-item;
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
 }

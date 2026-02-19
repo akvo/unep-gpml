@@ -49,5 +49,6 @@
 
 .columnItem {
   break-inside: avoid;
+  -webkit-column-break-inside: avoid;
   margin-bottom: 32px;
 }

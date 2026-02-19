@@ -53,7 +53,7 @@ msgstr "{progress}% completado"
 msgid "{value} Initiatives"
 msgstr "{value} iniciativas"
 
-#: src/pages/countryOverview/IntroPage.jsx:213
+#: src/modules/country-dashboard/DashboardLanding.jsx:146
 msgid "* You are currently viewing the beta version of the Country Dashboard, and we welcome your feedback on its usability and content. We particularly welcome suggestions for updated and improved data sources for your country. To request a data update, please use the \"Submit Data Update\" button within your Country Dashboard section."
 msgstr "* Actualmente está viendo la versión beta del Panel de País y agradecemos sus comentarios sobre su usabilidad y contenido. Agradecemos especialmente sus sugerencias para actualizar y mejorar las fuentes de datos de su país. Para solicitar una actualización de datos, utilice el botón \"Enviar actualización de datos\" en la sección Panel de País."
 
@@ -261,7 +261,7 @@ msgstr "todo"
 msgid "All (default)"
 msgstr "Todo (predeterminado)"
 
-#: src/pages/countryOverview/IntroPage.jsx:198
+#: src/modules/country-dashboard/DashboardLanding.jsx:131
 msgid "All data sources are clearly indicated, including links to the original methodologies and any information regarding uncertainties related to the modelling outputs."
 msgstr "Todas las fuentes de datos están claramente indicadas, incluyendo enlaces a las metodologías originales y cualquier información relativa a las incertidumbres relacionadas con los resultados de la modelización."
 
@@ -318,6 +318,11 @@ msgstr "Anticipar un futuro cambio de política"
 #: src/store.js:755
 msgid "Any resource – including print and non-print materials and online/open-access resources – which supports and enhances, directly or indirectly, learning, teaching and awareness raising."
 msgstr "Cualquier recurso, incluidos materiales impresos y no impresos y recursos en línea/de acceso abierto, que apoye y mejore, directa o indirectamente, el aprendizaje, la enseñanza y la sensibilización."
+
+#: src/modules/country-dashboard/charts/PlasticConsumptionChart.jsx:58
+#: src/modules/country-dashboard/charts/PlasticConsumptionChart.jsx:75
+msgid "Apparent consumption"
+msgstr ""
 
 #: src/modules/stakeholder-overview/filter-drawer.jsx:140
 msgid "Apply"
@@ -540,9 +545,17 @@ msgstr "explorar la comunidad por"
 msgid "Building, construction, demolition,industrial machinery"
 msgstr "Edificación, construcción, demolición, maquinaria industrial."
 
+#: src/modules/country-dashboard/charts/TradeCompositionPieChart.jsx:61
+msgid "By material group (million USD)"
+msgstr ""
+
 #: src/modules/workspace/view.jsx:355
 msgid "By proceeding to join the Global Partnership on Plastic Pollution & Marine Litter, you are confirming that you have the authorisation to submit this application on behalf of your organisation."
 msgstr "Al unirse a la Asociación Global sobre Contaminación Plástica y Basura Marina, usted confirma que tiene autorización para enviar esta solicitud en nombre de su organización."
+
+#: src/modules/country-dashboard/charts/TradingPartnersPieChart.jsx:54
+msgid "By region, {latestYear} (million USD)"
+msgstr ""
 
 #: src/modules/login/login-view.jsx:300
 #: src/modules/login/view.jsx:371
@@ -612,7 +625,7 @@ msgstr "Estudios de caso"
 msgid "Case Study"
 msgstr "Estudio de caso"
 
-#: src/pages/countryOverview/partials/EconomicInstrumentsComponent.jsx:20
+#: src/modules/country-dashboard/partials/EconomicInstrumentsComponent.jsx:20
 msgid "Cash for return schemes"
 msgstr "Planes de efectivo por retorno"
 
@@ -926,7 +939,7 @@ msgstr "País"
 msgid "Country dashboard"
 msgstr "Panel de control del país"
 
-#: src/pages/countryOverview/IntroPage.jsx:123
+#: src/modules/country-dashboard/DashboardLanding.jsx:89
 msgid "Country Dashboard"
 msgstr "Panel de control del país"
 
@@ -1039,12 +1052,19 @@ msgstr "Portal de datos"
 msgid "Data Source"
 msgstr "Fuente de datos"
 
-#: src/modules/country-dashboard/charts/MSWGeneration.tsx:224
-#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:246
+#: src/modules/country-dashboard/charts/MSWGeneration.tsx:223
+#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:225
+#: src/modules/country-dashboard/charts/PlasticConsumptionChart.jsx:98
 #: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:194
 #: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:200
-#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:222
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:230
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:221
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:227
+#: src/modules/country-dashboard/charts/ProductCategoriesChart.jsx:130
+#: src/modules/country-dashboard/charts/TopProductsTable.jsx:120
+#: src/modules/country-dashboard/charts/TotalPlasticsTradeChart.jsx:122
+#: src/modules/country-dashboard/charts/TradeCompositionPieChart.jsx:124
+#: src/modules/country-dashboard/charts/TradingPartnersBarChart.jsx:120
+#: src/modules/country-dashboard/charts/TradingPartnersPieChart.jsx:117
 msgid "Data source:"
 msgstr "Fuente de datos:"
 
@@ -1091,6 +1111,7 @@ msgstr "Rechazar"
 msgid "Delete"
 msgstr "Borrar"
 
+#: src/modules/country-dashboard/charts/TopProductsTable.jsx:53
 #: src/modules/details-page/view.jsx:383
 #: src/modules/flexible-forms/form-schema.js:115
 #: src/modules/flexible-forms/form-schema.js:1229
@@ -1205,7 +1226,7 @@ msgstr "Discusión"
 msgid "Discussions"
 msgstr "Discusiones"
 
-#: src/pages/countryOverview/partials/EconomicInstrumentsComponent.jsx:27
+#: src/modules/country-dashboard/partials/EconomicInstrumentsComponent.jsx:27
 msgid "Disincentives to irresponsible plastic stewardship​"
 msgstr "Desincentivos para el manejo irresponsable del plástico"
 
@@ -1344,13 +1365,13 @@ msgstr "Fecha final"
 msgid "End of Life"
 msgstr "Fin de la vida"
 
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:121
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:175
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:118
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:172
 msgid "Ends up in the ocean"
 msgstr "Termina en el océano"
 
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:121
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:168
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:118
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:165
 msgid "Ends up on the coasts"
 msgstr "Termina en las costas"
 
@@ -1454,7 +1475,7 @@ msgstr "Gestión ambientalmente racional y destrucción de PCB"
 msgid "Equity Investment"
 msgstr "Inversión de capital"
 
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:97
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:96
 msgid "Escaped plastic reaching oceans and coasts​"
 msgstr "El plástico escapado llega a océanos y costas"
 
@@ -1515,7 +1536,7 @@ msgstr "Resultados esperados"
 msgid "Experts"
 msgstr "Expertos"
 
-#: src/pages/countryOverview/IntroPage.jsx:123
+#: src/modules/country-dashboard/DashboardLanding.jsx:89
 msgid "Explore"
 msgstr "Explorar"
 
@@ -1535,10 +1556,34 @@ msgstr "Explorar la Plataforma"
 msgid "Explore the resources"
 msgstr "Explora los recursos"
 
-#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:194
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:193
+#: src/modules/country-dashboard/charts/ProductCategoriesChart.jsx:71
+#: src/modules/country-dashboard/charts/ProductCategoriesChart.jsx:108
 #: src/modules/profile/admin.jsx:887
 msgid "Export"
 msgstr "Exportar"
+
+#: src/modules/country-dashboard/charts/TradeCompositionPieChart.jsx:88
+msgid "Export composition"
+msgstr ""
+
+#: src/modules/country-dashboard/charts/TradeCompositionPieChart.jsx:56
+msgid "Export composition for {countryName}"
+msgstr ""
+
+#: src/modules/country-dashboard/charts/TradingPartnersPieChart.jsx:80
+msgid "Export destinations"
+msgstr ""
+
+#: src/modules/country-dashboard/charts/TradingPartnersBarChart.jsx:65
+#: src/modules/country-dashboard/charts/TradingPartnersBarChart.jsx:96
+msgid "Export of total plastics"
+msgstr ""
+
+#: src/modules/country-dashboard/charts/TotalPlasticsTradeChart.jsx:75
+#: src/modules/country-dashboard/charts/TotalPlasticsTradeChart.jsx:99
+msgid "Exports"
+msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:1182
 msgid "Facebook"
@@ -1574,7 +1619,7 @@ msgid "Filters"
 msgstr "Filtros"
 
 #: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:22
-#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:24
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:23
 msgid "Final manufactured plastic goods"
 msgstr "Productos plásticos manufacturados finales"
 
@@ -1625,7 +1670,7 @@ msgstr "Pesca"
 msgid "Fishing for Litter: Ocean cleaning project that involves fishermen who collect debris during fishing activities"
 msgstr "Pesca de Basura: Proyecto de limpieza de océanos que involucra a pescadores que recolectan desechos durante las actividades de pesca"
 
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:237
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:234
 msgid "​​Florida State University and UNEP, 2021"
 msgstr "Universidad Estatal de Florida y PNUMA, 2021"
 
@@ -1924,15 +1969,15 @@ msgstr "Daño causado por la basura marina"
 msgid "Harmonization of Microplastics Monitoring Methodologies in the Ocean"
 msgstr "Armonización de metodologías de seguimiento de microplásticos en el océano"
 
-#: src/pages/countryOverview/partials/PoliciesAndRegulationsComponent.jsx:37
+#: src/modules/country-dashboard/partials/PoliciesAndRegulationsComponent.jsx:37
 msgid "has implemented the following affirmative regulatory policy instruments on plastics:"
 msgstr "ha implementado los siguientes instrumentos de política regulatoria afirmativa sobre plásticos:"
 
-#: src/pages/countryOverview/partials/EconomicInstrumentsComponent.jsx:116
+#: src/modules/country-dashboard/partials/EconomicInstrumentsComponent.jsx:116
 msgid "has implemented the following economic and information policy instruments on plastics:"
 msgstr "ha puesto en marcha los siguientes instrumentos de política económica y de información sobre plásticos:"
 
-#: src/pages/countryOverview/ProhibitivePolicies.jsx:32
+#: src/modules/country-dashboard/ProhibitivePolicies.jsx:32
 msgid "has implemented the following prohibitive regulatory policy instruments on plastics:"
 msgstr "ha implementado los siguientes instrumentos de política regulatoria prohibitivos sobre los plásticos:"
 
@@ -1983,6 +2028,10 @@ msgstr "¿Cuánto dinero (cantidad) se ha invertido en la iniciativa hasta el mo
 #: src/modules/help-center/view.jsx:39
 msgid "How to Guides"
 msgstr "Cómo hacer guías"
+
+#: src/modules/country-dashboard/charts/TopProductsTable.jsx:43
+msgid "HS Code"
+msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:997
 msgid "Human health and wellbeing"
@@ -2054,13 +2103,45 @@ msgstr "Impacto. ¿Con qué impactos o daños se relaciona la iniciativa? (Por f
 msgid "Implementing MEA"
 msgstr "Implementación de AAM"
 
-#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:194
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:193
+#: src/modules/country-dashboard/charts/ProductCategoriesChart.jsx:71
+#: src/modules/country-dashboard/charts/ProductCategoriesChart.jsx:101
 msgid "Import"
 msgstr "Importar"
+
+#: src/modules/country-dashboard/charts/TradingPartnersBarChart.jsx:46
+msgid "Import and export of total plastics (2022)"
+msgstr ""
+
+#: src/modules/country-dashboard/charts/TotalPlasticsTradeChart.jsx:49
+msgid "Import and export of total plastics for {countryName}"
+msgstr ""
+
+#: src/modules/country-dashboard/charts/TradeCompositionPieChart.jsx:88
+msgid "Import composition"
+msgstr ""
+
+#: src/modules/country-dashboard/charts/TradeCompositionPieChart.jsx:55
+msgid "Import composition for {countryName}"
+msgstr ""
+
+#: src/modules/country-dashboard/charts/TradingPartnersBarChart.jsx:65
+#: src/modules/country-dashboard/charts/TradingPartnersBarChart.jsx:88
+msgid "Import of total plastics"
+msgstr ""
 
 #: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:45
 msgid "Import or export layer not found."
 msgstr "No se encontró la capa de importación o exportación."
+
+#: src/modules/country-dashboard/charts/TradingPartnersPieChart.jsx:80
+msgid "Import sources"
+msgstr ""
+
+#: src/modules/country-dashboard/charts/TotalPlasticsTradeChart.jsx:75
+#: src/modules/country-dashboard/charts/TotalPlasticsTradeChart.jsx:92
+msgid "Imports"
+msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:794
 msgid "In 1 to 3 years"
@@ -2086,9 +2167,13 @@ msgstr "En vigor"
 msgid "In market"
 msgstr "En el mercado"
 
-#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:135
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:134
 msgid "in million US dollars for year {0}"
 msgstr "en millones de dólares estadounidenses para el año {0}"
+
+#: src/modules/country-dashboard/charts/ProductCategoriesChart.jsx:53
+msgid "In million USD, {latestYear}"
+msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:796
 msgid "In more than 10 years"
@@ -2198,12 +2283,12 @@ msgid "Institutional development"
 msgstr "Desarrollo institucional"
 
 #: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:21
-#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:23
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:22
 msgid "Intermediate forms of plastic"
 msgstr "Formas intermedias de plástico"
 
 #: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:23
-#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:25
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:24
 msgid "Intermediate manufactured plastic goods"
 msgstr "Productos intermedios manufacturados de plástico"
 
@@ -2659,9 +2744,18 @@ msgid "Microplastics"
 msgstr "Microplásticos"
 
 #: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:93
-#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:136
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:135
 msgid "million US dollars"
 msgstr "millones de dólares estadounidenses"
+
+#: src/modules/country-dashboard/charts/PlasticConsumptionChart.jsx:48
+#: src/modules/country-dashboard/charts/PlasticConsumptionChart.jsx:69
+#: src/modules/country-dashboard/charts/ProductCategoriesChart.jsx:95
+#: src/modules/country-dashboard/charts/TotalPlasticsTradeChart.jsx:63
+#: src/modules/country-dashboard/charts/TotalPlasticsTradeChart.jsx:86
+#: src/modules/country-dashboard/charts/TradingPartnersBarChart.jsx:59
+msgid "million USD"
+msgstr ""
 
 #: src/modules/flexible-forms/form-schema.js:1962
 msgid "Miscellaneous"
@@ -2786,8 +2880,8 @@ msgstr "Nacional"
 msgid "National Action Plan"
 msgstr "Plan de acción nacional"
 
-#: src/components/map-and-layers/sidebar/index.jsx:174
-#: src/components/map-and-layers/sidebar/partials/CategoriesNestedDashboard.jsx:78
+#: src/components/map-and-layers/sidebar/index.jsx:187
+#: src/components/map-and-layers/sidebar/partials/CategoriesNestedDashboard.jsx:85
 msgid "National data"
 msgstr "Datos nacionales"
 
@@ -2870,7 +2964,7 @@ msgstr "ONGs"
 msgid "No"
 msgstr "No"
 
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:161
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:158
 msgid "No Data"
 msgstr "Sin Datos"
 
@@ -3162,7 +3256,7 @@ msgstr "A la gente le gustan los plásticos (comodidad, higiene, etc.)"
 msgid "Per capita MSW generation for {0}"
 msgstr "Generación de RSU per cápita para {0}"
 
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:99
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:98
 msgid "Percentage of the escaped plastic waste between years 2010-2019"
 msgstr "Porcentaje de residuos plásticos escapados entre los años 2010-2019"
 
@@ -3202,7 +3296,7 @@ msgstr "Piloto"
 msgid "Plastic composition in the MSW for {0}"
 msgstr "Composición plástica en los RSU para {0}"
 
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:129
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:126
 msgid "Plastic distribution"
 msgstr "Distribución de plástico"
 
@@ -3210,8 +3304,12 @@ msgstr "Distribución de plástico"
 msgid "Plastic export by type for {countryName}"
 msgstr "Exportación de plástico por tipo para {countryName}"
 
+#: src/modules/country-dashboard/charts/TradingPartnersPieChart.jsx:49
+msgid "Plastic export destinations for {countryName}"
+msgstr ""
+
 #: src/modules/country-dashboard/charts/PlasticImportExportChart.jsx:91
-#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:133
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:132
 msgid "Plastic import & export value for {0}"
 msgstr "Valor de importación y exportación de plástico para {0}"
 
@@ -3219,8 +3317,12 @@ msgstr "Valor de importación y exportación de plástico para {0}"
 msgid "Plastic import by type for {countryName}"
 msgstr "Importación de plástico por tipo para {countryName}"
 
+#: src/modules/country-dashboard/charts/TradingPartnersPieChart.jsx:48
+msgid "Plastic import sources for {countryName}"
+msgstr ""
+
 #: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:20
-#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:22
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:21
 msgid "Plastic in primary form"
 msgstr "Plástico en forma primaria"
 
@@ -3232,12 +3334,16 @@ msgstr "Se presentan datos de indicadores del ciclo de vida del plástico proced
 msgid "Plastic Odyssey: The Expedition Around The World To Fight Against Plastic Pollution"
 msgstr "Plastic Odyssey: La expedición alrededor del mundo para luchar contra la contaminación plástica"
 
+#: src/modules/country-dashboard/charts/ProductCategoriesChart.jsx:17
+msgid "Plastic packaging"
+msgstr ""
+
 #: src/store.js:493
 msgid "Plastic Pollution Calculator"
 msgstr "Calculadora de contaminación plástica"
 
 #: src/modules/country-dashboard/charts/PlasticImportExportPieChart.jsx:24
-#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:26
+#: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:25
 msgid "Plastic waste"
 msgstr "Desechos plásticos"
 
@@ -3356,6 +3462,10 @@ msgstr "Problemas con materiales y suministros alternativos."
 #: src/store.js:399
 msgid "Process of checking, verifying, and attaining general information about the abilityl to comply with the standard."
 msgstr "Proceso de comprobar, verificar y obtener información general sobre la capacidad para cumplir con la norma."
+
+#: src/modules/country-dashboard/charts/ProductCategoriesChart.jsx:51
+msgid "Product categories trade for {countryName}"
+msgstr ""
 
 #: src/utils/misc.js:361
 msgid "Production"
@@ -3509,43 +3619,43 @@ msgstr "Usuarios registrados y miembros de GPML conectados a través del Centro 
 msgid "Regulation"
 msgstr "Regulación"
 
-#: src/pages/countryOverview/partials/PoliciesAndRegulationsComponent.jsx:62
+#: src/modules/country-dashboard/partials/PoliciesAndRegulationsComponent.jsx:62
 msgid "Regulatory instruments on development of plans to address plastic pollution and management"
 msgstr "Instrumentos regulatorios sobre el desarrollo de planes para abordar y gestionar la contaminación plástica"
 
-#: src/pages/countryOverview/partials/EconomicInstrumentsComponent.jsx:31
+#: src/modules/country-dashboard/partials/EconomicInstrumentsComponent.jsx:31
 msgid "Regulatory instruments on education and outreach"
 msgstr "Instrumentos regulatorios en materia de educación y divulgación"
 
-#: src/pages/countryOverview/partials/PoliciesAndRegulationsComponent.jsx:74
+#: src/modules/country-dashboard/partials/PoliciesAndRegulationsComponent.jsx:74
 msgid "Regulatory instruments on innovation"
 msgstr "Instrumentos regulatorios sobre innovación"
 
-#: src/pages/countryOverview/ProhibitivePolicies.jsx:65
+#: src/modules/country-dashboard/ProhibitivePolicies.jsx:65
 msgid "Regulatory instruments on irresponsible handling of plastics"
 msgstr "Instrumentos regulatorios sobre el manejo irresponsable de plásticos"
 
-#: src/pages/countryOverview/ProhibitivePolicies.jsx:57
+#: src/modules/country-dashboard/ProhibitivePolicies.jsx:57
 msgid "Regulatory instruments on limiting plastics use"
 msgstr "Instrumentos regulatorios para limitar el uso de plásticos"
 
-#: src/pages/countryOverview/ProhibitivePolicies.jsx:61
+#: src/modules/country-dashboard/ProhibitivePolicies.jsx:61
 msgid "Regulatory instruments on plastics bans"
 msgstr "Instrumentos regulatorios sobre la prohibición de plásticos"
 
-#: src/pages/countryOverview/partials/EconomicInstrumentsComponent.jsx:35
+#: src/modules/country-dashboard/partials/EconomicInstrumentsComponent.jsx:35
 msgid "Regulatory instruments on plastics data collection"
 msgstr "Instrumentos reguladores sobre la recopilación de datos sobre plásticos"
 
-#: src/pages/countryOverview/partials/EconomicInstrumentsComponent.jsx:39
+#: src/modules/country-dashboard/partials/EconomicInstrumentsComponent.jsx:39
 msgid "Regulatory instruments on plastics labelling​"
 msgstr "Instrumentos reglamentarios sobre el etiquetado de plásticos"
 
-#: src/pages/countryOverview/partials/PoliciesAndRegulationsComponent.jsx:70
+#: src/modules/country-dashboard/partials/PoliciesAndRegulationsComponent.jsx:70
 msgid "Regulatory instruments on responsible handling of plastics"
 msgstr "Instrumentos regulatorios sobre el manejo responsable de plásticos"
 
-#: src/pages/countryOverview/partials/PoliciesAndRegulationsComponent.jsx:66
+#: src/modules/country-dashboard/partials/PoliciesAndRegulationsComponent.jsx:66
 msgid "Regulatory instruments to capture plastic post-leakage"
 msgstr "Instrumentos reguladores para capturar plásticos después de una fuga"
 
@@ -3768,9 +3878,9 @@ msgstr "Intervenciones sectoriales y plásticos heredados"
 msgid "See all"
 msgstr "Ver todo"
 
-#: src/pages/countryOverview/partials/EconomicInstrumentsComponent.jsx:121
-#: src/pages/countryOverview/partials/PoliciesAndRegulationsComponent.jsx:42
-#: src/pages/countryOverview/ProhibitivePolicies.jsx:37
+#: src/modules/country-dashboard/partials/EconomicInstrumentsComponent.jsx:121
+#: src/modules/country-dashboard/partials/PoliciesAndRegulationsComponent.jsx:42
+#: src/modules/country-dashboard/ProhibitivePolicies.jsx:37
 msgid "See the global dataset"
 msgstr "Ver el conjunto de datos global"
 
@@ -3793,7 +3903,7 @@ msgstr "Buscando:"
 msgid "Select a country"
 msgstr "Seleccione un país"
 
-#: src/pages/countryOverview/IntroPage.jsx:127
+#: src/modules/country-dashboard/DashboardLanding.jsx:93
 msgid "Select a Country to Get Started"
 msgstr "Seleccione un país para comenzar"
 
@@ -4019,10 +4129,12 @@ msgstr "Envíe una solicitud para que su organización, <0>{0}</0>, forme parte 
 msgid "Submit Application"
 msgstr "Presentar la solicitud"
 
-#: src/pages/countryOverview/index.jsx:313
-#: src/pages/countryOverview/index.jsx:464
-#: src/pages/countryOverview/RequestDataUpdateModal.jsx:31
-#: src/pages/countryOverview/RequestDataUpdateModal.jsx:159
+#: src/modules/country-dashboard/CountryOverview.jsx:281
+#: src/modules/country-dashboard/CountryOverview.jsx:315
+#: src/modules/country-dashboard/CountryOverview.jsx:422
+#: src/modules/country-dashboard/CountryOverview.jsx:644
+#: src/modules/country-dashboard/RequestDataUpdateModal.jsx:30
+#: src/modules/country-dashboard/RequestDataUpdateModal.jsx:157
 msgid "Submit Data Update"
 msgstr "Enviar actualización de datos"
 
@@ -4035,7 +4147,7 @@ msgstr "Enviar actualización de datos"
 msgid "Subnational"
 msgstr "subnacional"
 
-#: src/pages/countryOverview/partials/EconomicInstrumentsComponent.jsx:23
+#: src/modules/country-dashboard/partials/EconomicInstrumentsComponent.jsx:23
 msgid "Subsidies supporting plastic pollution reduction"
 msgstr "Subvenciones que apoyan la reducción de la contaminación plástica"
 
@@ -4106,6 +4218,14 @@ msgstr "Desarrollo de Zona Industrial Sostenible"
 #: src/modules/experts/view.jsx:147
 msgid "Switch to"
 msgstr "Cambiar a"
+
+#: src/modules/country-dashboard/charts/ProductCategoriesChart.jsx:19
+msgid "Synthetic rubber"
+msgstr ""
+
+#: src/modules/country-dashboard/charts/ProductCategoriesChart.jsx:18
+msgid "Synthetic textiles"
+msgstr ""
 
 #: src/modules/case-studies/CaseStudy.jsx:75
 #: src/modules/details-page/view.jsx:544
@@ -4192,7 +4312,7 @@ msgstr "La Ley para Prevenir la Contaminación Procedente de los Buques"
 msgid "The Action Planning Tool is a digital workflow to help countries in developing national plastic source inventories and plastic strategies, supported by step-by-step guidance and inspiring case studies. Create your account and explore."
 msgstr "La herramienta de planificación de acciones es un flujo de trabajo digital que ayuda a los países a elaborar inventarios nacionales de fuentes de plástico y estrategias sobre el plástico, con el apoyo de una guía paso a paso y estudios de caso inspiradores. Crea tu cuenta y explora."
 
-#: src/pages/countryOverview/IntroPage.jsx:170
+#: src/modules/country-dashboard/DashboardLanding.jsx:113
 msgid "The Country Dashboard provides a comprehensive snapshot of plastic flows in both the economy and the environment for each country. It consolidates data from best available global datasets from peer-reviewed scientific studies and global monitoring initiatives by international organizations into one accessible platform, aiming to support evidence-based policymaking and action planning. Additionally, it helps identify data gaps that require further collection efforts in specific countries."
 msgstr "El Panel de País ofrece una visión integral de los flujos de plástico en la economía y el medio ambiente de cada país. Consolida en una plataforma accesible los datos de los mejores conjuntos de datos globales disponibles, procedentes de estudios científicos revisados ​​por pares e iniciativas de monitoreo global de organizaciones internacionales, con el objetivo de respaldar la formulación de políticas y la planificación de acciones basadas en evidencia. Además, ayuda a identificar las lagunas de datos que requieren una mayor recopilación en países específicos."
 
@@ -4344,7 +4464,7 @@ msgstr "Título:"
 msgid "to address plastic pollution"
 msgstr "para hacer frente a la contaminación por plásticos "
 
-#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:204
+#: src/modules/country-dashboard/charts/PlasticOceanBeachCHart.jsx:201
 msgid "tonnes"
 msgstr "toneladas"
 
@@ -4586,6 +4706,14 @@ msgstr "Validado"
 msgid "Validation Mechanism"
 msgstr "Mecanismo de validación"
 
+#: src/modules/country-dashboard/charts/TradingPartnersBarChart.jsx:82
+msgid "Value (million USD)"
+msgstr ""
+
+#: src/modules/country-dashboard/charts/TopProductsTable.jsx:69
+msgid "Value (Million USD)"
+msgstr ""
+
 #: src/modules/flexible-forms/form-schema.js:2244
 msgid "Value Amount"
 msgstr "Importe del valor"
@@ -4632,8 +4760,8 @@ msgstr "Ver todos los foros"
 msgid "View Details"
 msgstr "Ver detalles"
 
-#: src/components/map-and-layers/sidebar/partials/CategoriesNestedDashboard.jsx:110
-#: src/pages/countryOverview/index.jsx:475
+#: src/components/map-and-layers/sidebar/partials/CategoriesNestedDashboard.jsx:135
+#: src/modules/country-dashboard/CountryOverview.jsx:655
 msgid "View Global Data"
 msgstr "Ver datos globales"
 
@@ -4822,7 +4950,7 @@ msgstr "espacio de trabajo"
 msgid "Workspace"
 msgstr "Espacio de trabajo"
 
-#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:251
+#: src/modules/country-dashboard/charts/PlasticCompositionChart.jsx:230
 msgid "World Bank"
 msgstr "Banco mundial"
 
