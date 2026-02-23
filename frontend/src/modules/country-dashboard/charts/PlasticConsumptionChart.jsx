@@ -30,7 +30,7 @@ const PlasticConsumptionChart = ({ countryData }) => {
   const getOption = () => ({
     title: {
       text: splitIntoTwoLines(
-        'Apparent plastic consumption (imports-exports) for ${countryName}'
+        `Apparent plastic consumption (imports-exports) for ${countryName}`
       ),
       left: 'center',
       textStyle: {

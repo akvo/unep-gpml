@@ -8,6 +8,7 @@ const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
   const router = useRouter()
   const { country, countryCode } = router.query
   const [data, setData] = useState([])
+  const [latestYear, setLatestYear] = useState(null)
 
   const categories = [
     'plasticinPrimaryForm',
@@ -43,7 +44,6 @@ const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
           'Final_manufactured_plastics_goods___weight__import__WFL1',
         intermediateManufacturedPlasticGoods:
           'Intermediate___weight__import__WFL1',
-
         plasticWaste: 'Plastic_waste_weigth____import__WFL1',
       },
       export: {
@@ -55,13 +55,12 @@ const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
           'Final_manufactured_plastics_goods_weight____export__WFL1',
         intermediateManufacturedPlasticGoods:
           'Intermediate___weight__export__WFL1',
-
         plasticWaste: 'Plastic_waste_weigth____export__WFL1',
       },
     }
 
     const fetchLayerData = () => {
-      let latestYear = null
+      let foundYear = null
 
       const layersData = categories.map((category) => {
         const layer = layers.find(
@@ -83,20 +82,19 @@ const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
           return !latest || current.Year > latest.Year ? current : latest
         }, null)
 
-        if (latestData?.Year > latestYear || !latestYear) {
-          latestYear = latestData?.Year
+        if (latestData?.Year > foundYear || !foundYear) {
+          foundYear = latestData?.Year
         }
 
         return latestData ? latestData.Value : 0
       })
 
       setData(layersData)
-      setLatestYear(latestYear)
+      setLatestYear(foundYear)
     }
 
     fetchLayerData()
   }, [country, layers, loading, chartType])
-  const [latestYear, setLatestYear] = useState(null)
 
   const generatePieData = (data) => {
     const total = data.reduce((sum, value) => sum + value, 0)
@@ -117,7 +115,7 @@ const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
   const getPieOption = () => ({
     title: {
       text: tTextTitle,
-      subtext: t`In 1000 metric tons for year ${2022 || 'N/A'}`,
+      subtext: t`In 1000 metric tons for year ${latestYear || 'N/A'}`,
       left: 'center',
       textStyle: {
         fontSize: window.innerWidth < 768 ? 14 : 18,
@@ -150,7 +148,7 @@ const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
       },
       data: categoriesTitle.map((category) => Object.values(category)[0]),
     },
-    
+
 
     grid: {
       left: '3%',

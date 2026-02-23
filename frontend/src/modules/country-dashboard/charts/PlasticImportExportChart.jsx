@@ -66,22 +66,13 @@ const PlasticImportExportChart = ({ layers, loading }) => {
         ).values(),
       ]
 
-      const yearsSet = new Set()
-      const importValues = []
-      const exportValues = []
+      // Sort both by year so values align with the sorted x-axis
+      const sortedImports = filteredImports.sort((a, b) => a.Year - b.Year)
+      const sortedExports = filteredExports.sort((a, b) => a.Year - b.Year)
 
-      filteredImports?.forEach((item) => {
-        yearsSet.add(item.Year)
-        importValues.push(item.Value)
-      })
-
-      filteredExports?.forEach((item) => {
-        exportValues.push(item.Value)
-      })
-
-      setYears(Array.from(yearsSet).sort())
-      setTotalImports(importValues)
-      setTotalExports(exportValues)
+      setYears(sortedImports.map((item) => item.Year))
+      setTotalImports(sortedImports.map((item) => item.Value))
+      setTotalExports(sortedExports.map((item) => item.Value))
     }
 
     fetchData()

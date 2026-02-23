@@ -30,6 +30,7 @@ const WasteManagementSection = React.forwardRef(
         <KeyTrends
           items={textContent.wasteManagement.keyTrends}
           title="Key trends"
+          placeholders={{ country: countryName }}
         />
 
         <Row gutter={[16, 16]} className={styles.chartRow}>
@@ -50,9 +51,9 @@ const WasteManagementSection = React.forwardRef(
 
         {textContent.wasteManagement.content && (
           <div className={styles.twoColumnText}>
-            <SectionText template={textContent.wasteManagement.content} />
+            <SectionText template={textContent.wasteManagement.content} placeholders={{ country: countryName }} />
             {textContent.wasteManagement.contentRight && (
-              <SectionText template={textContent.wasteManagement.contentRight} />
+              <SectionText template={textContent.wasteManagement.contentRight} placeholders={{ country: countryName }} />
             )}
           </div>
         )}

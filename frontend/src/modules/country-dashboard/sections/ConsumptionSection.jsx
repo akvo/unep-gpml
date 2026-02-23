@@ -20,7 +20,7 @@ const ConsumptionSection = React.forwardRef(
 
         {textContent.consumption.content && (
           <div className={styles.twoColumnText}>
-            <SectionText template={textContent.consumption.content} />
+            <SectionText template={textContent.consumption.content} placeholders={{ country: countryName }} />
           </div>
         )}
 

@@ -124,10 +124,11 @@ const splitTextInHalf = (text, splitMarker = '') => {
     const parts = text.split(splitMarker)
     return [parts[0].trim(), parts.slice(1).join(splitMarker).trim()]
   }
-  const exportsIndex = text.indexOf(
-    "<strong style='font-size: 20px; color: #6236FF;'>Plastic exports</strong>"
-  )
-  if (exportsIndex !== -1) {
+  // Flexible match for "Plastic exports" heading regardless of tag/style format
+  const exportsRegex = /<(?:strong|h3)[^>]*>Plastic exports<\/(?:strong|h3)>/i
+  const match = text.match(exportsRegex)
+  if (match) {
+    const exportsIndex = match.index
     const firstHalf = text.slice(0, exportsIndex).trim()
     const secondHalf = text.slice(exportsIndex).trim()
     return [firstHalf, secondHalf]
@@ -145,7 +146,17 @@ const splitTextByMarker = (text, marker) => {
   return [firstPart?.trim(), secondPart?.trim()]
 }
 
-const addTooltipsToPlaceholders = (htmlString, placeholders, tooltips) => {
+const TRADE_HEADINGS = ['plastic imports', 'plastic exports', 'plastic trade trends']
+
+const tradeHeadingStyle = {
+  fontFamily: "'DM Sans', sans-serif",
+  color: '#7468FF',
+  fontSize: '24px',
+  fontWeight: 700,
+  lineHeight: '30px',
+}
+
+const addTooltipsToPlaceholders = (htmlString, placeholders, tooltips, { convertHeadings = false } = {}) => {
   if (!placeholders || Object.keys(placeholders).length === 0) return htmlString
 
   const options = {
@@ -166,6 +177,7 @@ const addTooltipsToPlaceholders = (htmlString, placeholders, tooltips) => {
             <span
               style={{
                 fontWeight: 'bold',
+                color: '#6236FF',
                 cursor: 'pointer',
               }}
             >
@@ -175,11 +187,33 @@ const addTooltipsToPlaceholders = (htmlString, placeholders, tooltips) => {
         )
       }
 
+      // Convert <strong>Plastic imports</strong> etc to styled <h4>
+      if (
+        convertHeadings &&
+        (node.name === 'strong' || node.name === 'b') &&
+        node.children?.length
+      ) {
+        const text = node.children.map((c) => c.data || '').join('').trim()
+        if (TRADE_HEADINGS.includes(text.toLowerCase())) {
+          return <h4 style={tradeHeadingStyle}>{text}</h4>
+        }
+      }
+
       return undefined
     },
   }
 
   return parse(htmlString, options)
+}
+
+const wrapPlaceholders = (template) => {
+  return template.replace(/{{(.*?)}}/g, (match, placeholder) => {
+    const nonBreakingPlaceholder =
+      placeholder === 'country' && !template.trim().startsWith('Estimated')
+        ? `<placeholder key="${placeholder}" style="white-space: nowrap;"> {{country}} </placeholder>`
+        : `<placeholder key="${placeholder}">${match}</placeholder>`
+    return nonBreakingPlaceholder
+  })
 }
 
 const CountryOverview = ({
@@ -260,6 +294,52 @@ const CountryOverview = ({
     layerJson
   )
 
+  // Strapi trade text for Excel countries
+  const tradeCategoryObject = categories.find(
+    (c) => c.attributes.categoryId === CATEGORY_IDS.INDUSTRY_AND_TRADE
+  )
+
+  const tradeUniqueLayerIds = isExcelCountry && tradeCategoryObject
+    ? [
+        ...new Set(
+          tradeCategoryObject.attributes?.textTemplate?.placeholders?.map(
+            (placeholder) =>
+              placeholder
+                .split('=')[0]
+                .split(/(_year|_total|_last|_first|_city|\*|\/|\+|\-)/)[0]
+                .trim()
+          ) || []
+        ),
+      ]
+    : []
+
+  const tradeFilteredLayers = layers.filter((layer) =>
+    tradeUniqueLayerIds.includes(layer.attributes.arcgislayerId)
+  )
+
+  const tradeFilteredByCountry = tradeFilteredLayers.filter((l) =>
+    l.attributes.ValuePerCountry?.some(
+      (vpc) =>
+        vpc.CountryCode === router.query.countryCode ||
+        vpc.CountryName === router.query.country
+    )
+  )
+  const tradeLayerJson = JSON.stringify(tradeFilteredByCountry)
+
+  const {
+    placeholders: tradePlaceholders,
+    tooltips: tradeTooltips,
+    loading: tradeLoading,
+  } = useReplacedText(
+    router.query.country,
+    router.query.countryCode,
+    isExcelCountry ? CATEGORY_IDS.INDUSTRY_AND_TRADE : null,
+    isExcelCountry
+      ? tradeCategoryObject?.attributes?.textTemplate?.placeholders || []
+      : [],
+    tradeLayerJson
+  )
+
   // Excel countries: one-pager with all sections
   if (isExcelCountry) {
     if (countryDataLoading) {
@@ -289,6 +369,88 @@ const CountryOverview = ({
 
     const firstSectionKey = availableSections?.[0]?.key
 
+    // Compute Strapi trade content
+    let strapiTradeContent = null
+    if (
+      tradeCategoryObject &&
+      !tradeLoading &&
+      Object.keys(tradePlaceholders).length > 0
+    ) {
+      const processedPlaceholders = { ...tradePlaceholders }
+      const importTrend =
+        processedPlaceholders['importIncreasePercentage'] > 0
+          ? 'increased'
+          : 'decreased'
+      const exportTrend =
+        processedPlaceholders['exportIncreasePercentage'] > 0
+          ? 'increased'
+          : 'decreased'
+      processedPlaceholders['importTrend'] = importTrend
+      processedPlaceholders['exportTrend'] = exportTrend
+      processedPlaceholders['importIncreasePercentage'] = Math.abs(
+        processedPlaceholders['importIncreasePercentage']
+      ).toFixed(1)
+      processedPlaceholders['exportIncreasePercentage'] = Math.abs(
+        processedPlaceholders['exportIncreasePercentage']
+      ).toFixed(1)
+
+      const rawTemplate =
+        tradeCategoryObject.attributes?.textTemplate?.template || ''
+      const wrappedTemplate = wrapPlaceholders(rawTemplate)
+      const compiledTemplate = Handlebars.compile(wrappedTemplate, {
+        noEscape: true,
+      })
+      let categoryText = compiledTemplate({
+        ...processedPlaceholders,
+        country: countryName,
+      })
+        // Remove <br> tags immediately after heading strong/b tags
+        .replace(
+          /(<(?:strong|b)[^>]*>(?:Plastic imports|Plastic exports|Plastic trade trends)<\/(?:strong|b)>)\s*(?:<br\s*\/?>)+/gi,
+          '$1'
+        )
+
+      // Split into imports, exports, trends
+      const trendsRegex =
+        /<(?:strong|h3|h4)[^>]*>Plastic trade trends<\/(?:strong|h3|h4)>/i
+      const trendsMatch = categoryText.match(trendsRegex)
+      let importsExportsText = categoryText
+      let trendsText = ''
+      if (trendsMatch) {
+        importsExportsText = categoryText.slice(0, trendsMatch.index).trim()
+        trendsText = categoryText.slice(trendsMatch.index).trim()
+      }
+
+      const [firstHalf, secondHalf] = splitTextInHalf(
+        importsExportsText,
+        COLUMN_SPLIT_MARKER
+      )
+
+      const parseOpts = { convertHeadings: true }
+      strapiTradeContent = {
+        firstHalf: addTooltipsToPlaceholders(
+          firstHalf,
+          processedPlaceholders,
+          tradeTooltips,
+          parseOpts
+        ),
+        secondHalf: addTooltipsToPlaceholders(
+          secondHalf,
+          processedPlaceholders,
+          tradeTooltips,
+          parseOpts
+        ),
+        trends: trendsText
+          ? addTooltipsToPlaceholders(
+              trendsText,
+              processedPlaceholders,
+              tradeTooltips,
+              parseOpts
+            )
+          : null,
+      }
+    }
+
     return (
       <div className={styles.text}>
         {(availableSections || []).map((section) => {
@@ -305,6 +467,9 @@ const CountryOverview = ({
               layers={layers}
               layerLoading={layerLoading}
               {...(isFirst ? { headerExtra: submitButton } : {})}
+              {...(section.key === 'trade'
+                ? { strapiTradeContent, tradeLoading }
+                : {})}
             />
           )
         })}
@@ -345,16 +510,6 @@ const CountryOverview = ({
   placeholders['exportIncreasePercentage'] = Math.abs(
     exportIncreaseValue
   ).toFixed(1)
-
-  const wrapPlaceholders = (template) => {
-    return template.replace(/{{(.*?)}}/g, (match, placeholder) => {
-      const nonBreakingPlaceholder =
-        placeholder === 'country' && !template.trim().startsWith('Estimated')
-          ? `<placeholder key="${placeholder}" style="white-space: nowrap;"> {{country}} </placeholder>`
-          : `<placeholder key="${placeholder}">${match}</placeholder>`
-      return nonBreakingPlaceholder
-    })
-  }
 
   const rawTemplate =
     selectedCategoryObject?.attributes?.textTemplate?.template || ''

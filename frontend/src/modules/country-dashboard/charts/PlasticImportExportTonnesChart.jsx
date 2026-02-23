@@ -37,93 +37,93 @@ const PlasticImportExportChart = ({ layers, loading }) => {
       if (loading || !country || !layers.length) return
 
       const importLayers = {
-        plasticinPrimaryForm: layers.find(
-          (layer) =>
-            layer.attributes.arcgislayerId ===
-            'Plastic_in_primary_form___value__import__V2_WFL1'
-        ),
-        intermediateFormsOfPlastic: layers.find(
-          (layer) =>
-            layer.attributes.arcgislayerId ===
-            'Intermediate_forms_of_plastic___value__import__WFL1'
-        ),
-        finalManufacturedPlasticGoods: layers.find(
-          (layer) =>
-            layer.attributes.arcgislayerId ===
-            'Final_manufactured_plastic_goods___value__import__WFL1'
-        ),
-        intermediateManufacturedPlasticGoods: layers.find(
-          (layer) =>
-            layer.attributes.arcgislayerId ===
-            'Intermediate_man___value__import__V2_WFL1'
-        ),
-        plasticWaste: layers.find(
-          (layer) =>
-            layer.attributes.arcgislayerId ===
-            'Plastic_waste___value__import__V2_WFL1'
-        ),
-      }
+      plasticinPrimaryForm: layers.find(
+        (layer) =>
+          layer.attributes.arcgislayerId ===
+          'Plastic_in_primary_form___value__import__V2_WFL1'
+      ),
+      intermediateFormsOfPlastic: layers.find(
+        (layer) =>
+          layer.attributes.arcgislayerId ===
+          'Intermediate_forms_of_plastic___value__import__WFL1'
+      ),
+      finalManufacturedPlasticGoods: layers.find(
+        (layer) =>
+          layer.attributes.arcgislayerId ===
+          'Final_manufactured_plastic_goods___value__import__WFL1'
+      ),
+      intermediateManufacturedPlasticGoods: layers.find(
+        (layer) =>
+          layer.attributes.arcgislayerId ===
+          'Intermediate_man___value__import__V2_WFL1'
+      ),
+      plasticWaste: layers.find(
+        (layer) =>
+          layer.attributes.arcgislayerId ===
+          'Plastic_waste___value__import__V2_WFL1'
+      ),
+    }
 
-      const exportLayers = {
-        plasticinPrimaryForm: layers.find(
-          (layer) =>
-            layer.attributes.arcgislayerId ===
-            'Plastic_in_primary_form___value__export__V2_WFL1'
-        ),
-        intermediateFormsOfPlastic: layers.find(
-          (layer) =>
-            layer.attributes.arcgislayerId ===
-            'Intermediate_forms_of_plastic___value__export__V2_WFL1'
-        ),
-        finalManufacturedPlasticGoods: layers.find(
-          (layer) =>
-            layer.attributes.arcgislayerId ===
-            'Final_manufactured_plastic_goods___value__export__V2_WFL1'
-        ),
-        intermediateManufacturedPlasticGoods: layers.find(
-          (layer) =>
-            layer.attributes.arcgislayerId ===
-            'Intermediate_man___value__export__WFL1'
-        ),
-        plasticWaste: layers.find(
-          (layer) =>
-            layer.attributes.arcgislayerId ===
-            'Plastic_waste___value__export__V2_WFL1'
-        ),
-      }
+    const exportLayers = {
+      plasticinPrimaryForm: layers.find(
+        (layer) =>
+          layer.attributes.arcgislayerId ===
+          'Plastic_in_primary_form___value__export__V2_WFL1'
+      ),
+      intermediateFormsOfPlastic: layers.find(
+        (layer) =>
+          layer.attributes.arcgislayerId ===
+          'Intermediate_forms_of_plastic___value__export__V2_WFL1'
+      ),
+      finalManufacturedPlasticGoods: layers.find(
+        (layer) =>
+          layer.attributes.arcgislayerId ===
+          'Final_manufactured_plastic_goods___value__export__V2_WFL1'
+      ),
+      intermediateManufacturedPlasticGoods: layers.find(
+        (layer) =>
+          layer.attributes.arcgislayerId ===
+          'Intermediate_man___value__export__WFL1'
+      ),
+      plasticWaste: layers.find(
+        (layer) =>
+          layer.attributes.arcgislayerId ===
+          'Plastic_waste___value__export__V2_WFL1'
+      ),
+    }
 
-      const getLatestYearData = (data) => {
-        if (!data || data.length === 0) return null
-        const sortedData = data.sort((a, b) => b.Year - a.Year)
-        return sortedData[0]
-      }
+    const getLatestYearData = (data) => {
+      if (!data || data.length === 0) return null
+      const sortedData = data.sort((a, b) => b.Year - a.Year)
+      return sortedData[0]
+    }
 
-      const importResults = categories.map((category) => {
-        const layer = importLayers[category]
-        const data = getLatestYearData(
-          layer?.attributes?.ValuePerCountry?.filter((item) =>
-            item.CountryCode
-              ? item.CountryCode === countryCode
-              : item.CountryName === decodeURIComponent(country)
-          )
+    const importResults = categories.map((category) => {
+      const layer = importLayers[category]
+      const data = getLatestYearData(
+        layer?.attributes?.ValuePerCountry?.filter((item) =>
+          item.CountryCode
+            ? item.CountryCode === countryCode
+            : item.CountryName === decodeURIComponent(country)
         )
-        return data ? parseFloat(data.Value.toFixed(2)) : 0
-      })
+      )
+      return data ? parseFloat(data.Value.toFixed(2)) : 0
+    })
 
-      const exportResults = categories.map((category) => {
-        const layer = exportLayers[category]
-        const data = getLatestYearData(
-          layer?.attributes?.ValuePerCountry?.filter((item) =>
-            item.CountryCode
-              ? item.CountryCode === countryCode
-              : item.CountryName === decodeURIComponent(country)
-          )
+    const exportResults = categories.map((category) => {
+      const layer = exportLayers[category]
+      const data = getLatestYearData(
+        layer?.attributes?.ValuePerCountry?.filter((item) =>
+          item.CountryCode
+            ? item.CountryCode === countryCode
+            : item.CountryName === decodeURIComponent(country)
         )
-        return data ? parseFloat(data.Value.toFixed(2)) : 0
-      })
+      )
+      return data ? parseFloat(data.Value.toFixed(2)) : 0
+    })
 
-      setImportData(importResults)
-      setExportData(exportResults)
+    setImportData(importResults)
+    setExportData(exportResults)
     }
 
     fetchData()

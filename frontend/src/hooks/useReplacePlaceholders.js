@@ -40,12 +40,7 @@ const useReplacedText = (country, countryCode, categoryId, placeholders, layerJs
         if (country && categoryId && Array.isArray(placeholders) && placeholders.length > 0) {
             fetchReplacedText();
         } else {
-            console.warn('Insufficient data to fetch replaced text:', {
-                country,
-                categoryId,
-                placeholders,
-                layerJson,
-            });
+            setLoading(false);
         }
     }, [country, countryCode, categoryId, placeholders, layerJson, strapiURL]);
 

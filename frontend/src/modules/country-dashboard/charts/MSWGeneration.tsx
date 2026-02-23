@@ -47,12 +47,13 @@ const MSWGenerationChart = ({ layers, layerLoading }) => {
       )
 
       setNationalEstimate(nationalData ? nationalData.Value : 0)
-      setCityEstimates(cityData ? cityData.map((item) => item?.Value) : [])
-      setCities(
-        cityData
-          ? cityData.map((item, index) => item.City || `City ${index + 1}`)
-          : []
-      )
+
+      // Filter out city entries without a proper name
+      const namedCities = cityData
+        ? cityData.filter((item) => item.City && item.City.trim() !== '')
+        : []
+      setCityEstimates(namedCities.map((item) => item?.Value))
+      setCities(namedCities.map((item) => item.City))
 
       const selectedCountry = countriesWithRegions.find(
         (c) => c.CountryName === country

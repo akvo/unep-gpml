@@ -40,7 +40,6 @@ const useLayerInfo = () => {
 
   useEffect(() => {
     const fetchLayers = async () => {
-      const currentLocale = router.locale
       if (router.query.useDataLayers) {
         try {
           const response = await axios.get(
@@ -99,41 +98,7 @@ const useLayerInfo = () => {
 
           const updateLayer = await Promise.all(
             response.data.data.map(async (d) => {
-              if (
-                (d.attributes.arcgislayerId ===
-                  'Final_manufactured_plastic_goods___value__export__V2_WFL1' ||
-                  d.attributes.arcgislayerId ===
-                    'Total_plastic___value__export__V2_WFL1' ||
-                  d.attributes.arcgislayerId ===
-                    'Plastic_waste_weigth____export__WFL1') &&
-                currentLocale === 'en'
-              ) {
-                try {
-                  // const getValues = await axios.get(
-                  //   `${strapiURL}/api/layer-collections?filters[argislayerid]=${d.attributes.arcgislayerId}&pagination[page]=1&pagination[pageSize]=2000&publicationState=preview`
-                  // )
-                  const getValues = await axios.get(
-                    `${strapiURL}/api/layercollections/${d.attributes.arcgislayerId}`
-                  )
-                  return {
-                    ...d,
-                    attributes: {
-                      ...d.attributes,
-                      // ValuePerCountry: getValues?.data?.data.map((v) => v.attributes) || [],
-                      ValuePerCountry: getValues.data ?? [],
-                    },
-                  }
-                } catch (valueError) {
-                  console.error(
-                    `Error fetching values for layer ${d.attributes.arcgislayerId}:`,
-                    valueError
-                  )
-                  return d
-                }
-              } else if (
-                currentLocale !== 'en' &&
-                tradeLayers.includes(d.attributes.arcgislayerId)
-              ) {
+              if (tradeLayers.includes(d.attributes.arcgislayerId)) {
                 try {
                   const getValues = await axios.get(
                     `${strapiURL}/api/layercollections/${d.attributes.arcgislayerId}`
