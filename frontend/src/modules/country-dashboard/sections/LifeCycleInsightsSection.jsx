@@ -13,7 +13,7 @@ const LifeCycleInsightsSection = React.forwardRef(
         className={styles.dashboardSection}
       >
         <h2 className={styles.sectionTitle}>Life Cycle Insights</h2>
-        <LifeCycleInsights data={textContent.lifeCycleInsights} />
+        <LifeCycleInsights data={textContent.lifeCycleInsights} countryName={countryName} />
       </div>
     )
   }

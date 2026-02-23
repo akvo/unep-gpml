@@ -1,8 +1,16 @@
 import React from 'react'
+import Handlebars from 'handlebars'
 import styles from './LifeCycleInsights.module.scss'
 
-const LifeCycleInsights = ({ data }) => {
+const compile = (text, placeholders) => {
+  const compiled = Handlebars.compile(text, { noEscape: true })
+  return compiled(placeholders)
+}
+
+const LifeCycleInsights = ({ data, countryName }) => {
   if (!data || !data.sections) return null
+
+  const placeholders = { country: countryName || '' }
 
   return (
     <div className={styles.twoColumnLayout}>
@@ -14,7 +22,7 @@ const LifeCycleInsights = ({ data }) => {
 
           {section.text.split('\n\n').map((para, i) => (
             <p key={i} className={styles.paragraph}>
-              {para}
+              {compile(para, placeholders)}
             </p>
           ))}
 
@@ -27,7 +35,7 @@ const LifeCycleInsights = ({ data }) => {
                 <ul className={styles.policyList}>
                   {section.policyOpportunities.map((item, i) => (
                     <li key={i} className={styles.policyListItem}>
-                      {item}
+                      {compile(item, placeholders)}
                     </li>
                   ))}
                 </ul>

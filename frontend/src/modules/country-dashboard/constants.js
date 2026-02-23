@@ -123,6 +123,16 @@ export const SECTION_REGISTRY = [
 // Countries that use Excel/JSON data instead of Strapi
 export const EXCEL_COUNTRY_CODES = ['KHM']
 
+// Charts that must always fetch data from Strapi layers, even for Excel countries
+export const STRAPI_LAYER_CHARTS = [
+  'plasticImportExportLine',
+  'plasticImportExportBar',
+  'plasticImportExportPie',
+]
+
+// Sections whose text content should be fetched from Strapi, even for Excel countries
+export const STRAPI_CONTENT_SECTIONS = ['trade']
+
 // Excel-based category definitions (sidebar items for Excel countries)
 export const EXCEL_CATEGORY_IDS = {
   PRODUCTION: 'production',

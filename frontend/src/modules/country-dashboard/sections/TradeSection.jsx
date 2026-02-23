@@ -1,5 +1,5 @@
 import React from 'react'
-import { Row, Col } from 'antd'
+import { Row, Col, Spin } from 'antd'
 import dynamic from 'next/dynamic'
 import SectionText from './SectionText'
 import KeyTrends from './KeyTrends'
@@ -31,7 +31,7 @@ const TopProductsTable = dynamic(() => import('../charts/TopProductsTable'), {
 })
 
 const TradeSection = React.forwardRef(
-  ({ textContent, countryData, countryName, layers, layerLoading }, ref) => {
+  ({ textContent, countryData, countryName, layers, layerLoading, strapiTradeContent, tradeLoading }, ref) => {
     if (!textContent?.trade) return null
 
     return (
@@ -41,22 +41,53 @@ const TradeSection = React.forwardRef(
         <KeyTrends
           items={textContent.trade.keyTrends}
           title="Key Trade Trends"
+          placeholders={{ country: countryName }}
         />
 
-        <Row gutter={[24, 16]}>
-          {textContent.trade.summaryLeft && (
-            <Col xs={24} md={12}>
-              <SectionText template={textContent.trade.summaryLeft} />
-            </Col>
-          )}
-          {textContent.trade.summary && (
-            <Col xs={24} md={textContent.trade.summaryLeft ? 12 : 24}>
-              <SectionText template={textContent.trade.summary} />
-            </Col>
-          )}
-        </Row>
+        {strapiTradeContent ? (
+          <>
+            <Row gutter={[24, 16]}>
+              <Col xs={24} md={12}>
+                <div className={styles.textColumn}>
+                  {strapiTradeContent.firstHalf}
+                </div>
+              </Col>
+              <Col xs={24} md={12}>
+                <div className={styles.textColumn}>
+                  {strapiTradeContent.secondHalf}
+                </div>
+              </Col>
+            </Row>
+            {strapiTradeContent.trends && (
+              <Row style={{ marginTop: 16, marginBottom: 24 }}>
+                <Col span={24}>
+                  <div className={styles.textColumn}>
+                    {strapiTradeContent.trends}
+                  </div>
+                </Col>
+              </Row>
+            )}
+          </>
+        ) : tradeLoading ? (
+          <div style={{ textAlign: 'center', padding: '20px' }}>
+            <Spin size="small" />
+          </div>
+        ) : (
+          <Row gutter={[24, 16]}>
+            {textContent.trade.summaryLeft && (
+              <Col xs={24} md={12}>
+                <SectionText template={textContent.trade.summaryLeft} placeholders={{ country: countryName }} />
+              </Col>
+            )}
+            {textContent.trade.summary && (
+              <Col xs={24} md={textContent.trade.summaryLeft ? 12 : 24}>
+                <SectionText template={textContent.trade.summary} placeholders={{ country: countryName }} />
+              </Col>
+            )}
+          </Row>
+        )}
 
-        {/* ArcGIS layer-based charts */}
+        {/* Strapi layer-based charts (flagged in STRAPI_LAYER_CHARTS) */}
         <Row className={styles.chartRow}>
           <Col span={24}>
             <ChartCard>
@@ -106,7 +137,7 @@ const TradeSection = React.forwardRef(
             <Row gutter={[24, 16]} className={styles.chartRow}>
               {textContent.trade.tradingPartners && (
                 <Col xs={24} md={10}>
-                  <SectionText template={textContent.trade.tradingPartners} />
+                  <SectionText template={textContent.trade.tradingPartners} placeholders={{ country: countryName }} />
                 </Col>
               )}
               <Col xs={24} md={textContent.trade.tradingPartners ? 14 : 24}>
@@ -121,7 +152,7 @@ const TradeSection = React.forwardRef(
                 <h3
                   className={styles.sectionHeading}
                 >Top Product Categories</h3>
-                <SectionText template={textContent.trade.productCategories} />
+                <SectionText template={textContent.trade.productCategories} placeholders={{ country: countryName }} />
               </>
             )}
 

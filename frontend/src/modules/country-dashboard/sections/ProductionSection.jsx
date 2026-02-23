@@ -13,7 +13,7 @@ const ProductionSection = React.forwardRef(
           {headerExtra}
         </div>
         {textContent.production.content && (
-          <SectionText template={textContent.production.content} />
+          <SectionText template={textContent.production.content} placeholders={{ country: countryName }} />
         )}
       </div>
     )

@@ -264,6 +264,18 @@
 .textColumn {
   font-size: 16px;
   color: #000647;
+
+  strong {
+    color: #6236FF;
+  }
+
+  h3, h4 {
+    margin: 16px 0 12px 0;
+  }
+
+  p {
+    margin-bottom: 12px;
+  }
 }
 .twoColumnText {
   @media (min-width: 769px) {
