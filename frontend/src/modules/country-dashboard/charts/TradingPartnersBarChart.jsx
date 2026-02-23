@@ -4,12 +4,19 @@ import { t, Trans } from '@lingui/macro'
 import { COLORS } from '../constants'
 
 const REGIONS = ['Africa', 'Americas', 'Asia', 'Europe', 'Oceania']
-const REGION_KEYS = [
+const REGION_KEYS_A = [
   '__EMPTY_4',
   '__EMPTY_5',
   '__EMPTY_6',
   '__EMPTY_7',
   '__EMPTY_8',
+]
+const REGION_KEYS_B = [
+  '__EMPTY_15',
+  '__EMPTY_16',
+  '__EMPTY_17',
+  '__EMPTY_18',
+  '__EMPTY_19',
 ]
 
 const TradingPartnersBarChart = ({ countryData }) => {
@@ -17,25 +24,42 @@ const TradingPartnersBarChart = ({ countryData }) => {
 
   const rows = countryData['UNCTAD$partners'] || []
 
-  const importRow = rows.find(
+  // Try __EMPTY_3/__EMPTY_4 format first, then __EMPTY_14/__EMPTY_15 format
+  let importRow = rows.find(
     (r) =>
       r.__EMPTY_3 === 'Import of total plastics' &&
       typeof r.__EMPTY_4 === 'number'
   )
-  const exportRow = rows.find(
+  let exportRow = rows.find(
     (r) =>
       r.__EMPTY_3 === 'Export of total plastics' &&
       typeof r.__EMPTY_4 === 'number'
   )
 
+  let regionKeys = REGION_KEYS_A
+
+  if (!importRow && !exportRow) {
+    importRow = rows.find(
+      (r) =>
+        r.__EMPTY_14 === 'Import of total plastics' &&
+        typeof r.__EMPTY_15 === 'number'
+    )
+    exportRow = rows.find(
+      (r) =>
+        r.__EMPTY_14 === 'Export of total plastics' &&
+        typeof r.__EMPTY_15 === 'number'
+    )
+    regionKeys = REGION_KEYS_B
+  }
+
   if (!importRow && !exportRow) return null
 
-  const importValues = REGION_KEYS.map((key) =>
+  const importValues = regionKeys.map((key) =>
     importRow && importRow[key] != null
       ? parseFloat(Number(importRow[key]).toFixed(1))
       : 0
   )
-  const exportValues = REGION_KEYS.map((key) =>
+  const exportValues = regionKeys.map((key) =>
     exportRow && exportRow[key] != null
       ? parseFloat(Number(exportRow[key]).toFixed(1))
       : 0
