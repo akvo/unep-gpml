@@ -1,0 +1,1802 @@
+{
+  "sheets": {
+    "UNCTAD$value": [
+      {
+        "2017": 1439000,
+        "2018": 1956000,
+        "2019": 1147000,
+        "2020": 1080000,
+        "2021": 1154000,
+        "2022": 1664000,
+        "2023": 1668000,
+        "Indicator": "Import of feedstocks and precursors"
+      },
+      {
+        "2017": 16000,
+        "2018": 33000,
+        "2019": 77000,
+        "2020": 36000,
+        "2021": 42000,
+        "2022": 61000,
+        "2023": 55000,
+        "Indicator": "Export of feedstocks and precursors"
+      },
+      {
+        "2017": 34602000,
+        "2018": 31586000,
+        "2019": 32051000,
+        "2020": 33603000,
+        "2021": 40455000,
+        "2022": 46406000,
+        "2023": 46218000,
+        "Indicator": "Imports of additives"
+      },
+      {
+        "2017": 13932000,
+        "2018": 13259000,
+        "2019": 13889000,
+        "2020": 12825000,
+        "2021": 18264000,
+        "2022": 14618000,
+        "2023": 16732000,
+        "Indicator": "Exports of additives"
+      },
+      {
+        "2017": 101133000,
+        "2018": 109034000,
+        "2019": 110069000,
+        "2020": 107224000,
+        "2021": 162485000,
+        "2022": 185712000,
+        "2023": 157343000,
+        "Indicator": "Plastic import in primary forms"
+      },
+      {
+        "2017": 8189000,
+        "2018": 10333000,
+        "2019": 8142000,
+        "2020": 7586000,
+        "2021": 7689000,
+        "2022": 7611000,
+        "2023": 6418000,
+        "Indicator": "Plastic export in primary forms"
+      },
+      {
+        "2017": 65375000,
+        "2018": 79440000,
+        "2019": 74030000,
+        "2020": 81421000,
+        "2021": 101786000,
+        "2022": 106137000,
+        "2023": 88174000,
+        "Indicator": "Plastic import in intermediate forms"
+      },
+      {
+        "2017": 40220000,
+        "2018": 42607000,
+        "2019": 30543000,
+        "2020": 40706000,
+        "2021": 44267000,
+        "2022": 43083000,
+        "2023": 44893000,
+        "Indicator": "Plastic export in intermediate forms"
+      },
+      {
+        "2017": 31024000,
+        "2018": 32969000,
+        "2019": 33706000,
+        "2020": 34305000,
+        "2021": 48829000,
+        "2022": 44429000,
+        "2023": 39552000,
+        "Indicator": "Plastic import in intermediate goods"
+      },
+      {
+        "2017": 2280000,
+        "2018": 3833000,
+        "2019": 5193000,
+        "2020": 5060000,
+        "2021": 3173000,
+        "2022": 4929000,
+        "2023": 2794000,
+        "Indicator": "Plastic export in intermediate goods"
+      },
+      {
+        "2017": 120519000,
+        "2018": 143440000,
+        "2019": 148475000,
+        "2020": 148553000,
+        "2021": 158737000,
+        "2022": 160442000,
+        "2023": 162109000,
+        "Indicator": "Plastic import of final manufactured goods"
+      },
+      {
+        "2017": 81036000,
+        "2018": 91384000,
+        "2019": 60612000,
+        "2020": 87853000,
+        "2021": 102066000,
+        "2022": 107201000,
+        "2023": 112212000,
+        "Indicator": "Plastic export of final manufactured goods"
+      },
+      {
+        "2017": 1239000,
+        "2018": 1734000,
+        "2019": 1708000,
+        "2020": 350000,
+        "2021": 505000,
+        "2022": 402000,
+        "2023": 184000,
+        "Indicator": "Import of plastic waste"
+      },
+      {
+        "2017": 745000,
+        "2018": 595000,
+        "2019": 543000,
+        "2020": 1369000,
+        "2021": 1466000,
+        "2022": 922000,
+        "2023": 222000,
+        "Indicator": "Export of plastic waste"
+      },
+      {
+        "2017": 319290000,
+        "2018": 366617000,
+        "2019": 367988000,
+        "2020": 371853000,
+        "2021": 472342000,
+        "2022": 497122000,
+        "2023": 447362000,
+        "Indicator": "Import of total plastics"
+      },
+      {
+        "2017": 132470000,
+        "2018": 148752000,
+        "2019": 105033000,
+        "2020": 142574000,
+        "2021": 158661000,
+        "2022": 163746000,
+        "2023": 166539000,
+        "Indicator": "Export of total plastics"
+      },
+      {
+        "2017": 47212000,
+        "2018": 61421000,
+        "2019": 63853000,
+        "2020": 71849000,
+        "2021": 78642000,
+        "2022": 82128000,
+        "2023": 79488000,
+        "Indicator": "Import of plastic packaging"
+      },
+      {
+        "2017": 19480000,
+        "2018": 18379000,
+        "2019": 10504000,
+        "2020": 13263000,
+        "2021": 16718000,
+        "2022": 18512000,
+        "2023": 11363000,
+        "Indicator": "Export of plastic packaging"
+      },
+      {
+        "2017": 77193000,
+        "2018": 80078000,
+        "2019": 78223000,
+        "2020": 68612000,
+        "2021": 84563000,
+        "2022": 86584000,
+        "2023": 69538000,
+        "Indicator": "Import of synthetic textiles"
+      },
+      {
+        "2017": 86373000,
+        "2018": 99011000,
+        "2019": 65459000,
+        "2020": 96834000,
+        "2021": 111680000,
+        "2022": 108894000,
+        "2023": 112649000,
+        "Indicator": "Export of synthetic textiles"
+      },
+      {
+        "2017": 513000,
+        "2018": 234000,
+        "2019": 400000,
+        "2020": 444000,
+        "2021": 536000,
+        "2022": 1279000,
+        "2023": 1186000,
+        "Indicator": "Import of synthetic rubber"
+      },
+      {
+        "2017": 1000,
+        "2018": 46000,
+        "2019": 48000,
+        "2020": 29000,
+        "2021": 8000,
+        "2022": 0,
+        "2023": 1000,
+        "Indicator": "Export of synthetic rubber"
+      },
+      {
+        "2017": 186.8,
+        "2018": 217.9,
+        "2019": 263,
+        "2020": 229.3,
+        "2021": 313.7,
+        "2022": 333.4,
+        "2023": 280.8,
+        "Indicator": "Apparent plastic consumption (imports-exports)"
+      }
+    ],
+    "UNCTAD$partners": [
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Import of feedstocks and precursors",
+        "Trading partner": "Asia"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Import of feedstocks and precursors",
+        "Trading partner": "Africa"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Import of feedstocks and precursors",
+        "Trading partner": "Americas"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Import of feedstocks and precursors",
+        "Trading partner": "Europe"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Import of feedstocks and precursors",
+        "Trading partner": "Oceania"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Export of feedstocks and precursors",
+        "Trading partner": "Asia"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Export of feedstocks and precursors",
+        "Trading partner": "Africa"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Export of feedstocks and precursors",
+        "Trading partner": "Americas"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Export of feedstocks and precursors",
+        "Trading partner": "Europe"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Export of feedstocks and precursors",
+        "Trading partner": "Oceania"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Imports of additives",
+        "Trading partner": "Asia"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Imports of additives",
+        "Trading partner": "Africa"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Imports of additives",
+        "Trading partner": "Americas"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Imports of additives",
+        "Trading partner": "Europe"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Imports of additives",
+        "Trading partner": "Oceania"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Exports of additives",
+        "Trading partner": "Asia"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Exports of additives",
+        "Trading partner": "Africa"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Exports of additives",
+        "Trading partner": "Americas"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Exports of additives",
+        "Trading partner": "Europe"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Exports of additives",
+        "Trading partner": "Oceania"
+      },
+      {
+        "2017": 50314000,
+        "2018": 59154000,
+        "2019": 44281000,
+        "2020": 41572000,
+        "2021": 86457000,
+        "2022": 107953000,
+        "2023": 80795000,
+        "Indicator": "Plastic import in primary forms",
+        "Trading partner": "Asia"
+      },
+      {
+        "2017": 9703000,
+        "2018": 7852000,
+        "2019": 11925000,
+        "2020": 9624000,
+        "2021": 17084000,
+        "2022": 18279000,
+        "2023": 19704000,
+        "Indicator": "Plastic import in primary forms",
+        "Trading partner": "Africa"
+      },
+      {
+        "2017": 11577000,
+        "2018": 13669000,
+        "2019": 22881000,
+        "2020": 19473000,
+        "2021": 14381000,
+        "2022": 23905000,
+        "2023": 28480000,
+        "Indicator": "Plastic import in primary forms",
+        "Trading partner": "Americas"
+      },
+      {
+        "2017": 29294000,
+        "2018": 28152000,
+        "2019": 30953000,
+        "2020": 35720000,
+        "2021": 43555000,
+        "2022": 33643000,
+        "2023": 27102000,
+        "Indicator": "Plastic import in primary forms",
+        "Trading partner": "Europe"
+      },
+      {
+        "2017": 63000,
+        "2018": 100000,
+        "2019": 1000,
+        "2020": 207000,
+        "2021": 338000,
+        "2022": 618000,
+        "2023": 130000,
+        "Indicator": "Plastic import in primary forms",
+        "Trading partner": "Oceania"
+      },
+      {
+        "2017": 92000,
+        "2018": 32000,
+        "2019": 1281000,
+        "2020": 3157000,
+        "2021": 1276000,
+        "2022": 430000,
+        "2023": 103000,
+        "Indicator": "Plastic export in primary forms",
+        "Trading partner": "Asia"
+      },
+      {
+        "2017": 7669000,
+        "2018": 10075000,
+        "2019": 6669000,
+        "2020": 4333000,
+        "2021": 6098000,
+        "2022": 6512000,
+        "2023": 5373000,
+        "Indicator": "Plastic export in primary forms",
+        "Trading partner": "Africa"
+      },
+      {
+        "2017": 6000,
+        "2018": 13000,
+        "2019": 10000,
+        "2020": 87000,
+        "2021": 263000,
+        "2022": 222000,
+        "2023": 484000,
+        "Indicator": "Plastic export in primary forms",
+        "Trading partner": "Americas"
+      },
+      {
+        "2017": 423000,
+        "2018": 212000,
+        "2019": 181000,
+        "2020": 9000,
+        "2021": 21000,
+        "2022": 447000,
+        "2023": 457000,
+        "Indicator": "Plastic export in primary forms",
+        "Trading partner": "Europe"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 2000,
+        "Indicator": "Plastic export in primary forms",
+        "Trading partner": "Oceania"
+      },
+      {
+        "2017": 53231000,
+        "2018": 60374000,
+        "2019": 55785000,
+        "2020": 55835000,
+        "2021": 73224000,
+        "2022": 72331000,
+        "2023": 62469000,
+        "Indicator": "Plastic import in intermediate forms",
+        "Trading partner": "Asia"
+      },
+      {
+        "2017": 3016000,
+        "2018": 5630000,
+        "2019": 4953000,
+        "2020": 6490000,
+        "2021": 6485000,
+        "2022": 9571000,
+        "2023": 4935000,
+        "Indicator": "Plastic import in intermediate forms",
+        "Trading partner": "Africa"
+      },
+      {
+        "2017": 344000,
+        "2018": 450000,
+        "2019": 264000,
+        "2020": 163000,
+        "2021": 398000,
+        "2022": 1703000,
+        "2023": 360000,
+        "Indicator": "Plastic import in intermediate forms",
+        "Trading partner": "Americas"
+      },
+      {
+        "2017": 8723000,
+        "2018": 12720000,
+        "2019": 12637000,
+        "2020": 18836000,
+        "2021": 21507000,
+        "2022": 22449000,
+        "2023": 20108000,
+        "Indicator": "Plastic import in intermediate forms",
+        "Trading partner": "Europe"
+      },
+      {
+        "2017": 3000,
+        "2018": 1000,
+        "2019": 7000,
+        "2020": 77000,
+        "2021": 139000,
+        "2022": 41000,
+        "2023": 213000,
+        "Indicator": "Plastic import in intermediate forms",
+        "Trading partner": "Oceania"
+      },
+      {
+        "2017": 477000,
+        "2018": 323000,
+        "2019": 271000,
+        "2020": 179000,
+        "2021": 116000,
+        "2022": 145000,
+        "2023": 60000,
+        "Indicator": "Plastic export in intermediate forms",
+        "Trading partner": "Asia"
+      },
+      {
+        "2017": 14081000,
+        "2018": 12833000,
+        "2019": 8262000,
+        "2020": 8964000,
+        "2021": 9361000,
+        "2022": 9081000,
+        "2023": 6946000,
+        "Indicator": "Plastic export in intermediate forms",
+        "Trading partner": "Africa"
+      },
+      {
+        "2017": 20985000,
+        "2018": 22540000,
+        "2019": 15579000,
+        "2020": 22702000,
+        "2021": 24036000,
+        "2022": 24250000,
+        "2023": 28039000,
+        "Indicator": "Plastic export in intermediate forms",
+        "Trading partner": "Americas"
+      },
+      {
+        "2017": 4740000,
+        "2018": 6888000,
+        "2019": 6430000,
+        "2020": 8764000,
+        "2021": 10691000,
+        "2022": 9607000,
+        "2023": 9848000,
+        "Indicator": "Plastic export in intermediate forms",
+        "Trading partner": "Europe"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Plastic export in intermediate forms",
+        "Trading partner": "Oceania"
+      },
+      {
+        "2017": 18026000,
+        "2018": 23958000,
+        "2019": 19973000,
+        "2020": 18890000,
+        "2021": 28462000,
+        "2022": 20677000,
+        "2023": 19857000,
+        "Indicator": "Plastic import in intermediate goods",
+        "Trading partner": "Asia"
+      },
+      {
+        "2017": 6760000,
+        "2018": 4119000,
+        "2019": 2750000,
+        "2020": 3019000,
+        "2021": 6849000,
+        "2022": 6637000,
+        "2023": 7740000,
+        "Indicator": "Plastic import in intermediate goods",
+        "Trading partner": "Africa"
+      },
+      {
+        "2017": 199000,
+        "2018": 24000,
+        "2019": 97000,
+        "2020": 13000,
+        "2021": 401000,
+        "2022": 242000,
+        "2023": 469000,
+        "Indicator": "Plastic import in intermediate goods",
+        "Trading partner": "Americas"
+      },
+      {
+        "2017": 5387000,
+        "2018": 4493000,
+        "2019": 10784000,
+        "2020": 11870000,
+        "2021": 12793000,
+        "2022": 16667000,
+        "2023": 9157000,
+        "Indicator": "Plastic import in intermediate goods",
+        "Trading partner": "Europe"
+      },
+      {
+        "2017": 641000,
+        "2018": 324000,
+        "2019": 66000,
+        "2020": 513000,
+        "2021": 217000,
+        "2022": 185000,
+        "2023": 2262000,
+        "Indicator": "Plastic import in intermediate goods",
+        "Trading partner": "Oceania"
+      },
+      {
+        "2017": 125000,
+        "2018": 53000,
+        "2019": 26000,
+        "2020": 6000,
+        "2021": 0,
+        "2022": 34000,
+        "2023": 104000,
+        "Indicator": "Plastic export in intermediate goods",
+        "Trading partner": "Asia"
+      },
+      {
+        "2017": 1681000,
+        "2018": 3161000,
+        "2019": 5066000,
+        "2020": 5029000,
+        "2021": 3048000,
+        "2022": 4606000,
+        "2023": 2188000,
+        "Indicator": "Plastic export in intermediate goods",
+        "Trading partner": "Africa"
+      },
+      {
+        "2017": 4000,
+        "2018": 40000,
+        "2019": 26000,
+        "2020": 0,
+        "2021": 13000,
+        "2022": 0,
+        "2023": 146000,
+        "Indicator": "Plastic export in intermediate goods",
+        "Trading partner": "Americas"
+      },
+      {
+        "2017": 469000,
+        "2018": 579000,
+        "2019": 73000,
+        "2020": 25000,
+        "2021": 112000,
+        "2022": 289000,
+        "2023": 356000,
+        "Indicator": "Plastic export in intermediate goods",
+        "Trading partner": "Europe"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Plastic export in intermediate goods",
+        "Trading partner": "Oceania"
+      },
+      {
+        "2017": 58174000,
+        "2018": 79613000,
+        "2019": 75179000,
+        "2020": 72159000,
+        "2021": 90150000,
+        "2022": 80249000,
+        "2023": 89648000,
+        "Indicator": "Plastic import of final manufactured goods",
+        "Trading partner": "Asia"
+      },
+      {
+        "2017": 17923000,
+        "2018": 17610000,
+        "2019": 22088000,
+        "2020": 20278000,
+        "2021": 13946000,
+        "2022": 16362000,
+        "2023": 13605000,
+        "Indicator": "Plastic import of final manufactured goods",
+        "Trading partner": "Africa"
+      },
+      {
+        "2017": 3962000,
+        "2018": 5184000,
+        "2019": 4623000,
+        "2020": 9070000,
+        "2021": 5632000,
+        "2022": 11368000,
+        "2023": 7803000,
+        "Indicator": "Plastic import of final manufactured goods",
+        "Trading partner": "Americas"
+      },
+      {
+        "2017": 39812000,
+        "2018": 40712000,
+        "2019": 46236000,
+        "2020": 46687000,
+        "2021": 48318000,
+        "2022": 51453000,
+        "2023": 49989000,
+        "Indicator": "Plastic import of final manufactured goods",
+        "Trading partner": "Europe"
+      },
+      {
+        "2017": 228000,
+        "2018": 99000,
+        "2019": 86000,
+        "2020": 265000,
+        "2021": 323000,
+        "2022": 400000,
+        "2023": 412000,
+        "Indicator": "Plastic import of final manufactured goods",
+        "Trading partner": "Oceania"
+      },
+      {
+        "2017": 993000,
+        "2018": 809000,
+        "2019": 808000,
+        "2020": 415000,
+        "2021": 716000,
+        "2022": 749000,
+        "2023": 1147000,
+        "Indicator": "Plastic export of final manufactured goods",
+        "Trading partner": "Asia"
+      },
+      {
+        "2017": 37241000,
+        "2018": 38148000,
+        "2019": 30086000,
+        "2020": 35244000,
+        "2021": 39782000,
+        "2022": 43046000,
+        "2023": 46621000,
+        "Indicator": "Plastic export of final manufactured goods",
+        "Trading partner": "Africa"
+      },
+      {
+        "2017": 34035000,
+        "2018": 38464000,
+        "2019": 19450000,
+        "2020": 35551000,
+        "2021": 41403000,
+        "2022": 43820000,
+        "2023": 45826000,
+        "Indicator": "Plastic export of final manufactured goods",
+        "Trading partner": "Americas"
+      },
+      {
+        "2017": 8741000,
+        "2018": 13861000,
+        "2019": 10117000,
+        "2020": 16403000,
+        "2021": 19326000,
+        "2022": 19383000,
+        "2023": 18573000,
+        "Indicator": "Plastic export of final manufactured goods",
+        "Trading partner": "Europe"
+      },
+      {
+        "2017": 4000,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 1000,
+        "2023": 26000,
+        "Indicator": "Plastic export of final manufactured goods",
+        "Trading partner": "Oceania"
+      },
+      {
+        "2017": 115000,
+        "2018": 96000,
+        "2019": 626000,
+        "2020": 149000,
+        "2021": 64000,
+        "2022": 26000,
+        "2023": 54000,
+        "Indicator": "Import of plastic waste",
+        "Trading partner": "Asia"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Import of plastic waste",
+        "Trading partner": "Africa"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 304000,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 1000,
+        "Indicator": "Import of plastic waste",
+        "Trading partner": "Americas"
+      },
+      {
+        "2017": 1123000,
+        "2018": 1638000,
+        "2019": 778000,
+        "2020": 201000,
+        "2021": 441000,
+        "2022": 375000,
+        "2023": 129000,
+        "Indicator": "Import of plastic waste",
+        "Trading partner": "Europe"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Import of plastic waste",
+        "Trading partner": "Oceania",
+        "__EMPTY_14": "Import of total plastics",
+        "__EMPTY_15": 50.849,
+        "__EMPTY_16": 37.218,
+        "__EMPTY_17": 281.236,
+        "__EMPTY_18": 124.587,
+        "__EMPTY_19": 1.244
+      },
+      {
+        "2017": 683000,
+        "2018": 258000,
+        "2019": 301000,
+        "2020": 975000,
+        "2021": 549000,
+        "2022": 144000,
+        "2023": 9000,
+        "Indicator": "Export of plastic waste",
+        "Trading partner": "Asia"
+      },
+      {
+        "2017": 53000,
+        "2018": 85000,
+        "2019": 32000,
+        "2020": 32000,
+        "2021": 84000,
+        "2022": 96000,
+        "2023": 178000,
+        "Indicator": "Export of plastic waste",
+        "Trading partner": "Africa"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 48000,
+        "2021": 255000,
+        "2022": 153000,
+        "2023": 0,
+        "Indicator": "Export of plastic waste",
+        "Trading partner": "Americas"
+      },
+      {
+        "2017": 10000,
+        "2018": 252000,
+        "2019": 197000,
+        "2020": 313000,
+        "2021": 578000,
+        "2022": 528000,
+        "2023": 35000,
+        "Indicator": "Export of plastic waste",
+        "Trading partner": "Europe"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Export of plastic waste",
+        "Trading partner": "Oceania",
+        "__EMPTY_14": "Export of total plastics",
+        "__EMPTY_15": 63.341,
+        "__EMPTY_16": 68.445,
+        "__EMPTY_17": 1.502,
+        "__EMPTY_18": 30.254,
+        "__EMPTY_19": 0.001
+      },
+      {
+        "2017": 179860000,
+        "2018": 223195000,
+        "2019": 195844000,
+        "2020": 188605000,
+        "2021": 278357000,
+        "2022": 281236000,
+        "2023": 252823000,
+        "Indicator": "Import of total plastics",
+        "Trading partner": "Asia"
+      },
+      {
+        "2017": 37402000,
+        "2018": 35211000,
+        "2019": 41716000,
+        "2020": 39411000,
+        "2021": 44364000,
+        "2022": 50849000,
+        "2023": 45984000,
+        "Indicator": "Import of total plastics",
+        "Trading partner": "Africa"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 37218000,
+        "2023": 0,
+        "Indicator": "Import of total plastics",
+        "Trading partner": "Americas"
+      },
+      {
+        "2017": 84339000,
+        "2018": 87715000,
+        "2019": 101388000,
+        "2020": 113314000,
+        "2021": 126614000,
+        "2022": 124587000,
+        "2023": 106485000,
+        "Indicator": "Import of total plastics",
+        "Trading partner": "Europe"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 1244000,
+        "2023": 0,
+        "Indicator": "Import of total plastics",
+        "Trading partner": "Oceania"
+      },
+      {
+        "2017": 2370000,
+        "2018": 1475000,
+        "2019": 2687000,
+        "2020": 4732000,
+        "2021": 2657000,
+        "2022": 1502000,
+        "2023": 1423000,
+        "Indicator": "Export of total plastics",
+        "Trading partner": "Asia"
+      },
+      {
+        "2017": 60725000,
+        "2018": 64302000,
+        "2019": 50115000,
+        "2020": 53602000,
+        "2021": 58373000,
+        "2022": 63341000,
+        "2023": 61306000,
+        "Indicator": "Export of total plastics",
+        "Trading partner": "Africa"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 68445000,
+        "2023": 0,
+        "Indicator": "Export of total plastics",
+        "Trading partner": "Americas"
+      },
+      {
+        "2017": 14383000,
+        "2018": 21792000,
+        "2019": 16998000,
+        "2020": 25514000,
+        "2021": 30728000,
+        "2022": 30254000,
+        "2023": 29269000,
+        "Indicator": "Export of total plastics",
+        "Trading partner": "Europe"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 1000,
+        "2023": 0,
+        "Indicator": "Export of total plastics",
+        "Trading partner": "Oceania"
+      },
+      {
+        "2017": 177490000,
+        "2018": 221720000,
+        "2019": 193157000,
+        "2020": 0,
+        "2021": 275700000,
+        "2022": 279734000,
+        "2023": 251400000,
+        "Indicator": "Apparent plastic consumption",
+        "Trading partner": "Asia"
+      },
+      {
+        "2017": -23323000,
+        "2018": -29091000,
+        "2019": -8399000,
+        "2020": -14191000,
+        "2021": -14009000,
+        "2022": -12492000,
+        "2023": -15322000,
+        "Indicator": "Apparent plastic consumption",
+        "Trading partner": "Africa"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Apparent plastic consumption",
+        "Trading partner": "Americas"
+      },
+      {
+        "2017": 69956000,
+        "2018": 65923000,
+        "2019": 84390000,
+        "2020": 87800000,
+        "2021": 95886000,
+        "2022": 94333000,
+        "2023": 77216000,
+        "Indicator": "Apparent plastic consumption",
+        "Trading partner": "Europe"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Apparent plastic consumption",
+        "Trading partner": "Oceania"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Import of plastic packaging",
+        "Trading partner": "Asia"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Import of plastic packaging",
+        "Trading partner": "Africa"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Import of plastic packaging",
+        "Trading partner": "Americas"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Import of plastic packaging",
+        "Trading partner": "Europe"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Import of plastic packaging",
+        "Trading partner": "Oceania"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Export of plastic packaging",
+        "Trading partner": "Asia"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Export of plastic packaging",
+        "Trading partner": "Africa"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Export of plastic packaging",
+        "Trading partner": "Americas"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Export of plastic packaging",
+        "Trading partner": "Europe"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Export of plastic packaging",
+        "Trading partner": "Oceania"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Import of synthetic textiles",
+        "Trading partner": "Asia"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Import of synthetic textiles",
+        "Trading partner": "Africa"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Import of synthetic textiles",
+        "Trading partner": "Americas"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Import of synthetic textiles",
+        "Trading partner": "Europe"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Import of synthetic textiles",
+        "Trading partner": "Oceania"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Export of synthetic textiles",
+        "Trading partner": "Asia"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Export of synthetic textiles",
+        "Trading partner": "Africa"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Export of synthetic textiles",
+        "Trading partner": "Americas"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Export of synthetic textiles",
+        "Trading partner": "Europe"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Export of synthetic textiles",
+        "Trading partner": "Oceania"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Import of synthetic rubber",
+        "Trading partner": "Asia"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Import of synthetic rubber",
+        "Trading partner": "Africa"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Import of synthetic rubber",
+        "Trading partner": "Americas"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Import of synthetic rubber",
+        "Trading partner": "Europe"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Import of synthetic rubber",
+        "Trading partner": "Oceania"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Export of synthetic rubber",
+        "Trading partner": "Asia"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Export of synthetic rubber",
+        "Trading partner": "Africa"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Export of synthetic rubber",
+        "Trading partner": "Americas"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Export of synthetic rubber",
+        "Trading partner": "Europe"
+      },
+      {
+        "2017": 0,
+        "2018": 0,
+        "2019": 0,
+        "2020": 0,
+        "2021": 0,
+        "2022": 0,
+        "2023": 0,
+        "Indicator": "Export of synthetic rubber",
+        "Trading partner": "Oceania"
+      }
+    ],
+    "UNCTAD$products": [
+      {
+        "2017": 47212000,
+        "2018": 61421000,
+        "2019": 63853000,
+        "2020": 71849000,
+        "2021": 78642000,
+        "2022": 82128000,
+        "2023": 79488000,
+        "Indicator": "Import of plastic packaging"
+      },
+      {
+        "2017": 19480000,
+        "2018": 18379000,
+        "2019": 10504000,
+        "2020": 13263000,
+        "2021": 16718000,
+        "2022": 18512000,
+        "2023": 11363000,
+        "Indicator": "Export of plastic packaging"
+      },
+      {
+        "2017": 77193000,
+        "2018": 80078000,
+        "2019": 78223000,
+        "2020": 68612000,
+        "2021": 84563000,
+        "2022": 86584000,
+        "2023": 69538000,
+        "Indicator": "Import of synthetic textiles"
+      },
+      {
+        "2017": 86373000,
+        "2018": 99011000,
+        "2019": 65459000,
+        "2020": 96834000,
+        "2021": 111680000,
+        "2022": 108894000,
+        "2023": 112649000,
+        "Indicator": "Export of synthetic textiles"
+      },
+      {
+        "2017": 513000,
+        "2018": 234000,
+        "2019": 400000,
+        "2020": 444000,
+        "2021": 536000,
+        "2022": 1279000,
+        "2023": 1186000,
+        "Indicator": "Import of synthetic rubber"
+      },
+      {
+        "2017": 1000,
+        "2018": 46000,
+        "2019": 48000,
+        "2020": 29000,
+        "2021": 8000,
+        "2022": 0,
+        "2023": 1000,
+        "Indicator": "Export of synthetic rubber"
+      }
+    ],
+    "WTO_pie": [
+      {
+        "Imports": "Group",
+        "__EMPTY": "Import Value (million USD)"
+      },
+      {
+        "Imports": "Plastics and articles thereof",
+        "__EMPTY": 337.2
+      },
+      {
+        "Imports": "Rubber and articles thereof",
+        "__EMPTY": 80.21
+      },
+      {
+        "Imports": "Textiles, apparel, and footwear",
+        "__EMPTY": 152
+      },
+      {
+        "Imports": "Exports",
+        "__EMPTY": null
+      },
+      {
+        "Imports": "Group",
+        "__EMPTY": "Export Value (million USD)"
+      },
+      {
+        "Imports": "Plastics and articles thereof",
+        "__EMPTY": 39.19
+      },
+      {
+        "Imports": "Rubber and articles thereof",
+        "__EMPTY": 7.08
+      },
+      {
+        "Imports": "Textiles, apparel, and footwear",
+        "__EMPTY": 123
+      },
+      {
+        "Imports": "Note all categories are sums of top 20 items only (when available) from WTO database",
+        "__EMPTY": null
+      }
+    ],
+    "WTO_tables": [
+      {
+        "IMPORTS": "HS Code",
+        "__EMPTY": "Description",
+        "__EMPTY_1": "Value (Million USD)"
+      },
+      {
+        "IMPORTS": "Plastics and articles thereof",
+        "__EMPTY": null,
+        "__EMPTY_1": null
+      },
+      {
+        "IMPORTS": 3901,
+        "__EMPTY": "Polymers of ethylene, in primary forms",
+        "__EMPTY_1": 52.99
+      },
+      {
+        "IMPORTS": 3923,
+        "__EMPTY": "Plastic packaging and closures",
+        "__EMPTY_1": 37.27
+      },
+      {
+        "IMPORTS": 3904,
+        "__EMPTY": "Polymers of vinyl chloride/halogenated olefins",
+        "__EMPTY_1": 35.92
+      },
+      {
+        "IMPORTS": "Textiles, apparel, and footwear",
+        "__EMPTY": null,
+        "__EMPTY_1": null
+      },
+      {
+        "IMPORTS": 5506,
+        "__EMPTY": "Synthetic staple fibres, carded/combed/processed",
+        "__EMPTY_1": 47.69
+      },
+      {
+        "IMPORTS": 6305,
+        "__EMPTY": "Sacks and bags for packing of goods",
+        "__EMPTY_1": 20.2
+      },
+      {
+        "IMPORTS": 6309,
+        "__EMPTY": "Worn clothing and other worn articles",
+        "__EMPTY_1": 14.69
+      },
+      {
+        "IMPORTS": "Rubber and articles thereof",
+        "__EMPTY": null,
+        "__EMPTY_1": null
+      },
+      {
+        "IMPORTS": 4011,
+        "__EMPTY": "New pneumatic tyres of rubber",
+        "__EMPTY_1": 36.81
+      },
+      {
+        "IMPORTS": 4010,
+        "__EMPTY": "Conveyor or transmission belts of vulcanised rubber",
+        "__EMPTY_1": 9.12
+      },
+      {
+        "IMPORTS": 4016,
+        "__EMPTY": "Other articles of vulcanised rubber (excl. hard rubber)",
+        "__EMPTY_1": 8.98
+      },
+      {
+        "IMPORTS": "EXPORTS",
+        "__EMPTY": null,
+        "__EMPTY_1": null
+      },
+      {
+        "IMPORTS": "HS Code",
+        "__EMPTY": "Description",
+        "__EMPTY_1": "Value (Million USD)"
+      },
+      {
+        "IMPORTS": "Textiles, apparel, and footwear",
+        "__EMPTY": null,
+        "__EMPTY_1": null
+      },
+      {
+        "IMPORTS": 6704,
+        "__EMPTY": "Wigs, false hairpieces, eyelashes; articles of human hair",
+        "__EMPTY_1": 68.26
+      },
+      {
+        "IMPORTS": 5506,
+        "__EMPTY": "Synthetic staple fibres, carded/combed/processed",
+        "__EMPTY_1": 36.86
+      },
+      {
+        "IMPORTS": 6402,
+        "__EMPTY": "Footwear of rubber/plastic",
+        "__EMPTY_1": 11.2
+      },
+      {
+        "IMPORTS": "Plastics and articles thereof",
+        "__EMPTY": null,
+        "__EMPTY_1": null
+      },
+      {
+        "IMPORTS": 3923,
+        "__EMPTY": "Plastic packaging and closures",
+        "__EMPTY_1": 13.07
+      },
+      {
+        "IMPORTS": 3924,
+        "__EMPTY": "Household and toilet articles of plastics",
+        "__EMPTY_1": 6.66
+      },
+      {
+        "IMPORTS": 3917,
+        "__EMPTY": "Tubes, pipes, hoses & fittings of plastics",
+        "__EMPTY_1": 4.26
+      },
+      {
+        "IMPORTS": "Rubber and articles thereof",
+        "__EMPTY": null,
+        "__EMPTY_1": null
+      },
+      {
+        "IMPORTS": 4011,
+        "__EMPTY": "New pneumatic tyres of rubber",
+        "__EMPTY_1": 5.68
+      },
+      {
+        "IMPORTS": 4009,
+        "__EMPTY": "Rubber tubes, pipes and hoses (excl. hard rubber)",
+        "__EMPTY_1": 0.54
+      },
+      {
+        "IMPORTS": 4014,
+        "__EMPTY": "Hygienic/pharmaceutical rubber articles",
+        "__EMPTY_1": 0.36
+      }
+    ]
+  },
+  "text": {
+    "production": {
+      "title": "Production",
+      "content": "<p>There is no data on plastic production in {{country}}.</p>"
+    },
+    "trade": {
+      "title": "Trade",
+      "keyTrends": [
+        "{{country}}'s plastic economy is structurally import-dependent, reflecting limited domestic petrochemical infrastructure for the production of plastics in primary form.",
+        "Exports are growing more slowly than imports, but show relative strength in downstream segments, notably wigs, synthetic textiles, packaging, and selected manufactured plastic goods.",
+        "Imports of plastic waste have declined since 2019, with {{country}} becoming a net exporter in 2020, consistent with stronger waste-trade controls, but exports remain volatile.",
+        "Asia supplies two-thirds of {{country}}'s imports, while African markets absorb over half of {{country}}'s exports.",
+        "Net trade (imports – exports) nearly doubled between 2017 and 2022, highlighting a rapidly expanding domestic market and rising downstream pressures."
+      ],
+      "summaryLeft": "<h4 style=\"font-family: 'DM Sans', sans-serif; color: #7468FF; font-size: 24px; font-weight: 700; line-height: 30px;\">Plastic Imports</h4>\n\n<p>A total of <strong style=\"color: #6236FF;\" data-tooltip=\"UNCTAD\">2,395 million USD</strong> worth of plastic was imported to <strong style=\"color: #6236FF;\" data-tooltip=\"UNCTAD\">{{country}}</strong> between <strong style=\"color: #6236FF;\" data-tooltip=\"UNCTAD\">2017-2022</strong>. In the latest reporting year <strong style=\"color: #6236FF;\" data-tooltip=\"UNCTAD\">2022</strong>, the total imports reached value of <strong style=\"color: #6236FF;\" data-tooltip=\"UNCTAD\">497 million USD</strong>, of which:</p>\n<ul>\n<li>~ <strong style=\"color: #6236FF;\" data-tooltip=\"UNCTAD\">37%</strong> was plastic in primary forms</li>\n<li>~ <strong style=\"color: #6236FF;\" data-tooltip=\"UNCTAD\">21%</strong> was plastic in intermediate forms</li>\n<li>~ <strong style=\"color: #6236FF;\" data-tooltip=\"UNCTAD\">9%</strong> was intermediate manufactured plastic goods</li>\n<li>~ <strong style=\"color: #6236FF;\" data-tooltip=\"UNCTAD\">32%</strong> was final manufactured plastic goods</li>\n<li>~ <strong style=\"color: #6236FF;\" data-tooltip=\"UNCTAD\">0%</strong> was plastic waste.</li>\n</ul>\n<p>The plastic imports included estimated <strong style=\"color: #6236FF;\" data-tooltip=\"UNCTAD\">82 million USD</strong> of plastic packaging imports with notoriously short product lifetime.</p>\n\n<h4 style=\"font-family: 'DM Sans', sans-serif; color: #7468FF; font-size: 24px; font-weight: 700; line-height: 30px;\">Plastic exports</h4>\n\n<p>A total of <strong style=\"color: #6236FF;\" data-tooltip=\"UNCTAD\">851 million USD</strong> worth of plastic was exported from <strong style=\"color: #6236FF;\" data-tooltip=\"UNCTAD\">{{country}}</strong> in the year(s) <strong style=\"color: #6236FF;\" data-tooltip=\"UNCTAD\">2017-2022</strong>. In the latest reporting year <strong style=\"color: #6236FF;\" data-tooltip=\"UNCTAD\">2022</strong>, exports reached a value of <strong style=\"color: #6236FF;\" data-tooltip=\"UNCTAD\">USD 164 million</strong>, of which:</p>\n<ul>\n<li>~ <strong style=\"color: #6236FF;\" data-tooltip=\"UNCTAD\">5%</strong> was plastic in primary forms</li>\n<li>~ <strong style=\"color: #6236FF;\" data-tooltip=\"UNCTAD\">26%</strong> was plastic in intermediate forms</li>\n<li>~ <strong style=\"color: #6236FF;\" data-tooltip=\"UNCTAD\">3%</strong> was intermediate manufactured plastic goods</li>\n<li>~ <strong style=\"color: #6236FF;\" data-tooltip=\"UNCTAD\">65%</strong> was final manufactured plastic goods</li>\n<li>~ <strong style=\"color: #6236FF;\" data-tooltip=\"UNCTAD\">1%</strong> was plastic waste.</li>\n</ul>\n<p>Plastic exports included estimated <strong style=\"color: #6236FF;\" data-tooltip=\"UNCTAD\">19 million USD</strong> of plastic packaging.</p>",
+      "summary": "<h4 style=\"font-family: 'DM Sans', sans-serif; color: #7468FF; font-size: 24px; font-weight: 700; line-height: 30px;\">Plastic trade trends</h4>\n\n<p>Between years 2017 and 2022, the amount of plastic imported to {{country}} has increased by <strong style=\"color: #6236FF;\" data-tooltip=\"UNCTAD\">55.7%</strong>, while the amount of plastic exported from {{country}} has increased by <strong style=\"color: #6236FF;\" data-tooltip=\"UNCTAD\">23.8%</strong>.</p>\n\n<p>Imports are dominated by primary and final manufactured goods, while exports are weighted towards intermediate forms and final manufactured goods. {{country}}'s plastic economy appears demand-led, as imports climb steeply through to 2022, while exports rise modestly. Low exports of primary forms also suggest limited upstream capacity.</p>\n\n<p>Concerning waste imports, {{country}} was a net importer until 2019, then became a net exporter in 2020, suggesting the tightening of waste trade regulations.</p>",
+      "tradingPartners": "Trade flows are geographically concentrated: Asia accounts for around two thirds of all plastic imports, followed by Europe accounting for around a quarter. On the export side, African markets absorb more than half of {{country}}'s shipments, reinforcing {{country}}'s role as a regional processor and distributor.",
+      "productCategories": "The World Trade Organisation's database can provide more in-depth insights into specific products. {{country}} predominantly imports <b>plastics and articles thereof (HS Chapter 39)</b>, dominated by polymers in primary forms (mainly polymers of ethylene and vinyl chloride) and packaging, with a combined value of over USD 120 million. {{country}} exports plastic packaging, household plastics, tubes, pipes, and hose fittings under this category, with a much smaller amount, accounting for over USD 20 million.\n\nThere is a significant volume of plastic-based <b>textiles, apparel and footwear (HS chapters 54-65)</b> materials and products both entering and leaving {{country}}'s economy. Exports of textiles are mainly driven by wigs, synthetic fibre products, and footwear for the US (64%), EU (18%), the UK (7%) and the rest of West Africa (11%). Top imports include synthetic fibres and packaging bags, as well as worn clothing and other worn articles.\n\n{{country}}'s <b>rubber (HS Chapter 40)</b> economy is heavily import-dependent, driven largely by demand for tyres, conveyor belts, and industrial rubber goods, while exports are concentrated in small volumes of finished or semi-finished products."
+    },
+    "consumption": {
+      "title": "Consumption",
+      "content": "<p>{{country}}'s estimated plastic consumption based on net trade (import minus export) rose from USD 187 to 333 million between 2017 and 2022. After a dip in 2020 during the COVID-19 pandemic, consumption rebounded strongly. This rising consumption reflects economic growth and diversification, but also increasing pressure on waste-management systems, which have not expanded and improved at the same pace.</p>\n\n<p>Although {{country}} enacted a single-use plastic ban in 2020, plastic consumption increased by 78%, indicating the law enforcement challenges faced by the country.</p>"
+    },
+    "wasteManagement": {
+      "title": "Waste Management",
+      "keyTrends": [
+        "{{country}} generates 3.2 million tonnes of solid waste annually, with plastics accounting for 13-19%.",
+        "Only 55% of waste is collected nationally; Dakar is higher (95%) but only 1% is managed in controlled facilities (SDG 11.6.1).",
+        "<5% of plastic waste is formally recycled; informal actors may double this contribution but remain unsupported.",
+        "Open dumping and open burning remain widespread."
+      ],
+      "content": "<h4 style=\"font-family: 'DM Sans', sans-serif; color: #7468FF; font-size: 24px; font-weight: 700; line-height: 30px;\">Plastic waste from municipal solid waste</h4>\n\n<p>An estimated <strong style=\"color: #6236FF;\">3,209 thousand tonnes</strong> of municipal solid waste were generated in {{country}} in 2020, with Plastic waste generation estimates ranging between 340-350,000 tonnes per year. A study on global waste management modelling showed <strong style=\"color: #6236FF;\">50%</strong> of municipal solid waste is collection coverage, with annual plastic emission including both debris and open burning is <strong style=\"color: #6236FF;\">214,610 tonnes per year</strong>, which is equivalent to <strong style=\"color: #6236FF;\">13 kg/person/year</strong>.</p>\n\n<p>In 2021, it was reported ~8,000 tonnes of plastics are formally recycled each year (<5%), with recycling demand (~15,000 tonnes) double supply and strong market growth. Informal recovery is significant but inconsistent and unsupported by policy. {{country}} has over 40 plastic processing firms, but only a few use recycled material due to high capital costs. Initiatives such as ProPlast and Recuplast kiosks show potential for scalable recovery systems.</p>\n\n<p>The estimated MSW generation per capita in {{country}} in 2020 was <strong style=\"color: #6236FF;\">0.53 kg</strong> per person per day.</p>",
+      "contentRight": "<p>Data from selected city case studies provide further insights into waste management in {{country}}. Primary data collection through a waste composition survey undertaken recorded that high collection (95%), but only 1% of waste is treated in controlled facilities, and recycling remains at 4%. It also showed the share of plastic waste within the collected waste was 10% in Dakar in 2022. The same primary data collection estimated that the per capita MSW generation in Dakar was 0.97 kg, much higher than the global estimate.</p>\n\n<h4 style=\"font-family: 'DM Sans', sans-serif; color: #7468FF; font-size: 24px; font-weight: 700; line-height: 30px;\">Plastic waste from non-municipal solid waste</h4>\n\n<p>Total MSW generated from non-household sources 570 tonnes per day, calculated using proxy of 40% of total MSW.</p>"
+    },
+    "environment": {
+      "title": "Plastics in the Environment",
+      "keyTrends": [
+        "Coastal plastic pollution is severe and persistent.",
+        "Urban beaches have more than 20 times more plastic debris than remote zones.",
+        "Most litter is plastic bags, packaging, textiles, and fishing gear (mirroring consumption and trade patterns).",
+        "Buried plastic levels are extremely high, indicating long-term accumulation."
+      ],
+      "content": "<h4 style=\"font-family: 'DM Sans', sans-serif; color: #7468FF; font-size: 24px; font-weight: 700; line-height: 30px;\">Beach litter</h4>\n\n<p>The national average count of beach litter items in {{country}} was <strong style=\"color: #6236FF;\">230,851 items per km2</strong> in 2018. A 2020 study found that plastics account for 98% of visible debris, and density is much higher in urban areas than on remote coasts. Below the sand surface, buried debris reaches 49 items/m2, signalling decades of accumulation.</p>\n\n<h4 style=\"font-family: 'DM Sans', sans-serif; color: #7468FF; font-size: 24px; font-weight: 700; line-height: 30px;\">Common plastic items in the environment</h4>\n\n<p>The 2020 study found the items below are most common plastic products found in {{country}}ese beaches.</p>\n<ul>\n<li>Beach users (food and beverage packaging, straws, lollipop sticks).</li>\n<li>Fisheries (lines, nets, ropes, polystyrene).</li>\n<li>Land-based waste (medicine packaging, cotton bud sticks).</li>\n<li>Mixed municipal waste (bags, diapers, toys, lighters).</li>\n</ul>\n<p>These patterns closely mirror {{country}}'s import and consumption profile, particularly packaging, textiles, and multi-layer products, highlighting clear links between upstream product flows and downstream leakage.</p>"
+    },
+    "lifeCycleInsights": {}
+  }
+}
