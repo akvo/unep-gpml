@@ -329,7 +329,7 @@ const JoinBtn = ({ isAuthenticated, setLoginVisible }) => {
       ) : (
         <Link href="/workspace">
           <Button type="primary" size="large" withArrow>
-            <Trans>Workspace</Trans>
+            <Trans>View</Trans>
           </Button>
         </Link>
       )}

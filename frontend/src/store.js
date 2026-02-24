@@ -109,8 +109,8 @@ const menuList = [
         to: '/page/who-we-are',
       },
       {
-        key: msg`Digital Platform`,
-        id: 'Digital Platform',
+        key: 'The Global Plastics Hub',
+        id: 'The Global Plastics Hub',
         to: '/page/about-platform',
       },
       {
