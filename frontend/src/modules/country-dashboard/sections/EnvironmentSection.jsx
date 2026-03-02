@@ -1,10 +1,17 @@
 import React from 'react'
 import { Row, Col } from 'antd'
+import dynamic from 'next/dynamic'
 import Handlebars from 'handlebars'
 import parse, { domToReact } from 'html-react-parser'
 import { Tooltip } from 'antd'
 import KeyTrends from './KeyTrends'
+import ChartCard from '../ChartCard'
 import styles from '../CountryOverview.module.scss'
+
+const PlasticOceanBeachChart = dynamic(
+  () => import('../charts/PlasticOceanBeachCHart'),
+  { ssr: false }
+)
 
 const parseInlineStyle = (styleStr) => {
   if (!styleStr) return {}
@@ -37,7 +44,7 @@ const splitEnvironmentContent = (html) => {
 }
 
 const EnvironmentSection = React.forwardRef(
-  ({ textContent, countryData, countryName }, ref) => {
+  ({ textContent, countryData, countryName, layers, layerLoading }, ref) => {
     if (!textContent?.environment) return null
 
     const parseOptions = {
@@ -110,6 +117,10 @@ const EnvironmentSection = React.forwardRef(
             )}
           </Row>
         )}
+
+        <ChartCard className={styles.chartCardPadded}>
+          <PlasticOceanBeachChart layers={layers} layerLoading={layerLoading} />
+        </ChartCard>
       </div>
     )
   }

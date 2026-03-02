@@ -121,7 +121,7 @@ export const SECTION_REGISTRY = [
 ]
 
 // Countries that use Excel/JSON data instead of Strapi
-export const EXCEL_COUNTRY_CODES = ['KHM']
+export const EXCEL_COUNTRY_CODES = ['KHM', 'ZAF', 'SEN', 'JPN', 'ECU', 'PER', 'IND', 'MUS', 'LBN', 'SLB']
 
 // Charts that must always fetch data from Strapi layers, even for Excel countries
 export const STRAPI_LAYER_CHARTS = [

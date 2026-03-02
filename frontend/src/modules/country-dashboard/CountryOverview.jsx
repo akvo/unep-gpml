@@ -426,6 +426,22 @@ const CountryOverview = ({
         COLUMN_SPLIT_MARKER
       )
 
+      // Append extra trade text from JSON summary (after the Strapi trends paragraph)
+      const jsonSummary = textContent?.trade?.summary || ''
+      if (jsonSummary && trendsText) {
+        // Strip the heading + first paragraph (already from Strapi), keep the rest
+        let extraText = jsonSummary
+          .replace(/<h4[^>]*>.*?<\/h4>/i, '')  // remove heading
+          .replace(/<p>.*?<\/p>/i, '')           // remove first paragraph (Strapi duplicate)
+          .trim()
+        if (extraText) {
+          // Compile Handlebars placeholders like {{country}}
+          const compiledExtra = Handlebars.compile(extraText, { noEscape: true })
+          extraText = compiledExtra({ country: countryName })
+          trendsText += '<div style="padding-top: 16px;">' + extraText + '</div>'
+        }
+      }
+
       const parseOpts = { convertHeadings: true }
       strapiTradeContent = {
         firstHalf: addTooltipsToPlaceholders(
