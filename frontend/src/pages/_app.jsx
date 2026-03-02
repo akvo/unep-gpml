@@ -16,6 +16,34 @@ import { I18nProvider } from '@lingui/react'
 import { useLinguiInit } from '../translations/utils'
 import Script from 'next/script'
 
+function LoadMotomoAnalytics() {
+  const motomoSiteId = typeof window !== 'undefined' ? window.__ENV__.motomo.siteId : ''
+
+  if (!motomoSiteId) {
+    return null
+  }
+
+  console.log('MOTOMO_SITE_ID', motomoSiteId)
+
+  return (
+    <Script id="motomo-analytics" strategy="afterInteractive">
+      {`
+var _paq = window._paq = window._paq || [];
+/* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+_paq.push(['trackPageView']);
+_paq.push(['enableLinkTracking']);
+(function() {
+  var u="https://matomo.cloud.akvo.org/";
+  _paq.push(['setTrackerUrl', u+'matomo.php']);
+  _paq.push(['setSiteId', '${motomoSiteId}']);
+  var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+  g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+})();
+      `}
+    </Script>
+  );
+}
+
 function MyApp({ Component, pageProps }) {
   const i18n = useLinguiInit(pageProps.i18n)
   const router = useRouter()
@@ -371,6 +399,7 @@ function MyApp({ Component, pageProps }) {
         />
         <title>Global Plastics Hub</title>
       </Head>
+      <LoadMotomoAnalytics />
       <a href="#main-content" className="skip-link">
         Skip to main content
       </a>

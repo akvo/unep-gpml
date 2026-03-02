@@ -981,7 +981,8 @@
                                                                               :clientId #duct/env "OIDC_AUDIENCE"
                                                                               :audience #duct/env "OIDC_AUDIENCE_M2M"}
                                                                      :sentry {:dsn         #duct/env "SENTRY_DSN"
-                                                                              :environment #duct/env ["ENV_NAME" Str]}}
+                                                                              :environment #duct/env ["ENV_NAME" Str]}
+                                                                     :motomo {:siteId #duct/env "MOTOMO_SITE_ID"}}
  :gpml.handler.auth/post-topic-auth                                 #ig/ref :gpml.config/common
  :gpml.handler.auth/post-topic-auth-params                          {}
  :gpml.handler.comment/post                                         #ig/ref :gpml.config/common
