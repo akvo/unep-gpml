@@ -50,6 +50,7 @@ services:
       - OPENAI_API_KEY
       - GOOGLE_TRANSLATE_API_KEY
       - AUTO_TRANSLATE_ENABLED
+      - MOTOMO_SITE_ID
   frontend:
     environment:
       - PORT=3001
