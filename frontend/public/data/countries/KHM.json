@@ -6735,43 +6735,36 @@
       "title": "Plastic Life Cycle Insights",
       "sections": [
         {
-          "heading": "Production and Trade",
-          "text": "{{country}} is firmly positioned at the downstream end of the plastics value chain, importing plastic feedstocks and semi-manufactured inputs, especially synthetic textile materials, and re-exporting them embedded in finished apparel, footwear, and construction goods to high-income markets. {{country}}'s plastics industry plays a meaningful role in economic growth, and its position within global value chains gives it the potential to become a centre of innovation for circular design and sustainable plastic use at the manufacturing and packaging stages.\n\nThis model also generates substantial volumes of industrial plastic waste, including offcuts, rejects, and single-use flexible packaging (films, wraps, liners) used to protect goods during transport. These materials (often LDPE, PP, and mixed films) are low-value, rarely recycled, and prone to leakage, reinforcing national patterns in which flexible plastics dominate the waste stream and environmental emissions.\n\nStrengthening industrial recycling incentives is therefore a critical pathway to improving overall recycling outcomes. Creating a reliable demand for recycled materials, particularly from textiles, apparel, footwear, and construction, would help transform currently low-value industrial waste into viable secondary resources.",
+          "heading": "Cambodia is a downstream plastic-processing economy",
           "policyOpportunities": [
-            "Introduce eco-design and material standards for export-oriented manufacturing, prioritising mono-material, reduced polymer blends, and recyclability requirements for garments, footwear, and construction plastics, with explicit attention to eliminating unnecessary films and multi-layer packaging.",
-            "Embed plastic intensity and waste efficiency criteria into industrial investment incentives, rewarding manufacturers that minimise flexible packaging, offcuts, and rejects, and demonstrate on-site segregation and recovery of films and rigid plastics.",
-            "Implement extended producer responsibility (EPR) fees for major downstream users including international apparel brands and construction firms, with revenues earmarked for environmentally sound management of industrial plastic waste and the expansion of recycling infrastructure.",
-            "Use trade and industrial policy to catalyse local plastics recycling markets, including fiscal incentives for investments in domestic mechanical recycling of industrial textile and packaging waste, creating demand for materials that currently have little or no local value.",
-            "Leverage buyer and brand requirements in export markets to accelerate change, aligning national standards with international sustainability and circularity expectations, and shifting responsibility for problematic packaging upstream through supply-chain accountability systems."
+            "Cambodia imports all primary resins and synthetic textile inputs (PE, PP, PVC, synthetic yarns/fabrics) and undertakes only secondary production, mainly converting imported materials into packaging, household goods, and construction plastics.",
+            "The country is heavily dependent on regional petrochemical producers (China, Thailand, Vietnam).",
+            "Cambodia’s plastics and textile sectors are structurally reliant on imported plastic inputs, limiting national control over upstream impacts and economic value capture."
           ]
         },
         {
-          "heading": "Consumption",
-          "text": "Despite rising trade volumes, {{country}}'s apparent plastic consumption has declined since 2018, falling by about 25% by 2022. This suggests that the national plastic footprint is largely driven by foreign consumer demand rather than domestic use. However, local consumption patterns, especially single-use food and beverage packaging, are disproportionately responsible for visible litter and downstream pollution. Furthermore, (plastic) waste generation trends are also reported to have been increasing over the last decade.",
+          "heading": "Synthetic textiles drive Cambodia’s plastics economy",
           "policyOpportunities": [
-            "Implement targeted restrictions or levies on high-leakage single-use plastics (e.g., beverage bottles, thin bags, food wrappers, polystyrene food containers) that dominate coastal and urban litter.",
-            "Introduce extended producer responsibility (EPR) for packaging, requiring importers and brand owners to finance collection and recycling of packaging placed on the {{country}}n market.",
-            "Promote reuse and refill systems in urban centres and tourist areas (e.g., water refill stations, reusable food container schemes), linked to tourism and hospitality standards."
+            "The dominant plastic-related imports are synthetic yarns, knitted fabrics, films, and polymers, used heavily in garment production.",
+            "Exports are almost entirely finished goods—apparel, footwear, packaging, construction plastics—indicating Cambodia acts as a manufacturing and assembly hub. Exports grew 485% (2017–2022).",
+            "The textile industry is the country's largest throughput system for plastics, primarily in the form of fossil‑fuel‑based fibres (polyester, nylon)."
           ]
         },
         {
-          "heading": "Waste Management",
-          "text": "{{country}} generates an estimated 1.2–4.8 million tonnes of MSW annually, with per capita generation ranging from 0.2 to 0.78 kg per person per day, depending on location and methodology. Waste collection efficiency is estimated at up to 54%, with limited treatment options, leaving nearly half of MSW uncollected. Beyond MSW, rapid industrial growth, particularly in the garment and packaging sectors, has increased non-municipal plastic waste.",
+          "heading": "Waste systems cannot handle rising plastic and textile waste",
           "policyOpportunities": [
-            "Prioritise rapid expansion of waste collection coverage and service reliability, particularly in peri-urban and rural districts where collection rates are lowest and open dumping and burning are most prevalent.",
-            "Establish a national plastic recovery target under extended producer responsibility (EPR), mandating phased increases in collection and recycling rates for plastic packaging.",
-            "Integrate the informal recycling sector into the formal system through licensing, buy-back centres and guaranteed offtake contracts, focusing initially on high-value PET bottles and rigid plastics, while laying the groundwork for future recovery of films and flexible packaging.",
-            "Improve control and monitoring of industrial plastic waste, particularly from textile, packaging, construction, and medical sectors, by expanding regulated disposal options outside major cities.",
-            "Invest in controlled disposal and treatment infrastructure, including regional landfills, transfer stations, and material recovery facilities."
+            "Plastic waste generation ranges from 297,000–846,000 tonnes/year, with only 54% waste collection nationally and recycling at just ~4%.",
+            "Textile waste is vast: 136,151 tonnes of post‑industrial textile waste generated by the garment sector (2021–2022).",
+            "PET dominates recycling; LDPE, PP, PS, and textile fibres have no viable recycling markets.",
+            "Weak waste management leads to significant leakage into rivers, soils, and the ocean, particularly from textiles and packaging."
           ]
         },
         {
-          "heading": "Environment",
-          "text": "{{country}}'s coastlines are plastic pollution hotspots, with up to 70,000 litter items per kilometre, dominated by single-use beverage containers, thin bags, wrappers and polystyrene. Microplastics in the Mekong are primarily fibres and fragments, with concentrations increasing downstream, indicating that urban wastewater and poor waste containment are the primary leakage pathways.",
+          "heading": "Textile microfibres and packaging waste are major contributors to environmental pollution in Cambodia",
           "policyOpportunities": [
-            "Focus leakage prevention on high-impact items and hotspots, prioritising beverage packaging, thin bags and food containers in coastal provinces and major river corridors.",
-            "Upgrade waste containment and transfer infrastructure (covered bins, sealed trucks, storm-drain litter traps) in urban centres to cut direct leakage into waterways.",
-            "Require wastewater treatment upgrades in major cities to capture synthetic fibres and microplastics, paired with source-control measures in garment factories and laundries."
+            "Coastal pollution is extremely high—an estimated 70,000 items/km and over 80 million items along the coastline.",
+            "Dominant pollutants include water bottles, thin bags, food wrappers, and polystyrene fragments.",
+            "Mekong River microplastics are dominated by fibres and fragments, indicating textile and household wastewater sources."
           ]
         }
       ]
