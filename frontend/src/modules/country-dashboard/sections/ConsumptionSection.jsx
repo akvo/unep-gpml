@@ -15,12 +15,19 @@ const ConsumptionSection = React.forwardRef(
     if (!textContent?.consumption) return null
 
     return (
-      <div ref={ref} data-section="consumption" className={styles.dashboardSection}>
+      <div
+        ref={ref}
+        data-section="consumption"
+        className={styles.dashboardSection}
+      >
         <h2 className={styles.sectionTitle}>Consumption</h2>
 
         {textContent.consumption.content && (
-          <div className={styles.twoColumnText}>
-            <SectionText template={textContent.consumption.content} placeholders={{ country: countryName }} />
+          <div className="consumption-section">
+            <SectionText
+              template={textContent.consumption.content}
+              placeholders={{ country: countryName }}
+            />
           </div>
         )}
 
