@@ -20,7 +20,7 @@ const LifeCycleInsights = ({ data, countryName }) => {
             {section.heading}
           </h3>
 
-          {section.text.split('\n\n').map((para, i) => (
+          {section.text && section.text.split('\n\n').map((para, i) => (      
             <p key={i} className={styles.paragraph}>
               {compile(para, placeholders)}
             </p>
