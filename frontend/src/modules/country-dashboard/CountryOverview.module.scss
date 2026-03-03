@@ -276,6 +276,16 @@
   p {
     margin-bottom: 12px;
   }
+
+  a {
+    color: #6236ff;
+    font-weight: 700;
+    text-decoration: none;
+
+    &:hover {
+      color: #4a1fd6;
+    }
+  }
 }
 .twoColumnText {
   @media (min-width: 769px) {
