@@ -84,7 +84,9 @@ const EnvironmentSection = React.forwardRef(
     let rightCol = null
 
     if (textContent.environment.content) {
-      const compiled = Handlebars.compile(textContent.environment.content, { noEscape: true })
+      const compiled = Handlebars.compile(textContent.environment.content, {
+        noEscape: true,
+      })
       const html = compiled({ country: countryName || '' })
       const [firstHalf, secondHalf] = splitEnvironmentContent(html)
       leftCol = parse(firstHalf, parseOptions)
@@ -118,9 +120,9 @@ const EnvironmentSection = React.forwardRef(
           </Row>
         )}
 
-        <ChartCard className={styles.chartCardPadded}>
+        {/* <ChartCard className={styles.chartCardPadded}>
           <PlasticOceanBeachChart layers={layers} layerLoading={layerLoading} />
-        </ChartCard>
+        </ChartCard> */}
       </div>
     )
   }
