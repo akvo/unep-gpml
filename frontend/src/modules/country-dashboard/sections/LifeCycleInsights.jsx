@@ -1,10 +1,11 @@
 import React from 'react'
 import Handlebars from 'handlebars'
+import parse from 'html-react-parser'
 import styles from './LifeCycleInsights.module.scss'
 
 const compile = (text, placeholders) => {
   const compiled = Handlebars.compile(text, { noEscape: true })
-  return compiled(placeholders)
+  return parse(compiled(placeholders))
 }
 
 const LifeCycleInsights = ({ data, countryName }) => {

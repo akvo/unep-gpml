@@ -1,5 +1,6 @@
 import React from 'react'
 import Handlebars from 'handlebars'
+import parse from 'html-react-parser'
 import styles from './KeyTrends.module.scss'
 
 const KeyTrends = ({ items, title, placeholders = {} }) => {
@@ -11,10 +12,10 @@ const KeyTrends = ({ items, title, placeholders = {} }) => {
       <ul className={styles.list}>
         {items.map((item, i) => {
           const compiled = Handlebars.compile(item, { noEscape: true })
-          const text = compiled(placeholders)
+          const html = compiled(placeholders)
           return (
             <li key={i} className={styles.listItem}>
-              {text}
+              {parse(html)}
             </li>
           )
         })}
