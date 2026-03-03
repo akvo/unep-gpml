@@ -29,9 +29,11 @@ const LifeCycleInsights = ({ data, countryName }) => {
           {section.policyOpportunities &&
             section.policyOpportunities.length > 0 && (
               <div className={styles.policyContainer}>
-                <p className={styles.policyLabel}>
-                  Policy opportunities:
-                </p>
+                {section.showPolicyLabel && (
+                  <p className={styles.policyLabel}>
+                    Policy opportunities:
+                  </p>
+                )}
                 <ul className={styles.policyList}>
                   {section.policyOpportunities.map((item, i) => (
                     <li key={i} className={styles.policyListItem}>
