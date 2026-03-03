@@ -21,7 +21,13 @@ function ResourceView() {
   const availableSections = useMemo(() => {
     if (!isExcelCountry || !countryFileData?.text) return SECTION_REGISTRY
     const textContent = countryFileData.text
-    return SECTION_REGISTRY.filter((s) => textContent[s.textKey])
+    return SECTION_REGISTRY.filter((s) => {
+      const section = textContent[s.textKey]
+      if (!section || typeof section !== 'object') return false
+      // Hide sections that are empty objects or only have a title
+      const keys = Object.keys(section).filter((k) => k !== 'title')
+      return keys.length > 0
+    })
   }, [isExcelCountry, countryFileData])
 
   const sectionKeys = useMemo(

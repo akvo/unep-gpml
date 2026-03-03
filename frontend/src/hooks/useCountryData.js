@@ -14,6 +14,7 @@ const useCountryData = () => {
       return
     }
 
+    setData(null)
     setLoading(true)
     axios
       .get(`/data/countries/${countryCode}.json`)

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Row, Col, Spin } from 'antd'
+import { Row, Col } from 'antd'
 import dynamic from 'next/dynamic'
 import SectionText from './SectionText'
 import KeyTrends from './KeyTrends'
@@ -31,7 +31,7 @@ const TopProductsTable = dynamic(() => import('../charts/TopProductsTable'), {
 })
 
 const TradeSection = React.forwardRef(
-  ({ textContent, countryData, countryName, layers, layerLoading, strapiTradeContent, tradeLoading }, ref) => {
+  ({ textContent, countryData, countryName, layers, layerLoading, strapiTradeContent }, ref) => {
     if (!textContent?.trade) return null
 
     return (
@@ -68,10 +68,6 @@ const TradeSection = React.forwardRef(
               </Row>
             )}
           </>
-        ) : tradeLoading ? (
-          <div style={{ textAlign: 'center', padding: '20px' }}>
-            <Spin size="small" />
-          </div>
         ) : (
           <Row gutter={[24, 16]}>
             {textContent.trade.summaryLeft && (

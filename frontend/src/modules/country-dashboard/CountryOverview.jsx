@@ -484,7 +484,7 @@ const CountryOverview = ({
               layerLoading={layerLoading}
               {...(isFirst ? { headerExtra: submitButton } : {})}
               {...(section.key === 'trade'
-                ? { strapiTradeContent, tradeLoading }
+                ? { strapiTradeContent }
                 : {})}
             />
           )
