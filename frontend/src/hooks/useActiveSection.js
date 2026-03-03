@@ -5,10 +5,11 @@ const useActiveSection = (sectionKeys = []) => {
   const sectionRefs = useRef({})
   const observerRef = useRef(null)
 
-  // Keep activeSection default in sync when sectionKeys change
   useEffect(() => {
-    if (sectionKeys.length > 0 && !activeSection) {
-      setActiveSection(sectionKeys[0])
+    if (sectionKeys.length > 0) {
+      if (!activeSection || !sectionKeys.includes(activeSection)) {
+        setActiveSection(sectionKeys[0])
+      }
     }
   }, [sectionKeys])
 

@@ -1,10 +1,11 @@
 import React from 'react'
 import Handlebars from 'handlebars'
+import parse from 'html-react-parser'
 import styles from './LifeCycleInsights.module.scss'
 
 const compile = (text, placeholders) => {
   const compiled = Handlebars.compile(text, { noEscape: true })
-  return compiled(placeholders)
+  return parse(compiled(placeholders))
 }
 
 const LifeCycleInsights = ({ data, countryName }) => {
@@ -20,7 +21,7 @@ const LifeCycleInsights = ({ data, countryName }) => {
             {section.heading}
           </h3>
 
-          {section.text.split('\n\n').map((para, i) => (
+          {section.text && section.text.split('\n\n').map((para, i) => (      
             <p key={i} className={styles.paragraph}>
               {compile(para, placeholders)}
             </p>
@@ -29,9 +30,11 @@ const LifeCycleInsights = ({ data, countryName }) => {
           {section.policyOpportunities &&
             section.policyOpportunities.length > 0 && (
               <div className={styles.policyContainer}>
-                <p className={styles.policyLabel}>
-                  Policy opportunities:
-                </p>
+                {section.showPolicyLabel && (
+                  <p className={styles.policyLabel}>
+                    Policy opportunities:
+                  </p>
+                )}
                 <ul className={styles.policyList}>
                   {section.policyOpportunities.map((item, i) => (
                     <li key={i} className={styles.policyListItem}>

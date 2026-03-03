@@ -13,6 +13,16 @@
   color: #000647;
   line-height: 1.75;
   margin-bottom: 12px;
+
+  a {
+    color: #6236ff;
+    font-weight: 700;
+    text-decoration: none;
+
+    &:hover {
+      color: #4a1fd6;
+    }
+  }
 }
 
 .policyLabel {
@@ -34,6 +44,16 @@
 .policyListItem {
   margin-bottom: 8px;
   display: list-item;
+
+  a {
+    color: #6236ff;
+    font-weight: 700;
+    text-decoration: none;
+
+    &:hover {
+      color: #4a1fd6;
+    }
+  }
 }
 
 .policyContainer {

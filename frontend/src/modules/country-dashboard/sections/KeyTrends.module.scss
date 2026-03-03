@@ -36,4 +36,14 @@
   display: list-item;
   break-inside: avoid;
   -webkit-column-break-inside: avoid;
+
+  a {
+    color: #6236ff;
+    font-weight: 700;
+    text-decoration: none;
+
+    &:hover {
+      color: #4a1fd6;
+    }
+  }
 }

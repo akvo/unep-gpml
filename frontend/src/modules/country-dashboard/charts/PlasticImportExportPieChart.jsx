@@ -12,20 +12,17 @@ const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
 
   const categories = [
     'plasticinPrimaryForm',
-    'intermediateFormsOfPlastic',
     'finalManufacturedPlasticGoods',
     'intermediateManufacturedPlasticGoods',
     'plasticWaste',
   ]
 
   const plasticinPrimaryForm = t`Plastic in primary form`
-  const intermediateFormsOfPlastic = t`Intermediate forms of plastic`
   const finalManufacturedPlasticGoods = t`Final manufactured plastic goods`
   const intermediateManufacturedPlasticGoods = t`Intermediate manufactured plastic goods`
   const plasticWaste = t`Plastic waste`
   const categoriesTitle = [
     { plasticinPrimaryForm },
-    { intermediateFormsOfPlastic },
     { finalManufacturedPlasticGoods },
     { intermediateManufacturedPlasticGoods },
     { plasticWaste },
@@ -38,8 +35,6 @@ const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
       import: {
         plasticinPrimaryForm:
           'Plastics_in_primary_forms___weight__import__WFL1',
-        intermediateFormsOfPlastic:
-          'Intermediate_forms_of_plastic_weight____import__WFL1',
         finalManufacturedPlasticGoods:
           'Final_manufactured_plastics_goods___weight__import__WFL1',
         intermediateManufacturedPlasticGoods:
@@ -49,8 +44,6 @@ const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
       export: {
         plasticinPrimaryForm:
           'Plastics_in_primary_forms___weight__export__WFL1',
-        intermediateFormsOfPlastic:
-          'Intermediate_forms_of_plastic_weight____export__WFL1',
         finalManufacturedPlasticGoods:
           'Final_manufactured_plastics_goods_weight____export__WFL1',
         intermediateManufacturedPlasticGoods:
@@ -156,7 +149,7 @@ const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
       ...(window.innerWidth < 768) ? { bottom: 0} : {top:'30%'},
       containLabel: true,
     },
-    color: ['#384E85', '#FFB800', '#f56a00', '#A7AD3E', '#3498db'],
+    color: ['#384E85', '#f56a00', '#A7AD3E', '#3498db'],
     series: [
       {
         ...(window.innerWidth < 768) ? { top: 150} : {top:0},
