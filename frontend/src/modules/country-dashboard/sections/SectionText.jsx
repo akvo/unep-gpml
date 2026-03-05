@@ -64,11 +64,15 @@ const SectionText = ({ template, placeholders = {} }) => {
   }
 
   return (
-    <Row className={styles.container}>
-      <Col span={24}>
-        <div className={styles.content}>{parse(html, parseOptions)}</div>
-      </Col>
-    </Row>
+    <>
+      {/* <Row className={styles.container}> */}
+      {/* <Col span={24}> */}
+      <div className={`section-text ${styles.content}`}>
+        {parse(html, parseOptions)}
+      </div>
+      {/* </Col> */}
+      {/* </Row> */}
+    </>
   )
 }
 
