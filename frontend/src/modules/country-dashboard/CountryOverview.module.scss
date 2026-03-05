@@ -53,6 +53,10 @@
       line-height: 1.8;
       list-style-type: disc;
     }
+    .two-cols {
+      columns: 2;
+      column-gap: 32px;
+    }
     .data-table {
       margin-top: 20px;
       tbody {
