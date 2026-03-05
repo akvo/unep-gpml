@@ -43,6 +43,27 @@
   max-width: 70%;
   margin: 0 auto;
   padding: 16px;
+  :global {
+    ul {
+      padding-left: 24px;
+      margin: 0;
+      margin-bottom: 10px;
+      // font-size: 16px;
+      // color: #000647;
+      line-height: 1.8;
+      list-style-type: disc;
+    }
+    .data-table {
+      margin-top: 20px;
+      tbody {
+        tr {
+          td:last-child:not(:first-child) {
+            text-align: right;
+          }
+        }
+      }
+    }
+  }
 
   @media (max-width: 768px) {
     max-width: 100%;
@@ -266,10 +287,11 @@
   color: #000647;
 
   strong {
-    color: #6236FF;
+    color: #6236ff;
   }
 
-  h3, h4 {
+  h3,
+  h4 {
     margin: 16px 0 12px 0;
   }
 
