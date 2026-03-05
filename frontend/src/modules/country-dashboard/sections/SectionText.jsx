@@ -23,7 +23,7 @@ const SectionText = ({ template, placeholders = {} }) => {
   if (!template) return null
 
   const compiled = Handlebars.compile(template, { noEscape: true })
-  const html = compiled(placeholders).replace(/\n\n/g, '<br />')
+  const html = compiled(placeholders).replace(/\n\n/g, '<p></p>')
 
   const parseOptions = {
     replace: (node) => {
