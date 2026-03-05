@@ -80,7 +80,9 @@ const TradingPartnersBarChart = ({ countryData }) => {
       formatter: (params) => {
         let html = `${params[0].name}<br/>`
         params.forEach((p) => {
-          html += `${p.marker} ${p.seriesName}: ${p.value?.toLocaleString()} ${t`million USD`}<br/>`
+          html += `${p.marker} ${
+            p.seriesName
+          }: ${p.value?.toLocaleString()} ${t`million USD`}<br/>`
         })
         return html
       },
@@ -131,7 +133,7 @@ const TradingPartnersBarChart = ({ countryData }) => {
     <div className="trading-partners-bar-chart">
       <ReactEcharts
         option={getOption()}
-        style={{ height: '400px', width: '100%' }}
+        style={{ height: '460px', width: '100%' }}
       />
       <div
         style={{

@@ -56,6 +56,12 @@
     .two-cols {
       columns: 2;
       column-gap: 32px;
+      margin-top: 20px;
+      & > div:first-child {
+        h4 {
+          margin-top: 0;
+        }
+      }
     }
     .data-table {
       margin-top: 20px;

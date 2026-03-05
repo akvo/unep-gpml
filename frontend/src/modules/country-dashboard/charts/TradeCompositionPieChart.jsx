@@ -37,10 +37,7 @@ const TradeCompositionPieChart = ({ countryData, type }) => {
   // Filter to data rows: must have a group name in "Imports" and a numeric value in "__EMPTY"
   const pieData = sectionRows
     .filter(
-      (r) =>
-        r.Imports &&
-        r.__EMPTY != null &&
-        typeof r.__EMPTY === 'number'
+      (r) => r.Imports && r.__EMPTY != null && typeof r.__EMPTY === 'number'
     )
     .map((r) => ({
       name: r.Imports,
@@ -73,7 +70,9 @@ const TradeCompositionPieChart = ({ countryData, type }) => {
     tooltip: {
       trigger: 'item',
       formatter: (params) =>
-        `${params.name}<br/>${params.value.toLocaleString()} M$ (${params.percent}%)`,
+        `${params.name}<br/>${params.value.toLocaleString()} M$ (${
+          params.percent
+        }%)`,
     },
     legend: {
       orient: 'horizontal',
@@ -84,8 +83,7 @@ const TradeCompositionPieChart = ({ countryData, type }) => {
     color: GROUP_COLORS,
     series: [
       {
-        name:
-          type === 'import' ? t`Import composition` : t`Export composition`,
+        name: type === 'import' ? t`Import composition` : t`Export composition`,
         type: 'pie',
         radius: ['35%', '65%'],
         top: '15%',
@@ -111,7 +109,13 @@ const TradeCompositionPieChart = ({ countryData, type }) => {
     <div style={{ position: 'relative' }}>
       <ReactEcharts
         option={getOption()}
-        style={{ height: typeof window !== 'undefined' && window.innerWidth < 768 ? '500px' : '400px', width: '100%' }}
+        style={{
+          height:
+            typeof window !== 'undefined' && window.innerWidth < 768
+              ? '500px'
+              : '440px',
+          width: '100%',
+        }}
       />
       <div
         style={{

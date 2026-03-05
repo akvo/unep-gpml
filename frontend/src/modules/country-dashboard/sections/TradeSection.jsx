@@ -148,14 +148,14 @@ const TradeSection = React.forwardRef(
             <h3 className={styles.sectionHeading}>Top Trading Partners</h3>
             <Row gutter={[24, 16]} className={styles.chartRow}>
               {textContent.trade.tradingPartners && (
-                <Col xs={24} md={10}>
+                <Col xs={24} md={9}>
                   <SectionText
                     template={textContent.trade.tradingPartners}
                     placeholders={{ country: countryName }}
                   />
                 </Col>
               )}
-              <Col xs={24} md={textContent.trade.tradingPartners ? 14 : 24}>
+              <Col xs={24} md={textContent.trade.tradingPartners ? 15 : 24}>
                 <ChartCard>
                   <TradingPartnersBarChart countryData={countryData} />
                 </ChartCard>
