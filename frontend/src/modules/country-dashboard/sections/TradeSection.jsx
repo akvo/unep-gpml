@@ -31,7 +31,17 @@ const TopProductsTable = dynamic(() => import('../charts/TopProductsTable'), {
 })
 
 const TradeSection = React.forwardRef(
-  ({ textContent, countryData, countryName, layers, layerLoading, strapiTradeContent }, ref) => {
+  (
+    {
+      textContent,
+      countryData,
+      countryName,
+      layers,
+      layerLoading,
+      strapiTradeContent,
+    },
+    ref
+  ) => {
     if (!textContent?.trade) return null
 
     return (
@@ -72,12 +82,18 @@ const TradeSection = React.forwardRef(
           <Row gutter={[24, 16]}>
             {textContent.trade.summaryLeft && (
               <Col xs={24} md={12}>
-                <SectionText template={textContent.trade.summaryLeft} placeholders={{ country: countryName }} />
+                <SectionText
+                  template={textContent.trade.summaryLeft}
+                  placeholders={{ country: countryName }}
+                />
               </Col>
             )}
             {textContent.trade.summary && (
               <Col xs={24} md={textContent.trade.summaryLeft ? 12 : 24}>
-                <SectionText template={textContent.trade.summary} placeholders={{ country: countryName }} />
+                <SectionText
+                  template={textContent.trade.summary}
+                  placeholders={{ country: countryName }}
+                />
               </Col>
             )}
           </Row>
@@ -132,11 +148,14 @@ const TradeSection = React.forwardRef(
             <h3 className={styles.sectionHeading}>Top Trading Partners</h3>
             <Row gutter={[24, 16]} className={styles.chartRow}>
               {textContent.trade.tradingPartners && (
-                <Col xs={24} md={10}>
-                  <SectionText template={textContent.trade.tradingPartners} placeholders={{ country: countryName }} />
+                <Col xs={24} md={9}>
+                  <SectionText
+                    template={textContent.trade.tradingPartners}
+                    placeholders={{ country: countryName }}
+                  />
                 </Col>
               )}
-              <Col xs={24} md={textContent.trade.tradingPartners ? 14 : 24}>
+              <Col xs={24} md={textContent.trade.tradingPartners ? 15 : 24}>
                 <ChartCard>
                   <TradingPartnersBarChart countryData={countryData} />
                 </ChartCard>
@@ -145,10 +164,15 @@ const TradeSection = React.forwardRef(
 
             {textContent.trade.productCategories && (
               <>
-                <h3
-                  className={styles.sectionHeading}
-                >Top Product Categories</h3>
-                <SectionText template={textContent.trade.productCategories} placeholders={{ country: countryName }} />
+                <h3 className={styles.sectionHeading}>
+                  Top Product Categories
+                </h3>
+                <div style={{ marginBottom: 30 }}>
+                  <SectionText
+                    template={textContent.trade.productCategories}
+                    placeholders={{ country: countryName }}
+                  />
+                </div>
               </>
             )}
 

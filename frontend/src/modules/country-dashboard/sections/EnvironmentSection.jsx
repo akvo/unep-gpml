@@ -108,16 +108,10 @@ const EnvironmentSection = React.forwardRef(
         />
 
         {leftCol && (
-          <Row gutter={[24, 16]}>
-            <Col xs={24} md={12}>
-              <div className={styles.textColumn}>{leftCol}</div>
-            </Col>
-            {rightCol && (
-              <Col xs={24} md={12}>
-                <div className={styles.textColumn}>{rightCol}</div>
-              </Col>
-            )}
-          </Row>
+          <div className="two-cols">
+            <div className={styles.textColumn}>{leftCol}</div>
+            {rightCol && <div className={styles.textColumn}>{rightCol}</div>}
+          </div>
         )}
 
         {/* <ChartCard className={styles.chartCardPadded}>

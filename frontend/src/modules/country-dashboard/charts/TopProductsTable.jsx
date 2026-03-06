@@ -108,6 +108,7 @@ const TopProductsTable = ({ countryData, type, countryName }) => {
         size="small"
         scroll={{ x: true }}
         style={{ fontSize: '13px' }}
+        className="data-table"
       />
       <div
         style={{
