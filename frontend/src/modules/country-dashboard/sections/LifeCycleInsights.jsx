@@ -18,7 +18,7 @@ const LifeCycleInsights = ({ data, countryName }) => {
       {data.sections.map((section, index) => (
         <div className={styles.columnItem} key={index}>
           <h3 className={styles.sectionHeading}>
-            {section.heading}
+            {compile(section.heading, placeholders)}
           </h3>
 
           {section.text && section.text.split('\n\n').map((para, i) => (      
