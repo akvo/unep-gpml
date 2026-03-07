@@ -1,6 +1,7 @@
 import React from 'react'
 import { Row, Col } from 'antd'
 import dynamic from 'next/dynamic'
+import { useRouter } from 'next/router'
 import SectionText from './SectionText'
 import KeyTrends from './KeyTrends'
 import ChartCard from '../ChartCard'
@@ -42,6 +43,7 @@ const TradeSection = React.forwardRef(
     },
     ref
   ) => {
+    const router = useRouter()
     if (!textContent?.trade) return null
 
     return (
@@ -62,13 +64,15 @@ const TradeSection = React.forwardRef(
                   {strapiTradeContent.firstHalf}
                 </div>
               </Col>
-              <Col xs={24} md={12}>
-                <div className={styles.textColumn}>
-                  {strapiTradeContent.secondHalf}
-                </div>
-              </Col>
+              {router.query.countryCode !== 'SLB' && (
+                <Col xs={24} md={12}>
+                  <div className={styles.textColumn}>
+                    {strapiTradeContent.secondHalf}
+                  </div>
+                </Col>
+              )}
             </Row>
-            {strapiTradeContent.trends && (
+            {/* {strapiTradeContent.trends && (
               <Row style={{ marginTop: 16, marginBottom: 24 }}>
                 <Col span={24}>
                   <div className={styles.textColumn}>
@@ -76,6 +80,14 @@ const TradeSection = React.forwardRef(
                   </div>
                 </Col>
               </Row>
+            )} */}
+            {textContent.trade.summary && (
+              <Col xs={24} md={24}>
+                <SectionText
+                  template={textContent.trade.summary}
+                  placeholders={{ country: countryName }}
+                />
+              </Col>
             )}
           </>
         ) : (
