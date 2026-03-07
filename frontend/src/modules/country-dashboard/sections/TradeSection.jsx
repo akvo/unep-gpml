@@ -68,7 +68,7 @@ const TradeSection = React.forwardRef(
                 </div>
               </Col>
             </Row>
-            {strapiTradeContent.trends && (
+            {/* {strapiTradeContent.trends && (
               <Row style={{ marginTop: 16, marginBottom: 24 }}>
                 <Col span={24}>
                   <div className={styles.textColumn}>
@@ -76,6 +76,14 @@ const TradeSection = React.forwardRef(
                   </div>
                 </Col>
               </Row>
+            )} */}
+            {textContent.trade.summary && (
+              <Col xs={24} md={24}>
+                <SectionText
+                  template={textContent.trade.summary}
+                  placeholders={{ country: countryName }}
+                />
+              </Col>
             )}
           </>
         ) : (
