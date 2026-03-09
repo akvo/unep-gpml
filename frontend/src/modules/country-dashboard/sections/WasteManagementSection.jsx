@@ -73,7 +73,6 @@ const WasteManagementSection = React.forwardRef(
             )}
           </div>
         )}
-        {countryCode}
         <WFDStudies countryCode={countryCode} />
       </div>
     )

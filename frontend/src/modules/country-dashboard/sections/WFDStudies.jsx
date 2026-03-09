@@ -17,47 +17,91 @@ const SANKEY_NODES = [
   { name: 'Burnt', itemStyle: { color: '#ED7D31' } },
 ]
 
-const SANKEY_LINKS = [
-  { source: 'Generation', target: 'Collection services', value: 61880, lineStyle: { color: '#C5E0B4', opacity: 0.6 } },
-  { source: 'Generation', target: 'Unmanaged', value: 62737, lineStyle: { color: '#F4B8B0', opacity: 0.6 } },
-  { source: 'Collection services', target: 'Disposal', value: 37659, lineStyle: { color: '#C5E0B4', opacity: 0.6 } },
-  { source: 'Collection services', target: 'Sorted for recovery', value: 24221, lineStyle: { color: '#C5E0B4', opacity: 0.6 } },
-  { source: 'Unmanaged', target: 'Land', value: 25045, lineStyle: { color: '#F4B8B0', opacity: 0.6 } },
-  { source: 'Unmanaged', target: 'Drains', value: 534, lineStyle: { color: '#F4B8B0', opacity: 0.6 } },
-  { source: 'Unmanaged', target: 'Water', value: 25293, lineStyle: { color: '#F4B8B0', opacity: 0.6 } },
-  { source: 'Unmanaged', target: 'Burnt', value: 11865, lineStyle: { color: '#F4B8B0', opacity: 0.6 } },
-]
+const buildSankeyOption = (d) => {
+  const links = [
+    {
+      source: 'Generation',
+      target: 'Collection services',
+      value:
+        Number(d.DNAdisposedplastics || 0) + Number(d.recoveredplastics || 0),
+      lineStyle: { color: '#C5E0B4', opacity: 0.6 },
+    },
+    {
+      source: 'Generation',
+      target: 'Unmanaged',
+      value:
+        Number(d.DNAlandretention || 0) +
+        Number(d.DNAdrainretention || 0) +
+        Number(d.DNAtowater || 0) +
+        Number(d.F22a || 0),
+      lineStyle: { color: '#F4B8B0', opacity: 0.6 },
+    },
+    {
+      source: 'Collection services',
+      target: 'Disposal',
+      value: d.DNAdisposedplastics || 0,
+      lineStyle: { color: '#C5E0B4', opacity: 0.6 },
+    },
+    {
+      source: 'Collection services',
+      target: 'Sorted for recovery',
+      value: d.recoveredplastics || 0,
+      lineStyle: { color: '#C5E0B4', opacity: 0.6 },
+    },
+    {
+      source: 'Unmanaged',
+      target: 'Land',
+      value: d.DNAlandretention || 0,
+      lineStyle: { color: '#F4B8B0', opacity: 0.6 },
+    },
+    {
+      source: 'Unmanaged',
+      target: 'Drains',
+      value: d.DNAdrainretention || 0,
+      lineStyle: { color: '#F4B8B0', opacity: 0.6 },
+    },
+    {
+      source: 'Unmanaged',
+      target: 'Water',
+      value: d.DNAtowater || 0,
+      lineStyle: { color: '#F4B8B0', opacity: 0.6 },
+    },
+    {
+      source: 'Unmanaged',
+      target: 'Burnt',
+      value: d.F22a || 0,
+      lineStyle: { color: '#F4B8B0', opacity: 0.6 },
+    },
+  ]
+  console.log(links)
 
-// Precompute node values from links so the formatter doesn't rely on params.value
-const sankeyOutgoing = {}
-const sankeyIncoming = {}
-SANKEY_LINKS.forEach(({ source, target, value }) => {
-  sankeyOutgoing[source] = (sankeyOutgoing[source] || 0) + value
-  sankeyIncoming[target] = (sankeyIncoming[target] || 0) + value
-})
-// Middle nodes: appear as both source and target — hide their value label
-const sankeyMiddleNodes = new Set(
-  Object.keys(sankeyOutgoing).filter((n) => sankeyIncoming[n])
-)
+  const outgoing = {}
+  const incoming = {}
+  links.forEach(({ source, target, value }) => {
+    outgoing[source] = (outgoing[source] || 0) + value
+    incoming[target] = (incoming[target] || 0) + value
+  })
+  const middleNodes = new Set(Object.keys(outgoing).filter((n) => incoming[n]))
 
-const SANKEY_OPTION = {
-  series: {
-    type: 'sankey',
-    orient: 'horizontal',
-    nodeAlign: 'justify',
-    data: SANKEY_NODES,
-    links: SANKEY_LINKS,
-    label: {
-      formatter: (params) => {
-        if (sankeyMiddleNodes.has(params.name)) return params.name
-        const val = sankeyOutgoing[params.name] || sankeyIncoming[params.name]
-        if (!val) return params.name
-        return params.name === 'Generation'
-          ? `${params.name}: ${Number(val).toLocaleString()} t/year`
-          : `${params.name}: ${Number(val).toLocaleString()}`
+  return {
+    series: {
+      type: 'sankey',
+      orient: 'horizontal',
+      nodeAlign: 'justify',
+      data: SANKEY_NODES,
+      links,
+      label: {
+        formatter: (params) => {
+          if (middleNodes.has(params.name)) return params.name
+          const val = outgoing[params.name] || incoming[params.name]
+          if (!val) return params.name
+          return params.name === 'Generation'
+            ? `${params.name}: ${Number(val).toLocaleString()} t/year`
+            : `${params.name}: ${Number(val).toLocaleString()}`
+        },
       },
     },
-  },
+  }
 }
 
 const API_KEY =
@@ -88,6 +132,8 @@ const WFDStudies = ({ countryCode }) => {
   const [studies, setStudies] = useState([])
   const [loading, setLoading] = useState(false)
   const [selected, setSelected] = useState(undefined)
+  const [flowData, setFlowData] = useState(null)
+  const [flowLoading, setFlowLoading] = useState(false)
 
   useEffect(() => {
     const iso2 = toIso2(countryCode)
@@ -95,12 +141,12 @@ const WFDStudies = ({ countryCode }) => {
     setLoading(true)
     setStudies([])
     setSelected(undefined)
+    setFlowData(null)
     fetch(
       `https://wfd-data.rwm.global/api/studies/key/${API_KEY}/country/${iso2}/encoding/json`
     )
       .then((res) => res.json())
       .then((data) => {
-        console.log(data)
         const items = Array.isArray(data)
           ? data
           : data?.studies || data?.data || []
@@ -110,29 +156,59 @@ const WFDStudies = ({ countryCode }) => {
       .finally(() => setLoading(false))
   }, [countryCode])
 
+  useEffect(() => {
+    if (selected == null) {
+      setFlowData(null)
+      return
+    }
+    setFlowLoading(true)
+    fetch(
+      `https://wfd-data.rwm.global/api/studyFlow/key/${API_KEY}/study/${selected}/encoding/json`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        const d = Array.isArray(data) ? data[0] : data
+        setFlowData(d || null)
+      })
+      .catch(() => setFlowData(null))
+      .finally(() => setFlowLoading(false))
+  }, [selected])
+
   if (!loading && studies.length === 0) return null
 
   return (
     <div className={styles.wfdStudies}>
-      <h3 className={styles.wfdStudiesTitle}>Waste Flow Diagram Studies</h3>
+      <h4 className={styles.wfdStudiesTitle}>
+        Plastic leakage in municipal solid waste management systems in cities
+      </h4>
+      <p>
+        A study on plastic leakage from municipal solid waste management systems
+        in [year] in created a sanky diagram as shown below. This can provide
+        insights on what stages of the waste management system is the largest
+        source of plastic pollution
+      </p>
       {loading ? (
         <Spin size="small" />
       ) : (
         <>
           <Select
+            className="city-study-select"
             style={{ width: '100%', maxWidth: 480 }}
             placeholder="Select a study"
             value={selected}
             onChange={setSelected}
-            options={studies.map((s, i) => ({
-              value: s.study_name ?? i,
+            options={studies.map((s) => ({
+              value: s.ID,
               label: s.study_name,
             }))}
           />
-          <ReactEcharts
-            option={SANKEY_OPTION}
-            style={{ height: 500, marginTop: 24 }}
-          />
+          {flowLoading && <Spin size="small" style={{ marginTop: 24 }} />}
+          {!flowLoading && flowData && (
+            <ReactEcharts
+              option={buildSankeyOption(flowData)}
+              style={{ height: 500, marginTop: 24 }}
+            />
+          )}
         </>
       )}
     </div>
