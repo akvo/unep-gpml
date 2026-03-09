@@ -29,12 +29,10 @@ const parseInlineStyle = (styleStr) => {
 }
 
 const splitEnvironmentContent = (html) => {
-  // Split at the second <h4> tag (Beach litter)
   const secondH4 = html.indexOf('<h4', html.indexOf('<h4') + 1)
   if (secondH4 !== -1) {
     return [html.slice(0, secondH4).trim(), html.slice(secondH4).trim()]
   }
-  // Fallback: split by paragraphs roughly in half
   const parts = html.split('</p>')
   const half = Math.ceil(parts.length / 2)
   return [
@@ -44,8 +42,8 @@ const splitEnvironmentContent = (html) => {
 }
 
 const EnvironmentSection = React.forwardRef(
-  ({ textContent, countryData, countryName, layers, layerLoading }, ref) => {
-    if (!textContent?.environment) return null
+  ({ textContent, countryData, countryName, layers, layerLoading, strapiEnvironmentContent }, ref) => {
+    if (!textContent?.environment && !strapiEnvironmentContent) return null
 
     const parseOptions = {
       replace: (node) => {
@@ -80,10 +78,43 @@ const EnvironmentSection = React.forwardRef(
       },
     }
 
+    // Strapi content path (non-Excel countries)
+    if (strapiEnvironmentContent && !textContent?.environment) {
+      return (
+        <div
+          ref={ref}
+          data-section="environment"
+          className={styles.dashboardSection}
+        >
+          <h2 className={styles.sectionTitle}>Plastics in the Environment</h2>
+
+          <Row gutter={[16, 16]} className={styles.chartRow}>
+            <Col xs={24} md={12}>
+              <div className={styles.textColumn}>
+                {strapiEnvironmentContent.firstHalf}
+              </div>
+            </Col>
+            {strapiEnvironmentContent.secondHalf && (
+              <Col xs={24} md={12}>
+                <div className={styles.textColumn}>
+                  {strapiEnvironmentContent.secondHalf}
+                </div>
+              </Col>
+            )}
+          </Row>
+
+          <ChartCard className={styles.chartCardPadded}>
+            <PlasticOceanBeachChart layers={layers} layerLoading={layerLoading} />
+          </ChartCard>
+        </div>
+      )
+    }
+
+    // JSON content path (Excel countries)
     let leftCol = null
     let rightCol = null
 
-    if (textContent.environment.content) {
+    if (textContent?.environment?.content) {
       const compiled = Handlebars.compile(textContent.environment.content, {
         noEscape: true,
       })
@@ -101,11 +132,13 @@ const EnvironmentSection = React.forwardRef(
       >
         <h2 className={styles.sectionTitle}>Plastics in the Environment</h2>
 
-        <KeyTrends
-          items={textContent.environment.keyTrends}
-          title="Key trends"
-          placeholders={{ country: countryName }}
-        />
+        {textContent?.environment?.keyTrends && (
+          <KeyTrends
+            items={textContent.environment.keyTrends}
+            title="Key trends"
+            placeholders={{ country: countryName }}
+          />
+        )}
 
         {leftCol && (
           <div className="two-cols">
@@ -113,10 +146,6 @@ const EnvironmentSection = React.forwardRef(
             {rightCol && <div className={styles.textColumn}>{rightCol}</div>}
           </div>
         )}
-
-        {/* <ChartCard className={styles.chartCardPadded}>
-          <PlasticOceanBeachChart layers={layers} layerLoading={layerLoading} />
-        </ChartCard> */}
       </div>
     )
   }

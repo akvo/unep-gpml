@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Layout, Select, Button } from 'antd'
 import useQueryParameters from '../../../../hooks/useQueryParameters'
 import { UIStore } from '../../../../store'
@@ -12,22 +12,15 @@ import styled from 'styled-components'
 const { Sider } = Layout
 
 const CategoriesNestedDashboard = ({
-  categories,
-  handleCategoryParentClick,
-  isExcelCountry,
   availableSections,
   activeSection,
   scrollToSection,
 }) => {
   const { queryParameters, setQueryParameters } = useQueryParameters()
-  const [selectedCategory, setSelectedCategory] = useState(null)
-  const [selectedCountry, setSelectedCountry] = useState(null)
   const baseURL = getBaseUrl()
 
   const { countries } = UIStore.useState((s) => ({
     countries: s.countries,
-    transnationalOptions: s.transnationalOptions,
-    landing: s.landing,
   }))
 
   const isLoaded = () => !isEmpty(countries)
@@ -48,31 +41,6 @@ const CategoriesNestedDashboard = ({
     }
 
     setQueryParameters(newParams)
-
-    setSelectedCountry(selectedCountry?.name)
-  }
-
-  const handleCategoryClick = (category) => {
-    const newParams = {
-      categoryId: category.attributes.categoryId,
-    }
-
-    setQueryParameters(newParams)
-    setSelectedCategory(category.attributes.categoryId)
-    handleCategoryParentClick(category)
-  }
-
-  const isCategorySelected = (category) => {
-    return queryParameters.categoryId === category.attributes.categoryId
-  }
-
-  const handleViewGlobalDataClick = () => {
-    const categoryId = selectedCategory || queryParameters.categoryId
-    if (categoryId) {
-      window.open(`${baseURL}/data/maps?categoryId=${categoryId}`, '_blank')
-    } else {
-      alert('Please select a category before viewing global data.')
-    }
   }
 
   const handleBackToHomePage = () => {
@@ -98,8 +66,7 @@ const CategoriesNestedDashboard = ({
         onChange={handleChangeCountry}
       />
 
-      {isExcelCountry && availableSections ? (
-        /* TOC nav for Excel countries – scroll-based section navigation */
+      {availableSections && (
         <div style={{ marginTop: '20px' }} className="nav">
           {availableSections.map((section) => (
             <TocItem
@@ -114,24 +81,11 @@ const CategoriesNestedDashboard = ({
             </TocItem>
           ))}
         </div>
-      ) : (
-        /* Category nav for non-Excel countries */
-        <div style={{ marginTop: '20px' }} className="nav">
-          {categories.map((category) => (
-            <div
-              key={category.attributes.categoryId}
-              onClick={() => handleCategoryClick(category)}
-              className={classNames('nav-item', {
-                selected: isCategorySelected(category),
-              })}
-            >
-              {category.attributes.name}
-            </div>
-          ))}
-        </div>
       )}
 
-      <ButtonStyled type="ghost" onClick={handleViewGlobalDataClick}>
+      <ButtonStyled type="ghost" onClick={() => {
+        window.open(`${baseURL}/data/maps`, '_blank')
+      }}>
         {t`View Global Data `} →
       </ButtonStyled>
     </Sider>

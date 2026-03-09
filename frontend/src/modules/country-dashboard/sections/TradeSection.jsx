@@ -40,21 +40,27 @@ const TradeSection = React.forwardRef(
       layers,
       layerLoading,
       strapiTradeContent,
+      headerExtra,
     },
     ref
   ) => {
     const router = useRouter()
-    if (!textContent?.trade) return null
+    if (!textContent?.trade && !strapiTradeContent) return null
 
     return (
       <div ref={ref} data-section="trade" className={styles.dashboardSection}>
-        <h2 className={styles.sectionTitle}>Trade</h2>
+        <div className={styles.sectionTitleRow}>
+          <h2 className={styles.sectionTitle}>Trade</h2>
+          {headerExtra}
+        </div>
 
-        <KeyTrends
-          items={textContent.trade.keyTrends}
-          title="Key Trade Trends"
-          placeholders={{ country: countryName }}
-        />
+        {textContent?.trade?.keyTrends && (
+          <KeyTrends
+            items={textContent.trade.keyTrends}
+            title="Key Trade Trends"
+            placeholders={{ country: countryName }}
+          />
+        )}
 
         {strapiTradeContent ? (
           <>
@@ -72,7 +78,7 @@ const TradeSection = React.forwardRef(
                 </Col>
               )}
             </Row>
-            {/* {strapiTradeContent.trends && (
+            {strapiTradeContent.trends && (
               <Row style={{ marginTop: 16, marginBottom: 24 }}>
                 <Col span={24}>
                   <div className={styles.textColumn}>
@@ -80,8 +86,8 @@ const TradeSection = React.forwardRef(
                   </div>
                 </Col>
               </Row>
-            )} */}
-            {textContent.trade.summary && (
+            )}
+            {textContent?.trade?.summary && (
               <Col xs={24} md={24}>
                 <SectionText
                   template={textContent.trade.summary}
@@ -92,7 +98,7 @@ const TradeSection = React.forwardRef(
           </>
         ) : (
           <Row gutter={[24, 16]}>
-            {textContent.trade.summaryLeft && (
+            {textContent?.trade?.summaryLeft && (
               <Col xs={24} md={12}>
                 <SectionText
                   template={textContent.trade.summaryLeft}
@@ -100,7 +106,7 @@ const TradeSection = React.forwardRef(
                 />
               </Col>
             )}
-            {textContent.trade.summary && (
+            {textContent?.trade?.summary && (
               <Col xs={24} md={textContent.trade.summaryLeft ? 12 : 24}>
                 <SectionText
                   template={textContent.trade.summary}
@@ -159,7 +165,7 @@ const TradeSection = React.forwardRef(
           <>
             <h3 className={styles.sectionHeading}>Top Trading Partners</h3>
             <Row gutter={[24, 16]} className={styles.chartRow}>
-              {textContent.trade.tradingPartners && (
+              {textContent?.trade?.tradingPartners && (
                 <Col xs={24} md={9}>
                   <SectionText
                     template={textContent.trade.tradingPartners}
@@ -167,14 +173,14 @@ const TradeSection = React.forwardRef(
                   />
                 </Col>
               )}
-              <Col xs={24} md={textContent.trade.tradingPartners ? 15 : 24}>
+              <Col xs={24} md={textContent?.trade?.tradingPartners ? 15 : 24}>
                 <ChartCard>
                   <TradingPartnersBarChart countryData={countryData} />
                 </ChartCard>
               </Col>
             </Row>
 
-            {textContent.trade.productCategories && (
+            {textContent?.trade?.productCategories && (
               <>
                 <h3 className={styles.sectionHeading}>
                   Top Product Categories

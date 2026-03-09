@@ -6,7 +6,7 @@ import DashboardLanding from './DashboardLanding'
 import MobileTOC from './MobileTOC'
 import useCountryData from '../../hooks/useCountryData'
 import useActiveSection from '../../hooks/useActiveSection'
-import { EXCEL_COUNTRY_CODES, SECTION_REGISTRY } from './constants'
+import { EXCEL_COUNTRY_CODES, SECTION_REGISTRY, STRAPI_SECTION_KEYS } from './constants'
 import styles from './style.module.scss'
 
 function ResourceView() {
@@ -17,17 +17,21 @@ function ResourceView() {
   const isExcelCountry = EXCEL_COUNTRY_CODES.includes(countryCode)
   const { data: countryFileData, loading: countryDataLoading } = useCountryData()
 
-  // Compute which sections have data in the JSON
+  // Compute which sections are available
   const availableSections = useMemo(() => {
-    if (!isExcelCountry || !countryFileData?.text) return SECTION_REGISTRY
-    const textContent = countryFileData.text
-    return SECTION_REGISTRY.filter((s) => {
-      const section = textContent[s.textKey]
-      if (!section || typeof section !== 'object') return false
-      // Hide sections that are empty objects or only have a title
-      const keys = Object.keys(section).filter((k) => k !== 'title')
-      return keys.length > 0
-    })
+    if (isExcelCountry) {
+      // Excel countries: filter by JSON text content
+      if (!countryFileData?.text) return SECTION_REGISTRY
+      const textContent = countryFileData.text
+      return SECTION_REGISTRY.filter((s) => {
+        const section = textContent[s.textKey]
+        if (!section || typeof section !== 'object') return false
+        const keys = Object.keys(section).filter((k) => k !== 'title')
+        return keys.length > 0
+      })
+    }
+    // Non-Excel countries: show sections that have Strapi category mappings
+    return SECTION_REGISTRY.filter((s) => STRAPI_SECTION_KEYS.has(s.key))
   }, [isExcelCountry, countryFileData])
 
   const sectionKeys = useMemo(
@@ -38,11 +42,14 @@ function ResourceView() {
   const { activeSection, scrollToSection, registerRef } =
     useActiveSection(sectionKeys)
 
-  // Backward compat: if categoryId is in URL for Excel country, scroll to that section then clean URL
+  // Backward compat: if categoryId is in URL, scroll to mapped section then clean URL
   useEffect(() => {
-    if (!isExcelCountry || !query.categoryId) return
+    if (!query.categoryId) return
 
     const categoryToSection = {
+      'industry-and-trade': 'trade',
+      'waste-management': 'waste-management',
+      'environmental-impact': 'environment',
       production: 'production',
       trade: 'trade',
       consumption: 'consumption',
@@ -59,11 +66,9 @@ function ResourceView() {
     router.replace({ pathname: router.pathname, query: rest }, undefined, {
       shallow: true,
     })
-  }, [isExcelCountry, query.categoryId])
+  }, [query.categoryId])
 
-  const showDashboard = isExcelCountry
-    ? !!country
-    : !!country && !!query.categoryId
+  const showDashboard = !!country
 
   return (
     <>
@@ -72,7 +77,6 @@ function ResourceView() {
           <Sidebar
             alt={false}
             countryDashboard={true}
-            isExcelCountry={isExcelCountry}
             availableSections={availableSections}
             activeSection={activeSection}
             scrollToSection={scrollToSection}

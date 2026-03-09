@@ -1,82 +1,21 @@
 import React, { useEffect, useState } from 'react'
-import { Row, Col, Button, Spin, Tooltip } from 'antd'
+import { Button, Spin, Tooltip } from 'antd'
 import { useRouter } from 'next/router'
-import dynamic from 'next/dynamic'
 import useReplacedText from '../../hooks/useReplacePlaceholders'
-import PolicyComponent from './PolicyComponents'
 import RequestDataUpdateModal from './RequestDataUpdateModal'
-import ChartCard from './ChartCard'
 import {
   CATEGORY_IDS,
-  WEIGHT_LAYER_IDS,
   COLUMN_SPLIT_MARKER,
   EXCEL_COUNTRY_CODES,
-  SECTION_REGISTRY,
 } from './constants'
 
-const PlasticImportExportChart = dynamic(
-  () => import('./charts/PlasticImportExportChart'),
-  { ssr: false }
-)
-const PlasticImportExportTonnesChart = dynamic(
-  () => import('./charts/PlasticImportExportTonnesChart'),
-  { ssr: false }
-)
-const PlasticImportExportPieCharts = dynamic(
-  () => import('./charts/PlasticImportExportPieChart'),
-  { ssr: false }
-)
-const MSWGenerationChart = dynamic(
-  () => import('./charts/MSWGeneration'),
-  { ssr: false }
-)
-const PlasticOceanBeachChart = dynamic(
-  () => import('./charts/PlasticOceanBeachCHart'),
-  { ssr: false }
-)
-const PlasticCompositionChart = dynamic(
-  () => import('./charts/PlasticCompositionChart'),
-  { ssr: false }
-)
-const PlasticConsumptionChart = dynamic(
-  () => import('./charts/PlasticConsumptionChart'),
-  { ssr: false }
-)
-const TradingPartnersPieChart = dynamic(
-  () => import('./charts/TradingPartnersPieChart'),
-  { ssr: false }
-)
-const ProductCategoriesChart = dynamic(
-  () => import('./charts/ProductCategoriesChart'),
-  { ssr: false }
-)
-const TradeCompositionPieChart = dynamic(
-  () => import('./charts/TradeCompositionPieChart'),
-  { ssr: false }
-)
-const TopProductsTable = dynamic(
-  () => import('./charts/TopProductsTable'),
-  { ssr: false }
-)
-const TotalPlasticsTradeChart = dynamic(
-  () => import('./charts/TotalPlasticsTradeChart'),
-  { ssr: false }
-)
-const TradingPartnersBarChart = dynamic(
-  () => import('./charts/TradingPartnersBarChart'),
-  { ssr: false }
-)
 import Handlebars from 'handlebars'
-import useCategories from '../../hooks/useCategories'
-import SectionText from './sections/SectionText'
-import KeyTrends from './sections/KeyTrends'
-import LifeCycleInsights from './sections/LifeCycleInsights'
 import parse from 'html-react-parser'
 import styles from './CountryOverview.module.scss'
 import { t } from '@lingui/macro'
 
 import useLayerInfo from '../../hooks/useLayerInfo'
-import { getBaseUrl } from '../../utils/misc'
+import useCategories from '../../hooks/useCategories'
 
 // Section components for the one-pager
 import ProductionSection from './sections/ProductionSection'
@@ -95,57 +34,6 @@ const SECTION_COMPONENTS = {
   'life-cycle-insights': LifeCycleInsightsSection,
 }
 
-export function cleanArcGisFields(fields) {
-  if (!fields) return []
-
-  let cleanedFields = fields.filter((field) => !field.includes('='))
-
-  const unwantedValues = ['importTrend', 'country']
-  cleanedFields = cleanedFields.filter(
-    (field) => !unwantedValues.includes(field.trim())
-  )
-
-  cleanedFields = cleanedFields.map((field) =>
-    field
-      .replace(/(_total|_last|_first|_city)$/, '')
-      .replace(/_year_first$/, '')
-      .replace(/_year_last$/, '')
-      .replace(/_year$/, '')
-      .trim()
-  )
-
-  cleanedFields = cleanedFields.filter((field) => field !== '')
-
-  return [...new Set([...WEIGHT_LAYER_IDS, ...cleanedFields])]
-}
-
-const splitTextInHalf = (text, splitMarker = '') => {
-  if (splitMarker && text.includes(splitMarker)) {
-    const parts = text.split(splitMarker)
-    return [parts[0].trim(), parts.slice(1).join(splitMarker).trim()]
-  }
-  // Flexible match for "Plastic exports" heading regardless of tag/style format
-  const exportsRegex = /<(?:strong|h3)[^>]*>Plastic exports<\/(?:strong|h3)>/i
-  const match = text.match(exportsRegex)
-  if (match) {
-    const exportsIndex = match.index
-    const firstHalf = text.slice(0, exportsIndex).trim()
-    const secondHalf = text.slice(exportsIndex).trim()
-    return [firstHalf, secondHalf]
-  }
-
-  const words = text.split(' ')
-  const halfIndex = Math.ceil(words.length / 2)
-  const firstHalf = words.slice(0, halfIndex).join(' ')
-  const secondHalf = words.slice(halfIndex).join(' ')
-  return [firstHalf, secondHalf]
-}
-
-const splitTextByMarker = (text, marker) => {
-  const [firstPart, secondPart] = text.split(marker)
-  return [firstPart?.trim(), secondPart?.trim()]
-}
-
 const TRADE_HEADINGS = ['plastic imports', 'plastic exports', 'plastic trade trends']
 
 const tradeHeadingStyle = {
@@ -154,6 +42,27 @@ const tradeHeadingStyle = {
   fontSize: '24px',
   fontWeight: 700,
   lineHeight: '30px',
+}
+
+const splitTextInHalf = (text, splitMarker = '') => {
+  if (splitMarker && text.includes(splitMarker)) {
+    const parts = text.split(splitMarker)
+    return [parts[0].trim(), parts.slice(1).join(splitMarker).trim()]
+  }
+  const exportsRegex = /<(?:strong|h3)[^>]*>Plastic exports<\/(?:strong|h3)>/i
+  const match = text.match(exportsRegex)
+  if (match) {
+    const exportsIndex = match.index
+    return [text.slice(0, exportsIndex).trim(), text.slice(exportsIndex).trim()]
+  }
+  const words = text.split(' ')
+  const halfIndex = Math.ceil(words.length / 2)
+  return [words.slice(0, halfIndex).join(' '), words.slice(halfIndex).join(' ')]
+}
+
+const splitTextByMarker = (text, marker) => {
+  const [firstPart, secondPart] = text.split(marker)
+  return [firstPart?.trim(), secondPart?.trim()]
 }
 
 const addTooltipsToPlaceholders = (htmlString, placeholders, tooltips, { convertHeadings = false } = {}) => {
@@ -187,7 +96,6 @@ const addTooltipsToPlaceholders = (htmlString, placeholders, tooltips, { convert
         )
       }
 
-      // Convert <strong>Plastic imports</strong> etc to styled <h4>
       if (
         convertHeadings &&
         (node.name === 'strong' || node.name === 'b') &&
@@ -216,6 +124,83 @@ const wrapPlaceholders = (template) => {
   })
 }
 
+// Helper: extract unique ArcGIS layer IDs from a Strapi category object
+const extractLayerIds = (categoryObject) => {
+  if (!categoryObject?.attributes?.textTemplate?.placeholders) return []
+  return [
+    ...new Set(
+      categoryObject.attributes.textTemplate.placeholders.map(
+        (placeholder) =>
+          placeholder
+            .split('=')[0]
+            .split(/(_year|_total|_last|_first|_city|\*|\/|\+|\-)/)[0]
+            .trim()
+      )
+    ),
+  ]
+}
+
+// Helper: filter layers by IDs and country
+const filterLayersByCountry = (layers, layerIds, countryCode, countryName) => {
+  const filtered = layers.filter((layer) =>
+    layerIds.includes(layer.attributes.arcgislayerId)
+  )
+  return JSON.stringify(
+    filtered.filter((l) =>
+      l.attributes.ValuePerCountry?.some(
+        (vpc) =>
+          vpc.CountryCode === countryCode ||
+          vpc.CountryName === countryName
+      )
+    )
+  )
+}
+
+// Helper: compile a Strapi template and split into two columns
+const buildStrapiSectionContent = (
+  categoryObject,
+  placeholdersData,
+  tooltipsData,
+  countryName,
+  splitFn
+) => {
+  if (!categoryObject || Object.keys(placeholdersData).length === 0) return null
+
+  const processedPlaceholders = { ...placeholdersData }
+  const rawTemplate =
+    categoryObject.attributes?.textTemplate?.template || ''
+  const wrappedTemplate = wrapPlaceholders(rawTemplate)
+  const compiledTemplate = Handlebars.compile(wrappedTemplate, {
+    noEscape: true,
+  })
+  const categoryText = compiledTemplate({
+    ...processedPlaceholders,
+    country: countryName,
+  })
+
+  const [firstHalf, secondHalf] = splitFn(categoryText)
+
+  return {
+    firstHalf: addTooltipsToPlaceholders(
+      firstHalf,
+      processedPlaceholders,
+      tooltipsData
+    ),
+    secondHalf: secondHalf
+      ? addTooltipsToPlaceholders(
+          secondHalf,
+          processedPlaceholders,
+          tooltipsData
+        )
+      : null,
+    text: addTooltipsToPlaceholders(
+      categoryText,
+      processedPlaceholders,
+      tooltipsData
+    ),
+  }
+}
+
 const CountryOverview = ({
   countryFileData,
   countryDataLoading,
@@ -225,16 +210,13 @@ const CountryOverview = ({
   const router = useRouter()
   const { query } = router
   const [isMobile, setIsMobile] = useState(false)
-  const [selectedCategory, setSelectedCategory] = useState(null)
   const { categories } = useCategories()
   const { layers, loading: layerLoading } = useLayerInfo()
-  const baseURL = getBaseUrl()
 
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768)
     }
-
     handleResize()
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
@@ -242,589 +224,257 @@ const CountryOverview = ({
 
   const countryData = countryFileData?.sheets || null
   const textContent = countryFileData?.text || null
-
-  const isExcelCountry = EXCEL_COUNTRY_CODES.includes(router.query.countryCode)
-
-  const selectedCategoryObject = categories.find(
-    (c) => c.attributes.categoryId == router.query.categoryId
-  )
+  const isExcelCountry = EXCEL_COUNTRY_CODES.includes(query.countryCode)
+  const countryName = decodeURIComponent(query.country || '')
 
   const [isModalVisible, setModalVisible] = useState(false)
+  const showModal = () => setModalVisible(true)
+  const handleClose = () => setModalVisible(false)
 
-  const showModal = () => {
-    setModalVisible(true)
-  }
-
-  const handleClose = () => {
-    setModalVisible(false)
-  }
-
-  const uniqueLayerIds = isExcelCountry
-    ? []
-    : [
-        ...new Set(
-          selectedCategoryObject?.attributes?.textTemplate?.placeholders.map(
-            (placeholder) =>
-              placeholder
-                .split('=')[0]
-                .split(/(_year|_total|_last|_first|_city|\*|\/|\+|\-)/)[0]
-                .trim()
-          )
-        ),
-      ]
-
-  const filteredLayers = layers.filter((layer) =>
-    uniqueLayerIds.includes(layer.attributes.arcgislayerId)
-  )
-
-  const filteredByCountry = filteredLayers.filter((l) =>
-    l.attributes.ValuePerCountry.some(
-      (vpc) =>
-        vpc.CountryCode === router.query.countryCode ||
-        vpc.CountryName === router.query.country
-    )
-  )
-  const layerJson = JSON.stringify(filteredByCountry)
-
-  const { placeholders, tooltips, loading } = useReplacedText(
-    router.query.country,
-    router.query.countryCode,
-    isExcelCountry ? null : router.query.categoryId,
-    isExcelCountry ? [] : selectedCategoryObject?.attributes?.textTemplate?.placeholders,
-    layerJson
-  )
-
-  // Strapi trade text for Excel countries
+  // --- Strapi category objects ---
   const tradeCategoryObject = categories.find(
     (c) => c.attributes.categoryId === CATEGORY_IDS.INDUSTRY_AND_TRADE
   )
-
-  const tradeUniqueLayerIds = isExcelCountry && tradeCategoryObject
-    ? [
-        ...new Set(
-          tradeCategoryObject.attributes?.textTemplate?.placeholders?.map(
-            (placeholder) =>
-              placeholder
-                .split('=')[0]
-                .split(/(_year|_total|_last|_first|_city|\*|\/|\+|\-)/)[0]
-                .trim()
-          ) || []
-        ),
-      ]
-    : []
-
-  const tradeFilteredLayers = layers.filter((layer) =>
-    tradeUniqueLayerIds.includes(layer.attributes.arcgislayerId)
+  const wasteCategoryObject = categories.find(
+    (c) => c.attributes.categoryId === CATEGORY_IDS.WASTE_MANAGEMENT
+  )
+  const envCategoryObject = categories.find(
+    (c) => c.attributes.categoryId === CATEGORY_IDS.ENVIRONMENTAL_IMPACT
   )
 
-  const tradeFilteredByCountry = tradeFilteredLayers.filter((l) =>
-    l.attributes.ValuePerCountry?.some(
-      (vpc) =>
-        vpc.CountryCode === router.query.countryCode ||
-        vpc.CountryName === router.query.country
-    )
-  )
-  const tradeLayerJson = JSON.stringify(tradeFilteredByCountry)
+  // --- Layer filtering per category ---
+  const tradeLayerIds = extractLayerIds(tradeCategoryObject)
+  const tradeLayerJson = filterLayersByCountry(layers, tradeLayerIds, query.countryCode, query.country)
 
+  const wasteLayerIds = !isExcelCountry ? extractLayerIds(wasteCategoryObject) : []
+  const wasteLayerJson = filterLayersByCountry(layers, wasteLayerIds, query.countryCode, query.country)
+
+  const envLayerIds = !isExcelCountry ? extractLayerIds(envCategoryObject) : []
+  const envLayerJson = filterLayersByCountry(layers, envLayerIds, query.countryCode, query.country)
+
+  // --- useReplacedText hooks (always called, conditionally activated) ---
   const {
     placeholders: tradePlaceholders,
     tooltips: tradeTooltips,
     loading: tradeLoading,
   } = useReplacedText(
-    router.query.country,
-    router.query.countryCode,
-    isExcelCountry ? CATEGORY_IDS.INDUSTRY_AND_TRADE : null,
-    isExcelCountry
-      ? tradeCategoryObject?.attributes?.textTemplate?.placeholders || []
-      : [],
+    query.country,
+    query.countryCode,
+    CATEGORY_IDS.INDUSTRY_AND_TRADE,
+    tradeCategoryObject?.attributes?.textTemplate?.placeholders || [],
     tradeLayerJson
   )
 
-  // Excel countries: one-pager with all sections
-  if (isExcelCountry) {
-    if (countryDataLoading) {
-      return (
-        <div className={styles.spinner}>
-          <Spin tip="Loading data..." size="large" />
-        </div>
-      )
-    }
+  const {
+    placeholders: wastePlaceholders,
+    tooltips: wasteTooltips,
+    loading: wasteLoading,
+  } = useReplacedText(
+    query.country,
+    query.countryCode,
+    !isExcelCountry ? CATEGORY_IDS.WASTE_MANAGEMENT : null,
+    !isExcelCountry
+      ? wasteCategoryObject?.attributes?.textTemplate?.placeholders || []
+      : [],
+    wasteLayerJson
+  )
 
-    const countryName = decodeURIComponent(router.query.country || '')
+  const {
+    placeholders: envPlaceholders,
+    tooltips: envTooltips,
+    loading: envLoading,
+  } = useReplacedText(
+    query.country,
+    query.countryCode,
+    !isExcelCountry ? CATEGORY_IDS.ENVIRONMENTAL_IMPACT : null,
+    !isExcelCountry
+      ? envCategoryObject?.attributes?.textTemplate?.placeholders || []
+      : [],
+    envLayerJson
+  )
 
-    const submitButton = !isMobile ? (
-      <Tooltip title="Update country data by sending a request to the GPML Data Hub team.">
-        <Button
-          className={styles.buttonStyle}
-          onClick={showModal}
-        >
-          {t`Submit Data Update`}
-        </Button>
-        <RequestDataUpdateModal
-          visible={isModalVisible}
-          onClose={handleClose}
-        />
-      </Tooltip>
-    ) : null
+  // --- Loading state ---
+  const isLoading = isExcelCountry
+    ? countryDataLoading
+    : tradeLoading || wasteLoading || envLoading
 
-    const firstSectionKey = availableSections?.[0]?.key
-
-    // Compute Strapi trade content
-    let strapiTradeContent = null
-    if (
-      tradeCategoryObject &&
-      !tradeLoading &&
-      Object.keys(tradePlaceholders).length > 0
-    ) {
-      const processedPlaceholders = { ...tradePlaceholders }
-      const importTrend =
-        processedPlaceholders['importIncreasePercentage'] > 0
-          ? 'increased'
-          : 'decreased'
-      const exportTrend =
-        processedPlaceholders['exportIncreasePercentage'] > 0
-          ? 'increased'
-          : 'decreased'
-      processedPlaceholders['importTrend'] = importTrend
-      processedPlaceholders['exportTrend'] = exportTrend
-      processedPlaceholders['importIncreasePercentage'] = Math.abs(
-        processedPlaceholders['importIncreasePercentage']
-      ).toFixed(1)
-      processedPlaceholders['exportIncreasePercentage'] = Math.abs(
-        processedPlaceholders['exportIncreasePercentage']
-      ).toFixed(1)
-
-      const rawTemplate =
-        tradeCategoryObject.attributes?.textTemplate?.template || ''
-      const wrappedTemplate = wrapPlaceholders(rawTemplate)
-      const compiledTemplate = Handlebars.compile(wrappedTemplate, {
-        noEscape: true,
-      })
-      let categoryText = compiledTemplate({
-        ...processedPlaceholders,
-        country: countryName,
-      })
-        // Remove <br> tags immediately after heading strong/b tags
-        .replace(
-          /(<(?:strong|b)[^>]*>(?:Plastic imports|Plastic exports|Plastic trade trends)<\/(?:strong|b)>)\s*(?:<br\s*\/?>)+/gi,
-          '$1'
-        )
-
-      // Split into imports, exports, trends
-      const trendsRegex =
-        /<(?:strong|h3|h4)[^>]*>Plastic trade trends<\/(?:strong|h3|h4)>/i
-      const trendsMatch = categoryText.match(trendsRegex)
-      let importsExportsText = categoryText
-      let trendsText = ''
-      if (trendsMatch) {
-        importsExportsText = categoryText.slice(0, trendsMatch.index).trim()
-        trendsText = categoryText.slice(trendsMatch.index).trim()
-      }
-
-      const [firstHalf, secondHalf] = splitTextInHalf(
-        importsExportsText,
-        COLUMN_SPLIT_MARKER
-      )
-
-      // Append extra trade text from JSON summary (after the Strapi trends paragraph)
-      const jsonSummary = textContent?.trade?.summary || ''
-      if (jsonSummary && trendsText) {
-        // Strip the heading + first paragraph (already from Strapi), keep the rest
-        let extraText = jsonSummary
-          .replace(/<h4[^>]*>.*?<\/h4>/i, '')  // remove heading
-          .replace(/<p>.*?<\/p>/i, '')           // remove first paragraph (Strapi duplicate)
-          .trim()
-        if (extraText) {
-          // Compile Handlebars placeholders like {{country}}
-          const compiledExtra = Handlebars.compile(extraText, { noEscape: true })
-          extraText = compiledExtra({ country: countryName })
-          trendsText += '<div style="padding-top: 16px;">' + extraText + '</div>'
-        }
-      }
-
-      const parseOpts = { convertHeadings: true }
-      strapiTradeContent = {
-        firstHalf: addTooltipsToPlaceholders(
-          firstHalf,
-          processedPlaceholders,
-          tradeTooltips,
-          parseOpts
-        ),
-        secondHalf: addTooltipsToPlaceholders(
-          secondHalf,
-          processedPlaceholders,
-          tradeTooltips,
-          parseOpts
-        ),
-        trends: trendsText
-          ? addTooltipsToPlaceholders(
-              trendsText,
-              processedPlaceholders,
-              tradeTooltips,
-              parseOpts
-            )
-          : null,
-      }
-    }
-
-    return (
-      <div className={styles.text}>
-        {(availableSections || []).map((section) => {
-          const Component = SECTION_COMPONENTS[section.key]
-          if (!Component) return null
-          const isFirst = section.key === firstSectionKey
-          return (
-            <Component
-              key={section.key}
-              ref={(el) => registerRef && registerRef(section.key, el)}
-              textContent={textContent}
-              countryData={countryData}
-              countryName={countryName}
-              countryCode={router.query.countryCode}
-              layers={layers}
-              layerLoading={layerLoading}
-              {...(isFirst ? { headerExtra: submitButton } : {})}
-              {...(section.key === 'trade'
-                ? { strapiTradeContent }
-                : {})}
-            />
-          )
-        })}
-
-        {isMobile && (
-          <div className={styles.mobileButtonsContainer}>
-            <Button className={styles.buttonStyle} onClick={showModal}>
-              {t`Submit Data Update`}
-            </Button>
-          </div>
-        )}
-      </div>
-    )
-  }
-
-  // Non-Excel (Strapi) countries: original categoryId-based rendering
-  if (loading || layerLoading || !selectedCategoryObject) {
+  if (isLoading) {
     return (
       <div className={styles.spinner}>
         <Spin tip="Loading data..." size="large" />
       </div>
     )
   }
-  const importTrend =
-    placeholders['importIncreasePercentage'] > 0 ? 'increased' : 'decreased'
-  placeholders['importTrend'] = importTrend
 
-  const exportTrend =
-    placeholders['exportIncreasePercentage'] > 0 ? 'increased' : 'decreased'
-  placeholders['exportTrend'] = exportTrend
+  // --- Build Strapi trade content (for all countries) ---
+  let strapiTradeContent = null
+  if (
+    tradeCategoryObject &&
+    !tradeLoading &&
+    Object.keys(tradePlaceholders).length > 0
+  ) {
+    const processedPlaceholders = { ...tradePlaceholders }
+    const importTrend =
+      processedPlaceholders['importIncreasePercentage'] > 0
+        ? 'increased'
+        : 'decreased'
+    const exportTrend =
+      processedPlaceholders['exportIncreasePercentage'] > 0
+        ? 'increased'
+        : 'decreased'
+    processedPlaceholders['importTrend'] = importTrend
+    processedPlaceholders['exportTrend'] = exportTrend
+    processedPlaceholders['importIncreasePercentage'] = Math.abs(
+      processedPlaceholders['importIncreasePercentage']
+    ).toFixed(1)
+    processedPlaceholders['exportIncreasePercentage'] = Math.abs(
+      processedPlaceholders['exportIncreasePercentage']
+    ).toFixed(1)
 
-  const importIncreaseValue = placeholders['importIncreasePercentage']
-  const exportIncreaseValue = placeholders['exportIncreasePercentage']
+    const rawTemplate =
+      tradeCategoryObject.attributes?.textTemplate?.template || ''
+    const wrappedTemplate = wrapPlaceholders(rawTemplate)
+    const compiledTemplate = Handlebars.compile(wrappedTemplate, {
+      noEscape: true,
+    })
+    let categoryText = compiledTemplate({
+      ...processedPlaceholders,
+      country: countryName,
+    })
+      // Remove <br> tags immediately after heading strong/b tags
+      .replace(
+        /(<(?:strong|b)[^>]*>(?:Plastic imports|Plastic exports|Plastic trade trends)<\/(?:strong|b)>)\s*(?:<br\s*\/?>)+/gi,
+        '$1'
+      )
 
-  placeholders['importIncreasePercentage'] = Math.abs(
-    importIncreaseValue
-  ).toFixed(1)
-  placeholders['exportIncreasePercentage'] = Math.abs(
-    exportIncreaseValue
-  ).toFixed(1)
+    // Split into imports, exports, trends
+    const trendsRegex =
+      /<(?:strong|h3|h4)[^>]*>Plastic trade trends<\/(?:strong|h3|h4)>/i
+    const trendsMatch = categoryText.match(trendsRegex)
+    let importsExportsText = categoryText
+    let trendsText = ''
+    if (trendsMatch) {
+      importsExportsText = categoryText.slice(0, trendsMatch.index).trim()
+      trendsText = categoryText.slice(trendsMatch.index).trim()
+    }
 
-  const rawTemplate =
-    selectedCategoryObject?.attributes?.textTemplate?.template || ''
-  const wrappedTemplate = wrapPlaceholders(rawTemplate)
+    const [firstHalf, secondHalf] = splitTextInHalf(
+      importsExportsText,
+      COLUMN_SPLIT_MARKER
+    )
 
-  const compiledTemplate = Handlebars.compile(wrappedTemplate, {
-    noEscape: true,
-  })
-  const categoryText = compiledTemplate({
-    ...placeholders,
-    country: `{{country}}`,
-  })
+    // Append extra trade text from JSON summary (after the Strapi trends paragraph)
+    const jsonSummary = textContent?.trade?.summary || ''
+    if (jsonSummary && trendsText) {
+      // Strip the heading + first paragraph (already from Strapi), keep the rest
+      let extraText = jsonSummary
+        .replace(/<h4[^>]*>.*?<\/h4>/i, '')  // remove heading
+        .replace(/<p>.*?<\/p>/i, '')           // remove first paragraph (Strapi duplicate)
+        .trim()
+      if (extraText) {
+        // Compile Handlebars placeholders like {{country}}
+        const compiledExtra = Handlebars.compile(extraText, { noEscape: true })
+        extraText = compiledExtra({ country: countryName })
+        trendsText += '<div style="padding-top: 16px;">' + extraText + '</div>'
+      }
+    }
 
-  const [firstHalfText, secondHalfText] =
-    selectedCategoryObject?.attributes?.categoryId === CATEGORY_IDS.ENVIRONMENTAL_IMPACT ||
-    selectedCategoryObject?.attributes?.categoryId === CATEGORY_IDS.WASTE_MANAGEMENT
-      ? splitTextByMarker(categoryText, COLUMN_SPLIT_MARKER)
-      : splitTextInHalf(categoryText || '', COLUMN_SPLIT_MARKER)
-
-  const textWithTooltipsfirstHalfText = addTooltipsToPlaceholders(
-    firstHalfText,
-    placeholders,
-    tooltips
-  )
-  const textWithTooltipsfirstSecondText = addTooltipsToPlaceholders(
-    secondHalfText,
-    placeholders,
-    tooltips
-  )
-
-  const governanceText = addTooltipsToPlaceholders(
-    categoryText,
-    placeholders,
-    tooltips
-  )
-
-  const handleViewGlobalDataClick = () => {
-    const categoryId = selectedCategory || router?.query?.categoryId
-    if (categoryId) {
-      window.location.href = `${baseURL}/data/maps?categoryId=${categoryId}`
-    } else {
-      alert('Please select a category before viewing global data.')
+    const parseOpts = { convertHeadings: true }
+    strapiTradeContent = {
+      firstHalf: addTooltipsToPlaceholders(
+        firstHalf,
+        processedPlaceholders,
+        tradeTooltips,
+        parseOpts
+      ),
+      secondHalf: addTooltipsToPlaceholders(
+        secondHalf,
+        processedPlaceholders,
+        tradeTooltips,
+        parseOpts
+      ),
+      trends: trendsText
+        ? addTooltipsToPlaceholders(
+            trendsText,
+            processedPlaceholders,
+            tradeTooltips,
+            parseOpts
+          )
+        : null,
     }
   }
 
+  // --- Build Strapi waste content (non-Excel only) ---
+  const strapiWasteContent = !isExcelCountry
+    ? buildStrapiSectionContent(
+        wasteCategoryObject,
+        wastePlaceholders,
+        wasteTooltips,
+        countryName,
+        (text) => splitTextByMarker(text, COLUMN_SPLIT_MARKER)
+      )
+    : null
+
+  // --- Build Strapi environment content (non-Excel only) ---
+  const strapiEnvironmentContent = !isExcelCountry
+    ? buildStrapiSectionContent(
+        envCategoryObject,
+        envPlaceholders,
+        envTooltips,
+        countryName,
+        (text) => splitTextByMarker(text, COLUMN_SPLIT_MARKER)
+      )
+    : null
+
+  // --- Submit button ---
+  const submitButton = !isMobile ? (
+    <Tooltip title="Update country data by sending a request to the GPML Data Hub team.">
+      <Button className={styles.buttonStyle} onClick={showModal}>
+        {t`Submit Data Update`}
+      </Button>
+      <RequestDataUpdateModal
+        visible={isModalVisible}
+        onClose={handleClose}
+      />
+    </Tooltip>
+  ) : null
+
+  const firstSectionKey = availableSections?.[0]?.key
+
   return (
     <div className={styles.text}>
-      <Row className={styles.headerRow}>
-        <Col>
-          <div>
-            <span className={styles.titleCategory}>
-              {selectedCategoryObject?.attributes?.name || ''}
-            </span>
-          </div>
-        </Col>
-
-        {!isMobile && (
-          <Col className={styles.containerButton}>
-            <Tooltip title="Update country data by sending a request to the GPML Data Hub team.">
-              <Button
-                className={styles.buttonStyle}
-                onClick={showModal}
-                style={{ width: '100%' }}
-              >
-                {t`Submit Data Update`}
-              </Button>
-              <RequestDataUpdateModal
-                visible={isModalVisible}
-                onClose={handleClose}
-              />
-            </Tooltip>
-          </Col>
-        )}
-      </Row>
-
-      {router.query.categoryId !== CATEGORY_IDS.OVERVIEW &&
-      router.query.categoryId !== CATEGORY_IDS.GOVERNANCE_AND_REGULATIONS ? (
-        <Row gutter={[16, 16]} className={styles.chartRow}>
-          <Col xs={24} md={12}>
-            <div className={styles.textColumn}>
-              {textWithTooltipsfirstHalfText}
-            </div>
-          </Col>
-          <Col xs={24} md={12}>
-            <div className={styles.textColumn}>
-              {textWithTooltipsfirstSecondText}
-            </div>
-          </Col>
-        </Row>
-      ) : (
-        <Row className={styles.chartRow}>
-          <p className={styles.governanceText}>{governanceText}</p>
-        </Row>
-      )}
-
-      {router.query.categoryId === CATEGORY_IDS.INDUSTRY_AND_TRADE && (
-        <>
-          <Row className={styles.chartRow}>
-            <Col span={24}>
-              <div className={styles.plasticImportChart}>
-                <PlasticImportExportChart
-                  layers={layers}
-                  loading={layerLoading}
-                />
-              </div>
-            </Col>
-          </Row>
-          <Row className={styles.chartRow}>
-            <Col span={24}>
-              <ChartCard>
-                <PlasticImportExportTonnesChart
-                  layers={layers}
-                  loading={layerLoading}
-                />
-              </ChartCard>
-            </Col>
-          </Row>
-
-          <Row gutter={[16, 16]}>
-            <Col xs={24} md={12}>
-              <ChartCard>
-                <PlasticImportExportPieCharts
-                  chartType="import"
-                  layers={layers}
-                  loading={layerLoading}
-                />
-              </ChartCard>
-            </Col>
-            <Col xs={24} md={12}>
-              <ChartCard>
-                <PlasticImportExportPieCharts
-                  chartType="export"
-                  layers={layers}
-                  loading={layerLoading}
-                />
-              </ChartCard>
-            </Col>
-          </Row>
-
-          {countryData && (
-            <>
-              {textContent?.trade?.summary && (
-                <Row className={styles.sectionRowTop}>
-                  <Col span={24}>
-                    <SectionText
-                      template={textContent.trade.summary}
-                      placeholders={placeholders}
-                    />
-                  </Col>
-                </Row>
-              )}
-
-              <Row className={styles.chartRow}>
-                <Col span={24}>
-                  <ChartCard>
-                    <PlasticConsumptionChart countryData={countryData} />
-                  </ChartCard>
-                </Col>
-              </Row>
-
-              <Row gutter={[16, 16]} className={styles.chartRow}>
-                <Col xs={24} md={12}>
-                  <ChartCard>
-                    <TradingPartnersPieChart
-                      countryData={countryData}
-                      type="import"
-                    />
-                  </ChartCard>
-                </Col>
-                <Col xs={24} md={12}>
-                  <ChartCard>
-                    <TradingPartnersPieChart
-                      countryData={countryData}
-                      type="export"
-                    />
-                  </ChartCard>
-                </Col>
-              </Row>
-
-              <Row className={styles.chartRow}>
-                <Col span={24}>
-                  <ChartCard>
-                    <ProductCategoriesChart countryData={countryData} />
-                  </ChartCard>
-                </Col>
-              </Row>
-
-              <Row gutter={[16, 16]} className={styles.chartRow}>
-                <Col xs={24} md={12}>
-                  <ChartCard>
-                    <TradeCompositionPieChart
-                      countryData={countryData}
-                      type="import"
-                    />
-                  </ChartCard>
-                </Col>
-                <Col xs={24} md={12}>
-                  <ChartCard>
-                    <TradeCompositionPieChart
-                      countryData={countryData}
-                      type="export"
-                    />
-                  </ChartCard>
-                </Col>
-              </Row>
-
-              <Row gutter={[16, 16]} className={styles.chartRow}>
-                <Col xs={24} md={12}>
-                  <ChartCard>
-                    <TopProductsTable
-                      countryData={countryData}
-                      type="import"
-                    />
-                  </ChartCard>
-                </Col>
-                <Col xs={24} md={12}>
-                  <ChartCard>
-                    <TopProductsTable
-                      countryData={countryData}
-                      type="export"
-                    />
-                  </ChartCard>
-                </Col>
-              </Row>
-            </>
-          )}
-        </>
-      )}
-
-      {router.query.categoryId === CATEGORY_IDS.WASTE_MANAGEMENT && (
-        <>
-          <Row gutter={[16, 16]}>
-            <Col xs={24} md={12}>
-              <ChartCard>
-                <MSWGenerationChart layers={layers} layerLoading={layerLoading} />
-              </ChartCard>
-            </Col>
-            <Col xs={24} md={12}>
-              <ChartCard>
-                <PlasticCompositionChart
-                  layers={layers}
-                  layerLoading={layerLoading}
-                />
-              </ChartCard>
-            </Col>
-          </Row>
-          {textContent?.wasteManagement?.content && (
-            <Row className={styles.sectionRowTop}>
-              <Col span={24}>
-                <SectionText
-                  template={textContent.wasteManagement.content}
-                  placeholders={placeholders}
-                />
-              </Col>
-            </Row>
-          )}
-        </>
-      )}
-
-      {router.query.categoryId === CATEGORY_IDS.GOVERNANCE_AND_REGULATIONS && (
-        <Col span={24}>
-          <PolicyComponent layers={layers} layerLoading={layerLoading} />
-        </Col>
-      )}
-
-      {router.query.categoryId === CATEGORY_IDS.ENVIRONMENTAL_IMPACT && (
-        <>
-          <ChartCard className={styles.chartCardPadded}>
-            <PlasticOceanBeachChart layers={layers} layerLoading={layerLoading} />
-          </ChartCard>
-          {textContent?.environment?.content && (
-            <Row className={styles.sectionRowTop}>
-              <Col span={24}>
-                <SectionText
-                  template={textContent.environment.content}
-                  placeholders={placeholders}
-                />
-              </Col>
-            </Row>
-          )}
-        </>
-      )}
+      {(availableSections || []).map((section) => {
+        const Component = SECTION_COMPONENTS[section.key]
+        if (!Component) return null
+        const isFirst = section.key === firstSectionKey
+        return (
+          <Component
+            key={section.key}
+            ref={(el) => registerRef && registerRef(section.key, el)}
+            textContent={textContent}
+            countryData={countryData}
+            countryName={countryName}
+            countryCode={query.countryCode}
+            layers={layers}
+            layerLoading={layerLoading}
+            {...(isFirst ? { headerExtra: submitButton } : {})}
+            {...(section.key === 'trade'
+              ? { strapiTradeContent }
+              : {})}
+            {...(section.key === 'waste-management'
+              ? { strapiWasteContent }
+              : {})}
+            {...(section.key === 'environment'
+              ? { strapiEnvironmentContent }
+              : {})}
+          />
+        )
+      })}
 
       {isMobile && (
         <div className={styles.mobileButtonsContainer}>
           <Button className={styles.buttonStyle} onClick={showModal}>
             {t`Submit Data Update`}
-          </Button>
-        </div>
-      )}
-
-      {router?.query?.categoryId && router?.query?.country && isMobile && (
-        <div>
-          <Button
-            className={styles.globalButton}
-            onClick={handleViewGlobalDataClick}
-          >
-            {t`View Global Data `} →
           </Button>
         </div>
       )}
