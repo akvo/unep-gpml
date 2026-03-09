@@ -120,6 +120,13 @@ export const SECTION_REGISTRY = [
   },
 ]
 
+// Section keys that map to Strapi categories (used for non-Excel countries)
+export const STRAPI_SECTION_KEYS = new Set([
+  'trade',
+  'waste-management',
+  'environment',
+])
+
 // Countries that use Excel/JSON data instead of Strapi
 export const EXCEL_COUNTRY_CODES = ['KHM', 'ZAF', 'SEN', 'JPN', 'ECU', 'PER', 'IND', 'MUS', 'LBN', 'SLB']
 

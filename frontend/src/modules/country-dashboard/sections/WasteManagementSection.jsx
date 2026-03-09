@@ -24,10 +24,11 @@ const WasteManagementSection = React.forwardRef(
       countryCode,
       layers,
       layerLoading,
+      strapiWasteContent,
     },
     ref
   ) => {
-    if (!textContent?.wasteManagement) return null
+    if (!textContent?.wasteManagement && !strapiWasteContent) return null
 
     return (
       <div
@@ -37,41 +38,80 @@ const WasteManagementSection = React.forwardRef(
       >
         <h2 className={styles.sectionTitle}>Waste Management</h2>
 
-        <KeyTrends
-          items={textContent.wasteManagement.keyTrends}
-          title="Key trends"
-          placeholders={{ country: countryName }}
-        />
+        {textContent?.wasteManagement?.keyTrends && (
+          <KeyTrends
+            items={textContent.wasteManagement.keyTrends}
+            title="Key trends"
+            placeholders={{ country: countryName }}
+          />
+        )}
 
-        <Row gutter={[16, 16]} className={styles.chartRow}>
-          <Col xs={24} md={12}>
-            <ChartCard>
-              <MSWGenerationChart layers={layers} layerLoading={layerLoading} />
-            </ChartCard>
-          </Col>
-          <Col xs={24} md={12}>
-            <ChartCard>
-              <PlasticCompositionChart
-                layers={layers}
-                layerLoading={layerLoading}
-              />
-            </ChartCard>
-          </Col>
-        </Row>
+        {strapiWasteContent && !textContent?.wasteManagement ? (
+          <>
+            <Row gutter={[16, 16]} className={styles.chartRow}>
+              <Col xs={24} md={12}>
+                <div className={styles.textColumn}>
+                  {strapiWasteContent.firstHalf}
+                </div>
+              </Col>
+              {strapiWasteContent.secondHalf && (
+                <Col xs={24} md={12}>
+                  <div className={styles.textColumn}>
+                    {strapiWasteContent.secondHalf}
+                  </div>
+                </Col>
+              )}
+            </Row>
 
-        {textContent.wasteManagement.content && (
-          <div className={styles.twoColumnText}>
-            <SectionText
-              template={textContent.wasteManagement.content}
-              placeholders={{ country: countryName }}
-            />
-            {textContent.wasteManagement.contentRight && (
-              <SectionText
-                template={textContent.wasteManagement.contentRight}
-                placeholders={{ country: countryName }}
-              />
+            <Row gutter={[16, 16]} className={styles.chartRow}>
+              <Col xs={24} md={12}>
+                <ChartCard>
+                  <MSWGenerationChart layers={layers} layerLoading={layerLoading} />
+                </ChartCard>
+              </Col>
+              <Col xs={24} md={12}>
+                <ChartCard>
+                  <PlasticCompositionChart
+                    layers={layers}
+                    layerLoading={layerLoading}
+                  />
+                </ChartCard>
+              </Col>
+            </Row>
+          </>
+        ) : (
+          <>
+            <Row gutter={[16, 16]} className={styles.chartRow}>
+              <Col xs={24} md={12}>
+                <ChartCard>
+                  <MSWGenerationChart layers={layers} layerLoading={layerLoading} />
+                </ChartCard>
+              </Col>
+              <Col xs={24} md={12}>
+                <ChartCard>
+                  <PlasticCompositionChart
+                    layers={layers}
+                    layerLoading={layerLoading}
+                  />
+                </ChartCard>
+              </Col>
+            </Row>
+
+            {textContent?.wasteManagement?.content && (
+              <div className={styles.twoColumnText}>
+                <SectionText
+                  template={textContent.wasteManagement.content}
+                  placeholders={{ country: countryName }}
+                />
+                {textContent.wasteManagement.contentRight && (
+                  <SectionText
+                    template={textContent.wasteManagement.contentRight}
+                    placeholders={{ country: countryName }}
+                  />
+                )}
+              </div>
             )}
-          </div>
+          </>
         )}
         <WFDStudies countryCode={countryCode} />
       </div>

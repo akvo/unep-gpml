@@ -11,35 +11,26 @@ import { Layout, Select } from 'antd'
 import useQueryParameters from '../../../hooks/useQueryParameters'
 import { t } from '@lingui/macro'
 import { useRouter } from 'next/router'
-import { EXCEL_COUNTRY_CODES, EXCEL_CATEGORIES } from '../../../modules/country-dashboard/constants'
 
 const { Sider } = Layout
 
 const Sidebar = ({
   countryDashboard,
   layers,
-  isExcelCountry: isExcelCountryProp,
   availableSections,
   activeSection,
   scrollToSection,
 }) => {
   const router = useRouter()
-  const { pathname, query } = router
+  const { query } = router
 
   const [isMobile, setIsMobile] = useState(false)
   const { queryParameters, setQueryParameters } = useQueryParameters()
 
   const { loading } = useCategories()
   const catsData = useCategories()?.categories
-  const isExcelCountry = countryDashboard && EXCEL_COUNTRY_CODES.includes(query?.countryCode)
 
-  const categories = countryDashboard
-    ? isExcelCountry
-      ? EXCEL_CATEGORIES
-      : catsData.filter(
-          (d) => d.attributes.categoryId !== 'governance-and-regulations'
-        )
-    : catsData
+  const categories = catsData
   const subcategories = useSubcategories()
 
   const [selectedCountry, setSelectedCountry] = useState(null)
@@ -47,8 +38,6 @@ const Sidebar = ({
   const [selectedCategoryId, setSelectedCategoryId] = useState(null)
   const { countries } = UIStore.useState((s) => ({
     countries: s.countries,
-    transnationalOptions: s.transnationalOptions,
-    landing: s.landing,
   }))
 
   const isLoaded = () => !isEmpty(countries)
@@ -58,13 +47,6 @@ const Sidebar = ({
         .filter((country) => country.description === 'Member State')
         .map((it) => ({ value: it.id, label: it.name }))
         .sort((a, b) => a.label.localeCompare(b.label))
-    : []
-
-  const categoriesOpts = isLoaded()
-    ? categories.map((it) => ({
-        value: it.id,
-        label: it.attributes.categoryDescription,
-      }))
     : []
 
   const handleChangeCountry = (val) => {
@@ -90,21 +72,6 @@ const Sidebar = ({
     }
   }
 
-  const handleCategory = (category) => {
-    const selected = categories?.find((x) => x.id === category)
-    if (!selected) return
-    if (selected.attributes.categoryDescription === selectedCategory) return
-    if (countryDashboard) {
-      const newParams = {
-        categoryId: selected.attributes.categoryId,
-      }
-      setQueryParameters(newParams)
-    }
-
-    setSelectedCategoryId(selected.attributes.categoryId)
-    setSelectedCategory(selected.attributes.categoryDescription)
-  }
-
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768)
@@ -115,21 +82,6 @@ const Sidebar = ({
 
     return () => window.removeEventListener('resize', handleResize)
   }, [])
-
-  useEffect(() => {
-    if (
-      (selectedCategory === null || selectedCategory === undefined) &&
-      query?.categoryId &&
-      categories.length > 0
-    ) {
-      const selected = categories?.find(
-        (x) => x.attributes.categoryId === query?.categoryId
-      )
-      if (!selected) return
-      setSelectedCategory(selected.attributes.categoryDescription)
-      setSelectedCategoryId(query?.categoryId)
-    }
-  }, [query?.categoryId, categories])
 
   useEffect(() => {
     if (
@@ -145,7 +97,7 @@ const Sidebar = ({
     return <div>Loading...</div>
   }
 
-  if (!categories || categories.length === 0 || !Array.isArray(categories)) {
+  if (!countryDashboard && (!categories || categories.length === 0 || !Array.isArray(categories))) {
     return <div>No categories available.</div>
   }
 
@@ -162,26 +114,8 @@ const Sidebar = ({
             handleCategoryParentClick={handleCategoryClick}
           />
         )}
-        {/* {isMobile && !countryDashboard && (
-          <>
-            <div className={styles.mobileHeader} onClick={handleToggleSidebar}>
-            <span>Topics</span>
-            <span>{isSidebarExpanded ? '▲' : '▼'}</span>
-          </div>
-          {isSidebarExpanded && (
-            <CategoriesNested
-              categories={categories}
-              subcategories={subcategories}
-              layers={layers}
-              countryDashboard={countryDashboard}
-              selectedCategoryId={selectedCategoryId}
-              handleCategoryParentClick={handleCategoryClick}
-            />
-          )}
-          </>
-        )} */}
 
-        {countryDashboard && !isExcelCountryProp && (
+        {countryDashboard && (
           <CustomSiderWrapper>
             <StyledSider breakpoint="lg">
               <Title>{t`National data`}</Title>
@@ -197,19 +131,6 @@ const Sidebar = ({
                 }
                 onChange={handleChangeCountry}
               />
-
-              <CustomSelect
-                showSearch
-                size="large"
-                value={selectedCategory}
-                placeholder="Select Category"
-                options={categoriesOpts}
-                suffixIcon={<DropdownSvg />}
-                filterOption={(input, option) =>
-                  option?.label?.toLowerCase().includes(input.toLowerCase())
-                }
-                onChange={handleCategory}
-              />
             </StyledSider>
           </CustomSiderWrapper>
         )}
@@ -217,11 +138,6 @@ const Sidebar = ({
         <Container>
           {countryDashboard && (
             <CategoriesNestedDashboard
-              categories={categories}
-              subcategories={subcategories}
-              countryDashboard={countryDashboard}
-              handleCategoryParentClick={handleCategoryClick}
-              isExcelCountry={isExcelCountryProp}
               availableSections={availableSections}
               activeSection={activeSection}
               scrollToSection={scrollToSection}
