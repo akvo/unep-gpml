@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(git mv:*)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(curl -s \"https://wfd-data.rwm.global/api/studies/key/292b35d6e5b6ab61aa54354f1f6043c3fecc5ecb950fdffa63af394ef8719282/country/KE/encoding/json\")"
     ]
   }
 }

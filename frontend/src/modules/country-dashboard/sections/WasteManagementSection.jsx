@@ -4,19 +4,29 @@ import dynamic from 'next/dynamic'
 import SectionText from './SectionText'
 import KeyTrends from './KeyTrends'
 import ChartCard from '../ChartCard'
+import WFDStudies from './WFDStudies'
 import styles from '../CountryOverview.module.scss'
 
-const MSWGenerationChart = dynamic(
-  () => import('../charts/MSWGeneration'),
-  { ssr: false }
-)
+const MSWGenerationChart = dynamic(() => import('../charts/MSWGeneration'), {
+  ssr: false,
+})
 const PlasticCompositionChart = dynamic(
   () => import('../charts/PlasticCompositionChart'),
   { ssr: false }
 )
 
 const WasteManagementSection = React.forwardRef(
-  ({ textContent, countryData, countryName, layers, layerLoading }, ref) => {
+  (
+    {
+      textContent,
+      countryData,
+      countryName,
+      countryCode,
+      layers,
+      layerLoading,
+    },
+    ref
+  ) => {
     if (!textContent?.wasteManagement) return null
 
     return (
@@ -51,12 +61,19 @@ const WasteManagementSection = React.forwardRef(
 
         {textContent.wasteManagement.content && (
           <div className={styles.twoColumnText}>
-            <SectionText template={textContent.wasteManagement.content} placeholders={{ country: countryName }} />
+            <SectionText
+              template={textContent.wasteManagement.content}
+              placeholders={{ country: countryName }}
+            />
             {textContent.wasteManagement.contentRight && (
-              <SectionText template={textContent.wasteManagement.contentRight} placeholders={{ country: countryName }} />
+              <SectionText
+                template={textContent.wasteManagement.contentRight}
+                placeholders={{ country: countryName }}
+              />
             )}
           </div>
         )}
+        <WFDStudies countryCode={countryCode} />
       </div>
     )
   }

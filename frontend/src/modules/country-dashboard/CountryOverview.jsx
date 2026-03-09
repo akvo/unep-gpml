@@ -480,6 +480,7 @@ const CountryOverview = ({
               textContent={textContent}
               countryData={countryData}
               countryName={countryName}
+              countryCode={router.query.countryCode}
               layers={layers}
               layerLoading={layerLoading}
               {...(isFirst ? { headerExtra: submitButton } : {})}

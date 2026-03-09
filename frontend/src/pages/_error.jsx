@@ -29,7 +29,7 @@ CustomErrorComponent.getInitialProps = async (contextData) => {
 
   const errorInitialProps = await Error.getInitialProps(contextData)
 
-  const i18n = await loadCatalog(contextData.locale)
+  const i18n = await loadCatalog(contextData.locale || 'en')
 
   return { ...errorInitialProps, i18n }
 }

@@ -73,6 +73,25 @@
         }
       }
     }
+    h4 {
+      font-family: DM Sans, sans-serif;
+      color: rgb(116, 104, 255);
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 30px;
+    }
+    .city-study-select {
+      border: 1px solid #e8e8ed;
+      border-radius: 8px;
+      background: #fff;
+      // height: 50px;
+      // margin-left: 25px;
+      margin-top: 20px;
+      padding: 5px 0 5px 3px;
+      .ant-select-selector {
+        background-color: #fff;
+      }
+    }
   }
 
   @media (max-width: 768px) {
@@ -488,6 +507,18 @@
     font-weight: 500;
     color: #000647;
   }
+}
+
+.wfdStudies {
+  margin-top: 32px;
+}
+
+.wfdStudiesTitle {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #000647;
+  margin-bottom: 12px;
 }
 
 .mobileTocSelect {
