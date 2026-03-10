@@ -59,7 +59,11 @@ const ProductionPieChart = ({
         center: ['50%', '40%'],
         data: chartData.map((item, i) => ({
           ...item,
-          itemStyle: { color: CHART_COLORS[i % CHART_COLORS.length] },
+          itemStyle: {
+            color: CHART_COLORS[i % CHART_COLORS.length],
+            borderColor: '#fff',
+            borderWidth: 2,
+          },
         })),
         label: {
           show: true,
