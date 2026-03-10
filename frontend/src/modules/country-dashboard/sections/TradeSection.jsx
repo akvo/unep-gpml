@@ -78,7 +78,7 @@ const TradeSection = React.forwardRef(
                 </Col>
               )}
             </Row>
-            {strapiTradeContent.trends && (
+            {strapiTradeContent.trends && !textContent?.trade?.summary && (
               <Row style={{ marginTop: 16, marginBottom: 24 }}>
                 <Col span={24}>
                   <div className={styles.textColumn}>
