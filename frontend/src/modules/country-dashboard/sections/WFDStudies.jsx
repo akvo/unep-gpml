@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import countries from 'i18n-iso-countries'
 import dynamic from 'next/dynamic'
 import { Select, Spin } from 'antd'
 import styles from '../CountryOverview.module.scss'
@@ -107,25 +108,11 @@ const buildSankeyOption = (d) => {
 const API_KEY =
   '292b35d6e5b6ab61aa54354f1f6043c3fecc5ecb950fdffa63af394ef8719282'
 
-// ISO 3166-1 alpha-3 → alpha-2 mapping for countries used in this dashboard
-const ISO3_TO_ISO2 = {
-  KHM: 'KH',
-  ZAF: 'ZA',
-  SEN: 'SN',
-  JPN: 'JP',
-  ECU: 'EC',
-  PER: 'PE',
-  IND: 'IN',
-  MUS: 'MU',
-  LBN: 'LB',
-  SLB: 'SB',
-  KEN: 'KE',
-}
-
 const toIso2 = (code) => {
   if (!code) return null
-  if (code.length === 2) return code.toUpperCase()
-  return ISO3_TO_ISO2[code.toUpperCase()] ?? null
+  const upper = code.toUpperCase()
+  if (upper.length === 2) return upper
+  return countries.alpha3ToAlpha2(upper) ?? null
 }
 
 const WFDStudies = ({ countryCode }) => {
