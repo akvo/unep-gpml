@@ -4,12 +4,26 @@ import { Trans } from '@lingui/macro'
 import { COLORS } from '../constants'
 
 const CHART_COLORS = [
-  '#005B96', '#E87722', '#2E8B57', '#4682B4', '#8B4513',
-  '#6B8E23', '#2F4F4F', '#800020', '#556B2F', '#8B008B',
-  '#483D8B', '#008080',
+  '#005B96',
+  '#E87722',
+  '#2E8B57',
+  '#4682B4',
+  '#8B4513',
+  '#6B8E23',
+  '#2F4F4F',
+  '#800020',
+  '#556B2F',
+  '#8B008B',
+  '#483D8B',
+  '#008080',
 ]
 
-const ProductionPieChart = ({ chartData, chartTitle, chartSource, chartSourceUrl }) => {
+const ProductionPieChart = ({
+  chartData,
+  chartTitle,
+  chartSource,
+  chartSourceUrl,
+}) => {
   if (!chartData || chartData.length === 0) return null
 
   const getOption = () => ({
@@ -68,7 +82,7 @@ const ProductionPieChart = ({ chartData, chartTitle, chartSource, chartSourceUrl
     <div>
       <ReactEcharts
         option={getOption()}
-        style={{ height: '500px', width: '100%' }}
+        style={{ height: '700px', width: '100%' }}
       />
       {chartSource && (
         <div
