@@ -11,7 +11,7 @@ const PlasticConsumptionChart = dynamic(
 )
 
 const ConsumptionSection = React.forwardRef(
-  ({ textContent, countryData, countryName }, ref) => {
+  ({ textContent, countryData, countryName, countryCode }, ref) => {
     if (!textContent?.consumption) return null
 
     return (
@@ -31,7 +31,7 @@ const ConsumptionSection = React.forwardRef(
           </div>
         )}
 
-        {countryData && (
+        {countryData && countryCode !== 'JPN' && (
           <Row className={styles.chartRow}>
             <Col span={24}>
               <ChartCard>
