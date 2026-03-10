@@ -42,7 +42,17 @@ const splitEnvironmentContent = (html) => {
 }
 
 const EnvironmentSection = React.forwardRef(
-  ({ textContent, countryData, countryName, layers, layerLoading, strapiEnvironmentContent }, ref) => {
+  (
+    {
+      textContent,
+      countryData,
+      countryName,
+      layers,
+      layerLoading,
+      strapiEnvironmentContent,
+    },
+    ref
+  ) => {
     if (!textContent?.environment && !strapiEnvironmentContent) return null
 
     const parseOptions = {
@@ -89,11 +99,11 @@ const EnvironmentSection = React.forwardRef(
           <h2 className={styles.sectionTitle}>Plastics in the Environment</h2>
 
           <Row gutter={[16, 16]} className={styles.chartRow}>
-            <Col xs={24} md={12}>
+            {/* <Col xs={24} md={12}>
               <div className={styles.textColumn}>
                 {strapiEnvironmentContent.firstHalf}
               </div>
-            </Col>
+            </Col> */}
             {strapiEnvironmentContent.secondHalf && (
               <Col xs={24} md={12}>
                 <div className={styles.textColumn}>
@@ -103,9 +113,9 @@ const EnvironmentSection = React.forwardRef(
             )}
           </Row>
 
-          <ChartCard className={styles.chartCardPadded}>
+          {/* <ChartCard className={styles.chartCardPadded}>
             <PlasticOceanBeachChart layers={layers} layerLoading={layerLoading} />
-          </ChartCard>
+          </ChartCard> */}
         </div>
       )
     }
