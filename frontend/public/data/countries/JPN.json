@@ -1276,7 +1276,72 @@
   "text": {
     "production": {
       "title": "Production",
-      "content": "<p>According to data from the <a href=\"https://www.jpif.gr.jp/english/statistics/index.html\" target=\"_blank\" rel=\"noopener noreferrer\">Japan Plastics Industry Federation</a>, {{country}} produced approximately <strong style=\"color: #6236FF;\">9.5 million tonnes</strong> of plastics in primary forms (resins) and <strong style=\"color: #6236FF;\">5.6 million tonnes</strong> of plastic products in 2022. Among finished plastic products, plastic films and sheets account for the largest share at <strong style=\"color: #6236FF;\">43%</strong>, followed by plastic containers at <strong style=\"color: #6236FF;\">16%</strong> and plastic products for machine tools and parts at <strong style=\"color: #6236FF;\">12%</strong>. Within the films and sheets category, packaging materials account for approximately <strong style=\"color: #6236FF;\">20%</strong> of total production. When combined, plastic film packaging and plastic containers account for approximately <strong style=\"color: #6236FF;\">36%</strong> of {{country}}'s overall plastic product output, underscoring the dominant role of packaging applications in the country's plastics manufacturing sector.</p>"
+      "content": "<p>According to data from the <a href=\"https://www.jpif.gr.jp/english/statistics/index.html\" target=\"_blank\" rel=\"noopener noreferrer\">Japan Plastics Industry Federation</a>, {{country}} produced approximately <strong style=\"color: #6236FF;\">9.5 million tonnes</strong> of plastics in primary forms (resins) and <strong style=\"color: #6236FF;\">5.6 million tonnes</strong> of plastic products in 2022. Among finished plastic products, plastic films and sheets account for the largest share at <strong style=\"color: #6236FF;\">43%</strong>, followed by plastic containers at <strong style=\"color: #6236FF;\">16%</strong> and plastic products for machine tools and parts at <strong style=\"color: #6236FF;\">12%</strong>. Within the films and sheets category, packaging materials account for approximately <strong style=\"color: #6236FF;\">20%</strong> of total production. When combined, plastic film packaging and plastic containers account for approximately <strong style=\"color: #6236FF;\">36%</strong> of {{country}}'s overall plastic product output, underscoring the dominant role of packaging applications in the country's plastics manufacturing sector.</p>",
+      "chartData": [
+        {
+          "name": "Plastic film and sheets",
+          "value": 2372695,
+          "percent": 43
+        },
+        {
+          "name": "Plastic plates",
+          "value": 87667,
+          "percent": 2
+        },
+        {
+          "name": "Plastic synthetic leathers",
+          "value": 52129,
+          "percent": 1
+        },
+        {
+          "name": "Plastic pipes",
+          "value": 344707,
+          "percent": 6
+        },
+        {
+          "name": "Plastic pipe fittings",
+          "value": 53105,
+          "percent": 1
+        },
+        {
+          "name": "Plastic products for machine tools and parts",
+          "value": 655668,
+          "percent": 12
+        },
+        {
+          "name": "Daily necessaries and miscellaneous goods",
+          "value": 298215,
+          "percent": 5
+        },
+        {
+          "name": "Plastic containers",
+          "value": 865571,
+          "percent": 16
+        },
+        {
+          "name": "Plastic material for building",
+          "value": 253073,
+          "percent": 5
+        },
+        {
+          "name": "Plastic formed products",
+          "value": 240172,
+          "percent": 4
+        },
+        {
+          "name": "Plastic reinforced products",
+          "value": 68258,
+          "percent": 1
+        },
+        {
+          "name": "Other plastic products",
+          "value": 274696,
+          "percent": 5
+        }
+      ],
+      "chartTitle": "Japan's plastic products production (2022)",
+      "chartSource": "Japan Plastics Industry Federation",
+      "chartSourceUrl": "https://www.jpif.gr.jp/english/statistics/index.html"
     },
     "trade": {
       "title": "Trade",
