@@ -4,6 +4,7 @@ const useActiveSection = (sectionKeys = []) => {
   const [activeSection, setActiveSection] = useState(sectionKeys[0] || null)
   const sectionRefs = useRef({})
   const observerRef = useRef(null)
+  const isScrollingRef = useRef(false)
 
   useEffect(() => {
     if (sectionKeys.length > 0) {
@@ -19,6 +20,9 @@ const useActiveSection = (sectionKeys = []) => {
 
     const observer = new IntersectionObserver(
       (entries) => {
+        // Skip observer updates during programmatic scrolling
+        if (isScrollingRef.current) return
+
         // Find the topmost visible section
         const visible = entries
           .filter((e) => e.isIntersecting)
@@ -26,7 +30,7 @@ const useActiveSection = (sectionKeys = []) => {
 
         if (visible.length > 0) {
           const key = visible[0].target.getAttribute('data-section')
-          if (key) setActiveSection(key)
+          if (key) setActiveSection((prev) => (prev === key ? prev : key))
         }
       },
       { rootMargin: '-10% 0px -70% 0px', threshold: 0 }
@@ -52,8 +56,13 @@ const useActiveSection = (sectionKeys = []) => {
   const scrollToSection = useCallback((key) => {
     const el = sectionRefs.current[key]
     if (el) {
+      isScrollingRef.current = true
       setActiveSection(key)
       el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      // Re-enable observer after smooth scroll completes
+      setTimeout(() => {
+        isScrollingRef.current = false
+      }, 800)
     }
   }, [])
 

@@ -115,26 +115,6 @@ const Sidebar = ({
           />
         )}
 
-        {countryDashboard && (
-          <CustomSiderWrapper>
-            <StyledSider breakpoint="lg">
-              <Title>{t`National data`}</Title>
-              <CustomSelect
-                showSearch
-                size="large"
-                value={selectedCountry ? selectedCountry : ''}
-                placeholder="Search Country"
-                options={countryOpts}
-                suffixIcon={<DropdownSvg />}
-                filterOption={(input, option) =>
-                  option?.label?.toLowerCase().includes(input.toLowerCase())
-                }
-                onChange={handleChangeCountry}
-              />
-            </StyledSider>
-          </CustomSiderWrapper>
-        )}
-
         <Container>
           {countryDashboard && (
             <CategoriesNestedDashboard
