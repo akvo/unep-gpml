@@ -42,18 +42,23 @@ const MobileTOC = ({ availableSections, activeSection, scrollToSection }) => {
   }, [countries, country])
 
   useEffect(() => {
+    let rafId = null
     const handleScroll = () => {
-      const currentY = window.scrollY
-      if (currentY > lastScrollY.current && currentY > 80) {
-        setCollapsed(true)
-      } else {
-        setCollapsed(false)
-      }
-      lastScrollY.current = currentY
+      if (rafId) return
+      rafId = requestAnimationFrame(() => {
+        const currentY = window.scrollY
+        const shouldCollapse = currentY > lastScrollY.current && currentY > 80
+        setCollapsed((prev) => (prev === shouldCollapse ? prev : shouldCollapse))
+        lastScrollY.current = currentY
+        rafId = null
+      })
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      if (rafId) cancelAnimationFrame(rafId)
+    }
   }, [])
 
   if (!availableSections || availableSections.length === 0) return null
