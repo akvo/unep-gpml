@@ -1754,10 +1754,6 @@
     ]
   },
   "text": {
-    "production": {
-      "title": "Production",
-      "content": "<p>There is no data on plastic production in {{country}}.</p>"
-    },
     "trade": {
       "title": "Trade",
       "keyTrends": [

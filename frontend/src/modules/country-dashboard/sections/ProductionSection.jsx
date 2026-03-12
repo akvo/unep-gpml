@@ -13,28 +13,41 @@ const ProductionSection = React.forwardRef(
   ({ textContent, countryData, countryName, headerExtra }, ref) => {
     if (!textContent?.production) return null
 
-    const { chartData, chartTitle, chartSource, chartSourceUrl } =
-      textContent.production
+    const {
+      chartData,
+      chartTitle,
+      chartSource,
+      chartSourceUrl,
+    } = textContent.production
 
     return (
-      <div ref={ref} data-section="production" className={styles.dashboardSection}>
+      <div
+        ref={ref}
+        data-section="production"
+        className={styles.dashboardSection}
+      >
         <div className={styles.sectionTitleRow}>
           <h2 className={styles.sectionTitle}>Production</h2>
           {headerExtra}
         </div>
-        {textContent.production.content && (
-          <SectionText template={textContent.production.content} placeholders={{ country: countryName }} />
-        )}
-        {chartData && (
-          <ChartCard>
-            <ProductionPieChart
-              chartData={chartData}
-              chartTitle={chartTitle}
-              chartSource={chartSource}
-              chartSourceUrl={chartSourceUrl}
+        <div className={chartData && 'two-cols-fixed'}>
+          {textContent.production.content && (
+            <SectionText
+              template={textContent.production.content}
+              placeholders={{ country: countryName }}
             />
-          </ChartCard>
-        )}
+          )}
+          {chartData && (
+            <ChartCard>
+              <ProductionPieChart
+                chartData={chartData}
+                chartTitle={chartTitle}
+                chartSource={chartSource}
+                chartSourceUrl={chartSourceUrl}
+              />
+            </ChartCard>
+          )}
+        </div>
       </div>
     )
   }

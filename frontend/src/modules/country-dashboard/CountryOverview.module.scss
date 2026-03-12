@@ -63,6 +63,17 @@
         }
       }
     }
+    .two-cols-fixed {
+      @media screen and (min-width: 768px) {
+        display: flex;
+        .section-text {
+          padding-right: 40px;
+        }
+        & > * {
+          flex: 1;
+        }
+      }
+    }
     .data-table {
       margin-top: 20px;
       tbody {
