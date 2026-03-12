@@ -101,9 +101,9 @@ const Landing = (props) => {
       <div className="workflow">
         <div className="container">
           <div className="text">
-            <strong className="caps-heading-1">
+            {/* <strong className="caps-heading-1">
               <Trans>Workflow</Trans>
-            </strong>
+            </strong> */}
             <h2>
               <strong>
                 <Trans>Action Planning Tool</Trans>
@@ -118,7 +118,11 @@ const Landing = (props) => {
                 case studies. Create your account and explore.
               </Trans>
             </p>
-            <JoinBtn {...props} />
+            <Link href="/workspace/plastic-strategy-country-a">
+              <Button type="primary" size="large" withArrow>
+                <Trans>View</Trans>
+              </Button>
+            </Link>
           </div>
           <div className="screenshot">
             <Link href="/workspace/plastic-strategy-country-a">
