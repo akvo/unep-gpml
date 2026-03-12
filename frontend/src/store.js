@@ -109,11 +109,6 @@ const menuList = [
         to: '/page/who-we-are',
       },
       {
-        key: 'The Global Plastics Hub',
-        id: 'The Global Plastics Hub',
-        to: '/page/about-platform',
-      },
-      {
         key: msg`Contact Us`,
         id: 'Contact Us',
         to: '/page/contact-us',
