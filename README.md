@@ -1,6 +1,5 @@
 # UNEP - GPML Digital Platform
 
-[![Build Status](https://akvo.semaphoreci.com/badges/unep-gpml/branches/main.svg?style=shields)](https://akvo.semaphoreci.com/projects/unep-gpml)
 [![QA](https://github.com/akvo/unep-gpml/actions/workflows/qa.yml/badge.svg?branch=main)](https://github.com/akvo/unep-gpml/actions/workflows/qa.yml)
 
 ## Architecture Diagram
@@ -235,7 +234,7 @@ backend/src/gpml/
 
 ### Where to Find Functionality
 
-#### **🔍 Adding New API Endpoints**
+#### **Adding New API Endpoints**
 1. **Create Handler**: `/handler/your-feature.clj`
    ```clojure
    (defmethod ig/init-key :gpml.handler.your-feature/list [_ {:keys [db]}]
@@ -250,7 +249,7 @@ backend/src/gpml/
              ["/your-feature" {:handler #ig/ref :gpml.handler.your-feature/list}]]}
    ```
 
-#### **🗄️ Database Operations**
+#### **Database Operations**
 1. **SQL Queries**: `/db/your-feature.sql`
    ```sql
    -- :name list-items :? :*
@@ -265,17 +264,17 @@ backend/src/gpml/
    (hugsql/def-db-fns "gpml/db/your-feature.sql")
    ```
 
-#### **🔐 Authentication & Authorization**
+#### **Authentication & Authorization**
 - **Auth Logic**: `/util/auth0.clj` - JWT token handling
 - **RBAC**: `/service/permissions.clj` - Role-based access control
 - **Middleware**: Declarative auth in route definitions
 
-#### **📊 Business Logic**
+#### **Business Logic**
 - **Domain Models**: `/domain/` - Entity schemas and validation
 - **Services**: `/service/` - Complex operations and transactions
 - **Utilities**: `/util/` - Reusable helper functions
 
-#### **🔌 External Service Integration**
+#### **External Service Integration**
 1. **Define Interface**: `/boundary/port/your-service.clj`
    ```clojure
    (defprotocol YourService
@@ -305,12 +304,12 @@ backend/src/gpml/
          {:success? false :error-details (ex-message e)})))
    ```
 
-#### **⚙️ Configuration Management**
+#### **Configuration Management**
 - **Base Config**: `/resources/gpml/duct.base.edn`
 - **Environment Profiles**: `/resources/gpml/duct.edn` (dev), `/resources/gpml/duct.prod.edn`
 - **Local Overrides**: `/dev/resources/local.edn`
 
-#### **🔄 Background Jobs**
+#### **Background Jobs**
 - **Schedulers**: `/scheduler/` - Periodic tasks and background processing
 - **Examples**: BRS API import, chat processing, file reconciliation
 
@@ -681,10 +680,3 @@ Automatically deploys to test cluster after QA passes on main branch:
 - Pushes images to container registry
 - Performs Kubernetes rollout to test environment
 
-### Migration from Semaphore CI
-
-The project is in the process of migrating from Semaphore CI to GitHub Actions. Currently both systems are running:
-- **Semaphore CI**: Legacy build system (to be deprecated)
-- **GitHub Actions**: New QA and deployment workflows
-
-Once GitHub Actions is fully validated, Semaphore CI will be deprecated and the `ci/` folder will be removed.
