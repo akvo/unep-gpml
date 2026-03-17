@@ -7,13 +7,38 @@
  :gpml.test/db {:connection-uri #duct/env ["DATABASE_TEST_URL" Str :or "jdbc:postgresql://db/gpml_test?user=unep&password=password"]}
 
  :mocks.boundary.adapter.storage-client/local-file-system
- {:base-path #duct/env ["LOCAL_FS_STORAGE_BASE_PATH" Str]}
+ {:base-path #duct/env ["LOCAL_FS_STORAGE_BASE_PATH" Str :or "/tmp/local-storage"]}
 
  :mocks.boundary.adapter.chat/ds-chat
  {}
 
  :mocks.boundary.adapter.translate/google
  {}
+
+ ;; Provide test-safe defaults for OIDC settings so tests don't depend on env vars.
+ ;; The actual values don't matter since tests use mock auth, but the schema
+ ;; requires non-nil strings matching specific patterns.
+ :gpml.auth/auth-middleware                   {:issuer   #duct/env ["OIDC_ISSUER" Str :or "https://test.example.com/"]
+                                               :audience #duct/env ["OIDC_AUDIENCE" Str :or "test-audience"]
+                                               :db       #ig/ref :duct.database.sql.hikaricp/read-write}
+ :gpml.auth/auth-middleware-gpml-programmatic {:issuer   #duct/env ["OIDC_ISSUER" Str :or "https://test.example.com/"]
+                                               :audience #duct/env ["OIDC_AUDIENCE_M2M" Str :or "test-audience-m2m"]
+                                               :db       #ig/ref :duct.database.sql.hikaricp/read-write}
+ :gpml.auth/auth-middleware-auth0-actions     {:issuer   #duct/env ["OIDC_ISSUER" Str :or "https://test.example.com/"]
+                                               :audience #duct/env ["OIDC_AUDIENCE_AUTH0_ACTIONS" Str :or "test-audience-auth0-actions"]
+                                               :db       #ig/ref :duct.database.sql.hikaricp/read-write}
+
+ ;; BRS datasource adapter validates api-url as non-nil during init.
+ :gpml.boundary.adapter.datasource/brs {:api-url          #duct/env ["BRS_API_URL" Str :or "https://brs.test.example.com"]
+                                         :logger           #ig/ref :duct/logger
+                                         :retry-config     {:timeout 180000}
+                                         :records-per-page #duct/env ["BRS_API_RECORDS_PER_PAGE" Int :or 100]
+                                         :endpoints        {:publication #duct/env ["BRS_API_PUBLICATIONS_ENDPOINT" Str :or "/test/publications"]
+                                                            :meeting     #duct/env ["BRS_API_MEETINGS_ENDPOINT" Str :or "/test/meetings"]
+                                                            :project     #duct/env ["BRS_API_PROJECTS_ENDPOINT" Str :or "/test/projects"]}}
+
+ ;; CORS init calls (str/split allowed-origins #",") which NPEs on nil.
+ :gpml.handler.main/cors-allowed-origins {:allowed-origins #duct/env ["CORS_ALLOWED_ORIGINS" Str :or "localhost"]}
 
  :gpml/scheduler #ig/ref :gpml/noop-scheduler ;; Disabled until this thread leak is fixed https://github.com/akvo/unep-gpml/issues/1779
  :gpml/twarc-scheduler {:disabled true}
@@ -23,4 +48,11 @@
  {:chat-adapter           #ig/ref :mocks.boundary.adapter.chat/ds-chat
   :translate-adapter      #ig/ref :mocks.boundary.adapter.translate/google
   :storage-client-adapter #ig/ref :mocks.boundary.adapter.storage-client/local-file-system
-  :storage-bucket-name #duct/env ["LOCAL_FS_STORAGE_BUCKET_NAME" Str]}}
+  :storage-bucket-name    #duct/env ["LOCAL_FS_STORAGE_BUCKET_NAME" Str :or "unep-gpml-dev"]
+  :app-name               #duct/env ["APP_NAME" Str :or "UNEP GPML (test)"]
+  :app-domain             #duct/env ["APP_DOMAIN" Str :or "http://localhost"]
+  :app-user-admin         #duct/env ["APP_USER_ADMIN" Str :or "test-admin@example.com"]
+  :storage-api-host-name  #duct/env ["GCS_API_HOST_NAME" Str :or "storage.googleapis.com"]
+  :private-storage-bucket-name #duct/env ["GCS_PRIVATE_BUCKET_NAME" Str :or "unep-gpml-dev"]
+  :public-storage-bucket-name  #duct/env ["GCS_PUBLIC_BUCKET_NAME" Str :or "unep-gpml-public-dev"]
+  :openapi-api-key        #duct/env ["OPENAI_API_KEY" Str :or "test-key"]}}

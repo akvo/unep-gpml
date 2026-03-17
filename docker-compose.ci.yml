@@ -15,6 +15,10 @@ services:
       - APP_USER_ADMIN=deden@akvo.org
       - GOOGLE_TRANSLATE_API_KEY=dummy-key-for-ci
       - AUTO_TRANSLATE_ENABLED=false
+      - OIDC_ISSUER=https://unep-gpml-test.eu.auth0.com/
+      - OIDC_AUDIENCE=dxfYNPO4D9ovQr5NHFkOU3jwJzXhcq5J
+      - OIDC_AUDIENCE_M2M=https://unep-gpml-test.eu.auth0.com/api/v2/
+      - OIDC_AUDIENCE_AUTH0_ACTIONS=ftSrE1lYDbpvnWKJkdoT8nfO1ewTdxxh
   frontend:
     network_mode: service:mainnetwork
     image: eu.gcr.io/akvo-lumen/unep-gpml/frontend:latest

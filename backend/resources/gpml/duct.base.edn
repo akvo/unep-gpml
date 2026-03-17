@@ -837,14 +837,14 @@
  [:duct/const :gpml.config/brs-gpml-entities-mapping]
  [{:gpml-entity-name :initiative
    :brs-entity-name  :project}]
- [:duct/const :gpml.config/mailjet]                                 {:api-key    #duct/env ["MAILJET_API_KEY" Str]
-                                                                     :secret-key #duct/env ["MAILJET_SECRET_KEY" Str]
+ [:duct/const :gpml.config/mailjet]                                 {:api-key    #duct/env ["MAILJET_API_KEY" Str :or ""]
+                                                                     :secret-key #duct/env ["MAILJET_SECRET_KEY" Str :or ""]
                                                                      :logger     #ig/ref :duct/logger
-                                                                     :app-name   #duct/env ["APP_NAME" Str]
-                                                                     :app-domain #duct/env ["APP_DOMAIN" Str]}
- [:duct/const :gpml.config/auth0]                                   {:domain    #duct/env ["OIDC_ISSUER" Str]
-                                                                     :client-id #duct/env ["AUTH0_BACKEND_CLIENT_ID" Str]
-                                                                     :secret    #duct/env ["AUTH0_BACKEND_SECRET" Str]}
+                                                                     :app-name   #duct/env ["APP_NAME" Str :or "UNEP GPML"]
+                                                                     :app-domain #duct/env ["APP_DOMAIN" Str :or "http://localhost"]}
+ [:duct/const :gpml.config/auth0]                                   {:domain    #duct/env ["OIDC_ISSUER" Str :or "https://placeholder.example.com/"]
+                                                                     :client-id #duct/env ["AUTH0_BACKEND_CLIENT_ID" Str :or ""]
+                                                                     :secret    #duct/env ["AUTH0_BACKEND_SECRET" Str :or ""]}
  [:duct/const :gpml.config/common]
  {:profile                             #gpml/profile []
   :db                                  #ig/ref :duct.database.sql.hikaricp/read-write
@@ -859,18 +859,18 @@
   :auto-translate                      {:enabled #duct/env ["AUTO_TRANSLATE_ENABLED" Bool :or false]}
   :auth0                               #ig/ref :gpml.config/auth0
   :mailjet-config                      #ig/ref :gpml.config/mailjet
-  :app-name                            #duct/env ["APP_NAME" Str]
-  :app-domain                          #duct/env ["APP_DOMAIN" Str]
-  :app-user-admin                      #duct/env ["APP_USER_ADMIN" Str]
-  :storage-api-host-name               #duct/env ["GCS_API_HOST_NAME" Str]
-  :private-storage-bucket-name         #duct/env ["GCS_PRIVATE_BUCKET_NAME" Str]
+  :app-name                            #duct/env ["APP_NAME" Str :or "UNEP GPML"]
+  :app-domain                          #duct/env ["APP_DOMAIN" Str :or "http://localhost"]
+  :app-user-admin                      #duct/env ["APP_USER_ADMIN" Str :or ""]
+  :storage-api-host-name               #duct/env ["GCS_API_HOST_NAME" Str :or "storage.googleapis.com"]
+  :private-storage-bucket-name         #duct/env ["GCS_PRIVATE_BUCKET_NAME" Str :or ""]
   :private-storage-signed-url-lifespan 10080
-  :public-storage-bucket-name          #duct/env ["GCS_PUBLIC_BUCKET_NAME" Str]
-  :openapi-api-key                     #duct/env ["OPENAI_API_KEY" Str]
+  :public-storage-bucket-name          #duct/env ["GCS_PUBLIC_BUCKET_NAME" Str :or ""]
+  :openapi-api-key                     #duct/env ["OPENAI_API_KEY" Str :or ""]
   :brs-entities-to-import              #ig/ref :gpml.config/brs-gpml-entities-mapping
-  :subscribe-settings                  {:management-dest-email #duct/env ["SUBSCRIPTIONS_MANAGEMENT_EMAIL" Str]}
-  :contact-settings                    {:cobsea {:dest-email #duct/env ["CONTACT_COBSEA_MANAGEMENT_EMAIL" Str]}
-                                        :gpml {:dest-email #duct/env ["CONTACT_GPML_MANAGEMENT_EMAIL" Str]}}}
+  :subscribe-settings                  {:management-dest-email #duct/env ["SUBSCRIPTIONS_MANAGEMENT_EMAIL" Str :or ""]}
+  :contact-settings                    {:cobsea {:dest-email #duct/env ["CONTACT_COBSEA_MANAGEMENT_EMAIL" Str :or ""]}
+                                        :gpml {:dest-email #duct/env ["CONTACT_GPML_MANAGEMENT_EMAIL" Str :or ""]}}}
  :duct.server.http/jetty                                            {:handler #ig/ref :gpml.handler.main/handler}
  :gpml.handler.main/root                                            {}
  :gpml.handler.main/swagger-handler                                 {}
@@ -981,7 +981,7 @@
                                                                               :clientId #duct/env "OIDC_AUDIENCE"
                                                                               :audience #duct/env "OIDC_AUDIENCE_M2M"}
                                                                      :sentry {:dsn         #duct/env "SENTRY_DSN"
-                                                                              :environment #duct/env ["ENV_NAME" Str]}
+                                                                              :environment #duct/env ["ENV_NAME" Str :or "development"]}
                                                                      :motomo {:siteId #duct/env "MOTOMO_SITE_ID"}}
  :gpml.handler.auth/post-topic-auth                                 #ig/ref :gpml.config/common
  :gpml.handler.auth/post-topic-auth-params                          {}
@@ -1119,29 +1119,29 @@
  :gpml.handler.tag.migration/post-params                            {}
  :gpml.boundary.adapter.storage-client.gcs/client                   {}
 
- :gpml.boundary.adapter.chat/ds-chat          {:api-key #duct/env ["DEAD_SIMPLE_CHAT_API_KEY" Str]
+ :gpml.boundary.adapter.chat/ds-chat          {:api-key #duct/env ["DEAD_SIMPLE_CHAT_API_KEY" Str :or ""]
                                                :logger  #ig/ref :duct/logger
                                                :profile #gpml/profile []}
- :gpml.boundary.adapter.translate.google/adapter {:api-key #duct/env ["GOOGLE_TRANSLATE_API_KEY" Str]
+ :gpml.boundary.adapter.translate.google/adapter {:api-key #duct/env ["GOOGLE_TRANSLATE_API_KEY" Str :or ""]
                                                   :logger  #ig/ref :duct/logger}
  :duct.migrator/ragtime                       {:migrations #ig/ref :duct.migrator.ragtime/resources
                                                :database   #ig/ref :duct.database.sql.hikaricp/read-write
                                                :logger     #ig/ref :duct/logger
                                                :strategy   :raise-error}
  :duct.migrator.ragtime/resources             {:path "migrations"}
- :gpml.auth/auth-middleware                   {:issuer   #duct/env ["OIDC_ISSUER" Str]
-                                               :audience #duct/env ["OIDC_AUDIENCE" Str]
+ :gpml.auth/auth-middleware                   {:issuer   #duct/env ["OIDC_ISSUER" Str :or "https://placeholder.example.com/"]
+                                               :audience #duct/env ["OIDC_AUDIENCE" Str :or "placeholder"]
                                                :db       #ig/ref :duct.database.sql.hikaricp/read-write}
- :gpml.auth/auth-middleware-gpml-programmatic {:issuer   #duct/env ["OIDC_ISSUER" Str]
-                                               :audience #duct/env ["OIDC_AUDIENCE_M2M" Str]
+ :gpml.auth/auth-middleware-gpml-programmatic {:issuer   #duct/env ["OIDC_ISSUER" Str :or "https://placeholder.example.com/"]
+                                               :audience #duct/env ["OIDC_AUDIENCE_M2M" Str :or "placeholder"]
                                                :db       #ig/ref :duct.database.sql.hikaricp/read-write}
- :gpml.auth/auth-middleware-auth0-actions     {:issuer   #duct/env ["OIDC_ISSUER" Str]
-                                               :audience #duct/env ["OIDC_AUDIENCE_AUTH0_ACTIONS" Str]
+ :gpml.auth/auth-middleware-auth0-actions     {:issuer   #duct/env ["OIDC_ISSUER" Str :or "https://placeholder.example.com/"]
+                                               :audience #duct/env ["OIDC_AUDIENCE_AUTH0_ACTIONS" Str :or "placeholder"]
                                                :db       #ig/ref :duct.database.sql.hikaricp/read-write}
  :gpml.auth/auth-required                     {}
  :gpml.auth/admin-auth-required               #ig/ref :gpml.config/common
  :gpml.handler.monitoring/collector           {}
- :gpml.handler.main/cors-allowed-origins      {:allowed-origins #duct/env ["CORS_ALLOWED_ORIGINS"]}
+ :gpml.handler.main/cors-allowed-origins      {:allowed-origins #duct/env ["CORS_ALLOWED_ORIGINS" Str :or "localhost"]}
  :gpml.handler.monitoring/jetty-configurator  {:collector #ig/ref :gpml.handler.monitoring/collector}
  :gpml.handler.monitoring/hikaricp            {:hikari-cp         #ig/ref :duct.database.sql.hikaricp/read-write
                                                :metrics-collector #ig/ref :gpml.handler.monitoring/collector}
@@ -1157,13 +1157,13 @@
                                                                        :maximum-pool-size 2
                                                                        :auto-commit false
                                                                        :read-only true}
- :gpml.boundary.adapter.datasource/brs        {:api-url          #duct/env ["BRS_API_URL" Str]
+ :gpml.boundary.adapter.datasource/brs        {:api-url          #duct/env ["BRS_API_URL" Str :or "https://placeholder.example.com"]
                                                :logger           #ig/ref :duct/logger
                                                :retry-config     {:timeout 180000}
                                                :records-per-page #duct/env ["BRS_API_RECORDS_PER_PAGE" Int :or 100]
-                                               :endpoints        {:publication #duct/env ["BRS_API_PUBLICATIONS_ENDPOINT" Str]
-                                                                  :meeting     #duct/env ["BRS_API_MEETINGS_ENDPOINT" Str]
-                                                                  :project     #duct/env ["BRS_API_PROJECTS_ENDPOINT" Str]}}
+                                               :endpoints        {:publication #duct/env ["BRS_API_PUBLICATIONS_ENDPOINT" Str :or "/placeholder"]
+                                                                  :meeting     #duct/env ["BRS_API_MEETINGS_ENDPOINT" Str :or "/placeholder"]
+                                                                  :project     #duct/env ["BRS_API_PROJECTS_ENDPOINT" Str :or "/placeholder"]}}
  :gpml/scheduler                              #ig/ref :gpml/twarc-scheduler
  :gpml/twarc-scheduler                        {:logger           #ig/ref :duct/logger
                                                :thread-count #duct/env ["SCHEDULER_THREAD_COUNT" Int :or 50]}
