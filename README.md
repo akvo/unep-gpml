@@ -435,6 +435,13 @@ The hybrid approach allows using the most appropriate tool for each query type w
 
 * [docker-compose](https://docs.docker.com/compose/)
 
+### Getting Started
+
+Copy the environment file template:
+
+```bash
+cp .env.example .env
+```
 
 ### Usual commands
 
