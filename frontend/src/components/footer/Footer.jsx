@@ -124,6 +124,14 @@ const Footer = ({ showTools }) => {
                   UNEP One Plastics Initiative
                 </a>
               </li>
+              <li>
+                <a
+                  href="https://www.youtube.com/playlist?list=PLOlw9GG0Pf9i16IolVgLwmSDSXj47aJ-h"
+                  target="_blank"
+                >
+                  How To Guides
+                </a>
+              </li>
             </ul>
           </div>
           <div className="footer-item powered-by">

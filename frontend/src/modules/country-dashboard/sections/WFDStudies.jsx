@@ -170,9 +170,9 @@ const WFDStudies = ({ countryCode }) => {
       </h4>
       <p>
         A study on plastic leakage from municipal solid waste management systems
-        in [year] in created a sanky diagram as shown below. This can provide
-        insights on what stages of the waste management system is the largest
-        source of plastic pollution
+        produced a Sankey diagram, as shown below. This provides insights into
+        which stages of the waste management system are the largest sources of
+        plastic pollution.
       </p>
       {loading ? (
         <Spin size="small" />

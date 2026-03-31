@@ -76,7 +76,7 @@ const addTooltipsToPlaceholders = (htmlString, placeholders, tooltips, { convert
 
         return (
           <Tooltip
-            title={tooltips[placeholderKey]}
+            title={tooltips[placeholderKey] === 'Unknown source' ? null : tooltips[placeholderKey]}
             overlayInnerStyle={{
               backgroundColor: '#fff',
               color: '#020A5B',
