@@ -15,6 +15,9 @@ backend_build () {
   # Create cache directories if they don't exist
   mkdir -p "$HOME/.m2" "$HOME/.lein"
 
+  # Generate .env from example (the file is gitignored)
+  cp .env.example .env
+
   docker run \
      --rm \
      --env-file .env \
