@@ -5,6 +5,7 @@ import SectionText from './SectionText'
 import KeyTrends from './KeyTrends'
 import ChartCard from '../ChartCard'
 import WFDStudies from './WFDStudies'
+import useRegions from '../../../hooks/useRegions'
 import styles from '../CountryOverview.module.scss'
 
 const MSWGenerationChart = dynamic(() => import('../charts/MSWGeneration'), {
@@ -28,6 +29,8 @@ const WasteManagementSection = React.forwardRef(
     },
     ref
   ) => {
+    const { countriesWithRegions, loading: regionLoading } = useRegions()
+
     if (!textContent?.wasteManagement && !strapiWasteContent) return null
 
     return (
@@ -66,7 +69,7 @@ const WasteManagementSection = React.forwardRef(
             <Row gutter={[16, 16]} className={styles.chartRow}>
               <Col xs={24} md={12}>
                 <ChartCard>
-                  <MSWGenerationChart layers={layers} layerLoading={layerLoading} />
+                  <MSWGenerationChart layers={layers} layerLoading={layerLoading} countriesWithRegions={countriesWithRegions} regionLoading={regionLoading} />
                 </ChartCard>
               </Col>
               <Col xs={24} md={12}>
@@ -74,6 +77,8 @@ const WasteManagementSection = React.forwardRef(
                   <PlasticCompositionChart
                     layers={layers}
                     layerLoading={layerLoading}
+                    countriesWithRegions={countriesWithRegions}
+                    regionLoading={regionLoading}
                   />
                 </ChartCard>
               </Col>
@@ -84,7 +89,7 @@ const WasteManagementSection = React.forwardRef(
             <Row gutter={[16, 16]} className={styles.chartRow}>
               <Col xs={24} md={12}>
                 <ChartCard>
-                  <MSWGenerationChart layers={layers} layerLoading={layerLoading} />
+                  <MSWGenerationChart layers={layers} layerLoading={layerLoading} countriesWithRegions={countriesWithRegions} regionLoading={regionLoading} />
                 </ChartCard>
               </Col>
               <Col xs={24} md={12}>
@@ -92,6 +97,8 @@ const WasteManagementSection = React.forwardRef(
                   <PlasticCompositionChart
                     layers={layers}
                     layerLoading={layerLoading}
+                    countriesWithRegions={countriesWithRegions}
+                    regionLoading={regionLoading}
                   />
                 </ChartCard>
               </Col>

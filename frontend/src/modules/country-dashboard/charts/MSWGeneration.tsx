@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { useRouter } from 'next/router'
-import useRegions from '../../../hooks/useRegions'
 import { getBaseUrl } from '../../../utils/misc'
 import { t } from '@lingui/macro'
 import { splitIntoTwoLines } from './PlasticImportExportChart'
 
-const MSWGenerationChart = ({ layers, layerLoading }) => {
+const MSWGenerationChart = ({ layers, layerLoading, countriesWithRegions = [], regionLoading = false }) => {
   const router = useRouter()
   const baseURL = getBaseUrl()
   const { country, countryCode } = router.query
-  const { countriesWithRegions, loading: regionLoading } = useRegions()
 
   const [nationalEstimate, setNationalEstimate] = useState(0)
   const [cityEstimates, setCityEstimates] = useState([])
