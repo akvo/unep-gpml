@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { useRouter } from 'next/router'
-import useRegions from '../../../hooks/useRegions'
 import { getBaseUrl } from '../../../utils/misc'
 import { t, Trans } from '@lingui/macro'
 import { splitIntoTwoLines } from './PlasticImportExportChart'
 import { useLingui } from '@lingui/react'
 
-const PlasticCompositionChart = ({ layers, layerLoading }) => {
+const PlasticCompositionChart = ({ layers, layerLoading, countriesWithRegions = [], regionLoading = false }) => {
     const { i18n } = useLingui()
 
   const { _locale } = i18n
@@ -17,8 +16,6 @@ const PlasticCompositionChart = ({ layers, layerLoading }) => {
   const [cityEstimates, setCityEstimates] = useState([])
   const [cities, setCities] = useState([])
   const baseURL = getBaseUrl()
-
-  const { countriesWithRegions, loading: regionLoading } = useRegions()
 
   const [regionPlasticComposition, setRegionPlasticComposition] = useState(null)
 

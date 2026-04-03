@@ -27,10 +27,7 @@ const Sidebar = ({
   const [isMobile, setIsMobile] = useState(false)
   const { queryParameters, setQueryParameters } = useQueryParameters()
 
-  const { loading } = useCategories()
-  const catsData = useCategories()?.categories
-
-  const categories = catsData
+  const { loading, categories } = useCategories()
   const subcategories = useSubcategories()
 
   const [selectedCountry, setSelectedCountry] = useState(null)
