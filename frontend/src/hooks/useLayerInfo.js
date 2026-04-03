@@ -32,6 +32,14 @@ const tradeLayers = [
   'Intermediate_man___value__export__WFL1',
 ]
 
+// Layers that need individual fetches for English locale
+// (the rest are already populated via ?populate=ValuePerCountry)
+const enOnlyLayers = [
+  'Final_manufactured_plastic_goods___value__export__V2_WFL1',
+  'Total_plastic___value__export__V2_WFL1',
+  'Plastic_waste_weigth____export__WFL1',
+]
+
 // Fetch items with limited concurrency to avoid overwhelming the server
 const fetchWithConcurrency = async (items, fetchFn, concurrency = 5) => {
   const results = []
@@ -80,6 +88,7 @@ const useLayerInfo = () => {
     }
 
     const fetchLayers = async () => {
+      const currentLocale = router.locale
       if (router.query.useDataLayers) {
         try {
           const response = await axios.get(
@@ -109,21 +118,26 @@ const useLayerInfo = () => {
             `${strapiURL}/api/layers?locale=${router.locale}&pagination[pageSize]=150&sort[order]=asc&populate=ValuePerCountry`
           )
 
-          const tradeLayerItems = response.data.data.filter((d) =>
-            tradeLayers.includes(d.attributes.arcgislayerId)
+          // Determine which layers need individual fetches based on locale
+          // English: only 3 specific layers need re-fetching (rest come populated)
+          // Non-English: all trade layers need individual fetches
+          const layersNeedingFetch = currentLocale === 'en' ? enOnlyLayers : tradeLayers
+
+          const toEnrich = response.data.data.filter((d) =>
+            layersNeedingFetch.includes(d.attributes.arcgislayerId)
           )
-          const nonTradeLayerItems = response.data.data.filter((d) =>
-            !tradeLayers.includes(d.attributes.arcgislayerId)
+          const keepAsIs = response.data.data.filter((d) =>
+            !layersNeedingFetch.includes(d.attributes.arcgislayerId)
           )
 
-          const enrichedTradeLayers = await fetchWithConcurrency(
-            tradeLayerItems,
+          const enriched = await fetchWithConcurrency(
+            toEnrich,
             fetchLayerValues,
             5
           )
 
           if (!cancelled) {
-            setLayers([...nonTradeLayerItems, ...enrichedTradeLayers])
+            setLayers([...keepAsIs, ...enriched])
             setLoading(false)
           }
         } catch (error) {
