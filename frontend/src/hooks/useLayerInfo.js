@@ -32,6 +32,25 @@ const tradeLayers = [
   'Intermediate_man___value__export__WFL1',
 ]
 
+// Layers that need individual fetches for English locale
+// (the rest are already populated via ?populate=ValuePerCountry)
+const enOnlyLayers = [
+  'Final_manufactured_plastic_goods___value__export__V2_WFL1',
+  'Total_plastic___value__export__V2_WFL1',
+  'Plastic_waste_weigth____export__WFL1',
+]
+
+// Fetch items with limited concurrency to avoid overwhelming the server
+const fetchWithConcurrency = async (items, fetchFn, concurrency = 5) => {
+  const results = []
+  for (let i = 0; i < items.length; i += concurrency) {
+    const batch = items.slice(i, i + concurrency)
+    const batchResults = await Promise.all(batch.map(fetchFn))
+    results.push(...batchResults)
+  }
+  return results
+}
+
 const useLayerInfo = () => {
   const [layers, setLayers] = useState([])
   const [loading, setLoading] = useState(true)
@@ -39,56 +58,59 @@ const useLayerInfo = () => {
   const router = useRouter()
 
   useEffect(() => {
+    let cancelled = false
+
+    const fetchLayerValues = async (d) => {
+      try {
+        const getValues = await axios.get(
+          `${strapiURL}/api/layercollections/${d.attributes.arcgislayerId}`
+        )
+        return {
+          ...d,
+          attributes: {
+            ...d.attributes,
+            ValuePerCountry: getValues.data ?? [],
+          },
+        }
+      } catch (valueError) {
+        console.error(
+          `Error fetching values for layer ${d.attributes.arcgislayerId}:`,
+          valueError
+        )
+        return {
+          ...d,
+          attributes: {
+            ...d.attributes,
+            ValuePerCountry: [],
+          },
+        }
+      }
+    }
+
     const fetchLayers = async () => {
+      const currentLocale = router.locale
       if (router.query.useDataLayers) {
         try {
           const response = await axios.get(
             `${strapiURL}/api/layers?locale=${router.locale}&pagination[pageSize]=150&sort[order]=asc`
           )
 
-          const updateLayer = await Promise.all(
-            response.data.data.map(async (d) => {
-              try {
-                // const getValues = await axios.get(
-                //   `${strapiURL}/api/layer-collections?filters[argislayerid]=${d.attributes.arcgislayerId}&pagination[page]=1&pagination[pageSize]=2000&publicationState=preview`
-                // )
-                const getValues = await axios.get(
-                  `${strapiURL}/api/layercollections/${d.attributes.arcgislayerId}`
-                )
-                return {
-                  ...d,
-                  attributes: {
-                    ...d.attributes,
-                    // ValuePerCountry: getValues.data.data.map((v) => v.attributes) ?? []
-                    ValuePerCountry: getValues.data ?? [],
-                  },
-                }
-              } catch (valueError) {
-                console.error(
-                  `Error fetching values for layer ${d.attributes.arcgislayerId}:`,
-                  valueError
-                )
+          const updateLayer = await fetchWithConcurrency(
+            response.data.data,
+            fetchLayerValues,
+            5
+          )
 
-                return {
-                  ...d,
-                  attributes: {
-                    ...d.attributes,
-                    ValuePerCountry: [],
-                  },
-                }
-              }
-            })
-          ).catch((err) => {
-            console.error('Error in Promise.all:', err)
-            return response.data.data
-          })
-
-          setLayers(updateLayer || response.data.data || [])
-          setLoading(false)
+          if (!cancelled) {
+            setLayers(updateLayer || response.data.data || [])
+            setLoading(false)
+          }
         } catch (error) {
           console.error('Error fetching Layers:', error)
-          setLayers([]) // Set empty array instead of leaving previous state
-          setLoading(false)
+          if (!cancelled) {
+            setLayers([])
+            setLoading(false)
+          }
         }
       } else {
         try {
@@ -96,46 +118,43 @@ const useLayerInfo = () => {
             `${strapiURL}/api/layers?locale=${router.locale}&pagination[pageSize]=150&sort[order]=asc&populate=ValuePerCountry`
           )
 
-          const updateLayer = await Promise.all(
-            response.data.data.map(async (d) => {
-              if (tradeLayers.includes(d.attributes.arcgislayerId)) {
-                try {
-                  const getValues = await axios.get(
-                    `${strapiURL}/api/layercollections/${d.attributes.arcgislayerId}`
-                  )
-                  return {
-                    ...d,
-                    attributes: {
-                      ...d.attributes,
-                      ValuePerCountry: getValues.data ?? [],
-                    },
-                  }
-                } catch (valueError) {
-                  console.error(
-                    `Error fetching values for layer ${d.attributes.arcgislayerId}:`,
-                    valueError
-                  )
-                  return d
-                }
-              }
-              return d
-            })
-          ).catch((err) => {
-            console.error('Error in Promise.all:', err)
-            return response.data.data
-          })
+          // Determine which layers need individual fetches based on locale
+          // English: only 3 specific layers need re-fetching (rest come populated)
+          // Non-English: all trade layers need individual fetches
+          const layersNeedingFetch = currentLocale === 'en' ? enOnlyLayers : tradeLayers
 
-          setLayers(updateLayer || response.data.data || [])
-          setLoading(false)
+          const toEnrich = response.data.data.filter((d) =>
+            layersNeedingFetch.includes(d.attributes.arcgislayerId)
+          )
+          const keepAsIs = response.data.data.filter((d) =>
+            !layersNeedingFetch.includes(d.attributes.arcgislayerId)
+          )
+
+          const enriched = await fetchWithConcurrency(
+            toEnrich,
+            fetchLayerValues,
+            5
+          )
+
+          if (!cancelled) {
+            setLayers([...keepAsIs, ...enriched])
+            setLoading(false)
+          }
         } catch (error) {
           console.error('Error fetching Layers:', error)
-          setLayers([]) // Set empty array instead of leaving previous state
-          setLoading(false)
+          if (!cancelled) {
+            setLayers([])
+            setLoading(false)
+          }
         }
       }
     }
 
     fetchLayers()
+
+    return () => {
+      cancelled = true
+    }
   }, [router.locale])
 
   return { layers, loading }

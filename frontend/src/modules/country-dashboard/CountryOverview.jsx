@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Button, Spin, Tooltip } from 'antd'
 import { useRouter } from 'next/router'
 import useReplacedText from '../../hooks/useReplacePlaceholders'
@@ -231,28 +231,49 @@ const CountryOverview = ({
   const showModal = () => setModalVisible(true)
   const handleClose = () => setModalVisible(false)
 
-  // --- Strapi category objects ---
-  const tradeCategoryObject = categories.find(
-    (c) => c.attributes.categoryId === CATEGORY_IDS.INDUSTRY_AND_TRADE
+  // --- Strapi category objects (memoized to stabilize references) ---
+  const tradeCategoryObject = useMemo(
+    () => categories.find((c) => c.attributes.categoryId === CATEGORY_IDS.INDUSTRY_AND_TRADE),
+    [categories]
   )
-  const wasteCategoryObject = categories.find(
-    (c) => c.attributes.categoryId === CATEGORY_IDS.WASTE_MANAGEMENT
+  const wasteCategoryObject = useMemo(
+    () => categories.find((c) => c.attributes.categoryId === CATEGORY_IDS.WASTE_MANAGEMENT),
+    [categories]
   )
-  const envCategoryObject = categories.find(
-    (c) => c.attributes.categoryId === CATEGORY_IDS.ENVIRONMENTAL_IMPACT
+  const envCategoryObject = useMemo(
+    () => categories.find((c) => c.attributes.categoryId === CATEGORY_IDS.ENVIRONMENTAL_IMPACT),
+    [categories]
   )
 
-  // --- Layer filtering per category ---
-  const tradeLayerIds = extractLayerIds(tradeCategoryObject)
-  const tradeLayerJson = filterLayersByCountry(layers, tradeLayerIds, query.countryCode, query.country)
+  // --- Layer filtering per category (memoized to prevent re-fetch cascade) ---
+  const tradeLayerJson = useMemo(
+    () => filterLayersByCountry(layers, extractLayerIds(tradeCategoryObject), query.countryCode, query.country),
+    [layers, tradeCategoryObject, query.countryCode, query.country]
+  )
+  const wasteLayerJson = useMemo(
+    () => filterLayersByCountry(layers, !isExcelCountry ? extractLayerIds(wasteCategoryObject) : [], query.countryCode, query.country),
+    [layers, wasteCategoryObject, isExcelCountry, query.countryCode, query.country]
+  )
+  const envLayerJson = useMemo(
+    () => filterLayersByCountry(layers, !isExcelCountry ? extractLayerIds(envCategoryObject) : [], query.countryCode, query.country),
+    [layers, envCategoryObject, isExcelCountry, query.countryCode, query.country]
+  )
 
-  const wasteLayerIds = !isExcelCountry ? extractLayerIds(wasteCategoryObject) : []
-  const wasteLayerJson = filterLayersByCountry(layers, wasteLayerIds, query.countryCode, query.country)
+  // --- Memoize placeholder arrays to stabilize references ---
+  const tradePlaceholderKeys = useMemo(
+    () => tradeCategoryObject?.attributes?.textTemplate?.placeholders || [],
+    [tradeCategoryObject]
+  )
+  const wastePlaceholderKeys = useMemo(
+    () => (!isExcelCountry ? wasteCategoryObject?.attributes?.textTemplate?.placeholders || [] : []),
+    [isExcelCountry, wasteCategoryObject]
+  )
+  const envPlaceholderKeys = useMemo(
+    () => (!isExcelCountry ? envCategoryObject?.attributes?.textTemplate?.placeholders || [] : []),
+    [isExcelCountry, envCategoryObject]
+  )
 
-  const envLayerIds = !isExcelCountry ? extractLayerIds(envCategoryObject) : []
-  const envLayerJson = filterLayersByCountry(layers, envLayerIds, query.countryCode, query.country)
-
-  // --- useReplacedText hooks (always called, conditionally activated) ---
+  // --- useReplacedText hooks (gated on layerLoading to prevent double-fetch) ---
   const {
     placeholders: tradePlaceholders,
     tooltips: tradeTooltips,
@@ -260,8 +281,8 @@ const CountryOverview = ({
   } = useReplacedText(
     query.country,
     query.countryCode,
-    CATEGORY_IDS.INDUSTRY_AND_TRADE,
-    tradeCategoryObject?.attributes?.textTemplate?.placeholders || [],
+    !layerLoading ? CATEGORY_IDS.INDUSTRY_AND_TRADE : null,
+    tradePlaceholderKeys,
     tradeLayerJson
   )
 
@@ -272,10 +293,8 @@ const CountryOverview = ({
   } = useReplacedText(
     query.country,
     query.countryCode,
-    !isExcelCountry ? CATEGORY_IDS.WASTE_MANAGEMENT : null,
-    !isExcelCountry
-      ? wasteCategoryObject?.attributes?.textTemplate?.placeholders || []
-      : [],
+    !layerLoading && !isExcelCountry ? CATEGORY_IDS.WASTE_MANAGEMENT : null,
+    wastePlaceholderKeys,
     wasteLayerJson
   )
 
@@ -286,17 +305,15 @@ const CountryOverview = ({
   } = useReplacedText(
     query.country,
     query.countryCode,
-    !isExcelCountry ? CATEGORY_IDS.ENVIRONMENTAL_IMPACT : null,
-    !isExcelCountry
-      ? envCategoryObject?.attributes?.textTemplate?.placeholders || []
-      : [],
+    !layerLoading && !isExcelCountry ? CATEGORY_IDS.ENVIRONMENTAL_IMPACT : null,
+    envPlaceholderKeys,
     envLayerJson
   )
 
   // --- Loading state ---
   const isLoading = isExcelCountry
     ? countryDataLoading
-    : tradeLoading || wasteLoading || envLoading
+    : layerLoading || tradeLoading || wasteLoading || envLoading
 
   if (isLoading) {
     return (
