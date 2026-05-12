@@ -111,18 +111,18 @@ const PlasticImportExportChart = ({ layers, loading }) => {
     ...(window.innerWidth < 768
       ? {
           legend: {
-            data: [t`Total imports`,t`Total exports`],
+            data: [t`Total imports`, t`Total exports`],
             textStyle: { color: '#020A5B' },
             top: 50,
           },
         }
       : {
           legend: {
-            data: [t`Total imports`,t`Total exports`],
+            data: [t`Total imports`, t`Total exports`],
             textStyle: { color: '#020A5B' },
             bottom: 0,
           },
-      }),
+        }),
     xAxis: {
       type: 'category',
       textStyle: { color: '#020A5B' },
@@ -184,12 +184,12 @@ const PlasticImportExportChart = ({ layers, loading }) => {
       >
         <Trans>Data source: </Trans>{' '}
         <a
-          href={`${baseURL}/data/maps?categoryId=industry-and-trade&subcategoryId=Import&layer=Plastic_waste___value__import__WFL1`}
+          href={`https://unctad.org/publication/global-trade-plastics-insights-first-life-cycle-trade-database `}
           style={{ color: '#020A5B', fontWeight: 'bold' }}
           target="_blank"
           rel="noopener noreferrer"
         >
-          UNCTAD 2022
+          UNCTAD
         </a>
       </div>
     </div>

@@ -6,8 +6,13 @@ import { t, Trans } from '@lingui/macro'
 import { splitIntoTwoLines } from './PlasticImportExportChart'
 import { useLingui } from '@lingui/react'
 
-const PlasticCompositionChart = ({ layers, layerLoading, countriesWithRegions = [], regionLoading = false }) => {
-    const { i18n } = useLingui()
+const PlasticCompositionChart = ({
+  layers,
+  layerLoading,
+  countriesWithRegions = [],
+  regionLoading = false,
+}) => {
+  const { i18n } = useLingui()
 
   const { _locale } = i18n
   const router = useRouter()
@@ -84,7 +89,7 @@ const PlasticCompositionChart = ({ layers, layerLoading, countriesWithRegions = 
     ]
     const tTitle = splitIntoTwoLines(
       t`Plastic composition in the MSW for ${decodeURIComponent(country)}`,
-      _locale === "fr" ? true: false
+      _locale === 'fr' ? true : false
     )
     return {
       title: {
@@ -133,13 +138,13 @@ const PlasticCompositionChart = ({ layers, layerLoading, countriesWithRegions = 
           color: '#020A5B',
           fontSize: 10,
           ...(window.innerWidth < 768
-            ?  {
+            ? {
                 width: 50,
                 overflow: 'break',
                 interval: 0,
                 fontSize: 9,
-                rotate: 30
-            }
+                rotate: 30,
+              }
             : {
                 fontWeight: 'bold',
                 width: 70,
@@ -221,7 +226,7 @@ const PlasticCompositionChart = ({ layers, layerLoading, countriesWithRegions = 
       >
         <Trans>Data source: </Trans>{' '}
         <a
-          href={`${baseURL}/data/maps?categoryId=waste-management&subcategoryId=generation&layer=Proportion_of_plastic_waste_generated_WFL1`}
+          href={`https://openknowledge.worldbank.org/entities/publication/d3f9d45e-115f-559b-b14f-28552410e90a`}
           style={{ color: '#020A5B', fontWeight: 'bold' }}
         >
           <Trans> World Bank</Trans>

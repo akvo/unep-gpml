@@ -221,7 +221,7 @@ const MSWGenerationChart = ({ layers, layerLoading, countriesWithRegions = [], r
       >
         {t`Data source:`}{' '}
         <a
-          href={`${baseURL}/data/maps?categoryId=waste-management&subcategoryId=generation&layer=Municipal_solid_waste_generated_daily_per_capita_V3_WFL1`}
+          href={`https://www.greenpolicyplatform.org/initiatives/global-waste-management-outlook/Country+Data`}
           style={{ color: '#020A5B', fontWeight: 'bold' }}
           target="_blank"
           rel="noopener noreferrer"
@@ -230,7 +230,7 @@ const MSWGenerationChart = ({ layers, layerLoading, countriesWithRegions = [], r
         </a>{' '}
         and
         <a
-          href={`${baseURL}/data/maps?categoryId=waste-management&subcategoryId=generation&layer=MSW_generation_rate__kg_cap_day__WFL1`}
+          href={`https://unhabitat.org/waste-wise-data`}
           style={{ color: '#020A5B', fontWeight: 'bold' }}
           target="_blank"
           rel="noopener noreferrer"

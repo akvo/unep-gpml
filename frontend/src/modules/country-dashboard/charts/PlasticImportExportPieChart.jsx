@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { useRouter } from 'next/router'
 import { t, Trans } from '@lingui/macro'
-import { splitIntoTwoLines} from './PlasticImportExportChart'
+import { splitIntoTwoLines } from './PlasticImportExportChart'
 
 const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
   const router = useRouter()
@@ -101,9 +101,10 @@ const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
   const pieData = generatePieData(data)
   const countryName = decodeURIComponent(country)
 
-  const tTextTitle = chartType === 'import'
-      ?  splitIntoTwoLines(t`Plastic import by type for ${countryName}`, true)
-      :  splitIntoTwoLines(t`Plastic export by type for ${countryName}`, true)
+  const tTextTitle =
+    chartType === 'import'
+      ? splitIntoTwoLines(t`Plastic import by type for ${countryName}`, true)
+      : splitIntoTwoLines(t`Plastic export by type for ${countryName}`, true)
 
   const getPieOption = () => ({
     title: {
@@ -130,7 +131,7 @@ const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
       },
     },
     legend: {
-         left: 'left',
+      left: 'left',
       orient: 'horizontal',
       top: window.innerWidth < 768 ? 60 : 'bottom',
       height: 60,
@@ -142,17 +143,16 @@ const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
       data: categoriesTitle.map((category) => Object.values(category)[0]),
     },
 
-
     grid: {
       left: '3%',
       right: '4%',
-      ...(window.innerWidth < 768) ? { bottom: 0} : {top:'30%'},
+      ...(window.innerWidth < 768 ? { bottom: 0 } : { top: '30%' }),
       containLabel: true,
     },
     color: ['#384E85', '#f56a00', '#A7AD3E', '#3498db'],
     series: [
       {
-        ...(window.innerWidth < 768) ? { top: 150} : {top:0},
+        ...(window.innerWidth < 768 ? { top: 150 } : { top: 0 }),
         name: chartType === 'import' ? 'Import' : 'Export',
         type: 'pie',
         radius: '50%',
@@ -195,7 +195,7 @@ const PlasticImportExportPieCharts = ({ chartType, layers, loading }) => {
           rel="noopener noreferrer"
           style={{ color: '#020A5B', fontWeight: 'bold' }}
         >
-          UNCTAD 2022
+          UNCTAD
         </a>{' '}
       </div>
     </div>

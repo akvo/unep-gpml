@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { useRouter } from 'next/router'
 import { t, Trans } from '@lingui/macro'
-import { splitIntoTwoLines} from './PlasticImportExportChart'
+import { splitIntoTwoLines } from './PlasticImportExportChart'
 const PlasticImportExportChart = ({ layers, loading }) => {
   const router = useRouter()
   const { country, countryCode } = router.query
@@ -37,101 +37,105 @@ const PlasticImportExportChart = ({ layers, loading }) => {
       if (loading || !country || !layers.length) return
 
       const importLayers = {
-      plasticinPrimaryForm: layers.find(
-        (layer) =>
-          layer.attributes.arcgislayerId ===
-          'Plastic_in_primary_form___value__import__V2_WFL1'
-      ),
-      intermediateFormsOfPlastic: layers.find(
-        (layer) =>
-          layer.attributes.arcgislayerId ===
-          'Intermediate_forms_of_plastic___value__import__WFL1'
-      ),
-      finalManufacturedPlasticGoods: layers.find(
-        (layer) =>
-          layer.attributes.arcgislayerId ===
-          'Final_manufactured_plastic_goods___value__import__WFL1'
-      ),
-      intermediateManufacturedPlasticGoods: layers.find(
-        (layer) =>
-          layer.attributes.arcgislayerId ===
-          'Intermediate_man___value__import__V2_WFL1'
-      ),
-      plasticWaste: layers.find(
-        (layer) =>
-          layer.attributes.arcgislayerId ===
-          'Plastic_waste___value__import__V2_WFL1'
-      ),
-    }
+        plasticinPrimaryForm: layers.find(
+          (layer) =>
+            layer.attributes.arcgislayerId ===
+            'Plastic_in_primary_form___value__import__V2_WFL1'
+        ),
+        intermediateFormsOfPlastic: layers.find(
+          (layer) =>
+            layer.attributes.arcgislayerId ===
+            'Intermediate_forms_of_plastic___value__import__WFL1'
+        ),
+        finalManufacturedPlasticGoods: layers.find(
+          (layer) =>
+            layer.attributes.arcgislayerId ===
+            'Final_manufactured_plastic_goods___value__import__WFL1'
+        ),
+        intermediateManufacturedPlasticGoods: layers.find(
+          (layer) =>
+            layer.attributes.arcgislayerId ===
+            'Intermediate_man___value__import__V2_WFL1'
+        ),
+        plasticWaste: layers.find(
+          (layer) =>
+            layer.attributes.arcgislayerId ===
+            'Plastic_waste___value__import__V2_WFL1'
+        ),
+      }
 
-    const exportLayers = {
-      plasticinPrimaryForm: layers.find(
-        (layer) =>
-          layer.attributes.arcgislayerId ===
-          'Plastic_in_primary_form___value__export__V2_WFL1'
-      ),
-      intermediateFormsOfPlastic: layers.find(
-        (layer) =>
-          layer.attributes.arcgislayerId ===
-          'Intermediate_forms_of_plastic___value__export__V2_WFL1'
-      ),
-      finalManufacturedPlasticGoods: layers.find(
-        (layer) =>
-          layer.attributes.arcgislayerId ===
-          'Final_manufactured_plastic_goods___value__export__V2_WFL1'
-      ),
-      intermediateManufacturedPlasticGoods: layers.find(
-        (layer) =>
-          layer.attributes.arcgislayerId ===
-          'Intermediate_man___value__export__WFL1'
-      ),
-      plasticWaste: layers.find(
-        (layer) =>
-          layer.attributes.arcgislayerId ===
-          'Plastic_waste___value__export__V2_WFL1'
-      ),
-    }
+      const exportLayers = {
+        plasticinPrimaryForm: layers.find(
+          (layer) =>
+            layer.attributes.arcgislayerId ===
+            'Plastic_in_primary_form___value__export__V2_WFL1'
+        ),
+        intermediateFormsOfPlastic: layers.find(
+          (layer) =>
+            layer.attributes.arcgislayerId ===
+            'Intermediate_forms_of_plastic___value__export__V2_WFL1'
+        ),
+        finalManufacturedPlasticGoods: layers.find(
+          (layer) =>
+            layer.attributes.arcgislayerId ===
+            'Final_manufactured_plastic_goods___value__export__V2_WFL1'
+        ),
+        intermediateManufacturedPlasticGoods: layers.find(
+          (layer) =>
+            layer.attributes.arcgislayerId ===
+            'Intermediate_man___value__export__WFL1'
+        ),
+        plasticWaste: layers.find(
+          (layer) =>
+            layer.attributes.arcgislayerId ===
+            'Plastic_waste___value__export__V2_WFL1'
+        ),
+      }
 
-    const getLatestYearData = (data) => {
-      if (!data || data.length === 0) return null
-      const sortedData = data.sort((a, b) => b.Year - a.Year)
-      return sortedData[0]
-    }
+      const getLatestYearData = (data) => {
+        if (!data || data.length === 0) return null
+        const sortedData = data.sort((a, b) => b.Year - a.Year)
+        return sortedData[0]
+      }
 
-    const importResults = categories.map((category) => {
-      const layer = importLayers[category]
-      const data = getLatestYearData(
-        layer?.attributes?.ValuePerCountry?.filter((item) =>
-          item.CountryCode
-            ? item.CountryCode === countryCode
-            : item.CountryName === decodeURIComponent(country)
+      const importResults = categories.map((category) => {
+        const layer = importLayers[category]
+        const data = getLatestYearData(
+          layer?.attributes?.ValuePerCountry?.filter((item) =>
+            item.CountryCode
+              ? item.CountryCode === countryCode
+              : item.CountryName === decodeURIComponent(country)
+          )
         )
-      )
-      return data ? parseFloat(data.Value.toFixed(2)) : 0
-    })
+        return data ? parseFloat(data.Value.toFixed(2)) : 0
+      })
 
-    const exportResults = categories.map((category) => {
-      const layer = exportLayers[category]
-      const data = getLatestYearData(
-        layer?.attributes?.ValuePerCountry?.filter((item) =>
-          item.CountryCode
-            ? item.CountryCode === countryCode
-            : item.CountryName === decodeURIComponent(country)
+      const exportResults = categories.map((category) => {
+        const layer = exportLayers[category]
+        const data = getLatestYearData(
+          layer?.attributes?.ValuePerCountry?.filter((item) =>
+            item.CountryCode
+              ? item.CountryCode === countryCode
+              : item.CountryName === decodeURIComponent(country)
+          )
         )
-      )
-      return data ? parseFloat(data.Value.toFixed(2)) : 0
-    })
+        return data ? parseFloat(data.Value.toFixed(2)) : 0
+      })
 
-    setImportData(importResults)
-    setExportData(exportResults)
+      setImportData(importResults)
+      setExportData(exportResults)
     }
 
     fetchData()
   }, [country, layers, loading])
 
-  const textTitle = splitIntoTwoLines(t`Plastic import & export value for ${decodeURIComponent(country)}`)
+  const textTitle = splitIntoTwoLines(
+    t`Plastic import & export value for ${decodeURIComponent(country)}`
+  )
 
-  const subTitle = splitIntoTwoLines(t`in million US dollars for year ${2022 || 'N/A'}`)
+  const subTitle = splitIntoTwoLines(
+    t`in million US dollars for year ${2022 || 'N/A'}`
+  )
   const units = t`million US dollars`
   const fUnits = units.replace(/  /, '\n')
   const getOption = () => ({
@@ -190,13 +194,13 @@ const PlasticImportExportChart = ({ layers, loading }) => {
         color: '#020A5B',
         fontSize: 12,
       },
-      data: [t`Export`,t`Import`],
+      data: [t`Export`, t`Import`],
     },
     series: categories.map((category, index) => ({
       name: Object.values(categoriesTitle[index])[0],
       type: 'bar',
       stack: 'ImportExport',
-      data: [exportData[index],importData[index]],
+      data: [exportData[index], importData[index]],
       barWidth: window.innerWidth < 768 ? 50 : 90,
       itemStyle: {
         color: ['#384E85', '#FFB800', '#f56a00', '#A7AD3E', '#3498db'][index],
@@ -225,7 +229,7 @@ const PlasticImportExportChart = ({ layers, loading }) => {
           rel="noopener noreferrer"
           style={{ color: '#020A5B', fontWeight: 'bold' }}
         >
-          UNCTAD 2022
+          UNCTAD
         </a>{' '}
       </div>
     </div>
