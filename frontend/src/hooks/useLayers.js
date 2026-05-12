@@ -2,13 +2,11 @@
 import useQueryParameters from "./useQueryParameters";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer.js";
 import LabelClass from "@arcgis/core/layers/support/LabelClass.js";
-import useLayerInfo from "./useLayerInfo";
 
-const useLayers = (renderers, layerFromQuery) => {
-  const allLayers = useLayerInfo()
+const useLayers = (renderers, layerFromQuery, allLayers) => {
   let layersFromQuery
   if (layerFromQuery) {
-    layersFromQuery = allLayers?.layers.filter(lay => lay.attributes.arcgislayerId === layerFromQuery)
+    layersFromQuery = allLayers?.filter(lay => lay.attributes.arcgislayerId === layerFromQuery)
   }
   const featureLayersMap = [];
   const featureLayers = layersFromQuery?.reverse().map(layer => {

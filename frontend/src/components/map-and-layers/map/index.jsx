@@ -99,13 +99,13 @@ const adjustPopupPosition = (view) => {
   }
 }
 
-const Map = ({ initialViewProperties, selectedLayer }) => {
+const Map = ({ initialViewProperties, selectedLayer, allLayers }) => {
   const mapDiv = useRef(null)
   const viewRef = useRef(null)
   const currentLayerRef = useRef(null)
 
   const renderer = useLoadMap()
-  const layerstoset = useLayers(renderer.renderers, selectedLayer?.attributes?.arcgislayerId)
+  const layerstoset = useLayers(renderer.renderers, selectedLayer?.attributes?.arcgislayerId, allLayers)
 
   useEffect(() => {
     if (!mapDiv.current || viewRef.current) return

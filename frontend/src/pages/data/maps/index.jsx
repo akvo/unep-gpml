@@ -42,6 +42,7 @@ const MapAndLayerPage = () => {
           zoom: 3,
         }}
         selectedLayer={selectedLayer}
+        allLayers={layers.layers}
       />
     </div>
   )
