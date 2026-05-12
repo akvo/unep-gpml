@@ -62,7 +62,7 @@ const Landing = (props) => {
           title="Introduction to the Global Plastics Hub"
           width="100%"
           height="600"
-          src="https://www.youtube.com/embed/yq2IpKOpehI?si=ALQ2kn2e6iFp7gzc&controls=0"
+          src="https://www.youtube.com/embed/g1DY4Pc0hYE?si=JDSTEuPd_FZl-dr1"
           frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowFullScreen
@@ -531,12 +531,12 @@ const LatestNews = () => {
     <div className={styles.latestNews}>
       <div className="container">
         <div className="news-wrapper">
-          <strong className="caps-heading-1">
+          {/* <strong className="caps-heading-1">
             <Trans>HIGHLIGHTS</Trans>
-          </strong>
+          </strong> */}
           <h2>
             <strong>
-              <Trans>Latest news:</Trans>
+              <Trans>Highlights</Trans>
             </strong>
             <br />
           </h2>

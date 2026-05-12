@@ -2006,8 +2006,8 @@ msgid "High-level strategy"
 msgstr "Estrategia de alto nivel"
 
 #: src/pages/landing/index.jsx:523
-msgid "HIGHLIGHTS"
-msgstr "REFLEJOS"
+msgid "Highlights"
+msgstr "Reflejos"
 
 #: src/modules/flexible-forms/form-schema.js:617
 msgid "How can the data and information from your monitoring programme be accessed?"

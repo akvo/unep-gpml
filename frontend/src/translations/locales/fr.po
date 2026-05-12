@@ -2009,8 +2009,8 @@ msgid "High-level strategy"
 msgstr "Stratégie de haut niveau"
 
 #: src/pages/landing/index.jsx:523
-msgid "HIGHLIGHTS"
-msgstr "POINTS FORTS"
+msgid "Highlights"
+msgstr "Points forts"
 
 #: src/modules/flexible-forms/form-schema.js:617
 msgid "How can the data and information from your monitoring programme be accessed?"
