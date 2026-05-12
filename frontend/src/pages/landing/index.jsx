@@ -142,6 +142,7 @@ const Landing = (props) => {
         </div>
       </div>
       <Forums {...props} />
+      <Partners />
       <div className="info-box">
         <div className="container">
           <p>
@@ -679,6 +680,59 @@ const DynamicForumModal = dynamic(
     ssr: false, // modal has window object that should be run in client side
   }
 )
+
+const Partners = () => {
+  const [items, setItems] = useState([])
+  const [width] = useDeviceSize()
+  const strapiUrl = getStrapiUrl()
+  useEffect(() => {
+    fetch(`${strapiUrl}/api/partners?populate=*`)
+      .then((d) => d.json())
+      .then((d) => {
+        const simplifiedItems = d.data.map((item) => {
+          const { title, url, image } = item.attributes
+          return {
+            title,
+            url,
+            image: image.data.attributes.url,
+          }
+        })
+        setItems(simplifiedItems)
+      })
+  }, [])
+
+  return (
+    <div className={styles.partnerSection}>
+      <div className="container">
+        <h2 className="semibold">
+          <Trans>Our partners</Trans>
+        </h2>
+      </div>
+      <div className="partner-container">
+        <ul className="partner-items">
+          <Swiper
+            spaceBetween={width <= 1024 ? 20 : 40}
+            slidesPerView={width <= 1024 ? 2 : 5}
+            pagination={pagination}
+            modules={[Pagination]}
+          >
+            {items.map((item, ix) => (
+              <SwiperSlide key={ix}>
+                {item.url ? (
+                  <a href={item.url} target="_blank" rel="noopener noreferrer">
+                    <img alt={item.title} src={item.image} />
+                  </a>
+                ) : (
+                  <img alt={item.title} src={item.image} />
+                )}
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </ul>
+      </div>
+    </div>
+  )
+}
 
 export const getStaticProps = async (ctx) => {
   return {
