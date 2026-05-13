@@ -20,6 +20,21 @@ export LEIN_JVM_OPTS="${LEIN_JVM_OPTS:-} \
 -Dsun.net.client.defaultConnectTimeout=30000 \
 -Dsun.net.client.defaultReadTimeout=120000"
 
+# Route Maven Central via Google's free mirror. Azure North-Central-US
+# runners can't reliably reach repo1.maven.org's Fastly CDN for
+# several artifacts (jackson-core 2.9.6, jetty-server 11.0.18, quartz
+# 2.3.2, tools.logging 1.0.0, etc.) — the mirror serves the same
+# content via Google's network which peers well with Azure. Use an
+# isolated LEIN_HOME so a developer running release.sh locally inside
+# the container does not get their host ~/.lein/profiles.clj clobbered.
+export LEIN_HOME="${LEIN_HOME:-/tmp/lein-ci}"
+mkdir -p "$LEIN_HOME"
+cat > "$LEIN_HOME/profiles.clj" <<'PROFILES_EOF'
+{:user {:mirrors {"central" {:name "Google Maven Central Mirror"
+                             :url "https://maven-central.storage-download.googleapis.com/maven2/"
+                             :repo-manager true}}}}
+PROFILES_EOF
+
 find ./resources/migrations/ -name '*.up.sql' | \
   awk -F '/' '{print substr($4,1,3)}' | \
   sort --numeric-sort | \
