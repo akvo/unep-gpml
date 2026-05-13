@@ -30,15 +30,24 @@ export LEIN_JVM_OPTS="${LEIN_JVM_OPTS:-} \
 # isolated LEIN_HOME so a developer running release.sh locally inside
 # the container does not get their host ~/.lein/profiles.clj clobbered.
 export LEIN_HOME="${LEIN_HOME:-/tmp/lein-ci}"
-mkdir -p "$LEIN_HOME"
-cat > "$LEIN_HOME/profiles.clj" <<'PROFILES_EOF'
-{:base    {:mirrors {"central" {:name "Google Maven Central Mirror"
-                                :url "https://maven-central.storage-download.googleapis.com/maven2/"
-                                :repo-manager true}}}
- :uberjar {:mirrors {"central" {:name "Google Maven Central Mirror"
-                                :url "https://maven-central.storage-download.googleapis.com/maven2/"
-                                :repo-manager true}}}}
-PROFILES_EOF
+mkdir -p "$LEIN_HOME" "$HOME/.lein"
+__mirror_profiles='{:base     {:mirrors {"central" {:name "Google Maven Central Mirror" :url "https://maven-central.storage-download.googleapis.com/maven2/" :repo-manager true}}}
+ :user     {:mirrors {"central" {:name "Google Maven Central Mirror" :url "https://maven-central.storage-download.googleapis.com/maven2/" :repo-manager true}}}
+ :dev      {:mirrors {"central" {:name "Google Maven Central Mirror" :url "https://maven-central.storage-download.googleapis.com/maven2/" :repo-manager true}}}
+ :test     {:mirrors {"central" {:name "Google Maven Central Mirror" :url "https://maven-central.storage-download.googleapis.com/maven2/" :repo-manager true}}}
+ :seeder   {:mirrors {"central" {:name "Google Maven Central Mirror" :url "https://maven-central.storage-download.googleapis.com/maven2/" :repo-manager true}}}
+ :eastwood {:mirrors {"central" {:name "Google Maven Central Mirror" :url "https://maven-central.storage-download.googleapis.com/maven2/" :repo-manager true}}}
+ :eftest   {:mirrors {"central" {:name "Google Maven Central Mirror" :url "https://maven-central.storage-download.googleapis.com/maven2/" :repo-manager true}}}
+ :uberjar  {:mirrors {"central" {:name "Google Maven Central Mirror" :url "https://maven-central.storage-download.googleapis.com/maven2/" :repo-manager true}}}
+ :clj-kondo {:mirrors {"central" {:name "Google Maven Central Mirror" :url "https://maven-central.storage-download.googleapis.com/maven2/" :repo-manager true}}}}'
+printf '%s\n' "$__mirror_profiles" > "$LEIN_HOME/profiles.clj"
+printf '%s\n' "$__mirror_profiles" > "$HOME/.lein/profiles.clj"
+echo "=== DEBUG: lein env + profile sources ==="
+echo "HOME=$HOME LEIN_HOME=$LEIN_HOME"
+ls -la "$HOME/.lein/" "$LEIN_HOME/" 2>&1
+echo "--- $HOME/.lein/profiles.clj ---"
+cat "$HOME/.lein/profiles.clj"
+echo "==="
 
 find ./resources/migrations/ -name '*.up.sql' | \
   awk -F '/' '{print substr($4,1,3)}' | \
