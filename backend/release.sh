@@ -9,9 +9,11 @@ set -Eeuxo pipefail
 # the runner's entire 6h timeout window.
 export LEIN_JVM_OPTS="${LEIN_JVM_OPTS:-} \
 -Djava.net.preferIPv4Stack=true \
--Dmaven.wagon.http.pool=false \
+-Daether.connector.threads=1 \
+-Daether.connector.http.reuseConnections=false \
 -Daether.connector.connectTimeout=30000 \
 -Daether.connector.requestTimeout=120000 \
+-Daether.connector.http.connectionRequestTimeout=60000 \
 -Daether.connector.http.retryHandler.count=5 \
 -Dhttp.connection.timeout=30000 \
 -Dhttp.socket.timeout=120000 \
