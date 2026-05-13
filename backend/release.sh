@@ -8,9 +8,11 @@ set -Eeuxo pipefail
 # so a half-open TCP connection during dep resolution can freeze the JVM for
 # the runner's entire 6h timeout window.
 export LEIN_JVM_OPTS="${LEIN_JVM_OPTS:-} \
+-Djava.net.preferIPv4Stack=true \
+-Dmaven.wagon.http.pool=false \
 -Daether.connector.connectTimeout=30000 \
 -Daether.connector.requestTimeout=120000 \
--Daether.connector.http.retryHandler.count=2 \
+-Daether.connector.http.retryHandler.count=5 \
 -Dhttp.connection.timeout=30000 \
 -Dhttp.socket.timeout=120000 \
 -Dsun.net.client.defaultConnectTimeout=30000 \
