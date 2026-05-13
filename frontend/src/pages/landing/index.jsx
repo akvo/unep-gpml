@@ -704,9 +704,7 @@ const Partners = () => {
   return (
     <div className={styles.partnerSection}>
       <div className="container">
-        <h2 className="semibold">
-          <Trans>Our partners</Trans>
-        </h2>
+        <h2 className="semibold">Partners</h2>
       </div>
       <div className="partner-container">
         <ul className="partner-items">
