@@ -9,7 +9,9 @@ set -Eeuxo pipefail
 # the runner's entire 6h timeout window.
 export LEIN_JVM_OPTS="${LEIN_JVM_OPTS:-} \
 -Djava.net.preferIPv4Stack=true \
--Daether.connector.threads=1 \
+-Daether.connector.basic.threads=1 \
+-Dmaven.artifact.threads=1 \
+-Daether.connector.http.maxConnectionsPerRoute=1 \
 -Daether.connector.http.reuseConnections=false \
 -Daether.connector.connectTimeout=30000 \
 -Daether.connector.requestTimeout=120000 \
@@ -30,7 +32,7 @@ export LEIN_JVM_OPTS="${LEIN_JVM_OPTS:-} \
 export LEIN_HOME="${LEIN_HOME:-/tmp/lein-ci}"
 mkdir -p "$LEIN_HOME"
 cat > "$LEIN_HOME/profiles.clj" <<'PROFILES_EOF'
-{:user {:mirrors {"central" {:name "Google Maven Central Mirror"
+{:base {:mirrors {"central" {:name "Google Maven Central Mirror"
                              :url "https://maven-central.storage-download.googleapis.com/maven2/"
                              :repo-manager true}}}}
 PROFILES_EOF
