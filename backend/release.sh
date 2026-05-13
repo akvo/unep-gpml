@@ -46,14 +46,12 @@ fi
 (
   set +x
   while sleep 60; do
-    pid=$(pgrep -f 'java' | head -1) || continue
+    # jps is JDK-provided and present in the lein image; use it instead of
+    # pgrep/ps (procps not installed). -q prints just pids.
+    pid=$(jps -q 2>/dev/null | head -1)
     [ -n "$pid" ] || continue
     echo "=== WATCHDOG @ $(date -u +%H:%M:%S) pid=$pid ==="
-    if command -v jstack >/dev/null 2>&1; then
-      jstack -l "$pid" 2>&1 | head -300 || true
-    elif command -v jcmd >/dev/null 2>&1; then
-      jcmd "$pid" Thread.print 2>&1 | head -300 || true
-    fi
+    jstack -l "$pid" 2>&1 | head -300 || true
     echo "=== WATCHDOG end ==="
   done
 ) &
