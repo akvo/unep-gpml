@@ -32,9 +32,12 @@ export LEIN_JVM_OPTS="${LEIN_JVM_OPTS:-} \
 export LEIN_HOME="${LEIN_HOME:-/tmp/lein-ci}"
 mkdir -p "$LEIN_HOME"
 cat > "$LEIN_HOME/profiles.clj" <<'PROFILES_EOF'
-{:base {:mirrors {"central" {:name "Google Maven Central Mirror"
-                             :url "https://maven-central.storage-download.googleapis.com/maven2/"
-                             :repo-manager true}}}}
+{:base    {:mirrors {"central" {:name "Google Maven Central Mirror"
+                                :url "https://maven-central.storage-download.googleapis.com/maven2/"
+                                :repo-manager true}}}
+ :uberjar {:mirrors {"central" {:name "Google Maven Central Mirror"
+                                :url "https://maven-central.storage-download.googleapis.com/maven2/"
+                                :repo-manager true}}}}
 PROFILES_EOF
 
 find ./resources/migrations/ -name '*.up.sql' | \
