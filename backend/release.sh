@@ -59,24 +59,6 @@ fi
 # lein with-profile -user,-dev run -m nvd.task.check "nvd.edn" $classpath
 # cd -
 
-# TEMPORARY (revert after diagnosis): thread-dump watchdog so a future
-# JVM hang produces actionable state in the CI log instead of 65 min of
-# silence. Runs in a subshell with -x disabled to avoid noise.
-(
-  set +x
-  while sleep 60; do
-    # jps is JDK-provided and present in the lein image; use it instead of
-    # pgrep/ps (procps not installed). -q prints just pids.
-    pid=$(jps -q 2>/dev/null | head -1)
-    [ -n "$pid" ] || continue
-    echo "=== WATCHDOG @ $(date -u +%H:%M:%S) pid=$pid ==="
-    jstack -l "$pid" 2>&1 | head -300 || true
-    echo "=== WATCHDOG end ==="
-  done
-) &
-__WATCHDOG_PID=$!
-trap 'kill $__WATCHDOG_PID 2>/dev/null || true' EXIT
-
 lein with-profile -dev,+test,+seeder,+clj-kondo clj-kondo
 lein with-profile -user,-dev,+test,+seeder,+eastwood eastwood
 CI=true lein with-profile -user,-dev,+test,+seeder,+eftest eftest
