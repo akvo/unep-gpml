@@ -3,6 +3,19 @@
 
 set -Eeuxo pipefail
 
+# Fail fast on stalled Maven Central / Clojars sockets instead of hanging
+# indefinitely. Lein's default Aether/Wagon transport has no socket timeout,
+# so a half-open TCP connection during dep resolution can freeze the JVM for
+# the runner's entire 6h timeout window.
+export LEIN_JVM_OPTS="${LEIN_JVM_OPTS:-} \
+-Daether.connector.connectTimeout=30000 \
+-Daether.connector.requestTimeout=120000 \
+-Daether.connector.http.retryHandler.count=2 \
+-Dhttp.connection.timeout=30000 \
+-Dhttp.socket.timeout=120000 \
+-Dsun.net.client.defaultConnectTimeout=30000 \
+-Dsun.net.client.defaultReadTimeout=120000"
+
 find ./resources/migrations/ -name '*.up.sql' | \
   awk -F '/' '{print substr($4,1,3)}' | \
   sort --numeric-sort | \
