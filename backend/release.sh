@@ -3,6 +3,38 @@
 
 set -Eeuxo pipefail
 
+# Fail fast on stalled Maven Central / Clojars sockets instead of hanging
+# indefinitely. Lein's default Aether/Wagon transport has no socket timeout,
+# so a half-open TCP connection during dep resolution can freeze the JVM for
+# the runner's entire 6h timeout window.
+export LEIN_JVM_OPTS="${LEIN_JVM_OPTS:-} \
+-Djava.net.preferIPv4Stack=true \
+-Daether.connector.basic.threads=1 \
+-Dmaven.artifact.threads=1 \
+-Daether.connector.http.maxConnectionsPerRoute=1 \
+-Daether.connector.http.reuseConnections=false \
+-Daether.connector.connectTimeout=30000 \
+-Daether.connector.requestTimeout=120000 \
+-Daether.connector.http.connectionRequestTimeout=60000 \
+-Daether.connector.http.retryHandler.count=5 \
+-Dhttp.connection.timeout=30000 \
+-Dhttp.socket.timeout=120000 \
+-Dsun.net.client.defaultConnectTimeout=30000 \
+-Dsun.net.client.defaultReadTimeout=120000"
+
+# Route Maven Central via Google's free mirror. Azure North-Central-US
+# runners can't reliably reach repo1.maven.org's Fastly CDN for
+# several artifacts (jackson-core 2.9.6, jetty-server 11.0.18, quartz
+# 2.3.2, tools.logging 1.0.0, etc.) — the mirror serves the same
+# content via Google's network which peers well with Azure. Use an
+# isolated LEIN_HOME so a developer running release.sh locally inside
+# the container does not get their host ~/.lein/profiles.clj clobbered.
+export LEIN_HOME="${LEIN_HOME:-/tmp/lein-ci}"
+mkdir -p "$LEIN_HOME" "$HOME/.lein"
+__mirror_profiles='{:base {:mirrors {"central" {:name "Google Maven Central Mirror" :url "https://maven-central.storage-download.googleapis.com/maven2/" :repo-manager true}}}}'
+printf '%s\n' "$__mirror_profiles" > "$LEIN_HOME/profiles.clj"
+printf '%s\n' "$__mirror_profiles" > "$HOME/.lein/profiles.clj"
+
 find ./resources/migrations/ -name '*.up.sql' | \
   awk -F '/' '{print substr($4,1,3)}' | \
   sort --numeric-sort | \
@@ -31,7 +63,7 @@ lein with-profile -dev,+test,+seeder,+clj-kondo clj-kondo
 lein with-profile -user,-dev,+test,+seeder,+eastwood eastwood
 CI=true lein with-profile -user,-dev,+test,+seeder,+eftest eftest
 lein clean
-UBERJAR_IN_COURSE=true lein with-profile uberjar uberjar
+UBERJAR_IN_COURSE=true lein with-profile base,uberjar uberjar
 
 jar tf target/uberjar/app.jar | grep --silent duct_hierarchy.edn || exit 1
 jar tf target/uberjar/app.jar | grep --silent migrations/203-add-missing-on-delete-cascade-constraints.up.sql || exit 1
