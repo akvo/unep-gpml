@@ -34,7 +34,11 @@ const SECTION_COMPONENTS = {
   'life-cycle-insights': LifeCycleInsightsSection,
 }
 
-const TRADE_HEADINGS = ['plastic imports', 'plastic exports', 'plastic trade trends']
+const TRADE_HEADINGS = [
+  'plastic imports',
+  'plastic exports',
+  'plastic trade trends',
+]
 
 const tradeHeadingStyle = {
   fontFamily: "'DM Sans', sans-serif",
@@ -65,7 +69,12 @@ const splitTextByMarker = (text, marker) => {
   return [firstPart?.trim(), secondPart?.trim()]
 }
 
-const addTooltipsToPlaceholders = (htmlString, placeholders, tooltips, { convertHeadings = false } = {}) => {
+const addTooltipsToPlaceholders = (
+  htmlString,
+  placeholders,
+  tooltips,
+  { convertHeadings = false } = {}
+) => {
   if (!placeholders || Object.keys(placeholders).length === 0) return htmlString
 
   const options = {
@@ -83,15 +92,7 @@ const addTooltipsToPlaceholders = (htmlString, placeholders, tooltips, { convert
               borderRadius: '4px',
             }}
           >
-            <span
-              style={{
-                fontWeight: 'bold',
-                color: '#6236FF',
-                cursor: 'pointer',
-              }}
-            >
-              {placeholderValue}
-            </span>
+            {placeholderValue}
           </Tooltip>
         )
       }
@@ -101,7 +102,10 @@ const addTooltipsToPlaceholders = (htmlString, placeholders, tooltips, { convert
         (node.name === 'strong' || node.name === 'b') &&
         node.children?.length
       ) {
-        const text = node.children.map((c) => c.data || '').join('').trim()
+        const text = node.children
+          .map((c) => c.data || '')
+          .join('')
+          .trim()
         if (TRADE_HEADINGS.includes(text.toLowerCase())) {
           return <h4 style={tradeHeadingStyle}>{text}</h4>
         }
@@ -129,12 +133,11 @@ const extractLayerIds = (categoryObject) => {
   if (!categoryObject?.attributes?.textTemplate?.placeholders) return []
   return [
     ...new Set(
-      categoryObject.attributes.textTemplate.placeholders.map(
-        (placeholder) =>
-          placeholder
-            .split('=')[0]
-            .split(/(_year|_total|_last|_first|_city|\*|\/|\+|\-)/)[0]
-            .trim()
+      categoryObject.attributes.textTemplate.placeholders.map((placeholder) =>
+        placeholder
+          .split('=')[0]
+          .split(/(_year|_total|_last|_first|_city|\*|\/|\+|\-)/)[0]
+          .trim()
       )
     ),
   ]
@@ -149,8 +152,7 @@ const filterLayersByCountry = (layers, layerIds, countryCode, countryName) => {
     filtered.filter((l) =>
       l.attributes.ValuePerCountry?.some(
         (vpc) =>
-          vpc.CountryCode === countryCode ||
-          vpc.CountryName === countryName
+          vpc.CountryCode === countryCode || vpc.CountryName === countryName
       )
     )
   )
@@ -167,8 +169,7 @@ const buildStrapiSectionContent = (
   if (!categoryObject || Object.keys(placeholdersData).length === 0) return null
 
   const processedPlaceholders = { ...placeholdersData }
-  const rawTemplate =
-    categoryObject.attributes?.textTemplate?.template || ''
+  const rawTemplate = categoryObject.attributes?.textTemplate?.template || ''
   const wrappedTemplate = wrapPlaceholders(rawTemplate)
   const compiledTemplate = Handlebars.compile(wrappedTemplate, {
     noEscape: true,
@@ -233,30 +234,69 @@ const CountryOverview = ({
 
   // --- Strapi category objects (memoized to stabilize references) ---
   const tradeCategoryObject = useMemo(
-    () => categories.find((c) => c.attributes.categoryId === CATEGORY_IDS.INDUSTRY_AND_TRADE),
+    () =>
+      categories.find(
+        (c) => c.attributes.categoryId === CATEGORY_IDS.INDUSTRY_AND_TRADE
+      ),
     [categories]
   )
   const wasteCategoryObject = useMemo(
-    () => categories.find((c) => c.attributes.categoryId === CATEGORY_IDS.WASTE_MANAGEMENT),
+    () =>
+      categories.find(
+        (c) => c.attributes.categoryId === CATEGORY_IDS.WASTE_MANAGEMENT
+      ),
     [categories]
   )
   const envCategoryObject = useMemo(
-    () => categories.find((c) => c.attributes.categoryId === CATEGORY_IDS.ENVIRONMENTAL_IMPACT),
+    () =>
+      categories.find(
+        (c) => c.attributes.categoryId === CATEGORY_IDS.ENVIRONMENTAL_IMPACT
+      ),
     [categories]
   )
 
   // --- Layer filtering per category (memoized to prevent re-fetch cascade) ---
   const tradeLayerJson = useMemo(
-    () => filterLayersByCountry(layers, extractLayerIds(tradeCategoryObject), query.countryCode, query.country),
+    () =>
+      filterLayersByCountry(
+        layers,
+        extractLayerIds(tradeCategoryObject),
+        query.countryCode,
+        query.country
+      ),
     [layers, tradeCategoryObject, query.countryCode, query.country]
   )
   const wasteLayerJson = useMemo(
-    () => filterLayersByCountry(layers, !isExcelCountry ? extractLayerIds(wasteCategoryObject) : [], query.countryCode, query.country),
-    [layers, wasteCategoryObject, isExcelCountry, query.countryCode, query.country]
+    () =>
+      filterLayersByCountry(
+        layers,
+        !isExcelCountry ? extractLayerIds(wasteCategoryObject) : [],
+        query.countryCode,
+        query.country
+      ),
+    [
+      layers,
+      wasteCategoryObject,
+      isExcelCountry,
+      query.countryCode,
+      query.country,
+    ]
   )
   const envLayerJson = useMemo(
-    () => filterLayersByCountry(layers, !isExcelCountry ? extractLayerIds(envCategoryObject) : [], query.countryCode, query.country),
-    [layers, envCategoryObject, isExcelCountry, query.countryCode, query.country]
+    () =>
+      filterLayersByCountry(
+        layers,
+        !isExcelCountry ? extractLayerIds(envCategoryObject) : [],
+        query.countryCode,
+        query.country
+      ),
+    [
+      layers,
+      envCategoryObject,
+      isExcelCountry,
+      query.countryCode,
+      query.country,
+    ]
   )
 
   // --- Memoize placeholder arrays to stabilize references ---
@@ -265,11 +305,17 @@ const CountryOverview = ({
     [tradeCategoryObject]
   )
   const wastePlaceholderKeys = useMemo(
-    () => (!isExcelCountry ? wasteCategoryObject?.attributes?.textTemplate?.placeholders || [] : []),
+    () =>
+      !isExcelCountry
+        ? wasteCategoryObject?.attributes?.textTemplate?.placeholders || []
+        : [],
     [isExcelCountry, wasteCategoryObject]
   )
   const envPlaceholderKeys = useMemo(
-    () => (!isExcelCountry ? envCategoryObject?.attributes?.textTemplate?.placeholders || [] : []),
+    () =>
+      !isExcelCountry
+        ? envCategoryObject?.attributes?.textTemplate?.placeholders || []
+        : [],
     [isExcelCountry, envCategoryObject]
   )
 
@@ -365,8 +411,7 @@ const CountryOverview = ({
       )
 
     // Split into imports, exports, trends
-    const trendsRegex =
-      /<(?:strong|h3|h4)[^>]*>Plastic trade trends<\/(?:strong|h3|h4)>/i
+    const trendsRegex = /<(?:strong|h3|h4)[^>]*>Plastic trade trends<\/(?:strong|h3|h4)>/i
     const trendsMatch = categoryText.match(trendsRegex)
     let importsExportsText = categoryText
     let trendsText = ''
@@ -385,8 +430,8 @@ const CountryOverview = ({
     if (jsonSummary && trendsText) {
       // Strip the heading + first paragraph (already from Strapi), keep the rest
       let extraText = jsonSummary
-        .replace(/<h4[^>]*>.*?<\/h4>/i, '')  // remove heading
-        .replace(/<p>.*?<\/p>/i, '')           // remove first paragraph (Strapi duplicate)
+        .replace(/<h4[^>]*>.*?<\/h4>/i, '') // remove heading
+        .replace(/<p>.*?<\/p>/i, '') // remove first paragraph (Strapi duplicate)
         .trim()
       if (extraText) {
         // Compile Handlebars placeholders like {{country}}
@@ -449,10 +494,7 @@ const CountryOverview = ({
       <Button className={styles.buttonStyle} onClick={showModal}>
         {t`Submit Data Update`}
       </Button>
-      <RequestDataUpdateModal
-        visible={isModalVisible}
-        onClose={handleClose}
-      />
+      <RequestDataUpdateModal visible={isModalVisible} onClose={handleClose} />
     </Tooltip>
   ) : null
 
@@ -475,9 +517,7 @@ const CountryOverview = ({
             layers={layers}
             layerLoading={layerLoading}
             {...(isFirst ? { headerExtra: submitButton } : {})}
-            {...(section.key === 'trade'
-              ? { strapiTradeContent }
-              : {})}
+            {...(section.key === 'trade' ? { strapiTradeContent } : {})}
             {...(section.key === 'waste-management'
               ? { strapiWasteContent }
               : {})}
