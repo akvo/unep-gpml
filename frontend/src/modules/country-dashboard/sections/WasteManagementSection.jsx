@@ -69,7 +69,12 @@ const WasteManagementSection = React.forwardRef(
             <Row gutter={[16, 16]} className={styles.chartRow}>
               <Col xs={24} md={12}>
                 <ChartCard>
-                  <MSWGenerationChart layers={layers} layerLoading={layerLoading} countriesWithRegions={countriesWithRegions} regionLoading={regionLoading} />
+                  <MSWGenerationChart
+                    layers={layers}
+                    layerLoading={layerLoading}
+                    countriesWithRegions={countriesWithRegions}
+                    regionLoading={regionLoading}
+                  />
                 </ChartCard>
               </Col>
               <Col xs={24} md={12}>
@@ -89,7 +94,12 @@ const WasteManagementSection = React.forwardRef(
             <Row gutter={[16, 16]} className={styles.chartRow}>
               <Col xs={24} md={12}>
                 <ChartCard>
-                  <MSWGenerationChart layers={layers} layerLoading={layerLoading} countriesWithRegions={countriesWithRegions} regionLoading={regionLoading} />
+                  <MSWGenerationChart
+                    layers={layers}
+                    layerLoading={layerLoading}
+                    countriesWithRegions={countriesWithRegions}
+                    regionLoading={regionLoading}
+                  />
                 </ChartCard>
               </Col>
               <Col xs={24} md={12}>

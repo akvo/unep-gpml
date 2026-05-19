@@ -51,13 +51,21 @@ const fetchWithConcurrency = async (items, fetchFn, concurrency = 5) => {
   return results
 }
 
-const useLayerInfo = () => {
+// Options:
+//   countryCode — when provided, filters ValuePerCountry to that country only (Fix 1)
+//   layerIds    — when provided as a non-null array, filters to specific layers (Fix 2)
+//                 null means "caller not ready yet, hold off fetching"
+//                 undefined means "no filter, fetch all" (maps page default)
+const useLayerInfo = ({ countryCode = null, layerIds = undefined } = {}) => {
   const [layers, setLayers] = useState([])
   const [loading, setLoading] = useState(true)
   const strapiURL = getStrapiUrl()
   const router = useRouter()
 
   useEffect(() => {
+    // Caller signals it's not ready (e.g. categories still loading)
+    if (layerIds === null) return
+
     let cancelled = false
 
     const fetchLayerValues = async (d) => {
@@ -89,10 +97,25 @@ const useLayerInfo = () => {
 
     const fetchLayers = async () => {
       const currentLocale = router.locale
+
+      // Build layer ID filter when specific layers are requested (Fix 2)
+      const layerIdQuery =
+        Array.isArray(layerIds) && layerIds.length > 0
+          ? layerIds
+              .map(
+                (id, i) =>
+                  `filters[arcgislayerId][$in][${i}]=${encodeURIComponent(id)}`
+              )
+              .join('&')
+          : ''
+
+      const baseQuery = `locale=${router.locale}&pagination[pageSize]=150&sort[order]=asc`
+      const filterQuery = layerIdQuery ? `&${layerIdQuery}` : ''
+
       if (router.query.useDataLayers) {
         try {
           const response = await axios.get(
-            `${strapiURL}/api/layers?locale=${router.locale}&pagination[pageSize]=150&sort[order]=asc`
+            `${strapiURL}/api/layers?${baseQuery}${filterQuery}`
           )
 
           const updateLayer = await fetchWithConcurrency(
@@ -113,15 +136,18 @@ const useLayerInfo = () => {
           }
         }
       } else {
+        // Filter ValuePerCountry to the requested country only (Fix 1)
+        const populateParam = countryCode
+          ? `populate[ValuePerCountry][filters][CountryCode][$eq]=${encodeURIComponent(countryCode)}`
+          : 'populate=ValuePerCountry'
+
         try {
           const response = await axios.get(
-            `${strapiURL}/api/layers?locale=${router.locale}&pagination[pageSize]=150&sort[order]=asc&populate=ValuePerCountry`
+            `${strapiURL}/api/layers?${baseQuery}${filterQuery}&${populateParam}`
           )
 
-          // Determine which layers need individual fetches based on locale
-          // English: only 3 specific layers need re-fetching (rest come populated)
-          // Non-English: all trade layers need individual fetches
-          const layersNeedingFetch = currentLocale === 'en' ? enOnlyLayers : tradeLayers
+          const layersNeedingFetch =
+            currentLocale === 'en' ? enOnlyLayers : tradeLayers
 
           const toEnrich = response.data.data.filter((d) =>
             layersNeedingFetch.includes(d.attributes.arcgislayerId)
@@ -155,7 +181,7 @@ const useLayerInfo = () => {
     return () => {
       cancelled = true
     }
-  }, [router.locale])
+  }, [router.locale, countryCode, layerIds])
 
   return { layers, loading }
 }
