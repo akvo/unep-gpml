@@ -66,6 +66,7 @@ const useLayerInfo = ({ countryCode = null, layerIds = undefined } = {}) => {
     // Caller signals it's not ready (e.g. categories still loading)
     if (layerIds === null) return
 
+    setLoading(true)
     let cancelled = false
 
     const fetchLayerValues = async (d) => {
