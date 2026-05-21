@@ -228,7 +228,6 @@ const MSWGenerationChart = ({ layers, layerLoading, countriesWithRegions = [], r
         >
           UNEP 2020
         </a>{' '}
-        and
         <a
           href={`https://unhabitat.org/waste-wise-data`}
           style={{ color: '#020A5B', fontWeight: 'bold' }}
@@ -238,6 +237,13 @@ const MSWGenerationChart = ({ layers, layerLoading, countriesWithRegions = [], r
           {' '}
           UN Habitat 2021
         </a>
+        {' '}
+                <a
+                  href={`https://openknowledge.worldbank.org/entities/publication/d3f9d45e-115f-559b-b14f-28552410e90a`}
+                  style={{ color: '#020A5B', fontWeight: 'bold' }}
+                >
+                  World Bank
+                </a>{' '}
       </div>
     </div>
   )

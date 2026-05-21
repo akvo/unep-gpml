@@ -226,6 +226,23 @@ const PlasticCompositionChart = ({
       >
         <Trans>Data source: </Trans>{' '}
         <a
+          href={`https://www.greenpolicyplatform.org/initiatives/global-waste-management-outlook/Country+Data`}
+          style={{ color: '#020A5B', fontWeight: 'bold' }}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          UNEP 2020
+        </a>{' '}
+        <a
+          href={`https://unhabitat.org/waste-wise-data`}
+          style={{ color: '#020A5B', fontWeight: 'bold' }}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {' '}
+          UN Habitat 2021
+        </a>{' '}
+        <a
           href={`https://openknowledge.worldbank.org/entities/publication/d3f9d45e-115f-559b-b14f-28552410e90a`}
           style={{ color: '#020A5B', fontWeight: 'bold' }}
         >
