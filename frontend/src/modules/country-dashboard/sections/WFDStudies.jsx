@@ -174,6 +174,12 @@ const WFDStudies = ({ countryCode }) => {
         which stages of the waste management system are the largest sources of
         plastic pollution.
       </p>
+      <p>
+        Data source:&nbsp;
+        <a href="https://wfd-data.rwm.global/map" target="_blank">
+          Waste Flow Diagram
+        </a>
+      </p>
       {loading ? (
         <Spin size="small" />
       ) : (

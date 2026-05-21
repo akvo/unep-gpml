@@ -53,7 +53,7 @@ msgstr "{value} Initiatives"
 
 #: src/modules/country-dashboard/DashboardLanding.jsx:146
 msgid "* You are currently viewing the beta version of the Country Dashboard, and we welcome your feedback on its usability and content. We particularly welcome suggestions for updated and improved data sources for your country. To request a data update, please use the \"Submit Data Update\" button within your Country Dashboard section."
-msgstr "* Vous consultez actuellement la version bêta du Tableau de bord pays. Vos commentaires sur son ergonomie et son contenu sont les bienvenus. Nous apprécions particulièrement vos suggestions pour mettre à jour et améliorer les sources de données de votre pays. Pour demander une mise à jour de données, veuillez utiliser le bouton « Soumettre une mise à jour de données » dans la section « Tableau de bord pays »."
+msgstr "* Le tableau de bord par pays consolide des données publiquement disponibles provenant d’études scientifiques évaluées par des pairs, de rapports sectoriels ainsi que d’initiatives mondiales de suivi et de collecte de données menées par des organisations internationales au sein d’une plateforme accessible, afin de soutenir l’élaboration de politiques fondées sur des données probantes et la planification des actions. Les données ne sont pas approuvées par les gouvernements nationaux."
 
 #: src/pages/partnership/index.jsx:343
 msgid "<0>Be approved</0>and certified by the GPML as a member of the partnership."

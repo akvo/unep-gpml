@@ -53,7 +53,7 @@ msgstr "{value} Initiatives"
 
 #: src/modules/country-dashboard/DashboardLanding.jsx:146
 msgid "* You are currently viewing the beta version of the Country Dashboard, and we welcome your feedback on its usability and content. We particularly welcome suggestions for updated and improved data sources for your country. To request a data update, please use the \"Submit Data Update\" button within your Country Dashboard section."
-msgstr "* You are currently viewing the beta version of the Country Dashboard, and we welcome your feedback on its usability and content. We particularly welcome suggestions for updated and improved data sources for your country. To request a data update, please use the \"Submit Data Update\" button within your Country Dashboard section."
+msgstr "* Country dashboard consolidates publicly available data from peer-reviewed scientific studies, industry reports and global monitoring and data collection initiatives by international organizations into one accessible platform, aiming to support evidence-based policymaking and action planning. The data is not endorsed by national government"
 
 #: src/pages/partnership/index.jsx:343
 msgid "<0>Be approved</0>and certified by the GPML as a member of the partnership."
