@@ -137,10 +137,17 @@ const useLayerInfo = ({ countryCode = null, layerIds = undefined } = {}) => {
           }
         }
       } else {
-        // Filter ValuePerCountry to the requested country only (Fix 1)
-        const populateParam = countryCode
-          ? `populate[ValuePerCountry][filters][CountryCode][$eq]=${encodeURIComponent(countryCode)}`
-          : 'populate=ValuePerCountry'
+        // Filter ValuePerCountry to the requested country only (Fix 1).
+        // Some layers store entries by CountryCode, others by CountryName —
+        // use $or to cover both so no entries are silently dropped.
+        const countryName = router.query.country
+          ? decodeURIComponent(router.query.country)
+          : null
+        const populateParam =
+          countryCode && countryName
+            ? `populate[ValuePerCountry][filters][$or][0][CountryCode][$eq]=${encodeURIComponent(countryCode)}` +
+              `&populate[ValuePerCountry][filters][$or][1][CountryName][$eq]=${encodeURIComponent(countryName)}`
+            : 'populate=ValuePerCountry'
 
         try {
           const response = await axios.get(
@@ -182,7 +189,7 @@ const useLayerInfo = ({ countryCode = null, layerIds = undefined } = {}) => {
     return () => {
       cancelled = true
     }
-  }, [router.locale, countryCode, layerIds])
+  }, [router.locale, router.query.country, countryCode, layerIds])
 
   return { layers, loading }
 }
