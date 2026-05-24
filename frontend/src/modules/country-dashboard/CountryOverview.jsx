@@ -211,34 +211,10 @@ const CountryOverview = ({
   const router = useRouter()
   const { query } = router
   const [isMobile, setIsMobile] = useState(false)
-  const { categories, loading: categoriesLoading } = useCategories()
-
-  // Collect all layer IDs referenced by the three text-template categories so
-  // useLayerInfo can request only those layers (Fix 2). Returns null while
-  // categories are still loading so the hook knows to wait.
-  const neededLayerIds = useMemo(() => {
-    if (categoriesLoading) return null
-    const tradeObj = categories.find(
-      (c) => c.attributes.categoryId === CATEGORY_IDS.INDUSTRY_AND_TRADE
-    )
-    const wasteObj = categories.find(
-      (c) => c.attributes.categoryId === CATEGORY_IDS.WASTE_MANAGEMENT
-    )
-    const envObj = categories.find(
-      (c) => c.attributes.categoryId === CATEGORY_IDS.ENVIRONMENTAL_IMPACT
-    )
-    return [
-      ...new Set([
-        ...extractLayerIds(tradeObj),
-        ...extractLayerIds(wasteObj),
-        ...extractLayerIds(envObj),
-      ]),
-    ]
-  }, [categories, categoriesLoading])
+  const { categories } = useCategories()
 
   const { layers, loading: layerLoading } = useLayerInfo({
     countryCode: query.countryCode,
-    layerIds: neededLayerIds,
   })
 
   useEffect(() => {
