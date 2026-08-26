@@ -522,8 +522,8 @@ const CountryOverview = ({
             {...(isFirst ? { headerExtra: submitButton } : {})}
             {...(section.key === 'trade' ? { strapiTradeContent } : {})}
             {...(section.key === 'waste-management'
-              ? { strapiWasteContent }
-              : {})}
+  ? { strapiWasteContent, wasteCategoryName: wasteCategoryObject?.attributes?.name }
+  : {})}
             {...(section.key === 'environment'
               ? { strapiEnvironmentContent }
               : {})}
