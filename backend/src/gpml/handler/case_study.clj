@@ -41,7 +41,7 @@
                         related_content))
     (throw (ex-info "Failed to create case study's related content" {}))))
 
-(defn- create-case-study [{:keys [logger mailjet-config] :as config}
+(defn- create-case-study [{:keys [logger email-config] :as config}
                           conn
                           user
                           {:keys [body]}]
@@ -73,7 +73,7 @@
       (handler.resource.tag/create-resource-tags
        conn
        logger
-       mailjet-config
+       email-config
        {:tags tags
         :tag-category "general"
         :resource-name "case_study"
@@ -103,7 +103,7 @@
       :resource-id cs-id})
     (email/notify-admins-pending-approval
      conn
-     mailjet-config
+     email-config
      (merge case-study {:type "case_study"}))
     cs-id))
 

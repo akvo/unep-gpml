@@ -421,9 +421,9 @@
           (log logger :error :could-not-add-users e)
           (failure {:reason :could-not-add-users}))))))
 
-(defn send-private-channel-invitation-request [{:keys [db mailjet-config]} user channel-id channel-name]
+(defn send-private-channel-invitation-request [{:keys [db email-config]} user channel-id channel-name]
   (let [super-admins (db.rbac-util/get-super-admins-details (:spec db) {})]
-    (util.email/notify-admins-new-chat-private-channel-invitation-request mailjet-config
+    (util.email/notify-admins-new-chat-private-channel-invitation-request email-config
                                                                           super-admins
                                                                           user
                                                                           channel-id
@@ -741,13 +741,13 @@
       :else
       result)))
 
-(defn request-channel-creation [{:keys [db mailjet-config]} user new-channel]
+(defn request-channel-creation [{:keys [db email-config]} user new-channel]
   {:post [(check! [:or
                    (success-with)
                    (failure-with :reason any?)]
                   %)]}
   (let [super-admins (db.rbac-util/get-super-admins-details (:spec db) {})]
-    (util.email/notify-admins-new-channel-request mailjet-config
+    (util.email/notify-admins-new-channel-request email-config
                                                   super-admins
                                                   user
                                                   new-channel)))

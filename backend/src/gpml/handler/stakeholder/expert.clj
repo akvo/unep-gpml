@@ -162,7 +162,7 @@
           response
           (assoc-in response [:body :error-details :error] (.getMessage e)))))))
 
-(defn- send-invitation-emails [{:keys [mailjet-config app-domain logger]} invitations]
+(defn- send-invitation-emails [{:keys [email-config app-domain logger]} invitations]
   (try
     (doseq [{invitation-id :id
              first-name :first_name
@@ -170,7 +170,7 @@
              email :email :as invitation} invitations
             :let [msg (email/notify-expert-invitation-text first-name last-name invitation-id app-domain)
                   texts [msg]]]
-      (let [{:keys [status body]} (email/send-email mailjet-config
+      (let [{:keys [status body]} (email/send-email email-config
                                                     email/unep-sender
                                                     "Join the UNEP GPML Platform"
                                                     [{:Name (str first-name " " last-name)
@@ -190,7 +190,7 @@
 
 ;; TODO: Improve how we deal with errors here, since we should rollback invitation processes one by one, as otherwise
 ;; we might rollback all of them while the notifications or some of them have been sent already.
-(defn- invite-experts [{:keys [db mailjet-config logger] :as config}
+(defn- invite-experts [{:keys [db email-config logger] :as config}
                        {{:keys [body]} :parameters}]
   (try
     (jdbc/with-db-transaction [conn (:spec db)]
@@ -219,7 +219,7 @@
             (handler.stakeholder.tag/save-stakeholder-tags
              conn
              logger
-             mailjet-config
+             email-config
              {:tags (handler.stakeholder.tag/api-stakeholder-tags->stakeholder-tags {:expertise expertise})
               :stakeholder-id stakeholder-id}))
           (let [{:keys [success?]} (srv.permissions/create-resource-context
@@ -280,7 +280,7 @@ User %s is suggesting an expert with the following information:
    (if-not (seq expertise) "" (str "- Expertise: " expertise))
    (if-not (seq suggested_expertise) "" (str "- Suggested Expertise: " suggested_expertise))))
 
-(defn- suggest-expert [{:keys [db logger mailjet-config]}
+(defn- suggest-expert [{:keys [db logger email-config]}
                        {{:keys [body]} :parameters user :user}]
   (try
     (let [expert (-> body
@@ -293,7 +293,7 @@ User %s is suggesting an expert with the following information:
           receivers (map #(assoc {} :Name %1 :Email (:email %2)) admin-names admins)
           texts (map (partial generate-admins-expert-suggestion-text expert user-full-name) admin-names)
           htmls (mapv email/text->basic-html-email texts)
-          {:keys [status body]} (email/send-email mailjet-config email/unep-sender subject receivers texts htmls)]
+          {:keys [status body]} (email/send-email email-config email/unep-sender subject receivers texts htmls)]
       (if (<= 200 status 299)
         (resp/response {:success? true})
         {:status 500

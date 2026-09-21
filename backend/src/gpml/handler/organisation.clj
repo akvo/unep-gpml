@@ -28,7 +28,7 @@
   (:import
    (java.sql SQLException)))
 
-(defn create [{:keys [logger mailjet-config] :as config}
+(defn create [{:keys [logger email-config] :as config}
               conn
               {:keys [logo
                       geo_coverage_type
@@ -52,7 +52,7 @@
     (when (seq (:tags org))
       (handler.resource.tag/create-resource-tags conn
                                                  logger
-                                                 mailjet-config
+                                                 email-config
                                                  {:tags (:tags org)
                                                   :tag-category "general"
                                                   :resource-name "organisation"
@@ -80,7 +80,7 @@
                                   :private))
       (throw (ex-info "Failed to delete old organisation logo" {:result delete-result})))))
 
-(defn update-org [{:keys [logger mailjet-config] :as config}
+(defn update-org [{:keys [logger email-config] :as config}
                   conn
                   {:keys [logo
                           geo_coverage_type
@@ -114,10 +114,10 @@
                                                :country-groups geo_coverage_country_groups
                                                :country-states geo_coverage_country_states})
     (when (contains? (set (keys org)) :tags)
-      (handler.resource.tag/update-resource-tags conn logger mailjet-config {:tags (:tags org)
-                                                                             :tag-category "general"
-                                                                             :resource-name "organisation"
-                                                                             :resource-id org-id}))
+      (handler.resource.tag/update-resource-tags conn logger email-config {:tags (:tags org)
+                                                                           :tag-category "general"
+                                                                           :resource-name "organisation"
+                                                                           :resource-id org-id}))
     {:success? (= 1 affected-rows)
      :affected-entities affected-rows}))
 
@@ -247,7 +247,7 @@
       mu/optional-keys))
 
 (defmethod ig/init-key :gpml.handler.organisation/put-req-member
-  [_ {:keys [db logger mailjet-config] :as config}]
+  [_ {:keys [db logger email-config] :as config}]
   (fn [{:keys [body-params parameters user]}]
     (try
       (if (h.r.permission/operation-allowed?
@@ -274,7 +274,7 @@
             (do
               (email/notify-admins-pending-approval
                (:spec db)
-               mailjet-config
+               email-config
                (merge body-params {:type "organisation"}))
               (r/ok result))
             (r/server-error result)))

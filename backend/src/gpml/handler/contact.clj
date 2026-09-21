@@ -8,14 +8,14 @@
    [integrant.core :as ig]))
 
 (defmethod ig/init-key :gpml.handler.contact/post
-  [_ {:keys [contact-settings mailjet-config logger]}]
+  [_ {:keys [contact-settings email-config logger]}]
   (fn [{{:keys [body]} :parameters}]
     (try
       (let [source (:source body)
             dest-email (get-in contact-settings [source :dest-email])]
         (if (seq dest-email)
           (let [{:keys [status reason-phrase]} (email/notify-about-new-contact
-                                                mailjet-config
+                                                email-config
                                                 (assoc body :dest-email dest-email))]
             (if (<= 200 status 299)
               (r/ok {:success? true})

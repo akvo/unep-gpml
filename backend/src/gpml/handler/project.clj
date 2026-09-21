@@ -106,7 +106,7 @@
                                                 (pg-util/get-sql-state e)
                                                 (.getMessage e))}}))))
 
-(defn- create-project [{:keys [logger mailjet-config] :as config}
+(defn- create-project [{:keys [logger email-config] :as config}
                        conn
                        user
                        {:keys [title start_date end_date summary publish_year valid_from valid_to
@@ -159,10 +159,10 @@
     (when (seq gallery-ids)
       (db.prj/create-project-gallery conn {:images (map (partial vector project-id) gallery-ids)}))
     (when (not-empty tags)
-      (handler.resource.tag/create-resource-tags conn logger mailjet-config {:tags tags
-                                                                             :tag-category "general"
-                                                                             :resource-name "project"
-                                                                             :resource-id project-id}))
+      (handler.resource.tag/create-resource-tags conn logger email-config {:tags tags
+                                                                           :tag-category "general"
+                                                                           :resource-name "project"
+                                                                           :resource-id project-id}))
     (when (seq related_content)
       (handler.resource.related-content/create-related-contents conn logger project-id "project" related_content))
     (srv.permissions/create-resource-context
@@ -189,7 +189,7 @@
                                                         :country-states geo_coverage_country_states})
     (email/notify-admins-pending-approval
      conn
-     mailjet-config
+     email-config
      (merge data {:type "project"}))
     project-id))
 

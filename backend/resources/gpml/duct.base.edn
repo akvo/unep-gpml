@@ -837,7 +837,7 @@
  [:duct/const :gpml.config/brs-gpml-entities-mapping]
  [{:gpml-entity-name :initiative
    :brs-entity-name  :project}]
- [:duct/const :gpml.config/mailjet]                                 {:api-key    #duct/env ["MAILJET_API_KEY" Str :or ""]
+ [:duct/const :gpml.config/email]                                   {:api-key    #duct/env ["MAILJET_API_KEY" Str :or ""]
                                                                      :secret-key #duct/env ["MAILJET_SECRET_KEY" Str :or ""]
                                                                      :logger     #ig/ref :duct/logger
                                                                      :app-name   #duct/env ["APP_NAME" Str :or "UNEP GPML"]
@@ -858,7 +858,7 @@
   :translate-adapter                   #ig/ref :gpml.boundary.adapter.translate.google/adapter
   :auto-translate                      {:enabled #duct/env ["AUTO_TRANSLATE_ENABLED" Bool :or false]}
   :auth0                               #ig/ref :gpml.config/auth0
-  :mailjet-config                      #ig/ref :gpml.config/mailjet
+  :email-config                        #ig/ref :gpml.config/email
   :app-name                            #duct/env ["APP_NAME" Str :or "UNEP GPML"]
   :app-domain                          #duct/env ["APP_DOMAIN" Str :or "http://localhost"]
   :app-user-admin                      #duct/env ["APP_USER_ADMIN" Str :or ""]

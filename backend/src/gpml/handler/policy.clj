@@ -24,7 +24,7 @@
   (:import
    (java.sql SQLException)))
 
-(defn- create-policy [{:keys [logger mailjet-config] :as config}
+(defn- create-policy [{:keys [logger email-config] :as config}
                       conn
                       user
                       {:keys [title original_title abstract url
@@ -90,10 +90,10 @@
     (when (seq related_content)
       (handler.resource.related-content/create-related-contents conn logger policy-id "policy" related_content))
     (when (not-empty tags)
-      (handler.resource.tag/create-resource-tags conn logger mailjet-config {:tags tags
-                                                                             :tag-category "general"
-                                                                             :resource-name "policy"
-                                                                             :resource-id policy-id}))
+      (handler.resource.tag/create-resource-tags conn logger email-config {:tags tags
+                                                                           :tag-category "general"
+                                                                           :resource-name "policy"
+                                                                           :resource-id policy-id}))
     (srv.permissions/create-resource-context
      {:conn conn
       :logger logger}
@@ -119,7 +119,7 @@
                                                :country-states geo_coverage_country_states})
     (email/notify-admins-pending-approval
      conn
-     mailjet-config
+     email-config
      (merge data {:type "policy"}))
     policy-id))
 

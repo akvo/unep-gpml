@@ -22,7 +22,7 @@
   (:import
    (java.sql SQLException)))
 
-(defn- create-event [{:keys [logger mailjet-config] :as config}
+(defn- create-event [{:keys [logger email-config] :as config}
                      conn
                      user
                      {:keys [tags urls title start_date end_date
@@ -74,10 +74,10 @@
         geo-coverage-type (keyword geo_coverage_type)
         org-associations (map #(set/rename-keys % {:entity :organisation}) entity_connections)]
     (when (not-empty tags)
-      (handler.resource.tag/create-resource-tags conn logger mailjet-config {:tags tags
-                                                                             :tag-category "general"
-                                                                             :resource-name "event"
-                                                                             :resource-id event-id}))
+      (handler.resource.tag/create-resource-tags conn logger email-config {:tags tags
+                                                                           :tag-category "general"
+                                                                           :resource-name "event"
+                                                                           :resource-id event-id}))
     (srv.permissions/create-resource-context
      {:conn conn
       :logger logger}
@@ -112,7 +112,7 @@
                                                :country-states geo_coverage_country_states})
     (email/notify-admins-pending-approval
      conn
-     mailjet-config
+     email-config
      (merge data {:type "event"}))
     {:id event-id}))
 

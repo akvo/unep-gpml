@@ -23,7 +23,7 @@
   (:import
    (java.sql SQLException)))
 
-(defn- create-technology [{:keys [logger mailjet-config] :as config}
+(defn- create-technology [{:keys [logger email-config] :as config}
                           conn
                           user
                           {:keys [name organisation_type
@@ -101,10 +101,10 @@
       :resource-type "technology"
       :resource-id technology-id})
     (when (not-empty tags)
-      (handler.resource.tag/create-resource-tags conn logger mailjet-config {:tags tags
-                                                                             :tag-category "general"
-                                                                             :resource-name "technology"
-                                                                             :resource-id technology-id}))
+      (handler.resource.tag/create-resource-tags conn logger email-config {:tags tags
+                                                                           :tag-category "general"
+                                                                           :resource-name "technology"
+                                                                           :resource-id technology-id}))
     (when (not-empty urls)
       (let [lang-urls (map #(vector technology-id
                                     (->> % :lang
@@ -122,7 +122,7 @@
                                                :country-states geo_coverage_country_states})
     (email/notify-admins-pending-approval
      conn
-     mailjet-config
+     email-config
      (merge data {:type "technology"}))
     technology-id))
 

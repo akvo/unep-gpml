@@ -122,18 +122,18 @@ Please visit %s/profile to publish or reject the resource.
 - GlobalPlasticsHub
 " admin-name topic-type topic-title review-status review-comment app-domain))
 
-(defn notify-user-review-approved-text [mailjet-config topic-type topic-item]
+(defn notify-user-review-approved-text [email-config topic-type topic-item]
   (format "Dear user,
 
 Your submission has been published to %s/%s/%s.
 
 - GlobalPlasticsHub
 "
-          (:app-domain mailjet-config)
+          (:app-domain email-config)
           (h.util/get-api-topic-type topic-type topic-item)
           (:id topic-item)))
 
-(defn notify-user-review-rejected-text [mailjet-config topic-type topic-item]
+(defn notify-user-review-rejected-text [email-config topic-type topic-item]
   (format "Dear user,
 
 Your submission (%s) has been rejected.
@@ -144,14 +144,14 @@ again, please visit this URL: %s/edit-%s/%s
 - GlobalPlasticsHub
 "
           (h.util/get-title topic-type topic-item)
-          (:app-domain mailjet-config)
+          (:app-domain email-config)
           (-> (h.util/get-api-topic-type topic-type topic-item)
               (string/replace "_" "-"))
           (:id topic-item)))
 
-(defn notify-user-review-subject [mailjet-config review-status topic-type topic-item]
+(defn notify-user-review-subject [email-config review-status topic-type topic-item]
   (format "[%s] %s %s"
-          (:app-name mailjet-config)
+          (:app-name email-config)
           (h.util/get-display-topic-type topic-type topic-item)
           (string/lower-case review-status)))
 
@@ -213,38 +213,38 @@ To accept this invitation please visit %s and sign up to GPML Platform.
           country-name
           app-domain))
 
-(defn notify-admins-pending-approval [db mailjet-config new-item]
+(defn notify-admins-pending-approval [db email-config new-item]
   (let [admins (db.stakeholder/get-admins db)
         item-type (:type new-item)
         item-title (if (= item-type "stakeholder")
                      (get-user-full-name new-item)
                      (or (:title new-item) (:name new-item) (:tag new-item)))
-        subject (format "[%s] New %s needs approval" (:app-name mailjet-config) item-type)
+        subject (format "[%s] New %s needs approval" (:app-name email-config) item-type)
         sender unep-sender
         names (mapv get-user-full-name admins)
         receivers (mapv #(assoc {} :Name %1 :Email (:email %2)) names admins)
         texts (mapv #(format notify-admins-pending-approval-text
                              %1 item-type item-title
-                             (:app-domain mailjet-config))
+                             (:app-domain email-config))
                     names)
         htmls (mapv text->basic-html-email texts)]
     (when (-> receivers count pos?)
-      (send-email mailjet-config sender subject receivers texts htmls))))
+      (send-email email-config sender subject receivers texts htmls))))
 
 (defn notify-secretariat-about-new-subscription-req
   "Send email about a new subscription request."
-  [mailjet-config dest-email req-email]
-  (let [subject (format "[%s] New subscription request" (:app-name mailjet-config))
+  [email-config dest-email req-email]
+  (let [subject (format "[%s] New subscription request" (:app-name email-config))
         sender unep-sender
         receivers [{:Name "GPML Secretariat"
                     :Email dest-email}]
         texts [(format notify-secretariat-new-subscription-text req-email)]
         htmls (mapv text->basic-html-email texts)]
-    (send-email mailjet-config sender subject receivers texts htmls)))
+    (send-email email-config sender subject receivers texts htmls)))
 
 (defn notify-about-new-contact
   "Send email about a new contact request."
-  [mailjet-config {dest-email :dest-email
+  [email-config {dest-email :dest-email
                    req-email :email
                    name :name
                    organization :organization
@@ -260,12 +260,12 @@ To accept this invitation please visit %s and sign up to GPML Platform.
                     :Email dest-email}]
         texts [msg-body]
         htmls (mapv text->basic-html-email texts)]
-    (send-email mailjet-config sender subject receivers texts htmls)))
+    (send-email email-config sender subject receivers texts htmls)))
 
-(defn notify-admins-new-chat-private-channel-invitation-request [mailjet-config admins user channel-id channel-name]
+(defn notify-admins-new-chat-private-channel-invitation-request [email-config admins user channel-id channel-name]
   (let [sender unep-sender
         subject (notify-private-channel-invitation-request-subject
-                 (:app-name mailjet-config)
+                 (:app-name email-config)
                  channel-name)
         receivers (mapv (fn [admin]
                           {:Name (get-user-full-name admin)
@@ -276,7 +276,7 @@ To accept this invitation please visit %s and sign up to GPML Platform.
                                                                       channel-name
                                                                       ;; Isn't there better reverse routing?
                                                                       (format "%s/profile/admin-section?user_id=%s&channel_id=%s&email=%s&channel_name=%s"
-                                                                              (:app-domain mailjet-config)
+                                                                              (:app-domain email-config)
                                                                               (:id user)
                                                                               (util/encode-url-param channel-id)
                                                                               (util/encode-url-param (:email user))
@@ -285,18 +285,18 @@ To accept this invitation please visit %s and sign up to GPML Platform.
         htmls (mapv text->basic-html-email texts)]
     (if-not (-> receivers count pos?)
       (failure {:reason :no-admins})
-      (let [{:keys [status body]} (send-email mailjet-config sender subject receivers texts htmls)]
+      (let [{:keys [status body]} (send-email email-config sender subject receivers texts htmls)]
         (if (and status (<= 200 status 299))
           {:success? true}
           (failure {:reason :failed-to-send-email
                     :error-details body
                     :status status}))))))
 
-(defn notify-admins-new-channel-request [mailjet-config admins user new-channel]
+(defn notify-admins-new-channel-request [email-config admins user new-channel]
   {:pre [(check! port.chat/NewChannel new-channel)]}
   (let [sender unep-sender
         subject (format "[%s] Request from %s to create a Chat Channel"
-                        (:app-name mailjet-config)
+                        (:app-name email-config)
                         (get-user-full-name user))
         receivers (mapv (fn [admin]
                           {:Name (get-user-full-name admin)
@@ -328,43 +328,43 @@ Feel free to create such a channel."
                                                           receivers)]
     (if-not (-> receivers count pos?)
       (failure {:reason :no-admins})
-      (let [{:keys [status body]} (send-email mailjet-config sender subject receivers texts htmls)]
+      (let [{:keys [status body]} (send-email email-config sender subject receivers texts htmls)]
         (if (and status (<= 200 status 299))
           {:success? true}
           (failure {:reason :failed-to-send-email
                     :error-details body
                     :status status}))))))
 
-(defn notify-user-about-chat-private-channel-invitation-request-accepted [mailjet-config user channel-name]
+(defn notify-user-about-chat-private-channel-invitation-request-accepted [email-config user channel-name]
   (let [sender unep-sender
         subject (notify-user-about-chat-private-channel-invitation-request-accepted-subject
-                 (:app-name mailjet-config)
+                 (:app-name email-config)
                  channel-name)
         receivers [{:Name (get-user-full-name user)
                     :Email (:email user)}]
         texts [(notify-user-about-chat-private-channel-invitation-request-accepted-text
                 channel-name
-                (:app-domain mailjet-config))]
+                (:app-domain email-config))]
         htmls (mapv text->basic-html-email texts)
-        {:keys [status body]} (send-email mailjet-config sender subject receivers texts htmls)]
+        {:keys [status body]} (send-email email-config sender subject receivers texts htmls)]
     (if (and status (<= 200 status 299))
       {:success? true}
       (failure {:reason :failed-to-send-email
                 :error-details body
                 :status status}))))
 
-(defn notify-user-about-plastic-strategy-invitation [mailjet-config user plastic-strategy]
+(defn notify-user-about-plastic-strategy-invitation [email-config user plastic-strategy]
   (let [sender unep-sender
-        subject (notify-user-about-plastic-strategy-invitation-subject (:app-name mailjet-config))
+        subject (notify-user-about-plastic-strategy-invitation-subject (:app-name email-config))
         user-full-name (get-user-full-name user)
         receivers [{:Name user-full-name
                     :Email (:email user)}]
         texts [(notify-user-about-plastic-strategy-invitation-text
-                (:app-domain mailjet-config)
+                (:app-domain email-config)
                 user-full-name
                 (get-in plastic-strategy [:country :name]))]
         htmls (mapv text->basic-html-email texts)
-        {:keys [status body]} (send-email mailjet-config sender subject receivers texts htmls)]
+        {:keys [status body]} (send-email email-config sender subject receivers texts htmls)]
     (if (and status (<= 200 status 299))
       {:success? true}
       (failure {:reason :failed-to-send-email
@@ -383,7 +383,7 @@ It is now accessible through your workspace below
 
 - GlobalPlasticsHub" user-full-name country-name app-domain))
 
-(defn notify-user-added-to-plastic-strategy-team [mailjet-config user plastic-strategy]
+(defn notify-user-added-to-plastic-strategy-team [email-config user plastic-strategy]
   (let [sender unep-sender
         subject (notify-user-added-to-plastic-strategy-team-subject
                  (get-in plastic-strategy [:country :name]))
@@ -393,10 +393,10 @@ It is now accessible through your workspace below
         texts [(notify-user-added-to-plastic-strategy-team-text
                 user-full-name
                 (get-in plastic-strategy [:country :name])
-                (:app-domain mailjet-config))]
+                (:app-domain email-config))]
         htmls (mapv text->basic-html-email texts)
         {:keys [status body]}
-        (send-email mailjet-config sender subject receivers texts htmls)]
+        (send-email email-config sender subject receivers texts htmls)]
     (if (and status (<= 200 status 299))
       {:success? true}
       (failure {:reason :failed-to-send-email

@@ -149,15 +149,15 @@
         (throw (ex-info "Failed to unassign role from user" {:user-id stakeholder-id}))))
     (srv.permissions/unassign-all-roles config stakeholder-id)))
 
-(defn- notify-admins-submission-status [{:keys [mailjet-config]} resource-type resource-details]
+(defn- notify-admins-submission-status [{:keys [email-config]} resource-type resource-details]
   (let [creator (:creator resource-details)
         review-status (:review_status resource-details)
         texts [(if (= review-status "APPROVED")
-                 (email/notify-user-review-approved-text mailjet-config resource-type resource-details)
-                 (email/notify-user-review-rejected-text mailjet-config resource-type resource-details))]]
-    (email/send-email mailjet-config
+                 (email/notify-user-review-approved-text email-config resource-type resource-details)
+                 (email/notify-user-review-rejected-text email-config resource-type resource-details))]]
+    (email/send-email email-config
                       email/unep-sender
-                      (email/notify-user-review-subject mailjet-config review-status resource-type resource-details)
+                      (email/notify-user-review-subject email-config review-status resource-type resource-details)
                       (list {:Name (email/get-user-full-name creator) :Email (:email creator)})
                       texts
                       (mapv email/text->basic-html-email texts))))

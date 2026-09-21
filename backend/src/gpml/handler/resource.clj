@@ -23,7 +23,7 @@
   (:import
    (java.sql SQLException)))
 
-(defn- create-resource [{:keys [logger mailjet-config] :as config}
+(defn- create-resource [{:keys [logger email-config] :as config}
                         conn
                         user
                         {:keys [resource_type title publish_year
@@ -86,10 +86,10 @@
     (when (seq related_content)
       (handler.resource.related-content/create-related-contents conn logger resource-id "resource" related_content))
     (when (not-empty tags)
-      (handler.resource.tag/create-resource-tags conn logger mailjet-config {:tags tags
-                                                                             :tag-category "general"
-                                                                             :resource-name "resource"
-                                                                             :resource-id resource-id}))
+      (handler.resource.tag/create-resource-tags conn logger email-config {:tags tags
+                                                                           :tag-category "general"
+                                                                           :resource-name "resource"
+                                                                           :resource-id resource-id}))
     (srv.permissions/create-resource-context
      {:conn conn
       :logger logger}
@@ -122,7 +122,7 @@
                                                :country-states geo_coverage_country_states})
     (email/notify-admins-pending-approval
      conn
-     mailjet-config
+     email-config
      (merge data {:type resource_type}))
     resource-id))
 

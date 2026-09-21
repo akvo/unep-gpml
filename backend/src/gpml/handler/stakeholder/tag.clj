@@ -80,7 +80,7 @@
   resource tags.
 
   It also allows to remove tags when empty value is provided."
-  [conn logger mailjet-config
+  [conn logger email-config
    {:keys [tags stakeholder-id update? handle-errors? partial-tags-override-rel-cats]
     :or {update? false
          partial-tags-override-rel-cats []}}]
@@ -107,7 +107,7 @@
                                             (handler.resource.tag/create-resource-tags
                                              conn
                                              logger
-                                             mailjet-config
+                                             email-config
                                              (assoc opts :handle-errors? handle-errors?))))
                                         grouped-tags)]
       (if (or (empty? tags)

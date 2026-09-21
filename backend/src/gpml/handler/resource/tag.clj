@@ -16,11 +16,11 @@
   "Send notifications about new created tags that needs approval.
   TODO: We probably should create a notification that accepts multiple
   items instead of mapping through them."
-  [conn mailjet-config new-tags]
+  [conn email-config new-tags]
   (pmap
    (fn [tag]
      (email/notify-admins-pending-approval conn
-                                           mailjet-config
+                                           email-config
                                            (merge tag {:type "tag"})))
    new-tags))
 
@@ -36,7 +36,7 @@
 (defn create-resource-tags
   "Creates the relation between a resource `resource-name` and tags. If
   some of the tags don't exists they are created."
-  [conn logger mailjet-config {:keys [tags tag-category resource-name resource-id handle-errors?]}]
+  [conn logger email-config {:keys [tags tag-category resource-name resource-id handle-errors?]}]
   (let [tags-ids (map :id tags)
         table (str resource-name "_tag")]
     (if-not (some nil? tags-ids)
@@ -55,7 +55,7 @@
               new-tags (db.resource.tag/create-resource-tags conn {:table table
                                                                    :resource-col resource-name
                                                                    :tags resource-tags-to-add})]
-          (send-new-tags-admins-pending-approval-notification conn mailjet-config new-tags)
+          (send-new-tags-admins-pending-approval-notification conn email-config new-tags)
           {:success? true})
         (catch Exception e
           (log logger :error :failed-to-create-tag e)
@@ -76,10 +76,10 @@
   "Updates existing relations between a resource `resource-name` and tags.
 
   If the tags relations are empty or nil we just remove all of them."
-  [conn logger mailjet-config {:keys [resource-name resource-id] :as opts}]
+  [conn logger email-config {:keys [resource-name resource-id] :as opts}]
   (db.resource.tag/delete-resource-tags conn {:table (str resource-name "_tag")
                                               :resource-col resource-name
                                               :resource-id resource-id})
   (if (seq (:tags opts))
-    (create-resource-tags conn logger mailjet-config opts)
+    (create-resource-tags conn logger email-config opts)
     {:success? true}))

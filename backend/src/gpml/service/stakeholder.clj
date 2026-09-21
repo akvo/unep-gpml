@@ -21,7 +21,7 @@
    [next.jdbc :as jdbc]
    [taoensso.timbre :as timbre]))
 
-(defn create-stakeholder [{:keys [db logger mailjet-config] :as config} stakeholder]
+(defn create-stakeholder [{:keys [db logger email-config] :as config} stakeholder]
   (let [conn (:spec db)
         context {:success? true
                  :stakeholder stakeholder}
@@ -95,7 +95,7 @@
               (let [result (handler.stakeholder.tag/save-stakeholder-tags
                             conn
                             logger
-                            mailjet-config
+                            email-config
                             {:tags (:tags stakeholder)
                              :stakeholder-id (:id stakeholder)
                              :handle-errors? true})]
@@ -218,7 +218,7 @@
                          :error-details {:result result}))))}]]
     (tht/thread-transactions logger transactions context)))
 
-(defn update-stakeholder [{:keys [db logger mailjet-config] :as config} stakeholder partial-tags-override-rel-cats]
+(defn update-stakeholder [{:keys [db logger email-config] :as config} stakeholder partial-tags-override-rel-cats]
   (let [conn (:spec db)
         context {:success? true
                  :stakeholder stakeholder}
@@ -317,7 +317,7 @@
               (let [result (handler.stakeholder.tag/save-stakeholder-tags
                             conn
                             logger
-                            mailjet-config
+                            email-config
                             {:tags (:tags stakeholder)
                              :stakeholder-id (:id stakeholder)
                              :handle-errors? true
@@ -334,7 +334,7 @@
             (handler.stakeholder.tag/save-stakeholder-tags
              conn
              logger
-             mailjet-config
+             email-config
              {:tags old-tags
               :stakeholder-id (:id stakeholder)
               :handle-errors? true

@@ -59,7 +59,7 @@
     {:geo_coverage_country_groups (extract-ids (:q24_4 params))
      :geo_coverage_countries (extract-ids (:q24_2 params))}))
 
-(defn- create-initiative [{:keys [logger mailjet-config] :as config}
+(defn- create-initiative [{:keys [logger email-config] :as config}
                           conn
                           user
                           {:keys [q24 tags related_content created_by
@@ -105,13 +105,13 @@
       :resource-type "initiative"
       :resource-id initiative-id})
     (when (not-empty tags)
-      (handler.resource.tag/create-resource-tags conn logger mailjet-config {:tags tags
-                                                                             :tag-category "general"
-                                                                             :resource-name "initiative"
-                                                                             :resource-id initiative-id}))
+      (handler.resource.tag/create-resource-tags conn logger email-config {:tags tags
+                                                                           :tag-category "general"
+                                                                           :resource-name "initiative"
+                                                                           :resource-id initiative-id}))
     (email/notify-admins-pending-approval
      conn
-     mailjet-config
+     email-config
      {:type "initiative" :title (:q2 data)})
     initiative-id))
 
