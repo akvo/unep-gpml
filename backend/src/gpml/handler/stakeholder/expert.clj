@@ -17,7 +17,6 @@
    [gpml.util.postgresql :as pg-util]
    [gpml.util.sql :as util.sql]
    [integrant.core :as ig]
-   [jsonista.core :as json]
    [malli.util :as mu]
    [ring.util.response :as resp]
    [taoensso.timbre :as timbre])
@@ -170,20 +169,17 @@
              email :email :as invitation} invitations
             :let [msg (email/notify-expert-invitation-text first-name last-name invitation-id app-domain)
                   texts [msg]]]
-      (let [{:keys [status body]} (email/send-email email-config
-                                                    email/unep-sender
-                                                    "Join the UNEP GPML Platform"
-                                                    [{:Name (str first-name " " last-name)
-                                                      :Email email}]
-                                                    texts
-                                                    (mapv email/text->basic-html-email texts))]
-        (when-not (<= 200 status 299)
+      (let [{:keys [success? error-details]} (email/send-email email-config
+                                                               email/unep-sender
+                                                               "Join the UNEP GPML Platform"
+                                                               [{:Name (str first-name " " last-name)
+                                                                 :Email email}]
+                                                               texts
+                                                               (mapv email/text->basic-html-email texts))]
+        (when-not success?
           (timbre/with-context+ invitation
             (log logger :error :send-invitation-email-failed {:email-msg msg
-                                                              :response-body (try
-                                                                               (json/read-value body json/keyword-keys-object-mapper)
-                                                                               (catch Exception _
-                                                                                 body))})))))
+                                                              :error-details error-details})))))
     (catch Exception e
       (timbre/with-context+ {:invitations invitations}
         (log logger :error :send-invitation-emails-failed e)))))
@@ -293,13 +289,13 @@ User %s is suggesting an expert with the following information:
           receivers (map #(assoc {} :Name %1 :Email (:email %2)) admin-names admins)
           texts (map (partial generate-admins-expert-suggestion-text expert user-full-name) admin-names)
           htmls (mapv email/text->basic-html-email texts)
-          {:keys [status body]} (email/send-email email-config email/unep-sender subject receivers texts htmls)]
-      (if (<= 200 status 299)
+          {:keys [success? error-details]} (email/send-email email-config email/unep-sender subject receivers texts htmls)]
+      (if success?
         (resp/response {:success? true})
         {:status 500
          :body {:success? false
                 :reason :could-not-send-expert-suggestion-emails
-                :error-details (json/read-value body)}}))
+                :error-details error-details}}))
     (catch Exception e
       (timbre/with-context+ {:body body
                              :user user}

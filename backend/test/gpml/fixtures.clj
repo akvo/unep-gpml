@@ -85,6 +85,10 @@
                                                              :subject   subject
                                                              :receivers receivers
                                                              :texts     texts
-                                                             :htmls     htmls}))]
+                                                             :htmls     htmls})
+                                     ;; Match the real contract: `swap!`
+                                     ;; returns the atom's new value, which
+                                     ;; reads as a failed send.
+                                     {:success? true})]
       (binding [*system* system]
         (f)))))

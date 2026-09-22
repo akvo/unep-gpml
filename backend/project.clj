@@ -20,6 +20,7 @@
                  [com.auth0/auth0 "1.25.0" :exclusions [org.jetbrains.kotlin/kotlin-stdlib-common]]
                  [com.auth0/java-jwt "3.12.0"]
                  [com.auth0/jwks-rsa "0.15.0"]
+                 [com.draines/postal "2.0.5" :exclusions [commons-codec]]
                  [com.fasterxml.jackson.core/jackson-annotations ~jackson-version]
                  [com.fasterxml.jackson.core/jackson-core ~jackson-version]
                  [com.fasterxml.jackson.core/jackson-databind ~jackson-version]
