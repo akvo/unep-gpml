@@ -1,0 +1,53 @@
+.topicPage {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+.topicHeader {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.topicIntro {
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 32px;
+}
+
+.chartGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.chartPreview {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 24px;
+  border-radius: 8px;
+  background: #f5f5f5;
+  text-align: center;
+}
+
+.chartLabel {
+  font-weight: 600;
+}
+
+.chartStatus {
+  font-size: 13px;
+  color: #777;
+}
+
+.resourceList ul {
+  list-style: none;
+  padding: 0;
+}
+
+.resourceList li {
+  margin-bottom: 16px;
+}

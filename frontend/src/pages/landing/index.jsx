@@ -29,6 +29,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination } from 'swiper'
 import { useDeviceSize } from '../../modules/landing/landing'
+import ExploreByTopic from './ExploreByTopic'
 import Button from '../../components/button'
 import { Trans, t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
@@ -57,6 +58,7 @@ const Landing = (props) => {
     <div id="landing" className={styles.landing}>
       <HeroPlasticTap {...props} />
       <FeatureCards />
+      <ExploreByTopic />
       <div className="container wed-container" id="main-content">
         <iframe
           title="Introduction to the Global Plastics Hub"
