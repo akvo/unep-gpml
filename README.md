@@ -44,7 +44,7 @@ graph TD
        end
        auth0("<i class='fa fa-lock'></i> Auth0 / OIDC Provider")
        sentry("<i class='fa fa-bug'></i> Sentry.io")
-       mailjet("<i class='fa fa-envelope'></i> Mailjet")
+       smtp("<i class='fa fa-envelope'></i> SMTP Relay")
        brs("<i class='fa fa-file'></i> BRS API")
        leap("<i class='fa fa-user-gear'></i> LEAP API")
        openai("<i class='fa fa-robot'></i> OpenAI API")
@@ -61,7 +61,7 @@ graph TD
    frontend --> auth0
    backend --> sentry
    frontend --> sentry
-   backend --> mailjet
+   backend --> smtp
    backend --> brs
    backend --> leap
    backend --> chat
@@ -152,7 +152,7 @@ graph TD
 - **Sentry.io**: Error tracking and performance monitoring
 
 **Communication & Data**
-- **Mailjet**: Transactional email service for notifications and user communications
+- **SMTP**: Transactional email for notifications and user communications, sent through an SMTP relay
 - **Dead Simple Chat**: Real-time chat integration for community features
 - **BRS/LEAP APIs**: External data sources for environmental policy and legal frameworks
 - **OpenAI API**: AI-powered features for content processing and recommendations
