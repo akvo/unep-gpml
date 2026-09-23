@@ -138,7 +138,7 @@
       (util/replace-in-keys #"_" "-")
       (util/update-if-not-nil :resource-id #(Integer/parseInt %))))
 
-(defn- send-new-comment-created-notification [{:keys [db mailjet-config]} {:keys [resource-id resource-type author-id]}]
+(defn- send-new-comment-created-notification [{:keys [db email-config]} {:keys [resource-id resource-type author-id]}]
   (let [resource-type (if (some #{resource-type} ["financing_resource" "action_plan" "technical_resource" "data_catalog"])
                         "resource"
                         resource-type)
@@ -161,8 +161,8 @@
             texts [(email/new-resource-comment-text resource-owner-full-name
                                                     comment-author-full-name
                                                     resource-title-or-name
-                                                    (:app-domain mailjet-config))]]
-        (email/send-email mailjet-config
+                                                    (:app-domain email-config))]]
+        (email/send-email email-config
                           email/unep-sender
                           (email/new-resource-comment-subject comment-author-full-name)
                           [{:Name resource-owner-full-name :Email (:email resource-owner)}]

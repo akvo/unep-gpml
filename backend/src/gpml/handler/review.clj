@@ -68,7 +68,7 @@
           response
           (assoc response :error-details {:error (.getMessage e)}))))))
 
-(defn- new-review* [{:keys [logger conn mailjet-config topic-type topic-id assigned-by]} c reviewer-id]
+(defn- new-review* [{:keys [logger conn email-config topic-type topic-id assigned-by]} c reviewer-id]
   (let [params {:topic-type topic-type
                 :topic-id topic-id
                 :assigned-by assigned-by
@@ -81,32 +81,32 @@
                            :context-type (h.r.permission/entity-type->context-type topic-type)
                            :resource-id topic-id
                            :user-id reviewer-id}]
-        texts [(email/notify-reviewer-pending-review-text reviewer-name (:app-domain mailjet-config) topic-type (:title review))]]
+        texts [(email/notify-reviewer-pending-review-text reviewer-name (:app-domain email-config) topic-type (:title review))]]
     (srv.permissions/assign-roles-to-users {:conn conn
                                             :logger logger}
                                            role-assignments)
-    (email/send-email mailjet-config
+    (email/send-email email-config
                       email/unep-sender
-                      (format "[%s] Review requested on new %s" (:app-name mailjet-config) topic-type)
+                      (format "[%s] Review requested on new %s" (:app-name email-config) topic-type)
                       (list {:Name reviewer-name :Email (:email reviewer)})
                       texts
                       (mapv email/text->basic-html-email texts))
     (conj c review)))
 
-(defn- new-multiple-review [logger db mailjet-config topic-type topic-id reviewers assigned-by]
+(defn- new-multiple-review [logger db email-config topic-type topic-id reviewers assigned-by]
   (let [topic-type* (util/get-internal-topic-type topic-type)]
     (jdbc/with-db-transaction [conn (:spec db)]
       (db.review/delete-reviews conn {:topic-type topic-type* :topic-id topic-id})
       (resp/response {:reviews (reduce (partial new-review* {:logger logger
                                                              :conn conn
-                                                             :mailjet-config mailjet-config
+                                                             :email-config email-config
                                                              :topic-type topic-type*
                                                              :topic-id topic-id
                                                              :assigned-by assigned-by})
                                        []
                                        reviewers)}))))
 
-(defn- change-reviewers [logger db mailjet-config topic-type topic-id reviewers user]
+(defn- change-reviewers [logger db email-config topic-type topic-id reviewers user]
   (let [topic-type* (util/get-internal-topic-type topic-type)
         assigned-by (:id user)]
     (jdbc/with-db-transaction [tx (:spec db)]
@@ -134,12 +134,12 @@
                                   reviewers-to-keep
                                   (reduce (partial new-review* {:logger logger
                                                                 :conn tx
-                                                                :mailjet-config mailjet-config
+                                                                :email-config email-config
                                                                 :topic-type topic-type*
                                                                 :topic-id topic-id
                                                                 :assigned-by assigned-by}) [] reviewers-to-create))})))))
 
-(defn- update-review-status [db mailjet-config topic-type topic-id review-status review-comment user]
+(defn- update-review-status [db email-config topic-type topic-id review-status review-comment user]
   (let [topic-type* (util/get-internal-topic-type topic-type)]
     (jdbc/with-db-transaction [conn (:spec db)]
       (if-let [review (first (db.review/reviews-filter
@@ -154,14 +154,14 @@
                             :review-comment review-comment})
                 admin (db.stakeholder/stakeholder-by-id conn {:id (:assigned_by review)})
                 texts [(email/notify-review-submitted-text (email/get-user-full-name admin)
-                                                           (:app-domain mailjet-config)
+                                                           (:app-domain email-config)
                                                            topic-type
                                                            (:title review)
                                                            review-status
                                                            review-comment)]]
-            (email/send-email mailjet-config
+            (email/send-email email-config
                               email/unep-sender
-                              (format "[%s] Review submitted on %s: %s" (:app-name mailjet-config) topic-type (:title review))
+                              (format "[%s] Review submitted on %s: %s" (:app-name email-config) topic-type (:title review))
                               (list {:Name (email/get-user-full-name admin) :Email (:email admin)})
                               texts
                               (mapv email/text->basic-html-email texts))
@@ -187,14 +187,14 @@
       (r/forbidden {:message "Unauthorized"}))))
 
 (defmethod ig/init-key :gpml.handler.review/new-multiple-review
-  [_ {:keys [db mailjet-config logger] :as config}]
+  [_ {:keys [db email-config logger] :as config}]
   (fn [{{{:keys [topic-type topic-id]} :path
          {:keys [reviewers]} :body} :parameters
         user :user
         :as req}]
     (try
       (if (h.r.permission/super-admin? config (:id user))
-        (new-multiple-review logger db mailjet-config topic-type topic-id reviewers (:id user))
+        (new-multiple-review logger db email-config topic-type topic-id reviewers (:id user))
         (r/forbidden {:message "Unauthorized"}))
       (catch Exception t
         (timbre/with-context+ {:req-params (:parameters req)
@@ -211,13 +211,13 @@
     (resp/response reviews)))
 
 (defmethod ig/init-key :gpml.handler.review/update-review
-  [_ {:keys [logger db mailjet-config] :as config}]
+  [_ {:keys [logger db email-config] :as config}]
   (fn [{{{:keys [topic-type topic-id]} :path
          {:keys [review-status review-comment reviewers]} :body} :parameters
         user :user}]
     (if reviewers
       (if (h.r.permission/super-admin? config (:id user))
-        (change-reviewers logger db mailjet-config topic-type topic-id reviewers user)
+        (change-reviewers logger db email-config topic-type topic-id reviewers user)
         (r/forbidden {:message "Unauthorized"}))
       (if (h.r.permission/operation-allowed?
            config
@@ -225,7 +225,7 @@
             :entity-type (h.r.permission/entity-type->context-type topic-type)
             :entity-id topic-id
             :operation-type :review})
-        (update-review-status db mailjet-config topic-type topic-id review-status review-comment user)
+        (update-review-status db email-config topic-type topic-id review-status review-comment user)
         (r/forbidden {:message "Unauthorized"})))))
 
 (defmethod ig/init-key :gpml.handler.review/get-reviews

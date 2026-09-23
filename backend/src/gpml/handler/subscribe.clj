@@ -7,12 +7,12 @@
 
 (defmethod ig/init-key :gpml.handler.subscribe/post
   [_ {{:keys [management-dest-email]} :subscribe-settings
-      mailjet-config :mailjet-config}]
+      email-config :email-config}]
   (fn [{{:keys [body]} :parameters}]
     (if (seq management-dest-email)
       (let [email (:email body)
             {:keys [status reason-phrase]} (email/notify-secretariat-about-new-subscription-req
-                                            mailjet-config
+                                            email-config
                                             management-dest-email
                                             email)]
         (if (= 200 status)

@@ -630,11 +630,11 @@
 (defn update-resource-tags
   "Updates the resource tags and creating new ones if provided. Note
   that the `tag-category` is `general`."
-  [conn logger mailjet-config table id tags]
-  (handler.resource.tag/update-resource-tags conn logger mailjet-config {:tags tags
-                                                                         :resource-name table
-                                                                         :resource-id id
-                                                                         :tag-category "general"}))
+  [conn logger email-config table id tags]
+  (handler.resource.tag/update-resource-tags conn logger email-config {:tags tags
+                                                                       :resource-name table
+                                                                       :resource-id id
+                                                                       :tag-category "general"}))
 
 (defn update-resource-language-urls [conn table id urls]
   ;; Delete any existing lanugage URLs
@@ -754,7 +754,7 @@
                               old-file-id
                               image-payload))))
 
-(defn- update-resource [{:keys [logger mailjet-config] :as config}
+(defn- update-resource [{:keys [logger email-config] :as config}
                         conn
                         topic-type
                         id
@@ -803,7 +803,7 @@
     (when (and (= topic-type "project") (seq gallery))
       (update-project-gallery config conn id gallery))
     (when (contains? (set (keys updates)) :tags)
-      (update-resource-tags conn logger mailjet-config table id tags))
+      (update-resource-tags conn logger email-config table id tags))
     (when (seq related-contents)
       (handler.resource.related-content/update-related-contents conn logger id table related-contents))
     (when-not (or (= "policy" topic-type)
@@ -828,7 +828,7 @@
     (svc.topic.translation/delete-topic-translations config topic-type id)
     status))
 
-(defn- update-initiative [{:keys [logger mailjet-config] :as config}
+(defn- update-initiative [{:keys [logger email-config] :as config}
                           conn
                           id
                           initiative]
@@ -852,7 +852,7 @@
     (when (seq related-contents)
       (handler.resource.related-content/update-related-contents conn logger id "initiative" related-contents))
     (when (contains? (set (keys api-initiative)) :tags)
-      (update-resource-tags conn logger mailjet-config "initiative" id tags))
+      (update-resource-tags conn logger email-config "initiative" id tags))
     (handler.geo/update-resource-geo-coverage conn
                                               :initiative
                                               id

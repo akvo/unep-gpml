@@ -120,7 +120,7 @@
       (:member-two conversation)
       (:member-one conversation))))
 
-(defn summarize-chat-messages [{:keys [logger hikari mailjet-config app-domain]
+(defn summarize-chat-messages [{:keys [logger hikari email-config app-domain]
                                 chat :chat-adapter}
                                frequency-in-minutes]
   {:pre [logger
@@ -343,7 +343,7 @@ You can read them here: %s"
                                                    :title channel-name
                                                    :content [:lift (pg-util/val->jsonb recent-messages)]}]})
                 (when (:chat-email-notifications membership)
-                  (email/send-email mailjet-config
+                  (email/send-email email-config
                                     email/unep-sender
                                     (format "New messages in chat channel: %s" channel-name)
                                     [{:Name full-name
@@ -393,7 +393,7 @@ You can read them here: %s"
                                                      :title (:name discussion)
                                                      :content [:lift (pg-util/val->jsonb discussion-messages)]}]})
                   (when (:chat-email-notifications membership)
-                    (email/send-email mailjet-config
+                    (email/send-email email-config
                                       email/unep-sender
                                       (format "New messages in chat channel: %s" discussion-name)
                                       [{:Name full-name
@@ -444,7 +444,7 @@ You can read them here: %s"
                                                      :title channel-name
                                                      :content [:lift (pg-util/val->jsonb conversation-messages)]}]})
                   (when (:chat-email-notifications membership)
-                    (email/send-email mailjet-config
+                    (email/send-email email-config
                                       email/unep-sender
                                       conversation-name
                                       [{:Name full-name

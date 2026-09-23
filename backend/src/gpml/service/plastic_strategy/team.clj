@@ -22,7 +22,7 @@
                                                    :logger logger}
                                                   role-assignments))))
 
-(defn add-ps-team-member [{:keys [db logger mailjet-config] :as config} plastic-strategy ps-team-member]
+(defn add-ps-team-member [{:keys [db logger email-config] :as config} plastic-strategy ps-team-member]
   (let [transactions
         [{:txn-fn
           (fn tx-add-ps-team-member
@@ -111,7 +111,7 @@
             (let [result (if (-> ps-team-member :email string/blank?)
                            (failure {:reason :invalid-user-email
                                      :user-id (:id ps-team-member)})
-                           (util.email/notify-user-added-to-plastic-strategy-team mailjet-config
+                           (util.email/notify-user-added-to-plastic-strategy-team email-config
                                                                                   ps-team-member
                                                                                   plastic-strategy))]
               (when-not (:success? result)
@@ -219,14 +219,14 @@
                                       {:filters {:plastic-strategies-ids [(:id plastic-strategy)]}})
       result)))
 
-(defn invite-user-to-ps-team [{:keys [db logger mailjet-config] :as config} ps-team-invitation]
+(defn invite-user-to-ps-team [{:keys [db logger email-config] :as config} ps-team-invitation]
   (let [transactions
         [{:txn-fn
           (fn tx-invite-user
             [{:keys [ps-team-invitation] :as context}]
             (let [email-notification-fn (fn [user]
                                           (util.email/notify-user-about-plastic-strategy-invitation
-                                           mailjet-config
+                                           email-config
                                            user
                                            (:plastic-strategy ps-team-invitation)))
                   invitation-payload {:user (select-keys ps-team-invitation [:name :email])

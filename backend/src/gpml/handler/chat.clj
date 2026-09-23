@@ -76,7 +76,7 @@
       (r/ok (select-keys result [:success?]))
       (-> result present-error r/server-error))))
 
-(defn- add-user-to-private-channel [{:keys [db mailjet-config] :as config} parameters]
+(defn- add-user-to-private-channel [{:keys [db email-config] :as config} parameters]
   (let [{:keys [channel_id channel_name user_id]} (:body parameters)
         target-user (db.stakeholder/get-stakeholder-by-id (:spec db) {:id user_id})]
     (if-not (seq target-user)
@@ -85,7 +85,7 @@
       (let [result (svc.chat/join-channel config channel_id target-user)]
         (if (:success? result)
           (do
-            (email/notify-user-about-chat-private-channel-invitation-request-accepted mailjet-config
+            (email/notify-user-about-chat-private-channel-invitation-request-accepted email-config
                                                                                       target-user
                                                                                       channel_name)
             (r/ok (select-keys result [:success?])))
