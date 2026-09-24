@@ -50,6 +50,7 @@ const EnvironmentSection = React.forwardRef(
       layers,
       layerLoading,
       strapiEnvironmentContent,
+      envCategoryName,
     },
     ref
   ) => {
@@ -96,7 +97,7 @@ const EnvironmentSection = React.forwardRef(
           data-section="environment"
           className={styles.dashboardSection}
         >
-          <h2 className={styles.sectionTitle}>Plastics in the Environment</h2>
+          <h2 className={styles.sectionTitle}>{envCategoryName || 'Plastics in the Environment'}</h2>
 
           <Row gutter={[16, 16]} className={styles.chartRow}>
             {/* <Col xs={24} md={12}>
@@ -140,7 +141,7 @@ const EnvironmentSection = React.forwardRef(
         data-section="environment"
         className={styles.dashboardSection}
       >
-        <h2 className={styles.sectionTitle}>Plastics in the Environment</h2>
+        <h2 className={styles.sectionTitle}>{envCategoryName || 'Plastics in the Environment'}</h2>
 
         {textContent?.environment?.keyTrends && (
           <KeyTrends

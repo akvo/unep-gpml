@@ -534,12 +534,16 @@ const LatestNews = () => {
           {/* <strong className="caps-heading-1">
             <Trans>HIGHLIGHTS</Trans>
           </strong> */}
-          <h2>
-            <strong>
-              <Trans>Highlights</Trans>
-            </strong>
-            <br />
-          </h2>
+          <h2 style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px' }}>
+  <strong>
+    <Trans>Highlights</Trans>
+  </strong>
+  <Link href="/highlights" style={{ fontSize: '14px', fontWeight: 'normal' }}>
+    <Button type="link" withArrow>
+      <Trans>See All</Trans>
+    </Button>
+  </Link>
+</h2>
         </div>
         <Swiper
           slidesPerView={isMobile ? 1 : 4}
