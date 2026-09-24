@@ -105,8 +105,7 @@ const buildSankeyOption = (d) => {
   }
 }
 
-const API_KEY =
-  '292b35d6e5b6ab61aa54354f1f6043c3fecc5ecb950fdffa63af394ef8719282'
+   const API_KEY = process.env.NEXT_PUBLIC_WFD_API_KEY
 
 const toIso2 = (code) => {
   if (!code) return null
@@ -196,12 +195,19 @@ const WFDStudies = ({ countryCode }) => {
             }))}
           />
           {flowLoading && <Spin size="small" style={{ marginTop: 24 }} />}
-          {!flowLoading && flowData && (
-            <ReactEcharts
-              option={buildSankeyOption(flowData)}
-              style={{ height: 500, marginTop: 24 }}
-            />
-          )}
+          {!flowLoading && selected && (
+  <iframe
+    id="sankey"
+    src={`https://wfd-data.rwm.global/api/getsankey/key/${API_KEY}/study/${selected}/type/complex`}
+    style={{
+      width: '100%',
+      aspectRatio: '14/9',
+      border: 'none',
+      marginTop: 24,
+    }}
+    title="Waste Flow Sankey Diagram"
+  />
+)}
         </>
       )}
     </div>

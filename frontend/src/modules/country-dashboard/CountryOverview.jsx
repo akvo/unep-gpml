@@ -520,13 +520,11 @@ const CountryOverview = ({
             layers={layers}
             layerLoading={layerLoading}
             {...(isFirst ? { headerExtra: submitButton } : {})}
-            {...(section.key === 'trade' ? { strapiTradeContent } : {})}
+            {...(section.key === 'trade' ? { strapiTradeContent, tradeCategoryName: tradeCategoryObject?.attributes?.name } : {})}
             {...(section.key === 'waste-management'
-              ? { strapiWasteContent }
-              : {})}
-            {...(section.key === 'environment'
-              ? { strapiEnvironmentContent }
-              : {})}
+  ? { strapiWasteContent, wasteCategoryName: wasteCategoryObject?.attributes?.name }
+  : {})}
+            {...(section.key === 'environment' ? { strapiEnvironmentContent, envCategoryName: envCategoryObject?.attributes?.name } : {})}
           />
         )
       })}
