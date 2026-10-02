@@ -47,6 +47,7 @@ export const useStepsDict = () => {
     'Calculation of Indicators': i18n._(t`Calculation of Indicators`),
     'Available Information': i18n._(t`Available Information`),
     'National Source Inventory': i18n._(t`National Source Inventory`),
+       'Baselining and Monitoring': i18n._(t`Baselining and Monitoring`),
     'National Action Plan': i18n._(t`National Action Plan`),
     Upload: i18n._(t`Upload`),
     'Plastics in Economy': i18n._(t`Plastics in Economy`),
