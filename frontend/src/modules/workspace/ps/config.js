@@ -94,7 +94,7 @@ export const stepsState = [
     ],
   },
   {
-    label: 'National Source Inventory',
+    label: 'Baselining and Monitoring',
     slug: '4-national-source',
     substeps: [
       { label: 'Intro', slug: '', checked: false },
