@@ -3,10 +3,15 @@ import { useRouter } from 'next/router'
 import Head from 'next/head'
 import Image from 'next/image'
 import { Trans } from '@lingui/macro'
-import api from '../../utils/api'
 import { getStrapiUrl, transformStrapiResponse } from '../../utils/misc'
 import { loadCatalog } from '../../translations/utils'
 import styles from './topic.module.scss'
+
+const getIconUrl = (icon) => {
+  const url = icon?.data?.attributes?.url
+  if (!url) return null
+  return url.startsWith('http') ? url : `${getStrapiUrl()}${url}`
+}
 
 function TopicPage() {
   const router = useRouter()
@@ -19,10 +24,11 @@ function TopicPage() {
 
     const fetchTopic = async () => {
       try {
-        const res = await api.get(
-          `/topics?filters[topicId][$eq]=${slug}&populate=*`
+        const res = await fetch(
+          `${getStrapiUrl()}/api/topics?locale=${router.locale}&filters[topicId][$eq]=${slug}&populate=*`
         )
-        const data = transformStrapiResponse(res.data)
+        const json = await res.json()
+        const data = transformStrapiResponse(json?.data || [])
         setTopic(data?.[0] || null)
       } catch (err) {
         console.error('Failed to load topic', err)
@@ -31,7 +37,7 @@ function TopicPage() {
       }
     }
     fetchTopic()
-  }, [slug])
+  }, [slug, router.locale])
 
   if (loading) {
     return null
@@ -54,9 +60,9 @@ function TopicPage() {
       </Head>
       <div className={styles.topicPage}>
         <div className={styles.topicHeader}>
-          {topic.icon?.url && (
+          {getIconUrl(topic.icon) && (
             <Image
-              src={getStrapiUrl(topic.icon.url)}
+              src={getIconUrl(topic.icon)}
               width={64}
               height={64}
               alt={`${topic.name} icon`}

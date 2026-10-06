@@ -1,21 +1,30 @@
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Trans } from '@lingui/macro';
-import api from '../../utils/api';
 import { getStrapiUrl, transformStrapiResponse } from '../../utils/misc';
 import styles from './index.module.scss';
 
+const getIconUrl = (icon) => {
+  const url = icon?.data?.attributes?.url;
+  if (!url) return null;
+  return url.startsWith('http') ? url : `${getStrapiUrl()}${url}`;
+};
+
 const ExploreByTopic = () => {
+  const router = useRouter();
   const [topics, setTopics] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchTopics = async () => {
       try {
-        const res = await api.get('/topics?populate=*&sort=order:asc');
-        const data = transformStrapiResponse(res.data);
-        setTopics(data || []);
+        const res = await fetch(
+          `${getStrapiUrl()}/api/topics?locale=${router.locale}&populate=*&sort=order:asc`
+        );
+        const json = await res.json();
+        setTopics(transformStrapiResponse(json?.data || []));
       } catch (err) {
         console.error('Failed to load topics', err);
       } finally {
@@ -23,7 +32,7 @@ const ExploreByTopic = () => {
       }
     };
     fetchTopics();
-  }, []);
+  }, [router.locale]);
 
   if (loading || !topics.length) {
     return null;
@@ -47,9 +56,9 @@ const ExploreByTopic = () => {
               className="feature-card"
             >
               <div className="img">
-                {topic.icon?.url && (
+                {getIconUrl(topic.icon) && (
                   <Image
-                    src={getStrapiUrl(topic.icon.url)}
+                    src={getIconUrl(topic.icon)}
                     width={265}
                     height={136}
                     alt={`${topic.name} icon`}
