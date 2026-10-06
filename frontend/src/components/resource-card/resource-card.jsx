@@ -22,7 +22,10 @@ const ResourceCard = ({ item, bookmarked, onBookmark, onClick }) => {
     { name: t`Event`, value: 'event' },
     { name: t`Data Portal`, value: 'data_catalog' },
   ]
-  const withImage = item?.images?.length > 0 || item?.images?.thumbnail
+  // /resources returns the files under `images`; /browse (used in the
+  // Action Planning Tool) returns the same list under `files`
+  const images = item?.images || item?.files
+  const withImage = images?.length > 0 || images?.thumbnail
   const handleClick = (e) => {
     onClick({ e, item })
   }
@@ -56,17 +59,17 @@ const ResourceCard = ({ item, bookmarked, onBookmark, onClick }) => {
           )}
         </div>
       )}
-      {item?.images?.length > 0 && (
+      {images?.length > 0 && (
         <Image
-          src={`${baseUrl}/img400/${item?.images?.[0].objectKey}`}
+          src={`${baseUrl}/img400/${images?.[0].objectKey}`}
           width={195}
           height={175}
           alt="thumbnail"
         />
       )}
-      {item?.images?.thumbnail && (
+      {images?.thumbnail && (
         <Image
-          src={item?.images?.medium?.url || item?.images?.thumbnail.url}
+          src={images?.medium?.url || images?.thumbnail.url}
           width={195}
           height={175}
           alt="thumbnail"
