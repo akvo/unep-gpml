@@ -136,7 +136,7 @@ const View = ({ setLoginVisible, isAuthenticated }) => {
   return (
     <div className={styles.initiativesView}>
       <h4 className="caps-heading-m">
-        <Trans>Stakeholder Consultation Process</Trans>
+        <Trans>Stakeholder Engagement</Trans>
       </h4>
       <h2 className="h-xxl w-bold">
         <Trans>Initiatives</Trans>

@@ -29,6 +29,7 @@ export const useStepsDict = () => {
     Intro: t`Intro`,
     'Setup your team': i18n._(t`Setup your team`),
     'Stakeholder Consultations': i18n._(t`Stakeholder Consultations`),
+    'Stakeholder Engagement': i18n._(t`Stakeholder Engagement`),
     'Stakeholder Map': i18n._(t`Stakeholder Map`),
     'Case Studies': i18n._(t`Case Studies`),
     Initiatives: i18n._(t`Initiatives`),

@@ -50,7 +50,7 @@ export const stepsState = [
     ],
   },
   {
-    label: 'Stakeholder Consultations',
+    label: 'Stakeholder Engagement',
     slug: '2-stakeholder-consultation',
     substeps: [
       { label: 'Intro', slug: '', checked: false },
