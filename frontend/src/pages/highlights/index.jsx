@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Trans } from '../../translations/utils'
+import { Trans } from '@lingui/macro'
 import { getStrapiUrl } from '../../utils/misc'
 
 const stripHtml = (html) => {
@@ -130,7 +130,7 @@ export default function HighlightsPage({ i18n }) {
 }
 
 export async function getServerSideProps(ctx) {
-const { default: loadCatalog } = await import('../../translations/utils')
+  const { loadCatalog } = await import('../../translations/utils')
   const i18n = await loadCatalog(ctx.locale)
   return { props: { i18n } }
 }
