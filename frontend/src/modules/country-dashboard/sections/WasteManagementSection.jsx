@@ -19,14 +19,15 @@ const PlasticCompositionChart = dynamic(
 const WasteManagementSection = React.forwardRef(
   (
     {
-      textContent,
-      countryData,
-      countryName,
-      countryCode,
-      layers,
-      layerLoading,
-      strapiWasteContent,
-    },
+  textContent,
+  countryData,
+  countryName,
+  countryCode,
+  layers,
+  layerLoading,
+  strapiWasteContent,
+  wasteCategoryName,
+},
     ref
   ) => {
     const { countriesWithRegions, loading: regionLoading } = useRegions()
@@ -39,7 +40,7 @@ const WasteManagementSection = React.forwardRef(
         data-section="waste-management"
         className={styles.dashboardSection}
       >
-        <h2 className={styles.sectionTitle}>Waste Management</h2>
+       <h2 className={styles.sectionTitle}>{wasteCategoryName || 'Waste Management'}</h2>
 
         {textContent?.wasteManagement?.keyTrends && (
           <KeyTrends
