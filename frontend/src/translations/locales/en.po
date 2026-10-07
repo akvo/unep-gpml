@@ -481,6 +481,10 @@ msgstr "Back to Channel"
 msgid "Back to connect options"
 msgstr "Back to connect options"
 
+#: src/pages/highlights/index.jsx:45
+msgid "Back to Home"
+msgstr "Back to Home"
+
 #: src/modules/project-detail/project-detail.jsx:211
 msgid "Background"
 msgstr ""
@@ -1547,6 +1551,10 @@ msgstr "Experts"
 msgid "Explore"
 msgstr "Explore"
 
+#: src/pages/landing/ExploreByTopic.jsx:47
+msgid "Explore by Topic"
+msgstr "Explore by Topic"
+
 #: src/pages/landing/index.jsx:487
 msgid "Explore the community"
 msgstr "Explore the community"
@@ -2436,6 +2444,10 @@ msgstr "Last name"
 msgid "Last Name"
 msgstr "Last Name"
 
+#: src/pages/highlights/index.jsx:51
+msgid "Latest news and updates from the Global Plastics Hub"
+msgstr "Latest news and updates from the Global Plastics Hub"
+
 #: src/pages/landing/index.jsx:527
 msgid "Latest news:"
 msgstr "Latest news"
@@ -2990,6 +3002,10 @@ msgstr "No data to display"
 #: src/components/event-calendar/view.jsx:187
 msgid "No event on"
 msgstr "No event on"
+
+#: src/pages/highlights/index.jsx:63
+msgid "No highlights available at this time."
+msgstr "No highlights available at this time."
 
 #: src/modules/map/map-chart.jsx:309
 #: src/modules/map/map-chart.jsx:899
@@ -3889,6 +3905,10 @@ msgstr ""
 msgid "See all"
 msgstr "See all"
 
+#: src/pages/landing/index.jsx:545
+msgid "See All"
+msgstr "See All"
+
 #: src/modules/country-dashboard/partials/EconomicInstrumentsComponent.jsx:121
 #: src/modules/country-dashboard/partials/PoliciesAndRegulationsComponent.jsx:42
 #: src/modules/country-dashboard/ProhibitivePolicies.jsx:37
@@ -4496,6 +4516,10 @@ msgstr "tonnes"
 #: src/store.js:743
 msgid "Tools & Toolkits"
 msgstr "Tools & Toolkits"
+
+#: src/pages/topics/[slug].jsx:50
+msgid "Topic not found."
+msgstr "Topic not found."
 
 #: src/modules/flexible-forms/form-schema.js:1998
 msgid "Topics"
