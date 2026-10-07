@@ -496,6 +496,14 @@ msgstr "Prohibiciones"
 msgid "Banner"
 msgstr "Bandera"
 
+#: src/pages/workspace/[slug]/layout.js:51
+msgid "Baselining and Monitoring"
+msgstr "Línea de base y monitoreo"
+
+#: src/pages/workspace/[slug]/4-national-source/index.js:73
+msgid "Baselining and Monitoring Report"
+msgstr "Informe de línea de base y monitoreo"
+
 #: src/modules/flexible-forms/common.js:348
 #: src/modules/stakeholder-detail/view.jsx:475
 msgid "Basic info"
@@ -4036,6 +4044,13 @@ msgstr "Consulta con las partes interesadas"
 #: src/pages/workspace/[slug]/layout.js:31
 msgid "Stakeholder Consultations"
 msgstr "Consultas con las partes interesadas"
+
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/case-studies.js:33
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/index.js:31
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/initiatives.js:139
+#: src/pages/workspace/[slug]/layout.js:32
+msgid "Stakeholder Engagement"
+msgstr "Participación de las partes interesadas"
 
 #: src/modules/flexible-forms/form-schema.js:462
 msgid "Stakeholder engagement"

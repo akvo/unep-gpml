@@ -494,6 +494,14 @@ msgstr "Interdiction(s)"
 msgid "Banner"
 msgstr "Bannière"
 
+#: src/pages/workspace/[slug]/layout.js:51
+msgid "Baselining and Monitoring"
+msgstr "Données de référence et suivi"
+
+#: src/pages/workspace/[slug]/4-national-source/index.js:73
+msgid "Baselining and Monitoring Report"
+msgstr "Rapport sur les données de référence et le suivi"
+
 #: src/modules/flexible-forms/common.js:348
 #: src/modules/stakeholder-detail/view.jsx:475
 msgid "Basic info"
@@ -4041,6 +4049,13 @@ msgstr "Consultation des parties prenantes"
 #: src/pages/workspace/[slug]/layout.js:31
 msgid "Stakeholder Consultations"
 msgstr "Consultations des parties prenantes"
+
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/case-studies.js:33
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/index.js:31
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/initiatives.js:139
+#: src/pages/workspace/[slug]/layout.js:32
+msgid "Stakeholder Engagement"
+msgstr "Engagement des parties prenantes"
 
 #: src/modules/flexible-forms/form-schema.js:462
 msgid "Stakeholder engagement"

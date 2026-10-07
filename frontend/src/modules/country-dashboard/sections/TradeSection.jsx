@@ -40,6 +40,7 @@ const TradeSection = React.forwardRef(
       layers,
       layerLoading,
       strapiTradeContent,
+      tradeCategoryName,
       headerExtra,
     },
     ref
@@ -50,7 +51,7 @@ const TradeSection = React.forwardRef(
     return (
       <div ref={ref} data-section="trade" className={styles.dashboardSection}>
         <div className={styles.sectionTitleRow}>
-          <h2 className={styles.sectionTitle}>Trade</h2>
+          <h2 className={styles.sectionTitle}>{tradeCategoryName || 'Trade'}</h2>
           {headerExtra}
         </div>
 
