@@ -2352,6 +2352,10 @@ msgid "Join the discussion..."
 msgstr "Únete a la discusión..."
 
 #: src/store.js:86
+msgid "Join the GPML"
+msgstr "Únase a la GPML"
+
+#: src/store.js:86
 msgid "Join the Partnership"
 msgstr "Únase a la asociación"
 
@@ -4327,6 +4331,10 @@ msgstr "El Centro Mundial de Plásticos"
 #: src/modules/landing/landing.jsx:30
 msgid "The Global Partnership on Plastic Pollution and Marine Litter Digital Platform"
 msgstr "El Centro Mundial de Plásticos"
+
+#: src/store.js:91
+msgid "The GPML CoP"
+msgstr "Comunidades de práctica de la GPML"
 
 #: src/pages/landing/index.jsx:200
 msgid "The GPML digital platform allows NGOs and civil society to connect with likeminded organizations, discover financing resources and funding opportunities, and showcase their work in the fight against plastic pollution and marine litter."
