@@ -494,6 +494,14 @@ msgstr "Ban(s)"
 msgid "Banner"
 msgstr "Banner"
 
+#: src/pages/workspace/[slug]/layout.js:51
+msgid "Baselining and Monitoring"
+msgstr "Baselining and Monitoring"
+
+#: src/pages/workspace/[slug]/4-national-source/index.js:73
+msgid "Baselining and Monitoring Report"
+msgstr "Baselining and Monitoring Report"
+
 #: src/modules/flexible-forms/common.js:348
 #: src/modules/stakeholder-detail/view.jsx:475
 msgid "Basic info"
@@ -4031,6 +4039,13 @@ msgstr "Stakeholder Consultation"
 #: src/pages/workspace/[slug]/layout.js:31
 msgid "Stakeholder Consultations"
 msgstr "Stakeholder Consultations"
+
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/case-studies.js:33
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/index.js:31
+#: src/pages/workspace/[slug]/2-stakeholder-consultation/initiatives.js:139
+#: src/pages/workspace/[slug]/layout.js:32
+msgid "Stakeholder Engagement"
+msgstr "Stakeholder Engagement"
 
 #: src/modules/flexible-forms/form-schema.js:462
 msgid "Stakeholder engagement"

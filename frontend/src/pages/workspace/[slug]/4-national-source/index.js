@@ -70,7 +70,7 @@ const View = () => {
   return (
     <>
       <h4 className="caps-heading-m">
-        <Trans>National Source Inventory Report</Trans>
+        <Trans>Baselining and Monitoring Report</Trans>
       </h4>
       <h2 className="h-xxl w-bold">{data?.title}</h2>
       <div
