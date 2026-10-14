@@ -63,7 +63,7 @@ function TopicPage() {
           {getIconUrl(topic.icon) && (
             <Image
               src={getIconUrl(topic.icon)}
-              width={64}
+              width={125}
               height={64}
               alt={`${topic.name} icon`}
             />
