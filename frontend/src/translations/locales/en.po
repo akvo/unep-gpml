@@ -543,6 +543,10 @@ msgstr "Blended finance"
 msgid "Browse"
 msgstr "Browse"
 
+#: src/pages/topics/[slug].jsx:118
+msgid "Browse resources"
+msgstr "Browse resources"
+
 #: src/pages/knowledge-hub/index.js:410
 msgid "browse resources by"
 msgstr "browse resources by"
@@ -680,6 +684,10 @@ msgstr "Change in taxes/subsidies"
 #: src/pages/forum/index.jsx:239
 msgid "channel"
 msgstr "channel"
+
+#: src/pages/topics/[slug].jsx:130
+msgid "Chart preview"
+msgstr "Chart preview"
 
 #: src/modules/forum/my-forums.jsx:186
 #: src/modules/workspace/view.jsx:292
@@ -3462,6 +3470,10 @@ msgstr "Powered by OpenAI"
 #: src/store.js:732
 msgid "Preparing a Waste Management Plan - A Methodological Guidance Note"
 msgstr "Preparing a Waste Management Plan - A Methodological Guidance Note"
+
+#: src/pages/topics/[slug].jsx:135
+msgid "preview, live chart pending"
+msgstr "preview, live chart pending"
 
 #: src/modules/flexible-forms/form-schema.js:469
 msgid "Primary school"

@@ -543,6 +543,10 @@ msgstr "Financement mixte"
 msgid "Browse"
 msgstr "Parcourir"
 
+#: src/pages/topics/[slug].jsx:118
+msgid "Browse resources"
+msgstr "Parcourir les ressources"
+
 #: src/pages/knowledge-hub/index.js:410
 msgid "browse resources by"
 msgstr "parcourir les ressources par"
@@ -680,6 +684,10 @@ msgstr "Modification des taxes/subventions"
 #: src/pages/forum/index.jsx:239
 msgid "channel"
 msgstr "canal"
+
+#: src/pages/topics/[slug].jsx:130
+msgid "Chart preview"
+msgstr "Aperçu du graphique"
 
 #: src/modules/forum/my-forums.jsx:186
 #: src/modules/workspace/view.jsx:292
@@ -3468,6 +3476,10 @@ msgstr "Propulsé par OpenAI"
 #: src/store.js:732
 msgid "Preparing a Waste Management Plan - A Methodological Guidance Note"
 msgstr "Préparer un plan de gestion des déchets - Une note d'orientation méthodologique"
+
+#: src/pages/topics/[slug].jsx:135
+msgid "preview, live chart pending"
+msgstr "aperçu, graphique en direct à venir"
 
 #: src/modules/flexible-forms/form-schema.js:469
 msgid "Primary school"
