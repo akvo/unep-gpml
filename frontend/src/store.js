@@ -83,12 +83,12 @@ const menuList = [
         to: '/community-hub',
       },
       {
-        key: msg`Join the Partnership`,
+        key: msg`Join the GPML`,
         id: 'Join the Partnership',
         to: '/partnership',
       },
       {
-        key: msg`Communities of Practice`,
+        key: msg`The GPML CoP`,
         id: 'Communities of Practice',
         to: '/cop',
       },

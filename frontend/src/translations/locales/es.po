@@ -483,6 +483,10 @@ msgstr "Volver al canal"
 msgid "Back to connect options"
 msgstr "Volver a las opciones de conexión"
 
+#: src/pages/highlights/index.jsx:45
+msgid "Back to Home"
+msgstr "Volver al inicio"
+
 #: src/modules/project-detail/project-detail.jsx:211
 msgid "Background"
 msgstr "Fondo"
@@ -1548,6 +1552,10 @@ msgstr "Expertos"
 msgid "Explore"
 msgstr "Explorar"
 
+#: src/pages/landing/ExploreByTopic.jsx:47
+msgid "Explore by Topic"
+msgstr "Explorar por tema"
+
 #: src/pages/landing/index.jsx:487
 msgid "Explore the community"
 msgstr "Explora la comunidad"
@@ -2360,6 +2368,10 @@ msgid "Join the discussion..."
 msgstr "Únete a la discusión..."
 
 #: src/store.js:86
+msgid "Join the GPML"
+msgstr "Únase a la GPML"
+
+#: src/store.js:86
 msgid "Join the Partnership"
 msgstr "Únase a la asociación"
 
@@ -2432,6 +2444,10 @@ msgstr "Apellido"
 #: src/pages/partnership/index.jsx:1340
 msgid "Last Name"
 msgstr "Apellido"
+
+#: src/pages/highlights/index.jsx:51
+msgid "Latest news and updates from the Global Plastics Hub"
+msgstr "Últimas noticias y novedades del Global Plastics Hub"
 
 #: src/pages/landing/index.jsx:527
 msgid "Latest news:"
@@ -2987,6 +3003,10 @@ msgstr "no hay información para mostrar"
 #: src/components/event-calendar/view.jsx:187
 msgid "No event on"
 msgstr "Ningún evento en"
+
+#: src/pages/highlights/index.jsx:63
+msgid "No highlights available at this time."
+msgstr "No hay destacados disponibles en este momento."
 
 #: src/modules/map/map-chart.jsx:309
 #: src/modules/map/map-chart.jsx:899
@@ -3886,6 +3906,10 @@ msgstr "Intervenciones sectoriales y plásticos heredados"
 msgid "See all"
 msgstr "Ver todo"
 
+#: src/pages/landing/index.jsx:545
+msgid "See All"
+msgstr "Ver todo"
+
 #: src/modules/country-dashboard/partials/EconomicInstrumentsComponent.jsx:121
 #: src/modules/country-dashboard/partials/PoliciesAndRegulationsComponent.jsx:42
 #: src/modules/country-dashboard/ProhibitivePolicies.jsx:37
@@ -4343,6 +4367,10 @@ msgstr "El Centro Mundial de Plásticos"
 msgid "The Global Partnership on Plastic Pollution and Marine Litter Digital Platform"
 msgstr "El Centro Mundial de Plásticos"
 
+#: src/store.js:91
+msgid "The GPML CoP"
+msgstr "Comunidades de práctica de la GPML"
+
 #: src/pages/landing/index.jsx:200
 msgid "The GPML digital platform allows NGOs and civil society to connect with likeminded organizations, discover financing resources and funding opportunities, and showcase their work in the fight against plastic pollution and marine litter."
 msgstr "El Global Plastics Hub permite a las ONG y organizaciones de la sociedad civil conectarse con organizaciones afines, descubrir recursos financieros y oportunidades de financiación y mostrar su trabajo en la lucha contra la contaminación plástica y la basura marina."
@@ -4487,6 +4515,10 @@ msgstr "toneladas"
 #: src/store.js:743
 msgid "Tools & Toolkits"
 msgstr "Herramientas y kits de herramientas"
+
+#: src/pages/topics/[slug].jsx:50
+msgid "Topic not found."
+msgstr "Tema no encontrado."
 
 #: src/modules/flexible-forms/form-schema.js:1998
 msgid "Topics"
