@@ -28,6 +28,7 @@ frontend_build() {
   echo 'NEXT_PUBLIC_DSC_URL="https://deadsimplechat.com"' >>frontend/.env
   echo 'NEXT_PUBLIC_DSC_API_URL="https://api.deadsimplechat.com"' >>frontend/.env
   echo 'NEXT_PUBLIC_DSC_PUBLIC_KEY="pub_42747a344c7475336e2d4f46624c3333494d68745a784c316d4150626c4c32714a5146494c6b4d44764a4556456f5847"' >>frontend/.env
+  echo 'NEXT_PUBLIC_WFD_API_KEY=292b35d6e5b6ab61aa54354f1f6043c3fecc5ecb950fdffa63af394ef8719282' >>frontend/.env
 
   docker run \
     --rm \
