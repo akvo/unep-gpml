@@ -681,6 +681,10 @@ msgstr "Modification des taxes/subventions"
 msgid "channel"
 msgstr "canal"
 
+#: src/pages/topics/[slug].jsx:132
+msgid "Chart preview"
+msgstr "Aperçu du graphique"
+
 #: src/modules/forum/my-forums.jsx:186
 #: src/modules/workspace/view.jsx:292
 msgid "Chat"
@@ -3469,6 +3473,10 @@ msgstr "Propulsé par OpenAI"
 msgid "Preparing a Waste Management Plan - A Methodological Guidance Note"
 msgstr "Préparer un plan de gestion des déchets - Une note d'orientation méthodologique"
 
+#: src/pages/topics/[slug].jsx:139
+msgid "preview, live chart pending"
+msgstr "aperçu, graphique en direct à venir"
+
 #: src/modules/flexible-forms/form-schema.js:469
 msgid "Primary school"
 msgstr "École primaire"
@@ -4521,7 +4529,7 @@ msgstr "tonnes"
 msgid "Tools & Toolkits"
 msgstr "Outils et boîtes à outils"
 
-#: src/pages/topics/[slug].jsx:50
+#: src/pages/topics/[slug].jsx:87
 msgid "Topic not found."
 msgstr "Sujet introuvable."
 
