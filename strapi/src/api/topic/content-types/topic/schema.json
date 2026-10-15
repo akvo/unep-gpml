@@ -49,6 +49,12 @@
         "i18n": { "localized": true }
       }
     },
+    "narrative": {
+      "type": "richtext",
+      "pluginOptions": {
+        "i18n": { "localized": true }
+      }
+    },
     "pageIntro": {
       "type": "text",
       "pluginOptions": {
@@ -78,9 +84,6 @@
     },
     "hubResources": {
       "type": "json"
-    },
-    "browseUrl": {
-      "type": "string"
     }
   }
 }

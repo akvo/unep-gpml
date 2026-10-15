@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import Image from 'next/image'
-import Link from 'next/link'
 import { Trans } from '@lingui/macro'
+import DOMPurify from 'isomorphic-dompurify'
 import { getStrapiUrl, transformStrapiResponse } from '../../utils/misc'
 import { loadCatalog } from '../../translations/utils'
 import api from '../../utils/api'
@@ -111,35 +111,40 @@ function TopicPage() {
             )}
             <h1>{topic.name}</h1>
           </div>
-          <Link
-            href={topic.browseUrl || '/knowledge-hub'}
-            className={styles.browseLink}
-          >
-            <Trans>Browse resources</Trans> →
-          </Link>
         </div>
 
-        <div className={styles.topicTop}>
-          <p className={styles.topicIntro}>{topic.pageIntro}</p>
+        {topic.narrative ? (
+          <div
+            className={styles.narrative}
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(topic.narrative),
+            }}
+          />
+        ) : (
+          <div className={styles.topicTop}>
+            <p className={styles.topicIntro}>{topic.pageIntro}</p>
 
-          {Array.isArray(topic.charts) && topic.charts.length > 0 && (
-            <div className={styles.chartGrid}>
-              {topic.charts.map((chart, i) => (
-                <div className={styles.chartPreview} key={i}>
-                  <span className={styles.chartEyebrow}>
-                    <Trans>Chart preview</Trans>
-                  </span>
-                  <span className={styles.chartLabel}>{chart.chartLabel}</span>
-                  <span className={styles.chartStatus}>
-                    {chart.sourceLabel || (
-                      <Trans>preview, live chart pending</Trans>
-                    )}
-                  </span>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+            {Array.isArray(topic.charts) && topic.charts.length > 0 && (
+              <div className={styles.chartGrid}>
+                {topic.charts.map((chart, i) => (
+                  <div className={styles.chartPreview} key={i}>
+                    <span className={styles.chartEyebrow}>
+                      <Trans>Chart preview</Trans>
+                    </span>
+                    <span className={styles.chartLabel}>
+                      {chart.chartLabel}
+                    </span>
+                    <span className={styles.chartStatus}>
+                      {chart.sourceLabel || (
+                        <Trans>preview, live chart pending</Trans>
+                      )}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
 
         <hr className={styles.divider} />
 

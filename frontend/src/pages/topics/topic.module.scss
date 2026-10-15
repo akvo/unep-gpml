@@ -27,13 +27,6 @@
   }
 }
 
-.browseLink {
-  font-weight: 700;
-  color: #020a5c;
-  text-decoration: underline;
-  white-space: nowrap;
-}
-
 .topicTop {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -83,6 +76,76 @@
 .chartStatus {
   font-size: 12px;
   font-style: italic;
+}
+
+.narrative {
+  font-size: 16px;
+  line-height: 1.6;
+
+  &::after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+
+  h2 {
+    clear: both;
+    margin: 32px 0 16px;
+    padding: 10px 16px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  p {
+    margin: 0 0 16px;
+  }
+
+  a {
+    color: var(--accent);
+    text-decoration: underline;
+  }
+
+  // Images sit on the right with the text wrapping around them
+  img,
+  figure {
+    float: right;
+    clear: right;
+    width: 45%;
+    height: auto;
+    margin: 0 0 16px 32px;
+  }
+
+  figure img {
+    float: none;
+    width: 100%;
+    margin: 0;
+  }
+
+  figcaption {
+    font-size: 13px;
+    font-style: italic;
+    margin-top: 6px;
+  }
+
+  // Wide charts can take the full width instead
+  .full,
+  figure.full {
+    float: none;
+    width: 100%;
+    margin: 16px 0 24px;
+  }
+
+  @media (max-width: 768px) {
+    img,
+    figure {
+      float: none;
+      width: 100%;
+      margin: 16px 0;
+    }
+  }
 }
 
 .divider {
