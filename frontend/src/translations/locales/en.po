@@ -543,10 +543,6 @@ msgstr "Blended finance"
 msgid "Browse"
 msgstr "Browse"
 
-#: src/pages/topics/[slug].jsx:118
-msgid "Browse resources"
-msgstr "Browse resources"
-
 #: src/pages/knowledge-hub/index.js:410
 msgid "browse resources by"
 msgstr "browse resources by"
@@ -685,7 +681,7 @@ msgstr "Change in taxes/subsidies"
 msgid "channel"
 msgstr "channel"
 
-#: src/pages/topics/[slug].jsx:130
+#: src/pages/topics/[slug].jsx:132
 msgid "Chart preview"
 msgstr "Chart preview"
 
@@ -3471,7 +3467,7 @@ msgstr "Powered by OpenAI"
 msgid "Preparing a Waste Management Plan - A Methodological Guidance Note"
 msgstr "Preparing a Waste Management Plan - A Methodological Guidance Note"
 
-#: src/pages/topics/[slug].jsx:135
+#: src/pages/topics/[slug].jsx:139
 msgid "preview, live chart pending"
 msgstr "preview, live chart pending"
 
@@ -4529,7 +4525,7 @@ msgstr "tonnes"
 msgid "Tools & Toolkits"
 msgstr "Tools & Toolkits"
 
-#: src/pages/topics/[slug].jsx:50
+#: src/pages/topics/[slug].jsx:87
 msgid "Topic not found."
 msgstr "Topic not found."
 

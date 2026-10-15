@@ -543,10 +543,6 @@ msgstr "Financement mixte"
 msgid "Browse"
 msgstr "Parcourir"
 
-#: src/pages/topics/[slug].jsx:118
-msgid "Browse resources"
-msgstr "Parcourir les ressources"
-
 #: src/pages/knowledge-hub/index.js:410
 msgid "browse resources by"
 msgstr "parcourir les ressources par"
@@ -685,7 +681,7 @@ msgstr "Modification des taxes/subventions"
 msgid "channel"
 msgstr "canal"
 
-#: src/pages/topics/[slug].jsx:130
+#: src/pages/topics/[slug].jsx:132
 msgid "Chart preview"
 msgstr "Aperçu du graphique"
 
@@ -3477,7 +3473,7 @@ msgstr "Propulsé par OpenAI"
 msgid "Preparing a Waste Management Plan - A Methodological Guidance Note"
 msgstr "Préparer un plan de gestion des déchets - Une note d'orientation méthodologique"
 
-#: src/pages/topics/[slug].jsx:135
+#: src/pages/topics/[slug].jsx:139
 msgid "preview, live chart pending"
 msgstr "aperçu, graphique en direct à venir"
 
@@ -4533,7 +4529,7 @@ msgstr "tonnes"
 msgid "Tools & Toolkits"
 msgstr "Outils et boîtes à outils"
 
-#: src/pages/topics/[slug].jsx:50
+#: src/pages/topics/[slug].jsx:87
 msgid "Topic not found."
 msgstr "Sujet introuvable."
 
