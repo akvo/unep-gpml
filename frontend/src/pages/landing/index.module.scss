@@ -10,6 +10,17 @@
   }
 }
 
+// Slow zoom on the Explore The Platform background photo
+@keyframes platformZoom {
+  from {
+    transform: scale(1);
+  }
+
+  to {
+    transform: scale(1.08);
+  }
+}
+
 .landing {
   :global {
     .hero {
@@ -438,6 +449,226 @@
         text-transform: uppercase;
       }
     }
+    .at-a-glance {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      max-width: 1240px;
+      margin: 0 auto 60px;
+      padding: 36px 20px 40px;
+      border-radius: 24px;
+      // Background photo (Naja Bertolt Jensen / Unsplash), shown on phones
+      // and while the video loads
+      &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -2;
+        background: url(/explore-platform-bg.jpg) center 40% / cover no-repeat;
+      }
+      // Blue tint so the text and cards stay readable
+      &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background: linear-gradient(
+          180deg,
+          rgba(2, 10, 91, 0.6),
+          rgba(2, 10, 91, 0.3) 50%,
+          rgba(2, 10, 91, 0.65)
+        );
+      }
+      // Background video (Åke Wall / Pexels), sits above the photo
+      .glance-video {
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .glance-credit {
+        position: absolute;
+        right: 16px;
+        bottom: 10px;
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.85);
+        text-decoration: underline;
+      }
+      h3 {
+        width: 100%;
+        text-align: center;
+        color: #fff;
+        margin-bottom: 24px;
+        @media screen and (max-width: $bpMobile) {
+          margin-top: 0;
+        }
+      }
+      .glance {
+        display: grid;
+        grid-template-columns: 1fr 190px 1fr;
+        grid-template-areas:
+          '. data .'
+          'kh apt ch';
+        column-gap: 32px;
+        row-gap: 28px;
+        max-width: 900px;
+        margin: 0 auto;
+      }
+      .glance-data {
+        grid-area: data;
+      }
+      .glance-kh {
+        grid-area: kh;
+      }
+      .glance-ch {
+        grid-area: ch;
+      }
+      .glance-apt {
+        grid-area: apt;
+      }
+      .glance-card,
+      .glance-apt {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        color: $primaryDarkBlue;
+        position: relative;
+        h5 {
+          font-size: 14px;
+          font-weight: bold;
+          text-transform: uppercase;
+          color: $primaryViolet7;
+          margin: 8px 0 0;
+        }
+        h2 {
+          font-size: 26px;
+          font-weight: 900;
+          margin: 0 0 8px;
+        }
+        p {
+          font-size: 14px;
+          line-height: 20px;
+          margin: 0;
+          color: #000;
+        }
+      }
+      .glance-card {
+        box-sizing: border-box;
+        background-color: #f9f8ff;
+        border: 1px solid #1d5f86;
+        border-radius: 15px;
+        padding: 16px 18px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      }
+      .glance-title img {
+        width: 110px;
+        height: auto;
+      }
+      .glance-apt img {
+        width: 80px;
+        height: auto;
+      }
+      .glance-title {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: $primaryDarkBlue;
+        &:hover h5 {
+          text-decoration: underline;
+        }
+      }
+      .glance-card p a {
+        font-weight: bold;
+        font-style: italic;
+        text-decoration: underline;
+      }
+      .link-green {
+        color: #0a8a3a;
+      }
+      .link-orange {
+        color: #e2711d;
+      }
+      .link-purple {
+        color: #a3248f;
+      }
+      .glance-data {
+        width: 290px;
+        justify-self: center;
+        // line down to the Action Planning Tool circle
+        &::after {
+          content: '';
+          position: absolute;
+          top: 100%;
+          left: 50%;
+          height: 28px;
+          border-left: 2px solid #9fd3ff;
+        }
+      }
+      .glance-kh,
+      .glance-ch {
+        margin-top: 44px;
+        // line to the middle of the Action Planning Tool circle
+        // (circle centre 95px down the row, minus the 44px card offset)
+        &::before {
+          content: '';
+          position: absolute;
+          top: 51px;
+          width: 32px;
+          border-top: 2px solid #9fd3ff;
+        }
+      }
+      .glance-kh::before {
+        left: 100%;
+      }
+      .glance-ch::before {
+        right: 100%;
+      }
+      .glance-apt {
+        width: 190px;
+        height: 190px;
+        box-sizing: border-box;
+        border-radius: 50%;
+        border: 6px dotted #9fd3ff;
+        background-color: #fff;
+        box-shadow: 0 0 40px rgba(159, 211, 255, 0.45);
+        justify-content: center;
+        padding: 14px;
+        h5 {
+          margin-top: 6px;
+        }
+        p {
+          font-size: 12px;
+          line-height: 16px;
+        }
+      }
+      @media screen and (max-width: $bpMobile) {
+        border-radius: 0;
+        padding: 40px 0 48px;
+        .glance {
+          grid-template-columns: 1fr;
+          grid-template-areas: 'apt' 'data' 'kh' 'ch';
+          justify-items: center;
+          padding: 0 16px;
+          row-gap: 24px;
+        }
+        .glance-card {
+          width: 100%;
+          max-width: 360px;
+        }
+        .glance-kh,
+        .glance-ch {
+          margin-top: 0;
+        }
+        .glance-data::after,
+        .glance-kh::before,
+        .glance-ch::before {
+          display: none;
+        }
+      }
+    }
     .feature-cards {
       margin-bottom: 50px;
       h3 {
@@ -517,6 +748,41 @@
           flex-direction: column;
           .feature-card {
             margin-top: 15px;
+          }
+        }
+      }
+    }
+    // Explore by Topic: line up icons, titles and links across cards,
+    // whatever the length of each summary
+    .feature-cards.topic-cards {
+      .container > li {
+        display: flex;
+      }
+      .feature-card {
+        justify-content: flex-start;
+        height: auto;
+        min-height: 520px;
+        .img {
+          height: 220px;
+          flex: 0 0 220px;
+          img {
+            margin-top: 0;
+          }
+        }
+        .cnt {
+          flex: 1;
+          margin-top: 0;
+          h5 {
+            margin-top: 24px;
+            margin-bottom: 16px;
+            text-align: center;
+          }
+          p {
+            flex: 1;
+          }
+          p + span {
+            margin-top: auto;
+            padding-top: 20px;
           }
         }
       }
@@ -1014,5 +1280,13 @@
         line-height: $lhL;
       }
     }
+  }
+}
+
+// Kept outside :global so the animation name matches the local keyframes
+.landing :global(.at-a-glance)::before {
+  animation: platformZoom 25s ease-in-out infinite alternate;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
   }
 }
