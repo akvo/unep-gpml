@@ -88,7 +88,20 @@
     clear: both;
   }
 
+  // Main section heading: dark navy band
   h2 {
+    clear: both;
+    margin: 32px 0 16px;
+    padding: 10px 16px;
+    background: #020a5b;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  // Key message heading: topic colour band
+  h3 {
     clear: both;
     margin: 32px 0 16px;
     padding: 10px 16px;
@@ -97,6 +110,11 @@
     font-size: 18px;
     font-weight: 700;
     text-align: center;
+  }
+
+  // A key message directly under a section heading sits flush with it
+  h2 + h3 {
+    margin-top: -16px;
   }
 
   p {
@@ -122,6 +140,18 @@
     float: none;
     width: 100%;
     margin: 0;
+  }
+
+  // Charts and wide images: centred, not wider than 900px
+  figure.full img {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  figure.full figcaption {
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   figcaption {
