@@ -507,7 +507,7 @@
       }
       .glance {
         display: grid;
-        grid-template-columns: 1fr 190px 1fr;
+        grid-template-columns: 1fr 210px 1fr;
         grid-template-areas:
           '. data .'
           'kh apt ch';
@@ -536,21 +536,29 @@
         text-align: center;
         color: $primaryDarkBlue;
         position: relative;
+        // Same fonts as the rest of the homepage, with line heights set
+        // so the global heading spacing doesn't leave large gaps
         h5 {
-          font-size: 14px;
+          font-family: $ff1;
+          font-size: 17px;
+          line-height: 22px;
+          letter-spacing: 0.02em;
           font-weight: bold;
           text-transform: uppercase;
           color: $primaryViolet7;
           margin: 8px 0 0;
         }
         h2 {
-          font-size: 26px;
+          font-family: $ff1;
+          font-size: 34px;
+          line-height: 40px;
           font-weight: 900;
           margin: 0 0 8px;
         }
         p {
-          font-size: 14px;
-          line-height: 20px;
+          font-family: $ff2;
+          font-size: 16px;
+          line-height: 24px;
           margin: 0;
           color: #000;
         }
@@ -595,7 +603,7 @@
         color: #a3248f;
       }
       .glance-data {
-        width: 290px;
+        width: 330px;
         justify-self: center;
         // line down to the Action Planning Tool circle
         &::after {
@@ -615,7 +623,7 @@
         &::before {
           content: '';
           position: absolute;
-          top: 51px;
+          top: 61px;
           width: 32px;
           border-top: 2px solid #9fd3ff;
         }
@@ -627,8 +635,8 @@
         right: 100%;
       }
       .glance-apt {
-        width: 190px;
-        height: 190px;
+        width: 210px;
+        height: 210px;
         box-sizing: border-box;
         border-radius: 50%;
         border: 6px dotted #9fd3ff;
@@ -639,9 +647,13 @@
         h5 {
           margin-top: 6px;
         }
+        h5 {
+          font-size: 15px;
+          line-height: 19px;
+        }
         p {
-          font-size: 12px;
-          line-height: 16px;
+          font-size: 14px;
+          line-height: 19px;
         }
       }
       @media screen and (max-width: $bpMobile) {
