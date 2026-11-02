@@ -166,7 +166,8 @@ msgid "Action Plan"
 msgstr "Plan d'action"
 
 #: src/modules/workspace/view.jsx:485
-#: src/pages/landing/index.jsx:109
+#: src/pages/landing/index.jsx:111
+#: src/pages/landing/index.jsx:460
 #: src/pages/workspace/[slug]/layout.js:284
 msgid "Action Planning Tool"
 msgstr "Outil de planification des actions"
@@ -681,6 +682,10 @@ msgstr "Modification des taxes/subventions"
 msgid "channel"
 msgstr "canal"
 
+#: src/pages/topics/[slug].jsx:132
+msgid "Chart preview"
+msgstr "Aperçu du graphique"
+
 #: src/modules/forum/my-forums.jsx:186
 #: src/modules/workspace/view.jsx:292
 msgid "Chat"
@@ -730,7 +735,7 @@ msgstr "Circularité"
 msgid "Citizen science"
 msgstr "Science citoyenne"
 
-#: src/pages/landing/index.jsx:197
+#: src/pages/landing/index.jsx:211
 msgid "Civil Society"
 msgstr "Société civile"
 
@@ -819,7 +824,7 @@ msgstr "communauté"
 msgid "Community engagement"
 msgstr "Engagement communautaire"
 
-#: src/pages/landing/index.jsx:476
+#: src/pages/landing/index.jsx:507
 #: src/store.js:77
 msgid "Community Hub"
 msgstr "Centre communautaire"
@@ -1034,7 +1039,7 @@ msgstr "Outils de collecte de données"
 msgid "data hub"
 msgstr "centre de données"
 
-#: src/pages/landing/index.jsx:441
+#: src/pages/landing/index.jsx:433
 #: src/store.js:51
 msgid "Data Hub"
 msgstr "Centre de données"
@@ -1363,7 +1368,7 @@ msgstr "L'e-mail est obligatoire"
 msgid "Email Notifications"
 msgstr "Notifications par email"
 
-#: src/pages/landing/index.jsx:264
+#: src/pages/landing/index.jsx:278
 msgid "Empowering"
 msgstr "Appuyer le"
 
@@ -1559,21 +1564,9 @@ msgstr "Explorer"
 msgid "Explore by Topic"
 msgstr "Explorer par sujet"
 
-#: src/pages/landing/index.jsx:487
-msgid "Explore the community"
-msgstr "Explorez la communauté"
-
-#: src/pages/landing/index.jsx:454
-msgid "Explore the data"
-msgstr "Explorer les données"
-
-#: src/pages/landing/index.jsx:386
+#: src/pages/landing/index.jsx:420
 msgid "Explore The Platform"
 msgstr "Explorer la Plateforme"
-
-#: src/pages/landing/index.jsx:419
-msgid "Explore the resources"
-msgstr "Explorez les ressources"
 
 #: src/modules/country-dashboard/charts/PlasticImportExportTonnesChart.jsx:193
 #: src/modules/country-dashboard/charts/ProductCategoriesChart.jsx:71
@@ -1742,7 +1735,7 @@ msgstr "Mot de passe oublié?"
 
 #: src/modules/workspace/view.jsx:257
 #: src/pages/forum/index.jsx:123
-#: src/pages/landing/index.jsx:621
+#: src/pages/landing/index.jsx:676
 #: src/store.js:96
 msgid "Forums"
 msgstr "Forums"
@@ -1888,7 +1881,7 @@ msgstr "Le Partenariat mondial sur la pollution plastique et les déchets marins
 msgid "Global Plastics Action Partnership (GPAP)"
 msgstr "Partenariat mondial d’action contre les plastiques (GPAP)"
 
-#: src/pages/landing/index.jsx:137
+#: src/pages/landing/index.jsx:151
 msgid "Global Plastics Hub is developed through various stakeholders consultations, engagement and contributions from members and partners under the Global Partnership on Plastic Pollution and Marine Litter. We appreciate generous contributions from donor communities including Government of Japan, Norway and the United States."
 msgstr "Le Global Plastics Hub est le fruit de consultations avec diverses parties prenantes, de l'engagement et des contributions des membres et partenaires du Partenariat mondial sur la pollution plastique et les déchets marins. Nous remercions nos donateurs, notamment les gouvernements du Japon, de la Norvège et des États-Unis, pour leurs généreuses contributions."
 
@@ -1913,7 +1906,7 @@ msgstr "Gouvernance et application"
 msgid "Government Verified"
 msgstr "Vérifié par le gouvernement"
 
-#: src/pages/landing/index.jsx:162
+#: src/pages/landing/index.jsx:176
 msgid "Governments"
 msgstr "Gouvernements"
 
@@ -2024,7 +2017,7 @@ msgstr "MASQUER LES EXEMPLES"
 msgid "High-level strategy"
 msgstr "Stratégie de haut niveau"
 
-#: src/pages/landing/index.jsx:523
+#: src/pages/landing/index.jsx:578
 msgid "Highlights"
 msgstr "Points forts"
 
@@ -2097,7 +2090,7 @@ msgstr "Si vous avez sélectionné « Autre », veuillez préciser :"
 msgid "If you selected \"Other\", please specify."
 msgstr "Si vous avez sélectionné « Autre », veuillez préciser."
 
-#: src/pages/landing/index.jsx:190
+#: src/pages/landing/index.jsx:204
 msgid "IGOs"
 msgstr "Organisations Internationales"
 
@@ -2201,6 +2194,10 @@ msgstr "Dans plus de 10 ans"
 #: src/store.js:393
 msgid "Incentive measures bring about an intended behaviour or outcome as an alternative to command and control measures - legal codes and prescriptions."
 msgstr "Les mesures d'incitation entraînent un comportement ou un résultat souhaité comme alternative aux mesures de commandement et de contrôle - codes et prescriptions juridiques."
+
+#: src/pages/landing/index.jsx:438
+msgid "Indicators from global datasets from international organizations, scientific articles and SDG monitoring are visualized through <0>global maps</0> and <1>country dashboards</1>"
+msgstr "Indicateurs issus de jeux de données mondiaux d'organisations internationales, d'articles scientifiques et du suivi des ODD, visualisés sur des <0>cartes mondiales</0> et des <1>tableaux de bord par pays</1>"
 
 #: src/modules/map/vertical-legend.jsx:391
 #: src/modules/map/vertical-legend.jsx:421
@@ -2362,7 +2359,7 @@ msgid "Job Tilte"
 msgstr "Inclinaison de l'emploi"
 
 #: src/modules/workspace/view.jsx:377
-#: src/pages/landing/index.jsx:320
+#: src/pages/landing/index.jsx:334
 msgid "Join Now"
 msgstr "Inscrivez-vous maintenant"
 
@@ -2409,7 +2406,7 @@ msgstr "Bibliothèque d'échange de connaissances."
 msgid "knowledge hub"
 msgstr "pôle de connaissances"
 
-#: src/pages/landing/index.jsx:406
+#: src/pages/landing/index.jsx:479
 #: src/store.js:15
 msgid "Knowledge Hub"
 msgstr "Centre d’informations"
@@ -2417,10 +2414,6 @@ msgstr "Centre d’informations"
 #: src/modules/workspace/view.jsx:74
 msgid "Knowledge Library"
 msgstr "Bibliothèque de connaissances"
-
-#: src/pages/landing/index.jsx:413
-msgid "Knowledge materials and case studies shared and accessible in the Knowledge Library"
-msgstr "Documents de connaissances et études de cas partagés et accessibles dans la bibliothèque de connaissances"
 
 #: src/modules/flexible-forms/form-schema.js:2005
 msgid "Land and Agriculture"
@@ -2982,7 +2975,7 @@ msgstr "Nouveaux développements/innovations techniques, par exemple recherche e
 msgid "Next"
 msgstr "Suivant"
 
-#: src/pages/landing/index.jsx:183
+#: src/pages/landing/index.jsx:197
 msgid "NGOs"
 msgstr "ONG"
 
@@ -3359,10 +3352,6 @@ msgstr ""
 msgid "Plastic in primary form"
 msgstr "Plastique sous forme primaire"
 
-#: src/pages/landing/index.jsx:448
-msgid "Plastic lifecycle indicators' data from studies and global monitoring initiatives showcased"
-msgstr "Les données des indicateurs du cycle de vie des plastiques issues d'études et d'initiatives de surveillance mondiales ont été présentées"
-
 #: src/store.js:655
 msgid "Plastic Odyssey: The Expedition Around The World To Fight Against Plastic Pollution"
 msgstr "Plastic Odyssey : L’expédition autour du monde pour lutter contre la pollution plastique"
@@ -3469,6 +3458,10 @@ msgstr "Propulsé par OpenAI"
 msgid "Preparing a Waste Management Plan - A Methodological Guidance Note"
 msgstr "Préparer un plan de gestion des déchets - Une note d'orientation méthodologique"
 
+#: src/pages/topics/[slug].jsx:139
+msgid "preview, live chart pending"
+msgstr "aperçu, graphique en direct à venir"
+
 #: src/modules/flexible-forms/form-schema.js:469
 msgid "Primary school"
 msgstr "École primaire"
@@ -3484,7 +3477,7 @@ msgid "private"
 msgstr "privé"
 
 #: src/modules/flexible-forms/form-schema.js:1111
-#: src/pages/landing/index.jsx:169
+#: src/pages/landing/index.jsx:183
 msgid "Private Sector"
 msgstr "Secteur privé"
 
@@ -3602,7 +3595,7 @@ msgid "Read more"
 msgstr "En savoir plus"
 
 #: src/components/map-and-layers/sidebar/partials/layerInfo.jsx:54
-#: src/pages/landing/index.jsx:573
+#: src/pages/landing/index.jsx:628
 msgid "Read More"
 msgstr "En savoir plus"
 
@@ -3643,10 +3636,6 @@ msgstr "Moyenne régionale"
 #: src/modules/flexible-forms/form-schema.js:700
 msgid "Regional Sustainable Development Goals (SDGs)"
 msgstr "Objectifs régionaux de développement durable (ODD)"
-
-#: src/pages/landing/index.jsx:481
-msgid "Registered users and GPML members connected through Community Hub"
-msgstr "Utilisateurs enregistrés et membres de GPML connectés via le Centre communautaire"
 
 #: src/modules/flexible-forms/form-schema.js:1964
 msgid "Regulation"
@@ -3846,7 +3835,7 @@ msgstr "SB 270 : interdiction des sacs à l'échelle de l'État"
 msgid "Scale up"
 msgstr "Augmenter"
 
-#: src/pages/landing/index.jsx:176
+#: src/pages/landing/index.jsx:190
 msgid "Scientific Communities"
 msgstr "Communautés scientifiques"
 
@@ -3911,7 +3900,7 @@ msgstr "Interventions sectorielles et plastiques hérités"
 msgid "See all"
 msgstr "Voir tout"
 
-#: src/pages/landing/index.jsx:545
+#: src/pages/landing/index.jsx:582
 msgid "See All"
 msgstr "Voir tout"
 
@@ -3987,6 +3976,10 @@ msgstr "Partager"
 #: src/modules/workspace/view.jsx:76
 msgid "Share Your Knowledge"
 msgstr "Partagez vos connaissances"
+
+#: src/pages/landing/index.jsx:463
+msgid "Shared digital working space connecting data, knowledge and stakeholders"
+msgstr "Espace de travail numérique partagé reliant données, connaissances et parties prenantes"
 
 #: src/pages/forum/[...params]/index.jsx:369
 msgid "Shared Documents"
@@ -4302,6 +4295,10 @@ msgstr "Ressource technique"
 msgid "Technical Resources"
 msgstr "Ressources techniques"
 
+#: src/pages/landing/index.jsx:484
+msgid "Technical resources, good practices, case studies, guidelines, tools, training courses etc., integrated into the <0>Library</0> and <1>Learning Centre</1>"
+msgstr "Ressources techniques, bonnes pratiques, études de cas, lignes directrices, outils, formations, etc., intégrés à la <0>Bibliothèque</0> et au <1>Centre d'apprentissage</1>"
+
 #: src/modules/flexible-forms/form-schema.js:919
 msgid "Technological/technical resources"
 msgstr "Ressources technologiques/techniques"
@@ -4352,7 +4349,7 @@ msgstr "L’Initiative 3R : un système de marché basé sur le crédit pour en
 msgid "The Act to Prevent Pollution from Ships"
 msgstr "La Loi visant à prévenir la pollution par les navires"
 
-#: src/pages/landing/index.jsx:114
+#: src/pages/landing/index.jsx:116
 msgid "The Action Planning Tool is a digital workflow to help countries in developing national plastic source inventories and plastic strategies, supported by step-by-step guidance and inspiring case studies. Create your account and explore."
 msgstr "L'outil de planification des actions est un processus numérique conçu pour aider les pays à élaborer des inventaires nationaux des sources de plastique et des stratégies en la matière, grâce à des instructions étape par étape et des études de cas inspirantes. Créez votre compte et explorez-le."
 
@@ -4376,11 +4373,11 @@ msgstr "Plateforme numérique du Partenariat mondial sur la pollution plastique 
 msgid "The GPML CoP"
 msgstr "Communautés de pratique du GPML"
 
-#: src/pages/landing/index.jsx:200
+#: src/pages/landing/index.jsx:214
 msgid "The GPML digital platform allows NGOs and civil society to connect with likeminded organizations, discover financing resources and funding opportunities, and showcase their work in the fight against plastic pollution and marine litter."
 msgstr "Le Global Plastics Hub permet aux ONG et à la société civile d'entrer en contact avec des organisations partageant les mêmes idées, de découvrir des ressources et des opportunités de financement et de présenter leur travail dans la lutte contre la pollution plastique et les déchets marins."
 
-#: src/pages/landing/index.jsx:186
+#: src/pages/landing/index.jsx:200
 msgid "The GPML Digital Platform allows NGOs and civil society to connect with likeminded organizations, discover financing resources and funding opportunities, and showcase their work in the fight against plastic pollution and marine litter."
 msgstr "Le Global Plastics Hub permet aux ONG et à la société civile de se connecter avec des organisations partageant les mêmes idées, de découvrir des ressources et des opportunités de financement, et de présenter leur travail dans la lutte contre la pollution plastique et les déchets marins."
 
@@ -4388,19 +4385,19 @@ msgstr "Le Global Plastics Hub permet aux ONG et à la société civile de se co
 msgid "The GPML Digital Platform drives transformation and supports the work of the GPML Action Tracks. The Digital Platform is multi-stakeholder and partly open source, compiling and crowdsourcing different resources, integrating data and connecting stakeholders to guide action on addressing the global problem of marine litter and plastic pollution."
 msgstr "Le Global Plastics Hub stimule la transformation et soutient le travail des pistes d'action GPML. La plateforme numérique est multipartite et partiellement open source, compilant et externalisant différentes ressources, intégrant des données et connectant les parties prenantes pour guider l'action visant à résoudre le problème mondial des déchets marins et de la pollution plastique."
 
-#: src/pages/landing/index.jsx:165
+#: src/pages/landing/index.jsx:179
 msgid "The GPML digital platform empowers all countries to create and implement successful plastic strategies to end plastic pollution including in the marine environment."
 msgstr "Le Global Plastics Hub permet à tous les pays de créer et de mettre en œuvre des stratégies efficaces en matière de plastique pour mettre fin à la pollution plastique, y compris dans l'environnement marin."
 
-#: src/pages/landing/index.jsx:172
+#: src/pages/landing/index.jsx:186
 msgid "The GPML digital platform fosters public-private partnerships, offers clarity on circular economy practices, and provides guidance on Extended Producer Responsibilities (EPRs) and sustainable business models."
 msgstr "Le Global Plastics Hub favorise les partenariats public-privé, offre des informations sur les pratiques d'économie circulaire et fournit des conseils sur les responsabilités élargies des producteurs (REP) et les modèles commerciaux durables."
 
-#: src/pages/landing/index.jsx:179
+#: src/pages/landing/index.jsx:193
 msgid "The GPML digital platform helps academia and the scientific community to ensure their research becomes actionable by offering the opportunity to share resources and collaborate with policy makers."
 msgstr "Le Global Plastics Hub aide le monde universitaire et la communauté scientifique à garantir que les résultats de leurs recherches soient rendus disponibles en offrant la possibilité de partager des ressources et de collaborer avec les décideurs politiques."
 
-#: src/pages/landing/index.jsx:193
+#: src/pages/landing/index.jsx:207
 msgid "The GPML digital platform offers the opportunity to forge collaborative partnerships with diverse stakeholders, share and find resources on plastic pollution, and amplify advocacy."
 msgstr "Le Global Plastics Hub offre la possibilité de forger des partenariats collaboratifs avec diverses parties prenantes, de partager et de trouver des ressources sur la pollution plastique et d'amplifier le message."
 
@@ -4424,7 +4421,7 @@ msgstr "Le problème : les déchets marins et la pollution plastique"
 msgid "The National Environmental Act - Order No. 2034/33"
 msgstr "La loi nationale sur l'environnement - Arrêté n° 2034/33"
 
-#: src/pages/landing/index.jsx:352
+#: src/pages/landing/index.jsx:366
 msgid "The one-stop platform for data, knowledge, and collaboration to end plastic pollution."
 msgstr "La plateforme unique de données, de connaissances et de collaboration pour mettre fin à la pollution plastique."
 
@@ -4508,7 +4505,7 @@ msgstr "Titre, description et lien"
 msgid "Title:"
 msgstr "Titre:"
 
-#: src/pages/landing/index.jsx:270
+#: src/pages/landing/index.jsx:284
 msgid "to address plastic pollution"
 msgstr "pour lutter contre la pollution plastique"
 
@@ -4521,7 +4518,7 @@ msgstr "tonnes"
 msgid "Tools & Toolkits"
 msgstr "Outils et boîtes à outils"
 
-#: src/pages/topics/[slug].jsx:50
+#: src/pages/topics/[slug].jsx:87
 msgid "Topic not found."
 msgstr "Sujet introuvable."
 
@@ -4733,6 +4730,10 @@ msgstr "Rôle d'utilisateur"
 #: src/modules/profile/admin.jsx:508
 msgid "User role changed"
 msgstr "Le rôle de l'utilisateur a été modifié"
+
+#: src/pages/landing/index.jsx:512
+msgid "Users and stakeholders signed up for the <0>Global Plastics Hub</0> and <1>GPML members</1>"
+msgstr "Utilisateurs et parties prenantes inscrits sur le <0>Global Plastics Hub</0> et <1>membres du GPML</1>"
 
 #: src/modules/flexible-forms/form-schema.js:1443
 #: src/modules/flexible-forms/form-schema.js:1699
@@ -4997,8 +4998,7 @@ msgstr "espace de travail"
 
 #: src/components/nav/nav-mobile.jsx:237
 #: src/layouts/new-layout.js:342
-#: src/pages/landing/index.jsx:325
-#: src/pages/landing/index.jsx:617
+#: src/pages/landing/index.jsx:672
 msgid "Workspace"
 msgstr "Espace de travail"
 
