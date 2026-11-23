@@ -521,6 +521,41 @@
         }
       }
     }
+    // Explore by Topic: line up icons, titles and links across cards,
+    // whatever the length of each summary
+    .feature-cards.topic-cards {
+      .container > li {
+        display: flex;
+      }
+      .feature-card {
+        justify-content: flex-start;
+        height: auto;
+        min-height: 520px;
+        .img {
+          height: 220px;
+          flex: 0 0 220px;
+          img {
+            margin-top: 0;
+          }
+        }
+        .cnt {
+          flex: 1;
+          margin-top: 0;
+          h5 {
+            margin-top: 24px;
+            margin-bottom: 16px;
+            text-align: center;
+          }
+          p {
+            flex: 1;
+          }
+          p + span {
+            margin-top: auto;
+            padding-top: 20px;
+          }
+        }
+      }
+    }
     .wed {
       background-color: $primaryDarkBlue;
       background-size: cover;
