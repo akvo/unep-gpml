@@ -57,6 +57,7 @@ export const useStepsDict = () => {
     'National Source Inventory Data Mapping': i18n._(
       t`National Source Inventory Data Mapping`
     ),
+    'Data Mapping': i18n._(t`Data Mapping`),
     'Final Review': i18n._(t`Final Review`),
     'National Plastic Strategy': i18n._(t`National Plastic Strategy`),
     'Upstream Measures': i18n._(t`Upstream Measures`),

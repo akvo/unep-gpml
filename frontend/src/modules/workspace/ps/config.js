@@ -123,7 +123,7 @@ export const stepsState = [
         },
       },
       {
-        label: 'National Source Inventory Data Mapping',
+        label: 'Data Mapping',
         slug: 'data-mapping',
         checked: false,
         strapiParams: {
