@@ -57,7 +57,7 @@ const Landing = (props) => {
   return (
     <div id="landing" className={styles.landing}>
       <HeroPlasticTap {...props} />
-      <FeatureCards />
+      <AtAGlance />
       <ExploreByTopic />
       <div className="container wed-container" id="main-content">
         <iframe
@@ -390,120 +390,157 @@ const HeroPlasticTap = ({ isAuthenticated, setLoginVisible }) => {
   )
 }
 
-const FeatureCards = () => {
+const AtAGlance = () => {
+  // Video background on larger screens only, and not for visitors who
+  // turn off animations. Phones and reduced motion get the still photo.
+  const [showVideo, setShowVideo] = useState(false)
+  useEffect(() => {
+    const mq = window.matchMedia(
+      '(min-width: 769px) and (prefers-reduced-motion: no-preference)'
+    )
+    setShowVideo(mq.matches)
+  }, [])
+
   return (
-    <section
-      className="feature-cards"
-      aria-labelledby="explore-platform-heading"
-    >
+    <section className="at-a-glance" aria-labelledby="explore-platform-heading">
+      {showVideo && (
+        <video
+          className="glance-video"
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster="/explore-platform-video-poster.jpg"
+          aria-hidden="true"
+        >
+          <source src="/explore-platform-bg.mp4" type="video/mp4" />
+        </video>
+      )}
       <h3 id="explore-platform-heading">
         <Trans>Explore The Platform</Trans>
       </h3>
 
-      <ul className="container" role="list">
-        <li role="listitem">
-          <Link
-            href="/knowledge-hub"
-            aria-label="Explore the Knowledge Hub section"
-            className="feature-card"
-          >
-            <div className="img">
-              <Image
-                src="/iconxl-knowledge-hub.svg"
-                width={265}
-                height={136}
-                alt="Knowledge Hub icon"
-              />
-            </div>
-            <div className="cnt">
-              <h5>
-                <Trans>Knowledge Hub</Trans>
-              </h5>
-              <h2>2800+</h2>
-              <p>
-                {/* <Trans>
-                  Knowledge resources shared in the Knowledge Library.
-                </Trans> */}
-                <Trans>
-                  Knowledge materials and case studies shared and accessible in
-                  the Knowledge Library
-                </Trans>
-              </p>
-              <span aria-hidden="true">
-                <Trans>Explore the resources</Trans>
-              </span>
-            </div>
+      <div className="container glance">
+        <div className="glance-card glance-data">
+          <Link href="/data/maps" className="glance-title">
+            <Image
+              src="/iconxl-data-hub.svg"
+              width={160}
+              height={80}
+              alt="Data Hub icon"
+            />
+            <h5>
+              <Trans>Data Hub</Trans>
+            </h5>
+            <h2>70+</h2>
           </Link>
-        </li>
+          <p>
+            <Trans>
+              Indicators from global datasets from international organizations,
+              scientific articles and SDG monitoring are visualized through{' '}
+              <Link href="/data/maps" className="link-green">
+                global maps
+              </Link>{' '}
+              and{' '}
+              <Link href="/country-dashboard" className="link-green">
+                country dashboards
+              </Link>
+            </Trans>
+          </p>
+        </div>
 
-        <li role="listitem">
-          <Link
-            href="/data/maps"
-            aria-label="Explore the Data Hub section"
-            className="feature-card"
-          >
-            <div className="img">
-              <Image
-                src="/iconxl-data-hub.svg"
-                width={320}
-                height={160}
-                alt="Data Hub icon"
-              />
-            </div>
-            <div className="cnt">
-              <h5>
-                <Trans>Data Hub</Trans>
-              </h5>
-              <h2>70+</h2>
-              <p>
-                {/* <Trans>
-                  Plastic Lifecycle Indicators showcased in the Data Hub.
-                </Trans> */}
-                <Trans>
-                  Plastic lifecycle indicators' data from studies and global
-                  monitoring initiatives showcased
-                </Trans>
-              </p>
-              <span aria-hidden="true">
-                <Trans>Explore the data</Trans>
-              </span>
-            </div>
-          </Link>
-        </li>
+        <Link href="/workspace" className="glance-apt">
+          <Image
+            src="/iconxl-workspace.svg"
+            width={120}
+            height={60}
+            alt="Action Planning Tool icon"
+          />
+          <h5>
+            <Trans>Action Planning Tool</Trans>
+          </h5>
+          <p>
+            <Trans>
+              Shared digital working space connecting data, knowledge and
+              stakeholders
+            </Trans>
+          </p>
+        </Link>
 
-        <li role="listitem">
-          <Link
-            href="/community-hub"
-            aria-label="Explore the Community Hub section"
-            className="feature-card"
-          >
-            <div className="img">
-              <Image
-                src="/iconxl-community.svg"
-                width={321}
-                height={204}
-                alt="Community Hub icon"
-              />
-            </div>
-            <div className="cnt">
-              <h5>
-                <Trans>Community Hub</Trans>
-              </h5>
-              <h2>2000+</h2>
-              <p>
-                {/* <Trans>Members connected through the Community Hub.</Trans> */}
-                <Trans>
-                  Registered users and GPML members connected through Community
-                  Hub
-                </Trans>
-              </p>
-              <span aria-hidden="true">
-                <Trans>Explore the community</Trans>
-              </span>
-            </div>
+        <div className="glance-card glance-kh">
+          <Link href="/knowledge-hub" className="glance-title">
+            <Image
+              src="/iconxl-knowledge-hub.svg"
+              width={160}
+              height={80}
+              alt="Knowledge Hub icon"
+            />
+            <h5>
+              <Trans>Knowledge Hub</Trans>
+            </h5>
+            <h2>2800+</h2>
           </Link>
-        </li>
-      </ul>
+          <p>
+            <Trans>
+              Technical resources, good practices, case studies, guidelines,
+              tools, training courses etc., integrated into the{' '}
+              <Link href="/knowledge-hub" className="link-orange">
+                Library
+              </Link>{' '}
+              and{' '}
+              <Link href="/knowledge/learning-centre" className="link-purple">
+                Learning Centre
+              </Link>
+            </Trans>
+          </p>
+        </div>
+
+        <div className="glance-card glance-ch">
+          <Link href="/community-hub" className="glance-title">
+            <Image
+              src="/iconxl-community.svg"
+              width={160}
+              height={100}
+              alt="Community Hub icon"
+            />
+            <h5>
+              <Trans>Community Hub</Trans>
+            </h5>
+            <h2>3000+</h2>
+          </Link>
+          <p>
+            <Trans>
+              Users and stakeholders signed up for the{' '}
+              <Link href="/community-hub" className="link-purple">
+                Global Plastics Hub
+              </Link>{' '}
+              and{' '}
+              <Link href="/community" className="link-purple">
+                GPML members
+              </Link>
+            </Trans>
+          </p>
+        </div>
+      </div>
+      {showVideo ? (
+        <a
+          className="glance-credit"
+          href="https://www.pexels.com/video/plastic-floating-in-the-sea-4717817/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Video: Åke Wall / Pexels
+        </a>
+      ) : (
+        <a
+          className="glance-credit"
+          href="https://unsplash.com/@naja_bertolt_jensen"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Photo: Naja Bertolt Jensen / Unsplash
+        </a>
+      )}
     </section>
   )
 }

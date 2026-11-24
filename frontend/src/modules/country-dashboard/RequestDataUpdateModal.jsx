@@ -41,7 +41,7 @@ const RequestDataUpdateModal = ({ visible, onClose }) => {
             <Checkbox value="Waste Management">Waste Management</Checkbox>
             
             <Checkbox value="Plastic in the Environment">
-              Legacy Plastics
+              Plastics in the Environment
             </Checkbox>
           </Checkbox.Group>
         </Form.Item>

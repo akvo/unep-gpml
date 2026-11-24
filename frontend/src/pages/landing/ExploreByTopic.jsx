@@ -40,7 +40,7 @@ const ExploreByTopic = () => {
 
   return (
     <section
-      className="feature-cards"
+      className="feature-cards topic-cards"
       aria-labelledby="explore-by-topic-heading"
     >
       <h3 id="explore-by-topic-heading">
